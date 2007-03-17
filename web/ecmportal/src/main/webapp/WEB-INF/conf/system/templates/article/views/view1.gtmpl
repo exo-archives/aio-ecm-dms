@@ -1,0 +1,239 @@
+<div id="$uicomponent.id" style="margin: 10px 5px;">
+	<style>
+		.UIArticle {}
+			
+		.UIArticle .TopLeftCornerDecorator {
+		  background: url('/ecm/skin/images/article/LeftTop42x63.gif') no-repeat left;
+		  padding-left: 42px;
+		}
+		
+		.UIArticle .TopRightCornerDecorator {
+		  background: url('/ecm/skin/images/article/RightTop12x63.gif') no-repeat right ;
+		  padding-right:12px;
+		}
+		
+		.UIArticle .TopCenterDecorator {
+		  background: url('/ecm/skin/images/article/CenterTop1x63.gif') repeat-x top;
+		  padding: 0px 10px;
+		}
+		
+		.UIArticle .TopCenterDecorator .BannerIcon {
+		  background: url('/ecm/skin/images/article/BannerIcon.gif') no-repeat right bottom;
+		  height: 63px;
+		  padding-right: 236px;
+		}
+		
+		.UIArticle .TopCenterDecorator .TitleLabel {
+		  padding-top: 15px;
+		  font: normal bold 16px Arial;
+		  color: #0467e2;
+		}
+
+		.UIArticle .TopCenterDecorator .Underline {
+		  border-top: solid 1px #b7b7b7;
+		  border-bottom: solid 1px white;
+		}
+		
+		.UIArticle .MiddleLeftSideDecorator {
+		  background: url('/ecm/skin/images/article/LeftMiddle7x1.gif') repeat-y left;
+		  padding-left: 7px ;  
+		}
+		
+		.UIArticle .MiddleCenterDecorator {
+		  background: #f1f1f1;
+		  padding: 0px 8px;
+		}
+		
+		.UIArticle .MiddleRightSideDecorator {
+		  background: url('/ecm/skin/images/article/RightMiddle7x1.gif') repeat-y right;
+		  padding-right: 7px ;  
+		}
+		
+		.UIArticle .BottomLeftCornerDecorator {
+		  background: url('/ecm/skin/images/article/LeftBottom12x12.gif') no-repeat left ;
+		  padding-left: 12px;
+		}
+		
+		.UIArticle .BottomCenterDecorator {
+		  background: url('/ecm/skin/images/article/CenterBottom1x12.gif') repeat-x bottom;
+		  height: 12px;
+		}
+		
+		.UIArticle .BottomRightCornerDecorator {
+		  background: url('/ecm/skin/images/article/RightBottom12x12.gif') no-repeat right ;
+		  padding-right: 12px ;  
+		}
+		
+		.UIArticle .ArticleFrame {
+		  border: solid 1px #aeaeae;
+		  background: white;
+		  padding: 2px;
+		}
+			
+		.UIArticle .ArticleFrame .ArticleFrameContainer {
+		  background: #f2f2f2;
+		  padding: 1px 8px 15px 8px;
+		}
+		
+		.UIArticle .ArticleField {
+		  margin-top: 15px;
+		  line-height: 16px;
+		}
+		
+		.UIArticle .FieldIcon {
+	    float: left; margin-right: 5px;
+	    width: 16px; height: 16px;
+		}
+		
+		.UIArticle .FieldLabel {
+		  float: left;
+      font-weight: bold;
+		}
+		
+		.UIArticle .SummaryIcon {
+		  background: url('/ecm/skin/images/article/Summary.gif') no-repeat;
+		}
+		
+		.UIArticle .AttachmentsIcon {
+		  background: url('/ecm/skin/images/article/Attachments.gif') no-repeat;
+		}
+		
+		.UIArticle .RatingIcon {
+		  background: url('/ecm/skin/images/article/RatingInfo.gif') no-repeat;
+		}
+		
+		.UIArticle .ContentIcon {
+		  background: url('/ecm/skin/images/article/Content.gif') no-repeat;
+		}
+		
+		.UIArticle .LinksIcon {
+		  background: url('/ecm/skin/images/article/Links.gif') no-repeat;
+		}
+		
+		.UIArticle .FieldContent {
+		  padding: 5px 10px;
+		  margin-top: 5px;
+		  font: normal 11px Verdana;
+		  border: solid 1px #b7b7b7;
+		  background: white;
+		}
+
+		.UIArticle .DocumentRating {
+  		margin-left: 150px;
+  		border: solid 1px blue;
+  		width: 300px;
+		}
+
+    .UIArticle .Links {
+  	  margin-left: 80px;
+		}
+		
+		.UIVoteForm .RatingInfo {
+			font: normal bold 11px Arial;
+			color: #0489d5;
+		}
+		
+		.UIArticle .UIRatingInfoContainer {
+			margin: 0px 0px 0px auto;
+		}
+  </style>  
+	<%
+	 def node = uicomponent.getNode() ;		
+	 def relations = uicomponent.getRelations() ;
+	 def attachments = uicomponent.getAttachments() ;
+	%>
+	<div class="UIArticle">
+		<div class="TopLeftCornerDecorator">
+			<div class="TopRightCornerDecorator">
+				<div class="TopCenterDecorator">
+          <div class="BannerIcon">
+            <div class="TitleLabel"><%=node.getProperty("exo:title").getString()%></div>
+            <div class="Underline"><span></span></div>
+          </div>
+        </div>
+			</div>
+		</div>
+		<div class="MiddleLeftSideDecorator">
+			<div class="MiddleRightSideDecorator">
+				<div class="MiddleCenterDecorator">
+					<div class="ArticleFrame">
+            <div class="ArticleFrameContainer">
+              <div class="ArticleField">
+	              <div class="FieldIcon SummaryIcon"><span></span></div>
+	              <div class="FieldLabel">Summary :</div>
+	              <div>&nbsp;</div>
+	            </div>
+              <div class="FieldContent">
+                <%
+                  if(node.hasProperty("exo:summary")) {
+                    print node.getProperty("exo:summary").getString() ;
+                  } else {
+                    print "None Summary" ;
+                  }
+                %>
+              </div>
+							<%if(attachments.size() > 0) {%>
+		              <div class="ArticleField">
+			              <div class="FieldIcon AttachmentsIcon"><span></span></div>
+			              <div class="FieldLabel">Attachments :</div>
+			              <div class="AttachmentsContaienr">
+										<%for (att in attachments) {%>	
+			                  <a class="Attachment" href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a>
+		                <%}%>
+		                </div>
+			            </div>						
+							<%}%>
+            </div>
+          </div>
+          <div style="height: 10px;"><span></span></div>
+					<div class="ArticleFrame">
+            <div class="ArticleFrameContainer">
+              <div class="ArticleField">
+	              <div class="FieldIcon ContentIcon"><span></span></div>
+	              <div class="FieldLabel">Content :</div>
+	              <div>&nbsp;</div>
+	            </div>
+              <div class="FieldContent">
+                <%
+                  if(node.hasProperty("exo:text")) {
+                    print node.getProperty("exo:text").getString() ;
+                  } else {
+                    print "None Content" ;
+                  }
+                %>
+              </div>
+    					<%if(relations.size() > 0) {%>
+		              <div class="ArticleField">
+			              <div class="FieldIcon LinksIcon"><span></span></div>
+			              <div class="FieldLabel">Links :</div>
+			              <div class="Links">
+										<%
+						          for (rel in relations) {
+										    String wsName = rel.getSession().getWorkspace().getName() ;
+									      String actionLink ;
+										    if(!uicomponent.isRssLink()) { 
+										      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+									      } else { 
+										 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
+									      }
+								    %>
+  								    <div> - <a href="$actionLink">$rel.name</a></div>
+  							    <%}%>
+			              </div>
+			            </div>
+		          <%}%>
+            </div>
+          </div>
+          <div style="height: 10px;"><span></span></div>
+					<% _ctx.include(uicomponent.getVoteTemplate()); %>
+				</div>
+			</div>
+		</div>
+		<div class="BottomLeftCornerDecorator">
+			<div class="BottomRightCornerDecorator">
+				<div class="BottomCenterDecorator"><span></span></div>
+			</div>
+		</div>  
+	</div>
+	<% _ctx.include(uicomponent.getCommentTemplate()); %>
+</div>

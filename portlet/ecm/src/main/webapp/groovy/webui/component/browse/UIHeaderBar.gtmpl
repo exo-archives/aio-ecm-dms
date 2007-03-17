@@ -1,0 +1,24 @@
+<%
+  /**
+   * Created by The eXo Platform SARL
+   * Author : pham tuan
+   *          phamtuanchip@gmail.com
+   * Dec 14, 2006
+   * version: $Id$   
+   */
+%>
+<div class="UIHeaderBar" id="$uicomponent.id">
+  <div class="IconFrame">
+    <%
+      for (action in uicomponent.getActions()) {
+        String actionLabel = _ctx.appRes(uicomponent.getName() + ".title." + action) 
+          String link = uicomponent.event(action) ;
+    %>
+        <a class="Icon <%=action%>24x24Icon " href="$link" title="$actionLabel"><span></span></a>      
+        <div class="Separator HeaderBarSeparator"><span></span></div>
+    <%
+      }
+    %>
+    <div style="clear:right;"><span></span></div>
+  </div>
+</div>

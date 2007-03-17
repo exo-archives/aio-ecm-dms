@@ -1,0 +1,94 @@
+<%import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;%>
+<div class="UIBrowseContainer" id="$uicomponent.id">
+  <%if((uicomponent.isShowCommentForm()) ||(uicomponent.isShowVoteForm())) uicomponent.renderChild(UIToolBar.class);%>
+  <!--Begin TagMap-->
+  <%if(uicomponent.isShowTagmap()) {
+      def taglist = uicomponent.getTagLink() ;
+      def tagStyle = uicomponent.getTagStyle() ;  
+  %>
+      <div class="TagmapHolder">
+        <div class="TagmapContentTitle">
+          <div class="TagLabel">TagMap</div>
+        </div>
+        <div class ="TagmapContent">
+          <%
+            for(String tag : taglist){
+              String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
+              String tagStatus = "" ;
+              String style = "" ;
+              String tagkey = "" ; 
+              if(tag.hasProperty("exo:tagStatus")) {
+                tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
+                style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+              }
+              tagkey = tag.getName() ;                  
+              println "<div class=\"Tag\"> <a href=\"$tagLink\" $style>$tagkey</a> </div>" ;
+            }
+          %>
+          <div style="clear:left;"><span></span></div>
+        </div>  
+      </div>  
+  <%}%>
+  <!--End TagMap-->
+  <%
+    def subDocumentList = uicomponent.getNodeByScript(); 
+    if(subDocumentList.isEmpty()){%>
+		<div class="UISubContent">
+			<div class ="UIDocumentContentInfo">
+			  <div class="NoneDocumentMessage" style="margin:0px;">
+			  	<div class="MessageContainer">
+				  	<div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
+				  	<div class="Message"><%=_ctx.appRes(uicomponent.id + ".label.NoDocument")%></div>
+			  	</div>
+			  </div>
+			</div>	
+		</div>	
+	<%}%>
+   <!--Begin UIEventViewer-->
+	<div class="UIEventViewer">
+		<div class="EventContent">
+	  	<%
+	  		boolean isFloatRight = false ;
+	  	  for (Node doc in subDocumentList) {
+	  	  	String classStyle = "EventContentDetailLeft" ;
+					if(isFloatRight) classStyle = "EventContentDetailRight" ;
+					if(subDocumentList.size() == 1) classStyle = "EventContentDetail" ;
+	  	  	String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+	  	%>
+				  <div class="$classStyle">
+						<div class="TopEventContentDetail">
+						  <table>	
+						   	<tr>
+						    	<td>
+						    		<div class="DocumentIcon Documents16x16Icon"><span></span></div>
+						    		<div class="EventDocumentLabel">
+					    		    <a href="$viewAction"><%=doc.getName()%></a>
+					    		  </div>  
+						    	</td>
+						    	<td>
+							    	<div class="EventAuthorNameLabel"><%=uicomponent.getOwner(doc)%></div>
+		              </td>
+						    	<td>
+						    	  <div class="DateAndTimeLabel">not defined</div>
+						    	</td>
+						    </tr> 			 
+							</table>
+						</div>
+						<div class="MainEventContent">
+							<div class="SummaryTitleLabel">Summary:
+							  <%if(doc.hasProperty("exo:summary")){%>
+							   <%=doc.getProperty("exo:summary").getString()%>
+							 <%}%>
+							</div>
+					  </div>
+				  </div>
+				  
+			<%
+			    if(isFloatRight) println "<div style=\"clear: both\"><span></span></div>" ;
+					isFloatRight = !isFloatRight ;
+			  }
+			%>
+		</div>
+	</div>
+  <!--End UIEventViewer-->
+</div>

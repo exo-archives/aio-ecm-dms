@@ -1,0 +1,49 @@
+/***************************************************************************
+ * Copyright 2001-2006 The eXo Platform SARL         All rights reserved.  *
+ * Please look at license.txt in info directory for more license detail.   *
+ **************************************************************************/
+package org.exoplatform.ecm.webui.component.admin.queries;
+
+import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.webui.component.UIContainer;
+import org.exoplatform.webui.component.UIPopupWindow;
+import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.config.annotation.ComponentConfig;
+
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Dec 29, 2006  
+ * 11:27:14 AM
+ */
+@ComponentConfig(lifecycle = UIContainerLifecycle.class)
+public class UIQueriesManager extends UIContainer {
+
+  public UIQueriesManager() throws Exception {
+    addChild(UIQueriesList.class, null, null) ;
+  }
+
+  public void initFormPopup() throws Exception {
+    removeChildById("QueryForm") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "QueryForm") ;
+    uiPopup.setWindowSize(600, 500) ;
+    UIQueriesForm uiForm = createUIComponent(UIQueriesForm.class, null, null) ;
+    uiPopup.setUIComponent(uiForm) ;
+    uiPopup.setRendered(true) ;
+    uiPopup.setShow(true) ;
+  }
+  
+  public void initPermissionPopup() throws Exception {
+    removeChildById("PermissionPopup") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PermissionPopup");
+    uiPopup.setWindowSize(560, 300);
+    UIECMPermissionBrowser uiECMPermission = 
+      createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+    uiPopup.setUIComponent(uiECMPermission);
+    UIQueriesForm uiForm = findFirstComponentOfType(UIQueriesForm.class) ;
+    uiECMPermission.setComponent(uiForm, new String[] {UIQueriesForm.PERMISSIONS}) ;
+    uiPopup.setRendered(true) ;
+    uiPopup.setShow(true) ;
+  }
+}

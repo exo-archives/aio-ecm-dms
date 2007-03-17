@@ -1,0 +1,26 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modifile : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * December 08, 2006
+ * version: $Id$
+ */
+ 
+@import url("../../../icons/MacStylesheet.css");
+@import url("control/MacStylesheet.css");
+@import url("sidebar/MacStylesheet.css");
+@import url("UIPopupAction/MacStylesheet.css");
+@import url("UIDrivesBrowser/MacStylesheet.css");
+@import url("UIJCRExplorer/MacStylesheet.css");
+
+.UIJCRExplorerPortlet {}
+
+.UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
+  width: 80px;
+}
+
+.UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
+  height: 20px ; line-height: 20px;
+  font-weight: bold; font-size: 11px;
+  background: #8eeaaf ;
+}

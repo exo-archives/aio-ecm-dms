@@ -1,0 +1,79 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minhdv@exoplatform.com
+ * Nov 02, 2006
+ * version: $Id$
+ */
+
+/*############################## -- UIMetadataManager-- ########################*/
+
+.UIECMAdminPortlet .UIMetadataForm .UIGrid {
+  width: 100% ;
+  border-left: 0px ;
+  border-right: 0px ;
+}
+
+.UIECMAdminPortlet .UIMetadataForm .UIGrid .text {
+  width: 100% ;
+}
+
+.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
+  width: 200px;
+  margin: auto;
+  padding-top: 0px;
+}
+
+.UIECMAdminPortlet .UIMetadataForm .ActionContainer .ActionButton {
+  width: 85px;
+	float: none;
+}
+
+.UIECMAdminPortlet .UIMetadataList .UIAction {
+  padding-top: 7px;
+  width: 100px;
+  margin:auto;
+}
+
+.UIECMAdminPortlet .UIMetadataList .ActionContainer .ActionButton {
+  width: 100px;
+}
+
+.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm .textarea {
+  width: 498px;
+  height: 300px;
+  margin-left: 25px;
+}
+
+.UIECMAdminPortlet .UIMetadataManager {
+  padding: 0px 5px;
+}
+
+.UIECMAdminPortlet .MetadataInfoDetails {
+  width: 550px;
+}
+
+.UIECMAdminPortlet .MetadataInfo .GridTitleBar {
+  width: 220px;
+  padding-top: 10px ;
+}
+
+.UIECMAdminPortlet .MetadataInfo .GridTitleBar .GridTitleLeftBar  {
+  padding-left: 5px;
+  line-height: 21px;
+  background: url('DefaultSkin/background/InfoBarLeftBg5x21.gif') no-repeat left;
+}
+
+.UIECMAdminPortlet .MetadataInfo .GridTitleBar .GridTitleRightBar {
+  padding-right: 21px;
+  line-height: 21px;
+  background: url('DefaultSkin/background/InfoBarRightBg22x21.gif') no-repeat right;
+}
+
+.UIECMAdminPortlet .MetadataInfo .GridTitleBar .GridTitleMiddleBar {
+  line-height: 21px;
+  vertical-align: middle;
+  background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
+  padding: 0px 10px;
+}
+/*############################## -- End UIMetadataManager-- ########################*/

@@ -1,0 +1,73 @@
+<div class="UIFormWithTitle">
+  <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
+	<% uiform.begin() %>
+  <div class="HorizontalLayout">	  
+    <div class="FieldContainer">		          					
+      <label>Id</label>
+      <%
+         String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+         uicomponent.addMixinField("id", fieldId) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Action name</label>
+      <% 
+        String[] fieldName = ["jcrPath=/node/exo:name"] ;
+        uicomponent.addTextField("name", fieldName) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Lifecycle</label>
+      <% 
+        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,modify,remove"] ;
+        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Description</label>
+      <% 
+        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
+        uicomponent.addTextAreaField("description", fieldDescription) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Calendar file name</label>
+      <%
+        String[] fieldCalendarPath = ["jcrPath=/node/exo:calendarPath", "/cms/calendar/exocalendar.ics"] ; 
+        uicomponent.addTextField("calendarPath", fieldCalendarPath) ; 
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Query items</label>
+      <%
+        String[] fieldQuery = ["jcrPath=/node/exo:query", "/jcr:root/cms/publications//element(*, exo:event)"] ; 
+        uicomponent.addTextAreaField("query", fieldQuery) ;
+      %>
+    </div>
+    <%/* start render action*/%>
+		<div class="UIAction" style="width:180px; margin:auto;"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

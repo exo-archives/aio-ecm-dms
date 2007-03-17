@@ -1,0 +1,147 @@
+<%def node = uicomponent.getNode() ;%>
+<table class="UIGrid">      	 			
+  <tr>
+    <td style="width:25%">Action name:</td>
+    <td>
+      <%if(node.hasProperty("exo:name")) {%>
+        <%=node.getProperty("exo:name").getString()%>
+      <%}%>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:25%">Lifecycle:</td>
+    <td>
+      <%if(node.hasProperty("exo:lifecyclePhase")) {%>
+		    <%=node.getProperty("exo:lifecyclePhase").getString()%>
+		  <%}%>
+    </td>
+  </tr>
+  <tr>
+		<td style="width:25%">Feed title:</td>
+		<td>
+		  <%if(node.hasProperty("exo:feedTitle")) {%>
+				<%=node.getProperty("exo:feedTitle").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Feed type:</td>
+		<td>
+			<%if(node.hasProperty("exo:feedType")) {%>
+				<%=node.getProperty("exo:feedType").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Link:</td>
+		<td>
+			<%if(node.hasProperty("exo:feedType")) {%>
+				<%=node.getProperty("exo:link").getString()%>
+			<%}%>	
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Description:</td>
+		<td>
+			<%if(node.hasProperty("exo:description")) {%>
+        <%=node.getProperty("exo:description").getString()%>
+      <%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Language:</td>
+		<td>
+			<%if(node.hasProperty("exo:language")) {%>
+				<%=node.getProperty("exo:language").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Copyright:</td>
+		<td>
+			<%if(node.hasProperty("exo:language")) {%>
+				<%=node.getProperty("exo:copyright").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Publish date:</td>
+		<td>
+		  <%if(node.hasProperty("exo:pubDate")) {%>
+				<%=node.getProperty("exo:pubDate").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Owner name:</td>
+		<td>
+		  <%if(node.hasProperty("exo:ownerName")) {%>
+				<%=node.getProperty("exo:ownerName").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Owner email:</td>
+		<td>
+		  <%if(node.hasProperty("exo:ownerEmail")) {%>
+				<%=node.getProperty("exo:ownerEmail").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Image URL:</td>
+		<td>
+			<%if(node.hasProperty("exo:imageURL")) {%>
+				<%=node.getProperty("exo:imageURL").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Category:</td>
+		<td>
+		  <%if(node.hasProperty("exo:category")) {%>
+				<%=node.getProperty("exo:category").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Keywords:</td>
+		<td>
+		  <%if(node.hasProperty("exo:keywords")) {%>
+				<%=node.getProperty("exo:keywords").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Store path:</td>
+		<td>
+		  <%if(node.hasProperty("exo:storePath")) {%>
+				<%=node.getProperty("exo:storePath").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+    <td style="width:25%">Rss feed name:</td>
+    <td>
+      <%if(node.hasProperty("exo:feedName")) {%>
+				<%=node.getProperty("exo:feedName").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Rss version:</td>
+		<td>
+		  <%if(node.hasProperty("exo:rssVersion")) {%>
+				<%=node.getProperty("exo:rssVersion").getString()%>
+			<%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Query path:</td>
+		<td>
+		  <%if(node.hasProperty("exo:queryPath")) {%>
+				<%=node.getProperty("exo:queryPath").getString()%>
+			<%}%>
+		</td>
+  </tr> 
+</table>

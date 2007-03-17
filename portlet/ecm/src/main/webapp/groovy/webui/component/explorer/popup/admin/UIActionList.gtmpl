@@ -1,0 +1,76 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minhdv@exoplatform.com
+ * Nov 8, 2006
+ * 6:15:56 PM 
+ */
+%>
+<% import org.exoplatform.webui.component.UIPageIterator; %>
+<div class="UIActionList">
+  <table class="UIGrid">
+	  <thead>
+	    <tr>
+	      <th><%=_ctx.appRes("UIActionList.header.name")%></th>
+		    <th><%=_ctx.appRes("UIActionList.header.description")%></th>
+ 		    <th><%=_ctx.appRes("UIActionList.header.instanceOf")%></th>
+ 		    <th><%=_ctx.appRes("UIActionList.header.action")%></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+      <%
+        def rowClass = "OddRow" ;
+		    boolean even = true ;
+		    if(uicomponent.hasActions()) {
+			    for(action in uicomponent.getListActions()) {
+			      if(even) rowClass = "EvenRow" ;  
+			      else rowClass =  "OddRow" ; 
+			      even = !even ;
+      %>
+		      <tr class="$rowClass">
+		        <td>
+		          <div class="Text"><%=action.getProperty("exo:name").getString()%></div>
+		        </td>
+		        <td>
+		          <div class="Text"><%=action.getProperty("exo:description").getString()%></div>
+		        </td>
+		        <td>
+		          <div class="Text">[<%=action.getPrimaryNodeType().getName()%>]</div>
+		        </td>
+		        <td style="width:60px;">
+		        <%
+		          for(act in uicomponent.getActions()) { 
+		        %>
+	              <a href="<%=uicomponent.event(act, action.getName())%>">
+	                <div class="${act}16x16Icon" title="$act" style="margin-left:5px;float:left;"></div>
+	              </a>
+		        <%} %>
+		        </td>
+		      </tr>
+	    <%
+	        }
+	      }
+	    %>
+    </tbody>
+  </table>
+  <% uicomponent.renderChild(UIPageIterator.class) %>
+  <div class="UIAction" style="width: 90px; margin: auto;padding-top:5px;"> 
+    <div class="ActionContainer">
+	    <div class="ActionButton">
+	      <div class="LightBlueStyle" >
+					<div class="ButtonLeft">
+					  <div class="ButtonRight">
+						  <div class="ButtonMiddle">
+								<div class="Icon Cancel16x16Icon"><span></span></div>
+								<a href="<%=uicomponent.event("Cancel")%>">
+								  <%=_ctx.appRes("UIActionList.action.Cancel")%>
+								</a>
+				      </div>
+				    </div>
+			    </div>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>

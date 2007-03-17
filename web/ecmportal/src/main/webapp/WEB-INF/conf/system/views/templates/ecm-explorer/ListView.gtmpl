@@ -1,0 +1,120 @@
+<%
+	/**
+	 * Created by The eXo Platform SARL
+	 * Author : Dang Van Minh
+	 *          minhdv@exoplatform.com
+	 * July 25, 2006
+	 * 8:16:23 AM
+	 */
+%>
+<%	 
+	import org.exoplatform.webui.component.UIRightClickPopupMenu ;
+  
+  UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
+%>
+<div class="UIListView" id="UIDocumentInfo">
+  <table class="UIGridControl">
+    <%
+      String typeSort = uicomponent.getTypeSort() ;
+      String typeSortOrder = uicomponent.getTypeSortOrder() ;
+      String nameSortOrder = uicomponent.getNameSortOrder() ;
+      String typeClass = "" ;
+      String nameClass = "" ;
+      String typeBgColor = "" ;
+      String nameBgColor = "" ;
+      String classSortTypeIcon = "BlueDownArrow";
+      String classSortNameIcon = "BlueDownArrow";
+      String typeActionLink  = uicomponent.event("Sort","Type;Descending") ;
+      String nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
+      if(typeSort.equals("Type")) { 
+        typeClass = "OverHeader" ;
+        typeBgColor = "background: #f1f2f5" ;
+        if(typeSortOrder.equals("Ascending")) {
+          classSortTypeIcon = "BlueDownArrow" ;
+          typeActionLink = uicomponent.event("Sort","Type;Descending") ;
+        } else if(typeSortOrder.equals("Descending")) {
+          classSortTypeIcon = "BlueUpArrow" ;
+          typeActionLink = uicomponent.event("Sort","Type;Ascending") ;
+        }
+      } else if(typeSort.equals("Alphabetic")) {
+        nameClass = "OverHeader" ;
+        nameBgColor = "background: #f1f2f5" ;
+        if(nameSortOrder.equals("Ascending")) {
+          classSortNameIcon = "BlueDownArrow" ;
+          nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
+        } else if(nameSortOrder.equals("Descending")) {
+          classSortNameIcon = "BlueUpArrow" ;
+          nameActionLink = uicomponent.event("Sort","Alphabetic;Ascending") ;
+        }
+      }
+    %>
+    <col style="$typeBgColor ;width: 40px;"></col>
+    <col style="$nameBgColor"></col>
+    <col></col>
+    <col></col>
+    <thead>
+      <tr>
+        <th class="$typeClass;">
+          <a href="$typeActionLink">
+            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
+          </a>
+        </th>
+        <th class="$nameClass">
+          <div class="HeaderLabel"><%=_ctx.appRes("UIWorkingArea.title.Name")%></div>
+          <a href="$nameActionLink">
+            <div class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
+          </a>
+        </th>
+        <th><%=_ctx.appRes("UIWorkingArea.title.Owner")%></th>
+        <th><%=_ctx.appRes("UIWorkingArea.title.Versionable")%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%
+        for(data in uicomponent.getChildrenList()) {
+				  def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+      		def preferenceWS = data.getSession().getWorkspace().getName() ;
+      		def name = data.getName() ;
+	        String actionLink  ;
+	        String subName ;
+	        if(name.length() < 20) { 
+	          subName = name ;
+	          if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
+	          else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;
+	        } else {
+	          subName = name.substring(0,15) + "..." ;
+	          if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
+	          else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;								          
+	        }								        
+      %>
+	      <tr>
+	        <td>
+            <%
+		          String nodeType = data.getPrimaryNodeType().getName() ;
+		          nodeType = nodeType.replace(":", "_") ;
+			      %>	             
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+					    <div class="Icon16x16 default16x16Icon ${nodeType}16x16Icon"><span></span></div>
+  					</div>
+	        </td>
+	        <td>
+						<a href="$actionLink" title="$name">
+							<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+								<%=subName%>
+	  					</div>
+  					</a>
+	        </td>
+	        <td><%=uicomponent.getNodeOwner()%></td>
+	        <td>
+	          <%=uicomponent.isVersionable(data)%>
+	          <%
+	            if(uicomponent.isVersionable(data)) {
+	          %>
+	          (<%=uicomponent.getVersionName(data)%>)
+	          <%}%>
+	        </td>
+	      </tr>
+      <%} %>
+    </tbody>
+  </table>
+</div>

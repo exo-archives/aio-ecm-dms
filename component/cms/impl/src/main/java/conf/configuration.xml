@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<configuration>
+  <!--
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.templates.velocity.VelocityService</target-component>
+    <component-plugin>
+      <name>jcr.resource.loader</name>
+      <set-method>addPlugin</set-method>
+      <type>org.exoplatform.services.templates.velocity.impl.JCRResourceLoaderImpl</type>
+      <description>resource loader for the jcr</description>
+    </component-plugin>
+  </external-component-plugins>
+  -->
+</configuration>

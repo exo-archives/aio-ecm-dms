@@ -1,0 +1,33 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tuan Pham
+ *          phamtuanchip@gmail.com
+ * Nov 15, 2006 
+ *
+ */
+%>
+
+<div class="$uicomponent.id">  
+  <% uicomponent.renderChildren() %>
+  <div class="UIAction" style="width: 90px; margin: auto;padding-top:5px;"> 
+    <div class="ActionContainer">
+      <%for (action in uicomponent.getActions()) {%>
+      <div class="ActionButton">
+        <div class="LightBlueStyle" >
+          <div class="ButtonLeft">
+            <div class="ButtonRight">
+              <div class="ButtonMiddle">
+                <div class="Icon Cancel16x16Icon"><span></span></div>
+                <a href="<%=uicomponent.event("Cancel")%>">
+                  <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%}%>
+    </div>
+  </div>
+</div>

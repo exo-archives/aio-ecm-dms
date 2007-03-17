@@ -1,0 +1,70 @@
+<%
+  public void writeAction(String label, String action, String param) {
+    println """
+	    <div class="ActionButton">
+	      <div class="LightBlueStyle" >
+					<div class="ButtonLeft">
+					  <div class="ButtonRight">
+						  <div class="ButtonMiddle">
+							  <div class="Icon ${action}16x16Icon"><span></span></div>
+	  """;
+		if(param != null)
+		  println " <a href=\"" + uicomponent.event(action, param) + "\">" ;
+		else
+  		println " <a href=\"" + uicomponent.event(action) + "\">" ;
+    println """
+							    $label
+							  </a>
+				      </div>
+				    </div>
+			    </div>
+				</div>
+			</div>
+		""" ;
+  }
+%>
+
+<div class="UITask UIFormWithTitle">
+  <% 
+    uiform.begin() 
+    def resWorkflow = uicomponent.getWorkflowBundle() ;
+  %>
+  <div class="TitleBar"><%=resWorkflow.getString("title")%></div>
+  <div class="HorizontalLayout">
+		<%for(inputInfo in uicomponent.getInputInfo())  {%>
+	    <div class="FieldContainer">
+	  	  <label><%=inputInfo.getLabel()%></label>
+        <% uicomponent.renderField(inputInfo.getInput()); %>
+	  	</div>
+		<%}%>
+	  <div class="UIAction"> 
+	    <div class="ActionContainer">
+			  <%
+			  def buttons = uicomponent.getSubmitButtons() ;
+	      if(buttons.isEmpty()) {
+	        label = resWorkflow.getString("submit") ;
+		      if(uicomponent.isStart()) writeAction(label, "StartProcess", null) ;
+	        else writeAction(label, "EndOfState", null) ;
+	      } else {
+		      for(button in buttons) {
+		        name = button.get("name") ;
+		        submit = ".submit" ;
+		        label = name + submit ;
+		        label = resWorkflow.getString(label) ;
+		        writeAction(label, "Transition", name) ;
+		      }
+		    }
+		    writeAction("Cancel", "Cancel", null) ;
+		    %>
+	    </div>
+	  </div>
+		<%if(uicomponent.getStateImageURL() != "") {%>
+		  <div style="float: right">
+  	    <div style="padding-right: 80px">					  		
+		  		<img src="$uicomponent.stateImageURL"/>
+		  	</div>
+		  </div>
+		<%}%>
+  </div>
+  <%uiform.end()%>
+</div>

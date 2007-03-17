@@ -1,0 +1,72 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>config</artifactId>
+    <version>2.0</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.web.ecmportal</artifactId>
+  <packaging>war</packaging> 
+  <version>${org.exoplatform.ecm.version}</version>
+  <name>eXo ECM Portal web module</name>
+
+  <build>
+    <finalName>ecmportal</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <webResources>
+            <resource>
+              <!-- this is relative to the pom.xml directory -->
+              <directory>${exo.projects.directory.src}/portal/trunk/web/portal/src/main/webapp</directory>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.holiday.jbpm/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.holiday.bonita/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.payraise.jbpm/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.payraise.bonita/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.content-backup.jbpm/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.content-backup.bonita/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.content-validation.jbpm/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/exo-ecm/exo-ecm.business-process.content-validation.bonita/1.2</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.bpar</include></includes>
+            </resource>
+          </webResources>
+         </configuration>
+       </plugin>
+    </plugins>
+  </build>
+</project>

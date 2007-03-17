@@ -1,0 +1,34 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modifile : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * December 08, 2006
+ * version: $Id$
+ */
+
+@import url("../../../icons/VistaStylesheet.css");
+@import url("control/VistaStylesheet.css");
+@import url("sidebar/VistaStylesheet.css");
+@import url("UIPopupAction/VistaStylesheet.css");
+@import url("UIDrivesBrowser/VistaStylesheet.css");
+@import url("UIJCRExplorer/VistaStylesheet.css");
+
+.UIJCRExplorerPortlet {}
+
+.UIPageBody .UIJCRExplorerPortlet {
+	margin: 0px 6px 0px 6px;
+  border: 1px solid #737373;
+  background: url('../admin/VistaSkin/background/ECMAdminbottom1x30.gif') repeat-x left bottom;
+  background-color: white;
+  padding-bottom: 30px;
+}
+
+.UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
+  width: 80px;
+}
+
+.UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
+  height: 20px ; line-height: 20px;
+  font-weight: bold; font-size: 11px;
+  background: #8eeaaf ;
+}

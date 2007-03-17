@@ -1,0 +1,103 @@
+<%
+  String[] hiddenField1 = ["jcrPath=/node/exo:image", "nodetype=nt:resource", "visible=false"] ; 
+  String[] hiddenField2 = ["jcrPath=/node/exo:image/jcr:encoding", "visible=false", "UTF-8"] ;
+  String[] hiddenField3 = ["jcrPath=/node/exo:image/jcr:lastModified", "visible=false"] ;
+  uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
+  uicomponent.addHiddenField("hiddenInput2", hiddenField2) ;
+  uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
+%>
+<div class="UIFormWithTitle">
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">	  
+    <div class="FieldContainer">		          					
+      <label>Name</label>
+      <%
+        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
+        uicomponent.addTextField("name", fieldName) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Title</label>
+      <%
+        String[] fieldTitle = ["jcrPath=/node/exo:title"] ;
+        uicomponent.addTextField("title", fieldTitle) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Description</label>
+      <%
+        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
+        uicomponent.addTextAreaField("description", fieldDescription) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Date</label>
+      <%
+        String[] fieldDate = ["jcrPath=/node/exo:date"] ; 
+        uicomponent.addCalendarField("date", fieldDate) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Date Time</label>
+      <%
+        String[] fieldDateTime = ["jcrPath=/node/exo:datetime", "options=displaytime"] ;
+        uicomponent.addCalendarField("datetime", fieldDateTime) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Upload image</label>
+      <%
+        String[] fieldImage = ["jcrPath=/node/exo:image/jcr:data"] ;
+        uicomponent.addUploadField("image", fieldImage) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Mime type</label>
+      <%
+        String[] fieldMimeType = ["jcrPath=/node/exo:image/jcr:mimeType",  "image/gif", "options=image/gif,image/jpeg,image/png"] ;
+        uicomponent.addSelectBoxField("mimetype", fieldMimeType) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Summary</label>
+      <%
+        String[] fieldSummary = ["jcrPath=/node/exo:summary", "options=basic", ""] ;
+        uicomponent.addWYSIWYGField("summary", fieldSummary) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Content</label>
+      <%
+        String[] fieldContent = ["jcrPath=/node/exo:content", "options=default", ""] ;
+        uicomponent.addWYSIWYGField("content", fieldContent) ;
+      %>
+    </div>
+    
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+	  
+  </div>
+  <%uiform.end()%>
+</div>

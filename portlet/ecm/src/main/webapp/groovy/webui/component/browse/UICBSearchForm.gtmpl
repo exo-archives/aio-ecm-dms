@@ -1,0 +1,37 @@
+<%
+  import org.exoplatform.webui.component.UIFormSelectBox ;
+%>
+
+<div class="UICBSearchForm">
+  <div class="HorizontalLayout">
+  	<%uiform.begin()
+    for(field in uiform.getChildren()) { 
+      if(field.isRendered()) {
+    %>  
+		    <div class="FieldContainer">    
+			    <%fieldName = uicomponent.getLabel(field.getName());
+		        	if (fieldName.equals("nolabel")) {%>
+		           <div class="Nolabel"><span></span></div>
+		          <%} 
+		          else {
+		    			if(fieldName != null && fieldName.length() > 0) {%> 
+					        <label><%=uicomponent.getLabel(field.getName())%></label>  
+		    	 <% }
+			        }%>
+		        <div class="Input"><%uiform.renderField(field)%></div>
+		    </div>
+		<%
+		  }
+		}
+		%>
+     <div class="FieldContainer">
+	      <a  href="<%=uicomponent.event('Search')%>">
+	       <div class="SearchIcon"><span></span></div>
+	       <div class="SearchLabel">Search now</div>
+	      </a> 
+     </div>
+     <div style="clear:left;"><span></span></div>
+	   <%uiform.end()%>   
+	</div>       
+</div>
+

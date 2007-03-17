@@ -1,0 +1,64 @@
+<%
+   String[] hiddenField1 = ["jcrPath=/node/exo:move", "exo:move", "visible=false"] ; 
+   uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
+%>
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+      
+    <div class="FieldContainer">		          					
+      <label>Destination Workspace</label>
+      <%
+        String[] fieldDestWorkspace= ["jcrPath=/node/exo:move/exo:destWorkspace"] ;
+        uicomponent.addTextField("destWorkspace", fieldDestWorkspace) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Destination Path</label>
+      <%
+        String[] fieldDestPath = ["jcrPath=/node/exo:move/exo:destPath"] ;
+        uicomponent.addTextField("destPath", fieldDestPath) ;
+      %>
+    </div>
+     <div class="FieldContainer">		          					
+      <label>Primary Type</label>
+      <%
+        String[] fieldPrimaryType = ["jcrPath=/node/exo:move/jcr:primaryType"] ;
+        uicomponent.addTextField("primaryType", fieldPrimaryType) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Mixin Types</label>
+      <%
+        String[] fieldMixinTypes = ["jcrPath=/node/exo:move/jcr:mixinTypes"] ;
+        uicomponent.addTextField("mixinTypes", fieldMixinTypes) ;
+      %>
+    </div>
+    
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer" style="width:100%;">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

@@ -1,0 +1,361 @@
+<%
+  import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
+  import javax.jcr.Node ;
+  String componentName = uicomponent.getName() ;
+%>
+<div class="UIBrowseContainer" id="$uicomponent.id">
+  <%
+  if(uicomponent.isEnableToolBar()) uicomponent.renderChild(UIToolBar.class);
+  if(!uicomponent.isShowSearchForm()) {
+    Node rootNode = uicomponent.getRootNode() ;
+    Node currentNode = uicomponent.getCurrentNode() ;
+     Node selectedTab = uicomponent.getSelectedTab() ; 
+    boolean isShowAllDoc = uicomponent.isShowAllDocument() ;
+    def content = uicomponent.getPathContent() ;                  
+    def tabList = content.get("tabList") ;
+    def subCategoryList = content.get("subCategoryList") ;
+    def subDocumentList = uicomponent.getCurrentList() ;
+    boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
+    if(isShowDocByTag) { isShowAllDoc = true ;}
+    boolean hasNoSubCategory = subCategoryList.isEmpty() ;
+    boolean hasNoDocument = subDocumentList.isEmpty() ;
+    boolean isShowTagmap = uicomponent.isShowTagmap() ;
+    int itemPerPage = uicomponent.getItemPerPage() ;   
+    int itemPerBlock = uicomponent.getRowPerBlock() ;   
+    int numbOfDocument = subDocumentList.size() ;
+    int numbOfSubCategory = subCategoryList.size() ;
+  %>
+  <!--Begin UICBNavigation-->
+  <div class="UICBNavigation">
+    <div class="CBLeftNavigation">
+      <div class="CBRightNavigation">
+        <div class="CBMiddleNavigation">
+          <div class="UICBMainNavigation">
+            
+            <div class="HomeTab UIPopupSelector">
+              <div class="UIContextMenu UISelectContent">
+                <div class="SubContextMenu">
+                  <div class="NodeHistoryContainer">
+                    <%
+                      def String previousNode =  content.get("previous") ;
+                      def String  previousNodeName ;
+                      def String  previousActionLink ;
+                      if(previousNode != null){
+                         previousNodeName = "Previous" ;
+                         previousActionLink = uicomponent.event('ChangeNode',previousNode);
+                      } else {
+                        previousNodeName = "Root" ;
+                        previousActionLink = uicomponent.event('ChangeNode',rootNode.getPath());
+                      }
+                    %>    
+                    <div class="NodeNavigationIcon">                      
+                      <a class="BackButtonLabel" href="$previousActionLink">$previousNodeName</a>
+                    </div>
+                  </div>            
+                  <%
+                    for(String nodePath : content.get("history")) {
+                      String classStyleName = "NodeLabel" ;
+                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);                  
+                      String nodeLink = uicomponent.event('ChangeNode',nodePath) ;
+                       if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
+                  %>
+                      <div class="NodeHistoryContainer">
+                        <div class="NodeItemIcon">
+                          <a class="$classStyleName" href="$nodeLink">$nodeName</a>
+                        </div>
+                      </div>              
+                  <%}%>
+                 </div>
+              </div>
+              <div class="LeftHomeTab">
+                <div class="RightHomeTab">
+                  <div class="MiddleHomeTab">
+                    <a class="HomeTabLabel" href="<%=uicomponent.event('ChangeNode',rootNode.getPath())%>" >Home</a>
+                    <div class="HomeTabIcon DropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
+                    <div style="clear:left;"><span></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="UIHorizontalTabs">
+              <%
+                for(String tab in tabList) {
+                  String className = "CBNormalTab" ;
+                  String tabName = tab.substring(tab.lastIndexOf("/") + 1) ;
+                  if(tabName.equals(selectedTab.getName())) className = "CBSelectedTab" ;
+              %>
+                  <div class="UITab">
+                    <div class="$className"> 
+                      <div class="LeftTab">
+                        <div class="RightTab">
+                          <div class="MiddleTab">
+                            <div class="LabelButton">
+                              <a href="<%=uicomponent.event('ChangeNode',tab);%>">$tabName</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              <%}%>  
+            </div>
+            <div class="NavigationButtonContainer">
+              <div class="NavigationIcon ScrollLeftBlackArrow16x16Icon" title="Previous Tabs"><span></span></div>
+              <div class="NavigationIcon ScrollRightGrayArrow16x16Icon" title="More Tabs"><span></span></div>
+              <div style="clear:both"><span></span></div>
+            </div>
+          </div>
+          <div class="UICBSubNavigation">
+            <div class="LeftIcon S2LeftGrayArrow16x16Icon" title="Previous Items"><span></span></div>
+            <div class="ItemContainer">
+              <%
+                for(String subCat in subCategoryList) {
+                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
+                  String actionLinkSub = uicomponent.event("ChangeNode", subCat) ; 
+              %>
+                  <div class="ChildNodeItem">
+                    <div class="ItemIcon ExtendButton16x16Icon"><span></span></div>
+                    <a class="NodeLabel" href="$actionLinkSub">$catName</a>  
+                  </div>
+              <%}%>
+              <div style="clear:both"><span></span></div>
+            </div>
+            <div class="RightIcon S2RightGrayArrow16x16Icon" title="More Items"><span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End UICBNavigation-->
+  <!--Begin TagMap-->
+  <%if(isShowTagmap) {
+      def taglist = uicomponent.getTagLink() ;
+      def tagStyle = uicomponent.getTagStyle() ;  
+  %>
+      <div class="TagmapHolder">
+        <div class="TagmapContentTitle">
+          <div class="TagLabel">TagMap</div>
+        </div>
+        <div class ="TagmapContent">
+          <%
+            for(String tag : taglist){
+              String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
+              String tagStatus = "" ;
+              String style = "" ;
+              String tagkey = "" ; 
+              if(tag.hasProperty("exo:tagStatus")) {
+                tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
+                style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+              }
+              tagkey = tag.getName() ;                  
+              println "<div class=\"Tag\"> <a href=\"$tagLink\" $style>$tagkey</a> </div>" ;
+            }
+          %>
+          <div style="clear:left;"><span></span></div>
+        </div>  
+      </div>  
+  <%}%>
+  <!--End TagMap-->  
+  
+  <%if(hasNoDocument){%>
+    <div class="UISubContent">
+      <div class ="UIDocumentContentInfo">
+        <div class="NoneDocumentMessage" style="margin:0px;">
+          <div class="MessageContainer">
+            <div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
+            <div class="Message"><%=_ctx.appRes(componentName + ".label.NoDocument")%></div>
+          </div>
+        </div>
+      </div>  
+    </div>  
+  <%}%>
+  <%if(hasNoSubCategory) { %>
+      <div class="UISubContent">
+        <div class ="UIDocumentContentInfo">
+          <div class="NoneDocumentMessage" style="margin:0px;">
+            <div class="MessageContainer">
+              <div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
+              <div class="Message"><%=_ctx.appRes(componentName + ".label.NoChild")%></div>
+            </div>
+          </div>
+        </div>  
+      </div>  
+  <%}%>
+  <!--Begin UIEventViewer-->
+  <div class="UIEventViewer">
+    <div class="EventContent">
+      <%
+        boolean isFloatRight = false ;
+        for (Node doc in subDocumentList) {
+          String classStyle = "EventContentDetailLeft" ;
+          if(isFloatRight) classStyle = "EventContentDetailRight" ;
+          if(numbOfDocument == 1) classStyle = "EventContentDetail" ;
+          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+      %>
+          <div class="$classStyle">
+            <div class="TopEventContentDetail">
+              <table>  
+                 <tr>
+                  <td>
+                    <div class="DocumentIcon Documents16x16Icon"><span></span></div>
+                    <div class="EventDocumentLabel">
+                      <a href="$viewAction"><%=doc.getName()%></a>
+                    </div>  
+                  </td>
+                  <td>
+                    <div class="EventAuthorNameLabel"><%=uicomponent.getOwner(doc)%></div>
+                  </td>
+                  <td>
+                    <div class="DateAndTimeLabel">not defined</div>
+                  </td>
+                </tr>        
+              </table>
+            </div>
+            <div class="MainEventContent">
+              <div class="SummaryTitleLabel">Summary:
+                <%if(doc.hasProperty("exo:summary")){%>
+                 <%=doc.getProperty("exo:summary").getString()%>
+               <%}%>
+              </div>
+            </div>
+          </div>
+      <%
+          if(isFloatRight) println "<div style=\"clear: both\"><span></span></div>" ;
+          isFloatRight = !isFloatRight ;
+        }
+      %>
+      <div style="clear: both;"><span></span></div>
+    </div>
+    <div class="ViewMoreDocument">
+      <%
+        String moreActionLink = "" ;
+        String moreLabel = "" ;
+        if(uicomponent.getNumberOfPage() > 1 ) moreLabel = "more.." ;
+        if(!isShowAllDoc){
+          moreActionLink = uicomponent.event('ChangeNode','ViewMore') ;
+        } else {
+          moreActionLink = "" ;
+          moreLabel = "" ;
+          _ctx.renderUIComponent(uicomponent.getUIPageIterator()) ;
+          println "<div style=\"clear: both\"><span></span></div>" ;
+        }
+      %>
+      <a href="$moreActionLink">$moreLabel</a>
+    </div>
+  </div>  
+  <!--End UIEventViewer-->
+  <%if(isShowAllDoc) {%>
+        <div class="UIAction" style="margin-top:5px;"> 
+          <div class="ActionContainer">
+            <div class="ActionButton">
+              <div class="LightBlueStyle" >
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <div class="Icon Close16x16Icon"><span></span></div>
+                      <a href="<%=uicomponent.event('Close')%>">Close</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <%} else {%>
+        <!--Begin UISubContent-->    
+        <div class="UISubContent" >
+          <% 
+            isFloatRight = false ;
+            for(String subCat in subCategoryList) {
+              String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
+              String subCatLink = uicomponent.event("ChangeNode", subCat);
+              def className = "SubContentHolderLeft" ;
+              if(isFloatRight) className = "SubContentHolderRight" ;  
+              if(numbOfSubCategory ==1) className = "SubContentHolder" ;
+          %>
+              <div class="$className">
+                <div class="TopSubContent">
+                  <div class="ItemIcon ExtendButton16x16Icon"><span></span></div>
+                  <a class="NodeLabel" href="$subCatLink">$catName</a>
+                </div>
+                <div style="clear:both"><span></span></div>
+                <div class="SubContentTitle">
+                  <a class="LeftIcon S2LeftGrayArrow16x16Icon" href="javascript:ajaxGet('')" title="Scroll left"><span></span></a>
+                  <%
+                    def child = content.get(catName) ;
+                    def subChilds = child.get("sub") ;
+                    def docChilds = child.get("doc") ;
+                    for(String subChild in subChilds) {
+                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
+                       String subChildLink = uicomponent.event("ChangeNode", subChild);
+                  %>
+                      <div class="ChildNode">
+                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
+                      </div>
+                  <%}%>
+                  <a class="RightIcon S2RightGrayArrow16x16Icon" href="javascript:ajaxGet('')" title="Scroll right"><span></span></a>
+                  <div style="clear:both"><span></span></div>  
+                </div>
+                <div style="clear:both"><span></span></div>  
+                <div class="UIDocumentContentInfo">
+                  <table>
+                    <tbody>
+                      <%if(docChilds.isEmpty()) { %>
+                          <tr>
+                            <td>
+                              <div class="NoneDocumentMessage">
+                                <div class="MessageContainer">
+                                  <div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
+                                  <div class="Message">
+                                    <%=_ctx.appRes(componentName + ".label.NoDocument" )%> 
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr> 
+                      <%} else {   
+                           for(Node doc in docChilds) {
+                            String docActionLink = uicomponent.event("ChangeNode",doc.getPath()) ;
+                      %>
+                            <tr>
+                              <td>
+                                 <div class="DocumentInfo">
+                                  <div class="DocumentIcon Documents16x16Icon"><span></span></div>
+                                  <div class="DocumentLabel">
+                                    <a href="$docActionLink"><%=doc.getName()%></a>
+                                  </div>
+                                  <div style="clear:both"><span></span></div>  
+                                </div>
+                              </td>
+                              <td><div class="AuthorNameLabel"><%=uicomponent.getOwner(doc)%></div></td>
+                              <td><div class="DateTimeLabel">not defined</div></td>
+                            </tr> 
+                      <%}%>
+                          <tr>
+                            <td colspan="3">
+                              <div class="ViewMoreDocument">
+                                <%
+                                  String label = "More..." ;
+                                  if(docChilds.size() < itemPerBlock) label = "" ;
+                                %>
+                                <a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">$label</a>
+                              </div>
+                            <td>
+                          </tr>
+                      <%}%>
+                    <tbody>
+                  </table>
+                </div>      
+              </div>
+          <%
+              if(isFloatRight) println "<div style=\"clear: both\"><span></span></div>" ;
+              isFloatRight = !isFloatRight ;
+            } //end for
+          %>
+          <div style="clear: both;"><span></span></div>
+        </div> 
+        <!--End UISubContent-->   
+  <%  } 
+    }
+  %>
+</div>

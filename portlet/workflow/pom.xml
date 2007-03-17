@@ -1,0 +1,35 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>config</artifactId>
+    <version>2.0</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.portlet.workflow</artifactId>
+  <version>${org.exoplatform.ecm.version}</version>
+  <packaging>war</packaging>
+  <name>exo-ecm.portlets.workflow Portlet</name>
+  <url>http://www.exoplatform.org</url>
+  <description>exo-ecm.portlets.workflow Portlet</description>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.cms.impl</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency> 
+  </dependencies>
+  
+  <build>
+    <finalName>workflow</finalName>
+  </build>
+</project>

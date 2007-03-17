@@ -1,0 +1,180 @@
+<style>	
+	.FileContent {  
+	  padding: 5px;
+	  font-family: Verdana;
+	  color: #0e396c;
+	}
+
+	.FileContent  .TopLeftDecorator {
+	  background: url('/ecm/skin/images/file/TopLeftDecotator9x27.gif') no-repeat top left ;
+	  padding-left: 9px;
+	}
+
+	.FileContent  .TopRightDecorator {
+	  background: url('/ecm/skin/images/file/TopRightDecorator10x27.gif') no-repeat top right ;
+	  padding-right: 10px;
+	}
+
+	.FileContent  .TopCenterDecorator {
+	  background: url('/ecm/skin/images/file/TopMiddleDecorator1x27.gif') repeat-x top ;
+	  height: 27px;	padding-left: 12px;
+	  font-weight: bold; font-size: 11px;
+	  line-height: 26px;
+	}
+
+	.FileContent  .MiddleLeftDecorator {
+		border: solid 1px #cbcbcb;
+		border-bottom: none;
+		background: #ffffff;	
+		padding: 15px;		
+	}
+	
+	.ActionContainer {
+		height: 34px;
+		padding: 5px 0px 0px 0px;
+	}
+
+	.ActionButtom {
+		width: 150px;
+		margin: auto;
+	}
+
+	.ButtomLeft {
+	  background: url('/ecm/skin/images/file/ButtomLeft.gif') no-repeat bottom left ;
+	  padding-left: 7px;
+	}
+
+	.ButtomRight {
+	  background: url('/ecm/skin/images/file/ButtomRight.gif') no-repeat bottom right ;
+	  padding-right: 6px;
+	}
+
+	.MiddleButtom {
+	  background: url('/ecm/skin/images/file/MiddleButtom.gif') repeat-x bottom ;
+		height: 29px;
+		text-align: center;
+		font-size: 11px;
+		line-height: 29px;
+		cursor: pointer;
+	}
+
+	.FileContent .BottomLeftDecorator {
+	  background: url('/ecm/skin/images/file/BottomLeftDecorator9x11.gif') no-repeat bottom left ;
+	  padding-left: 9px;
+	}
+
+	.FileContent .BottomRightDecorator {
+	  background: url('/ecm/skin/images/file/BottomRightDecorator10x11.gif') no-repeat bottom right ;
+	  padding-right: 10px;
+	}
+
+	.FileContent .BottomCenterDecorator {
+	  background: url('/ecm/skin/images/file/BottomMiddleDecorator1x11.gif') repeat-x bottom ;
+		height: 11px;
+	}	
+</style>
+<%
+  def originalNode = uicomponent.getNode() ;
+  def node         = originalNode.getNode("jcr:content") ;
+  def nodetype     = node.getPrimaryNodeType().getName() ;
+  def mime = "" ;
+  if(node.hasProperty("jcr:mimeType")) mime = node.getProperty("jcr:mimeType").getString() ;
+%>
+<div class="FileContent">
+	<div class="NavigationContainer">  			
+	<div class="TopLeftDecorator">
+		<div class="TopRightDecorator">
+			<div class="TopCenterDecorator">
+				File Content
+			</div>
+		</div>
+	</div>
+	<div class="MiddleLeftDecorator">
+		<%
+		  if(uicomponent.isNodeTypeSupported(nodetype)) {
+  			def oldNode = node ;
+	  		uicomponent.setNode(node) ;
+		  	uicomponent.setTemplateNode(nodetype) ;			
+			  uicomponent.setNode(oldNode)
+		  }	else {
+		    if(mime.startsWith("text") && node.hasProperty("jcr:data")) {
+		      def text = node.getProperty("jcr:data").getString() ;
+		      println "$text" ;	
+		    } else if(mime.startsWith("image")) {
+		 %>
+		      <div style="width:99.5%; text-align:center">
+					  <img src="/<%=uicomponent.getPortalName()%>}/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=originalNode.getPath()%>"/>
+				  </div>																					
+					<div class="ActionContainer">
+						<div class="ActionButtom">
+							<div class="ButtomLeft">
+								<div class="ButtomRight">
+									<div class="MiddleButtom">
+										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%>/<%=originalNode.getPath()%>">
+											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ActionContainer">
+						<div class="ActionButtom">
+							<div class="ButtomLeft">
+								<div class="ButtomRight">
+									<div class="MiddleButtom">
+										<a href="/<%=uicomponent.getPortalName()%>/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=originalNode.getPath()%>">
+											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		 <% } else {%>	  
+		     	<div style="text-align:center; font-style:italic">This content is not viewable. Please download or use WebDAV to access the content</div>
+					<div class="ActionContainer">
+						<div class="ActionButtom">
+							<div class="ButtomLeft">
+								<div class="ButtomRight">
+									<div class="MiddleButtom">
+										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%>/<%=originalNode.getPath()%>">
+											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
+						  			</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ActionContainer">
+						<div class="ActionButtom">
+							<div class="ButtomLeft">
+								<div class="ButtomRight">
+									<div class="MiddleButtom">
+										<a href="/<%=uicomponent.getPortalName()%>/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=originalNode.getPath()%>">
+											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	<% 
+		   }
+		 }
+	%>			
+	</div>	
+	<div class="BottomLeftDecorator">
+		<div class="BottomRightDecorator">
+			<div class="BottomCenterDecorator"><span></span></div>
+		</div>
+	</div>  			  			
+  <div style="overflow:hidden;width:99.5%"> 
+		<div style="float:right; width:220px; margin-top: 5px">
+			<% _ctx.include(uicomponent.getVoteTemplate()); %>
+		</div>
+	</div>
+	<div style="margin:5px">
+		<% _ctx.include(uicomponent.getCommentTemplate()); %> 	  	
+	</div>
+</div>

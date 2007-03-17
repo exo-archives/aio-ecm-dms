@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration>  
+  
+  <component>
+    <key>org.exoplatform.services.cms.rules.RuleService</key>  
+    <type>org.exoplatform.services.cms.rules.RuleServiceImpl</type>
+    <init-params>
+      <object-param>
+        <name>predefined.rules</name>
+        <description>description</description>
+        <object type="org.exoplatform.services.cms.impl.ResourceConfig">
+          <field  name="workspace"><string>production</string></field>
+          <field  name="resources">
+            <collection type="java.util.ArrayList">
+              <value>
+                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+                  <field  name="name"><string>EnougthAdmins.java.drl</string></field>
+                </object>  
+              </value> 
+            </collection>   
+          </field>
+        </object>
+      </object-param>
+    </init-params>   
+  </component>    
+	
+	<component>
+	  <key>org.exoplatform.services.cms.relations.RelationsService</key>  
+	  <type>org.exoplatform.services.cms.relations.RelationsServiceImpl</type>      
+	</component>	
+  
+  <component>
+	  <key>org.exoplatform.services.cms.rss.RSSService</key>  
+	  <type>org.exoplatform.services.cms.rss.RSSServiceImpl</type>      
+	</component>
+	
+	<component>
+	  <key>org.exoplatform.services.cms.voting.VotingService</key>  
+	  <type>org.exoplatform.services.cms.voting.impl.VotingServiceImpl</type>      
+	</component>
+	
+	<component>
+	  <key>org.exoplatform.services.cms.comments.CommentsService</key>  
+	  <type>org.exoplatform.services.cms.comments.impl.CommentsServiceImpl</type>      
+	</component>
+		
+	<component>
+	  <key>org.exoplatform.services.cms.watch.WatchDocumentService</key>  
+	  <type>org.exoplatform.services.cms.watch.impl.WatchDocumentServiceImpl</type> 
+	  <init-params>
+      <object-param>
+        <name>messageConfig</name>
+        <description>description</description>
+        <object type="org.exoplatform.services.cms.watch.impl.MessageConfig">
+          <field  name="sender"><string>support@exoplatform.com</string></field>
+          <field  name="subject"><string>Your watching document is changed</string></field>
+          <field  name="mimeType"><string>text/plain</string></field>
+          <field  name="content">
+          	<string>The document that you are watching is changed. 
+                    Please go to ecm to see this change
+            </string>
+          </field>          
+        </object>
+      </object-param>
+    </init-params>        
+	</component>	
+	
+	<component>
+	  <key>org.exoplatform.services.cms.queries.QueryService</key>  
+	  <type>org.exoplatform.services.cms.queries.QueryServiceImpl</type>
+	  <init-params>
+	    <value-param>
+	      <name>workspace</name>
+	      <value>production</value>
+	    </value-param>   
+	    <value-param>
+	      <name>relativePath</name>
+	      <value>queries</value>
+	    </value-param>            
+	  </init-params>       
+	</component>
+			          
+</configuration>

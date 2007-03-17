@@ -1,0 +1,20 @@
+<div class="UIViewRelationList">
+	<div class="RelationFrame">
+		<div class="TitleLabel">
+	     <%=_ctx.appRes("UIViewRelationList.label.related-document")%>
+	  </div>
+		<div class="FrameContent">
+		<%def relations = uicomponent.getRelations()
+			if(relations.isEmpty()) { %>  			    			    	
+			    <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
+			 <%}else {
+				 for (rel in relations) {
+				   String wsName = rel.getSession().getWorkspace().getName() ;
+				   String actionLink ;
+				   actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;%>
+			 	 	 <div> - <a href="$actionLink">$rel.name</a></div>
+			<% }
+			}%>
+		</div>
+	</div>
+</div>

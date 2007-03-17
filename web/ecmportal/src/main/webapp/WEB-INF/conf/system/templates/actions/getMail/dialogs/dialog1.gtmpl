@@ -1,0 +1,45 @@
+#jsfDialogFormField("inputName=id" "jcrPath=/node" "editable=false" "visible=false")
+
+<div class="title" style="border-top:1px solid #b8c1ca">Get Mail Action</div>
+	<div class="detail">
+	  <div class="row">
+	    <label>Get mail action name:</label>
+	   #jsfDialogFormField("inputName=name" "jcrPath=/node/exo:name")
+	  </div>		
+	  <div class="row">
+	    <label>Lifecycle:</label>
+	    #jsfDialogFormField("inputName=lifecycle" "jcrPath=/node/exo:lifecyclePhase" "widget=selectbox" "add" "options=read,add,modify,remove")	
+	  </div>
+	  <div class="row">
+			<label>Protocol:</label>
+			#jsfDialogFormField("inputName=protocol" "jcrPath=/node/exo:protocol" "widget=selectbox" "pop3" "options=pop3,imap")
+	  </div>		  	
+	  <div class="row">
+			<label>Host:</label>
+			#jsfDialogFormField("inputName=host" "jcrPath=/node/exo:host")
+		</div>
+		<div class="row">
+			<label>Post:</label>
+			#jsfDialogFormField("inputName=port" "jcrPath=/node/exo:port")
+	  </div>
+	  <div class="row">
+			<label>Folder:</label>
+			#jsfDialogFormField("inputName=folder" "jcrPath=/node/exo:folder" "Inbox")
+	  </div>
+	  <div class="row">
+			<label>Username:</label>
+			#jsfDialogFormField("inputName=userName" "jcrPath=/node/exo:userName" "support@exoplatform.com")
+	  </div>
+	  <div class="row">
+			<label>Password:</label>
+			#jsfDialogFormField("inputName=password" "jcrPath=/node/exo:password" "widget=password")
+	  </div>
+	  <div class="row">
+			<label>Description:</label>
+			#jsfDialogFormField("inputName=description" "jcrPath=/node/exo:description" "widget=textarea")
+	  </div>
+	  <div class="row">
+			<label>Store path:</label>
+			#jsfDialogFormField("inputName=storePath" "jcrPath=/node/exo:storePath" "cms/mail")
+	  </div>
+  </div>

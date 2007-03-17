@@ -1,0 +1,97 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+.UIECMAdminPortlet .UITaxonomyManager {
+}
+
+.UIECMAdminPortlet .UITaxonomyContainer {
+  border: solid 1px #bdbdbd;
+  padding: 5px;
+  background-color: white;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .Icon16x16 {
+  margin: 7px 7px 0px 0px;
+  float: left;
+  cursor: pointer;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .Icon24x24 {
+  margin: 2px 3px;
+  float: left;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .HorizontalLayout{
+	padding-top: 12px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
+	border: solid 1px #ffffff;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .HomeNode {
+  padding: 0px 7px;
+  line-height: 30px;
+  background-color: #eaedf6;
+  margin-bottom: 1px;
+  font-weight: bold;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .Node {
+  line-height: 30px;
+  background-color: #eaedf6;
+  margin-bottom: 1px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .NodeEven {
+  line-height: 30px;
+  background-color: #e4e7f3;
+  margin-bottom: 1px;
+}
+.UIECMAdminPortlet .UITaxonomyManager .NoneIcon {
+  margin: 7px 2px;
+  float: left;
+  width: 16px;
+  height: 16px;  
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .ExpandIcon {
+  margin: 7px 0px;
+  float: left;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
+  margin: 7px 0px;
+  float: left;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .NodeActionsContainer {
+  float: right;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
+  width: 190px;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .TrueFalseContainer{
+  width: 65px;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIAction  .ActionContainer .ActionButton {
+  width: 80px;
+}

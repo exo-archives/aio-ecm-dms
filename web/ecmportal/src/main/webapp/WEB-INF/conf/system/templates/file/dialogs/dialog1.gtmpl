@@ -1,0 +1,132 @@
+<%
+  String[] hiddenField1 = ["jcrPath=/node/jcr:content", "nodetype=nt:resource", "mixintype=dc:elementSet", "visible=false"] ; 
+  String[] hiddenField2 = ["jcrPath=/node/jcr:content/jcr:encoding", "visible=false", "UTF-8"] ;
+  String[] hiddenField3 = ["jcrPath=/node/jcr:content/jcr:mimeType", "visible=false", "text/html"] ;  
+  String[] hiddenField4 = ["jcrPath=/node/jcr:content/jcr:lastModified", "visible=false"] ;
+  String[] hiddenField5 = ["jcrPath=/node/jcr:content/dc:date", "visible=false"] ;
+  uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
+  uicomponent.addHiddenField("hiddenInput2", hiddenField2) ;
+  uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
+  uicomponent.addCalendarField("hiddenInput4", hiddenField4) ;
+  uicomponent.addCalendarField("hiddenInput5", hiddenField5) ;
+%>
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+    <div class="FieldContainer">		          					
+      <label>Name</label>
+      <%
+        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable", "editable=if-null"] ;
+        uicomponent.addTextField("name", fieldName) ; 
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Title</label>
+      <%
+        String[] fieldTitle = ["jcrPath=/node/jcr:content/dc:title", "multiValues=true"] ;
+        uicomponent.addTextField("title", fieldTitle) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Creator</label>
+      <%
+        String[] fieldCreator = ["jcrPath=/node/jcr:content/dc:creator", "multiValues=true"] ;
+        uicomponent.addTextField("creator", fieldCreator) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Subject</label>
+      <%
+        String[] fieldSubject = ["jcrPath=/node/jcr:content/dc:subject", "multiValues=true"] ;
+        uicomponent.addTextField("subject", fieldSubject) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Description</label>
+      <%
+        String[] fieldDescription = ["jcrPath=/node/jcr:content/dc:description"] ;
+        uicomponent.addTextAreaField("description", fieldDescription) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Publisher</label>
+      <%
+        String[] fieldPublisher = ["jcrPath=/node/jcr:content/dc:publisher", "multiValues=true"] ;
+        uicomponent.addTextField("publisher", fieldPublisher) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Contributor</label>
+      <%
+        String[] fieldContributor = ["jcrPath=/node/jcr:content/dc:contributor", "multiValues=true"] ;
+        uicomponent.addTextField("contributor", fieldContributor) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Source</label>
+      <%
+        String[] fieldSource = ["jcrPath=/node/jcr:content/dc:source", "multiValues=true"] ;
+        uicomponent.addTextField("source", fieldSource) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Rights </label>
+      <%
+        String[] fieldRights = ["jcrPath=/node/jcr:content/dc:rights", "multiValues=true"] ;
+        uicomponent.addTextField("rights", fieldRights) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+			<label>Content</label>
+			<%
+			  if(uicomponent.isEditing()) { 
+			    def file = uicomponent.getContentNode() ;
+			    if(file.hasNode("jcr:content")) {
+				    def jcrContent = file.getNode("jcr:content") ;
+				    mimeType = jcrContent.getProperty("jcr:mimeType").getString() ;
+				    if(mimeType.startsWith("text")) { 
+	            String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+	            uicomponent.addWYSIWYGField("summary", fieldSummary) ;
+	          } else { %>
+	            <span style="font-size:12px; font-weight: bold; padding-top:5px;">
+					    	The content is binary data. You can not change it.
+					    </span>
+			<%
+				    }
+          } else {
+            String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+            uicomponent.addWYSIWYGField("summary", fieldSummary) ;
+          }
+			  } else {
+          String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+          uicomponent.addWYSIWYGField("summary", fieldSummary) ;
+			  }
+		  %>
+    </div>    
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

@@ -1,0 +1,191 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+ 
+/*############################## -- Begin UISideBar   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISideBar {
+  padding-right: 4px;
+  background: url('DefaultSkin/background/LineDecorator4x1.gif') repeat-y top right;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl {
+  border-top: solid 1px #ffffff;
+  border-bottom: solid 1px #bec1c7;
+  height: 24px;
+  background: url('VistaSkin/background/LineDecorator1x24.gif') repeat-x center center;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropSelectButton {
+  float: left;
+  width: 36px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropDownButton {
+  cursor: pointer;
+  margin: 3px 0px 0px 10px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .SideBarSeparator {
+  float: left;
+  height: 23px;
+  padding: 0px 8px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .ControlBody {
+  line-height: 22px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .Icon24x24 {
+  float: left;
+  margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .Label {
+  float: left;
+  font-weight: bold;
+  font-size: 11px;
+  padding-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
+  float: right;
+  margin: 4px 7px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent {
+  border: solid 1px #6a6a6b;
+  background-color: white;
+  width: 140px;
+  position: absolute;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectContentContainer {
+  border: solid 1px #b7b7b7;
+  background-color: #f4f4f4;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
+  clear: both;
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectedItem {
+  clear: both;
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: #d6ddef;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
+  float: left;
+  margin: 5px 3px 3px 3px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemLabel {
+  font-size:11px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .SeparatorLine {
+  margin: 5px;
+  background: #919192;
+  height: 1px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+}
+
+/*############################## -- UIViewRelationList   -- ##############################*/
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
+ width:auto;
+}
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
+  margin-top: 2px;
+  border: solid 1px #bdbdbd;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .TitleLabel {
+  height: 18px;
+  padding: 2px 0px 0px 15px;
+  font: normal bold 11px Verdana;
+  background: url('/ecm/skin/images/article/EventFrameBG.gif') repeat-x;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .FrameContent {
+  padding: 10px;
+}
+
+/*############################## -- End UISideBar   -- ##############################*/
+/*############################## -- Begin UITreeExplorer   -- ##############################*/
+.UIJCRExplorerPortlet .UITreeExplorer {
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
+  margin: 3px 5px;
+  float: left;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
+  line-height: 25px; vertical-align: middle;
+  font-weight: bold;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Node {
+  clear: both;
+  line-height: 22px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NoneIcon {
+  float: left;
+  width: 16px;
+  height: 16px;  
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
+  float: left;
+  margin: 9px 0px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/VistaSkin/SmallGrayMinus.gif') no-repeat ;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
+  float: left;
+  margin: 8px 0px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/VistaSkin/SmallGrayPlus.gif') no-repeat ;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
+  font-size: 11px;
+  color: black;
+  line-height: 30px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer a{
+  font-size: 11px;
+  color: black;
+  text-decoration: none;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer a:hover {
+  font-size: 11px;
+  color: blue;
+}
+/*############################## -- End UITreeExplorer   -- ##############################*/

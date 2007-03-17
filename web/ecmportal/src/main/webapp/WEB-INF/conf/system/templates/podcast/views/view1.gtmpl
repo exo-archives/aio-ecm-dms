@@ -1,0 +1,103 @@
+<%def node = uicomponent.getNode() ;%>
+<head>
+	<style>
+		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
+		span.text  { font-size: 12px; vertical-align:bottom; color: #00000; text-align: left ; }
+		div.summary { width: 95%; height: 160px ; font-weight: bold; font-size: 12px; padding: 5px; color: gray ; } 
+		div.content { width: 95%; font-size: 12px; padding: 5px; color: gray; }
+	</style>
+</head>
+<div style="text-align: left; margin: 5px;" id="$uicomponent.id">
+	<div>
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Podcast: <label>
+			<span class="text"><%=node.getName()%></span>
+		</div>
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Title: </label>
+			<span class="text">
+				<%if(node.hasProperty("exo:title")) {%>
+					<%=node.getProperty("exo:title").getString()%>
+				<%}%>
+			</span>
+		</div>
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Link: <label>
+			<span class="text">
+				<%if(node.hasProperty("exo:link")) {%>
+					<%=node.getProperty("exo:link").getString()%>
+				<%}%>
+			</span>
+		</div>
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Author:</label>
+			<span class="text">
+				<%if(node.hasProperty("exo:author")) {%>
+					<%=node.getProperty("exo:author").getString()%>
+				<%}%>
+			</span>
+		</div>
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Explicit:</label>
+			<span class="text">
+				<%if(node.hasProperty("exo:explicit")) {%>
+					<%=node.getProperty("exo:explicit").getString()%>
+				<%}%>
+			</span>
+		</div>	
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Category:</label>
+			<span class="text">
+				<%if(node.hasProperty("exo:category")) {%>
+					<%=node.getProperty("exo:category").getString()%>
+				<%}%>
+			</span>
+		</div>		
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Keywords:</label>
+			<span class="text">
+				<%if(node.hasProperty("exo:keywords")) {%>
+					<%=node.getProperty("exo:keywords").getString()%>
+				<%}%>
+			</span>
+		</div>
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Publish Date:</label>
+			<span class="text">
+				<%if(node.hasProperty("exo:publishedDate")) {%>
+					<%=node.getProperty("exo:publishedDate").getString()%>
+				<%}%>
+			</span>
+		</div>		
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">MimeType:</label>
+			<span class="text">
+				<%if(node.hasProperty("jcr:content")) {%>
+					<%=node.getProperty("jcr:content").getString()%>
+				<%}%>
+			</span>
+		</div>		
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Length:</label>
+			<span class="text">
+				<%if(node.hasProperty("exo:length")) {%>
+					<%=node.getProperty("exo:length").getString()%>
+				<%}%>
+			</span>
+		</div>				
+	</div>
+	<!-- div for  Description -->
+	<div style="overflow: hidden">
+		<div style="margin-top: 5px; border: 1px solid #a3abb6">
+			<div class="TitleBG">
+				<label class="text" style="padding-left: 5px">Description:</label>
+			</div>
+			<div class="summary" >
+				<%if(node.hasProperty("exo:description")) {%>
+					<%=node.getProperty("exo:description").getString()%>
+				<%}%>
+			</div>
+		</div>
+  </div>	
+  <!-- End div for  Description -->	
+</div>

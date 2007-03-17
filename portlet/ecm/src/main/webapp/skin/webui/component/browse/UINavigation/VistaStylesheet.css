@@ -1,0 +1,268 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Hoang Van Anh
+ *          hoanganhites@yahoo.com.vn
+ * DEC 14, 2006
+ * version: $Id$
+ */
+
+/*###########################-- Begin UICBNavigation --############################*/
+.UICBNavigation {
+	padding-top: 5px;
+}
+
+/*###########################-- Begin UIContextMenu --############################*/
+.UICBNavigation .UIContextMenu {
+  background: #ffffff;
+  border: solid 1px #5d5d5d;
+  position: absolute;
+  display: none;
+  padding:1px;
+}
+
+.UIContextMenu .SubContextMenu {
+  border: solid 1px #d1d1d1;
+  padding: 5px 25px 20px 5px;
+}
+
+.UIContextMenu .NodeHistoryContainer {
+	padding-top: 5px;
+}
+
+.UIContextMenu .NodeHistoryContainer .NodeNavigationIcon {
+	height: 24px;
+	background: url('DefaultSkin/background/GreenLeftArrowFolder.gif') no-repeat left;	
+	padding-left: 25px;
+}
+
+.UIContextMenu .NodeHistoryContainer .NodeItemIcon {
+	background: url('DefaultSkin/background/SmallSelect.gif') no-repeat left;
+	padding-left: 17px;
+	margin-left: 10px;
+}
+
+.UIContextMenu .NodeHistoryContainer .BackButtonLabel {
+  font: normal bold 11px Verdana;
+  line-height: 18px;
+  white-space: nowrap ;
+  cursor: pointer;
+  margin-left: 2px;
+}
+
+.UIContextMenu .NodeHistoryContainer .NodeLabel {
+	font-size: 11px; line-height: 16px;
+	white-space: nowrap ;
+  margin-left: 3px;
+}
+
+.UIContextMenu .NodeHistoryContainer .NodeLabelSelected {
+  font: normal bold 11px Verdana;
+  line-height: 16px;
+	white-space: nowrap ;
+  margin-left: 3px;
+}
+
+.UIContextMenu .NodeHistoryContainer a {
+	text-decoration: none; color: black;
+}
+
+.UIContextMenu .NodeHistoryContainer a:hover { 
+	text-decoration: none; color: blue;
+}
+
+/*###########################-- End UIContextMenu --############################*/
+.UICBNavigation .CBLeftNavigation {
+	height: 54px;
+}
+
+.UICBNavigation .CBRightNavigation {
+  height: 54px;
+}
+
+.UICBNavigation .CBMiddleNavigation {
+  height: 54px;
+  background: url('VistaSkin/background/MiddleNavigation1x54.gif') repeat-x bottom;
+}
+
+.UICBNavigation .UICBMainNavigation {
+	height: 25px;
+  font-size: 11px;
+  overflow: hidden;
+  padding: 0px 0px 0px 10px;
+}
+
+.UICBNavigation .UICBMainNavigation .HomeTab{
+  float: left;
+  width: 70px; height: 25px;
+}
+
+.UICBNavigation .HomeTab .LeftHomeTab {
+  height: 26px;
+  background: url('VistaSkin/background/LeftButton3x26.gif') no-repeat left;
+  padding-left: 3px;
+}
+.UICBNavigation .HomeTab .RightHomeTab {
+	height: 26px;
+  background: url('VistaSkin/background/RightButton3x26.gif') no-repeat right;
+  padding-right: 3px;
+}
+
+.UICBNavigation .HomeTab .MiddleHomeTab {
+	height: 26px;
+  background: url('VistaSkin/background/MidleButton1x26.gif') repeat-x top;
+}
+
+.UICBNavigation .HomeTab .HomeTabLabel {
+	float: left;
+	line-height: 24px; vertical-align: middle;
+	font-weight: bold; color: #333333;
+	margin-left: 5px;
+}
+
+.UICBNavigation .HomeTab .HomeTabIcon {
+  float: left;
+  margin: 5px 0px 0px 5px;
+  cursor: pointer;
+}
+
+.UICBNavigation .UIHorizontalTabs {
+	float: left;
+}
+
+.UICBNavigation .UIHorizontalTabs .TabsContainer {
+	width: 99.5%;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab {
+	float: left;
+	height: 24px;
+	padding-left: 2px;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab {
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LeftTab {
+  line-height: 24px;
+  background: url('VistaSkin/background/LeftButton3x26.gif') no-repeat left top;
+  padding-left: 3px;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .RightTab {
+  line-height: 24px;
+  padding-right: 3px;
+  background: url('VistaSkin/background/RightButton3x26.gif') no-repeat right top;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .MiddleTab {
+  line-height: 24px;
+  background: url('VistaSkin/background/MidleButton1x26.gif') repeat-x top;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton {
+  line-height: 24px; vertical-align: middle;
+  color: black; font-weight: bold;
+  padding: 0px 8px ;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton a { 
+	text-decoration: none; color: black;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton a:hover { 
+	text-decoration: none; color: blue;
+}
+/*###########################-- Selected Tabs --############################*/
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab {
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LeftTab {
+  background: url('VistaSkin/background/LeftButtonSL3x26.gif') no-repeat left top;
+  padding-left: 3px ;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .RightTab {
+	line-height: 25px;
+  background: url('VistaSkin/background/RightButtonSL3x26.gif') no-repeat right top;
+  padding-right: 3px ;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .MiddleTab {
+	line-height: 25px;
+  background: url('VistaSkin/background/MiddleButtonSL1x26.gif') repeat-x top;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LabelButton {
+  line-height: 25px; vertical-align: middle;
+  font-weight: bold;
+ 	padding: 0px 8px;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LabelButton a { 
+	text-decoration: none; color: blue;
+}
+
+/*###########################-- End Selected Tabs --############################*/
+
+.UICBNavigation .CBMiddleNavigation .NavigationButtonContainer {
+	float: right;
+	margin-top: 2px; margin-right: 6px;
+}
+
+.UICBNavigation .CBMiddleNavigation .NavigationIcon {
+	float: left;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+.UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 
+	height: 26px;
+	overflow: hidden;
+}
+
+.UICBNavigation .UICBSubNavigation .ItemContainer { 
+	float: left;
+}
+
+.UICBNavigation .UICBSubNavigation .LeftIcon {
+	float: left; 
+	cursor: pointer;
+	margin: 1px 0px 0px 3px;
+}
+
+.UICBNavigation .UICBSubNavigation .ChildNodeItem { 
+	float: left;
+	height: 24px;
+	border-right: solid 1px #bec1c7 ;
+	padding: 1px 0px 0px 7px;
+}
+
+.UICBNavigation .UICBSubNavigation .ChildNodeItem .ItemIcon {
+  float:left;
+  margin-top: 4px;
+}
+
+.UICBNavigation .UICBSubNavigation .ChildNodeItem a { 
+	text-decoration: none; color: black;
+}
+
+.UICBNavigation .UICBSubNavigation .ChildNodeItem a:hover { 
+	text-decoration: none; color: blue;
+}
+
+.UICBNavigation .UICBSubNavigation .NodeLabel { 
+	float: left;
+	line-height: 24px;
+	text-decoration: none;
+	border-right: solid 1px #ffffff ;
+	padding: 0px 7px;
+}
+
+.UICBNavigation .UICBSubNavigation .RightIcon { 
+	float: right;
+	cursor: pointer;
+	margin: 1px 3px 0px 0px;
+}
+
+/*###########################-- End UITabs --############################*/

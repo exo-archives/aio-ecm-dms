@@ -1,0 +1,72 @@
+<%
+  /**
+   * Created by The eXo Platform SARL
+   * Author : pham tuan
+   *          phamtuanchip@gmail.com
+   * Dec 14, 2006
+   * version: $Id$   
+   */
+
+  import java.util.List;
+  String actionShowHidden = uicomponent.event("ShowHidden") ;
+  Boolean isEnablePath =  uicomponent.enablePath() ;
+  Boolean isEnableTree =  uicomponent.enableTree() ;
+  Boolean isEnableVote =  uicomponent.enableVote() ;
+  Boolean isEnableComment =  uicomponent.enableComment() ;
+%>
+<div class="UIToolBar" id="$uicomponent.id">
+  <div class="LeftToolBar">
+    <%if(isEnableTree) {%>
+      <div class="SeparatorBarLeft Separator"><span></span></div>
+      <%
+        String iconName = "GreenRightArrow24x24Icon" 
+        if (uicomponent.isShowCategoryTree()) iconName = "GreenLeftArrow24x24Icon" ;
+      %>
+      <a  href="$actionShowHidden" title="Show Hidden Tree">
+      <div class="BlueBarIcon $iconName"><span></span></div>
+      </a>
+    <%}%>
+    <%if(isEnablePath) {%>
+      <div class="SeparatorBarLeft Separator"><span></span></div>
+      <div class="ImageNote Note16x16Icon"><span></span></div>
+        <a class="TextRoot" href="<%=uicomponent.event('SelectPath', uicomponent.getRootNode().getPath())%>">
+          <%=uicomponent.getRootNode().getName()%>
+        </a>
+        <div class="LeftArrowIcon RightArrow16x16Icon"><span></span></div>
+        <%for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
+             String actionLink = uicomponent.event("SelectPath", node.getPath()); %>
+            <a class="TextRoot" href="$actionLink">${node.name}</a>
+            <div class="LeftArrowIcon RightArrow16x16Icon"><span></span></div>
+        <%}%>
+      <div style="clear: left"></div>
+    <%}%> 
+  </div>
+  <div class="IconFrame">
+    <%
+      String actionLabel = "" ;
+      String link = "" ;
+      actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Search") 
+      link = uicomponent.event("Search") ;
+     %>
+      <a class="Icon SearchIcon" href="$link" title="$actionLabel"><span></span></a>      
+      <div class="Separator ToolBarSeparator"><span></span></div>
+      <%
+        if(isEnableVote) {
+          actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Vote") 
+          link = uicomponent.event("Vote") ;
+      %>
+          <a class="Icon VoteIcon" href="$link" title="$actionLabel"><span></span></a>      
+          <div class="Separator ToolBarSeparator"><span></span></div>
+     
+      <%}
+        if(isEnableComment) {
+          actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Comment") 
+          link = uicomponent.event("Comment") ;
+      %>
+        <a class="Icon CommentIcon" href="$link" title="$actionLabel"><span></span></a>      
+        <div class="Separator ToolBarSeparator"><span></span></div>
+      <%}%>
+    <div style="clear: all;"><span></span></div>
+  </div>
+</div>
+ <% uicomponent.renderChildren(); %>

@@ -1,0 +1,122 @@
+<%  
+  String[] hiddenField1 = ["jcrPath=/node/jcr:content", "nodetype=nt:resource", "visible=false"] ; 
+  String[] hiddenField2 = ["jcrPath=/node/jcr:content/jcr:encoding", "visible=false", "UTF-8"] ;
+  String[] hiddenField3 = ["jcrPath=/node/jcr:content/jcr:lastModified", "visible=false"] ;
+  uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
+  uicomponent.addHiddenField("hiddenInput2", hiddenField2) ;
+  uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
+%>
+<div class="UIFormWithTitle">
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">	      
+    <div class="FieldContainer">		          					
+      <label>Name</label>
+      <%
+        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
+        uicomponent.addTextField("name", fieldName) ;   
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Title</label>
+      <%
+        String[] fieldTitle = ["jcrPath=/node/exo:title"] ;
+        uicomponent.addTextField("title", fieldTitle) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Link</label>
+      <%
+        String[] fieldLink = ["jcrPath=/node/exo:link"] ;
+        uicomponent.addTextField("link", fieldLink) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Author</label>
+      <%
+        String[] fieldAuthor = ["jcrPath=/node/exo:author"] ;
+        uicomponent.addTextField("author", fieldAuthor) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Explicit</label>
+      <%
+        String[] fieldExplicit = ["jcrPath=/node/exo:explicit", "no", "options=no,yes"] ;
+        uicomponent.addSelectBoxField("explicit", fieldExplicit) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Category</label>
+      <%
+        String[] fieldCategory = ["jcrPath=/node/exo:category"] ;
+        uicomponent.addTextField("category", fieldCategory) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Keywords</label>
+      <%
+	      String[] fieldKeywords = ["jcrPath=/node/exo:keywords"] ;
+	      uicomponent.addTextField("keywords", fieldKeywords) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Publish Date</label>
+      <%
+        String[] fieldPublishedDate = ["jcrPath=/node/exo:publishedDate", "options=displaytime"] ;
+        uicomponent.addCalendarField("publishedDate", fieldPublishedDate) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Description</label>
+      <%
+        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
+        uicomponent.addTextAreaField("description", fieldDescription) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Media file to upload</label>
+      <%
+			  String[] fieldMedia = ["jcrPath=/node/jcr:content/jcr:data"] ;
+			  uicomponent.addUploadField("media", fieldMedia) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Mediamimetype</label>
+      <%
+        String[] fieldMediamimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "audio/mp3", "options=audio/mp3,audio/x-m4a,video/mpeg,video/x-m4v,video/quicktime"] ;
+        uicomponent.addSelectBoxField("mediamimetype", fieldMediamimetype) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Length</label>
+      <%
+       String[] fieldSize = ["jcrPath=/node/exo:length", "0"] ;
+       uicomponent.addTextField("size", fieldSize) ; 
+      %>
+    </div>
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

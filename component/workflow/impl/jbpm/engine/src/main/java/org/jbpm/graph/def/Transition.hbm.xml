@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+  <class name="org.jbpm.graph.def.Transition" 
+         table="JBPM_TRANSITION"
+         lazy="false">
+    <cache usage="nonstrict-read-write"/>
+    <id name="id" column="ID_"><generator class="native" /></id>
+
+    <!-- GRAPHELEMENT -->
+    <property name="name" column="NAME_"/>
+    <many-to-one name="processDefinition" 
+                 column="PROCESSDEFINITION_"
+                 foreign-key="FK_TRANS_PROCDEF"/>
+    <map name="events" cascade="all">
+      <key column="TRANSITION_" foreign-key="FK_EVENT_TRANS" />
+      <index column="EVENTTYPE_" type="string" />
+      <one-to-many class="org.jbpm.graph.def.Event" />
+    </map>
+    <list name="exceptionHandlers" cascade="all">
+      <key column="TRANSITION_" foreign-key="none" />
+      <list-index column="GRAPHELEMENTINDEX_" />
+      <one-to-many class="org.jbpm.graph.def.ExceptionHandler" />
+    </list>
+    <!-- ============ -->
+    
+    <many-to-one name="from" 
+                 column="FROM_" 
+                 foreign-key="FK_TRANSITION_FROM"/>
+    <many-to-one name="to" 
+                 column="TO_" 
+                 foreign-key="FK_TRANSITION_TO"/>
+
+  </class>
+</hibernate-mapping>

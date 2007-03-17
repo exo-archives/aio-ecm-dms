@@ -1,0 +1,91 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Vu Duy Tu
+ *          duytucntt@gmail.com
+ * DEC 19, 2006
+ * version: $Id$
+ */
+
+.UICategoryTree {
+  float: left;
+  border-right: solid 1px #7b7b7b ;
+}
+.UICategoryTree .RootTreeNode{
+	font-weight:  bold;
+	font-size: 11px;
+	margin-top: 8px;
+}
+
+.UICategoryTree .SubCategoryTree {
+  border-top: solid 1px #cccccc ;
+  border-right: solid 1px #bdc0c4 ;
+  margin-right: 1px;
+  width: 216px;
+  padding-bottom: 10px;
+}
+
+.UICategoryTree .TitleCategoryTree {
+  background: url('DefaultSkin/background/TitleCategoryTreeBG1x25.gif') repeat-x ;
+  height: 25px ;
+  width: 208px;
+  padding-left: 8px;
+}
+
+.UICategoryTree .TitleCategoryTree .Separator {
+	float: left;
+  background: url('DefaultSkin/background/Separator2x23.gif') no-repeat ;
+  height: 25px ;
+  width: 2px;
+  padding-left: 5px;
+}
+
+.UICategoryTree .TitleCategoryTree .CategoryTreeIcon {
+	float: left;
+  margin-top: 2px;
+}
+
+.UICategoryTree .SubCategoryTree .TiteLabel {
+	float: left;
+	margin-left: 5px;
+	line-height: 22px;
+	font-weight: bold;
+}
+
+.UICategoryTree .MiddleCategoryTree {
+
+}
+
+.UICategoryTree .MiddleCategoryTree .FolderIcon {
+	margin: 5px 0px 0px 0px;
+  height: 20px;
+  float:left;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu {
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .SupMenu {
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .ParentSupMenu {
+	margin: 5px 0px 0px 18px;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .SelectIcon {
+	float: left;
+	margin-top: 3px;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {
+	margin-left: 24px;
+	line-height: 16px;
+	font-size: 11px;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .CategorySelectLabel {
+	margin-left: 24px;
+	line-height: 16px;
+	font-weight:  bold;
+	color: red;
+	font-size: 11px;
+}

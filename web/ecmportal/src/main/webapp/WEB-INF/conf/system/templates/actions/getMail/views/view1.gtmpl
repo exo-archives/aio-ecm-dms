@@ -1,0 +1,53 @@
+#set($node = $uicomponent.getNode())
+<table class="UIGrid">      	 			
+  <tr>
+    <td style="width:25%">Action name:</td>
+    <td>$node.getProperty("exo:name").getString()</td>
+  </tr>
+  <tr>
+    <td style="width:25%">Lifecycle:</td>
+    <td>$node.getProperty("exo:lifecyclePhase").getString()</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Protocol:</td>
+		<td>
+			$node.getProperty("exo:protocol").getString()			
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Host:</td>
+		<td>
+			$node.getProperty("exo:host").getString()			
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Port:</td>
+		<td>
+			$node.getProperty("exo:port").getString()			
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Folder:</td>
+		<td>
+			$node.getProperty("exo:folder").getString()			
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Username:</td>
+		<td>
+			$node.getProperty("exo:userName").getString()			
+		</td>
+  </tr>  
+  <tr>
+		<td style="width:25%">Description:</td>
+		<td>
+			$node.getProperty("exo:description").getString()			
+		</td>
+  </tr>  
+  <tr>
+		<td style="width:25%">Store path:</td>
+		<td>
+			$node.getProperty("exo:storePath").getString()			
+		</td>
+  </tr>  
+</table>

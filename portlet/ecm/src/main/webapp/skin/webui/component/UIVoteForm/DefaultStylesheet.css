@@ -1,0 +1,48 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * January 31, 2007
+ */
+ 
+.UIVoteForm {
+	padding: 10px;
+}
+
+.UIVoteForm .UIRatingInfoContainer {
+	width: 150px; padding: 5px 12px;
+	margin: auto;
+	background: white;
+	border: solid 1px #b7b7b7;
+}
+
+.UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIVoteForm .OptionsContainer .NormalVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('DefaultSkin/background/GrayStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('DefaultSkin/background/YellowStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('DefaultSkin/background/OverStar.gif');
+}
+
+.UIVoteForm .UIAction {
+	margin: 10px auto;
+	width: 90px;
+}

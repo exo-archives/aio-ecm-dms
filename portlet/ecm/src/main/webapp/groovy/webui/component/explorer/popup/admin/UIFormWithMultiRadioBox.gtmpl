@@ -1,0 +1,63 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Oct 17, 2006
+ * 10:45:01 AM 
+ */
+%>
+<%
+  import org.exoplatform.webui.component.UIFormRadioBoxInput ;
+%>
+<div class="$uicomponent.id">
+  <div class="UIFormWithTitle">
+    <% uiform.begin() %>
+    <div class="HorizontalLayout">
+      <% 
+        for(field in uiform.getChildren()) { 
+          if(field.isRendered()) {
+      %>
+            <div class="FieldContainer">                        
+              <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
+                <label><%=uicomponent.getLabel(field.getName())+": " %></label>
+              <%} 
+                if(field instanceof UIFormRadioBoxInput) {
+                  println "<div class=\"MultiRadioInput\">" ;
+                    uiform.renderField(field) ;
+                  println "</div>" ;
+                } else { 
+                  uiform.renderField(field) ;
+                } 
+              %>
+            </div>
+      <%
+          }
+        }
+      %>
+      <div class="UIAction"> 
+        <div class="ActionContainer">
+          <% for(action in uicomponent.getActions()) { %>
+            <div class="ActionButton">
+              <div class="LightBlueStyle" >
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <div class="Icon ${action}16x16Icon"><span></span></div>                    
+                      <% 
+                        String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+                        String link = uicomponent.event(action) ;
+                      %>
+                       <a href="$link">$actionLabel</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <%}%>          
+        </div>
+      </div>
+    </div>
+    <%uiform.end()%>
+  </div>
+</div>

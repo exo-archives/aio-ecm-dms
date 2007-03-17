@@ -1,0 +1,142 @@
+<div class="UIFormWithTitle"> 
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border: 0px;">	  
+    <div class="FieldContainer">		          					
+      <label>Supplemental Marking List</label>
+      <%
+        String[] fieldSupplemental = ["jcrPath=/node/rma:supplementalMArkingList"] ;
+        uicomponent.addTextField("supplementalMArkingList", fieldSupplemental) ; 
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Subject</label>
+      <%
+        String[] fieldSubject = ["jcrPath=/node/rma:subject"] ;
+        uicomponent.addTextField("subject", fieldSubject) ;
+      %>
+    </div>
+    <div class="FieldContainer">		      
+      <label>Record Identifier</label>
+      <%
+        String[] fieldRecordIdentifier = ["jcrPath=/node/rma:recordIdentifier"] ;
+        uicomponent.addTextField("recordIdentifier", fieldRecordIdentifier) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Originator</label>
+      <%
+        String[] fieldOriginator = ["jcrPath=/node/rma:Originator"] ;
+        uicomponent.addTextField("originator", fieldOriginator) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Format</label>
+      <%
+        String[] fieldFormat = ["jcrPath=/node/rma:format"] ;
+        uicomponent.addTextField("format", fieldFormat) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Addressees</label>
+      <%
+        String[] fieldAddressees = ["jcrPath=/node/rma:addressees"] ;
+        uicomponent.addTextField("addressees", fieldAddressees) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		
+      <label>Originating Organization</label>
+      <%
+        String[] fieldOriginating = ["jcrPath=/node/rma:originatingOrganization"] ;
+        uicomponent.addTextField("originatingOrganization", fieldOriginating) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Other Addressees</label>
+      <%
+        String[] fieldOtherAddressees = ["jcrPath=/node/rma:otherAddressees"] ;
+        uicomponent.addTextField("otherAddressees", fieldOtherAddressees) ;        
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Publication Date</label>
+      <%
+        String[] fieldPublicationDate = ["jcrPath=/node/rma:publicationDate", "options=displaytime"] ;
+        uicomponent.addCalendarField("publicationDate", fieldPublicationDate) ;        
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Record Note</label>
+      <%
+        String[] fieldRecordNote = ["jcrPath=/node/rma:recordNote"] ;
+        uicomponent.addTextField("recordNote", fieldRecordNote) ;        
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Date Received</label>
+      <%
+        String[] fieldDateReceived = ["jcrPath=/node/rma:dateReceived", "options=displaytime"] ;
+        uicomponent.addCalendarField("dateReceived", fieldDateReceived) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Media Format</label>
+      <%
+        String[] fieldMediaFormat = ["jcrPath=/node/rma:mediaFormat"] ;
+        uicomponent.addTextField("mediaFormat", fieldMediaFormat) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		
+      <label>Is Obsolete</label>
+      <%
+        String[] fieldIsObsolete = ["jcrPath=/node/rma:isObsolete", "options= ,true,false"] ;
+        uicomponent.addSelectBoxField("isObsolete", fieldIsObsolete) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Date Filed</label>
+      <%
+        String[] fieldDate = ["jcrPath=/node/rma:dateFiled", "options=displaytime"] ;
+        uicomponent.addCalendarField("dateFiled", fieldDate) ;        
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Superseded</label>
+      <%
+        String[] fieldSuperseded = ["jcrPath=/node/rma:superseded"] ;
+        uicomponent.addTextField("superseded", fieldSuperseded) ;        
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>UUID</label>
+      <%
+        String[] fieldUUID = ["jcrPath=/node/rma:uuid"] ;
+        uicomponent.addTextField("uuid", fieldUUID) ;        
+      %>
+    </div>                                        
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) ; 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

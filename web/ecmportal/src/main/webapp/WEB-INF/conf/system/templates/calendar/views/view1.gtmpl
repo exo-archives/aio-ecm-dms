@@ -1,0 +1,25 @@
+<%def node = uicomponent.getNode() ;%>
+<head>
+	<style>
+		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
+		span.text  { font-size: 12px; vertical-align:bottom; color: #00000; text-align: left ; }
+		div.summary { width: 95%; height: 160px ; font-weight: bold; font-size: 12px; padding: 5px; color: gray ; } 
+		div.content { width: 95%; font-size: 12px; padding: 5px; color: gray; }
+	</style>
+</head>
+<div style="text-align: left; margin: 5px;">
+	<div class="HeaderBG">
+		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+			<label class="text">Calendar: <label>
+			<span class="text"><%=node.getName()%></span>
+		</div>
+	</div>
+	<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<label class="text">Shared: </label>
+		<span class="text">
+			<%if(node.hasProperty("exo:shared")) {%>
+				<%=node.getProperty("exo:shared").getString()%>
+			<%}%>
+		</span>
+	</div>
+</div>

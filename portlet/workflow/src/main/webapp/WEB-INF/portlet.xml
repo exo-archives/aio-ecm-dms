@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app version="1.0" xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"> 
+  <portlet>
+    <description xml:lang="EN">Workflow Controller Portlet</description>
+    <portlet-name>WorkflowControllerPortlet</portlet-name>
+    <display-name xml:lang="EN">Workflow Controller Portlet</display-name>
+    <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
+    
+    <init-param>
+      <name>webui.configuration</name>
+      <value>/WEB-INF/conf/portlet/workflow/WorkflowControllerPortlet/webui/configuration.xml</value>
+    </init-param>    
+
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>help</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>    
+    <resource-bundle>locale.portlet.workflow.WorkflowControllerPortlet</resource-bundle>    																														
+    
+    <portlet-info>
+      <title>Workflow Controller Portlet</title>
+      <short-title>Workflow Controller</short-title>
+      <keywords>workflow, Controller</keywords>
+    </portlet-info>
+  </portlet>
+  
+  
+  <portlet>
+    <description xml:lang="EN">Portlet Workflow Monitoring</description>
+    <portlet-name>WorkflowMonitoringPortlet</portlet-name>
+    <display-name xml:lang="EN">Workflow Monitoring Portlet</display-name>
+    <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
+    
+    <init-param>
+      <name>webui.configuration</name>
+      <value>/WEB-INF/conf/portlet/workflow/WorkflowMonitoringPortlet/webui/configuration.xml</value>
+    </init-param>    
+
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>help</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>    
+    <resource-bundle>locale.portlet.workflow.WorkflowMonitoringPortlet</resource-bundle>    																														
+    
+    <portlet-info>
+      <title>Workflow Monitoring Portlet</title>
+      <short-title>Wofkflow Monitoring</short-title>
+      <keywords>workflow, Monitoring</keywords>
+    </portlet-info>
+  </portlet> 
+</portlet-app>

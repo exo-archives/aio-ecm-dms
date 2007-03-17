@@ -1,0 +1,82 @@
+.UIEventViewer {
+  padding: 0px 5px;
+  margin-top: 5px;
+}
+
+.UIEventViewer .ViewMoreDocument {
+  text-align: right ;
+  border: solid 1px white;
+  margin-right: 10px;
+}
+.UIEventViewer .EventContent {
+  overflow: auto ;
+}
+
+.UIEventViewer .EventContent .DocumentIcon { 
+  float:left;
+  margin: 2px;
+}
+
+.UIEventViewer .EventContent .EventDocumentLabel {
+  line-height: 19px;
+	color: blue; font-size: 11px;
+	margin-left: 20px;
+}
+
+.UIEventViewer .EventContent .EventAuthorNameLabel {
+	font-size: 11px;
+}
+
+.UIEventViewer .EventContent .DateAndTimeLabel {
+	font-size: 11px;
+}
+
+.UIEventViewer .EventContent .SummaryTitleLabel {
+	line-height: 17px; font-size: 11px;
+}
+
+.UIEventViewer .EventContent .SummaryContentLabel {
+	line-height: 40px; text-align: center;
+	font-size: 11px;
+}
+
+.UIEventViewer .EventContent .EventContentDetailLeft {
+	float: left;
+	width : 48%; 
+	background: #efefef;
+	border: solid 1px #b7b7b7;
+	margin-top: 5px;
+}
+
+.UIEventViewer .EventContent .EventContentDetailRight {
+	float: right;
+	width : 48%;
+	background: #efefef;
+	border: solid 1px #b7b7b7;
+	margin-top: 5px;
+}
+.UIEventViewer .EventContent .EventContentDetail {
+	width : auto;
+	background: #efefef;
+	border: solid 1px #b7b7b7;
+}
+
+.UIEventViewer .EventContent .TopEventContentDetail {
+	height: 25px;
+}
+
+.UIEventViewer .EventContent .MainEventContent {
+  padding: 10px;
+}
+
+.UIEventViewer .EventContent .TitleEventContent {
+	height: 17px;
+  background: url('DefaultSkin/background/TitleEventViewrBG1x17.gif') repeat-x;
+  padding-left: 10px;
+}
+
+.UIEventViewer .EventContent .PanelEventContent {
+  background: #ffffff;
+  border-top: solid 1px #bdbdbd;
+}
+

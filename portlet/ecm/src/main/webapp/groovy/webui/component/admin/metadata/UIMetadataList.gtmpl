@@ -1,0 +1,118 @@
+<%
+	/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minhdv@exoplatform.com
+ * Sep 19, 2006
+ * 11:57:24 AM 
+ */
+%>
+<% import org.exoplatform.webui.component.UIPageIterator; %>
+<% 
+  def metaDatas = uicomponent.getListMetadata() ; 
+  if(metaDatas == null) return ;
+%>
+<div class="UIMetadataList">
+  <table class="UIGrid">
+	  <thead>
+	    <tr>
+	      <th></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.name")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.type")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.orderable")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.desc")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.action")%></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+      <%
+        def rowClass = null ;
+		    boolean even = true ;
+		    boolean found = false ;
+		    for (meta in metaDatas) {
+		      found = true  ;
+		      if(even) rowClass = "EvenRow" ;  
+		      else rowClass =  "OddRow" ; 
+		      even = !even ;
+      %>
+          <tr class="$rowClass">
+            <%
+              String nodeType = meta.getName() ;
+              nodeType = nodeType.replace(":", "_") ;
+            %>
+            <td style="width:30px; margin-left:5px;">
+              <div class="default16x16Icon  ${nodeType}16x16Icon"><span></span></div>
+            </td>
+            <td><div class="Text">$meta.name</div></td>
+            <td>
+              <%
+                String booleanText ;
+                String iconType ;
+                if(meta.isMixin()) {
+                  booleanText = _ctx.appRes("UIMetadataList.label.true") ;
+                  iconType = "True" ;
+                } else {
+                  booleanText = _ctx.appRes("UIMetadataList.label.false") ;
+                  iconType = "False" ;
+                }
+              %>
+              <div style="width: 65px; margin: auto;">
+	              <div class="Icon16x16 ${iconType}16x16Icon"><span></span></div>
+	              <div class="Text">$booleanText</div>
+	            </div>
+            </td>
+            <td>
+              <%
+                if(meta.hasOrderableChildNodes()) {
+                  booleanText = _ctx.appRes("UIMetadataList.label.true") ;
+                  iconType = "True" ;
+                } else {
+                  booleanText = _ctx.appRes("UIMetadataList.label.false") ;
+                  iconType = "False" ;
+                }
+              %>
+              <div style="width: 65px; margin: auto;">
+	              <div class="Icon16x16 ${iconType}16x16Icon"><span></span></div>
+	              <div class="Text">$booleanText</div>
+	            </div>
+            </td>
+            <td align="center"><div class="Text"><%=_ctx.appRes("UIMetadataList.info.description")%></div></td>
+            <td style="width:100px;">
+              <a href="<%=uicomponent.event("View", meta.getName())%>">
+                <div class="Icon16x16 MetaView16x16Icon" style="margin-left:7px;" title="View"><span></span></div>
+              </a>
+              <a href="<%=uicomponent.event("Edit", meta.getName())%>">
+                <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="Edit"><span></span></div>
+              </a>
+              <a href="<%=uicomponent.event("Delete", meta.getName())%>">
+                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="Delete"><span></span></div>
+              </a>
+            </td>
+          </tr>
+      <%}%>  
+	  </tbody>
+  </table>
+  <div style="margin:3px 0px 5px 0px;">
+    <%uicomponent.renderChild(UIPageIterator.class)%>
+  </div>
+  <div class="UIAction"> 
+    <div class="ActionContainer">
+      <% for(action in uicomponent.getActions()) { %>
+        <div class="ActionButton">
+          <div class="LightBlueStyle" >
+						<div class="ButtonLeft">
+						  <div class="ButtonRight">
+							  <div class="ButtonMiddle">
+								  <div class="Icon ${action}16x16Icon"><span></span></div>
+								  <a href="<%=uicomponent.event(action)%>">
+								    <%=_ctx.appRes("UIMetadataList.action." + action)%>
+								  </a>
+					      </div>
+					    </div>
+				    </div>
+					</div>
+				</div>
+      <% } %>
+    </div>
+  </div>
+</div>

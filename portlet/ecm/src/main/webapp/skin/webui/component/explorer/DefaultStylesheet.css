@@ -1,0 +1,33 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+@import url("../../../icons/DefaultStylesheet.css");
+@import url("control/DefaultStylesheet.css");
+@import url("sidebar/DefaultStylesheet.css");
+@import url("UIPopupAction/DefaultStylesheet.css");
+@import url("UIDrivesBrowser/DefaultStylesheet.css");
+@import url("UIJCRExplorer/DefaultStylesheet.css");
+@import url("../UIVoteForm/DefaultStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
+
+.UIJCRExplorerPortlet {}
+
+.UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
+  width: 80px;
+}
+
+.UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
+  height: 20px ; line-height: 20px;
+  font-weight: bold; font-size: 11px;
+  background: #8eeaaf ;
+}
+
+.UIJCRExplorerPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin-bottom: 10px ;
+  margin-left: 120px ;
+}

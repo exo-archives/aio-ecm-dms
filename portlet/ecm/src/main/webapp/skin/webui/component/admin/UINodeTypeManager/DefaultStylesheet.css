@@ -1,0 +1,128 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minhdv@exoplatform
+ * Nov 2, 2006
+ * version: $Id$
+ */
+/*############################## -- UINodeTypeManager-- ########################*/
+
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
+ width: 440px;
+ margin-left: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout{
+ padding: 8px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
+  width: 100% ;
+  border-right: 0px ;
+  border-left: 0px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
+  width: 100% ;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
+  width: 540px ;
+  border: 1px solid white ;
+  margin-left: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
+  width: 180px ;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
+  width: 400px ;
+  border: 1px solid white ;
+  margin-left: 25px;
+}
+
+.UIECMAdminPortlet .UIFormInputSetWithActions .UIAction {
+	width: 500px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .ActionContainer {
+  width: 300px ;
+  margin: auto ;
+}
+
+.UIECMAdminPortlet .UIFormInputSetWithActions .ActionContainer {
+  width: 300px ;
+  margin: auto ;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport {
+  width: 440px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .ActionButton {
+  width: 120px;
+  margin: auto;
+  float: none;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .ActionButton {
+  width: 80px;
+  float: right ;
+  margin-left: 3px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .ActionButton {
+  float: left ;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {
+  width: 260px;
+  margin: auto;
+  padding: 5px 0px 5px 0px; 
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
+  width: 680px ;
+  margin:auto;
+  margin-top: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{
+	padding-top: 5px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid {
+  width: 100% ;
+  border-left: 0px ;
+  border-right: 0px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid .text{
+  width: 100% ;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
+  width: 450px ;
+  
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .ActionContainer {
+  width: 380px ;
+  margin:auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .ActionButton {
+	margin-left: 3px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithActions .checkbox {
+  width: 15px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+	padding-left:120px;
+}
+
+/*############################## -- End UINodeTypeManager-- ########################*/

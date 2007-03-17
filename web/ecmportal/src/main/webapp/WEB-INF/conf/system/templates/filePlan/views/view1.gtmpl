@@ -1,0 +1,412 @@
+<%
+	def node = uicomponent.getNode() ;
+	String name = node.getPrimaryNodeType().getName() ;
+%>
+<div class="UIDivInfo" style="margin:auto; padding-top: 1px; margin:5px 0px 1px 0px">
+	<div style="width:99.7%">
+		<div class="title" style="font-size:13px; font-weight: bold">File Plan Content:<%=node.getName()%></div>
+		<table class="UIGrid" style="font-size:12px">    
+			<tr>
+				<td style="width: 30%">Record Category Identifier:</td>
+				<%
+					String recordCateIdentifier = "" ;
+					if(node.hasProperty("rma:recordCategoryIdentifier")) recordCateIdentifier = node.getProperty("rma:recordCategoryIdentifier").getString() ;
+				%>
+				<td><%=recordCateIdentifier%></td>
+			</tr>
+			<tr>
+				<td style="width: 30%">Disposition Authority:</td>				
+				<%
+					String disPositionAuthor = "" ;
+					if(node.hasProperty("rma:dispositionAuthority")) disPositionAuthor = node.getProperty("rma:dispositionAuthority").getString() ;
+				%>
+				<td><%=disPositionAuthor%></td>		
+			</tr>
+			<tr>
+				<td style="width: 30%">Disposition Instructions</td>
+				<%
+					String disInstruction = "" ;
+					if(node.hasProperty("rma:dispositionInstructions")) disInstruction = node.getProperty("rma:dispositionInstructions").getString() ;
+				%>
+				<td><%=disInstruction%></td>  	      
+			</tr>
+			<tr>
+				<td style="width: 30%">Permanent Record Indicator:</td>
+				<%
+					boolean permanetRecord = false;
+					if(node.hasProperty("rma:permanentRecordIndicator")) permanetRecord = node.getProperty("rma:permanentRecordIndicator").getBoolean() ;
+				%>
+				<td><%=permanetRecord%></td>
+			</tr>
+			<tr>
+				<td style="width: 30%">Contains Records Folder:</td>
+				<%
+					boolean containsRecord = false;
+					if(node.hasProperty("rma:containsRecordFolders")) containsRecord = node.getProperty("rma:containsRecordFolders").getBoolean() ;
+				%>
+				<td><%=containsRecord%></td>
+			</tr>
+			<tr>
+				<td style="width: 30%">Default Media Type:</td>
+				<%
+					String defaultMedia = "" ;
+					if(node.hasProperty("rma:defaultMediaType")) defaultMedia = node.getProperty("rma:defaultMediaType").getString() ;
+				%>
+				<td><%=defaultMedia%></td>
+			</tr>
+			<tr>
+				<td style="width: 30%">Default Marking List:</td>
+				<%
+					String defaultMarkingList = "" ;
+					if(node.hasProperty("rma:defaultMarkingList")) defaultMarkingList = node.getProperty("rma:defaultMarkingList").getString() ;
+				%>
+				<td><%=defaultMarkingList%></td>
+			</tr>			
+			<tr>
+				<td style="width: 30%">Default Originating Organization:</td>
+				<%
+					String defaultOriginating = "" ;
+					if(node.hasProperty("rma:defaultOriginatingOrganization")) defaultOriginating = node.getProperty("rma:defaultOriginatingOrganization").getString() ;
+				%>
+				<td><%=defaultOriginating%></td>
+			</tr>
+			<tr>
+				<td style="width: 30%">Number of Records:</td>
+				<%
+					String numberOfRecord = "" ;
+					if(node.hasProperty("rma:recordCounter")) numberOfRecord = node.getProperty("rma:recordCounter").getString() ;
+				%>				
+				<td><%=numberOfRecord%></td>
+			</tr>
+		</table>
+	 </div>
+	 <%
+		 	def className = "org.exoplatform.services.cms.records.RecordsService" ;
+		 	def recordsService = uicomponent.getComponentInstanceOfType(className) ;
+	 %>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 20px; padding: 0px 10px; float: left; " > Records </div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>			
+				<th>Record Id</th>
+				<th>Record Name</th>
+				<th>Originator</th>
+				<th>Date Received</th>
+				<th>Originating Organization</th>				
+			</tr>   
+			<%for(record in recordsService.getRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:originator")) {%>
+	            <%= record.getProperty("rma:originator").getString()%>
+	            <%}%>
+	          </td>
+	          <td>
+	            <%if(record.hasProperty("rma:dateReceived")) {%>
+	            <%=record.getProperty("rma:dateReceived").getString()%></td>    
+	            <%}%>
+	          <td>
+	            <%if(record.hasProperty("rma:originatingOrganization")) {%>
+	            <%=record.getProperty("rma:originatingOrganization").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%} %>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 20px; padding: 0px 10px; float: left; " > Obsolete Records </div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>				
+				<th>Record Id</th>
+				<th>Record Name</th>
+				<th>Originator</th>
+				<th>Date Received</th>
+				<th>Originating Organization</th>				
+			</tr>   
+			<%for(record in recordsService.getObsoleteRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:originator")) {%>
+	            <%= record.getProperty("rma:originator").getString()%>
+	            <%}%>
+	          </td>
+	          <td>
+	            <%if(record.hasProperty("rma:dateReceived")) {%>
+	            <%=record.getProperty("rma:dateReceived").getString()%></td>    
+	            <%}%>
+	          <td>
+	            <%if(record.hasProperty("rma:originatingOrganization")) {%>
+	            <%=record.getProperty("rma:originatingOrganization").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 20px; padding: 0px 10px; float: left; " > Superseded Records </div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>				
+				<th>Record Id</th>
+				<th>Record Name</th>
+				<th>Originator</th>
+				<th>Date Received</th>
+				<th>Originating Organization</th>				
+			</tr>   
+			<%for(record in recordsService.getSupersededRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:originator")) {%>
+	            <%= record.getProperty("rma:originator").getString()%>
+	            <%}%>
+	          </td>
+	          <td>
+	            <%if(record.hasProperty("rma:dateReceived")) {%>
+	            <%=record.getProperty("rma:dateReceived").getString()%></td>    
+	            <%}%>
+	          <td>
+	            <%if(record.hasProperty("rma:originatingOrganization")) {%>
+	            <%=record.getProperty("rma:originatingOrganization").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 20px; padding: 0px 10px; float: left; " > Vitals Records </div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>
+				<th>Record Id</th>
+				<th>Record Name</th>
+				<th>Next Review Date</th>
+				<th>Previous Review Date</th>	
+			</tr>   
+			<%for(record in recordsService.getVitalRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:nextReviewDate")) {%>
+	            <%= record.getProperty("rma:nextReviewDate").getString()%>
+	            <%}%>
+	          </td>
+	          <td>
+	            <% 
+	            if(record.hasProperty("rma:prevReviewDate")) {
+	              try{
+	                println "" + record.getProperty("rma:prevReviewDate").getDate().getTime().toString() +"" ;
+	              }catch(Exception e) {
+	              }	              	            
+	            }%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 19px; padding: 0px 10px; float: left; " > Cutoff Records</div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>
+	      <th>Record Id</th>
+	      <th>Record Name</th>
+	      <th>Cutoff Date</th>
+			</tr> 
+			<%for(record in recordsService.getCutoffRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:cutoffDateTime")) {%>
+	            <%= record.getProperty("rma:cutoffDateTime").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ; float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 19px; padding: 0px 10px; float: left; " > Holdable Records</div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>
+	      <th>Record Id</th>
+	      <th>Record Name</th>
+	      <th>Hold Until</th>
+			</tr> 
+			<%for(record in recordsService.getHolableRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:holdUntil")) {%>
+	            <%= record.getProperty("rma:holdUntil").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 19px; padding: 0px 10px; float: left; " > Transferable Records</div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>
+	      <th>Record Id</th>
+	      <th>Record Name</th>
+	      <th>Transfer Date</th>
+	      <th>Transfer Location</th>
+			</tr>
+			<%for(record in recordsService.getTransferableRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:transferDate")) {%>
+	            <%= record.getProperty("rma:transferDate").getString()%>
+	            <%}%>
+	          </td>
+	          <td>
+	            <%if(record.hasProperty("rma:transferLocation")) {%>
+	            <%= record.getProperty("rma:transferLocation").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 19px; padding: 0px 10px; float: left; " > Accessionable Records</div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px"></div>
+		</div>
+		<table class="UIGrid">
+			<tr>
+	      <th>Record Id</th>
+	      <th>Record Name</th>
+	      <th>Accession Date</th>
+	      <th>Accession Location</th>
+			</tr>
+			<%for(record in recordsService.getAccessionableRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:accessionDate")) {%>
+	            <%= record.getProperty("rma:accessionDate").getString()%>
+	            <%}%>
+	          </td>
+	          <td>
+	            <%if(record.hasProperty("rma:accessionLocation")) {%>
+	            <%= record.getProperty("rma:accessionLocation").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%}	%>
+		</table>
+	 </div>
+	 
+	 <div style="width:99.7%">
+		<div style="overflow: hidden; width: 100%; padding-top: 10px; font-size: 12px; font-weight: bold; color: gray">
+			<div style="background:url('/ecm/skin/images/filePlan/left-file-plan.gif') no-repeat ;float: left; width: 6px; height: 20px; margin-left: 10px"></div>
+			<div style="background:url('/ecm/skin/images/filePlan/middle-file-plan.gif') repeat-x ; height: 19px; padding: 0px 10px; float: left; " > Destroyable Records</div> 
+			<div style="background:url('/ecm/skin/images/filePlan/right-file-plan.gif') no-repeat ; float:left; width: 6px; height: 20px;"></div>
+		</div>
+			<table class="UIGrid">
+				<tr>
+	      <th>Record Id</th>
+	      <th>Record Name</th>
+	      <th>Destruction Date</th>
+	    </tr> 
+			<%for(record in recordsService.getDestroyableRecords(node)) { %>
+					<tr>
+	          <td>
+	            <%if(record.hasProperty("rma:recordIdentifier")) {%>
+	            <%=record.getProperty("rma:recordIdentifier").getString()%>
+              <%}%>
+	          </td>
+	          <td><%=record.getName()%></td>
+	          <td>
+	            <%if(record.hasProperty("rma:destructionDate")) {%>
+	            <%= record.getProperty("rma:destructionDate").getString()%>
+	            <%}%>
+	          </td>
+					</tr>
+			<%} %>
+		</table>
+	 </div>
+</div>

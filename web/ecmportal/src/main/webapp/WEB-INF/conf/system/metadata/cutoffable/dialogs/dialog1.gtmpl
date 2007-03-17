@@ -1,0 +1,72 @@
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+    <div class="FieldContainer">	
+      <label>Cutoff Executed</label>
+      <%
+        String[] fieldCutoffExecuted = ["jcrPath=/node/rma:cutoffExecuted", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("cutoffExecuted", fieldCutoffExecuted) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Cutoff Now</label>
+      <%
+        String[] fieldCutoffNow = ["jcrPath=/node/rma:cutoffNow", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("cutoffNow", fieldCutoffNow) ;
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Cutoff Date Time</label>
+      <%
+        String[] fieldCutoffDateTime = ["jcrPath=/node/rma:cutoffDateTime", "options=displaytime"] ;
+        uicomponent.addCalendarField("cutoffDateTime", fieldCutoffDateTime) ;
+      %>
+    </div>
+    <div class="FieldContainer">		
+      <label>Cutoff Event</label>
+      <%
+        String[] fieldCutoffEvent = ["jcrPath=/node/rma:cutoffEvent"] ;
+        uicomponent.addTextField("cutoffEvent", fieldCutoffEvent) ;
+      %>
+    </div>
+    <div class="FieldContainer">		 
+      <label>Cutoff Obsolete</label>
+      <%
+        String[] fieldCutoffObsolete = ["jcrPath=/node/rma:cutoffObsolete", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("cutoffObsolete", fieldCutoffObsolete) ;
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Cutoff Superseded </label>
+      <%
+        String[] fieldCutoffSupereded = ["jcrPath=/node/rma:cutoffSuperseded", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("cutoffSuperseded", fieldCutoffSupereded) ;
+      %>
+    </div>
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer" style="width:100%;">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

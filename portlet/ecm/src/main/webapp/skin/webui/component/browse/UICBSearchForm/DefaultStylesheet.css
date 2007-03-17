@@ -1,0 +1,77 @@
+/**
+ * Created by The eXo Platform SAS
+ * Modified : Vu Duy Tu
+ *          duytucntt@gmail.com
+ * DEC 26, 2006
+ * version: $Id$
+ **/
+ 
+ 
+.UICBSearchForm {
+  
+  border: solid 1px #b7b7b7 ;
+  background: #efefef;
+  margin: 2px 0px 5px 0px;  
+}
+
+.UICBSearchForm .SearchIcon {
+ float: left;
+ width: 24px; height: 24px;
+ margin-left: 10px;
+ background: url('/eXoResources/icons/24x24/DefaultSkin/QuickSearch.gif') no-repeat ;
+}
+
+.UICBSearchForm .SearchLabel {
+ float: left;
+ font-size: 11px; font-weight: bold;
+ margin-left: 5px;
+ cursor: pointer;
+}
+
+.UICBSearchForm form{
+  margin: 0px;
+  padding: 0px;
+}
+
+.UICBSearchForm .HorizontalLayout {
+  border: solid 2px #ffffff ;
+  padding: 3px 0px 2px 0px;
+  line-height: 20px;
+  height: 25px;
+}
+
+.UICBSearchForm .HorizontalLayout .FieldContainer {
+  float:left;
+}
+
+.UICBSearchForm .HorizontalLayout .Input {
+  padding-left: 5px;
+  margin: 0px;
+}
+
+.UICBSearchForm .HorizontalLayout label {
+  float:left;
+	text-align: right;
+	margin-right: 5px; margin-left: 10px;
+	font-size: 11px;
+}
+
+.UICBSearchForm .HorizontalLayout .Nolabel {
+  float:left;
+  width: 0px ;
+	text-align: left;
+	margin: 0px 0px ;
+}
+
+.UICBSearchForm a {
+  font-size: 12px; color: black;
+}
+
+.UICBSearchForm a:hover{
+  color: blue;
+}
+
+.UICBSearchForm select {
+  padding-left: 4px;
+  width: 90px;
+}

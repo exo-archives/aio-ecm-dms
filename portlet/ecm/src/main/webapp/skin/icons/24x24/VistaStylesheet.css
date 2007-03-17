@@ -1,0 +1,356 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+ 
+.BlueFolderMagnifier24x24Icon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/BlueFolderMagnifier.gif') no-repeat center center;
+}
+
+.CollapseFolder24x24Icon {
+  width: 30px; height: 30px;
+  background: url('VistaSkin/BlueOpenFolder.png') no-repeat;
+}
+
+.ExpandFolder24x24Icon {
+  width: 28px; height: 28px;
+  background: url('VistaSkin/BlueClosedFolder.png') no-repeat;
+}
+
+.Style1NextArrow24x24Icon  {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/BlueCircleRightArrow.gif') no-repeat center center;
+}
+
+.Style1BackArrow24x24Icon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/BlueCircleLeftArrow.png') no-repeat center center;
+}
+
+.EditDocumentIcon {
+	width: 32px; height: 30px;
+	background: url('VistaSkin/EditDocument.png') no-repeat;
+}
+
+.WatchDocumentIcon {
+	width: 32px; height: 28px;
+	background: url('VistaSkin/PagePreview.png') no-repeat;
+}
+
+.ViewMetadatasIcon {
+	width: 32px; height: 30px;
+	background: url('VistaSkin/GrayGlasses.png') no-repeat;
+}
+
+.VoteIcon {
+	width: 32px; height: 28px;
+	background: url('VistaSkin/Vote.png') no-repeat  ;
+}
+
+.CommentIcon {
+	width: 32px; height: 28px;
+	background: url('VistaSkin/Comment.png') no-repeat bottom;
+}
+
+.TaggingDocumentIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/RedFlagIcon24.png') no-repeat bottom;
+}
+
+.MultiLanguageIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/GreenRightArrowDoubleScreen.png') no-repeat ;
+}
+
+.ManageVersionsIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/DoubleWindowsUpArrow.png') no-repeat ;
+}
+
+.ManageActionsIcon {
+	width: 32px; height: 31px;
+  background: url('VistaSkin/HammerDataBox.png') no-repeat bottom;
+}
+
+.ManageCategoriesIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/CogWheelBrownBox.png') no-repeat ;
+}
+
+.ManageRelationsIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/MiscColorBevelRetangles.png') no-repeat ;
+}
+
+.ImportNodeIcon {
+	width: 32px; height: 32px;
+  background: url('VistaSkin/PageGreenArrowDown.png') no-repeat ;
+}
+
+.ExportNodeIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/PageGreenArrowUp.png') no-repeat ;
+}
+
+.SearchIcon {
+	width: 32px; height: 28px;
+  background: url('VistaSkin/BlackMagnifier.png') no-repeat ;
+}
+
+.AddDocumentIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/AddDocumentLabel.png') no-repeat top;
+}
+
+.CreateTicketIcon {
+	width: 24px; height: 24px;
+  background: url('VistaSkin/AddTicket.gif') no-repeat ;
+}
+
+.AddFolderIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/AddFolder.png') no-repeat ;
+}
+
+.UploadIcon {
+	width: 32px; height: 29px;
+  background: url('VistaSkin/UploadFile.png') no-repeat ;
+}
+
+.ViewReferencesIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/BlueBallMultiplePage.png') no-repeat ;
+}
+
+.ShowJCRStructureIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/GraySwitcher.png') no-repeat ;
+}
+
+.ViewNodeTypeIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/MiscColorRegtangleRing.png') no-repeat ;
+}
+
+.ViewPropertiesIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/SmallBallColorPlate.png') no-repeat ;
+}
+
+.ViewRelationsIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/SmallBallFlyingPages.png') no-repeat ;
+}
+
+.ViewPermissionsIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/SmallBallRedShield.png') no-repeat ;
+}
+
+.HardDisk24x24Icon {
+	width: 24px; height: 24px;
+  background: url('VistaSkin/HardDisk.png') no-repeat ;
+}
+
+.BlueDiamond24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/BlueDiamond.gif') no-repeat ;
+}
+
+.PermissionIcon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/PermissionIcon.gif') no-repeat ;
+}
+
+.Permission24x24Icon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/PermissionIcon.gif') no-repeat ;
+}
+
+.SelectPath24x24Icon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/BlueMagnifier.gif') no-repeat ;
+}
+
+.ManageOntologiesIcon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/ManageOntologiesIcon.gif') no-repeat ;
+}
+
+.UITemplatesManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/TemplatesManager.png') no-repeat ;
+}
+
+.UIViewManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ViewManager.png') no-repeat ;
+}
+
+.UIDriveManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/DriveManager.png') no-repeat ;
+}
+
+.UIQueriesManagerIcon {
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ManageQueries.png') no-repeat ;
+}
+
+.UIActionManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ActionManager.png') no-repeat ;
+}
+
+.UIScriptManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ScriptManager.png') no-repeat ;
+}
+
+.UIRuleManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/RuleManager.png') no-repeat ;
+}
+
+.UIFolksonomyManagerIcon {
+	float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ManageFolksonomyIcon.png') no-repeat ;
+}
+
+.UITaxonomyManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ManageTaxonomyIcon.png') no-repeat ;
+}
+
+.UIMetadataManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ManageMetadataIcon.png') no-repeat ;
+}
+
+.AddMetadataTypeIcon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/ManageMetadataIcon.gif') no-repeat ;
+}
+
+.UINamespaceManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/NamespaceManager.png') no-repeat ;
+}
+
+.UINodeTypeManagerIcon {
+  float: left ;
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/NodeTypeManager.png') no-repeat ;
+}
+
+.CreateDocumentTypesIcon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/CreateDocumentTypes.gif') no-repeat ;
+}
+
+.DisplayDocumentsIcon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/DisplayDocuments.gif') no-repeat ;
+}
+
+.ManageDynamicContentIcon {
+  float: left ;
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat ;
+}
+
+.RefreshSession24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/MetalSync.gif') no-repeat ;
+}
+
+.HomeIcon {
+  width: 24px;	height: 24px;
+  background: url('VistaSkin/HardDisk.gif') no-repeat ;
+}
+
+.ViewPortlet24x24Icon {
+  width: 32px;	height: 28px;
+  background: url('VistaSkin/DisplayDocuments.png') no-repeat ;
+}
+
+.ConfigPortlet24x24Icon {
+  width: 32px;	height: 28px;
+  background: url('VistaSkin/HammerDataBox.png') no-repeat bottom ;
+}
+
+.AddNewConfig24x24Icon {
+  width: 32px;	height: 28px;
+  background: url('VistaSkin/AddDocument.png') no-repeat ;
+}
+
+.SmallNote24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/SmallNote.gif') no-repeat ;
+}
+
+.GreenLeftArrowFolder24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/GreenLeftArrowFolder.gif') no-repeat ;
+}
+
+.GreenUpArrowFolder24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat ;
+}
+
+.GreenLeftArrow24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/GreenLeftArrow.gif') no-repeat ;
+}
+
+.GreenRightArrow24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/GreenRightArrow.gif') no-repeat ;
+}
+
+.Categories24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('VistaSkin/Categories.gif') no-repeat ;
+}
+
+.BlackMonitor24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('VistaSkin/BlackMonitor.gif') no-repeat ;
+}
+
+.DiskArrow24x24Icon {
+  width: 32px;	height: 26px;
+  background: url('VistaSkin/DiskArrow.png') no-repeat center ;
+}
+
+.ColorGridSquare24x24Icon {
+  width: 32px;	height: 28px;
+  background: url('VistaSkin/ColorGridSquare.png') no-repeat bottom;
+}
+
+.DiamondCircleRoundedArrows24x24Icon  {
+  width: 32px;	height: 28px;
+  background: url('VistaSkin/DiamondCircleRoundedArrows.png') no-repeat bottom;
+}

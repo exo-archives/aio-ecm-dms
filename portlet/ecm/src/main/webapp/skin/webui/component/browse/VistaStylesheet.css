@@ -1,0 +1,270 @@
+@import url("../../../icons/VistaStylesheet.css");
+@import url("UICategoryTree/VistaStylesheet.css");
+@import url("UIContentView/VistaStylesheet.css");
+@import url("UISubContent/VistaStylesheet.css");
+@import url("UINavigation/VistaStylesheet.css");
+@import url("UICBSearchForm/VistaStylesheet.css");
+@import url("UIEventViewer/VistaStylesheet.css");
+@import url("../UIVoteForm/VistaStylesheet.css");
+
+.UIWindow .UIBrowseContentPortlet {
+  overflow: auto;
+  background: white;
+}
+
+.UIPageBody .UIBrowseContentPortlet {
+  background: white;
+  margin: 0px 6px 0px 6px;
+  border: solid 1px #7b7b7b;
+}
+
+.UIBrowseContentPortlet {
+  overflow: auto;
+}
+
+.UIBrowseContentPortlet .ActionButton {
+  width:90px; /*FIX BUG IE*/
+}
+
+.UIBrowseContentPortlet .UINewConfigForm .ActionButton {
+  width:90px; /*FIX BUG IE*/
+}
+
+.UIBrowseContentPortlet .UIFormWithTitle {
+  border: solid 1px #b7b7b7;
+  padding: 1px;
+}
+
+.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout {
+  background: #ffffff;
+  border: none;
+}
+
+.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout label {
+  width: 150px;
+}
+
+.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout {
+  padding: 0px;
+}
+
+.UIBrowseContentPortlet .UIPageIterator {  
+  margin: 5px;
+}
+
+.UIBrowseContentPortlet .UIConfigTabPane {
+  border: 1px solid #b7b7b7;
+  padding: 5px;
+}
+
+.UIBrowseContentPortlet .ViewActicle {
+  margin: 9px 10px 0px 0px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder {
+  padding: 5px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagLabel {
+	line-height: 24px; font-weight: bold;
+	padding: 0px 8px;
+}
+	
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent {
+	height: 25px;
+	background: url('VistaSkin/background/ContainerBackgroud1x25.gif') repeat-x;
+	border: solid 1px #b8bbbe ;
+	margin-top: 1px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapContentTitle{
+	height: 27px;
+	background: url('VistaSkin/background/TitleBackgroud1x28.gif') repeat-x;
+  border-left: solid 1px #c3c3c3 ;  border-right: solid 1px #c3c3c3 ;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent .Tag {
+  float: left;
+  margin: 5px 0px;
+}
+
+/*############################## -- Begin UIBrowseContainer -- ##############################*/
+.UIBrowseContentPortlet .UIBrowseContainer {	
+}
+
+.UIBrowseContentPortlet .UIBrowseContainer .ActionContainer {
+  width: 200px;
+  margin: auto;
+}
+
+/*############################## -- Begin UIHeaderBar -- ##############################*/
+.UIBrowseContentPortlet .UIHeaderBar {
+  height: 30px;
+  background: url('VistaSkin/background/LineDecorator1x30.gif') repeat-x center center;
+  border-top: solid 1px #b7b7b7; border-bottom : solid 1px #b1b6e6;
+  margin-top: 10px;
+}
+
+.UIBrowseContentPortlet .UIHeaderBar .Separator {
+  width: 2px;
+  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
+}
+
+
+.UIBrowseContentPortlet .UIHeaderBar .SelectViewLabel {
+  float: left;
+  line-height: 28px;
+  padding-left: 10px;
+}
+
+.UIBrowseContentPortlet .UIHeaderBar .SelectBox {
+  float: left;
+  font-size: 11px;
+  padding: 3px 15px;
+}
+
+.UIBrowseContentPortlet .UIHeaderBar .IconFrame {
+  float: right;
+  width: 180px;
+  padding: 0px 10px;
+}
+
+.UIBrowseContentPortlet .UIHeaderBar .HeaderBarSeparator {
+  float: right;
+  height: 30px;
+}
+
+.UIBrowseContentPortlet .UIHeaderBar .IconFrame .Icon {
+  float: right;
+  margin: 2px 10px 0px 10px;
+  cursor: pointer;
+}
+
+/*############################## -- Begin UIToolBar -- ##############################*/
+.UIBrowseContentPortlet .UIToolBar {
+  height: 30px;
+  background: url('VistaSkin/background/LineDecorator1x30.gif') repeat-x center center;
+  border-bottom: solid 1px #c5c9d2; border-top: solid 1px #747474;
+}
+
+.UIBrowseContentPortlet .UIToolBar .Separator {
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar {
+  float: left;
+  height: 28px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .SeparatorBarLeft {
+  float: left;
+  height: 28px;
+  padding: 0px 6px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .BlueBarIcon {
+  float: left;
+  height: 28px;
+  cursor: pointer;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .ImageNote {
+  float: left;
+  height: 28px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .TextRoot {
+  float: left;
+  height: 28px; line-height: 26px;
+  font-weight: bold; color: #101010;
+  margin: 0px 2px; 
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .LeftArrowIcon {
+  float: left;
+  height: 28px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .SelectViewLabel {
+  float: left;
+  line-height: 28px;
+  padding-left: 10px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .SelectBox {
+  float: left;
+  font-size: 11px;
+  padding: 3px 15px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .IconFrame {
+  float: right;
+  width: 180px;
+  padding: 0px 10px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .ToolBarSeparator {
+  float: right;
+  height: 28px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .IconFrame .Icon {
+  float: right;
+  margin: 1px 10px 0px 10px;
+  cursor: pointer;
+}
+
+/*############################## -- Begin UIDocumentList -- ##############################*/
+.UIBrowseContainer .UIDocumentList .UIGrid{
+	border: none;
+}
+
+.UIBrowseContainer .UIDocumentList .UIGrid td{
+	border: none;
+}
+
+.UIBrowseContainer .UIDocumentList {
+	padding-top: 10px;
+}
+
+.UIBrowseContainer .UIDocumentList .DocumentIcon{
+	float: left;
+	width: 16px; height: 16px;
+}
+
+.UIBrowseContainer .UIDocumentList .DocumentLabel{
+	vertical-align: middle; line-height: 16px;
+}
+
+.UIBrowseContainer .UIDocumentList .TopSubContent {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.UIBrowseContainer .UIDocumentList .UIPageIterator {
+	background: none;
+	border: none;
+}
+
+.UIBrowseContainer .CommentHolder {
+}
+
+.UIBrowseContainer .VoteHolder {
+  float: right;
+  width: 250px;
+}
+
+/*############################## -- FIX BUG POPUP  -- ##############################*/
+.UIBrowseContentPortlet .UIPopupWindow .UITree{
+  float: left;
+  width: 200px;
+}
+
+.UIBrowseContentPortlet .UIPopupWindow .UIGrid{
+  width: 350px;
+  margin-left: 10px;
+}
+
+.UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
+  float: left;
+  margin-left: 5px;
+}

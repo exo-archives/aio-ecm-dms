@@ -1,0 +1,264 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modifile : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * December 08, 2006
+ * version: $Id$
+ */
+
+/*############################## -- Begin UIJCRExplorer -- ##############################*/
+.UIJCRExplorerPortlet .UIJCRExplorer {
+  border: solid 1px #aeaeae;
+  background: white;
+  width: 99.9%; /*  Bug on IE */
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .Separator {
+  width: 2px;
+  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .NormalBg42x30 {
+  width: 42px;
+  height: 30px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .OverBg42x30 {
+  width: 42px;
+  height: 30px;
+  background: url('DefaultSkin/background/SelectedBackground42x30.gif') no-repeat center center;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .SelectedBg42x30 {
+  width: 42px;
+  height: 30px;
+  background: url('DefaultSkin/background/SelectedBackground42x30.gif') no-repeat center center;
+}
+
+/*############################## -- End UIJCRExplorer -- ##############################*/
+/*############################## -- Begin UIDocumentWorkspace -- ##############################*/
+.UIJCRExplorerPortlet .UIListView {
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl {
+  float: left;      
+  font-size: 11px ;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl th {
+  line-height: 20px;
+  text-align: left;
+  font-size: 12px ;
+  padding: 0px 10px;
+  border: solid 1px #9fa8cb;
+  font-weight: normal;
+  background: url('DefaultSkin/background/ThGridRepeatBg1x20.gif') repeat-x center;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl td {
+  line-height: 30px;
+  padding: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .OverHeader {
+  background: url('DefaultSkin/background/OverThGridRepeatBg1x20.gif') repeat-x center;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .HeaderLabel {
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .SortButton {
+  float: left;
+  margin: 2px 5px;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .Icon16x16 {
+  float: left;
+  margin: 5px;
+  width: 16px; height: 16px;
+}
+/*############################## -- Begin MenuPopup -- ##############################*/
+
+.UIJCRExplorerPortlet .UIMenuPopup {
+  height: 23px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent {
+  padding: 1px;
+  border: solid 1px #6a6a6b;
+  background-color: white;
+  width: 150px;
+  position: absolute;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .NormalItem {
+  clear: both;
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectedItem {
+  clear: both;
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: #d6ddef;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectedNav {
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: #d6ddef;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .ItemIcon {
+  float: left;
+  margin: 6px 3px 3px 3px;
+  width: 16px;
+  height:16px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .ItemLabel {
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SeparatorLine {
+  margin: 5px;
+  background: #919192;
+  height: 1px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .SubMenu {
+  margin-left: 130px ;
+  background: #ffffff ;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .MenuItemContainer {
+  padding-left: 10px ;
+}
+/*############################## -- End UIMenuPopup   -- ##############################*/
+.UIJCRExplorerPortlet .UIThumbnailsView {
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
+  width: auto;
+  margin: auto;
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
+  margin: 15px 30px 15px 30px;
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
+  width: 100px;
+  height: 90px;
+  border: solid 1px #e0e0e0;
+  background: #f5f5f5;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIcon {
+  width: 64px;
+  height: 64px;
+  margin: 20px auto 0px auto;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .Icon48x48 {
+  width: 48px;
+  height: 48px;
+  margin: auto;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
+  text-align:center;
+  width: 100px;
+  height:22px; line-height: 24px; vertical-align: middle;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionLabel {
+  text-align:center;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
+  color: #000000;
+  text-align:center;
+  width:100px;
+  margin:auto;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a:hover {
+  color: blue;
+  text-align:center;
+  width:100px;
+  margin:auto;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .UIMenuPopup .UISelectContent {
+  border: solid 1px #6a6a6b;
+  background-color: white;
+  width: 150px;
+  position: absolute;
+  display: none;
+}
+/*############################## -- End UIThumbnailsView -- ##############################*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult table {
+  width: 99.6%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .ActionButton {
+  width: 80px;
+}
+/*############################## -- BEGIN UIDocumentInfo -- ##############################*/
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .ActionContainer {
+	width: 200px;
+	margin: auto;
+	padding: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .ActionButton {
+  width: 88px; /*FIX BUG IE*/
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormWithTitle label {
+	width: 110px;
+	line-height: 20px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
+	background:url('DefaultSkin/background/TitleBG.gif') repeat-x ; 
+	height: 20px; 
+	border-bottom: 1px solid #a3abb6; 
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
+  background:url('DefaultSkin/background/HeaderBG.gif') ;   
+  margin-bottom:1px;
+  padding: 0px 5px; 
+  border: solid 1px #a3abb6 ;
+}
+
+
+/*############################## -- END UIDocumentInfo -- ##############################*/
+
+/*############################## -- BEGIN UIFolderForm -- ##############################*/
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .ActionContainer {
+	 width: 170px;
+	 margin: auto;
+	 padding: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .ActionButton {
+  width: 80px;
+}
+
+/*############################## -- END UIFolderForm -- ##############################*/
+
+/*############################## -- End UIDocumentWorkspace -- ##############################*/

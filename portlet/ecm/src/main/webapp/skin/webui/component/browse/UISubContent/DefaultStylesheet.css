@@ -1,0 +1,146 @@
+/**
+ * Created by The eXo Platform SAS
+ * Author : Vu Duy Tu
+ *          duytucntt@gmail.com
+ * DEC 20, 2006
+ * version: $Id$
+ */
+
+.UISubContent {
+	padding-left: 5px; padding-right: 5px;
+}
+
+.UISubContent .SubContentHolder {
+	width: 99.5%;
+	padding: 5px;
+}
+
+.UISubContent .SubContentHolderLeft {
+  width: 49%;
+  float: left;
+}
+
+.UISubContent .SubContentHolderRight {
+  width: 49%;
+  float: right;
+}
+
+.UISubContent .TopSubContent {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/*###########################-- Begin Title --############################*/
+
+.UISubContent .SubContentTitle { 
+	border: solid 1px #6699cc ;
+	height: 20px;
+	background: url('DefaultSkin/background/TitleBackgroud3x20.gif') repeat-x;
+	overflow: hidden;
+}
+
+.UISubContent .SubContentTitle .LeftIcon {
+	float: left; 
+	height: 20px;
+	margin-left: 3px;
+}
+
+.UISubContent .SubContentTitle .ChildNode { 
+	float: left;
+	border-right: solid 1px #6699cc ;
+	height: 20px;
+}
+
+.UISubContent .SubContentTitle .ChildNode a { 
+	text-decoration: none;
+	color: black;
+}
+
+.UISubContent .SubContentTitle .ChildNode a:hover { 
+	text-decoration: none;
+	color: blue;
+}
+
+.UISubContent .SubContentTitle .NodeLabel { 
+	float: left;
+	border-right: solid 1px #ffffff ;
+	padding: 0px 8px;
+	line-height: 19px;
+}
+
+.UISubContent .SubContentTitle .RightIcon { 
+	float: right;
+	height: 20px;
+	margin-right: 3px;
+}
+/*###########################-- End Title --############################*/
+
+.UISubContent .UIDocumentContentInfo {
+	border: solid 1px #6699cc ;
+	margin-top: 1px;
+	background: #ffffff;
+}
+
+.UISubContent .UIHorizontalTabs {
+	padding: 0px;
+}
+
+.UISubContent .ItemIcon { 
+ float:left;
+ margin-top: 0px;
+ margin-left: 4px;
+}
+.UISubContent .UIDocumentContentInfo .DocumentInfo {
+	padding: 2px;
+}
+
+.UISubContent .UIDocumentContentInfo .DocumentIcon {
+	float:left;
+	margin: 2px;
+}
+
+.UISubContent .UIDocumentContentInfo .DocumentLabel {
+	color: blue;
+	font-size: 11px;
+	margin-left: 20px;
+  line-height: 16px;
+}
+
+.UISubContent .UIDocumentContentInfo .AuthorNameLabel {
+	color: black;
+	font-size: 11px;
+  line-height: 20px;
+}
+
+.UISubContent .UIDocumentContentInfo .DateTimeLabel {
+	color: black;
+	font-size: 11px;
+  line-height: 20px;
+}
+.UISubContent .UIDocumentContentInfo .ViewMoreDocument {
+  text-align: right ;
+  margin-right: 10px;
+}
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage {
+	background: #efefef;
+	margin: 10px 10px 10px 10px;
+	height: 54px;
+	padding-top: 25px;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .MessageContainer {
+	width: 50%;
+	margin: auto;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .InfoIcon {
+	margin-top: 3px;
+	float: left;
+	padding-left: 5px;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
+	color: black;
+	font-size: 11px;
+  line-height: 20px;
+}

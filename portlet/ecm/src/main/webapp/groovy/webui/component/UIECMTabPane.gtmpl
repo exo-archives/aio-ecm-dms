@@ -1,0 +1,53 @@
+<div class="$uicomponent.id" id="$uicomponent.id">
+<%//Begin UITabPane%>
+  <div class="UITabPane">
+    <%//Begin TabPaneContent%>
+    <div class="TabPaneContent">
+      <%//Begin WorkingArea%>
+      <div class="WorkingArea">
+        <%//Begin Tabs%>
+        <div class="UIHorizontalTabs">
+          <div class="TabsContainer">
+            <%
+              String colorTab = "NormalTabStyle" ;
+              for(uiChild in uicomponent.getChildren()) {
+                if(uiChild.isRendered()) colorTab = "HighlightTabStyle" ;
+                else colorTab = "NormalTabStyle" ;
+            %>
+                <div class="UITab">
+                  <div class="$colorTab">
+                    <div class="LeftTab">
+                      <div class="RightTab">
+                        <%if(uiChild.getId().indexOf(":") > -1) { %>
+                          <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">$uiChild.id</div>
+                        <%} else {%>
+                          <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes(uicomponent.getName() + ".tab.label." + uiChild.id)%></div>
+                        <%} %>
+                      </div>
+                    </div>
+                  </div>
+                </div>              
+            <%}%>
+          </div>
+        </div>
+        <%//End UIHorizontalTabs%>
+        <%//Start UITabContentContainer%>
+        <div class="UITabContentContainer">
+          <%
+            for(uiChild in uicomponent.getChildren()) { 
+              String display = "none" ;
+              if(uiChild.isRendered()) display="block" ;
+              println "<div class=\"UITabContent\" style=\"display: $display\">" ;
+              uicomponent.renderUIComponent(uiChild) ;
+              println "</div>" ;
+            }
+          %>
+        </div>
+        <%//End UITabContentContainer%>
+      </div>  
+      <%//End WorkingArea%>
+    </div>  
+    <%//End TabPaneContent%>
+  </div>  
+  <%//End UITabPane%>
+</div> 

@@ -1,0 +1,43 @@
+<%def node = uicomponent.getNode() ;%>
+<table class="UIGrid">      	 			
+  <tr>
+    <td style="width:25%">Action name:</td>
+    <td>
+      <%if(node.hasProperty("exo:name")) {%>
+		    <%=node.getProperty("exo:name").getString()%>
+		  <%}%>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:25%">Lifecycle:</td>
+    <td>
+      <%if(node.hasProperty("exo:lifecyclePhase")) {%>
+		    <%=node.getProperty("exo:lifecyclePhase").getString()%>
+		  <%}%>
+    </td>
+  </tr>
+  <tr>
+		<td style="width:25%">Calendar path:</td>
+		<td>
+		  <%if(node.hasProperty("exo:calendarPath")) {%>
+		    <%=node.getProperty("exo:calendarPath").getString()%>
+		  <%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Query:</td>
+		<td>
+		  <%if(node.hasProperty("exo:query")) {%>
+		    <%=node.getProperty("exo:query").getString()%>
+		  <%}%>
+		</td>
+  </tr>
+  <tr>
+		<td style="width:25%">Description:</td>
+		<td>
+		  <%if(node.hasProperty("exo:description")) {%>
+		    <%=node.getProperty("exo:description").getString()%>
+		  <%}%>
+		</td>
+  </tr>
+</table>

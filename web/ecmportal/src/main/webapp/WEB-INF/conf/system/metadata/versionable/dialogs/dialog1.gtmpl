@@ -1,0 +1,78 @@
+<%
+   String[] hiddenField1 = ["jcrPath=/node/mix:versionable", "mix:versionable", "visible=false"] ; 
+   uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
+%>
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+      
+    <div class="FieldContainer">		          					
+      <label>Version History</label>
+      <%
+        String[] fieldVersionHistory = ["jcrPath=/node/mix:versionable/jcr:versionHistory"] ;
+        uicomponent.addTextField("versionHistory", fieldVersionHistory) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Base Version</label>
+      <%
+        String[] fieldBaseVersion = ["jcrPath=/node/mix:versionable/jcr:baseVersion"] ;
+        uicomponent.addTextField("baseVersion", fieldBaseVersion) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>is Checked Out</label>
+      <%
+        String[] fieldIsCheckedOut = ["jcrPath=/node/mix:versionable/jcr:isCheckedOut"] ;
+        uicomponent.addTextField("isCheckedOut", fieldIsCheckedOut) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Predecessors</label>
+      <%
+        String[] fieldPredecessors = ["jcrPath=/node/mix:versionable/jcr:predecessors"] ;
+        uicomponent.addTextField("predecessors", fieldPredecessors) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Merge Failed</label>
+      <%
+        String[] fieldMergeFailed = ["jcrPath=/node/mix:versionable/jcr:mergeFailed"] ;
+        uicomponent.addTextField("mergeFailed", fieldMergeFailed) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>UUID</label>
+      <%
+        String[] fieldUuid = ["jcrPath=/node/mix:versionable/jcr:uuid"] ;
+        uicomponent.addTextField("uuid", fieldUuid) ;
+      %>
+    </div>
+   
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer" style="width:100%;">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

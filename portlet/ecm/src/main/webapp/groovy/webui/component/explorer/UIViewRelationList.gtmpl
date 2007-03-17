@@ -1,0 +1,39 @@
+<div class="Explorer">
+  <div class="ComponentBar">
+    <div class="InnerComponentBar">
+      <div class="TitleText"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
+      <div class="CloseButton">
+        <div class="BlueCloseButton16x16Icon" onclick="window.location='<%=uicomponent.event("Close")%>'"><span></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ExplorerTree">
+    <div class="InnerExplorerTree">
+      <div style="margin: 2px; border: solid 1px #526d82; padding: 5px;text-align: center; ">
+      <%def list = uicomponent.getRelations()
+		    if(list.isEmpty()) { %>
+		    	    		    				    			    			    	
+			    <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
+			
+		  <%}else {
+		    String subname ;
+		    String name ;
+		    String path ;
+		    String actionLink ;
+    		for(node in list)	{	    				    				    		
+	    	  preferenceWS = node.getSession().getWorkspace().getName() ;
+	    		name = node.getName() ;
+	    		parth = node.getPath() ;
+	    		actionLink = uicomponent.event("ViewNode", preferenceWS + ";" + path) ;
+	    		if(name.length() > 20) subname = name.substring(0,15) + "..." ;				    
+	        else subname = name ;
+	        %>
+	          <div>
+			        <a href="$actionLink" title="$name">$subname</a>
+			      </div>
+    	  <%}
+		    }%>
+		  </div>    
+    </div>
+  </div>
+</div>

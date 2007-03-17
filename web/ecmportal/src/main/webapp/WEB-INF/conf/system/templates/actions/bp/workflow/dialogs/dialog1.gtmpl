@@ -1,0 +1,80 @@
+<div class="UIFormWithTitle">
+  <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
+	<% uiform.begin() %>
+  <div class="HorizontalLayout">	  
+    <div class="FieldContainer">		          					
+      <label>Id</label>
+      <%
+        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move", "editable=false", "visible=if-not-null"] ;
+        uicomponent.addMixinField("id", fieldId) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Name</label>
+      <% 
+        String[] fieldName = ["jcrPath=/node/exo:name"] ;
+        uicomponent.addTextField("name", fieldName)  ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Lifecycle</label>
+      <% 
+        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
+        uiform.addSelectBoxField("lifecycle", fieldLifecycle) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Description</label>
+      <% 
+        String[] fieldDescription = ["jcrPath=/node/exo:description"] ; 
+        uicomponent.addTextAreaField("description", fieldDescription) 
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Validator</label>
+      <% 
+        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon"] ;
+        uicomponent.addActionField("validator", fieldValidator) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>To workspace</label>
+      <% 
+        String[] fieldWorkspace = ["jcrPath=/node/exo:destWorkspace", "production", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy"] ;
+        uicomponent.addSelectBoxField("destWorkspace", fieldWorkspace) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>With path</label>
+      <% 
+        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "selectorParams=#destWorkspace", "selectorIcon=SelectPath24x24Icon"] ;
+        uicomponent.addActionField("destPath", fieldPath)  ;
+      %>
+    </div>        
+    <%/* start render action*/%>
+		<div class="UIAction" style="width:180px; margin:auto;"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

@@ -1,0 +1,240 @@
+<%
+	uicomponent.addInterceptor("ecm-explorer/interceptor/PostFilePlanInterceptor.groovy", "post") ;
+%>
+<div class="UIFormWithTitle"> 
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border: 0px;">	  
+    <fieldset>
+	    <div class="FieldContainer">		          					
+	      <label>Name</label>
+	      <%
+	        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
+	        uicomponent.addTextField("name", fieldName) ; 
+	      %>
+	    </div>
+    </fieldset>
+		<fieldset>
+			<div class="FieldContainer">
+				<label>Record Category Identifier</label>
+				<%
+	        String[] fieldCateIdentifier = ["jcrPath=/node/rma:recordCategoryIdentifier"] ;
+	        uicomponent.addTextField("recordCategoryIdentifier", fieldCateIdentifier) ; 
+	      %>
+			</div>
+			<div class="FieldContainer">
+				<label>Disposition Authority</label>
+				<%
+	        String[] fieldDispotionAuthor = ["jcrPath=/node/rma:dispositionAuthority"] ;
+	        uicomponent.addTextField("dispositionAuthority", fieldDispotionAuthor) ; 
+	      %>
+			</div>			
+			<div class="FieldContainer">
+				<label>Permanent Record Indicator</label>
+				<%
+	        String[] fieldPermanentRecord = ["jcrPath=/node/rma:permanentRecordIndicator", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("permanentRecordIndicator", fieldPermanentRecord) ; 
+	      %>
+			</div>			
+			<div class="FieldContainer">
+				<label>Disposition Instructions</label>
+				<%
+	        String[] fieldDispositionInstruction = ["jcrPath=/node/rma:dispositionInstructions"] ;
+	        uicomponent.addTextAreaField("dispositionInstructions", fieldDispositionInstruction) ; 
+	      %>
+			</div>			
+			<div class="FieldContainer">
+				<label>Contains Record Folders</label>
+				<%
+	        String[] fieldContainsRecord = ["jcrPath=/node/rma:containsRecordFolders", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("containsRecordFolders", fieldContainsRecord) ; 
+	      %>
+			</div>	
+			<div class="FieldContainer">
+				<label>Default Media Type</label>
+				<%
+	        String[] fieldDefaultMedia = ["jcrPath=/node/rma:defaultMediaType", "options=Electronic,Paper"] ;
+	        uicomponent.addSelectBoxField("defaultMediaType", fieldDefaultMedia) ; 
+	      %>
+			</div>	
+			<div class="FieldContainer">
+				<label>Default Marking List</label>
+				<%
+	        String[] fieldDefaultMarking = ["jcrPath=/node/rma:defaultMarkingList", "options=NONE,CLASSIFIED,UNCLASSIFIED,NOCONTRACT"] ;
+	        uicomponent.addSelectBoxField("defaultMarkingList", fieldDefaultMarking) ; 
+	      %>
+			</div>
+			<div class="FieldContainer">
+				<label>Default Originating Organization</label>
+				<%
+	        String[] fieldDefaultOriginating = ["jcrPath=/node/rma:defaultOriginatingOrganization"] ;
+	        uicomponent.addTextField("defaultOriginatingOrganization", fieldDefaultOriginating) ; 
+	      %>
+			</div>				
+		</fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>Vital Record Indicator</label>
+				<%
+	        String[] fieldVitalRecord = ["jcrPath=/node/rma:vitalRecordIndicator", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("vitalRecordIndicator", fieldVitalRecord) ; 
+	      %>
+			</div>
+			<div class="FieldContainer">
+				<label>Vital Record Review Period</label>
+				<%
+	        String[] fieldVitalRecordReview = ["jcrPath=/node/rma:vitalRecordReviewPeriod", "options=one minute,hourly,daily,quarterly,yearly,ten years"] ;
+	        uicomponent.addSelectBoxField("vitalRecordReviewPeriod", fieldVitalRecordReview) ; 
+	      %>
+			</div>			    
+    </fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>Process Cutoffs</label>
+				<%
+	        String[] fieldProcessCutoff = ["jcrPath=/node/rma:processCutoff", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("processCutoff", fieldProcessCutoff) ; 
+	      %>
+			</div>		
+			<div class="FieldContainer">
+				<label>Event Trigger</label>
+				<%
+	        String[] fieldEventTrigger = ["jcrPath=/node/rma:eventTrigger"] ;
+	        uicomponent.addTextField("eventTrigger", fieldEventTrigger) ; 
+	      %>
+			</div>		
+			<div class="FieldContainer">
+				<label>Cutoff Period</label>
+				<%
+	        String[] fieldCutoffPeriod = ["jcrPath=/node/rma:cutoffPeriod", "options=one minute,hourly,daily,quarterly,yearly,ten years"] ;
+	        uicomponent.addSelectBoxField("cutoffPeriod", fieldCutoffPeriod) ; 
+	      %>
+			</div>		
+			<div class="FieldContainer">
+				<label>Cutoff on obsolete</label>
+				<%
+	        String[] fieldCutoffObsolete = ["jcrPath=/node/rma:cutoffOnObsolete", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("cutoffOnObsolete", fieldCutoffObsolete) ; 
+	      %>
+			</div>		
+			<div class="FieldContainer">
+				<label>Cutoff on superseded</label>
+				<%
+	        String[] fieldCutoffSupereseded = ["jcrPath=/node/rma:cutoffOnSuperseded", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("cutoffOnSuperseded", fieldCutoffSupereseded) ; 
+	      %>
+			</div>														    	
+    </fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>Process Hold</label>
+				<%
+	        String[] fieldProcessHold = ["jcrPath=/node/rma:processHold", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("processHold", fieldProcessHold) ; 
+	      %>
+			</div>														    	
+			<div class="FieldContainer">
+				<label>Hold Period</label>
+				<%
+	        String[] fieldHoldPeriod = ["jcrPath=/node/rma:holdPeriod", "options=one minute,hourly,daily,quarterly,yearly,ten years"] ;
+	        uicomponent.addSelectBoxField("holdPeriod", fieldHoldPeriod) ; 
+	      %>
+			</div>														    	
+			<div class="FieldContainer">
+				<label>Discretionary Hold</label>
+				<%
+	        String[] fieldDiscretionaryHold = ["jcrPath=/node/rma:discretionaryHold", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("discretionaryHold", fieldDiscretionaryHold) ; 
+	      %>
+			</div>														    	
+    </fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>Process Transfer</label>
+				<%
+	        String[] fieldProcessTransfer = ["jcrPath=/node/rma:processTransfer", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("processTransfer", fieldProcessTransfer) ; 
+	      %>
+			</div>														    	
+			<div class="FieldContainer">
+				<label>Default Transfer Location</label>
+				<%
+	        String[] fieldDefaultTransfer = ["jcrPath=/node/rma:defaultTransferLocation"] ;
+	        uicomponent.addTextField("defaultTransferLocation", fieldDefaultTransfer) ; 
+	      %>
+			</div>														    	
+			<div class="FieldContainer">
+				<label>Transfer Block Size</label>
+				<%
+	        String[] fieldTransferBlock = ["jcrPath=/node/rma:transferBlockSize"] ;
+	        uicomponent.addTextField("transferBlockSize", fieldTransferBlock) ; 
+	      %>
+			</div>														    	
+    </fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>Process Accession</label>
+				<%
+	        String[] fieldProcessAccession = ["jcrPath=/node/rma:processAccession", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("processAccession", fieldProcessAccession) ; 
+	      %>
+			</div>														    	
+			<div class="FieldContainer">
+				<label>Accession Location</label>
+				<%
+	        String[] fieldAccessionLocation = ["jcrPath=/node/rma:accessionLocation"] ;
+	        uicomponent.addTextField("accessionLocation", fieldAccessionLocation) ; 
+	      %>
+			</div>														    	
+			<div class="FieldContainer">
+				<label>Accession Block Size</label>
+				<%
+	        String[] fieldAccessionBlockSize = ["jcrPath=/node/rma:accessionBlockSize"] ;
+	        uicomponent.addTextField("accessionBlockSize", fieldAccessionBlockSize) ; 
+	      %>
+			</div>
+    </fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>Process Destruction</label>
+				<%
+	        String[] fieldProcessDestruction = ["jcrPath=/node/rma:processDestruction", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("processDestruction", fieldProcessDestruction) ; 
+	      %>
+			</div>		
+    </fieldset>
+    <fieldset>
+			<div class="FieldContainer">
+				<label>File Plan Note</label>
+				<%
+	        String[] fieldPlanNode = ["jcrPath=/node/rma:filePlanNote"] ;
+	        uicomponent.addTextAreaField("filePlanNote", fieldPlanNode) ; 
+	      %>
+			</div>		
+    </fieldset>    
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

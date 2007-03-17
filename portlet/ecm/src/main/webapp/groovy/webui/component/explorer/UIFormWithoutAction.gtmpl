@@ -1,0 +1,31 @@
+<%
+  /**
+ * Created by The eXo Platform SARL
+ * Author : Pham Tuan
+ *          phamtuanchip@yahoo.de ;
+ * Nov 08, 2006
+ * 
+ */
+%>
+<div class="$uicomponent.id">
+  <div class="UIFormWithTitle">
+    <% uiform.begin() %>
+    <div class="HorizontalLayout" style="border: none;padding-top:15px;padding-bottom:10px;">
+      <% 
+        for(field in uiform.getChildren()) { 
+          if(field.isRendered()) {
+      %>
+            <div class="FieldContainer">
+              <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
+                <label><%=uicomponent.getLabel(field.getName())+": " %></label>
+              <%} %>
+              <% uiform.renderField(field) %>
+            </div>
+      <%
+          }
+        }
+      %>
+    </div>
+    <%uiform.end()%>
+  </div>
+</div>

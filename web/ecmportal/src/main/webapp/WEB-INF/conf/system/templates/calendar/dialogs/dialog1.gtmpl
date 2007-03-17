@@ -1,0 +1,45 @@
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border: 0px;">	  
+    <div class="FieldContainer">		          					
+      <label>Name</label>
+      <%
+        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
+        uicomponent.addTextField("name", fieldName) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Shared</label>
+      <%
+        String[] fieldShared = ["jcrPath=/node/exo:shared", "false", "options=true,false"] ;
+        uicomponent.addSelectBoxField("shared", fieldShared) ;
+      %>
+    </div>
+    
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

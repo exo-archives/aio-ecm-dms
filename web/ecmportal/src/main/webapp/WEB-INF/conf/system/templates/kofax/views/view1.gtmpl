@@ -1,0 +1,48 @@
+<style>
+.community .UIDivForm .row {
+	margin-top: 5px;
+}
+
+.community .UIDivForm .detail label {
+	margin-top: 0px;
+}
+</style>
+
+<%
+  def node = uicomponent.getNode() ;
+  String namespace = "kfx:" ;
+%>
+
+<div class="UIDivForm">
+  <!-- Node name -->
+  <div class="title">Kofax document name : <%=node.getName()%></div>
+  <div class="detail">
+    <!-- Process the Node properties -->
+    <%
+      for(property in node.getProperties()) {
+        def propertyName = property.getName() ;
+        if(propertyName.startsWith(namespace)) { %>
+          <div class="row">
+            <label><%=propertyName.substring(namespace.length(), propertyName.length())%></label>
+            <%=node.getProperty(propertyName).getString()%>
+          </div>
+    <%
+        }
+      }
+    %>
+    <!-- Process the children -->
+    <%
+      int i = 1;
+      for(child in node.getNodes()) { %>
+        <div class="row">
+          <label>Downloadable file #<%=i%></label>
+          <a href="/<%=uicomponent.getPortalName()%>/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=child.getPath()%>">
+            <%=child.getName()%>
+          </a>
+         </div>
+    <%
+        i++ ;
+      } 
+    %>
+  </div>
+</div>

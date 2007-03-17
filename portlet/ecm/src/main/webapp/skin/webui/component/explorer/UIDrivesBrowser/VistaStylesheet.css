@@ -1,0 +1,193 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modifile : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * December 08, 2006
+ * version: $Id$
+ */
+ 
+ /*############################## -- Begin UIDrivesBrowser -- ##############################*/
+
+.UIJCRExplorerPortlet .UIDrivesBrowser {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitleLeft {
+  width: 477px; 
+  line-height: 27px;
+  background: url('VistaSkin/background/DrivesLeft3x27.png') no-repeat left;
+  padding-left: 3px;
+  margin: auto; 
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitle {
+  height: 27px; line-height: 27px; text-align: center;
+  font-weight: bold; font-size: 13px;  color: black;
+  background: url('VistaSkin/background/DrivesMiddle1x27.png') repeat-x ;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitleRight {
+  line-height: 27px;
+  background: url('VistaSkin/background/DrivesRight3x27.png') no-repeat right ;
+  padding-right: 3px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator {
+  width: 480px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorTopLeftCorner {
+  height: 2px; line-height: 2px;
+  background: url('VistaSkin/background/GrayRoundedCornerLT2x2.png') no-repeat left ;
+  padding-left: 2px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorTopCenterCorner {
+  height: 2px; line-height: 2px;
+  background: url('VistaSkin/background/GrayRoundedCornerTM1x2.png') repeat-x ;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorTopRightCorner {
+  height: 2px; line-height: 2px;
+  background: url('VistaSkin/background/GrayRoundedCornerRT2x2.png') no-repeat right ;
+  padding-right: 2px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorMiddleRight{
+  background: url('VistaSkin/background/GrayRoundedCornerMR2x1.png') repeat-y right ;
+  padding-right: 2px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorMiddleLeft{
+  background: url('VistaSkin/background/GrayRoundedCornerML2x1.png') repeat-y left ;
+  padding-left: 2px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorMiddle {
+  height: 100%;
+  padding: 5px 0px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorBottomLeftCorner {
+  height: 2px; line-height: 2px;
+  background: url('VistaSkin/background/GrayRoundedCornerLB2x2.png') no-repeat left ;
+  padding-left: 2px;
+}
+
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorBottomCenterCorner {
+  height: 2px; line-height: 2px;
+  background: url('VistaSkin/background/GrayRoundedCornerBM1x2.png') repeat-x;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorBottomRightCorner {
+  height: 2px; line-height: 2px;
+  background: url('VistaSkin/background/GrayRoundedCornerRB2x2.png') no-repeat right ;
+  padding-right: 2px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DriveRow {
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .LeftCol {
+  float: left;
+  width: 210px;
+  padding: 15px 0px 15px 13px ;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .RightCol {
+  float: right;
+  width: 210px;
+  padding: 15px 13px 15px 0px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
+  cursor: pointer;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar {
+  width: 185px; height: 20px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar a {
+  float: right;
+  font-weight: bold; font-size: 11px; color: #0442b6;
+  text-align: center; text-decoration: none;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar a:hover {
+  color: orange;  text-decoration: none;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .LeftBar {
+  height: 24px;
+  background: url('VistaSkin/background/TitleBarL11x24.png') no-repeat left;
+  padding-left: 11px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .RightBar {
+  height: 24px;
+  background: url('VistaSkin/background/TitleBarR11x24.png') no-repeat right;
+  padding-right: 11px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .MiddleBar {
+  height: 24px; line-height: 21px; vertical-align: middle;
+  background: url('VistaSkin/background/TitleBarM1x24.png') repeat-x ;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .TitleBarLabel {
+}
+
+/*############################## -- Begin Icon51x51-- ######################*/
+.UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/AdminProduction.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .AdmindraftIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/AdminDraft.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .AdminbackupIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/AdminBackup.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .AdmintaxonomyIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/AdminTaxonomy.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .Admindigital-assetsIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/AdminDigitalAssets.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .UserproductionIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/UserProduction.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .UserdraftIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/UserDraft.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .UserbackupIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/UserBackup.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .UsertaxonomyIcon {
+  width: 48px; height: 44px;
+  background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
+}
+/*############################## -- End UIDrivesBrowser -- ##############################*/

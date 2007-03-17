@@ -1,0 +1,61 @@
+<div class="UIDrivesBrowser UIResizableBlock">
+	<div class="DrivesTitleLeft">
+		<div class="DrivesTitleRight">
+  		<div class="DrivesTitle"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
+  	</div>
+  </div>
+  <div class="BrowserDecorator">
+    <div class="DecoratorTopLeftCorner">
+      <div class="DecoratorTopRightCorner">
+        <div class="DecoratorTopCenterCorner"><span></span></div>
+      </div>
+    </div>
+    <div class="DecoratorMiddleLeft">
+      <div class="DecoratorMiddleRight">
+        <div class="DecoratorMiddle">
+          <div>
+          <%
+            def drives = uicomponent.getDrives() ;
+            String style = "Right" ;
+            for(drive in drives) {
+              String[] arr = drive.split(",") ;
+              if(style == "Right") {
+                println "<div class=\"DriveRow\">" ;
+                style = "Left" ;
+              } else {
+                style = "Right" ;
+              }
+          %>
+              <div class="${style}Col">
+                <div class="Icon Admin${arr[1]}Icon" onclick="<%=uicomponent.event("SelectDrive","${arr[0]}")%>"><span></span></div>
+                <div class="TitleBar">
+                  <div class="LeftBar">
+                    <div class="RightBar">
+                      <div class="MiddleBar">
+                        <a style="margin: auto; width: 160px;" href="<%=uicomponent.event("SelectDrive","${arr[0]}")%>">${arr[0]}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+          <%
+            if(style == "Right"){
+              println "</div>"
+            }
+             }
+            if(style == "Left") {
+              println "</div>"
+            }
+          %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="DecoratorBottomLeftCorner">
+      <div class="DecoratorBottomRightCorner">
+        <div class="DecoratorBottomCenterCorner"><span></span></div>
+      </div>
+    </div>
+  </div>
+</div>

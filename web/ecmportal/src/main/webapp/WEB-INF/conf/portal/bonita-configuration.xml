@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration>  
+    
+  <component>
+	    <key>org.exoplatform.services.workflow.WorkflowServiceContainer</key>
+	    <type>org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl</type>
+	    <init-params>
+	      <object-param>
+	        <name>workflow.configuration</name>
+	        <description>load of default business processes</description>
+	        <object type="org.exoplatform.services.workflow.ProcessesConfig">
+	          <field  name="processLocation"><string>war:/conf/bp</string></field>
+	          <field  name="predefinedProcess">
+	            <collection type="java.util.HashSet">
+	              <value><string>/exo-ecm.business-process.holiday.bonita-1.1.bpar</string></value>
+	              <value><string>/exo-ecm.business-process.payraise.bonita-1.1.bpar</string></value>
+	              <value><string>/exo-ecm.business-process.content-validation.bonita-1.1.bpar</string></value>
+	              <value><string>/exo-ecm.business-process.content-backup.bonita-1.1.bpar</string></value>
+	            </collection>
+	          </field>
+	        </object>
+	      </object-param>    
+	    </init-params>      
+  </component>
+
+</configuration>

@@ -1,0 +1,61 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * January 31, 2007
+ * 9:32:56 AM 
+ */
+%>
+<%
+  def rcontext = _ctx.getRequestContext() ;
+  double rating = uicomponent.getRating() ;
+  rcontext.addJavascript("eXo.ecm.ECMUtils.initVote('$uicomponent.id', $rating) ;") ;
+%>
+<div class="UIVoteForm" id="$uicomponent.id">
+  <div class="DecoratorBox">
+    <div class="GrayRoundedFillBoxStyle">
+      <div class="TopLeftCornerBoxDecorator">
+        <div class="TopRightCornerBoxDecorator">
+          <div class="TopCenterBoxDecorator"><span></span></div>
+        </div>
+      </div>
+      <div class="MiddleLeftSideBoxDecorator">
+        <div class="MiddleRightSideBoxDecorator">
+          <div class="CenterBoxDecorator">
+            <div class="UIRatingInfoContainer">
+              <div class="OptionsContainer">
+	              <div class="NormalVote" onclick="<%=uicomponent.event("Vote", "1");%>"><span></span></div>
+	              <div class="NormalVote" onclick="<%=uicomponent.event("Vote", "2");%>"><span></span></div>
+	              <div class="NormalVote" onclick="<%=uicomponent.event("Vote", "3");%>"><span></span></div>
+	              <div class="NormalVote" onclick="<%=uicomponent.event("Vote", "4");%>"><span></span></div>
+	              <div class="NormalVote" onclick="<%=uicomponent.event("Vote", "5");%>"><span></span></div>
+	            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="BottomLeftCornerBoxDecorator">
+        <div class="BottomRightCornerBoxDecorator">
+          <div class="BottomCenterBoxDecorator"><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="UIAction"> 								
+    <div class="ActionContainer">								       
+	    <div class="ActionButton">
+	      <div class="NormalStyle">
+	      	<div class="ButtonLeft">
+	      		<div class="ButtonRight">
+	      			<div class="ButtonMiddle">
+	      				<div class="Icon Cancel16x16Icon"><span></span></div>
+	      				<a href="<%=uicomponent.event("Cancel")%>">Cancel</a>
+	      			</div>
+	      		</div>
+	      	</div>	              
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>

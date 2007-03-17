@@ -1,0 +1,105 @@
+/**
+ * Created by The eXo Platform SAS
+ * Modifier : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * January 03, 2006
+ * version: $Id$
+ */
+
+.UIECMAdminPortlet .UITaxonomyContainer {
+  background-color: white;
+  border: solid 1px #d9d8d8;
+  padding: 5px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .Icon16x16 {
+  float: left;
+  margin: 3px 7px 0px 0px;
+  cursor: pointer;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .Icon24x24 {
+  float: left;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .HorizontalLayout{
+	padding-top: 12px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
+	border-top: solid 1px #d9d8d8;
+	border-left: solid 1px #d9d8d8;
+	border-right: solid 1px #d9d8d8;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .HomeNode {
+  background-color: #eaeaea;
+  font-weight: bold; line-height: 30px;
+  border-bottom: solid 1px #d9d8d8;  
+  padding: 0px 7px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .Node {
+  line-height: 29px;
+  background-color: #eaeaea;
+  border-bottom: solid 1px #d9d8d8;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .NodeEven {
+  line-height: 29px;
+  background-color: #f4f3f3;
+  border-bottom: solid 1px #d9d8d8;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .NoneIcon {
+  float: left;
+  width: 16px; height: 16px;  
+  margin: 7px 2px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .ExpandIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  margin: 7px 0px;
+  cursor: pointer;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  margin: 7px 0px;
+  cursor: pointer;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .NodeActionsContainer {
+  float: right;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
+  width: 190px;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .TrueFalseContainer{
+  width: 65px;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm {
+	padding: 10px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {
+  width: 120px;
+  padding-right: 3px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIAction  .ActionContainer {
+  margin: 10px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UIAction  .ActionContainer .ActionButton {
+  width: 80px;
+}

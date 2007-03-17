@@ -1,0 +1,121 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Vu Duy Tu
+ *          duytucntt@gmail.com
+ * DEC 18, 2006
+ * version: $Id$
+ */
+.UIContentView {
+  margin: 9px 10px 0px 0px;
+}
+
+.UIContentView .TiteContentView {
+  margin-top: 9px;
+}
+
+.UIContentView .SubTitleContent {
+  width: 200px; height: 22px;
+  margin: 0px;
+}
+
+.UIContentView .SubTitleContent .TitleContentLeft {
+  height: 22px;
+  background: url('DefaultSkin/background/TitleContentLeft8x22.gif') no-repeat left ;
+  padding-left: 8px;
+}
+
+.UIContentView .SubTitleContent .TitleContentRight {
+  height: 22px;
+  background: url('DefaultSkin/background/TitleContentright22x22.gif') no-repeat right ;
+  padding-right: 22px;
+}
+
+.UIContentView .SubTitleContent .MiddleTitleContent {
+  height: 22px;
+  background: url('DefaultSkin/background/TitleContentBG1x22.gif') repeat-x ;
+}
+
+.UIContentView .SubTitleContent .TiteContentIcon {
+	float: left;
+	margin-top: 4px;
+}
+
+.UIContentView .TiteLabel {
+	line-height: 21px; font-size: 11px;
+	margin-left: 18px;
+}
+
+.UIContentView .TiteLabel a {
+	text-decoration: none; color: black;
+}
+
+.UIContentView .TiteLabel a:hover { 
+	text-decoration: none; color: blue;
+}
+
+.UIContentView .FormContentView {
+	border: 1px solid #dee7ef;
+  margin-left: 0px;
+}
+
+.UIContentView .SubFormContent {
+	background-color: #efefef;
+	border: 1px solid #cccccc;
+	padding-bottom: 10px;
+  margin: 1px;
+}
+
+.UIContentView .SubFormContent .ChildrenContent {
+  width: 99.5%;
+}
+
+.UIContentView .SubFormContent .ChildrenContentHolder {
+	float: left;
+	width: 200px;
+	margin: 10px 0px 10px 20px;
+}
+
+.UIContentView .SubFormContent .ImageNote {
+	float: left;
+  width: 28px; height: 34px;
+	background: url('DefaultSkin/background/Note28x34.gif');
+}
+
+.UIContentView .SubFormContent .ContentLabel {
+	height: 34px;
+	margin-left: 30px;
+}
+
+.UIContentView .SubFormContent .UserName {
+	height: 15px; line-height: 18px;
+	font-weight: bold; font-size: 11px;
+	margin-left: 8px;
+}
+
+.UIContentView .SubFormContent .Author {
+	height: 15px; line-height: 18px;
+	font-size: 10px;
+	margin-left: 20px;
+}
+
+.UIContentView .NoneDocumentMessage {
+	background: #efefef;
+	padding-top: 25px;
+	margin: 5px 10px 10px 5px;
+}
+
+.UIContentView .NoneDocumentMessage .MessageContainer {
+	width: 40%;
+	margin: auto;
+}
+
+.UIContentView .NoneDocumentMessage .InfoIcon {
+	float: left;
+	padding-left: 5px;
+}
+
+.UIContentView .NoneDocumentMessage .Message {
+	color: black; font-size: 11px; line-height: 20px;
+}
+
+

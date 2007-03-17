@@ -1,0 +1,109 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Jan 4, 2006
+ * 4:28:26 PM 
+ */
+%>
+<div class="" id="UISavedQuery">
+  <table class="UIGrid">
+    <thead>
+      <tr>
+  	    <th><%=_ctx.appRes("UISavedQuery.header.name")%></th>
+  	    <th><%=_ctx.appRes("UISavedQuery.header.type")%></th>
+  	    <th><%=_ctx.appRes("UISavedQuery.header.statement")%></th>
+  	    <th><%=_ctx.appRes("UISavedQuery.header.permission")%></th>
+  	    <th><%=_ctx.appRes("UISavedQuery.header.action")%></th>
+      </tr>
+    </thead>
+    <%
+    	def hasPrivateQueries = uicomponent.hasQueries() ;
+	    def hasSharedQueries = uicomponent.hasSharedQueries() ;
+    %>
+    <tbody>
+      <%if(!hasPrivateQueries && !hasSharedQueries) { %>
+	        <tr class="EvenRow">
+		        <td colspan="5"><%=_ctx.appRes("UISavedQuery.label.no-children")%></td>
+		      </tr>
+      <%} else {   
+	        def rowClass = null ;
+	  	    boolean even = true ;
+	  	    for(query in uicomponent.getQueries()) {
+	  	      if(even) rowClass = "EvenRow" ;  
+	  	      else rowClass =  "OddRow" ; 
+	  	      even = !even ;
+      %>
+	          <tr class="$rowClass">
+	            <td><div class="Text"><%=query.getStoredQueryPath()%></div></td>
+	            <td><div class="Text"><%=query.getLanguage()%></div></td>
+	            <td>
+	            	<%
+	            		String statement = query.getStatement() ;
+	            		if(statement.length() > 30) statement = "..." + statement.substring(10) ;
+	            	%>
+	            	<div class="Text" title="<%=query.getStatement()%>"><%=statement%></div>
+	            </td>
+	            <%
+			  	    	String permissions = null ;
+			  	    	for(per in uicomponent.getPermissions(query.getStoredQueryPath())) {
+			  	    		if(permissions == null) permissions = per.getUsersOrGroups() ;
+			  	    		else permissions = permissions + "," + per.getUsersOrGroups() ;
+			  	    	}
+	  	    		%>
+	            <td><%=permissions%></td>
+		          <td style="width:60px;">
+		            <a href="<%=uicomponent.event("Execute", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
+		              <div class="Execute16x16Icon" style="margin-left:5px;float:left"><span></span></div>
+		            </a>
+		            <a href="<%=uicomponent.event("Delete", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Delete")%>">
+		              <div class="Delete16x16Icon" style="margin-left:10px;"><span></span></div>
+		            </a>
+		          </td>	                    
+	          </tr>
+      	<%}%>
+      	<%
+      		for(sharedQueries in uicomponent.getSharedQueries()) {
+      			if(even) rowClass = "EvenRow" ;  
+	  	      else rowClass =  "OddRow" ; 
+	  	      even = !even ;
+	  	   %>
+		  	   <tr class="$rowClass">
+            <td><div class="Text"><%=sharedQueries.getPath()%></div></td>
+            <td><div class="Text"><%=sharedQueries.getProperty("jcr:language").getString()%></div></td>
+            <td>
+            	<div class="Text" title="<%=sharedQueries.getProperty("jcr:statement").getString()%>">
+	            	<%
+		            		String sharedStatement = sharedQueries.getProperty("jcr:statement").getString() ;
+		            		if(sharedStatement.length() > 40) sharedStatement = "..." + sharedStatement.substring(20) ;
+		            %>
+            		<%=sharedStatement%>
+            	</div>
+            </td>
+            <td>
+            <%
+            	String sharedPermissions = null ;
+            	for(per in sharedQueries.getProperty("exo:permissions").getValues()) {
+            		if(sharedPermissions == null) sharedPermissions = per.getString() ;
+            		else sharedPermissions = sharedPermissions + "," + per.getString() ;
+            	}
+            %>
+            	<div class="Text"><%=sharedPermissions%></div>
+            </td>
+	          <td style="width:60px;">
+	            <a href="<%=uicomponent.event("Execute", sharedQueries.getPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
+	              <div class="Execute16x16Icon" style="margin-left:5px;"><span></span></div>
+	            </a>
+	          </td>	                    
+          </tr>
+      	<%
+      		}  
+      	}
+      %>
+    </tbody>
+  </table>
+  <div style="margin:1px 0px 5px 0px;">
+    <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+  </div>
+</div>

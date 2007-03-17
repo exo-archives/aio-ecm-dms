@@ -1,0 +1,65 @@
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+    <div class="FieldContainer">	
+      <label>Hold Executed</label>
+      <%
+        String[] fieldHoldExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("holdExecuted", fieldHoldExecuted) ;
+      %>
+    </div>
+    <div class="FieldContainer">		  
+      <label>Hold Until</label>
+      <%
+        String[] fieldHoldUntil = ["jcrPath=/node/rma:holdUntil"] ;
+        uicomponent.addCalendarField("holdUntil", fieldHoldUntil) ;
+      %>
+    </div>
+    <div class="FieldContainer">		
+      <label>Holds Discretionary</label>
+      <%
+        String[] fieldHoldDiscretionary = ["jcrPath=/node/rma:holdsDiscretionary", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("holdsDiscretionary", fieldHoldDiscretionary) ;
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Hold Until Event</label>
+      <%
+        String[] fieldHoldUntilEvent = ["jcrPath=/node/rma:holdUntilEvent"] ;
+        uicomponent.addTextField("holdUntilEvent", fieldHoldUntilEvent) ;
+      %>
+    </div>
+    <div class="FieldContainer">	
+      <label>Freeze</label>
+      <%
+        String[] fieldFreeze = ["jcrPath=/node/rma:freeze", "false", "options=false,true"] ;
+        uicomponent.addSelectBoxField("freeze", fieldFreeze) ;
+      %>
+    </div>
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <div class="ActionContainer" style="width:100%;">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

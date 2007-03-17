@@ -1,0 +1,189 @@
+<div class="UIFormWithTitle">
+  <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
+	<% uiform.begin() %>
+  <div class="HorizontalLayout">	
+    <div class="FieldContainer">		          					
+      <label>Id</label>
+      <%
+        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+        uicomponent.addMixinField("id", fieldId) ;  
+      %>
+    </div> 
+  
+    <div class="FieldContainer">		          					
+      <label>Create feed action name</label>
+      <%
+        String[] fieldName = ["jcrPath=/node/exo:name"] ;
+        uicomponent.addTextField("name", fieldName) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Lifecycle</label>
+      <%
+        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
+        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ; 
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Feed node name</label>
+      <%
+         String[] fieldFeedName = ["jcrPath=/node/exo:feedName"] ;
+         uicomponent.addTextField("feed-name", fieldFeedName) ; 
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Feed store path</label>
+      <% 
+         String[] fieldFeedStorePath = ["jcrPath=/node/exo:storePath", "/cms/feed"] ;
+         uicomponent.addTextField("store-path", fieldFeedStorePath) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Query items</label>
+      <%
+        String[] fieldQueryPath = ["jcrPath=/node/exo:queryPath", "/jcr:root/cms/publications//element(*, exo:podcast)"] ;
+        uicomponent.addTextAreaField("queryPath", fieldQueryPath) ; 
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Rss URL</label>
+      <%
+        String[] fieldURL = ["jcrPath=/node/exo:url", "http://localhost:8080/cms-content/rss"] ;
+        uicomponent.addTextField("url", fieldURL) ; 
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Feed Title</label>
+      <%
+        String[] fieldTitle = ["jcrPath=/node/exo:feedTitle"] ;
+        uicomponent.addTextField("rss-title", fieldTitle) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Feed type</label>
+      <%
+        String[] fieldFeedType = ["jcrPath=/node/exo:feedType", "rss", "options=rss,podcast,video podcast"] ;
+        uicomponent.addSelectBoxField("feed-type", fieldFeedType) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Rss version</label>
+      <%
+        String[] fieldRSSVersion = ["jcrPath=/node/exo:rssVersion", "rss_2.0", "options=rss_2.0,rss_1.0,rss_0.94,rss_0.93,rss_0.92,rss_0.91,rss_0.90"] ;
+        uicomponent.addSelectBoxField("rss-version", fieldRSSVersion) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Link</label>
+      <%
+        String[] fieldLink = ["jcrPath=/node/exo:link"] ;
+        uicomponent.addTextField("link", fieldLink) ; 
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Description</label>
+      <%
+        String[] fieldDescription = ["jcrPath=/node/exo:description", "This podcast provided by eXo Platform opensource company"] ; 
+        uicomponent.addTextAreaField("description", fieldDescription) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Language</label>
+      <%
+        String[] fieldLanguage = ["jcrPath=/node/exo:language", "en", "options=en,fr"] ; 
+        uicomponent.addSelectBoxField("language", fieldLanguage) ; 
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Copyright</label>
+      <%
+        String[] fieldCopyright = ["jcrPath=/node/exo:copyright", "Copyright ? 2000-2005 eXo Platform SARL"] ; 
+        uicomponent.addTextField("copyright", fieldCopyright) ; 
+      %>
+    </div>
+
+    <div class="FieldContainer">		          					
+      <label>Publish date</label>
+      <%
+        String[] fieldPubDate = ["jcrPath=/node/exo:pubDate"] ; 
+        uicomponent.addCalendarField("pubDate", fieldPubDate) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Owner name</label>
+      <%
+        String[] fieldOwnerName = ["jcrPath=/node/exo:ownerName", "Exoplatform"] ; 
+        uicomponent.addTextField("ownerName", fieldOwnerName) ;   
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Owner email</label>
+      <%
+        String[] fieldOwnerEmail = ["jcrPath=/node/exo:ownerEmail", "support@exoplatform.com"] ; 
+        uicomponent.addTextField("ownerEmail", fieldOwnerEmail) ;   
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Image URL</label>
+      <%
+        String[] fieldImageURL = ["jcrPath=/node/exo:imageURL"] ; 
+        uicomponent.addTextField("imageURL", fieldImageURL) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Category</label>
+      <%
+        String[] fieldCategory = ["jcrPath=/node/exo:category"] ; 
+        uicomponent.addTextField("category", fieldCategory) ;
+      %>
+    </div>
+    
+    <div class="FieldContainer">		          					
+      <label>Keywords</label>
+      <%
+        String[] fieldKeyword = ["jcrPath=/node/exo:keywords"] ; 
+        uicomponent.addTextField("keywords", fieldKeyword) ;  
+      %>
+    </div>
+    <%/* start render action*/%>
+		<div class="UIAction" style="width:180px; margin:auto;"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

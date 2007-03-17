@@ -1,0 +1,61 @@
+/***************************************************************************
+ * Copyright 2001-2006 The eXo Platform SARL         All rights reserved.  *
+ * Please look at license.txt in info directory for more license detail.   *
+ **************************************************************************/
+package org.exoplatform.ecm.webui.component.explorer;
+
+import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.component.UIComponent;
+import org.exoplatform.webui.component.UIContainer;
+import org.exoplatform.webui.component.UIPopupWindow;
+import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.config.annotation.ComponentConfig;
+
+
+/**
+ * Created by The eXo Platform SARL
+ * Author : pham tuan
+ *          phamtuanchip@yahoo.de
+ * Oct 03, 2006
+ * 9:43:23 AM 
+ */
+@ComponentConfig(lifecycle = UIContainerLifecycle.class)
+public class UIPopupAction extends UIContainer {
+
+  public UIPopupAction() throws Exception {
+    addChild(createUIComponent(UIPopupWindow.class, null, null)) ;
+  }
+  
+  public <T extends UIComponent> T activate(Class<T> type, int width) throws Exception {
+    return activate(type, null, width, 0) ;
+  }
+  
+  public <T extends UIComponent> T activate(Class<T> type, String configId, int width, int height) throws Exception {
+    T comp = createUIComponent(type, configId, null) ;
+    activate(comp, width, height) ;
+    return comp ;
+  }
+  
+  public void activate(UIComponent uiComponent, int width, int height) throws Exception {
+    UIPopupWindow popup = getChild(UIPopupWindow.class);
+    popup.setUIComponent(uiComponent) ;
+    ((UIPopupComponent)uiComponent).activate() ;
+    popup.setWindowSize(width, height) ;  
+    popup.setRendered(true) ;
+    popup.setShow(true) ;
+  }
+  
+  public void deActivate() throws Exception {
+    UIPopupWindow popup = getChild(UIPopupWindow.class) ;
+    if(popup.getUIComponent() != null) ((UIPopupComponent)popup.getUIComponent()).deActivate() ;
+    popup.setUIComponent(null) ;
+    popup.setRendered(false) ;
+  }
+  
+  public void cancelPopupAction() throws Exception {
+    deActivate() ;
+    RequestContext context = RequestContext.getCurrentInstance() ;
+    context.addUIComponentToUpdateByAjax(this) ;
+  }
+}

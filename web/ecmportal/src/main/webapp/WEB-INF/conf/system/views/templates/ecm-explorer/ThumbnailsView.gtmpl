@@ -1,0 +1,45 @@
+<%	 
+	import org.exoplatform.webui.component.UIRightClickPopupMenu ;
+  
+  UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
+%>
+<div class="UIThumbnailsView" id="UIDocumentInfo">
+  <div class="ActionIconsContainer">
+    <%for(data in uicomponent.getChildrenList()) { %>
+			<div class="ActionIconBox">
+			  <%
+          String name = data.getName() ;
+				  def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+      		def preferenceWS = data.getSession().getWorkspace().getName() ;
+		      String actionLink  ;
+		      String subName ;
+		      if(name.length() < 20) { 
+		        subName = name ;
+		        if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
+		        else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;
+		      } else {
+		        subName = name.substring(0,15) + "..." ;
+		        if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
+		        else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;								          
+		      }								        
+	      %>	 
+			  <div class="ActionIconContainer">
+	        <%
+		        String nodeType = data.getPrimaryNodeType().getName() ;
+    	      nodeType = nodeType.replace(":", "_") ;
+	        %>
+		      <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+  			    <div class="ActionIcon">
+    			    <a class="ActionLabel" href="$actionLink" title="$name">
+    			      <div class="Icon48x48 default48x48Icon ${nodeType}48x48Icon"><span></span></div>
+    			    </a>
+  			    </div>
+	  			</div>
+	  		</div>
+			  <div class="ActionIconLabel">
+			    <a class="ActionLabel" href="$actionLink" title="$name">$subName</a>
+			  </div>
+		  </div> 
+    <%} %>
+  </div>
+</div>

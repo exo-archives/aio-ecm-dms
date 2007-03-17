@@ -1,0 +1,911 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modif : Tran The Trong
+ *          trongtt@gmail.com
+ * March 14, 2007
+ * version: $Id$
+ */
+
+@import url("NodeTypes/DefaultStylesheet.css");
+
+
+.AddIcon16x16 {
+  float:left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  cursor: pointer;
+}
+
+.AddPathIcon {
+  float: left ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/AddPath.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.AddIconIcon {
+  float: left ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/AddIcon.gif') no-repeat ;
+  cursor: pointer;
+} 
+
+.AddPermissionIcon {
+  float:left;
+	width: 16px; height: 16px;
+  margin: 2px 4px 0px 4px;
+  background: url('DefaultSkin/SelectPermission.gif') no-repeat; 
+  cursor: pointer;
+}
+ 
+.PermissionIcon16x16 {
+  float:left;
+  width: 16px; height: 16px;
+  margin: 4px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  cursor: pointer;
+}
+ 
+.SelectMemberIcon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGroup.gif') no-repeat;
+  cursor: pointer;  
+}
+
+ 
+.ExecuteIcon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Execute.gif') no-repeat;  
+  cursor: pointer;
+}
+ 
+ 
+.SelectGroupIcon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+  cursor: pointer;
+}
+
+.SelectUserIcon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+  cursor: pointer;
+}
+ 
+.ExpandIcon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.CompareVersion16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/CompareVersion.gif') no-repeat;
+  cursor: pointer;
+}
+
+.RestoreVersion16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/RestoreVersion.gif') no-repeat;
+  cursor: pointer;
+}
+
+.BlueRoundedPlusPage16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueRoundedPlusPage.gif') no-repeat;
+  cursor: pointer;
+}
+
+.RedRoundedPlusPage16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/RedRoundedPlusPage.gif') no-repeat;
+  cursor: pointer;
+}
+
+.Style1NextArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCircleNextArrow.gif') no-repeat;
+}
+
+.Style1DownArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlackBorderDownArrow.gif') no-repeat;
+}
+
+.BlackClose16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlackClose.gif') no-repeat center center;
+}
+
+.BlueDownArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
+}
+
+.BlueUpArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueUpArrow.gif') no-repeat;
+}
+
+.AddType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.Watch16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.Unwatch16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.Continue16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/GreenRightArrowPage.gif') no-repeat;  
+}
+
+.SaveDraft16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.AddTag16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.SetDefault16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.AddLanguage16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.UpdateStyle16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.UpdateChild16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.UpdateProperty16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.AddProperty16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.AddQuery16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.AddConstraints16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/AddNodeIcon.gif') no-repeat;  
+}
+
+.AddValue16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.AddNamespace16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.AddChild16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.CancelTab16x16Icon {
+  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
+}
+
+.CancelChild16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
+}
+
+.Close16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
+}
+
+.CancelProperty16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
+}
+
+.CancelConstraints16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
+}
+
+.Upload16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.View16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/YellowLight.gif') no-repeat;  
+}
+
+.MetaView16x16Icon {
+	float: left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/YellowLight.gif') no-repeat;  
+  cursor: pointer;
+}
+
+.DeleteIconInfo {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Delete.gif') no-repeat ; 
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.EditStyleIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.EditIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.False16x16Icon {
+	float: left;
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/False.gif') no-repeat;  
+}
+
+.True16x16Icon {
+	float: left;
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/True.gif') no-repeat;  
+}
+
+.SelectPath16x16Icon {
+  float: left;
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/SearchPage.gif') no-repeat;  
+}
+
+.SelectPermission16x16Icon {
+  float: left;
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+}
+/*############################## -- Action Icon  -- ##############################*/
+.Add16x16Icon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.Delete16x16Icon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/DustBin.gif') no-repeat ;   
+}
+
+.Locked16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Lock.gif') no-repeat ;   
+}
+
+.Unlock16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/UnLock.gif') no-repeat ;   
+}
+
+.CheckIn16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/CheckIn.gif') no-repeat ;   
+}
+
+.CheckOut16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/CheckOut.gif') no-repeat ;   
+}
+
+.Copy16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Copy.gif') no-repeat ;   
+}
+
+.Cut16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Cut.gif') no-repeat ;   
+}
+
+.Rename16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Rename.gif') no-repeat ;   
+}
+
+.Edit16x16Icon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;   
+}
+
+.EditDocument16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;   
+}
+
+.Save16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat ;   
+}
+
+.Search16x16Icon { 
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/SearchPage.gif') no-repeat;  
+}
+
+.AddRule16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+}
+
+.AddAction16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+}
+
+.AddNameSpace16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+}
+
+.AddNew16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+}
+
+.AddDrive16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+}
+
+.AddView16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+}
+
+.Paste16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/OrangeNote.gif') no-repeat ;
+}
+.Select16x16Icon {
+  width: 16px; height: 16px;
+  background-image: url('DefaultSkin/SelectPage.gif');  
+}
+
+.Export16x16Icon {
+  background-image: url('DefaultSkin/Export.gif');  
+}
+
+.Import16x16Icon {
+  background-image: url('DefaultSkin/Import.gif');  
+}
+.Active16x16Icon {
+  width: 16px; height: 16px;
+  background-image: url('DefaultSkin/SelectPage.gif');  
+}
+/*############################## -- End Action Icon  -- ##############################*/
+/*############################## -- Begin Properties Icon -- ########################*/
+.dc_contributor16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-contributor.gif') no-repeat;  
+}
+
+.dc_coverage16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-coverage.gif') no-repeat;  
+}
+
+.dc_creator16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-creator.gif') no-repeat;  
+}
+
+.dc_date16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-date.gif') no-repeat;  
+}
+
+.dc_description16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-description.gif') no-repeat;  
+}
+
+.dc_format16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-format.gif') no-repeat;  
+}
+
+.dc_identifier16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-identifier.gif') no-repeat;  
+}
+
+.dc_language16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-language.gif') no-repeat;  
+}
+
+.dc_publisher16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-publisher.gif') no-repeat;  
+}
+
+.dc_relation16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-relation.gif') no-repeat;  
+}
+
+.dc_resourceType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-resourceType.gif') no-repeat;  
+}
+
+.dc_rights16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-rights.gif') no-repeat;  
+}
+
+.dc_source16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-source.gif') no-repeat;  
+}
+
+.dc_subject16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-subject.gif') no-repeat;  
+}
+
+.dc_title16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/dc-title.gif') no-repeat;  
+}
+
+.exo_businessProcess16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-businessProcess.gif') no-repeat;  
+}
+
+.exo_buttons16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-buttons.gif') no-repeat;  
+}
+
+.exo_date16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-date.gif') no-repeat;  
+}
+
+.exo_datetime16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-datetime.gif') no-repeat;  
+}
+
+.exo_description16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-description.gif') no-repeat;  
+}
+
+.exo_destPath16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-destPath.gif') no-repeat;  
+}
+
+.exo_destWorkspace16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-destWorkspace.gif') no-repeat;  
+}
+
+.exo_image16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-image.gif') no-repeat;  
+}
+
+.exo_lifecyclePhase16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-lifecyclePhase.gif') no-repeat;  
+}
+
+.exo_name16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-name.gif') no-repeat;  
+}
+
+.exo_owner16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-owner.gif') no-repeat;  
+}
+
+.exo_permissions16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-permissions.gif') no-repeat;  
+}
+
+.exo_prefix16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-prefix.gif') no-repeat;  
+}
+
+.exo_relation16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-relation.gif') no-repeat;  
+}
+
+.exo_roles16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-roles.gif') no-repeat;  
+}
+
+.exo_rule16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-rule.gif') no-repeat;  
+}
+
+.exo_script16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-script.gif') no-repeat;  
+}
+
+.exo_summary16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-summary.gif') no-repeat;  
+}
+
+.exo_template16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-template.gif') no-repeat;  
+}
+
+.exo_templateFile16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-templateFile.gif') no-repeat;  
+}
+
+.exo_text16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-text.gif') no-repeat;  
+}
+
+.exo_title16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-title.gif') no-repeat;  
+}
+.exo_uri16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-uri.gif') no-repeat;  
+}
+
+.exo_validator16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/exo-validator.gif') no-repeat;  
+}
+
+.jcr_autoCreated16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-autoCreated.gif') no-repeat;  
+}
+
+.jcr_baseVersion16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-baseVersion.gif') no-repeat;  
+}
+
+.jcr_childNodeDefinition16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-childNodeDefinition.gif') no-repeat;  
+}
+
+.jcr_content16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-content.gif') no-repeat;  
+}
+
+.jcr_created16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-created.gif') no-repeat;  
+}
+
+.jcr_data16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-data.gif') no-repeat;  
+}
+
+.jcr_defaultPrimaryType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-defaultPrimaryType.gif') no-repeat;  
+}
+
+.jcr_defaultValues16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-defaultValues.gif') no-repeat;  
+}
+
+.jcr_encoding16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-encoding.gif') no-repeat;  
+}
+
+.jcr_frozenMixinTypes16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-frozenMixinTypes.gif') no-repeat;  
+}
+
+.jcr_frozenPrimaryType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-frozenPrimaryType.gif') no-repeat;  
+}
+
+.jcr_frozenUuid16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-frozenUuid.gif') no-repeat;  
+}
+
+.jcr_hasOrderableChildNodes16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-hasOrderableChildNodes.gif') no-repeat;  
+}
+
+.jcr_isCheckedOut16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-isCheckedOut.gif') no-repeat;  
+}
+
+.jcr_isMixin16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-isMixin.gif') no-repeat;  
+}
+
+.jcr_language16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-language.gif') no-repeat;  
+}
+
+.jcr_lastModified16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-lastModified.gif') no-repeat;  
+}
+
+.jcr_lockIsDeep16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-lockIsDeep.gif') no-repeat;  
+}
+
+.jcr_lockOwner16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-lockOwner.gif') no-repeat;  
+}
+
+.jcr_mandatory16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-mandatory.gif') no-repeat;  
+}
+
+.jcr_mergeFailed16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-mergeFailed.gif') no-repeat;  
+}
+
+.jcr_mimeType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-mimeType.gif') no-repeat;  
+}
+
+.jcr_mixinTypes16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-mixinTypes.gif') no-repeat;  
+}
+
+.jcr_multiple16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-multiple.gif') no-repeat;  
+}
+
+.jcr_name16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-name.gif') no-repeat;  
+}
+
+.jcr_nodeTypeName16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-nodeTypeName.gif') no-repeat;  
+}
+
+.jcr_onParentVersion16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-onParentVersion.gif') no-repeat;  
+}
+
+.jcr_predecessors16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-predecessors.gif') no-repeat;  
+}
+
+.jcr_primaryItemName16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-primaryItemName.gif') no-repeat;  
+}
+
+.jcr_primaryType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-primaryType.gif') no-repeat;  
+}
+
+.jcr_propertyDefinition16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-propertyDefinition.gif') no-repeat;  
+}
+
+.jcr_protected16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-protected.gif') no-repeat;  
+}
+
+.jcr_requiredPrimaryTypes16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-requiredPrimaryTypes.gif') no-repeat;  
+}
+
+.jcr_requiredType16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-requiredType.gif') no-repeat;  
+}
+
+.jcr_rootVersion16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-rootVersion.gif') no-repeat;  
+}
+
+.jcr_sameNameSiblings16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-sameNameSiblings.gif') no-repeat;  
+}
+
+.jcr_statement16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-statement.gif') no-repeat;  
+}
+
+.jcr_successors16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-successors.gif') no-repeat;  
+}
+
+.jcr_supertypes16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-supertypes.gif') no-repeat;  
+}
+
+.jcr_uuid16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-uuid.gif') no-repeat;  
+}
+
+.jcr_valueConstraints16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-valueConstraints.gif') no-repeat;  
+}
+
+.jcr_versionableUuid16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-versionableUuid.gif') no-repeat;  
+}
+
+.jcr_versionHistory16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-versionHistory.gif') no-repeat;  
+}
+
+.jcr_versionLabels16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/properties/jcr-versionLabels.gif') no-repeat;  
+}
+
+/*############################## -- End UIPropertyTab Icon -- ########################*/
+
+.ExtendButton16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallSelect.gif') no-repeat;  
+}
+
+.Note16x16Icon{
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallNote.gif') no-repeat center;  
+}
+
+.RightArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallRightArrow.gif') no-repeat center;  
+}
+
+.DropDownArrow16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/DropDownArrow.gif') no-repeat;
+}
+
+.S2RightArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallBlackNext.gif') no-repeat center;  
+}
+
+.S2LeftArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallBlackBack.gif') no-repeat center;  
+}
+
+.S2RightGrayArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGrayNext.gif') no-repeat center;  
+}
+
+.S2LeftGrayArrow16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGrayBack.gif') no-repeat center;  
+}
+/**/
+.ScrollLeftBlackArrow16x16Icon {
+  width: 16px; height:16px;
+  background: url('DefaultSkin/S1DropLeftBlackArrow.gif') no-repeat;  
+}
+
+.ScrollRightBlackArrow16x16Icon {
+  width: 16px;height:16px;
+  background: url('DefaultSkin/S1DropRightBlackArrow.gif') no-repeat;  
+}
+
+.ScrollLeftGrayArrow16x16Icon {
+  width: 16px; height:16px;
+  background: url('DefaultSkin/S1DropLeftGrayArrow.gif') no-repeat;  
+}
+
+.ScrollRightGrayArrow16x16Icon {
+  width: 16px;height:16px;
+  background: url('DefaultSkin/S1DropRightGrayArrow.gif') no-repeat;  
+}
+
+.Documents16x16Icon {
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/Documents.gif') no-repeat ;
+}
+
+.CategoryArrow16x16Icon {
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/CategoryArrow.gif') no-repeat ;
+}
+
+.RedEmpty16x16Icon {
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/Empty.gif') no-repeat ;
+}

@@ -1,0 +1,145 @@
+<%
+  import java.text.SimpleDateFormat ;
+
+  def commentsList = uicomponent.getComments() ;
+  if(commentsList.size() > 0) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a. EEE, MMM d, yy") ;
+    def lastComment = commentsList.get(0) ;
+%>
+	  <style>
+			.Comments {}
+	    
+	    .Comments .CommentInfo {
+	    	font-style: italic;  
+	    	margin: 15px 5px 5px 5px;
+	    }
+	    
+	     .Comments .CommentInfo a {
+		    color: #0615a5;   	
+	    	font-weight: bold; font-style:normal ;
+	    	cursor:pointer;    	
+	    }
+	    
+	    .Comments .CommentInfo a:hover{    	
+	    	color: blue;
+	    	text-decoration:underline;    	     	
+	    }
+	    
+	    .Comments .CommentBox {
+		    margin: 0px 15px;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxTopLeft {
+	    	padding-left:27px;
+	    	height:12px ;    	
+	      background: url('/ecm/skin/images/article/CommentBoxTL27x12.gif') no-repeat left top;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxTopRight {
+	      height: 12px;
+	      padding-right: 3px;
+	      background: url('/ecm/skin/images/article/CommentBoxTR3x3.gif') no-repeat right bottom;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxTopCenter {
+	      height: 12px;
+	      background: url('/ecm/skin/images/article/CommentBoxTC1x3.gif') repeat-x bottom;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxMiddleLeft {
+	    	padding-left:3px;
+	      background: url('/ecm/skin/images/article/CommentBoxML3x1.gif') repeat-y left;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxMiddleRight {
+	    	padding-right:3px;
+	      background: url('/ecm/skin/images/article/CommentBoxMR3x1.gif') repeat-y right;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxCenterBG {
+	    	padding:10px; 
+	    	background:white;
+	    	height:auto ;     	         	    	
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxBottomLeft {
+	      height: 3px;
+	      padding-left: 3px;
+	      background: url('/ecm/skin/images/article/CommentBoxBL3x3.gif') no-repeat left ;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxBottomRight {
+	    	padding-right:3px;
+	    	height:3px;    	
+	      background: url('/ecm/skin/images/article/CommentBoxBR3x3.gif') no-repeat right top;
+	    }
+	    
+	    .Comments .CommentBox .CommentBoxBottomCenter {    	
+	    	height:3px;
+	      background: url('/ecm/skin/images/article/CommentBoxBC1x3.gif') repeat-x top;
+	    }
+		</style>
+    <div class="Comments">
+			<div class="DecoratorBox" style="width: 400px;">
+				<div class="GrayRoundedFillBoxStyle">
+				  <div class="TopLeftCornerBoxDecorator">
+				    <div class="TopRightCornerBoxDecorator">
+				      <div class="TopCenterBoxDecorator"><span></span></div>
+				    </div>
+				  </div>
+				  <div class="MiddleLeftSideBoxDecorator">
+				    <div class="MiddleRightSideBoxDecorator">
+				      <div class="CenterBoxDecorator" style="padding: 0px 15px;">
+				  			<div style="font: italic normal 12px Arial; padding: 3px;">
+				  			  Posted by <span style="color:#f7941e"><%=lastComment.getProperty("exo:commentor").getString()%></span> 
+				  			  at <%=dateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
+				  			</div>
+				  			<div style="color:#0489d5; font: normal bold 11px verdana; text-decoration: underline;">
+					  			<div style="float: left;"><%=commentsList.size()%> Comments</div>
+					  			<div style="float: right; cursor: pointer;" onclick="eXo.ecm.ECMUtils.showHideComponent('CommentsList')">showHideComment</div>
+					  			<div style="clear: both;"><span></span></div>
+					  	  </div>
+			        </div>
+			      </div>
+				  </div>
+					<div class="BottomLeftCornerBoxDecorator">
+						<div class="BottomRightCornerBoxDecorator">
+						  <div class="BottomCenterBoxDecorator"><span></span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="CommentsList" style="display: none;">
+			  <%for(comment in commentsList) {%>
+				  	<div class="CommentInfo">
+				  		Comment by
+				  		<span style="color: orange; font-weight: bold;"><%=comment.getProperty("exo:commentor").getString()%></span>
+				  		<%
+					  		if(comment.hasProperty("exo:commentorSite")) {
+					  		  String site = comment.getProperty("exo:commentorSite").getString() ;
+				  		%>
+				  			  (Site:<a href="$site">$site</a> ) - at
+				  		<%}%>
+				  		<%=dateFormat.format(comment.getProperty("exo:commentDate").getDate().getTime())%>
+				  	</div>
+				  	<div class="CommentBox">  		
+				  		<div class="CommentBoxTopLeft">
+				  			<div class="CommentBoxTopRight">
+				  				<div class="CommentBoxTopCenter"><span></span></div>
+				  			</div>
+				  		</div>
+				  		<div class="CommentBoxMiddleLeft">
+				  			<div class="CommentBoxMiddleRight">
+				  				<div class="CommentBoxCenterBG"><%=comment.getProperty("exo:commentContent").getString()%></div>
+				  			</div>
+				  		</div>
+				  		<div class="CommentBoxBottomLeft">
+				  			<div class="CommentBoxBottomRight">
+				  				<div class="CommentBoxBottomCenter"><span></span></div>
+				  			</div>
+				  		</div>
+				  	</div>
+				<%}%>
+			</div>
+    </div>
+<%}%>

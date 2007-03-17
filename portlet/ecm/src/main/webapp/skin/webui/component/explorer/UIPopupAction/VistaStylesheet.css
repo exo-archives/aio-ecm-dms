@@ -1,0 +1,272 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modifile : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * December 08, 2006
+ * version: $Id$
+ */
+
+
+.UIJCRExplorerPortlet .UIVersionInfo {
+  background-color: white;
+  border: solid 1px #bdbdbd;
+  padding: 7px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
+  float: left;
+  width: 16px; height: 16px;
+  margin: 7px 5px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
+  float: left;
+  width: 24px; height: 24px;
+  margin: 2px 3px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .HomeNode {
+  background-color: #eaedf6;
+  line-height: 30px; font-weight: bold;
+  padding: 0px 10px;
+  margin-bottom: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .Node {
+  line-height: 30px;
+  background-color: #eaedf6;
+  margin-bottom: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .NodeEven {
+  line-height: 30px;
+  background-color: #e4e7f3;
+  margin-bottom: 1px;
+}
+.UIJCRExplorerPortlet .UIVersionInfo .NoneIcon {
+  float: left;
+  width: 16px; height: 16px;  
+  margin: 7px 0px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .ExpandIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  cursor: pointer;
+  margin: 7px 0px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
+  float: left;
+  width: 16px; height: 16px;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  margin: 7px 0px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
+  float: right;
+}
+
+.UIJCRExplorerPortlet .ActionButton {
+  width: 90px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .ActionButton {
+  width: 85px;
+}
+/*############################## -- Begin UINodeTypeInfo -- ##############################*/
+.UIJCRExplorerPortlet .UINodeTypeInfo {
+  padding: 5px 0px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
+  float: left;
+  width: 16px; height: 16px;
+  margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
+  border: solid 1px #5f90ba;
+  background-color: #dee7f5;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer {
+  border: solid 1px #b7b7b7;
+  background-color: #ffffff;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
+}
+
+.UIJCRExplorerPortlet .UIGrid td {
+  border: solid 1px #acc6dc;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar {
+  width: 220px;
+  margin-top: 15px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
+  line-height: 21px;
+  background: url('DefaultSkin/background/InfoBarLeftBg5x21.gif') no-repeat left;
+  padding-left: 5px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar .GridTitleRightBar {
+  line-height: 21px;
+  background: url('DefaultSkin/background/InfoBarRightBg22x21.gif') no-repeat right;
+  padding-right: 21px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
+  line-height: 21px; vertical-align: middle;
+  background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
+  padding: 0px 10px;
+}
+/*############################## -- End UINodeTypeInfo -- ##############################*/
+/*############################## -- UIExport    -- ##############################*/
+.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode {
+	margin-left: 160px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode input {
+	float:left;
+  width: 20px ;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .ActionButton {
+  width:80px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .ActionButton {
+  width:80px;
+}
+
+/*############################## -- End UIExport   -- ##############################*/
+/*############################## -- UITreeJCRExplorer   -- ##############################*/
+.Explorer {
+  float: left ;
+  width: 230px ;
+  margin-bottom: 10px;
+}
+
+.Explorer .ExplorerTree {
+  background: #f3f3f3;
+  border: solid 1px #c6c6c9;
+  padding: 1px;
+  margin-top: 1px;
+}
+
+.Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.Explorer .ExplorerTree .Node {
+  line-height: 32px;
+}
+
+.Explorer .ExplorerTree .NodeLevel1 {
+  height: 30px; line-height: 30px;
+  padding-left: 15px;
+}
+
+.Explorer .ExplorerTree .NodeLevel2 {
+  height: 30px; line-height: 30px;
+  padding-left: 30px;
+}
+
+.Explorer .ExplorerTree .ExpandIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  cursor: pointer;
+  margin: 1px 0px;
+}
+
+.Explorer .ExplorerTree .ColapseIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  cursor: pointer;
+  margin: 3px 0px;
+}
+
+.Explorer .ExplorerTree .NodeIcon {
+  float: left;
+}
+
+.Explorer .ExplorerTree .NodeLabel {
+  float: left;
+  color: #01060d;
+  padding: 0px 10px;
+}
+
+.Explorer .ExplorerTree .NodeLabelSelected {
+  float: left;
+  color: #0848c1;
+  padding: 0px 10px;
+}
+
+.UITreeList .UIGrid {
+  width: 315px;
+  margin-left: 10px ;
+}
+
+.UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {
+  margin-left: 15px ;
+}
+
+.UIJCRExplorerPortlet .UIRelationsAddedList .DeleteIcon {
+  margin-left: 15px ;
+}
+
+/*############################## --End UITreeJCRExplorer   -- ##############################*/
+
+/*############################## -- UISearch   -- ##############################*/
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .ActionButton {
+  width: 80px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .ActionButton {
+  width: 80px;
+}
+/*############################## -- End UISearch   -- ##############################*/
+
+/*############################## -- UIActionManager   -- ##############################*/
+.UIJCRExplorerPortlet .UIActionContainer .ActionContainer {
+  width: 200px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .ActionButton {
+  width: 80px;
+}
+.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
+  width: 100px; 
+  margin: 20px auto 0px auto;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .ActionContainer{
+  width: 200px; 
+  margin:auto;
+}
+
+.UIJCRExplorerPortlet .UIMetadataTab .ActionContainer{
+  width: 200px; 
+  margin:auto;
+}
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent {
+  border: 1px solid gray;  
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
+  background: #f4f4f4;
+}
+
+/*############################## -- End UIActionManager   -- ##############################*/

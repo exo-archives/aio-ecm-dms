@@ -1,0 +1,142 @@
+/**
+ * Created by The eXo Platform SAS
+ * Author : Vu Duy Tu
+ *          duytucntt@gmail.com
+ * DEC 20, 2006
+ * version: $Id$
+ */
+
+.UISubContent {
+	padding: 0px 5px;
+}
+
+.UISubContent .SubContentHolder {
+	width: 99.5%;
+	padding: 5px;
+}
+
+.UISubContent .SubContentHolderLeft {
+  float: left;
+  width: 49%;
+}
+
+.UISubContent .SubContentHolderRight {
+  float: right;
+  width: 49%;
+}
+
+.UISubContent .TopSubContent {
+	padding: 10px 0px 0px 5px;
+  font-weight: bold;
+}
+
+.UISubContent .TopSubContent .NodeLabel{
+  font-weight: bold	; color: black;
+  padding-left: 5px;
+}
+
+/*###########################-- Begin Title --############################*/
+
+.UISubContent .SubContentTitle { 
+	height: 28px;
+	background: url('VistaSkin/background/TitleBackgroud1x28.gif') repeat-x;
+	border-left: solid 1px #bfbfbf; border-right: solid 1px #bfbfbf;
+	overflow: hidden;
+}
+
+.UISubContent .SubContentTitle .LeftIcon {
+	float: left; 
+	height: 24px;
+	margin: 1px 0px 0px 1px;
+}
+
+.UISubContent .SubContentTitle .ChildNode { 
+	float: left;
+	height: 20px;
+	border-right: solid 1px #6699cc ;
+}
+
+.UISubContent .SubContentTitle .ChildNode a { 
+	text-decoration: none; color: black;
+}
+
+.UISubContent .SubContentTitle .ChildNode a:hover { 
+	text-decoration: none; color: blue;
+}
+
+.UISubContent .SubContentTitle .NodeLabel { 
+	float: left;
+	line-height: 19px;
+	border-right: solid 1px #ffffff ;
+	padding: 0px 8px;
+}
+
+.UISubContent .SubContentTitle .RightIcon { 
+	float: right;
+	height: 24px;
+	margin: 1px 1px 0px 0px;
+}
+/*###########################-- End Title --############################*/
+
+.UISubContent .UIDocumentContentInfo {
+	background: #ffffff;
+	border: solid 1px #afafaf ;
+	margin-top: 1px;
+}
+
+.UISubContent .UIHorizontalTabs {
+	padding: 0px;
+}
+
+.UISubContent .ItemIcon {
+  float:left;
+}
+
+.UISubContent .UIDocumentContentInfo .DocumentInfo {
+	padding: 2px;
+}
+
+.UISubContent .UIDocumentContentInfo .DocumentIcon {
+	float:left;
+	margin: 2px;
+}
+
+.UISubContent .UIDocumentContentInfo .DocumentLabel {
+	color: blue; font-size: 11px; line-height: 16px;
+	margin-left: 20px;
+}
+
+.UISubContent .UIDocumentContentInfo .AuthorNameLabel {
+	color: black;	font-size: 11px; line-height: 20px;
+}
+
+.UISubContent .UIDocumentContentInfo .DateTimeLabel {
+	color: black; font-size: 11px; line-height: 20px;
+}
+
+.UISubContent .UIDocumentContentInfo .ViewMoreDocument {
+  text-align: right ;
+  margin-right: 10px;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage {
+	height: 54px;
+	background: #efefef;
+	margin: 10px;
+	padding-top: 25px;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .MessageContainer {
+	width: 50%;
+	margin: auto;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .InfoIcon {
+	float: left;
+	padding-left: 5px;
+	margin-top: 3px;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
+	color: black; font-size: 11px; line-height: 30px;
+}
