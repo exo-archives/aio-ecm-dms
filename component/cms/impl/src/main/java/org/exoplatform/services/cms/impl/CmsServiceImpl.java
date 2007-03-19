@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.SessionContainer;
+import org.exoplatform.container.client.ClientInfo;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -76,9 +77,8 @@ public class CmsServiceImpl implements CmsService {
       nodeName = idGeneratorService.generateStringID(nodeTypeName);
     }
     SessionContainer sessionContainer = SessionContainer.getInstance();
-    String owner = (sessionContainer != null) ?
-                   sessionContainer.getRemoteUser() :
-                   null;
+    ClientInfo clientInfo = (sessionContainer != null) ? sessionContainer.getClientInfo() : null; 
+    String owner = (clientInfo != null) ? clientInfo.getRemoteUser() : null;
     if(owner == null || owner.length() == 0) {
       owner = "Anonymous" ;
     }    
