@@ -278,6 +278,10 @@
   background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
 }
 
+.Switch24x24Icon {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
+}
 .ConfigPortlet24x24Icon {
   width: 24px;	height: 24px;
   background: url('DefaultSkin/HammerDataBox.gif') no-repeat ;

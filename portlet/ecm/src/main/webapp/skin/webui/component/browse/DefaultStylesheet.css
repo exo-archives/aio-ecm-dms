@@ -18,7 +18,7 @@
 }
 
 .UIBrowseContentPortlet .ActionButton {
- width:90px; /*FIX BUG IE*/
+ width:100px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {

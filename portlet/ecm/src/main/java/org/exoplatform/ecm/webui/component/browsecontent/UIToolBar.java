@@ -36,8 +36,9 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UIToolBar extends UIContainer {
-  private boolean isEnableTree_ ;
-  private boolean isEnablePath_ ;
+  private boolean isEnableTree_ = true ;
+  private boolean isEnablePath_ = true ;
+  private boolean isEnableSeach_ = false ;
 
   public UIToolBar()throws Exception {
     addChild(UICBSearchForm.class, null, null).setRendered(false) ;
@@ -58,6 +59,9 @@ public class UIToolBar extends UIContainer {
 
   public void setEnablePath(boolean enablePath) {isEnablePath_ = enablePath ;}
   public boolean enablePath() {return isEnablePath_ ;}
+  
+  public void setEnableSearch(boolean enableSearch) {isEnableSeach_ = enableSearch ;}
+  public boolean enableSearch() {return isEnableSeach_ ;}
 
   public void setEnableTree(boolean enableTree) {isEnableTree_ = enableTree ;} 
   public boolean enableTree() {return isEnableTree_ ;}

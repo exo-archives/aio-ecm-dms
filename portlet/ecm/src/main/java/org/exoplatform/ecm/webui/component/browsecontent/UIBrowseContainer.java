@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
@@ -50,11 +52,13 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 14, 2006 5:15:47 PM
  */
 @ComponentConfig(
+   //template = "app:/groovy/webui/component/browse/test.gtmpl",
     events = {
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.ViewByTagActionListener.class),
-        @EventConfig(listeners = UIBrowseContainer.CloseActionListener.class)
+        @EventConfig(listeners = UIBrowseContainer.CloseActionListener.class),
+        @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
     }
 )
 public class UIBrowseContainer extends UIContainer {
@@ -103,21 +107,29 @@ public class UIBrowseContainer extends UIContainer {
     if(templateType.equals(Utils.CB_USE_FROM_PATH)) {
       currentNode_ = null ;
       selectedTab_ = null ;
-      if(isEnableToolBar()) initToolBar(false, true) ;
+      if(isEnableToolBar()) initToolBar(false, true, true) ;
+      else initToolBar(false, false, false) ;
       templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_PATH_TEMPLATES) + Utils.SLASH + templateName  ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
-    }
+      if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+        if(isEnableToolBar()) initToolBar(true, false, true) ;
+        setTreeRoot(getRootNode()) ;
+        buildTree(getRootNode().getPath()) ;
+      }
+    } 
     if(templateType.equals(Utils.CB_USE_DOCUMENT)) {
       Node documentNode = getNodeByPath(categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "")) ;
       initDocumentDetail(documentNode) ;
-      if(isEnableToolBar()) initToolBar(false, false) ;
+      if(isEnableToolBar()) initToolBar(false, false, false) ;
       templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES) + Utils.SLASH + templateName  ;
-    }
+    } 
     if(templateType.equals(Utils.CB_USE_JCR_QUERY)) {
+      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       setPageIterator(getNodeByQuery()) ;
       templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_QUERY_TEMPLATES) + Utils.SLASH  + templateName  ;
-    }
-    if(templateType.equals(Utils.CB_USE_SCRIPT)) {
+    } 
+    if(templateType.equals(Utils.CB_USE_SCRIPT)) { 
+      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_SCRIPT_TEMPLATES) + Utils.SLASH  + templateName  ;
     }
   }
@@ -236,10 +248,11 @@ public class UIBrowseContainer extends UIContainer {
     return false ;
   }
 
-  public void initToolBar(boolean showTree, boolean showPath) throws Exception {
+  public void initToolBar(boolean showTree, boolean showPath,boolean showSearch) throws Exception {
     UIToolBar toolBar = getChild(UIToolBar.class) ;
     toolBar.setEnableTree(showTree) ;
     toolBar.setEnablePath(showPath) ;
+    toolBar.setEnableSearch(showSearch) ;
     toolBar.setRendered(true) ;
     toolBar.getChild(UICBSearchForm.class).setRendered(false) ;
     toolBar.getChild(UICBSearchResults.class).setRendered(false) ;
@@ -298,28 +311,66 @@ public class UIBrowseContainer extends UIContainer {
     DataTransfer data = new DataTransfer() ;
     ScriptService scriptService = (ScriptService)PortalContainer.getComponent(ScriptService.class) ;
     data.setWorkspace(array[0].trim()) ;
-    //TODO:   FIX  THIS
-    //data.setSession(getSession()) ;
+    data.setSession(getSession()) ;
     Node scripts = scriptService.getCBScriptHome() ;
-    System.out.println("scripts.getName() ====== " + scripts.getName()+"/"+array[1].trim()) ;
     CmsScript cmsScript = scriptService.getScript(scripts.getName()+"/"+array[1].trim()) ;
     cmsScript.execute(data);
     return data.getContentList() ;
   }
-
-  //TODO for template 1
-  /*public void buildTree(String path) throws Exception {
+  
+  public Map getContent() throws Exception {
+    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    List templates = templateService.getDocumentTemplates() ;
+    List<String> subCategoryList = new ArrayList<String>() ;
+    List<Node> subDocumentList = new ArrayList<Node>() ;
+    Map content = new HashMap() ;
+    NodeIterator childIter = getCurrentNode().getNodes() ;
+    boolean isShowDocument = isEnableChildDocument() ;
+    boolean isShowReferenced = isEnableRefDocument() ;
+    int itemCounter = getRowPerBlock() ;
+    if(isShowAllDocument()) itemCounter = getItemPerPage();
+    while(childIter.hasNext()) {
+      Node child = childIter.nextNode() ;
+      if(templates.contains(child.getPrimaryNodeType().getName())) {
+        subDocumentList.add(child) ;
+      } else {
+        if(isCategories(child.getPrimaryNodeType())) {
+          Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates) ;
+          content.put(child.getName(), childOfSubCategory) ;
+          subCategoryList.add(child.getPath()) ;
+        }
+      }
+    }
+    content.put("subCategoryList", subCategoryList) ;
+    content.put("subDocumentList", subDocumentList) ;
+    return content ;
+  }
+  
+  public List<Node> getChildrenList(Node node, List filter) throws Exception{
+    List<Node> nodes = new ArrayList<Node>() ;
+    NodeIterator item = node.getNodes() ;
+    while(item.hasNext()) {
+      Node child = item.nextNode() ;
+      if(!filter.contains(child.getPrimaryNodeType().getName())) nodes.add(child) ;
+    }
+    return nodes ;
+  }
+  public void buildTree(String path) throws Exception {
+    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
+    List filter = templateService.getDocumentTemplates() ;
     treeRoot_.getChildren().clear() ;
     String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
     TreeNode temp = treeRoot_ ;
     for(String nodeName : arr) {
-      if(nodeName.equals("")) continue ;
-      temp.setChildren(getNoneDocumentNode(temp.getNode())) ;
+      if(nodeName.length() == 0) continue ;
+      temp.setChildren(getChildrenList(temp.getNode(), filter)) ;
       temp = temp.getChild(nodeName) ;
       if(temp == null) return ;
     }
-    temp.setChildren(getNoneDocumentNode(temp.getNode())) ;
-  }*/
+    temp.setChildren(getChildrenList(temp.getNode(), filter)) ;
+  }
+  
   @SuppressWarnings("unchecked")
   public Map getPathContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
@@ -562,4 +613,15 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getSelectedTab())) ;
     }
   }
+  
+  static public class SelectActionListener extends EventListener<UIBrowseContainer> {
+    public void execute(Event<UIBrowseContainer> event) throws Exception {
+      UIBrowseContainer uiContainer = event.getSource() ;
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      Node node = uiContainer.getNodeByPath(path) ;
+      uiContainer.setCurrentNode(node) ;
+      uiContainer.buildTree(path) ;
+    }
+  }
+
 }

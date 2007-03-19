@@ -13,19 +13,21 @@
   Boolean isEnableTree =  uicomponent.enableTree() ;
   Boolean isEnableVote =  uicomponent.enableVote() ;
   Boolean isEnableComment =  uicomponent.enableComment() ;
+  Boolean isEnableSearch = uicomponent.enableSearch() ;
 %>
 <div class="UIToolBar" id="$uicomponent.id">
   <div class="LeftToolBar">
     <%if(isEnableTree) {%>
-      <div class="SeparatorBarLeft Separator"><span></span></div>
+    <div class="SeparatorBarLeft Separator"><span></span></div>      
       <%
         String iconName = "GreenRightArrow24x24Icon" 
         if (uicomponent.isShowCategoryTree()) iconName = "GreenLeftArrow24x24Icon" ;
-      %>
+      %>      
       <a  href="$actionShowHidden" title="Show Hidden Tree">
-      <div class="BlueBarIcon $iconName"><span></span></div>
+        <div class="BlueBarIcon $iconName"><span></span></div>
       </a>
     <%}%>
+    <div class="SeparatorBarLeft Separator"><span></span></div>
     <%if(isEnablePath) {%>
       <div class="SeparatorBarLeft Separator"><span></span></div>
       <div class="ImageNote Note16x16Icon"><span></span></div>
@@ -45,12 +47,13 @@
     <%
       String actionLabel = "" ;
       String link = "" ;
-      actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Search") 
-      link = uicomponent.event("Search") ;
+      if(isEnableSearch) {
+	      actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Search") 
+	      link = uicomponent.event("Search") ;
      %>
-      <a class="Icon SearchIcon" href="$link" title="$actionLabel"><span></span></a>      
-      <div class="Separator ToolBarSeparator"><span></span></div>
-      <%
+	      <a class="Icon SearchIcon" href="$link" title="$actionLabel"><span></span></a>      
+	      <div class="Separator ToolBarSeparator"><span></span></div>
+      <%}
         if(isEnableVote) {
           actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Vote") 
           link = uicomponent.event("Vote") ;

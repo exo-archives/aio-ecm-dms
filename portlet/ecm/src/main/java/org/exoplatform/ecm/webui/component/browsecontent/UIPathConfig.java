@@ -25,6 +25,7 @@ import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -42,13 +43,11 @@ import org.exoplatform.webui.event.Event.Phase;
     template =  "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
     events = {
       @EventConfig(listeners = UIPathConfig.SaveActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.ChangeTemplateOptionActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.ResetActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.EditActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.CloseActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.AddActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.AddPathActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.CancelActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.CancelActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.BackActionListener.class)
     }
 )
 public class UIPathConfig extends UIForm implements UISelector{
@@ -57,7 +56,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
-    categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
+    categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)
+                                                            .addValidator(EmptyFieldValidator.class)) ;
     addUIComponentInput(categoryPathSelect) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEREFDOC, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECHILDDOC, null, null)) ;
@@ -66,7 +66,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETOOLBAR, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)
+                                   .addValidator(EmptyFieldValidator.class)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
@@ -86,6 +87,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     String hasComment = "true" ;
     String hasVote = "true" ;
     String itemPerPage = "20" ;
+    String template = preference.getValue(Utils.CB_TEMPLATE, "") ;
     try {
       Integer.parseInt(preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
@@ -113,6 +115,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     templateField.setOptions(getTemplateOption()) ;
+    templateField.setValue(template) ;
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
@@ -210,6 +213,13 @@ public class UIPathConfig extends UIForm implements UISelector{
       }
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
       String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+      try{
+        Integer.parseInt(itemPerPage) ;
+      } catch(Exception e){
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
+        return ;
+      }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasChildDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECHILDDOC).isChecked() ;
       boolean hasRefDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEREFDOC).isChecked() ;
@@ -240,24 +250,6 @@ public class UIPathConfig extends UIForm implements UISelector{
     }
   }  
 
-  @SuppressWarnings("unused")
-  public static class ChangeTemplateOptionActionListener extends EventListener<UIPathConfig>{
-    public void execute(Event<UIPathConfig> event) throws Exception {
-    }
-  }  
-
-  public static class ResetActionListener extends EventListener<UIPathConfig>{
-    public void execute(Event<UIPathConfig> event) throws Exception {
-      UIPathConfig uiForm = event.getSource() ;
-      List<UIComponent>  fields = uiForm.getChildren() ;
-      for (int i = 2; i < fields.size(); i++ ) {
-        UIFormInput child = (UIFormInput)fields.get(i) ;
-        if(child instanceof UIFormCheckBoxInput) {((UIFormCheckBoxInput)child).setChecked(false) ;}
-        child.reset() ;
-      }
-    }
-  }  
-
   public static class AddActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
@@ -265,21 +257,18 @@ public class UIPathConfig extends UIForm implements UISelector{
       uiConfigTabPane.createNewConfig();
     }
   }
-
   public static class CancelActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.getCurrentConfig() ;
     }
   }
-  public static class CloseActionListener extends EventListener<UIPathConfig>{
+  public static class BackActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
-      UIBrowseContentPortlet uiBrowseContentPortlet = 
-        uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      uiBrowseContentPortlet.removeChild(UIConfigTabPane.class) ;
-      uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setRendered(true) ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.createNewConfig();
     }
   }
   public static class EditActionListener extends EventListener<UIPathConfig>{

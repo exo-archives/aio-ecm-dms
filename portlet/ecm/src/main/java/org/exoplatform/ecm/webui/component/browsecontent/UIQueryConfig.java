@@ -19,15 +19,14 @@ import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
-import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
-import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -48,11 +47,10 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.ChangeLangActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.ChangeStatusActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.ChangeTypeActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.ResetActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.EditActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.CloseActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.AddActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.CancelActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.CancelActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.BackActionListener.class)
     }
 )
 public class UIQueryConfig extends UIForm {
@@ -74,7 +72,8 @@ public class UIQueryConfig extends UIForm {
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE, null, Options).setRendered(false)) ;
     addChild(new UIFormTextAreaInput(UINewConfigForm.FIELD_QUERY, null, null)) ;    
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE, null, Options)) ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)
+                                   .addValidator(EmptyFieldValidator.class)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETAGMAP, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
@@ -371,16 +370,6 @@ public class UIQueryConfig extends UIForm {
       uiForm.setQueryValue(queryValue, queryLang, queryType) ;
     }
   }
-  public static class ResetActionListener extends EventListener<UIQueryConfig>{
-    public void execute(Event<UIQueryConfig> event) throws Exception {
-      UIQueryConfig uiForm = event.getSource() ;
-      List<UIComponent>  fields = uiForm.getChildren() ;
-      for (int i = 2; i < fields.size(); i++ ) {
-        UIFormInput child = (UIFormInput)fields.get(i) ;
-        child.reset() ;
-      }
-    }
-  }  
 
   public static class AddActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
@@ -394,16 +383,14 @@ public class UIQueryConfig extends UIForm {
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig() ;
+      uiConfigTabPane.getCurrentConfig() ;
     }
   }
-  public static class CloseActionListener extends EventListener<UIQueryConfig>{
+  public static class BackActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
-      UIBrowseContentPortlet uiBrowseContentPortlet = 
-        uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      uiBrowseContentPortlet.removeChild(UIConfigTabPane.class) ;
-      uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setRendered(true) ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.createNewConfig() ;
     }
   }
   public static class EditActionListener extends EventListener<UIQueryConfig>{

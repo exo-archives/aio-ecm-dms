@@ -6,21 +6,22 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.portlet.PortletPreferences;
+
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.webui.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
-import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
-import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -39,26 +40,27 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(listeners = UIDocumentConfig.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.ChangeTemplateOptionActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.ResetActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.EditActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.CloseActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.AddActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.AddPathActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.DocSelectActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.CancelActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.CancelActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.BackActionListener.class)
     }
 )
 public class UIDocumentConfig extends UIForm implements UISelector{
   final static public String FIELD_PATHSELECT = "path" ;
   final static public String FIELD_DOCSELECT = "doc" ;
-  public UIDocumentConfig() {
+  public UIDocumentConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;    
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
-    categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
+    categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)
+                                                           .addValidator(EmptyFieldValidator.class)) ;
     addUIComponentInput(categoryPathSelect) ;
     UIFormInputSetWithAction documentSelect = new UIFormInputSetWithAction(FIELD_DOCSELECT) ;
-    documentSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_DOCNAME, UINewConfigForm.FIELD_DOCNAME, null)) ;
+    documentSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_DOCNAME, UINewConfigForm.FIELD_DOCNAME, null)
+                                                        .addValidator(EmptyFieldValidator.class)) ;
     addUIComponentInput(documentSelect) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, UINewConfigForm.FIELD_DETAILBOXTEMP, Options)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
@@ -173,11 +175,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction documentSelect = uiForm.getChildById(FIELD_DOCSELECT) ;
       UIFormStringInput documentField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
       String docName = documentField.getValue() ;
-      if((docName == null)||(docName.trim().length() == 0)) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-name", null)) ;
-        return ;
-      }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;
@@ -204,14 +201,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     }
   }  
 
-  public static class ResetActionListener extends EventListener<UIDocumentConfig>{
-    public void execute(Event<UIDocumentConfig> event) throws Exception {
-      UIDocumentConfig uiForm = event.getSource() ;
-      List<UIComponent>  fields = uiForm.getChildren() ;
-      for (int i = 2; i < fields.size(); i++ ) {((UIFormInput)fields.get(i)).reset() ;}
-    }
-  }  
-
   public static class AddActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
@@ -219,23 +208,19 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       uiConfigTabPane.createNewConfig() ;
     }
   }
-
+  
   public static class CancelActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig() ;
+      uiConfigTabPane.getCurrentConfig() ;
     }
   }
-  public static class CloseActionListener extends EventListener<UIDocumentConfig>{
+  public static class BackActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
-      UIBrowseContentPortlet uiBrowseContentPortlet = 
-        uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      uiBrowseContentPortlet.removeChild(UIConfigTabPane.class) ;
-      UIBrowseContainer uiContainer = uiBrowseContentPortlet.getChild(UIBrowseContainer.class) ;
-      uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
-      uiContainer.setRendered(true) ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.createNewConfig() ;
     }
   }
   public static class EditActionListener extends EventListener<UIDocumentConfig>{

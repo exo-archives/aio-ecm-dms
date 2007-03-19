@@ -7,10 +7,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jcr.nodetype.NodeType;
-
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -32,8 +29,8 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     template =  "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
     events = {
-      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.NextActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.CloseActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.BackActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.NextActionListener.class)
     }
 )
 
@@ -57,14 +54,13 @@ public class UINewConfigForm extends UIForm {
   final static public String FIELD_ENABLECOMMENT = "enableComment" ;
   final static public String FIELD_ENABLEVOTE = "enableVote" ;
   final static public String FIELD_QUERY = "query" ;
-  final static public String[] DEFAULT_ACTION = new String[]{"Edit", "Add", "Close"} ;
+  final static public String[] DEFAULT_ACTION = new String[]{"Edit", "Add"} ;
   final static public String[] NORMAL_ACTION = new String[]{"Save", "Cancel"} ;
-  final static public String[] ADD_NEW_ACTION = new String[]{"Save", "Reset", "Cancel"} ;
+  final static public String[] ADD_NEW_ACTION = new String[]{"Back", "Save"} ;
   
   public UINewConfigForm() throws Exception {
     addChild(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, getWorkSpaceOption())) ;
     addChild( new UIFormSelectBox(FIELD_BROWSETYPE, FIELD_BROWSETYPE, getBrowseTypeOption())) ;
-    setActions(new String[] {"Next", "Close"}) ;
   }
 
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
@@ -85,25 +81,11 @@ public class UINewConfigForm extends UIForm {
     return options ;
   }
 
-  @SuppressWarnings("unchecked")
-  public boolean isDocument(NodeType nodeType) throws Exception{
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;    
-    List<String> listDocumentNodeType = templateService.getDocumentTemplates() ;
-    String name = nodeType.getName() ;
-    for(String documentType:listDocumentNodeType) {
-      if(documentType.equals(name)) return true ;
-    }
-    return false ;
-  }
- 
-  public static class CloseActionListener extends EventListener<UINewConfigForm>{
+  public static class BackActionListener extends EventListener<UINewConfigForm>{
     public void execute(Event<UINewConfigForm> event) throws Exception {
       UINewConfigForm uiForm = event.getSource() ;
-      UIBrowseContentPortlet uiBrowseContentPortlet = 
-        uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      uiBrowseContentPortlet.removeChild(UIConfigTabPane.class) ;
-      UIBrowseContainer uiContainer  = uiBrowseContentPortlet.getChild(UIBrowseContainer.class) ;
-      uiContainer.setRendered(true) ; 
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.getCurrentConfig() ;
     }
   }  
 

@@ -15,10 +15,8 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
-import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
@@ -39,11 +37,10 @@ import org.exoplatform.webui.event.Event.Phase;
     template =  "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
     events = {
       @EventConfig(listeners = UIScriptConfig.SaveActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.ResetActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.EditActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.CloseActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.AddActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.CancelActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.CancelActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIScriptConfig.BackActionListener.class)
     }
 )
 public class UIScriptConfig extends UIForm {
@@ -173,17 +170,6 @@ public class UIScriptConfig extends UIForm {
     }
   }  
 
-  public static class ResetActionListener extends EventListener<UIScriptConfig>{
-    public void execute(Event<UIScriptConfig> event) throws Exception {
-      UIScriptConfig uiForm = event.getSource() ;
-      List<UIComponent>  fields = uiForm.getChildren() ;
-      for (int i = 2; i < fields.size(); i++ ) {
-        UIFormInput child = (UIFormInput)fields.get(i) ;
-        child.reset() ;
-      }
-    }
-  }  
-
   public static class AddActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
@@ -191,21 +177,18 @@ public class UIScriptConfig extends UIForm {
       uiConfigTabPane.createNewConfig();
     }
   }
-
   public static class CancelActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.getCurrentConfig() ;
     }
   }
-  public static class CloseActionListener extends EventListener<UIScriptConfig>{
+  public static class BackActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
-      UIBrowseContentPortlet uiBrowseContentPortlet = 
-        uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      uiBrowseContentPortlet.removeChild(UIConfigTabPane.class) ;
-      uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setRendered(true) ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.createNewConfig();
     }
   }
   public static class EditActionListener extends EventListener<UIScriptConfig>{

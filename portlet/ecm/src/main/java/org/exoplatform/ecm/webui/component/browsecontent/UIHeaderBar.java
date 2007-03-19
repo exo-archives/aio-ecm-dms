@@ -18,20 +18,14 @@ import org.exoplatform.webui.event.EventListener;
  */
 @ComponentConfig(
     template =  "app:/groovy/webui/component/browse/UIHeaderBar.gtmpl",
-    events = {
-        @EventConfig(listeners = UIHeaderBar.AddNewConfigActionListener.class),
-        @EventConfig(listeners = UIHeaderBar.ViewPortletActionListener.class),
-        @EventConfig(listeners = UIHeaderBar.ConfigPortletActionListener.class)
-    }
+    events = {@EventConfig(listeners = UIHeaderBar.SwitchActionListener.class)}
 )
 
 public class UIHeaderBar extends UIContainer {
-  private static String[] actions_ = {"ViewPortlet", "ConfigPortlet", "AddNewConfig"};
-
-  public UIHeaderBar()throws Exception {}
-
+  private static String[] actions_ = {"Switch"};
+  public UIHeaderBar(){}
+  
   public String[] getActions() { return actions_ ;}
-
   public void setActions(String[] actions) { actions_ = actions ;}
 
   static public class ViewPortletActionListener extends EventListener<UIHeaderBar> {
@@ -73,6 +67,27 @@ public class UIHeaderBar extends UIContainer {
       uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setRendered(false) ;
       uiTabPane.setRendered(true) ;
       uiTabPane.getCurrentConfig() ;
+    }
+  }
+  
+  static public class SwitchActionListener extends EventListener<UIHeaderBar> {
+    public void execute(Event<UIHeaderBar> event) throws Exception {
+      UIHeaderBar uiHeaderBar = event.getSource() ;
+      UIBrowseContentPortlet uiBrowseContentPortlet = 
+        uiHeaderBar.getAncestorOfType(UIBrowseContentPortlet.class) ;
+      UIConfigTabPane uiTabPane = uiBrowseContentPortlet.getChild(UIConfigTabPane.class) ;
+      UIBrowseContainer uiContainer = uiBrowseContentPortlet.getChild(UIBrowseContainer.class) ;
+      if (uiTabPane == null){
+        uiTabPane = uiBrowseContentPortlet.addChild(UIConfigTabPane.class, null, null) ;
+      }
+      if(uiTabPane.isRendered()) { 
+        uiTabPane.setRendered(false) ;
+        uiContainer.setRendered(true) ;
+      } else {
+        uiTabPane.setRendered(true) ;
+        uiContainer.setRendered(false) ;
+        uiTabPane.getCurrentConfig() ;
+      }
     }
   }
 
