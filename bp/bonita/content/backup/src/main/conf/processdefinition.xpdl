@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="content-backup" Name="content-backup">
+  <PackageHeader >
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Together</Vendor>
+    <Created>22 mars 2006 08:17:57</Created>
+    <Description>Create a document and publish it</Description>
+  </PackageHeader>
+  <RedefinableHeader  PublicationStatus="RELEASED">
+    <Author>Brice Revenant</Author>
+  </RedefinableHeader>
+  <ConformanceClass >NON_BLOCKED</ConformanceClass>
+  <WorkflowProcesses >
+    <WorkflowProcess AccessLevel="PUBLIC" Name="content-backup" Id="content-backup">
+      <DataFields>
+        <DataField Id="srcWorkspace" Name="srcWorkspace">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Name of the Workspace containing the draft document</Description>
+        </DataField>
+        <DataField Id="initiator" Name="initiator">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Name of the user who created the document</Description>
+        </DataField>
+        <DataField Id="srcPath" Name="srcPath">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Location of the Action in the source Workspace</Description>
+        </DataField>
+        <DataField Id="document-type" Name="document-type">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Type of the document</Description>
+        </DataField>
+        <DataField Id="nodePath" Name="nodePath">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Location of the document in the draft Workspace</Description>
+        </DataField>
+        <DataField Id="actionName" Name="actionName">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Name of the action that has been triggered</Description>
+        </DataField>
+        <DataField Id="wait" Name="wait">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="backup" />
+              <EnumerationValue Name="wait" />
+              <EnumerationValue Name="end" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>backup</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="initiator" Name="initiator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="hero.mapper.InitiatorRoleMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="SYSTEM" Name="SYSTEM">
+          <ParticipantType Type="SYSTEM" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="validator" Name="validator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="hero.mapper.ValidatorRoleMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="411" />
+            <ExtendedAttribute Name="YOffset" Value="333" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="start" Name="start">
+          <Description>Activity triggered automatically when the Process is instantiated</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="274" />
+            <ExtendedAttribute Name="YOffset" Value="84" />
+            <ExtendedAttribute Name="hook" Value="hero.hook.ContentBackupCreatePropertiesHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+            
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="wait" Name="wait">
+          <Deadline Execution="ASYNCHR">
+            <DeadlineCondition>0</DeadlineCondition>
+            <ExceptionName>hero.hook.ContentBackupOnDeadlineHook</ExceptionName>
+          </Deadline>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="273" />
+            <ExtendedAttribute Name="YOffset" Value="247" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="wait switch" Name="wait switch">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="276" />
+            <ExtendedAttribute Name="YOffset" Value="173" />
+            <ExtendedAttribute Name="property" Value="wait">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="hook" Value="hero.hook.ContentBackupWaitSwitchHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="backup" Name="backup">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="160" />
+            <ExtendedAttribute Name="YOffset" Value="294" />
+            <ExtendedAttribute Name="hook" Value="hero.hook.ContentBackupBackupHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="wait switch_backup" Name="wait switch_backup" From="wait switch" To="backup">
+          <Condition Type="CONDITION">wait.equals("backup")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="start_wait switch" Name="start_wait switch" From="start" To="wait switch">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="290.0-105.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="86.5-236.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="wait_backup" Name="wait_backup" From="wait" To="backup">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="backup_BonitaEnd" Name="backup_BonitaEnd" From="backup" To="BonitaEnd">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="wait switch_BonitaEnd" Name="wait switch_BonitaEnd" From="wait switch" To="BonitaEnd">
+          <Condition Type="CONDITION">wait.equals("end")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="wait switch_wait" Name="wait switch_wait" From="wait switch" To="wait">
+          <Condition Type="CONDITION">wait.equals("wait")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes >
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

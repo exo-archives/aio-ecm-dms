@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="content-validation" Name="content-validation">
+  <PackageHeader >
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Together</Vendor>
+    <Created>21 mars 2006 07:42:47</Created>
+    <Description>Create a document and publish it</Description>
+  </PackageHeader>
+  <RedefinableHeader  PublicationStatus="RELEASED">
+    <Author>Brice Revenant</Author>
+  </RedefinableHeader>
+  <ConformanceClass >NON_BLOCKED</ConformanceClass>
+  <WorkflowProcesses >
+    <WorkflowProcess AccessLevel="PUBLIC" Name="content-validation" Id="content-validation">
+      <DataFields>
+        <DataField Id="exo:validator" Name="exo:validator">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Membership and Group of the users who validate the document.</Description>
+        </DataField>
+        <DataField Id="srcWorkspace" Name="srcWorkspace">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Name of the Workspace containing the draft document</Description>
+        </DataField>
+        <DataField Id="initiator" Name="initiator">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Name of the user who created the document</Description>
+        </DataField>
+        <DataField Id="srcPath" Name="srcPath">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Location of the Action in the source Workspace</Description>
+        </DataField>
+        <DataField Id="document-type" Name="document-type">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Type of the document</Description>
+        </DataField>
+        <DataField Id="nodePath" Name="nodePath">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Location of the document in the draft Workspace</Description>
+        </DataField>
+        <DataField Id="document-id" Name="document-id">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Used by Node JSF components</Description>
+        </DataField>
+        <DataField Id="actionName" Name="actionName">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Name of the action that has been triggered</Description>
+        </DataField>
+        <DataField Id="decision" Name="decision">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="Approve" />
+              <EnumerationValue Name="Disapprove" />
+              <EnumerationValue Name="Refuse" />
+              <EnumerationValue Name="Delegate" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>Approve</InitialValue>
+          <Description>Contains the decision taken by the validator</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="startDate" Name="startDate">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Date when the document is to be published</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="endDate" Name="endDate">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>Date when the document is to be unpublished</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="delegate" Name="delegate">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="wait" Name="wait">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="true" />
+              <EnumerationValue Name="false" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>false</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="changedecision" Name="changedecision">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="Cancel" />
+              <EnumerationValue Name="Modify" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>Cancel</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="validator" Name="validator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="hero.mapper.ContentValidationValidatorRoleMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="SYSTEM" Name="SYSTEM">
+          <ParticipantType Type="SYSTEM" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="initiator" Name="initiator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="hero.mapper.ContentValidationInitiatorRoleMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="evaluation" Name="evaluation">
+          <Description>Evaluate a document</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>validator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="255" />
+            <ExtendedAttribute Name="YOffset" Value="144" />
+            <ExtendedAttribute Name="property" Value="decision">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="startDate">
+              <Propagated>Yes</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="endDate">
+              <Propagated>Yes</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="delegate">
+              <Propagated>Yes</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="start" Name="start">
+          <Description>Activity triggered automatically when the Process is instantiated</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="250" />
+            <ExtendedAttribute Name="YOffset" Value="90" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="wait" Name="wait">
+          <Deadline Execution="ASYNCHR">
+            <DeadlineCondition>0</DeadlineCondition>
+            <ExceptionName>hero.hook.ContentValidationOnDeadlineHook</ExceptionName>
+          </Deadline>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="135" />
+            <ExtendedAttribute Name="YOffset" Value="277" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="publication" Name="publication">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="22" />
+            <ExtendedAttribute Name="YOffset" Value="312" />
+            <ExtendedAttribute Name="hook" Value="hero.hook.ContentValidationPublicationHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="delegate" Name="delegate">
+          <Description>To be removed</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="463" />
+            <ExtendedAttribute Name="YOffset" Value="229" />
+            <ExtendedAttribute Name="hook" Value="hero.hook.ContentValidationDelegateHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="351" />
+            <ExtendedAttribute Name="YOffset" Value="369" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="change request" Name="change request">
+          <Description>Modify the document</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>initiator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="209" />
+            <ExtendedAttribute Name="YOffset" Value="235" />
+            <ExtendedAttribute Name="property" Value="changedecision">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="Iteration" Value="changedecision.equals(&quot;Modify&quot;)">
+              <To>evaluation</To>
+              <ExtendedAttributes>
+                <ExtendedAttribute Name="BreakPoint" Value="258.0-250.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="238.0-201.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="290.0-159.0" />
+              </ExtendedAttributes>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="wait switch" Name="wait switch">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="48" />
+            <ExtendedAttribute Name="YOffset" Value="221" />
+            <ExtendedAttribute Name="property" Value="wait">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="hook" Value="hero.hook.ContentValidationWaitSwitchHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="publication_BonitaEnd" Name="publication_BonitaEnd" From="publication" To="BonitaEnd">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="wait switch_wait" Name="wait switch_wait" From="wait switch" To="wait">
+          <Condition Type="CONDITION">wait.equals("true")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="evaluation_change request" Name="evaluation_change request" From="evaluation" To="change request">
+          <Condition Type="CONDITION">decision.equals("Disapprove")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="evaluation_wait switch" Name="evaluation_wait switch" From="evaluation" To="wait switch">
+          <Condition Type="CONDITION">decision.equals("Approve")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="evaluation_BonitaEnd" Name="evaluation_BonitaEnd" From="evaluation" To="BonitaEnd">
+          <Condition Type="CONDITION">decision.equals("Refuse")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="290.0-159.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="293.0-389.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="change request_BonitaEnd" Name="change request_BonitaEnd" From="change request" To="BonitaEnd">
+          <Condition Type="CONDITION">changedecision.equals("Cancel")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="start_evaluation" Name="start_evaluation" From="start" To="evaluation">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="evaluation_delegate" Name="evaluation_delegate" From="evaluation" To="delegate">
+          <Condition Type="CONDITION">decision.equals("Delegate")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="wait_publication" Name="wait_publication" From="wait" To="publication">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="wait switch_publication" Name="wait switch_publication" From="wait switch" To="publication">
+          <Condition Type="CONDITION">wait.equals("false")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="delegate_BonitaEnd" Name="delegate_BonitaEnd" From="delegate" To="BonitaEnd">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="0.0-6.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="20.0-6.0" />
+          </ExtendedAttributes>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes >
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+
