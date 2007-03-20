@@ -64,6 +64,12 @@
       <artifactId>exo.ecm.component.workflow.impl.jbpm.engine</artifactId>
       <version>3.0</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.component.web</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
