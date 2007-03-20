@@ -76,13 +76,15 @@ public class CmsServiceImpl implements CmsService {
     if (nodeName == null || nodeName.length() == 0) {
       nodeName = idGeneratorService.generateStringID(nodeTypeName);
     }
-    SessionContainer sessionContainer = SessionContainer.getInstance();
+    /*SessionContainer sessionContainer = SessionContainer.getInstance();
     ClientInfo clientInfo = (sessionContainer != null) ? sessionContainer.getClientInfo() : null; 
     String owner = (clientInfo != null) ? clientInfo.getRemoteUser() : null;
     if(owner == null || owner.length() == 0) {
       owner = "Anonymous" ;
-    }    
+    }    */
     Session session = storeHomeNode.getSession();
+    String owner = session.getUserID() ;
+    System.out.println("owner == " + owner) ;
     NodeTypeManager nodetypeManager = session.getWorkspace()
         .getNodeTypeManager();
     NodeType nodeType = nodetypeManager.getNodeType(nodeTypeName);

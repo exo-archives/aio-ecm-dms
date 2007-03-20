@@ -15,8 +15,11 @@
     <module>component/cms/api</module>
     <module>component/cms/impl</module>
 
+    <module>bp</module>
+
     <module>portlet/ecm</module>
     <module>portlet/workflow</module>
+
     <module>web/ecmportal</module>
   </modules>
 

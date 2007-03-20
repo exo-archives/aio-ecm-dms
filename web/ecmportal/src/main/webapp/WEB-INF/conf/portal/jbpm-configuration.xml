@@ -20,10 +20,11 @@
           <field  name="processLocation"><string>war:/conf/bp</string></field>
           <field  name="predefinedProcess">
             <collection type="java.util.HashSet">
-              <value><string>/exo-ecm.business-process.holiday.jbpm-1.2.bpar</string></value>
-              <value><string>/exo-ecm.business-process.payraise.jbpm-1.2.bpar</string></value>
-              <value><string>/exo-ecm.business-process.content-validation.jbpm-1.2.bpar</string></value>              
-              <value><string>/exo-ecm.business-process.content-backup.jbpm-1.2.bpar</string></value>   
+              <value><string>/exo.ecm.bp.jbpm.payraise-2.0.jar</string></value>
+	        <value><string>/exo.ecm.bp.jbpm.holiday-2.0.jar</string></value>
+	        <value><string>/exo.ecm.bp.jbpm.content.validation-2.0.jar</string></value>
+	        <value><string>/exo.ecm.bp.jbpm.content.backup-2.0.jar</string></value>
+
             </collection>
           </field>
         </object>

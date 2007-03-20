@@ -15,8 +15,14 @@
   <modules>
     <module>bonita/content/backup</module>
     <module>bonita/content/validation</module>
-    
+    <module>bonita/holiday</module>
+    <module>bonita/payraise</module>
+
+    <module>jbpm/content/backup</module>
+    <module>jbpm/content/validation</module>
     <module>jbpm/holiday</module>
+    <module>jbpm/payraise</module>
+	
   </modules>
 
   <developers>

@@ -13,10 +13,10 @@
 	          <field  name="processLocation"><string>war:/conf/bp</string></field>
 	          <field  name="predefinedProcess">
 	            <collection type="java.util.HashSet">
-	              <value><string>/exo-ecm.business-process.holiday.bonita-1.1.bpar</string></value>
-	              <value><string>/exo-ecm.business-process.payraise.bonita-1.1.bpar</string></value>
-	              <value><string>/exo-ecm.business-process.content-validation.bonita-1.1.bpar</string></value>
-	              <value><string>/exo-ecm.business-process.content-backup.bonita-1.1.bpar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.payraise-2.0.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.holiday-2.0.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content.validation-2.0.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content.backup-2.0.jar</string></value>
 	            </collection>
 	          </field>
 	        </object>
