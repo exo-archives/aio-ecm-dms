@@ -14,13 +14,15 @@ ECMUtils.prototype.init = function(portletId) {
 }
 
 ECMUtils.prototype.fixHeight = function(portletId) {
-	var portlet = document.getElementById(portletId) ;
+	var portlet =document.getElementById(portletId) ;
 	var child = eXo.core.DOMUtil.getChildrenByTagName(portlet, 'div') ;
 	
 	var delta = portlet.offsetHeight - child[0].offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	for(var i = 0, ln = resizeObj.length; i < ln; i++) {
+		alert(resizeObj[i].style.height)
 		resizeObj[i].style.height = (parseInt(resizeObj[i].offsetHeight) + delta) + 'px' ;
+		alert(resizeObj[i].style.height)
 	}
 }
 
@@ -53,8 +55,8 @@ ECMUtils.prototype.clickLeftMouse = function(event, clickedElemt, pos, option) {
 			break;
 	}
 	
-  popupWindow = eXo.core.DOMUtil.findAncestorByClass(popupSelector, "UIDragObject");
-  if(popupWindow) {
+  if(document.getElementById("UIPageDesktop")) {
+  	popupWindow = eXo.core.DOMUtil.findAncestorByClass(popupSelector, "UIDragObject");
     intTop = intTop - eXo.core.Browser.findPosY(popupWindow) ;
     intLeft = intLeft - eXo.core.Browser.findPosX(popupWindow) ;
   }
