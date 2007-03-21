@@ -59,6 +59,10 @@ public class UIPermissionForm extends UIForm implements UISelector {
       getUIFormCheckBoxInput(perm).setChecked(false) ;
     }    
   }
+  
+  public void updateSelect(String selectField, String value) {
+    getUIStringInput(selectField).setValue(value) ;
+  }
 
   static  public class SaveActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
@@ -78,6 +82,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
                                     getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).getValue() ;
         node.setPermission(userOrGroup, permsArray) ;
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;
+        if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
         uiForm.refresh() ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
@@ -123,10 +128,6 @@ public class UIPermissionForm extends UIForm implements UISelector {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.cancelAction() ;
     }
-  }
-
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(selectField).setValue(value) ;
   }
 }
 

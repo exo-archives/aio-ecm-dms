@@ -41,7 +41,11 @@
 			    <td>$bean.name</td>
 			    <td>
 		        <div class="MultiValue">
-					    <div class="Icon16x16 ${multiValue}16x16Icon" style="float: left;" ><span></span></div>$multiValue					  	
+		          <%
+		            String multiType = "False" ;
+		            if(multiValue) multiType = "True" ;
+		          %>
+					    <div class="Icon16x16 ${multiType}16x16Icon"><span></span></div>$multiValue					  	
 			      </div>
 			    </td>
 			    <td>

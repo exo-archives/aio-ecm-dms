@@ -40,6 +40,8 @@ public class ScriptActionActivationJob implements Job {
       (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class);
     SecurityService securityService = 
       (SecurityService) PortalContainer.getComponent(SecurityService.class);
+//    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
+//    SecurityService securityService2 = (SecurityService)exoContainer.getComponentInstanceOfType(SecurityService.class) ;
     ActionPlugin scriptActionService = actionServiceContainer.getActionPlugin(ScriptActionPlugin.ACTION_TYPE) ;
 
     Session jcrSession = null;

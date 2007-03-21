@@ -1,7 +1,7 @@
 <%
-  import org.exoplatform.ecm.webui.component.admin.UIECMAdminFunctionTitle ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminWorkingArea ;
+  import org.exoplatform.ecm.webui.component.admin.UIECMAdminFunctionTitle ;
 
   def rcontext = _ctx.getRequestContext() ;
   rcontext.importJavascript('eXo.webui.UIVerticalSlideTabs') ;
@@ -22,7 +22,9 @@
 		      <div class="<%=(uicomponent.isShowSideBar() ? "CollapseSideBar" : "ExpandSideBar")%>" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
         </td>
         <td valign="top">
-  	      <% uicomponent.renderChild(UIECMAdminFunctionTitle.class); %>
+  	      <% 
+  	      	uicomponent.renderChild(UIECMAdminFunctionTitle.class); 
+  	      %>
 				  <div class="UIResizableBlock">
   	        <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
   	      </div>

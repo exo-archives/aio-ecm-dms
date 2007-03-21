@@ -114,6 +114,10 @@
   width: 225px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .checkbox {
+  width: 15px;
+}
+
 .UIECMAdminPortlet .ActionContainer .ActionButton {
   width: 80px ;
 }

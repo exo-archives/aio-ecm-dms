@@ -90,10 +90,9 @@
 	                      <td>
 	                      <%
 	                        for(parent in nodeType.getSupertypes()) {
-							  	      	    println "<div style=\"border: solid 1px white;\">" ;
-							  	      	    repairName(parent.getName()) ;
-							  	      	    println "</div></br>" ;
-							  	      	    
+						  	      	    println "<div style=\"border: solid 1px white;padding-top:5px;\">" ;
+						  	      	    repairName(parent.getName()) ;
+						  	      	    println "</div>" ;
 							  	        }
 							  	      %>
 	                      </td>

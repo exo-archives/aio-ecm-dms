@@ -3,10 +3,8 @@
   String manageOntologies = "UIFolksonomyManager;UITaxonomyManager;UIMetadataManager" ;
   String createDocumentTypes = "UINamespaceManager;UINodeTypeManager;UITemplatesManager" ;
   String displayDocuments = "UIViewManager;UIDriveManager;UIQueriesManager" ;
-  String manageDynamicContent = "UIActionManager;UIScriptManager;UIRuleManager" ;
+  String manageDynamicContent = "UIActionManager;UIScriptManager" ;
   String[] managersGroup = [manageOntologies, createDocumentTypes, displayDocuments, manageDynamicContent] ;
-  
-
 %>
 <div class="UIECMAdminControlPanel UIResizableBlock" style="height: 300px;">
 	<div class="UIVerticalSlideTabs">

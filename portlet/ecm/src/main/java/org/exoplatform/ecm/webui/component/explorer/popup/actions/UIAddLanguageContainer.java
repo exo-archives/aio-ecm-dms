@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -18,10 +19,19 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 @ComponentConfig (lifecycle = UIContainerLifecycle.class) 
 public class UIAddLanguageContainer extends UIContainer {
 
+  public String nodeTypeName_ ;
+  
   public UIAddLanguageContainer() throws Exception {
     addChild(UILanguageTypeForm.class, null, null) ;
+  }
+  
+  public void setComponentDisplay(String nodeTypeName) throws Exception {
+    nodeTypeName_ = nodeTypeName ;
     UIDocumentForm uiDocumentForm = createUIComponent(UIDocumentForm.class, null, null) ;
-    uiDocumentForm.setTemplateNode("exo:article") ;
+    uiDocumentForm.setTemplateNode(nodeTypeName) ;
+    if(nodeTypeName.equals("nt:file")) {
+      uiDocumentForm.setContentNode(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+    }
     uiDocumentForm.setIsMultiLanguage(true) ;
     addChild(uiDocumentForm) ;
   }

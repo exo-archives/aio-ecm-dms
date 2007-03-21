@@ -11,11 +11,13 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.resources.LocaleConfig;
 import org.exoplatform.services.resources.LocaleConfigService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -69,10 +71,12 @@ public class UILanguageTypeForm extends UIForm {
       UIAddLanguageContainer uiContainer = uiTypeForm.getParent() ;
       UIDocumentForm uiDocumentForm = uiContainer.getChild(UIDocumentForm.class) ;
       uiDocumentForm.getChildren().clear() ;
-      uiDocumentForm.setTemplateNode("exo:article") ;
+      uiDocumentForm.setTemplateNode(uiContainer.nodeTypeName_) ;
       uiDocumentForm.setIsNotEditNode(true) ;
+      uiDocumentForm.setIsMultiLanguage(true) ;
       Node node = uiExplorer.getCurrentNode() ;
       uiDocumentForm.setNode(node) ;
+      if(uiContainer.nodeTypeName_.equals("nt:file")) uiDocumentForm.setContentNode(node) ;
       uiDocumentForm.setSelectedLanguage(selectedLanguage) ;
       if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  
         uiDocumentForm.setPropertyNode(node) ;
@@ -86,6 +90,7 @@ public class UILanguageTypeForm extends UIForm {
         }
       }
       uiContainer.setRenderSibbling(UIAddLanguageContainer.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
 }

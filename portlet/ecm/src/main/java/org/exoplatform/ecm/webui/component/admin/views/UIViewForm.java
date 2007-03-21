@@ -199,11 +199,11 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
         getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(views_)).setRendered(true) ;
         getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEditable(false) ;
+        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(false) ;
       } else if (!isVersioned(views_)) {
         getUIFormSelectBox(FIELD_VERSION).setRendered(false) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEditable(!isView_) ;   
+        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(!isView_) ;   
       } 
     }
     if (selectedVersion != null) {      

@@ -24,6 +24,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
@@ -291,10 +292,12 @@ public class UIActionBar extends UIForm {
             uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
           uiDocumentForm.setNode(selectedNode) ;
-          uiDocumentForm.addNew(false) ;
           uiDocumentForm.editDocument(selectedNode) ;
+          uiDocumentForm.setContentNode(selectedNode) ;
+          uiDocumentForm.addNew(false) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
           uiPopupAction.activate(uiDocumentForm, 600, 550) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         } else {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null)) ;
           return ;
@@ -408,7 +411,11 @@ public class UIActionBar extends UIForm {
       }
       if(templateService.isManagedNodeType(nodeType.getName())) {
         UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-        uiPopupAction.activate(UIMultiLanguageManager.class, 700) ;
+        uiPopupAction.activate(UIMultiLanguageManager.class, null,700, 550) ;
+        UIMultiLanguageManager uiMultiManager = 
+          uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
+        UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
+        uiAddContainer.setComponentDisplay(nodeType.getName()) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       } 
@@ -571,7 +578,7 @@ public class UIActionBar extends UIForm {
         return ;
       }
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UIActionManager.class, 610) ;
+      uiPopupAction.activate(UIActionManager.class, null, 610, 550) ;
       uiJCRExplorer.setIsHidePopup(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

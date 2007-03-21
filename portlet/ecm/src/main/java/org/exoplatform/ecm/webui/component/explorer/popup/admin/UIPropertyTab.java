@@ -70,7 +70,7 @@ public class UIPropertyTab extends UIContainer {
   
   static public class CloseActionListener extends EventListener<UIPropertyTab> {
     public void execute(Event<UIPropertyTab> event) throws Exception {
-      event.getSource().getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
+      event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
     }
   }
 }

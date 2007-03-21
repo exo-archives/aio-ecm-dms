@@ -224,7 +224,8 @@ public class UIJCRExplorer extends UIContainer {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     Iterator childrenIterator = node.getNodes() ;
     List<Node> childrenList  = new ArrayList<Node>() ;
-    if(!preferences_.isJcrEnable() && node.getPrimaryNodeType().getName().equals("exo:article")) {
+    NodeType nodeType = node.getPrimaryNodeType() ;
+    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName())) {
       return childrenList ;
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
