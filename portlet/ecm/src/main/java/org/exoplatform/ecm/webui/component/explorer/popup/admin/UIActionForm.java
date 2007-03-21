@@ -13,6 +13,7 @@ import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
@@ -82,9 +83,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
 
   public String getDialogPath() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    String userName = Util.getUIPortal().getOwner() ;
     if (nodeTypeName_ != null) {
       try {
-        return templateService.getTemplatePath(true, nodeTypeName_);
+        return templateService.getTemplatePathByUser(true, nodeTypeName_, userName);
       } catch (Exception e){
         UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
         Object[] arg = { nodeTypeName_ } ;

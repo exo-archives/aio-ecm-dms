@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.RequestContext;
@@ -34,8 +35,9 @@ public class UIActionViewTemplate extends UIContainer {
 
   public String getViewTemplatePath(){    
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    String userName = Util.getUIPortal().getOwner() ;
     try {
-      return templateService.getTemplatePath(false, documentType_) ;
+      return templateService.getTemplatePathByUser(false, documentType_, userName) ;
     } catch (Exception e) {
       return null ;
     }         

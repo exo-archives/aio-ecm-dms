@@ -10,6 +10,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPageIterator;
@@ -79,9 +80,10 @@ public class UIQueriesList extends UIContainer {
   static public class DeleteActionListener extends EventListener<UIQueriesList> {
     public void execute(Event<UIQueriesList> event) throws Exception {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
+      String userName = Util.getUIPortal().getOwner() ;
       String queryName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       QueryService queryService = event.getSource().getApplicationComponent(QueryService.class) ;
-      queryService.removeQuery(queryName) ;
+      queryService.removeQuery(queryName, userName) ;
       event.getSource().updateQueriesGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }

@@ -31,8 +31,6 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.container.SessionContainer;
-import org.exoplatform.container.client.ClientInfo;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -84,7 +82,6 @@ public class CmsServiceImpl implements CmsService {
     }    */
     Session session = storeHomeNode.getSession();
     String owner = session.getUserID() ;
-    System.out.println("owner == " + owner) ;
     NodeTypeManager nodetypeManager = session.getWorkspace()
         .getNodeTypeManager();
     NodeType nodeType = nodetypeManager.getNodeType(nodeTypeName);

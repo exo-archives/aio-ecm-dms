@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -42,9 +43,10 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
   static  public class VoteActionListener extends EventListener<UIVoteForm> {
     public void execute(Event<UIVoteForm> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      String userName = Util.getUIPortal().getOwner() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiJCRExplorer.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiJCRExplorer.getCurrentNode(), objId) ;
+      votingService.vote(uiJCRExplorer.getCurrentNode(), objId, userName) ;
       event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;
       uiJCRExplorer.updateAjax(event) ;
     }

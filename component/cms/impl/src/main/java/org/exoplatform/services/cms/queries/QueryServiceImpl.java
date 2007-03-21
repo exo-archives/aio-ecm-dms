@@ -15,16 +15,13 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.container.SessionContainer;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
-import org.exoplatform.services.cms.drives.ManageDrivePlugin;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.templates.velocity.impl.JCRResourceLoaderImpl;
 
 public class QueryServiceImpl implements QueryService{
   
@@ -54,12 +51,9 @@ public class QueryServiceImpl implements QueryService{
     return relativePath_;
   }
   
-  public List<Query> getQueries() throws Exception {
+  public List<Query> getQueries(String userName) throws Exception {
     List<Query> queries = new ArrayList<Query>();        
-    String user = getRemoteUser();
-    if(user == null)
-      return queries;
-    
+    if(userName == null) return queries;    
     Session session = null;
     try {
       session = repositoryService_.getRepository().getSystemSession(workspace_);
@@ -69,7 +63,7 @@ public class QueryServiceImpl implements QueryService{
     QueryManager manager = session.getWorkspace().getQueryManager();
     
     Node usersHome = (Node) session.getItem(cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH));
-    Node userHome = usersHome.getNode(user);
+    Node userHome = usersHome.getNode(userName);
     Node queriesHome = userHome.getNode(relativePath_); 
     
     NodeIterator iter = queriesHome.getNodes();
@@ -93,11 +87,8 @@ public class QueryServiceImpl implements QueryService{
     return manager.getQuery(queryNode);
   }
 
-  public void addQuery(String queryName, String statement, String language) throws Exception {
-    String user = getRemoteUser();
-    if(user == null)
-      return;
-    
+  public void addQuery(String queryName, String statement, String language, String userName) throws Exception {
+    if(userName == null) return;
     Session session = null;
     try {
       session = repositoryService_.getRepository().getSystemSession(workspace_);
@@ -107,14 +98,13 @@ public class QueryServiceImpl implements QueryService{
     QueryManager manager = session.getWorkspace().getQueryManager();    
     Query query = manager.createQuery(statement, language);
     String usersHome = cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH);
-    String absPath = usersHome + "/" + user + "/" + relativePath_ + "/" + queryName;
+    String absPath = usersHome + "/" + userName + "/" + relativePath_ + "/" + queryName;
     query.storeAsNode(absPath);
     session.getItem(usersHome).save();  
   }
 
-  public void removeQuery(String queryPath) throws Exception {
-    String user = getRemoteUser();
-    if(user == null) return;    
+  public void removeQuery(String queryPath, String userName) throws Exception {
+    if(userName == null) return;    
     Session session = null;
     try {
       session = repositoryService_.getRepository().getSystemSession(workspace_);
@@ -128,14 +118,6 @@ public class QueryServiceImpl implements QueryService{
     removeFromCache(queryPath) ;
   }
   
-  private String getRemoteUser() {
-    SessionContainer sessionContainer = SessionContainer.getInstance();
-    if (sessionContainer != null) {
-      return SessionContainer.getInstance().getRemoteUser();      
-    }
-    return null;    
-  }
-
   public void addSharedQuery(String queryName, String statement, String language, 
                              String[] permissions, boolean cachedResult) throws Exception {
     Session session = null;

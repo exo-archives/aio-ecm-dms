@@ -10,15 +10,15 @@ public interface QueryService {
   
   public String getRelativePath();
   
-  public List<Query> getQueries() throws Exception;
+  public List<Query> getQueries(String userName) throws Exception;
   
   public Query getQuery(String queryPath) throws Exception;
   
   public QueryResult execute (String queryPath) throws Exception;
   
-  public void addQuery(String queryName, String statement, String language) throws Exception;
+  public void addQuery(String queryName, String statement, String language, String userName) throws Exception;
   
-  public void removeQuery(String queryPath) throws Exception;
+  public void removeQuery(String queryPath, String userName) throws Exception;
   
   public void addSharedQuery(String queryName, String statement, String language, String[] permissions, boolean cachedResult) throws Exception;
   

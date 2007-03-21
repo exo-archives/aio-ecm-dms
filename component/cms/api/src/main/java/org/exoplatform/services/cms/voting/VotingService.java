@@ -14,6 +14,6 @@ import javax.jcr.Node;
  */
 public interface VotingService {
   
-  public void vote(Node document, double rate) throws Exception ;
+  public void vote(Node document, double rate, String userName) throws Exception ;
   
 }

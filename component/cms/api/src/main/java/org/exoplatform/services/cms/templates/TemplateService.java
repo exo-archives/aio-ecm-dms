@@ -36,10 +36,10 @@ public interface TemplateService {
   
   public Node getTemplatesHome() throws Exception ;
   
-  public String getTemplatePath(boolean isDialog, String nodeTypeName) throws Exception ;
+  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName) throws Exception ;
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName) throws Exception ;
   
-  public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception ;
+  //public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception ;
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName) throws Exception ;
   
   public void addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 

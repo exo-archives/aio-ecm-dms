@@ -54,8 +54,8 @@ public class UIDrivesBrowser extends UIContainer {
   public List<String> getDrives() throws Exception {
     List<String> driveList = new ArrayList<String>() ;
     OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
-    String username = Util.getUIPortal().getOwner() ;
-    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(username) ;
+    String userName = Util.getUIPortal().getOwner() ;
+    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userName) ;
     ManageDriveService dservice = getApplicationComponent(ManageDriveService.class) ;
     if(memberships == null || memberships.size() < 0) return driveList ;
     Object[] objects = memberships.toArray() ;

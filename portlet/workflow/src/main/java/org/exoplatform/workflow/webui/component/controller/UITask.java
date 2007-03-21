@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.workflow.Form;
@@ -101,9 +102,6 @@ public class UITask extends UIForm {
     formsService = getApplicationComponent(WorkflowFormsService.class) ;
     dialogService = getApplicationComponent(TemplateService.class) ;
     jcrService = getApplicationComponent(RepositoryService.class) ;
-//    System.out.println("\n\nworkflowServiceContainer :" + serviceContainer + "\nformsService : " + formsService + 
-//    "\ncmsService : " + cmsService + "\ncmsConfigService : " + cmsConfigService + "\ndialogService : " + dialogService + "\njcrService : " + jcrService + "\n\n") ;  
-   
     inputInfo = new ArrayList<InputInfo>();
   }
 
@@ -149,7 +147,6 @@ public class UITask extends UIForm {
       Map attributes = (Map) iter.next();
       String name = (String) attributes.get("name");
       String component = (String) attributes.get("component");
-//      boolean editable = true;
       String editableString = (String) attributes.get("editable");
       if (editableString != null && !"".equals(editableString)) {
 //        editable = new Boolean(editableString).booleanValue();
@@ -160,8 +157,9 @@ public class UITask extends UIForm {
         mandatory = new Boolean(mandatoryString).booleanValue();
       }
       Object value = variablesForService.get(name);
+      String userName = Util.getUIPortal().getOwner() ;
       if (NODE_TYPE.equals(component)) {
-        dialogPath_ = dialogService.getTemplatePath(true, (String) value);
+        dialogPath_ = dialogService.getTemplatePathByUser(true, (String) value, userName);
         isCreatedOrUpdated = true;
       } else if (NODE_EDIT.equals(component)) {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
@@ -169,7 +167,7 @@ public class UITask extends UIForm {
         isView = false ;
         docContent.setNode(viewNode);
         String nodetype = viewNode.getPrimaryNodeType().getName();
-        dialogPath_ = dialogService.getTemplatePath(true, nodetype);
+        dialogPath_ = dialogService.getTemplatePathByUser(true, nodetype, userName);
         isCreatedOrUpdated = true;
       } else if (NODE_VIEW.equals(component)) {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);

@@ -30,6 +30,7 @@ import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.voting.VotingService;
@@ -75,10 +76,11 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    String userName = Util.getUIPortal().getOwner() ;
     try {
       String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
       if(uiExplorer.getPreference().isJcrEnable()) return uiExplorer.getDocumentInfoTemplate();
-      else if(isNodeTypeSupported(nodeType)) return templateService.getTemplatePath(false, nodeType) ;
+      else if(isNodeTypeSupported(nodeType)) return templateService.getTemplatePathByUser(false, nodeType, userName) ;
     } catch(Exception e) {
       e.printStackTrace() ;
     }
@@ -513,9 +515,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   static  public class VoteActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
+      String userName = Util.getUIPortal().getOwner() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiComp.getNode(), objId) ;
+      votingService.vote(uiComp.getNode(), objId, userName) ;
     }
   }
 }

@@ -244,7 +244,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     String srcPath = storeActionNode.getPath();         
     ActionPlugin actionService = getActionPluginForActionType(actionType);
     if (actionService == null) 
-      throw new ClassNotFoundException("Not found any action's service compatible with action type"+actionType) ;      
+      throw new ClassNotFoundException("Not found any action's service compatible with action type "+actionType) ;      
     try {
       actionService.addAction(actionType, srcWorkspace, srcPath, mappings);
     } catch (Exception e) {

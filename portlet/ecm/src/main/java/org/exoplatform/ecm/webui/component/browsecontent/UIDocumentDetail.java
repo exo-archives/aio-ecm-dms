@@ -15,6 +15,7 @@ import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
@@ -41,14 +42,13 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
   public UIDocumentDetail() {} 
 
   public String getTemplatePath(){
-    String templatePath = null ;
-    try {
-      TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-      templatePath = templateService.getTemplatePath(false, getNodeType()) ;
-    } catch (Exception e) { 
-      e.printStackTrace() ;
-    }
-    return templatePath ;
+    String userName = Util.getUIPortal().getOwner() ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    try{
+      return templateService.getTemplatePathByUser(false, getNodeType(), userName) ;
+    }catch(Exception e) {
+      return null ;
+    }    
   }
 
   public String getTemplate(){ return getTemplatePath() ;}

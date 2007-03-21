@@ -14,7 +14,6 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 
-import org.exoplatform.container.SessionContainer;
 import org.exoplatform.services.cms.voting.VotingService;
 
 /**
@@ -33,7 +32,7 @@ public class VotingServiceImpl implements VotingService{
   public VotingServiceImpl() {
   }  
 
-  public void vote(Node document, double rate) throws Exception {       
+  public void vote(Node document, double rate, String userName) throws Exception {       
     if(!document.isNodeType(VOTABLE)) {
       if(document.canAddMixin(VOTABLE))
         document.addMixin(VOTABLE) ;
@@ -46,9 +45,8 @@ public class VotingServiceImpl implements VotingService{
     double newRating = ((voteTotal*votingRate)+rate)/(voteTotal+1) ;    
     DecimalFormat format = new DecimalFormat("###.##") ;
     double fomatedRating= format.parse(format.format(newRating)).doubleValue() ;
-    String userId = SessionContainer.getInstance().getRemoteUser() ;    
     Value[] voters = document.getProperty(VOTER_PROP).getValues() ;        
-    Value newVoter = session.getValueFactory().createValue(userId) ;    
+    Value newVoter = session.getValueFactory().createValue(userName) ;    
     List<Value> newVoterList = new ArrayList<Value>() ;
     newVoterList.addAll(Arrays.<Value>asList(voters)) ;    
     newVoterList.add(newVoter) ;        

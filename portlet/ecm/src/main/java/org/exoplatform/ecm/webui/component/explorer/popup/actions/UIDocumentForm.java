@@ -18,6 +18,7 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -86,8 +87,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    String userName = Util.getUIPortal().getOwner() ;
     try {
-      return templateService.getTemplatePath(true, documentType_) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;

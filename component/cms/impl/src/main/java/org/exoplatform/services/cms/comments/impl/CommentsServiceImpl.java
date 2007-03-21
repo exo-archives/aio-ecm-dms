@@ -15,7 +15,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
-import org.exoplatform.container.SessionContainer;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -83,13 +82,9 @@ public class CommentsServiceImpl implements CommentsService {
       }
     }         
     if(commentor == null || commentor.length() == 0) {
-      String userID = SessionContainer.getInstance().getRemoteUser() ;
-      if(userID == null || userID.length() == 0) {
-        commentor = ANONYMOUS ;
-      }else {
-        commentor = userID ;
-      }
-    }    
+      commentor = ANONYMOUS ;      
+    }
+    
     Calendar commentDate = new GregorianCalendar() ;
     String name = Long.toString(commentDate.getTimeInMillis()) ;    
     Node newComment = commentNode.addNode(name,EXO_COMMENTS) ;     

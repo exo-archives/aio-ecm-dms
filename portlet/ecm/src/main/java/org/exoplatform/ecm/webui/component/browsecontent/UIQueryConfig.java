@@ -215,7 +215,8 @@ public class UIQueryConfig extends UIForm {
     if(!isAddNewQuery_) {  
       QueryService qservice = getApplicationComponent(QueryService.class) ;   
       if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
-        List<Query> queries = qservice.getQueries();
+        String username = Util.getUIPortal().getOwner() ;
+        List<Query> queries = qservice.getQueries(username);
         for(Query query : queries) {
           String path = query.getStoredQueryPath() ;
           if(query.getLanguage().equals(queryLanguage))

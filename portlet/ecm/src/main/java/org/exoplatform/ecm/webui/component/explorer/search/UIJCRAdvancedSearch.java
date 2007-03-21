@@ -13,6 +13,7 @@ import javax.jcr.query.Query;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -121,7 +122,8 @@ public class UIJCRAdvancedSearch extends UIForm {
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
-      queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue()) ;
+      String userName = Util.getUIPortal().getOwner() ;
+      queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(), userName) ;
       UISearch uiSearch = uiForm.getParent() ;
       uiSearch.getChild(UISavedQuery.class).updateGrid() ;
       uiSearch.setRenderedChild(UISavedQuery.class) ;

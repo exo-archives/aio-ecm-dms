@@ -13,6 +13,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.Value;
 
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.RequestContext;
@@ -158,7 +159,8 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
 
   public String getTemplatePath() throws Exception { 
     String nodeTypeName = node_.getPrimaryNodeType().getName();
+    String userName = Util.getUIPortal().getOwner() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    return templateService.getTemplatePath(false, nodeTypeName);
+    return templateService.getTemplatePathByUser(false, nodeTypeName, userName);
   }
 }

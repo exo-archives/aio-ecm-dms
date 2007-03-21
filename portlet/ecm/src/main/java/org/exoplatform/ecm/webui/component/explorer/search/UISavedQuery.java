@@ -20,6 +20,7 @@ import javax.jcr.query.QueryResult;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -69,13 +70,15 @@ public class UISavedQuery extends UIContainer {
   
   public boolean hasQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
-    List<Query> queries = queryService.getQueries();
+    String userName = Util.getUIPortal().getOwner() ;
+    List<Query> queries = queryService.getQueries(userName);
     if (queries == null || queries.isEmpty()) return false;
     return true;
   }
 
   public List<Query> getQueries() throws Exception {
-    return getApplicationComponent(QueryService.class).getQueries();
+    String userName = Util.getUIPortal().getOwner() ;
+    return getApplicationComponent(QueryService.class).getQueries(userName);
   }
   
   public boolean hasSharedQueries() throws Exception {
@@ -165,9 +168,10 @@ public class UISavedQuery extends UIContainer {
   static public class DeleteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
+      String userName = Util.getUIPortal().getOwner() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;      
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      queryService.removeQuery(path) ;
+      queryService.removeQuery(path, userName) ;
       uiQuery.updateGrid() ;
       uiQuery.setRenderSibbling(UISavedQuery.class) ;
     }

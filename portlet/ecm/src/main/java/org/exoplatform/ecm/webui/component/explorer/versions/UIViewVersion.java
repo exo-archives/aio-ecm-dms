@@ -16,6 +16,7 @@ import javax.jcr.version.Version;
 
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.RequestContext;
@@ -45,9 +46,10 @@ public class UIViewVersion extends UIContainer {
   public String getTemplate() {
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class);
+    String userName = Util.getUIPortal().getOwner() ;
     try {
       String nodeType = node.getPrimaryNodeType().getName();
-      if(isNodeTypeSupported(node)) return templateService.getTemplatePath(false, nodeType) ;
+      if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName) ;
     } catch (Exception e) {
       e.printStackTrace();
     }

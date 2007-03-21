@@ -14,7 +14,6 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
-import org.exoplatform.container.SessionContainer;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -174,21 +173,14 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   
   public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName) throws Exception {
     String type = DIALOGS;
-    if (!isDialog)
-      type = VIEWS;
+    if (!isDialog) type = VIEWS;
     Node nodeTypeNode = getSystemTemplatesHome().getNode(nodeTypeName);
     return nodeTypeNode.getNode(type).getNode(templateName);
   }
   
-  private Node getTemplateNode(boolean isDialog, String nodeTypeName)
-  throws Exception {
+  private Node getTemplateNode(String nodeTypeName, String userName, boolean isDialog) throws Exception {
     String type = DIALOGS;
-    if (!isDialog)
-      type = VIEWS;
-    String userId = null ; 
-    try{
-      userId = SessionContainer.getInstance().getRemoteUser();
-    }catch (Exception e) {}
+    if (!isDialog) type = VIEWS;
     Node nodeTypeNode = getSystemTemplatesHome().getNode(nodeTypeName);
     NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
     Node selectedTemplateNode = null;
@@ -199,9 +191,9 @@ public class TemplateServiceImpl implements TemplateService, Startable {
         String templateRole = roles[i].getString();
         if ("*".equals(templateRole)) {
           selectedTemplateNode = node;
-        }else if(userId != null && userId.equals(templateRole)) {
+        }else if(userName != null && userName.equals(templateRole)) {
           return node;	
-        }else if (userId != null && securityService_.hasMembershipInGroup(userId, templateRole)){
+        }else if (userName != null && securityService_.hasMembershipInGroup(userName, templateRole)){
           return node;
         } 
       }
@@ -209,8 +201,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return selectedTemplateNode;
   }
   
-  public String getTemplatePath(boolean isDialog, String nodeTypeName) throws Exception {
-    Node templateNode = getTemplateNode(isDialog, nodeTypeName);
+  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName) throws Exception {
+    Node templateNode = getTemplateNode(isDialog, nodeTypeName, userName);
     return templateNode.getPath();
   }
   
@@ -220,10 +212,10 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return templateNode.getPath();
   }
   
-  public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception {
-    Node templateNode = getTemplateNode(isDialog, nodeTypeName);
+  /*public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception {
+    Node templateNode = getTemplateNode(nodeTypeName, userName, isDialog );
     return templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
-  }
+  }*/
   
   public String getTemplateLabel(String nodeTypeName)  throws Exception {
     Session session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());        
