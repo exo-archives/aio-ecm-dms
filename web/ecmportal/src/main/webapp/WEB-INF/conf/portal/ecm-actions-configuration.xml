@@ -105,6 +105,7 @@
           </object-param>
         </init-params>    
       </component-plugin>
+      <!--
       <component-plugin> 
         <name>exo:ruleAction</name>   
         <set-method>addPlugin</set-method>
@@ -117,7 +118,7 @@
               <field  name="workspace"><string>production</string></field>
               <field  name="actions">
                 <collection type="java.util.ArrayList">
-                  <!--value>
+                  <value>
                     <object type="org.exoplatform.services.cms.actions.ActionConfig$Action">
                       <field  name="type"><string>exo:assertEnougthAdminsAction</string></field>
                       <field  name="name"><string>assertEnougthAdmins</string></field>                  
@@ -125,13 +126,14 @@
                       <field  name="srcWorkspace"><string>draft</string></field>
                       <field  name="srcPath"><string>/cms/publications/en/events</string></field>
                     </object>  
-                  </value--> 
+                  </value>
                 </collection>   
               </field>  
             </object>
           </object-param>
         </init-params>         
       </component-plugin>
+     -->
     </component-plugins>
     <init-params>
       <value-param>
