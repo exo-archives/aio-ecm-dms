@@ -4,11 +4,13 @@
 %>
 <div class="UIGroupMembershipSelector" id="$uicomponent.id">
 	<div class="SelectedGroupPath"><% uicomponent.renderChild(UIBreadcumbs.class); %></div>
+	<div style="clear:both;"></div>
 	<div class="OverflowContainer">
 	  <%uicomponent.renderChild(UITree.class);%>	   
 	  <div class="MembershipSelector">
 	    <%boolean even = true ;
 		    String rowCssClass = "OddRow" ;
+
 	      if(uicomponent.isSelectGroup()) {%>
 	      <div class="MembershipTitle">Select Group</div>
 	      <%if(uicomponent.getCurrentGroup() != null) {
@@ -16,10 +18,11 @@
           <div class="$rowCssClass">
 			      <div class="OverflowContainer">
 			        <div class="ItemIcon"><span></span></div>
-			        <div class="" style="float:left;">
+			        <div style="float:left;">
 			          <a href="<%=uicomponent.event("SelectMembership", groupName)%>">$groupName</a>									           
 			        </div>
 			        <div class="Icon16x16 True16x16Icon"><span></span></div>
+			        <div style="clear:left;"><span></span></div>
 			      </div>
 			    </div>
 		      <%String childName ;
@@ -27,13 +30,14 @@
 				      childName = child.getGroupName() ;
 			        if(even) rowCssClass = "EvenRow" ;  
 			        even = !even ;%>
-	            <div class="$rowCssClass" style="padding-left:25px;">
+	            <div class="$rowCssClass" style="padding-left:25px;" >
 					      <div class="OverflowContainer">
-					        <div class="Icon16x16 ExpandIcon"><span></span></div>
-				          <div class="" style="float:left;">
+					        <div class="Icon16x16 ExpandIcon" style="float:left;margin-top:4px;"><span></span></div>
+				          <div style="float:left;">
 				            <a href="<%=uicomponent.event("SelectMembership", childName)%>">$childName</a>									           
 				          </div>
 					        <div class="Icon16x16 True16x16Icon"><span></span></div>
+					        <div style="clear:left;"><span></span></div>
 			          </div>
 					    </div>
 		    <%}}}%>
@@ -47,11 +51,12 @@
 		           even = !even ;%>
 		           <div class="$rowCssClass" style="padding-left:25px;">
 				         <div class="OverflowContainer">
-				           <div class="Icon16x16 ExpandIcon"><span></span></div>
+				           <div class="Icon16x16 ExpandIcon" style="float:left;margin-top:4px;"><span></span></div>
 				           <div class="" style="float:left;">
 				             <a href="<%=uicomponent.event("SelectMembership", userName)%>">$userName</a>									           
 				           </div>
 				           <div class="Icon16x16 True16x16Icon"><span></span></div>
+				           <div style="clear:left;"><span></span></div>
 		             </div>
 				       </div>
 		    <%}}}%>
@@ -63,11 +68,12 @@
 		           even = !even ;%>
 		           <div class="$rowCssClass" style="padding-left:25px;">
 				         <div class="OverflowContainer">
-				           <div class="Icon16x16 ExpandIcon"><span></span></div>
+				           <div class="Icon16x16 ExpandIcon" style="float:left;margin-top:4px;"><span></span></div>
 				           <div class="" style="float:left;">
 				             <a href="<%=uicomponent.event("SelectMembership", member)%>">$member</a>									           
 				           </div>
 				           <div class="Icon16x16 True16x16Icon"><span></span></div>
+				           <div style="clear:left;"><span></span></div>
 		             </div>
 				       </div>
 	      <%}}}%>
