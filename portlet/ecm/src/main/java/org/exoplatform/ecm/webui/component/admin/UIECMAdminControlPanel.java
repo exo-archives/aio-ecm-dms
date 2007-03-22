@@ -15,7 +15,6 @@ import org.exoplatform.ecm.webui.component.admin.metadata.UIMetadataManager;
 import org.exoplatform.ecm.webui.component.admin.namespace.UINamespaceManager;
 import org.exoplatform.ecm.webui.component.admin.nodetype.UINodeTypeManager;
 import org.exoplatform.ecm.webui.component.admin.queries.UIQueriesManager;
-import org.exoplatform.ecm.webui.component.admin.rules.UIRuleManager;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
@@ -44,7 +43,6 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIECMAdminControlPanel.UITemplatesManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UIActionManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UIScriptManagerActionListener.class),
-        @EventConfig(listeners = UIECMAdminControlPanel.UIRuleManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UIDriveManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UIQueriesManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UIFolksonomyManagerActionListener.class)
@@ -74,18 +72,6 @@ public class UIECMAdminControlPanel extends UIComponent {
       uiWorkingArea.getChild(UIScriptManager.class).refresh() ;
       uiWorkingArea.setRenderedChild(UIScriptManager.class) ;
       portlet.setRenderedCompName(uiWorkingArea.getChild(UIScriptManager.class).getId()) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
-    }
-  }
-
-  static public class UIRuleManagerActionListener extends EventListener<UIECMAdminControlPanel> {
-    public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
-      UIECMAdminPortlet portlet = event.getSource().getParent() ;
-      UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.getChild(UIRuleManager.class).refresh() ;
-      uiWorkingArea.setRenderedChild(UIRuleManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIRuleManager.class).getId()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }

@@ -11,7 +11,6 @@ import org.exoplatform.ecm.webui.component.admin.metadata.UIMetadataManager;
 import org.exoplatform.ecm.webui.component.admin.namespace.UINamespaceManager;
 import org.exoplatform.ecm.webui.component.admin.nodetype.UINodeTypeManager;
 import org.exoplatform.ecm.webui.component.admin.queries.UIQueriesManager;
-import org.exoplatform.ecm.webui.component.admin.rules.UIRuleManager;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
@@ -38,7 +37,6 @@ public class UIECMAdminWorkingArea extends UIContainer {
     addChild(UIDriveManager.class, null, null).setRendered(false) ;
     addChild(UINamespaceManager .class, null, null).setRendered(false) ;
     addChild(UIActionManager.class, null ,null).setRendered(false) ;
-    addChild(UIRuleManager.class, null ,null).setRendered(false) ;
     addChild(UIScriptManager.class, null ,null).setRendered(false) ;
     addChild(UITemplatesManager.class, null, null).setRendered(false) ;
     addChild(UIQueriesManager.class, null, null).setRendered(false) ;
