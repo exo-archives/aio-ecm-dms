@@ -51,6 +51,7 @@ public class UIMetadataForm extends UIForm implements UISelector{
   final static public String VIEW_PERMISSION = "viewPermission" ;
   
   private boolean isAddNew_ = true ;
+  private String metadataName_ ;
 
   public UIMetadataForm() throws Exception {
     addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
@@ -84,6 +85,7 @@ public class UIMetadataForm extends UIForm implements UISelector{
   }
   
   public void update(String metadata)throws Exception{
+    metadataName_ = metadata ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     options.add(new SelectItemOption<String>(metadata, metadata)) ;
@@ -104,12 +106,14 @@ public class UIMetadataForm extends UIForm implements UISelector{
       UIMetadataForm uiForm = event.getSource();      
       UIMetadataManager uiMetaManager = uiForm.getAncestorOfType(UIMetadataManager.class) ;
       MetadataService metadataService = uiForm.getApplicationComponent(MetadataService.class) ;
-      String ntName = uiForm.getUIFormSelectBox(MIXIN_TYPES).getValue() ;
+      String ntName ;
+      if(uiForm.isAddNew_) ntName = uiForm.getUIFormSelectBox(MIXIN_TYPES).getValue() ;
+      else ntName = uiForm.metadataName_ ;
       String roles = uiForm.getUIStringInput(VIEW_PERMISSION).getValue() ;
       String dialogTemplate = uiForm.getUIFormTextAreaInput(DIALOG_TEMPLATE).getValue() ;
       String viewTemplate = uiForm.getUIFormTextAreaInput(VIEW_TEMPLATE).getValue() ;
       metadataService.addMetadata(ntName, true, roles, dialogTemplate, uiForm.isAddNew_) ;
-      metadataService.addMetadata(ntName, true, roles, viewTemplate, uiForm.isAddNew_) ;
+      metadataService.addMetadata(ntName, false, roles, viewTemplate, uiForm.isAddNew_) ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
       uiForm.reset() ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
