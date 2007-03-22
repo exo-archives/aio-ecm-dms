@@ -61,7 +61,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-
+	<!--
   <nodeType name="exo:ruleAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:action</supertype>
@@ -73,7 +73,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-
+	-->
   <nodeType name="exo:actionable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <!--<supertypes>
       <supertype>nt:base</supertype>
