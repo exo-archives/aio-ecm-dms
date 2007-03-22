@@ -19,7 +19,7 @@
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
   width: 100% ;
   border-right: 0px ;
-  border-left: 0px ;
+  border-left: 1px solid #7EAAD0;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
@@ -105,6 +105,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
   width: 450px ;
+  border-left:1px solid #7EAAD0 ;
   
 }
 

@@ -520,6 +520,8 @@ public class UINodeTypeForm extends UIFormTabPane {
           for(String type :arrayTypes ) {
             listTypes.add(type.trim()) ;
           }  
+        } else {
+          listTypes.add(superTypes.trim()) ;
         }
       }
                        

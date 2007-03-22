@@ -13,12 +13,12 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.servlet.http.HttpServletResponse;
 
+import org.exoplatform.download.DownloadResource;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.compress.CompressData;
-import org.exoplatform.services.download.DownloadResource;
-import org.exoplatform.services.download.DownloadService;
-import org.exoplatform.services.download.InputStreamDownloadResource;
 import org.exoplatform.webui.application.RequestContext;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;

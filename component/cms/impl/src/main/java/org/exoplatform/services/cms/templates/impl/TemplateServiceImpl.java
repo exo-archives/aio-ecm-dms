@@ -260,7 +260,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     String path = contentNode.getPath() ;
     contentNode.remove() ;
     nodeTypeHome.save() ;
-    removeFromCache(path) ;
+    //removeFromCache(path) ;
   }
   
   public void removeManagedNodeType(String nodeTypeName) throws Exception {
@@ -312,7 +312,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
     
     templatesHome.save();
-    removeFromCache(contentNode.getPath()) ;
+    //removeFromCache(contentNode.getPath()) ;
   }
     
   
@@ -343,7 +343,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
     return templatesHome ;
   }
-  protected void removeFromCache(String templateName) {
+  /*protected void removeFromCache(String templateName) {
     try{
       ExoCache jcrcache_ = cacheService_.getCacheInstance(JCRResourceLoaderImpl.class.getName()) ;
       String portalName = containerInfo_.getContainerName() ;
@@ -352,7 +352,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       if (cachedobject != null) {
         jcrcache_.remove(key);      
       }
-    }catch(Exception e) {      
+    }catch(Exception e) {
+      e.printStackTrace() ;
     }
-  }  
+  }  */
 }

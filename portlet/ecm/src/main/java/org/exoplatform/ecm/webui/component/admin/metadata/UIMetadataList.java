@@ -86,7 +86,7 @@ public class UIMetadataList extends UIContainer {
     public void execute(Event<UIMetadataList> event) throws Exception {
       UIMetadataList uiMetaList = event.getSource() ;
       UIMetadataManager uiManager = uiMetaList.getParent() ;
-      uiManager.initPopup() ;
+      uiManager.initPopup(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -107,7 +107,7 @@ public class UIMetadataList extends UIContainer {
       UIMetadataList uiMetaList = event.getSource() ;
       String metadataName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIMetadataManager uiManager = uiMetaList.getParent() ;
-      uiManager.initPopup() ;
+      uiManager.initPopup(false) ;
       UIMetadataForm uiForm = uiManager.findFirstComponentOfType(UIMetadataForm.class) ;
       uiForm.update(metadataName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

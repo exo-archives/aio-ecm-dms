@@ -34,7 +34,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 )
 public class UIMetadataManager extends UIContainer {
   
-  final static public String METADATA_POPUP = "MetadataPopup" ;
+  public String METADATA_POPUP = "MetadataPopup" ;
   final static public String VIEW_METADATA_POPUP = "ViewMetadataPopup" ;
   final static public String PERMISSION_POPUP = "PermissionPopup" ;
   
@@ -42,7 +42,9 @@ public class UIMetadataManager extends UIContainer {
     addChild(UIMetadataList.class, null, null) ;
   }
   
-  public void initPopup() throws Exception {
+  public void initPopup(boolean isAddNew) throws Exception {
+    if(isAddNew) METADATA_POPUP = "MetadataPopupAddNew" ;
+    else METADATA_POPUP =  "MetadataPopupEdit" ;
     removeChildById(METADATA_POPUP) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     CmsConfigurationService cmsConfigService = getApplicationComponent(CmsConfigurationService.class) ;

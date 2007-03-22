@@ -14,6 +14,7 @@ import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -112,7 +113,7 @@ public class UIMetadataForm extends UIForm implements UISelector{
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
       uiForm.reset() ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
-      uiMetaManager.removeChildById(UIMetadataManager.METADATA_POPUP) ;
+      uiMetaManager.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;
     }
   }
@@ -130,7 +131,7 @@ public class UIMetadataForm extends UIForm implements UISelector{
     public void execute(Event<UIMetadataForm> event) throws Exception {
       UIMetadataForm uiView = event.getSource() ;
       UIMetadataManager uiMetaManager = uiView.getAncestorOfType(UIMetadataManager.class) ;
-      uiMetaManager.removeChildById(UIMetadataManager.METADATA_POPUP) ;
+      uiMetaManager.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;
     }
   }
