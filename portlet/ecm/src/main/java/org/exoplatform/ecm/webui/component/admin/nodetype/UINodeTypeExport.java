@@ -118,10 +118,10 @@ public class UINodeTypeExport extends UIForm {
     private String getNodeTypeXML(List selectedNodes) {
       StringBuilder nodeTypeXML = new StringBuilder() ;
       nodeTypeXML.append("<nodeTypes xmlns:nt=").append("\"") ;
-      nodeTypeXML.append("http://www.jcp.org/jcr/nt/1.0").append("\" ") ;
+      nodeTypeXML.append("http://www.jcp.org/jcr/nt/1.5").append("\" ") ;
       nodeTypeXML.append("xmlns:mix=").append("\"") ;
-      nodeTypeXML.append("http://www.jcp.org/jcr/mix/1.0").append("\" ") ;
-      nodeTypeXML.append("xmlns:jcr=").append("\"").append("http://www.jcp.org/jcr/1.0") ;
+      nodeTypeXML.append("http://www.jcp.org/jcr/mix/1.5").append("\" ") ;
+      nodeTypeXML.append("xmlns:jcr=").append("\"").append("http://www.jcp.org/jcr/1.5") ;
       nodeTypeXML.append("\" >").append("\n") ;
       for(int i = 0; i < selectedNodes.size(); i++) {
         NodeType nodeType = (NodeType)selectedNodes.get(i) ;
