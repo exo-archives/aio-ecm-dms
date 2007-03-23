@@ -47,11 +47,9 @@ public class UIDocumentList extends UIComponentDecorator {
   @SuppressWarnings("unused")
   public String getCreatedDate(Node node) { return new Date().toString() ;}
 
-  public void updateGrid() throws Exception {
-    if ( getDocNode()!= null){
-      ObjectPageList objPageList = new ObjectPageList(getDocuments(), 10) ;
+  public void updateGrid(List<Node> list, int numbPerPage) throws Exception {
+      ObjectPageList objPageList = new ObjectPageList(list , numbPerPage) ;
       uiPageIterator_.setPageList(objPageList) ;
-    }
   }
   public Node getDocNode() {return docNode_ ;}
   
@@ -78,8 +76,9 @@ public class UIDocumentList extends UIComponentDecorator {
       UIDocumentList uiList = event.getSource() ;
       UIBrowseContainer uiContainer = uiList.getParent() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node docNode = uiContainer.getNodeByPath(nodePath) ; 
       UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;
+      //if(nodePath.equals(uiDocumentDetail.getNode().getPath())) return ;
+      Node docNode = uiContainer.getNodeByPath(nodePath) ;
       uiDocumentDetail.setNode(docNode) ;
     }
   }

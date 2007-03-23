@@ -6,8 +6,10 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
+
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
@@ -16,10 +18,8 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
-import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
-import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
@@ -76,7 +76,9 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
   }
-
+  public PortletPreferences getPortletPreferences() {    
+    return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
+  }
   public void initForm(PortletPreferences preference, String workSpace, boolean isAddNew, 
                        boolean isEditable) throws Exception {
     String path = preference.getValue(Utils.JCR_PATH, "") ;
@@ -92,8 +94,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       Integer.parseInt(preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
     }
-    catch (Exception  e) {
-    }
+    catch (Exception  e) {}
     if(isAddNew) { setActions(UINewConfigForm.ADD_NEW_ACTION) ;
     } else {
       hasToolBar = preference.getValue(Utils.CB_VIEW_TOOLBAR, "") ;
@@ -154,20 +155,21 @@ public class UIPathConfig extends UIForm implements UISelector{
     categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
+    templateField.setValue(getPortletPreferences().getValue(Utils.CB_TEMPLATE, "")) ;
+    templateField.setEnable(isEditable) ;
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+    numbPerPageField.setEditable(isEditable) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
+    detailtemField.setEnable(isEditable) ;
     UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR)  ;
     UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC)  ;
+    enableToolBarField.setEnable(isEditable) ;
     UIFormCheckBoxInput enableChildDocField = getChildById(UINewConfigForm.FIELD_ENABLECHILDDOC)  ;
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP)  ;
     enableTagMapField.setEnable(isEditable) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
     categoryPathField.setEditable(isEditable) ;
-    templateField.setEnable(isEditable) ;
-    numbPerPageField.setEditable(isEditable) ;
-    detailtemField.setEnable(isEditable) ;
-    enableToolBarField.setEnable(isEditable) ;
     enableRefDocField.setEnable(isEditable) ;
     enableChildDocField.setEnable(isEditable) ;
     enableCommentField.setEnable(isEditable) ;
@@ -245,8 +247,6 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       container.loadPortletConfig(prefs) ;
-      UICBSearchResults uiResults = uiBrowseContentPortlet.findFirstComponentOfType(UICBSearchResults.class) ;
-      uiResults.setRendered(false) ;
     }
   }  
 

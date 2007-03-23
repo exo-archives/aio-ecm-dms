@@ -1,6 +1,5 @@
 <%import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;%>
-<div class="UIBrowseContainer" id="$uicomponent.id">
-  <%if((uicomponent.isShowCommentForm()) ||(uicomponent.isShowVoteForm())) uicomponent.renderChild(UIToolBar.class);%>
+<div class="UIBrowseContainer" id="$uicomponent.id">  
   <!--Begin TagMap-->
   <%if(uicomponent.isShowTagmap()) {
       def taglist = uicomponent.getTagLink() ;
@@ -88,6 +87,7 @@
 					isFloatRight = !isFloatRight ;
 			  }
 			%>
+    <div style="clear: both"><span></span></div>
 		</div>
 	</div>
   <!--End UIEventViewer-->

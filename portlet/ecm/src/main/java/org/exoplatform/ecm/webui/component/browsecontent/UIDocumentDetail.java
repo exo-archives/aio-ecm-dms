@@ -22,9 +22,6 @@ import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.RequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -33,7 +30,7 @@ import org.exoplatform.webui.event.EventListener;
  * Jan 15, 2007  
  */
 
-@ComponentConfig( events = {@EventConfig(listeners = UIDocumentDetail.ChangeNodeActionListener.class)})
+@ComponentConfig( )
 
 public class UIDocumentDetail extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent{
   private Node node_ ;
@@ -145,16 +142,5 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
   public String getVoteTemplate() throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
-  }
-  
-  static  public class ChangeNodeActionListener extends EventListener<UIDocumentDetail> {
-    public void execute(Event<UIDocumentDetail> event) throws Exception {
-      UIDocumentDetail uiDocumentDetail = event.getSource() ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIBrowseContainer container = uiDocumentDetail.getAncestorOfType(UIBrowseContainer.class) ;
-      Node node = container.getNodeByPath(nodePath) ;
-      uiDocumentDetail.setNode(node) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentDetail) ;
-    }
   }
 }

@@ -72,4 +72,4 @@
     <div style="clear: all;"><span></span></div>
   </div>
 </div>
- <% uicomponent.renderChildren(); %>
+

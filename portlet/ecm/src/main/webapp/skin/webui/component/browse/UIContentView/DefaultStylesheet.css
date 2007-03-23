@@ -76,10 +76,23 @@
 }
 
 .UIContentView .SubFormContent .ChildrenContentHolder {
-	float: left;
-	width: 200px;
-	margin: 10px 0px 10px 20px;
+	width: auto;
+	margin: 5px;
+	padding: 1px;
 }
+.UIContentView .SubFormContent .ChildrenContentHolderLeft{
+	float: left;
+	width: 48%;
+	margin: 5px;
+	padding: 1px;
+} 
+
+.UIContentView .SubFormContent .ChildrenContentHolderRight{
+	float: Right;
+	width: 48%;
+	margin: 5px;
+	padding: 1px;
+} 
 
 .UIContentView .SubFormContent .ImageNote {
 	float: left;
@@ -94,17 +107,17 @@
 }
 
 .UIContentView .SubFormContent .UserName {
-	margin-left: 8px;
-	height: 15px;
-	line-height: 18px;
+	margin: 0px 8px;
+	height: 16px;
+	line-height: 16px;
 	font-weight: bold;
 	font-size: 11px;
 }
 
 .UIContentView .SubFormContent .Author {
-	margin-left: 20px;
-	height: 15px;
-	line-height:18px;
+	margin: 0px 8px;
+	height: 16px;
+	line-height: 16px;
 	font-size: 10px;
 }
 

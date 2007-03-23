@@ -1,3 +1,4 @@
+<%import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;%>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <!--Begin TagMap-->
   <%
@@ -30,7 +31,7 @@
   <%}%>
   <!--End TagMap-->
   <%
-   def subDocumentList = uicomponent.getCurrentList() ;
+    def subDocumentList = uicomponent.getCurrentList() ;
     int numbOfDocument = subDocumentList.size() ;
     if(subDocumentList.isEmpty()){%>
 		<div class="UISubContent">
@@ -89,6 +90,7 @@
 					isFloatRight = !isFloatRight ;
 			  }
 			%>
+		  <div style="clear: both"><span></span></div>	
 		</div>
 	</div>
 	<%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>

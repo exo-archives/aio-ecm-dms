@@ -9,6 +9,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -39,8 +40,8 @@ public class UICBSearchResults extends UIGrid {
   static public class CloseActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
       UICBSearchResults uiResults = event.getSource() ;
-      UIToolBar uiToolBar = uiResults.getAncestorOfType(UIToolBar.class) ;
-      uiToolBar.setShowHiddenSearch() ;
+      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
+      uiSearchController.setShowHiddenSearch() ;
     }
   }
 
@@ -48,15 +49,19 @@ public class UICBSearchResults extends UIGrid {
     public void execute(Event<UICBSearchResults> event) throws Exception {
       UICBSearchResults uiResults = event.getSource() ;
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIToolBar uiToolBar = uiResults.getAncestorOfType(UIToolBar.class) ;
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
       Node node = container.getNodeByPath(itemPath) ;
-      uiToolBar.setShowHiddenSearch() ;  
-      UICBSearchForm uiForm = uiToolBar.getChild(UICBSearchForm.class) ;      
+      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
+      uiSearchController.setShowHiddenSearch() ;  
+      UICBSearchForm uiForm = uiSearchController.getChild(UICBSearchForm.class) ;      
       if(uiForm.isDocumentType) {
-        container.viewDocument(node) ;
+        container.viewDocument(node, true, true) ;
         return ;
       } 
+      if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+        container.selectNode(node) ;
+        return ;
+      }
       container.changeNode(node) ;
     }
   }

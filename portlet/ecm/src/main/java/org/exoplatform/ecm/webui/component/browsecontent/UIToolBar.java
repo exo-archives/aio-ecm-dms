@@ -10,7 +10,6 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -40,29 +39,11 @@ public class UIToolBar extends UIContainer {
   private boolean isEnablePath_ = true ;
   private boolean isEnableSeach_ = false ;
 
-  public UIToolBar()throws Exception {
-    addChild(UICBSearchForm.class, null, null).setRendered(false) ;
-    addChild(UICBSearchResults.class, null, null).setRendered(false) ;
-  }
-
-  public void setShowHiddenSearch() throws Exception {
-    UICBSearchForm uiSearch = getChild(UICBSearchForm.class) ;
-    uiSearch.reset() ;
-    UICBSearchResults uiSearchResults = getChild(UICBSearchResults.class) ;
-    List<ResultData> queryResult = new ArrayList<ResultData>() ;
-    uiSearchResults.updateGrid(queryResult) ;
-    uiSearch.setRendered(!uiSearch.isRendered()) ;
-    uiSearchResults.setRendered(!uiSearchResults.isRendered()) ;
-    UIBrowseContainer container = getAncestorOfType(UIBrowseContainer.class) ;
-    container.setShowSearchForm(!container.isShowSearchForm()) ;
-  }
-
+  public UIToolBar()throws Exception {}
   public void setEnablePath(boolean enablePath) {isEnablePath_ = enablePath ;}
   public boolean enablePath() {return isEnablePath_ ;}
-  
   public void setEnableSearch(boolean enableSearch) {isEnableSeach_ = enableSearch ;}
   public boolean enableSearch() {return isEnableSeach_ ;}
-
   public void setEnableTree(boolean enableTree) {isEnableTree_ = enableTree ;} 
   public boolean enableTree() {return isEnableTree_ ;}
 
@@ -119,7 +100,9 @@ public class UIToolBar extends UIContainer {
   static public class SearchActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
-      uiComp.setShowHiddenSearch() ;
+      UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      UISearchController uiSearchController = uiContainer.getChild(UISearchController.class) ;
+      uiSearchController.setShowHiddenSearch() ;
     }
   }  
   static public class VoteActionListener extends EventListener<UIToolBar> {

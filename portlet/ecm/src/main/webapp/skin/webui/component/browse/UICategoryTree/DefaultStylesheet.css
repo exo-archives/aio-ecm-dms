@@ -8,18 +8,23 @@
 
 .UICategoryTree {
   float: left;
-  border-right: solid 1px #7b7b7b ;
-  margin-left:3px;
+  border: solid 1px #7b7b7b ;
+  margin-left: 5px;
+  padding-left: 1px;
 }
 .UICategoryTree .RootTreeNode{
 	font-weight:  bold;
 	font-size: 11px;
-	margin-top: 8px;
+	line-height: 24px;
+	height: 24px;	
+	margin-top: 2px;
+	margin-left: 2px;
 }
 
 .UICategoryTree .SubCategoryTree {
   border-top: solid 1px #cccccc ;
   border-right: solid 1px #bdc0c4 ;
+  border-left: solid 1px #bdc0c4 ;
   margin-right: 1px;
   width: 216px;
   padding-bottom: 10px;
@@ -57,15 +62,10 @@
 }
 
 .UICategoryTree .MiddleCategoryTree .FolderIcon {
-	margin: 5px 0px 0px 0px;
-  height: 20px;
   float:left;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu {
-}
-
-.UICategoryTree .MiddleCategoryTree .ListMenu .SupMenu {
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .ParentSupMenu {
@@ -87,6 +87,5 @@
 	margin-left: 24px;
 	line-height: 16px;
 	font-weight:  bold;
-	color: red;
 	font-size: 11px;
 }

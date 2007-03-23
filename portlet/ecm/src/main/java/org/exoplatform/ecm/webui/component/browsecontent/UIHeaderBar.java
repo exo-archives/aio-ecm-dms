@@ -3,7 +3,7 @@
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
-
+import javax.portlet.PortletPreferences;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -27,7 +27,11 @@ public class UIHeaderBar extends UIContainer {
   
   public String[] getActions() { return actions_ ;}
   public void setActions(String[] actions) { actions_ = actions ;}
-
+  
+  public PortletPreferences getPortletPreferences () {
+    return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
+  }
+  
   static public class ViewPortletActionListener extends EventListener<UIHeaderBar> {
     public void execute(Event<UIHeaderBar> event) throws Exception {
       UIHeaderBar uiHeaderBar = event.getSource() ;
@@ -82,11 +86,12 @@ public class UIHeaderBar extends UIContainer {
       }
       if(uiTabPane.isRendered()) { 
         uiTabPane.setRendered(false) ;
+        uiContainer.loadPortletConfig(uiHeaderBar.getPortletPreferences()) ;
         uiContainer.setRendered(true) ;
       } else {
+        uiTabPane.getCurrentConfig() ;
         uiTabPane.setRendered(true) ;
         uiContainer.setRendered(false) ;
-        uiTabPane.getCurrentConfig() ;
       }
     }
   }

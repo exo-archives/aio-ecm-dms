@@ -10,7 +10,6 @@
 	  <div class="MembershipSelector">
 	    <%boolean even = true ;
 		    String rowCssClass = "OddRow" ;
-
 	      if(uicomponent.isSelectGroup()) {%>
 	      <div class="MembershipTitle">Select Group</div>
 	      <%if(uicomponent.getCurrentGroup() != null) {

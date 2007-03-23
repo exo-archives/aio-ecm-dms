@@ -209,12 +209,21 @@
 		        </object>
 		      </object-param>
           <object-param>        
-            <name>FormPath Template</name>
+            <name>Path Template</name>
             <description>Template for display Content Browser Portlet by JCRPath</description>
             <object type="org.exoplatform.services.cms.views.impl.TemplateDataImpl">
               <field  name="type"><string>pathTemplate</string></field>
               <field  name="name"><string>PathList</string></field>
               <field  name="warPath"><string>/content-browser/path-templates/UsePathView.gtmpl</string></field>
+            </object>
+          </object-param>
+          <object-param>        
+            <name>Tree Template</name>
+            <description>Template for display Content Browser Portlet by JCRPath</description>
+            <object type="org.exoplatform.services.cms.views.impl.TemplateDataImpl">
+              <field  name="type"><string>pathTemplate</string></field>
+              <field  name="name"><string>TreeList</string></field>
+              <field  name="warPath"><string>/content-browser/path-templates/UseTreeView.gtmpl</string></field>
             </object>
           </object-param>
           <object-param>        

@@ -275,4 +275,23 @@
   float: left;
 }
 
+.UIBrowseContentPortlet .UISearchController {
+	padding: 5px;
+}
+
+.UIBrowseContentPortlet .UISearchController .SearchResult{
+	border: solid 1px #b7b7b7;
+}
+
+.UIBrowseContentPortlet .UISearchController .Text{
+	line-height: 28px;
+	height: 28px;
+	margin-left: 5px;
+}
+
+.UIBrowseContentPortlet .UISearchController .IconFrame{
+	background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
+	height: 28px;	
+}
+
 

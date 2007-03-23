@@ -56,7 +56,7 @@ public class UICBSearchForm extends UIForm {
   public static final String CATEGORY_QUERY = "select * from $0 where jcr:path like '%/$1[%]' "  ;
   public static final String DOCUMENT_QUERY = "select * from $0 where contains(*, '$1') AND jcr:path like '$2[%]/%' ";  
   public boolean isDocumentType = true ;
-  
+  protected long duration_ = 0 ; 
   public UICBSearchForm() {
     UIFormSelectBox selectType = new UIFormSelectBox(FIELD_OPTION, FIELD_OPTION, getOptions()) ;
     selectType.setOnChange("ChangeType") ;
@@ -76,17 +76,23 @@ public class UICBSearchForm extends UIForm {
     return options ;
   } 
   
+  public long searchTime() { return duration_; }
+  
   public List<ResultData> searchByCategory(String keyword, Node currentNode) throws Exception{
     List<ResultData> resultList = new ArrayList<ResultData>() ;
     ResultData result ;
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     Session session = uiContainer.getSession() ;
-    QueryManager queryManager = session.getWorkspace().getQueryManager();             
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    duration_ = 0 ;
     String statement = StringUtils.replace(CATEGORY_QUERY, "$1", keyword);
     for(String type : Utils.CATEGORY_NODE_TYPES) {            
       String queryStatement = StringUtils.replace(statement, "$0",type);
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
+      long beforeTime = System.currentTimeMillis();
       QueryResult queryResult = query.execute();
+      long searchTime = System.currentTimeMillis() - beforeTime;
+      duration_ += searchTime ;
       NodeIterator iter = queryResult.getNodes() ;
       while(iter.hasNext()) {
         Node node = iter.nextNode() ;
@@ -95,7 +101,10 @@ public class UICBSearchForm extends UIForm {
           resultList.add(result) ; 
         }
       }
-    }    
+    }
+    UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
+    uiController.setSearchTime(duration_) ;
+    uiController.setResultRecord(resultList.size()) ;
     return resultList ;
   } 
 
@@ -108,14 +117,18 @@ public class UICBSearchForm extends UIForm {
     statement = StringUtils.replace(statement,"$2",currentNode.getPath()) ;    
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     Session session = uiContainer.getSession() ;
-    QueryManager queryManager = session.getWorkspace().getQueryManager();            
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    duration_ = 0 ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documentNodeTypes = templateService.getDocumentTemplates() ;
     documentNodeTypes.add("nt:resource") ;
     for(String ntDocument:documentNodeTypes) {            
       String queryStatement = StringUtils.replace(statement,"$0",ntDocument) ;      
-      Query query = queryManager.createQuery(queryStatement, Query.SQL);    
+      Query query = queryManager.createQuery(queryStatement, Query.SQL);
+      long beforeTime = System.currentTimeMillis();
       QueryResult queryResult = query.execute() ;
+      long searchTime = System.currentTimeMillis() - beforeTime;
+      duration_ += searchTime ;
       NodeIterator iter = queryResult.getNodes() ;
       while (iter.hasNext()) {
         Node node = iter.nextNode() ;
@@ -131,6 +144,9 @@ public class UICBSearchForm extends UIForm {
         }
       }
     }
+    UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
+    uiController.setSearchTime(duration_) ;
+    uiController.setResultRecord(resultList.size()) ;
     return resultList ;
   }
   public void reset() {
@@ -157,8 +173,7 @@ public class UICBSearchForm extends UIForm {
       String keyword = uiForm.getUIStringInput(FIELD_SEARCHVALUE).getValue();
       String type = uiForm.getUIFormSelectBox(FIELD_OPTION).getValue() ;            
       List<ResultData> queryResult ;
-      UIToolBar uiToolBar = uiForm.getAncestorOfType(UIToolBar.class) ;
-      UICBSearchResults searchResults = uiToolBar.findFirstComponentOfType(UICBSearchResults.class) ;
+      UICBSearchResults searchResults = container.findFirstComponentOfType(UICBSearchResults.class) ;
       if(keyword == null||keyword.length() == 0) {          
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UICBSearchForm.msg.not-empty", null)) ;
@@ -172,7 +187,6 @@ public class UICBSearchForm extends UIForm {
         queryResult = uiForm.searchDocument(keyword,reference,relation, currentNode) ;
       }
       searchResults.updateGrid(queryResult) ;
-      searchResults.setRendered(true) ;
     }
   }
 }

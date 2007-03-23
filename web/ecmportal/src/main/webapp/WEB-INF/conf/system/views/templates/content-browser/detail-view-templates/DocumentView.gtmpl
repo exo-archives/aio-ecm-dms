@@ -2,31 +2,38 @@
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail; 
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentList; 
+	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
-  <%if(uicomponent.isEnableToolBar()) uicomponent.renderChild(UIToolBar.class);%>
-	<!--BEGIN Document Detail -->
-	<%
-	  uicomponent.renderChild(UIDocumentDetail.class) ;
-	  if(uicomponent.isShowDocumentList()) { 
-	    uicomponent.renderChild(UIDocumentList.class) ;
-	%>
-			<div class="UIAction" style="margin-top:5px;"> 
-				<div class="ActionContainer">
-			    <div class="ActionButton">
-			      <div class="LightBlueStyle" >
-							<div class="ButtonLeft">
-							  <div class="ButtonRight">
-								  <div class="ButtonMiddle">
-									  <div class="Icon Back16x16Icon"><span></span></div>
-										<a href="<%=uicomponent.event('Back')%>">Back</a>
-							    </div>
+  <%
+  	if(uicomponent.isEnableToolBar()) uicomponent.renderChild(UIToolBar.class);
+  	if(uicomponent.isShowSearchForm()) {
+  		uicomponent.renderChild(UISearchController.class);
+  	} else {
+  %>
+		<!--BEGIN Document Detail -->
+		<%
+		  uicomponent.renderChild(UIDocumentDetail.class) ;
+		  if(uicomponent.isShowDocumentList()) { 
+		    uicomponent.renderChild(UIDocumentList.class) ;
+		%>
+				<div class="UIAction" style="margin-top:5px;"> 
+					<div class="ActionContainer">
+				    <div class="ActionButton">
+				      <div class="LightBlueStyle" >
+								<div class="ButtonLeft">
+								  <div class="ButtonRight">
+									  <div class="ButtonMiddle">
+										  <div class="Icon Back16x16Icon"><span></span></div>
+											<a href="<%=uicomponent.event('Back')%>">Back</a>
+								    </div>
+								  </div>
 							  </div>
-						  </div>
+							</div>
 						</div>
-					</div>
+				  </div>
 			  </div>
-		  </div>
+		<%}%>
+		<!--End Document Detail -->
 	<%}%>
-	<!--End Document Detail -->
 <div>

@@ -1,15 +1,19 @@
 <%
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
+  import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
   import javax.jcr.Node ;
   String componentName = uicomponent.getName() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
-  if(uicomponent.isEnableToolBar()) uicomponent.renderChild(UIToolBar.class);
-  if(!uicomponent.isShowSearchForm()) {
+  uicomponent.renderChild(UIToolBar.class);
+  if(uicomponent.isShowSearchForm()) {
+  	uicomponent.renderChild(UISearchController.class);
+  }
+  else {
     Node rootNode = uicomponent.getRootNode() ;
     Node currentNode = uicomponent.getCurrentNode() ;
-     Node selectedTab = uicomponent.getSelectedTab() ; 
+    Node selectedTab = uicomponent.getSelectedTab() ; 
     boolean isShowAllDoc = uicomponent.isShowAllDocument() ;
     def content = uicomponent.getPathContent() ;                  
     def tabList = content.get("tabList") ;
@@ -156,7 +160,6 @@
       </div>  
   <%}%>
   <!--End TagMap-->  
-  
   <%if(hasNoDocument){%>
     <div class="UISubContent">
       <div class ="UIDocumentContentInfo">
@@ -168,18 +171,6 @@
         </div>
       </div>  
     </div>  
-  <%}%>
-  <%if(hasNoSubCategory) { %>
-      <div class="UISubContent">
-        <div class ="UIDocumentContentInfo">
-          <div class="NoneDocumentMessage" style="margin:0px;">
-            <div class="MessageContainer">
-              <div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
-              <div class="Message"><%=_ctx.appRes(componentName + ".label.NoChild")%></div>
-            </div>
-          </div>
-        </div>  
-      </div>  
   <%}%>
   <!--Begin UIEventViewer-->
   <div class="UIEventViewer">
