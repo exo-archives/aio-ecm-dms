@@ -429,7 +429,8 @@
                         </collection> 
                       </field>   
                     </object>
-                  </value>                   
+                  </value>  
+                  <!--                 
                   <value>
                     <object type="org.exoplatform.services.cms.impl.CmsConfig$JcrPath">
                       <field  name="alias"><string>cmsRulesPath</string></field>
@@ -457,7 +458,8 @@
                         </collection> 
                       </field>                  
                     </object>
-                  </value>     
+                  </value>
+                  -->     
                   <value>
                     <object type="org.exoplatform.services.cms.impl.CmsConfig$JcrPath">
                       <field  name="alias"><string>cmsScriptsPath</string></field>

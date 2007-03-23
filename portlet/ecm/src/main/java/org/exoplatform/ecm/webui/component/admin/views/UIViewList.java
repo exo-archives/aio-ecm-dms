@@ -109,9 +109,9 @@ public class UIViewList extends UIGrid {
       UIViewForm viewForm = viewTabPane.getChild(UIViewForm.class) ;
       viewForm.refresh(true) ;
       viewForm.update(viewNode, false, null) ;
-      viewForm.setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
+      viewForm.setActions(new String[]{"Save", "Cancel"}, null) ;
       viewForm.setActionInfo(UIViewForm.FIELD_PERMISSION, new String[] {"AddPermission"}) ;
-      viewTabPane.getChild(UITabForm.class).setActions(new String[]{"Reset", "Save"}, null) ;
+      viewTabPane.getChild(UITabForm.class).setActions(new String[]{"Save"}, null) ;
       viewTabPane.setRenderedChild(UIViewForm.class) ;
       UIViewManager uiManager = uiViewList.getAncestorOfType(UIViewManager.class) ;
       uiManager.setRenderedChild(UIViewContainer.class) ;
@@ -134,7 +134,7 @@ public class UIViewList extends UIGrid {
       uiViewForm.refresh(false) ;
       uiViewForm.update(viewNode, true, null) ;
       uiViewForm.setActionInfo(UIViewForm.FIELD_PERMISSION, null) ;
-      uiViewForm.setActions(new String[]{"Reset", "Cancel"}, null) ;
+      uiViewForm.setActions(new String[]{"Cancel"}, null) ;
       uiViewTabPane.getChild(UITabForm.class).setActions(null, null) ;
       uiViewTabPane.setRenderedChild(UIViewForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
