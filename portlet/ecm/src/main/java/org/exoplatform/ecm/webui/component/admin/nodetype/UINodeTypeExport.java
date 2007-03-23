@@ -13,15 +13,11 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.exoplatform.download.DownloadResource;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.portal.application.handler.DownloadRequestHandler;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.webui.application.RequestContext;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormInputInfo;
@@ -113,15 +109,10 @@ public class UINodeTypeExport extends UIForm {
       String nodeTypeXML = getNodeTypeXML(selectedNodes) ;
       ByteArrayInputStream is = new ByteArrayInputStream(nodeTypeXML.getBytes()) ;
       DownloadResource dresource = new InputStreamDownloadResource(is, "text/xml") ;
-      System.out.println("\n\nValue====>" +nodeTypeXML+ "\n\n");
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
-      dresource.setDownloadName("nodetypeExport.xml");
+      dresource.setDownloadName("nodetype_export.xml");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-      System.out.println("\n\ndownload link=====>" +downloadLink+ "\n\n");
-      //DownloadRequestHandler handler = new DownloadRequestHandler() ;
-      //HttpServletRequest rcontext = event.getRequestContext().getParentAppRequestContext();
-      //HttpServletResponse response = rcontext.get;
-      //response.sendRedirect(downloadLink);
+      event.getRequestContext().addJavascript("window.location=\"" + downloadLink + "\"") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
     private String getNodeTypeXML(List selectedNodes) {

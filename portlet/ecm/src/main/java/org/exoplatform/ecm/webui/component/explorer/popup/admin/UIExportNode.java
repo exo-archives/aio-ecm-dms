@@ -11,15 +11,12 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.servlet.http.HttpServletResponse;
 
-import org.exoplatform.download.DownloadResource;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.compress.CompressData;
-import org.exoplatform.webui.application.RequestContext;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormInputInfo;
@@ -76,7 +73,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       Session session = uiExplorer.getSession() ;
       CompressData zipService = new CompressData();
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
-      DownloadResource dresource ;
+      InputStreamDownloadResource dresource ;
       String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
       boolean isZip = uiExport.getUIFormCheckBoxInput(ZIP).isChecked() ;
       ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
@@ -95,15 +92,10 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         else session.exportSystemView(nodePath, bos, false, false ) ;
         ByteArrayInputStream is = new ByteArrayInputStream(bos.toByteArray()) ;
         dresource = new InputStreamDownloadResource(is, "text/xml") ;
-        
         dresource.setDownloadName(format + ".xml");
       }
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-      RequestContext rcontext = event.getRequestContext().getParentAppRequestContext();
-      HttpServletResponse response = rcontext.getResponse();
-      System.out.println("\n\nDownload link====>" + downloadLink + "\n\n");
-      response.sendRedirect(downloadLink);
-      uiExplorer.updateAjax(event) ;
+      event.getRequestContext().addJavascript("window.location=\"" + downloadLink + "\"");
     }
   }
 
