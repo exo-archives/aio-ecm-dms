@@ -150,7 +150,7 @@ public class UISavedQuery extends UIContainer {
       UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class) ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
       String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UISearch uiSearch = uiQuery.getParent() ;
+      UIECMSearch uiSearch = uiQuery.getParent() ;
       uiSearch.setRenderedChild(UISearchResult.class) ;
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class); 
       QueryResult queryResult = null ;

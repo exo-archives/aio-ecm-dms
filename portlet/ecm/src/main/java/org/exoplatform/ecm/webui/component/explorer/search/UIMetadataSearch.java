@@ -97,7 +97,7 @@ public class UIMetadataSearch extends UIForm {
           }
           statement = statement + properties.toString() ;
         }
-        UISearch uiSearch = uiForm.getParent() ;
+        UIECMSearch uiSearch = uiForm.getParent() ;
         UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
         uiSearchResult.executeQuery(statement, Query.SQL) ;
         uiSearch.setRenderedChild(UISearchResult.class) ;
@@ -112,7 +112,7 @@ public class UIMetadataSearch extends UIForm {
     public void execute(Event<UIMetadataSearch> event) throws Exception {
       UISearchContainer uiContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
       uiContainer.initMetadataPopup() ;
-      uiContainer.getChild(UISearch.class).setRenderedChild(UIMetadataSearch.class) ;
+      uiContainer.getChild(UIECMSearch.class).setRenderedChild(UIMetadataSearch.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }

@@ -51,7 +51,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIReferencesList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
-import org.exoplatform.ecm.webui.component.explorer.search.UISearch;
+import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchContainer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
@@ -344,7 +344,7 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UISearch .class, 700) ;
+      uiPopupAction.activate(UIECMSearch .class, 700) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

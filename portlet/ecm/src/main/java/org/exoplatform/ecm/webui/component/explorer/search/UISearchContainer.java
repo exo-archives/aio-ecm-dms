@@ -26,7 +26,7 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent{
   private String selectedValue_ = "dc:elementSet";
   
   public UISearchContainer() throws Exception {
-    addChild(UISearch.class, null, null) ;
+    addChild(UIECMSearch.class, null, null) ;
   }
   
   public void setSelectedValue(String selectedValue) { selectedValue_ = selectedValue ; }
@@ -53,7 +53,7 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent{
   }
 
   public void activate() throws Exception {
-    UISearch uiSearch = getChild(UISearch.class) ;
+    UIECMSearch uiSearch = getChild(UIECMSearch.class) ;
     UIJCRAdvancedSearch advanceSearch = uiSearch.getChild(UIJCRAdvancedSearch.class);
     advanceSearch.update();
     UISavedQuery uiQuery = uiSearch.getChild(UISavedQuery.class);

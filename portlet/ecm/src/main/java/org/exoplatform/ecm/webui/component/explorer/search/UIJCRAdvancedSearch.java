@@ -89,7 +89,7 @@ public class UIJCRAdvancedSearch extends UIForm {
       UIJCRAdvancedSearch uiForm = event.getSource() ;
       String queryS = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
-      UISearch uiSearch = uiForm.getParent() ;
+      UIECMSearch uiSearch = uiForm.getParent() ;
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
       uiSearchResult.executeQuery(queryS, searchType) ;
       uiSearch.setRenderedChild(UISearchResult.class) ;
@@ -124,7 +124,7 @@ public class UIJCRAdvancedSearch extends UIForm {
       String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String userName = Util.getUIPortal().getOwner() ;
       queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(), userName) ;
-      UISearch uiSearch = uiForm.getParent() ;
+      UIECMSearch uiSearch = uiForm.getParent() ;
       uiSearch.getChild(UISavedQuery.class).updateGrid() ;
       uiSearch.setRenderedChild(UISavedQuery.class) ;
     }

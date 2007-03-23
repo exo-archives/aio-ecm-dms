@@ -600,7 +600,3 @@
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin: 0px 0px 0px 160px;
 }
-
-.UIECMAdminPortlet .UIGroupMembershipSelector {
-  width: auto;
-}

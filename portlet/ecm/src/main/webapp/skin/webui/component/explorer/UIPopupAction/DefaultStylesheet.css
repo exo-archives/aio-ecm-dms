@@ -6,6 +6,15 @@
  * version: $Id$
  */
 
+.UIJCRExplorerPortlet .UIPopupAction .ActionButton {
+  width: 85px;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+
+/*############################## -- Begin UIVersionInfo -- ##############################*/
 .UIJCRExplorerPortlet .UIVersionInfo {
   border: solid 1px #bdbdbd;
   padding: 7px;
@@ -70,15 +79,7 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .ActionButton {
-  width: 90px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .ActionButton {
-  width: 85px;
-}
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
-
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 5px 0px;
 }
@@ -132,35 +133,7 @@
   background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
   padding: 0px 10px;
 }
-/*############################## -- End UINodeTypeInfo -- ##############################*/
-/*############################## -- UIExportNode & UIImportNode    -- ##############################*/
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .MultiRadioInput {
-	margin-left: 160px;
-}
 
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .MultiRadioInput input {
-	float:left;
-  width: 20px ;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .MultiRadioInput {
-	margin-left: 160px;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .MultiRadioInput input {
-	float:left;
-  width: 20px ;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .ActionButton {
-  width:80px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .ActionButton {
-  width:80px;
-}
-
-/*############################## -- End UIExport   -- ##############################*/
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
 .Explorer {
   margin-bottom: 10px;
@@ -244,39 +217,11 @@
   margin-left: 15px ;
 }
 
-/*############################## --End UITreeJCRExplorer   -- ##############################*/
-
-/*############################## -- UIUploadForm   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIUploadForm .ActionButton {
-  width: 80px;
-}
-
-/*############################## -- UISearch   -- ##############################*/
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .ActionButton {
-  width: 80px;
-}
-
-.UIJCRExplorerPortlet .UIMetadataSearch .UIFormWithTitle .MultiRadioInput {
-	margin-left: 160px;
-	line-height: 16px;
-}
-
-.UIJCRExplorerPortlet .UIMetadataSearch .UIFormWithTitle .MultiRadioInput input {
-  width: 20px ;
-	float : left ;
-}
-
-/*############################## -- End UISearch   -- ##############################*/
-
 /*############################## -- UIActionManager   -- ##############################*/
 .UIJCRExplorerPortlet .UIActionContainer .ActionContainer {
   width: 200px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .ActionButton {
-  width: 80px;
-}
 .UIJCRExplorerPortlet .UIPropertyTab .UIAction {
   width: 100px; 
   margin-top:20px;
@@ -314,9 +259,6 @@
 }
 
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
-.UIJCRExplorerPortlet .UIMultiLanguageForm .ActionButton {
-	width: 80px ;
-}
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .ActionContainer {
 	width: 360px ;
@@ -326,8 +268,49 @@
 	height: 70px ;
 }
 
-/*############################## -- UIViewMetadataForm   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer {
+/*############################## -- Begin UIViewMetadataForm   -- ##############################*/
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer {}
+/*############################## -- End UIViewMetadataForm   -- ##############################*/
+/*############################## -- Begin UIVoteForm   -- ##############################*/
+.UIJCRExplorerPortlet .UIVoteForm {
+	padding: 10px;
 }
-/*########################################################################################*/
+
+.UIJCRExplorerPortlet .UIVoteForm .UIRatingInfoContainer {
+	width: 150px; padding: 5px 12px;
+	margin: auto;
+	background: white;
+	border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('DefaultSkin/background/GrayStar.gif');
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('DefaultSkin/background/YellowStar.gif');
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('DefaultSkin/background/OverStar.gif');
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+	margin: 10px auto;
+	width: 90px;
+}
+/*############################## -- End UIVoteForm   -- ##############################*/
