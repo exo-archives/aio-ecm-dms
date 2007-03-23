@@ -233,7 +233,7 @@ public class ManageViewServiceImpl implements ManageViewService {
     }
     newTemp.setProperty(TEMPLATE_PROP,content) ;
     templateHome.save() ;
-    removeFromCache(newTemp.getPath()) ;
+    //removeFromCache(newTemp.getPath()) ;
   }
 
   public void removeTemplate(String templatePath) throws Exception {    
