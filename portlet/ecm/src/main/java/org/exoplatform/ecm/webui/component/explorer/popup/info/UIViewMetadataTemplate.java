@@ -11,7 +11,7 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.templates.groovy.ResourceResolver;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -53,7 +53,7 @@ public class UIViewMetadataTemplate extends UIContainer {
   public String getTemplate() { return getViewTemplatePath() ; }
   
   @SuppressWarnings("unused")
-  public ResourceResolver getTemplateResourceResolver(RequestContext context, String template) {
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 

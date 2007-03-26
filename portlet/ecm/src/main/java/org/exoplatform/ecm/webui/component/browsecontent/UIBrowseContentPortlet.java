@@ -9,8 +9,8 @@ import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.webui.application.Application;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiApplication;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIPortletApplication;
 import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
@@ -39,13 +39,13 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   }
 
   public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)RequestContext.getCurrentInstance() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
   
-  public void processRender(Application app, RequestContext context) throws Exception {
+  public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     context.importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     super.processRender(app, context);
   }

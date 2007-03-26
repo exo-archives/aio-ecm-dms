@@ -13,7 +13,7 @@ import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.webui.application.ApplicationMessage;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIGrid;

@@ -19,7 +19,7 @@ import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 
@@ -51,7 +51,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
   public String getTemplate(){ return getTemplatePath() ;}
 
   @SuppressWarnings("unused")
-  public ResourceResolver getTemplateResourceResolver(RequestContext context, String template) {
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIBrowseContainer.class).getTemplateResourceResolver(context, template) ;
   }
 

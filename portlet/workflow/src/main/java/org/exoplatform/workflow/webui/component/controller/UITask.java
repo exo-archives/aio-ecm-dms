@@ -26,7 +26,7 @@ import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -327,7 +327,7 @@ public class UITask extends UIForm {
   public static class StartProcessActionListener extends EventListener<UITask> {
     public void execute(Event<UITask> event) throws Exception {
       UITask uiTask = event.getSource() ;
-      PortletRequestContext pcontext = (PortletRequestContext)RequestContext.getCurrentInstance() ;
+      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
       String remoteUser = pcontext.getRemoteUser();
       if (remoteUser == null) remoteUser = "anonymous";
       VariableMaps maps = uiTask.prepareVariables();

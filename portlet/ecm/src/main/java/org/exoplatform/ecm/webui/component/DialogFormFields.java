@@ -24,7 +24,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormDateTimeInput;
@@ -695,7 +695,7 @@ public class DialogFormFields extends UIForm {
   
   public void renderField(String name) throws Exception {
     UIComponent uiInput = findComponentById(name);;
-    RequestContext context = RequestContext.getCurrentInstance() ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     Writer w = context.getWriter() ;
     uiInput.processRender(context) ;
     if(components.get(name) != null) {
@@ -716,7 +716,7 @@ public class DialogFormFields extends UIForm {
   
   public void begin() throws Exception {
     String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
-    RequestContext context = RequestContext.getCurrentInstance() ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     context.importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
     super.begin();
   }

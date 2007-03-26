@@ -5,7 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;
@@ -55,7 +55,7 @@ public class UIPopupAction extends UIContainer {
   
   public void cancelPopupAction() throws Exception {
     deActivate() ;
-    RequestContext context = RequestContext.getCurrentInstance() ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     context.addUIComponentToUpdateByAjax(this) ;
   }
 }

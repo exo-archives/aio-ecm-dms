@@ -13,8 +13,8 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
-import org.exoplatform.webui.application.ApplicationMessage;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
@@ -74,7 +74,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormStringInput(VALUE_CONSTRAINTS, VALUE_CONSTRAINTS, null)) ;
   }
   
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     super.processRender(context) ;
   }
   

@@ -37,7 +37,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
@@ -176,7 +176,7 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public void cancelAction() throws Exception {
-    RequestContext context = RequestContext.getCurrentInstance() ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
     popupAction.deActivate() ;
     context.addUIComponentToUpdateByAjax(popupAction) ;
@@ -284,7 +284,7 @@ public class UIJCRExplorer extends UIContainer {
   public LinkedList<ClipboardCommand> getAllClipBoard() { return clipboards_ ;}
   
   public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)RequestContext.getCurrentInstance() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;

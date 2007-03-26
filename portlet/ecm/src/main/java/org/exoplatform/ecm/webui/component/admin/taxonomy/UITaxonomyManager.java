@@ -8,7 +8,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.services.cms.categories.CategoriesService;
-import org.exoplatform.webui.application.ApplicationMessage;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;

@@ -9,7 +9,7 @@ import java.util.List;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl;
-import org.exoplatform.webui.application.ApplicationMessage;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormInputSet;
 import org.exoplatform.webui.exception.MessageException;

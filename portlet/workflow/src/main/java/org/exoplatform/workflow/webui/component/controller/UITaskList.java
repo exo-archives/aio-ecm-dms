@@ -17,7 +17,7 @@ import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
@@ -70,7 +70,7 @@ public class UITaskList extends UIContainer {
   }
 
   public List<Task> getTasks() throws Exception {
-    PortletRequestContext pcontext = (PortletRequestContext)RequestContext.getCurrentInstance() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     String remoteUser = pcontext.getRemoteUser();
     if (remoteUser == null) remoteUser = "exoadmin"; 
     List<Task> unsortedTasks = workflowServiceContainer.getAllTasks(remoteUser);

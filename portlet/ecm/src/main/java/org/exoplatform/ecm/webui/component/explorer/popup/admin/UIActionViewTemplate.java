@@ -10,7 +10,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 
@@ -46,7 +46,7 @@ public class UIActionViewTemplate extends UIContainer {
   public String getTemplate() { return getViewTemplatePath() ;}
 
   @SuppressWarnings("unused")
-  public ResourceResolver getTemplateResourceResolver(RequestContext context, String template) {
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
 

@@ -19,7 +19,7 @@ import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.portletcontainer.ExoPortletRequest;
 import org.exoplatform.services.ticket.TicketCommand;
 import org.exoplatform.services.ticket.TicketService;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormDateTimeInput;
 import org.exoplatform.webui.component.UIFormStringInput;
@@ -173,7 +173,7 @@ public class UITicketForm extends UIForm implements UIPopupComponent {
     }
 
     public String getUrl(String ticketId,String portalId) throws Exception {    
-      RequestContext context = RequestContext.getCurrentInstance() ;
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
       ExoPortletRequest request = (ExoPortletRequest) context.getRequest();
       String hostName = request.getServerName() ;
       String port = Integer.toString(request.getServerPort()) ;

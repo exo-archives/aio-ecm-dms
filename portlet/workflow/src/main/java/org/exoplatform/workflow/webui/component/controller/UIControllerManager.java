@@ -13,7 +13,7 @@ import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIGrid;
@@ -48,7 +48,7 @@ public class UIControllerManager extends UIContainer {
     uiBPDefinitionGrid.configure("id", BPDEFINITION_BEAN_FIELD, ACTION) ;
   }
 
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     Locale locale = getAncestorOfType(UIApplication.class).getLocale() ;
     WorkflowFormsService workflowFormsService = getApplicationComponent(WorkflowFormsService.class) ;
     List<Process> processes = service_.getProcesses() ;

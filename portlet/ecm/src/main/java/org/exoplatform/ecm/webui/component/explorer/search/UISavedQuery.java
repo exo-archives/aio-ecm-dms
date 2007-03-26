@@ -27,8 +27,8 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
-import org.exoplatform.webui.application.ApplicationMessage;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPageIterator;
@@ -83,7 +83,7 @@ public class UISavedQuery extends UIContainer {
   
   public boolean hasSharedQueries() throws Exception {
     OrganizationService organizationService = getApplicationComponent(OrganizationService.class) ;
-    RequestContext context = RequestContext.getCurrentInstance() ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     String userName = context.getRemoteUser() ;
     List<String> roles = new ArrayList<String>() ;

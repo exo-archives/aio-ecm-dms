@@ -12,8 +12,8 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
-import org.exoplatform.webui.application.ApplicationMessage;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -60,7 +60,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
   public void setWatchNode(Node node) { watchNode_ = node ; }
   
   public String getUserName() { 
-    RequestContext context = RequestContext.getCurrentInstance() ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     return context.getRemoteUser() ; 
   }
   

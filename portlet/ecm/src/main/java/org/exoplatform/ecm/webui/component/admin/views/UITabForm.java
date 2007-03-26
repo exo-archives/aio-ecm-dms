@@ -10,8 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
-import org.exoplatform.webui.application.ApplicationMessage;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -42,7 +42,7 @@ public class UITabForm extends UIFormInputSetWithAction {
     setActions(new String[]{"Save", "Reset"}, null) ;
   }
   
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     super.processRender(context) ;
   }
   

@@ -7,7 +7,7 @@ package org.exoplatform.ecm.webui.component;
 import java.io.Writer;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIFormInputBase;
 
 /**
@@ -39,13 +39,13 @@ public class UIFormWYSIWYGInput extends UIFormInputBase<String> {
   }
   
   @SuppressWarnings("unused")
-  public void decode(Object input, RequestContext context) throws Exception {
+  public void decode(Object input, WebuiRequestContext context) throws Exception {
     value_ = (String) input;
     if(value_ != null && value_.length() == 0) value_ = null ;
   }
   
 // @TODO portalName not used 
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
     Writer w =  context.getWriter() ;
     if (value_ == null) value_ = "" ;

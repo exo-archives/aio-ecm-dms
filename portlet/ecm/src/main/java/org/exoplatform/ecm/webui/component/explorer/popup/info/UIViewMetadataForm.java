@@ -17,7 +17,7 @@ import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.templates.groovy.ResourceResolver;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIFormDateTimeInput;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -70,7 +70,7 @@ public class UIViewMetadataForm extends DialogFormFields {
   public String getTemplate() { return getDialogTemplatePath() ; }
   
   @SuppressWarnings("unused")
-  public ResourceResolver getTemplateResourceResolver(RequestContext context, String template) {
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
 

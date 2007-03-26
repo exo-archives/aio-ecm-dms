@@ -7,7 +7,7 @@ package org.exoplatform.ecm.webui.component;
 import java.util.HashMap;
 import java.util.List;
 
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormInputSet;
@@ -36,7 +36,7 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
     setComponentConfig(getClass(), null) ;  
   }
   
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     super.processRender(context) ;
   }
 

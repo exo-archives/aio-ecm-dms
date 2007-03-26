@@ -18,7 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.webui.application.ApplicationMessage;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;

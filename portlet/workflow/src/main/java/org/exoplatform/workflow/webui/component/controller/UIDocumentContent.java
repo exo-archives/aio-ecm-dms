@@ -16,7 +16,7 @@ import javax.jcr.Value;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.templates.groovy.ResourceResolver;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.workflow.webui.component.ECMViewComponent;
@@ -55,7 +55,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     return temp ;
   }
   
-  public ResourceResolver getTemplateResourceResolver(RequestContext context, String template) {
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     UITask task = getAncestorOfType(UITaskManager.class).getChild(UITask.class) ;
     try {
       if((task.isView() && isNodeTypeSupported()) || task.isCreatedOrUpdated()) {

@@ -13,8 +13,8 @@ import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.webui.application.ApplicationMessage;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
@@ -51,7 +51,7 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
     setComponentConfig(getClass(), null) ;
   }  
   
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     super.processRender(context) ;
   }
   

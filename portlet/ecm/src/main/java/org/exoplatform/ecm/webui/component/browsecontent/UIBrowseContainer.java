@@ -34,7 +34,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.templates.groovy.ResourceResolver;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPageIterator;
@@ -88,7 +88,7 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)RequestContext.getCurrentInstance() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
@@ -134,7 +134,7 @@ public class UIBrowseContainer extends UIContainer {
   public String getTemplate() {return templatePath_ ; }
 
   @SuppressWarnings("unused")
-  public ResourceResolver getTemplateResourceResolver(RequestContext context, String template) {
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
     return jcrTemplateResourceResolver_ ;
   }

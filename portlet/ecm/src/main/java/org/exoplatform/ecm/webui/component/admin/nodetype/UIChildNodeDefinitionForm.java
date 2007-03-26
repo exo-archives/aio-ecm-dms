@@ -13,8 +13,8 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.NodeDefinitionValue;
-import org.exoplatform.webui.application.ApplicationMessage;
-import org.exoplatform.webui.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
@@ -66,7 +66,7 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormStringInput(REQUIRED_PRIMARY_TYPE, REQUIRED_PRIMARY_TYPE, null)) ;
   }
   
-  public void processRender(RequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     super.processRender(context) ;
   }
   
