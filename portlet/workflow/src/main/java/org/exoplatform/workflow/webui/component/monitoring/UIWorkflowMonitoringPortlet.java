@@ -22,7 +22,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 public class UIWorkflowMonitoringPortlet extends UIPortletApplication {  
   public UIWorkflowMonitoringPortlet() throws Exception {
     addChild(UIMonitorManager.class, null, null) ;
-    UIPopupWindow popup = addChild(UIPopupWindow.class, null, null) ;
+    UIPopupWindow popup = addChild(UIPopupWindow.class, null, "MonitoringPopup") ;
     popup.setUIComponent(createUIComponent(UIProcessDetail.class, null, null)) ;
   }
 }
