@@ -33,6 +33,7 @@ import org.exoplatform.webui.event.Event.Phase;
         @EventConfig( listeners = UIViewFormTabPane.DeleteTabActionListener.class),
         @EventConfig( listeners = UIViewFormTabPane.ChangeVersionActionListener.class),
         @EventConfig( listeners = UIViewFormTabPane.CancelActionListener.class, phase = Phase.DECODE),
+        @EventConfig( listeners = UIViewFormTabPane.CloseActionListener.class, phase = Phase.DECODE),
         @EventConfig( listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE)
       }
 )
@@ -80,6 +81,18 @@ public class UIViewFormTabPane extends UIFormTabPane {
   }
 
   static  public class CancelActionListener extends EventListener<UIViewFormTabPane> {
+    public void execute(Event<UIViewFormTabPane> event) throws Exception {
+      UIViewFormTabPane uiViewTabPane = event.getSource();      
+      uiViewTabPane.uiTabForm.refresh(true) ;
+      uiViewTabPane.uiViewForm.refresh(true) ;
+      uiViewTabPane.removeChildById(POPUP_PERMISSION) ;
+      UIViewContainer uiViewContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
+      uiViewContainer.removeChild(UIPopupWindow.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
+    }
+  }
+  
+  static  public class CloseActionListener extends EventListener<UIViewFormTabPane> {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();      
       uiViewTabPane.uiTabForm.refresh(true) ;

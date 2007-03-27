@@ -179,7 +179,7 @@ public class UINodeTypeList extends UIComponentDecorator {
         }
         if(tab.getId().equals(UINodeTypeForm.NODETYPE_DEFINITION)) {
           tab.setRendered(true) ;
-          tab.setActions(new String[] {UINodeTypeForm.ACTION_CANCEL}, null) ;
+          tab.setActions(new String[] {"Close"}, null) ;
         } else {
           tab.setRendered(false) ;
           tab.setActions(null, null) ;

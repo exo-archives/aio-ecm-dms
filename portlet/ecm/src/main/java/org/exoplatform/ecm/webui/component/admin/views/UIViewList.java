@@ -134,7 +134,7 @@ public class UIViewList extends UIGrid {
       uiViewForm.refresh(false) ;
       uiViewForm.update(viewNode, true, null) ;
       uiViewForm.setActionInfo(UIViewForm.FIELD_PERMISSION, null) ;
-      uiViewForm.setActions(new String[]{"Cancel"}, null) ;
+      uiViewForm.setActions(new String[]{"Close"}, null) ;
       uiViewTabPane.getChild(UITabForm.class).setActions(null, null) ;
       uiViewTabPane.setRenderedChild(UIViewForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;

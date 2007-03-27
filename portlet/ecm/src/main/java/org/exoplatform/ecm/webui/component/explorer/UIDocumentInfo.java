@@ -121,6 +121,12 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
+//  public String getWebDAVServerPrefix() throws Exception{    
+//    PortletRequest request = (PortletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest() ;
+//    return request.getScheme() + "://" + request.getServerName() + ":" +
+//    String.format("%s", request.getServerPort()) ;
+//  }
+  
   public Node getViewNode(String nodeType) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getNode(nodeType) ;
   }
