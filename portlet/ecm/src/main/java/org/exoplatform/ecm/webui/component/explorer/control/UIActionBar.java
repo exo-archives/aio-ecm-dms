@@ -414,27 +414,26 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      if(templateService.isManagedNodeType(nodeType.getName())) {
-        UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-        uiPopupAction.activate(UIMultiLanguageManager.class, null,700, 550) ;
-        UIMultiLanguageManager uiMultiManager = 
-          uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
-        UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
-        if(nodeType.getName().equals(NT_FILE)) {
-          String mimeType = uiJCRExplorer.getCurrentNode().getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
-          if(mimeType.startsWith("text")) {
-            uiAddContainer.setComponentDisplay(nodeType.getName()) ;
-          } else {
-            uiAddContainer.addChild(UIUploadForm.class, null, null) ;
-          }
-        } else {
-          uiAddContainer.setComponentDisplay(nodeType.getName()) ;
-        }
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      if(!templateService.isManagedNodeType(nodeType.getName())) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null)) ;
         return ;
-      } 
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null)) ;
-      return ;
+      }
+      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      uiPopupAction.activate(UIMultiLanguageManager.class, null,700, 550) ;
+      UIMultiLanguageManager uiMultiManager = 
+        uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
+      UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
+      if(nodeType.getName().equals(NT_FILE)) {
+        String mimeType = uiJCRExplorer.getCurrentNode().getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
+        if(mimeType.startsWith("text")) {
+          uiAddContainer.setComponentDisplay(nodeType.getName()) ;
+        } else {
+          uiAddContainer.addChild(UIUploadForm.class, null, null) ;
+        }
+      } else {
+        uiAddContainer.setComponentDisplay(nodeType.getName()) ;
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
   

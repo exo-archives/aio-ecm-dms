@@ -8,10 +8,13 @@ import java.io.ByteArrayInputStream;
 import java.util.GregorianCalendar;
 
 import javax.jcr.Node;
+import javax.jcr.Value;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -53,6 +56,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
   final public static String JCR_MIMETYPE = "jcr:mimeType" ;
   final public static String JCR_LASTMODIFIED = "jcr:lastModified" ;
   
+  private boolean isMultiLanguage_ = false ;
+  private String language_ = null ;
+  
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
@@ -61,13 +67,22 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     addUIFormInput(uiInput) ;
   }
   
+  public void setIsMultiLanguage(boolean isMultiLanguage, String language) { 
+    isMultiLanguage_ = isMultiLanguage ;
+    language_ = language ;
+  }
+  
+  private boolean isMultiLanguage() { return isMultiLanguage_ ; }
+  
+  private String getLanguageSelected() { return language_ ; }
+  
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
       UIUploadForm uiForm = event.getSource();
-      
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
       String fileName = input.getUploadResource().getFileName() ;
+      MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
         return ;
@@ -78,33 +93,46 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       String mimeType = input.getUploadResource().getMimeType() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       Node selectedNode = uiExplorer.getCurrentNode();
+      
       boolean isExist = selectedNode.hasNode(name) ;
       try {
         selectedNode.getSession().checkPermission(selectedNode.getPath(), "add_node,set_property");
-        if(!isExist) {
-          Node node = selectedNode.addNode(name, NT_FILE);
-          Node contentNode = node.addNode(JCR_CONTENT, NT_RESOURCE);
-          contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
-          contentNode.setProperty(JCR_MIMETYPE, mimeType);
-          contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-          if(!node.isNodeType("mix:i18n")) node.addMixin("mix:i18n") ;
-          if(!node.isNodeType("mix:votable")) node.addMixin("mix:votable") ;
-          if(!node.isNodeType("mix:commentable")) node.addMixin("mix:commentable") ;
+        if(uiForm.isMultiLanguage()) {
+          ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
+          Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
+          multiLangService.addFileLanguage(selectedNode, contentValue, uiForm.getLanguageSelected(), false) ;
+          uiExplorer.setIsHidePopup(true) ;
+          UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
+          UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
+          uiMultiForm.updateSelect(uiExplorer.getCurrentNode()) ;
+          uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
-          Node node = selectedNode.getNode(name) ;
-          if(!node.isNodeType(MIX_VERSION)) {
-            node.addMixin(MIX_VERSION) ;            
-            node.save() ;            
+          if(!isExist) {
+            Node node = selectedNode.addNode(name, NT_FILE);
+            Node contentNode = node.addNode(JCR_CONTENT, NT_RESOURCE);
+            contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
+            contentNode.setProperty(JCR_MIMETYPE, mimeType);
+            contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
+            if(!node.isNodeType("mix:i18n")) node.addMixin("mix:i18n") ;
+            if(!node.isNodeType("mix:votable")) node.addMixin("mix:votable") ;
+            if(!node.isNodeType("mix:commentable")) node.addMixin("mix:commentable") ;
+          } else {
+            Node node = selectedNode.getNode(name) ;
+            if(!node.isNodeType(MIX_VERSION)) {
+              node.addMixin(MIX_VERSION) ;            
+              node.save() ;            
+              node.checkin() ;
+              node.checkout() ;
+            }
+            Node contentNode = node.getNode(JCR_CONTENT);
+            contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
+            contentNode.setProperty(JCR_MIMETYPE, mimeType);
+            contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
+            node.save() ;       
             node.checkin() ;
             node.checkout() ;
           }
-          Node contentNode = node.getNode(JCR_CONTENT);
-          contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
-          contentNode.setProperty(JCR_MIMETYPE, mimeType);
-          contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-          node.save() ;       
-          node.checkin() ;
-          node.checkout() ;
         }
         uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);

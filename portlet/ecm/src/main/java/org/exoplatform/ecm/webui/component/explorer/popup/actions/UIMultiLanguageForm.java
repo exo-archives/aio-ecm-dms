@@ -12,6 +12,7 @@ import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -83,7 +84,12 @@ public class UIMultiLanguageForm extends UIForm {
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
       multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
-      uiExplorer.updateAjax(event) ;
+      if(uiExplorer.getCurrentNode().getPrimaryNodeType().getName().equals("nt:file")) {
+        UIPopupAction uiPopup = uiForm.getAncestorOfType(UIPopupAction.class) ;
+        uiPopup.deActivate() ;
+      } else {
+        uiExplorer.updateAjax(event) ;
+      }
     }
   }
   

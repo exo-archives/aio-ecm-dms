@@ -88,6 +88,9 @@ public class UILanguageTypeForm extends UIForm {
             uiDocumentForm.setPropertyNode(null) ;
           }
         }
+      } else {
+        UIUploadForm uiUploadForm =  uiContainer.getChild(UIUploadForm.class) ;
+        uiUploadForm.setIsMultiLanguage(true, selectedLanguage) ;
       }
       uiContainer.setRenderSibbling(UIAddLanguageContainer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
