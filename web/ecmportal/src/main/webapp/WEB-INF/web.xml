@@ -34,8 +34,7 @@
       <param-value>/WEB-INF/webui-configuration.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
-  </servlet>
-
+  </servlet>	
   <!--
   <servlet>
     <servlet-name>ProxyTicketReceptor</servlet-name>
@@ -48,6 +47,8 @@
   </servlet>
   -->
   <!-- ================================================================= -->
+  
+  
   <servlet-mapping>
     <servlet-name>portal</servlet-name>
     <url-pattern>/private/*</url-pattern>

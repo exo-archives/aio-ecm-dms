@@ -32,6 +32,16 @@
     <servlet-name>PortletWrapper</servlet-name>
     <servlet-class>org.exoplatform.services.portletcontainer.impl.servlet.ServletWrapper</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>rssservlet</servlet-name>
+    <servlet-class>org.exoplatform.ecm.jcr.RssServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>rssservlet</servlet-name>
+    <url-pattern>/rss/*</url-pattern>
+  </servlet-mapping>  
   <servlet-mapping>
     <servlet-name>PortletWrapper</servlet-name>
     <url-pattern>/PortletWrapper</url-pattern>

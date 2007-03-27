@@ -42,8 +42,8 @@ import com.totsp.xml.syndication.itunes.types.Duration;
 import com.totsp.xml.syndication.itunes.types.Subcategory;
 
 /**
- * @author Davide Dalle Carbonare
- * @mail   davide.dallecarbonare@eng.it
+ * @author Nguyen Quang Hung
+ * @mail   nguyenkequanghung@yahoo.com 
  */
 
 public class RSSServiceImpl implements RSSService{
@@ -263,9 +263,18 @@ public class RSSServiceImpl implements RSSService{
         enclosureList.add(enc) ;
         entry.setEnclosures(enclosureList) ;
         entry.setLink(encUrl) ;
+        EntryInformation entryInfo = new EntryInformationImpl() ;
         description = new SyndContentImpl();
         description.setType("text/plain");
-        description.setValue(child.getProperty(DESCRIPTION).getString());
+        if(child.hasProperty(DESCRIPTION)){
+          description.setValue(child.getProperty(DESCRIPTION).getString());
+          entryInfo.setSubtitle(child.getProperty(DESCRIPTION).getString()) ;
+          entryInfo.setSummary(child.getProperty(DESCRIPTION).getString()) ;
+        }else{
+          description.setValue("");
+          entryInfo.setSubtitle("") ;
+          entryInfo.setSummary("") ;
+        }        
         entry.setDescription(description);
         try{
           Date pdate = child.getProperty(PUBLISHED_DATE).getDate().getTime() ;
@@ -273,39 +282,41 @@ public class RSSServiceImpl implements RSSService{
         }catch (Exception e) {
           entry.setPublishedDate(new Date()) ;
         }
-        EntryInformation entryInfo = new EntryInformationImpl() ;
-        entryInfo.setAuthor(child.getProperty(AUTHOR).getString()) ;
-        Category itemCat = new Category() ;
-        String itemCategories = child.getProperty(CATEGORY).getString() ;
-        if(itemCategories != null && itemCategories.length() > 0) {
-          if(itemCategories.indexOf(",") > -1) {
-            String[] arrCategories = itemCategories.split(",") ;
-            itemCat.setName(arrCategories[0].trim()) ;
-            for(int i = 1; i < arrCategories.length; i ++) {
-              Subcategory subCat = new Subcategory() ;
-              subCat.setName(arrCategories[i].trim()) ;
-              itemCat.setSubcategory(subCat) ;
-            }
-          }else{
-            itemCat.setName(itemCategories) ;          
-          }
-          entryInfo.setCategory(itemCat) ;
-        }
         
+        if(child.hasProperty(AUTHOR)) entryInfo.setAuthor(child.getProperty(AUTHOR).getString()) ;
+        else entryInfo.setAuthor("") ;
+        if(child.hasProperty(CATEGORY)) {
+          Category itemCat = new Category() ;
+          String itemCategories = child.getProperty(CATEGORY).getString() ;
+          if(itemCategories != null && itemCategories.length() > 0) {
+            if(itemCategories.indexOf(",") > -1) {
+              String[] arrCategories = itemCategories.split(",") ;
+              itemCat.setName(arrCategories[0].trim()) ;
+              for(int i = 1; i < arrCategories.length; i ++) {
+                Subcategory subCat = new Subcategory() ;
+                subCat.setName(arrCategories[i].trim()) ;
+                itemCat.setSubcategory(subCat) ;
+              }
+            }else{
+              itemCat.setName(itemCategories) ;          
+            }
+            entryInfo.setCategory(itemCat) ;
+          }
+        }
         Duration dura = new Duration() ;
         dura.setMilliseconds(enc.getLength()) ;
         entryInfo.setDuration(dura) ;
-        if(child.getProperty(EXPLICIT).getString().equals("no"))
-          entryInfo.setExplicit(false) ;
-        else
-          entryInfo.setExplicit(true) ;
-        String keys = child.getProperty(KEYWORDS).getString() ;
-        if(keys != null) {
-          String[] arrKeywords = keys.split(" ") ;
-          entryInfo.setKeywords(arrKeywords) ;
+        if(child.getProperty(EXPLICIT).getString().equals("no")) entryInfo.setExplicit(false) ;
+        else entryInfo.setExplicit(true) ;
+        if(child.hasProperty(KEYWORDS)) {
+          String keys = child.getProperty(KEYWORDS).getString() ;
+          if(keys != null) {
+            String[] arrKeywords = keys.split(" ") ;
+            entryInfo.setKeywords(arrKeywords) ;
+          }
+        }else {
+          entryInfo.setKeywords(new String[] {}) ;
         }
-        entryInfo.setSubtitle(child.getProperty(DESCRIPTION).getString()) ;
-        entryInfo.setSummary(child.getProperty(DESCRIPTION).getString()) ;
         List<EntryInformation> entryList = new ArrayList<EntryInformation>() ;
         entryList.add(entryInfo) ;
         entry.setModules(entryList) ;

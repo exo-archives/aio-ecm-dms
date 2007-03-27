@@ -120,7 +120,6 @@ public class Utils {
   @SuppressWarnings("unchecked")
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
-    Object value = null;
     for (int i = 0; i < inputs.size(); i++) {
       JcrInputProperty property ;
       if(inputs.get(i) instanceof UIFormMultiValueInputSet) {
@@ -131,13 +130,15 @@ public class Utils {
         if(property != null) property.setValue(multiValue) ;
       } else {
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
-        if (input instanceof UIFormUploadInput) {
-          value = ((UIFormUploadInput) input).getValue();
-        } else {
-          value = input.getValue();
-        }
         property = (JcrInputProperty) properties.get(input.getName());
-        if(property != null) property.setValue(value);
+        if(property != null) {
+          if (input instanceof UIFormUploadInput) {
+            byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
+            property.setValue(content);            
+          } else {
+            property.setValue(input.getValue());            
+          }
+        }
       }
     }
     Iterator iter = properties.values().iterator() ;
