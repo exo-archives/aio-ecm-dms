@@ -19,10 +19,11 @@
   }
   def content = uicomponent.getContent() ;                  
   def subCategoryList = content.get("subCategoryList") ;
-  def subDocumentList = content.get("subDocumentList") ;
+  def subDocumentList =  uicomponent.getCurrentList() ;
   boolean isShowTagmap = uicomponent.isShowTagmap() ;
   boolean isShowAllDoc = uicomponent.isShowAllDocument() ;
   boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
+  int itemPerBlock = uicomponent.getRowPerBlock() ;  
   if(isShowDocByTag) { 
   	isShowAllDoc = true ;
   	subDocumentList = uicomponent.getCurrentList() ;
@@ -31,7 +32,7 @@
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">  
 	<%uicomponent.renderChild(UIToolBar.class);%>
-	<!--Begin TagMap-->
+	<%/*Begin TagMap*/%>
   <%if(isShowTagmap) {
       def taglist = uicomponent.getTagLink() ;
       def tagStyle = uicomponent.getTagStyle() ;  
@@ -59,7 +60,7 @@
         </div>  
       </div>  
   	<%}%>
-  	<!--End TagMap-->
+  	<%/*End TagMap*/%>
 	<%
 	 String style = "" ;
 	 if(uicomponent.isShowSearchForm()) {uicomponent.renderChild(UISearchController.class); 
@@ -70,9 +71,9 @@
 	   		if (rootNode.equals("/"))  rootNode = "Root" ;
 	   		else  rootNode =  uicomponent.getRootNode().getName() ;
 	%>
-			  <!--Begin CategoryTree-->
-			   <div class="UICategoryTree">
-				  <div class="SubCategoryTree">
+			  <%/*Begin CategoryTree*/%>
+			  <div class="UICategoryTree">
+					<div class="SubCategoryTree">
 						<div class="TitleCategoryTree">
 							<div class="CategoryTreeIcon SmallNote24x24Icon"><span></span></div>
 							<div class="TiteLabel">Category</div>
@@ -94,7 +95,7 @@
 						</div>
 					</div>
 				</div>
-				<!--End CategoryTree-->
+				<%/*End CategoryTree*/%>
  	<%}%>
   <div style="$style" >
     <div style="margin: auto; width: 99%;">
@@ -111,7 +112,7 @@
 					  </div>  
 					</div>  
 				 <%}%>
-				 <!--Begin UIEventViewer-->
+				 <%/*Begin UIEventViewer*/%>
 			  <div class="UIEventViewer">
 			    <div class="EventContent">
 			      <%
@@ -173,7 +174,7 @@
 			      <a href="$moreActionLink">$moreLabel</a>
 			    </div>
 			  </div>  
-			  <!--End UIEventViewer-->
+			  <%/*End UIEventViewer*/%>
 			  <%if(isShowAllDoc) {%>
 			        <div class="UIAction" style="margin-top:5px;"> 
 			          <div class="ActionContainer">
@@ -192,7 +193,7 @@
 			          </div>
 			        </div>
 			    <%} else {%>
-        <!--Begin UIContentView -->
+        <%/*Begin UIContentView*/%>
 	      <div class="UIContentView">
 					<%
 					  if (!subCategoryList.isEmpty()) {
@@ -252,6 +253,15 @@
 				              isRight = !isRight ;
 									  }
 									  println "<div style=\"clear: both\"><span></span></div>" ;
+									  %>
+									  <div class="ViewMoreDocument">
+	                    <%
+	                      String label = "More..." ;
+	                      if(docChilds.size() < itemPerBlock) label = "" ;
+	                    %>
+	                    <a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">$label</a>
+	                  </div>
+									 <%
 									 } else {%>
 								   <div class="NoneDocumentMessage">
 								  	<div class="MessageContainer">
@@ -267,7 +277,7 @@
 						<%}
 					} %>
 				 </div>
-	      <!--End UIContentView -->
+	      <%/*End UIContentView*/%>
 	      <%}%>
 	      <div style="clear: both;"><span></span></div>
 		  </div>

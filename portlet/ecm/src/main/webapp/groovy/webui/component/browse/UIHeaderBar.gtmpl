@@ -1,12 +1,3 @@
-<%
-  /**
-   * Created by The eXo Platform SARL
-   * Author : pham tuan
-   *          phamtuanchip@gmail.com
-   * Dec 14, 2006
-   * version: $Id$   
-   */
-%>
 <div class="UIHeaderBar" id="$uicomponent.id">
   <div class="IconFrame">
     <%

@@ -77,9 +77,9 @@ public class UIDocumentList extends UIComponentDecorator {
       UIBrowseContainer uiContainer = uiList.getParent() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;
-      //if(nodePath.equals(uiDocumentDetail.getNode().getPath())) return ;
       Node docNode = uiContainer.getNodeByPath(nodePath) ;
       uiDocumentDetail.setNode(docNode) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentDetail) ;
     }
   }
 }

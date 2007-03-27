@@ -1,12 +1,4 @@
 <%
-  /**
-   * Created by The eXo Platform SARL
-   * Author : pham tuan
-   *          phamtuanchip@gmail.com
-   * Dec 14, 2006
-   * version: $Id$   
-   */
-
   import java.util.List;
   String actionShowHidden = uicomponent.event("ShowHidden") ;
   Boolean isEnablePath =  uicomponent.enablePath() ;

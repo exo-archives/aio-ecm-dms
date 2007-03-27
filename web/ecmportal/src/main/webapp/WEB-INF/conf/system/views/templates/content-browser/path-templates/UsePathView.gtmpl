@@ -29,7 +29,7 @@
     int numbOfDocument = subDocumentList.size() ;
     int numbOfSubCategory = subCategoryList.size() ;
   %>
-  <!--Begin UICBNavigation-->
+  <%/*Begin UICBNavigation*/%>
   <div class="UICBNavigation">
     <div class="CBLeftNavigation">
       <div class="CBRightNavigation">
@@ -130,8 +130,8 @@
       </div>
     </div>
   </div>
-  <!--End UICBNavigation-->
-  <!--Begin TagMap-->
+  <%/*End UICBNavigation*/%>
+  <%/*Begin TagMap*/%>
   <%if(isShowTagmap) {
       def taglist = uicomponent.getTagLink() ;
       def tagStyle = uicomponent.getTagStyle() ;  
@@ -159,7 +159,7 @@
         </div>  
       </div>  
   <%}%>
-  <!--End TagMap-->  
+  <%/*End TagMap*/%>  
   <%if(hasNoDocument){%>
     <div class="UISubContent">
       <div class ="UIDocumentContentInfo">
@@ -172,7 +172,7 @@
       </div>  
     </div>  
   <%}%>
-  <!--Begin UIEventViewer-->
+  <%/*Begin UIEventViewer*/%>
   <div class="UIEventViewer">
     <div class="EventContent">
       <%
@@ -234,7 +234,7 @@
       <a href="$moreActionLink">$moreLabel</a>
     </div>
   </div>  
-  <!--End UIEventViewer-->
+  <%/*End UIEventViewer*/%>
   <%if(isShowAllDoc) {%>
         <div class="UIAction" style="margin-top:5px;"> 
           <div class="ActionContainer">
@@ -253,7 +253,7 @@
           </div>
         </div>
     <%} else {%>
-        <!--Begin UISubContent-->    
+        <%/*Begin UISubContent*/%>    
         <div class="UISubContent" >
           <% 
             isFloatRight = false ;
@@ -345,7 +345,7 @@
           %>
           <div style="clear: both;"><span></span></div>
         </div> 
-        <!--End UISubContent-->   
+        <%/*End UISubContent*/%>   
   <%  } 
     }
   %>

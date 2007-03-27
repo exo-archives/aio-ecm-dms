@@ -1,7 +1,7 @@
 <%
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
-	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail; 
-	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentList; 
+	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 
+	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentList ; 
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
@@ -10,13 +10,10 @@
   	if(uicomponent.isShowSearchForm()) {
   		uicomponent.renderChild(UISearchController.class);
   	} else {
-  %>
-		<!--BEGIN Document Detail -->
-		<%
 		  uicomponent.renderChild(UIDocumentDetail.class) ;
 		  if(uicomponent.isShowDocumentList()) { 
 		    uicomponent.renderChild(UIDocumentList.class) ;
-		%>
+	%>
 				<div class="UIAction" style="margin-top:5px;"> 
 					<div class="ActionContainer">
 				    <div class="ActionButton">
@@ -33,7 +30,7 @@
 						</div>
 				  </div>
 			  </div>
-		<%}%>
-		<!--End Document Detail -->
-	<%}%>
-<div>
+	<%	}
+		}
+	%>
+</div>

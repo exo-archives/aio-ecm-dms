@@ -1,6 +1,6 @@
 <%import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;%>
 <div class="UIBrowseContainer" id="$uicomponent.id">
-  <!--Begin TagMap-->
+  <%/*Begin TagMap*/%>
   <%
     if(uicomponent.isShowTagmap()) {
       def taglist = uicomponent.getTagLink() ;
@@ -29,7 +29,7 @@
         </div>  
       </div>  
   <%}%>
-  <!--End TagMap-->
+  <%/*End TagMap*/%>
   <%
     def subDocumentList = uicomponent.getCurrentList() ;
     int numbOfDocument = subDocumentList.size() ;
@@ -46,7 +46,7 @@
 		</div>	
 	<%}%>
 	
-  <!--Begin UIEventViewer-->
+  <%/*Begin UIEventViewer*/%>
 	<div class="UIEventViewer">
 		<div class="EventContent">
 	  	<%
@@ -95,5 +95,5 @@
 	</div>
 	<%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
 	<div style="clear: both"><span></span></div>
-  <!--End UIEventViewer-->
+  <%/*End UIEventViewer*/%>
 </div>

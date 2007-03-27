@@ -110,7 +110,7 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
-      if(uiDocument.isRendered()) {
+      if(container.isShowDocumentDetail()) {
         if(uiDocument.getNode().isNodeType("mix:votable")) {
           UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
           UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
@@ -125,7 +125,7 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
-      if (uiDocument.isRendered()) {
+      if (container.isShowDocumentDetail()) {
         if(uiDocument.getNode().isNodeType("mix:commentable")) {
           UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
           UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
