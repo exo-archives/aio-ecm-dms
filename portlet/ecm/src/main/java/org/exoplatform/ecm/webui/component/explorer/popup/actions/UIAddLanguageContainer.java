@@ -19,7 +19,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 @ComponentConfig (lifecycle = UIContainerLifecycle.class) 
 public class UIAddLanguageContainer extends UIContainer {
 
-  public String nodeTypeName_ ;
+  public String nodeTypeName_ = null;
   
   public UIAddLanguageContainer() throws Exception {
     addChild(UILanguageTypeForm.class, null, null) ;

@@ -67,24 +67,26 @@ public class UILanguageTypeForm extends UIForm {
       if(selectedLanguage == null || selectedLanguage.length() < 1) return;
       UIJCRExplorer uiExplorer = uiTypeForm.getAncestorOfType(UIJCRExplorer.class);
       UIAddLanguageContainer uiContainer = uiTypeForm.getParent() ;
-      UIDocumentForm uiDocumentForm = uiContainer.getChild(UIDocumentForm.class) ;
-      uiDocumentForm.getChildren().clear() ;
-      uiDocumentForm.setTemplateNode(uiContainer.nodeTypeName_) ;
-      uiDocumentForm.setIsNotEditNode(true) ;
-      uiDocumentForm.setIsMultiLanguage(true) ;
-      Node node = uiExplorer.getCurrentNode() ;
-      uiDocumentForm.setNode(node) ;
-      if(uiContainer.nodeTypeName_.equals("nt:file")) uiDocumentForm.setContentNode(node) ;
-      uiDocumentForm.setSelectedLanguage(selectedLanguage) ;
-      if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  
-        uiDocumentForm.setPropertyNode(node) ;
-      } else {
-        if(node.hasNode("languages/"+ selectedLanguage)){
-          uiDocumentForm.getChildren().clear() ;
-          Node languageNode = multiLanguageService.getLanguage(node, selectedLanguage) ;
-          uiDocumentForm.setPropertyNode(languageNode) ;
+      if(uiContainer.nodeTypeName_ != null) {
+        UIDocumentForm uiDocumentForm = uiContainer.getChild(UIDocumentForm.class) ;
+        uiDocumentForm.getChildren().clear() ;
+        uiDocumentForm.setTemplateNode(uiContainer.nodeTypeName_) ;
+        uiDocumentForm.setIsNotEditNode(true) ;
+        uiDocumentForm.setIsMultiLanguage(true) ;
+        Node node = uiExplorer.getCurrentNode() ;
+        uiDocumentForm.setNode(node) ;
+        if(uiContainer.nodeTypeName_.equals("nt:file")) uiDocumentForm.setContentNode(node) ;
+        uiDocumentForm.setSelectedLanguage(selectedLanguage) ;
+        if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  
+          uiDocumentForm.setPropertyNode(node) ;
         } else {
-          uiDocumentForm.setPropertyNode(null) ;
+          if(node.hasNode("languages/"+ selectedLanguage)){
+            uiDocumentForm.getChildren().clear() ;
+            Node languageNode = multiLanguageService.getLanguage(node, selectedLanguage) ;
+            uiDocumentForm.setPropertyNode(languageNode) ;
+          } else {
+            uiDocumentForm.setPropertyNode(null) ;
+          }
         }
       }
       uiContainer.setRenderSibbling(UIAddLanguageContainer.class) ;

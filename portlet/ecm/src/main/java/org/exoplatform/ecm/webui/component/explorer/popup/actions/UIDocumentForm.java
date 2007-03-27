@@ -13,6 +13,8 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.Workspace;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -60,6 +62,11 @@ import org.exoplatform.webui.event.Event.Phase;
 public class UIDocumentForm extends DialogFormFields implements UIPopupComponent {
 
   final static public String LANGUAGES = "languages" ;
+  final static public String  JCRCONTENT = "jcr:content";
+  final static public String  JCRMIMETYPE = "jcr:mimeType";
+  final static public String  NT_FILE = "nt:file";
+  final static public String  JCRDATA = "jcr:data";
+  final static public String  NTUNSTRUCTURED = "nt:unstructured";
   
   private String documentType_ ;
   private boolean isAddNew_ = false ; 
@@ -129,9 +136,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   
   public void editDocument(Node editNode) throws Exception {
     String documentType = editNode.getProperty("jcr:primaryType").getString();
-    if("nt:file".equals(documentType)) {
-      Node jcrContent = editNode.getNode("jcr:content") ;      
-      String mimeType = jcrContent.getProperty("jcr:mimeType").getString() ;
+    if(NT_FILE.equals(documentType)) {
+      Node jcrContent = editNode.getNode(JCRCONTENT) ;      
+      String mimeType = jcrContent.getProperty(JCRMIMETYPE).getString() ;
       if(!mimeType.startsWith("text")) {      
         setBinaryData(jcrContent.getProperty("jcr:data").getStream()) ;
       }
@@ -181,12 +188,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         inputProperties.put(rootPath,property) ;
       }     
       if(isEditing()) {
-        if("nt:file".equals(documentType_)) {
+        if(NT_FILE.equals(documentType_)) {
           JcrInputProperty jcrDataInput = new JcrInputProperty() ;
           jcrDataInput.setJcrPath("/node/jcr:content/jcr:data") ;
           jcrDataInput.setValue(getBinaryData()) ;
           inputProperties.put("/node/jcr:content/jcr:data",jcrDataInput) ;
-          Node jcrNode = homeNode.getNode(name).getNode("jcr:content") ; 
+          Node jcrNode = homeNode.getNode(name).getNode(JCRCONTENT) ; 
           setMultiValue(jcrNode, inputs, property, uiExplorer.getSession()) ;
         }
       }
@@ -200,8 +207,8 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         homeNode.getSession().save() ;
         Node newNode = homeNode.getNode(name) ;
         if(!newNode.isNodeType("mix:i18n")) newNode.addMixin("mix:i18n") ;
-        if(documentType_.equals("nt:file") && !isEditing()) {
-          setMultiValue(newNode.getNode("jcr:content"), inputs, property, uiExplorer.getSession()) ;
+        if(documentType_.equals(NT_FILE) && !isEditing()) {
+          setMultiValue(newNode.getNode(JCRCONTENT), inputs, property, uiExplorer.getSession()) ;
         }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);
@@ -225,25 +232,47 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     }
   }
   
+  @SuppressWarnings("unchecked")
   private void addLanguage(UIJCRExplorer uiExplorer) throws Exception {
     Node node = uiExplorer.getCurrentNode() ;
     Node languagesNode = null ;
     if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
-    else languagesNode = node.addNode(LANGUAGES) ;
+    else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
     Node languageNode = null ;
-    if(languagesNode.hasNode(getSelectedLanguage())) {
-      languageNode = languagesNode.getNode(getSelectedLanguage()) ;
+    Workspace ws = uiExplorer.getSession().getWorkspace() ;
+    
+    if(node.getPrimaryNodeType().getName().equals(NT_FILE)) { 
+      if(languagesNode.hasNode(getSelectedLanguage())) languageNode = languagesNode.getNode(getSelectedLanguage()) ;
+      else languageNode = languagesNode.addNode(getSelectedLanguage()) ;
+      Node jcrContent = node.getNode(JCRCONTENT) ;
+      node.save() ;
+      ws.copy(jcrContent.getPath(), languageNode.getPath() + "/" + jcrContent.getName()) ;
       for(UIComponent uiChild : getChildren()) {
-        if(!propertiesName_.get(uiChild.getName()).equals("/node")) {
+        if(propertiesName_.get(uiChild.getName()).equals(JCRDATA)) {
+          String value = ((UIFormInput) uiChild).getValue().toString() ;
+          languageNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;
+        }
+      }
+      NodeType[] mixins = node.getMixinNodeTypes() ;
+      for(NodeType mixin:mixins) {
+        languageNode.addMixin(mixin.getName()) ;            
+      }
+      node.save() ;
+    } else {
+      if(languagesNode.hasNode(getSelectedLanguage())) {
+        languageNode = languagesNode.getNode(getSelectedLanguage()) ;
+        for(UIComponent uiChild : getChildren()) {
+          if(!propertiesName_.get(uiChild.getName()).equals("/node")) {
+            String value = ((UIFormInput) uiChild).getValue().toString() ;
+            languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
+          }
+        }
+      } else {
+        languageNode = languagesNode.addNode(getSelectedLanguage()) ;
+        for(UIComponent uiChild : getChildren()) {
           String value = ((UIFormInput) uiChild).getValue().toString() ;
           languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
         }
-      }
-    } else {
-      languageNode = languagesNode.addNode(getSelectedLanguage()) ;
-      for(UIComponent uiChild : getChildren()) {
-        String value = ((UIFormInput) uiChild).getValue().toString() ;
-        languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
       }
     }
     if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;

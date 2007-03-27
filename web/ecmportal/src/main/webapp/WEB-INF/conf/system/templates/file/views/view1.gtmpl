@@ -103,7 +103,7 @@
 		    } else if(mime.startsWith("image")) {
 		 %>
 		      <div style="width:99.5%; text-align:center">
-					  <img src="/<%=uicomponent.getPortalName()%>}/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=originalNode.getPath()%>"/>
+					  <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
 				  </div>																					
 					<div class="ActionContainer">
 						<div class="ActionButtom">
@@ -123,7 +123,7 @@
 							<div class="ButtomLeft">
 								<div class="ButtomRight">
 									<div class="MiddleButtom">
-										<a href="/<%=uicomponent.getPortalName()%>/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=originalNode.getPath()%>">
+										<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
 											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
 										</a>
 									</div>
@@ -151,7 +151,7 @@
 							<div class="ButtomLeft">
 								<div class="ButtomRight">
 									<div class="MiddleButtom">
-										<a href="/<%=uicomponent.getPortalName()%>/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=originalNode.getPath()%>">
+										<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
 											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
 										</a>
 									</div>

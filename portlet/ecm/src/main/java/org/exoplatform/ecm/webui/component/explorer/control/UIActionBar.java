@@ -124,6 +124,9 @@ public class UIActionBar extends UIForm {
   private List<SelectItemOption<String>> tabOptions = new ArrayList<SelectItemOption<String>>() ;
   private List<String[]> tabs_ = new ArrayList<String[]>();
 
+  final static private String  JCRCONTENT = "jcr:content";
+  final static private String  JCRMIMETYPE = "jcr:mimeType";
+  final static private String  NT_FILE = "nt:file";
   final static private String FIELD_SELECT_TAB = "tabs" ;
   final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
   final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
@@ -417,7 +420,16 @@ public class UIActionBar extends UIForm {
         UIMultiLanguageManager uiMultiManager = 
           uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
         UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
-        uiAddContainer.setComponentDisplay(nodeType.getName()) ;
+        if(nodeType.getName().equals(NT_FILE)) {
+          String mimeType = uiJCRExplorer.getCurrentNode().getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
+          if(mimeType.startsWith("text")) {
+            uiAddContainer.setComponentDisplay(nodeType.getName()) ;
+          } else {
+            uiAddContainer.addChild(UIUploadForm.class, null, null) ;
+          }
+        } else {
+          uiAddContainer.setComponentDisplay(nodeType.getName()) ;
+        }
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       } 
@@ -482,7 +494,6 @@ public class UIActionBar extends UIForm {
       Preference pref = uiJCRExplorer.getPreference() ;
       if(uiJCRExplorer.getPreference().isJcrEnable()) pref.setJcrEnable(false) ;
       else pref.setJcrEnable(true) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiJCRExplorer.getChild(UIControl.class)) ;
     }
   }
 

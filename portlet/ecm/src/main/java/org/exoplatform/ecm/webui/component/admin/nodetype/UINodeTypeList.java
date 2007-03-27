@@ -140,7 +140,7 @@ public class UINodeTypeList extends UIComponentDecorator {
     public void execute(Event<UINodeTypeList> event) throws Exception {
       UINodeTypeList uiList = event.getSource() ;
       UINodeTypeManager uiManager = uiList.getParent() ;
-      uiManager.initPopup() ;
+      uiManager.initPopup(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -169,7 +169,7 @@ public class UINodeTypeList extends UIComponentDecorator {
       String nodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       NodeType nodeType = uiList.getNodeTypeByName(nodeName) ;
       UINodeTypeManager uiManager = uiList.getParent() ;
-      uiManager.initPopup() ;
+      uiManager.initPopup(true) ;
       UINodeTypeForm uiForm = uiManager.findFirstComponentOfType(UINodeTypeForm.class) ;
       uiForm.update(nodeType, true) ;
       for(UIComponent uiComp : uiForm.getChildren()) {
@@ -202,7 +202,7 @@ public class UINodeTypeList extends UIComponentDecorator {
       String nodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node draftNodeType = session.getRootNode().getNode(DRAFTNODETYPE + "/" + nodeName) ;
       UINodeTypeManager uiManager = uiNodeList.getParent() ;
-      uiManager.initPopup() ;
+      uiManager.initPopup(false) ;
       UINodeTypeForm uiForm = uiManager.findFirstComponentOfType(UINodeTypeForm.class) ;
       uiForm.refresh() ;
       uiForm.removeChildTabs(TAB_REMOVE) ;

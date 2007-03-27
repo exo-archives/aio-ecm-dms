@@ -8,7 +8,6 @@ import java.io.ByteArrayInputStream;
 import java.util.GregorianCalendar;
 
 import javax.jcr.Node;
-import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
@@ -88,38 +87,26 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
           contentNode.setProperty(JCR_MIMETYPE, mimeType);
           contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-          uiExplorer.getSession().save() ;
+          if(!node.isNodeType("mix:i18n")) node.addMixin("mix:i18n") ;
+          if(!node.isNodeType("mix:votable")) node.addMixin("mix:votable") ;
+          if(!node.isNodeType("mix:commentable")) node.addMixin("mix:commentable") ;
         } else {
           Node node = selectedNode.getNode(name) ;
-          boolean isMixin = false ;
-          NodeType[] mixTypes = node.getMixinNodeTypes() ;
-          for(NodeType mix : mixTypes) {
-            if(mix.equals(MIX_VERSION)) {
-              isMixin = true ;
-              break ;
-            }
-          }
-          if(isMixin) {
-            node.checkout() ;
-            Node contentNode = node.getNode(JCR_CONTENT);
-            contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
-            contentNode.setProperty(JCR_DATA, mimeType);
-            contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-            node.save() ;
+          if(!node.isNodeType(MIX_VERSION)) {
+            node.addMixin(MIX_VERSION) ;            
+            node.save() ;            
             node.checkin() ;
-          } else {
-            Node addedNode = selectedNode.getNode(name) ;
-            addedNode.remove() ;
-            Node uploadNode = selectedNode.addNode(name, NT_FILE);
-            uploadNode.addMixin(MIX_VERSION) ;
-            Node contentNode = uploadNode.addNode(JCR_CONTENT, NT_RESOURCE);
-            contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
-            contentNode.setProperty(JCR_MIMETYPE, mimeType);
-            contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-            uiExplorer.getSession().save() ;
-            uploadNode.checkin() ;
+            node.checkout() ;
           }
+          Node contentNode = node.getNode(JCR_CONTENT);
+          contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
+          contentNode.setProperty(JCR_MIMETYPE, mimeType);
+          contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
+          node.save() ;       
+          node.checkin() ;
+          node.checkout() ;
         }
+        uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);
       } catch(Exception e) {
         e.printStackTrace() ;

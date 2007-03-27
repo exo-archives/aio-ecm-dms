@@ -465,7 +465,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       UIPopupWindow uiPopup = uiForm.getParent() ;
       uiPopup.setRendered(false) ;
       uiPopup.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UINodeTypeManager.class)) ;
     }
   }
 

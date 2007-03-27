@@ -9,12 +9,10 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
-import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
@@ -81,41 +79,10 @@ public class UIMultiLanguageForm extends UIForm {
     public void execute(Event<UIMultiLanguageForm> event) throws Exception {
       UIMultiLanguageForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node node = uiExplorer.getCurrentNode() ;
-      String defaultLanguage = node.getProperty(EXO_LANGUAGE).getValue().getString() ;
+      MultiLanguageService multiLanguageService = 
+        uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
-      Node languagesNode = null ;
-      if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
-      else languagesNode = node.addNode(LANGUAGES) ;
-      if(!defaultLanguage.equals(selectedLanguage)) {
-        Node newLang = languagesNode.addNode(defaultLanguage) ;
-        Node selectedLangNode = languagesNode.getNode(selectedLanguage) ;
-        PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
-        for(PropertyDefinition property : properties){
-          if(!property.isProtected()){
-            String propertyName = property.getName() ;
-            newLang.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
-            node.setProperty(propertyName, selectedLangNode.getProperty(propertyName).getValue()) ;
-          }
-        }
-        node.setProperty(EXO_LANGUAGE, selectedLanguage) ;
-        selectedLangNode.remove() ;
-        node.save() ;
-        node.getSession().save() ;
-      } else {
-        Node newLang = null ;
-        if(languagesNode.hasNode(selectedLanguage)) newLang = languagesNode.getNode(selectedLanguage) ;
-        else newLang = node ;
-        PropertyIterator properties = newLang.getProperties() ;
-        while(properties.hasNext()) {
-          Property property = properties.nextProperty() ;
-          if(property.getName().startsWith("exo") && node.hasProperty(property.getName())) {
-            node.setProperty(property.getName(), property.getValue().getString()) ;
-          }
-        }
-        node.save() ;
-        node.getSession().save() ;
-      }
+      multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
       uiExplorer.updateAjax(event) ;
     }
   }

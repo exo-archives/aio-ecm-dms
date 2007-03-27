@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +23,8 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.AlphaNodeComparator;
 import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
@@ -104,6 +108,17 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
 
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
+  }
+  
+  public String getDownloadLink(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
+    Node jcrContentNode = node.getNode("jcr:content") ;
+    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
   public Node getViewNode(String nodeType) throws Exception {
