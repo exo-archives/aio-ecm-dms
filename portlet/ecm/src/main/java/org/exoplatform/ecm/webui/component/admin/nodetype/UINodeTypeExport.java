@@ -114,6 +114,8 @@ public class UINodeTypeExport extends UIForm {
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + downloadLink + "\"") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.EXPORT_POPUP) ;
+      uiPopup.setRendered(false) ;
     }
     private String getNodeTypeXML(List selectedNodes) {
       StringBuilder nodeTypeXML = new StringBuilder() ;
