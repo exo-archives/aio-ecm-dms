@@ -11,6 +11,8 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -110,13 +112,16 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
-      if(container.isShowDocumentDetail()) {
-        if(uiDocument.getNode().isNodeType("mix:votable")) {
-          UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-          UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
-          uiPopupAction.activate(UICBVoteForm.class, 300) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        }
+      if(!container.isShowDocumentDetail()) {
+        UIApplication app = uiComp.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
+        return ;
+      } 
+      if(uiDocument.getNode().isNodeType("mix:votable")) {
+        UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
+        uiPopupAction.activate(UICBVoteForm.class, 300) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       }
     }
   }  
@@ -125,15 +130,18 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
-      if (container.isShowDocumentDetail()) {
-        if(uiDocument.getNode().isNodeType("mix:commentable")) {
-          UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-          UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
-          UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
-          commentForm.setDocument(uiDocument.getNode()) ;
-          uiPopupAction.activate(commentForm, 600, 0) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        }
+      if(!container.isShowDocumentDetail()) {
+        UIApplication app = uiComp.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
+        return ;
+      } 
+      if(uiDocument.getNode().isNodeType("mix:commentable")) {
+        UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
+        UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
+        commentForm.setDocument(uiDocument.getNode()) ;
+        uiPopupAction.activate(commentForm, 600, 0) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       }
     }
   }  

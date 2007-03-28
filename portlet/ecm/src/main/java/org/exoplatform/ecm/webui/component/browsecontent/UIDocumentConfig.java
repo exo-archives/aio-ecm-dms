@@ -21,7 +21,6 @@ import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
-import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -55,12 +54,10 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;    
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
-    categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)
-                                                           .addValidator(EmptyFieldValidator.class)) ;
+    categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
     addUIComponentInput(categoryPathSelect) ;
     UIFormInputSetWithAction documentSelect = new UIFormInputSetWithAction(FIELD_DOCSELECT) ;
-    documentSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_DOCNAME, UINewConfigForm.FIELD_DOCNAME, null)
-                                                        .addValidator(EmptyFieldValidator.class)) ;
+    documentSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_DOCNAME, UINewConfigForm.FIELD_DOCNAME, null)) ;
     addUIComponentInput(documentSelect) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, UINewConfigForm.FIELD_DETAILBOXTEMP, Options)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
@@ -172,9 +169,33 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPatth = categoryPathField.getValue() ;
+      if((jcrPatth == null) ||(jcrPatth.trim().length() == 0)) {
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
+        return ;
+      } 
+      try{
+        container.getNodeByPath(jcrPatth) ;
+      } catch (Exception e) {
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
+        return ;
+      }
       UIFormInputSetWithAction documentSelect = uiForm.getChildById(FIELD_DOCSELECT) ;
       UIFormStringInput documentField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
       String docName = documentField.getValue() ;
+      if((docName == null) ||(docName.trim().length() == 0)) {
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-doc", null)) ;
+        return ;
+      } 
+      try{
+        container.getNodeByPath(jcrPatth + Utils.SLASH + docName) ;
+      } catch (Exception e) {
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null)) ;
+        return ;
+      }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;
@@ -243,14 +264,23 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIDocumentConfig uiForm  = event.getSource() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-      String path = categoryPathField.getValue() ;
-      if((path == null)||(path.trim().length() == 0)) {
+      String jcrPatth = categoryPathField.getValue() ;
+      if((jcrPatth == null)||(jcrPatth.trim().length() == 0)) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
         return ;
       }
+      UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
+      UIBrowseContainer container = uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
+      try{
+        container.getNodeByPath(jcrPatth) ;
+      } catch (Exception e) {
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
+        return ;
+      }
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfig.initPopupDocumentSelect(uiForm, path) ;
+      uiConfig.initPopupDocumentSelect(uiForm, jcrPatth) ;
     }
   }
 
