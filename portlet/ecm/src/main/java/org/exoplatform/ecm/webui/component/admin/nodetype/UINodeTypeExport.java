@@ -112,7 +112,7 @@ public class UINodeTypeExport extends UIForm {
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
       dresource.setDownloadName("nodetype_export.xml");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-      event.getRequestContext().addJavascript("window.location=\"" + downloadLink + "\"") ;
+      event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + downloadLink + "\"") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
     private String getNodeTypeXML(List selectedNodes) {

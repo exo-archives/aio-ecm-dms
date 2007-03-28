@@ -19,8 +19,8 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   }
   
   public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
-    context.importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
-    context.addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
+    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
+    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
     super.processRender(app, context);
   }
 }

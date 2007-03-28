@@ -53,7 +53,7 @@ public class UIFormWYSIWYGInput extends UIFormInputBase<String> {
     value_ = value_.replaceAll("[\r\n]", "");
     w.write("<textarea id=\"" + name + "\" name=\"" + name + "\">" + value_ + "</textarea>") ;
 //    w.write("<script>");
-    context.addJavascript("eXo.ecm.ExoEditor.init('" + name + "',{});") ;
+    context.getJavascriptManager().addJavascript("eXo.ecm.ExoEditor.init('" + name + "',{});") ;
 //    context.addJavascript(" var fckeditor" + name + " = new FCKeditor( '" + name + "' ); \n") ;
 //    String basePath = "/" + portalName + "/FCKeditor/";
 //    context.addJavascript(" fckeditor" + name + ".BasePath  = '" + basePath + "' ; \n");

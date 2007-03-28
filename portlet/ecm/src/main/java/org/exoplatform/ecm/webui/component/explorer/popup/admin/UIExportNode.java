@@ -95,8 +95,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         dresource.setDownloadName(format + ".xml");
       }
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-      event.getRequestContext().addJavascript("window.location=\"" + downloadLink + "\"");
-      System.out.println("\n\nLink===>" + downloadLink + "\n\n");
+      event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + downloadLink + "\"");
     }
   }
 
