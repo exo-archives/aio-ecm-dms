@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.component.UIGrid;
@@ -36,6 +37,8 @@ import org.exoplatform.webui.event.EventListener;
 public class UIECMTemplateList extends UIGrid {
   private static String[] VIEW_BEAN_FIELD = {"name", "path", "baseVersion"} ;
   private static String[] VIEW_ACTION = {"EditInfo","Delete"} ;
+  public static String ST_ECMTempForm = "ECMTempForm" ;  
+  public static String ST_ECMTemp = "ECMTemplate" ;
   
   public UIECMTemplateList() throws Exception {
     getUIPageIterator().setId("UIECMTemplateGrid") ;
@@ -46,7 +49,7 @@ public class UIECMTemplateList extends UIGrid {
   public String[] getActions() { return new String[] {"Add"} ; }
   
   public String getBaseVersion(Node node) throws Exception {
-    if(!node.isNodeType("mix:versionable") || node.isNodeType("nt:frozenNode")) return "";
+    if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
   }
   
@@ -64,9 +67,9 @@ public class UIECMTemplateList extends UIGrid {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTempList = event.getSource() ;
       UIViewManager uiViewManager = uiECMTempList.getAncestorOfType(UIViewManager.class) ;
-      UITemplateContainer uiECMTempContainer = uiViewManager.getChildById("ECMTemplate") ;
-      uiECMTempContainer.initPopup("ECMTempForm") ;
-      uiViewManager.setRenderedChild("ECMTemplate") ;
+      UITemplateContainer uiECMTempContainer = uiViewManager.getChildById(UIECMTemplateList.ST_ECMTemp) ;
+      uiECMTempContainer.initPopup(UIECMTemplateList.ST_ECMTempForm, "Add") ;
+      uiViewManager.setRenderedChild(UIECMTemplateList.ST_ECMTemp) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMTempContainer) ;
     }
   }
@@ -76,7 +79,7 @@ public class UIECMTemplateList extends UIGrid {
       UIECMTemplateList uiECMTemp = event.getSource() ;
       ManageViewService service = uiECMTemp.getApplicationComponent(ManageViewService.class) ;
       UIViewManager uiViewManager = uiECMTemp.getAncestorOfType(UIViewManager.class) ;
-      uiViewManager.setRenderedChild("ECMTemplate") ;
+      uiViewManager.setRenderedChild(UIECMTemplateList.ST_ECMTemp) ;
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       service.removeTemplate(templatePath) ;
       uiECMTemp.updateTempListGrid() ;
@@ -91,10 +94,10 @@ public class UIECMTemplateList extends UIGrid {
       String tempPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UITemplateContainer uiTempContainer = uiECMTemp.getParent() ;
       UIViewManager uiViewManager = uiECMTemp.getAncestorOfType(UIViewManager.class) ;
-      uiTempContainer.initPopup("ECMTempForm") ;
-      UITemplateForm uiTempForm = uiTempContainer.findComponentById("ECMTempForm") ;
+      uiTempContainer.initPopup(UIECMTemplateList.ST_ECMTempForm, "Edit") ;
+      UITemplateForm uiTempForm = uiTempContainer.findComponentById(UIECMTemplateList.ST_ECMTempForm) ;
       uiTempForm.update(tempPath, null) ;
-      uiViewManager.setRenderedChild("ECMTemplate") ;
+      uiViewManager.setRenderedChild(UIECMTemplateList.ST_ECMTemp) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer) ;
     }
   }

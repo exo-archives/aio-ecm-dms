@@ -22,12 +22,14 @@ public class UITemplateContainer extends UIContainer {
   public UITemplateContainer() throws Exception {
   }
 
-  public void initPopup(String id) throws Exception {
-    String popupId = id + "Popup" ;
+  public void initPopup(String compId, String type) throws Exception {
+    String popupId = compId + type ;
     removeChildById(popupId) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId) ;
     uiPopup.setWindowSize(600,400) ;
-    UITemplateForm uiTempForm = createUIComponent(UITemplateForm.class, null, id) ;
+    UITemplateForm uiTempForm = createUIComponent(UITemplateForm.class, null, compId) ;
+    if(type.equals("Add")) uiTempForm.isAddNew_ = true ;
+    if(type.equals("Edit")) uiTempForm.isAddNew_ = false ;
     uiTempForm.updateOptionList() ;
     uiPopup.setUIComponent(uiTempForm) ;
     uiPopup.setShow(true) ;
