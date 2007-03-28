@@ -269,6 +269,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
       if(name == null || name.length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.PROPERTY_DEFINITION) ;
         uiApp.addMessage(new ApplicationMessage("UIPropertyDefinitionForm.msg.property-name", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(prefix != null && prefix.length() > 0 ) name = prefix + ":" + name ;
@@ -319,6 +320,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
       if(propertyName == null || propertyName.length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.PROPERTY_DEFINITION) ;
         uiApp.addMessage(new ApplicationMessage("UIPropertyDefinitionForm.msg.property-name", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(prefix != null && prefix.length() > 0 ) propertyName = prefix + ":" + propertyName ;
@@ -399,6 +401,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         String message = "UIPropertyDefinitionForm.msg.not-supported-value-constraints" ;
         uiApp.addMessage(new ApplicationMessage(message, null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       uiForm.setRenderedChild("Contraints") ;

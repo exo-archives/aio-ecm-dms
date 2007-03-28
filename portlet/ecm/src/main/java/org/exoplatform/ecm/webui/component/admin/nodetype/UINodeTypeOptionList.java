@@ -142,6 +142,7 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
       if(fieldName.equals(UIChildNodeDefinitionForm.DEFAULT_PRIMARY_TYPE) && count > 1) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.values-error", null)) ;
         uiForm.setTabRender(UINodeTypeForm.DEFAULT_PRIMARY_TYPE_TAB) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
       uiOptionList.setFieldValues(fieldName, selectedNodes) ;
