@@ -2,6 +2,7 @@
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminWorkingArea ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminFunctionTitle ;
+  import org.exoplatform.webui.component.UIPopupMessages ;
 
   def rcontext = _ctx.getRequestContext() ;
   rcontext.importJavascript('eXo.webui.UIVerticalSlideTabs') ;
@@ -31,5 +32,6 @@
         </td>
       </tr>
     </table>
+    <% uicomponent.renderPopupMessages(); %>
 	</div>
 </div>

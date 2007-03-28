@@ -21,11 +21,11 @@
 			  <div class="Node$clazz" style="padding-left: ${padding}px;">
 				    <div class="NodeActionsContainer">
 			""";
-			println "<div class=\"Icon16x16 Add16x16Icon\" onclick=\"" + uicomponent.event("Add",node.getPath()) + "\"></div>" ;
-			println "<div class=\"Icon16x16 Copy16x16Icon\" onclick=\"" + uicomponent.event("Copy",node.getPath()) + "\"></div>" ;
-			println "<div class=\"Icon16x16 Cut16x16Icon\" onclick=\"" + uicomponent.event("Cut",node.getPath()) + "\"></div>" ;
-			println "<div class=\"Icon16x16 Paste16x16Icon\" onclick=\"" + uicomponent.event("Paste",node.getPath()) + "\"></div>" ;
-			println "<div class=\"Icon16x16 Delete16x16Icon\" onclick=\"" + uicomponent.event("Remove",node.getPath()) + "\"></div>" ;
+			println "<div class=\"Icon16x16 Add16x16Icon\" onclick=\"" + uicomponent.event("Add",node.getPath()) + "\" title=\"Add\"></div>" ;
+			println "<div class=\"Icon16x16 Copy16x16Icon\" onclick=\"" + uicomponent.event("Copy",node.getPath()) + "\" title=\"Copy\"></div>" ;
+			println "<div class=\"Icon16x16 Cut16x16Icon\" onclick=\"" + uicomponent.event("Cut",node.getPath()) + "\" title=\"Cut\"></div>" ;
+			println "<div class=\"Icon16x16 Paste16x16Icon\" onclick=\"" + uicomponent.event("Paste",node.getPath()) + "\" title=\"Paste\"></div>" ;
+			println "<div class=\"Icon16x16 Delete16x16Icon\" onclick=\"" + uicomponent.event("Remove",node.getPath()) + "\" title=\"Delete\"></div>" ;
 			println "</div>" ;
 			if(node.getChildrenSize() > 0) {
 	      if(node.isExpanded()) {
@@ -52,7 +52,10 @@
   <div class="UITaxonomyContainer">
   	<div class="SubTaxonomyContainer">
 		  <div class="HomeNode">
-		    <div class="Icon16x16 Add16x16Icon" onclick="<%=uicomponent.event("Add",rootNode.getPath());%>" style="float: right;"><span></span></div>
+  		  <div class="NodeActionsContainer">
+			    <div class="Icon16x16 Add16x16Icon" onclick="<%=uicomponent.event("Add",rootNode.getPath());%>" title="Add"><span></span></div>
+			    <div class="Icon16x16 Paste16x16Icon" onclick="<%=uicomponent.event("Paste",rootNode.getPath());%>" title="Paste"><span></span></div>
+			  </div>
 		    <div class="Icon24x24 BlueDiamond24x24Icon"><span></span></div>
 		    <div class="NodeLabel">$rootNode.name</div>
 		  </div>

@@ -17,10 +17,12 @@ import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -34,7 +36,7 @@ import org.exoplatform.webui.event.EventListener;
     template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
       @EventConfig(listeners = UIMetadataForm.SaveActionListener.class),
-      @EventConfig(listeners = UIMetadataForm.CancelActionListener.class),
+      @EventConfig(listeners = UIMetadataForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIMetadataForm.AddPermissionActionListener.class)
     }
 )
@@ -54,11 +56,11 @@ public class UIMetadataForm extends UIForm implements UISelector{
   private String metadataName_ ;
 
   public UIMetadataForm() throws Exception {
-    addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
-    addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null)) ;
+    addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null).addValidator(EmptyFieldValidator.class)) ;
+    addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null).addValidator(EmptyFieldValidator.class)) ;
     addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
     UIFormInputSetWithAction permissionInput = new UIFormInputSetWithAction("permission") ;
-    permissionInput.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null)) ;
+    permissionInput.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).addValidator(EmptyFieldValidator.class)) ;
     permissionInput.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(permissionInput) ;
     setActions(new String[] {"Save", "Cancel"}) ;
@@ -103,6 +105,7 @@ public class UIMetadataForm extends UIForm implements UISelector{
   
   static public class SaveActionListener extends EventListener<UIMetadataForm> {
     public void execute(Event<UIMetadataForm> event) throws Exception {
+      System.out.println("\n\n\nHello the workd\n\n\n");
       UIMetadataForm uiForm = event.getSource();      
       UIMetadataManager uiMetaManager = uiForm.getAncestorOfType(UIMetadataManager.class) ;
       MetadataService metadataService = uiForm.getApplicationComponent(MetadataService.class) ;

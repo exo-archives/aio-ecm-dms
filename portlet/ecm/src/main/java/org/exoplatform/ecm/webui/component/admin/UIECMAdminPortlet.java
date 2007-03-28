@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin;
 
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.component.UIPopupMessages;
 import org.exoplatform.webui.component.UIPortletApplication;
 import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -31,7 +33,14 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     addChild(UIECMAdminControlPanel.class, null, null) ;
     addChild(UIECMAdminWorkingArea.class, null, null) ;
   }
-
+  
+  public void renderPopupMessages() throws Exception {
+    UIPopupMessages popupMess = getUIPopupMessages();
+    if(popupMess == null)  return ;
+    WebuiRequestContext  context =  WebuiRequestContext.getCurrentInstance() ;
+    popupMess.processRender(context);
+  }
+  
   public boolean isShowSideBar() { return isShowSideBar ; }
   public void setShowSideBar(boolean bl) { this.isShowSideBar = bl ; }
   
