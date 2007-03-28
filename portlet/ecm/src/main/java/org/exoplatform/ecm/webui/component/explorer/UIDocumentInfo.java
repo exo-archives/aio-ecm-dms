@@ -4,7 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +20,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
+import javax.servlet.http.HttpServletRequest;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
@@ -34,6 +34,7 @@ import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -41,6 +42,7 @@ import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIRightClickPopupMenu;
@@ -121,11 +123,23 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
-//  public String getWebDAVServerPrefix() throws Exception{    
-//    PortletRequest request = (PortletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest() ;
-//    return request.getScheme() + "://" + request.getServerName() + ":" +
-//    String.format("%s", request.getServerPort()) ;
-//  }
+  public String getImage(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode("exo:image") ;
+    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+  
+  public String getWebDAVServerPrefix() throws Exception {    
+    PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
+    String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
+                          portletRequestContext.getRequest().getServerName() + ":" +
+                          String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
+    return prefixWebDAV ;
+  }
   
   public Node getViewNode(String nodeType) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getNode(nodeType) ;

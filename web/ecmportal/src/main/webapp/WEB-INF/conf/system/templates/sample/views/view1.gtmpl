@@ -67,9 +67,8 @@
 			<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px">
 				<%
 				  if(node.hasNode("exo:image")) {
-				  	imagePath = uicomponent.getPortalName() + "/jcr?workspace=" + uicomponent.getWorkspaceName() + "&path=" + node.getPath() + "&relativePath=exo:image" ;
 				%>
-      			<img src="$imagePath" width="250" height="150"/> 
+      			<image src="<%=uicomponent.getImage(node)%>" width="250" height="150"/> 
       	<%}%>
 			</div>
 		</div>	
