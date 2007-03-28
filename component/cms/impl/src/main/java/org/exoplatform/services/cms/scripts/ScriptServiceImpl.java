@@ -208,7 +208,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
 
   private Node getScriptHome(String scriptAlias) throws Exception {
     String path = cmsConfigService_.getJcrPath(scriptAlias) ;    
-    Session session = repositoryService_.getRepository().login(cmsConfigService_.getWorkspace()) ;            
+    Session session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;            
     return (Node)session.getItem(path);
   }
 
