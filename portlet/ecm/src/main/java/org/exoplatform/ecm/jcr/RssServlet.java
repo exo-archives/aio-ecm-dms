@@ -28,6 +28,7 @@ import org.exoplatform.services.jcr.RepositoryService;
  * @author: Nguyen Quang Hung
  * @email: nguyenkequanghung@yahoo.com
  */
+@SuppressWarnings({"serial","unused"})
 public class RssServlet extends HttpServlet {
   public void init(ServletConfig config) throws ServletException {}  
 	public void service(HttpServletRequest request, HttpServletResponse response) 

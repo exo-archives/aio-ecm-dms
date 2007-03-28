@@ -110,6 +110,9 @@
                   <value>
                     <object type="org.exoplatform.services.cms.views.impl.ViewDataImpl$Tab">
                       <field  name="tabName"><string>Actions</string></field>
+                      <field  name="buttons">
+                      	<string></string>
+                      </field>
                     </object>
                   </value>
                 </collection>

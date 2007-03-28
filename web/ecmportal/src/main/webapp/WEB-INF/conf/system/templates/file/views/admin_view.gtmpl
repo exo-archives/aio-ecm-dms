@@ -1,3 +1,6 @@
+<style>
+ a {behavior: url(#default#AnchorClick);} 
+</style>
 <style>	
 	.FileContent {  
 	  padding: 5px;
@@ -110,7 +113,7 @@
 							<div class="ButtomLeft">
 								<div class="ButtomRight">
 									<div class="MiddleButtom">
-										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%>/<%=originalNode.getPath()%>">
+										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
 											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
 										</a>
 									</div>
@@ -138,7 +141,7 @@
 							<div class="ButtomLeft">
 								<div class="ButtomRight">
 									<div class="MiddleButtom">
-										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%>/<%=originalNode.getPath()%>">
+										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>">
 											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
 						  			</a>
 									</div>
