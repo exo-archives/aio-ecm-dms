@@ -31,6 +31,7 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.templates.groovy.ResourceResolver;
@@ -79,7 +80,9 @@ public class UIBrowseContainer extends UIContainer {
   private String templatePath_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
+  @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
+    ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
     addChild(UIPageIterator.class, null, null) ;
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
@@ -134,6 +137,7 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public String getTemplate() {
+    System.out.println("error here ?");
     return templatePath_ ; }
 
   @SuppressWarnings("unused")
@@ -146,7 +150,7 @@ public class UIBrowseContainer extends UIContainer {
     try {
       jcrTemplateResourceResolver_ = new JCRResourceResolver(getSession(), "exo:templateFile") ;
     } catch (Exception e) {
-      throw new RuntimeException() ;
+      e.printStackTrace();
     }
   }
 
@@ -656,7 +660,6 @@ public class UIBrowseContainer extends UIContainer {
       Node node = uiContainer.getNodeByPath(path) ;
       uiContainer.selectNode(node) ;
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
-      System.out.println(uiContainer.getCurrentNode().getName());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }

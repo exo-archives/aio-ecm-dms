@@ -24,9 +24,9 @@ public class UIViewContainer extends UIContainer {
     addChild(UIViewList.class, null, null) ;
   }
 
-  public void initPopup() throws Exception {
-    removeChildById("ViewPopup") ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "ViewPopup") ;
+  public void initPopup(String popupId) throws Exception {
+    removeChildById(popupId) ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId) ;
     uiPopup.setWindowSize(600,400) ;
     UIViewFormTabPane uiViewForm = createUIComponent(UIViewFormTabPane.class, null, null) ;
     uiPopup.setUIComponent(uiViewForm) ;

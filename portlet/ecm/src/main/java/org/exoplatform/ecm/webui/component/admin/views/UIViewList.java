@@ -37,7 +37,9 @@ import org.exoplatform.webui.event.EventListener;
 public class UIViewList extends UIGrid {
   
   final static public String[] ACTIONS = {"AddView"} ; 
-  
+  final static public String ST_VIEW = "ViewPopup" ;
+  final static public String ST_EDIT = "EditPopup" ;
+  final static public String ST_ADD = "AddPopup" ;
   private static String[] VIEW_BEAN_FIELD = {"name", "permissions", "tabList", "baseVersion"} ;
   private static String[] VIEW_ACTION = {"View","EditInfo","Delete"} ;
   
@@ -74,8 +76,9 @@ public class UIViewList extends UIGrid {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
-      uiViewContainer.removeChildById("ViewPopup") ;
-      uiViewContainer.initPopup() ;
+      uiViewContainer.removeChildById(UIViewList.ST_VIEW) ;
+      uiViewContainer.removeChildById(UIViewList.ST_EDIT) ;      
+      uiViewContainer.initPopup(UIViewList.ST_ADD) ;
       UIViewFormTabPane uiViewTabPane = 
         uiViewContainer.findFirstComponentOfType(UIViewFormTabPane.class) ;
       uiViewTabPane.reset() ;
@@ -103,8 +106,9 @@ public class UIViewList extends UIGrid {
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node viewNode = uiViewList.vservice_.getViewByName(viewName) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
-      uiViewContainer.removeChildById("ViewPopup") ;
-      uiViewContainer.initPopup() ;
+      uiViewContainer.removeChildById(UIViewList.ST_VIEW) ;
+      uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      
+      uiViewContainer.initPopup(UIViewList.ST_EDIT) ;
       UIViewFormTabPane viewTabPane = uiViewContainer.findFirstComponentOfType(UIViewFormTabPane.class) ;
       UIViewForm viewForm = viewTabPane.getChild(UIViewForm.class) ;
       viewForm.refresh(true) ;
@@ -126,8 +130,9 @@ public class UIViewList extends UIGrid {
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node viewNode = uiViewList.vservice_.getViewByName(viewName) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
-      uiViewContainer.removeChildById("ViewPopup") ;
-      uiViewContainer.initPopup() ;
+      uiViewContainer.removeChildById(UIViewList.ST_EDIT) ;
+      uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      
+      uiViewContainer.initPopup(UIViewList.ST_VIEW) ;
       UIViewFormTabPane uiViewTabPane = 
         uiViewContainer.findFirstComponentOfType(UIViewFormTabPane.class);
       UIViewForm uiViewForm = uiViewTabPane.getChild(UIViewForm.class) ;

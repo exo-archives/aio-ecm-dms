@@ -54,14 +54,15 @@ public class UITabForm extends UIFormInputSetWithAction {
     if(isEditable) setActions(new String[]{"Save", "Reset"}, null) ;
   }
 
-  public void update(Tab tab, boolean isView) throws Exception{    
+  public void update(Tab tab, boolean isView) throws Exception{
     refresh(!isView) ;    
     if(tab == null) return ;
     getUIStringInput(FIELD_NAME).setEditable(false).setValue(tab.getTabName()) ;
     String buttonsProperty = tab.getButtons() ;
     String[] buttonArray = StringUtils.split(buttonsProperty, ";") ;
     for(String bt : buttonArray){
-      getUIFormCheckBoxInput(bt.trim()).setChecked(true) ;        
+      UIFormCheckBoxInput cbInput = getUIFormCheckBoxInput(bt.trim()) ;
+      if(cbInput != null) cbInput.setChecked(true) ;
     }
   }
   

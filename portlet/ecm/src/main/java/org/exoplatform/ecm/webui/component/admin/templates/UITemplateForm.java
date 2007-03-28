@@ -121,16 +121,16 @@ public class UITemplateForm extends UIFormTabPane {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource() ;
       String name = uiForm.getUIFormSelectBox(FIELD_NAME).getValue() ;
-      String label = uiForm.getUIStringInput(FIELD_LABEL).getValue() ; 
-      String dialog = uiForm.getUIFormTextAreaInput(FIELD_DIALOG).getValue() ;
-      String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue() ;
-      boolean isDocumentTemplate = uiForm.getUIFormCheckBoxInput(FIELD_ISTEMPLATE).isChecked() ;
       if(uiForm.isExistedItem(name)) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         Object[] args = {name} ;
         app.addMessage(new ApplicationMessage("UITemplateForm.msg.item-exist", args)) ; 
         return ;
       }
+      String label = uiForm.getUIStringInput(FIELD_LABEL).getValue() ; 
+      String dialog = uiForm.getUIFormTextAreaInput(FIELD_DIALOG).getValue() ;
+      String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue() ;
+      boolean isDocumentTemplate = uiForm.getUIFormCheckBoxInput(FIELD_ISTEMPLATE).isChecked() ;
       String[] roles = {"*"} ; 
       if(dialog == null) dialog = "" ;
       if(view == null) view = "" ;

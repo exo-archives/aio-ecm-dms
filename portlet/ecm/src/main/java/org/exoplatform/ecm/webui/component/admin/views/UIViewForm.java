@@ -275,7 +275,9 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
 
   public void editTab(String tabName) throws Exception {
     UIViewFormTabPane viewTabPane = getParent() ;
+    System.out.println(viewTabPane);
     UITabForm tabForm = viewTabPane.getChild(UITabForm.class) ;
+    System.out.println(tabForm);
     tabForm.update(tabMap_.get(tabName), isView_) ;
     setRenderSibbling(UITabForm.class) ;
   }
