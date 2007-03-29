@@ -142,7 +142,8 @@ public class UITemplateForm extends UIFormTabPane {
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       uiManager.refresh() ;
       uiForm.refresh() ;
-      uiManager.removeChild(UIPopupWindow.class) ;
+      //uiManager.removeChild(UIPopupWindow.class) ;
+      uiManager.removeChildById("TemplatePopup") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -152,7 +153,8 @@ public class UITemplateForm extends UIFormTabPane {
       UITemplateForm uiTemplateForm = event.getSource() ;
       UITemplatesManager uiManager = uiTemplateForm.getAncestorOfType(UITemplatesManager.class) ;
       uiTemplateForm.reset() ;
-      uiManager.removeChild(UIPopupWindow.class) ;
+      //uiManager.removeChild(UIPopupWindow.class) ;
+      uiManager.removeChildById("TemplatePopup") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
