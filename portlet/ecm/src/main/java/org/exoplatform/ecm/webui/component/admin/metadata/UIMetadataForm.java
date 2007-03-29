@@ -37,7 +37,7 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(listeners = UIMetadataForm.SaveActionListener.class),
       @EventConfig(listeners = UIMetadataForm.CancelActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIMetadataForm.AddPermissionActionListener.class)
+      @EventConfig(listeners = UIMetadataForm.AddPermissionActionListener.class, phase = Phase.DECODE)
     }
 )
 
