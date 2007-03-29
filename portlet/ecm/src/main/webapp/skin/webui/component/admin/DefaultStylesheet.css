@@ -374,7 +374,10 @@
 }
 
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction{
-  width: 290px;
+  width: auto;
+}
+.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction .ActionContainer{
+  width: 400px;
   margin: auto;
 }
 
@@ -413,7 +416,10 @@
 }
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction{
-  width: 290px;
+  width: auto;
+}
+.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction .ActionContainer{
+  width: 400px;
   margin: auto;
 }
 
