@@ -29,6 +29,20 @@
     </dependency>
     
     <dependency>
+      <groupId>exo-jcr</groupId>
+      <artifactId>exo-jcr.services.webdav</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+		  <groupId>exo-jcr</groupId>
+		  <artifactId>exo-jcr.services.ftp</artifactId>
+		  <version>${org.exoplatform.jcr.version}</version>
+		  <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
       <groupId>org.exoplatform.ecm</groupId>
       <artifactId>exo.ecm.component.workflow.impl.jbpm.engine</artifactId>
       <version>3.0</version>
