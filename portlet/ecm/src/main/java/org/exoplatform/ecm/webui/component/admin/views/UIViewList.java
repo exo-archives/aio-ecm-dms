@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl;
 import org.exoplatform.webui.component.UIGrid;
@@ -54,7 +55,7 @@ public class UIViewList extends UIGrid {
   
   private String getBaseVersion(String name) throws Exception {
     Node node = vservice_.getViewByName(name);
-    if(!node.isNodeType("mix:versionable") || node.isNodeType("nt:frozenNode")) return "";
+    if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
   }
   

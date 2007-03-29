@@ -136,9 +136,7 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
 
-  public String getTemplate() {
-    System.out.println("error here ?");
-    return templatePath_ ; }
+  public String getTemplate() { return templatePath_ ; }
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {

@@ -11,6 +11,7 @@ import javax.jcr.Node;
 import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
@@ -51,7 +52,6 @@ public class UIScriptForm extends UIForm {
   final static public String FIELD_SCRIPT_CONTENT = "scriptContent" ;
   final static public String FIELD_SCRIPT_NAME = "scriptName" ;
   final static public String FIELD_ENABLE_VERSION = "enableVersion" ;
-  final static public String MIX_VERSIONABLE = "mix:versionable" ;
 
   private List<String> listVersion = new ArrayList<String>() ;
   private boolean isAddNew_ = true ; 
@@ -114,7 +114,7 @@ public class UIScriptForm extends UIForm {
       isAddNew_ = false ;
       String scriptContent = script.getProperty("jcr:data").getString() ;
       getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(true) ;
-      boolean isVersioned = script.isNodeType(MIX_VERSIONABLE) ;
+      boolean isVersioned = script.isNodeType(Utils.MIX_VERSIONABLE) ;
       if(isVersioned) {
         getUIFormSelectBox(FIELD_SELECT_VERSION).setRendered(true) ;
         getUIFormSelectBox(FIELD_SELECT_VERSION).setOptions(getVersionValues(script)) ;         
@@ -171,7 +171,7 @@ public class UIScriptForm extends UIForm {
         scriptService.addScript(namePrefix + "/" + name, content) ;
       } else {
         Node node = curentList.getScriptNode(name) ; 
-        if(!node.isNodeType(MIX_VERSIONABLE)) node.addMixin(MIX_VERSIONABLE) ;
+        if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;  
         scriptService.addScript(namePrefix + "/" + name, content) ;
         node.save() ;
@@ -227,8 +227,8 @@ public class UIScriptForm extends UIForm {
       String version = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ; 
       String path = node.getVersionHistory().getVersion(version).getPath() ;           
       VersionNode versionNode = uiForm.getRootVersion(node).findVersionNode(path) ;
-      Node frozenNode = versionNode.getVersion().getNode("jcr:frozenNode") ;    
-      String scriptContent = frozenNode.getProperty("jcr:data").getString() ;
+      Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;    
+      String scriptContent = frozenNode.getProperty(Utils.JCR_DATA).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).setValue(scriptContent) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }

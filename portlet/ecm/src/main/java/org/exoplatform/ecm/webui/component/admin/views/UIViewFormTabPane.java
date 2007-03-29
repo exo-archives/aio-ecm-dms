@@ -141,7 +141,9 @@ public class UIViewFormTabPane extends UIFormTabPane {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       uiViewTabPane.uiViewForm.changeVersion() ;
-      ((UIViewList)uiViewTabPane.getParent()).updateViewListGrid() ;
+      UIViewContainer uiContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
+      UIViewList uiViewList = uiContainer.findFirstComponentOfType(UIViewList.class) ;
+      uiViewList.updateViewListGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
   }

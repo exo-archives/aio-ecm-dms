@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.component.UIComponent;
@@ -80,7 +81,7 @@ public class UIECMScripts extends UIContainer {
     while(nodeList.hasNext()) {
       Node node = nodeList.nextNode() ;
       String version = "" ;
-      if(node.isNodeType("mix:versionable") && !node.isNodeType("nt:frozenNode")){
+      if(node.isNodeType(Utils.MIX_VERSIONABLE) && !node.isNodeType(Utils.NT_FROZEN)){
         version = node.getBaseVersion().getName();
       }
       script = new ScriptData(node.getName(), node.getPath(), version) ;
