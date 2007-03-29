@@ -408,9 +408,14 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(wysiwyg) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
-    if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
-      wysiwyg.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
-    } 
+    if(node_ != null && node_.isNodeType("nt:file")) {
+      Node jcrContentNode = node_.getNode("jcr:content") ;
+      wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
+    } else {
+      if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
+        wysiwyg.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+      } 
+    }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
         wysiwyg.setValue(getPropertyValue(jcrPath)) ;

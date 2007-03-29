@@ -72,7 +72,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIWorkingArea.CheckOutActionListener.class),
         @EventConfig(listeners = UIWorkingArea.RenameActionListener.class),
         @EventConfig(listeners = UIWorkingArea.CustomActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.PasteActionListener.class)
+        @EventConfig(listeners = UIWorkingArea.PasteActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.WebDAVActionListener.class)
       }
   )
 })
@@ -255,12 +256,14 @@ public class UIWorkingArea extends UIContainer {
           if(hasEditPermissions(node)) actionsList.append(",Rename") ;
           if(isJcrViewEnable()) actionsList.append(",Save") ;
           if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
+          actionsList.append(",WebDAV") ;
         } else {
           if(isVersionable(node)) actionsList.append(",CheckOut") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node)) actionsList.append(",Copy") ;
-          if(hasEditPermissions(node)) actionsList.append(",Rename") ; 
+          if(hasEditPermissions(node)) actionsList.append(",Rename") ;
+          actionsList.append(",WebDAV") ;
         }
       } else {
         if(isEditable(path) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
@@ -276,6 +279,7 @@ public class UIWorkingArea extends UIContainer {
         if(hasEditPermissions(node)) actionsList.append(",Rename") ;
         if(isJcrViewEnable()) actionsList.append(",Save") ;
         if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
+        actionsList.append(",WebDAV") ;
       }
     }
     return actionsList.toString() ;
@@ -305,6 +309,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(nodePath)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(nodePath.indexOf(";") > -1) {
@@ -348,6 +353,8 @@ public class UIWorkingArea extends UIContainer {
         } else {
           Object[] arg = { nodePath } ;
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-support", arg)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
         }
       }
     }
@@ -362,6 +369,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(renameNodePath)) {
         Object[] arg = { renameNodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       Node renameNode ;
@@ -410,8 +418,9 @@ public class UIWorkingArea extends UIContainer {
         clipboard.setType(ClipboardCommand.COPY) ;
         clipboard.setSrcPath(srcPath) ;
         uiExplorer.getAllClipBoard().add(clipboard) ;                      
-//        Object[] args = { srcPath };
-//        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-copied", args));
+        Object[] args = { srcPath };
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-copied", args));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
@@ -429,6 +438,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(nodePath)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
       try {
@@ -445,17 +455,18 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.getAllClipBoard().add(clipboard) ;                     
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
-        //Object[] args = { nodePath };
-        //uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-cut", args));
+        Object[] args = { nodePath };
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-cut", args));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
     }
   }
 
-  static  public class SaveActionListener extends EventListener<UIDocumentInfo> {
-    public void execute(Event<UIDocumentInfo> event) throws Exception {
-      UIDocumentInfo uicomp = event.getSource().getParent() ;
+  static  public class SaveActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = null ;
@@ -469,11 +480,13 @@ public class UIWorkingArea extends UIContainer {
         Object[] args = { nodePath };
         if(node.isNew()) {
           uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.unable-save-node",args));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
         node.save(); 
         uiExplorer.getSession().save() ;
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.save-node-success", args));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
@@ -489,6 +502,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(nodePath)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
       Node node ;
@@ -496,6 +510,7 @@ public class UIWorkingArea extends UIContainer {
         if ("/".equals(nodePath)) {
           Object[] arg = { nodePath } ;
           uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.remove-root", arg));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return;
         }
         if(nodePath.indexOf(";") > -1 ) {
@@ -511,9 +526,9 @@ public class UIWorkingArea extends UIContainer {
           parentNode.save() ;          
         } 
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;        
-//        Object[] args = { nodePath };
-//        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-remove-success", args));
-//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp) ;
+        Object[] args = { nodePath };
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-remove-success", args));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
@@ -580,6 +595,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(nodePath)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
       Node node ;
@@ -605,6 +621,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(nodePath)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
       Node node ;
@@ -635,7 +652,8 @@ public class UIWorkingArea extends UIContainer {
         String userId = Util.getUIPortal().getOwner() ;
         actionService.executeAction(userId, node, actionName, new HashMap());
         Object[] args = { actionName };
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.custom-action-success", args));        
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.custom-action-success", args)); 
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
@@ -666,6 +684,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(destPath)) {
         Object[] arg = { destPath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/")) ;
@@ -676,8 +695,9 @@ public class UIWorkingArea extends UIContainer {
           pasteByCut(uiExplorer, srcWorkspace, srcPath, destPath) ;
         }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-//        Object[] args = { srcPath, destPath };
-//        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-pasted", args));
+        Object[] args = { srcPath, destPath };
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-pasted", args));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {       
         JCRExceptionManager.process(uiApp, e);
@@ -757,6 +777,16 @@ public class UIWorkingArea extends UIContainer {
         }            
       }
       destNode.save() ;
+    }
+  }
+  
+  static  public class WebDAVActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent() ;
+      UIDocumentInfo uicomp = uiWorkingArea.findFirstComponentOfType(UIDocumentInfo.class) ;
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" + uicomp.getWorkspaceName() + nodePath ;
+      event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + link + "\"");
     }
   }
 }

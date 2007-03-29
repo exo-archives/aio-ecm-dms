@@ -71,11 +71,20 @@ public class UILanguageTypeForm extends UIForm {
         UIDocumentForm uiDocumentForm = uiContainer.getChild(UIDocumentForm.class) ;
         uiDocumentForm.getChildren().clear() ;
         uiDocumentForm.setTemplateNode(uiContainer.nodeTypeName_) ;
-        uiDocumentForm.setIsNotEditNode(true) ;
         uiDocumentForm.setIsMultiLanguage(true) ;
         Node node = uiExplorer.getCurrentNode() ;
-        uiDocumentForm.setNode(node) ;
-        if(uiContainer.nodeTypeName_.equals("nt:file")) uiDocumentForm.setContentNode(node) ;
+        if(node.hasNode(UIMultiLanguageForm.LANGUAGES)) {
+          Node languagesNode = node.getNode(UIMultiLanguageForm.LANGUAGES) ;
+          if(languagesNode.hasNode(selectedLanguage)) {
+            uiDocumentForm.setNode(languagesNode.getNode(selectedLanguage)) ;
+          } else if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
+            uiDocumentForm.setNode(node) ;
+          } else {
+            uiDocumentForm.setNode(null) ;
+          }
+        } else {
+          uiDocumentForm.setNode(node) ;
+        }
         uiDocumentForm.setSelectedLanguage(selectedLanguage) ;
         if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  
           uiDocumentForm.setPropertyNode(node) ;

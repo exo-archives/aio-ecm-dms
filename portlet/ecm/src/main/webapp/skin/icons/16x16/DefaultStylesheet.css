@@ -328,6 +328,11 @@
   background: url('DefaultSkin/CheckIn.gif') no-repeat ;   
 }
 
+.WebDAV16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Webdav.gif') no-repeat ;   
+}
+
 .CheckOut16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CheckOut.gif') no-repeat ;   
