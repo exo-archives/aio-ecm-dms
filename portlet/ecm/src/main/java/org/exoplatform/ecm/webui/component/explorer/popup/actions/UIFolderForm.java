@@ -71,6 +71,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       Node node = uiExplorer.getCurrentNode() ;
       if(node.isLocked()) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(name != null) {
@@ -86,6 +87,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         }
       } else {
         uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
     }

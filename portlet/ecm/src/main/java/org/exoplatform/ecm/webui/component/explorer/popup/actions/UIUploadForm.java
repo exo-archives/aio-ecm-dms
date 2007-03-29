@@ -76,15 +76,24 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
   
   private String getLanguageSelected() { return language_ ; }
   
+  public void activate() throws Exception {}
+  public void deActivate() throws Exception {}
+  
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
       UIUploadForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
+      if(input.getUploadResource() == null) {
+        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String fileName = input.getUploadResource().getFileName() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       byte[] content = input.getUploadData() ;
@@ -150,8 +159,4 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       uiExplorer.cancelAction() ;
     }
   }
-
-  public void activate() throws Exception {}
-  public void deActivate() throws Exception {}
 }
-
