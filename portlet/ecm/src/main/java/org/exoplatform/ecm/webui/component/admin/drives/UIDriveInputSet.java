@@ -71,5 +71,9 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     }
     getUIStringInput(FIELD_NAME).setEditable(true) ;
     reset() ;
+    getUIFormCheckBoxInput(FIELD_VIEWPREFERENCESDOC).setChecked(false) ;
+    getUIFormCheckBoxInput(FIELD_VIEWNONDOC).setChecked(false) ;
+    getUIFormCheckBoxInput(FIELD_VIEWEXPLORER).setChecked(false) ;
+    getUIFormCheckBoxInput(FIELD_VIEWCLIPBOARD).setChecked(false) ;
   }
 }
