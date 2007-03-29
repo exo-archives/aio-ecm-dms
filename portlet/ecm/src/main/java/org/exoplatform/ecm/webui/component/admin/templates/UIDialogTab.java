@@ -12,6 +12,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -67,7 +68,7 @@ public class UIDialogTab extends UIContainer {
       for(int i = 0; i < rules.length; i++) {
         rule.append("["+rules[i].getString()+"]") ;
       }
-      if(node.isNodeType("mix:versionable") && !node.isNodeType("nt:frozenNode")){
+      if(node.isNodeType(Utils.MIX_VERSIONABLE) && !node.isNodeType(Utils.NT_FROZEN)){
         version = node.getBaseVersion().getName() ;
       }
       item = new DialogData(node.getName(), rule.toString(), version) ;

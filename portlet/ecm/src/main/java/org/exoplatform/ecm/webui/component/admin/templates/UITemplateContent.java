@@ -12,6 +12,7 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -41,7 +42,7 @@ import org.exoplatform.webui.event.Event.Phase;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template = "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
+    template = "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
       @EventConfig(listeners = UITemplateContent.SaveActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UITemplateContent.ChangeActionListener.class),
@@ -58,7 +59,6 @@ public class UITemplateContent extends UIForm implements UISelector {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_VIEWPERMISSION = "viewPermission" ;
   final static public String FIELD_ENABLE_VERSION = "enableVersion" ;
-  final static public String MIX_VERSIONABLE = "mix:versionable" ;
 
   private boolean isDialog_  ;
   private boolean isAddNew_ = false ;
@@ -100,7 +100,7 @@ public class UITemplateContent extends UIForm implements UISelector {
       getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(true) ;
       String templateRole = 
         templateService.getTemplateRoles(isDialog_, nodeTypeName_, templateName) ;
-      boolean isVersioned = template.isNodeType(MIX_VERSIONABLE) ;
+      boolean isVersioned = template.isNodeType(Utils.MIX_VERSIONABLE) ;
       if(isVersioned) {
         getUIFormSelectBox(FIELD_SELECT_VERSION).setRendered(true) ;
         getUIFormSelectBox(FIELD_SELECT_VERSION).setOptions(getVersionValues(template)) ;         
@@ -192,15 +192,15 @@ public class UITemplateContent extends UIForm implements UISelector {
       Node node = templateService.getTemplateNode(uiForm.isDialog_,  uiForm.nodeTypeName_, name) ;
       String vesion = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ;
       String baseVesion = node.getBaseVersion().getName() ;
-      if(!vesion.equals(baseVesion)) { 
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        Object[] args = {uiForm.getUIStringInput(FIELD_SELECT_VERSION).getValue()} ;
-        app.addMessage(new ApplicationMessage("UITemplateContent.msg.version-restored", args)) ; 
-        node.checkout() ;
-        node.restore(vesion, true) ;
-        uiForm.refresh() ;
-      }
+      UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(vesion.equals(baseVesion)) return ;
+      node.checkout() ;
+      node.restore(vesion, true) ;
+      Object[] args = {uiForm.getUIStringInput(FIELD_SELECT_VERSION).getValue()} ;
+      app.addMessage(new ApplicationMessage("UITemplateContent.msg.version-restored", args)) ; 
+      uiForm.refresh() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
     }
   }
 
@@ -220,7 +220,7 @@ public class UITemplateContent extends UIForm implements UISelector {
             new String[] {role},  content) ;
       } else {
         Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name) ;
-        if(!node.isNodeType(MIX_VERSIONABLE)) node.addMixin(MIX_VERSIONABLE) ;
+        if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;            
         templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
             new String[] {role},  content) ;
@@ -242,8 +242,8 @@ public class UITemplateContent extends UIForm implements UISelector {
       String version = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ; 
       String path = node.getVersionHistory().getVersion(version).getPath() ;           
       VersionNode versionNode = uiForm.getRootVersion(node).findVersionNode(path) ;
-      Node frozenNode = versionNode.getVersion().getNode("jcr:frozenNode") ;
-      String content = frozenNode.getProperty("exo:templateFile").getString() ;
+      Node frozenNode = versionNode.getVersion().getNode(Utils.NT_FROZEN) ;
+      String content = frozenNode.getProperty(Utils.EXO_TEMPLATE).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
@@ -269,6 +269,7 @@ public class UITemplateContent extends UIForm implements UISelector {
     public void execute(Event<UITemplateContent> event) throws Exception {
       UITemplateContent uiForm = event.getSource() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
+      if(!uiForm.isAddNew_) return ;
       uiForm.update(null) ;
       uiForm.reset() ;
       uiForm.refresh() ;

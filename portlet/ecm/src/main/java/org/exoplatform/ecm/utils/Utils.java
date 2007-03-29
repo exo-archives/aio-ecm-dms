@@ -56,12 +56,12 @@ public class Utils {
   final public static String DRIVE = "drive".intern() ;
   final public static String JCR_INFO = "jcrInfo";
   final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
+  final static public String NT_FILE = "nt:file" ;
   final static public String NT_FOLDER = "nt:folder" ;
   final static public String NT_FROZEN = "nt:frozenNode" ;
   final static public String EXO_TITLE = "exo:title" ;
   final static public String EXO_SUMMARY = "exo:summary" ;
   final static public String EXO_RELATION = "exo:relation" ;
-  final static public String NT_FILE = "nt:file" ;
   final static public String EXO_TAXANOMY = "exo:taxonomy" ;
   final static public String MIX_REFERENCEABLE = "mix:referenceable" ;
   final static public String MIX_VERSIONABLE = "mix:versionable" ;
@@ -70,6 +70,7 @@ public class Utils {
   final static public String JCR_CONTENT = "jcr:content" ;
   final static public String JCR_MIMETY = "jcr:mimeType" ;
   final static public String EXO_ROLES = "exo:roles" ;
+  final static public String EXO_TEMPLATE = "exo:templateFile" ;
   final static public String MIX_LOCKABLE = "mix:lockable" ;
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;

@@ -489,10 +489,14 @@
   height: 250px; 
 }
 
-.UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction{
-  width: 290px; 
-  margin: auto;
+UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction{
+  width: auto; 
   padding: 0px 0px 10px 0px;
+}
+
+.UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction .ActionContainer{
+	width: 360px; 
+	margin: auto;
 }
 
 .UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction .ActionButton{
@@ -500,9 +504,12 @@
 }
 
 .UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction{
-  width: 290px; 
-  margin: auto;
+  width: auto; 
   padding: 0px 0px 10px 0px;
+}
+.UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction .ActionContainer{
+	width: 360px; 
+	margin: auto;
 }
 
 .UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction .ActionButton{
