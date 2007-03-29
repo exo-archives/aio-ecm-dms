@@ -94,9 +94,9 @@
 				  			  Posted by <span style="color:#f7941e"><%=lastComment.getProperty("exo:commentor").getString()%></span> 
 				  			  at <%=dateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
 				  			</div>
-				  			<div style="color:#0489d5; font: normal bold 11px verdana; text-decoration: underline;">
+				  			<div style="color:#0489d5; font: normal bold 11px verdana;">
 					  			<div style="float: left;"><%=commentsList.size()%> Comments</div>
-					  			<div style="float: right; cursor: pointer;" onclick="eXo.ecm.ECMUtils.showHideComponent('CommentsList')">showHideComment</div>
+					  			<div style="float: right; cursor: pointer; text-decoration: underline;" onclick="eXo.ecm.ECMUtils.showHideComponent(this, 'CommentsList')"><span>show comments</span><span style="display: none">hide comments</span></div>
 					  			<div style="clear: both;"><span></span></div>
 					  	  </div>
 			        </div>
@@ -112,8 +112,7 @@
 			<div id="CommentsList" style="display: none;">
 			  <%for(comment in commentsList) {%>
 				  	<div class="CommentInfo">
-				  		Comment by
-				  		<span style="color: orange; font-weight: bold;"><%=comment.getProperty("exo:commentor").getString()%></span>
+				  		Comment by <span style="color: orange; font-weight: bold;"><%=comment.getProperty("exo:commentor").getString()%></span>
 				  		<%
 					  		if(comment.hasProperty("exo:commentorSite")) {
 					  		  String site = comment.getProperty("exo:commentorSite").getString() ;

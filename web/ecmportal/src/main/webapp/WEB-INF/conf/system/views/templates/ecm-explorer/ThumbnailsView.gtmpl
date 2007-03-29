@@ -28,10 +28,10 @@
 		        String nodeType = data.getPrimaryNodeType().getName() ;
     	      nodeType = nodeType.replace(":", "_") ;
 	        %>
-		      <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+		      <div class="NodeLabel">
   			    <div class="ActionIcon">
     			    <a class="ActionLabel" href="$actionLink" title="$name">
-    			      <div class="Icon48x48 default48x48Icon ${nodeType}48x48Icon"><span></span></div>
+    			      <div class="Icon48x48 default48x48Icon ${nodeType}48x48Icon" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>><span></span></div>
     			    </a>
   			    </div>
 	  			</div>
