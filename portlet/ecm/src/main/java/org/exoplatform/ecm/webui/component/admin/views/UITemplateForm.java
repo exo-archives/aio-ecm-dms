@@ -15,7 +15,10 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.templates.UITemplateContent;
+import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
@@ -44,7 +47,8 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UITemplateForm.SaveActionListener.class),
       @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.CancelActionListener.class),
       @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.ResetActionListener.class),
-      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.ChangeVersionActionListener.class)
+      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.ChangeActionListener.class),
+      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.RestoreActionListener.class)
     }
 )
 
@@ -65,7 +69,7 @@ public class UITemplateForm extends UIForm {
 
   public UITemplateForm() throws Exception {
     UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, null) ;
-    versions.setOnChange("ChangeVersion") ;
+    versions.setOnChange("Change") ;
     versions.setRendered(false) ;
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null)) ;
@@ -167,14 +171,15 @@ public class UITemplateForm extends UIForm {
         getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(template_)).setRendered(true) ;
         getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true).setEnable(false) ;
+        setActions(new String[]{"Save", "Reset", "Restore", "Cancel"}) ;
       } else if (canEnableVersionning(template_)) {
         getUIFormSelectBox(FIELD_VERSION).setRendered(false) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false).setEditable(true) ;   
       }
     }
-    if (selectedVersion != null) {      
+    if(selectedVersion != null) {      
       template_.restore(selectedVersion.getVersion(), false) ;
-      selectedVersion_ = selectedVersion;         
+      selectedVersion_ = selectedVersion;  
     }
     String content = template_.getProperty(Utils.EXO_TEMPLATE).getString() ;
     getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
@@ -256,7 +261,28 @@ public class UITemplateForm extends UIForm {
     }
   }
   
-  static  public class ChangeVersionActionListener extends EventListener<UITemplateForm> {
+  static  public class ChangeActionListener extends EventListener<UITemplateForm> {
+    public void execute(Event<UITemplateForm> event) throws Exception {
+      UITemplateForm uiForm = event.getSource() ;
+      String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue() ;
+      String path = uiForm.template_.getVersionHistory().getVersion(version).getPath() ;
+      VersionNode versionNode = uiForm.getRootVersion(uiForm.template_).findVersionNode(path);
+      Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;
+      String content = frozenNode.getProperty(Utils.EXO_TEMPLATE).getString() ;
+      uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
+      UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
+      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+        UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class) ;
+        uiECMTempList.updateTempListGrid() ;
+      } 
+      if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+        UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class) ;
+        uiCBTempList.updateCBTempListGrid() ;
+      }
+    }
+  }
+  
+  static  public class RestoreActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource() ;
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue() ;
