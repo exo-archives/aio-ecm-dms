@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.drives;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.services.cms.CmsConfigurationService;
@@ -26,11 +27,11 @@ public class UIDriveManager extends UIContainer {
     addChild(UIDriveList.class, null, null) ;
   }
   
-  public void initPopup() throws Exception {
+  public void initPopup(String id) throws Exception {
     UIDriveForm uiDriveForm ;
-    UIPopupWindow uiPopup = getChildById("DriveManagerPopup") ;
+    UIPopupWindow uiPopup = getChildById(id) ;
     if(uiPopup == null) {
-      uiPopup = addChild(UIPopupWindow.class, null, "DriveManagerPopup") ;
+      uiPopup = addChild(UIPopupWindow.class, null, id) ;
       uiPopup.setWindowSize(560,400) ;      
       uiDriveForm = createUIComponent(UIDriveForm.class, null, null) ;
     } else {
@@ -77,7 +78,7 @@ public class UIDriveManager extends UIContainer {
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiJCRBrowser.setWorkspace("digital-assets") ;
     uiJCRBrowser.setRootPath("/") ;
-    uiJCRBrowser.setFilterType(new String[] {"nt:file"}) ;
+    uiJCRBrowser.setFilterType(new String[] {Utils.NT_FILE}) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_WORKSPACEICON}) ;
     uiPopup.setShow(true) ;
   }

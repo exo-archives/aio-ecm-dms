@@ -31,11 +31,11 @@ import org.exoplatform.webui.event.EventListener;
 public class UIDriveList extends UIGrid {
   
   final static public String[] ACTIONS = {"AddDrive"} ;
-  
+  final  static public String ST_ADD = "AddDriveManagerPopup" ;
+  final  static public String ST_EDIT = "EditDriveManagerPopup" ;
   private static String[] DRIVE_BEAN_FIELD = {"name", "workspace", "homePath", "permissions", "views"} ;
   private static String[] DRIVE_ACTION = {"EditInfo", "Delete"} ;
   private ManageDriveService dservice ;
-  
   public UIDriveList() throws Exception {
     configure("name", DRIVE_BEAN_FIELD, DRIVE_ACTION) ;
     dservice = getApplicationComponent(ManageDriveService.class) ;
@@ -53,7 +53,8 @@ public class UIDriveList extends UIGrid {
   static  public class AddDriveActionListener extends EventListener<UIDriveList> {
     public void execute(Event<UIDriveList> event) throws Exception {
       UIDriveManager uiDriveManager = event.getSource().getParent() ;
-      uiDriveManager.initPopup() ;
+      uiDriveManager.removeChildById(UIDriveList.ST_EDIT);
+      uiDriveManager.initPopup(UIDriveList.ST_ADD) ;
       UIDriveForm uiForm = uiDriveManager.findFirstComponentOfType(UIDriveForm.class) ;
       uiForm.refresh(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;
@@ -73,7 +74,8 @@ public class UIDriveList extends UIGrid {
   static  public class EditInfoActionListener extends EventListener<UIDriveList> {
     public void execute(Event<UIDriveList> event) throws Exception {
       UIDriveManager uiDriveManager = event.getSource().getParent() ;
-      uiDriveManager.initPopup() ;
+      uiDriveManager.removeChildById(UIDriveList.ST_ADD);
+      uiDriveManager.initPopup(UIDriveList.ST_EDIT) ;
       String driveName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiDriveManager.findFirstComponentOfType(UIDriveForm.class).refresh(driveName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;

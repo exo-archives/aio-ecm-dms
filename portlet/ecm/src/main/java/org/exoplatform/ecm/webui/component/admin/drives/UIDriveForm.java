@@ -147,7 +147,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       uiDriveForm.refresh(null) ;
       UIDriveManager uiDriveManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       uiDriveManager.removeChildById(UIDriveForm.POPUP_DRIVEPERMISSION) ;
-      uiDriveManager.removeChildById("DriveManagerPopup") ;
+      uiDriveManager.removeChildById(UIDriveList.ST_ADD) ;
+      uiDriveManager.removeChildById(UIDriveList.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;
     }
   }
@@ -158,7 +159,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       uiDriveForm.refresh(null) ;
       UIDriveManager uiDriveManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       uiDriveManager.removeChildById(UIDriveForm.POPUP_DRIVEPERMISSION) ;
-      uiDriveManager.removeChildById("DriveManagerPopup") ;
+      uiDriveManager.removeChildById(UIDriveList.ST_ADD) ;
+      uiDriveManager.removeChildById(UIDriveList.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;
     }
   }
