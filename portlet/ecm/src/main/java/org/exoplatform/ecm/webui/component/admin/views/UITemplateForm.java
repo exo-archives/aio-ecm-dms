@@ -96,11 +96,11 @@ public class UITemplateForm extends UIForm {
   }
   
   public boolean canEnableVersionning(Node node) throws Exception {
-    return node.canAddMixin("mix:versionable");
+    return node.canAddMixin(Utils.MIX_VERSIONABLE);
   }
 
   private boolean isVersioned(Node node) throws RepositoryException {          
-    return node.isNodeType("mix:versionable");    
+    return node.isNodeType(Utils.MIX_VERSIONABLE);    
   }
 
   private VersionNode getRootVersion(Node node) throws Exception{       
@@ -176,7 +176,7 @@ public class UITemplateForm extends UIForm {
       template_.restore(selectedVersion.getVersion(), false) ;
       selectedVersion_ = selectedVersion;         
     }
-    String content = template_.getProperty("exo:templateFile").getString() ;
+    String content = template_.getProperty(Utils.EXO_TEMPLATE).getString() ;
     getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
   } 
   

@@ -589,6 +589,13 @@ UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction{
 	height: 250px ;
 	width: 400px ;
 }
+.UIFolksonomyManager .UITagStyleForm .UIFormWithTitle .UIAction{
+  width: auto; 
+}
+.UIFolksonomyManager .UITagStyleForm .UIFormWithTitle .UIAction .ActionContainer{
+	width: 300px; 
+	margin: auto;
+}
 
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {

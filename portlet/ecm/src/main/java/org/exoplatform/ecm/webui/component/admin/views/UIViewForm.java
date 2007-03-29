@@ -16,6 +16,7 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -99,11 +100,11 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   public Node getViews() { return views_; }
   
   public boolean canEnableVersionning(Node node) throws Exception {
-    return node.canAddMixin("mix:versionable");
+    return node.canAddMixin(Utils.MIX_VERSIONABLE);
   }
 
   private boolean isVersioned(Node node) throws RepositoryException {          
-    return node.isNodeType("mix:versionable");    
+    return node.isNodeType(Utils.MIX_VERSIONABLE);    
   }
 
   private VersionNode getRootVersion(Node node) throws Exception{       
@@ -275,9 +276,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
 
   public void editTab(String tabName) throws Exception {
     UIViewFormTabPane viewTabPane = getParent() ;
-    System.out.println(viewTabPane);
     UITabForm tabForm = viewTabPane.getChild(UITabForm.class) ;
-    System.out.println(tabForm);
     tabForm.update(tabMap_.get(tabName), isView_) ;
     setRenderSibbling(UITabForm.class) ;
   }
