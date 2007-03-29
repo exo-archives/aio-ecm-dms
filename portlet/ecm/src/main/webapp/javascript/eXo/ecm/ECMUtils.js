@@ -128,10 +128,17 @@ ECMUtils.prototype.overVote = function(event) {
 	}
 }
 
-ECMUtils.prototype.showHideComponent = function(elemtId) {
+ECMUtils.prototype.showHideComponent = function(elemtClicked, elemtId) {
 	var elemt = document.getElementById(elemtId) ;
-	if(elemt.style.display == 'none') elemt.style.display = 'block' ;
-	else elemt.style.display = 'none' ;
+	if(elemt.style.display == 'none') {
+		elemtClicked.childNodes[0].style.display = 'none' ;
+		elemtClicked.childNodes[1].style.display = 'block' ;
+		elemt.style.display = 'block' ;
+	} else {
+		elemtClicked.childNodes[0].style.display = 'block' ;
+		elemtClicked.childNodes[1].style.display = 'none' ;
+		elemt.style.display = 'none' ;
+	}
 }
 
 eXo.ecm.ECMUtils = new ECMUtils(); 
