@@ -15,11 +15,10 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplateContent;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -179,7 +178,10 @@ public class UITemplateForm extends UIForm {
     }
     if(selectedVersion != null) {      
       template_.restore(selectedVersion.getVersion(), false) ;
-      selectedVersion_ = selectedVersion;  
+      selectedVersion_ = selectedVersion;
+      Object[] args = {getUIStringInput(FIELD_VERSION).getValue()} ;
+      UIApplication app = getAncestorOfType(UIApplication.class) ;
+      app.addMessage(new ApplicationMessage("UITemplateForm.msg.version-restored", args)) ;
     }
     String content = template_.getProperty(Utils.EXO_TEMPLATE).getString() ;
     getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
@@ -288,6 +290,7 @@ public class UITemplateForm extends UIForm {
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue() ;
       String path = uiForm.template_.getVersionHistory().getVersion(version).getPath() ;
       VersionNode selectedVesion = uiForm.getRootVersion(uiForm.template_).findVersionNode(path);
+      if(uiForm.baseVersion_.equals(selectedVesion)) return ;
       uiForm.update(null, selectedVesion) ;
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
@@ -298,6 +301,16 @@ public class UITemplateForm extends UIForm {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class) ;
         uiCBTempList.updateCBTempListGrid() ;
       }
+      
+      uiForm.refresh() ;
+      UITemplateContainer uiTemplateContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
+      if(uiForm.isAddNew_) {
+          uiTemplateContainer.removeChildById(UIECMTemplateList.ST_ECMTempForm + "Add") ;
+          uiTemplateContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Add") ;
+       } else {
+         uiTemplateContainer.removeChildById(UIECMTemplateList.ST_ECMTempForm + "Edit") ;
+         uiTemplateContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Edit") ;
+       }
     }
   }
 }

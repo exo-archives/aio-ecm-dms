@@ -241,7 +241,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   public void save() throws Exception {
     String viewName = getUIStringInput(FIELD_NAME).getValue() ;
     ApplicationMessage message ;
-    if(viewName == null || viewName.length() < 1){
+    if(viewName == null || viewName.trim().length() == 0){
       throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null)) ;
     }
     String permissions = getUIStringInput(FIELD_PERMISSION).getValue() ;

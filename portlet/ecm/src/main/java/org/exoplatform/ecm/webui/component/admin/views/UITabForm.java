@@ -68,7 +68,7 @@ public class UITabForm extends UIFormInputSetWithAction {
   
   public void save() throws Exception {
     String tabName = getUIStringInput(FIELD_NAME).getValue() ;
-    if(tabName == null || tabName.length() < 1) {
+    if(tabName == null || tabName.trim().length() == 0) {
       setRenderSibbling(UITabForm.class) ;
       throw new MessageException(new ApplicationMessage("UITabForm.msg.tab-name-error", null)) ;
     }
