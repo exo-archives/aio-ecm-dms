@@ -40,7 +40,7 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
-      @EventConfig(listeners = UIQueriesForm.AddQueryActionListener.class),
+      @EventConfig(listeners = UIQueriesForm.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueriesForm.CancelActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueriesForm.ChangeQueryTypeActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueriesForm.AddPermissionActionListener.class)
@@ -53,7 +53,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
   final static public String STATEMENT = "statement" ;
   final static public String PERMISSIONS = "permissions" ;
   final static public String CACHE_RESULT = "cache" ;
-  final static public String[] ACTIONS = {"AddQuery", "Cancel"} ;
+  final static public String[] ACTIONS = {"Save", "Cancel"} ;
   final static public String SQL_QUERY = "select * from exo:article where jcr:path like '/cms/publications/%'" ;
   final static public String XPATH_QUERY = "/jcr:root/cms/publications//element(*, exo:article)" ;
   
@@ -109,15 +109,17 @@ public class UIQueriesForm extends UIForm implements UISelector {
   static public class CancelActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
-      UIPopupWindow uiPopup = uiForm.getParent() ;
+      /*UIPopupWindow uiPopup = uiForm.getParent() ;
       uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;
+      uiPopup.setShow(false) ;*/
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
+      uiManager.removeChildById(UIQueriesList.ST_ADD) ;
+      uiManager.removeChildById(UIQueriesList.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
   
-  static public class AddQueryActionListener extends EventListener<UIQueriesForm> {
+  static public class SaveActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
@@ -131,11 +133,13 @@ public class UIQueriesForm extends UIForm implements UISelector {
       } else {
         queryService.addSharedQuery(queryName, statement, queryType, new String[] {permissions}, cacheResult) ;
       }   
-      UIPopupWindow uiPopup = uiForm.getParent() ;
+      /*UIPopupWindow uiPopup = uiForm.getParent() ;
       uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;
+      uiPopup.setShow(false) ;*/
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
       uiManager.getChild(UIQueriesList.class).updateQueriesGrid() ;
+      uiManager.removeChildById(UIQueriesList.ST_ADD) ;
+      uiManager.removeChildById(UIQueriesList.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

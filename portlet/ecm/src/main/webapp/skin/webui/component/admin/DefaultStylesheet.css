@@ -530,44 +530,6 @@ UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction{
 .UINamespaceManager .UIFormWithTitle .HorizontalLayout {
   padding-top: 15px;
 }
-/*############################## -- UIRuleManager  -- ########################*/
-.UIRuleManager .ActionButton {
-  width: 90px;
-}
-
-.UIRuleManager .UIFormWithTitle .HorizontalLayout {
-  padding-top: 10px;
-}
-
-.UIRuleManager .UIFormWithTitle .HorizontalLayout .UIAction {
-  padding-top: 15px;
-  width: 290px;
-  margin:auto;
-}
-
-.UIRuleManager .UIFormWithTitle .HorizontalLayout .ActionButton {
-  width: 85px;
-}
-
-.UIRuleManager .UIFormWithTitle .textarea {
-  width: 500px;
-  height: 300px;
-  margin-left: 22px;
-}
-
-.UIRuleManager .UIGrid .ActionContainer {
-  width: 50px ;
-  margin: auto;
-}
-
-.UIRuleManager .UIRuleList .UIAction{
-  width: 105px ;
-  margin: auto ;
-}
-
-.UIRuleManager .UIRuleList .ActionButton{
-  width: 90px ;
-}
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
@@ -579,11 +541,16 @@ UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction{
 .UIQueriesManager .UIQueriesList .ActionContainer .ActionButton{
 	width: 100px ;
 }
-
-.UIQueriesManager .UIQueriesForm .ActionContainer .ActionButton{
-	width: 100px ;
+.UIQueriesManager .UIQueriesForm .UIAction{
+  width: auto; 
 }
-
+.UIQueriesManager .UIQueriesForm .UIAction .ActionContainer{
+	width: 200px;
+	margin: auto;
+}
+.UIQueriesManager .UIQueriesForm .ActionContainer .ActionButton{
+	width: 85px ;
+}
 .UIQueriesManager .UIQueriesForm .UIForm .textarea{
 	height: 150px ;
 	width: 400px ;

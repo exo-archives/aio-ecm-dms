@@ -37,6 +37,8 @@ import org.exoplatform.webui.event.EventListener;
 public class UIQueriesList extends UIContainer {
 
   final static public String[] ACTIONS = {"AddQuery"} ;
+  final static public String ST_ADD = "AddQueryForm" ;
+  final static public String ST_EDIT = "EditQueryForm" ;
   
   public UIQueriesList() throws Exception {
     addChild(UIPageIterator.class, null, "QueriesListIterator");
@@ -61,7 +63,9 @@ public class UIQueriesList extends UIContainer {
   static public class AddQueryActionListener extends EventListener<UIQueriesList> {
     public void execute(Event<UIQueriesList> event) throws Exception {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
-      uiQueriesMan.initFormPopup() ;
+      uiQueriesMan.removeChildById(UIQueriesList.ST_EDIT) ;
+      uiQueriesMan.initFormPopup(UIQueriesList.ST_ADD) ;
+      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }
   }
@@ -69,7 +73,8 @@ public class UIQueriesList extends UIContainer {
   static public class EditActionListener extends EventListener<UIQueriesList> {
     public void execute(Event<UIQueriesList> event) throws Exception {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
-      uiQueriesMan.initFormPopup() ;
+      uiQueriesMan.removeChildById(UIQueriesList.ST_ADD) ;
+      uiQueriesMan.initFormPopup(UIQueriesList.ST_EDIT ) ;
       String queryName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIQueriesForm uiForm = uiQueriesMan.findFirstComponentOfType(UIQueriesForm.class) ;
       uiForm.update(queryName) ;

@@ -290,7 +290,7 @@ public class UITemplateForm extends UIForm {
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue() ;
       String path = uiForm.template_.getVersionHistory().getVersion(version).getPath() ;
       VersionNode selectedVesion = uiForm.getRootVersion(uiForm.template_).findVersionNode(path);
-      if(uiForm.baseVersion_.equals(selectedVesion)) return ;
+      if(uiForm.baseVersion_.getName().equals(selectedVesion.getName())) return ;
       uiForm.update(null, selectedVesion) ;
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {

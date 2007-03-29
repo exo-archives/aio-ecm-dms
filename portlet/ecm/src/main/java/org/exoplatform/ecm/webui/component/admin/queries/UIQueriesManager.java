@@ -24,9 +24,9 @@ public class UIQueriesManager extends UIContainer {
     addChild(UIQueriesList.class, null, null) ;
   }
 
-  public void initFormPopup() throws Exception {
-    removeChildById("QueryForm") ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "QueryForm") ;
+  public void initFormPopup(String id) throws Exception {
+    removeChildById(id) ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, id) ;
     uiPopup.setWindowSize(600, 500) ;
     UIQueriesForm uiForm = createUIComponent(UIQueriesForm.class, null, null) ;
     uiPopup.setUIComponent(uiForm) ;

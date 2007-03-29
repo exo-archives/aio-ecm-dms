@@ -96,7 +96,7 @@ public class UITaxonomyManager extends UIContainer {
         uiManager.categoriesService_.removeTaxonomyNode(path) ;
       } catch(Exception e) {
         Object[] arg = { path } ;
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg)) ;
         return ;
       }
       uiManager.resetTaxonomyRoot() ;
