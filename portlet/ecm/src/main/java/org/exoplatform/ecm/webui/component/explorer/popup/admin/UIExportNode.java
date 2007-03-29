@@ -66,6 +66,12 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     getUIFormInputInfo(NODE_PATH).setValue(node.getPath()) ;
   }
 
+  public void activate() throws Exception {
+    update(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+  }
+
+  public void deActivate() throws Exception { }
+  
   static public class ExportActionListener extends EventListener<UIExportNode> {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIExportNode uiExport = event.getSource() ;
@@ -96,6 +102,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       }
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + downloadLink + "\"");
+      uiExplorer.cancelAction() ;
     }
   }
 
@@ -105,10 +112,4 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       uiExplorer.cancelAction() ;
     }
   }
-
-  public void activate() throws Exception {
-    update(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
-  }
-
-  public void deActivate() throws Exception { }
 }

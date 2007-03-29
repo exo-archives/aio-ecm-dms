@@ -21,10 +21,12 @@ import org.exoplatform.webui.component.UIFormRadioBoxInput;
 import org.exoplatform.webui.component.UIFormUploadInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -37,7 +39,7 @@ import org.exoplatform.webui.event.EventListener;
     template =  "app:/groovy/webui/component/explorer/popup/admin/UIFormWithMultiRadioBox.gtmpl",
     events = {
       @EventConfig(listeners = UIImportNode.ImportActionListener.class),
-      @EventConfig(listeners = UIImportNode.CancelActionListener.class)
+      @EventConfig(listeners = UIImportNode.CancelActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIImportNode extends UIForm implements UIPopupComponent {
@@ -59,7 +61,9 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
   }
   
-  @SuppressWarnings("unused")
+  public void activate() throws Exception { }
+  public void deActivate() throws Exception { }
+  
   static public class ImportActionListener extends EventListener<UIImportNode> {
     public void execute(Event<UIImportNode> event) throws Exception {
       UIImportNode uiImport = event.getSource() ;
@@ -67,13 +71,12 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       Session session = uiExplorer.getSession() ;
       UIApplication uiApp = uiImport.getAncestorOfType(UIApplication.class) ;
       UIFormUploadInput input = uiImport.getUIInput(FILE_UPLOAD) ;
-      byte[] content = input.getUploadData() ;
-      try {
-        String fileName = input.getUploadResource().getFileName() ;
-      } catch(Exception e) {
+      if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filename-error", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      byte[] content = input.getUploadData() ;
       try {
         session.importXML(uiExplorer.getCurrentNode().getPath(), new ByteArrayInputStream(content),
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
@@ -81,7 +84,8 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         JCRExceptionManager.process(uiApp, e) ;
       }
       if(!uiExplorer.getPreference().isJcrEnable()) session.save() ; 
-        //uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.import-successful", null)) ;
+      uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.import-successful", null)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       uiExplorer.updateAjax(event) ;
     }
   }
@@ -93,6 +97,4 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
     }
   }
 
-  public void activate() throws Exception { }
-  public void deActivate() throws Exception { }
 }

@@ -395,6 +395,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(srcPath)) {
         Object[] arg = { srcPath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       try {

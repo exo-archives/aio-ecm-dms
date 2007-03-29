@@ -58,6 +58,11 @@ public class UINodeTypeUpload extends UIForm {
       UINodeTypeImportPopup uiImportPopup = uiManager.findComponentById("UINodeTypeImportPopup") ;
       UIApplication uiApp = uiUploadForm.getAncestorOfType(UIApplication.class) ;
       UIFormUploadInput input = uiUploadForm.getUIInput(FIELD_UPLOAD) ;
+      if(input.getUploadResource() == null) {
+        uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.filename-error", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String fileName = input.getUploadResource().getFileName();
       if(fileName == null || fileName.length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.filename-error", null)) ;
@@ -84,6 +89,7 @@ public class UINodeTypeUpload extends UIForm {
         uiPopup.setShow(true) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
