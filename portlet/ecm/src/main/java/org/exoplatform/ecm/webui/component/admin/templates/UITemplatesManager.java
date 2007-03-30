@@ -26,7 +26,7 @@ public class UITemplatesManager extends UIContainer{
   final static public String NEW_TEMPLATE = "TemplatePopup" ;
 
   public UITemplatesManager() throws Exception {
-    addChild(UINodeTypeList.class, null, null) ;
+    addChild(UITemplateList.class, null, null) ;
   }
 
   public void initPopup(UIComponent uiComponent, String title) throws Exception {
@@ -62,6 +62,6 @@ public class UITemplatesManager extends UIContainer{
   }
 
   public void refresh() throws Exception {
-    getChild(UINodeTypeList.class).updateGrid() ;
+    getChild(UITemplateList.class).updateGrid() ;
   }   
 }

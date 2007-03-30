@@ -27,18 +27,18 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
-      @EventConfig(listeners = UINodeTypeList.ViewActionListener.class),
-      @EventConfig(listeners = UINodeTypeList.DeleteActionListener.class),
-      @EventConfig(listeners = UINodeTypeList.AddNewActionListener.class)
+      @EventConfig(listeners = UITemplateList.EditActionListener.class),
+      @EventConfig(listeners = UITemplateList.DeleteActionListener.class),
+      @EventConfig(listeners = UITemplateList.AddNewActionListener.class)
     }
 )
 
-public class UINodeTypeList extends UIGrid {
+public class UITemplateList extends UIGrid {
   
   private static String[] NODETYPE_BEAN_FIELD = {"name"} ;
-  private static String[] NODETYPE_ACTION = {"View", "Delete"} ;
+  private static String[] NODETYPE_ACTION = {"Edit", "Delete"} ;
   
-  public UINodeTypeList() throws Exception {
+  public UITemplateList() throws Exception {
     getUIPageIterator().setId("NodeTypeListIterator") ;
     configure("name", NODETYPE_BEAN_FIELD, NODETYPE_ACTION) ;
   }
@@ -58,9 +58,9 @@ public class UINodeTypeList extends UIGrid {
     getUIPageIterator().setPageList(objPageList) ;
   }
 
-  static public class ViewActionListener extends EventListener<UINodeTypeList> {
-    public void execute(Event<UINodeTypeList> event) throws Exception {
-      UINodeTypeList nodeTypeList = event.getSource() ;
+  static public class EditActionListener extends EventListener<UITemplateList> {
+    public void execute(Event<UITemplateList> event) throws Exception {
+      UITemplateList nodeTypeList = event.getSource() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UITemplatesManager uiTemplatesManager = nodeTypeList.getParent() ;
       UIViewTemplate uiViewTemplate = uiTemplatesManager.createUIComponent(UIViewTemplate.class, null, null) ;
@@ -81,9 +81,9 @@ public class UINodeTypeList extends UIGrid {
     }
   }
 
-  static public class DeleteActionListener extends EventListener<UINodeTypeList> {
-    public void execute(Event<UINodeTypeList> event) throws Exception {
-      UINodeTypeList nodeTypeList = event.getSource() ;
+  static public class DeleteActionListener extends EventListener<UITemplateList> {
+    public void execute(Event<UITemplateList> event) throws Exception {
+      UITemplateList nodeTypeList = event.getSource() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       TemplateService templateService = nodeTypeList.getApplicationComponent(TemplateService.class) ;
       templateService.removeManagedNodeType(nodeType) ;
@@ -92,8 +92,8 @@ public class UINodeTypeList extends UIGrid {
     }
   }
   
-  static public class AddNewActionListener extends EventListener<UINodeTypeList> {
-    public void execute(Event<UINodeTypeList> event) throws Exception {
+  static public class AddNewActionListener extends EventListener<UITemplateList> {
+    public void execute(Event<UITemplateList> event) throws Exception {
       UITemplatesManager uiTemplatesManager = event.getSource().getAncestorOfType(UITemplatesManager.class) ;
       UITemplateForm uiTemplateForm = uiTemplatesManager.createUIComponent(UITemplateForm.class, null, null) ;
       uiTemplatesManager.initPopup(uiTemplateForm, "TemplatePopup") ;

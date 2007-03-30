@@ -465,12 +465,12 @@
   margin: 5px ;
 }
 
-.UITemplatesManager .UINodeTypeList .ActionContainer {
+.UITemplatesManager .UITemplateList .ActionContainer {
   width: 100px ; 
   margin: auto ;
 }
 
-.UITemplatesManager .UINodeTypeList .ActionButton {
+.UITemplatesManager .UITemplateList .ActionButton {
   width: 70px ; 
 }
 
