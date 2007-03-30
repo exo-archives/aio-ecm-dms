@@ -26,8 +26,7 @@
               </field>
 							<field  name="viewPreferences"><boolean>false</boolean></field>
 							<field  name="viewNonDocument"><boolean>false</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>
 		      <object-param>	      
@@ -44,8 +43,7 @@
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
 							<field  name="viewNonDocument"><boolean>false</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>
 		      <object-param>	      
@@ -62,8 +60,7 @@
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
 							<field  name="viewNonDocument"><boolean>false</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>
 		      <object-param>	      
@@ -80,8 +77,7 @@
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
 							<field  name="viewNonDocument"><boolean>false</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>
 		      <object-param>	      
@@ -98,8 +94,7 @@
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
 							<field  name="viewNonDocument"><boolean>false</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>		 
 		      <object-param>	      
@@ -116,8 +111,7 @@
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
 							<field  name="viewNonDocument"><boolean>false</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>
 		      <object-param>	      
@@ -134,8 +128,7 @@
               </field>
               <field  name="viewPreferences"><boolean>true</boolean></field>
 							<field  name="viewNonDocument"><boolean>true</boolean></field>
-							<field  name="viewExplorer"><boolean>false</boolean></field>
-							<field  name="viewClipboard"><boolean>false</boolean></field>
+							<field  name="viewSideBar"><boolean>false</boolean></field>
 		        </object>
 		      </object-param>		      
 	      </init-params>	

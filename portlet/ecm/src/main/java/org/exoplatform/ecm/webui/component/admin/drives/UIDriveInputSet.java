@@ -34,8 +34,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   
   final static public String FIELD_VIEWPREFERENCESDOC = "viewPreferences" ;
   final static public String FIELD_VIEWNONDOC = "viewNonDocument" ;
-  final static public String FIELD_VIEWEXPLORER = "viewExplorer" ;
-  final static public String FIELD_VIEWCLIPBOARD = "viewClipboard" ;
+  final static public String FIELD_VIEWSIDEBAR = "viewSideBar" ;
 
   public UIDriveInputSet(String name) throws Exception {
     super(name);
@@ -55,8 +54,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null)) ;
-    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWEXPLORER, FIELD_VIEWEXPLORER, null)) ;
-    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWCLIPBOARD, FIELD_VIEWCLIPBOARD, null)) ;
+    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"}) ;
     setActionInfo(FIELD_WORKSPACEICON, new String[] {"AddIcon"}) ;
@@ -73,7 +71,6 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     reset() ;
     getUIFormCheckBoxInput(FIELD_VIEWPREFERENCESDOC).setChecked(false) ;
     getUIFormCheckBoxInput(FIELD_VIEWNONDOC).setChecked(false) ;
-    getUIFormCheckBoxInput(FIELD_VIEWEXPLORER).setChecked(false) ;
-    getUIFormCheckBoxInput(FIELD_VIEWCLIPBOARD).setChecked(false) ;
+    getUIFormCheckBoxInput(FIELD_VIEWSIDEBAR).setChecked(false) ;
   }
 }

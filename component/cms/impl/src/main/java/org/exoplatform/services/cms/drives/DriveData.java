@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  *          nguyenkequanghung@yahoo.com
  * Feb 27, 2006 
  */
-public class DriveData{
+public class DriveData {
 
   private String name ;
   private String workspace ;
@@ -24,8 +24,7 @@ public class DriveData{
   private String views ;
   private boolean viewPreferences ;
   private boolean viewNonDocument ;
-  private boolean viewExplorer ;
-  private boolean viewClipboard ;
+  private boolean viewSideBar ;
   
   public  DriveData(){}
 
@@ -53,11 +52,8 @@ public class DriveData{
   public boolean getViewNonDocument() { return this.viewNonDocument ; }
   public void setViewNonDocument(boolean b) { this.viewNonDocument = b ; }
   
-  public boolean getViewExplorer() { return this.viewExplorer ; }
-  public void setViewExplorer(boolean b) { this.viewExplorer = b ; }
-  
-  public boolean getViewClipboard() { return this.viewClipboard ; }
-  public void setViewClipboard(boolean b) { this.viewClipboard = b ; }
+  public boolean getViewSideBar() { return this.viewSideBar ; }
+  public void setViewSideBar(boolean b) { this.viewSideBar = b ; }
   
   public List getAllPermissions() {
     String[] allPermissions = StringUtils.split(permissions, ",");

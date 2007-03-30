@@ -306,7 +306,7 @@ public class UIJCRExplorer extends UIContainer {
       String driveName = portletPref.getValue(Utils.DRIVE, "") ;
       try{
         DriveData drive = (DriveData)dservice.getDriveByName(driveName) ;
-        preferences_.setShowSideBar(drive.getViewExplorer()) ;
+        preferences_.setShowSideBar(drive.getViewSideBar()) ;
         preferences_.setShowNonDocumentType(drive.getViewNonDocument()) ;
         preferences_.setShowPreferenceDocuments(drive.getViewPreferences()) ;
         preferences_.setEmpty(false) ;        

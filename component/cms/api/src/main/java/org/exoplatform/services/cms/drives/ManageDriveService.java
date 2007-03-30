@@ -17,7 +17,7 @@ public interface ManageDriveService {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
                         String views, String icon, boolean viewReferences, boolean viewNonDocument,
-  boolean viewExplorer, boolean viewClipboard )throws Exception ;
+                        boolean viewSideBar)throws Exception ;
   public Object getDriveByName(String driveName) throws Exception;
   public List getAllDriveByPermission(String permission) throws Exception;
   

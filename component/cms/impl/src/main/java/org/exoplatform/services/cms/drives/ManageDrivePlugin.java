@@ -22,8 +22,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   private static String PATH = "exo:path".intern() ;
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
-  private static String VIEW_EXPLORER = "exo:viewExplorer".intern() ;
-  private static String VIEW_CLIPBOARD = "exo:viewClipboard".intern() ;
+  private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
   
 
   private RepositoryService repositoryService_;
@@ -56,8 +55,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
         driveNode.setProperty(ICON, data.getIcon()) ;
         driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(data.getViewPreferences())) ;
         driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(data.getViewNonDocument())) ;
-        driveNode.setProperty(VIEW_EXPLORER, Boolean.toString(data.getViewExplorer())) ;
-        driveNode.setProperty(VIEW_CLIPBOARD, Boolean.toString(data.getViewClipboard())) ;
+        driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(data.getViewSideBar())) ;
         driveHome.save() ;
       }        
     }
@@ -66,7 +64,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
                         String views, String icon, boolean viewReferences, boolean viewNonDocument, 
-                        boolean viewExplorer, boolean viewClipboard ) throws Exception {
+                        boolean viewSideBar) throws Exception {
     String drivesPath = cmsConfigService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Node driveHome = (Node)session_.getItem(drivesPath) ;
     if (!driveHome.hasNode(name)){
@@ -78,8 +76,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(ICON, icon) ;
       driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(viewReferences)) ;
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
-      driveNode.setProperty(VIEW_EXPLORER, Boolean.toString(viewExplorer)) ;
-      driveNode.setProperty(VIEW_CLIPBOARD, Boolean.toString(viewClipboard)) ;
+      driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
       driveHome.save() ;
     }else{
       Node driveNode = driveHome.getNode(name);
@@ -90,8 +87,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(ICON, icon) ;
       driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(viewReferences)) ;
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
-      driveNode.setProperty(VIEW_EXPLORER, Boolean.toString(viewExplorer)) ;
-      driveNode.setProperty(VIEW_CLIPBOARD, Boolean.toString(viewClipboard)) ;
+      driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
       driveNode.save() ;
     }
     session_.save() ;

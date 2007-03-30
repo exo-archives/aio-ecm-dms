@@ -30,8 +30,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
   private static String PATH = "exo:path".intern() ;
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
-  private static String VIEW_EXPLORER = "exo:viewExplorer".intern() ;
-  private static String VIEW_CLIPBOARD = "exo:viewClipboard".intern() ;
+  private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
 
   private ManageDrivePlugin drivePlugin_ ;
   private RepositoryService jcrService_ ;
@@ -71,8 +70,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
       data.setIcon(drive.getProperty(ICON).getString()) ;
       data.setViewPreferences(Boolean.parseBoolean(drive.getProperty(VIEW_REFERENCES).getString())) ;
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
-      data.setViewExplorer(Boolean.parseBoolean(drive.getProperty(VIEW_EXPLORER).getString())) ;
-      data.setViewClipboard(Boolean.parseBoolean(drive.getProperty(VIEW_CLIPBOARD).getString())) ;
+      data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
       driveList.add(data) ;
     }
     return driveList ;    
@@ -91,8 +89,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
       data.setIcon(drive.getProperty(ICON).getString()) ;
       data.setViewPreferences(Boolean.parseBoolean(drive.getProperty(VIEW_REFERENCES).getString())) ;
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
-      data.setViewExplorer(Boolean.parseBoolean(drive.getProperty(VIEW_EXPLORER).getString())) ;
-      data.setViewClipboard(Boolean.parseBoolean(drive.getProperty(VIEW_CLIPBOARD).getString())) ;
+      data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
       return data ;
     }
     return  null ;    
@@ -100,9 +97,9 @@ public class ManageDriveServiceImpl implements ManageDriveService {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
                         String views, String icon, boolean viewReferences, boolean viewNonDocument,
-                        boolean viewExplorer, boolean viewClipboard ) throws Exception{
+                        boolean viewSideBar ) throws Exception{
     drivePlugin_.addDrive(name, workspace, permissions, homePath, views, icon, viewReferences, 
-                          viewNonDocument, viewExplorer, viewClipboard ) ;
+                          viewNonDocument, viewSideBar) ;
   }
 
   public List getAllDriveByPermission(String permission) throws Exception {

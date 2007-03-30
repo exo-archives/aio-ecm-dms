@@ -121,12 +121,10 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       if (icon == null) icon = "" ;
       boolean viewReferences = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWPREFERENCESDOC).isChecked() ;
-      boolean viewExplorer = 
-        driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWEXPLORER).isChecked() ;
+      boolean viewSideBar = 
+        driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWSIDEBAR).isChecked() ;
       boolean viewNonDocument = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked() ;
-      boolean viewClipboard = 
-        driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWCLIPBOARD).isChecked() ;
 
       UIViewsInputSet viewsInputSet = uiDriveForm.getChild(UIViewsInputSet.class) ;
       String views = viewsInputSet.getViewsSelected() ;
@@ -140,7 +138,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         return ;
       }
       dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
-                         viewNonDocument, viewExplorer, viewClipboard ) ;
+                         viewNonDocument, viewSideBar) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;
       uiDriveList.updateDriveListGrid() ;
