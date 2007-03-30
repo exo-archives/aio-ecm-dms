@@ -46,7 +46,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   }
   
   public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
-    context.importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
+    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     super.processRender(app, context);
   }
 }

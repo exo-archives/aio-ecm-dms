@@ -10,7 +10,7 @@
 <%
   def rcontext = _ctx.getRequestContext() ;
   double rating = uicomponent.getRating() ;
-  rcontext.addJavascript("eXo.ecm.ECMUtils.initVote('$uicomponent.id', $rating) ;") ;
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.initVote('$uicomponent.id', $rating) ;") ;
 %>
 <div class="UIVoteForm" id="$uicomponent.id">
   <div class="DecoratorBox">

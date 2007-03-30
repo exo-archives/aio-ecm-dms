@@ -17,6 +17,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.download.DownloadResource;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
@@ -112,7 +113,9 @@ public class UINodeTypeExport extends UIForm {
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
       dresource.setDownloadName("nodetype_export.xml");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+
       event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + downloadLink + "\"") ;
+
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.EXPORT_POPUP) ;
       uiPopup.setRendered(false) ;

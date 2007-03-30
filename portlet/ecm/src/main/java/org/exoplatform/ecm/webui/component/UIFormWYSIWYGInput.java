@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component;
 import java.io.Writer;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIFormInputBase;
 
@@ -48,6 +49,7 @@ public class UIFormWYSIWYGInput extends UIFormInputBase<String> {
   public void processRender(WebuiRequestContext context) throws Exception {
     String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
     Writer w =  context.getWriter() ;
+    
     if (value_ == null) value_ = "" ;
     value_ = value_.replaceAll("'", "\\\\'");
     value_ = value_.replaceAll("[\r\n]", "");

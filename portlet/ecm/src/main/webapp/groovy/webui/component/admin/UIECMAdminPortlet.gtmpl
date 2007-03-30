@@ -5,9 +5,9 @@
   import org.exoplatform.webui.component.UIPopupMessages ;
 
   def rcontext = _ctx.getRequestContext() ;
-  rcontext.importJavascript('eXo.webui.UIVerticalSlideTabs') ;
-  rcontext.importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
-  rcontext.addJavascript("eXo.ecm.ECMUtils.fixHeight('UIECMAdminPortlet') ;") ;
+  rcontext.getJavascriptManager().importJavascript('eXo.webui.UIVerticalSlideTabs') ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.fixHeight('UIECMAdminPortlet') ;") ;
 %>
 <div class="UIApplication UIECMAdminPortlet" id="UIECMAdminPortlet">
   <div class="ApplicationMinWidth" >

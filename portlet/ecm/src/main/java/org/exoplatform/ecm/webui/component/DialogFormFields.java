@@ -722,7 +722,7 @@ public class DialogFormFields extends UIForm {
   public void begin() throws Exception {
     String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-    context.importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
+    context.getJavascriptManager().importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
     super.begin();
   }
   
