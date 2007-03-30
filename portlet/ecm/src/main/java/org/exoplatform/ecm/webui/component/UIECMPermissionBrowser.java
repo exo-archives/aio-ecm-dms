@@ -75,6 +75,7 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
       if(uiPermissionSelector.getCurrentGroup() == null) return ;
       String groupId = uiPermissionSelector.getCurrentGroup().getId() ;
       String permission = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      if(permission.equalsIgnoreCase("any")) permission = "*" ;
       String value = permission + ":" + groupId ;
       String returnField = uiPermissionSelector.getReturnField() ;
       ((UISelector)uiPermissionSelector.getReturnComponent()).updateSelect(returnField, value) ;
