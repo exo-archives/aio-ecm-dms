@@ -53,7 +53,8 @@ public class UILanguageTypeForm extends UIForm {
     languages.add(new SelectItemOption<String>("- - - -", ""));
     while(iter.hasNext()) {
       LocaleConfig localConfig = (LocaleConfig)iter.next() ;
-      languages.add(new SelectItemOption<String>(localConfig.getLanguage(), localConfig.getLanguage())) ;
+      languages.add(new SelectItemOption<String>(localConfig.getLocale().getDisplayLanguage(), 
+          localConfig.getLocale().getDisplayLanguage())) ;
     }
     return languages ;
   }
