@@ -12,10 +12,14 @@
     <%if(isEnableTree) {%>
     <div class="SeparatorBarLeft Separator"><span></span></div>      
       <%
-        String iconName = "GreenRightArrow24x24Icon" 
-        if (uicomponent.isShowCategoryTree()) iconName = "GreenLeftArrow24x24Icon" ;
+        String iconName = "GreenRightArrow24x24Icon" ;
+        String tooltip  = _ctx.appRes(uicomponent.getName() + ".tooltip.Show") ;
+        if(uicomponent.isShowCategoryTree()) { 
+        	iconName = "GreenLeftArrow24x24Icon" ;
+        	tooltip = _ctx.appRes(uicomponent.getName() + ".tooltip.Hidden") ; 
+       	}
       %>      
-      <a  href="$actionShowHidden" title="Show Hidden Tree">
+      <a  href="$actionShowHidden" title="$tooltip">
         <div class="BlueBarIcon $iconName"><span></span></div>
       </a>
     <%}%>
@@ -40,14 +44,14 @@
       String actionLabel = "" ;
       String link = "" ;
       if(isEnableSearch) {
-	      actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Search") 
+	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Search") 
 	      link = uicomponent.event("Search") ;
      %>
 	      <a class="Icon SearchIcon" href="$link" title="$actionLabel"><span></span></a>      
 	      <div class="Separator ToolBarSeparator"><span></span></div>
       <%}
         if(isEnableVote) {
-          actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Vote") 
+          actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Vote") 
           link = uicomponent.event("Vote") ;
       %>
           <a class="Icon VoteIcon" href="$link" title="$actionLabel"><span></span></a>      
@@ -55,13 +59,13 @@
      
       <%}
         if(isEnableComment) {
-          actionLabel = _ctx.appRes(uicomponent.getName() + ".title.Comment") 
+          actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Comment") 
           link = uicomponent.event("Comment") ;
       %>
         <a class="Icon CommentIcon" href="$link" title="$actionLabel"><span></span></a>      
         <div class="Separator ToolBarSeparator"><span></span></div>
       <%}%>
-    <div style="clear: all;"><span></span></div>
+    <div style="clear:all;"><span></span></div>
   </div>
 </div>
 

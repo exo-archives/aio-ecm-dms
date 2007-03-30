@@ -17,12 +17,21 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIBrowseContentPortlet .UIAction{
+   width: auto;
+}
+
+.UIBrowseContentPortlet .UIAction .ActionContainer{
+   width: 300px;
+   margin:auto;
+}
+
 .UIBrowseContentPortlet .ActionButton {
  width:110px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-   width:90px; /*FIX BUG IE*/
+   width:80px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
@@ -331,10 +340,16 @@
 	width: 19px; height: 18px;
   background: url('DefaultSkin/background/OverStar.gif');
 }
-
-.UIBrowseContentPortlet .UIVoteForm .UIAction {
-	margin: 10px auto;
-	width: 90px;
+.UIBrowseContentPortlet .UIVoteForm .UIAction .ActionButton {
+	width: 85px;
 }
+.UIBrowseContentPortlet .UIVoteForm .UIAction {
+	width: auto;
+}
+.UIBrowseContentPortlet .UIVoteForm .UIAction .ActionContainer{
+	width: 100px;
+	margin: auto; 
+}
+
 /*############################## -- End UIVoteForm   -- ##############################*/
 

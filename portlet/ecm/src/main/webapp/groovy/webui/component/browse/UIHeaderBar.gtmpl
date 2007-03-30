@@ -2,7 +2,7 @@
   <div class="IconFrame">
     <%
       for (action in uicomponent.getActions()) {
-        String actionLabel = _ctx.appRes(uicomponent.getName() + ".title." + action) 
+        String actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip." + action) 
           String link = uicomponent.event(action) ;
     %>
         <a class="Icon <%=action%>24x24Icon " href="$link" title="$actionLabel"><span></span></a>      
