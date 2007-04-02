@@ -122,7 +122,7 @@ public class UIScriptList extends UIGrid {
         UIScriptForm CBScriptForm = uiCBScripts.findFirstComponentOfType(UIScriptForm.class) ;
         if(CBScriptForm == null) CBScriptForm = 
           uiCBScripts.createUIComponent(UIScriptForm.class, null,UICBScripts.SCRIPTFORM_NAME) ;
-        CBScriptForm.update(null) ;
+        CBScriptForm.update(null, true) ;
         uiCBScripts.initPopup(CBScriptForm) ;
         uiECMScripts.setRendered(false) ;
       } else {
@@ -130,7 +130,7 @@ public class UIScriptList extends UIGrid {
         UIScriptForm uiECMScriptForm =  uiECMScripts.findFirstComponentOfType(UIScriptForm.class) ;
         if(uiECMScriptForm == null) uiECMScriptForm = 
           uiCBScripts.createUIComponent(UIScriptForm.class, null,UIECMScripts.SCRIPTFORM_NAME) ;
-        uiECMScriptForm.update(null) ;
+        uiECMScriptForm.update(null, true) ;
         uiECMScripts.initPopup(uiECMScriptForm) ;
         uiCBScripts.setRendered(false) ;
       }
@@ -152,7 +152,7 @@ public class UIScriptList extends UIGrid {
         if(ScriptForm == null) {
           ScriptForm = uiCBScripts.createUIComponent(UIScriptForm.class, null,UICBScripts.SCRIPTFORM_NAME) ;
         } 
-        ScriptForm.update(uiScriptList.getScriptNode(scriptName)) ;
+        ScriptForm.update(uiScriptList.getScriptNode(scriptName), false) ;
         uiCBScripts.initPopup(ScriptForm) ;
         uiECMScripts.setRendered(false) ;
       } else {
@@ -161,7 +161,7 @@ public class UIScriptList extends UIGrid {
         if(ScriptForm == null) {
           ScriptForm = uiCBScripts.createUIComponent(UIScriptForm.class, null,UIECMScripts.SCRIPTFORM_NAME) ;
         } 
-        ScriptForm.update(uiScriptList.getScriptNode(scriptName)) ;
+        ScriptForm.update(uiScriptList.getScriptNode(scriptName), false) ;
         uiECMScripts.initPopup(ScriptForm) ;
         uiCBScripts.setRendered(false) ;
       }

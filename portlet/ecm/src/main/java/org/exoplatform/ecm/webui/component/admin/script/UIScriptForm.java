@@ -108,10 +108,9 @@ public class UIScriptForm extends UIForm {
     return options ;
   }
 
-  public void update(Node script) throws Exception{
-    reset() ;
+  public void update(Node script, boolean isAddNew) throws Exception{
+    isAddNew_ = isAddNew ;
     if(script != null) {
-      isAddNew_ = false ;
       String scriptContent = script.getProperty("jcr:data").getString() ;
       getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(true) ;
       boolean isVersioned = script.isNodeType(Utils.MIX_VERSIONABLE) ;
@@ -132,15 +131,18 @@ public class UIScriptForm extends UIForm {
       getUIStringInput(FIELD_SCRIPT_NAME).setValue(script.getName()) ;
       getUIStringInput(FIELD_SCRIPT_NAME).setEditable(false) ;
       return ;
-    }
-      isAddNew_ = true ;
-      getUIFormSelectBox(FIELD_SELECT_VERSION).setRendered(false) ;
-      getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(false) ;
-      getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setChecked(false) ;
-      getUIStringInput(FIELD_SCRIPT_NAME).setEditable(true) ;
-      getUIStringInput(FIELD_SCRIPT_NAME).setValue(null) ;
+    } 
+    if(!isAddNew_) {
       getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).setValue(null) ;
-      setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
+      return ;
+    }
+    getUIFormSelectBox(FIELD_SELECT_VERSION).setRendered(false) ;
+    getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(false) ;
+    getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setChecked(false) ;
+    getUIStringInput(FIELD_SCRIPT_NAME).setEditable(true) ;
+    getUIStringInput(FIELD_SCRIPT_NAME).setValue(null) ;
+    getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).setValue(null) ;
+    setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
   } 
 
   private UIScriptList getCurentList() {
@@ -237,7 +239,8 @@ public class UIScriptForm extends UIForm {
   static public class RefreshActionListener extends EventListener<UIScriptForm> {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
-      uiForm.update(null) ;
+      if(uiForm.isAddNew_) uiForm.update(null, true) ;
+      else uiForm.update(null, false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
