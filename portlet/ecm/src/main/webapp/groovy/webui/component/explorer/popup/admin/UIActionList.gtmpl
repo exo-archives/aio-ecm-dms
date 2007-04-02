@@ -63,8 +63,8 @@
 					  <div class="ButtonRight">
 						  <div class="ButtonMiddle">
 								<div class="Icon Cancel16x16Icon"><span></span></div>
-								<a href="<%=uicomponent.event("Cancel")%>">
-								  <%=_ctx.appRes("UIActionList.action.Cancel")%>
+								<a href="<%=uicomponent.event("Close")%>">
+								  <%=_ctx.appRes("UIActionList.action.Close")%>
 								</a>
 				      </div>
 				    </div>

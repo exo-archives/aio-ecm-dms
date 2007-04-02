@@ -215,9 +215,10 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         setPath(newNode.getPath()) ;
       } catch(Exception e) {
         e.printStackTrace() ;
-        UIApplication app = getAncestorOfType(UIApplication.class);
+        UIApplication uiApp = getAncestorOfType(UIApplication.class);
         String key = "UIDocumentForm.msg.cannot-save" ;
-        app.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
     } else {
@@ -232,7 +233,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     }
   }
   
-  @SuppressWarnings("unchecked")
   private void addLanguage(UIJCRExplorer uiExplorer) throws Exception {
     Node node = uiExplorer.getCurrentNode() ;
     Node languagesNode = null ;
@@ -240,22 +240,25 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
     Node languageNode = null ;
     Workspace ws = uiExplorer.getSession().getWorkspace() ;
-    
     if(node.getPrimaryNodeType().getName().equals(NT_FILE)) { 
-      if(languagesNode.hasNode(getSelectedLanguage())) languageNode = languagesNode.getNode(getSelectedLanguage()) ;
-      else languageNode = languagesNode.addNode(getSelectedLanguage()) ;
-      Node jcrContent = node.getNode(JCRCONTENT) ;
-      node.save() ;
-      ws.copy(jcrContent.getPath(), languageNode.getPath() + "/" + jcrContent.getName()) ;
+      if(languagesNode.hasNode(getSelectedLanguage())) {
+        languageNode = languagesNode.getNode(getSelectedLanguage()) ;
+      } else {
+        languageNode = languagesNode.addNode(getSelectedLanguage()) ;
+        Node jcrContent = node.getNode(JCRCONTENT) ;
+        node.save() ;
+        ws.copy(jcrContent.getPath(), languageNode.getPath() + "/" + jcrContent.getName()) ;
+        NodeType[] mixins = node.getMixinNodeTypes() ;
+        for(NodeType mixin:mixins) {
+          languageNode.addMixin(mixin.getName()) ;            
+        }
+        node.save() ;
+      }
       for(UIComponent uiChild : getChildren()) {
         if(propertiesName_.get(uiChild.getName()).equals(JCRDATA)) {
           String value = ((UIFormInput) uiChild).getValue().toString() ;
           languageNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;
         }
-      }
-      NodeType[] mixins = node.getMixinNodeTypes() ;
-      for(NodeType mixin:mixins) {
-        languageNode.addMixin(mixin.getName()) ;            
       }
       node.save() ;
     } else {

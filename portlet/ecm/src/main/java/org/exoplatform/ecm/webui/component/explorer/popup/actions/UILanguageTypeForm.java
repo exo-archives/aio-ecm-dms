@@ -54,7 +54,7 @@ public class UILanguageTypeForm extends UIForm {
     while(iter.hasNext()) {
       LocaleConfig localConfig = (LocaleConfig)iter.next() ;
       languages.add(new SelectItemOption<String>(localConfig.getLocale().getDisplayLanguage(), 
-          localConfig.getLocale().getDisplayLanguage())) ;
+                                                 localConfig.getLocale().getDisplayLanguage())) ;
     }
     return languages ;
   }
@@ -76,15 +76,21 @@ public class UILanguageTypeForm extends UIForm {
         Node node = uiExplorer.getCurrentNode() ;
         if(node.hasNode(UIMultiLanguageForm.LANGUAGES)) {
           Node languagesNode = node.getNode(UIMultiLanguageForm.LANGUAGES) ;
+          if(node.isNodeType("nt:file")) uiDocumentForm.setIsNTFile(true) ;
+          else uiDocumentForm.setIsNTFile(false) ;
           if(languagesNode.hasNode(selectedLanguage)) {
             uiDocumentForm.setNode(languagesNode.getNode(selectedLanguage)) ;
           } else if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
             uiDocumentForm.setNode(node) ;
           } else {
-            uiDocumentForm.setNode(null) ;
+            uiDocumentForm.setNode(node) ;
+            uiDocumentForm.setIsNotEditNode(true) ;
           }
+        } else if(!node.hasNode(UIMultiLanguageForm.LANGUAGES) && selectedLanguage.equals(multiLanguageService.getDefault(node))) {
+          uiDocumentForm.setNode(node) ;
         } else {
           uiDocumentForm.setNode(node) ;
+          uiDocumentForm.setIsNotEditNode(true) ;
         }
         uiDocumentForm.setSelectedLanguage(selectedLanguage) ;
         if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  

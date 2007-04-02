@@ -138,11 +138,13 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     if(parentNode_.hasNode(actionName)) { 
       Object[] args = {actionName} ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return ;
     }
     if(parentNode_.isNew()) {
       String[] args = {parentNode_.getPath()} ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return ;
     }        
     actionServiceContainer.addAction(parentNode_, nodeTypeName_, sortedInputs);

@@ -56,6 +56,7 @@ public class DialogFormFields extends UIForm {
   private Node node_ = null;
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
+  private boolean isNTFile_ = false ;
   private List<String> scriptInterceptor_ = new ArrayList<String>() ; 
   private static final String SEPARATOR = "=";
   private static final String JCR_PATH = "jcrPath" + SEPARATOR;
@@ -89,7 +90,8 @@ public class DialogFormFields extends UIForm {
   
   public void resetProperties() { properties.clear() ; }
   
-  public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; } 
+  public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
+  public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
   
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
@@ -275,7 +277,11 @@ public class DialogFormFields extends UIForm {
     else uiInput.setEditable(true) ;
     if(node_ != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
-        uiInput.setValue(node_.getName()) ;
+        if(node_.getParent().getName().equals("languages")) {
+          uiInput.setValue(node_.getParent().getParent().getName()) ;
+        } else {
+          uiInput.setValue(node_.getName()) ;
+        }
         uiInput.setEditable(false) ;
       } else if(node_.hasProperty(propertyName)) {
         uiInput.setValue(node_.getProperty(propertyName).getValue().getString()) ;
@@ -408,13 +414,13 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(wysiwyg) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
-    if(node_ != null && node_.isNodeType("nt:file")) {
+    if(node_ != null && (node_.isNodeType("nt:file") || isNTFile_)) {
       Node jcrContentNode = node_.getNode("jcr:content") ;
       wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
     } else {
       if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
         wysiwyg.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
-      } 
+      }
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {

@@ -540,6 +540,7 @@ public class UINodeTypeForm extends UIFormTabPane {
         extNTManager.registerNodeType(newNodeType, ExtendedNodeTypeManager.FAIL_IF_EXISTS) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.register-failed", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
       }      
@@ -557,6 +558,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       uiPopup.setRendered(false) ;
       Object[] args = { newNodeType.getName() } ;
       uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.register-successfully", args)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

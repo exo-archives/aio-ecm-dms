@@ -94,15 +94,17 @@
 		          nodeType = nodeType.replace(":", "_") ;
 			      %>	             
 						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
-					    <div class="Icon16x16 default16x16Icon ${nodeType}16x16Icon"><span></span></div>
+					    <a href="$actionLink" title="$name">
+					    	<div class="Icon16x16 default16x16Icon ${nodeType}16x16Icon"><span></span></div>
+					    </a>
   					</div>
 	        </td>
 	        <td>
-						<a href="$actionLink" title="$name">
-							<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
-								<%=subName%>
-	  					</div>
-  					</a>
+						<div class="NodeLabel">
+							<a href="$actionLink" title="$name">
+								<span <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>><%=subName%></span>
+	  					</a>
+	 					</div>
 	        </td>
 	        <td><%=uicomponent.getNodeOwner()%></td>
 	        <td>

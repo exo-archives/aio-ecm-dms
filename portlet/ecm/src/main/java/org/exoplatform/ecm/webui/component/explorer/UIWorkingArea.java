@@ -418,9 +418,6 @@ public class UIWorkingArea extends UIContainer {
         clipboard.setType(ClipboardCommand.COPY) ;
         clipboard.setSrcPath(srcPath) ;
         uiExplorer.getAllClipBoard().add(clipboard) ;                      
-        Object[] args = { srcPath };
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-copied", args));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
@@ -455,9 +452,6 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.getAllClipBoard().add(clipboard) ;                     
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
-        Object[] args = { nodePath };
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-cut", args));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
@@ -526,9 +520,6 @@ public class UIWorkingArea extends UIContainer {
           parentNode.save() ;          
         } 
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;        
-        Object[] args = { nodePath };
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.node-remove-success", args));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
@@ -651,9 +642,6 @@ public class UIWorkingArea extends UIContainer {
         Node node = uicomp.getCurrentNode().getNode(nodeName);
         String userId = Util.getUIPortal().getOwner() ;
         actionService.executeAction(userId, node, actionName, new HashMap());
-        Object[] args = { actionName };
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.custom-action-success", args)); 
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
@@ -695,9 +683,6 @@ public class UIWorkingArea extends UIContainer {
           pasteByCut(uiExplorer, srcWorkspace, srcPath, destPath) ;
         }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-        Object[] args = { srcPath, destPath };
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-pasted", args));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {       
         JCRExceptionManager.process(uiApp, e);

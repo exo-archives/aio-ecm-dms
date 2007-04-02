@@ -32,7 +32,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UIActionList.ViewActionListener.class),
         @EventConfig(listeners = UIActionList.DeleteActionListener.class),
-        @EventConfig(listeners = UIActionList.CancelActionListener.class)
+        @EventConfig(listeners = UIActionList.CloseActionListener.class)
     }
 )
 public class UIActionList extends UIContainer {
@@ -90,11 +90,11 @@ public class UIActionList extends UIContainer {
     }
   }
 
-  static public class CancelActionListener extends EventListener<UIActionList> {
+  static public class CloseActionListener extends EventListener<UIActionList> {
     public void execute(Event<UIActionList> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.setIsHidePopup(false) ;
-      uiExplorer.updateAjax(event) ;
+      uiExplorer.cancelAction() ;
     }
   }
 

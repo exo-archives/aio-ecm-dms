@@ -37,7 +37,11 @@
 	  			</div>
 	  		</div>
 			  <div class="ActionIconLabel">
-			    <a class="ActionLabel" href="$actionLink" title="$name">$subName</a>
+			    <a class="ActionLabel" href="$actionLink" title="$name">
+			    	<span <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+				    	$subName
+				    </span>
+			    </a>
 			  </div>
 		  </div> 
     <%} %>

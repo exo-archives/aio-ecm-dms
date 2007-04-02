@@ -124,9 +124,9 @@ public class UIActionBar extends UIForm {
   private List<SelectItemOption<String>> tabOptions = new ArrayList<SelectItemOption<String>>() ;
   private List<String[]> tabs_ = new ArrayList<String[]>();
 
-  final static private String  JCRCONTENT = "jcr:content";
-  final static private String  JCRMIMETYPE = "jcr:mimeType";
-  final static private String  NT_FILE = "nt:file";
+  final static private String JCRCONTENT = "jcr:content";
+  final static private String JCRMIMETYPE = "jcr:mimeType";
+  final static private String NT_FILE = "nt:file";
   final static private String FIELD_SELECT_TAB = "tabs" ;
   final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
   final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
