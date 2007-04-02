@@ -9,12 +9,14 @@
   public void writeNodes(List treeNodes, int level) {
     UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
     for(treeNode in treeNodes) {
+      String path = uicomponent.getNodePath(treeNode.getNode()) ;
       String mode = "Expand" ;
       if(treeNode.isExpanded()) mode = "Collapse" ;
       println "<div class=\"Node\" style=\"margin-left: ${level * 15}px;\">" ;
       println "<div class=\"${mode}Icon\" onclick=\"" + uicomponent.event(mode, treeNode.getPath()) + "\"><span></span></div>" ;
-      println "<div class=\"Icon16x16 default16x16Icon ${treeNode.iconClass}16x16Icon ${mode}${treeNode.iconClass}16x16Icon\"><span></span></div>" ;
-      String path = uicomponent.getNodePath(treeNode.getNode()) ;
+			println "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">" ;
+      println "<div class=\"Icon16x16 default16x16Icon ${treeNode.iconClass}16x16Icon ${mode}${treeNode.iconClass}16x16Icon\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + "><span></span></div>" ;
+      println "</a>" ;
       %>
         <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode()));%>>
           <%
