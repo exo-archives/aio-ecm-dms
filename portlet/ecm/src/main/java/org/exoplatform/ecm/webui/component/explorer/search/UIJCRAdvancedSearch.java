@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -87,11 +89,16 @@ public class UIJCRAdvancedSearch extends UIForm {
   static public class SearchActionListener extends EventListener<UIJCRAdvancedSearch> {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       String queryS = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       UIECMSearch uiSearch = uiForm.getParent() ;
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      Query query = queryManager.createQuery(queryS, searchType);
+      QueryResult queryResult = query.execute();
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
-      uiSearchResult.executeQuery(queryS, searchType) ;
+      uiSearchResult.setQueryResults(queryResult) ;
+      uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
       uiSearch.setRenderedChild(UISearchResult.class) ;
     }
   }
