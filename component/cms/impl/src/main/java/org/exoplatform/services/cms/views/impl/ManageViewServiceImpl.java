@@ -244,7 +244,7 @@ public class ManageViewServiceImpl implements ManageViewService {
     selectedTemplate.remove() ;
     parent.save() ;
     session.save() ;
-    removeFromCache(path) ;
+    //removeFromCache(path) ;
   }
   
   protected void removeFromCache(String templateName) {
