@@ -5,7 +5,9 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -43,6 +45,7 @@ import org.exoplatform.webui.event.EventListener;
 public class UISearchResult extends UIContainer {
   private static String[] RESULT_BEAN_FIELD = {"name", "shortcutPath"} ;
   private static String[] VIEW_ACTION = {"View"} ;
+  private Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
   
   public UISearchResult() throws Exception {
     UIGrid uiGrid = addChild(UIGrid.class, null, null) ;
@@ -50,25 +53,24 @@ public class UISearchResult extends UIContainer {
     uiGrid.configure("path", RESULT_BEAN_FIELD, VIEW_ACTION) ;
   }
   
-  public void executeQuery(String qString, String type) throws Exception {
-    UIJCRExplorer explorer = getAncestorOfType(UIJCRExplorer.class) ;
-    QueryManager queryManager = explorer.getSession().getWorkspace().getQueryManager() ;
-    try {
-      Query query = queryManager.createQuery(qString, type) ;
-      QueryResult queryResult = query.execute() ;
-      updateGrid(queryResult) ;
-    } catch (Exception e) {
-      UIApplication uiApp = explorer.getAncestorOfType(UIApplication.class) ;
-      uiApp.addMessage(new ApplicationMessage("SearchQuery.alert.invalid", null)) ;
+  public void setQueryResults(QueryResult queryResult) throws Exception {
+    if(queryResult != null){
+      NodeIterator iter = queryResult.getNodes() ;
+      while(iter.hasNext()){
+        Node node = iter.nextNode() ;
+        resultMap_.put(node.getPath(), node) ;
+      }
     }
   }
   
-  public void updateGrid(QueryResult queryResult) throws Exception {
+  public Node[] getNodeIterator() throws Exception { 
+    return resultMap_.values().toArray(new Node[]{}) ; 
+  }
+  
+  public void updateGrid(Node[] arrNodes) throws Exception {
     List<ResultObject> results = new ArrayList<ResultObject>() ;    
-    NodeIterator iter = queryResult.getNodes() ;
-    while(iter.hasNext()) {
-      Node result = iter.nextNode() ;
-      ResultObject temp = new ResultObject(result.getName(), result.getPath()) ;
+    for(Node node : arrNodes) {
+      ResultObject temp = new ResultObject(node.getName(), node.getPath()) ;
       results.add(temp) ;
     }
     ObjectPageList objPageList = new ObjectPageList(results, 10) ;

@@ -15,6 +15,8 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.model.Preference;
@@ -141,7 +143,9 @@ public class UIActionBar extends UIForm {
 
   final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1')" ;
   final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
-    
+  private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
+  private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
+  
   public UIActionBar() throws Exception{
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) {
       @SuppressWarnings("unused")
@@ -468,9 +472,6 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiPropertiesManager, 700, 0) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-//      UIMixinTypeForm uiMixinForm = uiPropertiesManager.findFirstComponentOfType(UIMixinTypeForm.class) ;
-//      uiMixinForm.setIsNotEditNode(true) ;
-//      uiMixinForm.setPropertyNode(uiJCRExplorer.getCurrentNode()) ;
     }
   }
 
@@ -625,16 +626,31 @@ public class UIActionBar extends UIForm {
   static public class SimpleSearchActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiForm = event.getSource() ;
-      UIJCRExplorer jcrExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
-      Node currentNode = jcrExplorer.getCurrentNode() ;
-      
+      Node currentNode = uiExplorer.getCurrentNode() ;
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()) ;      
       if ("/".equals(currentNode.getPath())) queryText = ROOT_SQL_QUERY ;
+      String queryPath ;
+      if ("/".equals(currentNode.getPath()))  queryPath = ROOT_PATH_SQL_QUERY;
+      else if(currentNode.getParent().getPath().equals("/")) queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", "");
+      else queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", currentNode.getParent().getPath());
       String statement = StringUtils.replace(queryText, "$1", text) ;
-      UIDocumentWorkspace uiDocumentWorkspace = jcrExplorer.getChild(UIWorkingArea.class).
+      String statementPath = StringUtils.replace(queryPath, "$1", text) ;
+      
+      Query query = queryManager.createQuery(statement, Query.SQL);                
+      Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
+      
+      QueryResult queryResult = query.execute();
+      QueryResult pathQueryResult = pathQuery.execute();
+      
+      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
                                                       getChild(UIDocumentWorkspace.class) ;
-      uiDocumentWorkspace.getChild(UISearchResult.class).executeQuery(statement, Query.SQL) ;
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;
+      uiSearchResult.setQueryResults(queryResult) ;
+      uiSearchResult.setQueryResults(pathQueryResult) ;
+      uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class) ;
     }
   }
