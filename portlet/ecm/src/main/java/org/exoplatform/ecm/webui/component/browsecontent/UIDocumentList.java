@@ -4,15 +4,12 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.webui.component.UIComponentDecorator;
 import org.exoplatform.webui.component.UIPageIterator;
@@ -58,18 +55,6 @@ public class UIDocumentList extends UIComponentDecorator {
   public List getCurrentList() throws Exception {return uiPageIterator_.getCurrentPageData() ;}
   
   public UIPageIterator getUIPageIterator() {return uiPageIterator_ ;}
-  
-  public List<Node> getDocuments() throws Exception {
-    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
-    List templates = templateService.getDocumentTemplates() ;
-    List<Node> acticles = new ArrayList<Node>() ;
-    NodeIterator items  =  getDocNode().getParent().getNodes() ;
-    while (items.hasNext()) {
-      Node item = items.nextNode() ;
-      if (templates.contains(item.getPrimaryNodeType().getName())) acticles.add(item) ;
-    }
-    return  acticles ;
-  }
   
   static public class ViewDocumentActionListener extends EventListener<UIDocumentList> {
     public void execute(Event<UIDocumentList> event) throws Exception {

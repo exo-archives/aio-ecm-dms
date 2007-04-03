@@ -167,10 +167,12 @@ public class UITemplateForm extends UIForm {
       getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true) ;
       if (isVersioned(template_)) {
         baseVersion_ = template_.getBaseVersion() ;
-        getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(template_)).setRendered(true) ;
+        List<SelectItemOption<String>> options = getVersionValues(template_) ;
+        getUIFormSelectBox(FIELD_VERSION).setOptions(options).setRendered(true) ;
         getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true).setEnable(false) ;
-        setActions(new String[]{"Save", "Reset", "Restore", "Cancel"}) ;
+        if(options.size()>1) setActions(new String[]{"Save", "Reset", "Restore", "Cancel"}) ;
+        else setActions(new String[]{"Save", "Reset", "Cancel"}) ;
       } else if (canEnableVersionning(template_)) {
         getUIFormSelectBox(FIELD_VERSION).setRendered(false) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false).setEditable(true) ;   

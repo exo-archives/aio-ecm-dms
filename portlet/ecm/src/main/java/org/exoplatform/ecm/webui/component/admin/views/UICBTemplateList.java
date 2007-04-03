@@ -75,6 +75,7 @@ public class UICBTemplateList extends UIGrid {
       UICBTemplateList uiCBTemp = event.getSource() ;
       UIViewManager uiViewManager = uiCBTemp.getAncestorOfType(UIViewManager.class) ;
       UITemplateContainer uiECMTempContainer = uiViewManager.getChildById(UICBTemplateList.ST_CBTemp) ;
+      uiECMTempContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Edit") ;
       uiECMTempContainer.initPopup(UICBTemplateList.ST_CBTempForm, "Add") ;
       uiViewManager.setRenderedChild(UICBTemplateList.ST_CBTemp) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMTempContainer) ;
@@ -102,6 +103,7 @@ public class UICBTemplateList extends UIGrid {
       String tempPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIViewManager uiViewManager = uiCBTemp.getAncestorOfType(UIViewManager.class) ;
       UITemplateContainer uiTempContainer = uiViewManager.getChildById(UICBTemplateList.ST_CBTemp) ;
+      uiTempContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Add") ;
       uiTempContainer.initPopup(UICBTemplateList.ST_CBTempForm, "Edit") ;
       UITemplateForm uiTempForm = uiTempContainer.findComponentById(UICBTemplateList.ST_CBTempForm) ;
       uiTempForm.update(tempPath, null) ;

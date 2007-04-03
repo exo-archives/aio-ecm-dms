@@ -26,14 +26,10 @@ import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
-import org.exoplatform.webui.component.validator.EmptyFieldValidator;
-import org.exoplatform.webui.component.validator.Validator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-
-import com.sun.rmi.rmid.ExecPermission;
 
 /**
  * Created by The eXo Platform SARL
