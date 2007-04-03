@@ -16,6 +16,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
+import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -684,7 +685,12 @@ public class UIWorkingArea extends UIContainer {
         }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
-      } catch(Exception e) {       
+      } catch(ConstraintViolationException ce) {       
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
     }
