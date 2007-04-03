@@ -266,7 +266,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String name = uiPropertyForm.getUIStringInput(DEFINITION_NAME).getValue() ;
-      if(name == null || name.length() == 0) {
+      if(name == null || name.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.PROPERTY_DEFINITION) ;
         uiApp.addMessage(new ApplicationMessage("UIPropertyDefinitionForm.msg.property-name", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -317,7 +317,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String propertyName = 
         uiForm.getUIStringInput(DEFINITION_NAME).getValue() ;
-      if(propertyName == null || propertyName.length() == 0) {
+      if(propertyName == null || propertyName.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.PROPERTY_DEFINITION) ;
         uiApp.addMessage(new ApplicationMessage("UIPropertyDefinitionForm.msg.property-name", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

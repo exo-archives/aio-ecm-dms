@@ -64,13 +64,13 @@ public class UINodeTypeUpload extends UIForm {
         return ;
       }
       String fileName = input.getUploadResource().getFileName();
-      if(fileName == null || fileName.length() == 0) {
+      if(fileName == null || fileName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.filename-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       MimeTypeResolver resolver = new MimeTypeResolver();
-      String mimeType = resolver.getMimeType(fileName);
+      String mimeType = resolver.getMimeType(fileName) ;
       if(!mimeType.trim().equals("text/xml")){        
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-file-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

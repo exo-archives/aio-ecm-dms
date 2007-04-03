@@ -131,9 +131,6 @@ public class UIQueriesForm extends UIForm implements UISelector {
       } else {
         queryService.addSharedQuery(queryName, statement, queryType, new String[] {permissions}, cacheResult) ;
       }   
-      /*UIPopupWindow uiPopup = uiForm.getParent() ;
-      uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;*/
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
       uiManager.getChild(UIQueriesList.class).updateQueriesGrid() ;
       uiManager.removeChildById(UIQueriesList.ST_ADD) ;

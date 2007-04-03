@@ -237,8 +237,9 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
       NodeDefinitionValue nodeTypeValue = 
         uiChildNodeForm.getChildNodeByName(nodeName, uiForm.addedChildDef_);
       String prefix = uiForm.getUIFormSelectBox(UIChildNodeDefinitionForm.NAMESPACE).getValue() ;
-      String childNodeName = uiForm.getUIStringInput(UIChildNodeDefinitionForm.CHILD_NAME).getValue() ;
-      if(childNodeName == null || childNodeName.length() == 0) {
+      String childNodeName = 
+        uiForm.getUIStringInput(UIChildNodeDefinitionForm.CHILD_NAME).getValue() ;
+      if(childNodeName == null || childNodeName.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.CHILDNODE_DEFINITION) ;
         uiApp.addMessage(new ApplicationMessage("UIChildNodeDefinitionForm.msg.child-name", null)) ;
         return ;
@@ -247,7 +248,7 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
       nodeTypeValue.setName(childNodeName) ;
       String defaultType = 
         uiForm.getUIStringInput(UIChildNodeDefinitionForm.DEFAULT_PRIMARY_TYPE).getValue() ;
-      if(defaultType == null || defaultType.length() == 0) {
+      if(defaultType == null || defaultType.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.CHILDNODE_DEFINITION) ;
         message = new ApplicationMessage("UIChildNodeDefinitionForm.msg.defaultPrimaryType", null) ;
         uiApp.addMessage(message) ;
@@ -300,7 +301,7 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       ApplicationMessage message ;
       String childNodeName = uiForm.getUIStringInput(CHILD_NAME).getValue() ;
-      if(childNodeName == null || childNodeName.length() == 0) {
+      if(childNodeName == null || childNodeName.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.CHILDNODE_DEFINITION) ;
         uiApp.addMessage(new ApplicationMessage("UIChildNodeDefinitionForm.msg.child-name", null)) ;
         return ;
@@ -309,7 +310,7 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
       nodeTypeValue.setName(childNodeName) ;
       String defaultType =
         uiForm.getUIStringInput(DEFAULT_PRIMARY_TYPE).getValue() ;
-      if(defaultType == null || defaultType.length() == 0) {
+      if(defaultType == null || defaultType.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.CHILDNODE_DEFINITION) ;
         message = new ApplicationMessage("UIChildNodeDefinitionForm.msg.defaultPrimaryType", null) ;
         uiApp.addMessage(message) ;
@@ -327,7 +328,7 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
       String parentVer = uiForm.getUIFormSelectBox(PARENTVERSION).getValue() ;
       nodeTypeValue.setOnVersion(Integer.parseInt(parentVer)) ;
       String requiredType = uiForm.getUIStringInput(REQUIRED_PRIMARY_TYPE).getValue() ;
-      if(requiredType == null || requiredType.length() == 0) {
+      if(requiredType == null || requiredType.trim().length() == 0) {
         uiForm.setTabRender(UINodeTypeForm.CHILDNODE_DEFINITION) ;
         message = new ApplicationMessage("UIChildNodeDefinitionForm.msg.requiredPrimaryType", null) ;
         uiApp.addMessage(message) ;

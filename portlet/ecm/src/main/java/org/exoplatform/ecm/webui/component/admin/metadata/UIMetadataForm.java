@@ -105,7 +105,6 @@ public class UIMetadataForm extends UIForm implements UISelector{
   
   static public class SaveActionListener extends EventListener<UIMetadataForm> {
     public void execute(Event<UIMetadataForm> event) throws Exception {
-      System.out.println("\n\n\nHello the workd\n\n\n");
       UIMetadataForm uiForm = event.getSource();      
       UIMetadataManager uiMetaManager = uiForm.getAncestorOfType(UIMetadataManager.class) ;
       MetadataService metadataService = uiForm.getApplicationComponent(MetadataService.class) ;

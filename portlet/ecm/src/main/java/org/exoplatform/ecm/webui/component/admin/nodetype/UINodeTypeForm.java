@@ -500,7 +500,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       NodeTypeManager ntManager = repositoryService.getRepository().getNodeTypeManager() ;
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
-      if(nodeTypeName == null || nodeTypeName.length() == 0) {
+      if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null)) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
@@ -575,7 +575,7 @@ public class UINodeTypeForm extends UIFormTabPane {
         repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
-      if(nodeTypeName == null || nodeTypeName.length() == 0) {
+      if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null)) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
