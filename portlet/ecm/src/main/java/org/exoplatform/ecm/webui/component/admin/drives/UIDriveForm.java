@@ -107,6 +107,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       String workspace = 
         driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
       String path = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).getValue() ;
+      if(path == null) path = "/" ;
       UIApplication uiApp = uiDriveForm.getAncestorOfType(UIApplication.class) ;
       try {
         RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
@@ -114,7 +115,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         session.getItem(path) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.workspace-path-invalid", null, 
-                                                ApplicationMessage.ERROR)) ;
+                                                ApplicationMessage.INFO)) ;
         return ;
       }      
       String icon = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;

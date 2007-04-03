@@ -37,11 +37,11 @@ ECMUtils.prototype.clickLeftMouse = function(event, clickedElemt, pos, option) {
 	switch (pos) {
 		case 1:							// Top
 		  intTop  = eXo.core.Browser.findPosY(popupSelector) - showBlock.offsetHeight;
-		  intLeft = eXo.core.Browser.findPosX(popupSelector) + 1;	
+		  intLeft = eXo.core.Browser.findPosX(popupSelector) ;	
 			break;
 		case 2:							// Bottom
   		intTop  = eXo.core.Browser.findPosY(popupSelector) + popupSelector.offsetHeight;
-		  intLeft = eXo.core.Browser.findPosX(popupSelector) + 1;
+		  intLeft = eXo.core.Browser.findPosX(popupSelector) ;
 			break;
 		case 3:							// Left
   		intTop  = eXo.core.Browser.findPosY(popupSelector);
@@ -60,11 +60,10 @@ ECMUtils.prototype.clickLeftMouse = function(event, clickedElemt, pos, option) {
   }
 	showBlock.style.top = intTop + "px";
 	showBlock.style.left = intLeft + "px";
-	showBlock.firstCall = true;
 }
 
 ECMUtils.prototype.showPopup = function(showBlock, clearAll) {
-		if(clearAll) this.closeAllPopup();
+		if(clearAll) this.closeAllPopup() ;
 		eXo.webui.UIPopup.show(showBlock) ;
 		showBlock.onmousedown = function(e) {
 			if(!e) e = window.event ;

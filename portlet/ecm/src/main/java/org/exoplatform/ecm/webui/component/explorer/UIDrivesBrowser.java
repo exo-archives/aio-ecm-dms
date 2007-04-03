@@ -95,7 +95,7 @@ public class UIDrivesBrowser extends UIContainer {
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class) ;
       
       Preference pref = uiJCRExplorer.getPreference() ;
-      pref.setShowSideBar(true) ;
+      pref.setShowSideBar(drive.getViewSideBar()) ;
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
       pref.setEmpty(false) ;

@@ -41,7 +41,7 @@ public class UIPopupAction extends UIContainer {
     UIPopupWindow popup = getChild(UIPopupWindow.class);
     popup.setUIComponent(uiComponent) ;
     ((UIPopupComponent)uiComponent).activate() ;
-    popup.setWindowSize(width, height) ;  
+    popup.setWindowSize(width, height) ;
     popup.setRendered(true) ;
     popup.setShow(true) ;
   }
