@@ -2,10 +2,9 @@
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
- *          minhdv@exoplatform.com
+ *          minh.dang@exoplatform.com
  * @version: $Id$
  * Oct 6, 2006  
- *TODO: Why don't  you use the common  UIForm.gtmpl
  */
 %>
 <div class="$uicomponent.id">

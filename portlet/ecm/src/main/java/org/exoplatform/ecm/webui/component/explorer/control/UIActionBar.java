@@ -367,15 +367,11 @@ public class UIActionBar extends UIForm {
       if(templateService.isManagedNodeType(nodeType.getName())) {
         UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(UIWatchDocumentForm .class, 700) ;
-        UIWatchDocumentForm uiWatchForm = uiPopupAction.findFirstComponentOfType(UIWatchDocumentForm.class) ;
-        if(uiWatchForm.isWatching()) {
-          uiApp.addMessage(new ApplicationMessage("UIWatchDocumentForm.msg.node-iswatching", null)) ;
-        }
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-watch", null)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return ;
     }
   }

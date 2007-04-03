@@ -38,8 +38,7 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(listeners = UIWatchDocumentForm.WatchActionListener.class), 
       @EventConfig(listeners = UIWatchDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIWatchDocumentForm.UnwatchActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIWatchDocumentForm.ContinueActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIWatchDocumentForm.UnwatchActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
@@ -97,7 +96,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
   public void activate() throws Exception {
     setWatchNode(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
     if(!isWatching()) setActions(new String[] {"Watch", "Cancel"}) ;
-    else setActions(new String[] {"Unwatch", "Continue"}) ;
+    else setActions(new String[] {"Unwatch", "Cancel"}) ;
   }
   
   public void deActivate() throws Exception {
@@ -127,13 +126,6 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       uiApp.addMessage(new ApplicationMessage("UIWatchDocumentForm.msg.watching-successfully", null)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp) ;
       uiForm.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
-    }
-  }
-  
-  static  public class ContinueActionListener extends EventListener<UIWatchDocumentForm> {
-    public void execute(Event<UIWatchDocumentForm> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction() ;
     }
   }
   
