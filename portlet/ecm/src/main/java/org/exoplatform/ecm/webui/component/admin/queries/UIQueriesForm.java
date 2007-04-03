@@ -97,6 +97,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
     getUIStringInput(QUERY_NAME).setEditable(false) ;
     getUIFormCheckBoxInput(CACHE_RESULT).setChecked(query.getProperty("exo:cachedResult").getBoolean()) ;
     getUIFormTextAreaInput(STATEMENT).setValue(query.getProperty("jcr:statement").getString()) ;
+    getUIFormSelectBox(QUERY_TYPE).setValue(query.getProperty("jcr:language").getString()) ;
     Value[] values = query.getProperty("exo:permissions").getValues() ;
     StringBuilder strValues = new StringBuilder() ;
     for(int i = 0; i < values.length; i ++) {
@@ -109,9 +110,6 @@ public class UIQueriesForm extends UIForm implements UISelector {
   static public class CancelActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
-      /*UIPopupWindow uiPopup = uiForm.getParent() ;
-      uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;*/
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
       uiManager.removeChildById(UIQueriesList.ST_ADD) ;
       uiManager.removeChildById(UIQueriesList.ST_EDIT) ;

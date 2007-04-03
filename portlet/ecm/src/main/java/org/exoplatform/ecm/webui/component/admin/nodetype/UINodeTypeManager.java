@@ -56,7 +56,7 @@ public class UINodeTypeManager extends UIContainer {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupID) ;
     UINodeTypeForm uiForm = createUIComponent(UINodeTypeForm.class, null, null) ;
     uiForm.update(null, false) ;
-    uiPopup.setWindowSize(760, 400) ;
+    uiPopup.setWindowSize(660, 400) ;
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setShow(true) ;
   }
