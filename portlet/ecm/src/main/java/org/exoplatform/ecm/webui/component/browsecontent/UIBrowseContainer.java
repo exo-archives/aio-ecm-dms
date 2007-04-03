@@ -105,6 +105,7 @@ public class UIBrowseContainer extends UIContainer {
     String templateName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     CmsConfigurationService cmsConfiguration = getApplicationComponent(CmsConfigurationService.class) ;
     setShowSearchForm(false) ;
+    setShowDocumentDetail(false) ;
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
     rootNode_ = (Node) getSession().getItem(categoryPath) ;
     if(templateType.equals(Utils.CB_USE_FROM_PATH)) {
@@ -122,6 +123,7 @@ public class UIBrowseContainer extends UIContainer {
       }
     } 
     if(templateType.equals(Utils.CB_USE_DOCUMENT)) {
+      setShowDocumentDetail(true) ;
       Node documentNode = getNodeByPath(categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "")) ;
       initDocumentDetail(documentNode) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;

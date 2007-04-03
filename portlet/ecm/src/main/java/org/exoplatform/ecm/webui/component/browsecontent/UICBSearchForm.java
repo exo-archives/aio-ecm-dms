@@ -87,7 +87,7 @@ public class UICBSearchForm extends UIForm {
     duration_ = 0 ;
     String statement = StringUtils.replace(CATEGORY_QUERY, "$1", keyword);
     for(String type : Utils.CATEGORY_NODE_TYPES) {            
-      String queryStatement = StringUtils.replace(statement, "$0",type);
+      String queryStatement = StringUtils.replace(statement, "$0", type);
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
       long beforeTime = System.currentTimeMillis();
       try{
@@ -115,10 +115,12 @@ public class UICBSearchForm extends UIForm {
   @SuppressWarnings("unchecked")
   public List<ResultData> searchDocument(String keyword, boolean reference,
       boolean relation, Node currentNode) throws Exception { 
+    String nodePath = currentNode.getPath() ;
+    if(nodePath.equals("/")) nodePath = "" ;
     List<ResultData> resultList = new ArrayList<ResultData>() ;
     ResultData result ;
-    String statement = StringUtils.replace(DOCUMENT_QUERY,"$1", keyword) ;
-    statement = StringUtils.replace(statement,"$2", currentNode.getPath()) ;    
+    String statement = StringUtils.replace(DOCUMENT_QUERY, "$1", keyword) ;
+    statement = StringUtils.replace(statement, "$2", nodePath) ;    
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     Session session = uiContainer.getSession() ;
     QueryManager queryManager = session.getWorkspace().getQueryManager();
@@ -127,7 +129,7 @@ public class UICBSearchForm extends UIForm {
     List<String> documentNodeTypes = templateService.getDocumentTemplates() ;
     documentNodeTypes.add("nt:resource") ;
     for(String ntDocument : documentNodeTypes) {            
-      String queryStatement = StringUtils.replace(statement,"$0", ntDocument) ;      
+      String queryStatement = StringUtils.replace(statement, "$0", ntDocument) ;      
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
       long beforeTime = System.currentTimeMillis();
       try{
