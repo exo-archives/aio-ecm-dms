@@ -17,8 +17,9 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.download.DownloadResource;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormInputInfo;
@@ -44,7 +45,9 @@ import org.exoplatform.webui.event.Event.Phase;
     template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
       @EventConfig(listeners = UINodeTypeExport.ExportActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UINodeTypeExport.CancelActionListener.class)
+      @EventConfig(phase=Phase.DECODE, listeners = UINodeTypeExport.CancelActionListener.class),
+      @EventConfig(listeners = UINodeTypeExport.UncheckAllActionListener.class),
+      @EventConfig(listeners = UINodeTypeExport.CheckAllActionListener.class)
     }
 )
 public class UINodeTypeExport extends UIForm {
@@ -80,6 +83,7 @@ public class UINodeTypeExport extends UIForm {
       uiInputSet.addChild(uiCheckbox);
       uiTableInputSet.addChild(uiInputSet);      
     }
+    setActions(new String[] {"Export", "Cancel", "UncheckAll"}) ;
     addUIFormInput(uiTableInputSet) ;
   }
 
@@ -100,12 +104,18 @@ public class UINodeTypeExport extends UIForm {
     public void execute(Event<UINodeTypeExport> event) throws Exception {
       UINodeTypeExport uiExport = event.getSource() ;
       UINodeTypeManager uiManager = uiExport.getAncestorOfType(UINodeTypeManager.class) ;
+      UIApplication uiApp = uiExport.getAncestorOfType(UIApplication.class) ;
       List<NodeType> selectedNodes = new ArrayList<NodeType>() ;
       List<UIFormCheckBoxInput> listCheckbox =  new ArrayList<UIFormCheckBoxInput>();
       uiExport.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);
       for(int i = 0; i < listCheckbox.size(); i ++) {
         boolean checked = listCheckbox.get(i).isChecked() ;
         if(checked) selectedNodes.add(uiExport.getNodeTypeByName(listCheckbox.get(i).getName())) ;
+      }
+      if(selectedNodes.size() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UINodeTypeExport.msg.item-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
       String nodeTypeXML = getNodeTypeXML(selectedNodes) ;
       ByteArrayInputStream is = new ByteArrayInputStream(nodeTypeXML.getBytes()) ;
@@ -263,6 +273,32 @@ public class UINodeTypeExport extends UIForm {
       UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.EXPORT_POPUP) ;
       uiPopup.setRendered(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+    }
+  }
+  
+  static public class UncheckAllActionListener extends EventListener<UINodeTypeExport> {
+    public void execute(Event<UINodeTypeExport> event) throws Exception {
+      UINodeTypeExport uiExport = event.getSource() ;
+      List<UIFormCheckBoxInput> listCheckbox =  new ArrayList<UIFormCheckBoxInput>();
+      uiExport.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);
+      for(int i = 0; i < listCheckbox.size(); i ++) {
+        listCheckbox.get(i).setChecked(false) ;
+      }
+      uiExport.setActions(new String[] {"Export", "Cancel", "CheckAll"}) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiExport.getParent()) ;
+    }
+  }
+  
+  static public class CheckAllActionListener extends EventListener<UINodeTypeExport> {
+    public void execute(Event<UINodeTypeExport> event) throws Exception {
+      UINodeTypeExport uiExport = event.getSource() ;
+      List<UIFormCheckBoxInput> listCheckbox =  new ArrayList<UIFormCheckBoxInput>();
+      uiExport.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);
+      for(int i = 0; i < listCheckbox.size(); i ++) {
+        listCheckbox.get(i).setChecked(true) ;
+      }
+      uiExport.setActions(new String[] {"Export", "Cancel", "UncheckAll"}) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiExport.getParent()) ;
     }
   }
 }

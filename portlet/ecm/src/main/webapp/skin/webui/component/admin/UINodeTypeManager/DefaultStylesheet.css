@@ -8,12 +8,12 @@
 /*############################## -- UINodeTypeManager-- ########################*/
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
- width: 440px;
- margin-left: 10px;
+  width: 440px;
+  margin-left: 10px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout{
- padding: 8px;
+  padding: 8px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
@@ -26,6 +26,21 @@
   width: 100% ;
   border-right: 0px ;
   border-left: 1px solid #7EAAD0;
+}
+	
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .ActionContainer {
+  width: 320px ;
+  margin: auto ;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
+  margin-left: 0px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .ActionButton {
+  width: 100px;
+  float: left ;
+  margin-left: 3px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
@@ -54,11 +69,6 @@
 
 .UIECMAdminPortlet .UIFormInputSetWithActions .UIAction {
 	width: 500px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .ActionContainer {
-  width: 300px ;
-  margin: auto ;
 }
 
 .UIECMAdminPortlet .UINodeTypeImport .ActionContainer {
@@ -94,10 +104,6 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImport .ActionButton {
   width: 90px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .ActionButton {
-  float: left ;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {

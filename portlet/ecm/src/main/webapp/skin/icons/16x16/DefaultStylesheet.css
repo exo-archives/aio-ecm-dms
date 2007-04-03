@@ -419,6 +419,14 @@
   background-image: url('DefaultSkin/Export.gif');  
 }
 
+.UncheckAll16x16Icon {
+  background-image: url('DefaultSkin/UnCheckAll.gif');  
+}
+
+.CheckAll16x16Icon {
+  background-image: url('DefaultSkin/CheckAll.gif');  
+}
+
 .Import16x16Icon {
   background-image: url('DefaultSkin/Import.gif');  
 }

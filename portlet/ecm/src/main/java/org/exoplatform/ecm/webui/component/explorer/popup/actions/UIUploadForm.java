@@ -83,11 +83,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIUploadForm> event) throws Exception {
       UIUploadForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
       if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+        
       }
       String fileName = input.getUploadResource().getFileName() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
@@ -100,7 +102,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null) name = fileName;
       String mimeType = input.getUploadResource().getMimeType() ;
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       Node selectedNode = uiExplorer.getCurrentNode();
       
       boolean isExist = selectedNode.hasNode(name) ;
