@@ -13,6 +13,9 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.cms.views.impl.ViewDataImpl;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -39,20 +42,30 @@ public class UIECMTemplateList extends UIGrid {
   private static String[] VIEW_ACTION = {"EditInfo","Delete"} ;
   public static String ST_ECMTempForm = "ECMTempForm" ;  
   public static String ST_ECMTemp = "ECMTemplate" ;
-  
+
   public UIECMTemplateList() throws Exception {
     getUIPageIterator().setId("UIECMTemplateGrid") ;
     configure("path", VIEW_BEAN_FIELD, VIEW_ACTION) ;
     updateTempListGrid() ;
   }
-  
+
   public String[] getActions() { return new String[] {"Add"} ; }
-  
+
   public String getBaseVersion(Node node) throws Exception {
     if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
   }
-  
+
+  public boolean canDelete(String tempName) throws Exception{
+    ManageViewService  vservice = getApplicationComponent(ManageViewService.class) ;
+    for(Object o : vservice.getAllViews()) {
+      String tempPath = ((ViewDataImpl)o).getTemplate() ;
+      String tName = tempPath.substring(tempPath.lastIndexOf("/")+1) ;
+      if(tempName.equals(tName)) return false ;
+    }
+    return true ;
+  }
+
   public void updateTempListGrid() throws Exception {
     ManageViewService service = getApplicationComponent(ManageViewService.class) ;
     List<Node> nodes = service.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES) ;
@@ -62,7 +75,7 @@ public class UIECMTemplateList extends UIGrid {
     }
     getUIPageIterator().setPageList(new ObjectPageList(tempBeans, 10)) ;
   }
-  
+
   static  public class AddActionListener extends EventListener<UIECMTemplateList> {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTempList = event.getSource() ;
@@ -73,15 +86,24 @@ public class UIECMTemplateList extends UIGrid {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMTempContainer) ;
     }
   }
-  
+
   static  public class DeleteActionListener extends EventListener<UIECMTemplateList> {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTemp = event.getSource() ;
-      ManageViewService service = uiECMTemp.getApplicationComponent(ManageViewService.class) ;
+      ManageViewService vservice = uiECMTemp.getApplicationComponent(ManageViewService.class) ;
       UIViewManager uiViewManager = uiECMTemp.getAncestorOfType(UIViewManager.class) ;
       uiViewManager.setRenderedChild(UIECMTemplateList.ST_ECMTemp) ;
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      service.removeTemplate(templatePath) ;
+      Node template = vservice.getTemplate(templatePath) ;
+      String templateName = template.getName() ;
+      if(!uiECMTemp.canDelete(templateName))
+      {
+        UIApplication app = uiECMTemp.getAncestorOfType(UIApplication.class) ;
+        Object[] args = {templateName} ;
+        app.addMessage(new ApplicationMessage("UIECMTemplateList.msg.template-in-use", args)) ;
+        return ;
+      }
+      vservice.removeTemplate(templatePath) ;
       uiECMTemp.updateTempListGrid() ;
       UITemplateContainer uiTempContainer = uiECMTemp.getParent() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer) ;

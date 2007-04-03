@@ -35,8 +35,10 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.templates.groovy.ResourceResolver;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPageIterator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -203,8 +205,13 @@ public class UIBrowseContainer extends UIContainer {
   public void setTreeRoot(Node node) throws Exception { treeRoot_ = new TreeNode(node) ;}
   public String[] getActions() { return new String[] {"back"} ;}
   public Node getNodeByUUID(String uuid) throws Exception{ return getSession().getNodeByUUID(uuid);}
-  public Node getNodeByPath(String nodePath) throws Exception {
-    return (Node)getSession().getItem(nodePath) ;
+  public Node getNodeByPath(String nodePath) throws Exception{
+    try{
+      return (Node)getSession().getItem(nodePath) ;
+    } catch(Exception e){
+      getSession().refresh(true) ;
+      return null ;
+    }
   }
   public Node getRootNode() {return rootNode_ ;}
   public Node getCurrentNode() {
@@ -387,7 +394,7 @@ public class UIBrowseContainer extends UIContainer {
         }
         if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
             childNode, isShowAllDocument(), subDocumentList.size(), templates)) ;        
-        if(isCategories(childNode.getPrimaryNodeType())) {
+        if(isCategories(nt)&&(!templates.contains(nt.getName()))) {
           Map childOfSubCategory = new HashMap() ;
           List<Node> subCategoryDoc = new ArrayList<Node>() ;
           List<String> subCategoryCat = new ArrayList<String>() ;
@@ -398,7 +405,7 @@ public class UIBrowseContainer extends UIContainer {
             if(templates.contains(nodeType.getName())&&(isShowDocument)) { 
               if(subCategoryDoc.size() < getRowPerBlock()) subCategoryDoc.add(node) ;
             }
-            if(isCategories(node.getPrimaryNodeType())) subCategoryCat.add(node.getPath()) ;
+            if(isCategories(nodeType)&&(!templates.contains(nodeType.getName()))) subCategoryCat.add(node.getPath()) ;
           }
           if(isShowReferenced) subCategoryDoc.addAll(getReferences(repositoryService, childNode,
               false, subCategoryDoc.size(), templates)) ;
@@ -592,6 +599,7 @@ public class UIBrowseContainer extends UIContainer {
     setCurrentNode(node) ;
     buildTree(node.getPath()) ;
   }
+  
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
@@ -610,6 +618,11 @@ public class UIBrowseContainer extends UIContainer {
         return ;
       }
       Node selectNode = uiContainer.getNodeByPath(objectId) ;
+      if(selectNode == null) {
+        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
+        return ;
+      }
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates() ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
@@ -656,6 +669,11 @@ public class UIBrowseContainer extends UIContainer {
       UIBrowseContainer uiContainer = event.getSource() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = uiContainer.getNodeByPath(path) ;
+      if(node == null) {
+        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
+        return ;
+      }
       uiContainer.selectNode(node) ;
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;

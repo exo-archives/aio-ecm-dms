@@ -41,9 +41,7 @@ public class UIConfigTabPane extends UIContainer {
   public static String WORKSPACE = null ;
   public static String PATH_SELECTOR = "pathSelector" ;
   public static String DOCUMENT_SELECTOR = "documentSelector" ;
-  public UIConfigTabPane() throws Exception {
-
-  }
+  public UIConfigTabPane() throws Exception {}
   
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;

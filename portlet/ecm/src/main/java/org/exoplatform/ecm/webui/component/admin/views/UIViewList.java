@@ -11,8 +11,12 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -73,6 +77,16 @@ public class UIViewList extends UIGrid {
     getUIPageIterator().setPageList(new ObjectPageList(viewBeans, 10)) ;    
   }
   
+  public boolean canDelete(List drivers, String viewName) {
+    for(Object driver : drivers){
+      String views = ((DriveData)driver).getViews() ;
+      for(String view: views.split(",")){
+        if(viewName.equals(view.trim())) return false ;
+      }
+    }
+    return true ;
+  }
+  
   static  public class AddViewActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
@@ -94,6 +108,13 @@ public class UIViewList extends UIGrid {
       UIViewList viewList = event.getSource() ;
       viewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID)  ;
+      ManageDriveService manageDrive = viewList.getApplicationComponent(ManageDriveService.class) ;
+      if(!viewList.canDelete(manageDrive.getAllDrives(), viewName)) {
+        UIApplication app = viewList.getAncestorOfType(UIApplication.class) ;
+        Object[] args = {viewName} ;
+        app.addMessage(new ApplicationMessage("UIViewList.msg.template-in-use", args)) ; 
+        return ;
+      }
       viewList.vservice_.removeView(viewName) ;
       viewList.updateViewListGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(viewList.getParent()) ;
