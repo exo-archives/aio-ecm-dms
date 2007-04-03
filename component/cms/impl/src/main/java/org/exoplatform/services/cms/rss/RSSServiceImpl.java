@@ -132,7 +132,8 @@ public class RSSServiceImpl implements RSSService{
       PortalContainerInfo containerInfo = PortalContainer.getInstance().getPortalContainerInfo() ;      
       String portalName = containerInfo.getContainerName() ; 
       String wsName = session.getWorkspace().getName() ;
-      NodeIterator iter = queryResult.getNodes() ;   
+      NodeIterator iter = queryResult.getNodes() ;
+      System.out.println("---  \nThere are "+ iter.getSize() + " items in RSS  ---.\n") ;
       while (iter.hasNext()) {        
         Node child = iter.nextNode(); 
 	    if(child.isNodeType("exo:rss-enable")) {
@@ -246,7 +247,9 @@ public class RSSServiceImpl implements RSSService{
       PortalContainerInfo containerInfo = PortalContainer.getInstance().getPortalContainerInfo() ;      
       String portalName = containerInfo.getContainerName() ;  
       MimeTypeResolver resolver = new MimeTypeResolver();
-      for (NodeIterator iter = queryResult.getNodes();iter.hasNext() ;) {        
+      NodeIterator iter = queryResult.getNodes() ;
+      System.out.println("---  \nThere are "+ iter.getSize() + " items in Podcast.  ---\n") ;
+      while (iter.hasNext()) {        
         Node child = iter.nextNode();        
         entry = new SyndEntryImpl();
         entry.setTitle(child.getProperty(TITLE).getString());
