@@ -7,6 +7,8 @@ package org.exoplatform.ecm.webui.component.admin.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.nodetype.NodeType;
+
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -137,13 +139,14 @@ public class UIActionTypeForm extends UIForm {
       UIActionManager uiActionManager = uiForm.getAncestorOfType(UIActionManager.class) ;
       ActionServiceContainer actionServiceContainer = 
         uiForm.getApplicationComponent(ActionServiceContainer.class) ;
-      UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String selectValue = uiForm.getUIStringInput(FIELD_ACTIONTYPE).getValue() ;
       String actionName = uiForm.getUIStringInput(FIELD_NAME).getValue();
       Object[] args = {actionName} ;
       if(!actionName.startsWith("exo:")) { 
-        app.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-name-invalid", args,
-                                              ApplicationMessage.ERROR)) ; 
+        uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-name-invalid", args,
+                                                 ApplicationMessage.WARNING)) ; 
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
       List<String> variables = new ArrayList<String>();     
@@ -151,6 +154,13 @@ public class UIActionTypeForm extends UIForm {
       if(values != null && values.size() > 0) {
         for(Object value : values) {
           variables.add((String)value) ;
+        }
+      }
+      for(NodeType nodeType : actionServiceContainer.getCreatedActionTypes()) {
+        if(actionName.equals(nodeType.getName())) {
+          uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-exist", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
         }
       }
       try {
@@ -161,8 +171,9 @@ public class UIActionTypeForm extends UIForm {
         uiForm.refresh() ;
         uiActionManager.removeChild(UIPopupWindow.class) ;
       } catch(Exception e) {
-        app.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-type-create-error", args,
-                                              ApplicationMessage.ERROR)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-type-create-error", args,
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionManager) ;
