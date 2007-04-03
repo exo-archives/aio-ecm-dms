@@ -431,6 +431,14 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     }
   }
   
+  static public class RemoveActionListener extends EventListener<UINodeTypeForm> {
+    public void execute(Event<UINodeTypeForm> event) throws Exception {
+      UINodeTypeForm uiForm = event.getSource() ;
+      uiForm.setRenderedChild("Contraints") ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+    }
+  }
+  
   @SuppressWarnings("unchecked")
   static public class AddValueActionListener extends EventListener<UINodeTypeForm> {
     public void execute(Event<UINodeTypeForm> event) throws Exception {

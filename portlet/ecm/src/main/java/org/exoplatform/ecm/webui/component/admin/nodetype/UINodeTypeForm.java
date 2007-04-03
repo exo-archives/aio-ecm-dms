@@ -74,7 +74,8 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UIPropertyDefinitionForm.AddConstraintsActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.AddValueActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.CancelConstraintsActionListener.class),
-      @EventConfig(listeners = UIPropertyDefinitionForm.AddActionListener.class)
+      @EventConfig(listeners = UIPropertyDefinitionForm.AddActionListener.class),
+      @EventConfig(listeners = UIPropertyDefinitionForm.RemoveActionListener.class)
     }
 )
 public class UINodeTypeForm extends UIFormTabPane {
