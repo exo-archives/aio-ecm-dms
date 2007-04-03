@@ -1,16 +1,18 @@
 <%
-  import java.util.List;
+  import java.util.List ;
+  import javax.jcr.Node ;
   String actionShowHidden = uicomponent.event("ShowHidden") ;
   Boolean isEnablePath =  uicomponent.enablePath() ;
   Boolean isEnableTree =  uicomponent.enableTree() ;
   Boolean isEnableVote =  uicomponent.enableVote() ;
   Boolean isEnableComment =  uicomponent.enableComment() ;
   Boolean isEnableSearch = uicomponent.enableSearch() ;
+  Node Root = uicomponent.getRootNode() ;
 %>
 <div class="UIToolBar" id="$uicomponent.id">
   <div class="LeftToolBar">
-    <%if(isEnableTree) {%>
     <div class="SeparatorBarLeft Separator"><span></span></div>      
+    <%if(isEnableTree) {%>
       <%
         String iconName = "GreenRightArrow24x24Icon" ;
         String tooltip  = _ctx.appRes(uicomponent.getName() + ".tooltip.Show") ;
@@ -22,27 +24,37 @@
       <a  href="$actionShowHidden" title="$tooltip">
         <div class="BlueBarIcon $iconName"><span></span></div>
       </a>
-    <%}%>
-    <div class="SeparatorBarLeft Separator"><span></span></div>
-    <%if(isEnablePath) {%>
       <div class="SeparatorBarLeft Separator"><span></span></div>
+    <%}%>
+    <%if(isEnablePath) {%>
       <div class="ImageNote Note16x16Icon"><span></span></div>
-        <a class="TextRoot" href="<%=uicomponent.event('SelectPath', uicomponent.getRootNode().getPath())%>">
-          <%=uicomponent.getRootNode().getName()%>
+        <a class="TextRoot" href="<%=uicomponent.event('SelectPath', Root.getPath())%>">
+          <%
+          	String nodeName = Root.getName() ;
+          if(Root.getPath().trim().equals("/")) nodeName = _ctx.appRes(uicomponent.getName() + ".label.RootNode") ;
+          %>
+          <%=nodeName%>
         </a>
         <div class="LeftArrowIcon RightArrow16x16Icon"><span></span></div>
         <%for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
-             String actionLink = uicomponent.event("SelectPath", node.getPath()); %>
-            <a class="TextRoot" href="$actionLink">${node.name}</a>
+             String actionLink = uicomponent.event("SelectPath", node.getPath()); 
+         %>
+            <a class="TextRoot" href="$actionLink"><%=node.getName()%></a>
             <div class="LeftArrowIcon RightArrow16x16Icon"><span></span></div>
         <%}%>
-      <div style="clear: left"></div>
+      <div style="clear:left"></div>
     <%}%> 
   </div>
   <div class="IconFrame">
     <%
       String actionLabel = "" ;
       String link = "" ;
+      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Refresh") 
+	    link = uicomponent.event("Refresh") ;
+    %> 
+    <a class="Icon RefreshSession24x24Icon" href="$link" title="$actionLabel"><span></span></a>      
+	  <div class="Separator ToolBarSeparator"><span></span></div>
+    <%
       if(isEnableSearch) {
 	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Search") 
 	      link = uicomponent.event("Search") ;
@@ -67,5 +79,6 @@
       <%}%>
     <div style="clear:all;"><span></span></div>
   </div>
+  <div style="clear:left"></div>
 </div>
 

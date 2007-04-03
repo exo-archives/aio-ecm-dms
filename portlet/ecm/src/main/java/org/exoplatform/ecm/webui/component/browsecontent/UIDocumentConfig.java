@@ -52,7 +52,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
   final static public String FIELD_DOCSELECT = "doc" ;
   public UIDocumentConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;    
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;    
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
     categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
     addUIComponentInput(categoryPathSelect) ;
@@ -83,9 +83,9 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
     }
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setOptions(getWorkSpaceOption()) ;
+    UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
+    workSpaceField.setEditable(false) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
@@ -106,7 +106,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
     }
     categoryPathField.setValue(path) ;
-    workSpaceField.setEnable(isEditable) ;
     documentNameField.setValue(docName) ;
     categoryPathField.setEditable(isEditable) ;
     documentNameField.setEditable(isEditable) ;
@@ -116,8 +115,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
   }
 
   public void editForm(boolean isEditable) {
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setEnable(isEditable) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
     categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
@@ -254,7 +251,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm  = event.getSource() ;
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      String workSpace = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, workSpace) ;
     }
   }

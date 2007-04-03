@@ -26,10 +26,14 @@ import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
+import org.exoplatform.webui.component.validator.Validator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+
+import com.sun.rmi.rmid.ExecPermission;
 
 /**
  * Created by The eXo Platform SARL
@@ -48,8 +52,8 @@ import org.exoplatform.webui.event.EventListener;
 public class UICBSearchForm extends UIForm {
   final static  private String FIELD_SEARCHVALUE = "inputValue" ;
   final static  private String FIELD_OPTION = "option" ;
-  final static  private String FIELD_CB_REF = "referenceDoc" ;
-  final static  private String FIELD_CB_REL = "relationDoc" ;
+  final static  private String FIELD_CB_REF = "referencesDoc" ;
+  final static  private String FIELD_CB_CHILD = "childDoc" ;
   
   public static final String CATEGORY_SEARCH = "Category" ;
   public static final String DOCUMENT_SEARCH = "Content" ;  
@@ -64,7 +68,7 @@ public class UICBSearchForm extends UIForm {
     addChild(new UIFormStringInput(FIELD_SEARCHVALUE, FIELD_SEARCHVALUE, null)) ;
     addChild(selectType) ;
     UIFormCheckBoxInput cbRef = new UIFormCheckBoxInput<Boolean>(FIELD_CB_REF, FIELD_CB_REF, null) ; 
-    UIFormCheckBoxInput cbRel = new UIFormCheckBoxInput<Boolean>(FIELD_CB_REL, FIELD_CB_REL, null) ;
+    UIFormCheckBoxInput cbRel = new UIFormCheckBoxInput<Boolean>(FIELD_CB_CHILD, FIELD_CB_CHILD, null) ;
     addChild(cbRef.setRendered(isDocumentType)) ;
     addChild(cbRel.setRendered(isDocumentType)) ;
   }
@@ -90,16 +94,20 @@ public class UICBSearchForm extends UIForm {
       String queryStatement = StringUtils.replace(statement, "$0",type);
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
       long beforeTime = System.currentTimeMillis();
-      QueryResult queryResult = query.execute();
-      long searchTime = System.currentTimeMillis() - beforeTime;
-      duration_ += searchTime ;
-      NodeIterator iter = queryResult.getNodes() ;
-      while(iter.hasNext()) {
-        Node node = iter.nextNode() ;
-        if(node.getPath().startsWith(currentNode.getPath())) {                    
-          result = new ResultData(node.getName(), node.getPath()) ;
-          resultList.add(result) ; 
+      try{
+        QueryResult queryResult = query.execute();
+        long searchTime = System.currentTimeMillis() - beforeTime;
+        duration_ += searchTime ;
+        NodeIterator iter = queryResult.getNodes() ;
+        while(iter.hasNext()) {
+          Node node = iter.nextNode() ;
+          if(node.getPath().startsWith(currentNode.getPath())) {                    
+            result = new ResultData(node.getName(), node.getPath()) ;
+            resultList.add(result) ; 
+          }
         }
+      }catch(Exception e){
+        return null ;
       }
     }
     UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
@@ -108,13 +116,13 @@ public class UICBSearchForm extends UIForm {
     return resultList ;
   } 
 
-  @SuppressWarnings({"unused", "unchecked"})
+  @SuppressWarnings("unchecked")
   public List<ResultData> searchDocument(String keyword, boolean reference,
-      boolean relation, Node currentNode) throws Exception {    
+      boolean relation, Node currentNode) throws Exception { 
     List<ResultData> resultList = new ArrayList<ResultData>() ;
     ResultData result ;
-    String statement = StringUtils.replace(DOCUMENT_QUERY,"$1",keyword) ;
-    statement = StringUtils.replace(statement,"$2",currentNode.getPath()) ;    
+    String statement = StringUtils.replace(DOCUMENT_QUERY,"$1", keyword) ;
+    statement = StringUtils.replace(statement,"$2", currentNode.getPath()) ;    
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     Session session = uiContainer.getSession() ;
     QueryManager queryManager = session.getWorkspace().getQueryManager();
@@ -122,46 +130,53 @@ public class UICBSearchForm extends UIForm {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documentNodeTypes = templateService.getDocumentTemplates() ;
     documentNodeTypes.add("nt:resource") ;
-    for(String ntDocument:documentNodeTypes) {            
-      String queryStatement = StringUtils.replace(statement,"$0",ntDocument) ;      
+    for(String ntDocument : documentNodeTypes) {            
+      String queryStatement = StringUtils.replace(statement,"$0", ntDocument) ;      
       Query query = queryManager.createQuery(queryStatement, Query.SQL);
       long beforeTime = System.currentTimeMillis();
-      QueryResult queryResult = query.execute() ;
-      long searchTime = System.currentTimeMillis() - beforeTime;
-      duration_ += searchTime ;
-      NodeIterator iter = queryResult.getNodes() ;
-      while (iter.hasNext()) {
-        Node node = iter.nextNode() ;
-        if(ntDocument.equals("nt:resource")) {
-          Node paNode = node.getParent() ;
-          if(documentNodeTypes.contains(paNode.getPrimaryNodeType().getName())) {
-            result = new ResultData(paNode.getName(), paNode.getPath()) ;
+      try{
+        QueryResult queryResult = query.execute() ;
+        long searchTime = System.currentTimeMillis() - beforeTime;
+        duration_ += searchTime ;
+        NodeIterator iter = queryResult.getNodes() ;
+        while (iter.hasNext()) {
+          Node node = iter.nextNode() ;
+          if(ntDocument.equals("nt:resource")) {
+            Node paNode = node.getParent() ;
+            if(documentNodeTypes.contains(paNode.getPrimaryNodeType().getName())) {
+              result = new ResultData(paNode.getName(), paNode.getPath()) ;
+              resultList.add(result) ;
+            }
+          } else {
+            result = new ResultData(node.getName(), node.getPath()) ;
             resultList.add(result) ;
           }
-        } else {
-          result = new ResultData(node.getName(), node.getPath()) ;
-          resultList.add(result) ;
         }
+      } catch (Exception e) {
+        return null ;
       }
     }
+    
     UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
     uiController.setSearchTime(duration_) ;
     uiController.setResultRecord(resultList.size()) ;
     return resultList ;
   }
+  
   public void reset() {
     getUIStringInput(FIELD_SEARCHVALUE).setValue("") ;
     getUIFormSelectBox(FIELD_OPTION).setOptions(getOptions()) ;
     getUIFormCheckBoxInput(FIELD_CB_REF).setRendered(isDocumentType) ;
-    getUIFormCheckBoxInput(FIELD_CB_REL).setRendered(isDocumentType) ;
+    getUIFormCheckBoxInput(FIELD_CB_CHILD).setRendered(isDocumentType) ;
   }
+  
   static public class ChangeTypeActionListener extends EventListener <UICBSearchForm> {
     public void execute(Event<UICBSearchForm>  event) throws Exception {
       UICBSearchForm uiForm = event.getSource() ;
       String searchType = uiForm.getUIFormSelectBox(FIELD_OPTION).getValue() ;
       uiForm.isDocumentType = searchType.equals(DOCUMENT_SEARCH) ; 
       uiForm.getUIFormCheckBoxInput(FIELD_CB_REF).setRendered(uiForm.isDocumentType) ;
-      uiForm.getUIFormCheckBoxInput(FIELD_CB_REL).setRendered(uiForm.isDocumentType) ;
+      uiForm.getUIFormCheckBoxInput(FIELD_CB_CHILD).setRendered(uiForm.isDocumentType) ;
     }   
   }
 
@@ -169,13 +184,13 @@ public class UICBSearchForm extends UIForm {
     public void execute(Event<UICBSearchForm> event) throws Exception {
       UICBSearchForm uiForm = event.getSource() ;
       UIBrowseContainer container = uiForm.getAncestorOfType(UIBrowseContainer.class) ;
-      Node currentNode = container.getCurrentNode() ;
+      Node currentNode = container.getRootNode() ;
       String keyword = uiForm.getUIStringInput(FIELD_SEARCHVALUE).getValue();
       String type = uiForm.getUIFormSelectBox(FIELD_OPTION).getValue() ;            
       List<ResultData> queryResult ;
       UICBSearchResults searchResults = container.findFirstComponentOfType(UICBSearchResults.class) ;
-      if(keyword == null||keyword.length() == 0) {          
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(keyword == null || keyword.trim().length() == 0) {          
         app.addMessage(new ApplicationMessage("UICBSearchForm.msg.not-empty", null)) ;
         return ;
       }
@@ -183,8 +198,12 @@ public class UICBSearchForm extends UIForm {
         queryResult = uiForm.searchByCategory(keyword, currentNode) ;
       } else {
         boolean reference = uiForm.getUIFormCheckBoxInput(FIELD_CB_REF).isChecked() ;
-        boolean relation = uiForm.getUIFormCheckBoxInput(FIELD_CB_REL).isChecked() ;   
-        queryResult = uiForm.searchDocument(keyword,reference,relation, currentNode) ;
+        boolean relation = uiForm.getUIFormCheckBoxInput(FIELD_CB_CHILD).isChecked() ;   
+        queryResult = uiForm.searchDocument(keyword, reference, relation, currentNode) ;
+      }
+      if(queryResult == null){
+        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.invalid-keyword", null)) ;
+        return ;
       }
       searchResults.updateGrid(queryResult) ;
     }

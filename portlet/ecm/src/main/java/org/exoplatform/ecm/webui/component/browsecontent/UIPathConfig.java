@@ -53,7 +53,7 @@ public class UIPathConfig extends UIForm implements UISelector{
   final static public String FIELD_PATHSELECT = "path" ;
   public UIPathConfig()throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
     categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
     addUIComponentInput(categoryPathSelect) ;
@@ -102,9 +102,9 @@ public class UIPathConfig extends UIForm implements UISelector{
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       isEditable = false ;
     }
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setOptions(getWorkSpaceOption());
+    UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
+    workSpaceField.setEditable(false) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     if((isAddNew)||(isEditable)) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
@@ -131,7 +131,6 @@ public class UIPathConfig extends UIForm implements UISelector{
     enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
-    workSpaceField.setEnable(isEditable) ;
     categoryPathField.setValue(path) ;
     categoryPathField.setEditable(isEditable) ;
     templateField.setEnable(isEditable) ;
@@ -145,9 +144,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     enableChildDocField.setEnable(isEditable) ;
   }
 
-  public void editForm(boolean isEditable) {
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setEnable(isEditable) ;
+  public void editForm(boolean isEditable) {   
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
@@ -203,7 +200,8 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       PortletPreferences prefs = container.getPortletPreferences();
-      String workSpace = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      UIFormStringInput workSpaceField = uiForm.getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
+      String workSpace = workSpaceField.getValue() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPatth = categoryPathField.getValue() ;
@@ -285,7 +283,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm  = event.getSource() ;
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      String workSpace = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, workSpace) ;
     }
   }

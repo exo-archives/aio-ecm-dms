@@ -66,7 +66,7 @@ public class UIQueryConfig extends UIForm {
   private boolean isAddNewQuery_ = true ;
   public UIQueryConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYSTATUS, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYTYPE, null, Options).setRendered(false)) ;
@@ -122,10 +122,9 @@ public class UIQueryConfig extends UIForm {
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
     }
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setOptions(getWorkSpaceOption());
+    UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
-    workSpaceField.setEnable(isEditable) ;
+    workSpaceField.setEditable(false) ;
     UIFormSelectBox queryStatusField = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
     queryStatusField.setOptions(getQueryStatus()) ;
     queryStatusField.setOnChange("ChangeStatus") ;
@@ -181,8 +180,6 @@ public class UIQueryConfig extends UIForm {
   }
 
   public void editForm(boolean isEditable) {
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setEnable(isEditable) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     templateField.setEnable(isEditable) ;
     UIFormSelectBox queryLangField = getChildById(UINewConfigForm.FIELD_QUERYLANG) ;
@@ -272,7 +269,7 @@ public class UIQueryConfig extends UIForm {
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       PortletPreferences prefs = uiBrowseContentPortlet.getPortletPreferences();
-      String workSpace = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String query = uiForm.getUIStringInput(UINewConfigForm.FIELD_QUERY).getValue() ;
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;

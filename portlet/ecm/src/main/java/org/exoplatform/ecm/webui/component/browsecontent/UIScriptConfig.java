@@ -18,6 +18,7 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
+import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -47,7 +48,7 @@ public class UIScriptConfig extends UIForm {
 
   public UIScriptConfig() {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, Options)) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_SCRIPTNAME, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
@@ -69,10 +70,9 @@ public class UIScriptConfig extends UIForm {
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
     }
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setOptions(getWorkSpaceOption());
+    UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
-    workSpaceField.setEnable(isEditable) ;
+    workSpaceField.setEditable(false) ;
     UIFormSelectBox scriptField = getChildById(UINewConfigForm.FIELD_SCRIPTNAME) ;
     scriptField.setOptions(getScriptOption()) ;
     scriptField.setEnable(isEditable) ;
@@ -95,8 +95,6 @@ public class UIScriptConfig extends UIForm {
   }
 
   public void editForm(boolean isEditable) {
-    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setEnable(isEditable) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     templateField.setEnable(isEditable) ;
     UIFormSelectBox scriptField = getChildById(UINewConfigForm.FIELD_SCRIPTNAME) ;

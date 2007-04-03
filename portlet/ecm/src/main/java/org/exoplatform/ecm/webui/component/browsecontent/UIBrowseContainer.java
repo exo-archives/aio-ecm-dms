@@ -516,7 +516,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     return refDocuments ;
   }
-
+  
   public List<Node> getTagLink() throws Exception {
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
     return folksonomyService.getAllTags() ;

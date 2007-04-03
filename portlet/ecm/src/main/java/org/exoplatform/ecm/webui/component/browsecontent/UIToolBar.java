@@ -30,6 +30,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UIToolBar.ShowHiddenActionListener.class),
         @EventConfig(listeners = UIToolBar.SelectPathActionListener.class),
+        @EventConfig(listeners = UIToolBar.RefreshActionListener.class),
         @EventConfig(listeners = UIToolBar.VoteActionListener.class),
         @EventConfig(listeners = UIToolBar.CommentActionListener.class),
         @EventConfig(listeners = UIToolBar.SearchActionListener.class)
@@ -98,7 +99,15 @@ public class UIToolBar extends UIContainer {
       uiBrowseContainer.setShowCategoryTree(!uiBrowseContainer.isShowCategoryTree()) ;
     }
   } 
-
+  
+  static public class RefreshActionListener extends EventListener<UIToolBar> {
+    public void execute(Event<UIToolBar> event) throws Exception {
+      UIToolBar uiComp = event.getSource() ;
+      UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
+    }
+  }  
+  
   static public class SearchActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
