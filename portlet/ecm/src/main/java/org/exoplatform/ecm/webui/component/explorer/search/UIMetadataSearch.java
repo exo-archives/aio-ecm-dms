@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -81,6 +83,7 @@ public class UIMetadataSearch extends UIForm {
       String typeOperation = " " + uiForm.<UIFormRadioBoxInput>getUIInput(OPERATION).getValue() + " ";
       String metadata = uiForm.getUIStringInput(TYPE_SEARCH).getValue() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String queryText = null;
       if ("/".equals(uiExplorer.getCurrentNode().getPath())) queryText = ROOT_SQL_QUERY;
@@ -99,7 +102,10 @@ public class UIMetadataSearch extends UIForm {
         }
         UIECMSearch uiSearch = uiForm.getParent() ;
         UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
-        uiSearchResult.executeQuery(statement, Query.SQL) ;
+        Query query = queryManager.createQuery(statement, Query.SQL);
+        QueryResult queryResult = query.execute();
+        uiSearchResult.setQueryResults(queryResult) ;
+        uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
         uiSearch.setRenderedChild(UISearchResult.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiSearch.getParent()) ;
       } catch (Exception e) {
