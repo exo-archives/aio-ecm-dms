@@ -254,7 +254,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       Node actionNode = (Node) session.getItem(nodePath);
       actionNode.remove();
       session.save();
-      //e.printStackTrace();
+      throw e ;
     }
   }
 

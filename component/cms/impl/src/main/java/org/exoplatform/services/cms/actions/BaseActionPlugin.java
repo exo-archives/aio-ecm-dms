@@ -90,7 +90,8 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     mappings.remove("/node/exo:name");
     String type = 
       (String) ((JcrInputProperty) mappings.get("/node/exo:lifecyclePhase")).getValue();               
-    String actionExecutable = getActionExecutable(actionType);  
+    String actionExecutable = getActionExecutable(actionType);
+    
     if (ActionServiceContainer.READ_PHASE.equals(type))
       return;    
     else if(ActionServiceContainer.SCHEDULE_PHASE.equals(type)) {
@@ -425,6 +426,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class) ;
 
     Session session = getSystemSession(srcWorkspace) ;
+    
     Node srcNode = (Node)session.getItem(srcPath) ;
     Node actionNode = actionContainer.getAction(srcNode,actionName) ;
     if(!actionNode.isNodeType(SCHEDULABLE_INFO_MIXIN)) {
