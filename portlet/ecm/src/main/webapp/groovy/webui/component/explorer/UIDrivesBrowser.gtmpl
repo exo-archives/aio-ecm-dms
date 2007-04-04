@@ -18,7 +18,6 @@
             def drives = uicomponent.getDrives() ;
             String style = "Right" ;
             for(drive in drives) {
-              String[] arr = drive.split(",") ;
               if(style == "Right") {
                 println "<div class=\"DriveRow\">" ;
                 style = "Left" ;
@@ -27,12 +26,14 @@
               }
           %>
               <div class="${style}Col">
-                <div class="Icon Admin${arr[1]}Icon" onclick="<%=uicomponent.event("SelectDrive","${arr[0]}")%>"><span></span></div>
+                <div class="Icon Admin${drive.workspace}Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>">
+                  <img src="${drive.icon}" width="48" height="44" />
+                </div>
                 <div class="TitleBar">
                   <div class="LeftBar">
                     <div class="RightBar">
                       <div class="MiddleBar">
-                        <a style="margin: auto; width: 160px;" href="<%=uicomponent.event("SelectDrive","${arr[0]}")%>">${arr[0]}</a>
+                        <a style="margin: auto; width: 160px;" href="<%=uicomponent.event("SelectDrive","${drive.name}")%>">${drive.name}</a>
                       </div>
                     </div>
                   </div>
@@ -40,10 +41,10 @@
               </div>
     
           <%
-            if(style == "Right"){
-              println "</div>"
+	            if(style == "Right"){
+	              println "</div>"
+	            }
             }
-             }
             if(style == "Left") {
               println "</div>"
             }

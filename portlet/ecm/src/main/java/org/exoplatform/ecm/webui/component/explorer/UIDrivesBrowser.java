@@ -4,9 +4,9 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -14,6 +14,8 @@ import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
@@ -51,25 +53,39 @@ public class UIDrivesBrowser extends UIContainer {
   public UIDrivesBrowser() throws Exception {
   }
 
-  public List<String> getDrives() throws Exception {
-    List<String> driveList = new ArrayList<String>() ;
+  public List<DriveData> getDrives() throws Exception {
+    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
+    ManageableRepository repository = rservice.getRepository() ;
+    Session session = repository.getSystemSession("digital-assets") ;
+    
+    List<DriveData> driveList = new ArrayList<DriveData>() ;
     OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
     String userName = Util.getUIPortal().getOwner() ;
     Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userName) ;
-    ManageDriveService dservice = getApplicationComponent(ManageDriveService.class) ;
     if(memberships == null || memberships.size() < 0) return driveList ;
     Object[] objects = memberships.toArray() ;
+    System.out.println("\n\nMembership size : " + objects.length);
+    
     for(int i = 0 ; i < objects.length ; i ++ ){
       Membership membership = (Membership)objects[i] ;
       String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
       List wsByPermission = new ArrayList() ;
-      wsByPermission = dservice.getAllDriveByPermission(role) ;
+      wsByPermission = driveService.getAllDriveByPermission(role) ;
       if(wsByPermission != null && wsByPermission.size() > 0) {
         for(int j = 0; j < wsByPermission.size(); j ++) {
-          DriveData data = (DriveData)wsByPermission.get(j) ;
-          driveList.add(data.getName() + "," + data.getWorkspace()) ;
+          DriveData drive = (DriveData)wsByPermission.get(j) ;
+          if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+            Node node = (Node) session.getItem(drive.getIcon()) ;
+            Node jcrContentNode = node.getNode("jcr:content") ;
+            InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+            InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+            dresource.setDownloadName(node.getName()) ;
+            drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+          }
+          driveList.add(drive) ;
         }
-        Collections.sort(driveList) ;
       }
     }
     return driveList ; 

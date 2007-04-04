@@ -4,9 +4,19 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.drives;
 
+import java.io.InputStream;
 import java.util.List;
+
+import javax.jcr.Node;
+import javax.jcr.Session;
+
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -33,19 +43,34 @@ public class UIDriveList extends UIGrid {
   final static public String[] ACTIONS = {"AddDrive"} ;
   final  static public String ST_ADD = "AddDriveManagerPopup" ;
   final  static public String ST_EDIT = "EditDriveManagerPopup" ;
-  private static String[] DRIVE_BEAN_FIELD = {"name", "workspace", "homePath", "permissions", "views"} ;
+  private static String[] DRIVE_BEAN_FIELD = {"icon", "name", "workspace", "homePath", "permissions", "views"} ;
   private static String[] DRIVE_ACTION = {"EditInfo", "Delete"} ;
-  private ManageDriveService dservice ;
   public UIDriveList() throws Exception {
     configure("name", DRIVE_BEAN_FIELD, DRIVE_ACTION) ;
-    dservice = getApplicationComponent(ManageDriveService.class) ;
     updateDriveListGrid() ;
   }
   
   public String[] getActions() { return ACTIONS ; }
   
   public void updateDriveListGrid() throws Exception {
-    List drives = dservice.getAllDrives() ;
+    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
+    ManageableRepository repository = rservice.getRepository() ;
+    Session session = repository.getSystemSession("digital-assets") ;
+    
+    List drives = driveService.getAllDrives() ;
+    for(int i = 0; i < drives.size(); i++) {
+      DriveData drive = (DriveData)drives.get(i) ;
+      if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+        Node node = (Node) session.getItem(drive.getIcon()) ;
+        Node jcrContentNode = node.getNode("jcr:content") ;
+        InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+        InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+        dresource.setDownloadName(node.getName()) ;
+        drive.setIcon("<img src=\"" + dservice.getDownloadLink(dservice.addDownloadResource(dresource)) + "\" width=\"16\" height=\"16\" />") ;
+      }
+    }
     ObjectPageList objPageList = new ObjectPageList(drives, 10) ;
     getUIPageIterator().setPageList(objPageList) ;    
   }
@@ -65,7 +90,8 @@ public class UIDriveList extends UIGrid {
     public void execute(Event<UIDriveList> event) throws Exception {
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIDriveList uiDriveList = event.getSource();
-      uiDriveList.dservice.removeDrive(name) ;
+      ManageDriveService driveService = uiDriveList.getApplicationComponent(ManageDriveService.class) ;
+      driveService.removeDrive(name) ;
       uiDriveList.updateDriveListGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveList.getParent()) ;
     }

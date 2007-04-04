@@ -98,7 +98,7 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
   cursor: pointer;
-  margin: auto;
+  margin: 2px auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar {
