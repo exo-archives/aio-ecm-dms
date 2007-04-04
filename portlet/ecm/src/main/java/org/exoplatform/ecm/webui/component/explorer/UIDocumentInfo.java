@@ -89,7 +89,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
       e.printStackTrace() ;
     }
     String temp = uiExplorer.getDocumentInfoTemplate() ;
-    System.out.println("\n\ntemp ====== " + temp) ;
     return temp; 
   }
 
