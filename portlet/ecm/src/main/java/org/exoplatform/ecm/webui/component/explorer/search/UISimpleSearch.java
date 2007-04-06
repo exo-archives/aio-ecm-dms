@@ -15,7 +15,6 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormInputInfo;
 import org.exoplatform.webui.component.UIFormStringInput;
@@ -115,6 +114,7 @@ public class UISimpleSearch extends UIForm {
       QueryResult pathQueryResult = pathQuery.execute();
       UIECMSearch uiECMSearch = uiForm.getParent() ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
+      uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.setQueryResults(pathQueryResult) ;
       uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;

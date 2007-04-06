@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;

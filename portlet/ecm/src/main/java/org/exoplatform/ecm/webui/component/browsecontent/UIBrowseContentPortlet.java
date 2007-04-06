@@ -4,19 +4,14 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
-import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPortletApplication;
 import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;

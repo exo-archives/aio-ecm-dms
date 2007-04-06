@@ -11,14 +11,10 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
@@ -45,7 +41,7 @@ import org.exoplatform.webui.event.EventListener;
 public class UISearchResult extends UIContainer {
   private static String[] RESULT_BEAN_FIELD = {"name", "shortcutPath"} ;
   private static String[] VIEW_ACTION = {"View"} ;
-  private Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
+  public Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
   
   public UISearchResult() throws Exception {
     UIGrid uiGrid = addChild(UIGrid.class, null, null) ;

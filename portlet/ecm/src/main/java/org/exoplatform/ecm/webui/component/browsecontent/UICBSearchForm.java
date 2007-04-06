@@ -112,7 +112,7 @@ public class UICBSearchForm extends UIForm {
     return resultList ;
   } 
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unused")
   public List<ResultData> searchDocument(String keyword, boolean reference,
       boolean relation, Node currentNode) throws Exception { 
     String nodePath = currentNode.getPath() ;

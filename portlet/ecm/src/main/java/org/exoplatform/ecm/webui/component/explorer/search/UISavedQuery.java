@@ -156,6 +156,7 @@ public class UISavedQuery extends UIContainer {
       QueryResult queryResult = null ;
       try {
         queryResult = queryService.execute(queryPath) ;
+        uiSearchResult.resultMap_.clear() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
       } catch(Exception e) {
