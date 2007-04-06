@@ -502,14 +502,16 @@ public class UINodeTypeForm extends UIFormTabPane {
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
       }
       if(prefix != null && prefix.length() > 0 ) nodeTypeName = prefix + ":" + nodeTypeName ;
       String superTypes = uiForm.getUIStringInput(SUPER_TYPE).getValue() ;
       if(uiForm.getUIFormSelectBox(MIXIN_TYPE).getValue().equals("false")) {
-        if(superTypes == null || superTypes.length() == 0) {
+        if(superTypes == null || superTypes.trim().length() == 0) {
           uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.supertype-is-madatory", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           uiForm.setTabRender(NODETYPE_DEFINITION) ;
           return ;
         }
@@ -577,6 +579,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
       }

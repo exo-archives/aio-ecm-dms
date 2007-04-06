@@ -54,14 +54,20 @@ public class UITaxonomyForm extends UIForm {
   static public class SaveActionListener extends EventListener<UITaxonomyForm> {
     public void execute(Event<UITaxonomyForm> event) throws Exception {
       UITaxonomyForm uiForm = event.getSource() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UITaxonomyManager uiManager = uiForm.getAncestorOfType(UITaxonomyManager.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      if(name == null || name.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String parentPath = ROOT_PATH + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
       try {
         uiManager.addTaxonomy(parentPath, name)  ;
       } catch(Exception e) {
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       uiForm.reset() ;

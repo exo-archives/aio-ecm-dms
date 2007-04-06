@@ -49,10 +49,21 @@ public class UINamespaceForm extends UIForm {
     public void execute(Event<UINamespaceForm> event) throws Exception {
       UINamespaceForm uiForm = event.getSource() ;
       String uri = uiForm.getUIStringInput(FIELD_URI).getValue() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
       NamespaceRegistry namespaceRegistry = repositoryService.getRepository().getNamespaceRegistry() ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
       String prefix = uiForm.getUIStringInput(FIELD_PREFIX).getValue() ;
+      if(prefix == null || prefix.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      if(uri == null || uri.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       Object[] args = { prefix } ; 
       try {
         namespaceRegistry.registerNamespace(prefix, uri) ;
