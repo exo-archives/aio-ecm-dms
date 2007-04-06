@@ -36,7 +36,7 @@ import org.exoplatform.webui.event.EventListener;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl",
+    template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl",
     events = {
       @EventConfig(listeners = UINodeTypeOptionList.AddTypeActionListener.class)
     }

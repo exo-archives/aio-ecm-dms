@@ -39,7 +39,7 @@ import org.exoplatform.webui.exception.MessageException;
  *          trongtt@yahoo.com
  * Jun 28, 2006
  */
-@ComponentConfig(template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   
   final static public String MIXVERSION = "mix:versionable" ;

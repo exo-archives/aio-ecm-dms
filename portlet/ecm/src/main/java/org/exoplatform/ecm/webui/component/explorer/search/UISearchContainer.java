@@ -24,6 +24,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 public class UISearchContainer extends UIContainer implements UIPopupComponent{
   
   private String selectedValue_ = "dc:elementSet";
+  final static public String METADATA_POPUP = "MetadataPopup" ;
   
   public UISearchContainer() throws Exception {
     addChild(UIECMSearch.class, null, null) ;
@@ -32,11 +33,11 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent{
   public void setSelectedValue(String selectedValue) { selectedValue_ = selectedValue ; }
   
   public void initMetadataPopup() throws Exception {
-    removeChild(UIPopupWindow.class) ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, null) ;
+    UIPopupWindow uiPopup = getChildById(METADATA_POPUP) ;
+    if(uiPopup == null) uiPopup = addChild(UIPopupWindow.class, null, METADATA_POPUP) ;
     UIMetadataSelectForm uiSelectForm = createUIComponent(UIMetadataSelectForm.class, null, null) ;
-    UIMetadataSearch uiMetadata = findFirstComponentOfType(UIMetadataSearch.class) ;
-    String properties = uiMetadata.getUIStringInput(UIMetadataSearch.TYPE_SEARCH).getValue() ;
+    UIConstraintsForm uiConstraintsForm = findFirstComponentOfType(UIConstraintsForm.class) ;
+    String properties = uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).getValue() ;
     List<String> selected = new ArrayList<String> () ;
     if(properties != null && properties.length() > 0) {
       String[] array = properties.split(",") ;

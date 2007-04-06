@@ -33,7 +33,7 @@ import org.exoplatform.webui.event.EventListener;
  * 3:36:17 PM 
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl"
+    template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl"
 )
 public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
 

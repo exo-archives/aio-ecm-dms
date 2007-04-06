@@ -17,7 +17,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  *          trongtt@gmail.com
  * Jun 28, 2006
  */
-@ComponentConfig(template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UIPermissionInputSet extends UIFormInputSetWithAction {
   
   final static public String FIELD_USERORGROUP = "userOrGroup" ;

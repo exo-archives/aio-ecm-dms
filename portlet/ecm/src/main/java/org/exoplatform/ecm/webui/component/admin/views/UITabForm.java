@@ -24,7 +24,7 @@ import org.exoplatform.webui.exception.MessageException;
  * Jun 28, 2006
  */
 
-@ComponentConfig(template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UITabForm extends UIFormInputSetWithAction {
   
   final static public String FIELD_NAME = "tabName" ;

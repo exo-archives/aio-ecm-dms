@@ -19,7 +19,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 @ComponentConfig( template = "app:/groovy/webui/component/UIECMTabPane.gtmpl" )
 public class UIECMSearch extends UIContainer {
   public UIECMSearch() throws Exception {
-    addChild(UIMetadataSearch.class, null, null) ;
+    addChild(UISimpleSearch.class, null, null) ;
     addChild(UIJCRAdvancedSearch.class, null, null).setRendered(false);
     addChild(UISavedQuery.class, null, null).setRendered(false) ;
     addChild(UISearchResult.class, null, null).setRendered(false) ;

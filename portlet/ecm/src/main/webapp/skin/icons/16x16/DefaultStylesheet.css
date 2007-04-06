@@ -186,6 +186,11 @@
   background: url('DefaultSkin/Save.gif') no-repeat;  
 }
 
+.MoreConstraints16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/AddConstraints.gif') no-repeat;  
+}
+
 .AddProperty16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
@@ -260,7 +265,7 @@
 .DeleteIconInfo {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Delete.gif') no-repeat ; 
+  background: url('DefaultSkin/RedDelete.gif') no-repeat ; 
   cursor: pointer;
   margin-left: 3px;
 }

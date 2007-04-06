@@ -79,9 +79,9 @@ public class UIMetadataSelectForm extends UIForm {
 
   private boolean propertiesSelected(String name) {
     UISearchContainer uiSearchContainer = getAncestorOfType(UISearchContainer.class) ;
-    UIMetadataSearch uiMetadataSearch = 
-      uiSearchContainer.findFirstComponentOfType(UIMetadataSearch.class) ;
-    String typeValues = uiMetadataSearch.getUIStringInput(UIMetadataSearch.TYPE_SEARCH).getValue() ;
+    UIConstraintsForm uiConstraintsForm = 
+      uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
+    String typeValues = uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).getValue() ;
     if(typeValues == null) return false ;
     if(typeValues.indexOf(",") > -1) {
       String[] values = typeValues.split(",") ;
@@ -118,20 +118,21 @@ public class UIMetadataSelectForm extends UIForm {
   public void setProperties(List<String> selectedProperties) {
     String strProperties = null ;
     UISearchContainer uiContainer = getAncestorOfType(UISearchContainer.class) ;
-    UIMetadataSearch uiMetadataSearch = uiContainer.findFirstComponentOfType(UIMetadataSearch.class) ;
+    UIConstraintsForm uiConstraintsForm = uiContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
     for(int i = 0 ; i < selectedProperties.size() ; i++) {
       if(strProperties == null) strProperties = selectedProperties.get(i) ;
       else strProperties = strProperties + "," + selectedProperties.get(i) ;
     }
-    uiMetadataSearch.getUIStringInput(UIMetadataSearch.TYPE_SEARCH).setValue(strProperties) ;
+    uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).setValue(strProperties) ;
   }
   
   static  public class CancelActionListener extends EventListener<UIMetadataSelectForm> {
     public void execute(Event<UIMetadataSelectForm> event) throws Exception {
-      UIPopupWindow uiPopup = event.getSource().getParent() ;
+      UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
+      UIPopupWindow uiPopup = uiSearchContainer.getChildById(UISearchContainer.METADATA_POPUP) ;
       uiPopup.setRendered(false) ;
       uiPopup.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
   }
   
@@ -139,11 +140,13 @@ public class UIMetadataSelectForm extends UIForm {
     public void execute(Event<UIMetadataSelectForm> event) throws Exception {
       UIMetadataSelectForm uiForm = event.getSource() ;
       UISearchContainer uiSearchContainer = uiForm.getAncestorOfType(UISearchContainer.class) ;
-      UIMetadataSearch uiMetadataSearch = uiSearchContainer.findFirstComponentOfType(UIMetadataSearch.class) ;
+      UIConstraintsForm uiConstraintsForm = 
+        uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
       List<String> selectedProperties = new ArrayList<String>() ;
       List<UIFormCheckBoxInput> listCheckbox =  new ArrayList<UIFormCheckBoxInput>();
       uiForm.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);
-      String propertiesValue = uiMetadataSearch.getUIStringInput(UIMetadataSearch.TYPE_SEARCH).getValue() ;
+      String propertiesValue = 
+        uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).getValue() ;
       if(propertiesValue != null && propertiesValue.length() > 0) {
         String[] array = propertiesValue.split(",") ;
         for(int i = 0; i < array.length; i ++) {

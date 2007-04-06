@@ -329,3 +329,46 @@
 	margin:auto;
 	width:300px;
 }
+
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle {
+	width:500px;
+	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
+  border: none ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
+  float: left ;
+  width: 300px ;
+  padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
+  padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
+  padding-left: 135px ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforField {
+}
+
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionContainer {
+	width:400px;
+	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionButton {
+	width: 130px ;
+	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionButton a {
+  float: left ;
+  margin-left: 3px;
+}
+

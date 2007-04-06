@@ -30,7 +30,7 @@ import org.exoplatform.webui.event.EventListener;
  * Sep 22, 2006
  * 11:50:10 AM 
  */
-@ComponentConfig(template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
 
   final static public String NAMESPACE = "childNamespace" ;

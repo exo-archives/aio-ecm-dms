@@ -20,7 +20,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Sep 20, 2006
  */
 @ComponentConfig(
-   template = "app:/groovy/webui/component/admin/UIFormInputSetWithAction.gtmpl"
+   template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl"
 )
 public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormInput {
 
@@ -28,7 +28,9 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   private String[] values_ ;
   private boolean isView_ ;
   private boolean isShowOnly_ = false;
+  private boolean isDeleteOnly_ = false ;
   private HashMap<String, String> infor_ = new HashMap<String, String>() ;
+  private HashMap<String, List<String>> listInfor_ = new HashMap<String, List<String>>() ;
   private HashMap<String, String[]> actionInfo_ = new HashMap<String, String[]>() ;
   
   public UIFormInputSetWithAction(String name) {  
@@ -55,6 +57,18 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   
   public boolean isShowOnly() { return isShowOnly_ ; }
   public void setIsShowOnly(boolean isShowOnly) { isShowOnly_ = isShowOnly ; }
+
+  public boolean isDeleteOnly() { return isDeleteOnly_ ; }
+  public void setIsDeleteOnly(boolean isDeleteOnly) { isDeleteOnly_ = isDeleteOnly ; }
+  
+  public void setListInfoField(String fieldName, List<String> listInfor) {
+    listInfor_.put(fieldName, listInfor) ;
+  }
+  
+  public List<String> getListInfoField(String fieldName) {
+    if(listInfor_.containsKey(fieldName)) return listInfor_.get(fieldName) ;
+    return null ;
+  }
   
   public void setInfoField(String fieldName, String fieldInfo) {
     infor_.put(fieldName, fieldInfo) ;
