@@ -13,7 +13,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.exoplatform.templates.groovy.ResourceResolver;
+import org.exoplatform.resolver.ResourceResolver;
 
 /**
  * Created by The eXo Platform SARL

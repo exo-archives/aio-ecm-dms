@@ -14,8 +14,8 @@ import javax.jcr.Property;
 import javax.jcr.Value;
 
 import org.exoplatform.portal.component.view.Util;
+import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

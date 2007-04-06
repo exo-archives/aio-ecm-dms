@@ -9,8 +9,8 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.templates.groovy.ResourceResolver;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
