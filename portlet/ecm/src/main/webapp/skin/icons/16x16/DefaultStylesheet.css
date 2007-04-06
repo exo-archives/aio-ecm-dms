@@ -8,6 +8,9 @@
 
 @import url("NodeTypes/DefaultStylesheet.css");
 
+.UIAction .ActionContainer .ActionButton .Icon {
+  margin: 3px 3px 0px;
+}
 
 .Icon16x16 {
 	float: left;
