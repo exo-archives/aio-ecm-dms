@@ -19,8 +19,8 @@ import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.webui.component.admin.action.UIActionTypeForm.SaveActionListener;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.faces.core.component.UIStringInput;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -47,7 +47,12 @@ import org.exoplatform.webui.event.EventListener;
  * 
  */
 
-@ComponentConfig(events = @EventConfig(listeners = SaveActionListener.class))
+@ComponentConfig(
+    events = {
+        @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
+        @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class)
+    }
+)
 @SuppressWarnings("unused")
 public class DialogFormFields extends UIForm {
   
@@ -61,7 +66,9 @@ public class DialogFormFields extends UIForm {
   private static final String SEPARATOR = "=";
   private static final String JCR_PATH = "jcrPath" + SEPARATOR;
   private static final String EDITABLE = "editable" + SEPARATOR;
+  private static final String ONCHANGE = "onchange" + SEPARATOR;
   private static final String OPTIONS = "options" + SEPARATOR;  
+  private static final String TYPE = "type" + SEPARATOR ;
   private static final String VISIBLE = "visible" + SEPARATOR;
   private static final String NODETYPE = "nodetype" + SEPARATOR;
   private static final String MIXINTYPE = "mixintype" + SEPARATOR;
@@ -204,6 +211,7 @@ public class DialogFormFields extends UIForm {
   
   public void addTextField(String name, String[] arguments) throws Exception {
     String editable = "true";
+    String type = "text" ;
     String defaultValue = "";
     String jcrPath = null;
     String mixintype = null;
@@ -214,6 +222,8 @@ public class DialogFormFields extends UIForm {
         jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(EDITABLE)) {
         editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(TYPE)){
+        type = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MIXINTYPE)) {
         mixintype = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
@@ -273,6 +283,7 @@ public class DialogFormFields extends UIForm {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       addUIFormInput(uiInput) ;
     }
+    if(type.equals("password")) uiInput.setType((short)UIStringInput.PASSWORD) ;
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     if(node_ != null) {
@@ -437,7 +448,8 @@ public class DialogFormFields extends UIForm {
   public void addSelectBoxField(String name, String[] arguments) throws Exception {
     String jcrPath = null;
     String editable = "true";
-    String defaultValue = "";
+    String onchange = "false" ;
+    String defaultValue = "" ;
     String options = null;
     String script = null;
     String[] scriptParams = null;
@@ -457,9 +469,11 @@ public class DialogFormFields extends UIForm {
         scriptParams = StringUtils.split(params, ","); 
       } else if (argument.startsWith(MULTI_VALUES)) {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+      } else if(argument.startsWith(ONCHANGE)) {
+        onchange = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
       } else {
         defaultValue = argument;
-      }
+      } 
     }
     if(multiValues != null && multiValues.equals("true")) {
       UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
@@ -486,6 +500,7 @@ public class DialogFormFields extends UIForm {
        }
        uiSelectBox.setOptions(optionsList);
     }
+    uiSelectBox.setDefaultValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     if(node_ == null) {
       if (defaultValue != null && defaultValue.length() > 0) {
@@ -504,7 +519,14 @@ public class DialogFormFields extends UIForm {
     if(isNotEditNode_) {
       if(propertyNode_ != null) uiSelectBox.setValue(getPropertyValue(jcrPath)) ;
     }
+    if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
     renderField(name) ;
+  }
+  public String getSelectBoxFieldValue(String name) {
+    UIFormSelectBox uiSelectBox = findComponentById(name) ;
+    String value = null ;
+    if (uiSelectBox != null) value = uiSelectBox.getValue() ;
+    return value ;
   }
   
   public void addUploadField(String name, String[] arguments) throws Exception {
@@ -741,6 +763,7 @@ public class DialogFormFields extends UIForm {
   }
 
   public void storeValue(Event event) throws Exception {}
+  public void onchange(Event event) throws Exception {}
   public String getPath() { return null ; }
   
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
@@ -771,6 +794,12 @@ public class DialogFormFields extends UIForm {
           dialogForm.executeScript(scriptPath, dialogForm.getPath(), null) ;
         }
       }
+    }
+  }
+  
+  static  public class OnchangeActionListener extends EventListener<DialogFormFields> {
+    public void execute(Event<DialogFormFields> event) throws Exception {     
+      event.getSource().onchange(event) ;
     }
   }
 }

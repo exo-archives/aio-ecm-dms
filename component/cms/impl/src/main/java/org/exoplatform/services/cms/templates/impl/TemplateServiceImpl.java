@@ -206,10 +206,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       Node templateNode = getTemplateNode(nodeTypeName, userName, isDialog);
       return templateNode.getPath();
     }catch(Exception e) {
-      e.printStackTrace() ;
+      return null;
     }
-    
-    return null;
   }
   
   public String getTemplatePath(boolean isDialog, String nodeTypeName,

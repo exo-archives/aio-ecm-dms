@@ -179,7 +179,7 @@ public class UIActionTypeForm extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionManager) ;
     }
   }
-
+  
   static public class CancelActionListener extends EventListener<UIActionTypeForm> {
     public void execute(Event<UIActionTypeForm> event) throws Exception {
       UIActionTypeForm uiForm = event.getSource();

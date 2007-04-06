@@ -453,6 +453,62 @@
                   
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
+                      <field  name="nodetypeName"><string>exo:enableVersioning</string></field>
+                      <field  name="documentTemplate"><boolean>false</boolean></field>
+                      <field  name="label"><string>Enable Versioning </string></field>
+                      <field  name="referencedView">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/versioning/enable-versioning/views/view1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                               
+                          </value>  
+                        </collection>
+                      </field>                  
+                      <field  name="referencedDialog">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/versioning/enable-versioning/dialogs/dialog1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                                                   
+                          </value>  
+                        </collection>
+                      </field>                                    
+                    </object>
+                  </value>
+                  
+                  <value>
+                    <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
+                      <field  name="nodetypeName"><string>exo:autoVersioning</string></field>
+                      <field  name="documentTemplate"><boolean>false</boolean></field>
+                      <field  name="label"><string>Automation Versioning </string></field>
+                      <field  name="referencedView">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/versioning/auto-versioning/views/view1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                               
+                          </value>  
+                        </collection>
+                      </field>                  
+                      <field  name="referencedDialog">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/versioning/auto-versioning/dialogs/dialog1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                                                   
+                          </value>  
+                        </collection>
+                      </field>                                    
+                    </object>
+                  </value>
+                  
+                  <value>
+                    <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:sample</string></field>
                       <field  name="documentTemplate"><boolean>true</boolean></field>
                       <field  name="label"><string>Sample node</string></field>

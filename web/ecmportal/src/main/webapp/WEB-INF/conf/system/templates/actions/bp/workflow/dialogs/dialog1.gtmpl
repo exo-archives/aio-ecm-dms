@@ -19,7 +19,7 @@
     <div class="FieldContainer">		          					
       <label>Lifecycle</label>
       <% 
-        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
+        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify"] ;
         uiform.addSelectBoxField("lifecycle", fieldLifecycle) ;
       %>
     </div>

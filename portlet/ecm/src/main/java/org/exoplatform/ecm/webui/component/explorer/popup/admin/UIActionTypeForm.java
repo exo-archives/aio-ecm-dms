@@ -7,7 +7,11 @@ import java.util.List;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
@@ -33,11 +37,11 @@ public class UIActionTypeForm extends UIForm {
 
   final static public String ACTION_TYPE = "actionType" ;
   final static public String CHANGE_ACTION = "ChangeActionType" ;
-  
+
   private List<SelectItemOption<String>> typeList_ ;
-  
+
   public String defaultActionType_ ;
-  
+
   public UIActionTypeForm() throws Exception {
     typeList_ = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(ACTION_TYPE, ACTION_TYPE, new ArrayList<SelectItemOption<String>>()) ;
@@ -49,7 +53,7 @@ public class UIActionTypeForm extends UIForm {
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class) ;
     return actionService.getCreatedActionTypes().iterator();
   }
-  
+
   public void setDefaultActionType() throws Exception{    
     if(defaultActionType_ == null) {
       //Iterator actionsTypes = getCreatedActionTypes();
@@ -62,7 +66,7 @@ public class UIActionTypeForm extends UIForm {
       getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_) ;
     }
   }  
-  
+
   public void update() throws Exception {
     Iterator actions = getCreatedActionTypes(); 
     while(actions.hasNext()){
@@ -72,12 +76,22 @@ public class UIActionTypeForm extends UIForm {
     getUIFormSelectBox(ACTION_TYPE).setOptions(typeList_) ;
     setDefaultActionType() ;
   }
-  
+
   static public class ChangeActionTypeActionListener extends EventListener<UIActionTypeForm> {
     public void execute(Event<UIActionTypeForm> event) throws Exception {
       UIActionTypeForm uiActionType = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionType.getAncestorOfType(UIJCRExplorer.class) ;
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue() ;
+      TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
+      String userName = Util.getUIPortal().getOwner() ;
+      if(templateService.getTemplatePathByUser(true, actionType, userName) == null) {
+        UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
+        Object[] arg = { actionType } ;
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg)) ;
+        UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
+        uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+        return ;
+      }
       UIActionContainer uiActionContainer = uiActionType.getParent() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
       uiActionForm.createNewAction(uiExplorer.getCurrentNode(), actionType, true) ;

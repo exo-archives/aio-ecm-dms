@@ -1,45 +1,108 @@
-#jsfDialogFormField("inputName=id" "jcrPath=/node" "editable=false" "visible=false")
 
-<div class="title" style="border-top:1px solid #b8c1ca">Get Mail Action</div>
-	<div class="detail">
-	  <div class="row">
-	    <label>Get mail action name:</label>
-	   #jsfDialogFormField("inputName=name" "jcrPath=/node/exo:name")
-	  </div>		
-	  <div class="row">
-	    <label>Lifecycle:</label>
-	    #jsfDialogFormField("inputName=lifecycle" "jcrPath=/node/exo:lifecyclePhase" "widget=selectbox" "add" "options=read,add,modify,remove")	
+<div class="UIFormWithTitle">
+  <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
+	<% uiform.begin() %>
+  <div class="HorizontalLayout">	  
+    <div class="FieldContainer">		          					     
+      <%
+        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+				uicomponent.addMixinField("id", fieldId) ;  
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Get Mail Action</label>
+      <% 
+        String[] fieldName = ["jcrPath=/node/exo:name"] ;
+        uicomponent.addTextField("name", fieldName)  ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Lifecycle</label>
+      <% 
+        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify"] ;
+        uiform.addSelectBoxField("lifecycle", fieldLifecycle) ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Protocol:</label>
+      <% 
+        String[] fieldProtocol = ["jcrPath=/node/exo:protocol", "options=pop3,imap"] ; 
+        uicomponent.addSelectBoxField("protocol", fieldProtocol) 
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Host:</label>
+      <% 
+       	String[] fieldHost = ["jcrPath=/node/exo:host"] ;
+        uicomponent.addTextField("host", fieldHost)  ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Port:</label>
+      <% 
+        String[] fieldPort = ["jcrPath=/node/exo:port"] ;
+        uicomponent.addTextField("port", fieldPort)  ;
+      %>
+    </div>
+    <div class="FieldContainer">		          					
+      <label>Folder:</label>
+      <% 
+        String[] fieldFolder = ["jcrPath=/node/exo:folder", "Inbox"] ;
+        uicomponent.addTextField("folder", fieldFolder)  ;
+      %>
+    </div> 
+    <div class="FieldContainer">		          					
+      <label>Username:</label>
+      <% 
+        String[] fieldUsername = ["jcrPath=/node/exo:userName", "support@exoplatform.com"] ;
+        uicomponent.addTextField("userName", fieldUsername)  ;
+      %>
+    </div>   
+    <div class="FieldContainer">		          					
+      <label>Password:</label>
+      <% 
+        String[] fieldPassword = ["jcrPath=/node/exo:password", "type=password"] ;
+        uicomponent.addTextField("password", fieldPassword)  ;
+      %>
+    </div>   
+    <div class="FieldContainer">		          					
+      <label>Description:</label>
+      <% 
+        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
+				uicomponent.addTextAreaField("description", fieldDescription) ;
+      %>
+    </div>   
+    <div class="FieldContainer">		          					
+      <label>Store path:</label>
+      <% 
+        String[] fieldStorePath = ["jcrPath=/node/exo:storePath", "cms/mail"] ;
+        uicomponent.addTextField("storePath", fieldStorePath)  ;
+      %>
+    </div>     
+    <%/* start render action*/%>
+		<div class="UIAction" style="width:180px; margin:auto;"> 
+	    <div class="ActionContainer">
+	      <% for(action in uicomponent.getActions()) { %>
+	        <div class="ActionButton">
+	          <div class="LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+									  <div class="Icon ${action}16x16Icon"><span></span></div>
+								    <% 
+								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								      String link = uicomponent.event(action) ;
+								    %>
+								    <a href="$link">$actionLabel</a>
+						      </div>
+						    </div>
+					    </div>
+						</div>
+					</div>
+	      <%}%>          
+	    </div>
 	  </div>
-	  <div class="row">
-			<label>Protocol:</label>
-			#jsfDialogFormField("inputName=protocol" "jcrPath=/node/exo:protocol" "widget=selectbox" "pop3" "options=pop3,imap")
-	  </div>		  	
-	  <div class="row">
-			<label>Host:</label>
-			#jsfDialogFormField("inputName=host" "jcrPath=/node/exo:host")
-		</div>
-		<div class="row">
-			<label>Post:</label>
-			#jsfDialogFormField("inputName=port" "jcrPath=/node/exo:port")
-	  </div>
-	  <div class="row">
-			<label>Folder:</label>
-			#jsfDialogFormField("inputName=folder" "jcrPath=/node/exo:folder" "Inbox")
-	  </div>
-	  <div class="row">
-			<label>Username:</label>
-			#jsfDialogFormField("inputName=userName" "jcrPath=/node/exo:userName" "support@exoplatform.com")
-	  </div>
-	  <div class="row">
-			<label>Password:</label>
-			#jsfDialogFormField("inputName=password" "jcrPath=/node/exo:password" "widget=password")
-	  </div>
-	  <div class="row">
-			<label>Description:</label>
-			#jsfDialogFormField("inputName=description" "jcrPath=/node/exo:description" "widget=textarea")
-	  </div>
-	  <div class="row">
-			<label>Store path:</label>
-			#jsfDialogFormField("inputName=storePath" "jcrPath=/node/exo:storePath" "cms/mail")
-	  </div>
+	  <%/* end render action*/%>
   </div>
+  <%uiform.end()%>
+</div>

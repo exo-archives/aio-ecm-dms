@@ -19,10 +19,65 @@
     <div class="FieldContainer">		          					
       <label>Lifecycle</label>
       <% 
-        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
+        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
         uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
       %>
     </div>
+    <%
+		String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;
+		if(selectValue != null) {		
+			if(selectValue.equals("schedule")) { 
+	%>
+			  <div class="FieldContainer">		          					
+			  <label>Schedule type:</label>
+			  <% 
+				String[] fieldScheduleType = ["jcrPath=/node/exo:scheduleType", "options=cron,period", "onchange=true"] ;
+				uicomponent.addSelectBoxField("scheduleType", fieldScheduleType) 
+			  %>
+			  </div>
+			<%
+				String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
+				if(ScheduleType.equals("period") ) {%>
+					<div class="FieldContainer">		          					
+					  <label>Start time:</label>
+					  <% 
+						String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime"] ;
+						uicomponent.addCalendarField("startTime", fieldStartTime) ;
+					  %>
+					</div>
+					<div class="FieldContainer">		          					
+					  <label>End time:</label>
+					  <% 
+					   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime"] ;
+						uicomponent.addCalendarField("endTime", fieldEndTime) ;
+					  %>
+					</div>
+					<div class="FieldContainer">		          					
+					  <label>Repeat Count</label>
+					  <% 
+						String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;
+						uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
+					  %>
+					</div>
+					<div class="FieldContainer">		          					
+					  <label>Time inteval</label>
+					  <% 
+						String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
+						uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
+					  %>
+					</div>
+			<%} else {%>
+					<div class="FieldContainer">		          					
+					  <label>Cron expression</label>
+					  <% 
+						String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
+						uicomponent.addTextField("cronExpression", fieldCronExpression) ;
+					  %>
+					</div>
+ <%			}	
+		  }
+	  }
+	%>	
     <div class="FieldContainer">		          					
       <label>Description</label>
       <% 

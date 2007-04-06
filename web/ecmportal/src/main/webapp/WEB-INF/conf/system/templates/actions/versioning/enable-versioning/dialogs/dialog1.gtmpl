@@ -2,8 +2,7 @@
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	  
-	<div class="FieldContainer">		          					
-	  <label>Id</label>
+	<div class="FieldContainer">
 	  <%
 		 String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
 		 uicomponent.addMixinField("id", fieldId) ;  
@@ -19,7 +18,7 @@
 	<div class="FieldContainer">		          					
 	  <label>Lifecycle</label>
 	  <% 
-		String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
+		String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=add", "onchange=true"] ;
 		uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
 	  %>
 	</div>
@@ -84,14 +83,7 @@
 		String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
 		uicomponent.addTextAreaField("description", fieldDescription) ;
 	  %>
-	</div>
-	<div class="FieldContainer">		          					
-	  <label>Send mail to</label>
-	  <% 
-		String[] fieldMailTo = ["jcrPath=/node/exo:to"] ;
-		uicomponent.addTextField("to", fieldMailTo) ;
-	  %>
-	</div>
+	</div>	
 	<%/* start render action*/%>
 		<div class="UIAction" style="width:180px; margin:auto;"> 
 		<div class="ActionContainer">
@@ -119,3 +111,6 @@
   </div>
   <%uiform.end()%>
 </div>
+
+
+
