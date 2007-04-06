@@ -34,21 +34,26 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   public UIBrowseContentPortlet() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
     addChild(UIPopupAction.class, null, null) ;
-    addChild(UIHeaderBar.class, null, null) ;
-    addChild(UIBrowseContainer.class, null, UIPortletApplication.VIEW_MODE) ;
-    addChild(UIConfigTabPane.class, null, UIPortletApplication.EDIT_MODE).setRendered(false);
-    
+    UIBrowseContainer uiContainer = createUIComponent(UIBrowseContainer.class, null, null) ;
+    uiContainer.loadPortletConfig(getPortletPreferences()) ;
+    addChild(uiContainer) ;
+    UIConfigTabPane uiConfig = createUIComponent(UIConfigTabPane.class, null, null) ;
+    addChild(uiConfig) ;
+    uiConfig.getCurrentConfig() ;
+    uiConfig.setRendered(false) ;
   }
   
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
+    UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
+    UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     if (portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN VIEW MODE \n");
-      
+     uiTabPane.setRendered(false) ;
+      uiContainer.setRendered(true) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN EDIT MODE \n");
-            
+     uiTabPane.setRendered(true) ;
+      uiContainer.setRendered(false) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
