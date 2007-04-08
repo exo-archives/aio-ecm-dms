@@ -1,4 +1,6 @@
-<%	 
+<%
+  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
 	import org.exoplatform.webui.component.UIRightClickPopupMenu ;
   
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
@@ -21,29 +23,34 @@
 		        subName = name.substring(0,15) + "..." ;
 		        if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
 		        else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;								          
-		      }								        
+		      }
+		      
+				  List customActs = uicomponent.getCustomActions(data) ;
+					String strActs = "" ;
+				  if(customActs.size() > 0) {
+					  strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+						for(act in customActs) {
+						  strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
+					    strActs += "  <div class=\"ItemIcon " + Utils.getIconClass(act) + "16x16Icon\"><span></span></div>" ;
+						  strActs += "  <a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom","_objectid_",new Parameter("actionName",act.getName())) + "\">${act.name}</a>" ;
+						  strActs += "</div>" ;
+						}
+					  strActs += "</div>" ;
+				  }
 	      %>	 
 			  <div class="ActionIconContainer">
-	        <%
-		        String nodeType = data.getPrimaryNodeType().getName() ;
-    	      nodeType = nodeType.replace(":", "_") ;
-	        %>
 		      <div class="NodeLabel">
   			    <div class="ActionIcon">
     			    <a class="ActionLabel" href="$actionLink" title="$name">
-    			      <div class="Icon48x48 default48x48Icon ${nodeType}48x48Icon" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>><span></span></div>
+    			      <div class="Icon48x48 default48x48Icon <%=Utils.getIconClass(data)%>48x48Icon" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>$strActs<span></span></div>
     			    </a>
   			    </div>
 	  			</div>
 	  		</div>
-			  <div class="ActionIconLabel">
-			    <a class="ActionLabel" href="$actionLink" title="$name">
-			    	<span <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
-				    	$subName
-				    </span>
-			    </a>
+			  <div class="ActionIconLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+			    $strActs<a class="ActionLabel" href="$actionLink" title="$name">$subName</a>
 			  </div>
 		  </div> 
-    <%} %>
+    <%}%>
   </div>
 </div>

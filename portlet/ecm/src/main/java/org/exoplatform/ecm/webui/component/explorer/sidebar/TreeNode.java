@@ -42,9 +42,6 @@ public class TreeNode {
   
   public Node getNode() { return node_ ; }  
   public void setNode(Node node) { node_ = node ; }
-  public String getIconClass() throws RepositoryException {
-    return node_.getPrimaryNodeType().getName().replaceAll(":", "_") ;
-  }
   
 	public List<TreeNode> getChildren() { return children_ ; }
   public int getChildrenSize() { return children_.size() ; }

@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
+import java.util.List;
+
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -45,6 +47,10 @@ public class UITreeExplorer extends UIComponent {
   
   public String getActionsList(Node node) throws Exception {
     return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
+  }
+  
+  public List<Node> getCustomActions(Node node) throws Exception {
+    return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
   }
   
   public String getNodePath(Node node) throws Exception {

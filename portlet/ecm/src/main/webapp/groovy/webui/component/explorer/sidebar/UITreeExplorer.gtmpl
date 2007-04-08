@@ -1,5 +1,7 @@
 <%
   import javax.jcr.Node;
+  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.component.UIRightClickPopupMenu ;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
 %>
@@ -12,15 +14,29 @@
       String path = uicomponent.getNodePath(treeNode.getNode()) ;
       String mode = "Expand" ;
       if(treeNode.isExpanded()) mode = "Collapse" ;
+
+			List customActs = uicomponent.getCustomActions(treeNode.getNode()) ;
+			String strActs = "" ;
+		  if(customActs.size() > 0) {
+			  strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+				for(act in customActs) {
+				  strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
+			    strActs += "  <div class=\"ItemIcon " + Utils.getIconClass(act) + "16x16Icon\"><span></span></div>" ;
+				  strActs += "  <a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom","_objectid_",new Parameter("actionName",act.getName())) + "\">${act.name}</a>" ;
+				  strActs += "</div>" ;
+				}
+			  strActs += "</div>" ;
+      }
+
       println "<div class=\"Node\" style=\"margin-left: ${level * 15}px;\">" ;
       println "<div class=\"${mode}Icon\" onclick=\"" + uicomponent.event(mode, treeNode.getPath()) + "\"><span></span></div>" ;
 			println "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">" ;
-      println "<div class=\"Icon16x16 default16x16Icon ${treeNode.iconClass}16x16Icon ${mode}${treeNode.iconClass}16x16Icon\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + "><span></span></div>" ;
+      println "<div class=\"Icon16x16 default16x16Icon " + Utils.getIconClass(treeNode.getNode()) + "16x16Icon ${mode}" + Utils.getIconClass(treeNode.getNode()) + "16x16Icon\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" + strActs + "<span></span></div>" ;
       println "</a>" ;
       %>
         <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode()));%>>
           <%
-            println "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
+            println strActs + "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
           %>
         </div>
       </div>

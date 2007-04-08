@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer ;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +37,9 @@ import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIRightClickPopupMenu;
@@ -97,8 +100,13 @@ public class UIWorkingArea extends UIContainer {
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
+  
+  private ActionServiceContainer actionService_ ;
+  private SecurityService securityService_ ;
 
   public UIWorkingArea() throws Exception {
+    actionService_ = getApplicationComponent(ActionServiceContainer.class) ;
+    securityService_ = getApplicationComponent(SecurityService.class) ;
     addChild(UIRightClickPopupMenu.class, "ECMContextMenu", null) ;
     addChild(UISideBar.class, null, null) ;
     addChild(UIDocumentWorkspace.class, null, null) ;
@@ -113,6 +121,7 @@ public class UIWorkingArea extends UIContainer {
     UIJCRExplorer jcrExplorer = getParent() ;
     jcrExplorer.getPreference().setShowSideBar(b) ;
   }
+  
   public Node getNodeByUUID(String uuid) throws Exception{
     CmsConfigurationService cmsConfService = getApplicationComponent(CmsConfigurationService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
@@ -295,6 +304,23 @@ public class UIWorkingArea extends UIContainer {
     if(getAllClipBoard().size() > 0) actionsList = actionsList + "," + "Paste" ;
     return actionsList ;
     
+  }
+  
+  public List<Node> getCustomActions(Node node) throws Exception {
+    List<Node> safeActions = new ArrayList<Node>();
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+    String userName = context.getRemoteUser() ;
+    List<Node> unsafeActions = actionService_.getActions(node, ActionServiceContainer.READ_PHASE);
+    for (Iterator<Node> iter = unsafeActions.iterator(); iter.hasNext();) {
+      Node actionNode = iter.next();
+      Value[] roles = actionNode.getProperty("exo:roles").getValues();
+      for (int i = 0; i < roles.length; i++) {
+        String role = roles[i].getString();
+        if(securityService_.hasMembershipInGroup(userName, role))
+          safeActions.add(actionNode);
+      }
+    }      
+    return safeActions;
   }
   
   @SuppressWarnings("unused")
@@ -633,17 +659,17 @@ public class UIWorkingArea extends UIContainer {
   static  public class CustomActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
-      String nodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      nodeName = nodeName.substring(nodeName.lastIndexOf("/") + 1) ;
-      String actionName = event.getRequestContext().getActionParameterName() ;
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String actionName = event.getRequestContext().getRequestParameter("actionName") ;
       ActionServiceContainer actionService = 
         uicomp.getApplicationComponent(ActionServiceContainer.class) ;
       try {
-        Node node = uicomp.getCurrentNode().getNode(nodeName);
-        String userId = Util.getUIPortal().getOwner() ;
-        actionService.executeAction(userId, node, actionName, new HashMap());
+        Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath);
+        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+        String userId = context.getRemoteUser() ;
+        actionService.executeAction(userId, node, actionName);
       } catch (Exception e) {
+        UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
         JCRExceptionManager.process(uiApp, e);
       }
     }

@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
@@ -78,6 +80,10 @@ public class Utils {
   final static public String EXO_CATEGORY = "exo:category" ;
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
   final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ; 
+  
+  public static String getIconClass(Node node) throws RepositoryException {
+    return node.getPrimaryNodeType().getName().replaceAll(":", "_") ;
+  }
   
   public static Collection getChildrenPerRow(int nbPerRow, Iterator iter) throws Exception{
     List<List> listOfList = new ArrayList<List>();

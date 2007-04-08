@@ -66,8 +66,6 @@ public class UIDrivesBrowser extends UIContainer {
     Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userName) ;
     if(memberships == null || memberships.size() < 0) return driveList ;
     Object[] objects = memberships.toArray() ;
-    System.out.println("\n\nMembership size : " + objects.length);
-    
     for(int i = 0 ; i < objects.length ; i ++ ){
       Membership membership = (Membership)objects[i] ;
       String role = membership.getMembershipType() + ":" + membership.getGroupId() ;

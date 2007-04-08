@@ -148,6 +148,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
   }
   
+  public List<Node> getCustomActions(Node node) throws Exception {
+    return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
+  }
+  
   public boolean isPreferenceNode(Node node) throws Exception {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
   }
