@@ -57,6 +57,7 @@ import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchContainer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
@@ -479,7 +480,13 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UISideBar uiSideBar = uiJCRExplorer.findFirstComponentOfType(UISideBar.class) ;
-      uiSideBar.setRenderedChild(UIViewRelationList.class) ;
+      UIViewRelationList uiViewRelationList = uiSideBar.getChild(UIViewRelationList.class) ;
+      if(uiViewRelationList.isRendered()) {
+        uiViewRelationList.setRendered(false) ;
+        uiSideBar.setRenderedChild(UITreeExplorer.class) ;
+      } else {
+        uiSideBar.setRenderedChild(UIViewRelationList.class) ;
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
     }
   }
@@ -632,6 +639,15 @@ public class UIActionBar extends UIForm {
       Node currentNode = uiExplorer.getCurrentNode() ;
       if(text == null || text.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.keyword-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      for(int i = 0; i < text.length(); i ++){
+        char c = text.charAt(i);
+        if (Character.isLetter(c) || Character.isDigit(c) || c=='_' || c=='-' || c=='.' || c==':' ){
+          continue;
+        }
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.keyword-not-allow", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
