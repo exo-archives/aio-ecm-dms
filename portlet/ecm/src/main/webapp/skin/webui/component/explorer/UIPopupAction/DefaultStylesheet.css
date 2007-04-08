@@ -377,3 +377,12 @@
   margin-left: 3px;
 }
 
+.UIJCRExplorerPortlet .SelectFileFrame {
+  margin:10px 0px 0px 50px;
+  width:400px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .ActionContainer {
+  margin: auto ;
+  width: 300px ;
+}

@@ -573,7 +573,7 @@ UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction{
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin-bottom: 10px ;
-  margin-left: 120px ;
+  margin-left: 135px ;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
