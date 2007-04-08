@@ -14,7 +14,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Oct 03, 2006
  * 9:43:23 AM 
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIECMTabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 
 public class UIViewTemplate extends UIContainer {
   private String nodeTypeName_ ;

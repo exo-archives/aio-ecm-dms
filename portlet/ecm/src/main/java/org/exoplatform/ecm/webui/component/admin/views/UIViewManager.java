@@ -11,7 +11,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * 11:45:11 AM 
  */
 
-@ComponentConfig(template = "app:/groovy/webui/component/UIECMTabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 public class UIViewManager extends UIContainer {
   
   public UIViewManager() throws Exception{

@@ -14,7 +14,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Jan 25, 2007  
  * 1:59:57 PM
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIECMTabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 public class UIViewMetadataContainer extends UIContainer {
 
   public UIViewMetadataContainer() throws Exception {

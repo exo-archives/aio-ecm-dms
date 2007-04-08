@@ -18,9 +18,7 @@ import org.exoplatform.webui.event.EventListener;
  * Nov 8, 2006
  * 9:39:58 AM 
  */
-@ComponentConfig(
-    template = "app:/groovy/webui/component/UIECMTabPane.gtmpl"
-)
+@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 public class UIActionManager extends UIContainer implements UIPopupComponent {
   
   public UIActionManager() throws Exception {

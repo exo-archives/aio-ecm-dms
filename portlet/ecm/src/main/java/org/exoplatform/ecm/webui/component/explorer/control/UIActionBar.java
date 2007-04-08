@@ -628,7 +628,13 @@ public class UIActionBar extends UIForm {
       UIActionBar uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
+      if(text == null || text.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.keyword-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()) ;      
       if ("/".equals(currentNode.getPath())) queryText = ROOT_SQL_QUERY ;
@@ -651,6 +657,11 @@ public class UIActionBar extends UIForm {
       uiSearchResult.setIsQuickSearch(true) ;
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.setQueryResults(pathQueryResult) ;
+      if(uiSearchResult.resultMap_ == null || uiSearchResult.resultMap_.size() ==0) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-found", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class) ;
     }

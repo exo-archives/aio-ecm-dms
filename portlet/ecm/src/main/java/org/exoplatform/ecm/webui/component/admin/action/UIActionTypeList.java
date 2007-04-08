@@ -6,7 +6,9 @@ package org.exoplatform.ecm.webui.component.admin.action;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.jcr.nodetype.NodeType;
+
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.webui.component.UIGrid;
@@ -26,16 +28,16 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
         @EventConfig(listeners = UIActionTypeList.AddActionActionListener.class)
-      }
+    }
 )
 
 public class UIActionTypeList extends UIGrid {
 
-  private static String[] NAMESPACE_BEAN_FIELD = {"name", "superTypes"} ;
+  private static String[] ACTIONTYPE_BEAN_FIELD = {"name", "extendType"} ;
 
   public UIActionTypeList() throws Exception { 
     getUIPageIterator().setId("ActionTypeListIterator");
-    configure("name", NAMESPACE_BEAN_FIELD, null) ;
+    configure("name", ACTIONTYPE_BEAN_FIELD, null) ;
   }
   
   public String[] getActions() { return new String[] {"AddAction"} ;}
@@ -55,7 +57,7 @@ public class UIActionTypeList extends UIGrid {
       for(int j = 0; j < superTypes.length; j ++) {
         types.append("[").append(superTypes[j].getName()).append("] ") ;        
       }
-      bean.setSuperTypes(types.toString()) ;
+      bean.setExtendType(types.toString()) ;
       actions.add(bean) ;
     }
     ObjectPageList objPageList = new ObjectPageList(actions, 10) ;
@@ -75,12 +77,12 @@ public class UIActionTypeList extends UIGrid {
   
   public static class ActionData {
     private String name ;
-    private String superTypes ;
+    private String extendType ;
 
     public String getName() { return name ; }
     public void setName(String s) { name = s ; }    
 
-    public String getSuperTypes() { return superTypes ; }
-    public void setSuperTypes(String s) { superTypes = s ; }
+    public String getExtendType() { return extendType ; }
+    public void setExtendType(String s) { extendType = s ; }
   }
 }

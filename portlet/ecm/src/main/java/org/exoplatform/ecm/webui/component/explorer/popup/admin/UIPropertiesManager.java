@@ -16,7 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * September 17, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIECMTabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 
 public class UIPropertiesManager extends UIContainer implements UIPopupComponent {
 

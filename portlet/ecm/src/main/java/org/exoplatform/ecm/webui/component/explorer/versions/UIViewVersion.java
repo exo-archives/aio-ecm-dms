@@ -33,7 +33,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 
 @ComponentConfig(
   type     = UIViewVersion.class,
-  template = "app:/groovy/webui/component/UIECMTabPane.gtmpl"
+  template = "system:groovy/webui/component/UITabPane.gtmpl"
 )
 
 public class UIViewVersion extends UIContainer {

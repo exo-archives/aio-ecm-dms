@@ -16,7 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Jan 16, 2007  
  * 11:23:26 AM
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIECMTabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 public class UIMultiLanguageManager extends UIContainer implements UIPopupComponent {
 
   public UIMultiLanguageManager() throws Exception {
