@@ -48,12 +48,15 @@ public class UISearchResult extends UIContainer {
   private static String[] RESULT_BEAN_FIELD = {"name", "shortcutPath"} ;
   private static String[] VIEW_ACTION = {"View", "OpenFolder"} ;
   public Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
+  private boolean isQuickSearch_ = false ;
   
   public UISearchResult() throws Exception {
     UIGrid uiGrid = addChild(UIGrid.class, null, null) ;
     uiGrid.getUIPageIterator().setId("UISearchIterator") ;
     uiGrid.configure("path", RESULT_BEAN_FIELD, VIEW_ACTION) ;
   }
+  
+  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
   
   public void setQueryResults(QueryResult queryResult) throws Exception {
     if(queryResult != null){
@@ -85,6 +88,11 @@ public class UISearchResult extends UIContainer {
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = (Node)uiExplorer.getSession().getItem(path) ;
+      if(uiSearchResult.isQuickSearch_) {
+        uiExplorer.setSelectNode(node) ;
+        uiExplorer.updateAjax(event) ;
+        return ;
+      }
       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class) ;
       if(!templateService.isManagedNodeType(node.getPrimaryNodeType().getName())) {
         UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;

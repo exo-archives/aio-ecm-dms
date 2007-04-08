@@ -648,6 +648,7 @@ public class UIActionBar extends UIForm {
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
                                                       getChild(UIDocumentWorkspace.class) ;
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;
+      uiSearchResult.setIsQuickSearch(true) ;
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.setQueryResults(pathQueryResult) ;
       uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
