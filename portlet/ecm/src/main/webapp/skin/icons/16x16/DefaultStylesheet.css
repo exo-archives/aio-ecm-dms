@@ -258,6 +258,11 @@
   background: url('DefaultSkin/YellowLight.gif') no-repeat;  
 }
 
+.OpenFolderIcon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/FolderGreen.gif') no-repeat;  
+}
+
 .MetaView16x16Icon {
 	float: left;
   width: 16px; height: 16px;

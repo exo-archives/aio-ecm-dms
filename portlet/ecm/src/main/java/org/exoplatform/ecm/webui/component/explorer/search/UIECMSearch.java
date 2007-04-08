@@ -16,7 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Editor: pham tuan Oct 27, 2006
  */
 
-@ComponentConfig( template = "app:/groovy/webui/component/UIECMTabPane.gtmpl" )
+@ComponentConfig( template = "system:groovy/webui/component/UITabPane.gtmpl" )
 public class UIECMSearch extends UIContainer {
   public UIECMSearch() throws Exception {
     addChild(UISimpleSearch.class, null, null) ;

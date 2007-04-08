@@ -38,12 +38,17 @@ public class UIPopupAction extends UIContainer {
   }
   
   public void activate(UIComponent uiComponent, int width, int height) throws Exception {
+    activate(uiComponent, width, height, false) ;
+  }
+  
+  public void activate(UIComponent uiComponent, int width, int height, boolean isResizeable) throws Exception {
     UIPopupWindow popup = getChild(UIPopupWindow.class);
     popup.setUIComponent(uiComponent) ;
     ((UIPopupComponent)uiComponent).activate() ;
     popup.setWindowSize(width, height) ;
     popup.setRendered(true) ;
     popup.setShow(true) ;
+    popup.setResizable(isResizeable) ;
   }
   
   public void deActivate() throws Exception {

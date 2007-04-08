@@ -335,6 +335,11 @@
 	margin: auto ;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
+	width:50px;
+	margin: auto ;
+}
+
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
   border: none ;
 }
