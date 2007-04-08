@@ -375,7 +375,8 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-watch", null)) ;
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-watch", null,
+          ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return ;
     }
@@ -399,7 +400,8 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       } 
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-tagging", null)) ;
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-tagging", null,
+          ApplicationMessage.WARNING)) ;
     }
   }
   
@@ -416,7 +418,8 @@ public class UIActionBar extends UIForm {
         return ;
       }
       if(!templateService.isManagedNodeType(nodeType.getName())) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null, 
+            ApplicationMessage.WARNING)) ;
         return ;
       }
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;

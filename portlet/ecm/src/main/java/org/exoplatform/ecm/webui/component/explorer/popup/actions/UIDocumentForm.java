@@ -15,6 +15,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
 import javax.jcr.nodetype.NodeType;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -213,8 +214,14 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);
         setPath(newNode.getPath()) ;
-      } catch(Exception e) {
-        e.printStackTrace() ;
+      } catch(VersionException ve) {
+        UIApplication uiApp = getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }catch(Exception e) {
+        //e.printStackTrace() ;
         UIApplication uiApp = getAncestorOfType(UIApplication.class);
         String key = "UIDocumentForm.msg.cannot-save" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;

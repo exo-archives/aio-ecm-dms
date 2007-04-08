@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
@@ -82,6 +84,12 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
           node.getSession().refresh(false) ;
           if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
           uiExplorer.updateAjax(event) ;
+        }catch(ConstraintViolationException cve) {  
+          Object[] arg = { type } ;
+          uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.constraint-violation", arg, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
         } catch (Exception e) {
           JCRExceptionManager.process(uiApp, e);
         }

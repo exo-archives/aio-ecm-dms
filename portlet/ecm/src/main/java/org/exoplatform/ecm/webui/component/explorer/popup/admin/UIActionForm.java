@@ -159,6 +159,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       uiActionManager.setRenderedChild(UIActionList.class) ;
       reset() ;
     } catch (Exception e) {
+      e.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
       return ;
     }

@@ -17,8 +17,10 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
+import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -597,6 +599,11 @@ public class UIWorkingArea extends UIContainer {
         }
         node.unlock();  
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+      }catch(LockException ve) {       
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
@@ -713,6 +720,11 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }catch(VersionException ve) {       
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.copied-node-in-versioning", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
