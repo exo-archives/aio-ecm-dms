@@ -386,3 +386,9 @@
   margin: auto ;
   width: 300px ;
 }
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .ActionContainer {
+	width:300px;
+	margin: auto ;
+}
+
