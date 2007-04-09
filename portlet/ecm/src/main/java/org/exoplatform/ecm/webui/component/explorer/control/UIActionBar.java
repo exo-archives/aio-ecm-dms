@@ -580,6 +580,7 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
+      uiJCRExplorer.setIsHidePopup(true) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiRelationManager, 630, 0) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
