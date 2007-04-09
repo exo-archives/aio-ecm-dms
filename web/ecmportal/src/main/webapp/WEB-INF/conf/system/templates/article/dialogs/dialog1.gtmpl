@@ -4,14 +4,14 @@
     <div class="FieldContainer">		          					
       <label>Name</label>
       <%
-        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable", "editable=if-null"] ;
+        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable", "editable=if-null", "validate=name"] ;
         uicomponent.addTextField("name", fieldName) ; 
       %>
     </div>
     <div class="FieldContainer">		          					
       <label>Title</label>
       <%
-        String[] fieldTitle = ["jcrPath=/node/exo:title"] ;
+        String[] fieldTitle = ["jcrPath=/node/exo:title", "validate=empty"] ;
         uicomponent.addTextField("title", fieldTitle) ;
       %>
     </div>

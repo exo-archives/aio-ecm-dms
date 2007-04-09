@@ -13,7 +13,7 @@
     <div class="FieldContainer">                        
       <label>Create feed action name</label>
       <%
-        String[] fieldName = ["jcrPath=/node/exo:name"] ;
+        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
         uicomponent.addTextField("name", fieldName) ;  
       %>
     </div>
@@ -56,7 +56,7 @@
 					<div class="FieldContainer">		          					
 					  <label>Repeat Count</label>
 					  <% 
-						String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;
+						String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number" ] ;
 						uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
 					  %>
 					</div>

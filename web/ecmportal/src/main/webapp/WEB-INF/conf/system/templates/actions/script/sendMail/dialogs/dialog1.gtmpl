@@ -12,7 +12,7 @@
 	<div class="FieldContainer">		          					
 	  <label>Name</label>
 	  <% 
-		String[] fieldName = ["jcrPath=/node/exo:name"] ;
+		String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
 		uicomponent.addTextField("name", fieldName) ;
 	  %>
 	</div>
@@ -62,7 +62,7 @@
 					<div class="FieldContainer">		          					
 					  <label>Time inteval</label>
 					  <% 
-						String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
+						String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "-1", "validate=number"] ;
 						uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
 					  %>
 					</div>

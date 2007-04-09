@@ -8,7 +8,7 @@
 	    <div class="FieldContainer">		          					
 	      <label>Name</label>
 	      <%
-	        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
+	        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
 	        uicomponent.addTextField("name", fieldName) ; 
 	      %>
 	    </div>

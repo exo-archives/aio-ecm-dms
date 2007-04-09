@@ -12,7 +12,7 @@
     <div class="FieldContainer">		          					
       <label>Name</label>
       <%
-        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
+        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
         uicomponent.addTextField("name", fieldName) ;   
       %>
     </div>
@@ -89,7 +89,7 @@
     <div class="FieldContainer">		          					
       <label>Length</label>
       <%
-       String[] fieldSize = ["jcrPath=/node/exo:length", "0"] ;
+       String[] fieldSize = ["jcrPath=/node/exo:length", "0", "validate=number"] ;
        uicomponent.addTextField("size", fieldSize) ; 
       %>
     </div>

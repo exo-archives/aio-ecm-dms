@@ -22,6 +22,7 @@ import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -37,13 +38,14 @@ import org.exoplatform.webui.event.EventListener;
  * Oct 12, 2006
  * 11:30 AM
  */
+import org.exoplatform.webui.event.Event.Phase;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
       @EventConfig(listeners = UIFolderForm.SaveActionListener.class),
-      @EventConfig(listeners = UIFolderForm.CancelActionListener.class)
+      @EventConfig(listeners = UIFolderForm.CancelActionListener.class, phase=Phase.DECODE)
     }
 )
 
@@ -53,7 +55,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   public UIFolderForm() throws Exception {
     addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, getOptions())) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(NameValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
   }
 

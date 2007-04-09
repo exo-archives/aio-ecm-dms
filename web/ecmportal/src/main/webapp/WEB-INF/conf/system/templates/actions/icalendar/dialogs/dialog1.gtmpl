@@ -12,7 +12,7 @@
     <div class="FieldContainer">		          					
       <label>Action name</label>
       <% 
-        String[] fieldName = ["jcrPath=/node/exo:name"] ;
+        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
         uicomponent.addTextField("name", fieldName) ;
       %>
     </div>

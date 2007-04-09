@@ -34,6 +34,10 @@ import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIFormUploadInput;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.EmailAddressValidator;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
+import org.exoplatform.webui.component.validator.NameValidator;
+import org.exoplatform.webui.component.validator.NumberFormatValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -72,6 +76,7 @@ public class DialogFormFields extends UIForm {
   private static final String VISIBLE = "visible" + SEPARATOR;
   private static final String NODETYPE = "nodetype" + SEPARATOR;
   private static final String MIXINTYPE = "mixintype" + SEPARATOR;
+  private static final String VALIDATE = "validate" + SEPARATOR;
   private static final String SELECTOR_ACTION = "selectorAction" + SEPARATOR;
   private static final String SELECTOR_CLASS = "selectorClass" + SEPARATOR;
   private static final String SELECTOR_ICON = "selectorIcon" + SEPARATOR;
@@ -79,6 +84,7 @@ public class DialogFormFields extends UIForm {
   private static final String SCRIPT = "script" + SEPARATOR;
   private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
+  
   public static final  String[]  ACTIONS = {"Save", "Cancel"};
   
   protected Map<String, Object> properties = new HashMap<String, Object>();
@@ -216,6 +222,7 @@ public class DialogFormFields extends UIForm {
     String jcrPath = null;
     String mixintype = null;
     String multiValues = null ;
+    String validateType = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -228,6 +235,8 @@ public class DialogFormFields extends UIForm {
         mixintype = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
         defaultValue = argument;
       }
@@ -281,6 +290,15 @@ public class DialogFormFields extends UIForm {
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
+      if(validateType.equals("name")) {
+        uiInput.addValidator(NameValidator.class) ;
+      } else if (validateType.equals("email")){
+        uiInput.addValidator(EmailAddressValidator.class) ;
+      } else if (validateType.equals("number")) {
+        uiInput.addValidator(NumberFormatValidator.class) ;
+      } else if (validateType.equals("empty")){
+        uiInput.addValidator(EmptyFieldValidator.class) ;
+      }      
       addUIFormInput(uiInput) ;
     }
     if(type.equals("password")) uiInput.setType((short)UIStringInput.PASSWORD) ;
