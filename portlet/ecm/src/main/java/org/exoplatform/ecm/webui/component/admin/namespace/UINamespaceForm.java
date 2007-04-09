@@ -13,6 +13,7 @@ import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
+import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -40,7 +41,7 @@ public class UINamespaceForm extends UIForm {
 
   public UINamespaceForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_PREFIX, FIELD_PREFIX, null).
-                   addValidator(EmptyFieldValidator.class)) ;
+                   addValidator(NameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_URI, FIELD_URI, null).
                    addValidator(EmptyFieldValidator.class)) ;
   }

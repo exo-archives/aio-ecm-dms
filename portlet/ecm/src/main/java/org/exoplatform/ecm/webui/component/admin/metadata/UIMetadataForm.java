@@ -56,8 +56,8 @@ public class UIMetadataForm extends UIForm implements UISelector{
   private String metadataName_ ;
 
   public UIMetadataForm() throws Exception {
-    addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null).addValidator(EmptyFieldValidator.class)) ;
-    addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null).addValidator(EmptyFieldValidator.class)) ;
+    addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
+    addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null)) ;
     addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
     UIFormInputSetWithAction permissionInput = new UIFormInputSetWithAction("permission") ;
     permissionInput.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).addValidator(EmptyFieldValidator.class)) ;
@@ -113,7 +113,9 @@ public class UIMetadataForm extends UIForm implements UISelector{
       else ntName = uiForm.metadataName_ ;
       String roles = uiForm.getUIStringInput(VIEW_PERMISSION).getValue() ;
       String dialogTemplate = uiForm.getUIFormTextAreaInput(DIALOG_TEMPLATE).getValue() ;
+      if(dialogTemplate == null) dialogTemplate = "" ;
       String viewTemplate = uiForm.getUIFormTextAreaInput(VIEW_TEMPLATE).getValue() ;
+      if(viewTemplate == null) viewTemplate = "" ;
       metadataService.addMetadata(ntName, true, roles, dialogTemplate, uiForm.isAddNew_) ;
       metadataService.addMetadata(ntName, false, roles, viewTemplate, uiForm.isAddNew_) ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;

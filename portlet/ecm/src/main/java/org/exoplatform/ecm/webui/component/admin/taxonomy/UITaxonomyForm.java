@@ -11,7 +11,7 @@ import org.exoplatform.webui.component.UIFormInputInfo;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
-import org.exoplatform.webui.component.validator.EmptyFieldValidator;
+import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -42,7 +42,7 @@ public class UITaxonomyForm extends UIForm {
   public UITaxonomyForm() throws Exception {
     addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-                   addValidator(EmptyFieldValidator.class)) ;
+                   addValidator(NameValidator.class)) ;
   }
   
   public void setParent(String path) {
@@ -66,7 +66,9 @@ public class UITaxonomyForm extends UIForm {
       try {
         uiManager.addTaxonomy(parentPath, name)  ;
       } catch(Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", null)) ;
+        Object[] arg = {name} ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", arg, 
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
