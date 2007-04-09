@@ -64,7 +64,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIDocumentInfo.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.ViewNodeActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.SortActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.VoteActionListener.class)
+        @EventConfig(listeners = UIDocumentInfo.VoteActionListener.class),
+        @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class)
     }
 )
 public class UIDocumentInfo extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent {
@@ -74,6 +75,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   private String typeSortOrder_ ;
   private String nameSortOrder_ ;
   private String language_ = DEFAULT_LANGUAGE ;
+  private Node currentNode_ ;
 
   public UIDocumentInfo() throws Exception {}
 
@@ -271,18 +273,30 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return getNode().getSession().getWorkspace().getName();
   }
 
-  public Node getNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
+  public Node getNode() throws Exception { 
+    Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
+    currentNode_ = node ;
+    if(currentNode_.hasProperty("exo:language")) {
+      String defaultLang = currentNode_.getProperty("exo:language").getString() ;
+      if(!language_.equals("default") && !language_.equals(defaultLang)) {
+        Node curNode = currentNode_.getNode("languages/" + language_) ;
+        language_ = defaultLang ;
+        return curNode ;
+      } 
+    }    
+    return currentNode_; 
+  }
 
   public double getRating() throws Exception {
-    return getNode().getProperty("exo:votingRate").getDouble();
+    return currentNode_.getProperty("exo:votingRate").getDouble();
   }
 
   public long getVoteTotal() throws Exception {
-    return getNode().getProperty("exo:voteTotal").getLong();
+    return currentNode_.getProperty("exo:voteTotal").getLong();
   }
 
   public List<Node> getComments() throws Exception {
-    return getApplicationComponent(CommentsService.class).getComments(getNode(), getLanguage()) ;
+    return getApplicationComponent(CommentsService.class).getComments(currentNode_, getLanguage()) ;
   }
 
   public String getCommentTemplate() throws Exception {
@@ -545,8 +559,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiDocumentInfo = event.getSource() ;
-      uiDocumentInfo.setLanguage(event.getRequestContext().getRequestParameter(OBJECTID)) ;
-      uiDocumentInfo.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
+      UIJCRExplorer uiExplorer = uiDocumentInfo.getAncestorOfType(UIJCRExplorer.class) ;
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiDocumentInfo.setLanguage(selectedLanguage) ;
+      uiExplorer.updateAjax(event) ;
     }   
   }
   

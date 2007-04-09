@@ -107,14 +107,7 @@ public class UIJCRExplorer extends UIContainer {
   }
   
   public boolean nodeIsLocked(String path) throws Exception {
-    Node node ;
-    if(path.indexOf(";") < 0) {
-      path = getSession().getWorkspace().getName() + ";" + path ;
-      node = getNodeByPath(path) ;
-    } else {
-      node = getNodeByPath(path) ;
-    }
-    if(node.isLocked()) return true;
+    if(getNodeByPath(path).isLocked()) return true;
     return false ;
   }
   

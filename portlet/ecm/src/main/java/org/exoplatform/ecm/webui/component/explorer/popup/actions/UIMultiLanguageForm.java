@@ -9,6 +9,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
+import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -96,10 +99,18 @@ public class UIMultiLanguageForm extends UIForm {
   static public class ViewActionListener extends EventListener<UIMultiLanguageForm> {
     public void execute(Event<UIMultiLanguageForm> event) throws Exception {
       UIMultiLanguageForm uiForm = event.getSource() ;
+      MultiLanguageService multiLanguageService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currNode = uiExplorer.getCurrentNode() ;
       UIDocumentInfo uiDocumentInfo = uiJCRExplorer.findFirstComponentOfType(UIDocumentInfo.class) ;
-      uiDocumentInfo.setLanguage(uiForm.getUIFormSelectBox(LANGUAGES).getValue()) ;
-      uiJCRExplorer.cancelAction() ;
+      String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
+      if(selectedLanguage.equals(multiLanguageService.getDefault(currNode))) {
+        uiJCRExplorer.cancelAction() ;
+      } else {
+        uiDocumentInfo.setLanguage(uiForm.getUIFormSelectBox(LANGUAGES).getValue()) ;
+        uiExplorer.updateAjax(event) ;
+      }
     }
   }
 }

@@ -128,6 +128,18 @@
   	  margin-left: 80px;
 		}
 		
+		.UIArticle .Language {
+	    margin-top: 10px;
+	    text-align: left;
+	    color:#bdbdbd;
+	  }
+	  
+	  .UIArticle  a.LanguageTitle {
+	    font: normal 10px Verdana;
+	    text-align: left;
+	    color:#494b88;
+	  }
+	  
 		.UIVoteForm .RatingInfo {
 			font: normal bold 11px Arial;
 			color: #0489d5;
@@ -149,6 +161,19 @@
           <div class="BannerIcon">
             <div class="TitleLabel"><%=node.getProperty("exo:title").getString()%></div>
             <div class="Underline"><span></span></div>
+            <%
+							def locals = uicomponent.getSupportedLocalise() ;
+							if(locals.size() > 0) {
+								println "<div class=\"Language\">" ;
+								println "Languages: &nbsp;" ;
+								def actionChangeLang ;
+								for(local in locals) {
+								  actionChangeLang = uicomponent.event("ChangeLanguage", local) ;
+									println "<a href=\"$actionChangeLang\" class=\"LanguageTitle\">$local &nbsp;&nbsp;</a>" ;
+								}
+								println "</div>" ;
+							}	
+					%>
           </div>
         </div>
 			</div>
