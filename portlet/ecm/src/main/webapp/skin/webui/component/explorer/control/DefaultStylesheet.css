@@ -9,15 +9,15 @@
 /*############################## -- Begin UIViewBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar {
-  border-top: solid 1px #fdfdfd;
+	border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;
   background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
   height: 28px;
+  line-height: 28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
   float: left;
-  line-height: 28px;
   padding-left: 10px;
 }
 
@@ -35,17 +35,21 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
   float: right;
-  width: 180px;
   padding: 0px 10px;
 }
-
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .WorkspaceName {
+	float: left;
+	padding: 0px 5px;
+	font-weight: bold;
+	color: #0000EE;
+}
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
-  float: right;
+  float: left;
   height: 27px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
-  float: right;
+  float: left;
   margin: 2px 10px;
   cursor: pointer;
 }

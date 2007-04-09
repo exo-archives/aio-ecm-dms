@@ -17,14 +17,13 @@
     <%uiform.end()%>    
   </div>
   <div class="IconFrame">
-    <div class="OverflowContainer">
-      <a class="Icon DiamondCircleRoundedArrows24x24Icon" href="<%=uicomponent.event("RefreshSession")%>" title="Refresh"><span></span></a>
-      <%if(uicomponent.isShowSaveSession()) {%>
-        <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="Save Session"><span></span></a>
-      <%}%>
-      <a class="Icon ColorGridSquare24x24Icon" href="<%=uicomponent.event("Preferences")%>" title="Set up your browsing preferences"><span></span></a>
-      <a class="Icon DiskArrow24x24Icon" href="<%=uicomponent.event("Back")%>" title="Back to JCR main Drives"><span></span></a>
-		  <div class="Separator ViewBarSeparator"><span></span></div>
-    </div>
+    <div class="WorkspaceName">Current Drive : <%=uicomponent.getWorkspaceName()%></div>
+		<div class="Separator ViewBarSeparator"><span></span></div>
+	  <a class="Icon DiskArrow24x24Icon" href="<%=uicomponent.event("Back")%>" title="Back to JCR main Drives"><span></span></a>
+	  <a class="Icon ColorGridSquare24x24Icon" href="<%=uicomponent.event("Preferences")%>" title="Set up your browsing preferences"><span></span></a>
+	  <%if(uicomponent.isShowSaveSession()) {%>
+	    <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="Save Session"><span></span></a>
+	  <%}%>
+	  <a class="Icon DiamondCircleRoundedArrows24x24Icon" href="<%=uicomponent.event("RefreshSession")%>" title="Refresh"><span></span></a>
   </div>
 </div>

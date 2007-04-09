@@ -85,32 +85,32 @@ public class Utils {
     return node.getPrimaryNodeType().getName().replaceAll(":", "_") ;
   }
   
-  public static Collection getChildrenPerRow(int nbPerRow, Iterator iter) throws Exception{
-    List<List> listOfList = new ArrayList<List>();
-    List<Object> tempList = new ArrayList<Object>(nbPerRow);
-    int i = 0;
-    while (iter.hasNext()) {
-      Object object =  iter.next();
-      tempList.add(object);
-      if(i == nbPerRow - 1) {
-        listOfList.add(tempList);        
-        if(iter.hasNext()) {
-          i = 0;
-          tempList = new ArrayList<Object>(nbPerRow);
-        }
-      } else if(iter.hasNext()) i++;
-    }
-    if(i < nbPerRow - 1) listOfList.add(tempList);
-    return listOfList;
-  }  
-  public static Collection toCollection(Iterator iter) throws Exception {    
-    List<Object> tempList = new ArrayList<Object>();    
-    while (iter.hasNext()) {
-      Object object =  iter.next();
-      tempList.add(object);                                    
-    }          
-    return tempList;
-  }  
+//  public static Collection getChildrenPerRow(int nbPerRow, Iterator iter) throws Exception{
+//    List<List> listOfList = new ArrayList<List>();
+//    List<Object> tempList = new ArrayList<Object>(nbPerRow);
+//    int i = 0;
+//    while (iter.hasNext()) {
+//      Object object =  iter.next();
+//      tempList.add(object);
+//      if(i == nbPerRow - 1) {
+//        listOfList.add(tempList);        
+//        if(iter.hasNext()) {
+//          i = 0;
+//          tempList = new ArrayList<Object>(nbPerRow);
+//        }
+//      } else if(iter.hasNext()) i++;
+//    }
+//    if(i < nbPerRow - 1) listOfList.add(tempList);
+//    return listOfList;
+//  }  
+//  public static Collection toCollection(Iterator iter) throws Exception {    
+//    List<Object> tempList = new ArrayList<Object>();    
+//    while (iter.hasNext()) {
+//      Object object =  iter.next();
+//      tempList.add(object);                                    
+//    }          
+//    return tempList;
+//  }  
   
   public static Value[] getMultiValue(List<String> values, int valueType, Session session) throws Exception {
     List<Value> valueList = new ArrayList<Value>();

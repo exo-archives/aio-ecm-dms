@@ -138,6 +138,7 @@
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
+  cursor: pointer;
   margin: 0px 3px;
 }
 

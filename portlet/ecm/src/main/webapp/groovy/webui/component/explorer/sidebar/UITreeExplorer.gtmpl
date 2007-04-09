@@ -29,18 +29,13 @@
       }
 
       println "<div class=\"Node\" style=\"margin-left: ${level * 15}px;\">" ;
-      println "<div class=\"${mode}Icon\" onclick=\"" + uicomponent.event(mode, treeNode.getPath()) + "\"><span></span></div>" ;
-			println "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">" ;
-      println "<div class=\"Icon16x16 default16x16Icon " + Utils.getIconClass(treeNode.getNode()) + "16x16Icon ${mode}" + Utils.getIconClass(treeNode.getNode()) + "16x16Icon\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" + strActs + "<span></span></div>" ;
-      println "</a>" ;
-      %>
-        <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode()));%>>
-          <%
-            println strActs + "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
-          %>
-        </div>
-      </div>
-      <% if(treeNode.getChildrenSize() > 0) writeNodes(treeNode.getChildren(), level + 1) ;
+      println "  <div class=\"${mode}Icon\" onclick=\"" + uicomponent.event(mode, treeNode.getPath()) + "\"><span></span></div>" ;
+      println "  <div onclick=\"" + uicomponent.event("Expand", path) + "\" class=\"Icon16x16 default16x16Icon " + Utils.getIconClass(treeNode.getNode()) + "16x16Icon ${mode}" + Utils.getIconClass(treeNode.getNode()) + "16x16Icon\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" + strActs + "<span></span></div>" ;
+      println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" ;
+      println strActs + "<a href=\"" + uicomponent.event("Expand", path) + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
+      println "  </div>" ;
+      println "</div>" ;
+      if(treeNode.getChildrenSize() > 0) writeNodes(treeNode.getChildren(), level + 1) ;
     }
   }
 %>

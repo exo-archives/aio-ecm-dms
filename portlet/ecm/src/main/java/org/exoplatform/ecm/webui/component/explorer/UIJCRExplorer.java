@@ -149,15 +149,13 @@ public class UIJCRExplorer extends UIContainer {
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
+    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
+    uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
     if(preferences_.isShowSideBar()) {
       UISideBar uiSideBar = uiWorkingArea.getChild(UISideBar.class) ;
       uiSideBar.getChild(UITreeExplorer.class).buildTree(currentNode_.getPath()) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-    } else {
-      UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
-      uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocWorkspace) ;
     }
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     if(!isHidePopup_) {
       UIPopupAction popupAction = getChild(UIPopupAction.class) ;
       if(popupAction.isRendered()) {
