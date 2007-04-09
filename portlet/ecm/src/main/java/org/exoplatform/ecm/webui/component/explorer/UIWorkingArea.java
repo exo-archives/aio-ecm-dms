@@ -672,10 +672,10 @@ public class UIWorkingArea extends UIContainer {
         uicomp.getApplicationComponent(ActionServiceContainer.class) ;
       try {
         Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath);
-        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-        String userId = context.getRemoteUser() ;
+        String userId = event.getRequestContext().getRemoteUser() ;
         actionService.executeAction(userId, node, actionName);
       } catch (Exception e) {
+        e.printStackTrace() ;
         UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
         JCRExceptionManager.process(uiApp, e);
       }

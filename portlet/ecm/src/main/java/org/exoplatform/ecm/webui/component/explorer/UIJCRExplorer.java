@@ -269,16 +269,13 @@ public class UIJCRExplorer extends UIContainer {
   }
   
   public Node getNodeByPath(String nodePath) throws Exception {
-    Node node ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String[] array = nodePath.split(";") ;
-    if(getSession().getWorkspace().getName().equals(array[0].trim())) {
-      node = (Node)getSession().getItem(array[1].trim()) ;
-    } else {
+    if(nodePath.indexOf(";") > 0) {
+      String[] array = nodePath.split(";") ;
+      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
       Session session = repositoryService.getRepository().getSystemSession(array[0].trim()) ;
-      node = (Node)session.getItem(array[1].trim());
+      return (Node)session.getItem(array[1].trim());
     }
-    return node ;
+    return (Node)getSession().getItem(nodePath) ;    
   }
   
   public LinkedList<ClipboardCommand> getAllClipBoard() { return clipboards_ ;}
