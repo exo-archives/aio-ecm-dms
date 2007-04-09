@@ -1,3 +1,6 @@
+<style>
+ a {behavior: url(#default#AnchorClick);} 
+</style>
 <style>	
 	.FileContent {  
 	  padding: 5px;
@@ -82,99 +85,96 @@
 %>
 <div class="FileContent">
 	<div class="NavigationContainer">  			
-	<div class="TopLeftDecorator">
-		<div class="TopRightDecorator">
-			<div class="TopCenterDecorator">
-				File Content
+		<div class="TopLeftDecorator">
+			<div class="TopRightDecorator">
+				<div class="TopCenterDecorator">
+					File Content
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="MiddleLeftDecorator">
-		<%
-		  if(uicomponent.isNodeTypeSupported(nodetype)) {
-  			def oldNode = node ;
-	  		uicomponent.setNode(node) ;
-		  	uicomponent.setTemplateNode(nodetype) ;			
-			  uicomponent.setNode(oldNode)
-		  }	else {
-		    if(mime.startsWith("text") && node.hasProperty("jcr:data")) {
-		      def text = node.getProperty("jcr:data").getString() ;
-		      println "$text" ;	
-		    } else if(mime.startsWith("image")) {
-		 %>
-		      <div style="width:99.5%; text-align:center">
-					  <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
-				  </div>																					
-					<div class="ActionContainer">
-						<div class="ActionButtom">
-							<div class="ButtomLeft">
-								<div class="ButtomRight">
-									<div class="MiddleButtom">
-										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%>/<%=originalNode.getPath()%>">
-											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
-										</a>
+		<div class="MiddleLeftDecorator">
+			<%
+			  if(uicomponent.isNodeTypeSupported(nodetype)) {
+	  			def oldNode = node ;
+		  		uicomponent.setNode(node) ;
+			  	uicomponent.setTemplateNode(nodetype) ;			
+				  uicomponent.setNode(oldNode)
+			  }	else {
+			    if(mime.startsWith("text") && node.hasProperty("jcr:data")) {
+			      def text = node.getProperty("jcr:data").getString() ;
+			      println "$text" ;	
+			    } else if(mime.startsWith("image")) {
+			 %>
+			      <div style="width:99.5%; text-align:center">
+						  <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
+					  </div>																					
+						<div class="ActionContainer">
+							<div class="ActionButtom">
+								<div class="ButtomLeft">
+									<div class="ButtomRight">
+										<div class="MiddleButtom">
+											<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
+												<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ActionContainer">
-						<div class="ActionButtom">
-							<div class="ButtomLeft">
-								<div class="ButtomRight">
-									<div class="MiddleButtom">
-										<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
-											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
-										</a>
+						<div class="ActionContainer">
+							<div class="ActionButtom">
+								<div class="ButtomLeft">
+									<div class="ButtomRight">
+										<div class="MiddleButtom">
+											<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
+												<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-		 <% } else {%>	  
-		     	<div style="text-align:center; font-style:italic">This content is not viewable. Please download or use WebDAV to access the content</div>
-					<div class="ActionContainer">
-						<div class="ActionButtom">
-							<div class="ButtomLeft">
-								<div class="ButtomRight">
-									<div class="MiddleButtom">
-										<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%>/<%=originalNode.getPath()%>">
-											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
-						  			</a>
+			 <% } else {%>	  
+			     	<div style="text-align:center; font-style:italic">This content is not viewable. Please download or use WebDAV to access the content</div>
+						<div class="ActionContainer">
+							<div class="ActionButtom">
+								<div class="ButtomLeft">
+									<div class="ButtomRight">
+										<div class="MiddleButtom">
+											<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>">
+												<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/WebDAVView.gif' />WebDAV View
+							  			</a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="ActionContainer">
-						<div class="ActionButtom">
-							<div class="ButtomLeft">
-								<div class="ButtomRight">
-									<div class="MiddleButtom">
-										<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
-											<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
-										</a>
+						<div class="ActionContainer">
+							<div class="ActionButtom">
+								<div class="ButtomLeft">
+									<div class="ButtomRight">
+										<div class="MiddleButtom">
+											<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
+												<image style = "height:16px; vertical-align:middle;padding-right:3px" src='/ecm/skin/images/file/Download.gif' /> Download this File
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-	<% 
-		   }
-		 }
-	%>			
-	</div>	
-	<div class="BottomLeftDecorator">
-		<div class="BottomRightDecorator">
-			<div class="BottomCenterDecorator"><span></span></div>
+		<% 
+			   }
+			 }
+		%>			
+		</div>	
+		<div class="BottomLeftDecorator">
+			<div class="BottomRightDecorator">
+				<div class="BottomCenterDecorator"><span></span></div>
+			</div>
 		</div>
 	</div>  			  			
-  <div style="overflow:hidden;width:99.5%"> 
-		<div style="float:right; width:220px; margin-top: 5px">
-			<% _ctx.include(uicomponent.getVoteTemplate()); %>
-		</div>
-	</div>
-	<div style="margin:5px">
-		<% _ctx.include(uicomponent.getCommentTemplate()); %> 	  	
-	</div>
+  <div style="height: 10px;"><span></span></div>
+	<% _ctx.include(uicomponent.getVoteTemplate()); %>
+  <div style="height: 10px;"><span></span></div>
+	<% _ctx.include(uicomponent.getCommentTemplate()); %> 	  	
 </div>

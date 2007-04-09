@@ -313,6 +313,14 @@
   background: url('DefaultSkin/background/OverStar.gif');
 }
 
+.UIJCRExplorerPortlet .UIVoteForm .UIAction .ActionButton {
+	width: 85px;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .UIAction .ActionButton .NormalStyle {
+  border: none ;
+}
+
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
 	margin: 10px auto;
 	width: 90px;
