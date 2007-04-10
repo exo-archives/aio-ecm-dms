@@ -33,7 +33,7 @@
     <div class="FieldContainer">		          					
       <label>Validator</label>
       <% 
-        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon"] ;
+        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty"] ;
         uicomponent.addActionField("validator", fieldValidator) ;
       %>
     </div>
@@ -47,7 +47,7 @@
     <div class="FieldContainer">		          					
       <label>With path</label>
       <% 
-        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "selectorParams=#destWorkspace", "selectorIcon=SelectPath24x24Icon"] ;
+        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "selectorParams=#destWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty"] ;
         uicomponent.addActionField("destPath", fieldPath)  ;
       %>
     </div>        

@@ -148,6 +148,7 @@ public class DialogFormFields extends UIForm {
     String[] selectorParams = null;
     String selectorIcon = null ;
     String multiValues = null ;
+    String validateType = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -165,6 +166,8 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(SELECTOR_PARAMS)) {
         String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
         selectorParams = StringUtils.split(params, ",");
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
         defaultValue = argument;
       }
@@ -191,6 +194,17 @@ public class DialogFormFields extends UIForm {
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
+      if(validateType != null) {
+        if(validateType.equals("name")) {
+          uiInput.addValidator(NameValidator.class) ;
+        } else if (validateType.equals("email")){
+          uiInput.addValidator(EmailAddressValidator.class) ;
+        } else if (validateType.equals("number")) {
+          uiInput.addValidator(NumberFormatValidator.class) ;
+        } else if (validateType.equals("empty")){
+          uiInput.addValidator(EmptyFieldValidator.class) ;
+        }
+      }    
       addUIFormInput(uiInput) ;
     }
     if(editable.equals("false")) uiInput.setEditable(false) ;
