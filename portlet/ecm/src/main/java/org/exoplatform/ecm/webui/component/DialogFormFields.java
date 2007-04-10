@@ -42,6 +42,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -290,15 +291,17 @@ public class DialogFormFields extends UIForm {
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
-      if(validateType.equals("name")) {
-        uiInput.addValidator(NameValidator.class) ;
-      } else if (validateType.equals("email")){
-        uiInput.addValidator(EmailAddressValidator.class) ;
-      } else if (validateType.equals("number")) {
-        uiInput.addValidator(NumberFormatValidator.class) ;
-      } else if (validateType.equals("empty")){
-        uiInput.addValidator(EmptyFieldValidator.class) ;
-      }      
+      if(validateType != null) {
+        if(validateType.equals("name")) {
+          uiInput.addValidator(NameValidator.class) ;
+        } else if (validateType.equals("email")){
+          uiInput.addValidator(EmailAddressValidator.class) ;
+        } else if (validateType.equals("number")) {
+          uiInput.addValidator(NumberFormatValidator.class) ;
+        } else if (validateType.equals("empty")){
+          uiInput.addValidator(EmptyFieldValidator.class) ;
+        }
+      }     
       addUIFormInput(uiInput) ;
     }
     if(type.equals("password")) uiInput.setType((short)UIStringInput.PASSWORD) ;

@@ -520,6 +520,16 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
+      String ws = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+      String currentNodePath = uiExplorer.getCurrentNode().getPath() ;
+      System.out.println("path === " + ws + ";" + nodePath);
+      System.out.println("curpath === " + ws + ";" + currentNodePath);
+      if(currentNodePath.equals(nodePath) || currentNodePath.equals(ws + ";" + nodePath)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(uiExplorer.nodeIsLocked(nodePath)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;

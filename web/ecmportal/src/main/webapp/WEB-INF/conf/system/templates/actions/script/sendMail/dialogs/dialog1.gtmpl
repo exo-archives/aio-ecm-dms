@@ -88,7 +88,7 @@
 	<div class="FieldContainer">		          					
 	  <label>Send mail to</label>
 	  <% 
-		String[] fieldMailTo = ["jcrPath=/node/exo:to"] ;
+		String[] fieldMailTo = ["jcrPath=/node/exo:to", "validate=email"] ;
 		uicomponent.addTextField("to", fieldMailTo) ;
 	  %>
 	</div>

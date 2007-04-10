@@ -43,9 +43,9 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     events = {
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-      @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIActionForm.BackActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIActionForm.ShowComponentActionListener.class)
+      @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.BackActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIActionForm extends DialogFormFields implements UISelector {
