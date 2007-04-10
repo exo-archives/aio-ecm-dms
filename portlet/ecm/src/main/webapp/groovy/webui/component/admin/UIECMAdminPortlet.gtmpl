@@ -26,7 +26,7 @@
   	      <% 
   	      	uicomponent.renderChild(UIECMAdminFunctionTitle.class); 
   	      %>
-				  <div class="UIResizableBlock">
+				  <div class="UIResizableBlock" style="height: 400px;">
   	        <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
   	      </div>
         </td>
