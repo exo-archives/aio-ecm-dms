@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -86,6 +87,7 @@ public class UIDrivesBrowser extends UIContainer {
         }
       }
     }
+    Collections.sort(driveList) ;
     return driveList ; 
   }
 

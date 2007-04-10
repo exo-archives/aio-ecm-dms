@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  *          nguyenkequanghung@yahoo.com
  * Feb 27, 2006 
  */
-public class DriveData {
+public class DriveData implements Comparable<DriveData> {
 
   private String name ;
   private String workspace ;
@@ -55,9 +55,9 @@ public class DriveData {
   public boolean getViewSideBar() { return this.viewSideBar ; }
   public void setViewSideBar(boolean b) { this.viewSideBar = b ; }
   
-  public List getAllPermissions() {
+  public List<String> getAllPermissions() {
     String[] allPermissions = StringUtils.split(permissions, ",");
-    List permissionList = new ArrayList() ;
+    List<String> permissionList = new ArrayList<String>() ;
     for(int i = 0 ; i < allPermissions.length ; i ++ ){
       permissionList.add(allPermissions[i].trim()) ;
     }
@@ -65,14 +65,18 @@ public class DriveData {
   }
 
   public boolean hasPermission(String permission) {
-    List permissions = getAllPermissions() ;
+    List<String> pers = getAllPermissions() ;
     if(permission == null) return false ;
     if(permission.indexOf(":/") > -1){
 	  String[] array = StringUtils.split(permission , ":/") ;
       if(array == null || array.length < 2) return false ;
-      if( permissions.indexOf("*:/"+array[1]) > -1) return true ;
+      if( pers.indexOf("*:/"+array[1]) > -1) return true ;
     }    
-    return permissions.contains(permission) ;
+    return pers.contains(permission) ;
+  }
+
+  public int compareTo(DriveData arg) {
+    return name.compareToIgnoreCase(arg.getName()) ;
   }
   
 }

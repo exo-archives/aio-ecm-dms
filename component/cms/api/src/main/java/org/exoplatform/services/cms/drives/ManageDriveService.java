@@ -19,7 +19,7 @@ public interface ManageDriveService {
                         String views, String icon, boolean viewReferences, boolean viewNonDocument,
                         boolean viewSideBar)throws Exception ;
   public Object getDriveByName(String driveName) throws Exception;
-  public List getAllDriveByPermission(String permission) throws Exception;
+  public List<DriveData> getAllDriveByPermission(String permission) throws Exception;
   
   public void removeDrive(String driveName) throws Exception;  
   public Node getDriveHome() throws Exception ;  

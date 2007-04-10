@@ -55,10 +55,10 @@ public class ManageDriveServiceImpl implements ManageDriveService {
     return (Node) session_.getItem(drivesPath);
   }
 
-  public List getAllDrives() throws Exception {
+  public List<DriveData> getAllDrives() throws Exception {
     Node driveHome = getDriveHome() ;
     NodeIterator itr = driveHome.getNodes() ;
-    ArrayList driveList = new ArrayList() ;
+    List<DriveData> driveList = new ArrayList<DriveData>() ;
     while(itr.hasNext()) {
       DriveData data = new DriveData() ;
       Node drive = itr.nextNode() ;
@@ -102,12 +102,12 @@ public class ManageDriveServiceImpl implements ManageDriveService {
                           viewNonDocument, viewSideBar) ;
   }
 
-  public List getAllDriveByPermission(String permission) throws Exception {
-    List driveByPermission = new ArrayList() ;
+  public List<DriveData> getAllDriveByPermission(String permission) throws Exception {
+    List<DriveData> driveByPermission = new ArrayList<DriveData>() ;
     try{
-      List driveList = getAllDrives() ;    
+      List<DriveData> driveList = getAllDrives();    
       for(int i = 0; i < driveList.size(); i ++) {
-        DriveData drive = (DriveData)driveList.get(i) ;
+        DriveData drive = driveList.get(i) ;
         if(drive.hasPermission(permission))
           driveByPermission.add(drive) ;
       }
