@@ -99,6 +99,7 @@ public class UIWorkingArea extends UIContainer {
   final static public String MIX_LOCKABLE = "mix:lockable" ;
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;
+  final static public String WS_NAME = "workspaceName" ;
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
   
   private ActionServiceContainer actionService_ ;
@@ -148,24 +149,17 @@ public class UIWorkingArea extends UIContainer {
   }
   
   public boolean isPreferenceNode(Node node) throws RepositoryException {
-    return (getCurrentNode().hasNode(node.getName())) ? false : true ;
+    return getAncestorOfType(UIJCRExplorer.class).isPreferenceNode(node) ;
   }
 
   public boolean isSameNameSibling(Node node) throws Exception {
     return (node.getPath().endsWith("]")) ? true : false ;
   }
 
-  public boolean isEditable(String nodePath) throws Exception {
+  public boolean isEditable(String nodePath, Session session) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     boolean isEdit = true;
-    Node childNode ;    
-    if(nodePath.indexOf(";") > -1) {
-      childNode = uiExplorer.getNodeByPath(nodePath) ; 
-    } else {
-      Node currentNode =  uiExplorer.getCurrentNode() ;
-      String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
-      childNode = currentNode.getNode(name) ;
-    }      
+    Node childNode = uiExplorer.getNodeByPath(nodePath, session) ; 
     String nodeType = childNode.getPrimaryNodeType().getName();
     for (int i = 0; i < NON_EDITABLE_NODETYPES.length; i++) {
       String nonEditableType = NON_EDITABLE_NODETYPES[i];
@@ -191,10 +185,6 @@ public class UIWorkingArea extends UIContainer {
   public boolean isReadAuthorized(ExtendedNode node) throws RepositoryException {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     return uiExplorer.isReadAuthorized(node);
-  }
-
-  public String getNodeOwner() throws RepositoryException { 
-    return ((ExtendedNode) getCurrentNode()).getACL().getOwner(); 
   }
 
   public boolean isVersionable(Node node) throws RepositoryException {
@@ -227,12 +217,7 @@ public class UIWorkingArea extends UIContainer {
   }
   
   public String getNodePath(Node node) throws Exception {
-    String nodePath = node.getPath() ;
-    if(isPreferenceNode(node)) {
-      String preferenceWS = node.getSession().getWorkspace().getName() ;
-      nodePath = preferenceWS + ";" + nodePath ;
-    }
-    return nodePath ;
+    return node.getPath()  ;
   }
   
   public boolean hasRemovePermissions(Node curNode){
@@ -252,11 +237,14 @@ public class UIWorkingArea extends UIContainer {
   
   private String getList(Node node, String path) throws Exception {
     StringBuilder actionsList = new StringBuilder() ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    String preferenceWS = node.getSession().getWorkspace().getName() ;
+    Session session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
     if(isReadAuthorized((ExtendedNode)node)) {
       if(isVersionableOrAncestor(node)) {
         if(node.isCheckedOut()) {
           if(isVersionable(node)) actionsList.append("CheckIn") ;
-          if(isEditable(path) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
+          if(isEditable(path, session) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node)) {
@@ -276,7 +264,7 @@ public class UIWorkingArea extends UIContainer {
           actionsList.append(",WebDAV") ;
         }
       } else {
-        if(isEditable(path) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
+        if(isEditable(path, session) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
         if(node.holdsLock() && hasEditPermissions(node)) {
           actionsList.append(",Unlock") ;
         } else if(!node.isLocked() && hasEditPermissions(node)) {
@@ -297,9 +285,7 @@ public class UIWorkingArea extends UIContainer {
   
   public String getActionsList(Node node) throws Exception {
     String actionsList = null ;
-    String preferenceWS = node.getSession().getWorkspace().getName() ;
     String path = node.getPath() ;
-    if(isPreferenceNode(node)) path = preferenceWS + ";" + path ;
     actionsList = getList(node, path) ;
     if(getAllClipBoard().size() > 0) actionsList = actionsList + "," + "Paste" ;
     return actionsList ;
@@ -328,32 +314,18 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      Node selectedNode ;
-      Session session ; 
       boolean isReferenced = false ;
-      if(uiExplorer.nodeIsLocked(nodePath)) {
+      if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(nodePath.indexOf(";") > -1) {
-        isReferenced = true ;
-        String[] array = nodePath.split(";") ;
-        if(!uiExplorer.getSession().getWorkspace().getName().equals(array[0])) {
-          RepositoryService repositoryService = uicomp.getApplicationComponent(RepositoryService.class) ;
-          session = repositoryService.getRepository().login(array[0]) ;
-        } else {
-          session = uiExplorer.getSession() ;
-        } 
-        selectedNode = (Node)session.getItem(array[1]) ;          
-      } else {
-        selectedNode = uiExplorer.getCurrentNode();
-        nodePath = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
-        selectedNode = selectedNode.getNode(nodePath);          
-      }
+      Node selectedNode = uiExplorer.getNodeByPath(nodePath, session);
       if(selectedNode.isNodeType("exo:action")) {
         UIActionContainer uiContainer = uiExplorer.createUIComponent(UIActionContainer.class, null, null) ;
         uiExplorer.setIsHidePopup(true) ;
@@ -391,9 +363,11 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String renameNodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(renameNodePath)) {
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
+      if(uiExplorer.nodeIsLocked(renameNodePath, session)) {
         Object[] arg = { renameNodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -402,12 +376,8 @@ public class UIWorkingArea extends UIContainer {
       Node renameNode ;
       boolean isReferencedNode = false ;
       try {
-        if(renameNodePath.indexOf(";") > -1) {
-          isReferencedNode = true ;
-          renameNode = uiExplorer.getNodeByPath(renameNodePath) ;
-        } else {
-          renameNode = (Node)uiExplorer.getSession().getItem(renameNodePath) ;
-        }
+        if(wsName != null) isReferencedNode = true ;
+        renameNode = uiExplorer.getNodeByPath(renameNodePath, session) ;
         UIControl uiControl = uiExplorer.getChild(UIControl.class) ;
         UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
         UIRenameForm uiRenameForm = uiActionBar.createUIComponent(UIRenameForm.class, null, null) ;
@@ -425,9 +395,10 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(srcPath)) {
+      if(uiExplorer.nodeIsLocked(srcPath, uiExplorer.getSessionByWorkspace(wsName))) {
         Object[] arg = { srcPath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -444,6 +415,7 @@ public class UIWorkingArea extends UIContainer {
         ClipboardCommand clipboard = new ClipboardCommand() ;
         clipboard.setType(ClipboardCommand.COPY) ;
         clipboard.setSrcPath(srcPath) ;
+        clipboard.setWorkspace(wsName) ;
         uiExplorer.getAllClipBoard().add(clipboard) ;                      
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
@@ -458,8 +430,10 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(nodePath)) {
+      if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -476,8 +450,9 @@ public class UIWorkingArea extends UIContainer {
         ClipboardCommand clipboard = new ClipboardCommand() ;
         clipboard.setType(ClipboardCommand.CUT) ;
         clipboard.setSrcPath(nodePath) ;
+        clipboard.setWorkspace(wsName) ;
         uiExplorer.getAllClipBoard().add(clipboard) ;                     
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;
         uiExplorer.updateAjax(event) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
@@ -490,14 +465,11 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Node node = null ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       try {
-        if(nodePath.indexOf(";") > -1) {
-          node = uiExplorer.getNodeByPath(nodePath) ;
-        } else {
-          node = (Node)uiExplorer.getSession().getItem(nodePath);
-        }
+        Node node = uiExplorer.getNodeByPath(nodePath, session) ;
         Object[] args = { nodePath };
         if(node.isNew()) {
           uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.unable-save-node",args));
@@ -505,7 +477,7 @@ public class UIWorkingArea extends UIContainer {
           return ;
         }
         node.save(); 
-        uiExplorer.getSession().save() ;
+        session.save() ;
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.save-node-success", args));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch(Exception e) {
@@ -519,23 +491,23 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
+      if(uiExplorer.nodeIsLocked(nodePath, session)) {
+        Object[] arg = { nodePath } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String ws = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
       String currentNodePath = uiExplorer.getCurrentNode().getPath() ;
-      System.out.println("path === " + ws + ";" + nodePath);
-      System.out.println("curpath === " + ws + ";" + currentNodePath);
       if(currentNodePath.equals(nodePath) || currentNodePath.equals(ws + ";" + nodePath)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(nodePath)) {
-        Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }    
       Node node ;
       try {        
         if ("/".equals(nodePath)) {
@@ -544,8 +516,8 @@ public class UIWorkingArea extends UIContainer {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return;
         }
-        if(nodePath.indexOf(";") > -1 ) {
-          node = uiExplorer.getNodeByPath(nodePath) ;
+        if(wsName != null) {
+          node = uiExplorer.getNodeByPath(nodePath, session) ;
           Node parentNode = node.getParent() ;
           node.remove();
           parentNode.getSession().save() ;
@@ -556,7 +528,7 @@ public class UIWorkingArea extends UIContainer {
           node.remove();
           parentNode.save() ;          
         } 
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;        
+        if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;        
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
@@ -569,15 +541,10 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      Node node ;
       try {
-        if(name.indexOf(";") > -1) {
-          node = uiExplorer.getNodeByPath(name) ;
-        } else {
-          name = name.substring(name.lastIndexOf("/") + 1) ;
-          node = uiExplorer.getCurrentNode().getNode(name);
-        }      
+        Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
         if(!node.isNodeType(MIX_LOCKABLE)) {
           node.addMixin(MIX_LOCKABLE);
           node.save();
@@ -596,18 +563,13 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      Node node ;
       try {
-        if(name.indexOf(";") > -1) {
-          node = uiExplorer.getNodeByPath(name) ;
-        } else {
-          name = name.substring(name.lastIndexOf("/") + 1) ;
-          node = uiExplorer.getCurrentNode().getNode(name);
-        }
+        Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
         node.unlock();  
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      }catch(LockException ve) {       
+      } catch(LockException ve) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -624,20 +586,17 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(nodePath)) {
+      if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
-      Node node ;
       try {
-        if(nodePath.indexOf(";") > -1) {
-          node = uiExplorer.getNodeByPath(nodePath) ;
-        } else {
-          node = (Node)uiExplorer.getSession().getItem(nodePath);
-        }
+        Node node = uiExplorer.getNodeByPath(nodePath, session);
         node.checkin();
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
@@ -650,20 +609,17 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(nodePath)) {
+      if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
-      Node node ;
       try {
-        if(nodePath.indexOf(";") > -1) {
-          node = uiExplorer.getNodeByPath(nodePath) ;
-        } else {
-          node = (Node)uiExplorer.getSession().getItem(nodePath);
-        }
+        Node node = uiExplorer.getNodeByPath(nodePath, session) ;
         node.checkout();
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
@@ -676,10 +632,13 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String actionName = event.getRequestContext().getRequestParameter("actionName") ;
+      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       ActionServiceContainer actionService = 
         uicomp.getApplicationComponent(ActionServiceContainer.class) ;
       try {
-        Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath);
+        Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session);
         String userId = event.getRequestContext().getRemoteUser() ;
         actionService.executeAction(userId, node, actionName);
       } catch (Exception e) {
@@ -695,23 +654,16 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String destPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String destWorkspace = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      Session session = uiExplorer.getSessionByWorkspace(destWorkspace) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       ClipboardCommand currentClipboard = 
         ((LinkedList<ClipboardCommand>)uicomp.getAllClipBoard()).getLast() ;
       String srcPath = currentClipboard.getSrcPath() ;
       String type = currentClipboard.getType();
-      String srcWorkspace = null ;
-      if(srcPath.indexOf(";") > -1 ) {
-        String[] array = srcPath.split(";") ;
-        srcWorkspace = array[0].trim() ;
-        srcPath = array[1].trim() ;
-      } 
-      if(destPath.indexOf(";") > -1 ) {
-        String[] array = destPath.split(";") ;
-        srcWorkspace = array[0].trim() ;
-        destPath = array[1].trim() ;
-      }
-      if(uiExplorer.nodeIsLocked(destPath)) {
+      String srcWorkspace = currentClipboard.getWorkspace() ;
+      if(srcWorkspace == null) srcWorkspace = uiExplorer.getCurrentWorkspace() ;
+      if(uiExplorer.nodeIsLocked(destPath, session)) {
         Object[] arg = { destPath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -720,9 +672,9 @@ public class UIWorkingArea extends UIContainer {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/")) ;
       try {
         if (ClipboardCommand.COPY.equals(type)) {
-          pasteByCopy(uiExplorer, srcWorkspace, srcPath, destPath) ;
+          pasteByCopy(session, srcWorkspace, srcPath, destPath) ;
         } else {
-          pasteByCut(uiExplorer, srcWorkspace, srcPath, destPath) ;
+          pasteByCut(uiExplorer, session, srcWorkspace, srcPath, destPath) ;
         }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
@@ -731,19 +683,18 @@ public class UIWorkingArea extends UIContainer {
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }catch(VersionException ve) {       
+      } catch(VersionException ve) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.copied-node-in-versioning", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }catch(Exception e) {
+      } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
     }
     
-    private void pasteByCopy(UIJCRExplorer uiExplorer, String srcWorkspace, 
+    private void pasteByCopy(Session session, String srcWorkspace, 
                              String srcPath, String destPath) throws Exception {
-      Session session = uiExplorer.getSession() ;
       Workspace workspace = session.getWorkspace();
       if(srcWorkspace != null) workspace.copy(srcWorkspace, srcPath, destPath);
       else workspace.copy(srcPath, destPath);
@@ -751,9 +702,8 @@ public class UIWorkingArea extends UIContainer {
       removeReferences(destNode, session) ;
     }
     
-    private void pasteByCut(UIJCRExplorer uiExplorer, String srcWorkspace, 
+    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcWorkspace, 
                             String srcPath, String destPath) throws Exception {
-      Session session = uiExplorer.getSession() ;
       Workspace workspace = session.getWorkspace();
       if(srcWorkspace != null) {
         workspace.copy(srcWorkspace, srcPath, destPath);

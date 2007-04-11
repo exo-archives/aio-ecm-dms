@@ -17,7 +17,7 @@
     <%uiform.end()%>    
   </div>
   <div class="IconFrame">
-    <div class="WorkspaceName">Current Drive : <%=uicomponent.getWorkspaceName()%></div>
+    <div class="WorkspaceName">Current Drive : <font color="#0000EE"><%=uicomponent.getWorkspaceName()%></font></div>
 		<div class="Separator ViewBarSeparator"><span></span></div>
 	  <a class="Icon DiskArrow24x24Icon" href="<%=uicomponent.event("Back")%>" title="Back to JCR main Drives"><span></span></a>
 	  <a class="Icon ColorGridSquare24x24Icon" href="<%=uicomponent.event("Preferences")%>" title="Set up your browsing preferences"><span></span></a>

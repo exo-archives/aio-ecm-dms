@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
@@ -53,8 +54,11 @@ public class UITreeExplorer extends UIComponent {
     return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
   }
   
+  public boolean isPreferenceNode(Node node) throws RepositoryException {
+    return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
+  }
   public String getNodePath(Node node) throws Exception {
-    return getAncestorOfType(UIWorkingArea.class).getNodePath(node) ;
+    return node.getPath() ;
   }
   
   public TreeNode getTreeRoot() { return treeRoot_ ; }
@@ -76,19 +80,21 @@ public class UITreeExplorer extends UIComponent {
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uijcrExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uijcrExplorer.setSelectNode(path) ;
-      uijcrExplorer.updateAjax(event) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      uiExplorer.setSelectNode(path, uiExplorer.getSessionByWorkspace(wsName)) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
   
   static public class CollapseActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UITreeExplorer uiTreeExplorer = event.getSource() ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
       path = path.substring(0, path.lastIndexOf("/")) ;
-      uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class).setSelectNode(path) ;
-      uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
+      uiExplorer.setSelectNode(path, uiExplorer.getSessionByWorkspace(wsName)) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 }

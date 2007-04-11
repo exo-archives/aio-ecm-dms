@@ -115,7 +115,7 @@ public class UISearchResult extends UIContainer {
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String folderPath = path.substring(0, path.lastIndexOf("/")) ;
-      uiExplorer.setSelectNode(folderPath) ;
+      uiExplorer.setSelectNode(folderPath, uiExplorer.getSession()) ;
       uiExplorer.updateAjax(event) ;
     }
   }

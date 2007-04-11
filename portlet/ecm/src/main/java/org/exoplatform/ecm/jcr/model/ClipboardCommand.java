@@ -7,10 +7,12 @@ public class ClipboardCommand {
   
   private String type ;
   private String srcPath ;
+  private String wsName  = null ;
 
   public String getSrcPath() { return srcPath ;}
   public void setSrcPath(String srcPath) { this.srcPath = srcPath ;}
   public String getType() { return type ;}
   public void setType(String type) { this.type = type ;}
-    
+  public void setWorkspace(String ws) { wsName = ws ; }
+  public String getWorkspace() { return wsName ; }
 }

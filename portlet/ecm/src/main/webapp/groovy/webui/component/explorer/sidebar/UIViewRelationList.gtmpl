@@ -1,3 +1,6 @@
+<%
+  import org.exoplatform.web.application.Parameter ;
+%>
 <div class="UIViewRelationList">
 	<div class="RelationFrame">
 		<div class="TitleLabel">
@@ -8,10 +11,13 @@
 			if(relations.isEmpty()) { %>  			    			    	
 			    <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
 			 <%}else {
+				 String actionLink ;
 				 for (rel in relations) {
-				   String wsName = rel.getSession().getWorkspace().getName() ;
-				   String actionLink ;
+				   String preferenceWS = rel.getSession().getWorkspace().getName() ;
 				   actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;%>
+				   if(isPreferenceNode(rel)) {
+				     actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
+				   }
 			 	 	 <div> - <a href="$actionLink">$rel.name</a></div>
 			<% }
 			}%>

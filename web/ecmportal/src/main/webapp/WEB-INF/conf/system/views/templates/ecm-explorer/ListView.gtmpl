@@ -78,25 +78,24 @@
       		def preferenceWS = data.getSession().getWorkspace().getName() ;
       		def name = data.getName() ;
 	        String actionLink  ;
+	        String nodePath = data.getPath() ;
 	        String subName ;
-	        if(name.length() < 20) { 
-	          subName = name ;
-	          if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
-	          else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;
-	        } else {
-	          subName = name.substring(0,15) + "..." ;
-	          if(isPreferenceNode) actionLink = uicomponent.event("ViewNode",preferenceWS + ";" + data.path) ;
-	          else if(uicomponent.isReadAuthorized(data)) actionLink = uicomponent.event("ChangeNode", data.path) ;								          
-	        }
-	        
+          if(isPreferenceNode) {
+            actionLink = uicomponent.event("ViewNode",data.path, new Parameter("workspaceName", preferenceWS)) ;
+            nodePath = nodePath + "&workspaceName=" + preferenceWS ;
+          } else if(uicomponent.isReadAuthorized(data)) {
+            actionLink = uicomponent.event("ChangeNode", data.path) ;
+          }
 				  List customActs = uicomponent.getCustomActions(data) ;
 					String strActs = "" ;
+					Parameter[] params ;
 				  if(customActs.size() > 0) {
 					  strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
 						for(act in customActs) {
+						  params = [new Parameter("workspaceName", nodePath), new Parameter("actionName",act.getName())] ;
 						  strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
 					    strActs += "  <div class=\"ItemIcon " + Utils.getIconClass(act) + "16x16Icon\"><span></span></div>" ;
-						  strActs += "  <a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom","_objectid_",new Parameter("actionName",act.getName())) + "\">${act.name}</a>" ;
+						  strActs += "  <a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom","_objectid_",params) + "\">${act.name}</a>" ;
 						  strActs += "</div>" ;
 						}
 					  strActs += "</div>" ;
@@ -104,16 +103,20 @@
       %>
 	      <tr>
 	        <td>
-						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
 					    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getIconClass(data)%>16x16Icon"><span></span></div></a>
   					</div>
 	        </td>
+	        <%
+  	        if(name.length() < 20) subName = name ;
+		        else subName = name.substring(0,15) + "..." ;
+	        %>
 	        <td>
-						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(uicomponent.getNodePath(data), uicomponent.getActionsList(data));%>>
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
 							$strActs<a href="$actionLink" title="$name">$subName</a>
 	 					</div>
 	        </td>
-	        <td><%=uicomponent.getNodeOwner()%></td>
+	        <td><%=uicomponent.getNodeOwner(data)%></td>
 	        <td>
 	          <%=uicomponent.isVersionable(data)%>
 	          <%

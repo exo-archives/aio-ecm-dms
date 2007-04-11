@@ -243,8 +243,23 @@
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*############################## -- BEGIN UIFolderForm -- ##############################*/
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .ActionButton {
+
+.UIJCRExplorerPortlet .UIFolderForm .UIFormWithTitle .ActionContainer {
+  margin: auto ;
+  width: 200px; 
+}
+
+.UIJCRExplorerPortlet .UIFolderForm .ActionButton {
   width: 80px; 
+}
+
+.UIJCRExplorerPortlet .UIRenameForm .ActionButton {
+  width: 80px; 
+}
+
+.UIJCRExplorerPortlet .UIRenameForm .UIFormWithTitle .ActionContainer {
+  margin: auto ;
+  width: 200px; 
 }
 
 /*############################## -- END UIFolderForm -- ##############################*/

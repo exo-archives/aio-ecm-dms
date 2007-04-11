@@ -13,6 +13,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -33,7 +34,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIFolderForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITicketForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIUploadForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIWatchDocumentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
@@ -95,7 +95,6 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIActionBar.AddDocumentActionListener.class),
         @EventConfig(listeners = UIActionBar.EditDocumentActionListener.class),
         @EventConfig(listeners = UIActionBar.UploadActionListener.class),
-        @EventConfig(listeners = UIActionBar.CreateTicketActionListener.class),
         @EventConfig(listeners = UIActionBar.SearchActionListener.class),
         @EventConfig(listeners = UIActionBar.WatchDocumentActionListener.class),
         @EventConfig(listeners = UIActionBar.TaggingDocumentActionListener.class),
@@ -244,14 +243,20 @@ public class UIActionBar extends UIForm {
   
   static public class AddFolderActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Node currentNode = uiExplorer.getCurrentNode() ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(currentNode)) {
+        String preferenceWS = currentNode.getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode.getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIFolderForm.class, 700) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -259,14 +264,19 @@ public class UIActionBar extends UIForm {
 
   static public class AddDocumentActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIDocumentFormController.class, null, 700, 550) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
      }
@@ -277,8 +287,13 @@ public class UIActionBar extends UIForm {
       UIActionBar uicomp = event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       Node selectedNode = uiExplorer.getCurrentNode() ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(selectedNode.getPath())) {
+      if(uiExplorer.nodeIsLocked(selectedNode.getPath(), session)) {
         Object[] arg = { selectedNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
@@ -318,33 +333,21 @@ public class UIActionBar extends UIForm {
 
   static public class UploadActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }         
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIUploadForm .class, 700) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-    }
-  }
-
-  static public class CreateTicketActionListener extends EventListener<UIActionBar> {
-    public void execute(Event<UIActionBar> event) throws Exception {      
-      UIActionBar uiActionbar = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uiActionbar.getAncestorOfType(UIJCRExplorer.class) ;
-      Node selectedNode = uiJCRExplorer.getCurrentNode() ;
-      String nodeType = selectedNode.getPrimaryNodeType().getName() ;
-      if(nodeType.equals(UIActionBar.EXO_ARTICLE)) {
-        UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-        uiPopupAction.activate(UITicketForm .class, 700) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
-      }
-      UIApplication uiApp = uiActionbar.getAncestorOfType(UIApplication.class) ;
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.No-support-create-ticket", null)) ;
     }
   }
 
@@ -360,17 +363,22 @@ public class UIActionBar extends UIForm {
   static public class WatchDocumentActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
-      NodeType nodeType = uiJCRExplorer.getCurrentNode().getPrimaryNodeType() ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
       if(templateService.isManagedNodeType(nodeType.getName())) {
-        UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(UIWatchDocumentForm .class, 700) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
@@ -385,17 +393,22 @@ public class UIActionBar extends UIForm {
   static public class TaggingDocumentActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      NodeType nodeType = uiJCRExplorer.getCurrentNode().getPrimaryNodeType() ;
+      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }         
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
       if(templateService.isManagedNodeType(nodeType.getName())) {
-        UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(UITaggingForm.class, 700) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
@@ -408,12 +421,17 @@ public class UIActionBar extends UIForm {
   static public class MultiLanguageActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      NodeType nodeType = uiJCRExplorer.getCurrentNode().getPrimaryNodeType() ;
+      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
@@ -422,13 +440,13 @@ public class UIActionBar extends UIForm {
             ApplicationMessage.WARNING)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIMultiLanguageManager.class, null,700, 550) ;
       UIMultiLanguageManager uiMultiManager = 
         uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
       UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
       if(nodeType.getName().equals(NT_FILE)) {
-        String mimeType = uiJCRExplorer.getCurrentNode().getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
+        String mimeType = uiExplorer.getCurrentNode().getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
         if(mimeType.startsWith("text")) {
           uiAddContainer.setComponentDisplay(nodeType.getName()) ;
         } else {
@@ -510,7 +528,12 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(currentNode.getPath())) {
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(currentNode.getPath(), session)) {
         Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
@@ -533,24 +556,29 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
       CmsConfigurationService cmsService = uiActionBar.getApplicationComponent(CmsConfigurationService.class) ;
-      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      uiJCRExplorer.setIsHidePopup(true) ;
+      uiExplorer.setIsHidePopup(true) ;
       CategoriesService categoriesService = uiActionBar.getApplicationComponent(CategoriesService.class) ;
-      UICategoryManager uiManager = uiJCRExplorer.createUIComponent(UICategoryManager.class, null, null) ;
+      UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null) ;
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class) ;
-      uiCateAddedList.updateGrid(categoriesService.getCategories(uiJCRExplorer.getCurrentNode())) ;
+      uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode())) ;
       UIJCRBrowser uiJCRBrowser = uiManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(null) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(EXO_TAXONOMIES_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiCateAddedList, null) ;
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiManager, 630, 0) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -559,29 +587,34 @@ public class UIActionBar extends UIForm {
   static public class ManageRelationsActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
       CmsConfigurationService cmsService = 
         uiActionBar.getApplicationComponent(CmsConfigurationService.class) ;
       UIRelationManager uiRelationManager = 
-        uiJCRExplorer.createUIComponent(UIRelationManager.class, null, null) ;
+        uiExplorer.createUIComponent(UIRelationManager.class, null, null) ;
       RelationsService relateService = 
         uiActionBar.getApplicationComponent(RelationsService.class) ;
       UIRelationsAddedList uiRelateAddedList = 
         uiRelationManager.getChild(UIRelationsAddedList.class) ;
-      uiRelateAddedList.updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode())) ;
+      uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode())) ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(new String[] {EXO_ARTICLE}) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
-      uiJCRExplorer.setIsHidePopup(true) ;
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      uiExplorer.setIsHidePopup(true) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiRelationManager, 630, 0) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -590,30 +623,40 @@ public class UIActionBar extends UIForm {
   static public class ManageActionsActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIActionManager.class, null, 610, 550) ;
-      uiJCRExplorer.setIsHidePopup(true) ;
+      uiExplorer.setIsHidePopup(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 
   static public class ExportNodeActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIExportNode.class, 610) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -621,14 +664,19 @@ public class UIActionBar extends UIForm {
 
   static public class ImportNodeActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIImportNode.class, 610) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -699,18 +747,23 @@ public class UIActionBar extends UIForm {
   
   static public class VoteActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = uiJCRExplorer.getAncestorOfType(UIApplication.class) ;
-      if(!uiJCRExplorer.getCurrentNode().isNodeType("mix:votable")) {
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(!uiExplorer.getCurrentNode().isNodeType("mix:votable")) {
         uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-support", null)) ;
         return ;
       }
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIVoteForm.class, 300) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -746,18 +799,23 @@ public class UIActionBar extends UIForm {
   
   static public class CommentActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = uiJCRExplorer.getAncestorOfType(UIApplication.class) ;
-      if(!uiJCRExplorer.getCurrentNode().isNodeType("mix:commentable")) {
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
+      Session session = uiExplorer.getSession() ;
+      if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
+        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
+      }   
+      if(!uiExplorer.getCurrentNode().isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-support", null)) ;
         return ;
       }
-      if(uiJCRExplorer.nodeIsLocked(uiJCRExplorer.getCurrentNode().getPath())) {
-        Object[] arg = { uiJCRExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UICommentForm.class, 700) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

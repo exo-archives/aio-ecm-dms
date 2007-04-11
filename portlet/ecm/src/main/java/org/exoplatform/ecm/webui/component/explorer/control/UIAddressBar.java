@@ -73,10 +73,10 @@ public class UIAddressBar extends UIForm {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiAddress = event.getSource() ;
       String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue() ;
-      UIJCRExplorer uiJCRExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        uiJCRExplorer.setSelectNode(path) ;
-        uiJCRExplorer.updateAjax(event) ;
+        uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+        uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null)) ;
@@ -89,9 +89,9 @@ public class UIAddressBar extends UIForm {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiAddressBar = event.getSource() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiJCRExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
-      uiJCRExplorer.setSelectNode(path) ;
-      uiJCRExplorer.refreshExplorer() ;
+      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+      uiExplorer.refreshExplorer() ;
     }
   }
 }

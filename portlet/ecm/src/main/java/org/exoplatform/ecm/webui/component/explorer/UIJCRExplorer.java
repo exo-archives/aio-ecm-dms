@@ -92,7 +92,12 @@ public class UIJCRExplorer extends UIContainer {
   public void newJCRTemplateResourceResolver() {
     jcrTemplateResourceResolver_ = new JCRResourceResolver(session_, "exo:templateFile") ; 
   }
-
+  
+  public Session getSessionByWorkspace(String wsName) throws Exception{
+    if(wsName == null ) return getSession() ;
+    RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
+    return repositoryService.getRepository().getSystemSession(wsName) ;    
+  }
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
                                                  setValue(currentNode_.getPath()) ;
@@ -106,8 +111,8 @@ public class UIJCRExplorer extends UIContainer {
     popupAction.deActivate() ;
   }
   
-  public boolean nodeIsLocked(String path) throws Exception {
-    if(getNodeByPath(path).isLocked()) return true;
+  public boolean nodeIsLocked(String path, Session session) throws Exception {
+    if(getNodeByPath(path, session).isLocked()) return true;
     return false ;
   }
   
@@ -187,26 +192,11 @@ public class UIJCRExplorer extends UIContainer {
     currentNode_ = node ;
   }
 
-  public void setSelectNode(String uri) throws Exception {  
+  public void setSelectNode(String uri, Session session) throws Exception {  
     Node previousNode = null ;
-    if(uri == null || uri.length() == 0) {      
-      currentNode_ = (Node) session_.getItem("/") ;
-    } else {
-      previousNode = currentNode_ ;        
-      if(uri.indexOf(";") > -1) {
-        String[] array = uri.split(";") ;
-        String wsName = array[0].trim() ;
-        if(wsName.equals(getCurrentWorkspace())) {
-          currentNode_ = (Node)session_.getItem(array[1].trim()) ;
-        } else {
-          RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-          Session ses = repositoryService.getRepository().getSystemSession(wsName) ;
-          currentNode_ = (Node)ses.getItem(array[1].trim()) ;
-        }
-      } else {
-        currentNode_ = (Node) session_.getItem(uri);
-      }      
-    }
+    if(uri == null || uri.length() == 0) uri = "/" ;
+    previousNode = currentNode_ ;        
+    currentNode_ = (Node) session.getItem(uri);
     if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;
   }
   
@@ -259,14 +249,12 @@ public class UIJCRExplorer extends UIContainer {
     return false ;
   }
   
-  public Node getNodeByPath(String nodePath) throws Exception {
-    if(nodePath.indexOf(";") > 0) {
-      String[] array = nodePath.split(";") ;
-      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-      Session session = repositoryService.getRepository().getSystemSession(array[0].trim()) ;
-      return (Node)session.getItem(array[1].trim());
-    }
-    return (Node)getSession().getItem(nodePath) ;    
+  public boolean isPreferenceNode(Node node) throws RepositoryException {
+    return (getCurrentNode().hasNode(node.getName())) ? false : true ;
+  }
+  
+  public Node getNodeByPath(String nodePath, Session session) throws Exception {
+    return (Node)session.getItem(nodePath) ;    
   }
   
   public LinkedList<ClipboardCommand> getAllClipBoard() { return clipboards_ ;}

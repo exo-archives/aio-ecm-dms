@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -27,17 +26,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-/**
- * Created by The eXo Platform SARL
- * Author : nqhungvn
- *          nguyenkequanghung@yahoo.com
- * July 3, 2006
- * 10:07:15 AM
- * Edit : Pham Tuan
- *        phamtuanchip@yahoo.de
- * Oct 12, 2006
- * 11:30 AM
- */
 import org.exoplatform.webui.event.Event.Phase;
 
 @ComponentConfig(

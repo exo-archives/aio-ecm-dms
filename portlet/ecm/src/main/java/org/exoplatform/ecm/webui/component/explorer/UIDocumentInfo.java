@@ -38,6 +38,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.voting.VotingService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -175,12 +176,12 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return service;
   }
   
-  public String getNodeOwner() throws RepositoryException { 
-    return getAncestorOfType(UIWorkingArea.class).getNodeOwner() ;
+  public String getNodeOwner(Node node) throws RepositoryException { 
+    return ((ExtendedNode) node).getACL().getOwner();
   }
   
   public String getNodePath(Node node) throws Exception {
-    return  getAncestorOfType(UIWorkingArea.class).getNodePath(node) ;
+    return node.getPath() ;
   }
   
   public boolean isVersionable(Node node) throws RepositoryException {
@@ -466,7 +467,15 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
       UIDocumentInfo uicomp = event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);      
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiExplorer.setSelectNode(uri) ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      Session session ;
+      if(workspaceName == null ) {
+        session = uiExplorer.getSession() ;
+      } else {
+        RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
+        session = repositoryService.getRepository().getSystemSession(workspaceName) ;
+      }
+      uiExplorer.setSelectNode(uri, session) ;
       uiExplorer.updateAjax(event) ;
     }
   }
@@ -476,11 +485,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
       UIDocumentInfo uicomp =  event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      if(uri.indexOf(":/") > -1) {
-        uiExplorer.setSelectNode(uri) ;
-        uiExplorer.updateAjax(event) ;
-        return ;
-      }
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       String prefPath = uiExplorer.getPreferencesPath() ;
       String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
@@ -496,7 +502,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
               uiExplorer.updateAjax(event) ;
             }
           } else {
-            uiExplorer.setSelectNode(uri);
+            uiExplorer.setSelectNode(uri, session);
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
@@ -510,7 +516,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
               uiExplorer.updateAjax(event) ;
             }
           } else {
-            uiExplorer.setSelectNode(uri);
+            uiExplorer.setSelectNode(uri, session);
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {

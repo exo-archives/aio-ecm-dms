@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -48,18 +49,19 @@ public class UIViewRelationList extends UIContainer{
       relations.add(node) ;
     }
     return relations ;
-  }  
+  }
+  
+  public boolean isPreferenceNode(Node node) throws RepositoryException {
+    return getAncestorOfType(UIJCRExplorer.class).isPreferenceNode(node) ;
+  }
 
   static public class ChangeNodeActionListener extends EventListener<UIViewRelationList> {
     public void execute(Event<UIViewRelationList> event) throws Exception {
       UIViewRelationList uicomp =  event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      if(uri.indexOf(":/") > -1) {
-        uiExplorer.setSelectNode(uri) ;   
-        uiExplorer.updateAjax(event) ;
-        return ;
-      }
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       String prefPath = uiExplorer.getPreferencesPath() ;
       String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
@@ -75,7 +77,7 @@ public class UIViewRelationList extends UIContainer{
           }
           return ;
         }
-        uiExplorer.setSelectNode(uri);
+        uiExplorer.setSelectNode(uri, session);
         uiExplorer.updateAjax(event) ;
         return ;
       } 
@@ -86,9 +88,8 @@ public class UIViewRelationList extends UIContainer{
         }
         return ;
       }
-      uiExplorer.setSelectNode(uri);
+      uiExplorer.setSelectNode(uri, session);
       uiExplorer.updateAjax(event) ;
     }
   }
-  
 }

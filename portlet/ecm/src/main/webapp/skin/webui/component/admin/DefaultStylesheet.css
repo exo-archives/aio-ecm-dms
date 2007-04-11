@@ -11,7 +11,8 @@
 @import url("UINodeTypeManager/DefaultStylesheet.css");
 @import url("UITaxonomyManager/DefaultStylesheet.css");
 
-.UIECMAdminPortlet {}
+.UIECMAdminPortlet {
+}
 
 .UIECMAdminPortlet .UIECMPortletLayout {
   border: 1px solid #737373;
