@@ -19,6 +19,7 @@ import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormInputInfo;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
+import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -56,7 +57,7 @@ public class UISimpleSearch extends UIForm {
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
   
   public UISimpleSearch() throws Exception {
-    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
+    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null).addValidator(NameValidator.class)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints") ;
     uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null)) ;
     addUIComponentInput(uiInputAct) ;
