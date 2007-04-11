@@ -30,7 +30,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 
 public class UIBrowseContentPortlet extends UIPortletApplication  {
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
     addChild(UIPopupAction.class, null, null) ;

@@ -53,11 +53,11 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 14, 2006 5:15:47 PM
  */
 @ComponentConfig(
+    //template = "app:/groovy/webui/component/browse/test.gtmpl",
     events = {
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.ViewByTagActionListener.class),
-        @EventConfig(listeners = UIBrowseContainer.CloseActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
     }
 )
@@ -89,7 +89,6 @@ public class UIBrowseContainer extends UIContainer {
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
     addChild(UIDocumentDetail.class, null, null).setRendered(false) ;
-    addChild(UIDocumentList.class, null, null).setRendered(false) ; 
     loadPortletConfig(getPortletPreferences()) ;
   }
 
@@ -108,9 +107,8 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentDetail(false) ;
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
     rootNode_ = (Node) getSession().getItem(categoryPath) ;
+    
     if(templateType.equals(Utils.CB_USE_FROM_PATH)) {
-      currentNode_ = null ;
-      selectedTab_ = null ;
       if(isEnableToolBar()) initToolBar(false, true, true) ;
       else initToolBar(false, false, false) ;
       templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_PATH_TEMPLATES) + Utils.SLASH + templateName  ;
@@ -136,6 +134,7 @@ public class UIBrowseContainer extends UIContainer {
     } 
     if(templateType.equals(Utils.CB_USE_SCRIPT)) { 
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+      setPageIterator(getNodeByScript()) ;
       templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_SCRIPT_TEMPLATES) + Utils.SLASH  + templateName  ;
     }
   }
@@ -242,8 +241,13 @@ public class UIBrowseContainer extends UIContainer {
   public boolean isShowDocumentList() {return isShowDocumentList_ ;}
   public void setShowDocumentList(boolean isShowDocumentList){isShowDocumentList_ = isShowDocumentList ;}
   public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
+  
   public String getOwner(Node node) throws Exception{
     return ((ExtendedNode)node).getACL().getOwner() ;
+  }
+  
+  public String getCreatedDate(Node node) throws Exception{
+    return "UIBrowseContainer.label.date" ;
   }
 
   private boolean isReferenceableNode(Node node) throws Exception {
@@ -270,13 +274,10 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
 
-  public void initDocumentList(Node node) throws Exception {
-    UIDocumentList uiList = getChild(UIDocumentList.class) ;      
-    uiList.setDocNode(node) ;
-    uiList.updateGrid(getSubDocumentList(node.getParent()), getItemPerPage()) ;
-    uiList.setRendered(true) ;
+  public String getIcons(Node node) throws Exception {
+    return Utils.getIconClass(node) ; 
   }
-
+  
   public List getCurrentList() throws Exception {
     return getChild(UIPageIterator.class).getCurrentPageData() ;
   }
@@ -546,6 +547,8 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentByTag(false) ;
     setShowAllChildren(false) ;
     if(selectNode.equals(getRootNode())) {
+      setCurrentNode(null) ;
+      setSelectedTab(null) ;
       loadPortletConfig(getPortletPreferences()) ;
       return ;
     }
@@ -575,7 +578,6 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentDetail(hasDocDetail) ;
     setShowDocumentList(hasDocList) ;
     initDocumentDetail(docNode) ;
-    if(hasDocList) initDocumentList(docNode) ;
     initToolBar(false, false, false) ;
     CmsConfigurationService cmsConfiguration = getApplicationComponent(CmsConfigurationService.class) ;
     templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES) + Utils.SLASH + documentView_  ;
@@ -585,16 +587,6 @@ public class UIBrowseContainer extends UIContainer {
     history_.clear() ;
     history_.put(KEY_CURRENT, getCurrentNode());
     history_.put(KEY_SELECTED, getSelectedTab());
-  }
-  public void back() throws Exception {
-    if((history_ != null)&&(history_.size() > 0 )) {
-      setCurrentNode(history_.get(KEY_CURRENT)) ;
-      setSelectedTab(history_.get(KEY_SELECTED)) ;
-      history_.clear() ;
-    }
-    getChild(UIDocumentDetail.class).setRendered(false) ;
-    getChild(UIDocumentList.class).setRendered(false) ;
-    setPageIterator(getSubDocumentList(getSelectedTab())) ;
   }
 
   public void selectNode(Node node) throws Exception {
@@ -607,10 +599,7 @@ public class UIBrowseContainer extends UIContainer {
       UIBrowseContainer uiContainer = event.getSource() ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-      if(objectId.equals("ViewMore")) {
-        uiContainer.setShowAllChildren(true) ;
-        return ;
-      }
+
       if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
         uiContainer.storeHistory() ;
         String path = objectId.substring(objectId.lastIndexOf(Utils.SEMI_COLON)+1) ;
@@ -629,6 +618,7 @@ public class UIBrowseContainer extends UIContainer {
       List templates = templateService.getDocumentTemplates() ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
         uiContainer.storeHistory() ;
+        uiContainer.setPageIterator(uiContainer.getSubDocumentList(selectNode.getParent())) ;
         uiContainer.viewDocument(selectNode, true, true) ; 
         return ;
       }
@@ -639,10 +629,25 @@ public class UIBrowseContainer extends UIContainer {
   static public class BackActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
-      uiContainer.setShowDocumentDetail(false) ;
+      
+      if(uiContainer.isShowDocumentByTag()) {
+        uiContainer.setShowDocumentByTag(false) ;
+      }
+      if(uiContainer.isShowDocumentDetail()) {
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+      }
+      if(uiContainer.isShowAllDocument()) {
+        uiContainer.setShowAllChildren(false) ;
+      }
+      
+      uiContainer.setCurrentNode(uiContainer.history_.get(uiContainer.KEY_CURRENT)) ;
+      uiContainer.setSelectedTab(uiContainer.history_.get(uiContainer.KEY_SELECTED)) ;
+      uiContainer.history_.clear() ;
       uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
-      String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
-      if(templateType.equals(Utils.CB_USE_FROM_PATH)) uiContainer.back() ;
+      if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
+      //uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getSelectedTab())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
@@ -653,19 +658,11 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.setShowDocumentByTag(true) ;
       uiContainer.setTagPath(tagPath) ;
       uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
+      uiContainer.storeHistory() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
-  static public class CloseActionListener extends EventListener<UIBrowseContainer> {
-    public void execute(Event<UIBrowseContainer> event) throws Exception {
-      UIBrowseContainer uiContainer = event.getSource() ;
-      uiContainer.setShowAllChildren(false) ;
-      uiContainer.setShowDocumentByTag(false) ;
-      uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getSelectedTab())) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-    }
-  }
-
+  
   static public class SelectActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;

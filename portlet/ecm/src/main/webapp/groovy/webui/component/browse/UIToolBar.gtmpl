@@ -22,63 +22,63 @@
        	}
       %>      
       <a  href="$actionShowHidden" title="$tooltip">
-        <div class="BlueBarIcon $iconName"><span></span></div>
+        <div class="ShowHiddenIcon $iconName"><span></span></div>
       </a>
-      <div class="SeparatorBarLeft Separator"><span></span></div>
     <%}%>
     <%if(isEnablePath) {%>
-      <div class="ImageNote Note16x16Icon"><span></span></div>
-        <a class="TextRoot" href="<%=uicomponent.event('SelectPath', Root.getPath())%>">
+      <div class="CategoryListIcon"><span></span></div>
+        <a class="PathLabel" href="<%=uicomponent.event('SelectPath', Root.getPath())%>">
           <%
           	String nodeName = Root.getName() ;
           if(Root.getPath().trim().equals("/")) nodeName = _ctx.appRes(uicomponent.getName() + ".label.RootNode") ;
           %>
           <%=nodeName%>
         </a>
-        <div class="LeftArrowIcon RightArrow16x16Icon"><span></span></div>
         <%for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
              String actionLink = uicomponent.event("SelectPath", node.getPath()); 
          %>
-            <a class="TextRoot" href="$actionLink"><%=node.getName()%></a>
-            <div class="LeftArrowIcon RightArrow16x16Icon"><span></span></div>
+            <div class="PathIcon"><span></span></div>
+            <a class="PathChildLabel" href="$actionLink"><%=node.getName()%></a>
         <%}%>
       <div style="clear:left"></div>
     <%}%> 
   </div>
-  <div class="IconFrame">
+  <div class="CBActionContainer">
+  	<div class="SeparatorLine"><span></span></div>
     <%
       String actionLabel = "" ;
       String link = "" ;
-      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Refresh") 
-	    link = uicomponent.event("Refresh") ;
-    %> 
-    <a class="Icon RefreshSession24x24Icon" href="$link" title="$actionLabel"><span></span></a>      
-	  <div class="Separator ToolBarSeparator"><span></span></div>
-    <%
-      if(isEnableSearch) {
-	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Search") 
-	      link = uicomponent.event("Search") ;
-     %>
-	      <a class="Icon SearchIcon" href="$link" title="$actionLabel"><span></span></a>      
-	      <div class="Separator ToolBarSeparator"><span></span></div>
-      <%}
+    %>
+    
+  		<%  
         if(isEnableVote) {
           actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Vote") 
           link = uicomponent.event("Vote") ;
       %>
-          <a class="Icon VoteIcon" href="$link" title="$actionLabel"><span></span></a>      
-          <div class="Separator ToolBarSeparator"><span></span></div>
+          <a class="Icon VoteDocumentButton" href="$link" title="$actionLabel"><span></span></a>      
      
       <%}
         if(isEnableComment) {
           actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Comment") 
           link = uicomponent.event("Comment") ;
       %>
-        <a class="Icon CommentIcon" href="$link" title="$actionLabel"><span></span></a>      
-        <div class="Separator ToolBarSeparator"><span></span></div>
+        <a class="Icon WriteCommentButton" href="$link" title="$actionLabel"><span></span></a>      
       <%}%>
-    <div style="clear:all;"><span></span></div>
+      
+      <%
+      if(isEnableSearch) {
+	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Search") 
+	      link = uicomponent.event("Search") ;
+      %>
+	      <a class="Icon CBSearchButton" href="$link" title="$actionLabel"><span></span></a>      
+      <%}%>
+      <%
+	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Refresh") 
+		    link = uicomponent.event("Refresh") ;
+    	%> 
+    	<a class="Icon CBRefreshButton" href="$link" title="$actionLabel"><span></span></a>      
+    <div style="clear: left;"><span></span></div>
   </div>
-  <div style="clear:left"></div>
+  <div style="clear:both"><span></span></div>
 </div>
 

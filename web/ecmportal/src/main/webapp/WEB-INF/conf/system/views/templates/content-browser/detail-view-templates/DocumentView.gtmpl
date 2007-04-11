@@ -3,6 +3,8 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentList ; 
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
+	def subDocumentList =  uicomponent.getCurrentList() ;
+	boolean hasNoDocument = subDocumentList.isEmpty() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
@@ -11,25 +13,59 @@
   		uicomponent.renderChild(UISearchController.class);
   	} else {
 		  uicomponent.renderChild(UIDocumentDetail.class) ;
-		  if(uicomponent.isShowDocumentList()) { 
-		    uicomponent.renderChild(UIDocumentList.class) ;
+		  if(uicomponent.isShowDocumentList()) { 		  
 	%>
-				<div class="UIAction" style="margin-top:5px;"> 
-					<div class="ActionContainer">
-				    <div class="ActionButton">
-				      <div class="LightBlueStyle">
-								<div class="ButtonLeft">
-								  <div class="ButtonRight">
-									  <div class="ButtonMiddle">
-										  <div class="Icon Back16x16Icon"><span></span></div>
-											<a href="<%=uicomponent.event('Back')%>">Back</a>
-								    </div>
-								  </div>
-							  </div>
-							</div>
-						</div>
-				  </div>
-			  </div>
+		<div class="UIDocumentList">
+			<%/*Begin UIEventViewer*/%>
+			<div class="UIEventViewer">
+		 	<%if(!hasNoDocument){%>
+  				<div class="EventContent">
+	      <%
+	        for (Node doc in subDocumentList) {
+	          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+	          String iconName = uicomponent.getIcons(doc) + "16x16Icon" ;
+	      %>
+	          <div class="EventContentDetail">
+	            <div class="TopEventContentDetail">
+	              <table>  
+	                 <tr>
+	                  <td>
+	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
+	                    <div class="EventDocumentLabel">
+	                      <a href="$viewAction"><%=doc.getName()%></a>
+	                    </div>  
+	                  </td>
+	                  <td class="EventAuthorNameLabel">
+	                    Author: <%=uicomponent.getOwner(doc)%>
+	                  </td>
+	                  <td class="DateAndTimeLabel">
+	                   Date time: 10/04/2007 14:00
+	                  </td>
+	                </tr>        
+	              </table>
+	            </div>
+	            <div class="MainEventContent">
+	              <div class="SummaryTitleLabel">Summary:
+	                <%if(doc.hasProperty("exo:summary")){%>
+	                 <%=doc.getProperty("exo:summary").getString()%>
+	               <%}%>
+	              </div>
+	            </div>
+	          </div>
+	      <%
+	        }
+	      %>
+   			</div>
+		    <div class="ViewPreviousDocument"> 
+		      <div class="BackIcon"><span></span></div>
+		      <a href="<%=uicomponent.event('Back')%>">Previous View</a>
+		      <div style="clear:left"><span></span></div>
+		    </div>
+		    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+		    <div style="clear:left"><span></span></div>
+   			<%}%>
+			 <%/*End UIEventViewer*/%>
+			</div>
 	<%	}
 		}
 	%>

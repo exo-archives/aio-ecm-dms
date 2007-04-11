@@ -5,12 +5,10 @@
 <div class="UISearchController" id="$uicomponent.id">
 	<%uicomponent.renderChild(UICBSearchForm.class);%>
 	<div class="SearchResult">
-		<div class="IconFrame">
-			<div class="Text">
-				<%=_ctx.appRes(uicomponent.name + ".label.searchTime")%>
-				(<%=uicomponent.getResultRecord()%> records :
-				 <%=uicomponent.getSearchTime()%> ms)
-			</div>			
+		<div class="ResultInfo">
+			<%=_ctx.appRes(uicomponent.name + ".label.searchTime")%>
+			(<%=uicomponent.getResultRecord()%> records :
+			 <%=uicomponent.getSearchTime()%> ms)
 		</div>
 		<%uicomponent.renderChild(UICBSearchResults.class);%>
 	</div>

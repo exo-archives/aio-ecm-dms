@@ -1,4 +1,3 @@
-/**
  * Created by The eXo Platform SAS
  * Author : Vu Duy Tu
  *          duytucntt@gmail.com
@@ -10,60 +9,92 @@
 	padding-left: 5px; padding-right: 5px;
 }
 
+.UISubContent .SeparatorLine{
+	margin-top: 3px;
+}
+
 .UISubContent .SubContentHolder {
-	width: 99.5%;
+	width: 98.5%;
 	padding: 5px;
 }
 
-.UISubContent .SubContentHolderLeft {
-  width: 49%;
-  float: left;
-}
-
-.UISubContent .SubContentHolderRight {
-  width: 49%;
-  float: right;
-}
-
 .UISubContent .TopSubContent {
-  margin-top: 10px;
-  font-weight: bold;
+  margin-top: 5px;
+  font-weight: bold; font-size: 11px;
+  height: 19px;
 }
 
+.UISubContent .TopSubContent a{
+	float: left;
+	height: 16px;
+	padding: 1px 5px 0px 7px;
+	color: #058ee6;
+}
+.UISubContent .TopSubContent  a:hover{
+	text-decoration: none;
+	color: #ff9314;
+}
 /*###########################-- Begin Title --############################*/
 
-.UISubContent .SubContentTitle { 
-	border: solid 1px #6699cc ;
-	height: 20px;
-	background: url('DefaultSkin/background/TitleBackgroud3x20.gif') repeat-x;
+.UISubContent .SubContentTitle { 	
+	height: 26px; line-height: 26px;
 	overflow: hidden;
 }
 
+.UISubContent .SubContentTitle .LeftBar { 
+	line-height: 26px; height: 26px;
+	background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left;
+  padding-left: 4px;
+}
+.UISubContent .SubContentTitle .RightBar{ 
+	line-height: 26px; height: 26px;
+	background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right;
+  padding-right: 4px;
+}
+.UISubContent .SubContentTitle .MiddleBar { 
+	line-height: 26px; height: 26px;
+	background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x;
+}
+
+.UISubContent .SubContentTitle .ChildContainer{
+	float: left;
+}
 .UISubContent .SubContentTitle .LeftIcon {
 	float: left; 
 	height: 20px;
 	margin-left: 3px;
 }
 
+.UISubContent .NavigationButtonContainer {
+	float: right;
+	height: 16px;
+}
+
+.UISubContent .NavigationButtonContainer .NavigationIcon {
+	float: left;
+	cursor: pointer;
+	margin-top: 4px;
+}
+
 .UISubContent .SubContentTitle .ChildNode { 
 	float: left;
-	border-right: solid 1px #6699cc ;
-	height: 20px;
+	height: 18px;
+	padding: 1px 5px 0px 5px;
 }
 
 .UISubContent .SubContentTitle .ChildNode a { 
 	text-decoration: none;
-	color: black;
+	color: #515151;
+	font-size: 11px; font-weight: bold;
 }
 
 .UISubContent .SubContentTitle .ChildNode a:hover { 
 	text-decoration: none;
-	color: blue;
+	color: #058ee6;
 }
 
 .UISubContent .SubContentTitle .NodeLabel { 
 	float: left;
-	border-right: solid 1px #ffffff ;
 	padding: 0px 8px;
 	line-height: 19px;
 }
@@ -76,9 +107,9 @@
 /*###########################-- End Title --############################*/
 
 .UISubContent .UIDocumentContentInfo {
-	border: solid 1px #6699cc ;
+	border: solid 1px #e1e1e1 ;
 	margin-top: 1px;
-	background: #ffffff;
+	padding: 5px;
 }
 
 .UISubContent .UIHorizontalTabs {
@@ -94,53 +125,72 @@
 	padding: 2px;
 }
 
-.UISubContent .UIDocumentContentInfo .DocumentIcon {
-	float:left;
-	margin: 2px;
-}
-
 .UISubContent .UIDocumentContentInfo .DocumentLabel {
-	color: blue;
 	font-size: 11px;
 	margin-left: 20px;
   line-height: 16px;
 }
 
+.UISubContent .UIDocumentContentInfo .DocumentLabel a {
+	color: #058ee6;
+}
+
+.UISubContent .UIDocumentContentInfo .DocumentLabel a:hover {
+	color: orange;
+}
+
 .UISubContent .UIDocumentContentInfo .AuthorNameLabel {
-	color: black;
 	font-size: 11px;
   line-height: 20px;
+  color: gray;
 }
 
 .UISubContent .UIDocumentContentInfo .DateTimeLabel {
-	color: black;
 	font-size: 11px;
   line-height: 20px;
+  color: gray;
 }
-.UISubContent .UIDocumentContentInfo .ViewMoreDocument {
-  text-align: right ;
+
+.ViewMoreDocument{
+	float: right;
+	height: 16px; line-height: 16px; vertical-align: middle;
+	border: 1px solid #e1e1e1;
+}
+
+.ViewMoreDocument a{
   margin-right: 10px;
-}
-.UISubContent .UIDocumentContentInfo .NoneDocumentMessage {
-	background: #efefef;
-	margin: 10px 10px 10px 10px;
-	height: 54px;
-	padding-top: 25px;
+  font-size: 11px;
+  color: #058ee6;
+  float: left;
+  padding-left: 3px;
 }
 
-.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .MessageContainer {
-	width: 50%;
-	margin: auto;
+.ViewMoreDocument a:hover{
+  color: orange;
 }
 
-.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .InfoIcon {
-	margin-top: 3px;
+.ViewMoreDocument .NextIcon{
 	float: left;
-	padding-left: 5px;
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/background/BlackDotNextArrow.gif');
 }
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage {
+	padding: 5px 0px;
+	width: 200px; margin: auto;
+}
+
+.UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Info16x16Icon {
+	float: left;
+	width: 16px; height: 16px;
+	margin: 3px 5px 0px 0px;
+	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat; 
+}
+
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
-	color: black;
+	float: left;
+	color: #b7b7b7;
 	font-size: 11px;
   line-height: 20px;
 }

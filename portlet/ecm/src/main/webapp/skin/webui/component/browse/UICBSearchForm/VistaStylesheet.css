@@ -6,34 +6,40 @@
  * version: $Id$
  **/
  
-.UICBSearchForm { 
-  background: #efefef;
+ 
+.UICBSearchForm {
+  
   border: solid 1px #b7b7b7 ;
+  background: #efefef;
   margin: 2px 0px 5px 0px;  
 }
 
-.UICBSearchForm .SearchIcon {
-  float: left;
-  width: 24px; height: 24px;
-  background: url('/eXoResources/icons/24x24/DefaultSkin/QuickSearch.gif') no-repeat ;
-  margin-left: 10px;
+.UICBSearchForm .HorizontalLayout .FieldContainer a{
+  color: #058ee6;
+  font-size: 11px; font-weight: bold;
 }
 
-.UICBSearchForm .SearchLabel {
-  float: left;
-  font-size: 11px; font-weight: bold;
-  cursor: pointer;
-  margin-left: 5px;
+.UICBSearchForm .HorizontalLayout .FieldContainer a:hover{
+  text-decoration: underline;
+}
+
+.UICBSearchForm .SearchIcon {
+ float: left;
+ width: 24px; height: 24px;
+ margin-left: 10px;
+ background: url('../DefaultSkin/background/CBSearchButton.gif') no-repeat ;
 }
 
 .UICBSearchForm form{
-  margin: 0px; padding: 0px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .UICBSearchForm .HorizontalLayout {
-  height: 25px; line-height: 20px;
   border: solid 2px #ffffff ;
   padding: 3px 0px 2px 0px;
+  line-height: 20px;
+  height: 25px;
 }
 
 .UICBSearchForm .HorizontalLayout .FieldContainer {
@@ -47,8 +53,9 @@
 
 .UICBSearchForm .HorizontalLayout label {
   float:left;
-	text-align: right; font-size: 11px;
-	margin: 0px 5px 0px 10px; 
+	text-align: right;
+	margin-right: 5px; margin-left: 10px;
+	font-size: 11px;
 }
 
 .UICBSearchForm .HorizontalLayout .Nolabel {
@@ -58,15 +65,7 @@
 	margin: 0px 0px ;
 }
 
-.UICBSearchForm a {
-  font-size: 12px; color: black;
-}
-
-.UICBSearchForm a:hover{
-  color: blue;
-}
-
 .UICBSearchForm select {
-  width: 90px;
   padding-left: 4px;
+  width: 90px;
 }

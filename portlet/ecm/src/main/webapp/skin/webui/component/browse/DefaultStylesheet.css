@@ -12,6 +12,11 @@
   overflow: auto;
 }
 
+.UIWindow .UIBrowseContentPortlet .ContentHolder {
+  padding: 5px;
+}
+
+
 .UIBrowseContentPortlet {
   overflow: auto;
   border: solid 1px #b7b7b7;
@@ -52,9 +57,6 @@
   padding: 0px;
 }
 
-.UIBrowseContentPortlet .UIPageIterator {  
-  margin: 5px;
-}
 .UIBrowseContentPortlet .UIConfigTabPane {
   border: 1px solid #b7b7b7;
   padding: 5px;
@@ -66,7 +68,17 @@
 
 
 .UIBrowseContentPortlet .TagmapHolder {
-  padding: 5px;
+	float: right ;  
+  width: 200px;
+  border: solid 1px #c4c4c4 ;	
+	background: #ffffff;
+	padding: 1px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapTitle{
+	height: 19px; line-height: 19px;
+	margin: 0px;
+	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .TagLabel {
@@ -76,21 +88,23 @@
 }
 	
 .UIBrowseContentPortlet .TagmapHolder .TagmapContent {
-  border: solid 1px #6699cc ;
-	margin-top: 1px;
-	background: #ffffff;
-	padding-top : 5px;
-	padding-bottom: 5px;
-}
-.UIBrowseContentPortlet .TagmapHolder .TagmapContentTitle{
-  border: solid 1px #6699cc ;
-	height: 20px;
-	background: url('DefaultSkin/background/TitleBackgroud3x20.gif') repeat-x;
+   border: solid 1px #e1e1e1 ;	
+   background: #ffffff;
+   padding: 5px;
+   text-align: justify ;
+   line-height: 22px;
 }
 
+.UIBrowseContentPortlet .TagmapHolder .Icon{
+	float: left;
+	width: 19px; height: 16px; 
+	margin: 2px 5px 0px 5px;
+	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
+}
+
+
 .UIBrowseContentPortlet .TagmapHolder .TagmapContent .Tag {
-  margin: 5px; 0px;
-  float: left;
+	margin: 3px; 5px;
 }
 
 
@@ -105,96 +119,63 @@
   margin: auto;
 }
 
-/*############################## -- Begin UIHeaderBar -- ##############################*/
-.UIBrowseContentPortlet .UIHeaderBar {
-  border-top: solid 1px #b7b7b7;
-  margin-top: 10px;
-  background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
-  height: 29px;
-}
-
-.UIBrowseContentPortlet .UIHeaderBar .Separator {
-  width: 2px;
-  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
-}
-
-
-.UIBrowseContentPortlet .UIHeaderBar .SelectViewLabel {
-  float: left;
-  line-height: 28px;
-  padding-left: 10px;
-}
-
-.UIBrowseContentPortlet .UIHeaderBar .SelectBox {
-  float: left;
-  padding: 3px 15px;
-  font-size: 11px;
-}
-
-.UIBrowseContentPortlet .UIHeaderBar .IconFrame {
-  float: right;
-  width: 180px;
-  padding: 0px 10px;
-}
-
-.UIBrowseContentPortlet .UIHeaderBar .HeaderBarSeparator {
-  float: right;
-  height: 27px;
-}
-
-.UIBrowseContentPortlet .UIHeaderBar .IconFrame .Icon {
-  float: right;
-  margin: 2px 10px;
-  cursor: pointer;
-}
-
 /*############################## -- Begin UIToolBar -- ##############################*/
 .UIBrowseContentPortlet .UIToolBar {
-  border-bottom: solid 1px #b7b7b7;
-  background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
-  height: 29px;
+  background: url('DefaultSkin/background/CBToolbarBG1x27.gif') repeat-x;
+  height: 27px;
   margin-bottom: 5px;
 }
 
-.UIBrowseContentPortlet .UIToolBar .Separator {
+.UIBrowseContentPortlet .UIToolBar .SeparatorLine {
   width: 2px;
-  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
+  height: 20px;
+  margin: 4px 5px 0px 0px;
+  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y;
 }
 
 .UIBrowseContentPortlet .UIToolBar .LeftToolBar {
   float: left;
-  height: 29px;
+  height: 27px;
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .SeparatorBarLeft {
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .ShowHiddenIcon {
   float: left;
-  padding: 0px 8px;
-  height: 29px;
-}
-
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .BlueBarIcon {
-  float: left;
-  height: 29px;
+  height: 24px;
   cursor: pointer;
+  margin: 2px 0px 2px 5px;
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .ImageNote {
+.UIBrowseContentPortlet .CategoryListIcon {
   float: left;
-  height: 29px;
+  height: 16px; width: 16px;
+  background: url('DefaultSkin/background/CategoryListIcon.gif') no-repeat;
+  margin: 6px 5px 0px 8px;
+  
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .TextRoot {
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathLabel {
   float: left;
-  height: 29px;
-  font-weight: bold;
-  color: blue;
-  margin: 0px 2px; 
-  line-height: 26px;
+  height: 27px;
+  font-weight: bold; font-size: 11px; color: #058ee6;
+  line-height: 27px; vertical-align: middle;
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .LeftArrowIcon {
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathChildLabel {
   float: left;
-  height: 29px;
+  height: 27px;
+	font-size: 11px; color: black;
+  line-height: 27px; vertical-align: middle;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar a:hover {
+	color: #f97c01;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathIcon {
+  float: left;
+  height: 16px; width: 16px;
+  margin: 11px 0px 0px 5px;
+  background: url('DefaultSkin/background/CBPathArrow8x7.gif') no-repeat;
 }
 
 .UIBrowseContentPortlet .UIToolBar .SelectViewLabel {
@@ -209,38 +190,46 @@
   font-size: 11px;
 }
 
-.UIBrowseContentPortlet .UIToolBar .IconFrame {
-  height: 29px;
-  padding: 0px 10px;
-}
-
-.UIBrowseContentPortlet .UIToolBar .ToolBarSeparator {
-  float: right;
+.UIBrowseContentPortlet .UIToolBar .CBActionContainer {
   height: 27px;
+  width: 160px;
+  float: right;
 }
 
-.UIBrowseContentPortlet .UIToolBar .IconFrame .Icon {
-  float: right;
-  margin: 2px 10px;
+.UIBrowseContentPortlet .UIToolBar .CBActionContainer .Icon {
+  float: left;
+  margin: 2px 6px;
   cursor: pointer;
 }
 
-/*############################## -- Begin UIDocumentList -- ##############################*/
-.UIBrowseContainer .UIDocumentList .UIGrid{
-	border: none;
+.UIBrowseContentPortlet .UIToolBar .CBRefreshButton {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/background/CBRefreshButton.gif') no-repeat;
 }
 
-.UIBrowseContainer .UIDocumentList .UIGrid td{
-	border: none;
+.UIBrowseContentPortlet .UIToolBar .CBSearchButton {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/background/CBSearchButton.gif') no-repeat;
+}
+
+.UIBrowseContentPortlet .UIToolBar .VoteDocumentButton{
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/background/VoteDocumentButton.gif') no-repeat;
+}
+
+.UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
+	width: 24px; height: 24px;
+	background:url('DefaultSkin/background/WriteCommentButton.gif') no-repeat;
+	
 }
 
 .UIBrowseContainer .UIDocumentList {
-	padding-top: 10px;
+	margin: 5px;
 }
 
-.UIBrowseContainer .UIDocumentList .DocumentIcon{
-	width: 16px; height: 16px;
+.UIBrowseContainer .DocNodeIcon{
 	float: left;
+	margin: 0px 3px 0px 0px;
 }
 
 .UIBrowseContainer .UIDocumentList .DocumentLabel{
@@ -289,17 +278,29 @@
 
 .UIBrowseContentPortlet .UISearchController .SearchResult{
 	border: solid 1px #b7b7b7;
+	padding: 5px;
 }
 
-.UIBrowseContentPortlet .UISearchController .Text{
-	line-height: 28px;
-	height: 28px;
-	margin-left: 5px;
+.UIBrowseContentPortlet .UISearchController .UIPageIterator{
+	margin-right: 0px;
 }
 
-.UIBrowseContentPortlet .UISearchController .IconFrame{
-	background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
-	height: 28px;	
+.UIBrowseContentPortlet .UISearchController .ResultInfo{
+	line-height: 26px; vertical-align: middle;
+	font-size: 11px;	
+}
+
+.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
+	width: 18px; margin: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .UIAction{
+	width: 70px; margin: auto;
+	padding-bottom:8px;
+}
+
+.UIBrowseContentPortlet .UISearchController .ActionButton{
+	width: 70px; margin: auto;
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/

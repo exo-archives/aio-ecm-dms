@@ -8,55 +8,29 @@
 
 
 .UIContentView {
-  margin: 9px 10px 0px 0px;
+  margin: 9px 0px 0px 0px;
 }
 .UIContentView .TiteContentView {
-  margin-top: 9px;
+  margin: 8px 0px 1px 0px;
+  height: 18px; line-height: 18px; vertical-align: middle;
 }
 
-.UIContentView .SubTitleContent {
-  height: 22px;
-  width: 200px;
-  margin-top: 0px;
-  margin-left: 0px;
-}
-
-.UIContentView .SubTitleContent .TitleContentLeft {
-  background: url('DefaultSkin/background/TitleContentLeft8x22.gif') no-repeat left ;
-  height: 22px;
-  padding-left: 8px;
-}
-
-.UIContentView .SubTitleContent .TitleContentRight {
-  background: url('DefaultSkin/background/TitleContentright22x22.gif') no-repeat right ;
-  height: 22px;
-  padding-right: 22px;
-}
-
-.UIContentView .SubTitleContent .MiddleTitleContent {
-  background: url('DefaultSkin/background/TitleContentBG1x22.gif') repeat-x ;
-  height: 22px;
-}
-
-.UIContentView .SubTitleContent .TiteContentIcon {
+.UIContentView .TiteContentIcon {
 	float: left;
-	margin-top: 4px;
+	margin-left: 5px;
 }
 
-.UIContentView .TiteLabel {
-	margin-left: 18px;
-	line-height: 21px;
-	font-size: 11px;
+.UIContentView .TiteContentView a {
+	float: left;
+	margin-left: 6px;
+	line-height: 18px; vertical-align: middle;
+	font-size: 11px; font-weight: bold;
+	color: #058ee6;
 }
 
-.UIContentView .TiteLabel a {
+.UIContentView .TiteContentView a:hover{
 	text-decoration: none;
-	color: black;
-}
-
-.UIContentView .TiteLabel a:hover { 
-	text-decoration: none;
-	color: blue;
+	color: orange;
 }
 
 .UIContentView .FormContentView {
@@ -65,14 +39,20 @@
 }
 
 .UIContentView .SubFormContent {
-  margin: 1px;
-	border: 1px solid #cccccc;
-	background-color: #efefef;
-	padding-bottom: 10px;
+	padding: 10px;
+}
+
+.UIContentView .SubFormContent a {
+	color: #333333;
+}
+
+.UIContentView .SubFormContent a:hover {
+	color: #058ff8;
 }
 
 .UIContentView .SubFormContent .ChildrenContent {
   width: 99.5%;
+  border: 1px solid red;
 }
 
 .UIContentView .SubFormContent .ChildrenContentHolder {
@@ -121,26 +101,11 @@
 	font-size: 10px;
 }
 
-.UIContentView .NoneDocumentMessage {
-	background: #efefef;
-	margin: 5px 10px 10px 5px;
-	padding-top: 25px;
+.UIContentView .SubFormContent .UIDocumentContentInfo {
+	border: none;
 }
 
-.UIContentView .NoneDocumentMessage .MessageContainer {
-	width: 40%;
-	margin: auto;
+.UISubContent .MessageContainer {
+	height: 18px;
 }
-
-.UIContentView .NoneDocumentMessage .InfoIcon {
-	float: left;
-	padding-left: 5px;
-}
-
-.UIContentView .NoneDocumentMessage .Message {
-	color: black;
-	font-size: 11px;
-  line-height: 16px;
-}
-
 

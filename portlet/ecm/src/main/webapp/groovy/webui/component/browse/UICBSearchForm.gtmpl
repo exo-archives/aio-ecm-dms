@@ -25,10 +25,8 @@
 		}
 		%>
      <div class="FieldContainer">
-	      <a  href="<%=uicomponent.event('Search')%>">
-	       <div class="SearchIcon"><span></span></div>
-	       <div class="SearchLabel">Search now</div>
-	      </a> 
+       <a class="SearchIcon" href="<%=uicomponent.event('Search')%>" title="Search now"><span></span></a>
+       <a class="SearchLabel" href="<%=uicomponent.event('Search')%>">Search now</a>
      </div>
      <div style="clear:left;"><span></span></div>
 	   <%uiform.end()%>   

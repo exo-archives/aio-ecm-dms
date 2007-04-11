@@ -904,25 +904,27 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGrayBack.gif') no-repeat center;  
 }
-/**/
-.ScrollLeftBlackArrow16x16Icon {
+
+/*############################## -- Begin BC Portlet Icon -- ########################*/
+
+.ScrollBackArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('DefaultSkin/S1DropLeftBlackArrow.gif') no-repeat;  
+  background: url('DefaultSkin/SrollBackArrow.gif') no-repeat;  
 }
 
-.ScrollRightBlackArrow16x16Icon {
+.ScrollNextArrow16x16Icon {
   width: 16px;height:16px;
-  background: url('DefaultSkin/S1DropRightBlackArrow.gif') no-repeat;  
+  background: url('DefaultSkin/SrollNextArrow.gif') no-repeat;  
 }
 
-.ScrollLeftGrayArrow16x16Icon {
+.DisableBackArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('DefaultSkin/S1DropLeftGrayArrow.gif') no-repeat;  
+  background: url('DefaultSkin/DisableBackArrow.gif') no-repeat;  
 }
 
-.ScrollRightGrayArrow16x16Icon {
-  width: 16px;height:16px;
-  background: url('DefaultSkin/S1DropRightGrayArrow.gif') no-repeat;  
+.DisableNextArrow16x16Icon {
+  width: 16px; height:16px;
+  background: url('DefaultSkin/DisableNextArrow.gif') no-repeat;  
 }
 
 .Documents16x16Icon {
@@ -939,3 +941,15 @@
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/Empty.gif') no-repeat ;
 }
+
+.CBDropDownArrow16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
+}
+
+.CBHome16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/CBHomeIcon.gif') no-repeat;
+}
+
+/*############################## -- End BC Portlet Icon -- ########################*/

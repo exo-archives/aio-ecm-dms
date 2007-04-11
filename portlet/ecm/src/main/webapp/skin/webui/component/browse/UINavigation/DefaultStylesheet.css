@@ -6,26 +6,22 @@
  * version: $Id$
  */
 
-/*###########################-- Begin UICBNavigation --############################*/
-.UICBNavigation {
-}
-
 /*###########################-- Begin UIContextMenu --############################*/
 .UICBNavigation .UIContextMenu {
   border: solid 1px #5d5d5d;
   position: absolute;
   padding:1px;
-  background: #ffffff;
   display: none;
 }
 
 .UIContextMenu .SubContextMenu {
-  border: solid 1px #d1d1d1;
-  padding: 5px 25px 20px 5px;
+  border: solid 1px #d1d1d1;  
+  background: #ffffff;
 }
 
 .UIContextMenu .NodeHistoryContainer {
-	padding-top: 5px;
+	padding: 2px;
+	background: #ffffff;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeNavigationIcon {
@@ -38,6 +34,8 @@
 	margin-left: 10px;
 	padding-left: 17px;
 	background: url('DefaultSkin/background/SmallSelect.gif') no-repeat left;
+	line-height: 16px;
+	width: 16px; height: 16px;
 }
 
 .UIContextMenu .NodeHistoryContainer .BackButtonLabel {
@@ -59,12 +57,13 @@
 	white-space: nowrap ;
   line-height: 16px;
   margin-left: 3px;
+  color: #058ee6;
   font: normal bold 11px Verdana;
 }
 
 .UIContextMenu .NodeHistoryContainer a {
 	text-decoration: none;
-	color: black;
+	color: #515151;
 }
 
 .UIContextMenu .NodeHistoryContainer a:hover { 
@@ -73,21 +72,24 @@
 }
 
 /*###########################-- End UIContextMenu --############################*/
+.UICBNavigation {
+}
+
 .UICBNavigation .CBLeftNavigation {
-	height: 52px;
-  background: url('DefaultSkin/background/NavigationLeft7x52.gif') no-repeat left bottom;
-  padding-left: 7px;
+	height: 49px;
+  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left bottom;
+  padding-left: 4px;
 }
 
 .UICBNavigation .CBRightNavigation {
-	height: 52px;
-  background: url('DefaultSkin/background/NavigationRight8x52.gif') no-repeat right bottom;
-  padding-right: 8px;
+	height: 49px;
+  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right bottom;
+  padding-right: 4px;
 }
 
 .UICBNavigation .CBMiddleNavigation {
-	height: 52px;
-  background: url('DefaultSkin/background/MiddleNavigation3x52.gif') repeat-x bottom;
+	height: 49px;
+  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x bottom;
 }
 
 .UICBNavigation .UICBMainNavigation {
@@ -97,39 +99,49 @@
 }
 
 .UICBNavigation .UICBMainNavigation .HomeTab{
-	height: 25px;
+	height: 21px; line-height: 21px;
   float: left;
-  width: 70px;
+  width: 100px;
 }
 
 .UICBNavigation .HomeTab .LeftHomeTab {
-	height: 24px;
-	padding-left: 3px;
-  background: url('DefaultSkin/background/LeftButton4x24.gif') no-repeat left;
+	height: 21px; line-height: 21px;
+	padding-left: 10px;
+  background: url('DefaultSkin/background/LeftCBHomeTab10x21.gif') no-repeat left;
 }
 
 .UICBNavigation .HomeTab .RightHomeTab{
-	height: 24px;
-  padding-right: 3px;
-  background: url('DefaultSkin/background/RightButton4x24.gif') no-repeat right;
+	height: 21px; line-height: 21px;
+  padding-right: 10px;
+  background: url('DefaultSkin/background/RightCBHomeTab10x21.gif') no-repeat right;
 }
 
 .UICBNavigation .HomeTab .MiddleHomeTab {
-	height: 24px;
-  background: url('DefaultSkin/background/MidleButton3x24.gif') repeat-x;
+	height: 21px; line-height: 21px;
+  background: url('DefaultSkin/background/CenterCBHomeTab1x21.gif') repeat-x;
 }
 
-.UICBNavigation .HomeTab .HomeTabLabel {
-	line-height: 24px; vertical-align: middle;
+.UICBNavigation .HomeTab a {
+	line-height: 21px; vertical-align: middle;
 	float: left;
 	margin-left: 5px;
 	font-weight: bold;
 	color: #333333;
 }
 
-.UICBNavigation .HomeTab .HomeTabIcon {
-  float: left;
-  margin: 5px 0px 0px 5px;
+.UICBNavigation .HomeTab a:hover {
+	color: #058ee6;
+}
+
+.UICBNavigation .HomeTab .LeftIcon {
+	float: left;
+	margin: 2px 0px 0px 0px;
+	cursor: pointer;
+}
+
+.UICBNavigation .HomeTab .RightIcon {
+  float: right;
+  margin: 2px 0px 0px 0px;
   cursor: pointer;
 }
 
@@ -143,112 +155,131 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab {
 	float: left;
-	height: 24px;
+	height: 23px;
 	padding-left: 2px;
 }
 
+.UICBNavigation .UIHorizontalTabs .TabIcon {
+	width: 16px;
+	height: 16px;
+}
+
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab {
+	margin-top: 1px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LeftTab {
-  padding-left: 3px;
-  line-height: 24px;
-  background: url('DefaultSkin/background/LeftButton4x24.gif') no-repeat left;
+  padding-left: 4px;
+  line-height: 22px;
+  background: url('DefaultSkin/background/LeftCBTab4x22.gif') no-repeat left;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .RightTab {
-  padding-right: 3px;
-  line-height: 24px;
-  background: url('DefaultSkin/background/RightButton4x24.gif') no-repeat right;
+  padding-right: 4px;
+  line-height: 22px;
+  background: url('DefaultSkin/background/RightCBTab4x22.gif') no-repeat right;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .MiddleTab {
-  background: url('DefaultSkin/background/MidleButton3x24.gif') repeat-x;
-  line-height: 24px;
+  background: url('DefaultSkin/background/CenterCBTab1x22.gif') repeat-x;
+  line-height: 22px;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .Icon {
+  float: left;
+  width: 16px; height: 16px;
+  margin: 3px 5px 0px 2px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton {
-  line-height: 24px;
+  line-height: 22px;
   font-weight: bold;
   vertical-align: middle;
-  padding: 0px 8px ;
+  padding: 0px 5px ;
   color: black;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton a { 
 	text-decoration: none;
-  color: black;
+  color: #333333;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton a:hover { 
 	text-decoration: none;
-	color: blue;
+	color: #ff9314;
 }
 /*###########################-- Selected Tabs --############################*/
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab {
+	margin-top: 1px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LeftTab {
-  padding-left: 3px ;
-  background: url('DefaultSkin/background/LeftButtonSL4x25.gif') no-repeat left;
+  padding-left: 4px ;
+  background: url('DefaultSkin/background/LeftSelectedCBTab4x23.gif') no-repeat left;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .RightTab {
-	line-height: 25px;
-  padding-right: 3px ;
-  background: url('DefaultSkin/background/RightButtonSL4x25.gif') no-repeat right ;
+	line-height: 23px;
+  padding-right: 4px ;
+  background: url('DefaultSkin/background/RightSelectedCBTab4x23.gif') no-repeat right ;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .MiddleTab {
-	line-height: 25px;
-  background: url('DefaultSkin/background/MiddleButtonSL3x25.gif') repeat-x ;
+	line-height: 23px;
+  background: url('DefaultSkin/background/CenterSelectedCBTab1x23.gif') repeat-x ;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .Icon {
+  float: left;
+  width: 16px; height: 16px;
+  margin: 3px 0px 0px 2px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LabelButton {
-  line-height: 25px;
+	float: left;
+  line-height: 23px;
   font-weight: bold;
   vertical-align: middle;
- 	padding: 0px 8px;
+ 	padding: 0px 5px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LabelButton a { 
 	text-decoration: none;
-  color: blue;
+  color: #058ee6;
+}
+
+.UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LabelButton a:hover { 
+  color: #ff9314;
 }
 
 /*###########################-- End Selected Tabs --############################*/
 
-.UICBNavigation .CBMiddleNavigation .NavigationButtonContainer {
+.UICBNavigation .NavigationButtonContainer {
 	float: right;
-	margin-top: 2px;
+	height: 16px;
 }
 
-.UICBNavigation .CBMiddleNavigation .NavigationIcon {
+.UICBNavigation .NavigationButtonContainer .NavigationIcon {
 	float: left;
 	cursor: pointer;
+	margin-top: 3px;
 }
 
 .UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 
 	height: 19px;
 	overflow: hidden;
+	padding-left: 4px;
 }
 
 .UICBNavigation .UICBSubNavigation .ItemContainer { 
 	float: left;
 }
 
-.UICBNavigation .UICBSubNavigation .LeftIcon {
-	float: left; 
-	cursor: pointer;
-	margin: 2px 0px 0px 3px;
-}
-
 .UICBNavigation .UICBSubNavigation .ChildNodeItem { 
 	float: left;
-	border-right: solid 1px #6699cc ;
 	height: 18px;
-	padding: 1px 0px 0px 7px;
+	padding: 1px 5px 0px 5px;
 }
 
 .UICBNavigation .UICBSubNavigation .ChildNodeItem .ItemIcon {
@@ -258,20 +289,25 @@
 
 .UICBNavigation .UICBSubNavigation .ChildNodeItem a { 
 	text-decoration: none;
-	color: black;
+	color: #515151; font-size: 11px; font-weight: bold;
 }
 
 .UICBNavigation .UICBSubNavigation .ChildNodeItem a:hover { 
 	text-decoration: none;
-	color: blue;
+	color: #058ee6;
 }
 
 .UICBNavigation .UICBSubNavigation .NodeLabel { 
 	float: left;
-	border-right: solid 1px #ffffff ;
-	padding: 0px 7px;
 	line-height: 18px;
 	text-decoration: none;
+}
+
+.SeparatorLine { 
+	float: left;
+	background: url('DefaultSkin/background/SeparatorLine1x2.gif') repeat-y ;  
+	margin: 2px 3px;
+	height: 18px; width: 1px;
 }
 
 .UICBNavigation .UICBSubNavigation .RightIcon { 

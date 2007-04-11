@@ -1,72 +1,88 @@
-.UIEventViewer {
-  padding: 0px 5px;
-  margin-top: 5px;
+.UIEventViewer {  
+  margin: 0px 1px;
+  border: solid 1px #c0c0c0 ;
+  padding: 10px;
 }
 
-.UIEventViewer .ViewMoreDocument {
-  text-align: right ;
-  border: solid 1px white;
-  margin-right: 10px;
+.UIEventViewer .UIPageIterator {
+	margin-right: 0px;
 }
+
+
 .UIEventViewer .EventContent {
-  overflow: auto ;
+  border: solid 1px #e1e1e1;
+  padding: 10px;
+  margin-bottom: 2px;
+  font-size: 11px;
 }
 
-.UIEventViewer .EventContent .DocumentIcon { 
-  float:left;
-  margin: 2px;
+.UIEventViewer .ViewPreviousDocument {
+  margin: 0px 0px 5px 0px;
+  height: 19px; vertical-align: middle;
+  border: 1px #e1e1e1 solid; background: #f3f3f3;
+  float: left;
+}
+
+.UIEventViewer .ViewPreviousDocument .BackIcon {
+	float: left;
+  width: 16px; height: 16px;
+  margin: 3px 0px 0px 2px;
+  background: url('DefaultSkin/background/BlackDotBackArrow.gif') no-repeat;
+}
+
+.UIEventViewer .ViewPreviousDocument a{
+	float: left;
+	color: #333333;
+	line-height: 19px; 
+	font-size: 11px;
+	padding: 0px 10px 0px 4px;
+}
+
+.UIEventViewer .ViewPreviousDocument a:hover{
+	color: #058ee6;
 }
 
 .UIEventViewer .EventContent .EventDocumentLabel {
-  line-height: 19px;
-	color: blue; font-size: 11px;
 	margin-left: 20px;
+  line-height: 16px; vertical-align: middle;
+}
+
+.UIEventViewer .EventContent .EventDocumentLabel a{
+	color: #058ee6;
+}
+
+.UIEventViewer .EventContent .EventDocumentLabel a:hover{
+	color: orange;
 }
 
 .UIEventViewer .EventContent .EventAuthorNameLabel {
-	font-size: 11px;
+	text-align: left;
+	width: 25%;
+	color: gray;
+  line-height: 16px; vertical-align: middle;
 }
 
 .UIEventViewer .EventContent .DateAndTimeLabel {
-	font-size: 11px;
+	text-align: left;
+	width: 180px;
+	color: gray;
+  line-height: 16px; vertical-align: middle;
 }
 
 .UIEventViewer .EventContent .SummaryTitleLabel {
-	line-height: 17px; font-size: 11px;
+  line-height: 16px; vertical-align: middle;
 }
 
-.UIEventViewer .EventContent .SummaryContentLabel {
-	line-height: 40px; text-align: center;
-	font-size: 11px;
-}
-
-.UIEventViewer .EventContent .EventContentDetailLeft {
-	float: left;
-	width : 48%; 
-	background: #efefef;
-	border: solid 1px #b7b7b7;
-	margin-top: 5px;
-}
-
-.UIEventViewer .EventContent .EventContentDetailRight {
-	float: right;
-	width : 48%;
-	background: #efefef;
-	border: solid 1px #b7b7b7;
-	margin-top: 5px;
-}
 .UIEventViewer .EventContent .EventContentDetail {
-	width : auto;
-	background: #efefef;
-	border: solid 1px #b7b7b7;
+	border-bottom: dotted 1px #e1e1e1;
+	margin-bottom: 5px;
 }
-
 .UIEventViewer .EventContent .TopEventContentDetail {
-	height: 25px;
+	
 }
 
 .UIEventViewer .EventContent .MainEventContent {
-  padding: 10px;
+  padding: 3px 0px 5px 20px; 
 }
 
 .UIEventViewer .EventContent .TitleEventContent {
@@ -76,7 +92,7 @@
 }
 
 .UIEventViewer .EventContent .PanelEventContent {
-  background: #ffffff;
   border-top: solid 1px #bdbdbd;
+  background: #ffffff;
 }
 

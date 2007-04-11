@@ -1,15 +1,28 @@
-<%import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;%>
-<div class="UIBrowseContainer" id="$uicomponent.id">  
-  <%/*Begin TagMap*/%>
-  <%if(uicomponent.isShowTagmap()) {
-      def taglist = uicomponent.getTagLink() ;
+<%
+	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
+	String componentName = uicomponent.getName() ;
+	def subDocumentList = uicomponent.getCurrentList() ;
+	boolean hasNoDocument = subDocumentList.isEmpty() ;
+	boolean isShowTagmap = uicomponent.isShowTagmap() ;
+	boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
+%>
+<div class="UIBrowseContainer" id="$uicomponent.id">
+   <div class="ContentHolder">
+ <%   
+        
+	 	String styleWithTag = "" ;
+	 	if(isShowTagmap) {	
+	 		styleWithTag = "margin-right: 210px;"	 ;  		
+	 		def taglist = uicomponent.getTagLink() ;
       def tagStyle = uicomponent.getTagStyle() ;  
   %>
+  <%/*Begin TagMap*/%>
       <div class="TagmapHolder">
-        <div class="TagmapContentTitle">
-          <div class="TagLabel">TagMap</div>
+        <div class="TagmapTitle">
+        	<div class="Icon"><span></span></div>
+          <div class="TagLabel">Tag map</div>
         </div>
-        <div class ="TagmapContent">
+        <div class ="TagmapContent"> 
           <%
             for(String tag : taglist){
               String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
@@ -21,74 +34,77 @@
                 style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
               }
               tagkey = tag.getName() ;                  
-              println "<div class=\"Tag\"> <a href=\"$tagLink\" $style>$tagkey</a> </div>" ;
+              println "<a href=\"$tagLink\" class=\"Tag\" $style>$tagkey</a>" ;
             }
           %>
-          <div style="clear:left;"><span></span></div>
         </div>  
-      </div>  
+      </div> 
+  <%/*End TagMap*/%>  
   <%}%>
-  <%/*End TagMap*/%>
-  <%
-    def subDocumentList = uicomponent.getNodeByScript(); 
-    if(subDocumentList.isEmpty()){%>
-		<div class="UISubContent">
-			<div class ="UIDocumentContentInfo">
-			  <div class="NoneDocumentMessage" style="margin:0px;">
-			  	<div class="MessageContainer">
-				  	<div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
-				  	<div class="Message"><%=_ctx.appRes(uicomponent.id + ".label.NoDocument")%></div>
-			  	</div>
-			  </div>
-			</div>	
-		</div>	
-	<%}%>
+  <div style="$styleWithTag">
+    
   <%/*Begin UIEventViewer*/%>
-	<div class="UIEventViewer">
-		<div class="EventContent">
-	  	<%
-	  		boolean isFloatRight = false ;
-	  	  for (Node doc in subDocumentList) {
-	  	  	String classStyle = "EventContentDetailLeft" ;
-					if(isFloatRight) classStyle = "EventContentDetailRight" ;
-					if(subDocumentList.size() == 1) classStyle = "EventContentDetail" ;
-	  	  	String viewAction = uicomponent.event("ChangeNode",doc.getPath());
-	  	%>
-				  <div class="$classStyle">
-						<div class="TopEventContentDetail">
-						  <table>	
-						   	<tr>
-						    	<td>
-						    		<div class="DocumentIcon Documents16x16Icon"><span></span></div>
-						    		<div class="EventDocumentLabel">
-					    		    <a href="$viewAction"><%=doc.getName()%></a>
-					    		  </div>  
-						    	</td>
-						    	<td>
-							    	<div class="EventAuthorNameLabel"><%=uicomponent.getOwner(doc)%></div>
-		              </td>
-						    	<td>
-						    	  <div class="DateAndTimeLabel">not defined</div>
-						    	</td>
-						    </tr> 			 
-							</table>
-						</div>
-						<div class="MainEventContent">
-							<div class="SummaryTitleLabel">Summary:
-							  <%if(doc.hasProperty("exo:summary")){%>
-							   <%=doc.getProperty("exo:summary").getString()%>
-							 <%}%>
-							</div>
-					  </div>
-				  </div>
-				  
-			<%
-			    if(isFloatRight) println "<div style=\"clear: both\"><span></span></div>" ;
-					isFloatRight = !isFloatRight ;
-			  }
-			%>
-    <div style="clear: both"><span></span></div>
-		</div>
-	</div>
+  <div class="UIEventViewer">
+  	<%if(hasNoDocument){%>
+    <div class="UISubContent">
+      <div class ="UIDocumentContentInfo">
+        <div class="NoneDocumentMessage">
+          <div class="MessageContainer">
+            <div class="Info16x16Icon"><span></span></div>
+            <div class="Message"><%=_ctx.appRes(componentName + ".label.NoDocument")%></div>
+            <div style="clear:left;"><span></span></div>
+          </div>
+        </div>
+      </div>  
+    </div>  
+  <%} else {%>
+    <div class="EventContent">
+      <%
+        for (Node doc in subDocumentList) {
+          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+          String icon = uicomponent.getIcons(doc) + "16x16Icon" ;
+      %>
+          <div class="EventContentDetail">
+            <div class="TopEventContentDetail">
+              <table>  
+                 <tr>
+                  <td>
+                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon"><span></span></div>
+                    <div class="EventDocumentLabel">
+                      <a href="$viewAction"><%=doc.getName()%></a>
+                    </div>  
+                  </td>
+                  <td class="EventAuthorNameLabel">
+                    Author: <%=uicomponent.getOwner(doc)%>
+                  </td>
+                  <td class="DateAndTimeLabel">
+                   Date time: 10/04/2007 14:00
+                  </td>
+                </tr>        
+              </table>
+            </div>
+            <div class="MainEventContent">
+              <div class="SummaryTitleLabel">Summary:
+                <%if(doc.hasProperty("exo:summary")){%>
+                 <%=doc.getProperty("exo:summary").getString()%>
+               <%}%>
+              </div>
+            </div>
+          </div>
+      <%}%>
+    </div>
+    <%if(isShowDocByTag) {%>
+    <div class="ViewPreviousDocument"> 
+      <div class="BackIcon"><span></span></div>
+      <a href="<%=uicomponent.event('Back')%>">Previous View</a>
+      <div style="clear:left"><span></span></div>
+    </div>
+    <%}%>
+    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+    <div style="clear:left"><span></span></div>
+    <%}%>    
+  </div>  
   <%/*End UIEventViewer*/%>
+  </div>
+ </div> 
 </div>

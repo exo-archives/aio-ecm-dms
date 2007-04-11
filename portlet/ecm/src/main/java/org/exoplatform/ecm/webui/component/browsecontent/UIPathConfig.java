@@ -248,6 +248,8 @@ public class UIPathConfig extends UIForm implements UISelector{
       prefs.store() ; 
       uiForm.reset() ;
       uiConfigTabPane.getCurrentConfig() ;
+      container.setCurrentNode(null) ;
+      container.setSelectedTab(null) ;
       container.loadPortletConfig(prefs) ;
     }
   }  

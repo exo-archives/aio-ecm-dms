@@ -27,8 +27,43 @@
     int itemPerPage = uicomponent.getItemPerPage() ;   
     int itemPerBlock = uicomponent.getRowPerBlock() ;   
     int numbOfDocument = subDocumentList.size() ;
-    int numbOfSubCategory = subCategoryList.size() ;
+    int numbOfSubCategory = subCategoryList.size() ;  
+ %>
+ <div class="ContentHolder">
+ <%   
+        
+	 	String styleWithTag = "" ;
+	 	if(isShowTagmap) {	
+	 		styleWithTag = "margin-right: 210px;"	 ;  		
+	 		def taglist = uicomponent.getTagLink() ;
+      def tagStyle = uicomponent.getTagStyle() ;  
   %>
+  <%/*Begin TagMap*/%>
+      <div class="TagmapHolder">
+        <div class="TagmapTitle">
+        	<div class="Icon"><span></span></div>
+          <div class="TagLabel">Tag map</div>
+        </div>
+        <div class ="TagmapContent"> 
+          <%
+            for(String tag : taglist){
+              String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
+              String tagStatus = "" ;
+              String style = "" ;
+              String tagkey = "" ; 
+              if(tag.hasProperty("exo:tagStatus")) {
+                tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
+                style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+              }
+              tagkey = tag.getName() ;                  
+              println "<a href=\"$tagLink\" class=\"Tag\" $style>$tagkey</a>" ;
+            }
+          %>
+        </div>  
+      </div> 
+  <%/*End TagMap*/%>  
+  <%}%>
+  <div style="$styleWithTag">
   <%/*Begin UICBNavigation*/%>
   <div class="UICBNavigation">
     <div class="CBLeftNavigation">
@@ -74,9 +109,10 @@
               <div class="LeftHomeTab">
                 <div class="RightHomeTab">
                   <div class="MiddleHomeTab">
-                    <a class="HomeTabLabel" href="<%=uicomponent.event('ChangeNode',rootNode.getPath())%>" >Home</a>
-                    <div class="HomeTabIcon DropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
-                    <div style="clear:left;"><span></span></div>
+                  	<div class="LeftIcon CBHome16x16Icon" title="Home"><span></span></div>
+                    <a href="<%=uicomponent.event('ChangeNode',rootNode.getPath())%>" >Home</a>
+                    <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
+                    <div style="clear:both;"><span></span></div>
                   </div>
                 </div>
               </div>
@@ -93,9 +129,11 @@
                       <div class="LeftTab">
                         <div class="RightTab">
                           <div class="MiddleTab">
-                            <div class="LabelButton">
+                          	<div class="Icon CBDefaultFolder16x16Icon"><span></span></div>
+                            <div class="LabelButton">                            	
                               <a href="<%=uicomponent.event('ChangeNode',tab);%>">$tabName</a>
                             </div>
+                            <div style="clear:left"><span></span></div>
                           </div>
                         </div>
                       </div>
@@ -104,13 +142,12 @@
               <%}%>  
             </div>
             <div class="NavigationButtonContainer">
-              <div class="NavigationIcon ScrollLeftBlackArrow16x16Icon" title="Previous Tabs"><span></span></div>
-              <div class="NavigationIcon ScrollRightGrayArrow16x16Icon" title="More Tabs"><span></span></div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
+							<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
               <div style="clear:both"><span></span></div>
             </div>
           </div>
           <div class="UICBSubNavigation">
-            <div class="LeftIcon S2LeftGrayArrow16x16Icon" title="Previous Items"><span></span></div>
             <div class="ItemContainer">
               <%
                 for(String subCat in subCategoryList) {
@@ -118,86 +155,60 @@
                   String actionLinkSub = uicomponent.event("ChangeNode", subCat) ; 
               %>
                   <div class="ChildNodeItem">
-                    <div class="ItemIcon ExtendButton16x16Icon"><span></span></div>
                     <a class="NodeLabel" href="$actionLinkSub">$catName</a>  
                   </div>
+                  <div class="SeparatorLine"><span></span></div>
               <%}%>
               <div style="clear:both"><span></span></div>
             </div>
-            <div class="RightIcon S2RightGrayArrow16x16Icon" title="More Items"><span></span></div>
+            <div class="NavigationButtonContainer">
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
+							<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+              <div style="clear:both"><span></span></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <%/*End UICBNavigation*/%>
-  <%/*Begin TagMap*/%>
-  <%if(isShowTagmap) {
-      def taglist = uicomponent.getTagLink() ;
-      def tagStyle = uicomponent.getTagStyle() ;  
-  %>
-      <div class="TagmapHolder">
-        <div class="TagmapContentTitle">
-          <div class="TagLabel">TagMap</div>
-        </div>
-        <div class ="TagmapContent">
-          <%
-            for(String tag : taglist){
-              String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
-              String tagStatus = "" ;
-              String style = "" ;
-              String tagkey = "" ; 
-              if(tag.hasProperty("exo:tagStatus")) {
-                tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-                style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
-              }
-              tagkey = tag.getName() ;                  
-              println "<div class=\"Tag\"> <a href=\"$tagLink\" $style>$tagkey</a> </div>" ;
-            }
-          %>
-          <div style="clear:left;"><span></span></div>
-        </div>  
-      </div>  
-  <%}%>
-  <%/*End TagMap*/%>  
-  <%if(hasNoDocument){%>
+  
+  <%/*Begin UIEventViewer*/%>
+  <div class="UIEventViewer">
+  	<%if(hasNoDocument){%>
     <div class="UISubContent">
       <div class ="UIDocumentContentInfo">
-        <div class="NoneDocumentMessage" style="margin:0px;">
+        <div class="NoneDocumentMessage">
           <div class="MessageContainer">
-            <div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
+            <div class="Info16x16Icon"><span></span></div>
             <div class="Message"><%=_ctx.appRes(componentName + ".label.NoDocument")%></div>
+            <div style="clear:left;"><span></span></div>
           </div>
         </div>
       </div>  
     </div>  
-  <%}%>
-  <%/*Begin UIEventViewer*/%>
-  <div class="UIEventViewer">
+  <%} else {%>
     <div class="EventContent">
       <%
-        boolean isFloatRight = false ;
         for (Node doc in subDocumentList) {
-          String classStyle = "EventContentDetailLeft" ;
-          if(isFloatRight) classStyle = "EventContentDetailRight" ;
-          if(numbOfDocument == 1) classStyle = "EventContentDetail" ;
           String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+          String iconName = uicomponent.getIcons(doc) + "16x16Icon" ;
       %>
-          <div class="$classStyle">
+          <div class="EventContentDetail">
             <div class="TopEventContentDetail">
               <table>  
                  <tr>
                   <td>
-                    <div class="DocumentIcon Documents16x16Icon"><span></span></div>
+                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
                     <div class="EventDocumentLabel">
                       <a href="$viewAction"><%=doc.getName()%></a>
                     </div>  
                   </td>
-                  <td>
-                    <div class="EventAuthorNameLabel"><%=uicomponent.getOwner(doc)%></div>
+                  <td class="EventAuthorNameLabel">
+                    Author: <%=uicomponent.getOwner(doc)%>
                   </td>
-                  <td>
-                    <div class="DateAndTimeLabel">not defined</div>
+                  <td class="DateAndTimeLabel">
+                   Date time: 10/04/2007 14:00
                   </td>
                 </tr>        
               </table>
@@ -211,82 +222,67 @@
             </div>
           </div>
       <%
-          if(isFloatRight) println "<div style=\"clear: both\"><span></span></div>" ;
-          isFloatRight = !isFloatRight ;
         }
       %>
-      <div style="clear: both;"><span></span></div>
     </div>
-    <div class="ViewMoreDocument">
-      <%
-        String moreActionLink = "" ;
-        String moreLabel = "" ;
-        if(uicomponent.getNumberOfPage() > 1 ) moreLabel = "more.." ;
-        if(!isShowAllDoc){
-          moreActionLink = uicomponent.event('ChangeNode','ViewMore') ;
-        } else {
-          moreActionLink = "" ;
-          moreLabel = "" ;
-          _ctx.renderUIComponent(uicomponent.getUIPageIterator()) ;
-          println "<div style=\"clear: both\"><span></span></div>" ;
-        }
-      %>
-      <a href="$moreActionLink">$moreLabel</a>
+    <%if(isShowAllDoc) {%>
+    <div class="ViewPreviousDocument"> 
+      <div class="BackIcon"><span></span></div>
+      <a href="<%=uicomponent.event('Back')%>">Previous View</a>
+      <div style="clear:left"><span></span></div>
     </div>
-  </div>  
-  <%/*End UIEventViewer*/%>
-  <%if(isShowAllDoc) {%>
-        <div class="UIAction" style="margin-top:5px;"> 
-          <div class="ActionContainer">
-            <div class="ActionButton">
-              <div class="LightBlueStyle" >
-                <div class="ButtonLeft">
-                  <div class="ButtonRight">
-                    <div class="ButtonMiddle">
-                      <div class="Icon Close16x16Icon"><span></span></div>
-                      <a href="<%=uicomponent.event('Close')%>">Close</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    <%} else {%>
-        <%/*Begin UISubContent*/%>    
+    <%}%>
+    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+    <div style="clear:left"><span></span></div>
+    <%}%>
+    <%if(!isShowAllDoc) {/*Begin UISubContent*/%>
         <div class="UISubContent" >
           <% 
             isFloatRight = false ;
             for(String subCat in subCategoryList) {
               String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
               String subCatLink = uicomponent.event("ChangeNode", subCat);
-              def className = "SubContentHolderLeft" ;
-              if(isFloatRight) className = "SubContentHolderRight" ;  
-              if(numbOfSubCategory ==1) className = "SubContentHolder" ;
+              className = "SubContentHolder" ;
           %>
               <div class="$className">
                 <div class="TopSubContent">
-                  <div class="ItemIcon ExtendButton16x16Icon"><span></span></div>
+                  <div class="ItemIcon CBDefaultFolder16x16Icon"><span></span></div>
                   <a class="NodeLabel" href="$subCatLink">$catName</a>
                 </div>
                 <div style="clear:both"><span></span></div>
-                <div class="SubContentTitle">
-                  <a class="LeftIcon S2LeftGrayArrow16x16Icon" href="javascript:ajaxGet('')" title="Scroll left"><span></span></a>
+                
                   <%
                     def child = content.get(catName) ;
                     def subChilds = child.get("sub") ;
                     def docChilds = child.get("doc") ;
-                    for(String subChild in subChilds) {
-                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
-                       String subChildLink = uicomponent.event("ChangeNode", subChild);
-                  %>
-                      <div class="ChildNode">
-                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
-                      </div>
-                  <%}%>
-                  <a class="RightIcon S2RightGrayArrow16x16Icon" href="javascript:ajaxGet('')" title="Scroll right"><span></span></a>
-                  <div style="clear:both"><span></span></div>  
-                </div>
+                    if(!subChilds.isEmpty()) {
+                   %>
+                  	<div class="SubContentTitle">
+	                   	<div class="LeftBar">
+	                   		<div class="RightBar">
+	                   			<div class="MiddleBar">
+	                   					<div class="ChildContainer" > 
+	                   					<% 
+						                    for(String subChild in subChilds) {
+						                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
+						                       String subChildLink = uicomponent.event("ChangeNode", subChild);
+						                  %>
+						                      <div class="ChildNode">						                      	
+						                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
+						                      </div>
+						                      <div class="SeparatorLine"><span></span></div>
+						                  <%}%>
+						                  </div>
+						                  <div class="NavigationButtonContainer">
+																<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
+																<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+									              <div style="clear:both"><span></span></div>
+									            </div>                  
+	                   			</div>                   		
+	                   		</div>
+	                  	</div>                   
+                		</div>
+                <%}%>
                 <div style="clear:both"><span></span></div>  
                 <div class="UIDocumentContentInfo">
                   <table>
@@ -296,7 +292,7 @@
                             <td>
                               <div class="NoneDocumentMessage">
                                 <div class="MessageContainer">
-                                  <div class="InfoIcon BlueInfoBox16x16Icon"><span></span></div>
+                                  <div class="Info16x16Icon"><span></span></div>
                                   <div class="Message">
                                     <%=_ctx.appRes(componentName + ".label.NoDocument" )%> 
                                   </div>
@@ -307,11 +303,12 @@
                       <%} else {   
                            for(Node doc in docChilds) {
                             String docActionLink = uicomponent.event("ChangeNode",doc.getPath()) ;
+                            String icon = uicomponent.getIcons(doc) + "16x16Icon" ;
                       %>
                             <tr>
                               <td>
                                  <div class="DocumentInfo">
-                                  <div class="DocumentIcon Documents16x16Icon"><span></span></div>
+                                  <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon"><span></span></div>
                                   <div class="DocumentLabel">
                                     <a href="$docActionLink"><%=doc.getName()%></a>
                                   </div>
@@ -322,31 +319,35 @@
                               <td><div class="DateTimeLabel">not defined</div></td>
                             </tr> 
                       <%}%>
-                          <tr>
-                            <td colspan="3">
-                              <div class="ViewMoreDocument">
-                                <%
-                                  String label = "More..." ;
-                                  if(docChilds.size() < itemPerBlock) label = "" ;
-                                %>
-                                <a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">$label</a>
-                              </div>
-                            <td>
-                          </tr>
+			                      <tr>
+			                        <td colspan="3">
+			                            <%
+			                              if(!(docChilds.size() < itemPerBlock)) {
+			                              	String label = "More Documents" ;
+			                             %>
+			                             	<div class="ViewMoreDocument">
+			                                	<div class="NextIcon"><span></span></div>
+			                                	<a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">$label</a>
+			                                	<div style="clear: left;"><span></span></div>                               
+			                            	</div>
+			                          		<div style="clear:right"><span></span></div>
+			                             <% 	
+			                              }
+			                            %>
+			                        <td>
+			                      </tr>
                       <%}%>
                     <tbody>
                   </table>
                 </div>      
               </div>
-          <%
-              if(isFloatRight) println "<div style=\"clear: both\"><span></span></div>" ;
-              isFloatRight = !isFloatRight ;
-            } //end for
-          %>
+          <%}%>
           <div style="clear: both;"><span></span></div>
         </div> 
-        <%/*End UISubContent*/%>   
-  <%  } 
-    }
-  %>
+  <%  }/*End UISubContent*/%>
+  </div>  
+  <%/*End UIEventViewer*/%>
+  </div>
+ </div> 
+ <%}%>
 </div>
