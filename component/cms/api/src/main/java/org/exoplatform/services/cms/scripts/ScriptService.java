@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.container.component.ComponentPlugin;
-
 public interface ScriptService {
   
   //public void addScriptPlugin(ComponentPlugin plugin) ;
