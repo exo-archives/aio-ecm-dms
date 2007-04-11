@@ -15,11 +15,12 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormInputInfo;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
-import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -57,7 +58,7 @@ public class UISimpleSearch extends UIForm {
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
   
   public UISimpleSearch() throws Exception {
-    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null).addValidator(NameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints") ;
     uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null)) ;
     addUIComponentInput(uiInputAct) ;
@@ -95,7 +96,22 @@ public class UISimpleSearch extends UIForm {
       UISimpleSearch uiForm = event.getSource();
       String text = uiForm.getUIStringInput(INPUT_SEARCH).getValue() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
+      if(text == null || text.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.keyword-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      for(int i = 0; i < text.length(); i ++){
+        char c = text.charAt(i);
+        if (Character.isLetter(c) || Character.isDigit(c) || c=='_' || c=='-' || c=='.' || c==':' ){
+          continue;
+        }
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.keyword-not-allow", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()) ;      
       if ("/".equals(currentNode.getPath())) queryText = ROOT_SQL_QUERY ;
