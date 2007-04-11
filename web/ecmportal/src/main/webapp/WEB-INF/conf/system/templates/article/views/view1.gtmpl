@@ -2,64 +2,64 @@
 	<style>
 		.UIArticle {}
 			
-		.UIArticle .TopLeftCornerDecorator {
+		.UIArticle .ArticleTLDecorator {
 		  background: url('/ecm/skin/images/article/LeftTop42x63.gif') no-repeat left;
 		  padding-left: 42px;
 		}
 		
-		.UIArticle .TopRightCornerDecorator {
+		.UIArticle .ArticleTRDecorator {
 		  background: url('/ecm/skin/images/article/RightTop12x63.gif') no-repeat right ;
 		  padding-right:12px;
 		}
 		
-		.UIArticle .TopCenterDecorator {
+		.UIArticle .ArticleTCDecorator {
 		  background: url('/ecm/skin/images/article/CenterTop1x63.gif') repeat-x top;
 		  padding: 0px 10px;
 		}
 		
-		.UIArticle .TopCenterDecorator .BannerIcon {
+		.UIArticle .ArticleTCDecorator .BannerIcon {
 		  background: url('/ecm/skin/images/article/BannerIcon.gif') no-repeat right bottom;
 		  height: 63px;
 		  padding-right: 236px;
 		}
 		
-		.UIArticle .TopCenterDecorator .TitleLabel {
+		.UIArticle .ArticleTCDecorator .TitleLabel {
 		  padding-top: 15px;
 		  font: normal bold 16px Arial;
 		  color: #0467e2;
 		}
 
-		.UIArticle .TopCenterDecorator .Underline {
+		.UIArticle .ArticleTCDecorator .Underline {
 		  border-top: solid 1px #b7b7b7;
 		  border-bottom: solid 1px white;
 		}
 		
-		.UIArticle .MiddleLeftSideDecorator {
+		.UIArticle .ArticleMLDecorator {
 		  background: url('/ecm/skin/images/article/LeftMiddle7x1.gif') repeat-y left;
 		  padding-left: 7px ;  
 		}
 		
-		.UIArticle .MiddleCenterDecorator {
+		.UIArticle .ArticleMCDecorator {
 		  background: #f1f1f1;
 		  padding: 0px 8px;
 		}
 		
-		.UIArticle .MiddleRightSideDecorator {
+		.UIArticle .ArticleMRDecorator {
 		  background: url('/ecm/skin/images/article/RightMiddle7x1.gif') repeat-y right;
 		  padding-right: 7px ;  
 		}
 		
-		.UIArticle .BottomLeftCornerDecorator {
+		.UIArticle .ArticleBLDecorator {
 		  background: url('/ecm/skin/images/article/LeftBottom12x12.gif') no-repeat left ;
 		  padding-left: 12px;
 		}
 		
-		.UIArticle .BottomCenterDecorator {
+		.UIArticle .ArticleBCDecorator {
 		  background: url('/ecm/skin/images/article/CenterBottom1x12.gif') repeat-x bottom;
 		  height: 12px;
 		}
 		
-		.UIArticle .BottomRightCornerDecorator {
+		.UIArticle .ArticleBRDecorator {
 		  background: url('/ecm/skin/images/article/RightBottom12x12.gif') no-repeat right ;
 		  padding-right: 12px ;  
 		}
@@ -155,9 +155,9 @@
 	 def attachments = uicomponent.getAttachments() ;
 	%>
 	<div class="UIArticle">
-		<div class="TopLeftCornerDecorator">
-			<div class="TopRightCornerDecorator">
-				<div class="TopCenterDecorator">
+		<div class="ArticleTLDecorator">
+			<div class="ArticleTRDecorator">
+				<div class="ArticleTCDecorator">
           <div class="BannerIcon">
             <div class="TitleLabel"><%=node.getProperty("exo:title").getString()%></div>
             <div class="Underline"><span></span></div>
@@ -178,9 +178,9 @@
         </div>
 			</div>
 		</div>
-		<div class="MiddleLeftSideDecorator">
-			<div class="MiddleRightSideDecorator">
-				<div class="MiddleCenterDecorator">
+		<div class="ArticleMLDecorator">
+			<div class="ArticleMRDecorator">
+				<div class="ArticleMCDecorator">
 					<div class="ArticleFrame">
             <div class="ArticleFrameContainer">
               <div class="ArticleField">
@@ -254,9 +254,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="BottomLeftCornerDecorator">
-			<div class="BottomRightCornerDecorator">
-				<div class="BottomCenterDecorator"><span></span></div>
+		<div class="ArticleBLDecorator">
+			<div class="ArticleBRDecorator">
+				<div class="ArticleBCDecorator"><span></span></div>
 			</div>
 		</div>  
 	</div>
