@@ -49,7 +49,6 @@
 	      	<div class="ButtonLeft">
 	      		<div class="ButtonRight">
 	      			<div class="ButtonMiddle">
-	      				<div class="Icon Cancel16x16Icon"><span></span></div>
 	      				<a href="<%=uicomponent.event("Cancel")%>">Cancel</a>
 	      			</div>
 	      		</div>

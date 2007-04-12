@@ -51,6 +51,7 @@ import org.exoplatform.webui.event.Event.Phase;
     template = "system:/groovy/webui/component/UIFormTabPane.gtmpl",
     events = {
       @EventConfig(listeners = UINodeTypeForm.CancelActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UINodeTypeForm.CloseActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UINodeTypeOptionList.CancelTabActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UINodeTypeForm.SaveDraftActionListener.class),
       @EventConfig(listeners = UINodeTypeForm.SaveActionListener.class),
@@ -459,6 +460,18 @@ public class UINodeTypeForm extends UIFormTabPane {
   }
 
   static public class CancelActionListener extends EventListener<UINodeTypeForm> {
+    public void execute(Event<UINodeTypeForm> event) throws Exception {
+      UINodeTypeForm uiForm = event.getSource() ;
+      uiForm.update(null, false) ;
+      uiForm.refresh() ;
+      UIPopupWindow uiPopup = uiForm.getParent() ;
+      uiPopup.setRendered(false) ;
+      uiPopup.setShow(false) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UINodeTypeManager.class)) ;
+    }
+  }
+  
+  static public class CloseActionListener extends EventListener<UINodeTypeForm> {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
       uiForm.update(null, false) ;

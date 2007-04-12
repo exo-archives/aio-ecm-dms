@@ -120,7 +120,6 @@
 	               <div class="ButtonLeft">
 	                 <div class="ButtonRight">
 	                   <div class="ButtonMiddle">
-	                     <div class="Icon <%=actions[i]%>16x16Icon"><span></span></div>
 	                     <div>
 	                     <% 
 	                       if(actionValues != null && actionValues.length > 0) { 

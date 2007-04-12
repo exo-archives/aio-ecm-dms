@@ -88,7 +88,6 @@
 	        <div class="ButtonLeft">
 	          <div class="ButtonRight">
 	            <div class="ButtonMiddle">
-	              <div class="Icon Close16x16Icon"><span></span></div>              
 	              <a href="<%=uicomponent.event("Close")%>">Close</a> 
 	            </div>
 	          </div>
