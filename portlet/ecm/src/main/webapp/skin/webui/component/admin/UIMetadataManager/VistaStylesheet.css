@@ -23,19 +23,10 @@
   padding-top: 0px;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .ActionContainer .ActionButton {
-	float: none;
-  width: 85px;
-}
-
 .UIECMAdminPortlet .UIMetadataList .UIAction {
   width: 100px;
   padding-top: 7px;
   margin:auto;
-}
-
-.UIECMAdminPortlet .UIMetadataList .ActionContainer .ActionButton {
-  width: 100px;
 }
 
 .UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm textarea {

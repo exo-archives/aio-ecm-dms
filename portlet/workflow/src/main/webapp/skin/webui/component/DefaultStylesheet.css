@@ -90,14 +90,6 @@
 }
 /*********************************************** End Icon24x24 *****************************************/
 
-.UIWorkflowPortlet .DecoratorBox {
-  margin: 7px;
-}
-
-.UIWorkflowPortlet .UITask .ActionButton {
-  width: 100px;
-}
-/*###########################################    ########################################*/
 .UIWorkflowPortlet .UIDocumentContent {
   background: white;
 }
@@ -190,4 +182,3 @@
 .UIWorkflowPortlet .UIDocumentContent .EventFrame .FrameContent {
   padding: 10px;
 }
-/*###########################################    ########################################*/

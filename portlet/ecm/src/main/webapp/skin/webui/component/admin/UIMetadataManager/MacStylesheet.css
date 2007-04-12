@@ -24,31 +24,16 @@
   padding-top: 0px;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .ActionContainer .ActionButton {
-  width: 85px;
-	float: none;
-}
-
 .UIECMAdminPortlet .UIMetadataList .UIAction {
   padding-top: 7px;
   width: 100px;
   margin:auto;
 }
 
-.UIECMAdminPortlet .UIMetadataList .ActionContainer .ActionButton {
-  width: 100px;
-  float: left;
-}
-
 .UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm .textarea {
   width: 400px;
   height: 300px;  
   margin-left: 25px;
-}
-
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm .ActionButton {
-  float: left;
-  padding-bottom: 10px;
 }
 
 .UIECMAdminPortlet .UIMetadataManager {

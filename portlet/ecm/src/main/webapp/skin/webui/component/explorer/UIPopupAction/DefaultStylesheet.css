@@ -6,10 +6,6 @@
  * version: $Id$
  */
 
-.UIJCRExplorerPortlet .UIPopupAction .ActionButton {
-  width: 85px;
-}
-
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
 	float: left;
 }
@@ -213,10 +209,6 @@
 
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIMultiLanguageForm .ActionButton {
-	width: 100px ;
-}
-
 .UIJCRExplorerPortlet .UIMultiLanguageForm .ActionContainer {
 	width: 360px ;
 }
@@ -233,11 +225,7 @@
 	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .UIAction .ActionButton {
-	width: 85px;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction .ActionButton .NormalStyle {
+.UIJCRExplorerPortlet .UIVoteForm .UIAction .NormalStyle {
   border: none ;
 }
 
@@ -292,11 +280,6 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionContainer {
 	width:400px;
-	margin: auto ;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionButton {
-	width: 130px ;
 	margin: auto ;
 }
 

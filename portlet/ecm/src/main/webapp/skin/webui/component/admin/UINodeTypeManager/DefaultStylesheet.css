@@ -37,12 +37,6 @@
   margin-left: 0px ;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .ActionButton {
-  width: 100px;
-  float: left ;
-  margin-left: 3px;
-}
-
 .UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
   width: 100% ;
 }
@@ -90,22 +84,6 @@
   width: 440px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .ActionButton {
-  width: 120px;
-  margin: auto;
-  float: none;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .ActionButton {
-  width: 80px;
-  float: right ;
-  margin-left: 3px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImport .ActionButton {
-  width: 90px;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {
   width: 260px;
   margin: auto;
@@ -140,10 +118,6 @@
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .ActionContainer {
   width: 380px ;
   margin:auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .ActionButton {
-	margin-left: 3px ;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithActions .checkbox {

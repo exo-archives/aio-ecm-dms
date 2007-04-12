@@ -16,10 +16,6 @@
 
 .UIJCRExplorerPortlet {}
 
-.UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
-  width: 80px;
-}
-
 .UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;

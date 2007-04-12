@@ -12,7 +12,7 @@
 	  	<div class="Separator SeparatorRight"><span></span></div>
 	  </div>
 	  
-	  <div class="DecoratorBox">
+	  <div class="DecoratorBox" style="margin: 7px;">
 		  <div class="GrayRoundedFillBoxStyle">
 			  <div class="TopLeftCornerBoxDecorator">
 			    <div class="TopRightCornerBoxDecorator">
