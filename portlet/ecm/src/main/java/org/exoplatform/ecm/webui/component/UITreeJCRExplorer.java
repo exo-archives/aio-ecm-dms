@@ -30,12 +30,16 @@ import org.exoplatform.webui.event.EventListener;
  * 10:45:01 AM 
  */
 @ComponentConfigs({
+//    @ComponentConfig(
+//        type = UITree.class, id = "UIJCRTree",
+//        template = "system:/groovy/webui/component/UITree.gtmpl" , 
+//        events = @EventConfig(listeners = UITreeJCRExplorer.ChangeNodeActionListener.class)
+//    ),
     @ComponentConfig(
-        type = UITree.class, id = "UIJCRTree",
-        template = "system:/groovy/webui/component/UITree.gtmpl" , 
+        template =  "app:/groovy/webui/component/UITreeJCRExplorer.gtmpl",
         events = @EventConfig(listeners = UITreeJCRExplorer.ChangeNodeActionListener.class)
-    ),
-    @ComponentConfig(template =  "app:/groovy/webui/component/UITreeJCRExplorer.gtmpl")
+    )
+    
 })
 public class UITreeJCRExplorer extends UIContainer {
 
@@ -44,11 +48,12 @@ public class UITreeJCRExplorer extends UIContainer {
   private boolean isTab_ = false;
   
   public UITreeJCRExplorer() throws Exception {
-    UITree tree = addChild(UITree.class, "UIJCRTree", null) ;
+//    UITree tree = addChild(UITree.class, "UIJCRTree", null) ;
+    UITree tree = addChild(UITree.class, null, null) ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;
-    tree.setIcon("NodeIcon LightBlueFolder24x24Icon")  ;    
-    tree.setSelectedIcon("NodeIcon LightBlueOpenFolder24x24Icon") ;
+    tree.setIcon("Icon LightBlueFolder24x24Icon")  ;    
+    tree.setSelectedIcon("Icon LightBlueOpenFolder24x24Icon") ;
   }
   
   public void buildTree() throws Exception {

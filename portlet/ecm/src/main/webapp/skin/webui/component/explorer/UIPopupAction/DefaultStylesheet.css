@@ -157,53 +157,6 @@
   line-height: 30px;
 }
 
-.Explorer .ExplorerTree .NodeLevel1 {
-  height: 30px;
-  line-height: 30px;
-  padding-left: 15px;
-
-}
-
-.Explorer .ExplorerTree .NodeLevel2 {
-  height: 30px;
-  line-height: 30px;
-  padding-left: 30px;
-}
-
-.Explorer .ExplorerTree .ExpandIcon {
-  margin: 3px 0px;
-  float: left;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
-}
-
-.Explorer .ExplorerTree .ColapseIcon {
-  float: left;
-  margin: 3px 0px;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
-}
-
-.Explorer .ExplorerTree .NodeIcon {
-  float: left;
-}
-
-.Explorer .ExplorerTree .NodeLabel {
-  float: left;
-  color: #01060d;
-  padding: 0px 10px;
-}
-
-.Explorer .ExplorerTree .NodeLabelSelected {
-  float: left;
-  color: #0848c1;
-  padding: 0px 10px;
-}
-
 .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
@@ -278,39 +231,6 @@
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 .UIJCRExplorerPortlet .UIVoteForm {
 	padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIRatingInfoContainer {
-	width: 150px; padding: 5px 12px;
-	margin: auto;
-	background: white;
-	border: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer {
-	margin: auto;
-	width: 120px; height: 20px;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('DefaultSkin/background/GrayStar.gif');
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('DefaultSkin/background/YellowStar.gif');
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('DefaultSkin/background/OverStar.gif');
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction .ActionButton {

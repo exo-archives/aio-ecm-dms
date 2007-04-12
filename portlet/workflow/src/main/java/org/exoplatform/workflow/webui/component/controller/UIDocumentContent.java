@@ -4,34 +4,34 @@
  **************************************************************************/
 package org.exoplatform.workflow.webui.component.controller ;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Property;
 import javax.jcr.Value;
 
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.workflow.webui.component.CommentsComponent;
 import org.exoplatform.workflow.webui.component.ECMViewComponent;
 import org.exoplatform.workflow.webui.component.JCRResourceResolver;
+import org.exoplatform.workflow.webui.component.VoteComponent;
 
 /**
  * Created by The eXo Platform SARL
- * Author : tran the  trong
+ * Author : tran the trong
  *          trongtt@gmail.com
  * July 3, 2006
  * 10:07:15 AM
  */
 @ComponentConfig(template = "app:/groovy/webui/component/UIDocumentContent.gtmpl")
-public class UIDocumentContent extends UIContainer implements ECMViewComponent {
-
+public class UIDocumentContent extends UIContainer implements ECMViewComponent, VoteComponent, CommentsComponent {
   private Node node_ ;
 
   public UIDocumentContent() throws Exception {}
@@ -105,42 +105,6 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     return attachments;
   }  
 
-  public String getAttachmentSize(Node node){
-    Node jcrContentNode = null;
-    int size = 0;
-    String sSize = "0";
-    String nodeType = "";
-    try {      
-      nodeType = node.getPrimaryNodeType().getName();     
-    } catch (Exception ex) {
-      nodeType = "default";
-    }
-    try {
-      if ("nt:file".equals(nodeType)) jcrContentNode = node.getNode("jcr:content") ;
-      else if ("nt:resource".equals(nodeType)) jcrContentNode = node ;
-      if (jcrContentNode != null) {
-        Property data = null;
-        if (jcrContentNode.hasProperty("jcr:data"))
-          data = jcrContentNode.getProperty("jcr:data");
-
-        InputStream is = data.getValue().getStream();
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = is.read(buf)) > 0) {
-          size += len;
-        }
-        is.close();
-      }
-    } catch (Exception e) {}
-
-    if(size >0){
-      sSize = String.valueOf((((float)(size/100))/10));
-    }
-    sSize += " Kb";
-    return sSize;
-  }
-
-
   public boolean hasPropertyContent(Node nod, String property){
     try {
       String value = nod.getProperty(property).getString() ;
@@ -155,12 +119,45 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public String getRssLink() { return null ; }
   public boolean isRssLink() { return false ; }
 
-  public List getSupportedLocalise() throws Exception { return null ; }
+  public List getSupportedLocalise() throws Exception {
+    List<String> local = new ArrayList<String>() ;
+    if(node_.hasNode("languages")){
+      Node languages = node_.getNode("languages") ;
+      NodeIterator iter = languages.getNodes() ;
+      while(iter.hasNext()) {
+        local.add(iter.nextNode().getName()) ;
+      }
+      local.add(node_.getProperty("exo:language").getString()) ;      
+    } 
+    return local ;
+  }
 
   public String getTemplatePath() throws Exception { 
     String nodeTypeName = node_.getPrimaryNodeType().getName();
     String userName = Util.getUIPortal().getOwner() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     return templateService.getTemplatePathByUser(false, nodeTypeName, userName);
+  }
+
+  public String getVoteTemplate() throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
+  }
+
+  public double getRating() throws Exception {
+    return node_.getProperty("exo:votingRate").getDouble();
+  }
+  
+  public long getVoteTotal() throws Exception {
+    return node_.getProperty("exo:voteTotal").getLong();
+  }
+
+  public String getCommentTemplate() throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getTemplatePath(false, "exo:comment", "view1") ;
+  }
+
+  public List<Node> getComments() throws Exception {
+    return getApplicationComponent(CommentsService.class).getComments(node_, "default") ;
   }
 }

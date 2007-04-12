@@ -59,10 +59,8 @@
 	    </div>
 	  </div>
 		<%if(uicomponent.getStateImageURL() != "") {%>
-		  <div style="float: right">
-  	    <div style="padding-right: 80px">					  		
-		  		<img src="$uicomponent.stateImageURL"/>
-		  	</div>
+      <div align="center">					  		
+	  		<img src="$uicomponent.stateImageURL"/>
 		  </div>
 		<%}%>
   </div>

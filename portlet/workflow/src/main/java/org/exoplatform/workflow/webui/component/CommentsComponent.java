@@ -2,7 +2,11 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.jcr;
+package org.exoplatform.workflow.webui.component;
+
+import java.util.List;
+
+import javax.jcr.Node;
 
 
 /**
@@ -12,8 +16,7 @@ package org.exoplatform.ecm.jcr;
  * Jan 31, 2007  
  * 10:36:21 AM
  */
-public interface VoteComponent {
-  public double getRating() throws Exception;
-  public String getVoteTemplate() throws Exception;
-  public long getVoteTotal() throws Exception ;
+public interface CommentsComponent {
+  public String getCommentTemplate() throws Exception;
+  public List<Node> getComments() throws Exception;
 }
