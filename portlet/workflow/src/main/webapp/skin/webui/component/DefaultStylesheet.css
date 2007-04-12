@@ -10,6 +10,14 @@
 	overflow: auto;
 }
 
+.UIWorkflowPortlet .UIForm .UIAction {
+	width: auto;
+}
+
+.UIWorkflowPortlet .ActionContainer {
+	float: right;
+}
+
 .UIWorkflowPortlet .Toolbar {
 	height: 29px;
 	padding: 0px 8px;
