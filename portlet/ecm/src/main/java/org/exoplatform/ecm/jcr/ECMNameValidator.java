@@ -32,7 +32,7 @@ public class ECMNameValidator implements Validator {
         continue ;
       }
       Object[] args = { uiInput.getName(), uiInput.getBindingField() };
-      throw new MessageException(new ApplicationMessage("NameValidator.msg.Invalid-char", args)) ;
+      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args)) ;
     }
   }
 }
