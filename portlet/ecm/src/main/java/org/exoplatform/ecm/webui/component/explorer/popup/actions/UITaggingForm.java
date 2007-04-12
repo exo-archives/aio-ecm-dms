@@ -6,10 +6,13 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormInputInfo;
 import org.exoplatform.webui.component.UIFormStringInput;
@@ -44,7 +47,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
   final static public String ASCENDING_ORDER = "Ascending".intern();
   
   public UITaggingForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null)) ;
+    addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null).addValidator(ECMNameValidator.class)) ;
     UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET) ;
     uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null)) ;
     addUIComponentInput(uiInputSet) ;
@@ -71,10 +74,19 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String[] tagNames = null ;
-      if((tagName == null)||(tagName.trim().length() == 0)){return ;}
       if(tagName.indexOf(";") > -1) tagNames = tagName.split(";") ;
       else tagNames = new String[] {tagName} ;
+      for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode())) {
+        for(String t : tagNames) {
+          if(t.equals(tag.getName())) {
+            uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.name-exist", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+      }
       folksonomyService.addTag(uiExplorer.getCurrentNode(), tagNames) ;
       uiForm.activate() ;
       uiForm.getUIStringInput(TAG_NAMES).setValue(null) ;

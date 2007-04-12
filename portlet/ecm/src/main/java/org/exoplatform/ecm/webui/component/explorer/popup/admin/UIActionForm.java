@@ -55,7 +55,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private boolean isAddNew_ ;
   private String scriptPath_ = null ;
   
-  public UIActionForm() throws Exception {setActions(new String[]{"Save","Back","ShowComponent"}) ;}
+  public UIActionForm() throws Exception {setActions(new String[]{"Save","Back"}) ;}
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
     reset() ;

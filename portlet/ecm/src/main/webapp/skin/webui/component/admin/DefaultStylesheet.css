@@ -40,6 +40,11 @@
 	cursor: pointer;
 }
 
+.UIECMAdminPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
+  background: none ;
+  border: none ;
+}
+
 .UIECMAdminPortlet .ExpandSideBar {
 	width: 11px; height: 27px;
 	background: url('DefaultSkin/background/ExpandSideBar.gif') no-repeat;

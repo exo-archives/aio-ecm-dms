@@ -6,9 +6,16 @@
  * version: $Id$
  */
 
-.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
-	float: left;
+/*############################## -- Begin UIFormWithTitle -- ##############################*/
+.UIJCRExplorerPortlet .UIFormWithTitle {
+  width: 550px ;
+} 
+
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
+  background: none ;
+  border: none ;
 }
+/*############################## -- End UIFormWithTitle -- ##############################*/
 
 /*############################## -- Begin UIVersionInfo -- ##############################*/
 .UIJCRExplorerPortlet .UIVersionInfo {
@@ -186,9 +193,17 @@
 	padding-left: 5px ;
 }
 
+.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
+  width: 220px ;
+}
+
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
+}
+
+.UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
+  width: 300px ;
 }
 
 /*############################## -- Begin UIViewMetadataForm   -- ##############################*/
@@ -199,15 +214,20 @@
 	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .UIAction .NormalStyle {
-  border: none ;
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+  width: 100px ;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/
 
+/*############################## -- UISearch   -- ##############################*/
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle {
 	width:500px;
 	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {
+	width: 350px ;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
@@ -233,7 +253,16 @@
   padding-left: 135px ;
 }
 
+/*############################## -- End UISearch   -- ##############################*/
+
+/*############################## -- Others   -- ##############################*/
+
 .UIJCRExplorerPortlet .SelectFileFrame {
   margin:10px 0px 0px 50px;
   width:400px;
 }
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+/*############################## -- End Others   -- ##############################*/

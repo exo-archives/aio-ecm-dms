@@ -212,18 +212,7 @@
   width: 99.6%;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .ActionButton {
-  width: 80px;
-}
-
-.UIJCRExplorerPortlet .UIMetadataSelectForm .ActionContainer .ActionButton {
-  width: 90px;
-}
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .ActionButton {
-  width: 88px; /*FIX BUG IE*/
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
 	background:url('DefaultSkin/background/TitleBG.gif') repeat-x ; 
@@ -242,26 +231,5 @@
 
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
-/*############################## -- BEGIN UIFolderForm -- ##############################*/
-
-.UIJCRExplorerPortlet .UIFolderForm .UIFormWithTitle .ActionContainer {
-  margin: auto ;
-  width: 200px; 
-}
-
-.UIJCRExplorerPortlet .UIFolderForm .ActionButton {
-  width: 80px; 
-}
-
-.UIJCRExplorerPortlet .UIRenameForm .ActionButton {
-  width: 80px; 
-}
-
-.UIJCRExplorerPortlet .UIRenameForm .UIFormWithTitle .ActionContainer {
-  margin: auto ;
-  width: 200px; 
-}
-
-/*############################## -- END UIFolderForm -- ##############################*/
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
