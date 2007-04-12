@@ -22,39 +22,33 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIBrowseContentPortlet .UIAction{
-   width: auto;
+.UIBrowseContentPortlet .UIFormWithTitle {
+	width: 550px;
 }
 
-.UIBrowseContentPortlet .UIAction .ActionContainer{
-   width: 300px;
-   margin:auto;
+.UIBrowseContentPortlet .UINewConfigForm .UIAction{
+	padding-top: 10px;
+	width: 200px;
+	margin: auto;
+	
+}
+.UIBrowseContentPortlet .UIConfigContainer .UIAction{
+	padding-top: 10px;
+	width: 300px;
+	margin: auto;
 }
 
-.UIBrowseContentPortlet .ActionButton {
- width:110px; /*FIX BUG IE*/
+.UIBrowseContentPortlet .UIConfigContainer .ActionButton {
+	width:120px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-   width:80px; /*FIX BUG IE*/
+	width:80px; /*FIX BUG IE*/
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
-  padding: 1px;
-}
-
-.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout {
-  border: none;
-  background: #ffffff;
-}
 
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout label {
   width: 150px;
-}
-
-.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout {
-  padding: 0px;
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
@@ -112,11 +106,6 @@
 .UIBrowseContentPortlet .UIBrowseContainer {
   padding: 0px;
   background: white;
-}
-
-.UIBrowseContentPortlet .UIBrowseContainer .ActionContainer {
-  width: 200px;
-  margin: auto;
 }
 
 /*############################## -- Begin UIToolBar -- ##############################*/
@@ -271,6 +260,8 @@
   margin-left: 5px;
   float: left;
 }
+
+/*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
 
 .UIBrowseContentPortlet .UISearchController {
 	padding: 5px;

@@ -258,7 +258,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.loadNewConfig(true);
     }
   }
   public static class CancelActionListener extends EventListener<UIPathConfig>{
@@ -272,7 +272,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.loadNewConfig(false);
     }
   }
   public static class EditActionListener extends EventListener<UIPathConfig>{

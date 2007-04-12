@@ -24,6 +24,11 @@
   margin-left: 25px;
 }
 
+.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction{
+  margin: 5px auto 15px auto;
+  padding-bottom: 15px;
+}
+
 .UIECMAdminPortlet .UIMetadataManager {
   padding: 0px 5px;
 }

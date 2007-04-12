@@ -379,7 +379,7 @@ public class UIQueryConfig extends UIForm {
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.loadNewConfig(true);
     }
   }
 
@@ -394,7 +394,7 @@ public class UIQueryConfig extends UIForm {
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig() ;
+      uiConfigTabPane.loadNewConfig(false) ;
     }
   }
   public static class EditActionListener extends EventListener<UIQueryConfig>{

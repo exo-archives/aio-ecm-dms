@@ -172,7 +172,7 @@ public class UIScriptConfig extends UIForm {
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.loadNewConfig(true);
     }
   }
   public static class CancelActionListener extends EventListener<UIScriptConfig>{
@@ -186,7 +186,7 @@ public class UIScriptConfig extends UIForm {
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig();
+      uiConfigTabPane.loadNewConfig(false);
     }
   }
   public static class EditActionListener extends EventListener<UIScriptConfig>{

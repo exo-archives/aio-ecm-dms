@@ -62,7 +62,12 @@ public class UINewConfigForm extends UIForm {
     addChild(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, getWorkSpaceOption())) ;
     addChild( new UIFormSelectBox(FIELD_BROWSETYPE, FIELD_BROWSETYPE, getBrowseTypeOption())) ;
   }
-
+  
+  public void resetForm() throws Exception{
+    getUIFormSelectBox(FIELD_WORKSPACE).reset() ;
+    getUIFormSelectBox(FIELD_BROWSETYPE).reset() ;
+  }
+  
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;

@@ -12,6 +12,10 @@
   margin-left: 10px;
 }
 
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
+  width: 310px;
+}
+
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout{
   padding: 8px;
 }
@@ -42,8 +46,12 @@
   margin-left: auto;
 }
 
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
+  padding: 20px 0px;
+}
+
+
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
-  width: 400px ;
   border: 1px solid white ;
 }
 
@@ -55,6 +63,10 @@
   width: 600px ;
   margin:auto;
   margin-top: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction{
+  margin-top: 15px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{

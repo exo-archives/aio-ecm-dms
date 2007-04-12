@@ -223,7 +223,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig() ;
+      uiConfigTabPane.loadNewConfig(true) ;
     }
   }
   
@@ -238,7 +238,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.createNewConfig() ;
+      uiConfigTabPane.loadNewConfig(false) ;
     }
   }
   public static class EditActionListener extends EventListener<UIDocumentConfig>{

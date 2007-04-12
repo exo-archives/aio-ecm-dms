@@ -13,7 +13,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 
 @ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
 public class UIViewManager extends UIContainer {
-  
   public UIViewManager() throws Exception{
     addChild(UIViewContainer.class, null, null) ;
     UITemplateContainer uiECMTemp = addChild(UITemplateContainer.class, null, "ECMTemplate") ;

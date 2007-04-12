@@ -135,16 +135,17 @@
 			                    </div>  
 			                  </td>
 			                  <td class="EventAuthorNameLabel">
-			                    Author: <%=uicomponent.getOwner(doc)%>
+			                    <%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
 			                  </td>
 			                  <td class="DateAndTimeLabel">
-			                   Date time: 10/04/2007 14:00
+			                   <%=_ctx.appRes(componentName + ".label.dateTime")%>:<%=uicomponent.getCreatedDate(doc)%>
 			                  </td>
 			                </tr>        
 			              </table>
 			            </div>
 			            <div class="MainEventContent">
-			              <div class="SummaryTitleLabel">Summary:
+			              <div class="SummaryTitleLabel">
+											<%=_ctx.appRes(componentName + ".label.summary")%>:
 			                <%if(doc.hasProperty("exo:summary")){%>
 			                 <%=doc.getProperty("exo:summary").getString()%>
 			               <%}%>
@@ -158,7 +159,9 @@
 	   			 <%if(isShowAllDoc) {%>
 					    <div class="ViewPreviousDocument"> 
 					      <div class="BackIcon"><span></span></div>
-					      <a href="<%=uicomponent.event('Back')%>">Previous View</a>
+					      <a href="<%=uicomponent.event('Back')%>">
+					      	<%=_ctx.appRes(componentName + ".label.previous")%>
+					      </a>
 					      <div style="clear:left"><span></span></div>
 					    </div>
 	    		<%}%>
@@ -222,11 +225,13 @@
 												  }
 												  println "<div style=\"clear: both\"><span></span></div>" ;									  
 				                  if(!(docChilds.size() < itemPerBlock)) {
-				                  	String label = "More Documents" ;
+				                  	String label = componentName + ".label.more" ;
 				                %>
 				                     <div class="ViewMoreDocument">
 				                    	<div class="NextIcon"><span></span></div>
-				                    	<a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">$label</a>
+				                    	<a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">
+				                    		<%=_ctx.appRes(label)%>
+															</a>
 				                    	<div style="clear: left;"><span></span></div>                               
 				                    </div>
 				                  	<div style="clear:right"><span></span></div>										  

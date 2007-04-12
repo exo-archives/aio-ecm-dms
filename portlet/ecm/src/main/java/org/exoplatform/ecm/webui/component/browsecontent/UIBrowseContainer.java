@@ -53,7 +53,6 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 14, 2006 5:15:47 PM
  */
 @ComponentConfig(
-    //template = "app:/groovy/webui/component/browse/test.gtmpl",
     events = {
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
@@ -243,11 +242,13 @@ public class UIBrowseContainer extends UIContainer {
   public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
   
   public String getOwner(Node node) throws Exception{
-    return ((ExtendedNode)node).getACL().getOwner() ;
+    String owner = ((ExtendedNode) node).getACL().getOwner();    
+    if(owner != null) return owner ;
+    return "System";
   }
   
   public String getCreatedDate(Node node) throws Exception{
-    return "UIBrowseContainer.label.date" ;
+    return "not defined" ;
   }
 
   private boolean isReferenceableNode(Node node) throws Exception {
@@ -360,6 +361,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     return nodes ;
   }
+  
   public void buildTree(String path) throws Exception {
     treeRoot_.getChildren().clear() ;
     String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
@@ -599,7 +601,6 @@ public class UIBrowseContainer extends UIContainer {
       UIBrowseContainer uiContainer = event.getSource() ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-
       if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
         uiContainer.storeHistory() ;
         String path = objectId.substring(objectId.lastIndexOf(Utils.SEMI_COLON)+1) ;
@@ -629,28 +630,22 @@ public class UIBrowseContainer extends UIContainer {
   static public class BackActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
-      
-      if(uiContainer.isShowDocumentByTag()) {
-        uiContainer.setShowDocumentByTag(false) ;
-      }
+      if(uiContainer.isShowDocumentByTag()) uiContainer.setShowDocumentByTag(false) ;
       if(uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
       }
-      if(uiContainer.isShowAllDocument()) {
-        uiContainer.setShowAllChildren(false) ;
-      }
-      
+      if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
       uiContainer.setCurrentNode(uiContainer.history_.get(uiContainer.KEY_CURRENT)) ;
       uiContainer.setSelectedTab(uiContainer.history_.get(uiContainer.KEY_SELECTED)) ;
       uiContainer.history_.clear() ;
       uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
-      //uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getSelectedTab())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
+  
   static public class ViewByTagActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;

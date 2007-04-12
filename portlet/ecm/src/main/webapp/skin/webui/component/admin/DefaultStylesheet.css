@@ -15,6 +15,13 @@
 	width: 300px;
 }
 
+.UIECMAdminPortlet .UIFormWithTitle {
+	width: 560px;
+}
+.UIECMAdminPortlet .UIPageIterator {
+	margin-right: 0px;
+}
+
 .UIECMAdminPortlet .UIECMPortletLayout {
   border: 1px solid #737373;
   border-collapse: collapse ;
@@ -125,6 +132,10 @@
   margin-top: 5px ;
 }
 
+.UIECMAdminPortlet .UINamespaceList .UIAction{
+	width: 100px;
+}
+
 /*############################## -- UIDriveManager -- ########################*/
 
 .UIECMAdminPortlet .UIDriveList {
@@ -159,30 +170,43 @@
 }
 
 /*############################## -- UIViewManager -- ########################*/
+.UIECMAdminPortlet .UIViewFormTabPane {
+	border: solid 1px red ;
+}
 
-.UIECMAdminPortlet .UIViewManager {
-  height: 300px;
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
+	width: 540px;
+	margin: auto;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction{
+	padding-top: 10px;
+}
+
+.UIECMAdminPortlet .UIViewManager .UITabPane{
+  padding: 10px;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewList {
   margin-top: 5px;
 }
 
-.UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
-	padding: 0px 10px;
-}
-
-.UIECMAdminPortlet .UIViewManager .UIFormTabPane {
-	width: 550px ;
-	margin-left: auto; margin-right: auto;
-}
-
 .UIECMAdminPortlet .UIECMTemplateList {
   margin-top: 5px;
+}
+.UIECMAdminPortlet .UIECMTemplateList .UIAction{
+  width: 85px;
 }
 
 .UIECMAdminPortlet .UICBTemplateList {
   margin-top: 5px;
+}
+.UIECMAdminPortlet .UICBTemplateList .UIAction{
+   width: 85px;
+}
+
+.ECMTempForm .UIFormWithTitle .UIAction {
+	width: 380px;
 }
 
 .ECMTempForm .UIFormWithTitle .UIForm .textarea {
@@ -191,11 +215,16 @@
   margin-left: 25px;
 }
 
+.CBTempForm .UIFormWithTitle .UIAction {
+	width: 380px;
+}
+
 .CBTempForm .UIFormWithTitle .UIForm textarea {
   width: 500px;
   height: 300px;
   margin-left: 25px;
 }
+
 /*############################## -- UIActionManager -- ########################*/
 .UIActionManager .UIActionTypeForm .UIFormWithTitle .HorizontalLayout {
 	padding-top: 10px; padding-left: 30px;
@@ -205,7 +234,9 @@
 .UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
 }
-
+.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction{
+  width: 380px;
+}
 .UIECMScripts .UIScriptFilterForm .UIForm {
    height: 30px; width: 100%;
    padding: 0px;
@@ -223,7 +254,7 @@
 }
 
 .UIECMScripts .UIFormWithTitle .HorizontalLayout{
-  padding-top: 7px;
+  padding: 10px;
 }
 
 .UIECMScripts .UIFormWithTitle .UIForm textarea {
@@ -233,8 +264,13 @@
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
+
+.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction{
+  width: 380px;
+}
+
 .UICBScripts .UIFormWithTitle .HorizontalLayout{
-  padding-top: 7px;
+  padding: 10px;
 }
 
 .UICBScripts .UIFormWithTitle .UIForm textarea {
@@ -245,29 +281,28 @@
 
 /*############################## --Begin UITemplatesManager --##############################*/
 
-.UITemplatesManager .UIPopupWindow .WorkingArea {
-	height: 350px ;
-	overflow: auto ;
-	padding:10px;
-}
 
 .UITemplatesManager .UIGrid .ActionContainer {
   width: 50px ;
   margin: auto;
 }
 
-.UITemplatesManager .UIFormTabPane {
+.UITemplatesManager .UITabPane {
+	padding: 10px;
+}
+
+.UITemplatesManager .UITabPane .UIDialogTab .UIAction{
+	width: 380px;
+}
+
+.UITemplatesManager .UITabPane .UIViewTab .UIAction{
+	width: 380px;
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
   width: 430px; 
   height: 300px; 
   margin: 5px ;
-}
-
-.UITemplatesManager .UIFormWithTitle {
-  padding-top: 7px;
-  width:auto;
 }
 
 .UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
@@ -282,18 +317,29 @@
 
 /*############################## -- UINamespaceManager -- ########################*/
 .UINamespaceManager .UIFormWithTitle .HorizontalLayout {
-  padding-top: 15px;
+ 	padding: 15px 0px;
 }
 
 /*############################## -- UIQueriesManager  -- ########################*/
+
+.UIQueriesManager .UIQueriesForm .UIFormWithTitle .HorizontalLayout {
+	padding: 15px 0px;
+}
+
+
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 150px ;
 	width: 400px ;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
+.UIFolksonomyManager .UITagStyleForm .UIAction{
+	width: 200px ;
+	padding: 12px 0px;
+}
+
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea{
-	height: 250px ;
+	height: 290px ;
 	width: 400px ;
 }
 

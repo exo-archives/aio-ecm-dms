@@ -26,8 +26,12 @@
   float: left;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction{
+	margin: 14px auto;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .HorizontalLayout{
-	padding-top: 12px;
+	padding: 23px 0px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {

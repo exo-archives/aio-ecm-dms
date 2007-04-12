@@ -5,6 +5,7 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
 	def subDocumentList =  uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
+	String componentName = uicomponent.getName() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
@@ -21,7 +22,7 @@
 		 	<%if(!hasNoDocument){%>
   				<div class="EventContent">
 	      <%
-	        for (Node doc in subDocumentList) {
+	        for(Node doc in subDocumentList) {
 	          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
 	          String iconName = uicomponent.getIcons(doc) + "16x16Icon" ;
 	      %>
@@ -36,19 +37,20 @@
 	                    </div>  
 	                  </td>
 	                  <td class="EventAuthorNameLabel">
-	                    Author: <%=uicomponent.getOwner(doc)%>
+	                  	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
 	                  </td>
 	                  <td class="DateAndTimeLabel">
-	                   Date time: 10/04/2007 14:00
+	                  	<%=_ctx.appRes(componentName + ".label.dateTime")%>:<%=uicomponent.getCreatedDate(doc)%>
 	                  </td>
 	                </tr>        
 	              </table>
 	            </div>
 	            <div class="MainEventContent">
-	              <div class="SummaryTitleLabel">Summary:
+	              <div class="SummaryTitleLabel">
+	              	<%=_ctx.appRes(componentName + ".label.summary")%>:
 	                <%if(doc.hasProperty("exo:summary")){%>
 	                 <%=doc.getProperty("exo:summary").getString()%>
-	               <%}%>
+	                <%}%>
 	              </div>
 	            </div>
 	          </div>
@@ -58,7 +60,9 @@
    			</div>
 		    <div class="ViewPreviousDocument"> 
 		      <div class="BackIcon"><span></span></div>
-		      <a href="<%=uicomponent.event('Back')%>">Previous View</a>
+		      <a href="<%=uicomponent.event('Back')%>">
+		      	<%=_ctx.appRes(componentName + ".label.previous")%>
+		      </a>
 		      <div style="clear:left"><span></span></div>
 		    </div>
 		    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
