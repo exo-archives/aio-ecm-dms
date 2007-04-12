@@ -187,11 +187,6 @@
 }
 
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .ActionContainer {
-	width: 360px ;
-}
-
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
 }
