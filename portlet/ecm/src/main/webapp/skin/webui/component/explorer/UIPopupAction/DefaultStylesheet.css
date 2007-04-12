@@ -236,16 +236,6 @@
 
 /*############################## -- End UIVoteForm   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIFolderForm .UIFormWithTitle .ActionContainer {
-  margin: auto;    
-  width: 300px ;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .ActionContainer {
-	margin:auto;
-	width:300px;
-}
-
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle {
 	width:500px;
 	margin: auto ;
@@ -274,32 +264,7 @@
   padding-left: 135px ;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforField {
-}
-
-
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionContainer {
-	width:400px;
-	margin: auto ;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionButton a {
-  float: left ;
-  margin-left: 3px;
-}
-
 .UIJCRExplorerPortlet .SelectFileFrame {
   margin:10px 0px 0px 50px;
   width:400px;
 }
-
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .ActionContainer {
-  margin: auto ;
-  width: 300px ;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .ActionContainer {
-	width:300px;
-	margin: auto ;
-}
-

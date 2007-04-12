@@ -45,7 +45,7 @@
       %>
     </div>
     <%/* start render action*/%>
-		<div class="UIAction" style="width:180px; margin:auto;"> 
+		<div class="UIAction"> 
 	    <div class="ActionContainer">
 	      <% for(action in uicomponent.getActions()) { %>
 	        <div class="ActionButton">
@@ -53,7 +53,6 @@
 							<div class="ButtonLeft">
 							  <div class="ButtonRight">
 								  <div class="ButtonMiddle">
-									  <div class="Icon ${action}16x16Icon"><span></span></div>
 								    <% 
 								      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
 								      String link = uicomponent.event(action) ;
