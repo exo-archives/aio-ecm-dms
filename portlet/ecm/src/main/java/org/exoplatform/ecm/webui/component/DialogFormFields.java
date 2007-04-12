@@ -19,6 +19,7 @@ import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.faces.core.component.UIStringInput;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -36,7 +37,6 @@ import org.exoplatform.webui.component.UIFormUploadInput;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.component.validator.EmailAddressValidator;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
-import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.component.validator.NumberFormatValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -196,7 +196,7 @@ public class DialogFormFields extends UIForm {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       if(validateType != null) {
         if(validateType.equals("name")) {
-          uiInput.addValidator(NameValidator.class) ;
+          uiInput.addValidator(ECMNameValidator.class) ;
         } else if (validateType.equals("email")){
           uiInput.addValidator(EmailAddressValidator.class) ;
         } else if (validateType.equals("number")) {
@@ -307,7 +307,7 @@ public class DialogFormFields extends UIForm {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       if(validateType != null) {
         if(validateType.equals("name")) {
-          uiInput.addValidator(NameValidator.class) ;
+          uiInput.addValidator(ECMNameValidator.class) ;
         } else if (validateType.equals("email")){
           uiInput.addValidator(EmailAddressValidator.class) ;
         } else if (validateType.equals("number")) {

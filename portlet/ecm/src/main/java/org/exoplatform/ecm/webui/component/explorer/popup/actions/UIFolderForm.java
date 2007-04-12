@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.nodetype.ConstraintViolationException;
 
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -21,7 +22,6 @@ import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
-import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -43,7 +43,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   public UIFolderForm() throws Exception {
     addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, getOptions())) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(NameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
   }
 

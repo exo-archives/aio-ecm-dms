@@ -11,7 +11,7 @@
   def nodeTypes = uicomponent.getNodeTypeList() ; 
   if(nodeTypes == null) return ;
 %>
-<div class="UINodeTypeList">
+<div class="UINodeTypeList" id="$uicomponent.id">
   <table class="UIGrid">
     <thead>
       <tr>

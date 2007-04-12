@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.namespace;
 
 import javax.jcr.NamespaceRegistry;
+
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -13,7 +15,6 @@ import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
-import org.exoplatform.webui.component.validator.NameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -41,7 +42,7 @@ public class UINamespaceForm extends UIForm {
 
   public UINamespaceForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_PREFIX, FIELD_PREFIX, null).
-                   addValidator(NameValidator.class)) ;
+                   addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_URI, FIELD_URI, null).
                    addValidator(EmptyFieldValidator.class)) ;
   }
