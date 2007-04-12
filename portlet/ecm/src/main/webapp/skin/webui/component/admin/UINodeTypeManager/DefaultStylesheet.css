@@ -28,15 +28,6 @@
   border-left: 1px solid #7EAAD0;
 }
 	
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .ActionContainer {
-  width: 320px ;
-  margin: auto ;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
-  margin-left: 0px ;
-}
-
 .UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
   width: 100% ;
 }
@@ -51,43 +42,13 @@
   margin-left: auto;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
-  width: 180px ;
-  margin: auto;
-}
-
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
   width: 400px ;
   border: 1px solid white ;
 }
 
-.UIECMAdminPortlet .UIFormInputSetWithActions .UIAction {
-	width: 500px;
-}
-
-.UIECMAdminPortlet .UINodeTypeImport .ActionContainer {
-  width: 300px ;
-  margin: auto ;
-}
-
-.UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle .UIAction {
-	margin-left: 0px ;
-	width: auto ;
-}
-
-.UIECMAdminPortlet .UIFormInputSetWithActions .ActionContainer {
-  width: 300px ;
-  margin: auto ;
-}
-
 .UIECMAdminPortlet .UINodeTypeExport {
   width: 440px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {
-  width: 260px;
-  margin: auto;
-  padding: 5px 0px 5px 0px; 
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
@@ -113,11 +74,6 @@
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
   width: 450px ;
   border-left:1px solid #7EAAD0 ;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .ActionContainer {
-  width: 380px ;
-  margin:auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithActions .checkbox {

@@ -167,26 +167,6 @@
 }
 
 /*############################## -- UIActionManager   -- ##############################*/
-.UIJCRExplorerPortlet .UIActionContainer .ActionContainer {
-  width: 200px;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
-  width: 100px; 
-  margin-top:20px;
-  margin-left:auto;
-  margin-right:auto;
-}
-.UIJCRExplorerPortlet .UIPropertyForm .ActionContainer{
-  width: 200px; 
-  margin:auto;
-}
-
-.UIJCRExplorerPortlet .UIMetadataTab .ActionContainer{
-  width: 200px; 
-  margin:auto;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   padding: 10px;
 }
@@ -196,7 +176,6 @@
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
 	line-height: 16px ;
 }
@@ -227,11 +206,6 @@
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction .NormalStyle {
   border: none ;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-	margin: 10px auto;
-	width: 90px;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/

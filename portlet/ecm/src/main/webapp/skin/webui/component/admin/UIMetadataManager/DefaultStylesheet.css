@@ -18,18 +18,6 @@
   width: 100% ;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
-  width: 200px;
-  margin: auto;
-  padding-top: 0px;
-}
-
-.UIECMAdminPortlet .UIMetadataList .UIAction {
-  padding-top: 7px;
-  width: 100px;
-  margin:auto;
-}
-
 .UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm .textarea {
   width: 498px;
   height: 300px;
