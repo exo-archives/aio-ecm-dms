@@ -1,12 +1,13 @@
 
-@import url("../../../icons/DefaultStylesheet.css");
-@import url("UICategoryTree/DefaultStylesheet.css");
-@import url("UIContentView/DefaultStylesheet.css");
-@import url("UISubContent/DefaultStylesheet.css");
-@import url("UINavigation/DefaultStylesheet.css");
-@import url("UICBSearchForm/DefaultStylesheet.css");
-@import url("UIEventViewer/DefaultStylesheet.css");
-@import url("../UIVoteForm/DefaultStylesheet.css");
+@import url("../../../icons/MacStylesheet.css");
+@import url("UICategoryTree/MacStylesheet.css");
+@import url("UIContentView/MacStylesheet.css");
+@import url("UISubContent/MacStylesheet.css");
+@import url("UINavigation/MacStylesheet.css");
+@import url("UICBSearchForm/MacStylesheet.css");
+@import url("UIEventViewer/MacStylesheet.css");
+@import url("../UIVoteForm/MacStylesheet.css");
+
 
 .UIWindow .UIBrowseContentPortlet {
   overflow: auto;
@@ -22,39 +23,33 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIBrowseContentPortlet .UIAction{
-   width: auto;
+.UIBrowseContentPortlet .UIFormWithTitle {
+	width: 550px;
 }
 
-.UIBrowseContentPortlet .UIAction .ActionContainer{
-   width: 300px;
-   margin:auto;
+.UIBrowseContentPortlet .UINewConfigForm .UIAction{
+	padding-top: 10px;
+	width: 200px;
+	margin: auto;
+	
+}
+.UIBrowseContentPortlet .UIConfigContainer .UIAction{
+	padding-top: 10px;
+	width: 300px;
+	margin: auto;
 }
 
-.UIBrowseContentPortlet .ActionButton {
- width:110px; /*FIX BUG IE*/
+.UIBrowseContentPortlet .UIConfigContainer .ActionButton {
+	width:120px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-   width:80px; /*FIX BUG IE*/
+	width:80px; /*FIX BUG IE*/
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
-  padding: 1px;
-}
-
-.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout {
-  border: none;
-  background: #ffffff;
-}
 
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout label {
   width: 150px;
-}
-
-.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout {
-  padding: 0px;
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
@@ -112,11 +107,6 @@
 .UIBrowseContentPortlet .UIBrowseContainer {
   padding: 0px;
   background: white;
-}
-
-.UIBrowseContentPortlet .UIBrowseContainer .ActionContainer {
-  width: 200px;
-  margin: auto;
 }
 
 /*############################## -- Begin UIToolBar -- ##############################*/
@@ -223,19 +213,8 @@
 	
 }
 
-
-
-/*############################## -- Begin UIDocumentList -- ##############################*/
-.UIBrowseContainer .UIDocumentList .UIGrid{
-	border: none;
-}
-
-.UIBrowseContainer .UIDocumentList .UIGrid td{
-	border: none;
-}
-
 .UIBrowseContainer .UIDocumentList {
-	padding-top: 10px;
+	margin: 5px;
 }
 
 .UIBrowseContainer .DocNodeIcon{
@@ -282,6 +261,8 @@
   margin-left: 5px;
   float: left;
 }
+
+/*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
 
 .UIBrowseContentPortlet .UISearchController {
 	padding: 5px;

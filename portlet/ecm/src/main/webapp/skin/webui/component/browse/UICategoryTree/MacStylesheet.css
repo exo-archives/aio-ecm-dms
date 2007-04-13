@@ -1,0 +1,82 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Vu Duy Tu
+ *          duytucntt@gmail.com
+ * DEC 19, 2006
+ * version: $Id$
+ */
+
+.UICategoryTree {
+  float: left;
+  border: solid 1px #e1e1e1 ;	
+  padding: 1px;
+  width: 200px;
+}
+
+.UICategoryTree a {
+  text-decoration: none;
+	color: #058ee6;
+	font-size: 11px;
+}
+
+.UICategoryTree .TitleCategoryTree {
+  background: url('../DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x ;
+  height: 19px; line-height: 19px;
+	margin: 0px;
+}
+
+.UICategoryTree .TitleCategoryTree .CategoryTreeIcon {
+	float: left;
+  margin-top: 2px;
+}
+
+.UICategoryTree .TiteLabel {
+	float: left;	
+	font-weight: bold;
+}
+
+.UICategoryTree .MiddleCategoryTree {
+	border: solid 1px #e1e1e1 ;	
+  background: #ffffff;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	overflow: auto;
+}
+
+.UICategoryTree .MiddleCategoryTree .TreeRootIcon{
+  float: left;
+  margin: 2px 5px 0px 2px;
+}
+
+.UICategoryTree .MiddleCategoryTree .RootTreeNode{
+	float: left;
+	font-weight:  bold;
+	font-size: 11px;
+	line-height: 16px; height: 16px;		
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu {
+
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .ParentSupMenu {
+	margin: 5px 0px 0px 18px;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .SelectIcon {
+	float: left;
+	margin-top: 3px;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {
+	margin-left: 24px;
+	line-height: 16px;
+	font-size: 11px;
+}
+
+.UICategoryTree .MiddleCategoryTree .ListMenu .CategorySelectLabel {
+	margin-left: 24px;
+	line-height: 16px;
+	font-weight:  bold;
+	font-size: 11px;
+}

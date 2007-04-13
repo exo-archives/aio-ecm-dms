@@ -1,0 +1,98 @@
+.UIEventViewer {  
+  margin: 0px 1px;
+  border: solid 1px #c0c0c0 ;
+  padding: 10px;
+}
+
+.UIEventViewer .UIPageIterator {
+	margin-right: 0px;
+}
+
+
+.UIEventViewer .EventContent {
+  border: solid 1px #e1e1e1;
+  padding: 10px;
+  margin-bottom: 2px;
+  font-size: 11px;
+}
+
+.UIEventViewer .ViewPreviousDocument {
+  margin: 0px 0px 5px 0px;
+  height: 19px; vertical-align: middle;
+  border: 1px #e1e1e1 solid; background: #f3f3f3;
+  float: left;
+}
+
+.UIEventViewer .ViewPreviousDocument .BackIcon {
+	float: left;
+  width: 16px; height: 16px;
+  margin: 3px 0px 0px 2px;
+  background: url('DefaultSkin/background/BlackDotBackArrow.gif') no-repeat;
+}
+
+.UIEventViewer .ViewPreviousDocument a{
+	float: left;
+	color: #333333;
+	line-height: 19px; 
+	font-size: 11px;
+	padding: 0px 10px 0px 4px;
+}
+
+.UIEventViewer .ViewPreviousDocument a:hover{
+	color: #058ee6;
+}
+
+.UIEventViewer .EventContent .EventDocumentLabel {
+	margin-left: 20px;
+  line-height: 16px; vertical-align: middle;
+}
+
+.UIEventViewer .EventContent .EventDocumentLabel a{
+	color: #058ee6;
+}
+
+.UIEventViewer .EventContent .EventDocumentLabel a:hover{
+	color: orange;
+}
+
+.UIEventViewer .EventContent .EventAuthorNameLabel {
+	text-align: left;
+	width: 25%;
+	color: gray;
+  line-height: 16px; vertical-align: middle;
+}
+
+.UIEventViewer .EventContent .DateAndTimeLabel {
+	text-align: left;
+	width: 180px;
+	color: gray;
+  line-height: 16px; vertical-align: middle;
+}
+
+.UIEventViewer .EventContent .SummaryTitleLabel {
+  line-height: 16px; vertical-align: middle;
+}
+
+.UIEventViewer .EventContent .EventContentDetail {
+	border-bottom: dotted 1px #e1e1e1;
+	margin-bottom: 5px;
+}
+.UIEventViewer .EventContent .TopEventContentDetail {
+	
+}
+
+.UIEventViewer .EventContent .MainEventContent {
+  padding: 3px 0px 5px 20px; 
+}
+
+.UIEventViewer .EventContent .TitleEventContent {
+	height: 17px;
+  background: url('DefaultSkin/background/TitleEventViewrBG1x17.gif') repeat-x;
+  padding-left: 10px;
+}
+
+.UIEventViewer .EventContent .PanelEventContent {
+  border-top: solid 1px #bdbdbd;
+  background: #ffffff;
+}
+

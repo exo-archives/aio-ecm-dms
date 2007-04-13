@@ -16,7 +16,7 @@
 .UIJCRExplorerPortlet {}
 
 .UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
-  width: 80px;
+  width: 100px;
 }
 
 .UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {

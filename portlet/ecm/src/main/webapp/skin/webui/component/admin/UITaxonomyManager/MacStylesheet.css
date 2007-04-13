@@ -84,8 +84,7 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
-  width: 190px;
-  margin: auto;
+  width: 210px;
 }
 
 .UIECMAdminPortlet .TrueFalseContainer{
@@ -102,10 +101,7 @@
   padding-right: 3px;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIAction  .ActionContainer {
-  margin: 10px;
+.UIECMAdminPortlet .UITaxonomyManager .UIAction {
+  width: 100px;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIAction  .ActionContainer .ActionButton {
-  width: 80px;
-}

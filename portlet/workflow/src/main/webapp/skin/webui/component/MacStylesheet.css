@@ -7,6 +7,15 @@
  */
 
 .UIWorkflowPortlet {
+	overflow: auto;
+}
+
+.UIWorkflowPortlet .UIForm .UIAction {
+	width: auto;
+}
+
+.UIWorkflowPortlet .ActionContainer {
+	float: right;
 }
 
 .UIWorkflowPortlet .Toolbar {
@@ -30,7 +39,7 @@
 
 .UIWorkflowPortlet .Toolbar .TextAdmin {
 	float: left;
-  font: 12px bold;
+  font-weight: bold;
   line-height:29px;
   padding: 0px 15px 0px 10px;
 }
@@ -41,7 +50,7 @@
 	background: url('DefaultSkin/background/ButtonContainerBG3x29.gif') repeat-x;
 }
 
-.UIWorkflowPortlet .Toolbar .ButtonContainer a {
+.UIWorkflowPortlet .Toolbar .ButtonContainer .TextButton {
   color: black;
 	padding: 0px 6px;
   font-weight: bold;
@@ -54,7 +63,7 @@
 	background: url('DefaultSkin/background/ButtonContainerSelectedBG3x29.gif') repeat-x;
 }
 
-.UIWorkflowPortlet .Toolbar .ButtonContainerSelected a {
+.UIWorkflowPortlet .Toolbar .ButtonContainerSelected .TextButton {
 	padding: 0px 6px;
 	font-weight: bold;
   line-height: 29px;
@@ -71,10 +80,11 @@
 	background: url('DefaultSkin/icons/Execute.gif') no-repeat;
 }
 
-Transition16x16Icon {
+.Transition16x16Icon , .EndOfState16x16Icon , .StartProcess16x16Icon {
 	width: 16px; height: 16px;
 	background: url('DefaultSkin/icons/Execute.gif') no-repeat;
 }
+
 /*********************************************** End Icon16x16 *****************************************/
 /*********************************************** Begin Icon24x24 ***********************************/
 .Monitor24x24Icon {
@@ -88,16 +98,6 @@ Transition16x16Icon {
 }
 /*********************************************** End Icon24x24 *****************************************/
 
-
-.UIWorkflowPortlet .DecoratorBox {
-  margin: 7px;
-}
-
-.UIWorkflowPortlet .UIPopupWindow .Content {
-  padding: 10px;
-}
-
-/*###########################################    ########################################*/
 .UIWorkflowPortlet .UIDocumentContent {
   background: white;
 }
@@ -189,11 +189,4 @@ Transition16x16Icon {
 
 .UIWorkflowPortlet .UIDocumentContent .EventFrame .FrameContent {
   padding: 10px;
-}
-/*###########################################    ########################################*/
-
-.UIWorkflowPortlet .UITask {
-}
-
-.UIWorkflowPortlet .UITask .TitleBar {
 }

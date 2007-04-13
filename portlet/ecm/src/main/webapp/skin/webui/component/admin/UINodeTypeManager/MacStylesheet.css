@@ -20,9 +20,8 @@
  	border-left: solid 1px #afaeae;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .ActionContainer {
-	width: 180px;
-	padding: 10px 0px;
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
+	width: 200px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
@@ -47,9 +46,8 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction{
-  width: 180px ;
-  margin: auto;
-  padding: 6px 0px 14px 0px;
+  width: 200px ;
+  padding: 9px 0px 14px 0px;
 }
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
@@ -58,9 +56,8 @@
   margin-left: 25px;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .ActionContainer {
-  width: 300px ;
-  margin: auto ;
+.UIECMAdminPortlet .UINodeTypeExport .UIAction {
+  width: 330px ;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport {
@@ -68,30 +65,11 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIAction{
-  margin: auto;	
-  width: 350px;
-  padding: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .ActionButton {
-  margin: auto;	
-  width: 110px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .ActionButton {
-  width: 80px;
-  float: right ;
-  margin: left;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .ActionButton {
-  float: left ;
+  width: 400px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {
-  width: 260px;
-  margin: auto;
-  padding: 5px 0px; 
+  width: 290px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
