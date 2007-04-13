@@ -75,7 +75,7 @@ public class JcrConsoleServlet extends HttpServlet {
     	String pass = (String)principalsIterator.next();
     	System.out.println("=========2" + (pass));
       }*/
-      System.out.println("===JcrConsoleServlet.java, doPost :" + (Thread.currentThread().getId()));
+      //System.out.println("===JcrConsoleServlet.java, doPost :" + (Thread.currentThread().getId()));
       params = parseQuery(commandLine);
       if (commandFromCommandLine.equals("login")) {
         if (context == null) {
