@@ -320,6 +320,12 @@ public class UIActionBar extends UIForm {
           uiDocumentForm.editDocument(selectedNode) ;
           uiDocumentForm.setContentNode(selectedNode) ;
           uiDocumentForm.addNew(false) ;
+//          if(nodeType.equals("nt:file")) {
+//            String mimeType = selectedNode.getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
+//            if(!mimeType.startsWith("text")) {
+//              
+//            }
+//          }
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
           uiPopupAction.activate(uiDocumentForm, 600, 550) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;

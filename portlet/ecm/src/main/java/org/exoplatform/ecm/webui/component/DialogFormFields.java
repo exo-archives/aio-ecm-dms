@@ -292,11 +292,13 @@ public class DialogFormFields extends UIForm {
         }
       } else if(node_ != null) {
         if(node_.isNodeType("nt:file")) {
-          Value[] values = node_.getNode("jcr:content").getProperty(getPropertyName(jcrPath)).getValues() ;
-          for(Value value : values) {
-            valueList.add(value.getString()) ;
-          }
-          uiMulti.setValue(valueList) ;
+          if(node_.getNode("jcr:content").hasProperty(getPropertyName(jcrPath))) {
+            Value[] values = node_.getNode("jcr:content").getProperty(getPropertyName(jcrPath)).getValues() ;
+            for(Value value : values) {
+              valueList.add(value.getString()) ;
+            }
+            uiMulti.setValue(valueList) ;
+          } 
         }
       }
       renderField(name) ;
