@@ -373,11 +373,17 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      Node renameNode ;
+      Node renameNode = uiExplorer.getNodeByPath(renameNodePath, session) ;;
+      if(renameNode.isNodeType("mix:versionable")) {
+        if(!renameNode.isCheckedOut()) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.is-checked-in", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       boolean isReferencedNode = false ;
       try {
         if(wsName != null) isReferencedNode = true ;
-        renameNode = uiExplorer.getNodeByPath(renameNodePath, session) ;
         UIControl uiControl = uiExplorer.getChild(UIControl.class) ;
         UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
         UIRenameForm uiRenameForm = uiActionBar.createUIComponent(UIRenameForm.class, null, null) ;
