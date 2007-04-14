@@ -33,6 +33,10 @@
   padding: 0px 5px;
 }
 
+.UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
+  width: 100px ;
+}
+
 .UIECMAdminPortlet .MetadataInfoDetails {
   width: 550px;
 }

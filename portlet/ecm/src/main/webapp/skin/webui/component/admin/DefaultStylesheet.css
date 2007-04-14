@@ -144,6 +144,10 @@
   margin-top: 5px ;
 }
 
+.UIECMAdminPortlet .UIDriveList .UIAction{
+  width: 100px ;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout label {
 	float:left;
   width: 120px ;
@@ -236,6 +240,11 @@
 	padding-top: 10px; padding-left: 30px;
 }
 
+.UIActionManager .UIActionTypeList .UIAction {
+  width: 100px ;
+}
+
+
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
 .UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
@@ -243,6 +252,11 @@
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction{
   width: 380px;
 }
+
+.UIECMScripts .ECMScriptList .UIAction{
+  width: 100px;
+}
+
 .UIECMScripts .UIScriptFilterForm .UIForm {
    height: 30px; width: 100%;
    padding: 0px;
@@ -305,6 +319,10 @@
 	width: 380px;
 }
 
+.UITemplatesManager .UITemplateList .UIAction {
+  width: 100px ;
+}
+
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
   width: 430px; 
   height: 300px; 
@@ -332,6 +350,9 @@
 	padding: 15px 0px;
 }
 
+.UIQueriesList .UIAction {
+  width: 100px ;
+}
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 150px ;

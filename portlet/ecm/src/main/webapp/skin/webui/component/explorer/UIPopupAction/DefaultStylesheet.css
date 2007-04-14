@@ -219,7 +219,11 @@
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {
-	width: 350px ;
+	width: 280px ;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIFormWithTitle .UIAction {
+	width: 250px ;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
