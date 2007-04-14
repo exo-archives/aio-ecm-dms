@@ -143,4 +143,11 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
   }
+
+  public String getLanguage() {
+    return null;
+  }
+
+  public void setLanguage(String language) {
+  }
 }

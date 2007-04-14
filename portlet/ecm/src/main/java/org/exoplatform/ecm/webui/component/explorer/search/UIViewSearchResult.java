@@ -158,4 +158,11 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
   }
+
+  public String getLanguage() {
+    return null;
+  }
+
+  public void setLanguage(String language) {
+  }
 }
