@@ -94,7 +94,7 @@
 						for(act in customActs) {
 						  params = [new Parameter("workspaceName", nodePath), new Parameter("actionName",act.getName())] ;
 						  strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
-					    strActs += "  <div class=\"ItemIcon " + Utils.getIconClass(act) + "16x16Icon\"><span></span></div>" ;
+					    strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><span></span></div>" ;
 						  strActs += "  <a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom","_objectid_",params) + "\">${act.name}</a>" ;
 						  strActs += "</div>" ;
 						}
@@ -104,7 +104,7 @@
 	      <tr>
 	        <td>
 						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
-					    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getIconClass(data)%>16x16Icon"><span></span></div></a>
+					    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
   					</div>
 	        </td>
 	        <%

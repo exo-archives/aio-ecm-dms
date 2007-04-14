@@ -26,8 +26,13 @@
 	      even = !even ;
     %>
 	    <tr class="$rowClass">
-	      <td class="text">Label</td>
-	      <td class="text">Action</td>
+	      <td class="text"><img src="<%=uicomponent.getIconURL(task)%>"/></td>
+	      <td class="text">
+	        <%
+            if(task.getActorId().indexOf(":/") > -1) println "<div class=\"Group16x16Icon\"></div>" ;
+						else println "<div class=\"User16x16Icon\"></div>" ;
+					%>
+				</td>
 	      <td class="text">$task.id</td>
 	      <td class="text"><%=uicomponent.getProcessName(task)%></td>
 	      <td class="text">$task.taskName</td>

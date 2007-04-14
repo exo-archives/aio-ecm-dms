@@ -18,6 +18,9 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.workflow.webui.component.CommentsComponent;
 import org.exoplatform.workflow.webui.component.ECMViewComponent;
 import org.exoplatform.workflow.webui.component.JCRResourceResolver;
@@ -30,10 +33,16 @@ import org.exoplatform.workflow.webui.component.VoteComponent;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIDocumentContent.gtmpl")
+@ComponentConfig(
+    template = "app:/groovy/webui/component/UIDocumentContent.gtmpl",
+    events = {
+        @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class)
+    }
+)
 public class UIDocumentContent extends UIContainer implements ECMViewComponent, VoteComponent, CommentsComponent {
   private Node node_ ;
-
+  private String language_ = "default" ;
+  
   public UIDocumentContent() throws Exception {}
   
   public void setNode(Node node) { this.node_ = node; }
@@ -161,13 +170,15 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent, 
     return getApplicationComponent(CommentsService.class).getComments(node_, "default") ;
   }
 
-  public String getLanguage() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public void setLanguage(String language) {
-    // TODO Auto-generated method stub
-    
+  public String getLanguage() { return language_ ; }
+  public void setLanguage(String language) { language_ = language ; }
+  
+  static public class ChangeLanguageActionListener extends EventListener<UIDocumentContent> {
+    public void execute(Event<UIDocumentContent> event) throws Exception {
+      UIDocumentContent uiDocContent = event.getSource() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocContent.getAncestorOfType(UITaskManager.class)) ;
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiDocContent.setLanguage(selectedLanguage) ;
+    }   
   }
 }

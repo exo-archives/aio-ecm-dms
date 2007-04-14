@@ -84,6 +84,15 @@ public class Utils {
     return node.getPrimaryNodeType().getName().replaceAll(":", "_") ;
   }
   
+  public static String getNodeTypeIcon(Node node, String size) throws RepositoryException {
+    String str = node.getPrimaryNodeType().getName().replaceAll(":", "_") + size;
+    if(node.isNodeType(NT_FILE)) {
+      Node jcrContentNode = node.getNode("jcr:content") ;
+      str += " " + jcrContentNode.getProperty(JCR_MIMETY).getString().replaceFirst("/", "_") + size;
+    }
+    return str ;
+  }
+  
 //  public static Collection getChildrenPerRow(int nbPerRow, Iterator iter) throws Exception{
 //    List<List> listOfList = new ArrayList<List>();
 //    List<Object> tempList = new ArrayList<Object>(nbPerRow);
@@ -157,5 +166,5 @@ public class Utils {
       rawinputs.put(property.getJcrPath(), property) ;      
     }
     return rawinputs;
-  }    
+  }
 }

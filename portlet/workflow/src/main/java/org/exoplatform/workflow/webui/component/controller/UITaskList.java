@@ -60,11 +60,11 @@ public class UITaskList extends UIContainer {
   }
 
   public String getIconURL(Task task) {
-    try{
+    try {
       Locale locale = getAncestorOfType(UIApplication.class).getLocale();    
       Form form = workflowFormsService.getForm(task.getProcessId(), task.getTaskName(), locale);
       return form.getIconURL(); 
-    }catch(Exception e) {
+    } catch(Exception e) {
       return "" ;
     }    
   }
