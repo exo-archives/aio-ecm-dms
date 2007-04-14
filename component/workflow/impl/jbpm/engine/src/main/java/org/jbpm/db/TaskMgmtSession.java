@@ -27,15 +27,17 @@ public class TaskMgmtSession {
    * get the tasllist for a given actor.
    */
   public List findTaskInstances(String actorId) {
-    List result = null;
+    List result = new ArrayList();
     try {
       Query query = session.createQuery(findTaskInstancesByActorId);
       query.setString("actorId", actorId);
       result = query.list();
     } catch (Exception e) {
+      e.printStackTrace() ;
       log.error(e);
       jbpmSession.handleException();
-      throw new RuntimeException("couldn't get task instances list for actor '"+actorId+"'", e);
+      return result;
+      //throw new RuntimeException("couldn't get task instances list for actor '"+actorId+"'", e);
     } 
     return result;
   }
@@ -64,6 +66,7 @@ public class TaskMgmtSession {
       query.setParameterList("actorIds", actorIds);
       result = query.list();
     } catch (Exception e) {
+      e.printStackTrace() ;
       log.error(e);
       jbpmSession.handleException();
       throw new RuntimeException("couldn't get task instances list for actors '"+actorIds+"'", e);

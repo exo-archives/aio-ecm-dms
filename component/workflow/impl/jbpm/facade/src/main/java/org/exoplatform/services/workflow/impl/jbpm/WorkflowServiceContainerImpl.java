@@ -171,7 +171,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
   }
 
   public List<Task> getAllTasks(String user) throws Exception {
-    List allTasks = new ArrayList();
+    List<Task> allTasks = new ArrayList<Task>();
     allTasks.addAll(getUserTaskList(user));
     allTasks.addAll(getGroupTaskList(user));
     return allTasks;
