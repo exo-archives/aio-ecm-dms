@@ -13,6 +13,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -28,6 +29,7 @@ import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
+import org.exoplatform.webui.component.validator.PermissionValidaror;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -46,11 +48,12 @@ import org.exoplatform.webui.event.Event.Phase;
     template =  "system:/groovy/webui/component/UIFormTabPane.gtmpl",
     events = {
       @EventConfig(listeners = UITemplateForm.SaveActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UITemplateForm.RefreshActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UITemplateForm.CancelActionListener.class)
+      @EventConfig(listeners = UITemplateForm.RefreshActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UITemplateForm.CancelActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UITemplateForm.AddPermissionActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UITemplateForm extends UIFormTabPane {  
+public class UITemplateForm extends UIFormTabPane implements UISelector {  
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_LABEL = "label" ;
   final static public String FIELD_ISTEMPLATE = "isDocumentTemplate" ;
@@ -59,6 +62,7 @@ public class UITemplateForm extends UIFormTabPane {
   final static public String FIELD_TAB_TEMPLATE = "template" ;
   final static public String FIELD_TAB_DIALOG = "defaultDialog" ;
   final static public String FIELD_TAB_VIEW = "defaultView" ;
+  final static public String FIELD_PERMISSION = "permission" ;
 
   public UITemplateForm() throws Exception {
     super("UITemplateForm", false) ;
@@ -66,17 +70,21 @@ public class UITemplateForm extends UIFormTabPane {
     templateTab.setActions(new String[]{"Save", "Refresh", "Cancel"}, null) ;
     templateTab.addUIFormInput(new UIFormSelectBox(FIELD_NAME, FIELD_NAME, getOption())) ;
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_LABEL, FIELD_LABEL, null).
-                                   addValidator(EmptyFieldValidator.class)) ;
+                               addValidator(EmptyFieldValidator.class)) ;
+    
     templateTab.addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ISTEMPLATE, FIELD_ISTEMPLATE, null));                               
+    templateTab.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null)) ;
+    templateTab.setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(templateTab) ;
+    
     UIFormInputSet defaultDialogTab = new UIFormInputSet(FIELD_TAB_DIALOG) ;
     defaultDialogTab.addUIFormInput(new UIFormTextAreaInput(FIELD_DIALOG, FIELD_DIALOG, null).
-                                        addValidator(EmptyFieldValidator.class)) ;
+                                    addValidator(EmptyFieldValidator.class)) ;
     defaultDialogTab.setRendered(false) ;
     addUIFormInput(defaultDialogTab) ;
     UIFormInputSet defaultViewTab = new UIFormInputSet(FIELD_TAB_VIEW) ;
     defaultViewTab.addUIFormInput(new UIFormTextAreaInput(FIELD_VIEW, FIELD_VIEW, null).
-                                      addValidator(EmptyFieldValidator.class)) ;
+                                  addValidator(EmptyFieldValidator.class)) ;
     defaultViewTab.setRendered(false) ;
     addUIFormInput(defaultViewTab) ;
     setActions(new String[]{}) ;
@@ -87,6 +95,7 @@ public class UITemplateForm extends UIFormTabPane {
     getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(false) ;
     getUIFormTextAreaInput(FIELD_DIALOG).setValue("") ;
     getUIFormTextAreaInput(FIELD_VIEW).setValue("") ;
+    getUIStringInput(FIELD_PERMISSION).setValue("") ;
     getUIFormSelectBox(FIELD_NAME).setOptions(getOption()) ; 
   }
 
@@ -115,6 +124,14 @@ public class UITemplateForm extends UIFormTabPane {
     }    
     return false ;
   }
+  
+  @SuppressWarnings("unused")
+  public void updateSelect(String selectField, String value) {
+    UIFormInputSetWithAction uiFormAction = getChildById(FIELD_TAB_TEMPLATE) ;
+    uiFormAction.getUIStringInput(FIELD_PERMISSION).setValue(value) ;
+    UITemplatesManager uiManager = getAncestorOfType(UITemplatesManager.class) ;
+    uiManager.removeChildById("AddNewTemplatePermission") ;
+  }
 
   static public class SaveActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
@@ -130,7 +147,7 @@ public class UITemplateForm extends UIFormTabPane {
       String dialog = uiForm.getUIFormTextAreaInput(FIELD_DIALOG).getValue() ;
       String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue() ;
       boolean isDocumentTemplate = uiForm.getUIFormCheckBoxInput(FIELD_ISTEMPLATE).isChecked() ;
-      String[] roles = {"*"} ; 
+      String[] roles = {uiForm.getUIStringInput(FIELD_PERMISSION).getValue()} ; 
       if(dialog == null) dialog = "" ;
       if(view == null) view = "" ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
@@ -161,6 +178,15 @@ public class UITemplateForm extends UIFormTabPane {
       UITemplateForm uiFormTabPane = event.getSource() ;
       uiFormTabPane.refresh() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormTabPane.getParent()) ;
+    }
+  }
+  
+  static public class AddPermissionActionListener extends EventListener<UITemplateForm> {
+    public void execute(Event<UITemplateForm> event) throws Exception {
+      UITemplateForm uiTemplateForm = event.getSource() ;
+      UITemplatesManager uiManager = uiTemplateForm.getAncestorOfType(UITemplatesManager.class) ;
+      uiManager.initPopupPermission("AddNew") ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
 }

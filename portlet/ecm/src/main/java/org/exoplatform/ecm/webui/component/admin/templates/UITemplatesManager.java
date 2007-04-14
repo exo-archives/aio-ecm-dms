@@ -35,7 +35,7 @@ public class UITemplatesManager extends UIContainer{
     UIPopupWindow uiPopup = getChildById(popuId) ;
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, popuId) ;
-      uiPopup.setWindowSize(700, 0) ;
+      uiPopup.setWindowSize(700, 500) ;
     } else { 
       uiPopup.setRendered(true) ;
     }
@@ -51,8 +51,13 @@ public class UITemplatesManager extends UIContainer{
       uiPopup.setWindowSize(560, 300);
       UIECMPermissionBrowser uiECMPermission = 
         createUIComponent(UIECMPermissionBrowser.class, null, null) ;
-      UITemplateContent uiTemContent = findComponentById(id) ;
-      uiECMPermission.setComponent(uiTemContent, null) ;
+      if(id.equals("AddNew")) {
+        UITemplateForm uiForm = findFirstComponentOfType(UITemplateForm.class) ;
+        uiECMPermission.setComponent(uiForm, null) ;
+      } else {
+        UITemplateContent uiTemContent = findComponentById(id) ;
+        uiECMPermission.setComponent(uiTemContent, null) ;
+      }
       uiPopup.setUIComponent(uiECMPermission);
       uiPopup.setShow(true) ;
       return ;
