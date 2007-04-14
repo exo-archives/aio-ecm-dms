@@ -33,10 +33,10 @@ import org.exoplatform.webui.event.EventListener;
 public class UICBVoteForm extends UIComponent implements UIPopupComponent{
   public UICBVoteForm() {}
 
-  public Node getDocument() { 
+  public Node getDocument() throws Exception { 
     UIBrowseContentPortlet portlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
     UIDocumentDetail uiDocumentDetail = portlet.findFirstComponentOfType(UIDocumentDetail.class) ;
-    return uiDocumentDetail.getNode();
+    return uiDocumentDetail.node_;
   }
  
   public double getRating() throws Exception {

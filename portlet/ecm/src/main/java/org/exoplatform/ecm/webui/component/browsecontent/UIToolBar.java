@@ -126,7 +126,7 @@ public class UIToolBar extends UIContainer {
         app.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
         return ;
       } 
-      if(uiDocument.getNode().isNodeType("mix:votable")) {
+      if(uiDocument.node_.isNodeType("mix:votable")) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
         UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(UICBVoteForm.class, 300) ;
@@ -144,11 +144,11 @@ public class UIToolBar extends UIContainer {
         app.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
         return ;
       } 
-      if(uiDocument.getNode().isNodeType("mix:commentable")) {
+      if(uiDocument.node_.isNodeType("mix:commentable")) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
         UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
         UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
-        commentForm.setDocument(uiDocument.getNode()) ;
+        commentForm.setDocument(uiDocument.node_) ;
         uiPopupAction.activate(commentForm, 600, 0) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       }

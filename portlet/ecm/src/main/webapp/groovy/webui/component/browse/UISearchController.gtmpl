@@ -7,8 +7,9 @@
 	<div class="SearchResult">
 		<div class="ResultInfo">
 			<%=_ctx.appRes(uicomponent.name + ".label.searchTime")%>
-			(<%=uicomponent.getResultRecord()%> records :
-			 <%=uicomponent.getSearchTime()%> ms)
+			<%=uicomponent.getResultRecord()%> node ; 
+			<%=_ctx.appRes(uicomponent.name + ".label.duration")%>
+			 <%=uicomponent.getSearchTime()%> ms
 		</div>
 		<%uicomponent.renderChild(UICBSearchResults.class);%>
 	</div>

@@ -7,9 +7,12 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -26,17 +29,21 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
         @EventConfig(listeners = UICBSearchResults.CloseActionListener.class),
-        @EventConfig(listeners = UICBSearchResults.ViewActionListener.class)
+        @EventConfig(listeners = UICBSearchResults.ViewActionListener.class),
+        @EventConfig(listeners = UICBSearchResults.GotoActionListener.class)
     }
 )
 public class UICBSearchResults extends UIGrid {
   private static String[] GRID_FIELD = {"name", "path"} ;
-  private static String[] GRID_ACTIONS = {"View"} ;
+  private static String[] GRID_ACTIONS = {"View", "Goto"} ;
   public UICBSearchResults() throws Exception { 
     getUIPageIterator().setId("ResultListIterator") ;
     configure("path", GRID_FIELD, GRID_ACTIONS) ;
   }
-
+  private boolean isDocumentTemplate(String nodeType)throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    return templateService.getDocumentTemplates().contains(nodeType) ;
+  }
   static public class CloseActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
       UICBSearchResults uiResults = event.getSource() ;
@@ -51,21 +58,48 @@ public class UICBSearchResults extends UIGrid {
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
       Node node = container.getNodeByPath(itemPath) ;
+      NodeType nodeType = node.getPrimaryNodeType() ;
       UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
-      uiSearchController.setShowHiddenSearch() ;  
-      UICBSearchForm uiForm = uiSearchController.getChild(UICBSearchForm.class) ;      
-      if(uiForm.isDocumentType) {
-        container.viewDocument(node, true, true) ;
-        return ;
-      } 
-      if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-        container.selectNode(node) ;
+      if(uiResults.isDocumentTemplate(nodeType.getName())) {
+        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
+        UIDocumentDetail uiDocument = cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
+        uiDocument.setNode(node) ;
+        uiPopupAction.activate(uiDocument, 600, 0) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }
-      container.changeNode(node) ;
+      if(container.isCategories(nodeType)) {
+        uiSearchController.setShowHiddenSearch() ;
+        if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+          container.selectNode(node) ;
+          return ;
+        }
+        container.changeNode(node) ;
+        return ;
+      }
     }
   }
-
+  static public class GotoActionListener extends EventListener<UICBSearchResults> {
+    public void execute(Event<UICBSearchResults> event) throws Exception {
+      UICBSearchResults uiResults = event.getSource() ;
+      String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
+      Node node = container.getNodeByPath(itemPath) ;      
+      Node parentNode = node.getParent() ;
+      NodeType nodeType = parentNode.getPrimaryNodeType() ;
+      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
+      if(container.isCategories(nodeType)) {
+        uiSearchController.setShowHiddenSearch() ;
+        if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+          container.selectNode(parentNode) ;
+          return ;
+        }
+        container.changeNode(parentNode) ;
+        return ;
+      }
+    }
+  }
   public String[] getActions() { return new String[] {"Close"} ;}
 
   public void updateGrid(List<ResultData> result) throws Exception {

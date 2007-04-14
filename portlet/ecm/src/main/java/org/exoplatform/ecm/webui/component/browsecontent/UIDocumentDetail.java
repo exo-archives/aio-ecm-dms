@@ -4,24 +4,37 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
+import org.exoplatform.ecm.jcr.JCRResourceResolver;
+import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -30,12 +43,16 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Jan 15, 2007  
  */
 
-@ComponentConfig( )
+@ComponentConfig(
+    events ={ @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class) }
+)
 
-public class UIDocumentDetail extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent{
-  private Node node_ ;
-  private String nodeType_ ;
-
+public class UIDocumentDetail extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent, UIPopupComponent{
+  protected Node node_ ;
+  public static final String DEFAULT_LANGUAGE = "default".intern() ;
+  private String language_ = DEFAULT_LANGUAGE ;
+  private JCRResourceResolver jcrTemplateResourceResolver_ ;
+  
   public UIDocumentDetail() {} 
 
   public String getTemplatePath(){
@@ -44,41 +61,106 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     try{
       return templateService.getTemplatePathByUser(false, getNodeType(), userName) ;
     }catch(Exception e) {
-      return null ;
+     e.printStackTrace() ;
     }    
+    return null ;
   }
 
   public String getTemplate(){ return getTemplatePath() ;}
-
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    return getAncestorOfType(UIBrowseContainer.class).getTemplateResourceResolver(context, template) ;
+    if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
+    return jcrTemplateResourceResolver_ ;
   }
 
-  public Node getNode() {return node_ ;}
+  public void newJCRTemplateResourceResolver() {
+    try {
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(getSession(), "exo:templateFile") ;
+    } catch (Exception e) {}
+  }
+
+  public Node getNode() throws Exception { 
+    if(node_.hasProperty("exo:language")) {
+      String defaultLang = node_.getProperty("exo:language").getString() ;
+      if(!language_.equals(DEFAULT_LANGUAGE) && !language_.equals(defaultLang)) {
+        Node curNode = node_.getNode("languages/" + language_) ;
+        language_ = defaultLang ;
+        return curNode ;
+      } 
+    }    
+    return node_;
+  }
+  private Session getSession() throws Exception {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    Session session = repositoryService.getRepository().getSystemSession(getWorkSpace()) ;
+    return session ;
+  }
+  
+  public String getWorkSpace() {
+    return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
+  }
+  
+  public PortletPreferences getPortletPreferences() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest prequest = pcontext.getRequest() ;
+    PortletPreferences portletPref = prequest.getPreferences() ;
+    return portletPref ;
+  }
+  
+  public void setLanguage(String language) { language_ = language ; }
+  public String getLanguage() { return language_ ; }
+
+  public String getDownloadLink(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
+    Node jcrContentNode = node.getNode("jcr:content") ;
+    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+
+  public String getImage(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode("exo:image") ;
+    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+
+  public String getWebDAVServerPrefix() throws Exception {    
+    PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
+    String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
+    portletRequestContext.getRequest().getServerName() + ":" +
+    String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
+    return prefixWebDAV ;
+  }
 
   public void setNode(Node docNode) {node_ = docNode ;}
 
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
-    NodeIterator childrenIterator = getNode().getNodes();;
+    NodeIterator childrenIterator = node_.getNodes();;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
+      if ("nt:file".equals(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }
 
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    Node node = getNode() ;
-    if (node.hasProperty(Utils.EXO_RELATION)) {
-      Value[] vals = node.getProperty(Utils.EXO_RELATION).getValues();
-      for (Value val : vals) {
-        String uuid = val.getString();
-        Node rnode = getNodeByUUID(uuid);
-        relations.add(rnode);
+    if (node_.hasProperty("exo:relation")) {
+      Value[] vals = node_.getProperty("exo:relation").getValues();
+      for (int i = 0; i < vals.length; i++) {
+        String uuid = vals[i].getString();
+        Node node = getNodeByUUID(uuid);
+        relations.add(node);
       }
     }
     return relations;
@@ -94,8 +176,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
   }
 
   public Node getNodeByUUID(String uuid) throws Exception{ 
-    UIBrowseContainer container = getAncestorOfType(UIBrowseContainer.class) ;
-    return container.getNodeByUUID(uuid);
+    return getSession().getNodeByUUID(uuid);
   }
 
   public boolean hasPropertyContent(Node node, String property){
@@ -108,46 +189,67 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
   }
 
   public String getNodeType() throws Exception {
-    nodeType_ = getNode().getPrimaryNodeType().getName() ;
-    return nodeType_ ;
+    return node_.getPrimaryNodeType().getName() ;
   }
 
   public String getRssLink() {return null ;}
 
-  public List getSupportedLocalise() throws Exception {return null ;}
-
   public boolean isRssLink() {return false ;}
-  
+
   public double getRating() throws Exception {
-    return getNode().getProperty("exo:votingRate").getDouble();
+    return node_.getProperty("exo:votingRate").getDouble();
   }
 
   public long getVoteTotal() throws Exception {
-    return getNode().getProperty("exo:voteTotal").getLong();
+    return node_.getProperty("exo:voteTotal").getLong();
   }
-  
+
   public String getLanguage(Node node) throws Exception {
     return node.getProperty("exo:language").getValue().getString() ;
   }
 
   public List<Node> getComments() throws Exception {
-    return getApplicationComponent(CommentsService.class).getComments(getNode(), getLanguage(getNode())) ;
+    return getApplicationComponent(CommentsService.class).getComments(node_, getLanguage(node_)) ;
   }
-  
+
+  public List<String> getSupportedLocalise() throws Exception {
+    List<String> local = new ArrayList<String>() ;
+    if(node_.hasNode("languages")){
+      NodeIterator iter = node_.getNode("languages").getNodes() ;
+      while(iter.hasNext()) {
+        local.add(iter.nextNode().getName()) ;
+      }
+      local.add(node_.getProperty("exo:language").getString()) ;      
+    } 
+    return local ;
+  }
+
   public String getCommentTemplate() throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:comment", "view1") ;
   }
-  
+
   public String getVoteTemplate() throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
   }
 
-  public String getLanguage() {
-    return null;
+  static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
+    public void execute(Event<UIDocumentDetail> event) throws Exception {
+      UIDocumentDetail uiDocument = event.getSource() ;
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiDocument.setLanguage(selectedLanguage) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+    }
   }
 
-  public void setLanguage(String language) {
+  public void activate() throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void deActivate() throws Exception {
+    // TODO Auto-generated method stub
+    
   }
 }

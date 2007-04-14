@@ -21,9 +21,19 @@
   overflow: auto;
   border: solid 1px #b7b7b7;
 }
+.UIBrowseContentPortlet .GotoIcon{
+width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
+}
 
 .UIBrowseContentPortlet .UIFormWithTitle {
-	width: 550px;
+	width: 570px;
+	margin: auto;
+}
+
+.UIBrowseContentPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
+  background: none ;
+  border: none ;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .UIAction{
@@ -244,25 +254,6 @@
   float: right;
 }
 
-/*############################## -- FIX BUG POPUP  -- ##############################*/
-.UIBrowseContentPortlet .UIPopupWindow .UITree{
-  float: left;
-  width: 200px;
-}
-
-.UIBrowseContentPortlet .UIPopupWindow .UIGrid{
-  width: 350px;
-  margin-left: 10px;
-}
-
-
-.UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
-  margin-left: 5px;
-  float: left;
-}
-
-/*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
-
 .UIBrowseContentPortlet .UISearchController {
 	padding: 5px;
 }
@@ -282,7 +273,7 @@
 }
 
 .UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 18px; margin: auto;
+	width: 40px;
 }
 
 .UIBrowseContentPortlet .UISearchController .UIAction{
@@ -295,51 +286,9 @@
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
-.UIBrowseContentPortlet .UIVoteForm {
-	padding: 10px;
-}
 
-.UIBrowseContentPortlet .UIVoteForm .UIRatingInfoContainer {
-	width: 150px; padding: 5px 12px;
-	margin: auto;
-	background: white;
-	border: solid 1px #b7b7b7;
-}
-
-.UIBrowseContentPortlet .UIVoteForm .OptionsContainer {
-	margin: auto;
-	width: 120px; height: 20px;
-}
-
-.UIBrowseContentPortlet .UIVoteForm .OptionsContainer .NormalVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('DefaultSkin/background/GrayStar.gif');
-}
-
-.UIBrowseContentPortlet .UIVoteForm .OptionsContainer .RatedVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('DefaultSkin/background/YellowStar.gif');
-}
-
-.UIBrowseContentPortlet .UIVoteForm .OptionsContainer .OverVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('DefaultSkin/background/OverStar.gif');
-}
-.UIBrowseContentPortlet .UIVoteForm .UIAction .ActionButton {
-	width: 85px;
-}
 .UIBrowseContentPortlet .UIVoteForm .UIAction {
-	width: auto;
-}
-.UIBrowseContentPortlet .UIVoteForm .UIAction .ActionContainer{
-	width: 100px;
-	margin: auto; 
+	width:100px;;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/
