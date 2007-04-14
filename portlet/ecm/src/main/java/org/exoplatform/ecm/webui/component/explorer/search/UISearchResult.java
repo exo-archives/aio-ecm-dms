@@ -88,11 +88,6 @@ public class UISearchResult extends UIContainer {
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = (Node)uiExplorer.getSession().getItem(path) ;
-      if(uiSearchResult.isQuickSearch_) {
-        uiExplorer.setSelectNode(node) ;
-        uiExplorer.updateAjax(event) ;
-        return ;
-      }
       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class) ;
       if(!templateService.isManagedNodeType(node.getPrimaryNodeType().getName())) {
         UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;

@@ -42,8 +42,8 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(listeners = UIViewMetadataForm.SaveActionListener.class),
       @EventConfig(listeners = UIViewMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIViewMetadataForm.AddActionListener.class),
-      @EventConfig(listeners = UIViewMetadataForm.RemoveActionListener.class)
+      @EventConfig(listeners = UIViewMetadataForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIViewMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIViewMetadataForm extends DialogFormFields {

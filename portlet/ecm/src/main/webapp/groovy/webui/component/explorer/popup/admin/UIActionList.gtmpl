@@ -8,7 +8,7 @@
  */
 %>
 <% import org.exoplatform.webui.component.UIPageIterator; %>
-<div class="UIActionList">
+<div class="UIActionList" id="$uicomponent.id">
   <table class="UIGrid">
 	  <thead>
 	    <tr>

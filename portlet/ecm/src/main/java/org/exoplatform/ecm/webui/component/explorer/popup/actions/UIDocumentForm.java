@@ -54,9 +54,9 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     events = {
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentForm.CancelActionListener.class),
-      @EventConfig(listeners = UIDocumentForm.AddActionListener.class),
-      @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class)
+      @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
 

@@ -178,10 +178,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
-  height: 350px ;
-}
-
 /*############################## -- End UIActionManager   -- ##############################*/
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
 	line-height: 16px ;
@@ -253,6 +249,10 @@
   padding-left: 135px ;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
+  height: 350px ;
+}
+
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
@@ -264,5 +264,9 @@
 
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
 	float: left;
+}
+
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
+  width: 150px ;
 }
 /*############################## -- End Others   -- ##############################*/

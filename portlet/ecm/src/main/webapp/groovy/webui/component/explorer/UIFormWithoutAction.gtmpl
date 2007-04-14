@@ -10,7 +10,7 @@
 <div class="$uicomponent.id">
   <div class="UIFormWithTitle">
     <% uiform.begin() %>
-    <div class="HorizontalLayout" style="border: none;padding-top:15px;padding-bottom:10px;">
+    <div class="HorizontalLayout" style="border: none;">
       <% 
         for(field in uiform.getChildren()) { 
           if(field.isRendered()) {
