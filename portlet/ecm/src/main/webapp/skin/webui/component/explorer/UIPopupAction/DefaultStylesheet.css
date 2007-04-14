@@ -7,10 +7,6 @@
  */
 
 /*############################## -- Begin UIFormWithTitle -- ##############################*/
-.UIJCRExplorerPortlet .UIFormWithTitle {
-  width: 550px ;
-} 
-
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
   background: none ;
   border: none ;
