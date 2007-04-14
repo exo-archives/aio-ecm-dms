@@ -160,4 +160,14 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent, 
   public List<Node> getComments() throws Exception {
     return getApplicationComponent(CommentsService.class).getComments(node_, "default") ;
   }
+
+  public String getLanguage() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void setLanguage(String language) {
+    // TODO Auto-generated method stub
+    
+  }
 }

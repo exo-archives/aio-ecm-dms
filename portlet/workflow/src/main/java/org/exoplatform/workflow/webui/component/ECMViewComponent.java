@@ -37,4 +37,8 @@ public interface ECMViewComponent {
   public String getRssLink() ;
 
   public List getSupportedLocalise() throws Exception  ;
+  
+  public void setLanguage(String language) ;
+  
+  public String getLanguage() ;
 }
