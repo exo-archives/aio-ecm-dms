@@ -72,7 +72,7 @@ public class UITaskList extends UIContainer {
   public List<Task> getTasks() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     String remoteUser = pcontext.getRemoteUser();
-    if (remoteUser == null) remoteUser = "exoadmin"; 
+    if (remoteUser == null) return selectVisibleTasks(new ArrayList<Task>()) ;      
     List<Task> unsortedTasks = workflowServiceContainer.getAllTasks(remoteUser);
     return selectVisibleTasks(unsortedTasks) ; 
   }
