@@ -11,7 +11,7 @@
   def sharedQueries = uicomponent.getAllSharedQueries() ; 
   if(sharedQueries == null) return ;
 %>
-<div class="UIQueriesList">
+<div class="UIQueriesList" id="$uicomponent.id">
   <table class="UIGrid">
     <thead>
       <tr>
