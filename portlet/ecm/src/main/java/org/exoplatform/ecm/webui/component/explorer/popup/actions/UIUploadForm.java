@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 import javax.jcr.Node;
 import javax.jcr.Value;
 
+import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -101,7 +102,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       byte[] content = input.getUploadData() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null) name = fileName;
-      String mimeType = input.getUploadResource().getMimeType() ;
+      MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
+      String mimeType = mimeTypeSolver.getMimeType(name) ;
+      //String mimeType = input.getUploadResource().getMimeType() ;
       Node selectedNode = uiExplorer.getCurrentNode();
       
       boolean isExist = selectedNode.hasNode(name) ;
