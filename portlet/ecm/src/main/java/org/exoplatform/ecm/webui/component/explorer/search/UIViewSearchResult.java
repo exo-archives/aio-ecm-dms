@@ -123,7 +123,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
     return false ;
   }
 
-  public void setNode(Node node) { node_ = node ;  }
+  public void setNode(Node node) { node_ = node ; }
   
   public Node getNodeByUUID(String uuid) throws Exception{
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -158,5 +158,4 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
   }
-
 }

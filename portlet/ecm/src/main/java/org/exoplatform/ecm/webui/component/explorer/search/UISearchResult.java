@@ -20,6 +20,7 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIGrid;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -95,6 +96,20 @@ public class UISearchResult extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      if(uiSearchResult.isQuickSearch_) {
+        UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch") ;
+        if(uiPopup == null) {
+          uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch") ;
+        }
+        uiPopup.setResizable(true) ;
+        UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null) ;
+        uiViewSearch.setNode(node) ;
+        uiPopup.setWindowSize(560,450) ;
+        uiPopup.setUIComponent(uiViewSearch) ;
+        uiPopup.setRendered(true) ;
+        uiPopup.setShow(true) ;
+        return ;
+      }      
       UIECMSearch uiECMSearch = uiSearchResult.getParent() ;
       UIViewSearchResult uiView = uiECMSearch.getChild(UIViewSearchResult.class) ;
       if(uiView == null) uiView = uiECMSearch.addChild(UIViewSearchResult.class, null, null) ;
