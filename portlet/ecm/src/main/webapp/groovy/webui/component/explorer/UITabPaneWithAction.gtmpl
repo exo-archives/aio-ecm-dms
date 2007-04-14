@@ -7,35 +7,45 @@
  * 10:41:44 AM 
  */
 %>
-<%/*Begin UITabPane*/%>
+<%
+  def rcontext = _ctx.getRequestContext() ;
+	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
+%>
+
+<%//Begin UITabPane%>
 <div class="UITabPane" id="$uicomponent.id">
-  <%/*Begin TabPaneContent*/%>
-  <div class="TabPaneContent">
-    <%/*Begin WorkingArea*/%>
-    <div class="WorkingArea">
-      <%/*Begin Tabs*/%>
+  <%//Begin TabPaneContent%>
+  <div class="TabPaneContent"> 
+    <%//Begin WorkingArea%>
+    <div class="WorkingAreaWithHelp">
+    	<%//Begin Tabs%>
       <div class="UIHorizontalTabs">
-        <div class="TabsContainer">
-          <%
-            String colorTab = "NormalTabStyle" ;
-            for(uiChild in uicomponent.getChildren()) {
-              if(uiChild.isRendered()) colorTab = "HighlightTabStyle" ;
-              else colorTab = "NormalTabStyle" ;
-          %>
-              <div class="UITab">
-                <div class="$colorTab">
-                  <div class="LeftTab">
-                    <div class="RightTab">
-                      <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes(uicomponent.getName() + ".tab.label." + uiChild.id)%></div>
-                    </div>
-                  </div>
-                </div>
-              </div>              
-          <%}%>
-        </div>
+        <div class="LeftHorizontalTabs">
+	     	  <div class="RightHorizontalTabs">
+	     	    <div class="CenterHorizontalTabs">
+			        <div class="TabsContainer">
+			          <%
+			            for(uiChild in uicomponent.getChildren()) {
+			              String style = "NormalTabStyle" ;
+			              if(uiChild.isRendered()) style = "SelectedTabStyle" ;
+			          %>
+			            <div class="UITab">
+			              <div class="$style">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes(uicomponent.getName() + ".tab.label." + uiChild.id)%></div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>              
+			          <%}%>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
       </div>
-      <%/*End UIHorizontalTabs*/%>
-      <%/*Start UITabContentContainer*/%>
+      <%//End UIHorizontalTabs%>
+      <%//Start UITabContentContainer%>
       <div class="UITabContentContainer">
         <%
           for(uiChild in uicomponent.getChildren()) { 
@@ -46,30 +56,30 @@
             println "</div>" ;
           }
         %>
-      </div>
-      <%/*End UITabContentContainer*/%>
+      </div>  
+      <%//End UITabContentContainer%>
     </div>  
-    <%/*End WorkingArea*/%>
+    <%//End WorkingArea%>
+    <div class="UIAction" style="width: 120px; margin: auto;padding-top:5px;"> 
+	    <div class="ActionContainer">
+	      <div class="ActionButton">
+	        <div class="LightBlueStyle" >
+	          <div class="ButtonLeft">
+	            <div class="ButtonRight">
+	              <div class="ButtonMiddle">
+	                <% for(action in uicomponent.getActions()) { %>
+	                  <a href="<%=uicomponent.event(action)%>">
+	                    <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
+	                  </a>
+	                <%} %>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
   </div>  
-  <div class="UIAction" style="width: 120px; margin: auto;padding-top:5px;"> 
-    <div class="ActionContainer">
-      <div class="ActionButton">
-        <div class="LightBlueStyle" >
-          <div class="ButtonLeft">
-            <div class="ButtonRight">
-              <div class="ButtonMiddle">
-                <% for(action in uicomponent.getActions()) { %>
-                  <a href="<%=uicomponent.event(action)%>">
-                    <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
-                  </a>
-                <%} %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%/*End TabPaneContent*/%>
+  <%//End TabPaneContent%>
 </div>  
-<%/*End UITabPane*/%>
+<%//End UITabPane%>
