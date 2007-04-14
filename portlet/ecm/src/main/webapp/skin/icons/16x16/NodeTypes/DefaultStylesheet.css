@@ -276,6 +276,22 @@
   background: url('DefaultSkin/pdf.gif') no-repeat;  
 }
 
+.application_odt16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/odt.gif') no-repeat;  
+}
+
+.application_ods16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/ods.gif') no-repeat;  
+}
+
+.application_odp16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/odp.gif') no-repeat;  
+}
+
+
 .text_rtf16x16Icon {
   width: 16px;	height: 16px;
   background: url('DefaultSkin/rtf.gif') no-repeat;  
