@@ -176,6 +176,10 @@
 	border: solid 1px red ;
 }
 
+.UIECMAdminPortlet .ECMTempForm .UIFormWithTitle .UIAction {
+  width: 220px ;
+}
+
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
 	width: 540px;
 	margin: auto;
@@ -193,6 +197,10 @@
   margin-top: 5px;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIViewList .UIAction {
+  width: 100px ;
+}
+
 .UIECMAdminPortlet .UIECMTemplateList {
   margin-top: 5px;
 }
@@ -205,10 +213,6 @@
 }
 .UIECMAdminPortlet .UICBTemplateList .UIAction{
    width: 85px;
-}
-
-.ECMTempForm .UIFormWithTitle .UIAction {
-	width: 380px;
 }
 
 .ECMTempForm .UIFormWithTitle .UIForm .textarea {

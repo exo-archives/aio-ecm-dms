@@ -29,7 +29,6 @@
 	        <div class="ButtonLeft">
 	          <div class="ButtonRight">
 	            <div class="ButtonMiddle">
-	              <div class="Icon Active16x16Icon"><span></span></div>    
 	              <a href="<%=uicomponent.event("EnableVersion")%>">Activate</a> 
 	            </div>
 	          </div>

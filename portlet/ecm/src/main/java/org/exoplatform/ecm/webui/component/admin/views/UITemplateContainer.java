@@ -28,8 +28,13 @@ public class UITemplateContainer extends UIContainer {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId) ;
     uiPopup.setWindowSize(600,400) ;
     UITemplateForm uiTempForm = createUIComponent(UITemplateForm.class, null, compId) ;
-    if(type.equals("Add")) uiTempForm.isAddNew_ = true ;
-    if(type.equals("Edit")) uiTempForm.isAddNew_ = false ;
+    if(type.equals("Add")) {
+      uiTempForm.isAddNew_ = true ;
+      uiTempForm.setActions(new String[]{"Save", "Reset", "Cancel"}) ;
+    } else if(type.equals("Edit")) {
+      uiTempForm.isAddNew_ = false ;
+      uiTempForm.setActions(new String[]{"Save", "Cancel"}) ;
+    }
     uiTempForm.updateOptionList() ;
     uiPopup.setUIComponent(uiTempForm) ;
     uiPopup.setShow(true) ;

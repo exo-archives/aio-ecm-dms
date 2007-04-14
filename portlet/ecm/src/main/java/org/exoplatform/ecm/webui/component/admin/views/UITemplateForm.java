@@ -78,7 +78,6 @@ public class UITemplateForm extends UIForm {
     UIFormCheckBoxInput enableVersion = new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null) ;
     enableVersion.setRendered(false) ;
     addUIFormInput(enableVersion) ;
-    setActions(new String[]{"Save", "Reset", "Cancel"}) ;
     service_ = getApplicationComponent(ManageViewService.class) ;
   }
 
@@ -87,7 +86,7 @@ public class UITemplateForm extends UIForm {
     if(getId().equalsIgnoreCase("ECMTempForm")) {              
       Node ecmTemplateHome = service_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES) ; 
       typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(),ecmTemplateHome.getPath())) ;
-    }else {        
+    } else {        
       Node cbTemplateHome = service_.getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES) ;
       NodeIterator iter = cbTemplateHome.getNodes() ;
       while(iter.hasNext()) {
@@ -152,7 +151,7 @@ public class UITemplateForm extends UIForm {
       selectedVersion_ = null ;
       baseVersion_ = null ;
       return ;
-    }    
+    } 
     update(template_.getPath(), null) ;
   }
 
