@@ -243,15 +243,16 @@ public class UIScriptForm extends UIForm {
       if(!uiForm.isAddNew_) { 
         UIScriptManager uiScriptManager = uiForm.getAncestorOfType(UIScriptManager.class);
         UIScriptList uiScriptList ;
-        if(uiForm.getParent().getParent()  instanceof UIECMScripts) {
+        if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
           uiScriptList = uiScriptManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME) ; 
         } else {
           uiScriptList = uiScriptManager.findComponentById(UICBScripts.SCRIPTLIST_NAME) ;
         }
         Node script = uiScriptList.getScriptNode(sciptName) ;  
         uiForm.update(script, false) ;
+      } else {
+        uiForm.update(null, true) ;
       }
-      else uiForm.update(null, true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
