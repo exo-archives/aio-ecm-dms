@@ -108,16 +108,16 @@
   					</div>
 	        </td>
 	        <%
-  	        if(name.length() < 20) subName = name ;
-		        else subName = name.substring(0,15) + "..." ;
+  	        if(name.length() < 50) subName = name ;
+		        else subName = name.substring(0,50) + "..." ;
 	        %>
 	        <td>
 						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
 							$strActs<a href="$actionLink" title="$name">$subName</a>
 	 					</div>
 	        </td>
-	        <td><%=uicomponent.getNodeOwner(data)%></td>
-	        <td>
+	        <td style="width:80px;"><%=uicomponent.getNodeOwner(data)%></td>
+	        <td style="width:50px;">
 	          <%=uicomponent.isVersionable(data)%>
 	          <%
 	            if(uicomponent.isVersionable(data)) {
