@@ -18,7 +18,7 @@
 	        <div class="ButtonLeft">
 	          <div class="ButtonRight">
 	            <div class="ButtonMiddle">
-	              <a href="<%=uicomponent.event("Cancel")%>">Cancel</a> 
+	              <a href="<%=uicomponent.event("EnableVersion")%>">Activate</a> 
 	            </div>
 	          </div>
 	        </div>
@@ -29,7 +29,7 @@
 	        <div class="ButtonLeft">
 	          <div class="ButtonRight">
 	            <div class="ButtonMiddle">
-	              <a href="<%=uicomponent.event("EnableVersion")%>">Activate</a> 
+	              <a href="<%=uicomponent.event("Cancel")%>">Cancel</a> 
 	            </div>
 	          </div>
 	        </div>

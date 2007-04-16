@@ -269,4 +269,12 @@
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
   width: 150px ;
 }
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
+  width: 100px ;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .UIAction {
+  width: 100px ;
+}
 /*############################## -- End Others   -- ##############################*/
