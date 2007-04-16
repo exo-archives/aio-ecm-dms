@@ -10,7 +10,12 @@
 .UIJCRExplorerPortlet .UIJCRExplorer {
   border: solid 1px #aeaeae;
   background: white;
-  width: 99.9%; /*  Bug on IE */
+  width: 99.9%; /* Bug on IE */
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle {
+  width: 95%;
+  margin: 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
@@ -234,6 +239,54 @@
 
 
 /*############################## -- END UIDocumentInfo -- ##############################*/
+
+/*===========================Folder Form=====================*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
+	width: 160px;
+	padding-top: 12px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer{
+	width: 500px;
+	margin: auto;
+}
+
+/*===========================DocumentFormController=====================*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
+	width: 165px;
+	padding-left: 20px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
+  border: 1px solid #e1e1e1;
+  border-top: none;
+  border-bottom: none;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
+  width: auto;
+  margin: 0px;
+  border-bottom: none;
+  border-top: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
+  padding: 0px 3px 0px 0px;
+}
+
+/*===========================UIUploadForm====================*/
+
+.UIJCRExplorerPortlet .UIUploadForm .UIAction {
+  width: 170px;
+  padding-left: 15px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer{
+  width: 480px;
+  margin: 0px auto;
+}
 
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

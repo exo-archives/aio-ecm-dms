@@ -1,12 +1,19 @@
 /**
  * Created by The eXo Platform SARL
- * Modifile : Vu Duy Tu
- *           duytucntt@gmail.com
- * December 08, 2006
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
  * version: $Id$
  */
 
+/*############################## -- Begin UIFormWithTitle -- ##############################*/
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
+  background: none ;
+  border: none ;
+}
+/*############################## -- End UIFormWithTitle -- ##############################*/
 
+/*############################## -- Begin UIVersionInfo -- ##############################*/
 .UIJCRExplorerPortlet .UIVersionInfo {
   border: solid 1px #bdbdbd;
   padding: 7px;
@@ -16,16 +23,14 @@
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
   margin: 7px 5px;
   float: left;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
   margin: 2px 3px;
   float: left;
-  width: 24px;
-  height: 24px;
+  width: 24px; height: 24px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .HomeNode {
@@ -50,15 +55,13 @@
 .UIJCRExplorerPortlet .UIVersionInfo .NoneIcon {
   margin: 7px 0px;
   float: left;
-  width: 16px;
-  height: 16px;  
+  width: 16px; height: 16px;  
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ExpandIcon {
   margin: 7px 0px;
   float: left;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
 }
@@ -66,8 +69,7 @@
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
   margin: 7px 0px;
   float: left;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
 }
@@ -76,13 +78,6 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .ActionButton {
-  width: 90px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .ActionButton {
-  width: 85px;
-}
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 5px 0px;
@@ -137,26 +132,7 @@
   background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
   padding: 0px 10px;
 }
-/*############################## -- End UINodeTypeInfo -- ##############################*/
-/*############################## -- UIExport    -- ##############################*/
-.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode {
-	margin-left: 160px;
-}
 
-.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode input {
-	float:left;
-  width: 20px ;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .ActionButton {
-  width:80px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .ActionButton {
-  width:80px;
-}
-
-/*############################## -- End UIExport   -- ##############################*/
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
 .Explorer {
   margin-bottom: 10px;
@@ -180,53 +156,6 @@
   line-height: 30px;
 }
 
-.Explorer .ExplorerTree .NodeLevel1 {
-  height: 30px;
-  line-height: 30px;
-  padding-left: 15px;
-
-}
-
-.Explorer .ExplorerTree .NodeLevel2 {
-  height: 30px;
-  line-height: 30px;
-  padding-left: 30px;
-}
-
-.Explorer .ExplorerTree .ExpandIcon {
-  margin: 3px 0px;
-  float: left;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
-}
-
-.Explorer .ExplorerTree .ColapseIcon {
-  float: left;
-  margin: 3px 0px;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
-}
-
-.Explorer .ExplorerTree .NodeIcon {
-  float: left;
-}
-
-.Explorer .ExplorerTree .NodeLabel {
-  float: left;
-  color: #01060d;
-  padding: 0px 10px;
-}
-
-.Explorer .ExplorerTree .NodeLabelSelected {
-  float: left;
-  color: #0848c1;
-  padding: 0px 10px;
-}
-
 .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
@@ -240,70 +169,104 @@
   margin-left: 15px ;
 }
 
-/*############################## --End UITreeJCRExplorer   -- ##############################*/
+/*############################## -- UIActionManager   -- ##############################*/
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
+  padding: 10px;
+}
+
+/*############################## -- End UIActionManager   -- ##############################*/
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
+	line-height: 16px ;
+}
+
+/*############################## -- UITaggingForm   -- ##############################*/
+.UIJCRExplorerPortlet .UITaggingForm .ActionField {
+	float: left ;
+	padding-left: 5px ;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
+  width: 220px ;
+}
+
+/*############################## -- UIMultiLanguageForm   -- ##############################*/
+.UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
+	height: 70px ;
+}
+
+.UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
+  width: 300px ;
+}
+
+/*############################## -- Begin UIViewMetadataForm   -- ##############################*/
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer {}
+/*############################## -- End UIViewMetadataForm   -- ##############################*/
+/*############################## -- Begin UIVoteForm   -- ##############################*/
+.UIJCRExplorerPortlet .UIVoteForm {
+	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+  width: 100px ;
+}
+
+/*############################## -- End UIVoteForm   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle {
+	width:500px;
+	margin: auto ;
+}
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .ActionButton {
-  width: 80px;
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {
+	width: 280px ;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIFormWithTitle .UIAction {
+	width: 250px ;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
+	width:50px;
+	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
+  border: none ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
+  float: left ;
+  width: 300px ;
+  padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
+  padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
+  padding-left: 135px ;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
+  height: 350px ;
 }
 
 /*############################## -- End UISearch   -- ##############################*/
 
-/*############################## -- UIUploadForm   -- ##############################*/
+/*############################## -- Others   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle {
-	width: 550px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm label {
-	padding-right: 10px;
+.UIJCRExplorerPortlet .SelectFileFrame {
+  margin: 10px 0px 0px 50px;
+  width: 400px;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .HorizontalLayout input {
-	margin: 0px;
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .ActionContainer {
-	width: 170px;
-	margin: auto;
-	padding: 10px 0px;
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
+  width: 150px ;
 }
-
-.UIJCRExplorerPortlet .UIUploadForm .ActionButton {
-  width: 80px; 
-}
-/*############################## --End UIUploadForm   -- ##############################*/
-
-/*############################## -- UIActionManager   -- ##############################*/
-.UIJCRExplorerPortlet .UIActionContainer .ActionContainer {
-  width: 200px;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .ActionButton {
-  width: 80px;
-}
-.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
-  width: 100px; 
-  margin-top:20px;
-  margin-left:auto;
-  margin-right:auto;
-}
-.UIJCRExplorerPortlet .UIPropertyForm .ActionContainer{
-  width: 200px; 
-  margin:auto;
-}
-
-.UIJCRExplorerPortlet .UIMetadataTab .ActionContainer{
-  width: 200px; 
-  margin:auto;
-}
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent {
-  border: 1px solid gray;  
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
-  background: #f4f4f4;
-}
-
-/*############################## -- End UIActionManager   -- ##############################*/
+/*############################## -- End Others   -- ##############################*/

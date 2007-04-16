@@ -1,15 +1,16 @@
 /**
  * Created by The eXo Platform SARL
- * Modifile : Vu Duy Tu
- *           duytucntt@gmail.com
- * December 08, 2006
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
  * version: $Id$
  */
  
- /*############################## -- Begin UIDrivesBrowser -- ##############################*/
+/*############################## -- Begin UIDrivesBrowser -- ##############################*/
 
-.UIJCRExplorerPortlet .UIDrivesBrowser {
-  padding: 10px;
+.UIWindow .UIJCRExplorerPortlet .UIDrivesBrowser {
+  overflow: auto;
+  width: 100%;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitle {
@@ -97,7 +98,8 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
   cursor: pointer;
-  margin: auto;
+  width: 48px; height: 41px;
+  margin: 2px auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar {
@@ -142,56 +144,38 @@
 
 /*############################## -- Begin Icon51x51-- ######################*/
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/AdminProduction.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmindraftIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/AdminDraft.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminbackupIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/AdminBackup.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmintaxonomyIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/AdminTaxonomy.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Admindigital-assetsIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/AdminDigitalAssets.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserproductionIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/UserProduction.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserdraftIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/UserDraft.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserbackupIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/UserBackup.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UsertaxonomyIcon {
-  width: 48px;
-  height: 44px;
   background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
 }
 /*############################## -- End UIDrivesBrowser -- ##############################*/

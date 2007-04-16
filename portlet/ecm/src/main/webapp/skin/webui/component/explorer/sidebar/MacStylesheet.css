@@ -129,58 +129,48 @@
 
 /*############################## -- End UISideBar   -- ##############################*/
 /*############################## -- Begin UITreeExplorer   -- ##############################*/
-.UIJCRExplorerPortlet .UITreeExplorer {
-}
+.UIJCRExplorerPortlet .UITreeExplorer {}
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
-  margin: 3px 5px;
   float: left;
   cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
+  float: left;
+  cursor: pointer;
+  margin: 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
   line-height: 25px; vertical-align: middle;
   font-weight: bold;
+  font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
-  clear: both;
-  line-height: 22px;
-}
-
-.UIJCRExplorerPortlet .UITreeExplorer .NoneIcon {
-  float: left;
-  width: 16px;
-  height: 16px;  
+  clear: both; margin-bottom: 5px;
+  line-height: 16px;
+  font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
   float: left;
-  margin: 3px 0px;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
   float: left;
-  margin: 3px 0px;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
-  font-size: 11px;
+.UIJCRExplorerPortlet .UITreeExplorer a {
   color: black;
-}
-
-.UIJCRExplorerPortlet .UITreeExplorer a{
-  font-size: 11px;
-  color: black;
-  text-decoration: none;
+	text-decoration: none;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {

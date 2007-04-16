@@ -37,6 +37,7 @@
   float: right;
   padding: 0px 10px;
 }
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .WorkspaceName {
 	float: left;
 	padding: 0px 5px;
@@ -179,8 +180,10 @@
   float: left;
   line-height: 32px;
   text-align: center;
-  font-size: 11px; color: #0a29e7;
+  font-size: 11px; color: #058ee6;
+  width: 92px;
 }
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
   float: left;
   height: 31px;
@@ -189,7 +192,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
   float: left;
-  padding-top: 6px;
+  padding: 6px 4px 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox select{

@@ -9,15 +9,15 @@
 /*############################## -- Begin UIViewBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar {
-  border-top: solid 1px #fdfdfd;
+	border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;
   background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
   height: 28px;
+  line-height: 28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
   float: left;
-  line-height: 28px;
   padding-left: 10px;
 }
 
@@ -35,17 +35,21 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
   float: right;
-  width: 180px;
   padding: 0px 10px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .WorkspaceName {
+	float: left;
+	padding: 0px 5px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
-  float: right;
+  float: left;
   height: 27px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
-  float: right;
+  float: left;
   margin: 2px 10px;
   cursor: pointer;
 }
@@ -110,9 +114,9 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
   float: left;
   margin: 4px 0px 0px 2px;
-  width: 18px;
+  width: 20px;
   height: 12px;
-  background: url('DefaultSkin/background/HardDisk18x12.gif') repeat-x center center;
+  background: url('DefaultSkin/background/HardDisk20x12.gif') repeat-x center center;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .InputContainer {
@@ -175,10 +179,10 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
   float: left;
-  width: 100px;
   line-height: 32px;
   text-align: center;
-  font-size: 11px; color: #0a29e7;
+  font-size: 11px; color: #058ee6;
+  width: 92px;
 }
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
   float: left;
@@ -188,7 +192,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
   float: left;
-  padding-top: 6px;
+  padding: 6px 4px 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox select{
@@ -196,10 +200,6 @@
   width: 97px;
   height: 19px;
   padding-left: 5px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionIconContainer {
-  margin-left: 230px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg {

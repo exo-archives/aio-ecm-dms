@@ -188,7 +188,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
   float: left;
-  padding-top: 6px;
+  padding: 6px 4px 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox select{

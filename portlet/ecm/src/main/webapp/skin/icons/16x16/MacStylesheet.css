@@ -1,44 +1,49 @@
 /**
  * Created by The eXo Platform SARL
- * Modifile : Vu Duy Tu
- *           duytucntt@gmail.com
- * December 08, 2006
+ * Modif : Tran The Trong
+ *          trongtt@gmail.com
+ * March 14, 2007
  * version: $Id$
  */
- 
+
+@import url("NodeTypes/DefaultStylesheet.css");
+
 .Icon16x16 {
-	width: 16px;
-  height: 16px;
+	float: left;
 }
 
-.AddIcon16x16 {
-  width: 16px;
-  height: 16px;
-  float:left;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+.AddPathIcon {
+  float: left ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/AddPath.gif') no-repeat ;
   cursor: pointer;
 }
 
+.AddIconIcon {
+  float: left ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/AddIcon.gif') no-repeat ;
+  cursor: pointer;
+} 
+
 .AddPermissionIcon {
-	width: 16px; height: 16px;
   float:left;
+	width: 16px; height: 16px;
   margin: 2px 4px 0px 4px;
   background: url('DefaultSkin/SelectPermission.gif') no-repeat; 
   cursor: pointer;
 }
  
 .PermissionIcon16x16 {
-  width: 16px;
-  height: 16px;
   float:left;
+  width: 16px; height: 16px;
   margin: 4px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
   cursor: pointer;
 }
  
 .SelectMemberIcon {
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;
   cursor: pointer;  
 }
@@ -52,22 +57,19 @@
  
  
 .SelectGroupIcon {
-	width: 16px;
-  height: 16px;
+	width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
   cursor: pointer;
 }
 
 .SelectUserIcon {
-	width: 16px;
-  height: 16px;
+	width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
   cursor: pointer;
 }
  
 .ExpandIcon {
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat ;
   cursor: pointer;
 }
@@ -94,17 +96,6 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/RedRoundedPlusPage.gif') no-repeat;
   cursor: pointer;
-}
-
-.false16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/False.gif') no-repeat;  
-}
-
-.true16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/True.gif') no-repeat;  
-  
 }
 
 .Style1NextArrow16x16Icon {
@@ -137,8 +128,43 @@
   background: url('DefaultSkin/Save.gif') no-repeat;  
 }
 
+.Watch16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.Unwatch16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.Continue16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/GreenRightArrowPage.gif') no-repeat;  
+}
+
 .SaveDraft16x16Icon {
   width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.AddTag16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.SetDefault16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Save.gif') no-repeat;  
+}
+
+.AddLanguage16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.UpdateStyle16x16Icon {
+	width: 16px; height: 16px;
   background: url('DefaultSkin/Save.gif') no-repeat;  
 }
 
@@ -152,7 +178,17 @@
   background: url('DefaultSkin/Save.gif') no-repeat;  
 }
 
+.MoreConstraints16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/AddConstraints.gif') no-repeat;  
+}
+
 .AddProperty16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
+.AddQuery16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }
@@ -211,7 +247,13 @@
   background: url('DefaultSkin/YellowLight.gif') no-repeat;  
 }
 
+.OpenFolderIcon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/FolderGreen.gif') no-repeat;  
+}
+
 .MetaView16x16Icon {
+	float: left;
   width: 16px; height: 16px;
   background: url('DefaultSkin/YellowLight.gif') no-repeat;  
   cursor: pointer;
@@ -220,9 +262,15 @@
 .DeleteIconInfo {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Delete.gif') no-repeat ; 
+  background: url('DefaultSkin/RedDelete.gif') no-repeat ; 
   cursor: pointer;
-  margin-left: 3px;  
+  margin-left: 3px;
+}
+
+.EditStyleIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;
 }
 
 .EditIcon {
@@ -232,11 +280,13 @@
 }
 
 .False16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/False.gif') no-repeat;  
 }
 
 .True16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/True.gif') no-repeat;  
 }
@@ -270,17 +320,22 @@
   background: url('DefaultSkin/Lock.gif') no-repeat ;   
 }
 
-.UnLock16x16Icon {
+.Unlock16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/UnLock.gif') no-repeat ;   
 }
 
-.Checkin16x16Icon {
+.CheckIn16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CheckIn.gif') no-repeat ;   
 }
 
-.Checkout16x16Icon {
+.WebDAV16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Webdav.gif') no-repeat ;   
+}
+
+.CheckOut16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CheckOut.gif') no-repeat ;   
 }
@@ -302,6 +357,12 @@
 
 .Edit16x16Icon {
   float: left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;   
+}
+
+.EditDocument16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Edit.gif') no-repeat ;
   cursor: pointer;   
@@ -349,7 +410,7 @@
 
 .Paste16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/OrangeNote.gif') no-repeat ;
+  background: url('DefaultSkin/OrangeNote.gif') no-repeat ;
 }
 .Select16x16Icon {
   width: 16px; height: 16px;
@@ -358,6 +419,14 @@
 
 .Export16x16Icon {
   background-image: url('DefaultSkin/Export.gif');  
+}
+
+.UncheckAll16x16Icon {
+  background-image: url('DefaultSkin/UnCheckAll.gif');  
+}
+
+.CheckAll16x16Icon {
+  background-image: url('DefaultSkin/CheckAll.gif');  
 }
 
 .Import16x16Icon {
@@ -369,10 +438,6 @@
 }
 /*############################## -- End Action Icon  -- ##############################*/
 /*############################## -- Begin Properties Icon -- ########################*/
-.Icon16x16 {
-  float: left;
-}
-
 .dc_contributor16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/properties/dc-contributor.gif') no-repeat;  
@@ -788,238 +853,7 @@
 }
 
 /*############################## -- End UIPropertyTab Icon -- ########################*/
-/*############################## -- Begin NodeType Icon -- ########################*/
 
-.dc_elementSet16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/dc-elementSet.gif') no-repeat;  
-}
-
-.exo_accessControllable16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-accessControllable.gif') no-repeat;  
-}
-
-.exo_action16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-action.gif') no-repeat;  
-}
-
-.default16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/default.gif') no-repeat;  
-}
-
-.exo_actionable16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-actionable.gif') no-repeat;  
-}
-
-.exo_article16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-article.gif') no-repeat;  
-}
-
-.exo_article_reference16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-article-reference.gif') no-repeat;  
-}
-
-.exo_backupAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-backupAction.gif') no-repeat;  
-}
-
-.exo_businessProcessAction16x16Icon {
-  width: 16px ;	height: 16px ;
-  background: url('DefaultSkin/nodetype/exo-businessProcessAction.gif') no-repeat;  
-}
-
-.exo_categorized16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-categorized.gif') no-repeat;  
-}
-
-.exo_mockNodeType16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-mockNodeType.gif') no-repeat;  
-}
-
-.exo_move16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-move.gif') no-repeat;  
-}
-
-.exo_namespace16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-namespace.gif') no-repeat;  
-}
-
-.exo_published16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-published.gif') no-repeat;  
-}
-
-.exo_relationable16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-relationable.gif') no-repeat;  
-}
-
-.exo_ruleAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-ruleAction.gif') no-repeat;  
-}
-
-.exo_scriptAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-scriptAction.gif') no-repeat;  
-}
-
-.exo_sendMailAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-sendMailAction.gif') no-repeat;  
-}
-
-.exo_tab16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-tab.gif') no-repeat;  
-}
-
-.exo_taxonomy16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-taxonomy.gif') no-repeat;  
-}
-
-.exo_template16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-template.gif') no-repeat;  
-}
-
-.exo_versionStorage16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-versionStorage.gif') no-repeat;  
-}
-
-.exo_transformBinaryToTextAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-transformBinaryToTextAction.gif') no-repeat;  
-}
-
-.exo_view16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-view.gif') no-repeat;  
-}
-
-.exo_workflowAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-workflowAction.gif') no-repeat;  
-}
-
-.exo_createRSSFeedAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-createRSSFeedAction.gif') no-repeat;  
-}
-
-.mix_lockable16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/mix-lockable.gif') no-repeat;  
-}
-
-.mix_referenceable16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/mix-referenceable.gif') no-repeat;  
-}
-
-.mix_versionable16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/mix-versionable.gif') no-repeat;  
-}
-
-.nt_base16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-base.gif') no-repeat;  
-}
-
-.nt_childNodeDefinition16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-childNodeDefinition.gif') no-repeat;  
-}
-
-.nt_file16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-file.gif') no-repeat;  
-}
-
-.nt_folder16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-folder.gif') no-repeat;  
-}
-
-.nt_frozenNode16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-frozenNode.gif') no-repeat;  
-}
-
-.nt_hierarchyNode16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-hierarchyNode.gif') no-repeat;  
-}
-
-.nt_linkedFile16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-linkedFile.gif') no-repeat;  
-}
-
-.nt_nodeType16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-nodeType.gif') no-repeat;  
-}
-
-.nt_propertyDefinition16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-propertyDefinition.gif') no-repeat;  
-}
-
-.nt_query16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-query.gif') no-repeat;  
-}
-
-.nt_resource16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-resource.gif') no-repeat;  
-}
-
-.nt_unstructured16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-unstructured.gif') no-repeat;  
-}
-
-.nt_version16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-version.gif') no-repeat;  
-}
-
-.nt_versionedChild16x16Icon {
-  width: 16px; height: 16px;
-  background: url('../DefaultSkin/nodetype/nt-versionedChild.gif') no-repeat;  
-}
-
-.nt_versionHistory16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-versionHistory.gif') no-repeat;  
-}
-
-.nt_query16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-query.gif') no-repeat;  
-}
-
-.nt_versionLabels16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-versionLabels.gif') no-repeat;  
-}
-/**/
 .ExtendButton16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/SmallSelect.gif') no-repeat;  
@@ -1059,27 +893,29 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGrayBack.gif') no-repeat center;  
 }
-/**/
-.ScrollLeftBlackArrow16x16Icon {
+
+/*############################## -- Begin BC Portlet Icon -- ########################*/
+
+.ScrollBackArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('DefaultSkin/S1DropLeftBlackArrow.gif') no-repeat;  
+  background: url('DefaultSkin/SrollBackArrow.gif') no-repeat;  
 }
 
-.ScrollRightBlackArrow16x16Icon {
+.ScrollNextArrow16x16Icon {
   width: 16px;height:16px;
-  background: url('DefaultSkin/S1DropRightBlackArrow.gif') no-repeat;  
+  background: url('DefaultSkin/SrollNextArrow.gif') no-repeat;  
 }
 
-.ScrollLeftGrayArrow16x16Icon {
+.DisableBackArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('DefaultSkin/S1DropLeftGrayArrow.gif') no-repeat;  
+  background: url('DefaultSkin/DisableBackArrow.gif') no-repeat;  
 }
 
-.ScrollRightGrayArrow16x16Icon {
-  width: 16px;height:16px;
-  background: url('DefaultSkin/S1DropRightGrayArrow.gif') no-repeat;  
+.DisableNextArrow16x16Icon {
+  width: 16px; height:16px;
+  background: url('DefaultSkin/DisableNextArrow.gif') no-repeat;  
 }
-/**/
+
 .Documents16x16Icon {
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/Documents.gif') no-repeat ;
@@ -1094,3 +930,15 @@
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/Empty.gif') no-repeat ;
 }
+
+.CBDropDownArrow16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
+}
+
+.CBHome16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/CBHomeIcon.gif') no-repeat;
+}
+
+/*############################## -- End BC Portlet Icon -- ########################*/
