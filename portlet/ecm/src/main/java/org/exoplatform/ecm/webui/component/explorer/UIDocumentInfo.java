@@ -287,7 +287,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     }    
     return currentNode_; 
   }
-
+  
+  public String getIcons(Node node, String size) throws Exception {
+    return Utils.getNodeTypeIcon(node, size) ;
+  }
   public double getRating() throws Exception {
     return currentNode_.getProperty("exo:votingRate").getDouble();
   }

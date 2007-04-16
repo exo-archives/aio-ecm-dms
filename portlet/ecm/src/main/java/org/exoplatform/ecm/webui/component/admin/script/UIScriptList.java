@@ -141,12 +141,11 @@ public class UIScriptList extends UIGrid {
   static public class EditActionListener extends EventListener<UIScriptList> {
     public void execute(Event<UIScriptList> event) throws Exception {
       UIScriptList uiScriptList = event.getSource() ;
-      UIComponent parent = uiScriptList.getParent() ;
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID); 
       UIScriptManager sManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
       UICBScripts uiCBScripts = sManager.getChild(UICBScripts.class) ;
       UIECMScripts uiECMScripts = sManager.getChild(UIECMScripts.class) ;
-      if(parent instanceof UICBScripts) {
+      if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)){
         uiCBScripts.setRendered(true) ;
         UIScriptForm ScriptForm = sManager.findComponentById(UICBScripts.SCRIPTFORM_NAME) ;
         if(ScriptForm == null) {

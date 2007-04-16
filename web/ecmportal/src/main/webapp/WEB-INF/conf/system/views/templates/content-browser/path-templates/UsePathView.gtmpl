@@ -192,7 +192,7 @@
       <%
         for (Node doc in subDocumentList) {
           String viewAction = uicomponent.event("ChangeNode",doc.getPath());
-          String iconName = uicomponent.getIcons(doc) + "16x16Icon" ;
+          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
       %>
           <div class="EventContentDetail">
             <div class="TopEventContentDetail">
@@ -305,7 +305,7 @@
                       <%} else {   
                            for(Node doc in docChilds) {
                             String docActionLink = uicomponent.event("ChangeNode",doc.getPath()) ;
-                            String icon = uicomponent.getIcons(doc) + "16x16Icon" ;
+                            String icon = uicomponent.getIcons(doc,"16x16Icon") ;
                       %>
                             <tr>
                               <td>

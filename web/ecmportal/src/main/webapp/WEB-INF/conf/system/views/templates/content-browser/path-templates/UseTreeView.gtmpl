@@ -9,7 +9,7 @@
 	    String actionTreeLink = "" ;
 	    actionTreeLink = uicomponent.event("Select",node.getPath()) ;
 	    String styleTree =  "CategoryTreeLabel" ;
-	    String icon = uicomponent.getIcons(node.getNode()) + "16x16Icon" ;
+	    String icon = uicomponent.getIcons(node.getNode(),"16x16Icon") ;
 	    if(node.isExpanded()) styleTree = "CategorySelectLabel" ;
 	    println "<div class=\"ParentSupMenu\" style=\"margin-left: ${level * 15}px;\">" ;
 	    println "<div class=\"SelectIcon CBDefaultFolder16x16Icon $icon\"><span></span></div>" ;
@@ -122,7 +122,7 @@
 			      <%
 			        for (Node doc in subDocumentList) {
 			          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
-			          String iconName = uicomponent.getIcons(doc) + "16x16Icon" ;
+			          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 			      %>
 			          <div class="EventContentDetail">
 			            <div class="TopEventContentDetail">
