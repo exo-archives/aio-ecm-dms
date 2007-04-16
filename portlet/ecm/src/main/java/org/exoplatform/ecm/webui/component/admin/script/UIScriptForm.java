@@ -47,7 +47,7 @@ import org.exoplatform.webui.event.Event.Phase;
     }
 )
 public class UIScriptForm extends UIForm {
-  
+
   final static public String FIELD_SELECT_VERSION = "selectVersion" ;
   final static public String FIELD_SCRIPT_CONTENT = "scriptContent" ;
   final static public String FIELD_SCRIPT_NAME = "scriptName" ;
@@ -55,7 +55,7 @@ public class UIScriptForm extends UIForm {
 
   private List<String> listVersion = new ArrayList<String>() ;
   private boolean isAddNew_ = true ; 
-  
+
   public UIScriptForm() throws Exception { 
     UIFormSelectBox versions = 
       new UIFormSelectBox(FIELD_SELECT_VERSION , FIELD_SELECT_VERSION, null) ;
@@ -89,7 +89,7 @@ public class UIScriptForm extends UIForm {
     }           
     return listVersion ;
   }
-// @TODO use comparator and collections for sort
+//@TODO use comparator and collections for sort
   private List<SelectItemOption<String>> getVersionValues(Node node) throws Exception { 
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     List<VersionNode> children = getRootVersion(node).getChildren() ;
@@ -239,8 +239,19 @@ public class UIScriptForm extends UIForm {
   static public class RefreshActionListener extends EventListener<UIScriptForm> {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
-      if(uiForm.isAddNew_) uiForm.update(null, true) ;
-      else uiForm.update(null, false) ;
+      String sciptName = uiForm.getUIStringInput(UIScriptForm.FIELD_SCRIPT_NAME).getValue() ;
+      if(!uiForm.isAddNew_) { 
+        UIScriptManager uiScriptManager = uiForm.getAncestorOfType(UIScriptManager.class);
+        UIScriptList uiScriptList ;
+        if(uiForm.getParent().getParent()  instanceof UIECMScripts) {
+          uiScriptList = uiScriptManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME) ; 
+        } else {
+          uiScriptList = uiScriptManager.findComponentById(UICBScripts.SCRIPTLIST_NAME) ;
+        }
+        Node script = uiScriptList.getScriptNode(sciptName) ;  
+        uiForm.update(script, false) ;
+      }
+      else uiForm.update(null, true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }

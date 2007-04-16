@@ -233,14 +233,16 @@
 
 .ECMTempForm .UIFormWithTitle .UIAction {
 	width: 380px;
+	margin-left: 100px;
 }
 
 .CBTempForm .UIFormWithTitle .UIAction {
 	width: 380px;
+	margin-left: 100px;
 }
 
-.CBTempForm .UIFormWithTitle .UIForm textarea {
-  width: 500px;
+.CBTempForm .UIFormWithTitle .UIForm .textarea {
+  width: 450px;
   height: 300px;
   margin-left: 25px;
 }
@@ -255,12 +257,13 @@
 }
 
 
-/*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
+/*############################## -- UIScriptManager  -- ########################*/
 .UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
 }
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction{
   width: 380px;
+  margin-left: 100px;
 }
 
 .UIECMScripts .ECMScriptList .UIAction{
@@ -287,26 +290,27 @@
   padding: 10px;
 }
 
-.UIECMScripts .UIFormWithTitle .UIForm textarea {
-  width: 500px;
+.UIECMScripts .UIFormWithTitle .UIForm .textarea {
+  width: 450px;
   height: 300px;
-  margin-left: 25px;
+  margin-left: 10px;
 }
-
-/*############################## -- UIScriptManager UIScriptForm  -- ########################*/
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction{
   width: 380px;
+  margin-left: 100px;
 }
-
+.UICBScripts .CBScriptList .UIAction{
+  width: 100px;
+}
 .UICBScripts .UIFormWithTitle .HorizontalLayout{
   padding: 10px;
 }
 
-.UICBScripts .UIFormWithTitle .UIForm textarea {
-  width: 500px;
+.UICBScripts .UIFormWithTitle .UIForm .textarea {
+  width: 450px;
   height: 300px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/
@@ -363,7 +367,7 @@
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 150px ;
-	width: 400px ;
+	width: 300px ;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/

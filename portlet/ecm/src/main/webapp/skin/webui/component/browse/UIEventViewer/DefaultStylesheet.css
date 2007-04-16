@@ -8,6 +8,10 @@
 	margin-right: 0px;
 }
 
+.UIEventViewer .UIPageIterator .PageIteratorContainer{
+	width: 99.5%;
+}
+
 
 .UIEventViewer .EventContent {
   border: solid 1px #e1e1e1;

@@ -29,7 +29,6 @@ import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
-import org.exoplatform.webui.component.validator.PermissionValidaror;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
