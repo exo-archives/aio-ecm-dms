@@ -129,6 +129,13 @@
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
+.UIECMAdminPortlet .UINamespaceManager .UIFormWithTitle {
+	margin: auto;
+}
+
+.UIECMAdminPortlet .UINamespaceManager .UIFormWithTitle .HorizontalLayout {
+ 	padding: 15px 0px;
+}
 
 .UIECMAdminPortlet .UINamespaceList {
   margin-top: 5px ;
@@ -139,7 +146,6 @@
 }
 
 /*############################## -- UIDriveManager -- ########################*/
-
 .UIECMAdminPortlet .UIDriveList {
   margin-top: 5px ;
 }
@@ -220,9 +226,13 @@
 }
 
 .ECMTempForm .UIFormWithTitle .UIForm .textarea {
-  width: 500px;
+  width: 450px;
   height: 300px;
   margin-left: 25px;
+}
+
+.ECMTempForm .UIFormWithTitle .UIAction {
+	width: 380px;
 }
 
 .CBTempForm .UIFormWithTitle .UIAction {
@@ -313,10 +323,12 @@
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIAction{
 	width: 380px;
+	margin-left: 100px;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction{
 	width: 380px;
+	margin-left: 100px;
 }
 
 .UITemplatesManager .UITemplateList .UIAction {
@@ -337,11 +349,6 @@
 .UITemplatesManager .UIFormWithTitle .UIForm .textarea {
   width: 350px; 
   height: 250px; 
-}
-
-/*############################## -- UINamespaceManager -- ########################*/
-.UINamespaceManager .UIFormWithTitle .HorizontalLayout {
- 	padding: 15px 0px;
 }
 
 /*############################## -- UIQueriesManager  -- ########################*/
@@ -368,6 +375,7 @@
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea{
 	height: 290px ;
 	width: 400px ;
+	margin-left: 40px;
 }
 
 /*############################## -- MultiField  -- ########################*/

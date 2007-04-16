@@ -21,10 +21,6 @@
   overflow: auto;
   border: solid 1px #b7b7b7;
 }
-.UIBrowseContentPortlet .GotoIcon{
-width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
-}
 
 .UIBrowseContentPortlet .UIFormWithTitle {
 	width: 570px;
@@ -274,6 +270,15 @@ width: 16px ;  height: 16px ;
 
 .UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
 	width: 40px;
+}
+
+.UIBrowseContentPortlet .UISearchController .ViewIcon{
+	width: 16px ;  height: 16px ;
+	float: left;
+}
+.UIBrowseContentPortlet .UISearchController .GotoIcon{
+	width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
 }
 
 .UIBrowseContentPortlet .UISearchController .UIAction{

@@ -284,8 +284,8 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
 
-  public String getIcons(Node node) throws Exception {
-    return Utils.getIconClass(node) ; 
+  public String getIcons(Node node, String type) throws Exception {
+    return Utils.getNodeTypeIcon(node, type) ; 
   }
 
   public List getCurrentList() throws Exception {

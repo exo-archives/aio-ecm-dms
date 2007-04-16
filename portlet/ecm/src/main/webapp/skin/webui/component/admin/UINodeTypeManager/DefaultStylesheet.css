@@ -10,11 +10,12 @@
 .UIECMAdminPortlet .UINodeTypeList .UIAction {
   width: 240px ;
 }
-
+.UIECMAdminPortlet .UIFormWithTitle {
+  margin: auto;
+}
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
   width: 440px;
-  margin-left: 10px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {

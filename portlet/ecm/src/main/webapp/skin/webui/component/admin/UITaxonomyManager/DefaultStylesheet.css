@@ -8,6 +8,9 @@
 
 .UIECMAdminPortlet .UITaxonomyManager {
 }
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle {
+	width: auto;
+}
 
 .UIECMAdminPortlet .UITaxonomyContainer {
   border: solid 1px #bdbdbd;

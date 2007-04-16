@@ -269,7 +269,10 @@ public class UITemplateContent extends UIForm implements UISelector {
     public void execute(Event<UITemplateContent> event) throws Exception {
       UITemplateContent uiForm = event.getSource() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
-      if(!uiForm.isAddNew_) return ;
+      if(!uiForm.isAddNew_) {
+        uiForm.update(uiForm.getUIStringInput(UITemplateContent.FIELD_NAME).getValue()) ;
+        return ;
+      }
       uiForm.update(null) ;
       uiForm.reset() ;
       uiForm.refresh() ;
