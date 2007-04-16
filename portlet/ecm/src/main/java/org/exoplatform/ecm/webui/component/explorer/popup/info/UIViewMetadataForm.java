@@ -127,9 +127,7 @@ public class UIViewMetadataForm extends DialogFormFields {
   static public class CancelActionListener extends EventListener<UIViewMetadataForm> {
     public void execute(Event<UIViewMetadataForm> event) throws Exception {
       UIViewMetadataForm uiForm = event.getSource() ;
-      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
-      uiPopup.setShow(false) ;
-      uiPopup.setRendered(false) ;
+      uiForm.getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
     }
   }
 

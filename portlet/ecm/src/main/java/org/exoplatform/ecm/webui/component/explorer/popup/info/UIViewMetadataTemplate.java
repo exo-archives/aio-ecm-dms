@@ -17,7 +17,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -29,7 +28,7 @@ import org.exoplatform.webui.event.Event.Phase;
 @ComponentConfig(
     events = {
       @EventConfig(listeners = UIViewMetadataTemplate.EditPropertyActionListener.class),
-      @EventConfig(listeners = UIViewMetadataTemplate.CancelActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIViewMetadataTemplate.CancelActionListener.class)
     }
 )
 public class UIViewMetadataTemplate extends UIContainer {

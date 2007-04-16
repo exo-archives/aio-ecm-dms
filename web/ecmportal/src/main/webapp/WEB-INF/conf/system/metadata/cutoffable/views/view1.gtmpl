@@ -128,23 +128,23 @@
 		<div class="ActionButton">
 	  	<div class="LightBlueStyle">
 				<div class="ButtonLeft">
-				  <div class="ButtonRight">
-					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
-			      </div>
-			    </div>
-		    </div>
-			</div>
-		</div>
-		<div class="ActionButton">
-	  	<div class="LightBlueStyle">
-				<div class="ButtonLeft">
 					 <div class="ButtonRight">
 					  <div class="ButtonMiddle">
 					    <a href="<%=uicomponent.event("EditProperty", "rma:cutoffable")%>" title="Add/Edit properties">Add/Edit</a>
 				    </div>
 			    </div>
 			  </div>
+			</div>
+		</div>
+		<div class="ActionButton">
+	  	<div class="LightBlueStyle">
+				<div class="ButtonLeft">
+				  <div class="ButtonRight">
+					  <div class="ButtonMiddle">
+					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
+			      </div>
+			    </div>
+		    </div>
 			</div>
 		</div>
   </div

@@ -284,6 +284,13 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
             languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
           }
         }
+      } else if(node.getProperty("exo:language").getValue().getString().equals(getSelectedLanguage())) {
+        for(UIComponent uiChild : getChildren()) {
+          if(!propertiesName_.get(uiChild.getName()).equals("node")) {
+            String value = ((UIFormInput) uiChild).getValue().toString() ;
+            node.setProperty(propertiesName_.get(uiChild.getName()), value) ;
+          }
+        }
       } else {
         languageNode = languagesNode.addNode(getSelectedLanguage()) ;
         for(UIComponent uiChild : getChildren()) {
@@ -293,7 +300,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       }
       if(isDefaultLanguage()) multiLanguageService.setDefault(node, getSelectedLanguage()) ;
     }
-    
     if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
   }
 
