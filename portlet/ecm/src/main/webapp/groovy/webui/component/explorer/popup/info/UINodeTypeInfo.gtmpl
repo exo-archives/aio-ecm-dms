@@ -43,7 +43,7 @@
           <div class="UIHorizontalTabs">
 	          <div class="TabsContainer">
               <%
-              String style="HighlightTabStyle" ;              
+              String style="SelectedTabStyle" ;              
               for(nodeType in collect) {
               %>
 	              <div class="UITab">

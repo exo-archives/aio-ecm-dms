@@ -163,7 +163,7 @@ public class UIPropertyForm extends UIForm {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         if ((name == null) || (name.length() == 0)) {
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null,
-                                                  ApplicationMessage.ERROR)) ;
+                                                  ApplicationMessage.WARNING)) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
