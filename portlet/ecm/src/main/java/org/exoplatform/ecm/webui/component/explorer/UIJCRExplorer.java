@@ -72,7 +72,7 @@ public class UIJCRExplorer extends UIContainer {
   
   public Node getCurrentNode() { return currentNode_ ; }
   public void setBackNode(String historyNode) throws Exception {
-    currentNode_ = (Node) session_.getItem(historyNode) ;
+    currentNode_ = (Node)session_.getItem(historyNode) ;
     refreshExplorer() ;
   }
   
