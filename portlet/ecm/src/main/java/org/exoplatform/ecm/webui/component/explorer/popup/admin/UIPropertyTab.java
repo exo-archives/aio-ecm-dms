@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
+import javax.jcr.PropertyType;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 
@@ -49,10 +50,9 @@ public class UIPropertyTab extends UIContainer {
     return false ;
   }
   
-  public String getPropertyValue(Property prop) throws Exception {      
-    String dataType = "jcr:data" ;  
+  public String getPropertyValue(Property prop) throws Exception {
+    if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;
     try {
-      if(dataType.equals(prop.getName())) return PRO_KEY_BINARYTYPE ; 
       if(prop.getDefinition().isMultiple()) {
         Value[] values =  prop.getValues();
         StringBuffer sB = new StringBuffer();
