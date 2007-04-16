@@ -6,14 +6,19 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import java.io.ByteArrayInputStream;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -105,11 +110,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(name) ;
       //String mimeType = input.getUploadResource().getMimeType() ;
-      Node selectedNode = uiExplorer.getCurrentNode();
+      Node selectedNode = uiExplorer.getCurrentNode();      
       
       boolean isExist = selectedNode.hasNode(name) ;
       try {
-        selectedNode.getSession().checkPermission(selectedNode.getPath(), "add_node,set_property");
+        selectedNode.getSession().checkPermission(selectedNode.getPath(),"add_node,set_property");        
         if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
@@ -121,15 +126,46 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
-          if(!isExist) {
-            Node node = selectedNode.addNode(name, NT_FILE);
-            Node contentNode = node.addNode(JCR_CONTENT, NT_RESOURCE);
-            contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
-            contentNode.setProperty(JCR_MIMETYPE, mimeType);
-            contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-            if(!node.isNodeType("mix:i18n")) node.addMixin("mix:i18n") ;
-            if(!node.isNodeType("mix:votable")) node.addMixin("mix:votable") ;
-            if(!node.isNodeType("mix:commentable")) node.addMixin("mix:commentable") ;
+          if(!isExist) {            
+            Map<String,JcrInputProperty> inputProperties = new HashMap<String,JcrInputProperty>() ;            
+            JcrInputProperty nodeInput = new JcrInputProperty() ;
+            nodeInput.setJcrPath("/node") ;
+            nodeInput.setValue(name) ;
+            nodeInput.setMixintype("mix:i18n,mix:votable,mix:commentable") ;
+            nodeInput.setType(JcrInputProperty.NODE) ;
+            inputProperties.put("/node",nodeInput) ;
+            
+            JcrInputProperty jcrContent = new JcrInputProperty() ;
+            jcrContent.setJcrPath("/node/jcr:content") ;
+            jcrContent.setValue("") ;
+            jcrContent.setMixintype("dc:elementSet") ;
+            jcrContent.setNodetype(NT_RESOURCE) ;
+            jcrContent.setType(JcrInputProperty.NODE) ;
+            inputProperties.put("/node/jcr:content",jcrContent) ;
+            
+            JcrInputProperty jcrData = new JcrInputProperty() ;
+            jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
+            jcrData.setValue(content) ;          
+            inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
+            
+            JcrInputProperty jcrMimeType = new JcrInputProperty() ;
+            jcrMimeType.setJcrPath("/node/jcr:content/jcr:mimeType") ;
+            jcrMimeType.setValue(mimeType) ;          
+            inputProperties.put("/node/jcr:content/jcr:mimeType",jcrMimeType) ;
+            
+            JcrInputProperty jcrLastModified = new JcrInputProperty() ;
+            jcrLastModified.setJcrPath("/node/jcr:content/jcr:lastModified") ;
+            jcrLastModified.setValue(new GregorianCalendar()) ;
+            inputProperties.put("/node/jcr:content/jcr:lastModified",jcrLastModified) ;
+            
+            JcrInputProperty jcrEncoding = new JcrInputProperty() ;
+            jcrEncoding.setJcrPath("/node/jcr:content/jcr:encoding") ;
+            jcrEncoding.setValue("UTF-8") ;
+            inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
+            CmsService cmsService = (CmsService)PortalContainer.getComponent(CmsService.class) ;
+            cmsService.storeNode(NT_FILE,selectedNode,inputProperties,true) ;
+            selectedNode.save() ;
+            selectedNode.getSession().save() ;                        
           } else {
             Node node = selectedNode.getNode(name) ;
             if(!node.isNodeType(MIX_VERSION)) {
@@ -150,7 +186,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);
       } catch(Exception e) {
-        e.printStackTrace() ;
+        //e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         return ;
       }
