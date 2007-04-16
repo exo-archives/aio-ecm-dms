@@ -25,6 +25,7 @@ import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -76,6 +77,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   private String scriptPath_ = null ;
   private InputStream binaryData_ ;
   private Node contentNode_ ;
+  private boolean isDefault_ = false;
   
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"}) ;    
@@ -87,6 +89,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   
   public void setIsMultiLanguage(boolean isMultiLanguage) { isMultiLanguage_ = isMultiLanguage; }
   public boolean isMultiLanguage() { return isMultiLanguage_; }
+  
+  public void setIsDefaultLanguage(boolean isDefault) { isDefault_ = isDefault ; }
+  public boolean isDefaultLanguage() { return isDefault_ ; } 
   
   public void setSelectedLanguage(String selectedLanguage) { selectedLanguage_ = selectedLanguage; }
   public String getSelectedLanguage() { return selectedLanguage_ ; }
@@ -243,6 +248,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   private void addLanguage(UIJCRExplorer uiExplorer) throws Exception {
     Node node = uiExplorer.getCurrentNode() ;
     Node languagesNode = null ;
+    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
     if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
     else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
     Node languageNode = null ;
@@ -267,6 +273,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
           languageNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;
         }
       }
+      if(isDefaultLanguage()) multiLanguageService.setDefault(node, getSelectedLanguage()) ;
       node.save() ;
     } else {
       if(languagesNode.hasNode(getSelectedLanguage())) {
@@ -284,7 +291,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
           languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
         }
       }
+      if(isDefaultLanguage()) multiLanguageService.setDefault(node, getSelectedLanguage()) ;
     }
+    
     if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
   }
 

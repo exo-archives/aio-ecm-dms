@@ -101,31 +101,31 @@
             strActs += "</div>" ;
           }
       %>
-        <tr>
-          <td>
-            <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
-              $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
-            </div>
-          </td>
-          <%
-            if(name.length() < 50) subName = name ;
-            else subName = name.substring(0,50) + "..." ;
-          %>
-          <td>
-            <div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
-              $strActs<a href="$actionLink" title="$name">$subName</a>
-            </div>
-          </td>
-          <td style="width:80px;"><%=uicomponent.getNodeOwner(data)%></td>
-          <td style="width:50px;">
-            <%=uicomponent.isVersionable(data)%>
-            <%
-              if(uicomponent.isVersionable(data)) {
-            %>
-            (<%=uicomponent.getVersionName(data)%>)
-            <%}%>
-          </td>
-        </tr>
+	      <tr>
+	        <td>
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
+					    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
+  					</div>
+	        </td>
+	        <%
+  	        if(name.length() < 50) subName = name ;
+		        else subName = name.substring(0,50) + "..." ;
+	        %>
+	        <td>
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
+							$strActs<a href="$actionLink" title="$name">$subName</a>
+	 					</div>
+	        </td>
+	        <td style="width:80px;"><%=uicomponent.getNodeOwner(data)%></td>
+	        <td style="width:50px;">
+	          <%=uicomponent.isVersionable(data)%>
+	          <%
+	            if(uicomponent.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
+	          %>
+	          (<%=uicomponent.getVersionName(data)%>)
+	          <%}%>
+	        </td>
+	      </tr>
       <%}%>
     </tbody>
   </table>
