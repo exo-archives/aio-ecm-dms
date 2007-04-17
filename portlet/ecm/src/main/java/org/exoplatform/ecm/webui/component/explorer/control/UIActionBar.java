@@ -306,7 +306,7 @@ public class UIActionBar extends UIForm {
         uiActionForm.createNewAction(selectedNode, selectedNode.getPrimaryNodeType().getName(), false) ;
         uiActionForm.setNode(selectedNode) ;
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-        uiPopupAction.activate(uiContainer, 600, 550) ;
+        uiPopupAction.activate(uiContainer, 700, 550) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
