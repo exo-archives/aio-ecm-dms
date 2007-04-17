@@ -1,12 +1,12 @@
 
-@import url("../../../icons/DefaultStylesheet.css");
-@import url("UICategoryTree/DefaultStylesheet.css");
-@import url("UIContentView/DefaultStylesheet.css");
-@import url("UISubContent/DefaultStylesheet.css");
-@import url("UINavigation/DefaultStylesheet.css");
-@import url("UICBSearchForm/DefaultStylesheet.css");
-@import url("UIEventViewer/DefaultStylesheet.css");
-@import url("../UIVoteForm/DefaultStylesheet.css");
+@import url("../../../icons/VistaStylesheet.css");
+@import url("UICategoryTree/VistaStylesheet.css");
+@import url("UIContentView/VistaStylesheet.css");
+@import url("UISubContent/VistaStylesheet.css");
+@import url("UINavigation/VistaStylesheet.css");
+@import url("UICBSearchForm/VistaStylesheet.css");
+@import url("UIEventViewer/VistaStylesheet.css");
+@import url("../UIVoteForm/VistaStylesheet.css");
 
 .UIWindow .UIBrowseContentPortlet {
   overflow: auto;
@@ -76,9 +76,9 @@
 }
 
 .UIBrowseContentPortlet .TagmapHolder .TagmapTitle{
-	height: 19px; line-height: 19px;
+	height: 24px; line-height: 24px;
 	margin: 0px;
-	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
+	background: url('VistaSkin/background/TagmapTitleBG1x24.png') repeat-x;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .TagLabel {
@@ -97,9 +97,9 @@
 
 .UIBrowseContentPortlet .TagmapHolder .Icon{
 	float: left;
-	width: 19px; height: 16px; 
-	margin: 2px 5px 0px 5px;
-	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
+	width: 24px; height: 24px; 
+	margin: 0px 5px;
+	background: url('VistaSkin/background/TagMapIcon24x24.png') no-repeat; 
 }
 
 
@@ -121,8 +121,8 @@
 
 /*############################## -- Begin UIToolBar -- ##############################*/
 .UIBrowseContentPortlet .UIToolBar {
-  background: url('DefaultSkin/background/CBToolbarBG1x27.gif') repeat-x;
-  height: 27px;
+  background: url('VistaSkin/background/CBToolbarBG1x31.png') repeat-x;
+  height: 31px;
   margin-bottom: 5px;
 }
 
@@ -147,9 +147,9 @@
 
 .UIBrowseContentPortlet .CategoryListIcon {
   float: left;
-  height: 16px; width: 16px;
-  background: url('DefaultSkin/background/CategoryListIcon.gif') no-repeat;
-  margin: 6px 5px 0px 8px;
+  height: 24px; width: 24px;
+  background: url('VistaSkin/background/CategoryListIcon.png') no-repeat;
+  margin: 4px 5px 0px 8px;
   
 }
 
@@ -198,28 +198,28 @@
 
 .UIBrowseContentPortlet .UIToolBar .CBActionContainer .Icon {
   float: left;
-  margin: 2px 6px;
+  margin: 2px 5px;
   cursor: pointer;
 }
 
 .UIBrowseContentPortlet .UIToolBar .CBRefreshButton {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/background/CBRefreshButton.gif') no-repeat;
+	width: 28px; height: 28px;
+	background: url('VistaSkin/background/CBRefreshButton.png') no-repeat;
 }
 
 .UIBrowseContentPortlet .UIToolBar .CBSearchButton {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/background/CBSearchButton.gif') no-repeat;
+	width: 28px; height: 28px;
+	background: url('VistaSkin/background/CBSearchButton.png') no-repeat;
 }
 
 .UIBrowseContentPortlet .UIToolBar .VoteDocumentButton{
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/background/VoteDocumentButton.gif') no-repeat;
+	width: 28px; height: 28px;
+	background: url('VistaSkin/background/VoteDocumentButton.png') no-repeat;
 }
 
 .UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
-	width: 24px; height: 24px;
-	background:url('DefaultSkin/background/WriteCommentButton.gif') no-repeat;
+	width: 28px; height: 28px;
+	background:url('VistaSkin/background/WriteCommentButton.png') no-repeat;
 	
 }
 

@@ -76,20 +76,20 @@
 }
 
 .UICBNavigation .CBLeftNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left bottom;
-  padding-left: 4px;
+	height: 58px;
+  background: url('VistaSkin/background/LeftHorizontalTabBG3x30.png') no-repeat left bottom;
+  padding-left: 3px;
 }
 
 .UICBNavigation .CBRightNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right bottom;
-  padding-right: 4px;
+	height: 58px;
+  background: url('VistaSkin/background/RightHorizontalTabBG3x30.png') no-repeat right bottom;
+  padding-right: 3px;
 }
 
 .UICBNavigation .CBMiddleNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x bottom;
+	height: 58px;
+  background: url('VistaSkin/background/CenterHorizontalTabBG1x30.png') repeat-x bottom;
 }
 
 .UICBNavigation .UICBMainNavigation {
@@ -98,31 +98,31 @@
   overflow: hidden;
 }
 
-.UICBNavigation .UICBMainNavigation .HomeTab{
-	height: 21px; line-height: 21px;
+.UICBNavigation .UICBMainNavigation .HomeTab {
+	height: 25px; line-height: 25px;
   float: left;
-  width: 100px;
+  width: 106px;
 }
 
 .UICBNavigation .HomeTab .LeftHomeTab {
-	height: 21px; line-height: 21px;
-	padding-left: 10px;
-  background: url('DefaultSkin/background/LeftCBHomeTab10x21.gif') no-repeat left;
+	height: 25px; line-height: 25px;
+	padding-left: 16px;
+  background: url('VistaSkin/background/LeftCBHomeTab16x25.png') no-repeat left;
 }
 
-.UICBNavigation .HomeTab .RightHomeTab{
-	height: 21px; line-height: 21px;
-  padding-right: 10px;
-  background: url('DefaultSkin/background/RightCBHomeTab10x21.gif') no-repeat right;
+.UICBNavigation .HomeTab .RightHomeTab {
+	height: 25px; line-height: 25px;
+  padding-right: 15px;
+  background: url('VistaSkin/background/RightCBHomeTab15x25.png') no-repeat right;
 }
 
 .UICBNavigation .HomeTab .MiddleHomeTab {
-	height: 21px; line-height: 21px;
-  background: url('DefaultSkin/background/CenterCBHomeTab1x21.gif') repeat-x;
+	height: 25px; line-height: 25px;
+  background: url('VistaSkin/background/CenterCBHomeTab1x25.png') repeat-x;
 }
 
 .UICBNavigation .HomeTab a {
-	line-height: 21px; vertical-align: middle;
+	line-height: 25px; vertical-align: middle;
 	float: left;
 	margin-left: 5px;
 	font-weight: bold;
@@ -135,13 +135,13 @@
 
 .UICBNavigation .HomeTab .LeftIcon {
 	float: left;
-	margin: 2px 0px 0px 0px;
+	margin: 4px 0px 0px 0px;
 	cursor: pointer;
 }
 
 .UICBNavigation .HomeTab .RightIcon {
   float: right;
-  margin: 2px 0px 0px 0px;
+  margin: 6px 0px 0px 0px;
   cursor: pointer;
 }
 
@@ -267,7 +267,6 @@
 }
 
 .UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 
-	height: 19px;
 	overflow: hidden;
 	padding-left: 4px;
 }
@@ -278,7 +277,8 @@
 
 .UICBNavigation .UICBSubNavigation .ChildNodeItem { 
 	float: left;
-	height: 18px;
+	height: 23px;
+	lineheight: 23px;
 	padding: 1px 5px 0px 5px;
 }
 
@@ -299,15 +299,15 @@
 
 .UICBNavigation .UICBSubNavigation .NodeLabel { 
 	float: left;
-	line-height: 18px;
+	line-height: 27px;
 	text-decoration: none;
 }
 
 .SeparatorLine { 
 	float: left;
-	background: url('DefaultSkin/background/SeparatorLine1x2.gif') repeat-y ;  
-	margin: 2px 3px;
-	height: 18px; width: 1px;
+	background: url('VistaSkin/background/SeparatorLine2x1.png') repeat-y ;  
+	margin: 4px 3px;
+	height: 23px; width: 2px;
 }
 
 .UICBNavigation .UICBSubNavigation .RightIcon { 

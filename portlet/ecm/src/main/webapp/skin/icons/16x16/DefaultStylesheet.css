@@ -940,12 +940,12 @@
 
 .CBDropDownArrow16x16Icon {
 	width: 16px; height:16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
+  background: url('VistaSkin/BlueDownArrow.png') no-repeat;
 }
 
 .CBHome16x16Icon {
 	width: 16px; height:16px;
-  background: url('DefaultSkin/CBHomeIcon.gif') no-repeat;
+  background: url('VistaSkin/CBHomeIcon.png') no-repeat;
 }
 
 /*############################## -- End BC Portlet Icon -- ########################*/

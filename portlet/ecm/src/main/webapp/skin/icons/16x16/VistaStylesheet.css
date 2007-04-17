@@ -5,10 +5,8 @@
  * DEC 20, 2006
  * version: $Id$
  */
+@import url("NodeTypes/VistaStylesheet.css");
 
-.test {
- border: solid red 1px;
-}
  
 .AddIcon16x16 {
   float: left;
@@ -1156,10 +1154,21 @@
 }
 
 .ScrollRightGrayArrow16x16Icon {
-  width: 16px;height:16px;
-  background: url('VistaSkin/S1DropRightGrayArrow.gif') no-repeat;  
+  width: 24px;height:24px;
+  background: url('VistaSkin/S1DropRightGrayArrow.png') no-repeat;  
 }
 /**/
+
+.DisableBackArrow16x16Icon {
+  width: 24px; height:24px;
+  background: url('VistaSkin/DisableBackArrow.png') no-repeat;  
+}
+
+.DisableNextArrow16x16Icon {
+  width: 24px; height:24px;
+  background: url('VistaSkin/DisableNextArrow.png') no-repeat;  
+}
+
 .Documents16x16Icon {
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/Documents.gif') no-repeat ;
@@ -1178,4 +1187,14 @@
 .S2LeftGrayArrow16x16Icon {
   width: 24px; height: 24px;
   background: url('VistaSkin/SmallGrayBack.gif') no-repeat top; 
+}
+
+.CBDropDownArrow16x16Icon {
+	width: 16px; height:16px;
+  background: url('VistaSkin/BlueDownArrow.png') no-repeat;
+}
+
+.CBHome16x16Icon {
+	width: 16px; height:16px;
+  background: url('VistaSkin/CBHomeIcon.png') no-repeat;
 }

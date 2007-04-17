@@ -10,7 +10,7 @@
 }
 
 .UISubContent .SeparatorLine{
-	margin-top: 3px;
+	margin-top: 1px;
 }
 
 .UISubContent .SubContentHolder {
@@ -37,23 +37,23 @@
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
-	height: 26px; line-height: 26px;
+	height: 30px; line-height: 30px;
 	overflow: hidden;
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
-	line-height: 26px; height: 26px;
-	background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left;
-  padding-left: 4px;
+	line-height: 30px; height: 26px;
+	background: url('VistaSkin/background/LeftHorizontalTabBG3x30.png') no-repeat left;
+  padding-left: 3px;
 }
 .UISubContent .SubContentTitle .RightBar{ 
-	line-height: 26px; height: 26px;
-	background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right;
-  padding-right: 4px;
+	line-height: 30px; height: 30px;
+	background: url('VistaSkin/background/RightHorizontalTabBG3x30.png') no-repeat right;
+  padding-right: 3px;
 }
 .UISubContent .SubContentTitle .MiddleBar { 
-	line-height: 26px; height: 26px;
-	background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x;
+	line-height: 30px; height: 30px;
+	background: url('VistaSkin/background/CenterHorizontalTabBG1x30.png') repeat-x;
 }
 
 .UISubContent .SubContentTitle .ChildContainer{
@@ -73,7 +73,6 @@
 .UISubContent .NavigationButtonContainer .NavigationIcon {
 	float: left;
 	cursor: pointer;
-	margin-top: 4px;
 }
 
 .UISubContent .SubContentTitle .ChildNode { 
@@ -108,8 +107,10 @@
 
 .UISubContent .UIDocumentContentInfo {
 	border: solid 1px #e1e1e1 ;
-	margin-top: 1px;
+	margin: 1px 2px 2px 2px;
 	padding: 5px;
+	height: 25px;
+	background: url('VistaSkin/background/DocumentContentInfoBG1x25.png') repeat-x;
 }
 
 .UISubContent .UIHorizontalTabs {
@@ -182,9 +183,9 @@
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Info16x16Icon {
 	float: left;
-	width: 16px; height: 16px;
-	margin: 3px 5px 0px 0px;
-	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat; 
+	width: 24px; height: 22px;
+	margin: 0px 5px 0px 0px;
+	background: url('VistaSkin/background/InfoIcon.png') no-repeat; 
 }
 
 
