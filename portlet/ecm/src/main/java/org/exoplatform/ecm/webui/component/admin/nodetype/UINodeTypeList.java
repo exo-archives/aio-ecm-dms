@@ -53,7 +53,7 @@ public class UINodeTypeList extends UIComponentDecorator {
   private UIPageIterator uiPageIterator_ ;
   private List<NodeType> nodeTypeList_ = new ArrayList<NodeType>() ;
   final static public String DRAFTNODETYPE = "jcr:system/jcr:nodetypesDraft" ;
-  final static public String[] ACTIONS = {"Import","Export", "Add"} ;
+  final static public String[] ACTIONS = {"Add", "Import", "Export"} ;
   final static public String[] CANCEL = {"Cancel"} ;
   final static public String[] TAB_REMOVE = {
     UINodeTypeForm.SUPER_TYPE_TAB, UINodeTypeForm.DEFAULT_PRIMARY_TYPE_TAB,
