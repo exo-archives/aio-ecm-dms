@@ -38,7 +38,7 @@ public class UIPopupAction extends UIContainer {
   }
   
   public void activate(UIComponent uiComponent, int width, int height) throws Exception {
-    activate(uiComponent, width, height, false) ;
+    activate(uiComponent, width, height, true) ;
   }
   
   public void activate(UIComponent uiComponent, int width, int height, boolean isResizeable) throws Exception {
