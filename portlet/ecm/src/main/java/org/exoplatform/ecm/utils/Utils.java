@@ -1,5 +1,6 @@
 package org.exoplatform.ecm.utils;
 
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +13,8 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.webui.component.UIFormInputBase;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.UIFormUploadInput;
@@ -79,9 +82,18 @@ public class Utils {
   final static public String EXO_CATEGORY = "exo:category" ;
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
   final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ; 
+
+  public static boolean isVersionable(Node node) throws RepositoryException {
+    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType("nt:frozenNode");
+  }
   
-  public static String getIconClass(Node node) throws RepositoryException {
-    return node.getPrimaryNodeType().getName().replaceAll(":", "_") ;
+  public static boolean isReadAuthorized(Node node) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(PermissionType.READ);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
   }
   
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {

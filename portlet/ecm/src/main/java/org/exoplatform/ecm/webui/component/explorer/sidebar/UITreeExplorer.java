@@ -9,8 +9,10 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIRightClickPopupMenu;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -44,6 +46,13 @@ public class UITreeExplorer extends UIComponent {
   
   public UIRightClickPopupMenu getContextMenu() {
     return getAncestorOfType(UIWorkingArea.class).getChild(UIRightClickPopupMenu.class) ;
+  }
+  
+  public String getRootActionList() throws RepositoryException {
+    if(getAncestorOfType(UIJCRExplorer.class).getAllClipBoard().size() > 0) {
+      return getContextMenu().getJSOnclickShowPopup(treeRoot_.getPath(), "Paste").toString() ;
+    }
+    return "" ;
   }
   
   public String getActionsList(Node node) throws Exception {

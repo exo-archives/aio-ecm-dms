@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component.explorer ;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -23,6 +22,7 @@ import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
@@ -36,7 +36,6 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -129,11 +128,11 @@ public class UIWorkingArea extends UIContainer {
     Session session = repositoryService.getRepository().getSystemSession(cmsConfService.getWorkspace());
     return session.getNodeByUUID(uuid);
   }
-  
-  public List getAllClipBoard() {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    return uiExplorer.getAllClipBoard() ;
-  }
+//  
+//  public List getAllClipBoard() {
+//    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+//    return uiExplorer.getAllClipBoard() ;
+//  }
   
   protected Node getCurrentNode() {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -168,11 +167,6 @@ public class UIWorkingArea extends UIContainer {
     return isEdit;
   }
 
-  public boolean isVersionableOrAncestor(Node node) throws RepositoryException {
-    if (isVersionable(node) || isAncestorVersionable(node)) return true;
-    return false;
-  }
-
   public boolean isEditable(Node node) throws Exception {
     String nodeType = node.getPrimaryNodeType().getName();
     for (int i = 0; i < NON_EDITABLE_NODETYPES.length; i++) {
@@ -181,18 +175,18 @@ public class UIWorkingArea extends UIContainer {
     }
     return true;
   }
-
-  public boolean isReadAuthorized(ExtendedNode node) throws RepositoryException {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    return uiExplorer.isReadAuthorized(node);
+  
+  public boolean isVersionableOrAncestor(Node node) throws RepositoryException {
+    if (Utils.isVersionable(node) || isAncestorVersionable(node)) return true;
+    return false;
   }
 
-  public boolean isVersionable(Node node) throws RepositoryException {
-    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType("nt:frozenNode");
-  }
+//  public boolean isVersionable(Node node) throws RepositoryException {
+//    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType("nt:frozenNode");
+//  }
 
   public String getVersionNumber(Node node) throws RepositoryException {
-    if(!isVersionable(node)) return "-";
+    if(!Utils.isVersionable(node)) return "-";
     return node.getBaseVersion().getName();
   }
 
@@ -235,15 +229,16 @@ public class UIWorkingArea extends UIContainer {
     return false ;
   }
   
-  private String getList(Node node, String path) throws Exception {
+  public String getActionsList(Node node) throws Exception {
+    String path = node.getPath() ;
     StringBuilder actionsList = new StringBuilder() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     String preferenceWS = node.getSession().getWorkspace().getName() ;
     Session session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
-    if(isReadAuthorized((ExtendedNode)node)) {
+    if(Utils.isReadAuthorized(node)) {
       if(isVersionableOrAncestor(node)) {
         if(node.isCheckedOut()) {
-          if(isVersionable(node)) actionsList.append("CheckIn") ;
+          if(Utils.isVersionable(node)) actionsList.append("CheckIn") ;
           if(isEditable(path, session) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
@@ -256,7 +251,7 @@ public class UIWorkingArea extends UIContainer {
           if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
           actionsList.append(",WebDAV") ;
         } else {
-          if(isVersionable(node)) actionsList.append(",CheckOut") ;
+          if(Utils.isVersionable(node)) actionsList.append(",CheckOut") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node)) actionsList.append(",Copy") ;
@@ -280,15 +275,8 @@ public class UIWorkingArea extends UIContainer {
         actionsList.append(",WebDAV") ;
       }
     }
+    if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste") ;
     return actionsList.toString() ;
-  }
-  
-  public String getActionsList(Node node) throws Exception {
-    String actionsList = null ;
-    String path = node.getPath() ;
-    actionsList = getList(node, path) ;
-    if(getAllClipBoard().size() > 0) actionsList = actionsList + "," + "Paste" ;
-    return actionsList ;
     
   }
   
@@ -666,8 +654,7 @@ public class UIWorkingArea extends UIContainer {
       String destWorkspace = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(destWorkspace) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
-      ClipboardCommand currentClipboard = 
-        ((LinkedList<ClipboardCommand>)uicomp.getAllClipBoard()).getLast() ;
+      ClipboardCommand currentClipboard = uiExplorer.getAllClipBoard().getLast() ;
       String srcPath = currentClipboard.getSrcPath() ;
       String type = currentClipboard.getType();
       String srcWorkspace = currentClipboard.getWorkspace() ;
@@ -678,7 +665,11 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/")) ;
+      if(destPath.endsWith("/")) {
+        destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1) ;
+      } else {
+        destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/")) ;
+      }
       try {
         if (ClipboardCommand.COPY.equals(type)) {
           pasteByCopy(session, srcWorkspace, srcPath, destPath) ;

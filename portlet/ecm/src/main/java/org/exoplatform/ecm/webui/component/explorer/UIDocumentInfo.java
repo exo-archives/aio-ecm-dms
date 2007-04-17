@@ -160,7 +160,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   }
   
   public boolean isReadAuthorized(ExtendedNode node) throws Exception {
-    return getAncestorOfType(UIWorkingArea.class).isReadAuthorized(node) ;
+    return getAncestorOfType(UIJCRExplorer.class).isReadAuthorized(node) ;
   }
   
   @SuppressWarnings("unchecked")
@@ -183,10 +183,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   public String getNodePath(Node node) throws Exception {
     return node.getPath() ;
   }
-  
-  public boolean isVersionable(Node node) throws RepositoryException {
-    return  getAncestorOfType(UIWorkingArea.class).isVersionable(node) ;
-  }
+//  
+//  public boolean isVersionable(Node node) throws RepositoryException {
+//    return  getAncestorOfType(UIWorkingArea.class).isVersionable(node) ;
+//  }
   
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;

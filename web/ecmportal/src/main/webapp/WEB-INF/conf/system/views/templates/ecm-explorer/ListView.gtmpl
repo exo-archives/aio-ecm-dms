@@ -118,12 +118,12 @@
 	        </td>
 	        <td style="width:80px;"><%=uicomponent.getNodeOwner(data)%></td>
 	        <td style="width:50px;">
-	          <%=uicomponent.isVersionable(data)%>
+	          <%=Utils.isVersionable(data)%>
 	          <%
-	            if(uicomponent.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
+	            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
+	              println "(" + uicomponent.getVersionName(data) + ")" ;
+	            }
 	          %>
-	          (<%=uicomponent.getVersionName(data)%>)
-	          <%}%>
 	        </td>
 	      </tr>
       <%}%>
