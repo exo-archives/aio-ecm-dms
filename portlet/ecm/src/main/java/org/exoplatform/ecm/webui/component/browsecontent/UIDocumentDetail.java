@@ -191,6 +191,15 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
       return false;
     }
   }
+  
+  public boolean isNodeTypeSupported(String nodeTypeName) {
+    try {      
+      TemplateService templateService = getApplicationComponent(TemplateService.class);
+      return templateService.isManagedNodeType(nodeTypeName);
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
   public Node getNodeByUUID(String uuid) throws Exception{ 
     return getSession().getNodeByUUID(uuid);

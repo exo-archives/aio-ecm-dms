@@ -1,4 +1,8 @@
-<%def node = uicomponent.getNode() ;%>
+<%
+	import java.text.SimpleDateFormat ;
+	def node = uicomponent.getNode() ;
+	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
+%>
 	<style>
 		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
 		span.text  { font-size: 12px; vertical-align:bottom; color: #00000; }
@@ -25,16 +29,20 @@
 			<div style="height: 25px; float: left; width: 49%">
 				<label class="text">Date: </label>
 				<span class="text">
-					<%if(node.hasProperty("exo:date")) {%>
-						<%=node.getProperty("exo:date").getString()%>
+					<%if(node.hasProperty("exo:date")) {
+					  dateFormat.applyPattern("MMMMM dd yyyy") ;						
+					%>
+						<%=dateFormat.format(node.getProperty("exo:date").getDate().getTime())%>
 					<%}%>
 				</span>
 			</div>
 			<div style="height: 25px">
 				<label class="text">Date Time: </label>
 				<span class="text">
-					<%if(node.hasProperty("exo:datetime")) {%>
-						<%=node.getProperty("exo:datetime").getString()%>
+					<%if(node.hasProperty("exo:datetime")) {
+						 dateFormat.applyPattern("MMMMM dd yyyy hh:mm:ss") ;		
+					%>
+						<%=dateFormat.format(node.getProperty("exo:datetime").getDate().getTime())%>
 					<%}%>	
 				</span>
 			</div>

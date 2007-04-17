@@ -19,15 +19,7 @@
 	}
 	.UIDivInfo .Title {
 		font-size:13px; font-weight: bold;
-	}
-	.UIGrid {
-		border-collapse:separate;
-		border-color:#7EAAD0 -moz-use-text-color rgb(126, 170, 208) rgb(126, 170, 208);
-		border-style:solid;
-		border-width:1px;
-		font-size:11px;
-		padding:0px;
-	}
+	}	
 </style>		
 
 <div class="UIDivInfo">
@@ -37,7 +29,7 @@
 			<div class="Title">File Plan Content:<%=node.getName()%></div>
 			<div style="clear:left;"><span></span></div>
 		</div>
-		<table class="UIGrid">    
+		<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">    
 			<tr>
 				<td style="width: 30%">Record Category Identifier:</td>
 				<%
@@ -226,7 +218,7 @@
 	      <div style="clear:left;"><span></span></div>
 	      <div class="UITabContentContainer">
 	        <div class="UITabContent" style="display: block;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>		
 								<th width="30px;"><span></span></th>	
 								<th>Record Id</th>
@@ -266,7 +258,7 @@
 						</table>
 	        </div>
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>		
 								<th width="30px;"><span></span></th>			
 								<th>Record Id</th>
@@ -307,7 +299,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>	
 								<th width="30px;"><span></span></th>				
 								<th>Record Id</th>
@@ -348,7 +340,7 @@
 	        </div>
 	        
 	       	<div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th>Record Id</th>
@@ -385,7 +377,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 					      <th>Record Id</th>
@@ -414,7 +406,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 					      <th>Record Id</th>
@@ -443,7 +435,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 					      <th>Record Id</th>
@@ -478,7 +470,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 					      <th>Record Id</th>
@@ -513,7 +505,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid">
+	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 					      <th>Record Id</th>

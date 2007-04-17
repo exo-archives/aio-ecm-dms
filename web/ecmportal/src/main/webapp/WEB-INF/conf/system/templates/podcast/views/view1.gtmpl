@@ -1,4 +1,10 @@
-<%def node = uicomponent.getNode() ;%>
+<%
+	import java.text.SimpleDateFormat ;
+	def node = uicomponent.getNode() ;
+	String pattern = "MMMMM dd yyyy" ;
+	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
+  dateFormat.applyPattern(pattern) ;
+%>
 <head>
 	<style>
 		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
@@ -65,7 +71,7 @@
 			<label class="text">Publish Date:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:publishedDate")) {%>
-					<%=node.getProperty("exo:publishedDate").getString()%>
+					<%=dateFormat.format(node.getProperty("exo:publishedDate").getDate().getTime())%>
 				<%}%>
 			</span>
 		</div>		
