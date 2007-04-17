@@ -30,8 +30,6 @@ public interface ECMViewComponent {
 
   public List<Node> getAttachments() throws Exception;
 
-  public boolean hasPropertyContent(Node node, String property) ;
-
   public boolean isRssLink() ;
 
   public String getRssLink() ;

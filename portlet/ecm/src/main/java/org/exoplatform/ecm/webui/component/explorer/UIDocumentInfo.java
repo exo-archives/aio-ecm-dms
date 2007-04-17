@@ -252,16 +252,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     }
   }
   
-  public boolean hasPropertyContent(Node node, String property){
-    try {
-      String value = node.getProperty(property).getString() ;
-      if(value.length() > 0) return true ;
-    } catch (Exception e) {
-      e.printStackTrace() ;      
-    }
-    return false ;
-  }
-  
   public boolean isRssLink() { return false ; }
   public String getRssLink() { return null ; }
   

@@ -178,10 +178,8 @@
 					</div>
 				</div>
 				<%
-					def summary = uicomponent.hasPropertyContent(node, "exo:summary") ;
-					def location = uicomponent.hasPropertyContent(node, "exo:location") ;
-					if(summary) {
-						if(location) { %>
+					if(node.hasProperty("exo:summary")) {
+						if(node.hasProperty("exo:location")) { %>
 							<div class="EventFrame" style="float: left; width: 49%">
 					<%} else { %>
 							<div class="EventFrame" style="float: left; width: 99.8%">
@@ -193,8 +191,8 @@
 							</div>
 				<%} %>
 				<%
-					if(location) {
-						if(summary) { %>
+					if(node.hasProperty("exo:location")) {
+						if(node.hasProperty("exo:summary")) { %>
 							<div class="EventFrame" style="float: right; width: 49%">
 					<%} else {%>
 							<div class="EventFrame" style="float: right; width: 99.8%">
@@ -205,8 +203,8 @@
 								</div>
 							</div>					
 				<%} %>
-				<div style="clear: both;"><span></span></div>				
-				<%if(uicomponent.hasPropertyContent(node, "exo:comment")) { %>
+				<div style="clear: both;"><span></span></div>
+				<%if(node.hasProperty("exo:comment")) { %>
 						<div class="EventFrame">
 							<div class="TitleLabel">Comment</div>
 							<div class="FrameContent">
@@ -214,14 +212,16 @@
 							</div>
 						</div>					
 				<%} %>
-				<%if(uicomponent.hasPropertyContent(node, "exo:description")) {%>					
+				<%if(node.hasProperty("exo:description")) {%>					
 						<div class="EventFrame">
 							<div class="TitleLabel">Description</div>
 							<div class="FrameContent">
 								<%=node.getProperty("exo:description").getString()%>
 							</div>
 						</div>					
-				<%} %>				
+				<%} %>
+      <div style="height: 10px;"><span></span></div>
+			<% _ctx.include(uicomponent.getVoteTemplate()); %>
 			</div>
 		</div>
 	</div>
@@ -229,5 +229,6 @@
 		<div class="BottomRightCornerDecorator">
 			<div class="BottomCenterDecorator"><span></span></div>
 		</div>
-	</div>  
+	</div>
+  <% _ctx.include(uicomponent.getCommentTemplate()); %>
 </div>

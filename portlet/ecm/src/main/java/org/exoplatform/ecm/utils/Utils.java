@@ -84,41 +84,20 @@ public class Utils {
     return node.getPrimaryNodeType().getName().replaceAll(":", "_") ;
   }
   
-  public static String getNodeTypeIcon(Node node, String size) throws RepositoryException {
-    String str = node.getPrimaryNodeType().getName().replaceAll(":", "_") + size;
+  public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
+    String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
+    StringBuilder str = new StringBuilder(nodeType) ;
+    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
     if(node.isNodeType(NT_FILE)) {
-      Node jcrContentNode = node.getNode("jcr:content") ;
-      str += " " + jcrContentNode.getProperty(JCR_MIMETY).getString().replaceFirst("/", "_") + size;
+      Node jcrContentNode = node.getNode(JCR_CONTENT) ;
+      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceFirst("/", "_")).append(appended);
     }
-    return str ;
+    return str.toString() ;
   }
   
-//  public static Collection getChildrenPerRow(int nbPerRow, Iterator iter) throws Exception{
-//    List<List> listOfList = new ArrayList<List>();
-//    List<Object> tempList = new ArrayList<Object>(nbPerRow);
-//    int i = 0;
-//    while (iter.hasNext()) {
-//      Object object =  iter.next();
-//      tempList.add(object);
-//      if(i == nbPerRow - 1) {
-//        listOfList.add(tempList);        
-//        if(iter.hasNext()) {
-//          i = 0;
-//          tempList = new ArrayList<Object>(nbPerRow);
-//        }
-//      } else if(iter.hasNext()) i++;
-//    }
-//    if(i < nbPerRow - 1) listOfList.add(tempList);
-//    return listOfList;
-//  }  
-//  public static Collection toCollection(Iterator iter) throws Exception {    
-//    List<Object> tempList = new ArrayList<Object>();    
-//    while (iter.hasNext()) {
-//      Object object =  iter.next();
-//      tempList.add(object);                                    
-//    }          
-//    return tempList;
-//  }  
+  public static String getNodeTypeIcon(Node node, String appended) throws RepositoryException {
+    return getNodeTypeIcon(node, appended, null) ;
+  }
   
   public static Value[] getMultiValue(List<String> values, int valueType, Session session) throws Exception {
     List<Value> valueList = new ArrayList<Value>();
