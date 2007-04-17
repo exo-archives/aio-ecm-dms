@@ -506,9 +506,8 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String ws = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
       String currentNodePath = uiExplorer.getCurrentNode().getPath() ;
-      if(currentNodePath.equals(nodePath) || currentNodePath.equals(ws + ";" + nodePath)) {
+      if(currentNodePath.equals(nodePath)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

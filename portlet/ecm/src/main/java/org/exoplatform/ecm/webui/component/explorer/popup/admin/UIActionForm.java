@@ -150,7 +150,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }        
+      }
+      JcrInputProperty description = (JcrInputProperty) sortedInputs.get("/node/exo:description");
       actionServiceContainer.addAction(parentNode_, nodeTypeName_, sortedInputs);
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;

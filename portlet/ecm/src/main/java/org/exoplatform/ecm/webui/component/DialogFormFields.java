@@ -52,12 +52,12 @@ import org.exoplatform.webui.event.Event.Phase;
  * 
  */
 
-@ComponentConfig(
+/*@ComponentConfig(
     events = {
         @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-        @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class)
+        @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class, phase = Phase.DECODE)
     }
-)
+)*/
 @SuppressWarnings("unused")
 public class DialogFormFields extends UIForm {
   
@@ -395,7 +395,7 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiTextArea) ;
     }
     if(editable.equals("false")) uiTextArea.setEditable(false) ;
-    else uiTextArea.setEditable(false) ;
+    else uiTextArea.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     if(node_ != null) {
       String value = "";
@@ -418,6 +418,7 @@ public class DialogFormFields extends UIForm {
     } 
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
+        System.out.println("test value ========= " + getPropertyValue(jcrPath)) ;
         uiTextArea.setValue(getPropertyValue(jcrPath)) ;
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         uiTextArea.setValue(node_.getName()) ;

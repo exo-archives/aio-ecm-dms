@@ -72,7 +72,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
           node.addNode(name, type) ;
           node.save() ;
           node.getSession().refresh(false) ;
-          if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+          if(!uiExplorer.getPreference().isJcrEnable())uiExplorer.getSession().save() ;
           uiExplorer.updateAjax(event) ;
         }catch(ConstraintViolationException cve) {  
           Object[] arg = { type } ;

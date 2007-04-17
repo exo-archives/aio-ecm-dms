@@ -81,6 +81,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
+        return ;
       }
       if(!uiExplorer.getPreference().isJcrEnable()) session.save() ; 
       uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.import-successful", null)) ;
