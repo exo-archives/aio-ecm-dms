@@ -257,19 +257,39 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
-  border-top: none;
-  border-bottom: none;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .HorizontalLayout {
+  padding-bottom: 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
-  width: auto;
-  margin: 0px;
-  border-bottom: none;
-  border-top: solid 1px #cdcdcd;
+  padding-bottom: 3px; 
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label{
+  width: 200px;
+  text-align: right;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController {
+ 	padding: 13px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
   padding: 0px 3px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
+  padding-top: 12px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
+  width: auto;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
+  margin: 5px;
 }
 
 /*===========================UIUploadForm====================*/
@@ -284,5 +304,107 @@
   margin: 0px auto;
 }
 
+/*=============================UIWatchDocumentForm=======================*/
+.UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
+  width: 480px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer label {
+  width: 115px;
+}
+
+.UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
+  width: 150px;
+  padding-left: 40px;
+}
+
+/*=============================UITaggingForm=======================*/
+
+.UIJCRExplorerPortlet .UITaggingForm .FieldContainer {
+  width: 480px;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .FieldContainer .UIFormInputSet {
+  padding: 0px;
+  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+  padding: 0px;
+  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIAction {
+  width: 170px;
+  padding: 0px 0px 8px 40px;
+}
+
+/*==================================UIMultiLanguageForm==============================*/
+
+.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .HorizontalLayout  {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
+  width: 240px;
+  padding-left: 15px;
+}
+
+/*==================================UIVoteForm==============================*/
+
+.UIJCRExplorerPortlet .UIVoteForm {
+  padding: 8px;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer {
+	padding-top: 8px;
+  background: #f4f4f4 ;
+  border: 1px solid #e1e1e1 ;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white ;
+  width: 145px;
+  padding: 2px 15px;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote{
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .UIAction{
+  width: 80px;
+  padding-left: 13px;
+}
+
+/*===============================UILanguageTypeForm===================================*/
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIAction {
+  width: 160px;
+  padding-left: 15px;
+}
+
+/*=============================UICommentForm=======================*/
+
+.UIJCRExplorerPortlet .UICommentForm .FieldContainer {
+  width: 480px;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .UICommentForm .FieldContainer input {
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UICommentForm .UIAction {
+  width: 160px;
+  padding-left: 40px;
+}
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

@@ -321,7 +321,7 @@ public class UIActionBar extends UIForm {
           uiDocumentForm.setContentNode(selectedNode) ;
           uiDocumentForm.addNew(false) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-          uiPopupAction.activate(uiDocumentForm, 600, 550) ;
+          uiPopupAction.activate(uiDocumentForm, 700, 550) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         } else {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null)) ;
@@ -441,7 +441,7 @@ public class UIActionBar extends UIForm {
         return ;
       }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UIMultiLanguageManager.class, null,700, 550) ;
+      uiPopupAction.activate(UIMultiLanguageManager.class, null,720, 550) ;
       UIMultiLanguageManager uiMultiManager = 
         uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
       UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
