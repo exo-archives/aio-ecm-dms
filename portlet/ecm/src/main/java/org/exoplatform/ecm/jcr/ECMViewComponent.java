@@ -39,4 +39,7 @@ public interface ECMViewComponent {
   public void setLanguage(String language) ;
   
   public String getLanguage() ;
+  
+  public Object getComponentInstanceOfType(String className) ;
+  
 }

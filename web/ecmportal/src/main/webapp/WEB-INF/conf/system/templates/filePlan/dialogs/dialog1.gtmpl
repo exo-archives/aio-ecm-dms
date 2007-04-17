@@ -4,13 +4,13 @@
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
 %>
 
-<%//Begin UITabPane%>
+<%/*Begin UITabPane*/%>
 <div class="UITabPane" id="$uicomponent.id">
-  <%//Begin TabPaneContent%>
+  <%/*Begin TabPaneContent*/%>
   <div class="TabPaneContent"> 
-    <%//Begin WorkingArea%>
+    <%/*Begin WorkingArea*/%>
     <div class="WorkingAreaWithHelp">
-    	<%//Begin Tabs%>
+    	<%/*Begin Tabs*/%>
       <div class="UIHorizontalTabs" style="margin-top:5px;">
         <div class="LeftHorizontalTabs">
 	     	  <div class="RightHorizontalTabs">
@@ -21,7 +21,7 @@
 			              <div class="SelectedTabStyle">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Name</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Name</div>
 			                  </div>
 			                </div>
 			              </div>
@@ -31,7 +31,7 @@
 			              <div class="NormalTabStyle">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Record</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Record</div>
 			                  </div>
 			                </div>
 			              </div>
@@ -41,7 +41,7 @@
 			              <div class="NormalTabStyle">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Process</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Process</div>
 			                  </div>
 			                </div>
 			              </div>
@@ -52,15 +52,15 @@
 			    </div>
 			  </div>
       </div>
-      <%//End UIHorizontalTabs%>
-      <%//Start UITabContentContainer%>
+      <%/*End UIHorizontalTabs*/%>
+      <%/*Start UITabContentContainer*/%>
       
       <div class="UIFormWithTitle" style="margin:0px; border: 1px solid #b7b7b7; border-top: none;background: #f4f4f4;"> 
 			<%uiform.begin()%>
-				<div class="HorizontalLayout" style="border: 0px; margin:0px;">	  
+				<div class="HorizontalLayout" style="border: none; margin:0px;">	  
       
 		      <div class="UITabContentContainer">
-		      	<div class="UITabContent" style="display: block">
+		      	<div class="UITabContent" style="display: block;">
 						    
 						    <div class="FieldContainer">		          					
 						      <label>Name</label>
@@ -80,7 +80,7 @@
 								
 		      	</div> 
 		      	
-		      	<div class="UITabContent" style="display: none">
+		      	<div class="UITabContent" style="display: none;">
 						   <div class="FieldContainer">
 								<label>Record Category Identifier</label>
 								<%
@@ -155,7 +155,7 @@
 		      	
 		      	</div> 
 		      	
-		        <div class="UITabContent" style="display: none">
+		        <div class="UITabContent" style="display: none;">
 		      		<div class="FieldContainer">
 								<label>Process Cutoffs</label>
 								<%
@@ -266,7 +266,7 @@
 		        
 		      </div>  
       	
-      		<%/* start render action*/%>
+      		<%/*start render action*/%>
 					<div class="UIAction"> 
 				    <div class="ActionContainer">
 				      <% for(action in uicomponent.getActions()) { %>
@@ -276,7 +276,7 @@
 										  <div class="ButtonRight">
 											  <div class="ButtonMiddle">
 											    <% 
-											      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+											      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) ;
 											      String link = uicomponent.event(action) ;
 											    %>
 											    <a href="$link">$actionLabel</a>
@@ -288,15 +288,15 @@
 				      <%}%>          
 				    </div>
 				  </div>
-			  	<%/* end render action*/%>      	
+			  	<%/*end render action*/%>      	
       		</div>  
       	<%uiform.end()%>						 
 				</div>
-      <%//End UITabContentContainer%>
+      <%/*End UITabContentContainer*/%>
       
     </div>  
-    <%//End WorkingArea%>
+    <%/*End WorkingArea*/%>
   </div>  
-  <%//End TabPaneContent%>
+  <%/*End TabPaneContent*/%>
 </div>  
-<%//End UITabPane%>
+<%/*End UITabPane*/%>

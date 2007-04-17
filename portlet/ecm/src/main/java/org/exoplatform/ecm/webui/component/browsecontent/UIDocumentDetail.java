@@ -65,6 +65,10 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     }    
     return null ;
   }
+  
+  public String getIcons(Node node, String type) throws Exception {
+    return Utils.getNodeTypeIcon(node, type) ; 
+  }
 
   public String getTemplate(){ return getTemplatePath() ;}
   
@@ -80,6 +84,19 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     } catch (Exception e) {}
   }
 
+  @SuppressWarnings("unchecked")
+  public Object getComponentInstanceOfType(String className) {
+    Object service = null;
+    try {
+      ClassLoader loader =  Thread.currentThread().getContextClassLoader();
+      Class clazz = loader.loadClass(className);
+      service = getApplicationComponent(clazz);
+    } catch (ClassNotFoundException ex) {
+      ex.printStackTrace();
+    } 
+    return service;
+  }
+  
   public Node getNode() throws Exception { 
     if(node_.hasProperty("exo:language")) {
       String defaultLang = node_.getProperty("exo:language").getString() ;

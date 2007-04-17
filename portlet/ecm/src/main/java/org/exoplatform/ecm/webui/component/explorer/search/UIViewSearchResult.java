@@ -165,4 +165,17 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
 
   public void setLanguage(String language) {
   }
+
+  @SuppressWarnings("unchecked")
+  public Object getComponentInstanceOfType(String className) {
+    Object service = null;
+    try {
+      ClassLoader loader =  Thread.currentThread().getContextClassLoader();
+      Class clazz = loader.loadClass(className);
+      service = getApplicationComponent(clazz);
+    } catch (ClassNotFoundException ex) {
+      ex.printStackTrace();
+    } 
+    return service;
+  }
 }

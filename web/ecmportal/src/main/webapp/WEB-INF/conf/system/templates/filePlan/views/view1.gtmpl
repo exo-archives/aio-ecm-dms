@@ -113,13 +113,13 @@
 		</table>
 	 </div>
 
-	<%//Begin UITabPane%>
+	<%/*Begin UITabPane*/%>
 	<div class="UITabPane" style="margin-top: 5px;">
-	  <%//Begin TabPaneContent%>
+	  <%/*Begin TabPaneContent*/%>
 	  <div class="TabPaneContent"> 
-	    <%//Begin WorkingArea%>
+	    <%/*Begin WorkingArea*/%>
 	    <div class="WorkingAreaWithHelp">
-	    	<%//Begin Tabs%>
+	    	<%/*Begin Tabs*/%>
 	      <div class="UIHorizontalTabs">
 	        <div class="LeftHorizontalTabs">
 		     	  <div class="RightHorizontalTabs">
@@ -221,8 +221,8 @@
 				    </div>
 				  </div>
 	      </div>
-	      <%//End UIHorizontalTabs%>
-	      <%//Start UITabContentContainer%>
+	      <%/*End UIHorizontalTabs*/%>
+	      <%/*Start UITabContentContainer*/%>
 	      <div style="clear:left;"><span></span></div>
 	      <div class="UITabContentContainer">
 	        <div class="UITabContent" style="display: block;"> 
@@ -380,7 +380,7 @@
 					            }%>
 					          </td>
 									</tr>
-							<%}	%>
+							<%}%>
 						</table>
 	        </div>
 	        
@@ -409,7 +409,7 @@
 					            <%}%>
 					          </td>
 									</tr>
-							<%}	%>
+							<%}%>
 						</table>
 	        </div>
 	        
@@ -542,12 +542,12 @@
 	        </div>
 	        
 	      </div>  
-	      <%//End UITabContentContainer%>
+	      <%/*End UITabContentContainer*/%>
 	    </div>  
-	    <%//End WorkingArea%>
+	    <%/*End WorkingArea*/%>
 	  </div>  
-	  <%//End TabPaneContent%>
+	  <%/*End TabPaneContent*/%>
 	</div>  
-	<%//End UITabPane%>
+	<%/*End UITabPane*/%>
 	 
 </div>
