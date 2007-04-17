@@ -1,0 +1,64 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Apr 17, 2007 3:37:43 PM
+ */
+%>
+<% import org.exoplatform.webui.component.UIPageIterator; %>
+<% 
+  def resultList = uicomponent.getResultList() ; 
+  if(resultList == null) return ;
+%>
+<div class="UISearchResult" id="$uicomponent.id">
+  <table class="UIGrid">
+    <thead>
+      <tr>
+        <th></th>
+  	    <th><%=_ctx.appRes("UISearchResult.header.name")%></th>
+  	    <th><%=_ctx.appRes("UISearchResult.header.path")%></th>
+  	    <th><%=_ctx.appRes("UISearchResult.header.action")%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%
+        def rowClass = null ;
+  	    boolean even = true ;
+  	    boolean found = false ;
+  	    for (node in resultList) {
+  	      found = true  ;
+  	      if(even) rowClass = "EvenRow" ;  
+  	      else rowClass =  "OddRow" ; 
+  	      even = !even ;
+      %>
+          <tr class="$rowClass">
+            <%
+              String nodeType = node.getPrimaryNodeType().getName() ;
+              nodeType = nodeType.replace(":", "_") ;
+            %>
+            <td width="40px" align="center">
+              <div class="default16x16Icon ${nodeType}16x16Icon" style="margin:auto"><span></span></div>
+            </td>
+            <td><div class="Text"><%=node.getName()%></div></td>
+	          <%
+	            String nodePath = node.getPath() ;
+	            if(nodePath.length() > 40) nodePath = nodePath.substring(0, 40) + "..." ;
+	          %>
+	          <td><div class="Text"><%=nodePath%></div></td>
+	          <td style="width:80px;">
+	            <a href="<%=uicomponent.event("View", node.getPath())%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
+	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
+	            </a>
+	            <a href="<%=uicomponent.event("OpenFolder", node.getPath())%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
+	              <div class="OpenFolder16x16Icon" style="margin-left:10px;float:left"><span></span></div>
+	            </a>
+	          </td>	                    
+          </tr>
+      <%}%>
+    </tbody>
+  </table>
+  <div style="margin:1px 0px 20px 0px;">
+    <%uicomponent.renderChild(UIPageIterator.class)%>
+  </div>
+</div>

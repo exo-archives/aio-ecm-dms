@@ -642,15 +642,19 @@ public class UIWorkingArea extends UIContainer {
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       ActionServiceContainer actionService = 
         uicomp.getApplicationComponent(ActionServiceContainer.class) ;
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
       try {
         Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session);
         String userId = event.getRequestContext().getRemoteUser() ;
         actionService.executeAction(userId, node, actionName);
+        Object[] arg = { actionName } ;
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.execute-successfully", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.updateAjax(event) ;
       } catch (Exception e) {
-        e.printStackTrace() ;
-        UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
         JCRExceptionManager.process(uiApp, e);
       }
+      
     }
   }
   

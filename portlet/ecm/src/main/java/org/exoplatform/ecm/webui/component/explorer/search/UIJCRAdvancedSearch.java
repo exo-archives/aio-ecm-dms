@@ -99,7 +99,7 @@ public class UIJCRAdvancedSearch extends UIForm {
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
       uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setQueryResults(queryResult) ;
-      uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
+      uiSearchResult.updateGrid() ;
       uiSearch.setRenderedChild(UISearchResult.class) ;
     }
   }

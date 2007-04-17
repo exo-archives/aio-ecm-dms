@@ -105,10 +105,6 @@
 .UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
 }
 
-.UIJCRExplorerPortlet .UIGrid td {
-  border: solid 1px #acc6dc;
-}
-
 .UIJCRExplorerPortlet .GridTitleBar {
   width: 220px;
   margin-top: 15px;

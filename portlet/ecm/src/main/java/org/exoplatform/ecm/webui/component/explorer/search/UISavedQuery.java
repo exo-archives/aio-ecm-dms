@@ -158,7 +158,7 @@ public class UISavedQuery extends UIContainer {
         queryResult = queryService.execute(queryPath) ;
         uiSearchResult.resultMap_.clear() ;
         uiSearchResult.setQueryResults(queryResult) ;
-        uiSearchResult.updateGrid(uiSearchResult.getNodeIterator()) ;
+        uiSearchResult.updateGrid() ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null)) ;
         uiSearch.setRenderedChild(UISavedQuery.class) ;
