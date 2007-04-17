@@ -325,14 +325,14 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   private void initiateActionConfiguration() throws Exception {
     ManageableRepository jcrRepository = repositoryService_.getRepository();
     String[] workspaces = jcrRepository.getWorkspaceNames();
-    String workspace = null;
-    for (int i = 0; i < workspaces.length; i++) {
-      workspace = workspaces[i];
+    for (String workspace : workspaces) {
       Session session = jcrRepository.getSystemSession(workspace);
       QueryManager queryManager = null;
       try {
         queryManager = session.getWorkspace().getQueryManager();
-      } catch (Exception e) {
+      } catch (RepositoryException e) {
+        System.out.println("[WARN] ActionServiceContainer - Query Manager Factory of workspace "
+            + workspace + " not found. Check configuration.");
       }
       if (queryManager == null)
         continue;

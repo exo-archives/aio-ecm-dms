@@ -363,7 +363,6 @@ abstract public class BaseActionPlugin implements ActionPlugin {
           if (!srcNode.isNodeType("exo:actionable")) {
             srcNode.addMixin("exo:actionable");
           }
-
           actionNode = srcNode.addNode(actionName, nodeType);
           actionNode.setProperty("exo:name", action.getName());
           actionNode.setProperty("exo:description", action.getDescription());

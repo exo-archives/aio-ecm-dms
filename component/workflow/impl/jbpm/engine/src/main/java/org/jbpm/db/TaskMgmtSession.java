@@ -33,10 +33,9 @@ public class TaskMgmtSession {
       query.setString("actorId", actorId);
       result = query.list();
     } catch (Exception e) {
-      e.printStackTrace() ;
       log.error(e);
       jbpmSession.handleException();
-      return result;
+      //return result;
       //throw new RuntimeException("couldn't get task instances list for actor '"+actorId+"'", e);
     } 
     return result;
