@@ -682,6 +682,10 @@ public class UIWorkingArea extends UIContainer {
           pasteByCut(uiExplorer, session, srcWorkspace, srcPath, destPath) ;
         }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        Node selectedNode = (Node)session.getItem(destPath) ;
+        ActionServiceContainer actionContainer = 
+          event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
+        actionContainer.initiateObservation(selectedNode) ;
         uiExplorer.updateAjax(event) ;
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
