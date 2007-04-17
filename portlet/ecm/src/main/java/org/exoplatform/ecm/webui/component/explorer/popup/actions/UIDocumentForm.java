@@ -274,7 +274,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         }
       }
       if(isDefaultLanguage()) multiLanguageService.setDefault(node, getSelectedLanguage()) ;
-      node.save() ;
     } else {
       if(languagesNode.hasNode(getSelectedLanguage())) {
         languageNode = languagesNode.getNode(getSelectedLanguage()) ;
@@ -298,8 +297,10 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
           languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
         }
       }
+      setNode(node) ;
       if(isDefaultLanguage()) multiLanguageService.setDefault(node, getSelectedLanguage()) ;
     }
+    node.save() ;
     if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
   }
 

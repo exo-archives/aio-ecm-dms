@@ -259,7 +259,7 @@ public class DialogFormFields extends UIForm {
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
-    String propertyName = jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ;
+    String propertyName = getPropertyName(jcrPath) ;
     if(mixintype != null) inputProperty.setMixintype(mixintype) ;
     properties.put(name, inputProperty) ;
     propertiesName_.put(name, propertyName) ;
@@ -325,7 +325,8 @@ public class DialogFormFields extends UIForm {
     else uiInput.setEditable(true) ;
     if(node_ != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
-        if(node_.getParent().getName().equals("languages")) {
+        Node parentNode = node_.getParent().getParent() ;
+        if(parentNode != null && parentNode.getName().equals("languages")) {
           uiInput.setValue(node_.getParent().getParent().getName()) ;
         } else {
           uiInput.setValue(node_.getName()) ;
