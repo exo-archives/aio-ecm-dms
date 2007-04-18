@@ -132,6 +132,7 @@
 	    margin-top: 10px;
 	    text-align: left;
 	    color:#bdbdbd;
+	    width: 400px;
 	  }
 	  
 	  .UIArticle  a.LanguageTitle {
@@ -148,6 +149,11 @@
 		.UIArticle .UIRatingInfoContainer {
 			margin: 0px 0px 0px auto;
 		}
+		
+		.UIArticle .AttachmentsContaienr {
+		  margin-left: 110px ;
+		}
+		
   </style>  
 	<%
 	 def node = uicomponent.getNode() ;		
@@ -203,7 +209,8 @@
 			              <div class="FieldLabel">Attachments :</div>
 			              <div class="AttachmentsContaienr">
 										<%for (att in attachments) {%>	
-			                  <a class="Attachment" href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a>
+			                  <div class="Attachment" style="float:left"><span></span></div>
+			                  <div style="float:left;margin-right:5px;"><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
 		                <%}%>
 		                </div>
 			            </div>						
