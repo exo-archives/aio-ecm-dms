@@ -14,17 +14,13 @@ import javax.portlet.GenericPortlet;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.PortletSession;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-
 import org.exoplatform.container.ExoContainer;
-import org.apache.commons.chain.Context;
 import org.exoplatform.container.ExoContainerContext;
-
-import org.exoplatform.services.portletcontainer.impl.portletAPIImp.PortletSessionImp;
+import org.exoplatform.services.security.SecurityService;
 
 public class JcrConsole extends GenericPortlet {
 
@@ -40,11 +36,11 @@ public class JcrConsole extends GenericPortlet {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     String cont_name = (String)container.getContext().getName();
     
-    //System.out.println("Container: "+container);
- 
+    SecurityService securityService = (SecurityService) container.getComponentInstanceOfType(SecurityService.class);
+    securityService.setCurrentUser(renderRequest.getRemoteUser());
+    
     //renderRequest.getPortletSession().setAttribute(SESSION_CONTAINER,cont_name);
     renderRequest.setAttribute(SESSION_CONTAINER,cont_name);
-    
     
     renderResponse.setContentType("text/html; charset=UTF-8");
     PrintWriter w = renderResponse.getWriter();
