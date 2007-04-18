@@ -9,8 +9,11 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 
 import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
@@ -24,6 +27,9 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -31,10 +37,13 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  *          minh.dang@exoplatform.com
  * Apr 6, 2007 4:21:18 PM
  */
-@ComponentConfig()
+@ComponentConfig(
+    events = @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class)
+)
 public class UIViewSearchResult extends UIContainer implements ECMViewComponent, VoteComponent, CommentsComponent {
   
   private Node node_ ;
+  private String language_ ;
   public UIViewSearchResult() throws Exception {
   }
 
@@ -67,7 +76,21 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
     return attachments;
   }
 
-  public Node getNode() { return node_ ; }
+  public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException { 
+    if(node_.hasProperty("exo:language")) {
+      if(language_ == null) language_ = node_.getProperty("exo:language").getString() ;
+      String defaultLang = node_.getProperty("exo:language").getString() ;
+      if(node_.hasNode("languages")) {
+        if(!language_.equals("default") && !language_.equals(defaultLang)) {
+          Node curNode = node_.getNode("languages/" + language_) ;
+          language_ = defaultLang ;
+          return curNode ;
+        } 
+      }
+      return node_ ;
+    }    
+    return node_ ; 
+  }
 
   public String getNodeType() throws Exception { return null; }
   
@@ -159,12 +182,9 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
   }
 
-  public String getLanguage() {
-    return null;
-  }
+  public String getLanguage() { return language_; }
 
-  public void setLanguage(String language) {
-  }
+  public void setLanguage(String language) { language_ = language ; }
 
   @SuppressWarnings("unchecked")
   public Object getComponentInstanceOfType(String className) {
@@ -177,5 +197,14 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
       ex.printStackTrace();
     } 
     return service;
+  }
+  
+  static public class ChangeLanguageActionListener extends EventListener<UIViewSearchResult> {
+    public void execute(Event<UIViewSearchResult> event) throws Exception {
+      UIViewSearchResult uiViewSearchResult = event.getSource() ;
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiViewSearchResult.setLanguage(selectedLanguage) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewSearchResult.getParent()) ;
+    }   
   }
 }

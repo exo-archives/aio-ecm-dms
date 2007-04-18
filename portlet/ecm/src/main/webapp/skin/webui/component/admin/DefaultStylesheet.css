@@ -183,7 +183,6 @@
 
 /*############################## -- UIViewManager -- ########################*/
 .UIECMAdminPortlet .UIViewFormTabPane {
-	border: solid 1px red ;
 }
 
 .UIECMAdminPortlet .ECMTempForm .UIFormWithTitle .UIAction {
@@ -201,6 +200,21 @@
 
 .UIECMAdminPortlet .UIViewManager .UITabPane{
   padding: 10px;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
+  margin: auto;
+  width: 70px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 60px;
+}
+
+.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 60px;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewList {

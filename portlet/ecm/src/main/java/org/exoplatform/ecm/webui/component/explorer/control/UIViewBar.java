@@ -106,6 +106,10 @@ public class UIViewBar extends UIForm {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       uiJCRExplorer.getSession().refresh(false) ;
       uiJCRExplorer.refreshExplorer() ;
+      UIControl uiControl = event.getSource().getParent() ;
+      UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
+      String viewName = event.getSource().getUIFormSelectBox(FIELD_SELECT_VIEW).getValue() ;
+      uiActionBar.setTabOptions(viewName) ;
       UIApplication uiApp = uiJCRExplorer.getAncestorOfType(UIApplication.class) ;
       String mess = "UIJCRExplorer.msg.refresh-session-success" ;
       uiApp.addMessage(new ApplicationMessage(mess, null, ApplicationMessage.INFO)) ;

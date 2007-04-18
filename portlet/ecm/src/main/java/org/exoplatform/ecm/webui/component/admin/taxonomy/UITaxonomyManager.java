@@ -55,7 +55,7 @@ public class UITaxonomyManager extends UIContainer {
   public void initPopup(String path) throws Exception {
     removeChildById("TaxonomyPopup") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyPopup") ;
-    uiPopup.setWindowSize(600,230) ;
+    uiPopup.setWindowSize(600,250) ;
     UITaxonomyForm uiTaxoForm = createUIComponent(UITaxonomyForm.class, null, null) ;
     uiTaxoForm.setParent(path) ;
     uiPopup.setUIComponent(uiTaxoForm) ;

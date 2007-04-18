@@ -105,6 +105,7 @@ public class UISearchResult extends UIContainer {
         uiPopup.setResizable(true) ;
         UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null) ;
         uiViewSearch.setNode(node) ;
+        
         uiPopup.setWindowSize(560,450) ;
         uiPopup.setUIComponent(uiViewSearch) ;
         uiPopup.setRendered(true) ;

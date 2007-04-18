@@ -9,7 +9,7 @@
 .UIECMAdminPortlet .UITaxonomyManager {
 }
 .UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle {
-	width: auto;
+	width: 550px;
 }
 
 .UIECMAdminPortlet .UITaxonomyContainer {

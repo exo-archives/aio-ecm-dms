@@ -84,12 +84,11 @@ public class UIMultiLanguageForm extends UIForm {
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
       multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
-      if(uiExplorer.getCurrentNode().getPrimaryNodeType().getName().equals("nt:file")) {
-        UIPopupAction uiPopup = uiForm.getAncestorOfType(UIPopupAction.class) ;
-        uiPopup.deActivate() ;
-      } else {
-        uiExplorer.updateAjax(event) ;
-      }
+      uiExplorer.updateAjax(event) ;
+//      if(uiExplorer.getCurrentNode().getPrimaryNodeType().getName().equals("nt:file")) {
+//        UIPopupAction uiPopup = uiForm.getAncestorOfType(UIPopupAction.class) ;
+//        uiPopup.deActivate() ;
+//      } 
     }
   }
   

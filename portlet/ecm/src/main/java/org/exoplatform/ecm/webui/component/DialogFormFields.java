@@ -325,8 +325,7 @@ public class DialogFormFields extends UIForm {
     else uiInput.setEditable(true) ;
     if(node_ != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
-        Node parentNode = node_.getParent().getParent() ;
-        if(parentNode != null && parentNode.getName().equals("languages")) {
+        if(node_.getParent() != null && node_.getParent().getName().equals("languages")) {
           uiInput.setValue(node_.getParent().getParent().getName()) ;
         } else {
           uiInput.setValue(node_.getName()) ;
