@@ -16,6 +16,7 @@ import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;
@@ -29,9 +30,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Sep 19, 2006
  * 11:45:11 AM 
  */
-@ComponentConfig(
-    lifecycle = UIContainerLifecycle.class
-)
+@ComponentConfig(lifecycle = UIContainerLifecycle.class)
 public class UIMetadataManager extends UIContainer {
   
   public String METADATA_POPUP = "MetadataPopup" ;
@@ -69,6 +68,8 @@ public class UIMetadataManager extends UIContainer {
     } else {
       UIApplication uiApp = uiMetaList.getAncestorOfType(UIApplication.class) ;
       uiApp.addMessage(new ApplicationMessage("UIMetadataManager.msg.already-mapped", null));
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+      context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return;
     }
     uiPopup.setUIComponent(uiMetaForm) ;

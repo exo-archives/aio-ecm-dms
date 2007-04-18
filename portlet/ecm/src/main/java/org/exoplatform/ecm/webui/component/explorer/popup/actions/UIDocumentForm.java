@@ -225,8 +225,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }catch(Exception e) {
-        //e.printStackTrace() ;
+      } catch(Exception e) {
         UIApplication uiApp = getAncestorOfType(UIApplication.class);
         String key = "UIDocumentForm.msg.cannot-save" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;

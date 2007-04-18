@@ -18,7 +18,7 @@
   width: 100% ;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm .textarea {
+.UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
   width: 450px;
   height: 300px;
   margin-left: 25px;

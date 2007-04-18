@@ -10,9 +10,10 @@ import java.util.List;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.webui.component.UIForm;
+import org.exoplatform.webui.component.UIFormInputSet;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
+import org.exoplatform.webui.component.UIFormTabPane;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
@@ -33,7 +34,7 @@ import org.exoplatform.webui.event.Event.Phase;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
+    template =  "system:/groovy/webui/component/UIFormTabPane.gtmpl",
     events = {
       @EventConfig(listeners = UIMetadataForm.SaveActionListener.class),
       @EventConfig(listeners = UIMetadataForm.CancelActionListener.class, phase = Phase.DECODE),
@@ -41,7 +42,7 @@ import org.exoplatform.webui.event.Event.Phase;
     }
 )
 
-public class UIMetadataForm extends UIForm implements UISelector{
+public class UIMetadataForm extends UIFormTabPane implements UISelector {
 
   final static public String METADATA_PATH = "metadataPath" ;
   final static public String MAPPING = "mapping" ;
@@ -51,19 +52,30 @@ public class UIMetadataForm extends UIForm implements UISelector{
   final static public String VIEW_TEMPLATE = "viewTemplate" ;
   final static public String MIXIN_TYPES = "mixinTypes" ;
   final static public String VIEW_PERMISSION = "viewPermission" ;
+  final static public String METADATA_TAB = "metadataTypeTab" ;
+  final static public String DIALOG_TAB = "dialogTab" ;
+  final static public String VIEW_TAB = "viewTab" ;
   
   private boolean isAddNew_ = true ;
   private String metadataName_ ;
 
   public UIMetadataForm() throws Exception {
-    addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
-    addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null)) ;
-    addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
-    UIFormInputSetWithAction permissionInput = new UIFormInputSetWithAction("permission") ;
-    permissionInput.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).addValidator(EmptyFieldValidator.class)) ;
-    permissionInput.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
-    addUIComponentInput(permissionInput) ;
-    setActions(new String[] {"Save", "Cancel"}) ;
+    super("UIMetadataForm", false) ;
+    UIFormInputSetWithAction uiMetadataType = new UIFormInputSetWithAction(METADATA_TAB) ;
+    uiMetadataType.addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
+    uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).addValidator(EmptyFieldValidator.class)) ;
+    uiMetadataType.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
+    uiMetadataType.setActions(new String[] {"Save", "Cancel"}, null) ;
+    addUIComponentInput(uiMetadataType) ;
+    UIFormInputSet uiDialogTab = new UIFormInputSet(DIALOG_TAB) ;
+    uiDialogTab.addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
+    uiDialogTab.setRendered(false) ;
+    addUIComponentInput(uiDialogTab) ;
+    UIFormInputSet uiViewTab = new UIFormInputSet(VIEW_TAB) ;
+    uiViewTab.addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null)) ;
+    uiViewTab.setRendered(false) ;
+    addUIComponentInput(uiViewTab) ;
+    setActions(new String[]{}) ;
   }
 
   public void update(List metadataList){
