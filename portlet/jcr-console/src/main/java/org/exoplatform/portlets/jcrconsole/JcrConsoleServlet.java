@@ -61,44 +61,21 @@ public class JcrConsoleServlet extends HttpServlet {
       CommandService cservice = (CommandService)container.getComponentInstanceOfType(CommandService.class);
       Catalog catalog = cservice.getCatalog("CLI");
 
-      /*SecurityService securityService = (SecurityService) container.getComponentInstanceOfType(SecurityService.class);
-      Subject subject = securityService.getCurrentSubject();
-      Set privateCredentialsSet = subject.getPrivateCredentials();
-      Iterator privateCredentialsSetIterator = privateCredentialsSet.iterator();
-      while (privateCredentialsSetIterator.hasNext()){
-    	String pass = (String)privateCredentialsSetIterator.next();
-    	System.out.println("=========1" + (pass));
-      }
-      Set principals = subject.getPrincipals();
-      Iterator principalsIterator = principals.iterator();
-      while (principalsIterator.hasNext()){
-    	String pass = (String)principalsIterator.next();
-    	System.out.println("=========2" + (pass));
-      }*/
-      //System.out.println("===JcrConsoleServlet.java, doPost :" + (Thread.currentThread().getId()));
       params = parseQuery(commandLine);
-      if (commandFromCommandLine.equals("login")) {
-        if (context == null) {
-          RepositoryService repService = (RepositoryService) container
-              .getComponentInstanceOfType(RepositoryService.class);
-          context = new CliAppContext(repService.getRepository(), PARAMETERS_KEY);
-        }
-        Command commandToExecute = catalog.getCommand(commandFromCommandLine);
-        context.put(PARAMETERS_KEY, params);
-        commandToExecute.execute(context);
-        //context.setCurrentItem(context.getSession().getRootNode());
-      } else {
-        if (context == null) {
-          throw new LoginException();
-        } else {
-          Command commandToExecute = catalog.getCommand(commandFromCommandLine);
-          context.put(PARAMETERS_KEY, params);
-          commandToExecute.execute(context);
-        }
+      //System.out.println("===JcrConsoleServlet.java, doPost, (context == null) : " + (context == null));
+      //System.out.println("===JcrConsoleServlet.java, doPost, Thread.currentThread().getId() : " + Thread.currentThread().getId());
+      if (context == null) {
+        RepositoryService repService = (RepositoryService) container
+            .getComponentInstanceOfType(RepositoryService.class);
+        String workspace = repService.getRepository().getConfiguration().getDefaultWorkspaceName();
+        context = new CliAppContext(repService.getRepository(), PARAMETERS_KEY);
+        context.setCurrentWorkspace(workspace);
+        context.setCurrentItem(context.getSession().getRootNode());
       }
+      Command commandToExecute = catalog.getCommand(commandFromCommandLine);
+      context.put(PARAMETERS_KEY, params);
+      commandToExecute.execute(context);
       printWriter.print(context.getOutput());
-    } catch (LoginException loginException) {
-      printWriter.print("Please login first using [login] [<workspace name>] syntax\n");
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("[ERROR] [jcr-concole] Can't execute command - " + e.getMessage());
