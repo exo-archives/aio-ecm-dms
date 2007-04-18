@@ -4,7 +4,7 @@
     <div class="FieldContainer">		          					
       <label>Name</label>
       <%
-        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable", "editable=if-null", "validate=name"] ;
+        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
         uicomponent.addTextField("name", fieldName) ;
       %>
     </div>

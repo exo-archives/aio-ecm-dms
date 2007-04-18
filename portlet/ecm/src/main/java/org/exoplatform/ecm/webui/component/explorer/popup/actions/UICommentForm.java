@@ -80,14 +80,19 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
       String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
       String comment = uiForm.getUIFormTextAreaInput(FIELD_COMMENT).getValue() ;
       UIJCRExplorer jcrExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-            
-      String language = jcrExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
-                        getChild(UIDocumentInfo.class).getLanguage() ;
-      if(UIDocumentInfo.DEFAULT_LANGUAGE.equals(language)) {      
-        if(!uiForm.document_.hasProperty("exo:language")) return ;
-        language = uiForm.document_.getProperty("exo:language").getString() ;
-      }
+      
       try {
+        String language = jcrExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
+        getChild(UIDocumentInfo.class).getLanguage() ;
+        if(UIDocumentInfo.DEFAULT_LANGUAGE.equals(language)) { 
+          if(!uiForm.document_.hasProperty("exo:language")){
+            uiForm.document_.addMixin("mix:i18n") ;
+            uiForm.document_.save() ;
+            language = UIDocumentInfo.DEFAULT_LANGUAGE ;
+          }else {
+            language = uiForm.document_.getProperty("exo:language").getString() ;
+          }
+        }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
         commentsService.addComment(uiForm.document_, name, email, website, comment, language) ;
       } catch (Exception e) {        

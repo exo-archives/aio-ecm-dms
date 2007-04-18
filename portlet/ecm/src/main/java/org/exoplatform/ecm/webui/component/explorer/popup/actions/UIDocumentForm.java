@@ -212,7 +212,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew());
         homeNode.getSession().save() ;
         Node newNode = homeNode.getNode(name) ;
-        if(!newNode.isNodeType("mix:i18n")) newNode.addMixin("mix:i18n") ;
+        //if(!newNode.isNodeType("mix:i18n")) newNode.addMixin("mix:i18n") ;
         if(documentType_.equals(NT_FILE) && !isEditing()) {
           setMultiValue(newNode.getNode(JCRCONTENT), inputs, property, uiExplorer.getSession()) ;
         }

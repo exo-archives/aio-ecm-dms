@@ -33,10 +33,22 @@ public interface ECMViewComponent {
   public boolean isRssLink() ;
 
   public String getRssLink() ;
-
+  
+  public String getDownloadLink(Node node) throws Exception ;
+  
   public List getSupportedLocalise() throws Exception  ;
   
   public void setLanguage(String language) ;
   
   public String getLanguage() ;
+  
+  public Object getComponentInstanceOfType(String className) ;
+  
+  public String getWebDAVServerPrefix() throws Exception ;
+  
+  public String getImage(Node node) throws Exception ;
+  
+  public String getPortalName() ;
+  
+  public String getWorkspaceName() throws Exception ;
 }

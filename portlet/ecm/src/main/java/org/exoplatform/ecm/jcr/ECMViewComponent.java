@@ -42,4 +42,11 @@ public interface ECMViewComponent {
   
   public Object getComponentInstanceOfType(String className) ;
   
+ public String getWebDAVServerPrefix() throws Exception ;
+  
+  public String getImage(Node node) throws Exception ;
+  
+  public String getPortalName() ;
+  
+  public String getWorkspaceName() throws Exception ;
 }

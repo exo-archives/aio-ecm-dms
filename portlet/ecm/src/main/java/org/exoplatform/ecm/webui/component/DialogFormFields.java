@@ -60,7 +60,7 @@ import org.exoplatform.webui.event.Event.Phase;
 )*/
 @SuppressWarnings("unused")
 public class DialogFormFields extends UIForm {
-  
+
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
   private Node node_ = null;
@@ -85,32 +85,32 @@ public class DialogFormFields extends UIForm {
   private static final String SCRIPT = "script" + SEPARATOR;
   private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
-  
+
   public static final  String[]  ACTIONS = {"Save", "Cancel"};
-  
+
   protected Map<String, Object> properties = new HashMap<String, Object>();
-  
+
   public DialogFormFields() throws Exception {}
 
   public void setNode(Node node) throws Exception { node_ = node ; }
   public Node getNode() { return node_ ; }
-  
+
   public void setPropertyNode(Node node) throws Exception { propertyNode_ = node ; }
-  
+
   public void setInputProperty(String name, Object value) { properties.put(name, value) ; }
   public Object getInputProperty(String name) { return properties.get(name) ; }
-  
+
   public Map<String, Object> getInputProperties() { return properties ; }
-  
+
   public void resetProperties() { properties.clear() ; }
-  
+
   public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
   public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
-  
+
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
-  
+
   private String getPropertyValue(String jcrPath) throws Exception {
     if(jcrPath.equals("/node") && node_ != null) return node_.getName() ;
     if(propertyNode_.hasProperty(getPropertyName(jcrPath))) {
@@ -138,7 +138,7 @@ public class DialogFormFields extends UIForm {
     }
     return "" ;
   }
-  
+
   public void addActionField(String name, String[] arguments) throws Exception {
     String editable = "true";
     String defaultValue = "";
@@ -229,7 +229,7 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-  
+
   public void addTextField(String name, String[] arguments) throws Exception {
     String editable = "true";
     String type = "text" ;
@@ -325,7 +325,8 @@ public class DialogFormFields extends UIForm {
     else uiInput.setEditable(true) ;
     if(node_ != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
-        if(node_.getParent() != null && node_.getParent().getName().equals("languages")) {
+        Node parentNode = node_.getParent() ;
+        if(parentNode != null && parentNode.getName().equals("languages")) {
           uiInput.setValue(node_.getParent().getParent().getName()) ;
         } else {
           uiInput.setValue(node_.getName()) ;
@@ -346,7 +347,7 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-  
+
   public void addTextAreaField(String name, String[] arguments) throws Exception {
     String editable = "true";
     String defaultValue = "";
@@ -427,7 +428,7 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-  
+
   public void addWYSIWYGField(String name, String[] arguments) throws Exception {
     String options = null ;
     String defaultValue = "";
@@ -482,7 +483,7 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-  
+
   public void addSelectBoxField(String name, String[] arguments) throws Exception {
     String jcrPath = null;
     String editable = "true";
@@ -531,12 +532,12 @@ public class DialogFormFields extends UIForm {
     if (script != null) {
       executeScript(script, uiSelectBox, scriptParams);
     } else if (options != null && options.length() >0) {
-       String[] array = options.split(",");
-       optionsList = new ArrayList<SelectItemOption<String>>(5);
-       for(int i = 0; i < array.length; i++) {
-         optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
-       }
-       uiSelectBox.setOptions(optionsList);
+      String[] array = options.split(",");
+      optionsList = new ArrayList<SelectItemOption<String>>(5);
+      for(int i = 0; i < array.length; i++) {
+        optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
+      }
+      uiSelectBox.setOptions(optionsList);
     }
     uiSelectBox.setDefaultValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
@@ -566,7 +567,7 @@ public class DialogFormFields extends UIForm {
     if (uiSelectBox != null) value = uiSelectBox.getValue() ;
     return value ;
   }
-  
+
   public void addUploadField(String name, String[] arguments) throws Exception {
     String editable = "true";
     String jcrPath = null;
@@ -603,7 +604,7 @@ public class DialogFormFields extends UIForm {
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     renderField(name) ;
   }
-  
+
   public void addMixinField(String name, String[] arguments) throws Exception {
     String jcrPath = null;
     String nodetype = null;
@@ -646,7 +647,7 @@ public class DialogFormFields extends UIForm {
       renderField(name) ; 
     }
   }
-  
+
   public void addCalendarField(String name, String[] arguments) throws Exception {
     String jcrPath = null;
     String options = null;
@@ -713,7 +714,7 @@ public class DialogFormFields extends UIForm {
     }
     if(!visible.equals("false")) renderField(name) ;
   }
-  
+
   public void addHiddenField(String name, String[] arguments) throws Exception {
     String jcrPath = null;
     String nodetype = null;
@@ -748,11 +749,11 @@ public class DialogFormFields extends UIForm {
     }
     setInputProperty(name, inputProperty) ;
   }
-  
+
   public void addInterceptor(String scriptPath, String type) {
     if(scriptPath.length() > 0 && type.length() > 0) scriptInterceptor_.add(scriptPath+ ";" + type) ;
   }
-  
+
   private void executeScript(String script, Object o, String[] params) {
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     try {
@@ -763,7 +764,7 @@ public class DialogFormFields extends UIForm {
       e.printStackTrace();
     }
   }
-  
+
   public void renderField(String name) throws Exception {
     UIComponent uiInput = findComponentById(name);;
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
@@ -779,31 +780,31 @@ public class DialogFormFields extends UIForm {
 
       if(name.equals(fieldName)) {
         w.write("<div class='"+ iconClass +"' style=\"cursor:pointer;\" "
-                + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
-                + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><span></span></div>") ;
+            + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
+            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><span></span></div>") ;
       } 
     }
   }
-  
+
   public void begin() throws Exception {
     String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     context.getJavascriptManager().importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
     super.begin();
   }
-  
+
   public String event(String name) {
     StringBuilder b = new StringBuilder("javascript:") ;
     b.append("eXo.ecm.ExoEditor.saveHandler() ;").
-      append("eXo.webui.UIForm.submitForm('").append(getId()).append("','").
-      append(name).append("', true)");
+    append("eXo.webui.UIForm.submitForm('").append(getId()).append("','").
+    append(name).append("', true)");
     return b.toString() ;
   }
 
   public void storeValue(Event event) throws Exception {}
   public void onchange(Event event) throws Exception {}
   public String getPath() { return null ; }
-  
+
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
@@ -834,7 +835,7 @@ public class DialogFormFields extends UIForm {
       }
     }
   }
-  
+
   static  public class OnchangeActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {     
       event.getSource().onchange(event) ;

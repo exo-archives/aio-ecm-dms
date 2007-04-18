@@ -15,6 +15,7 @@ import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.CommentsComponent;
@@ -89,8 +90,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     Object service = null;
     try {
       ClassLoader loader =  Thread.currentThread().getContextClassLoader();
-      Class clazz = loader.loadClass(className);
-      service = getApplicationComponent(clazz);
+      Class object = loader.loadClass(className);
+      service = getApplicationComponent(object);
     } catch (ClassNotFoundException ex) {
       ex.printStackTrace();
     } 
@@ -229,13 +230,9 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
   public long getVoteTotal() throws Exception {
     return node_.getProperty("exo:voteTotal").getLong();
   }
-
-  public String getLanguage(Node node) throws Exception {
-    return node.getProperty("exo:language").getValue().getString() ;
-  }
-
+  
   public List<Node> getComments() throws Exception {
-    return getApplicationComponent(CommentsService.class).getComments(node_, getLanguage(node_)) ;
+    return getApplicationComponent(CommentsService.class).getComments(node_, getLanguage()) ;
   }
 
   public List<String> getSupportedLocalise() throws Exception {
@@ -259,6 +256,24 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
   }
+  
+  public void activate() throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  public void deActivate() throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+  public String getPortalName() {
+    PortalContainer pcontainer =  PortalContainer.getInstance() ;
+    return pcontainer.getPortalContainerInfo().getContainerName() ; 
+  }
+  
+  public String getWorkspaceName() throws Exception {
+    return node_.getSession().getWorkspace().getName();
+  }
 
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
@@ -269,13 +284,4 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     }
   }
 
-  public void activate() throws Exception {
-    // TODO Auto-generated method stub
-    
-  }
-
-  public void deActivate() throws Exception {
-    // TODO Auto-generated method stub
-    
-  }
 }

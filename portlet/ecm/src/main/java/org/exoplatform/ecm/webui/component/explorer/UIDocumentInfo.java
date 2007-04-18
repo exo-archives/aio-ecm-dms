@@ -70,12 +70,13 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UIDocumentInfo extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent {
+  
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
+  private String language_ = DEFAULT_LANGUAGE ;
   
   private String typeSort_ ;
   private String typeSortOrder_ ;
   private String nameSortOrder_ ;
-  private String language_ = DEFAULT_LANGUAGE ;
   private Node currentNode_ ;
 
   public UIDocumentInfo() throws Exception {}
@@ -190,8 +191,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    if (getNode().hasProperty("exo:relation")) {
-      Value[] vals = getNode().getProperty("exo:relation").getValues();
+    if (currentNode_.hasProperty("exo:relation")) {
+      Value[] vals = currentNode_.getProperty("exo:relation").getValues();
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
@@ -203,7 +204,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
 
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
-    NodeIterator childrenIterator = getNode().getNodes();;
+    NodeIterator childrenIterator = currentNode_.getNodes();;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
@@ -225,13 +226,13 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
 
   public List<String> getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(getNode().hasNode("languages")){
-      Node languages = getNode().getNode("languages") ;
+    if(currentNode_.hasNode("languages")){
+      Node languages = currentNode_.getNode("languages") ;
       NodeIterator iter = languages.getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(getNode().getProperty("exo:language").getString()) ;      
+      local.add(currentNode_.getProperty("exo:language").getString()) ;      
     } 
     return local ;
   }
@@ -244,12 +245,13 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return node.getBaseVersion().getName() ;
   }
   
-  public void setNode(Node node) { 
-    try {
+  public void setNode(Node node) {
+    currentNode_ = node ;
+   /* try {
       getAncestorOfType(UIJCRExplorer.class).setSelectNode(node) ;
     } catch(Exception e) {
       e.printStackTrace() ;
-    }
+    }*/
   }
   
   public boolean isRssLink() { return false ; }
@@ -261,7 +263,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   }
 
   public String getWorkspaceName() throws Exception {
-    return getNode().getSession().getWorkspace().getName();
+    return currentNode_.getSession().getWorkspace().getName();
   }
 
   public Node getNode() throws Exception { 
@@ -571,7 +573,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
       String userName = Util.getUIPortal().getOwner() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiComp.getNode(), objId, userName) ;
+      votingService.vote(uiComp.currentNode_, objId, userName) ;
     }
   }
 }

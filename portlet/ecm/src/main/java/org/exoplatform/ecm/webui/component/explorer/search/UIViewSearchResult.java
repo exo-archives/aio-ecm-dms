@@ -207,4 +207,24 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewSearchResult.getParent()) ;
     }   
   }
+
+  public String getImage(Node node) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getPortalName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getWebDAVServerPrefix() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getWorkspaceName() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }
