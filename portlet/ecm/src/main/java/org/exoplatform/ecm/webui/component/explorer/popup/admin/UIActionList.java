@@ -105,8 +105,8 @@ public class UIActionList extends UIContainer {
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class) ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       actionService.removeAction(uiExplorer.getCurrentNode(), actionName) ;
-      UITreeExplorer uiTreeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class) ;
-      uiTreeExplorer.buildTree(uiExplorer.getCurrentNode().getPath()) ;
+//      UITreeExplorer uiTreeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class) ;
+//      uiTreeExplorer.buildTree(uiExplorer.getCurrentNode().getPath()) ;
       uiActionList.updateGrid(uiExplorer.getCurrentNode()) ;
       uiActionList.setRenderSibbling(UIActionList.class) ;
     }

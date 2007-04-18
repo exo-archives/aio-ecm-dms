@@ -52,7 +52,7 @@
     }
   }
   
-  TreeNode treeNodeRoot = uicomponent.getTreeRoot() ;
+  TreeNode treeNodeRoot = uicomponent.buildTree() ;
   String contextMenuEvent = uicomponent.getRootActionList() ;
 %>
 <div class="UITreeExplorer" id="UITreeExplorer">
