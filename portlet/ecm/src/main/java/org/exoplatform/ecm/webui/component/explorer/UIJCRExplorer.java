@@ -60,7 +60,6 @@ public class UIJCRExplorer extends UIContainer {
   private Preference preferences_ = new Preference() ;
   private Set<String> addressPath_ = new HashSet<String>() ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
-  private Node rootNode_ ;
   private Node currentNode_ ;
   private String documentInfoTemplate_ ;
   public boolean isHidePopup_ = false ;

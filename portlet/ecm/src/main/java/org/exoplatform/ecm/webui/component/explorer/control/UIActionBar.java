@@ -114,6 +114,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
         @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class),
         @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class),
+        @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class),
         @EventConfig(listeners = UIActionBar.VoteActionListener.class),
         @EventConfig(listeners = UIActionBar.CommentActionListener.class)
     }
@@ -147,16 +148,9 @@ public class UIActionBar extends UIForm {
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
   
   public UIActionBar() throws Exception{
-    UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) {
-      @SuppressWarnings("unused")
-      public String renderOnChangeEvent(UIForm uiForm) throws Exception {
-        StringBuilder builder = new StringBuilder();
-        builder.append("javascript:eXo.ecm.ECMUtils.selectBoxOnChange(this);");
-        return builder.toString();
-      }
-    } ;
+    UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
-    addChild(selectTab) ;
+    addUIFormInput(selectTab) ;
     addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null)) ;
     
     List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>() ;
@@ -818,6 +812,12 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UICommentForm.class, 600) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+    }
+  }
+  
+  static public class ChangeTabActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource()) ;
     }
   }
 }

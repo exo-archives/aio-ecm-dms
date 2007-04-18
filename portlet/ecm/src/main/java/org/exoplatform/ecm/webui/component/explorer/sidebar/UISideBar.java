@@ -22,15 +22,14 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UISideBar.CloseActionListener.class),
         @EventConfig(listeners = UISideBar.ExplorerActionListener.class),
-        @EventConfig(listeners = UISideBar.ViewRelationActionListener.class)
+        @EventConfig(listeners = UISideBar.RelationActionListener.class)
     }
 )
 public class UISideBar extends UIContainer {
-  
-  private String currentComp ;
+  private String currentComp = "Explorer";
   
   public UISideBar() throws Exception {
-    currentComp = addChild(UITreeExplorer.class, null, null).getId() ;
+    addChild(UITreeExplorer.class, null, null).getId() ;
     addChild(UIViewRelationList.class, null, null).setRendered(false) ;
   }
   
@@ -48,17 +47,18 @@ public class UISideBar extends UIContainer {
   static public class ExplorerActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource() ;
-      uiSideBar.currentComp = "UITreeExplorer" ;
+      uiSideBar.currentComp = "Explorer" ;
       uiSideBar.setRenderedChild(UITreeExplorer.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
     }
   }
 
-  static public class ViewRelationActionListener extends EventListener<UISideBar> {
+  static public class RelationActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource() ;
+      uiSideBar.currentComp = "Relation" ;
       uiSideBar.setRenderedChild(UIViewRelationList.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
     }
   }
 }

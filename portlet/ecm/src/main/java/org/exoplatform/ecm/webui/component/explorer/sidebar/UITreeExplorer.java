@@ -70,20 +70,20 @@ public class UITreeExplorer extends UIComponent {
   
   public TreeNode getTreeRoot() { return treeRoot_ ; }
   
-  public void buildTree(String path) throws Exception {
-    System.out.println("\n\nBuild Tree is called = !" + path + "\n\n");
-    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    treeRoot_.getChildren().clear() ;
-    String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
-    TreeNode temp = treeRoot_ ;
-    for(String nodeName : arr) {
-      if(nodeName.length() == 0) continue ;
-      temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-      temp = temp.getChild(nodeName) ;
-      if(temp == null) return ;
-    }
-    temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-  }
+//  public void buildTree(String path) throws Exception {
+//    System.out.println("\n\nBuild Tree is called = !" + path + "\n\n");
+//    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+//    treeRoot_.getChildren().clear() ;
+//    String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
+//    TreeNode temp = treeRoot_ ;
+//    for(String nodeName : arr) {
+//      if(nodeName.length() == 0) continue ;
+//      temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
+//      temp = temp.getChild(nodeName) ;
+//      if(temp == null) return ;
+//    }
+//    temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
+//  }
   
   public TreeNode buildTree() throws Exception {
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;

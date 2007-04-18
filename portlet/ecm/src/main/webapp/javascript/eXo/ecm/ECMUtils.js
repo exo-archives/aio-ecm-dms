@@ -79,16 +79,6 @@ ECMUtils.prototype.closeAllPopup = function() {
 	this.popupArray.clear() ;
 }
 
-ECMUtils.prototype.selectBoxOnChange = function(elemt) {
-	var selectBox = eXo.core.DOMUtil.findAncestorByClass(elemt, "UISelectBoxOnChange");
-	var contentContainer = eXo.core.DOMUtil.findFirstDescendantByClass(selectBox, "div", "SelectBoxContentContainer") ;
-	var tabs = eXo.core.DOMUtil.findChildrenByClass(contentContainer, "div", "SelectBoxContent");
-	for(var i=0; i < tabs.length; i++) {
-		tabs[i].style.display = "none";
-	}
-	tabs[elemt.selectedIndex].style.display = "block";
-}
-
 ECMUtils.prototype.initVote = function(voteId, rate) {
 	var vote = document.getElementById(voteId) ;
 	vote.rate = rate = parseInt(rate) ;

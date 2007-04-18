@@ -12,7 +12,7 @@
 	  <%/*Begin popup*/%>
 	  <div class="UISelectContent">
 	    <div class="SelectContentContainer">
-		    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("ViewRelation")%>">
+		    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Relation")%>">
 		      <div class="ItemIcon ViewRelationsIcon"><span></span></div>
 	        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Relation")%></div>
 	      </div>
@@ -35,7 +35,7 @@
     <div class="Separator SideBarSeparator"><span></span></div>
     <div class="ControlBody">
       <div class="CloseButton BlackClose16x16Icon" onclick="<%=uicomponent.event("Close")%>" title="Close Sidebar"><span></span></div>
-      <div class="Label">$uicomponent.currentComp</div>
+      <div class="Label"><%=_ctx.appRes("UISideBar.label." + uicomponent.currentComp)%></div>
     </div>
   </div>
   <div style="width: 100%;">
