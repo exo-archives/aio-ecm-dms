@@ -91,23 +91,19 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
-  border: solid 1px #5f90ba;
-  background-color: #dee7f5;
   padding: 10px;
+  border: solid 1px gray; border-top: none;
+  background: #eeeeee;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer {
-  border: solid 1px #b7b7b7;
-  background-color: #ffffff;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
+.UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
+  width: 105px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
   width: 220px;
   margin-top: 15px;
+  font-size: 11px; font-weight: bold;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
@@ -166,7 +162,8 @@
 }
 
 /*############################## -- UIActionManager   -- ##############################*/
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UITabPane {
   padding: 10px;
 }
 

@@ -81,7 +81,7 @@
 <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
 <% if(uicomponent.getActions() != null) { %>
   <div class="$uicomponent.id">
-    <div class="UIAction" style="margin-top:5px;"> 
+    <div class="UIAction"> 
       <div class="ActionContainer">
         <% for(action in uicomponent.getActions()) { %>
           <div class="ActionButton">

@@ -14,7 +14,7 @@
   String name = uicomponent.getId() ;
   String key ;
 %>
-<div clas="UIReferencesList">  
+<div class="UIReferencesList">  
 	<table class="UIGrid">
 	  <thead>
 	    <tr>

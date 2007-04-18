@@ -18,6 +18,16 @@
   margin: 0px auto;
 }
 
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer textarea {
+  border: solid 1px #b7b7b7;
+  padding: 3px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
@@ -346,11 +356,6 @@
   margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UITaggingForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
-  padding: 0px;
-  margin: 0px;
-}
-
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
   width: 170px;
   padding: 0px 0px 8px 60px;
@@ -414,18 +419,181 @@
 
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm .FieldContainer{
+.UIJCRExplorerPortlet .UICommentForm .FieldContainer {
   width: 500px;
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UICommentForm .FieldContainer textarea {
-  padding: 5px;
 }
 
 .UIJCRExplorerPortlet .UICommentForm .UIAction {
   width: 170px;
   padding-left: 40px;
 }
+
+/*================================UISimpleSearch=================================*/
+
+.UIJCRExplorerPortlet .UISimpleSearch .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .FieldContainer {
+  padding-top: 8px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
+  width: 300px;
+  padding-left: 70px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
+  padding-bottom: 0px;
+}
+
+/*================================UIJCRAdvancedSearch=================================*/
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIAction {
+  width: 280px;
+  padding-left: 60px;
+}
+/*================================UIConstraintsForm=================================*/
+
+.UIJCRExplorerPortlet .UIConstraintsForm .HorizontalLayout .UIAction {
+  width: 170px;
+  padding-left: 50px;
+}
+
+/*================================UIActivateVersion=================================*/
+
+.UIJCRExplorerPortlet .UIActivateVersion .UIAction {
+  width: 120px;
+  padding-left: 50px;
+}
+
+/*================================UIActionContainer=================================*/
+
+.UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm .UIFormWithTitle {
+  border-bottom: none;
+  padding-bottom: 8px;
+}
+
+.UIJCRExplorerPortlet  .UIActionContainer .UIActionTypeForm label {
+  width: 170px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
+  width: 170px;
+  padding-left: 15px;
+}
+
+/*================================UIActionList=================================*/
+
+.UIJCRExplorerPortlet .UIActionList .UIAction {
+  padding-left: 20px;
+}
+
+/*================================UIPropertyForm=================================*/
+
+.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle .UIAction {
+  width: 70px;	
+  padding-left: 30px;
+}
+
+/*================================.UIExportNode=================================*/
+
+.UIJCRExplorerPortlet .UIExportNode {
+  padding: 15px 0px;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input  {
+  width: 15px; height: 15px;
+  margin: 0px;
+  padding: 2px 0px;
+} 
+
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input.checkbox  {
+  margin-left: 5px ;
+} 
+
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
+  width: 170px;
+  padding-left: 25px;
+}
+
+/*================================.UIImportNode=================================*/
+
+.UIJCRExplorerPortlet .UIImportNode {
+  padding: 15px 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input  {
+  width: 15px; height: 15px;
+  margin: 0px;
+  padding:  2px 0px;
+} 
+
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input.checkbox  {
+  margin-left: 2px ;
+} 
+
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
+  width: 170px;
+  padding-left: 25px;
+}
+
+/*================================.UIReferencesList=================================*/
+
+.UIJCRExplorerPortlet .UIReferencesList {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIReferencesList .UIPageIterator {
+  width: 98%;
+  border: solid 1px red;
+}
+
+/*================================UIPermissionManager=================================*/
+.UIJCRExplorerPortlet .UIPermissionManager {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPageIterator {
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
+  padding-bottom: 8px;
+}
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithActions a {
+  float: left;
+}
+
+/*================================DecoratorBoxNested=================================*/
+
+.UIJCRExplorerPortlet .UINodeTypeInfo {
+  padding: 8px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UIHorizontalTabs {
+  border: solid 1px red;
+  width: 98.5%;
+  margin: 0px;
+  padding: 0px;
+}
+
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
