@@ -36,9 +36,6 @@ public class JcrConsole extends GenericPortlet {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     String cont_name = (String)container.getContext().getName();
     
-    SecurityService securityService = (SecurityService) container.getComponentInstanceOfType(SecurityService.class);
-    securityService.setCurrentUser(renderRequest.getRemoteUser());
-    
     //renderRequest.getPortletSession().setAttribute(SESSION_CONTAINER,cont_name);
     renderRequest.setAttribute(SESSION_CONTAINER,cont_name);
     
