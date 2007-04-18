@@ -15,7 +15,7 @@
 .AddIcon16x16 {
   float:left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
 .AddIconIcon {
   float: left ;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/AddIcon.gif') no-repeat ;
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat ;
   cursor: pointer;
 } 
 
@@ -45,7 +45,7 @@
   float:left;
   width: 16px; height: 16px;
   margin: 4px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
   cursor: pointer;
 }
  
@@ -187,7 +187,7 @@
 
 .MoreConstraints16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/AddConstraints.gif') no-repeat;  
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat;  
 }
 
 .AddProperty16x16Icon {
@@ -256,7 +256,7 @@
 
 .OpenFolder16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/FolderGreen.gif') no-repeat;  
+  background: url('DefaultSkin/OpenFolder.gif') no-repeat;  
 }
 
 .MetaView16x16Icon {

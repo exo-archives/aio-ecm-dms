@@ -12,6 +12,13 @@
 	float: left;
 }
 
+.AddIcon16x16 {
+  float:left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
+  cursor: pointer;
+}
+
 .AddPathIcon {
   float: left ;
 	width: 16px;	height: 16px;
@@ -22,7 +29,7 @@
 .AddIconIcon {
   float: left ;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/AddIcon.gif') no-repeat ;
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat ;
   cursor: pointer;
 } 
 
@@ -38,7 +45,7 @@
   float:left;
   width: 16px; height: 16px;
   margin: 4px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
   cursor: pointer;
 }
  
@@ -180,7 +187,7 @@
 
 .MoreConstraints16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/AddConstraints.gif') no-repeat;  
+  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat;  
 }
 
 .AddProperty16x16Icon {
@@ -247,9 +254,9 @@
   background: url('DefaultSkin/YellowLight.gif') no-repeat;  
 }
 
-.OpenFolderIcon {
+.OpenFolder16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/FolderGreen.gif') no-repeat;  
+  background: url('DefaultSkin/OpenFolder.gif') no-repeat;  
 }
 
 .MetaView16x16Icon {
@@ -306,13 +313,13 @@
 .Add16x16Icon {
   float: left;
   width: 16px; height: 16px;
-  background: url('MacSkin/BlueCirclePlus.gif') no-repeat;  
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }
 
 .Delete16x16Icon {
   float: left;
   width: 16px; height: 16px;
-  background: url('MacSkin/DustBin.gif') no-repeat ;   
+  background: url('DefaultSkin/DustBin.gif') no-repeat ;   
 }
 
 .Locked16x16Icon {
@@ -342,7 +349,7 @@
 
 .Copy16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/Copy.gif') no-repeat ;   
+  background: url('DefaultSkin/Copy.gif') no-repeat ;   
 }
 
 .Cut16x16Icon {
@@ -933,12 +940,12 @@
 
 .CBDropDownArrow16x16Icon {
 	width: 16px; height:16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
+  background: url('VistaSkin/BlueDownArrow.png') no-repeat;
 }
 
 .CBHome16x16Icon {
 	width: 16px; height:16px;
-  background: url('DefaultSkin/CBHomeIcon.gif') no-repeat;
+  background: url('VistaSkin/CBHomeIcon.png') no-repeat;
 }
 
 /*############################## -- End BC Portlet Icon -- ########################*/
