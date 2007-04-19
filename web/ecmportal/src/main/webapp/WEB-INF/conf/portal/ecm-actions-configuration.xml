@@ -28,7 +28,7 @@
                       <field  name="lifecyclePhase"><string>add</string></field>	                    
                       <field  name="roles"><string>*:/user</string></field>	                    
                       <field  name="variables">
-                        <string>exo:validator=member:/portal/community/direction</string>
+                        <string>exo:validator=member:/admin</string>
                       </field>              
                       <field name="mixins">
                         <collection type="java.util.ArrayList">
