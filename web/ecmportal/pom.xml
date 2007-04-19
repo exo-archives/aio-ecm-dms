@@ -6,12 +6,12 @@
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.web.ecmportal</artifactId>
+  <artifactId>exo.ecm.web.portal</artifactId>
   <packaging>war</packaging> 
   <version>${org.exoplatform.ecm.version}</version>
   <name>eXo ECM Portal web module</name>
   <build>
-    <finalName>ecmportal</finalName>
+    <finalName>portal</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -22,6 +22,12 @@
             <resource>
               <!-- this is relative to the pom.xml directory -->
               <directory>${exo.projects.directory.src}/portal/trunk/web/portal/src/main/webapp</directory>
+              <excludes>
+                <exclude>WEB-INF/web.xml</exclude>                     
+                <exclude>WEB-INF/conf/configuration.xml</exclude>                     
+                <exclude>WEB-INF/conf/users/site/pages.xml</exclude>                     
+                <exclude>WEB-INF/conf/users/site/navigation.xml</exclude>                     
+              </excludes>
             </resource>
             <resource>
               <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/bp/exo.ecm.bp.bonita.payraise/2.0</directory>
