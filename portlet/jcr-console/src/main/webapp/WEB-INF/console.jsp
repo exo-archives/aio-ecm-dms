@@ -4,9 +4,9 @@
 <LINK REL="stylesheet"  HREF="/jcr-console/styles/styles.css" TYPE="text/css">
 <DIV ID="termDiv" STYLE="position:relative; top:20px; left:100px;"></DIV>
 <%
-String cont_name = (String)request.getAttribute(JcrConsole.SESSION_CONTAINER);
+String containerName = (String)request.getAttribute(JcrConsole.SESSION_CONTAINER);
 %>
 <SCRIPT LANGUAGE="JavaScript">
-var context = "<%=cont_name%>";
+var containerName = "<%=containerName%>";
 termOpen();
 </SCRIPT>

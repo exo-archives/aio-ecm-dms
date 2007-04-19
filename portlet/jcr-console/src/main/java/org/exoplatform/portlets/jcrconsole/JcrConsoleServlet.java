@@ -29,41 +29,40 @@ import org.exoplatform.services.command.impl.CommandService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.security.SecurityService;
 
-
-
 public class JcrConsoleServlet extends HttpServlet {
-
- 
-  private CliAppContext context;
-  private ArrayList<String> params = new ArrayList<String>();
-  private final static String  PARAMETERS_KEY = "paramethers";
-  private String userName;
 
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     
+    CliAppContext context = (CliAppContext) request.getSession().getAttribute("context");
+    ArrayList<String> params = new ArrayList<String>();
+    String PARAMETERS_KEY = "parameterss";
+    
     response.setContentType("text/html");
     PrintWriter printWriter = response.getWriter();
-
     try {
-      String containerName = request.getParameter("context").trim();
-      ExoContainer container = ExoContainerContext
-          .getContainerByName(containerName);
+      String containerName = request.getParameter("containerName").trim();
+      ExoContainer container = ExoContainerContext.getContainerByName(containerName);
 
       String commandLine = request.getParameter("myaction").trim();
 
       String commandFromCommandLine = commandLine.substring(0,
           (commandLine.indexOf(" ") < 0) ? commandLine.length() : commandLine.indexOf(" "));
 
-      commandLine = commandLine.substring(commandLine.indexOf(commandFromCommandLine)+ commandFromCommandLine.length());
+      commandLine = commandLine.substring(commandLine.indexOf(commandFromCommandLine)
+          + commandFromCommandLine.length());
       commandLine = commandLine.trim();
 
-      CommandService cservice = (CommandService)container.getComponentInstanceOfType(CommandService.class);
+      CommandService cservice = (CommandService) container
+          .getComponentInstanceOfType(CommandService.class);
       Catalog catalog = cservice.getCatalog("CLI");
 
-      params = parseQuery(commandLine);
-      //System.out.println("===JcrConsoleServlet.java, doPost, (context == null) : " + (context == null));
-      //System.out.println("===JcrConsoleServlet.java, doPost, Thread.currentThread().getId() : " + Thread.currentThread().getId());
+      parseQuery(commandLine, params);
+
+      System.out.println("===JcrConsoleServlet.java, doPost, (context == null) : "
+          + (context == null));
+      System.out.println("===JcrConsoleServlet.java, doPost, Thread.currentThread().getId() : "
+          + Thread.currentThread().getId());
       if (context == null) {
         RepositoryService repService = (RepositoryService) container
             .getComponentInstanceOfType(RepositoryService.class);
@@ -80,19 +79,19 @@ public class JcrConsoleServlet extends HttpServlet {
       e.printStackTrace();
       System.out.println("[ERROR] [jcr-concole] Can't execute command - " + e.getMessage());
       printWriter.print("Invalid command\n");
+    } finally {
+      request.getSession().setAttribute("context", context);
     }
-    
+
   }
 
-   private ArrayList parseQuery(String query) {
-
+  private void parseQuery(String query, ArrayList params) {
     try {
       params.clear();
       if (query.indexOf("\"") == -1) {
         while (!query.equals("")) {
-          String item = query.substring(0, (query.indexOf(" ") < 0) ? query
-              .length() : query.indexOf(" "));
-
+          String item = query.substring(0, (query.indexOf(" ") < 0) ? query.length() : query
+              .indexOf(" "));
           params.add(item);
           query = query.substring(query.indexOf(item) + item.length());
           query = query.trim();
@@ -101,12 +100,11 @@ public class JcrConsoleServlet extends HttpServlet {
         while (!query.equals("")) {
           String item = "";
           if (query.startsWith("\"")) {
-            item = query.substring(query.indexOf("\"")+1,
-                (query.indexOf("\"", 1) < 0) ? query.length() : query.indexOf(
-                    "\"", 1));
+            item = query.substring(query.indexOf("\"") + 1, (query.indexOf("\"", 1) < 0) ? query
+                .length() : query.indexOf("\"", 1));
           } else {
-            item = query.substring(0, (query.indexOf(" ") < 0) ? query.length()
-                : query.indexOf(" "));
+            item = query.substring(0, (query.indexOf(" ") < 0) ? query.length() : query
+                .indexOf(" "));
           }
           item = item.trim();
           if (item != null && !(item.equals(""))) {
@@ -124,7 +122,7 @@ public class JcrConsoleServlet extends HttpServlet {
     } catch (Exception exception) {
       exception.printStackTrace();
     }
-    return params;
+    // return params;
   }
 
 }

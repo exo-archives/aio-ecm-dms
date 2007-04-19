@@ -1493,7 +1493,7 @@ function termHandler() {
     var line = this.lineBuffer;
     this.newLine();
     var action = "/jcr-console/jcrconsoleservlet";
-    var params = "myaction="+line+"&context="+context;
+    var params = "myaction="+line+"&containerName="+containerName;
   	var response = request(action,params);
   	//Terminal.write( <text> [,<usemore>] )
     var re = /\n/g;
