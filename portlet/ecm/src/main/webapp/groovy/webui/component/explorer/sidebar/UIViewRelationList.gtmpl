@@ -11,14 +11,16 @@
 			if(relations.isEmpty()) { %>  			    			    	
 			  <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
 		<%} else {
-				 String actionLink ;
-				 for (rel in relations) {
-				   String preferenceWS = rel.getSession().getWorkspace().getName() ;
-				   actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
+				String actionLink ;
+				for (rel in relations) {
+				  String preferenceWS = rel.getSession().getWorkspace().getName() ;
+				  actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
 			%>
-			 	 	 <div> - <a href="$actionLink">$rel.name</a></div>
-			<% }
-			}%>
+			 	  <div> - <a href="$actionLink">$rel.name</a></div>
+			<% 
+			  }
+			}
+			%>
 		</div>
 	</div>
 </div>

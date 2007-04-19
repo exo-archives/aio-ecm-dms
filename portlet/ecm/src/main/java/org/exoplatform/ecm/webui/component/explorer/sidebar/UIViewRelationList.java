@@ -64,8 +64,7 @@ public class UIViewRelationList extends UIContainer{
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       String prefPath = uiExplorer.getPreferencesPath() ;
-      String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
-      if((!prefPath.equals("")) && (uiExplorer.getCurrentWorkspace().equals(prefWorkspace))) {
+      if((!prefPath.equals("")) && (uiExplorer.getCurrentWorkspace().equals(workspaceName))) {
         if(!uri.contains(prefPath)) {         
           JCRExceptionManager.process(uiApp,new PathNotFoundException());
           return ;
