@@ -58,6 +58,7 @@ public class UIJCRExplorer extends UIContainer {
   private Preference preferences_ = new Preference() ;
   private Set<String> addressPath_ = new HashSet<String>() ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
+  private Node rootNode_ ;
   private Node currentNode_ ;
   private String documentInfoTemplate_ ;
   public boolean isHidePopup_ = false ;
@@ -68,6 +69,12 @@ public class UIJCRExplorer extends UIContainer {
     addChild(UIWorkingArea.class, null, null) ;
   }
   
+  public void setRootNode(Node node) {
+    rootNode_ = node ;
+    currentNode_ = node ;
+  }
+  public Node getRootNode() { return rootNode_ ; }
+
   public Node getCurrentNode() { return currentNode_ ; }
   public void setBackNode(String historyNode) throws Exception {
     currentNode_ = (Node)session_.getItem(historyNode) ;
@@ -146,7 +153,6 @@ public class UIJCRExplorer extends UIContainer {
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
     uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(currentNode_.getPath()) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
-    
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
     uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;

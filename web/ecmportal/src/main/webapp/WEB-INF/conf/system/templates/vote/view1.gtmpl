@@ -6,7 +6,9 @@
 </style>
 
 <%
-  double rating = uicomponent.getRating() ;
+  def voteNode = uicomponent.getNode() ;
+  double voteRating = voteNode.getProperty("exo:votingRate").getDouble() ;
+  long voteTotal = voteNode.getProperty("exo:voteTotal").getLong() ;
 %>
 <div class="UIVoteForm">
   <div class="DecoratorBox">
@@ -23,7 +25,7 @@
               <div class="OptionsContainer">
                 <%
                   int i = 0;
-                  while(++i <= rating) {
+                  while(++i <= voteRating) {
                 %>
 	                  <div class="RatedVote"><span></span></div>
 	              <%
@@ -34,8 +36,8 @@
 	              <%}%>
 	            </div>
 	            <div class="RatingInfo">
-		            <div class="LeftBlock">Rating: $uicomponent.rating</div>
-		            <div class="RightBlock">Vote Total: $uicomponent.voteTotal</div>
+		            <div class="LeftBlock">Rating: $voteRating</div>
+		            <div class="RightBlock">Vote Total: $voteTotal</div>
 		            <div style="clear: both;"><span></span></div>
 		          </div>
             </div>

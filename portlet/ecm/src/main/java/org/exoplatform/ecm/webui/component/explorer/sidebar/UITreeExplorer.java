@@ -33,22 +33,16 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UITreeExplorer extends UIComponent {
-
-  private TreeNode treeRoot_ ;
-  
   public UITreeExplorer() throws Exception {}
-  
-  public void setTreeRoot(Node node) throws Exception {
-    treeRoot_ = new TreeNode(node) ;
-  }
   
   public UIRightClickPopupMenu getContextMenu() {
     return getAncestorOfType(UIWorkingArea.class).getChild(UIRightClickPopupMenu.class) ;
   }
   
   public String getRootActionList() throws RepositoryException {
-    if(getAncestorOfType(UIJCRExplorer.class).getAllClipBoard().size() > 0) {
-      return getContextMenu().getJSOnclickShowPopup(treeRoot_.getPath(), "Paste").toString() ;
+    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class);
+    if(jcrExplorer.getAllClipBoard().size() > 0) {
+      return getContextMenu().getJSOnclickShowPopup(jcrExplorer.getRootNode().getPath(), "Paste").toString() ;
     }
     return "" ;
   }
@@ -68,37 +62,20 @@ public class UITreeExplorer extends UIComponent {
     return node.getPath() ;
   }
   
-  public TreeNode getTreeRoot() { return treeRoot_ ; }
-  
-//  public void buildTree(String path) throws Exception {
-//    System.out.println("\n\nBuild Tree is called = !" + path + "\n\n");
-//    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-//    treeRoot_.getChildren().clear() ;
-//    String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
-//    TreeNode temp = treeRoot_ ;
-//    for(String nodeName : arr) {
-//      if(nodeName.length() == 0) continue ;
-//      temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-//      temp = temp.getChild(nodeName) ;
-//      if(temp == null) return ;
-//    }
-//    temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-//  }
-  
   public TreeNode buildTree() throws Exception {
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    TreeNode treeRoot = new TreeNode(jcrExplorer.getRootNode()) ;
     String path = jcrExplorer.getCurrentNode().getPath() ;
-    treeRoot_.getChildren().clear() ;
-    String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
-    TreeNode temp = treeRoot_ ;
+    String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
+    TreeNode temp = treeRoot ;
     for(String nodeName : arr) {
       if(nodeName.length() == 0) continue ;
       temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
       temp = temp.getChild(nodeName) ;
-      if(temp == null) return treeRoot_ ;
+      if(temp == null) return treeRoot ;
     }
     temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-    return treeRoot_ ;
+    return treeRoot ;
   }
   
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {

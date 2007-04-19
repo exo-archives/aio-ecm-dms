@@ -26,10 +26,8 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.workflow.webui.component.CommentsComponent;
 import org.exoplatform.workflow.webui.component.ECMViewComponent;
 import org.exoplatform.workflow.webui.component.JCRResourceResolver;
-import org.exoplatform.workflow.webui.component.VoteComponent;
 
 /**
  * Created by The eXo Platform SARL
@@ -44,7 +42,7 @@ import org.exoplatform.workflow.webui.component.VoteComponent;
         @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class)
     }
 )
-public class UIDocumentContent extends UIContainer implements ECMViewComponent, VoteComponent, CommentsComponent {
+public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   private Node node_ ;
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
@@ -153,22 +151,9 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent, 
     return templateService.getTemplatePathByUser(false, nodeTypeName, userName);
   }
 
-  public String getVoteTemplate() throws Exception {
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
-  }
-
-  public double getRating() throws Exception {
-    return node_.getProperty("exo:votingRate").getDouble();
-  }
-  
-  public long getVoteTotal() throws Exception {
-    return node_.getProperty("exo:voteTotal").getLong();
-  }
-
-  public String getCommentTemplate() throws Exception {
-    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:comment", "view1") ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
   }
 
   public List<Node> getComments() throws Exception {

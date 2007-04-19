@@ -121,8 +121,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setSession(session) ;      
       Node node = (Node) session.getItem(drive.getHomePath()) ;
       uiJCRExplorer.getAllClipBoard().clear() ;
-      uiJCRExplorer.findFirstComponentOfType(UITreeExplorer.class).setTreeRoot(node) ;
-      uiJCRExplorer.setSelectNode(node) ;
+      uiJCRExplorer.setRootNode(node) ;
       uiJCRExplorer.refreshExplorer() ;
       
       String[] arrView = drive.getViews().split(",") ;

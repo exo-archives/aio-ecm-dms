@@ -6,7 +6,7 @@
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
 %>
 <%
-  public void writeNodes(List treeNodes, int level) {
+  public void writeNodes(List treeNodes) {
     UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
     for(treeNode in treeNodes) {
       def node = treeNode.getNode() ;
@@ -41,14 +41,18 @@
 			  strActs += "</div>" ;
       }
       
-      println "<div class=\"Node\" style=\"margin-left: ${level * 15}px;\">" ;
+      println "<div class=\"Node\">" ;
       println "  <div class=\"${mode}Icon\" onclick=\"" + actionLink + "\"><span></span></div>" ;
       println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(treeNode.getNode(), "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" + strActs + "<span></span></div>" ;
       println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" ;
       println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
       println "  </div>" ;
+      if(treeNode.getChildrenSize() > 0) {
+        println "<div class=\"NodeGroup\">" ;
+        writeNodes(treeNode.getChildren()) ;
+        println "</div>" ;
+      }
       println "</div>" ;
-      if(treeNode.getChildrenSize() > 0) writeNodes(treeNode.getChildren(), level + 1) ;
     }
   }
   
@@ -61,6 +65,8 @@
       <div class="Icon16x16 HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
       <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><%=_ctx.appRes("UITreeExplorer.label.Root")%></a></div>
     </div>
-    <%writeNodes(treeNodeRoot.getChildren(), 1)%>
+    <div class="NodeGroup">
+    <%writeNodes(treeNodeRoot.getChildren())%>
+    </div>
   </div>
 </div>

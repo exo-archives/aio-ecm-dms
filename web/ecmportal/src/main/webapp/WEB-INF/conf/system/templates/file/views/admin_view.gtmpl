@@ -160,7 +160,7 @@
 		</div>
 	</div>  			  			
   <div style="height: 10px;"><span></span></div>
-	<% _ctx.include(uicomponent.getVoteTemplate()); %>
+	<% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %>
   <div style="height: 10px;"><span></span></div>
-	<% _ctx.include(uicomponent.getCommentTemplate()); %> 	  	
+	<% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %>
 </div>

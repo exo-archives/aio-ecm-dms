@@ -15,9 +15,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 
-import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
-import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -40,7 +38,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     events = @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class)
 )
-public class UIViewSearchResult extends UIContainer implements ECMViewComponent, VoteComponent, CommentsComponent {
+public class UIViewSearchResult extends UIContainer implements ECMViewComponent {
   
   private Node node_ ;
   private String language_ ;
@@ -159,27 +157,14 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent,
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
 
-  public double getRating() throws Exception {
-    return getNode().getProperty("exo:votingRate").getDouble();
-  }
-
-  public long getVoteTotal() throws Exception {
-    return getNode().getProperty("exo:voteTotal").getLong();
-  }
-
   public List<Node> getComments() throws Exception {
     MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
     return getApplicationComponent(CommentsService.class).getComments(getNode(), multiLanguageService.getDefault(getNode())) ;
   }
-
-  public String getCommentTemplate() throws Exception {
+  
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:comment", "view1") ;
-  }
-
-  public String getVoteTemplate() throws Exception {
-    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
   }
 
   public String getLanguage() { return language_; }

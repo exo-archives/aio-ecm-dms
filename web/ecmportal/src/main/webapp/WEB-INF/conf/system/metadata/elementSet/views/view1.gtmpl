@@ -59,7 +59,7 @@
 %>
 
 <div class="Header">DC:ELEMENTSET</div>
-<div id="dc_elementSet">     
+<div>     
   <div class="ContentBlock" style="width:45%">
     <div class="Title">
       <div class="Label">Title</div>
@@ -68,8 +68,8 @@
     <div><% renderDCValues("dc:title") %></div>
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Date</div>
@@ -78,7 +78,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Subject</div>
@@ -89,8 +89,8 @@
     </div>              
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Description</div>
@@ -99,7 +99,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Languages</div>
@@ -110,8 +110,8 @@
     </div>              
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Creator</div>
@@ -120,7 +120,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Publisher</div>
@@ -131,8 +131,8 @@
     </div>              
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Contributor</div>
@@ -141,7 +141,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Identifier</div>
@@ -152,8 +152,8 @@
     </div>              
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Resource Type</div>
@@ -162,7 +162,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Format</div>
@@ -173,8 +173,8 @@
     </div>              
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Relation</div>
@@ -183,7 +183,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Rights</div>
@@ -194,8 +194,8 @@
     </div>              
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+  <div style="overflow:hidden; width:99.5%;">
+    <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Source</div>
@@ -204,7 +204,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Coverage</div>
@@ -240,7 +240,7 @@
 		    </div>
 			</div>
 		</div>
-  </div
+  </div>
 </div>
 <%/* end render action*/%>
  

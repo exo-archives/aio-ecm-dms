@@ -15,7 +15,6 @@ import javax.jcr.Node;
  * 10:36:21 AM
  */
 public interface ECMViewComponent {
-  
   public void setNode(Node node);
 
   public Node getNode() throws Exception;
@@ -34,7 +33,7 @@ public interface ECMViewComponent {
 
   public String getRssLink() ;
 
-  public List getSupportedLocalise() throws Exception  ;
+  public List getSupportedLocalise() throws Exception ;
   
   public void setLanguage(String language) ;
   
@@ -49,4 +48,8 @@ public interface ECMViewComponent {
   public String getPortalName() ;
   
   public String getWorkspaceName() throws Exception ;
+  
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception ;
+  
+  public List<Node> getComments() throws Exception;
 }

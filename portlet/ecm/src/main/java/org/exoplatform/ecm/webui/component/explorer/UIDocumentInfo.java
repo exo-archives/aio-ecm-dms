@@ -25,12 +25,10 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.AlphaNodeComparator;
-import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.PropertiesComparator;
 import org.exoplatform.ecm.jcr.TypeNodeComparator;
-import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.component.view.Util;
@@ -69,7 +67,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class)
     }
 )
-public class UIDocumentInfo extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent {
+public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
@@ -184,11 +182,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   public String getNodePath(Node node) throws Exception {
     return node.getPath() ;
   }
-//  
-//  public boolean isVersionable(Node node) throws RepositoryException {
-//    return  getAncestorOfType(UIWorkingArea.class).isVersionable(node) ;
-//  }
-  
+
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
     if (currentNode_.hasProperty("exo:relation")) {
@@ -303,14 +297,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
     return getApplicationComponent(CommentsService.class).getComments(currentNode_, getLanguage()) ;
   }
 
-  public String getCommentTemplate() throws Exception {
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:comment", "view1") ;
-  }
-
-  public String getVoteTemplate() throws Exception {
-    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
   }
 
   //TODO:  Need to use Comparator,  You can call me  when when you are working on this

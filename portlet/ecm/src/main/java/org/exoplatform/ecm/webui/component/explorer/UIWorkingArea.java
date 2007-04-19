@@ -128,11 +128,6 @@ public class UIWorkingArea extends UIContainer {
     Session session = repositoryService.getRepository().getSystemSession(cmsConfService.getWorkspace());
     return session.getNodeByUUID(uuid);
   }
-//  
-//  public List getAllClipBoard() {
-//    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-//    return uiExplorer.getAllClipBoard() ;
-//  }
   
   protected Node getCurrentNode() {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;

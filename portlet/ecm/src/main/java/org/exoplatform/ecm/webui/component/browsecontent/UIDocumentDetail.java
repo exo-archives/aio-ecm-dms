@@ -18,11 +18,9 @@ import javax.portlet.PortletRequest;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.CommentsComponent;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.jcr.VoteComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -48,7 +46,7 @@ import org.exoplatform.webui.event.EventListener;
     events ={ @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class) }
 )
 
-public class UIDocumentDetail extends UIComponent implements ECMViewComponent, VoteComponent, CommentsComponent, UIPopupComponent{
+public class UIDocumentDetail extends UIComponent implements ECMViewComponent, UIPopupComponent{
   protected Node node_ ;
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
@@ -109,6 +107,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     }    
     return node_;
   }
+  
   private Session getSession() throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     Session session = repositoryService.getRepository().getSystemSession(getWorkSpace()) ;
@@ -223,14 +222,6 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
 
   public boolean isRssLink() {return false ;}
 
-  public double getRating() throws Exception {
-    return node_.getProperty("exo:votingRate").getDouble();
-  }
-
-  public long getVoteTotal() throws Exception {
-    return node_.getProperty("exo:voteTotal").getLong();
-  }
-  
   public List<Node> getComments() throws Exception {
     return getApplicationComponent(CommentsService.class).getComments(node_, getLanguage()) ;
   }
@@ -247,16 +238,11 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, V
     return local ;
   }
 
-  public String getCommentTemplate() throws Exception {
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:comment", "view1") ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
   }
 
-  public String getVoteTemplate() throws Exception {
-    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, "exo:vote", "view1") ;
-  }
-  
   public void activate() throws Exception {
     // TODO Auto-generated method stub
     

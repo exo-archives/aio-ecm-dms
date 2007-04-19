@@ -15,7 +15,6 @@ import javax.jcr.Node;
  * 10:36:21 AM
  */
 public interface ECMViewComponent {
-  
   public void setNode(Node node);
 
   public Node getNode() throws Exception;
@@ -33,10 +32,8 @@ public interface ECMViewComponent {
   public boolean isRssLink() ;
 
   public String getRssLink() ;
-  
-  public String getDownloadLink(Node node) throws Exception ;
-  
-  public List getSupportedLocalise() throws Exception  ;
+
+  public List getSupportedLocalise() throws Exception ;
   
   public void setLanguage(String language) ;
   
@@ -44,11 +41,15 @@ public interface ECMViewComponent {
   
   public Object getComponentInstanceOfType(String className) ;
   
-  public String getWebDAVServerPrefix() throws Exception ;
+ public String getWebDAVServerPrefix() throws Exception ;
   
   public String getImage(Node node) throws Exception ;
   
   public String getPortalName() ;
   
   public String getWorkspaceName() throws Exception ;
+  
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception ;
+  
+  public List<Node> getComments() throws Exception;
 }

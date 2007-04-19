@@ -131,11 +131,6 @@
 /*############################## -- Begin UITreeExplorer   -- ##############################*/
 .UIJCRExplorerPortlet .UITreeExplorer {}
 
-.UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
-  float: left;
-  cursor: pointer;
-}
-
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
   cursor: pointer;
@@ -147,10 +142,13 @@
   font-weight: bold;
   font-size: 11px;
 }
-
+ 
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
+  margin-left: 15px;
+}
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
-  clear: both; margin-bottom: 5px;
-  line-height: 16px;
+  clear: both;
+  line-height: 20px;
   font-size: 11px;
 }
 
