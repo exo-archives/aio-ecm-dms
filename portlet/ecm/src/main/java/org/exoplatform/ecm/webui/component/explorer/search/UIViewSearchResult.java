@@ -20,7 +20,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
-import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIContainer;
@@ -41,7 +40,8 @@ import org.exoplatform.webui.event.EventListener;
 public class UIViewSearchResult extends UIContainer implements ECMViewComponent {
   
   private Node node_ ;
-  private String language_ ;
+  private String language_ = "default";
+  private String selectedLanguage_ ;
   public UIViewSearchResult() throws Exception {
   }
 
@@ -65,7 +65,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
-    NodeIterator childrenIterator = getNode().getNodes();;
+    NodeIterator childrenIterator = node_.getNodes();;
     while(childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
@@ -76,16 +76,17 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
 
   public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException { 
     if(node_.hasProperty("exo:language")) {
-      if(language_ == null) language_ = node_.getProperty("exo:language").getString() ;
       String defaultLang = node_.getProperty("exo:language").getString() ;
+      if(selectedLanguage_ == null) selectedLanguage_ =  defaultLang ;
       if(node_.hasNode("languages")) {
         if(!language_.equals("default") && !language_.equals(defaultLang)) {
           Node curNode = node_.getNode("languages/" + language_) ;
+          selectedLanguage_ = language_ ;
           language_ = defaultLang ;
           return curNode ;
         } 
+        selectedLanguage_ = defaultLang ;
       }
-      return node_ ;
     }    
     return node_ ; 
   }
@@ -94,8 +95,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    if (getNode().hasProperty("exo:relation")) {
-      Value[] vals = getNode().getProperty("exo:relation").getValues();
+    if (node_.hasProperty("exo:relation")) {
+      Value[] vals = node_.getProperty("exo:relation").getValues();
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
@@ -110,13 +111,13 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
 
   public List getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(getNode().hasNode("languages")){
-      Node languages = getNode().getNode("languages") ;
+    if(node_.hasNode("languages")){
+      Node languages = node_.getNode("languages") ;
       NodeIterator iter = languages.getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(getNode().getProperty("exo:language").getString()) ;      
+      local.add(node_.getProperty("exo:language").getString()) ;      
     } 
     return local ;
   }
@@ -158,8 +159,12 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   }
 
   public List<Node> getComments() throws Exception {
-    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
-    return getApplicationComponent(CommentsService.class).getComments(getNode(), multiLanguageService.getDefault(getNode())) ;
+    if(node_.hasProperty("exo:language")) {
+      String defaultLang = node_.getProperty("exo:language").getString() ;
+      if(selectedLanguage_ == null) selectedLanguage_ =  defaultLang ;
+      return getApplicationComponent(CommentsService.class).getComments(node_, selectedLanguage_) ;
+    }
+    return getApplicationComponent(CommentsService.class).getComments(node_, language_) ;
   }
   
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
