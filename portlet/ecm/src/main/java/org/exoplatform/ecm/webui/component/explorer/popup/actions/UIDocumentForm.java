@@ -278,7 +278,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       if(languagesNode.hasNode(getSelectedLanguage())) {
         languageNode = languagesNode.getNode(getSelectedLanguage()) ;
         for(UIComponent uiChild : getChildren()) {
-          if(!propertiesName_.get(uiChild.getName()).equals("/node")) {
+          if(!propertiesName_.get(uiChild.getName()).equals("node")) {
             String value = ((UIFormInput) uiChild).getValue().toString() ;
             languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;
           }

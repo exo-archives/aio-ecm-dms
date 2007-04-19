@@ -134,7 +134,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         selectedLangNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;
         node.getSession().move(languagesNode.getPath() + "/" + language, languagesNode.getPath() + "/" + defaultLanguage) ;
         node.setProperty(EXO_LANGUAGE, language) ;
-      }else {
+      } else {
         Node newLang = languagesNode.addNode(defaultLanguage) ;
         PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
         for(PropertyDefinition pro : properties){
@@ -145,6 +145,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           }
         }
         node.setProperty(EXO_LANGUAGE, language) ;
+        if(node.hasNode(COMMENTS)) {
+          node.getSession().move(node.getPath() + "/" + COMMENTS, newLang.getPath() + "/" + COMMENTS) ;
+        }
+        if(selectedLangNode.hasNode(COMMENTS)) {
+          node.getSession().move(selectedLangNode.getPath() + "/" + COMMENTS, node.getPath() + "/" + COMMENTS) ;
+        }
         selectedLangNode.remove() ;
       }
       node.save() ;

@@ -32,7 +32,6 @@ public class CommentsServiceImpl implements CommentsService {
   private final static String COMMENTABLE = "mix:commentable".intern() ;
   private final static String EXO_COMMENTS = "exo:comments".intern() ;
   private final static String NT_UNSTRUCTURE = "nt:unstructured".intern() ;
-  private final static String MIX_I18N = "mix:i18n".intern()  ;
   private final static String MESSAGE = "exo:commentContent".intern() ;
   private final static String COMMENTOR = "exo:commentor".intern() ;
   private final static String COMMENTOR_EMAIL = "exo:commentorEmail".intern() ;
@@ -51,36 +50,29 @@ public class CommentsServiceImpl implements CommentsService {
   }
   
   public void addComment(Node document, String commentor,String email, String site, String comment,String language) throws Exception {
-    if(!document.isNodeType(COMMENTABLE)){
-      if(document.canAddMixin(COMMENTABLE)) 
-        document.addMixin(COMMENTABLE) ;
-      else 
-        throw new Exception("This node does not support comments.") ;  
+    if(!document.isNodeType(COMMENTABLE)) {
+      if(document.canAddMixin(COMMENTABLE)) document.addMixin(COMMENTABLE) ;
+      else throw new Exception("This node does not support comments.") ;  
     }        
     Node multiLanguages =null, languageNode= null, commentNode = null ;
-    if(document.isNodeType(MIX_I18N)) {
-      if(!document.hasNode(LANGUAGES)) {
-        multiLanguages = document.addNode(LANGUAGES,NT_UNSTRUCTURE) ;
-      }else {
-        multiLanguages = document.getNode(LANGUAGES) ;
-      }
+    
+    if(!document.hasNode(LANGUAGES) || language.equals(multiLangService_.getDefault(document))) {
+      if(document.hasNode(COMMENTS)) commentNode = document.getNode(COMMENTS) ;
+      else commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ;
+    } else {
+      multiLanguages = document.getNode(LANGUAGES) ;
       if(multiLanguages.hasNode(language)) {
         languageNode = multiLanguages.getNode(language) ;
-      }else {
+      } else {
         languageNode = multiLanguages.addNode(language) ;
       }
       if(languageNode.hasNode(COMMENTS)) {
         commentNode = languageNode.getNode(COMMENTS) ;
-      }else{
+      } else{
         commentNode = languageNode.addNode(COMMENTS,NT_UNSTRUCTURE) ;
       }
-    }else {
-      if(document.hasNode(COMMENTS)) {
-        commentNode = document.getNode(COMMENTS) ;         
-      }else {
-        commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ;
-      }
-    }         
+    }
+     
     if(commentor == null || commentor.length() == 0) {
       commentor = ANONYMOUS ;      
     }
@@ -102,19 +94,27 @@ public class CommentsServiceImpl implements CommentsService {
     commentsCache_.remove(commentNode.getPath()) ;
   }
 
+  @SuppressWarnings("unchecked")
   public List<Node> getComments(Node document,String language) throws Exception {    
-    String commentsNodeName = null;
     Node commentsNode = null ;
-    if(document.isNodeType(MIX_I18N)){
-      if(!isSupportedLocalize(document,language)) {
-        language = document.getProperty("exo:language").getString() ; 
-      }      
-      commentsNodeName = LANGUAGES+"/"+language +"/" +COMMENTS;      
-    }else {                  
-      commentsNodeName = COMMENTS ;
-    }           
-    if(!document.hasNode(commentsNodeName)) return new ArrayList<Node>() ;    
-    commentsNode = document.getNode(commentsNodeName) ;
+    Node languagesNode = null ;
+    Node languageNode = null ;
+    if(!isSupportedLocalize(document,language)) {
+      language = document.getProperty("exo:language").getString() ; 
+    }
+    if(document.hasNode(LANGUAGES)) {
+      languagesNode = document.getNode(LANGUAGES) ;
+      if(languagesNode.hasNode(language)) {
+        languageNode = languagesNode.getNode(language) ;
+        if(languageNode.hasNode(COMMENTS)) commentsNode = languageNode.getNode(COMMENTS) ;
+      } else if(language.equals(multiLangService_.getDefault(document))) {
+        languageNode = document ;
+      }
+    } else {
+      languageNode = document ;
+    }
+    if(!languageNode.hasNode(COMMENTS)) return new ArrayList<Node>() ;    
+    commentsNode = languageNode.getNode(COMMENTS) ;
     String cacheKey = document.getPath().concat(commentsNode.getPath());
     Object comments = commentsCache_.get(cacheKey) ;
     if(comments !=null) return (List<Node>)comments ;        

@@ -14,8 +14,9 @@ import javax.jcr.Value;
 
 public interface MultiLanguageService {
   
-  public static final String LANGUAGES = "languages" ;
-  public static final String EXO_LANGUAGE = "exo:language" ;
+  final static public String LANGUAGES = "languages" ;
+  final static public String EXO_LANGUAGE = "exo:language" ;
+  final static public String COMMENTS = "comments".intern() ;
   
   
   public List<String> getSupportedLanguages(Node node) throws Exception ;

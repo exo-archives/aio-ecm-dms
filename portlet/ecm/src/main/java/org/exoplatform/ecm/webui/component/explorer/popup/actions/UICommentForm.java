@@ -79,17 +79,16 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
       String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
       String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
       String comment = uiForm.getUIFormTextAreaInput(FIELD_COMMENT).getValue() ;
-      UIJCRExplorer jcrExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        String language = jcrExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
-        getChild(UIDocumentInfo.class).getLanguage() ;
+        String language = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
+        getChild(UIDocumentInfo.class).getSelectedLanguage() ;
         if(UIDocumentInfo.DEFAULT_LANGUAGE.equals(language)) { 
           if(!uiForm.document_.hasProperty("exo:language")){
             uiForm.document_.addMixin("mix:i18n") ;
             uiForm.document_.save() ;
             language = UIDocumentInfo.DEFAULT_LANGUAGE ;
-          }else {
+          } else {
             language = uiForm.document_.getProperty("exo:language").getString() ;
           }
         }
@@ -98,7 +97,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
       } catch (Exception e) {        
         e.printStackTrace() ;
       }
-      jcrExplorer.updateAjax(event) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 }

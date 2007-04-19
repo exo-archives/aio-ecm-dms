@@ -101,10 +101,6 @@ public class UIJCRExplorer extends UIContainer {
                                                  setValue(currentNode_.getPath()) ;
     UIWorkingArea workingArea = getChild(UIWorkingArea.class) ;
     workingArea.getChild(UIDocumentWorkspace.class).setRenderedChild(UIDocumentInfo.class) ;
-//    if(preferences_.isShowSideBar()) {
-//      UITreeExplorer uiTree = workingArea.getChild(UISideBar.class).getChild(UITreeExplorer.class) ;
-//      uiTree.buildTree(currentNode_.getPath()) ;
-//    }
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
     popupAction.deActivate() ;
   }
@@ -154,10 +150,6 @@ public class UIJCRExplorer extends UIContainer {
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
     uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
-//    if(preferences_.isShowSideBar()) {
-//      UISideBar uiSideBar = uiWorkingArea.getChild(UISideBar.class) ;
-//      uiSideBar.getChild(UITreeExplorer.class).buildTree(currentNode_.getPath()) ;
-//    }
     event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     if(!isHidePopup_) {
       UIPopupAction popupAction = getChild(UIPopupAction.class) ;

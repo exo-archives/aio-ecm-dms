@@ -73,7 +73,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
-  
+  private String selectedLanguage_ ;
   private String typeSort_ ;
   private String typeSortOrder_ ;
   private String nameSortOrder_ ;
@@ -267,15 +267,17 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   }
 
   public Node getNode() throws Exception { 
-    Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
-    currentNode_ = node ;
+    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
     if(currentNode_.hasProperty("exo:language")) {
       String defaultLang = currentNode_.getProperty("exo:language").getString() ;
+      if(selectedLanguage_ == null) selectedLanguage_ =  defaultLang ;
       if(!language_.equals("default") && !language_.equals(defaultLang)) {
         Node curNode = currentNode_.getNode("languages/" + language_) ;
+        selectedLanguage_ = language_ ;
         language_ = defaultLang ;
         return curNode ;
-      } 
+      }
+      selectedLanguage_ = defaultLang ;
     }    
     return currentNode_; 
   }
@@ -292,6 +294,12 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   }
 
   public List<Node> getComments() throws Exception {
+    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
+    if(currentNode_.hasProperty("exo:language")) {
+      String defaultLang = currentNode_.getProperty("exo:language").getString() ;
+      if(selectedLanguage_ == null) selectedLanguage_ =  defaultLang ;
+      return getApplicationComponent(CommentsService.class).getComments(currentNode_, selectedLanguage_) ;
+    }
     return getApplicationComponent(CommentsService.class).getComments(currentNode_, getLanguage()) ;
   }
 
@@ -456,7 +464,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent, Vot
   
   public void setLanguage(String language) { language_ = language ; }
   public String getLanguage() { return language_ ; }
-
+  
+  public String getSelectedLanguage() { return selectedLanguage_ ; }
+ 
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uicomp = event.getSource() ;
