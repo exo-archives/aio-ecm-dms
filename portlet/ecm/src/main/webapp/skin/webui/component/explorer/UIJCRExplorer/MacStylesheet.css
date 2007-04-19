@@ -71,7 +71,7 @@
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl td {
-  line-height: 30px;
+  line-height: 28px;
   padding: 0px 5px;
 }
 
@@ -85,14 +85,28 @@
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .SortButton {
   float: left;
-  margin: 2px 5px;
+  margin: 2px 5px 0px 2px;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .Icon16x16 {
   float: left;
-  margin: 5px;
+  margin: 5px 5px 0px 5px;
   width: 16px; height: 16px;
 }
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel {
+  padding-left: 5px;
+  color: #058ee9;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a {
+  color: #0766e7;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a:hover{
+  color: #fb8404;
+}
+
 /*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet .UIMenuPopup {
@@ -563,7 +577,6 @@
 
 .UIJCRExplorerPortlet .UIReferencesList .UIPageIterator {
   width: 98%;
-  border: solid 1px red;
 }
 
 /*================================UIPermissionManager=================================*/
@@ -582,17 +595,20 @@
   float: left;
 }
 
-/*================================DecoratorBoxNested=================================*/
+/*================================UIViewMetadataManager=================================*/
 
-.UIJCRExplorerPortlet .UINodeTypeInfo {
-  padding: 8px;
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
+  width: 170px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UIHorizontalTabs {
-  border: solid 1px red;
-  width: 98.5%;
-  margin: 0px;
-  padding: 0px;
+/*================================UINodeTypeInfo=================================*/
+
+.UIJCRExplorerPortlet .UIGrid tr {
+  border: solid 1px yellow;
+}
+
+.UIJCRExplorerPortlet .UIGrid td {
+  border: solid 1px #cfcfcf;
 }
 
 

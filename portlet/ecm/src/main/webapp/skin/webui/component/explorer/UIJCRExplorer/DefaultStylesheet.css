@@ -63,15 +63,15 @@
 .UIJCRExplorerPortlet .UIListView .UIGridControl th {
   line-height: 20px;
   text-align: left;
-  font-size: 12px ;
+  font-size: 11px ;
   padding: 0px 10px;
-  border: solid 1px #9fa8cb;
+  border-right: solid 1px #b7b7b7;
   font-weight: normal;
   background: url('DefaultSkin/background/ThGridRepeatBg1x20.gif') repeat-x center;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl td {
-  line-height: 30px;
+  line-height: 28px;
   padding: 0px 5px;
 }
 
@@ -85,14 +85,28 @@
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .SortButton {
   float: left;
-  margin: 2px 5px;
+  margin: 2px 5px 0px 2px;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .Icon16x16 {
   float: left;
-  margin: 5px;
+  margin: 5px 5px 0px 5px;
   width: 16px; height: 16px;
 }
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel {
+  padding-left: 5px;
+  color: #058ee9;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a {
+  color: #0766e7;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a:hover{
+  color: #fb8404;
+}
+
 /*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet .UIMenuPopup {
@@ -560,17 +574,23 @@
 
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 8px;
-  border: solid 1px red;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .UIHorizontalTabs {
-  border: solid 1px red;
 }
 
 /*================================UIPropertyTab=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{
-  padding-right: 3px;
+  margin-right: 3px;
 }
+
+/*================================UINodeTypeInfo=================================*/
+
+.UIJCRExplorerPortlet .UIGrid .OddRow {
+  background: #fbfbfb;
+}
+
+.UIJCRExplorerPortlet .UIGrid tr {
+  background: #f3f3f3;
+}
+
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

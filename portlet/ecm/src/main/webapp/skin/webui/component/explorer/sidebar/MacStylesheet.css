@@ -88,7 +88,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
   float: left;
-  margin: 5px 3px 3px 3px;
+  margin: 5px 3px 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemLabel {
@@ -129,7 +129,8 @@
 
 /*############################## -- End UISideBar   -- ##############################*/
 /*############################## -- Begin UITreeExplorer   -- ##############################*/
-.UIJCRExplorerPortlet .UITreeExplorer {}
+.UIJCRExplorerPortlet .UITreeExplorer {
+}
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
   float: left;
@@ -171,6 +172,7 @@
 .UIJCRExplorerPortlet .UITreeExplorer a {
   color: black;
 	text-decoration: none;
+	margin-left: 4px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {

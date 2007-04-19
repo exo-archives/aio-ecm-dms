@@ -16,7 +16,7 @@
     }
     .ContentBlock{
       width: 99.5%;     
-      margin:20px 20px 20px 20px;
+      margin:15px;
     }
     .Label {
       height:14px;
@@ -34,7 +34,7 @@
     }
     .Line {
       background: url('/ecm/skin/images/metadata/dot.gif')repeat-x center;
-      height: 10px;
+      height: 8px;
     }       
   </style>  
 </head>

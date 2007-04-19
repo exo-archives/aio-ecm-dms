@@ -80,7 +80,9 @@
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
-  padding: 5px 0px;
+  padding: 8px;
+  width: 96%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
@@ -91,22 +93,12 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
-  border: solid 1px #5f90ba;
-  background-color: #dee7f5;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer {
   border: solid 1px #b7b7b7;
-  background-color: #ffffff;
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
-}
-
-.UIJCRExplorerPortlet .UIGrid td {
-  border: solid 1px #acc6dc;
+.UIJCRExplorerPortlet .UINodeTypeInfo .UIAction{
+  width: 70px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
