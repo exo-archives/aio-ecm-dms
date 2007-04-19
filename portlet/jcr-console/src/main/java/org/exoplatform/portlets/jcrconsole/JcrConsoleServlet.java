@@ -59,10 +59,6 @@ public class JcrConsoleServlet extends HttpServlet {
 
       parseQuery(commandLine, params);
 
-      System.out.println("===JcrConsoleServlet.java, doPost, (context == null) : "
-          + (context == null));
-      System.out.println("===JcrConsoleServlet.java, doPost, Thread.currentThread().getId() : "
-          + Thread.currentThread().getId());
       if (context == null) {
         RepositoryService repService = (RepositoryService) container
             .getComponentInstanceOfType(RepositoryService.class);
