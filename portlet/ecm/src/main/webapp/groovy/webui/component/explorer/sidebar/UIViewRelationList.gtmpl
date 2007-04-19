@@ -9,15 +9,13 @@
 		<div class="FrameContent">
 		<%def relations = uicomponent.getRelations()
 			if(relations.isEmpty()) { %>  			    			    	
-			    <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
-			 <%}else {
+			  <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
+		<%} else {
 				 String actionLink ;
 				 for (rel in relations) {
 				   String preferenceWS = rel.getSession().getWorkspace().getName() ;
-				   actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;%>
-				   if(isPreferenceNode(rel)) {
-				     actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
-				   }
+				   actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
+			%>
 			 	 	 <div> - <a href="$actionLink">$rel.name</a></div>
 			<% }
 			}%>
