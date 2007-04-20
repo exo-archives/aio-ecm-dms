@@ -121,7 +121,6 @@ public class UIQueryConfig extends UIForm {
       hasTagMap  = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
-      System.out.println("vao day khong ?");
     }
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
@@ -310,10 +309,7 @@ public class UIQueryConfig extends UIForm {
       prefs.setValue(Utils.CB_QUERY_STORE, queryPath) ;
       prefs.setValue(Utils.CB_QUERY_STATEMENT, query) ;
       prefs.store() ; 
-      //uiForm.reset() ;
-      uiConfigTabPane.getCurrentConfig() ;
-      //uiForm.editForm(false) ;
-      uiForm.setActions(UINewConfigForm.DEFAULT_ACTION) ;
+    
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       try{
@@ -323,7 +319,10 @@ public class UIQueryConfig extends UIForm {
         app.addMessage(new ApplicationMessage("UIQueryConfig.msg.save-error", null)) ;
         return ;
       }
-      
+      //uiForm.reset() ;
+      uiConfigTabPane.getCurrentConfig() ;
+      //uiForm.editForm(false) ;
+      uiForm.setActions(UINewConfigForm.DEFAULT_ACTION) ;
     }
   }  
   
