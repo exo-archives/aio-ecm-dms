@@ -8,13 +8,7 @@ package org.exoplatform.portlets.jcrconsole;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
 
-import javax.jcr.Credentials;
-import javax.jcr.LoginException;
-import javax.jcr.SimpleCredentials;
-import javax.security.auth.Subject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,17 +21,15 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.frameworks.jcr.cli.CliAppContext;
 import org.exoplatform.services.command.impl.CommandService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.security.SecurityService;
 
 public class JcrConsoleServlet extends HttpServlet {
 
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    
+
     CliAppContext context = (CliAppContext) request.getSession().getAttribute("context");
     ArrayList<String> params = new ArrayList<String>();
     String PARAMETERS_KEY = "parameterss";
-    
     response.setContentType("text/html");
     PrintWriter printWriter = response.getWriter();
     try {
@@ -45,14 +37,12 @@ public class JcrConsoleServlet extends HttpServlet {
       ExoContainer container = ExoContainerContext.getContainerByName(containerName);
 
       String commandLine = request.getParameter("myaction").trim();
-
       String commandFromCommandLine = commandLine.substring(0,
           (commandLine.indexOf(" ") < 0) ? commandLine.length() : commandLine.indexOf(" "));
 
       commandLine = commandLine.substring(commandLine.indexOf(commandFromCommandLine)
           + commandFromCommandLine.length());
       commandLine = commandLine.trim();
-
       CommandService cservice = (CommandService) container
           .getComponentInstanceOfType(CommandService.class);
       Catalog catalog = cservice.getCatalog("CLI");
@@ -118,7 +108,6 @@ public class JcrConsoleServlet extends HttpServlet {
     } catch (Exception exception) {
       exception.printStackTrace();
     }
-    // return params;
   }
 
 }
