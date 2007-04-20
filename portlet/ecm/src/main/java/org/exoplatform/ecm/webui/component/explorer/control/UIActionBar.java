@@ -311,8 +311,6 @@ public class UIActionBar extends UIForm {
             uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
           uiDocumentForm.setNode(selectedNode) ;
-          uiDocumentForm.editDocument(selectedNode) ;
-          uiDocumentForm.setContentNode(selectedNode) ;
           uiDocumentForm.addNew(false) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
           uiPopupAction.activate(uiDocumentForm, 700, 550) ;

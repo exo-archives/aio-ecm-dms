@@ -74,9 +74,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   private boolean isAddNew_ = false ; 
   private boolean isMultiLanguage_ = false ;
   private String selectedLanguage_ = "en" ;
-  private String scriptPath_ = null ;
+  //private String scriptPath_ = null ;
   private InputStream binaryData_ ;
-  private Node contentNode_ ;
+  //private Node contentNode_ ;
   private boolean isDefault_ = false;
   
   public UIDocumentForm() throws Exception {
@@ -121,27 +121,17 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
   
-  public void setContentNode(Node contentNode) { contentNode_ = contentNode ; }
-  public Node getContentNode() { return contentNode_ ; }
+  //public void setContentNode(Node contentNode) { contentNode_ = contentNode ; }
+  //public Node getContentNode() { return contentNode_ ; }
   
   public Node getCurrentNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
-  
-  private void setPath(String scriptPath) { 
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    if(scriptPath.indexOf(":") < 0) {
-      scriptPath = uiExplorer.getSession().getWorkspace().getName() + ":" + scriptPath ;
-    }
-    scriptPath_ = scriptPath ; 
-  }
-  
-  public String getPath() { return scriptPath_ ; }
   
   public boolean isEditing() { return !isAddNew_ ; }
   
   public InputStream getBinaryData() { return binaryData_ ;}
   public void setBinaryData(InputStream data) { this.binaryData_ = data ; }
   
-  public void editDocument(Node editNode) throws Exception {
+  /*public void editDocument(Node editNode) throws Exception {
     String documentType = editNode.getProperty("jcr:primaryType").getString();
     if(NT_FILE.equals(documentType)) {
       Node jcrContent = editNode.getNode(JCRCONTENT) ;      
@@ -151,7 +141,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       }
     }
   }
-  
+  */
   @SuppressWarnings("unchecked")
   public void setMultiValue(Node node, List inputs, JcrInputProperty property, Session session) throws Exception {
     for (int i = 0; i < inputs.size(); i++) {
@@ -166,11 +156,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   }
   
   @SuppressWarnings("unchecked")
-  public void storeValue(Event event) throws Exception {
+  public Node storeValue(Event event) throws Exception {
     CmsService cmsService = getApplicationComponent(CmsService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     List inputs = getChildren() ;
     Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), uiExplorer.getSession()) ;
+    Node newNode = null ;
     if(!isMultiLanguage()) {
       String nodeType ;
       Node homeNode ;
@@ -182,7 +173,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         homeNode = getNode().getParent() ;
         nodeType = getNode().getPrimaryNodeType().getName() ;
       }       
-      String name = getUIStringInput("name").getValue() ;
+      /*String name = getUIStringInput("name").getValue() ;
       String rootPath = "/node";
       JcrInputProperty property = new JcrInputProperty();
       if(inputProperties.containsKey(rootPath)) {
@@ -200,38 +191,36 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
           jcrDataInput.setJcrPath("/node/jcr:content/jcr:data") ;
           jcrDataInput.setValue(getBinaryData()) ;
           inputProperties.put("/node/jcr:content/jcr:data",jcrDataInput) ;
-          Node jcrNode = homeNode.getNode(name).getNode(JCRCONTENT) ; 
+          Node jcrNode = node_.getNode(JCRCONTENT) ; 
           setMultiValue(jcrNode, inputs, property, uiExplorer.getSession()) ;
         }
-      }
+      }*/
       try {
-        try {
-          homeNode.getSession().checkPermission(homeNode.getPath(),"add_node,set_property");
-        } catch (AccessControlException e) {
-          throw new AccessDeniedException(e.getMessage());
-        }
-        cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew());
+        String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew());
         homeNode.getSession().save() ;
-        Node newNode = homeNode.getNode(name) ;
-        //if(!newNode.isNodeType("mix:i18n")) newNode.addMixin("mix:i18n") ;
-        if(documentType_.equals(NT_FILE) && !isEditing()) {
+        newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
+        /*if(documentType_.equals(NT_FILE) && !isEditing()) {
           setMultiValue(newNode.getNode(JCRCONTENT), inputs, property, uiExplorer.getSession()) ;
-        }
+        }*/
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-        uiExplorer.updateAjax(event);
-        setPath(newNode.getPath()) ;
-      } catch(VersionException ve) {
+        uiExplorer.updateAjax(event);        
+      }catch (AccessControlException ace) {
+        ace.printStackTrace() ;
+        throw new AccessDeniedException(ace.getMessage());
+      }catch(VersionException ve) {
+        ve.printStackTrace() ;
         UIApplication uiApp = getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        return null;
       } catch(Exception e) {
+        e.printStackTrace() ;
         UIApplication uiApp = getAncestorOfType(UIApplication.class);
         String key = "UIDocumentForm.msg.cannot-save" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        return null;
       }
     } else {
       addLanguage(uiExplorer) ;
@@ -243,6 +232,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       uiExplorer.updateAjax(event) ;
     }
+    return newNode ;
   }
   
   private void addLanguage(UIJCRExplorer uiExplorer) throws Exception {
@@ -252,6 +242,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
     else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
     Node languageNode = null ;
+    
     Workspace ws = uiExplorer.getSession().getWorkspace() ;
     if(node.getPrimaryNodeType().getName().equals(NT_FILE)) { 
       if(languagesNode.hasNode(getSelectedLanguage())) {
@@ -303,6 +294,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     }
     node.save() ;
     if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
+    
   }
 
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {

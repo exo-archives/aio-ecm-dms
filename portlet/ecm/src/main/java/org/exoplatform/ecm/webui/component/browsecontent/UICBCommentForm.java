@@ -35,12 +35,14 @@ import org.exoplatform.webui.event.Event.Phase;
 ) 
 
 public class UICBCommentForm extends UIForm implements UIPopupComponent {
-  public static final String DEFAULT_LANGUAGE = "default".intern() ;
+  final public static String DEFAULT_LANGUAGE = "default".intern() ;
   final private static String FIELD_NAME = "name" ;
   final private static String FIELD_EMAIL = "email" ;
   final private static String FIELD_WEBSITE = "website" ;
   final private static String FIELD_COMMENT = "comment" ;
   private Node docNode_ ;
+
+
   public UICBCommentForm() {
     addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null)) ;

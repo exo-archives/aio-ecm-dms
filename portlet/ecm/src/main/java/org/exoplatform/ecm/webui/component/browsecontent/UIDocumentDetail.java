@@ -245,12 +245,10 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   public void activate() throws Exception {
     // TODO Auto-generated method stub
-    
   }
   
   public void deActivate() throws Exception {
     // TODO Auto-generated method stub
-    
   }
   public String getPortalName() {
     PortalContainer pcontainer =  PortalContainer.getInstance() ;

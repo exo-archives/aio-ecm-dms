@@ -11,7 +11,9 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.ValueFactory;
 
+import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -119,6 +121,7 @@ public class Utils {
         if (valueType == 6) { // boolean
           valueList.add(session.getValueFactory().createValue(Boolean.parseBoolean(value)));
         } else {
+          System.out.println("value === " + value) ;
           valueList.add(session.getValueFactory().createValue(value));
         }
       }
@@ -129,14 +132,28 @@ public class Utils {
   @SuppressWarnings("unchecked")
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
+    ValueFactory valueFac = session.getValueFactory() ;
     for (int i = 0; i < inputs.size(); i++) {
       JcrInputProperty property ;
       if(inputs.get(i) instanceof UIFormMultiValueInputSet) {
         String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;
         List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
+        Class clazz = ((UIFormMultiValueInputSet)inputs.get(i)).getTypeValue() ;
+        System.out.println("clazz ======== " + clazz.getName()) ;
         property = (JcrInputProperty) properties.get(inputName);
-        Value[] multiValue = getMultiValue(values, property.getType(), session);
-        if(property != null) property.setValue(multiValue) ;
+        List<Value> vls = new ArrayList<Value> () ;
+        for(String vl : values) {
+          vls.add(valueFac.createValue(vl)) ;
+        }
+        if(property != null){
+          if(property.getJcrPath().contains(CmsService.MIXIN_PROPERTY)) {
+            property.setValue(vls) ;
+            property.setValueType(JcrInputProperty.MULTI_VALUE) ;
+          }else {
+            Value[] multiValue = getMultiValue(values, property.getType(), session);
+            property.setValue(multiValue) ;
+          }
+        } 
       } else {
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
         property = (JcrInputProperty) properties.get(input.getName());
@@ -144,8 +161,15 @@ public class Utils {
           if (input instanceof UIFormUploadInput) {
             byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
             property.setValue(content);            
+            property.setValueType(JcrInputProperty.BYTE_VALUE) ;
           } else {
-            property.setValue(input.getValue());            
+            if(property.getJcrPath().contains(CmsService.MIXIN_PROPERTY)) {
+              property.setValue(valueFac.createValue((String)input.getValue()));
+              property.setValueType(JcrInputProperty.SINGLE_VALUE) ;
+            }else {
+              property.setValue(input.getValue()) ;
+            }
+            
           }
         }
       }

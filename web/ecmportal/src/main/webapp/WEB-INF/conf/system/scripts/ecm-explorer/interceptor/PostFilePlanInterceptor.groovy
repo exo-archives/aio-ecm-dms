@@ -27,14 +27,17 @@ public class PostFilePlanInterceptor implements CmsScript {
   
   public void execute(Object context) {
     String path = (String) context;       
-
-    println("Post File Plan interceptor, created node: "+path);
-
-    String[] splittedContent = StringUtils.split(path, ":");
-    Session session = repositoryService_.getRepository().login(splittedContent[0]);
-    Node filePlan = (Node) session.getItem(splittedContent[1]);
-
-    recordsService_.bindFilePlanAction(filePlan);
+		try{
+			println("Post File Plan interceptor, created node hello: "+path);
+	    String[] splittedContent = path.split("&workspaceName=");
+	    println("Post File Plan interceptor, created node hello: " + splittedContent[0] + " 1== " + splittedContent[1]);
+	    Session session = repositoryService_.getRepository().login(splittedContent[1]);
+	    Node filePlan = (Node) session.getItem(splittedContent[0]);
+	
+	    recordsService_.bindFilePlanAction(filePlan);
+		}catch(Exception e) {
+			e.printStackTrace() ;
+		}
   }
 
   public void setParams(String[] params) {}

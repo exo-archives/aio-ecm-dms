@@ -63,11 +63,12 @@ public class DialogFormFields extends UIForm {
 
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
-  private Node node_ = null;
+  protected Node node_ = null;
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
-  private List<String> scriptInterceptor_ = new ArrayList<String>() ; 
+  private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
+  private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
   private static final String SEPARATOR = "=";
   private static final String JCR_PATH = "jcrPath" + SEPARATOR;
   private static final String EDITABLE = "editable" + SEPARATOR;
@@ -111,7 +112,8 @@ public class DialogFormFields extends UIForm {
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
   public void resetScriptInterceptor(){
-    scriptInterceptor_.clear() ;
+    prevScriptInterceptor_.clear() ;
+    postScriptInterceptor_.clear() ;
   }
   private String getPropertyValue(String jcrPath) throws Exception {
     if(jcrPath.equals("/node") && node_ != null) return node_.getName() ;
@@ -420,7 +422,6 @@ public class DialogFormFields extends UIForm {
     } 
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
-        System.out.println("test value ========= " + getPropertyValue(jcrPath)) ;
         uiTextArea.setValue(getPropertyValue(jcrPath)) ;
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         uiTextArea.setValue(node_.getName()) ;
@@ -753,7 +754,13 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addInterceptor(String scriptPath, String type) {
-    if(scriptPath.length() > 0 && type.length() > 0) scriptInterceptor_.add(scriptPath+ ";" + type) ;
+    if(scriptPath.length() > 0 && type.length() > 0){
+      if(type.equals("prev")){
+        prevScriptInterceptor_.add(scriptPath + ";" + type) ;
+      } else if(type.equals("post")){
+        postScriptInterceptor_.add(scriptPath + ";" + type) ;
+      }
+    } 
   }
 
   private void executeScript(String script, Object o, String[] params) {
@@ -803,38 +810,36 @@ public class DialogFormFields extends UIForm {
     return b.toString() ;
   }
 
-  public void storeValue(Event event) throws Exception {}
+  public Node storeValue(Event event) throws Exception { return null ; }
   public void onchange(Event event) throws Exception {}
-  public String getPath() { return null ; }
-
+  
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
       UIJCRExplorer uiJCRExplorer = dialogForm.getAncestorOfType(UIJCRExplorer.class) ;
-      String path = uiJCRExplorer.getCurrentNode().getPath() ;
-      if(path.indexOf(":") < 0) {
-        path = uiJCRExplorer.getSession().getWorkspace().getName() + ":" + path ;
-      }
-      if(dialogForm.scriptInterceptor_.size() == 0) {
-        dialogForm.storeValue(event) ;
-        return ;
-      }
-      boolean isPrev = false ;
-      for(String interceptor : dialogForm.scriptInterceptor_) {
-        if(interceptor.indexOf(";") < 0) continue ;
+      Node currNode = uiJCRExplorer.getCurrentNode() ;
+      String path = currNode.getPath()+ "&workspaceName=" + currNode.getSession().getWorkspace().getName() ;
+      
+      for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
         String type = interceptor.split(";")[1] ;
         if(type.equals("prev")) {
-          dialogForm.executeScript(scriptPath, path, null) ;
-          dialogForm.storeValue(event) ;
-          isPrev = true ;
-        } else if(type.equals("post") && isPrev) {
-          dialogForm.executeScript(scriptPath, dialogForm.getPath(), null) ;
-        } else if(type.endsWith("post") && !isPrev) {
-          dialogForm.storeValue(event) ;
-          dialogForm.executeScript(scriptPath, dialogForm.getPath(), null) ;
-        }
+          dialogForm.executeScript(scriptPath, path, null) ;          
+        } 
       }
+      
+      Node newNode = dialogForm.storeValue(event) ;
+      if(newNode == null) return ;
+      
+      path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() ;
+      for(String interceptor : dialogForm.postScriptInterceptor_) {
+        String scriptPath = interceptor.split(";")[0] ;
+        String type = interceptor.split(";")[1] ;
+        if(type.equals("post")) {
+          dialogForm.executeScript(scriptPath, path, null) ;          
+        } 
+      }
+      
     }
   }
 

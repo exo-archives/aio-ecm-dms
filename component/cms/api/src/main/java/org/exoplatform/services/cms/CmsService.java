@@ -14,6 +14,7 @@ import javax.jcr.Node;
 public interface CmsService {
   
   public static final String NODE = "/node";  
+  public static final String MIXIN_PROPERTY = "/node/mixin/";
   
   public String storeNode(String workspace, String nodetypeName, String storePath, Map inputProperties) throws Exception;
   

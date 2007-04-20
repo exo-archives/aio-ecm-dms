@@ -29,9 +29,6 @@ public class UIAddLanguageContainer extends UIContainer {
     nodeTypeName_ = nodeTypeName ;
     UIDocumentForm uiDocumentForm = createUIComponent(UIDocumentForm.class, null, null) ;
     uiDocumentForm.setTemplateNode(nodeTypeName) ;
-    if(nodeTypeName.equals("nt:file")) {
-      uiDocumentForm.setContentNode(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
-    }
     uiDocumentForm.setIsMultiLanguage(true) ;
     addChild(uiDocumentForm) ;
   }

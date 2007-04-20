@@ -111,7 +111,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   }
   
   @SuppressWarnings("unchecked")
-  public void storeValue(Event event) throws Exception {
+  public Node storeValue(Event event) throws Exception {
     UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     ActionServiceContainer actionServiceContainer = getApplicationComponent(ActionServiceContainer.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;      
@@ -121,12 +121,12 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     if(!isAddNew_) {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       Node storedHomeNode = getNode().getParent() ;
-      cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false) ;
+      String nodePath = cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.setIsHidePopup(false) ;
       uiExplorer.updateAjax(event) ;
       setPath(storedHomeNode.getPath()) ;
-      return ;
+      return getNode();
     }
     try{
       JcrInputProperty rootProp = (JcrInputProperty) sortedInputs.get("/node");
@@ -143,13 +143,13 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         Object[] args = {actionName} ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        return null;
       }
       if(parentNode_.isNew()) {
         String[] args = {parentNode_.getPath()} ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        return null;
       }
       actionServiceContainer.addAction(parentNode_, nodeTypeName_, sortedInputs);
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
@@ -161,8 +161,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     } catch (Exception e) {
       e.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
-      return ;
+      return null;
     }
+    return null ;
   }
   
   @SuppressWarnings("unchecked")

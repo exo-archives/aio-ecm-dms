@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.search;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,11 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
+import javax.portlet.PortletRequest;
 
+import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
@@ -22,6 +27,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -189,6 +195,33 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     return service;
   }
   
+
+  public String getImage(Node node) throws Exception {
+    DownloadService downloadService = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource inputResource ;
+    Node imageNode = node.getNode("exo:image") ;
+    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    inputResource = new InputStreamDownloadResource(input, "image") ;
+    inputResource.setDownloadName(node.getName()) ;
+    return downloadService.getDownloadLink(downloadService.addDownloadResource(inputResource)) ;
+  }
+
+  public String getPortalName() {
+    PortalContainer pContainer = PortalContainer.getInstance() ;
+    return pContainer.getPortalContainerInfo().getContainerName() ;
+  }
+
+  public String getWebDAVServerPrefix() throws Exception {
+    PortletRequestContext pRequestContext = PortletRequestContext.getCurrentInstance() ;
+    PortletRequest pRequest = pRequestContext.getRequest() ;
+    String prefixWebDAV = pRequest.getScheme() + "://" + pRequest.getServerName() + ":" 
+                          + String.format("%s",pRequest.getServerPort()) ;
+    return prefixWebDAV ;
+  }
+
+  public String getWorkspaceName() throws Exception {
+    return node_.getSession().getWorkspace().getName() ;
+  }
   static public class ChangeLanguageActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
       UIViewSearchResult uiViewSearchResult = event.getSource() ;
@@ -196,25 +229,5 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
       uiViewSearchResult.setLanguage(selectedLanguage) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewSearchResult.getParent()) ;
     }   
-  }
-
-  public String getImage(Node node) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public String getPortalName() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public String getWebDAVServerPrefix() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public String getWorkspaceName() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

@@ -51,6 +51,7 @@
 		        <div class="TagmapTitle">
 		        	<div class="Icon"><span></span></div>
 		          <div class="TagLabel">Tag map</div>
+		          <div style="clear:left;"><span></span></div>
 		        </div>
 		        <div class ="TagmapContent"> 
 		          <%
