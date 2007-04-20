@@ -11,12 +11,9 @@
 @import url("UINodeTypeManager/DefaultStylesheet.css");
 @import url("UITaxonomyManager/DefaultStylesheet.css");
 
-.UIECMAdminPortlet .UIAction {
-	width: 300px;
-}
-
-.UIECMAdminPortlet .UIPageIterator {
-	margin-right: 0px;
+.UIECMAdminPortlet .UIMetadataList .UIPageIterator  {
+  float: right;
+  width: 95%;
 }
 
 .UIECMAdminPortlet .UIECMPortletLayout {
@@ -24,6 +21,21 @@
   border-collapse: collapse ;
   font-size: 11px ;
   background: url('DefaultSkin/background/ECMAdminTitleBar.gif') repeat-x left top;
+}
+
+.UIECMAdminPortlet .UIFormWithTitle {
+  width: 95%;
+  margin: 0px auto;
+}
+
+.UIECMAdminPortlet .UIFormWithTitle .FieldContainer textarea {
+  border: solid 1px #b7b7b7;
+  padding: 3px;
+}
+
+.UIECMAdminPortlet .UIFormWithTitle .FieldContainer input {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
 }
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
@@ -65,7 +77,6 @@
 	overflow: auto;
 }
 
-
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
   margin: 10px;
 }
@@ -77,11 +88,11 @@
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab .TabIcon {
 	float: left;
-  margin: 1px 5px;
+  margin: 1px 5px 0px 5px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent {
-  margin: 1px 2px;
+  margin: 1px 2px 0px 2px;
   border: solid 1px #b2b1b1;
   background: #ffffff;
   padding: 5px ;
@@ -98,7 +109,7 @@
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem {
   clear: both;
   height: 25px;
-  margin: 4px 2px;
+  margin: 4px 2px 0px 2px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemIcon {
@@ -217,13 +228,14 @@
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewList .UIAction {
-  width: 100px ;
+  width: 70px ;
 }
 
 .UIECMAdminPortlet .UIECMTemplateList {
   margin-top: 5px;
 }
-.UIECMAdminPortlet .UIECMTemplateList .UIAction{
+
+.UIECMAdminPortlet .UIECMTemplateList .UIAction  {
   width: 85px;
 }
 
@@ -265,11 +277,12 @@
   width: 100px ;
 }
 
-
 /*############################## -- UIScriptManager  -- ########################*/
+
 .UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
 }
+
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction{
   width: 380px;
   margin-left: 100px;
@@ -324,6 +337,10 @@
 
 /*############################## --Begin UITemplatesManager --##############################*/
 
+.UIECMAdminPortlet .UITemplatesManager .UIPageIterator  {
+  float: right;
+  width: 95%;
+}
 
 .UITemplatesManager .UIGrid .ActionContainer {
   width: 50px ;
@@ -366,6 +383,11 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
+.UIECMAdminPortlet .UIQueriesManager .UIPageIterator  {
+  float: right;
+  width: 95%;
+}
+
 .UIQueriesManager .UIQueriesForm .UIFormWithTitle .HorizontalLayout {
 	padding: 15px 0px;
 }
@@ -380,15 +402,15 @@
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
-.UIFolksonomyManager .UITagStyleForm .UIAction{
-	width: 200px ;
-	padding: 12px 0px;
+.UIFolksonomyManager .UITagStyleForm .UIAction {
+	width: 160px ;
+	padding: 10px 0px 10px 40px;
 }
 
-.UIFolksonomyManager .UITagStyleForm .UIForm .textarea{
+.UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 290px ;
-	width: 400px ;
-	margin-left: 40px;
+	width: 300px ;
+	margin: auto;
 }
 
 /*############################## -- MultiField  -- ########################*/

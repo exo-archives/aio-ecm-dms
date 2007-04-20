@@ -19,12 +19,28 @@
   background: url('MacSkin/background/ECMAdminTitleBar1x31.gif') repeat-x left top;
 }
 
+.UIECMAdminPortlet .UIMetadataList .UIPageIterator  {
+  float: right;
+  width: 95%;
+}
+
 .UIECMAdminPortlet .UIAction {
 	width: 320px;
 }
 
 .UIECMAdminPortlet .UIFormWithTitle {
-	width: 506px;
+  width: 95%;
+  margin: 0px auto;
+}
+
+.UIECMAdminPortlet .UIFormWithTitle .FieldContainer textarea {
+  border: solid 1px #b7b7b7;
+  padding: 3px;
+}
+
+.UIECMAdminPortlet .UIFormWithTitle .FieldContainer input {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
 }
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
@@ -113,7 +129,8 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminWorkingArea .UIFormInputSet {
-  margin: 0px;
+  width: 500px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
@@ -125,6 +142,9 @@
   width: 225px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions input.checkbox  {
+  width: 15px;
+}
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceList {
@@ -159,7 +179,7 @@
   margin: auto ; margin-top: 10px; margin-bottom: 10px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction{
+.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 300px ;
 }
 
@@ -168,7 +188,7 @@
   padding: 10px 7px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UIGrid{
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UIGrid {
   margin-left: 5px ; 
   width: 340px;
 }
@@ -187,8 +207,13 @@
   margin-top: 5px;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
+  width: 95%;
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UIViewContainer .UIViewList .UIAction {
-  width: 110px ;
+  width: 80px ;
 }
 
 .UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
@@ -200,8 +225,9 @@
 	margin-left: auto; margin-right: auto;
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction{
-  width: 190px ;
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction {
+  width: 170px ;
+  padding-left: 40px;
 }
 
 .UIECMAdminPortlet .UIECMTemplateList {
@@ -341,6 +367,11 @@
 
 /*############################## --Begin UITemplatesManager --##############################*/
 
+.UIECMAdminPortlet .UITemplatesManager .UIPageIterator {
+  float: right;
+  width: 95%;
+}
+
 .UITemplatesManager .UIPopupWindow .WorkingArea {
 	height: 350px ;
 	overflow: auto ;
@@ -435,6 +466,11 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
+.UIECMAdminPortlet .UIQueriesManager .UIPageIterator  {
+  float: right;
+  width: 95%;
+}
+
 .UIQueriesManager .UIQueriesList .UIAction {
 	width: 120px ;
 }
@@ -452,9 +488,16 @@
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
-.UIFolksonomyManager .UITagStyleForm .UIForm .textarea{
+.UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 250px ;
-	width: 400px ;
+	width: 300px ;
+	margin: auto;
+	margin-left: 8px;
+}
+
+.UIFolksonomyManager .UITagStyleForm .UIAction {
+	width: 170px ;
+	padding: 10px 0px 10px 50px;
 }
 
 /*############################## -- MultiField  -- ########################*/

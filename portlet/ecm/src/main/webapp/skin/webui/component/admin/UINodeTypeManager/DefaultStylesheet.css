@@ -7,9 +7,6 @@
  */
 /*############################## -- UINodeTypeManager-- ########################*/
 
-.UIECMAdminPortlet .UINodeTypeList .UIAction {
-  width: 240px ;
-}
 .UIECMAdminPortlet .UIFormWithTitle {
   margin: auto;
 }
@@ -67,26 +64,38 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
   width: 600px ;
-  margin:auto;
+  margin: auto;
   margin-top: 10px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction{
-  margin-top: 15px;
+.UIECMAdminPortlet .UINodeTypeManager .UIAction {
+  width: 240px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
+  width: 70px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {
+  width: 130px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane input {
+  border: solid 1px gray;
+  padding-left: 3px; 
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane textarea {
+  border: solid 1px gray;
+  padding: 3px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
+  width: 70px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{
 	padding-top: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid {
-  width: 100% ;
-  border-left: 0px ;
-  border-right: 0px ;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid .text{
-  width: 100% ;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {

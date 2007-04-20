@@ -8,23 +8,28 @@
 
 /*############################## -- UIMetadataManager-- ########################*/
 
-.UIECMAdminPortlet .UIMetadataForm .UIGrid {
-  width: 100% ;
-  border-left: 0px ;
-  border-right: 0px ;
+.UIECMAdminPortlet .UIMetadataManager .UITabPane {
+  width: 97%;
+  margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIGrid .text {
-  width: 100% ;
+.UIECMAdminPortlet .UIMetadataManager .UITabPane .UIAction {
+  width: 160px;
+  padding-right: 60px;
+}
+
+.UIECMAdminPortlet .UIMetadataManager .UIFormInputSet {
+  width: 550 px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 500px;
+  width: 380px;
   height: 270px;
-  margin-left: 25px;
+  padding: 3px;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction{
+.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
   margin: 5px auto 15px auto;
   padding-bottom: 15px;
 }
@@ -34,7 +39,7 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
-  width: 100px ;
+  width: 80px ;
 }
 
 .UIECMAdminPortlet .MetadataInfoDetails {

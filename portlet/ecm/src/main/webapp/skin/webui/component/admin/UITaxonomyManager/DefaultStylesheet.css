@@ -25,16 +25,22 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .Icon24x24 {
-  margin: 2px 3px;
+  margin: 2px 3px 0px 3px;
   float: left;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction{
-	margin: 14px auto;
+.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
+	width: 160px;
+	padding-left: 60px;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .HorizontalLayout{
-	padding: 23px 0px;
+.UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout .FieldContainer {
+  width: 450px;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {
+  width: 120px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
@@ -61,7 +67,7 @@
   margin-bottom: 1px;
 }
 .UIECMAdminPortlet .UITaxonomyManager .NoneIcon {
-  margin: 7px 2px;
+  margin: 7px 2px 0px 2px;
   float: left;
   width: 16px;
   height: 16px;  

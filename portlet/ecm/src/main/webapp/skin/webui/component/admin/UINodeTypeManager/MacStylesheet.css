@@ -64,32 +64,36 @@
   width: 440px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIAction{
-  width: 400px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {
-  width: 290px;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
-  width: 680px ;
-  margin:auto;
+  width: 600px ;
+  margin: auto;
   margin-top: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
+  width: 80px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {
+  width: 130px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIAction {
+  width: 250px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane input {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px; 
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane textarea {
+  border: solid 1px #b7b7b7;
+  padding: 3px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{
 	padding-top: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid {
-  width: 100% ;
-  border-left: 0px ;
-  border-right: 0px ;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid .text{
-  width: 100% ;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {

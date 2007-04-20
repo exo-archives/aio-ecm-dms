@@ -8,32 +8,39 @@
  
 /*############################## -- UIMetadataManager-- ########################*/
 
-.UIECMAdminPortlet .UIMetadataForm .UIGrid {
-  width: 100% ;
-  border-left: 0px ;
-  border-right: 0px ;
+
+.UIECMAdminPortlet .UIMetadataManager .UITabPane {
+  width: 97%;
+  margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIGrid .text {
-  width: 100% ;
+.UIECMAdminPortlet .UIMetadataManager .UITabPane .UIAction {
+  width: 170px;
+  padding-right: 20px;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
-  width: 220px;
+.UIECMAdminPortlet .UIMetadataManager .UIFormInputSet {
+  width: 550px;
+  margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataList .UIAction {
-  width: 120px;
-}
-
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm .textarea {
-  width: 400px;
-  height: 300px;  
-  margin-left: 25px;
+.UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
+  width: 350px;
+  height: 270px;
+  padding: 3px;
 }
 
 .UIECMAdminPortlet .UIMetadataManager {
   padding: 0px 5px;
+}
+
+.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
+  margin: 5px auto 15px auto;
+  padding-bottom: 15px;
+}
+
+.UIECMAdminPortlet .UIMetadataList .UIAction {
+  width: 92px;
 }
 
 .UIECMAdminPortlet .MetadataInfoDetails {
