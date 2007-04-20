@@ -65,7 +65,6 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     uiMetadataType.addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
     uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).addValidator(EmptyFieldValidator.class)) ;
     uiMetadataType.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
-    uiMetadataType.setActions(new String[] {"Save", "Cancel"}, null) ;
     addUIComponentInput(uiMetadataType) ;
     UIFormInputSet uiDialogTab = new UIFormInputSet(DIALOG_TAB) ;
     uiDialogTab.addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
@@ -75,7 +74,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     uiViewTab.addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null)) ;
     uiViewTab.setRendered(false) ;
     addUIComponentInput(uiViewTab) ;
-    setActions(new String[]{}) ;
+    setActions(new String[] {"Save", "Cancel"}) ;
   }
 
   public void update(List metadataList){
