@@ -42,7 +42,7 @@
       }
       
       println "<div class=\"Node\">" ;
-      println "  <div class=\"${mode}Icon\" onclick=\"" + actionLink + "\"><span></span></div>" ;
+      println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
       println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(treeNode.getNode(), "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" + strActs + "<span></span></div>" ;
       println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" ;
       println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;

@@ -130,4 +130,18 @@ ECMUtils.prototype.showHideComponent = function(elemtClicked, elemtId) {
 	}
 }
 
+ECMUtils.prototype.collapseExpand = function(elemt) {
+	var node = elemt.parentNode ;
+	var subGroup = eXo.core.DOMUtil.findFirstChildByClass(node, "div", "NodeGroup") ;
+	if(!subGroup) return false;
+	if(subGroup.style.display == "none") {
+		elemt.className = "CollapseIcon" ;
+		subGroup.style.display = "block" ;
+	} else {
+		elemt.className = "ExpandIcon" ;
+		subGroup.style.display = "none" ;
+	}
+	return true
+}
+
 eXo.ecm.ECMUtils = new ECMUtils(); 
