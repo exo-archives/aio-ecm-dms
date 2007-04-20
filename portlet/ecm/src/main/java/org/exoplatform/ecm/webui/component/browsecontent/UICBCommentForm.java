@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.webui.component.UIForm;
@@ -36,6 +35,7 @@ import org.exoplatform.webui.event.Event.Phase;
 ) 
 
 public class UICBCommentForm extends UIForm implements UIPopupComponent {
+  public static final String DEFAULT_LANGUAGE = "default".intern() ;
   final private static String FIELD_NAME = "name" ;
   final private static String FIELD_EMAIL = "email" ;
   final private static String FIELD_WEBSITE = "website" ;
@@ -68,17 +68,20 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
       String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
       String comment = uiForm.getUIFormTextAreaInput(FIELD_COMMENT).getValue() ;
-      String language = "default" ;
-      if(uiForm.getDocument().hasProperty("exo:language")){
-        uiForm.getDocument().addMixin("mix:i18n") ;
-        uiForm.getDocument().save() ;
-        language = UIDocumentInfo.DEFAULT_LANGUAGE ;
-      }else {
-        language = uiForm.getDocument().getProperty("exo:language").getString() ;
-      }
       try {
+        String language = uiForm.getAncestorOfType(UIBrowseContentPortlet.class).
+                                 findFirstComponentOfType(UIDocumentDetail.class).getLanguage() ;
+        if(DEFAULT_LANGUAGE.equals(language)) { 
+          if(!uiForm.getDocument().hasProperty("exo:language")){
+            uiForm.getDocument().addMixin("mix:i18n") ;
+            uiForm.getDocument().save() ;
+            language = DEFAULT_LANGUAGE ;
+          } else {
+            language = uiForm.getDocument().getProperty("exo:language").getString() ;
+          }
+        }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
-        commentsService.addComment(uiForm.getDocument(),name,email,website,comment,language) ;
+        commentsService.addComment(uiForm.getDocument(), name, email, website, comment, language) ;
       } catch (Exception e) {        
         e.printStackTrace() ;
       }

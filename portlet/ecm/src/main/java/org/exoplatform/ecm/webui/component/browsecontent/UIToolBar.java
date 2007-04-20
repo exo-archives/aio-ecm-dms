@@ -14,6 +14,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -128,8 +129,9 @@ public class UIToolBar extends UIContainer {
       } 
       if(uiDocument.node_.isNodeType("mix:votable")) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         uiPopupAction.activate(UICBVoteForm.class, 300) ;
+        uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       }
     }
@@ -146,10 +148,11 @@ public class UIToolBar extends UIContainer {
       } 
       if(uiDocument.node_.isNodeType("mix:commentable")) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
         commentForm.setDocument(uiDocument.node_) ;
         uiPopupAction.activate(commentForm, 600, 0) ;
+        uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       }
     }

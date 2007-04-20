@@ -35,6 +35,7 @@ public class UINamespaceManager extends UIContainer {
       UINamespaceForm uiNamespaceForm = createUIComponent(UINamespaceForm.class, null, null) ;
       uiPopup.setUIComponent(uiNamespaceForm) ;
       uiPopup.setShow(true) ;
+      uiPopup.setResizable(true) ;
       return ;
     } 
     uiPopup.setRendered(true) ;

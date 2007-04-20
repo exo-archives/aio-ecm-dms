@@ -53,6 +53,7 @@ public class UICBScripts extends UIContainer {
     }
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public List<ScriptData> getCBScript() throws Exception {

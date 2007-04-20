@@ -45,6 +45,7 @@ public class UIViewMetadataManager extends UIContainer implements UIPopupCompone
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setRendered(true);
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 
   public void activate() throws Exception {}

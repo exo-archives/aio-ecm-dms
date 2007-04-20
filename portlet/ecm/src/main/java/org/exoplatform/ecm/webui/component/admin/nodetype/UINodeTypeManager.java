@@ -36,6 +36,7 @@ public class UINodeTypeManager extends UIContainer {
     uiExport.update() ;
     uiPopup.setUIComponent(uiExport) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 
   public void setImportPopup() throws Exception {
@@ -46,6 +47,7 @@ public class UINodeTypeManager extends UIContainer {
       uiPopup.createUIComponent(UINodeTypeImportPopup.class, null, null) ;
     uiPopup.setUIComponent(uiImportPopup) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void initPopup(boolean isView) throws Exception {
@@ -59,5 +61,6 @@ public class UINodeTypeManager extends UIContainer {
     uiPopup.setWindowSize(660, 400) ;
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 }

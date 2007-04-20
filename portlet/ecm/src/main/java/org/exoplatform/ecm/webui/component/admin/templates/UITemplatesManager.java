@@ -41,6 +41,7 @@ public class UITemplatesManager extends UIContainer{
     }
     uiPopup.setUIComponent(uiComponent) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 
   public void initPopupPermission(String id) throws Exception {
@@ -64,6 +65,7 @@ public class UITemplatesManager extends UIContainer{
     }
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 
   public void refresh() throws Exception {

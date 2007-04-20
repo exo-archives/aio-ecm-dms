@@ -40,6 +40,7 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     }
     uiPopup.setUIComponent(uiSelector);
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void activate() throws Exception {getChild(UIPermissionInfo.class).updateGrid() ;}

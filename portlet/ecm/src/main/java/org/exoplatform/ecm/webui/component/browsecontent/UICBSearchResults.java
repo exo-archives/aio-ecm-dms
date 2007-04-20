@@ -14,6 +14,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.component.UIGrid;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -62,10 +63,11 @@ public class UICBSearchResults extends UIGrid {
       UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
       if(uiResults.isDocumentTemplate(nodeType.getName())) {
         UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChild(UIPopupAction.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UIDocumentDetail uiDocument = cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
         uiDocument.setNode(node) ;
         uiPopupAction.activate(uiDocument, 600, 0) ;
+        uiPopupAction.getChild(UIPopupWindow.class).setResizable(true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }

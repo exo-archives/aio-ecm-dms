@@ -38,5 +38,6 @@ public class UITemplateContainer extends UIContainer {
     uiTempForm.updateOptionList() ;
     uiPopup.setUIComponent(uiTempForm) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 }

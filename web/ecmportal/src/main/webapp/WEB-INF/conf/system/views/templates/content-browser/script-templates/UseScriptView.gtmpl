@@ -34,7 +34,7 @@
                 style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
               }
               tagkey = tag.getName() ;                  
-              println "<a href=\"$tagLink\" class=\"Tag\" $style>$tagkey</a>" ;
+              println "<a href=\"$tagLink\" $style>$tagkey</a>" ;
             }
           %>
         </div>  
@@ -102,6 +102,7 @@
       </a>
       <div style="clear:left"><span></span></div>
     </div>
+    <div style="clear:left"><span></span></div>
     <%}%>
     <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
     <div style="clear:left"><span></span></div>

@@ -70,6 +70,7 @@ public class UIECMScripts extends UIContainer {
     }
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public List<ScriptData> getECMScript(String name) throws Exception {

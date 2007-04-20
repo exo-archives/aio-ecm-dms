@@ -41,5 +41,6 @@ public class UIActionManager extends UIContainer {
     }
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 }

@@ -40,6 +40,7 @@ public class UIDriveManager extends UIContainer {
     }
     uiPopup.setUIComponent(uiDriveForm) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void initPopupPermission() throws Exception {

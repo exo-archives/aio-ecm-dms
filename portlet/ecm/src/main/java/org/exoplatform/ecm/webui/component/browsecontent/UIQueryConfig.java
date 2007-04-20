@@ -121,6 +121,7 @@ public class UIQueryConfig extends UIForm {
       hasTagMap  = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+      System.out.println("vao day khong ?");
     }
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
@@ -182,12 +183,12 @@ public class UIQueryConfig extends UIForm {
   public void editForm(boolean isEditable) {
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     templateField.setEnable(isEditable) ;
+    UIFormSelectBox queryStatusField = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
+    queryStatusField.setEnable(isEditable) ;
     UIFormSelectBox queryLangField = getChildById(UINewConfigForm.FIELD_QUERYLANG) ;
     queryLangField.setEnable(isEditable) ;
     UIFormSelectBox queryTypeField = getChildById(UINewConfigForm.FIELD_QUERYTYPE) ;
     queryTypeField.setEnable(isEditable) ;
-    UIFormSelectBox queryStatusField = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
-    queryStatusField.setEnable(isEditable) ;
     UIFormSelectBox queryValueField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
     queryValueField.setEnable(isEditable) ;
     UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
@@ -196,7 +197,6 @@ public class UIQueryConfig extends UIForm {
     numbPerPageField.setEditable(isEditable) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     detailtemField.setEnable(isEditable) ;
-    setActions(UINewConfigForm.NORMAL_ACTION) ;
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP)  ;
     enableTagMapField.setEnable(isEditable) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
@@ -279,7 +279,9 @@ public class UIQueryConfig extends UIForm {
       String  queryPath = "" ;
       if((!uiForm.isAddNewQuery_)&&(queryValueField.isRendered())) {
         queryPath = queryValueField.getValue() ;
-        if((queryPath == null )||(queryPath.length() == 0)){
+        if((queryPath == null )||(queryPath.trim().length() == 0)){
+          UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-name", null)) ;
           return ;
         }
       }
@@ -308,11 +310,20 @@ public class UIQueryConfig extends UIForm {
       prefs.setValue(Utils.CB_QUERY_STORE, queryPath) ;
       prefs.setValue(Utils.CB_QUERY_STATEMENT, query) ;
       prefs.store() ; 
-      uiForm.reset() ;
+      //uiForm.reset() ;
       uiConfigTabPane.getCurrentConfig() ;
+      //uiForm.editForm(false) ;
+      uiForm.setActions(UINewConfigForm.DEFAULT_ACTION) ;
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
-      container.loadPortletConfig(prefs) ;
+      try{
+        container.loadPortletConfig(prefs) ;
+      } catch(Exception e) {
+        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIQueryConfig.msg.save-error", null)) ;
+        return ;
+      }
+      
     }
   }  
   
@@ -401,6 +412,8 @@ public class UIQueryConfig extends UIForm {
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
       uiForm.editForm(true) ; 
+      uiForm.chageStatus() ;
+      uiForm.setActions(UINewConfigForm.NORMAL_ACTION) ;
     }
   }
 }

@@ -110,7 +110,9 @@ public class DialogFormFields extends UIForm {
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
-
+  public void resetScriptInterceptor(){
+    scriptInterceptor_.clear() ;
+  }
   private String getPropertyValue(String jcrPath) throws Exception {
     if(jcrPath.equals("/node") && node_ != null) return node_.getName() ;
     if(propertyNode_.hasProperty(getPropertyName(jcrPath))) {

@@ -41,6 +41,7 @@ public class UIFolksonomyManager extends UIContainer {
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public Node getSelectedTagStyle(String tagStyleName) throws Exception {

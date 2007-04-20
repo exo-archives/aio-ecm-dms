@@ -37,5 +37,6 @@ public class UIActionContainer extends UIContainer implements UIPopupComponent {
     uiPopup.setUIComponent(uiComp) ;
     uiPopup.setWindowSize(640, 300) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 }

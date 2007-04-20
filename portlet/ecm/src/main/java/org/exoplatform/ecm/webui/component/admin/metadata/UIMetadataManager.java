@@ -75,7 +75,7 @@ public class UIMetadataManager extends UIContainer {
     uiPopup.setUIComponent(uiMetaForm) ;
     uiPopup.setRendered(true);
     uiPopup.setShow(true) ;
-        
+    uiPopup.setResizable(true) ;    
   }
   
   public void initViewPopup(String metadataName) throws Exception {

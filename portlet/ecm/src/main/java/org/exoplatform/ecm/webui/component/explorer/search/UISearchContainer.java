@@ -51,6 +51,7 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent{
     uiSelectForm.setMetadataOptions() ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 
   public void activate() throws Exception {

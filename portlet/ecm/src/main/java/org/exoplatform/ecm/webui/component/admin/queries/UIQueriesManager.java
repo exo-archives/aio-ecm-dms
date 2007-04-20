@@ -32,6 +32,7 @@ public class UIQueriesManager extends UIContainer {
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void initPermissionPopup() throws Exception {
@@ -45,5 +46,6 @@ public class UIQueriesManager extends UIContainer {
     uiECMPermission.setComponent(uiForm, new String[] {UIQueriesForm.PERMISSIONS}) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 }

@@ -65,6 +65,7 @@
 		      </a>
 		      <div style="clear:left"><span></span></div>
 		    </div>
+		    <div style="clear:left"><span></span></div>
 		    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
 		    <div style="clear:left"><span></span></div>
    			<%}%>

@@ -5,7 +5,7 @@
 %>
 
 <%/*Begin UITabPane*/%>
-<div class="UITabPane" id="$uicomponent.id">
+<div class="UITabPane">
   <%/*Begin TabPaneContent*/%>
   <div class="TabPaneContent"> 
     <%/*Begin WorkingArea*/%>
@@ -229,7 +229,7 @@
 							<div class="FieldContainer">
 								<label>Transfer Block Size</label>
 								<%
-					        String[] fieldTransferBlock = ["jcrPath=/node/rma:transferBlockSize"] ;
+					        String[] fieldTransferBlock = ["jcrPath=/node/rma:transferBlockSize","validate=number"] ;
 					        uicomponent.addTextField("transferBlockSize", fieldTransferBlock) ; 
 					      %>
 							</div>			
@@ -250,7 +250,7 @@
 							<div class="FieldContainer">
 								<label>Accession Block Size</label>
 								<%
-					        String[] fieldAccessionBlockSize = ["jcrPath=/node/rma:accessionBlockSize"] ;
+					        String[] fieldAccessionBlockSize = ["jcrPath=/node/rma:accessionBlockSize","validate=number"] ;
 					        uicomponent.addTextField("accessionBlockSize", fieldAccessionBlockSize) ; 
 					      %>
 							</div>

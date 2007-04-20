@@ -31,6 +31,7 @@ public class UIViewContainer extends UIContainer {
     UIViewFormTabPane uiViewForm = createUIComponent(UIViewFormTabPane.class, null, null) ;
     uiPopup.setUIComponent(uiViewForm) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void initPopupPermission() throws Exception {
@@ -43,5 +44,6 @@ public class UIViewContainer extends UIContainer {
     UIViewForm uiViewForm = findFirstComponentOfType(UIViewForm.class) ;
     uiECMPermission.setComponent(uiViewForm, null) ;
     uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
 }
