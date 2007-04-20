@@ -171,14 +171,9 @@
   margin: auto ; margin-top: 10px; margin-bottom: 10px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser{
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
   margin: auto ; 
   padding: 10px 7px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UIGrid {
-  margin:0px 1px 0px 1px ; 
-  width: 99.8%;
 }
 
 /*############################## -- UIViewManager -- ########################*/
@@ -406,4 +401,31 @@
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
   background: #8eeaaf ;
+}
+
+.Explorer {
+  margin-bottom: 10px;
+  float: left ;
+  width: 230px ;
+}
+
+.Explorer .ExplorerTree {
+  margin-top: 1px;
+  border: solid 1px #c6c6c9;
+  background: #f3f3f3;
+  padding: 1px;
+}
+
+.Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.Explorer .ExplorerTree .Node {
+  line-height: 30px;
+}
+
+.UITreeList .UIGrid {
+  width: 315px;
+  margin-left: 10px ;
 }
