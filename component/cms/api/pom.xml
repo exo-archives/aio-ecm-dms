@@ -16,9 +16,9 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.exoplatform.jcr</groupId>
-      <artifactId>exo.jcr.component.core</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.component.resources</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
       <scope>compile</scope>
     </dependency>
 
