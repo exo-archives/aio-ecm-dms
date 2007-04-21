@@ -15,7 +15,7 @@
 .AddIcon16x16 {
   float:left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
 .AddIconIcon {
   float: left ;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat ;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;
   cursor: pointer;
 } 
 
@@ -105,6 +105,12 @@
   cursor: pointer;
 }
 
+.CloseSidebarIcon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat;
+  cursor: pointer;
+}
+
 .Style1NextArrow16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCircleNextArrow.gif') no-repeat;
@@ -115,9 +121,9 @@
   background: url('DefaultSkin/BlackBorderDownArrow.gif') no-repeat;
 }
 
-.BlackClose16x16Icon {
+.Close16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlackClose.gif') no-repeat center center;
+  background: url('DefaultSkin/CloseButton.gif') no-repeat center center;
 }
 
 .BlueDownArrow16x16Icon {
@@ -187,7 +193,7 @@
 
 .MoreConstraints16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/GreenAddIcon.gif') no-repeat;  
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }
 
 .AddProperty16x16Icon {
@@ -202,7 +208,7 @@
 
 .AddConstraints16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/AddNodeIcon.gif') no-repeat;  
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }
 
 .AddValue16x16Icon {
@@ -269,7 +275,7 @@
 .DeleteIconInfo {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/RedDelete.gif') no-repeat ; 
+  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat ; 
   cursor: pointer;
   margin-left: 3px;
 }
@@ -371,7 +377,7 @@
 
 .EditDocument16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  background: url('DefaultSkin/EditDocument.gif') no-repeat ;
   cursor: pointer;   
 }
 

@@ -6,10 +6,186 @@
  * version: $Id$
  */
 
-.DiskArrow24x24Icon {
-	width: 24px ;	height: 24px ;
-  background: url('/eXoResources/icons/24x24/DefaultSkin/DiskArrow.gif') no-repeat ;
-  margin: auto;
+.Relations24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/RelationsIcon.gif') no-repeat center center;
+}
+
+.JCRExplorer24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
+}
+
+.CloseSidebar24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
+}
+
+.CollapseFolder24x24Icon {
+  background: url('DefaultSkin/BlueOpenFolder.gif') no-repeat center center;
+  width: 24px; height: 24px;
+}
+
+.ExpandFolder24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/BlueClosedFolder.gif') no-repeat center center;
+}
+
+.Style1NextArrow24x24Icon  {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/BlueCircleRightArrow.gif') no-repeat center center;
+}
+
+.Style1BackArrow24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat center center;
+}
+
+.EditDocumentIcon {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/EditDocument.gif') no-repeat;
+}
+
+.WatchDocumentIcon {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/WatchDocument.gif') no-repeat;
+}
+
+.ViewMetadatasIcon {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/ViewMetadata.gif') no-repeat;
+}
+
+.VoteIcon {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/VoteDocument.gif') no-repeat;
+}
+
+.CommentIcon {
+	width: 24px; height: 24px;
+	background: url('DefaultSkin/Comment.gif') no-repeat;
+}
+
+.TaggingDocumentIcon {
+	width: 26px; height: 24px;
+  background: url('DefaultSkin/Tagging.gif') no-repeat ;
+}
+
+.MultiLanguageIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/MultiLanguages.gif') no-repeat ;
+}
+
+.ManageVersionsIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
+}
+
+.ManageActionsIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat ;
+}
+
+.ManageCategoriesIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat ;
+}
+
+.ManageRelationsIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat ;
+}
+
+.ImportNodeIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ImportNode.gif') no-repeat ;
+}
+
+.ExportNodeIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ExportNode.gif') no-repeat ;
+}
+
+.SearchIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/Search.gif') no-repeat ;
+}
+
+.AddDocumentIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat ;
+}
+
+.CreateTicketIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/AddTicket.gif') no-repeat ;
+}
+
+.AddFolderIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/AddFolder.gif') no-repeat ;
+}
+
+.UploadIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/UploadFile.gif') no-repeat ;
+}
+
+.ViewReferencesIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat ;
+}
+
+.ShowJCRStructureIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat ;
+}
+
+.ViewNodeTypeIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat ;
+}
+
+.ViewPropertiesIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat ;
+}
+
+.ViewRelationsIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat ;
+}
+
+.ViewPermissionsIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ViewPermissions.gif') no-repeat ;
+}
+
+.HardDisk24x24Icon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/HardDisk.gif') no-repeat ;
+}
+
+.BlueDiamond24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/BlueDiamond.gif') no-repeat ;
+}
+
+.PermissionIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
+}
+
+.Permission24x24Icon {
+  float: left;
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
+}
+
+.SelectPath24x24Icon {
+  float: left;
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/Magnifier.gif') no-repeat ;
 }
 
 .UIFolksonomyManagerIcon {
@@ -77,179 +253,7 @@
   background: url('MacSkin/QueriesManager.gif') no-repeat ;
 }
 
-
 /*=================================================================*/
-.BlueFolderMagnifier24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueFolderMagnifier.gif') no-repeat center center;
-}
-
-.CollapseFolder24x24Icon {
-  background: url('MacSkin/BlueOpenFolder.gif') no-repeat center center;
-  width: 24px; height: 24px;
-}
-
-.ExpandFolder24x24Icon {
-  width: 24px; height: 24px;
-  background: url('MacSkin/BlueClosedFolder.gif') no-repeat center center;
-}
-
-.Style1NextArrow24x24Icon  {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueCircleRightArrow.gif') no-repeat center center;
-}
-
-.Style1BackArrow24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat center center;
-}
-
-.EditDocumentIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/EditDocument.gif') no-repeat;
-}
-
-.WatchDocumentIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/PagePreview.gif') no-repeat;
-}
-
-.ViewMetadatasIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/GrayGlasses.gif') no-repeat;
-}
-
-.VoteIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/Vote.gif') no-repeat;
-}
-
-.CommentIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/Comment.gif') no-repeat;
-}
-
-.TaggingDocumentIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/RedFlagIcon24.gif') no-repeat ;
-}
-
-.MultiLanguageIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/GreenRightArrowDoubleScreen.gif') no-repeat ;
-}
-
-.ManageVersionsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/DoubleWindowsUpArrow.gif') no-repeat ;
-}
-
-.ManageActionsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/HammerDataBox.gif') no-repeat ;
-}
-
-.ManageCategoriesIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/CogWheelBrownBox.gif') no-repeat ;
-}
-
-.ManageRelationsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/MiscColorBevelRetangles.gif') no-repeat ;
-}
-
-.ImportNodeIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/PageGreenArrowDown.gif') no-repeat ;
-}
-
-.ExportNodeIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/PageGreenArrowUp.gif') no-repeat ;
-}
-
-.SearchIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/BlackMagnifier.gif') no-repeat ;
-}
-
-.AddDocumentIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat ;
-}
-
-.CreateTicketIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddTicket.gif') no-repeat ;
-}
-
-.AddFolderIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddFolder.gif') no-repeat ;
-}
-
-.UploadIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/UploadFile.gif') no-repeat ;
-}
-
-.ViewReferencesIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueBallMultiplePage.gif') no-repeat ;
-}
-
-.ShowJCRStructureIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/GraySwitcher.gif') no-repeat ;
-}
-
-.ViewNodeTypeIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/MiscColorRegtangleRing.gif') no-repeat ;
-}
-
-.ViewPropertiesIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/SmallBallColorPlate.gif') no-repeat ;
-}
-
-.ViewRelationsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/SmallBallFlyingPages.gif') no-repeat ;
-}
-
-.ViewPermissionsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/SmallBallRedShield.gif') no-repeat ;
-}
-
-.HardDisk24x24Icon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/HardDisk.gif') no-repeat ;
-}
-
-.BlueDiamond24x24Icon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BlueDiamond.gif') no-repeat ;
-}
-
-.PermissionIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
-}
-
-.Permission24x24Icon {
-  float: left;
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
-}
-
-.SelectPath24x24Icon {
-  float: left;
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BlueMagnifier.gif') no-repeat ;
-}
 
 .RefreshSession24x24Icon {
 	width: 24px;	height: 24px;
@@ -270,9 +274,10 @@
   width: 24px;	height: 24px;
   background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
 }
+
 .ConfigPortlet24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/HammerDataBox.gif') no-repeat ;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat ;
 }
 
 .AddNewConfig24x24Icon {

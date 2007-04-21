@@ -6,9 +6,19 @@
  * version: $Id$
  */
  
-.BlueFolderMagnifier24x24Icon {
+.Relations24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueFolderMagnifier.gif') no-repeat center center;
+  background: url('DefaultSkin/RelationsIcon.gif') no-repeat center center;
+}
+
+.JCRExplorer24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
+}
+
+.CloseSidebar24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
 }
 
 .CollapseFolder24x24Icon {
@@ -38,17 +48,17 @@
 
 .WatchDocumentIcon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/PagePreview.gif') no-repeat;
+	background: url('DefaultSkin/WatchDocument.gif') no-repeat;
 }
 
 .ViewMetadatasIcon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/GrayGlasses.gif') no-repeat;
+	background: url('DefaultSkin/ViewMetadata.gif') no-repeat;
 }
 
 .VoteIcon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/Vote.gif') no-repeat;
+	background: url('DefaultSkin/VoteDocument.gif') no-repeat;
 }
 
 .CommentIcon {
@@ -57,48 +67,48 @@
 }
 
 .TaggingDocumentIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/RedFlagIcon24.gif') no-repeat ;
+	width: 26px; height: 24px;
+  background: url('DefaultSkin/Tagging.gif') no-repeat ;
 }
 
 .MultiLanguageIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/GreenRightArrowDoubleScreen.gif') no-repeat ;
+  background: url('DefaultSkin/MultiLanguages.gif') no-repeat ;
 }
 
 .ManageVersionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/DoubleWindowsUpArrow.gif') no-repeat ;
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
 }
 
 .ManageActionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/HammerDataBox.gif') no-repeat ;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat ;
 }
 
 .ManageCategoriesIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/CogWheelBrownBox.gif') no-repeat ;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat ;
 }
 
 .ManageRelationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/MiscColorBevelRetangles.gif') no-repeat ;
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat ;
 }
 
 .ImportNodeIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/PageGreenArrowDown.gif') no-repeat ;
+  background: url('DefaultSkin/ImportNode.gif') no-repeat ;
 }
 
 .ExportNodeIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/PageGreenArrowUp.gif') no-repeat ;
+  background: url('DefaultSkin/ExportNode.gif') no-repeat ;
 }
 
 .SearchIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/BlackMagnifier.gif') no-repeat ;
+  background: url('DefaultSkin/Search.gif') no-repeat ;
 }
 
 .AddDocumentIcon {
@@ -123,32 +133,32 @@
 
 .ViewReferencesIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueBallMultiplePage.gif') no-repeat ;
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat ;
 }
 
 .ShowJCRStructureIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/GraySwitcher.gif') no-repeat ;
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat ;
 }
 
 .ViewNodeTypeIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/MiscColorRegtangleRing.gif') no-repeat ;
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat ;
 }
 
 .ViewPropertiesIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/SmallBallColorPlate.gif') no-repeat ;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat ;
 }
 
 .ViewRelationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/SmallBallFlyingPages.gif') no-repeat ;
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat ;
 }
 
 .ViewPermissionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/SmallBallRedShield.gif') no-repeat ;
+  background: url('DefaultSkin/ViewPermissions.gif') no-repeat ;
 }
 
 .HardDisk24x24Icon {
@@ -175,7 +185,7 @@
 .SelectPath24x24Icon {
   float: left;
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BlueMagnifier.gif') no-repeat ;
+  background: url('DefaultSkin/Magnifier.gif') no-repeat ;
 }
 
 .ManageOntologiesIcon {
@@ -284,7 +294,7 @@
 }
 .ConfigPortlet24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/HammerDataBox.gif') no-repeat ;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat ;
 }
 
 .AddNewConfig24x24Icon {

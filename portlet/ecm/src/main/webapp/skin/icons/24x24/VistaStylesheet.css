@@ -11,6 +11,21 @@
   background: url('VistaSkin/BlueFolderMagnifier.gif') no-repeat center center;
 }
 
+.Relations24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/RelationsIcon.gif') no-repeat center center;
+}
+
+.JCRExplorer24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
+}
+
+.CloseSidebar24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
+}
+
 .CollapseFolder24x24Icon {
   width: 30px; height: 30px;
   background: url('VistaSkin/BlueOpenFolder.png') no-repeat;
@@ -338,19 +353,4 @@
 .BlackMonitor24x24Icon {
 	width: 24px;	height: 19px;
   background: url('VistaSkin/BlackMonitor.gif') no-repeat ;
-}
-
-.DiskArrow24x24Icon {
-  width: 32px;	height: 26px;
-  background: url('VistaSkin/DiskArrow.png') no-repeat center ;
-}
-
-.ColorGridSquare24x24Icon {
-  width: 32px;	height: 28px;
-  background: url('VistaSkin/ColorGridSquare.png') no-repeat bottom;
-}
-
-.DiamondCircleRoundedArrows24x24Icon  {
-  width: 32px;	height: 28px;
-  background: url('VistaSkin/DiamondCircleRoundedArrows.png') no-repeat bottom;
 }

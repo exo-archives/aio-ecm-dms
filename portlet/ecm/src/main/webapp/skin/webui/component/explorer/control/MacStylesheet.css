@@ -29,32 +29,49 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
   float: left;
-  padding: 3px 15px;
+  padding-left: 5px;
   font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
   float: right;
-  padding: 0px 10px;
+  padding-right: 8px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .WorkspaceName {
 	float: left;
-	padding: 0px 5px;
+	padding-right: 8px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
   float: left;
-  height: 27px;
+  height: 24px;
+  margin-top: 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
   float: left;
-  margin: 2px 10px;
+  margin: 2px 3px 0px 15px;
   cursor: pointer;
 }
 
+.UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/BackToMainDriveButton.gif') no-repeat center ;
+}
+
+.UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/SetupPreferencesButton.gif') no-repeat bottom;
+}
+
+.UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/RefreshSessionButton.gif') no-repeat bottom;
+}
+
 /*############################## -- End UIViewBar -- ##############################*/
+
 /*############################## -- Begin UIViewBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar {
@@ -113,9 +130,9 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
   float: left;
-  margin: 4px 0px 0px 2px;
+  margin: 4px 0px 0px 4px;
   width: 20px;
-  height: 12px;
+  height: 13px;
   background: url('DefaultSkin/background/HardDisk20x12.gif') repeat-x center center;
 }
 
