@@ -27,38 +27,21 @@
     </dependency>
 
     <dependency>
-      <groupId>exo-jcr</groupId>
-      <artifactId>exo-jcr.services.jcr.impl</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
-    </dependency>
-
-    <!--
-    <dependency>
-      <groupId>exo-jcr</groupId>
-      <artifactId>exo-jcr.services.jcr.rmi.api</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>exo-jcr</groupId>
-      <artifactId>exo-jcr.services.jcr.rmi.impl</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
-      <scope>compile</scope>
-    </dependency>
-   -->
-
-    <dependency>
-    <groupId>exo-jcr</groupId>
-    <artifactId>exo-jcr.services.ext</artifactId>
-    <version>${org.exoplatform.jcr.version}</version>
-    <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.exoplatform.ecm</groupId>
       <artifactId>exo.ecm.component.cms.api</artifactId>
       <version>${org.exoplatform.ecm.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.ext</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
     </dependency>
 
     <dependency>

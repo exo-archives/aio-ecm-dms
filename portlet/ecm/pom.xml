@@ -22,22 +22,21 @@
     </dependency>
 
     <dependency>
-      <groupId>exo-jcr</groupId>
-      <artifactId>exo-jcr.services.jcr.impl</artifactId>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
-      <scope>provided</scope>
     </dependency>
     
     <dependency>
-      <groupId>exo-jcr</groupId>
-      <artifactId>exo-jcr.services.webdav</artifactId>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.webdav</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-		  <groupId>exo-jcr</groupId>
-		  <artifactId>exo-jcr.services.ftp</artifactId>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.ftp</artifactId>
 		  <version>${org.exoplatform.jcr.version}</version>
 		  <scope>provided</scope>
     </dependency>

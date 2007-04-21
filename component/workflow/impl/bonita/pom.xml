@@ -70,8 +70,8 @@
     </dependency>
 
     <dependency>
-      <groupId>exo-jcr</groupId>
-      <artifactId>exo-jcr.services.jcr.api</artifactId>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
     </dependency>
 
