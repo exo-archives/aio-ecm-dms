@@ -53,7 +53,7 @@
 
 .ViewMetadatasIcon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/ViewMetadata.gif') no-repeat;
+	background: url('DefaultSkin/ViewMatadata.gif') no-repeat;
 }
 
 .VoteIcon {
@@ -153,12 +153,12 @@
 
 .ViewRelationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewRelations.gif') no-repeat ;
+  background: url('DefaultSkin/RelationsIcon.gif') no-repeat ;
 }
 
 .ViewPermissionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewPermissions.gif') no-repeat ;
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat ;
 }
 
 .HardDisk24x24Icon {
