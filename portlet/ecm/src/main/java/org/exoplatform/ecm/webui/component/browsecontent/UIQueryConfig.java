@@ -64,6 +64,7 @@ public class UIQueryConfig extends UIForm {
   final private static String SHARED_QUERY = "Shared Query".intern() ;
   private List<String> roles_ = new ArrayList<String>();
   private boolean isAddNewQuery_ = true ;
+
   public UIQueryConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
@@ -92,10 +93,15 @@ public class UIQueryConfig extends UIForm {
     }
   }
 
+  public PortletPreferences getPortletPreferences() {    
+    return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
+  }
+
   public void initForm(PortletPreferences preference, String workSpace, boolean isAddNew, 
       boolean isEditable) throws Exception {
     String queryLang = "" ;
     String queryType = "" ;
+    String queryStore = null ;
     String query = "" ;
     String queryNew = "true" ;
     String hasComment = "false" ;
@@ -115,6 +121,7 @@ public class UIQueryConfig extends UIForm {
       isEditable = false ;
       queryNew = preference.getValue(Utils.CB_QUERY_ISNEW, "") ;
       queryType = preference.getValue(Utils.CB_QUERY_TYPE, "") ;
+      queryStore = preference.getValue(Utils.CB_QUERY_STORE, "") ;
       query = preference.getValue(Utils.CB_QUERY_STATEMENT, "") ;
       queryLang = preference.getValue(Utils.CB_QUERY_LANGUAGE, "") ;
       itemPerPage = preference.getValue(Utils.CB_NB_PER_PAGE, "") ;
@@ -140,7 +147,7 @@ public class UIQueryConfig extends UIForm {
     queryTypeField.setOnChange("ChangeType") ;
     queryTypeField.setEnable(isEditable) ;
     UIFormSelectBox queryStoreField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
-    setQueryValue(queryStoreField, queryLang, queryType) ;  
+    setQueryValue(queryStoreField, queryLang, queryType, queryStore) ;  
     queryStoreField.setEnable(isEditable) ;
     if(Boolean.parseBoolean(queryNew)) {    
       queryTypeField.setRendered(false) ;
@@ -153,7 +160,7 @@ public class UIQueryConfig extends UIForm {
       queryStatusField.setValue(EXITING_QUERY) ;
       isAddNewQuery_ = Boolean.parseBoolean(queryNew);
       queryTypeField.setValue(queryType) ;
-      setQueryValue(queryStoreField, queryLang, queryType) ;
+      setQueryValue(queryStoreField, queryLang, queryType, queryStore) ;
     }   
     UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
     queryField.setValue(query) ;
@@ -179,19 +186,32 @@ public class UIQueryConfig extends UIForm {
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
   }
 
-  public void editForm(boolean isEditable) {
+  public void editForm(boolean isEditable) throws Exception {
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     templateField.setEnable(isEditable) ;
-    UIFormSelectBox queryStatusField = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
+    PortletPreferences preference = getPortletPreferences() ;
+    String queryStore = preference.getValue(Utils.CB_QUERY_STORE, "") ;
+    String queryNew = preference.getValue(Utils.CB_QUERY_ISNEW, "") ;
+    String queryType = preference.getValue(Utils.CB_QUERY_TYPE, "") ;
+    String query = preference.getValue(Utils.CB_QUERY_STATEMENT, "") ;
+    UIFormSelectBox queryStatusField = getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTATUS) ;
+    if(Boolean.parseBoolean(queryNew)) queryStatusField.setValue(NEW_QUERY) ;
+    else queryStatusField.setValue(EXITING_QUERY) ;
+    isAddNewQuery_ = Boolean.parseBoolean(queryNew) ;
     queryStatusField.setEnable(isEditable) ;
-    UIFormSelectBox queryLangField = getChildById(UINewConfigForm.FIELD_QUERYLANG) ;
-    queryLangField.setEnable(isEditable) ;
     UIFormSelectBox queryTypeField = getChildById(UINewConfigForm.FIELD_QUERYTYPE) ;
+    if(Boolean.parseBoolean(queryType)) queryTypeField.setValue(PERSONAL_QUERY) ;
+    else queryTypeField.setValue(SHARED_QUERY) ;
     queryTypeField.setEnable(isEditable) ;
+    UIFormSelectBox queryLangField = getChildById(UINewConfigForm.FIELD_QUERYLANG) ;
+    queryLangField.setValue(preference.getValue(Utils.CB_QUERY_LANGUAGE, "")) ;
+    queryLangField.setEnable(isEditable) ;
     UIFormSelectBox queryValueField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
+    queryValueField.setValue(queryStore) ;
     queryValueField.setEnable(isEditable) ;
     UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
-    queryField.setEditable(isEditable) ;
+    queryField.setValue(query) ;
+    queryField.setEnable(isEditable) ;
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     numbPerPageField.setEditable(isEditable) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
@@ -203,9 +223,9 @@ public class UIQueryConfig extends UIForm {
     enableCommentField.setEnable(isEditable) ;
     enableVoteField.setEnable(isEditable) ;
   }
-  
- 
-  private void setQueryValue(UIFormSelectBox select, String queryLanguage, String queryType) throws Exception {
+
+
+  private void setQueryValue(UIFormSelectBox select, String queryLanguage, String queryType, String queryStore) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     if(!isAddNewQuery_) {  
       QueryService qservice = getApplicationComponent(QueryService.class) ;   
@@ -225,6 +245,7 @@ public class UIQueryConfig extends UIForm {
       } 
     }
     select.setOptions(options) ;
+    if(queryStore != null) select.setValue(queryStore) ;
   }   
   private List<SelectItemOption<String>> getQueryTemplate() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -261,11 +282,31 @@ public class UIQueryConfig extends UIForm {
     options.add(new SelectItemOption<String>(PERSONAL_QUERY, PERSONAL_QUERY)) ;
     return options ;
   }
-
+  public void chageStatus () throws Exception {
+    UIFormSelectBox queryStatus = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
+    isAddNewQuery_ = UIQueryConfig.NEW_QUERY.equals(queryStatus.getValue()) ;    
+    UIFormSelectBox queryStore = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
+    queryStore.setRendered(!isAddNewQuery_);
+    UIFormSelectBox queryTypeField = getChildById(UINewConfigForm.FIELD_QUERYTYPE) ;
+    queryTypeField.setRendered(!isAddNewQuery_);
+    String queryLang = getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
+    UIFormTextAreaInput query = getChildById(UINewConfigForm.FIELD_QUERY) ;
+    query.setRendered(isAddNewQuery_) ;
+    if(!isAddNewQuery_) {
+      UIFormSelectBox queryValue = getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;
+      setQueryValue(queryValue ,queryLang, queryTypeField.getValue(), queryStore.getValue()) ;
+    } else {
+      if(queryLang.equals(Query.XPATH)) {
+        getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).setValue(xpathDefault_) ;
+      }
+      if(queryLang.equals(Query.SQL)) {
+        getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).setValue(sqlDefault_) ;
+      }
+    }
+  }
   public static class SaveActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       PortletPreferences prefs = uiBrowseContentPortlet.getPortletPreferences();
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
@@ -309,7 +350,6 @@ public class UIQueryConfig extends UIForm {
       prefs.setValue(Utils.CB_QUERY_STORE, queryPath) ;
       prefs.setValue(Utils.CB_QUERY_STATEMENT, query) ;
       prefs.store() ; 
-    
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       try{
@@ -318,37 +358,12 @@ public class UIQueryConfig extends UIForm {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIQueryConfig.msg.save-error", null)) ;
         return ;
-      }
-      //uiForm.reset() ;
-      uiConfigTabPane.getCurrentConfig() ;
-      //uiForm.editForm(false) ;
+      }      
+      uiForm.editForm(false) ;
       uiForm.setActions(UINewConfigForm.DEFAULT_ACTION) ;
     }
   }  
-  
-  public void chageStatus () throws Exception {
-    UIFormSelectBox queryStatus = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
-    isAddNewQuery_ = UIQueryConfig.NEW_QUERY.equals(queryStatus.getValue()) ;    
-    UIFormSelectBox queryStore = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
-    queryStore.setRendered(!isAddNewQuery_);
-    UIFormSelectBox queryTypeField = getChildById(UINewConfigForm.FIELD_QUERYTYPE) ;
-    queryTypeField.setRendered(!isAddNewQuery_);
-    String queryLang = getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
-    UIFormTextAreaInput query = getChildById(UINewConfigForm.FIELD_QUERY) ;
-    query.setRendered(isAddNewQuery_) ;
-    if(!isAddNewQuery_) {
-    UIFormSelectBox queryValue = getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;
-    setQueryValue(queryValue ,queryLang, queryTypeField.getValue()) ;
-    } else {
-      if(queryLang.equals(Query.XPATH)) {
-        getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).setValue(xpathDefault_) ;
-      }
-      if(queryLang.equals(Query.SQL)) {
-        getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).setValue(sqlDefault_) ;
-      }
-    }
-  }
-  
+
   public static class ChangeLangActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
@@ -363,7 +378,7 @@ public class UIQueryConfig extends UIForm {
         }
       } else {
         UIFormSelectBox queryValue = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;
-        uiForm.setQueryValue(queryValue, queryLang, queryType) ;
+        uiForm.setQueryValue(queryValue, queryLang, queryType, null) ;
       }
     }
   }
@@ -381,7 +396,7 @@ public class UIQueryConfig extends UIForm {
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String queryType = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYTYPE).getValue() ;
       UIFormSelectBox queryValue = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;
-      uiForm.setQueryValue(queryValue, queryLang, queryType) ;
+      uiForm.setQueryValue(queryValue, queryLang, queryType, null) ;
     }
   }
 
@@ -411,7 +426,6 @@ public class UIQueryConfig extends UIForm {
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
       uiForm.editForm(true) ; 
-      uiForm.chageStatus() ;
       uiForm.setActions(UINewConfigForm.NORMAL_ACTION) ;
     }
   }

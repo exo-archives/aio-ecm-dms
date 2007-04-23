@@ -39,7 +39,7 @@ public class UIConfigTabPane extends UIContainer {
   public static String WORKSPACE = null ;
   public static String PATH_SELECTOR = "pathSelector" ;
   public static String DOCUMENT_SELECTOR = "documentSelector" ;
-  
+  public String configType_ = null ;
   public UIConfigTabPane() throws Exception {
     addChild(UINewConfigForm.class, null, null).setRendered(false) ;
     addChild(UIConfigContainer.class, null, null) ;

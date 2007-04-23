@@ -635,6 +635,7 @@ public class UIBrowseContainer extends UIContainer {
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
@@ -645,7 +646,15 @@ public class UIBrowseContainer extends UIContainer {
         uiContainer.viewDocument(selectNode, true, true) ; 
         return ;
       }
+      String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+      if((templateType.equals(Utils.CB_USE_JCR_QUERY)) || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
+        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.template-notsupported", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        return ;
+      }
       uiContainer.changeNode(selectNode) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
 
@@ -688,6 +697,7 @@ public class UIBrowseContainer extends UIContainer {
       if(node == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       uiContainer.selectNode(node) ;
