@@ -17,8 +17,6 @@
 }
 
 .UIECMAdminPortlet .UIECMPortletLayout {
-  border: 1px solid #737373;
-  border-collapse: collapse ;
   font-size: 11px ;
   background: url('DefaultSkin/background/ECMAdminTitleBar.gif') repeat-x left top;
 }

@@ -26,7 +26,7 @@
         actionLink = uicomponent.event(mode, treeNode.getPath()) ;
         expandLink = uicomponent.event("Expand", treeNode.getPath()) ;
       }
-			List customActs = uicomponent.getCustomActions(treeNode.getNode()) ;
+			List customActs = uicomponent.getCustomActions(node) ;
 			String strActs = "" ;
 		  Parameter[] params ;
 		  if(customActs.size() > 0) {
@@ -43,8 +43,8 @@
       
       println "<div class=\"Node\">" ;
       println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
-      println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(treeNode.getNode(), "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" + strActs + "<span></span></div>" ;
-      println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(treeNode.getNode())) + ">" ;
+      println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(node)) + ">" + strActs + "<span></span></div>" ;
+      println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(path, uicomponent.getActionsList(node)) + ">" ;
       println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
       println "  </div>" ;
       if(treeNode.getChildrenSize() > 0) {
@@ -66,7 +66,7 @@
       <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><%=_ctx.appRes("UITreeExplorer.label.Root")%></a></div>
     </div>
     <div class="NodeGroup">
-    <%writeNodes(treeNodeRoot.getChildren())%>
+      <%writeNodes(treeNodeRoot.getChildren())%>
     </div>
   </div>
 </div>

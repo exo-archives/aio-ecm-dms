@@ -69,6 +69,12 @@ public class UIJCRExplorer extends UIContainer {
     addChild(UIWorkingArea.class, null, null) ;
   }
   
+  private String filterPath(String currentPath) throws RepositoryException {
+    if(rootNode_.getDepth() == 0) return currentPath ;
+    if(rootNode_.equals(currentNode_)) return "/" ;
+    return currentPath.replaceFirst(rootNode_.getPath(), "") ;
+  }
+  
   public void setRootNode(Node node) {
     rootNode_ = node ;
     currentNode_ = node ;
@@ -103,9 +109,10 @@ public class UIJCRExplorer extends UIContainer {
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
     return repositoryService.getRepository().getSystemSession(wsName) ;    
   }
+  
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
-                                                 setValue(currentNode_.getPath()) ;
+                                                 setValue(filterPath(currentNode_.getPath())) ;
     UIWorkingArea workingArea = getChild(UIWorkingArea.class) ;
     workingArea.getChild(UIDocumentWorkspace.class).setRenderedChild(UIDocumentInfo.class) ;
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
@@ -151,7 +158,7 @@ public class UIJCRExplorer extends UIContainer {
   
   public void updateAjax(Event event) throws Exception { 
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
-    uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(currentNode_.getPath()) ;
+    uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(filterPath(currentNode_.getPath())) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;

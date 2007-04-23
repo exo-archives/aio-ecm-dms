@@ -26,12 +26,12 @@
   	      <% 
   	      	uicomponent.renderChild(UIECMAdminFunctionTitle.class); 
   	      %>
-				  <div class="UIResizableBlock" style="height: 400px;">
+				  <div class="UIResizableBlock" style="height: 1400px;">
   	        <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
   	      </div>
         </td>
       </tr>
     </table>
-    <% uicomponent.renderPopupMessages(); %>
 	</div>
 </div>
+<% uicomponent.renderPopupMessages(); %>

@@ -6,6 +6,8 @@ package org.exoplatform.ecm.webui.component.explorer.control ;
 
 import java.util.Set;
 
+import javax.jcr.Node;
+
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -75,7 +77,8 @@ public class UIAddressBar extends UIForm {
       String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue() ;
       UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+        Node node = uiExplorer.getRootNode().getNode(path.substring(1)) ;
+        uiExplorer.setSelectNode(node) ;
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;

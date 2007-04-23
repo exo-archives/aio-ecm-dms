@@ -16,11 +16,15 @@ ECMUtils.prototype.init = function(portletId) {
 ECMUtils.prototype.fixHeight = function(portletId) {
 	var portlet =document.getElementById(portletId) ;
 	var child = eXo.core.DOMUtil.getChildrenByTagName(portlet, 'div') ;
-	
+	var table = eXo.core.DOMUtil.getChildrenByTagName(child[0], 'table') ;
+//	alert(table[0].offsetHeight) ;
 	var delta = portlet.offsetHeight - child[0].offsetHeight ;
+//	alert(delta + " = " + portlet.offsetHeight + " - " + child[0].offsetHeight)
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	for(var i = 0, ln = resizeObj.length; i < ln; i++) {
+//		alert(resizeObj[i].style.height)
 		resizeObj[i].style.height = (parseInt(resizeObj[i].offsetHeight) + delta) + 'px' ;
+//		alert(resizeObj[i].style.height + " = " + parseInt(resizeObj[i].offsetHeight) + " + " +  delta)
 	}
 }
 

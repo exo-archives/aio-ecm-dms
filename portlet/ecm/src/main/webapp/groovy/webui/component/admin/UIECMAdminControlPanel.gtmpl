@@ -6,7 +6,7 @@
   String manageDynamicContent = "UIActionManager;UIScriptManager" ;
   String[] managersGroup = [manageOntologies, createDocumentTypes, displayDocuments, manageDynamicContent] ;
 %>
-<div class="UIECMAdminControlPanel UIResizableBlock" style="height: 400px;">
+<div class="UIECMAdminControlPanel UIResizableBlock" style="height: 1400px;">
 	<div class="UIVerticalSlideTabs">
     <%
     	int i = 0;
