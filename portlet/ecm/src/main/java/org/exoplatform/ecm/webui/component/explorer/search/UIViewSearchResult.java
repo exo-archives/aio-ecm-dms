@@ -230,4 +230,14 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewSearchResult.getParent()) ;
     }   
   }
+  public String getDownloadLink(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
+    Node jcrContentNode = node.getNode("jcr:content") ;
+    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
 }
