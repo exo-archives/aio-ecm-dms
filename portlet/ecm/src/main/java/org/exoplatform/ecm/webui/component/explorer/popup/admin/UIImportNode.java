@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.ImportUUIDBehavior;
+import javax.jcr.InvalidSerializedDataException;
 import javax.jcr.Session;
 
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -49,7 +49,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   public static final String DOC_VIEW = "docview" ;
   public static final String SYS_VIEW = "sysview" ;
   public static final String FILE_UPLOAD = "upload" ;
-  
+
   public UIImportNode() throws Exception {
     this.setMultiPart(true) ;
     addUIFormInput(new UIFormUploadInput(FILE_UPLOAD, FILE_UPLOAD)) ;
@@ -57,12 +57,12 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
     formatItem.add(new SelectItemOption<String>(DOCUMENT_VIEW, DOC_VIEW));
     formatItem.add(new SelectItemOption<String>(SYSTEM_VIEW, SYS_VIEW));
     addUIFormInput(new UIFormRadioBoxInput(FORMAT, DOC_VIEW, formatItem).
-                   setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
+        setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
   }
-  
+
   public void activate() throws Exception { }
   public void deActivate() throws Exception { }
-  
+
   static public class ImportActionListener extends EventListener<UIImportNode> {
     public void execute(Event<UIImportNode> event) throws Exception {
       UIImportNode uiImport = event.getSource() ;
@@ -71,25 +71,26 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiImport.getAncestorOfType(UIApplication.class) ;
       UIFormUploadInput input = uiImport.getUIInput(FILE_UPLOAD) ;
       if(input.getUploadResource() == null) {
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filename-error", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filename-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       byte[] content = input.getUploadData() ;
       try {
         session.importXML(uiExplorer.getCurrentNode().getPath(), new ByteArrayInputStream(content),
-                          ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
-      } catch(Exception e) {
-        JCRExceptionManager.process(uiApp, e) ;
+            ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
+      } catch(InvalidSerializedDataException ise) {
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
+      } 
       if(!uiExplorer.getPreference().isJcrEnable()) session.save() ; 
       uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.import-successful", null)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       uiExplorer.updateAjax(event) ;
     }
   }
-  
+
   static public class CancelActionListener extends EventListener<UIImportNode> {
     public void execute(Event<UIImportNode> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
