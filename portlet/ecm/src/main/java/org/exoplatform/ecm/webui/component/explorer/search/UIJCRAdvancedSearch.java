@@ -17,6 +17,8 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
@@ -55,7 +57,7 @@ public class UIJCRAdvancedSearch extends UIForm {
   private static final String ROOT_XPATH_QUERY = "//*" ;
   private static final String XPATH_QUERY = "/jcr:root$0//*" ;
   private static final String CHANGE_OPTION = "ChangeOption" ;
-  
+
   public UIJCRAdvancedSearch() throws Exception  {
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
@@ -67,7 +69,7 @@ public class UIJCRAdvancedSearch extends UIForm {
     addUIFormInput(new UIFormTextAreaInput(FIELD_QUERY, FIELD_QUERY, null)) ;
     setActions(new String[]{"Search", "Save", "Cancel"}) ;
   }
-  
+
   public void update() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node selectedNode = uiExplorer.getCurrentNode() ;
@@ -78,14 +80,14 @@ public class UIJCRAdvancedSearch extends UIForm {
     getUIFormSelectBox(FIELD_SELECT_BOX).setValue("sql") ;
     getUIFormTextAreaInput(FIELD_QUERY).setValue(queryText) ;
   }
-  
+
   static  public class CancelActionListener extends EventListener<UIJCRAdvancedSearch> {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       event.getSource().getAncestorOfType(UIPopupAction.class).deActivate() ;
       event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
     }
   }
-  
+
   static public class SearchActionListener extends EventListener<UIJCRAdvancedSearch> {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;
@@ -95,7 +97,15 @@ public class UIJCRAdvancedSearch extends UIForm {
       UIECMSearch uiSearch = uiForm.getParent() ;
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       Query query = queryManager.createQuery(queryS, searchType);
-      QueryResult queryResult = query.execute();
+      QueryResult queryResult = null ;
+      try {
+        queryResult = query.execute();
+      } catch (Exception e){
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.invalid-queryStatement", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
       uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setQueryResults(queryResult) ;
@@ -123,15 +133,27 @@ public class UIJCRAdvancedSearch extends UIForm {
       }
     }
   }
-  
+
   static  public class SaveActionListener extends EventListener<UIJCRAdvancedSearch> {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      if((name == null) || (name.trim().length() == 0)) {
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.name-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String userName = Util.getUIPortal().getOwner() ;
-      queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(), userName) ;
+      try{
+        queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(), userName) ;        
+      } catch (Exception e){
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIECMSearch uiSearch = uiForm.getParent() ;
       uiSearch.getChild(UISavedQuery.class).updateGrid() ;
       uiSearch.setRenderedChild(UISavedQuery.class) ;
