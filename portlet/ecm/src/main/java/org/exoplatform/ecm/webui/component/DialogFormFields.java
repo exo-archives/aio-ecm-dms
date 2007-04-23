@@ -294,16 +294,16 @@ public class DialogFormFields extends UIForm {
           }
           uiMulti.setValue(valueList) ;
         }
-      } else if(node_ != null) {
-        if(node_.isNodeType("nt:file")) {
-          if(node_.getNode("jcr:content").hasProperty(getPropertyName(jcrPath))) {
-            Value[] values = node_.getNode("jcr:content").getProperty(getPropertyName(jcrPath)).getValues() ;
-            for(Value value : values) {
-              valueList.add(value.getString()) ;
-            }
-            uiMulti.setValue(valueList) ;
-          } 
+      }
+      if(node_ != null) {
+        String propertyPath = jcrPath.substring("/node/".length()) ;
+        if(node_.hasProperty(propertyPath)) {
+          Value[] values = node_.getProperty(propertyPath).getValues() ;
+          for(Value vl : values) {
+            if (vl != null) valueList.add(vl.getString()) ;
+          }
         }
+        uiMulti.setValue(valueList) ;        
       }
       renderField(name) ;
       return ;
@@ -401,6 +401,7 @@ public class DialogFormFields extends UIForm {
     if(editable.equals("false")) uiTextArea.setEditable(false) ;
     else uiTextArea.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    
     if(node_ != null) {
       String value = "";
       if(node_.hasProperty(getPropertyName(jcrPath))) {
