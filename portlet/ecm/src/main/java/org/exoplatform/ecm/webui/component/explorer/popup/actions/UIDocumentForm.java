@@ -121,39 +121,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
   
-  //public void setContentNode(Node contentNode) { contentNode_ = contentNode ; }
-  //public Node getContentNode() { return contentNode_ ; }
-  
   public Node getCurrentNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
   
   public boolean isEditing() { return !isAddNew_ ; }
   
   public InputStream getBinaryData() { return binaryData_ ;}
   public void setBinaryData(InputStream data) { this.binaryData_ = data ; }
-  
-  /*public void editDocument(Node editNode) throws Exception {
-    String documentType = editNode.getProperty("jcr:primaryType").getString();
-    if(NT_FILE.equals(documentType)) {
-      Node jcrContent = editNode.getNode(JCRCONTENT) ;      
-      String mimeType = jcrContent.getProperty(JCRMIMETYPE).getString() ;
-      if(!mimeType.startsWith("text")) {      
-        setBinaryData(jcrContent.getProperty("jcr:data").getStream()) ;
-      }
-    }
-  }
-  */
-  @SuppressWarnings("unchecked")
-  public void setMultiValue(Node node, List inputs, JcrInputProperty property, Session session) throws Exception {
-    for (int i = 0; i < inputs.size(); i++) {
-      if(inputs.get(i) instanceof UIFormMultiValueInputSet) {
-        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;
-        List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
-        property = (JcrInputProperty) properties.get(inputName);
-        Value[] multiValue = Utils.getMultiValue(values, property.getType(), session);
-        node.setProperty(propertiesName_.get(inputName), multiValue) ;
-      }
-    }
-  }
   
   @SuppressWarnings("unchecked")
   public Node storeValue(Event event) throws Exception {
@@ -173,35 +146,10 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         homeNode = getNode().getParent() ;
         nodeType = getNode().getPrimaryNodeType().getName() ;
       }       
-      /*String name = getUIStringInput("name").getValue() ;
-      String rootPath = "/node";
-      JcrInputProperty property = new JcrInputProperty();
-      if(inputProperties.containsKey(rootPath)) {
-        property = (JcrInputProperty) inputProperties.get(rootPath);  
-        property.setValue(name);
-        inputProperties.put(rootPath, property);
-      } else {
-        property.setJcrPath(rootPath) ;
-        property.setValue(name) ;
-        inputProperties.put(rootPath,property) ;
-      }     
-      if(isEditing()) {
-        if(NT_FILE.equals(documentType_)) {
-          JcrInputProperty jcrDataInput = new JcrInputProperty() ;
-          jcrDataInput.setJcrPath("/node/jcr:content/jcr:data") ;
-          jcrDataInput.setValue(getBinaryData()) ;
-          inputProperties.put("/node/jcr:content/jcr:data",jcrDataInput) ;
-          Node jcrNode = node_.getNode(JCRCONTENT) ; 
-          setMultiValue(jcrNode, inputs, property, uiExplorer.getSession()) ;
-        }
-      }*/
       try {
         String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew());
         homeNode.getSession().save() ;
         newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
-        /*if(documentType_.equals(NT_FILE) && !isEditing()) {
-          setMultiValue(newNode.getNode(JCRCONTENT), inputs, property, uiExplorer.getSession()) ;
-        }*/
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);        
       }catch (AccessControlException ace) {
