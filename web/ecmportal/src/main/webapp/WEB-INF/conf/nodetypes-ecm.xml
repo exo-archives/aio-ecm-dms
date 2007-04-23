@@ -403,8 +403,18 @@
           <defaultValue>0</defaultValue>
         </defaultValues>
       </propertyDefinition>
+			<propertyDefinition name="exo:voteTotalOfLang" requiredType="Long" autoCreated="true" mandatory="false"
+        onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+        <defaultValues>
+          <defaultValue>0</defaultValue>
+        </defaultValues>
+      </propertyDefinition>
 			<propertyDefinition name="exo:voter" requiredType="String" autoCreated="true" mandatory="false"
         onParentVersion="COPY" protected="false" multiple="true">        
+        <defaultValues>
+          <defaultValue> </defaultValue>
+        </defaultValues>
       </propertyDefinition>			
     </propertyDefinitions>			
   </nodeType>
