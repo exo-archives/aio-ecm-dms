@@ -20,6 +20,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.UIVoteForm;
@@ -80,6 +81,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -91,32 +93,32 @@ import org.exoplatform.webui.event.EventListener;
     lifecycle = UIFormLifecycle.class,
     template =  "app:/groovy/webui/component/explorer/control/UIActionBar.gtmpl",
     events = {
-        @EventConfig(listeners = UIActionBar.AddFolderActionListener.class),
-        @EventConfig(listeners = UIActionBar.AddDocumentActionListener.class),
-        @EventConfig(listeners = UIActionBar.EditDocumentActionListener.class),
-        @EventConfig(listeners = UIActionBar.UploadActionListener.class),
-        @EventConfig(listeners = UIActionBar.SearchActionListener.class),
-        @EventConfig(listeners = UIActionBar.WatchDocumentActionListener.class),
-        @EventConfig(listeners = UIActionBar.TaggingDocumentActionListener.class),
-        @EventConfig(listeners = UIActionBar.MultiLanguageActionListener.class),
-        @EventConfig(listeners = UIActionBar.ViewReferencesActionListener.class),
-        @EventConfig(listeners = UIActionBar.ViewNodeTypeActionListener.class),
-        @EventConfig(listeners = UIActionBar.ViewPermissionsActionListener.class),
-        @EventConfig(listeners = UIActionBar.ViewPropertiesActionListener.class),
-        @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class),
-        @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class),
-        @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class),
-        @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class),
-        @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class),
-        @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class),
-        @EventConfig(listeners = UIActionBar.ExportNodeActionListener.class),
-        @EventConfig(listeners = UIActionBar.ImportNodeActionListener.class),
+        @EventConfig(listeners = UIActionBar.AddFolderActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.AddDocumentActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.EditDocumentActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.UploadActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.SearchActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.WatchDocumentActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.TaggingDocumentActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.MultiLanguageActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ViewReferencesActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ViewNodeTypeActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ViewPermissionsActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ViewPropertiesActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ExportNodeActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ImportNodeActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
-        @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class),
-        @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class),
-        @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class),
-        @EventConfig(listeners = UIActionBar.VoteActionListener.class),
-        @EventConfig(listeners = UIActionBar.CommentActionListener.class)
+        @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -151,7 +153,7 @@ public class UIActionBar extends UIForm {
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
     addUIFormInput(selectTab) ;
-    addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null)) ;
+    addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(ECMNameValidator.class)) ;
     
     List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>() ;
     typeOptions.add(new SelectItemOption<String>(FIELD_SQL, Query.SQL)) ;
@@ -681,20 +683,6 @@ public class UIActionBar extends UIForm {
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
-      if(text == null || text.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.keyword-null", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      for(int i = 0; i < text.length(); i ++){
-        char c = text.charAt(i);
-        if (Character.isLetter(c) || Character.isDigit(c) || c=='_' || c=='-' || c=='.' || c==':' ){
-          continue;
-        }
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.keyword-not-allow", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()) ;      
       if ("/".equals(currentNode.getPath())) queryText = ROOT_SQL_QUERY ;
