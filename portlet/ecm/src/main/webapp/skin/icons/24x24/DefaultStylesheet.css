@@ -153,7 +153,7 @@
 
 .ViewRelationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/RelationsIcon.gif') no-repeat ;
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat ;
 }
 
 .ViewPermissionsIcon {
@@ -279,8 +279,8 @@
 }
 
 .HomeIcon {
-  width: 24px;	height: 24px;
-  background: url('DefaultSkin/HardDisk.gif') no-repeat ;
+  width: 24px;	height: 16px;
+  background: url('DefaultSkin/HardDisk20x12.gif') no-repeat center center ;
 }
 
 .ViewPortlet24x24Icon {

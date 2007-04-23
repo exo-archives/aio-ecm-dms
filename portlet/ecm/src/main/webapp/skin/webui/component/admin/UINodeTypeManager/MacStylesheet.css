@@ -7,53 +7,45 @@
  */
 /*############################## -- UINodeTypeManager-- ########################*/
 
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
- width: 440px;
- margin-left: 10px;
+.UIECMAdminPortlet .UIFormWithTitle {
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport {
+  width: 440px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
  padding: 8px;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .FieldContainer {
- 	border-left: solid 1px #afaeae;
-}
-
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
-	width: 200px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
-  width: 100% ;
-  border-right: 0px ;
-  border-left: 0px ;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
-  width: 100% ;
+  width: 280px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
-  width: 540px ;
-  border: 1px solid #afaeae;
+  width: 450px ;
+  border: 1px solid #e1e1e1 ;
   margin-left: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
+  width: 170px;
+  padding: 0px 0px 8px 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
+  padding: 20px 0px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle label {
 	line-height: 20px;
-	padding-right: 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction{
-  width: 200px ;
-  padding: 9px 0px 14px 0px;
+	width: 140px;
 }
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
   width: 400px ;
-  border: 1px solid #afaeae ;
-  margin-left: 25px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIAction {

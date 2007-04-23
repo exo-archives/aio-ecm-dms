@@ -46,7 +46,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
   float: right;
-  margin: 2px 7px;
+  margin: 2px 7px 0px 7px;
   cursor: pointer;
 }
 
@@ -101,6 +101,7 @@
 }
 
 /*############################## -- UIViewRelationList   -- ##############################*/
+
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
  width:auto;
 }
@@ -122,6 +123,7 @@
 
 /*############################## -- End UISideBar   -- ##############################*/
 /*############################## -- Begin UITreeExplorer   -- ##############################*/
+
 .UIJCRExplorerPortlet .UITreeExplorer {
 }
 
@@ -144,6 +146,7 @@
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
   margin-left: 15px;
 }
+
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
   clear: both;
   line-height: 20px;

@@ -15,7 +15,6 @@
 
 .UIECMAdminPortlet .UIMetadataManager .UITabPane .UIAction {
   width: 160px;
-  padding-right: 60px;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIFormInputSet {
@@ -24,7 +23,7 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 380px;
+  width: 350px;
   height: 270px;
   padding: 3px;
 }

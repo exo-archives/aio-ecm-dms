@@ -14,10 +14,8 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl {
-  border-top: solid 1px #ffffff;
-  border-bottom: solid 1px #868686;
-  height: 23px;
-  background: url('DefaultSkin/background/LineDecorator1x23.gif') repeat-x center center;
+  height: 20px;
+  background: url('DefaultSkin/background/SideBarControlBG1x20.gif') repeat-x center center;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropSelectButton {
@@ -27,17 +25,12 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropDownButton {
   cursor: pointer;
-  margin: 3px 0px 0px 10px;
-}
-
-.UIJCRExplorerPortlet .UISideBar .UISideBarControl .SideBarSeparator {
-  float: left;
-  height: 22px;
-  padding: 0px 8px;
+  width: 24px; height: 20px;
+  background: url('DefaultSkin/background/DropDownButton24x20.gif') no-repeat center;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .ControlBody {
-  line-height: 22px;
+  line-height: 20px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .Icon24x24 {
@@ -53,12 +46,12 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
   float: right;
-  margin: 4px 7px;
+  margin: 2px 7px 0px 7px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent {
-  border: solid 1px #6a6a6b;
+  border: solid 1px gray;
   background-color: white;
   width: 140px;
   position: absolute;
@@ -66,20 +59,20 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectContentContainer {
-  border: solid 1px #b7b7b7;
+  border: solid 1px #ffffff;
   background-color: #f4f4f4;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
   clear: both;
-  line-height: 30px;
+  line-height: 26px;
   cursor: pointer;
   margin-bottom: 2px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectedItem {
   clear: both;
-  line-height: 30px;
+  line-height: 26px;
   cursor: pointer;
   margin-bottom: 2px;
   background: #d6ddef;
@@ -87,7 +80,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
   float: left;
-  margin: 5px 3px 0px 3px;
+  margin: 3px 3px 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemLabel {
@@ -95,10 +88,10 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SeparatorLine {
-  margin: 5px;
+  margin: 0px auto 0px 4px;
+  background: url('DefaultSkin/background/SidebarSeparatorLine.gif') repeat-x;
   height: 2px;
-  background: #919192;
-  height: 1px;
+  width: 90%;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
@@ -108,6 +101,7 @@
 }
 
 /*############################## -- UIViewRelationList   -- ##############################*/
+
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
  width:auto;
 }
@@ -132,11 +126,6 @@
 .UIJCRExplorerPortlet .UITreeExplorer {
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
-  float: left;
-  cursor: pointer;
-}
-
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
   cursor: pointer;
@@ -147,6 +136,14 @@
   line-height: 25px; vertical-align: middle;
   font-weight: bold;
   font-size: 11px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
+  margin-left: 15px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .Icon16x16 {
+  margin: 2px 0px 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {

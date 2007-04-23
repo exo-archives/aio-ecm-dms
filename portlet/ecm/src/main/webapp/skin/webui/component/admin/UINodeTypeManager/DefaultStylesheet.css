@@ -11,36 +11,17 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
+.UIECMAdminPortlet .UINodeTypeExport {
   width: 440px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
-  width: 310px;
+  width: 250px;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout{
+.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
   padding: 8px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
-  width: 100% ;
-  border-right: 0px ;
-  border-left: 1px solid #7EAAD0;
-}
-
-.UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle .UIGrid {
-  width: 100% ;
-  border-right: 0px ;
-  border-left: 1px solid #7EAAD0;
-}
-	
-.UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
-  width: 100% ;
-}
-
-.UIECMAdminPortlet .UINodeTypeImport .UIGrid .text {
-  width: 100% ;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
@@ -49,10 +30,14 @@
   margin-left: auto;
 }
 
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
+  width: 160px;
+  padding-left: 10px;
+}
+
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
   padding: 20px 0px;
 }
-
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
   border: 1px solid white ;
