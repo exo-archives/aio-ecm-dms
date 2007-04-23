@@ -97,8 +97,7 @@ public class UIViewMetadataForm extends DialogFormFields {
               node.setProperty(name, valueList.toArray(new Value[] {}));
             } else {
               List<String> values = (List<String>) ((UIFormMultiValueInputSet)uiForm.getUIInput(inputName)).getValue() ;
-              Value[] multiValue = Utils.getMultiValue(values, requiredType, uiJCRExplorer.getSession());
-              node.setProperty(name, multiValue);
+              node.setProperty(name, values.toArray(new String[values.size()]));
             }
           } else {
             if (requiredType == 6) { // boolean
