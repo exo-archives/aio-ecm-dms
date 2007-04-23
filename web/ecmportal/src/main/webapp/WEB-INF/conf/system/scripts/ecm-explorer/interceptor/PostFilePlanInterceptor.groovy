@@ -28,9 +28,8 @@ public class PostFilePlanInterceptor implements CmsScript {
   public void execute(Object context) {
     String path = (String) context;       
 		try{
-			println("Post File Plan interceptor, created node hello: "+path);
-	    String[] splittedContent = path.split("&workspaceName=");
-	    println("Post File Plan interceptor, created node hello: " + splittedContent[0] + " 1== " + splittedContent[1]);
+			String[] splittedContent = path.split("&workspaceName=");
+      println("Post File Plan interceptor, created node hello: "+splittedContent[0]);
 	    Session session = repositoryService_.getRepository().login(splittedContent[1]);
 	    Node filePlan = (Node) session.getItem(splittedContent[0]);
 	

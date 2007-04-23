@@ -59,7 +59,7 @@ public class RecordsJob extends BaseJob {
         session.logout();
       }
     } catch (Exception e) {
-      log_.error(e.getMessage());
+      //log_.error(e.getMessage());
     } 
     log_.info("File plan job done");
   }

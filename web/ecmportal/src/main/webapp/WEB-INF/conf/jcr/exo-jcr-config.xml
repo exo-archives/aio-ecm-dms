@@ -56,10 +56,10 @@
               <property name="sourceName" value="jdbcjcr"/>
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			  <property name="max-buffer-size" value="204800"/>
+			        <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/draft"/>
             </properties>
-            <!-- value-storages>
+            <value-storages>
               <value-storage class="org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage">
                 <properties>
                   <property name="path" value="../temp/values/draft"/>
@@ -68,7 +68,7 @@
                   <filter property-type="Binary"/>
                 </filters>
               </value-storage>
-            </value-storages -->
+            </value-storages>
             <!-- binary-swap
               directory-path="../temp/swap/draft"
               min-file-size="100K"
@@ -93,10 +93,10 @@
               <property name="sourceName" value="jdbcjcr"/>
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			  <property name="max-buffer-size" value="204800"/>
+			        <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/backup"/>
             </properties>
-            <!-- value-storages>
+            <value-storages>
               <value-storage class="org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage">
                 <properties>
                   <property name="path" value="../temp/values/backup"/>
@@ -105,7 +105,7 @@
                   <filter property-type="Binary"/>
                 </filters>
               </value-storage>
-            </value-storages -->
+            </value-storages>
             <!-- binary-swap
               directory-path="../temp/swap/backup"
               min-file-size="100K"
@@ -116,8 +116,13 @@
           <properties>
             <property name="maxSize" value="1000"/>
             <property name="liveTime" value="10000"/>
-          </properties>
+          </properties>          
          </cache>
+         <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
+          <properties>
+            <property name="indexDir" value="../temp/jcrlucenedb/index"/>
+          </properties>
+         </query-handler>
        </workspace>
        <workspace name="digital-assets" auto-init-root-nodetype="nt:folder">
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
@@ -125,10 +130,10 @@
               <property name="sourceName" value="jdbcjcr"/>
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			  <property name="max-buffer-size" value="204800"/>
+			        <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/digital-assets"/>
             </properties>
-            <!-- value-storages>
+            <value-storages>
               <value-storage class="org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage">
                 <properties>
                   <property name="path" value="../temp/values/digital-assets"/>
@@ -137,7 +142,7 @@
                   <filter property-type="Binary"/>
                 </filters>
               </value-storage>
-            </value-storages -->
+            </value-storages>
             <!-- binary-swap
               directory-path="../temp/swap/digital-assets"
               min-file-size="100K"

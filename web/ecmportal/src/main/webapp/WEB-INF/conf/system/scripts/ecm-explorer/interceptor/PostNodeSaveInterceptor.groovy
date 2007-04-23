@@ -15,8 +15,8 @@ public class PostNodeSaveInterceptor implements CmsScript {
   public void execute(Object context) {
     String path = (String) context;       
 
-    //TODO Should send an email
-    println("Post node save interceptor, created node: "+path);
+    String[] splittedContent = path.split("&workspaceName=");
+    println("Post node save interceptor, created node: " + splittedContent[0]);
   }
 
   public void setParams(String[] params) {}

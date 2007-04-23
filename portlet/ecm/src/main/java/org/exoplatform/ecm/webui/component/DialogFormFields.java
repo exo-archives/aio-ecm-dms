@@ -829,8 +829,7 @@ public class DialogFormFields extends UIForm {
       }
       
       Node newNode = dialogForm.storeValue(event) ;
-      if(newNode == null) return ;
-      
+      if(newNode == null) return ;      
       path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() ;
       for(String interceptor : dialogForm.postScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
@@ -838,8 +837,7 @@ public class DialogFormFields extends UIForm {
         if(type.equals("post")) {
           dialogForm.executeScript(scriptPath, path, null) ;          
         } 
-      }
-      
+      }      
     }
   }
 

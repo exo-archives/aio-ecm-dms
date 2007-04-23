@@ -5,7 +5,6 @@ package org.exoplatform.services.cms.impl;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -111,54 +110,6 @@ public class CmsServiceImpl implements CmsService {
       currentNode = storeHomeNode.getNode(nodeName);
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
     }
-    // add mixin properties
-    Iterator propertyPath = mappings.keySet().iterator() ;
-    try{
-      while(propertyPath.hasNext()){
-        String path = (String)propertyPath.next() ;
-        JcrInputProperty inputVariable = (JcrInputProperty) mappings.get(path) ;
-        if(path.contains(MIXIN_PROPERTY)){
-          path = path.substring(MIXIN_PROPERTY.length()) ;
-          if(inputVariable.getValue() != null) {
-            /*if(currentNode.hasProperty(path)){              
-              Property property = currentNode.getProperty(path) ;
-            }else*/
-            if(inputVariable.getValueType() == JcrInputProperty.SINGLE_VALUE) {
-              Value value = (Value)inputVariable.getValue() ;
-              if(path.indexOf("/") > -1) {
-                String[] array = path.split("/") ;
-                Node childNode = currentNode.getNode(array[0]) ;
-                childNode.setProperty(array[1], value) ;
-              }else {
-                currentNode.setProperty(path, value) ;
-              }
-            } else {
-              List<Value> values = (List<Value>)inputVariable.getValue() ;
-              if(path.indexOf("/") > -1) {
-                String[] array = path.split("/") ;
-                Node childNode = currentNode.getNode(array[0]) ;
-                childNode.setProperty(array[1], values.toArray(new Value[] {})) ;
-              }else {
-                currentNode.setProperty(path, values.toArray(new Value[] {})) ;
-              }
-            }            
-          }
-        }
-      }      
-    }catch(Exception e) {
-      e.printStackTrace() ;
-    }
-    /*if(mixinTypes != null) {
-      for(String type : mixinTypes) {
-        NodeType mixType = nodetypeManager.getNodeType(type) ;
-        PropertyDefinition[] propertiesDef = mixType.getPropertyDefinitions() ;
-        for(PropertyDefinition property : propertiesDef) {
-          String currentPath = NODE + "/" + property.getName();
-          JcrInputProperty inputVariable = (JcrInputProperty) mappings.get(currentPath) ;
-        }
-      }
-    }*/
-    
     return currentNode.getPath();
   }
 
@@ -311,7 +262,7 @@ public class CmsServiceImpl implements CmsService {
           if (value instanceof String)
             node.setProperty(propertyName, new String[] { (String)value});
           else if (value instanceof String[])
-            node.setProperty(propertyName, (String[]) value);            
+            node.setProperty(propertyName, (String[]) value);          
         } else
           node.setProperty(propertyName, (String) value);
       }

@@ -31,7 +31,7 @@
 			              <div class="NormalTabStyle">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Record</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Record properties</div>
 			                  </div>
 			                </div>
 			              </div>
@@ -41,7 +41,7 @@
 			              <div class="NormalTabStyle">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Process</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Process properties</div>
 			                  </div>
 			                </div>
 			              </div>
