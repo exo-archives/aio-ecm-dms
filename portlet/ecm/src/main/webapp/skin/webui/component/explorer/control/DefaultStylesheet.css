@@ -55,17 +55,17 @@
 
 .UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BackToMainDriveButton.gif') no-repeat center ;
+  background: url('DefaultSkin/icons/BackToMainDriveButton.gif') no-repeat center ;
 }
 
 .UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/SetupPreferencesButton.gif') no-repeat bottom;
+  background: url('DefaultSkin/icons/SetupPreferencesButton.gif') no-repeat bottom;
 }
 
 .UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/RefreshSessionButton.gif') no-repeat bottom;
+  background: url('DefaultSkin/icons/RefreshSessionButton.gif') no-repeat bottom;
 }
 
 /*############################## -- End UIViewBar -- ##############################*/
@@ -120,9 +120,11 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
   margin: 4px 58px 0px 116px;
-  height: 21px; line-height: 21px;
+  height: 20px; line-height: 20px;
   background: white;
-  border: solid 1px #8c8b8b;
+  border: solid 1px #b7b7b7;
+  border-right: solid 1px #cdcdcd;
+  border-bottom: solid 1px #cdcdcd;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {

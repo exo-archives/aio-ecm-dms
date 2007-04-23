@@ -42,7 +42,6 @@
   float: left;
   font-weight: bold;
   font-size: 11px;
-  padding-left: 5px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
@@ -89,9 +88,10 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SeparatorLine {
-  margin: 5px;
-  background: #919192;
-  height: 1px;
+  margin: 0px auto 0px 4px;
+  background: url('DefaultSkin/background/SidebarSeparatorLine.gif') repeat-x;
+  height: 2px;
+  width: 90%;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
@@ -135,6 +135,10 @@
   line-height: 25px; vertical-align: middle;
   font-weight: bold;
   font-size: 11px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .Icon16x16 {
+  margin: 2px 0px 0px 10px;
 }
  
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
