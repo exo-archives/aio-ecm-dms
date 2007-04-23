@@ -46,8 +46,7 @@ import org.exoplatform.webui.event.EventListener;
 public class UIViewSearchResult extends UIContainer implements ECMViewComponent {
   
   private Node node_ ;
-  private String language_ = "default";
-  private String selectedLanguage_ ;
+  private String language_ ;
   public UIViewSearchResult() throws Exception {
   }
 
@@ -83,16 +82,14 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException { 
     if(node_.hasProperty("exo:language")) {
       String defaultLang = node_.getProperty("exo:language").getString() ;
-      if(selectedLanguage_ == null) selectedLanguage_ =  defaultLang ;
+      if(language_ == null) language_ =  defaultLang ;
       if(node_.hasNode("languages")) {
-        if(!language_.equals("default") && !language_.equals(defaultLang)) {
+        if(!language_.equals(defaultLang)) {
           Node curNode = node_.getNode("languages/" + language_) ;
-          selectedLanguage_ = language_ ;
-          language_ = defaultLang ;
           return curNode ;
         } 
-        selectedLanguage_ = defaultLang ;
       }
+      return node_ ;
     }    
     return node_ ; 
   }
@@ -165,11 +162,6 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   }
 
   public List<Node> getComments() throws Exception {
-    if(node_.hasProperty("exo:language")) {
-      String defaultLang = node_.getProperty("exo:language").getString() ;
-      if(selectedLanguage_ == null) selectedLanguage_ =  defaultLang ;
-      return getApplicationComponent(CommentsService.class).getComments(node_, selectedLanguage_) ;
-    }
     return getApplicationComponent(CommentsService.class).getComments(node_, language_) ;
   }
   

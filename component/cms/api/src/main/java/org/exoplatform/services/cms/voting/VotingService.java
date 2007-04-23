@@ -14,6 +14,7 @@ import javax.jcr.Node;
  */
 public interface VotingService {
   
-  public void vote(Node document, double rate, String userName) throws Exception ;
+  public void vote(Node document, double rate, String userName, String language) throws Exception ;
   
+  public long getVoteTotal(Node node) throws Exception ;
 }

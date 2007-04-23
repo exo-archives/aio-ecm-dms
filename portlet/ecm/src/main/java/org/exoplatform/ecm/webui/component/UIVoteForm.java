@@ -5,8 +5,11 @@
 package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.webui.component.UIComponent;
@@ -42,13 +45,15 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
   
   static  public class VoteActionListener extends EventListener<UIVoteForm> {
     public void execute(Event<UIVoteForm> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       String userName = Util.getUIPortal().getOwner() ;
+      String language = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
+      getChild(UIDocumentInfo.class).getLanguage() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
-      VotingService votingService = uiJCRExplorer.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiJCRExplorer.getCurrentNode(), objId, userName) ;
+      VotingService votingService = uiExplorer.getApplicationComponent(VotingService.class) ;
+      votingService.vote(uiExplorer.getCurrentNode(), objId, userName, language) ;
       event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;
-      uiJCRExplorer.updateAjax(event) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 

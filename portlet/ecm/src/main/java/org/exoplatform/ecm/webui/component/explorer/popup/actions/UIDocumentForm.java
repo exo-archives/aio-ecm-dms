@@ -11,8 +11,6 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.Session;
-import javax.jcr.Value;
 import javax.jcr.Workspace;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
@@ -24,7 +22,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
-import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -32,7 +29,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIFormInput;
-import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -233,6 +229,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         }
       } else {
         languageNode = languagesNode.addNode(getSelectedLanguage()) ;
+        languageNode.addMixin("mix:votable") ;
         for(UIComponent uiChild : getChildren()) {
           String value = ((UIFormInput) uiChild).getValue().toString() ;
           languageNode.setProperty(propertiesName_.get(uiChild.getName()), value) ;

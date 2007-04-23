@@ -20,6 +20,10 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   final static public String  JCRCONTENT = "jcr:content";
   final static public String  JCRDATA = "jcr:data";
   final static public String  NTUNSTRUCTURED = "nt:unstructured";
+  final static String VOTER_PROP = "exo:voter".intern() ;  
+  final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;
+  final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ; 
+  final static String VOTE_TOTAL_LANG_PROP = "exo:voteTotalOfLang".intern() ;
   
   public MultiLanguageServiceImpl() throws Exception {
   }
@@ -120,6 +124,24 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return languages;
   }
 
+  public long getVoteTotal(Node node) throws Exception {
+    long voteTotal = 0;
+    if(!node.hasNode(LANGUAGES) && node.hasProperty(VOTE_TOTAL_PROP)) {
+      return node.getProperty(VOTE_TOTAL_LANG_PROP).getLong() ;
+    }
+    Node multiLanguages = node.getNode(LANGUAGES) ;
+    voteTotal = node.getProperty(VOTE_TOTAL_LANG_PROP).getLong() ;
+    NodeIterator nodeIter = multiLanguages.getNodes() ;
+    String defaultLang = getDefault(node) ;
+    while(nodeIter.hasNext()) {
+      Node languageNode = nodeIter.nextNode() ;
+      if(!languageNode.getName().equals(defaultLang)) {
+        voteTotal = voteTotal + languageNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong() ;
+      }
+    }
+    return voteTotal ;
+  }
+  
   public void setDefault(Node node, String language) throws Exception {
     String defaultLanguage = getDefault(node) ;
     if(!defaultLanguage.equals(language)){
@@ -128,10 +150,6 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
       Node selectedLangNode = languagesNode.getNode(language) ;
       if(node.getPrimaryNodeType().getName().equals("nt:file")) {
-        Value value = node.getNode(JCRCONTENT).getProperty(JCRDATA).getValue() ;
-        Value selectedValue = selectedLangNode.getNode(JCRCONTENT).getProperty(JCRDATA).getValue() ;
-        node.getNode(JCRCONTENT).setProperty(JCRDATA, selectedValue) ;
-        selectedLangNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;
         node.getSession().move(languagesNode.getPath() + "/" + language, languagesNode.getPath() + "/" + defaultLanguage) ;
         node.setProperty(EXO_LANGUAGE, language) ;
       } else {
@@ -144,6 +162,15 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
             node.setProperty(propertyName, selectedLangNode.getProperty(propertyName).getValue()) ;
           }
         }
+        newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
+        newLang.setProperty(VOTE_TOTAL_LANG_PROP, node.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+        newLang.setProperty(VOTING_RATE_PROP, node.getProperty(VOTING_RATE_PROP).getLong()) ;
+        newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
+        
+        node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
+        node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+        node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
+        node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
         node.setProperty(EXO_LANGUAGE, language) ;
         if(node.hasNode(COMMENTS)) {
           node.getSession().move(node.getPath() + "/" + COMMENTS, newLang.getPath() + "/" + COMMENTS) ;
@@ -162,5 +189,4 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     if(node.hasNode(LANGUAGES + "/"+ language)) return node.getNode(LANGUAGES + "/"+ language) ;
     return null;
   }
-  
 }

@@ -50,10 +50,12 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
   static  public class VoteActionListener extends EventListener<UICBVoteForm> {
     public void execute(Event<UICBVoteForm> event) throws Exception {
       UICBVoteForm uiForm = event.getSource() ;
+      UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
+      UIDocumentDetail uiDocumentDetail = uiPortlet.findFirstComponentOfType(UIDocumentDetail.class) ;
       String userName = Util.getUIPortal().getOwner() ;
       long objId = Long.parseLong(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiForm.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiForm.getDocument(), objId, userName) ;
+      votingService.vote(uiForm.getDocument(), objId, userName, uiDocumentDetail.getLanguage()) ;
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
     }

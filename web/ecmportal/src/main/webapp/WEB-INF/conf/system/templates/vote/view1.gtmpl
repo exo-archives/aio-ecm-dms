@@ -8,7 +8,7 @@
 <%
   def voteNode = uicomponent.getNode() ;
   double voteRating = voteNode.getProperty("exo:votingRate").getDouble() ;
-  long voteTotal = voteNode.getProperty("exo:voteTotal").getLong() ;
+  long voteTotal = voteNode.getProperty("exo:voteTotalOfLang").getLong() ;
 %>
 <div class="UIVoteForm">
   <div class="DecoratorBox">
