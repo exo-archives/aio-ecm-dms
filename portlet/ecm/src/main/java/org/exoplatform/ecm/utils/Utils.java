@@ -1,20 +1,15 @@
 package org.exoplatform.ecm.utils;
 
 import java.security.AccessControlException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.Value;
-import javax.jcr.ValueFactory;
 
-import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -84,7 +79,8 @@ public class Utils {
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
-  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ; 
+  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;
+  public Map<String, Object> maps_ = new HashMap<String, Object>() ;
 
   public static boolean isVersionable(Node node) throws RepositoryException {
     return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType("nt:frozenNode");
@@ -114,7 +110,11 @@ public class Utils {
     return getNodeTypeIcon(node, appended, null) ;
   }
   
-  @SuppressWarnings("unchecked")
+  public String getPropertyName(String jcrPath) { 
+    return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
+  }
+  
+  @SuppressWarnings({"unchecked", "unused"})
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
     for (int i = 0; i < inputs.size(); i++) {
@@ -143,7 +143,7 @@ public class Utils {
     JcrInputProperty property ;
     while (iter.hasNext()) {
       property = (JcrInputProperty) iter.next() ;
-      rawinputs.put(property.getJcrPath(), property) ;      
+      rawinputs.put(property.getJcrPath(), property) ;
     }
     return rawinputs;
   }

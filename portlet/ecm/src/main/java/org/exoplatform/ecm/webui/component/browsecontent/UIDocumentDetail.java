@@ -48,8 +48,7 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UIDocumentDetail extends UIComponent implements ECMViewComponent, UIPopupComponent{
   protected Node node_ ;
-  public static final String DEFAULT_LANGUAGE = "default".intern() ;
-  private String language_ = DEFAULT_LANGUAGE ;
+  private String language_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
   
   public UIDocumentDetail() {} 
@@ -99,9 +98,9 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public Node getNode() throws Exception { 
     if(node_.hasProperty("exo:language")) {
       String defaultLang = node_.getProperty("exo:language").getString() ;
-      if(!language_.equals(DEFAULT_LANGUAGE) && !language_.equals(defaultLang)) {
+      if(language_ == null) language_ = defaultLang ;
+      if(!language_.equals(defaultLang)) {
         Node curNode = node_.getNode("languages/" + language_) ;
-        language_ = defaultLang ;
         return curNode ;
       } 
     }    

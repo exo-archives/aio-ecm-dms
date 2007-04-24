@@ -256,6 +256,7 @@ public class UIBrowseContainer extends UIContainer {
     return "System";
   }
 
+  @SuppressWarnings("unused")
   public String getCreatedDate(Node node) throws Exception{
     return "not defined" ;
   }

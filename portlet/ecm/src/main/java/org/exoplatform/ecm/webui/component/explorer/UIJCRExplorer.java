@@ -62,6 +62,7 @@ public class UIJCRExplorer extends UIContainer {
   private Node currentNode_ ;
   private String documentInfoTemplate_ ;
   public boolean isHidePopup_ = false ;
+  private String language_ ;
 
   public UIJCRExplorer() throws Exception {
     addChild(UIPopupAction.class, null, null) ;
@@ -86,6 +87,9 @@ public class UIJCRExplorer extends UIContainer {
     currentNode_ = (Node)session_.getItem(historyNode) ;
     refreshExplorer() ;
   }
+  
+  public void setLanguage(String language) { language_ = language ; }
+  public String getLanguage() { return language_ ; }
   
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
   public Set<String> getAddressPath() { return addressPath_ ; }
@@ -193,6 +197,9 @@ public class UIJCRExplorer extends UIContainer {
   public void setSelectNode(Node node) throws Exception {
     if(currentNode_ != null && !node.equals(currentNode_)) record(currentNode_.getPath()) ;
     currentNode_ = node ;
+    if(currentNode_.hasProperty("exo:language")) {
+      setLanguage(currentNode_.getProperty("exo:language").getValue().getString()) ;
+    }
   }
 
   public void setSelectNode(String uri, Session session) throws Exception {  
@@ -200,6 +207,9 @@ public class UIJCRExplorer extends UIContainer {
     if(uri == null || uri.length() == 0) uri = "/" ;
     previousNode = currentNode_ ;        
     currentNode_ = (Node) session.getItem(uri);
+    if(currentNode_.hasProperty("exo:language")) {
+      setLanguage(currentNode_.getProperty("exo:language").getValue().getString()) ;
+    }
     if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;
   }
   

@@ -121,7 +121,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     if(!isAddNew_) {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       Node storedHomeNode = getNode().getParent() ;
-      String nodePath = cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false) ;
+      cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.setIsHidePopup(false) ;
       uiExplorer.updateAjax(event) ;

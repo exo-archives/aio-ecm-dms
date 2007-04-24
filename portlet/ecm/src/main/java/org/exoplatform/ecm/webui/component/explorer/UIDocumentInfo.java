@@ -69,7 +69,6 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   
-  private String language_ ;
   private String typeSort_ ;
   private String typeSortOrder_ ;
   private String nameSortOrder_ ;
@@ -262,9 +261,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
     if(currentNode_.hasProperty("exo:language")) {
       String defaultLang = currentNode_.getProperty("exo:language").getString() ;
-      if(language_ == null) language_ =  defaultLang ;
-      if(!language_.equals(defaultLang)) {
-        Node curNode = currentNode_.getNode("languages/" + language_) ;
+      if(getLanguage() == null) setLanguage(defaultLang) ;
+      if(!getLanguage().equals(defaultLang)) {
+        Node curNode = currentNode_.getNode("languages/" + getLanguage()) ;
         return curNode ;
       }
     }    
@@ -276,12 +275,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   }
 
   public List<Node> getComments() throws Exception {
-    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
-    if(currentNode_.hasProperty("exo:language")) {
-      String defaultLang = currentNode_.getProperty("exo:language").getString() ;
-      if(language_ == null) language_ =  defaultLang ;
-      return getApplicationComponent(CommentsService.class).getComments(currentNode_, language_) ;
-    }
     return getApplicationComponent(CommentsService.class).getComments(currentNode_, getLanguage()) ;
   }
 
@@ -347,6 +340,14 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       j++;
     }
     return nodesMap ;
+  }
+
+  public String getLanguage() {
+    return getAncestorOfType(UIJCRExplorer.class).getLanguage() ;
+  }
+
+  public void setLanguage(String language) { 
+    getAncestorOfType(UIJCRExplorer.class).setLanguage(language) ;
   }
 
   @SuppressWarnings("unchecked")
@@ -438,9 +439,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     if(nameSortOrder_ == null) return Preference.ASCENDING_ORDER ;
     return nameSortOrder_ ;  
   }
-  
-  public void setLanguage(String language) { language_ = language ; }
-  public String getLanguage() { return language_ ; }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
@@ -547,7 +545,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       UIDocumentInfo uiDocumentInfo = event.getSource() ;
       UIJCRExplorer uiExplorer = uiDocumentInfo.getAncestorOfType(UIJCRExplorer.class) ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiDocumentInfo.setLanguage(selectedLanguage) ;
+      uiExplorer.setLanguage(selectedLanguage) ;
       uiExplorer.updateAjax(event) ;
     }   
   }

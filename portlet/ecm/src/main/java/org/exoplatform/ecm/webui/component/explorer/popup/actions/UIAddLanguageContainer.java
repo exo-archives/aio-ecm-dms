@@ -27,10 +27,9 @@ public class UIAddLanguageContainer extends UIContainer {
   
   public void setComponentDisplay(String nodeTypeName) throws Exception {
     nodeTypeName_ = nodeTypeName ;
-    UIDocumentForm uiDocumentForm = createUIComponent(UIDocumentForm.class, null, null) ;
-    uiDocumentForm.setTemplateNode(nodeTypeName) ;
-    uiDocumentForm.setNode(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
-    uiDocumentForm.setIsMultiLanguage(true) ;
-    addChild(uiDocumentForm) ;
+    UILanguageDialogForm uiDialogForm = createUIComponent(UILanguageDialogForm.class, null, null) ;
+    uiDialogForm.setTemplateNode(nodeTypeName) ;
+    uiDialogForm.setNode(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+    addChild(uiDialogForm) ;
   }
 }

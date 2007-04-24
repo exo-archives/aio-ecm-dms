@@ -77,10 +77,9 @@ public class UILanguageTypeForm extends UIForm {
       UIJCRExplorer uiExplorer = uiTypeForm.getAncestorOfType(UIJCRExplorer.class);
       UIAddLanguageContainer uiContainer = uiTypeForm.getParent() ;
       if(uiContainer.nodeTypeName_ != null) {
-        UIDocumentForm uiDocumentForm = uiContainer.getChild(UIDocumentForm.class) ;
-        uiDocumentForm.getChildren().clear() ;
-        uiDocumentForm.setTemplateNode(uiContainer.nodeTypeName_) ;
-        uiDocumentForm.setIsMultiLanguage(true) ;
+        UILanguageDialogForm uiDialogForm = uiContainer.getChild(UILanguageDialogForm.class) ;
+        uiDialogForm.getChildren().clear() ;
+        uiDialogForm.setTemplateNode(uiContainer.nodeTypeName_) ;
         Node node = uiExplorer.getCurrentNode() ;
         if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(true) ;
@@ -89,32 +88,32 @@ public class UILanguageTypeForm extends UIForm {
         }
         if(node.hasNode(UIMultiLanguageForm.LANGUAGES)) {
           Node languagesNode = node.getNode(UIMultiLanguageForm.LANGUAGES) ;
-          if(node.isNodeType("nt:file")) uiDocumentForm.setIsNTFile(true) ;
-          else uiDocumentForm.setIsNTFile(false) ;
+          if(node.isNodeType("nt:file")) uiDialogForm.setIsNTFile(true) ;
+          else uiDialogForm.setIsNTFile(false) ;
           if(languagesNode.hasNode(selectedLanguage)) {
-            uiDocumentForm.setNode(languagesNode.getNode(selectedLanguage)) ;
+            uiDialogForm.setNode(languagesNode.getNode(selectedLanguage)) ;
           } else if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
-            uiDocumentForm.setNode(node) ;
+            uiDialogForm.setNode(node) ;
           } else {
-            uiDocumentForm.setNode(node) ;
-            uiDocumentForm.setIsNotEditNode(true) ;
+            uiDialogForm.setNode(node) ;
+            uiDialogForm.setIsNotEditNode(true) ;
           }
         } else if(!node.hasNode(UIMultiLanguageForm.LANGUAGES) && selectedLanguage.equals(multiLanguageService.getDefault(node))) {
-          uiDocumentForm.setNode(node) ;
+          uiDialogForm.setNode(node) ;
         } else {
-          uiDocumentForm.setNode(node) ;
-          uiDocumentForm.setIsNotEditNode(true) ;
+          uiDialogForm.setNode(node) ;
+          uiDialogForm.setIsNotEditNode(true) ;
         }
-        uiDocumentForm.setSelectedLanguage(selectedLanguage) ;
+        uiDialogForm.setSelectedLanguage(selectedLanguage) ;
         if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  
-          uiDocumentForm.setPropertyNode(node) ;
+          uiDialogForm.setPropertyNode(node) ;
         } else {
           if(node.hasNode("languages/"+ selectedLanguage)){
-            uiDocumentForm.getChildren().clear() ;
+            uiDialogForm.getChildren().clear() ;
             Node languageNode = multiLanguageService.getLanguage(node, selectedLanguage) ;
-            uiDocumentForm.setPropertyNode(languageNode) ;
+            uiDialogForm.setPropertyNode(languageNode) ;
           } else {
-            uiDocumentForm.setPropertyNode(null) ;
+            uiDialogForm.setPropertyNode(null) ;
           }
         }
       } else {
@@ -130,9 +129,9 @@ public class UILanguageTypeForm extends UIForm {
     public void execute(Event<UILanguageTypeForm> event) throws Exception {
       UILanguageTypeForm uiForm = event.getSource() ;
       UIAddLanguageContainer uiLanguageContainer = uiForm.getParent() ;
-      UIDocumentForm uiDocumentForm = uiLanguageContainer.getChild(UIDocumentForm.class) ;
+      UILanguageDialogForm uiDialogForm = uiLanguageContainer.getChild(UILanguageDialogForm.class) ;
       boolean isDefault = uiForm.getUIFormCheckBoxInput(DEFAULT_TYPE).isChecked() ;
-      uiDocumentForm.setIsDefaultLanguage(isDefault) ;
+      uiDialogForm.setIsDefaultLanguage(isDefault) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageContainer) ;
     }
   }

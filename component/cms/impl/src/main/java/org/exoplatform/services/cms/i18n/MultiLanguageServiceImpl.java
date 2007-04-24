@@ -11,6 +11,8 @@ import javax.jcr.Workspace;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.exoplatform.services.cms.JcrInputProperty;
+
 /**
  * @author Hung Nguyen Quang
  * @mail   nguyenkequanghung@yahoo.com
@@ -24,6 +26,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;
   final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ; 
   final static String VOTE_TOTAL_LANG_PROP = "exo:voteTotalOfLang".intern() ;
+  final static String NODE = "/node/" ;
   
   public MultiLanguageServiceImpl() throws Exception {
   }
@@ -42,29 +45,30 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         if(languagesNode.hasNode(language)) newLanguageNode = languagesNode.getNode(language) ;
         else newLanguageNode = languagesNode.addNode(language) ;
       }
-    }    
-    PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
-    for(PropertyDefinition pro : properties){
-      if(!pro.isProtected()){
-        String propertyName = pro.getName() ;        
-        if(defaultLanguage.equals(language)){
-          node.setProperty(propertyName, (String)inputs.get(propertyName)) ;
-        }else {          
-          if(isDefault){            
-            newLanguageNode.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
-            node.setProperty(propertyName, (String)inputs.get(propertyName)) ;
-          }else {            
-            newLanguageNode.setProperty(propertyName, (String)inputs.get(propertyName)) ;
-          }
-        }               
-      }
-    }
+    }   
     
-    // add mixin type for node
     NodeType[] mixins = node.getMixinNodeTypes() ;
     for(NodeType mixin:mixins) {
       newLanguageNode.addMixin(mixin.getName()) ;            
     }
+    PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
+    for(PropertyDefinition pro : properties){
+      if(!pro.isProtected()) {
+        String propertyName = pro.getName() ;
+        JcrInputProperty property = (JcrInputProperty)inputs.get(NODE + propertyName) ;
+        if(defaultLanguage.equals(language)) {
+          node.setProperty(propertyName, property.getValue().toString()) ;
+        } else {          
+          if(isDefault) {            
+            newLanguageNode.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
+            node.setProperty(propertyName, property.getValue().toString()) ;
+          } else {           
+            newLanguageNode.setProperty(propertyName, property.getValue().toString()) ;
+          }
+        }               
+      }
+    }
+    // add mixin type for node
     
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
     node.save() ;
