@@ -12,7 +12,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
+  width: 550px;
   margin: auto;
 }
 
@@ -21,7 +21,11 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
-  padding: 8px;
+  padding: 8px 12px 8px 0px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
+  padding:  5px 2px 0px 8px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
@@ -81,11 +85,6 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{
 	padding-top: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
-  width: 450px ;
-  border-left:1px solid #7EAAD0 ;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithActions .checkbox {
