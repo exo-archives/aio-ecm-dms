@@ -47,7 +47,7 @@
     <div class="FieldContainer">		          					
       <label>Category</label>
       <%
-        String[] fieldCategory = ["jcrPath=/node/exo:category"] ;
+        String[] fieldCategory = ["jcrPath=/node/exo:podcastCategory"] ;
         uicomponent.addTextField("category", fieldCategory) ;  
       %>
     </div>
@@ -90,7 +90,7 @@
       <label>Length</label>
       <%
        String[] fieldSize = ["jcrPath=/node/exo:length", "0", "validate=number"] ;
-       uicomponent.addTextField("size", fieldSize) ; 
+       uicomponent.addTextField("lenth", fieldSize) ; 
       %>
     </div>
 		<%/* start render action*/%>
