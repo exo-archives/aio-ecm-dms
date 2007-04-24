@@ -83,6 +83,7 @@ public class UIMultiLanguageForm extends UIForm {
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
       multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
+      uiExplorer.setLanguage(selectedLanguage) ;
       uiExplorer.updateAjax(event) ;
     }
   }
