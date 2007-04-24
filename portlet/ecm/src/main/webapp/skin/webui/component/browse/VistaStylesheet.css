@@ -26,17 +26,9 @@
    width: auto;
 }
 
-.UIBrowseContentPortlet .UIAction .ActionContainer{
-   width: 300px;
+.UIBrowseContentPortlet .ActionContainer{
+   width: auto;
    margin:auto;
-}
-
-.UIBrowseContentPortlet .ActionButton {
- width:110px; /*FIX BUG IE*/
-}
-
-.UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-   width:80px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
@@ -112,11 +104,6 @@
 .UIBrowseContentPortlet .UIBrowseContainer {
   padding: 0px;
   background: white;
-}
-
-.UIBrowseContentPortlet .UIBrowseContainer .ActionContainer {
-  width: 200px;
-  margin: auto;
 }
 
 /*############################## -- Begin UIToolBar -- ##############################*/
@@ -301,17 +288,9 @@
 	font-size: 11px;	
 }
 
-.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 18px; margin: auto;
-}
-
 .UIBrowseContentPortlet .UISearchController .UIAction{
 	width: 70px; margin: auto;
 	padding-bottom:8px;
-}
-
-.UIBrowseContentPortlet .UISearchController .ActionButton{
-	width: 70px; margin: auto;
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
@@ -320,6 +299,9 @@
 	width: 90px;
 }
 
+.UIBrowseContentPortlet .ActionButton{
+  margin: auto;
+}
 
 /*############################## -- End UIVoteForm   -- ##############################*/
 

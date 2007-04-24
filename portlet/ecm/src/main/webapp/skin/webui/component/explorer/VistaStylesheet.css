@@ -12,16 +12,9 @@
 @import url("UIPopupAction/VistaStylesheet.css");
 @import url("UIDrivesBrowser/VistaStylesheet.css");
 @import url("UIJCRExplorer/VistaStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
 
 .UIJCRExplorerPortlet {}
-
-.UIPageBody .UIJCRExplorerPortlet {
-	margin: 0px 6px 0px 6px;
-  border: 1px solid #737373;
-  background: url('../admin/VistaSkin/background/ECMAdminbottom1x30.gif') repeat-x left bottom;
-  background-color: white;
-  padding-bottom: 30px;
-}
 
 .UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
   width: 80px;

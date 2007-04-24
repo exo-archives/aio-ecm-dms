@@ -7,8 +7,7 @@
  */
 
 .UIPageBody .UIJCRExplorerPortlet {
-	margin: 0px 6px 0px 7px;
-  border: 1px solid #737373;
+  border: none;
   background: url('VistaSkin/background/ECMAdminbottom1x30.gif') repeat-x left bottom;
   background-color: white;
   padding-bottom: 30px;
@@ -20,6 +19,7 @@
   height: 30px;
   background: url('VistaSkin/background/LineDecorator1x30.gif') repeat-x center center;
   border-bottom: solid 1px #c5c9d2;
+  line-height: 30px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
@@ -30,7 +30,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewBox {
   float: left;
-  width: 300px; height: 28px;
+  width: 320px; height: 28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
@@ -41,18 +41,22 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
   float: right;
-  width: 180px;
   padding: 0px 10px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .WorkspaceName {
+	float: left;
+	padding: 0px 5px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
-  float: right;
+  float: left;
   height: 29px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
-  float: right;
-  margin: 2px 10px;
+  float: left;
+  margin: 2px 6px;
   cursor: pointer;
 }
 

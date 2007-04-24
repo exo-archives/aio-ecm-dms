@@ -132,10 +132,20 @@
 .UIJCRExplorerPortlet .UITreeExplorer {
 }
 
+.UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
+  float: left;
+  cursor: pointer;
+  margin: 0px 3px;
+}
+
 .UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
   margin: 3px 5px;
   float: left;
   cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
+  margin-left: 15px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {

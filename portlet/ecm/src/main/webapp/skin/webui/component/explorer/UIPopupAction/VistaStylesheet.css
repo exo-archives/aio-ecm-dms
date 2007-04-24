@@ -69,14 +69,6 @@
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
   float: right;
 }
-
-.UIJCRExplorerPortlet .ActionButton {
-  width: 90px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .ActionButton {
-  width: 85px;
-}
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 5px 0px;
@@ -98,6 +90,10 @@
   border: solid 1px #b7b7b7;
   background-color: #ffffff;
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
+  width: 105px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
@@ -138,14 +134,6 @@
 .UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode input {
 	float:left;
   width: 20px ;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .ActionButton {
-  width:80px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .ActionButton {
-  width:80px;
 }
 
 /*############################## -- End UIExport   -- ##############################*/
@@ -230,37 +218,25 @@
 /*############################## --End UITreeJCRExplorer   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .ActionButton {
-  width: 80px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .ActionButton {
-  width: 80px;
-}
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- UIActionManager   -- ##############################*/
-.UIJCRExplorerPortlet .UIActionContainer .ActionContainer {
-  width: 200px;
+
+.UIJCRExplorerPortlet .ActionContainer {
+  width: auto;
+  margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .ActionButton {
-  width: 80px;
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
 }
+
 .UIJCRExplorerPortlet .UIPropertyTab .UIAction {
   width: 100px; 
   margin: 20px auto 0px auto;
 }
 
-.UIJCRExplorerPortlet .UIPropertyForm .ActionContainer{
-  width: 200px; 
-  margin:auto;
-}
-
-.UIJCRExplorerPortlet .UIMetadataTab .ActionContainer{
-  width: 200px; 
-  margin:auto;
-}
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent {
   border: 1px solid gray;  
 }
