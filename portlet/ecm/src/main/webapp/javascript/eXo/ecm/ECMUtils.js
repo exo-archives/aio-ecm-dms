@@ -36,34 +36,8 @@ ECMUtils.prototype.clickLeftMouse = function(event, clickedElemt, pos, option) {
 		showBlock.style.width = (popupSelector.offsetWidth - 2) + "px";
 	}
 	this.showPopup(showBlock, true)
-	var intTop = 0;
-	var intLeft = 0;
-	switch (pos) {
-		case 1:							// Top
-		  intTop  = eXo.core.Browser.findPosY(popupSelector) - showBlock.offsetHeight;
-		  intLeft = eXo.core.Browser.findPosX(popupSelector) ;	
-			break;
-		case 2:							// Bottom
-  		intTop  = eXo.core.Browser.findPosY(popupSelector) + popupSelector.offsetHeight;
-		  intLeft = eXo.core.Browser.findPosX(popupSelector) ;
-			break;
-		case 3:							// Left
-  		intTop  = eXo.core.Browser.findPosY(popupSelector);
-		  intLeft = eXo.core.Browser.findPosX(popupSelector) - showBlock.offsetWidth;						
-			break;
-		default:						// Right
-  		intTop  = eXo.core.Browser.findPosY(popupSelector);
-		  intLeft = eXo.core.Browser.findPosX(popupSelector) + popupSelector.offsetWidth;						
-			break;
-	}
-	
-  if(document.getElementById("UIPageDesktop")) {
-  	popupWindow = eXo.core.DOMUtil.findAncestorByClass(popupSelector, "UIDragObject");
-    intTop = intTop - eXo.core.Browser.findPosY(popupWindow) ;
-    intLeft = intLeft - eXo.core.Browser.findPosX(popupWindow) ;
-  }
-	showBlock.style.top = intTop + "px";
-	showBlock.style.left = intLeft + "px";
+	showBlock.style.top = (popupSelector.offsetTop + popupSelector.offsetHeight) + "px";
+	showBlock.style.left = popupSelector.offsetLeft + "px";
 }
 
 ECMUtils.prototype.showPopup = function(showBlock, clearAll) {
