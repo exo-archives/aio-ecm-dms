@@ -91,7 +91,7 @@ public class CmsServiceImpl implements CmsService {
       if(mixintypeName.indexOf(",") > -1){
         mixinTypes = mixintypeName.split(",") ;
       }else {
-        mixinTypes[0] = mixintypeName ;
+        mixinTypes = new String[] {mixintypeName} ;
       }
     }
     if (isAddNew) {
