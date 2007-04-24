@@ -27,16 +27,13 @@ public class UIConfigContainer extends UIContainer {
     if(browseType.equals(Utils.CB_USE_FROM_PATH)) {
       UIPathConfig uiPathConfig = addChild(UIPathConfig.class, null, null) ;
       uiPathConfig.initForm(preference, workSpace, true, true) ;
-    }
-    if(browseType.equals(Utils.CB_USE_JCR_QUERY)) {
+    }else if(browseType.equals(Utils.CB_USE_JCR_QUERY)) {
       UIQueryConfig uiQueryConfig = addChild(UIQueryConfig.class, null, null) ;
       uiQueryConfig.initForm(preference, workSpace, true, true) ;
-    } 
-    if(browseType.equals(Utils.CB_USE_SCRIPT)) {
+    } else if(browseType.equals(Utils.CB_USE_SCRIPT)) {
       UIScriptConfig uiScriptConfig = addChild(UIScriptConfig.class, null, null) ;
       uiScriptConfig.initForm(preference, workSpace, true, true) ;
-    }
-    if(browseType.equals(Utils.CB_USE_DOCUMENT)) {
+    }else if(browseType.equals(Utils.CB_USE_DOCUMENT)) {
       UIDocumentConfig uiDocumentConfig =  addChild(UIDocumentConfig.class, null, null) ;
       uiDocumentConfig.initForm(preference, workSpace, true, true) ;
     }

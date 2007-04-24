@@ -40,7 +40,21 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     UIDocumentForm uiDocumentForm = createUIComponent(UIDocumentForm.class, null, null) ;
     uiDocumentForm.setTemplateNode(DEFAULT_VALUE) ;
     uiDocumentForm.addNew(true) ;
-    addChild(uiDocumentForm) ;
+    addChild(uiDocumentForm) ;    
+  }
+  
+  public void initDocumentForm(boolean isEditMode) throws Exception{
+    if(isEditMode) {
+      // set flag to UISelectDocumentForm
+      // set Default path to UISelectDocumentForm
+      
+      // set flag to DocumentForm
+      // set Default path to DocumentForm
+    }else {
+      
+    }
+    
+    
   }
 
   public void activate() throws Exception {

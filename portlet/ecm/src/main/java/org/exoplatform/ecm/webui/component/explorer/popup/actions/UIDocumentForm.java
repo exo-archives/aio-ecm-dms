@@ -55,7 +55,8 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
 
   private String documentType_ ;
   private boolean isAddNew_ = false ; 
-  
+  private String storePath_ ;
+  private boolean isEditMode_ = false ;
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"}) ;    
   }
@@ -85,7 +86,13 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
-
+  
+  public void setEditModeStorePath(String storePath) {
+    storePath_ = storePath ;
+  }
+  public void createFromEditMode(boolean isEditMode) {
+    isEditMode_ = isEditMode ;
+  }
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
   
