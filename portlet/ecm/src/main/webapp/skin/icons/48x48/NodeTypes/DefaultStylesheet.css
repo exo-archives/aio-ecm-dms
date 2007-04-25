@@ -268,24 +268,39 @@
   background: url('DefaultSkin/pdf.gif') no-repeat;  
 }
 
-.application_odt48x48Icon {
+.application_vnd_oasis_opendocument_text48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/odt.gif') no-repeat;  
 }
 
-.application_ods48x48Icon {
+.application_vnd_oasis_opendocument_spreadsheet48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/ods.gif') no-repeat;  
 }
 
-.application_odp48x48Icon {
+.application_vnd_oasis_opendocument_presentation48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/odp.gif') no-repeat;  
+}
+
+.application_zip48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/zip.gif') no-repeat;  
+}
+
+.application_rar48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/rar.gif') no-repeat;  
 }
 
 .text_rtf48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/rtf.gif') no-repeat;  
+}
+
+.text_xml48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/xml.gif') no-repeat;  
 }
 
 .text_plain48x48Icon {

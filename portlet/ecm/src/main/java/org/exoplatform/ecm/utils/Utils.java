@@ -83,7 +83,7 @@ public class Utils {
   public Map<String, Object> maps_ = new HashMap<String, Object>() ;
 
   public static boolean isVersionable(Node node) throws RepositoryException {
-    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType("nt:frozenNode");
+    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType(JCR_FROZEN);
   }
   
   public static boolean isReadAuthorized(Node node) throws RepositoryException {
@@ -101,7 +101,7 @@ public class Utils {
     if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
     if(node.isNodeType(NT_FILE)) {
       Node jcrContentNode = node.getNode(JCR_CONTENT) ;
-      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceFirst("/", "_")).append(appended);
+      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceAll("/|\\.","_")).append(appended);
     }
     return str.toString() ;
   }

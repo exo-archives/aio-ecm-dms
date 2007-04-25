@@ -2,25 +2,23 @@
   import org.exoplatform.web.application.Parameter ;
 %>
 <div class="UIViewRelationList">
-	<div class="RelationFrame">
-		<div class="TitleLabel">
-	     <%=_ctx.appRes("UIViewRelationList.label.related-document")%>
-	  </div>
-		<div class="FrameContent">
-		<%def relations = uicomponent.getRelations()
-			if(relations.isEmpty()) { %>  			    			    	
-			  <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
-		<%} else {
-				String actionLink ;
-				for (rel in relations) {
-				  String preferenceWS = rel.getSession().getWorkspace().getName() ;
-				  actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
-			%>
-			 	  <div> - <a href="$actionLink">$rel.name</a></div>
-			<% 
-			  }
-			}
-			%>
-		</div>
+	<div class="TitleLabel">
+     <%=_ctx.appRes("UIViewRelationList.label.related-document")%>
+  </div>
+	<div class="FrameContent">
+	<%def relations = uicomponent.getRelations()
+		if(relations.isEmpty()) { %>  			    			    	
+		  <%=_ctx.appRes("UIViewRelationList.label.no-related-document")%>
+	<%} else {
+			String actionLink ;
+			for (rel in relations) {
+			  String preferenceWS = rel.getSession().getWorkspace().getName() ;
+			  actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
+		%>
+		 	  <div> - <a href="$actionLink">$rel.name</a></div>
+		<% 
+		  }
+		}
+		%>
 	</div>
 </div>

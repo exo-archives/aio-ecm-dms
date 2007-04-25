@@ -102,22 +102,13 @@
 
 /*############################## -- UIViewRelationList   -- ##############################*/
 
-.UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
- width:auto;
-}
-.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
-  margin-top: 2px;
-  border: solid 1px #bdbdbd;
-}
-
-.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .TitleLabel {
-  height: 18px;
-  padding: 2px 0px 0px 15px;
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .TitleLabel {
+  padding: 5px;
   font: normal bold 11px Verdana;
   background: url('/ecm/skin/images/article/EventFrameBG.gif') repeat-x;
 }
 
-.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .FrameContent {
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
   padding: 10px;
 }
 
