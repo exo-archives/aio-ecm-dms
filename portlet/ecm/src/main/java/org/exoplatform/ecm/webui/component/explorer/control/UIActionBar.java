@@ -494,15 +494,20 @@ public class UIActionBar extends UIForm {
   static public class ViewRelationsActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UISideBar uiSideBar = uiJCRExplorer.findFirstComponentOfType(UISideBar.class) ;
+      UIWorkingArea uiWorkingArea = uiJCRExplorer.getChild(UIWorkingArea.class) ;
+      UISideBar uiSideBar = uiWorkingArea.getChild(UISideBar.class) ;
       UIViewRelationList uiViewRelationList = uiSideBar.getChild(UIViewRelationList.class) ;
-      if(uiViewRelationList.isRendered()) {
-        uiViewRelationList.setRendered(false) ;
-        uiSideBar.setRenderedChild(UITreeExplorer.class) ;
+      if(uiJCRExplorer.getPreference().isShowSideBar()) {
+        if(uiViewRelationList.isRendered()) {
+          uiSideBar.setRenderedChild(UITreeExplorer.class) ;
+        } else {
+          uiSideBar.setRenderedChild(UIViewRelationList.class) ;
+        }
       } else {
+        uiJCRExplorer.getPreference().setShowSideBar(true) ;
         uiSideBar.setRenderedChild(UIViewRelationList.class) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     }
   }
 

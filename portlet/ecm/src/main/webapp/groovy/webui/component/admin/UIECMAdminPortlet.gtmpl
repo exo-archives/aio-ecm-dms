@@ -32,6 +32,6 @@
         </td>
       </tr>
     </table>
+		<% uicomponent.renderPopupMessages(); %>
 	</div>
 </div>
-<% uicomponent.renderPopupMessages(); %>
