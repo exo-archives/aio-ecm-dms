@@ -42,15 +42,18 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         if(languagesNode.hasNode(defaultLanguage)) newLanguageNode = languagesNode.getNode(defaultLanguage) ;
         else newLanguageNode = languagesNode.addNode(defaultLanguage) ;
       }else {
-        if(languagesNode.hasNode(language)) newLanguageNode = languagesNode.getNode(language) ;
-        else newLanguageNode = languagesNode.addNode(language) ;
+        if(languagesNode.hasNode(language)) {
+          newLanguageNode = languagesNode.getNode(language) ;
+        } else {
+          newLanguageNode = languagesNode.addNode(language) ;
+          NodeType[] mixins = node.getMixinNodeTypes() ;
+          for(NodeType mixin:mixins) {
+            newLanguageNode.addMixin(mixin.getName()) ;            
+          }
+        }
       }
     }   
     
-    NodeType[] mixins = node.getMixinNodeTypes() ;
-    for(NodeType mixin:mixins) {
-      newLanguageNode.addMixin(mixin.getName()) ;            
-    }
     PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
     for(PropertyDefinition pro : properties){
       if(!pro.isProtected()) {
@@ -68,8 +71,6 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }               
       }
     }
-    // add mixin type for node
-    
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
     node.save() ;
     node.getSession().save() ;    
