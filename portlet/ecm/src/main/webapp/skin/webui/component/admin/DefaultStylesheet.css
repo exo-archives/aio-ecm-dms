@@ -138,13 +138,9 @@
   width: 520px;
 }
 
-.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormWithTitle .HorizontalLayout {
-  padding: 3px 20px 3px 0px;
-  border: solid 1px red;
-}
-
-.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet .FieldContainer {
-  padding:  5px 12px 0px 8px;
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+  margin: auto;
+  padding: 15px 6px 0px 6px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .UIAction {
@@ -319,7 +315,7 @@ UIECMAdminPortlet .UIViewManager {
 
 .ECMTempForm .UIFormWithTitle .UIAction {
 	width: 230px;
-	padding: 10px 15px 0px 0px;
+	padding: 10px 0px 0px 10px;
 }
 
 .CBTempForm .UIFormWithTitle .HorizontalLayout .FieldContainer {
@@ -554,13 +550,6 @@ UIECMAdminPortlet .UIViewManager {
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin-bottom: 10px ;
   margin-left: 135px ;
-  border: solid 1px red;
-}
-
-.UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-  margin-left: 135px ;
-  border: solid 1px red;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
@@ -610,11 +599,6 @@ UIECMAdminPortlet .UIViewManager {
 	width: 100%;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet label {
-	width: 130px;
-	margin: 0px;
-}
-
 /*############################## -- UIDialogTab -- ########################*/
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator{
@@ -640,7 +624,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .DialogForm .UIFormInputSet label {
-	width: 123px;
+	width: 103px;
 	margin: 0px;
 	margin-right: 10px;
 }
@@ -649,7 +633,7 @@ UIECMAdminPortlet .UIViewManager {
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
 	width: 250px;
-	padding-right: 35px;
+	padding-right: 15px;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
@@ -666,7 +650,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .ViewForm .UIFormInputSet label {
-	width: 123px;
+	width: 103px;
 	margin: 0px;
 	margin-right: 10px;
 }

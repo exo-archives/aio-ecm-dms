@@ -244,15 +244,14 @@
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
-	background:url('DefaultSkin/background/TitleBG.gif') repeat-x ; 
+	background: url('DefaultSkin/background/TitleBG.gif') repeat-x ; 
 	height: 20px; 
 	border-bottom: 1px solid #a3abb6; 
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
   background:url('DefaultSkin/background/HeaderBG.gif') ;   
-  
-  margin-bottom:1px;
+  margin-bottom: 1px;
   padding: 0px 5px 0px 5px; 
   border: solid 1px #a3abb6 ;
 }
@@ -339,7 +338,7 @@
 }
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
-  width: 150px;
+  width: 160px;
   padding-left: 40px;
 }
 
@@ -355,9 +354,10 @@
   margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UITaggingForm .UIAction {
+.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout .UIAction {
   width: 170px;
-  padding: 0px 0px 8px 40px;
+  padding: 0px 0px 8px 10px;
+  border: solid 1px red;
 }
 
 /*==================================UIMultiLanguageForm==============================*/
@@ -394,11 +394,11 @@
   padding: 2px 15px;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .NormalVote{
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .UIAction{
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
   width: 80px;
   padding-left: 13px;
 }
@@ -451,6 +451,11 @@
 
 /*================================UIJCRAdvancedSearch=================================*/
 
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIAction {
   width: 250px;
   padding-left: 60px;
@@ -497,14 +502,15 @@
 
 /*================================UIPropertyForm=================================*/
 
-.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle {
+.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   margin: auto;
+  border: none;
 }
 
-.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle .UIAction {
+.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
   width: 60px;	
-  padding-left: 15px;
+  padding-right: 15px;
 }
 
 /*================================.UIExportNode=================================*/

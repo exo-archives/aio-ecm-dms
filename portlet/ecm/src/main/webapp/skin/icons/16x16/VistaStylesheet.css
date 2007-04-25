@@ -341,6 +341,11 @@
   background: url('DefaultSkin/UnLock.gif') no-repeat ;   
 }
 
+.DownLoad16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/DownLoadIcon.gif') no-repeat ;   
+}
+
 .CheckIn16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CheckIn.gif') no-repeat ;   

@@ -18,6 +18,7 @@
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
   width: 250px;
+  padding-left: 35px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {

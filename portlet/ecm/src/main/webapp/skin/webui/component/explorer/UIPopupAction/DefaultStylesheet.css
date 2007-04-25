@@ -182,7 +182,8 @@
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
-  width: 220px ;
+  width: 160px ;
+  padding-left: 15px;
 }
 
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
@@ -260,7 +261,9 @@
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
-  border: none ;
+  width: 500px;
+  border: none;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {

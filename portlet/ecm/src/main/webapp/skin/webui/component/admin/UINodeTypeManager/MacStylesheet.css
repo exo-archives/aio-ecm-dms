@@ -17,11 +17,16 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
- padding: 8px;
+  padding: 8px 12px 8px 0px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
+  padding:  5px 2px 0px 7px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
   width: 280px;
+  padding-left: 30px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {

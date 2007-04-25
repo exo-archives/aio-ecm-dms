@@ -202,6 +202,39 @@
   width: 100px ;
 }
 
+.UIVoteForm .UIRatingInfoContainer {
+	width: 150px; padding: 5px 12px;
+	margin: auto;
+	background: white;
+	border: solid 1px #b7b7b7;
+}
+
+.UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIVoteForm .OptionsContainer .NormalVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('/ecm/skin/images/vote/GrayStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('/ecm/skin/images/vote/YellowStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('/ecm/skin/images/vote/OverStar.gif');
+}
+
 /*############################## -- End UIVoteForm   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
@@ -261,4 +294,9 @@
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
   width: 150px ;
 }
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
+  width: 100px ;
+}
+
 /*############################## -- End Others   -- ##############################*/

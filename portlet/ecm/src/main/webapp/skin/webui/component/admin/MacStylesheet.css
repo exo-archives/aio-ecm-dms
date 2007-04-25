@@ -127,9 +127,14 @@
   margin: 10px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+  margin: auto;
+  padding: 15px 6px 0px 6px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .UIAction {
   width: 270px;
-  padding-left: 55px;
+  padding-left: 25px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
@@ -368,9 +373,9 @@
 }
 
 .UIECMScripts .UIScriptFilterForm .UIForm  {
-   height: 30px; width: 100%;
-   padding: 0px;
-   margin: 0px;
+  height: 30px; width: 100%;
+  padding: 0px;
+  margin: 0px;
 }
 
 .UIECMScripts .UIScriptFilterForm .FieldContainer  {
@@ -486,16 +491,6 @@
   height: 250px; 
 }
 
-.UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction {
-  width: 270px; 
-  padding-left: 50px;
-}
-
-.UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction {
-  width: 270px;
-  padding-left: 50px; 
-}
-
 /*############################## -- UINamespaceManager -- ########################*/
 .UINamespaceManager .UIAction {
   width: 110px;
@@ -606,7 +601,7 @@
 }
 /*############################## -- UIDialogTab -- ########################*/
 
-.UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator{
+.UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator {
 	margin-bottom: 15px;
 }
 
@@ -620,37 +615,40 @@
 	border: none;
 }
 
+.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
+	width: 120px;
+}
+
 .UITemplatesManager .DialogForm .UIFormInputSet .FieldContainer {
 	width: 100%;
 }
 
-.UITemplatesManager .DialogForm .UIFormInputSet label {
-	width: 130px;
-	margin: 0px;
+.UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction {
+  width: 270px; 
+  padding-right: 15px;
 }
 
 /*############################## -- UIViewTab -- ########################*/
 
-.UITemplatesManager .UITabPane .UIViewTab .UIAction {
-	width: 270px;
-	padding-left: 40px;
+.UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction {
+  width: 270px;
+  padding-right: 15px; 
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	margin: 30px 0px 0px 0px;
 }
 
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout {
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout .FieldContainer {
 	width: 550px;
 	margin: auto;
 	border: none;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
-	width: 100%;
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
+	width: 120px;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet label {
-	width: 130px;
-	margin: 0px;
+.UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
+	width: 100%;
 }

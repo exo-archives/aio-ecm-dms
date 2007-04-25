@@ -1,8 +1,8 @@
 <style>
 	.UIVoteForm .RatingInfo {
-		font: normal bold 11px Arial;
-		color: #0489d5;
-	}  
+		font: normal bold 11px verdana;
+		color: #058ee6;
+	} 
 </style>
 
 <%
@@ -11,44 +11,24 @@
   long voteTotal = voteNode.getProperty("exo:voteTotalOfLang").getLong() ;
 %>
 <div class="UIVoteForm">
-  <div class="DecoratorBox">
-    <div class="GrayRoundedFillBoxStyle">
-      <div class="TopLeftCornerBoxDecorator">
-        <div class="TopRightCornerBoxDecorator">
-          <div class="TopCenterBoxDecorator"><span></span></div>
-        </div>
-      </div>
-      <div class="MiddleLeftSideBoxDecorator">
-        <div class="MiddleRightSideBoxDecorator">
-          <div class="CenterBoxDecorator">
-            <div class="UIRatingInfoContainer">
-              <div class="OptionsContainer">
-                <%
-                  int i = 0;
-                  while(++i <= voteRating) {
-                %>
-	                  <div class="RatedVote"><span></span></div>
-	              <%
-	                }
-	                while(i++ <= 5) {
-	              %>
-                    <div class="NormalVote"><span></span></div>
-	              <%}%>
-	            </div>
-	            <div class="RatingInfo">
-		            <div class="LeftBlock">Rating: $voteRating</div>
-		            <div class="RightBlock">Vote Total: $voteTotal</div>
-		            <div style="clear: both;"><span></span></div>
-		          </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="BottomLeftCornerBoxDecorator">
-        <div class="BottomRightCornerBoxDecorator">
-          <div class="BottomCenterBoxDecorator"><span></span></div>
-        </div>
-      </div>
+	<div class="UIRatingInfoContainer">
+	  <div class="OptionsContainer">
+	    <%
+	      int i = 0;
+	      while(++i <= voteRating) {
+	    %>
+	          <div class="RatedVote"><span></span></div>
+	      <%
+	        }
+	        while(i++ <= 5) {
+	      %>
+	        <div class="NormalVote"><span></span></div>
+	      <%}%>
     </div>
-  </div>
+    <div class="RatingInfo">
+	    <div class="LeftBlock">Rating: $voteRating</div>
+	    <div class="RightBlock">Vote Total: $voteTotal</div>
+	    <div style="clear: both;"><span></span></div>
+	  </div>
+	</div>
 </div>

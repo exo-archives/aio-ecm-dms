@@ -27,6 +27,7 @@
 .UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .HorizontalLayout{
 	width: 400px;
 	margin: auto;
+	border: none;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
