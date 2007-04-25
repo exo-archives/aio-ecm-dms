@@ -4,15 +4,6 @@
   padding: 10px;
 }
 
-.UIEventViewer .UIPageIterator {
-	margin-right: 0px;
-}
-
-.UIEventViewer .UIPageIterator .PageIteratorContainer{
-	width: 99.5%;
-}
-
-
 .UIEventViewer .EventContent {
   border: solid 1px #e1e1e1;
   padding: 10px;
@@ -24,7 +15,7 @@
   margin: 0px 0px 5px 0px;
   height: 19px; vertical-align: middle;
   border: 1px #e1e1e1 solid; background: #f3f3f3;
-  float: left;
+  width: 130px;
 }
 
 .UIEventViewer .ViewPreviousDocument .BackIcon {

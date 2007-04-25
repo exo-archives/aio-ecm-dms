@@ -6,8 +6,6 @@
 @import url("UINavigation/MacStylesheet.css");
 @import url("UICBSearchForm/MacStylesheet.css");
 @import url("UIEventViewer/MacStylesheet.css");
-@import url("../UIVoteForm/MacStylesheet.css");
-
 
 .UIWindow .UIBrowseContentPortlet {
   overflow: auto;

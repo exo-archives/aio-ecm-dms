@@ -6,7 +6,6 @@
 @import url("UINavigation/DefaultStylesheet.css");
 @import url("UICBSearchForm/DefaultStylesheet.css");
 @import url("UIEventViewer/DefaultStylesheet.css");
-@import url("../UIVoteForm/DefaultStylesheet.css");
 
 .UIWindow .UIBrowseContentPortlet {
   overflow: auto;
@@ -15,7 +14,6 @@
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
   padding: 5px;
 }
-
 
 .UIBrowseContentPortlet {
   overflow: auto;
@@ -36,15 +34,6 @@
 	width: 200px;
 	margin: auto;
 	
-}
-.UIBrowseContentPortlet .UIConfigContainer .UIAction{
-	padding-top: 10px;
-	width: 300px;
-	margin: auto;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .ActionButton {
-	width:120px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
@@ -290,9 +279,62 @@
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
-.UIBrowseContentPortlet .UIVoteForm .UIAction {
-	width: 100px;
+.UIBrowseContentPortlet .UIVoteForm {
+  padding: 8px;
 }
 
+.UIBrowseContentPortlet .VoteFormContainer {
+	padding-top: 8px;
+  background: #f4f4f4 ;
+  border: 1px solid #e1e1e1 ;
+}
+
+.UIBrowseContentPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white ;
+  width: 145px;
+  padding: 2px 15px;
+}
+
+.UIBrowseContentPortlet .UIVoteForm .NormalVote{
+  cursor: pointer;
+}
+
+.UIBrowseContentPortlet .UIVoteForm .UIAction{
+  width: 80px;
+  padding-left: 13px;
+}
+
+.UIVoteForm .UIRatingInfoContainer {
+	width: 150px; padding: 5px 12px;
+	margin: auto;
+	background: white;
+	border: solid 1px #b7b7b7;
+}
+
+.UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIVoteForm .OptionsContainer .NormalVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('/ecm/skin/images/vote/GrayStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('/ecm/skin/images/vote/YellowStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 0px 2px;
+	width: 19px; height: 18px;
+  background: url('/ecm/skin/images/vote/OverStar.gif');
+}
 /*############################## -- End UIVoteForm   -- ##############################*/
 

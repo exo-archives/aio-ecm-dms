@@ -621,13 +621,13 @@ public class UIBrowseContainer extends UIContainer {
       UIBrowseContainer uiContainer = event.getSource() ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
       if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
         uiContainer.storeHistory() ;
         String path = objectId.substring(objectId.lastIndexOf(Utils.SEMI_COLON)+1) ;
         Node selected = uiContainer.getNodeByPath(path) ;
         uiContainer.changeNode(selected) ;
         uiContainer.setShowAllChildren(true) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }
       Node selectNode = uiContainer.getNodeByPath(objectId) ;
@@ -652,6 +652,7 @@ public class UIBrowseContainer extends UIContainer {
           uiContainer.initDocumentDetail(selectNode) ;
           uiContainer.initToolBar(false, false, false) ;
         }
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }
       String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;

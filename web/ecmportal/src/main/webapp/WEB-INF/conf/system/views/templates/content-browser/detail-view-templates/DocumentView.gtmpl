@@ -1,7 +1,6 @@
 <%
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
-	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 
-	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentList ; 
+	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 	
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
 	def subDocumentList =  uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
@@ -9,12 +8,9 @@
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
-  	if(uicomponent.isEnableToolBar()) uicomponent.renderChild(UIToolBar.class);
-  	if(uicomponent.isShowSearchForm()) {
-  		uicomponent.renderChild(UISearchController.class);
-  	} else {
-		  uicomponent.renderChild(UIDocumentDetail.class) ;
-		  if(uicomponent.isShowDocumentList()) { 		  
+  	if(uicomponent.isEnableToolBar()) uicomponent.renderChild(UIToolBar.class);  	
+		uicomponent.renderChild(UIDocumentDetail.class) ;
+		if(uicomponent.isShowDocumentList()) { 		  
 	%>
 		<div class="UIDocumentList">
 			<%/*Begin UIEventViewer*/%>
@@ -52,9 +48,7 @@
 	              </div>
 	            </div>
 	          </div>
-	      <%
-	        }
-	      %>
+	      <%}%>
    			</div>
 		    <div class="ViewPreviousDocument"> 
 		      <div class="BackIcon"><span></span></div>
@@ -69,7 +63,6 @@
    			<%}%>
 			 <%/*End UIEventViewer*/%>
 			</div>
-	<%	}
-		}
-	%>
+		</div>
+	<%}%>
 </div>
