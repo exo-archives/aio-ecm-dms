@@ -71,12 +71,7 @@
 	      link = uicomponent.event("Search") ;
       %>
 	      <a class="Icon CBSearchButton" href="$link" title="$actionLabel"><span></span></a>      
-      <%}%>
-      <%
-	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Refresh") 
-		    link = uicomponent.event("Refresh") ;
-    	%> 
-    	<a class="Icon CBRefreshButton" href="$link" title="$actionLabel"><span></span></a>      
+      <%}%>      
     <div style="clear: left;"><span></span></div>
   </div>
   <div style="clear:both"><span></span></div>

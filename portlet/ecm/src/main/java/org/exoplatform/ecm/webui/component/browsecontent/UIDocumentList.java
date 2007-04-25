@@ -39,10 +39,7 @@ public class UIDocumentList extends UIComponentDecorator {
   
   public String getOwner(Node node) throws Exception { 
     return ((ExtendedNode)node).getACL().getOwner() ; 
-  }
-
-  @SuppressWarnings("unused")
-  public String getCreatedDate(Node node) { return new Date().toString() ;}
+  }  
 
   public void updateGrid(List<Node> list, int numbPerPage) throws Exception {
       ObjectPageList objPageList = new ObjectPageList(list , numbPerPage) ;

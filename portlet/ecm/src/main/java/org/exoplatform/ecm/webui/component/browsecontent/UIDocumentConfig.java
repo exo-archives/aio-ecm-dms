@@ -208,6 +208,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.store() ; 
       uiForm.reset() ;
       uiConfigTabPane.getCurrentConfig() ;
+      container.loadPortletConfig(container.getPortletPreferences()) ;
       container.setShowDocumentDetail(true) ;
       container.setShowDocumentList(false) ;
     }

@@ -1,5 +1,6 @@
 <%
 	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
+	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ;
 	String componentName = uicomponent.getName() ;
 	def subDocumentList = uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
@@ -7,6 +8,11 @@
 	boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
+	<%
+		if(uicomponent.isShowDocumentDetail()&&uicomponent.isEnableToolBar()) {
+			uicomponent.renderChild(UIToolBar.class);
+		}
+	%>
    <div class="ContentHolder">
  <%   
         
@@ -43,7 +49,7 @@
   <%/*End TagMap*/%>  
   <%}%>
   <div style="$styleWithTag">
-    
+  <%if(uicomponent.isShowDocumentDetail()) uicomponent.renderChild(UIDocumentDetail.class);%>	
   <%/*Begin UIEventViewer*/%>
   <div class="UIEventViewer">
   	<%if(hasNoDocument){%>
@@ -77,10 +83,7 @@
                   </td>
                   <td class="EventAuthorNameLabel">
                     <%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-                  </td>
-                  <td class="DateAndTimeLabel">
-                   	<%=_ctx.appRes(componentName + ".label.dateTime")%>:<%=uicomponent.getCreatedDate(doc)%>
-                  </td>
+                  </td>                  
                 </tr>        
               </table>
             </div>

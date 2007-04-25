@@ -48,18 +48,19 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
-    if (portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
-     uiTabPane.setRendered(false) ;
+    if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
+      uiTabPane.setRendered(false) ;
       uiContainer.setRendered(true) ;
+      getChild(UIBrowseContainer.class).getSession().refresh(true) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
-     uiTabPane.setRendered(true) ;
+      uiTabPane.setRendered(true) ;
       uiContainer.setRendered(false) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
     super.processRender(app, context) ;
   }
-  
+
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;

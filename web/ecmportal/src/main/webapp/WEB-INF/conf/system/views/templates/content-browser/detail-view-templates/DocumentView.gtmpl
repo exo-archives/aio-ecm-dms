@@ -23,7 +23,8 @@
   				<div class="EventContent">
 	      <%
 	        for(Node doc in subDocumentList) {
-	          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+	        	String objectId = doc.getPath() + "&category=" + uicomponent.getCategoryPath() ;
+	          String viewAction = uicomponent.event("ChangeNode",objectId);
 	          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 	      %>
 	          <div class="EventContentDetail">
@@ -38,10 +39,7 @@
 	                  </td>
 	                  <td class="EventAuthorNameLabel">
 	                  	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-	                  </td>
-	                  <td class="DateAndTimeLabel">
-	                  	<%=_ctx.appRes(componentName + ".label.dateTime")%>:<%=uicomponent.getCreatedDate(doc)%>
-	                  </td>
+	                  </td>	                  
 	                </tr>        
 	              </table>
 	            </div>

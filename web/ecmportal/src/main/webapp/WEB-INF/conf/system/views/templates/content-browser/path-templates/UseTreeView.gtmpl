@@ -122,7 +122,8 @@
 	  				<div class="EventContent">
 			      <%
 			        for (Node doc in subDocumentList) {
-			          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+			        	String objectId = doc.getPath() + "&category=" + uicomponent.getCurrentNode().getPath() ;
+			          String viewAction = uicomponent.event("ChangeNode", objectId);
 			          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 			      %>
 			          <div class="EventContentDetail">
@@ -137,10 +138,7 @@
 			                  </td>
 			                  <td class="EventAuthorNameLabel">
 			                    <%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-			                  </td>
-			                  <td class="DateAndTimeLabel">
-			                   <%=_ctx.appRes(componentName + ".label.dateTime")%>:<%=uicomponent.getCreatedDate(doc)%>
-			                  </td>
+			                  </td>			                  
 			                </tr>        
 			              </table>
 			            </div>
@@ -209,7 +207,8 @@
 			                      String cssStyle = "ChildrenContentHolderLeft" ;
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
-			                      String subChildLink = uicomponent.event("ChangeNode", subChild.getPath());                       
+									          String docId = subChild.getPath() + "&category=" + subCat ;
+			                      String subChildLink = uicomponent.event("ChangeNode", docId);                       
 											 %>
 														<div class="$cssStyle">
 															<div class="ImageNote"><span></span></div>

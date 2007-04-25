@@ -80,6 +80,7 @@ public class UIBrowseContainer extends UIContainer {
   final public String KEY_SELECTED = "selectedNode" ;
   private Map<String, Node> history_  ;
   private String templatePath_ ;
+  private String categoryPath_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
   @SuppressWarnings("unused")
@@ -189,6 +190,8 @@ public class UIBrowseContainer extends UIContainer {
   public String getWorkSpace() {
     return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
   }
+  public String getCategoryPath() {return categoryPath_ ;}
+  public void setCategoryPath(String path) {categoryPath_ = path ;}
 
   public String getQueryStatement() {
     return getPortletPreferences().getValue(Utils.CB_QUERY_STATEMENT, "") ;
@@ -256,11 +259,6 @@ public class UIBrowseContainer extends UIContainer {
     return "System";
   }
 
-  @SuppressWarnings("unused")
-  public String getCreatedDate(Node node) throws Exception{
-    return "not defined" ;
-  }
-
   private boolean isReferenceableNode(Node node) throws Exception {
     NodeType[] nodeTypes = node.getMixinNodeTypes() ;
     for(NodeType type : nodeTypes) {
@@ -276,7 +274,14 @@ public class UIBrowseContainer extends UIContainer {
     toolBar.setEnableSearch(showSearch) ;
     toolBar.setRendered(true) ;
   }
-
+  public void viewDocument(Node docNode, boolean hasDocDetail ,boolean hasDocList) throws Exception {
+    setShowDocumentDetail(hasDocDetail) ;
+    setShowDocumentList(hasDocList) ;
+    initDocumentDetail(docNode) ;
+    initToolBar(false, false, false) ;
+    CmsConfigurationService cmsConfiguration = getApplicationComponent(CmsConfigurationService.class) ;
+    templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES) + Utils.SLASH + documentView_  ;
+  }
   public void initDocumentDetail(Node docNode) throws Exception {
     if(isShowDocumentDetail()) {
       UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
@@ -582,9 +587,10 @@ public class UIBrowseContainer extends UIContainer {
 
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
+    List<Node> subDocumentList = new ArrayList<Node>() ;
+    if(selectedNode == null) return subDocumentList ;
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     List<String> templates = templateService.getDocumentTemplates() ;
-    List<Node> subDocumentList = new ArrayList<Node>() ;
     NodeIterator item = selectedNode.getNodes() ;
     if(isEnableChildDocument())
       while (item.hasNext()) {
@@ -594,17 +600,8 @@ public class UIBrowseContainer extends UIContainer {
         }
       }
     if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
-        getSelectedTab(), isShowAllDocument(), subDocumentList.size(), templates)) ;
+        selectedNode, isShowAllDocument(), subDocumentList.size(), templates)) ;
     return subDocumentList ;
-  }
-
-  public void viewDocument(Node docNode, boolean hasDocDetail ,boolean hasDocList) throws Exception {
-    setShowDocumentDetail(hasDocDetail) ;
-    setShowDocumentList(hasDocList) ;
-    initDocumentDetail(docNode) ;
-    initToolBar(false, false, false) ;
-    CmsConfigurationService cmsConfiguration = getApplicationComponent(CmsConfigurationService.class) ;
-    templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES) + Utils.SLASH + documentView_  ;
   }
 
   public void storeHistory() throws Exception {
@@ -622,7 +619,8 @@ public class UIBrowseContainer extends UIContainer {
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
-      String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
+      String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String catPath = event.getRequestContext().getRequestParameter("category") ;  
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
       if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
         uiContainer.storeHistory() ;
@@ -642,9 +640,18 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates() ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
-        uiContainer.storeHistory() ;
-        uiContainer.setPageIterator(uiContainer.getSubDocumentList(selectNode.getParent())) ;
-        uiContainer.viewDocument(selectNode, true, true) ; 
+        if(catPath != null) {
+          uiContainer.setCategoryPath(catPath) ;
+          Node currentCat  = uiContainer.getNodeByPath(catPath);
+          uiContainer.storeHistory() ;
+          uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
+          if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
+          uiContainer.viewDocument(selectNode, true, true) ;
+        } else {
+          uiContainer.setShowDocumentDetail(true) ;
+          uiContainer.initDocumentDetail(selectNode) ;
+          uiContainer.initToolBar(false, false, false) ;
+        }
         return ;
       }
       String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
