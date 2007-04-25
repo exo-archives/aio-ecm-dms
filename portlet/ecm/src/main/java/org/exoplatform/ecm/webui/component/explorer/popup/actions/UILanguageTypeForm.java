@@ -132,7 +132,7 @@ public class UILanguageTypeForm extends UIForm {
       UILanguageDialogForm uiDialogForm = uiLanguageContainer.getChild(UILanguageDialogForm.class) ;
       boolean isDefault = uiForm.getUIFormCheckBoxInput(DEFAULT_TYPE).isChecked() ;
       uiDialogForm.setIsDefaultLanguage(isDefault) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageContainer) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
   }
 }

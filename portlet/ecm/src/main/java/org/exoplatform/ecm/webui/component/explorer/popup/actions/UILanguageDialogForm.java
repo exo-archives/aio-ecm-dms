@@ -112,6 +112,7 @@ public class UILanguageDialogForm extends DialogFormFields {
     UIMultiLanguageManager uiManager = getAncestorOfType(UIMultiLanguageManager.class) ;
     UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
     uiMultiForm.updateSelect(node) ;
+    if(isDefaultLanguage()) uiExplorer.setLanguage(getSelectedLanguage()) ;
     uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
     if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
     return null ;
