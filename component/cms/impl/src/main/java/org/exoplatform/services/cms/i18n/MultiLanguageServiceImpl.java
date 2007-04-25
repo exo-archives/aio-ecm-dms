@@ -39,9 +39,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
     if(!defaultLanguage.equals(language)){
       if(isDefault) {
-        if(languagesNode.hasNode(defaultLanguage)) newLanguageNode = languagesNode.getNode(defaultLanguage) ;
-        else newLanguageNode = languagesNode.addNode(defaultLanguage) ;
-      }else {
+        if(languagesNode.hasNode(defaultLanguage)) {
+          newLanguageNode = languagesNode.getNode(defaultLanguage) ;
+        } else {
+          newLanguageNode = languagesNode.addNode(defaultLanguage) ;
+          NodeType[] mixins = node.getMixinNodeTypes() ;
+          for(NodeType mixin:mixins) {
+            newLanguageNode.addMixin(mixin.getName()) ;            
+          }
+        }
+      } else {
         if(languagesNode.hasNode(language)) {
           newLanguageNode = languagesNode.getNode(language) ;
         } else {
