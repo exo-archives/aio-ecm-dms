@@ -113,17 +113,22 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
+      UIApplication app = uiComp.getAncestorOfType(UIApplication.class) ;
       if(!container.isShowDocumentDetail()) {
-        UIApplication app = uiComp.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
         return ;
       } 
       if(uiDocument.node_.isNodeType("mix:votable")) {
-        UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
-        uiPopupAction.activate(UICBVoteForm.class, 300) ;
-        uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        if((uiDocument.node_.isCheckedOut())) {
+          UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
+          UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+          uiPopupAction.activate(UICBVoteForm.class, 300) ;
+          uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        } else {
+          app.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null)) ;
+          return ;
+        }
       }
     }
   }  
@@ -132,19 +137,24 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
+      UIApplication app = uiComp.getAncestorOfType(UIApplication.class) ;
       if(!container.isShowDocumentDetail()) {
-        UIApplication app = uiComp.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
         return ;
       } 
       if(uiDocument.node_.isNodeType("mix:commentable")) {
-        UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
-        UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
-        commentForm.setDocument(uiDocument.node_) ;
-        uiPopupAction.activate(commentForm, 600, 0) ;
-        uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        if((uiDocument.node_.isCheckedOut())) {
+          UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
+          UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+          UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
+          commentForm.setDocument(uiDocument.node_) ;
+          uiPopupAction.activate(commentForm, 600, 0) ;
+          uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        } else {
+          app.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null)) ;
+          return ;
+        }
       }
     }
   }  

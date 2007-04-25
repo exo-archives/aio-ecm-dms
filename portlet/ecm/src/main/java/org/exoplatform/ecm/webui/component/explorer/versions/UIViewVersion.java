@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.versions;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +13,27 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
-import javax.jcr.version.Version;
 
+import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -33,11 +45,14 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 
 @ComponentConfig(
   type     = UIViewVersion.class,
-  template = "system:groovy/webui/component/UITabPane.gtmpl"
+  template = "system:groovy/webui/component/UITabPane.gtmpl",
+  events = {@EventConfig(listeners = UIViewVersion.ChangeLanguageActionListener.class)}
 )
 
-public class UIViewVersion extends UIContainer {
-
+public class UIViewVersion extends UIContainer implements ECMViewComponent {
+  protected Node node_ ;
+  private String language_ ;
+  
   public UIViewVersion() throws Exception {    
     addChild(UINodeInfo.class, null, null) ;
     addChild(UINodeProperty.class, null, null).setRendered(false) ;
@@ -77,11 +92,18 @@ public class UIViewVersion extends UIContainer {
   }
   
   public Node getNode() throws RepositoryException {
-    UIVersionInfo uiVersionInfo = getAncestorOfType(UIVersionInfo.class) ;
-    Version version_ = uiVersionInfo.getCurrentVersionNode().getVersion() ;
-    Node frozenNode = version_.getNode("jcr:frozenNode") ;
-    return frozenNode ;
+    if(node_.hasProperty("exo:language")) {
+      String defaultLang = node_.getProperty("exo:language").getString() ;
+      if(language_ == null) language_ = defaultLang ;
+      if(!language_.equals(defaultLang)) {
+        Node curNode = node_.getNode("languages/" + language_) ;
+        return curNode ;
+      } 
+    }    
+    return node_;
   }
+  
+  public void setNode(Node node) {node_ = node ;}
   
   public Node getNodeByUUID(String uuid) throws Exception{
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -91,8 +113,8 @@ public class UIViewVersion extends UIContainer {
   
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    if (getNode().hasProperty("exo:relation")) {
-      Value[] vals = getNode().getProperty("exo:relation").getValues();
+    if (node_.hasProperty("exo:relation")) {
+      Value[] vals = node_.getProperty("exo:relation").getValues();
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
@@ -104,7 +126,7 @@ public class UIViewVersion extends UIContainer {
   
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
-    NodeIterator childrenIterator = getNode().getNodes();;
+    NodeIterator childrenIterator = node_.getNodes();;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
@@ -113,6 +135,9 @@ public class UIViewVersion extends UIContainer {
     return attachments;
   }
   
+  public String getIcons(Node node, String type) throws Exception {
+    return Utils.getNodeTypeIcon(node, type) ; 
+  }
   public boolean hasPropertyContent(Node node, String property){
     try {
       String value = node.getProperty(property).getString() ;
@@ -128,5 +153,112 @@ public class UIViewVersion extends UIContainer {
   
   public void update() throws Exception {    
     getChild(UINodeInfo.class).update();
-  }  
+  }
+
+  public List<Node> getComments() throws Exception {
+    return getApplicationComponent(CommentsService.class).getComments(node_, getLanguage()) ;
+  }
+
+  @SuppressWarnings("unchecked")
+  public Object getComponentInstanceOfType(String className) {
+    Object service = null;
+    try {
+      ClassLoader loader =  Thread.currentThread().getContextClassLoader();
+      Class object = loader.loadClass(className);
+      service = getApplicationComponent(object);
+    } catch (ClassNotFoundException ex) {
+      ex.printStackTrace();
+    } 
+    return service;
+  }
+
+  public String getDownloadLink(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
+    Node jcrContentNode = node.getNode("jcr:content") ;
+    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+
+  public String getImage(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode("exo:image") ;
+    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+
+  public void setLanguage(String language) { language_ = language ; }
+  public String getLanguage() { return language_ ; }
+
+  public String getNodeType() throws Exception {
+    return node_.getPrimaryNodeType().getName() ;
+  }
+
+  public String getPortalName() {
+    PortalContainer pcontainer =  PortalContainer.getInstance() ;
+    return pcontainer.getPortalContainerInfo().getContainerName() ; 
+  }
+
+  public List getSupportedLocalise() throws Exception {
+    List<String> local = new ArrayList<String>() ;
+    if(node_.hasNode("languages")){
+      NodeIterator iter = node_.getNode("languages").getNodes() ;
+      while(iter.hasNext()) {
+        local.add(iter.nextNode().getName()) ;
+      }
+      local.add(node_.getProperty("exo:language").getString()) ;      
+    } 
+    return local ;
+  }
+
+  public String getTemplatePath() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
+  }
+
+  public String getWebDAVServerPrefix() throws Exception {
+    PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
+    String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
+    portletRequestContext.getRequest().getServerName() + ":" +
+    String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
+    return prefixWebDAV ;
+  }
+
+  public String getWorkspaceName() throws Exception {
+    return node_.getSession().getWorkspace().getName();
+  }
+
+  public boolean isNodeTypeSupported() {
+    try {      
+      TemplateService templateService = getApplicationComponent(TemplateService.class);
+      return templateService.isManagedNodeType(getNodeType());
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
+    public void execute(Event<UIViewVersion> event) throws Exception {
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIViewVersion uiViewVersion = event.getSource() ;
+      UIApplication uiApp = uiViewVersion.getAncestorOfType(UIApplication.class) ;
+      uiApp.addMessage(new ApplicationMessage("UIViewVersion.msg.not-supported", null)) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      //uiViewVersion.setLanguage(selectedLanguage) ;
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+      context.addUIComponentToUpdateByAjax(uiViewVersion) ;
+    }
+    
+  }
 }

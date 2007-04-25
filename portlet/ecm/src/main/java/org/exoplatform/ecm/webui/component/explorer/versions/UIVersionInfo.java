@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer.versions;
 
 import javax.jcr.Node;
+import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
@@ -86,8 +87,11 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       }
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiVersionInfo.curentVersion_  = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
-      uiVersionInfo.getChild(UIViewVersion.class).update() ;
-      uiVersionInfo.getChild(UIViewVersion.class).setRendered(true) ;
+      UIViewVersion uiViewVerion = uiVersionInfo.getChild(UIViewVersion.class) ;
+      Version version_ = uiVersionInfo.curentVersion_.getVersion() ;
+      Node frozenNode = version_.getNode("jcr:frozenNode") ;
+      uiViewVerion.setNode(frozenNode) ;
+      uiViewVerion.setRendered(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
     }
   }

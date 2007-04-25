@@ -67,10 +67,4 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-  
-  static public class UIViewMode extends UIContainer {
-    public UIViewMode() throws Exception {
-      
-    }
-  }
 }

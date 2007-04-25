@@ -12,6 +12,8 @@ import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
+import org.exoplatform.webui.component.validator.EmailAddressValidator;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -43,11 +45,11 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
   private Node docNode_ ;
 
 
-  public UICBCommentForm() {
+  public UICBCommentForm() throws Exception {
     addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
-    addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null)) ;
+    addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-    addChild(new UIFormTextAreaInput(FIELD_COMMENT, FIELD_COMMENT, null)) ;
+    addChild(new UIFormTextAreaInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(EmptyFieldValidator.class)) ;
     setActions(new String[] {"Save", "Cancel"}) ;
   }
 
