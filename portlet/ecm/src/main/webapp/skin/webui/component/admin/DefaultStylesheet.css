@@ -11,6 +11,10 @@
 @import url("UINodeTypeManager/DefaultStylesheet.css");
 @import url("UITaxonomyManager/DefaultStylesheet.css");
 
+.UIPageDesktop .UIECMAdminPortlet {
+  overflow: hidden;
+}
+
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator  {
   float: right;
   width: 95%;
