@@ -93,6 +93,7 @@ public class UIMetadataManager extends UIContainer {
     UIMetadataView uiView = uiPopup.createUIComponent(UIMetadataView.class, null, null) ;
     uiView.setMetadata(nodeType) ;
     uiPopup.setUIComponent(uiView) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void initPopupPermission() throws Exception {

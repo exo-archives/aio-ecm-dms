@@ -29,5 +29,6 @@ public class UIWorkflowControllerPortlet extends UIPortletApplication {
     UIPopupWindow popup = addChild(UIPopupWindow.class, null, "ControllerPopup").setRendered(false) ;
     popup.setUIComponent(createUIComponent(UITaskManager.class, null, null)) ;
     popup.setWindowSize(600, 0) ;
+    popup.setResizable(true) ;
   }
 }
