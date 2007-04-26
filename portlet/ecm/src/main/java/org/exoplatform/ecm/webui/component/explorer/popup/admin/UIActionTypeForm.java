@@ -88,9 +88,11 @@ public class UIActionTypeForm extends UIForm {
         UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
         Object[] arg = { actionType } ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        actionType = "exo:sendMailAction" ;
+        uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
         UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
         uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
-        return ;
       }
       UIActionContainer uiActionContainer = uiActionType.getParent() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;

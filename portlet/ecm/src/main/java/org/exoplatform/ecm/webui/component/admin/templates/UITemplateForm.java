@@ -66,7 +66,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
   public UITemplateForm() throws Exception {
     super("UITemplateForm", false) ;
     UIFormInputSetWithAction templateTab = new UIFormInputSetWithAction(FIELD_TAB_TEMPLATE) ;
-    templateTab.setActions(new String[]{"Save", "Refresh", "Cancel"}, null) ;
+    //templateTab.setActions(new String[]{"Save", "Refresh", "Cancel"}, null) ;
     templateTab.addUIFormInput(new UIFormSelectBox(FIELD_NAME, FIELD_NAME, getOption())) ;
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_LABEL, FIELD_LABEL, null).
                                addValidator(EmptyFieldValidator.class)) ;
@@ -87,7 +87,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
                                   addValidator(EmptyFieldValidator.class)) ;
     defaultViewTab.setRendered(false) ;
     addUIFormInput(defaultViewTab) ;
-    setActions(new String[]{}) ;
+    setActions(new String[]{"Save", "Refresh", "Cancel"}) ;
   }
 
   public void refresh()throws Exception {

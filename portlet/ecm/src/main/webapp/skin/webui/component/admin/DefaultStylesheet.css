@@ -241,14 +241,25 @@ UIECMAdminPortlet .UIViewManager {
 .UIECMAdminPortlet .UIViewContainer .UIViewList {
   margin-top: 5px;
 }
+.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
+  width: 70px;
+}
 
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
-  width: 95%;
-  margin: auto;
+.UIECMAdminPortlet .UIViewContainer .UIViewList .ActionContainer {
+  width: 110px ;  
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIViewList .ActionButton {
+  width: 90px ;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewList .UIAction {
   width: 80px ;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
+  width: 95%;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
@@ -265,37 +276,26 @@ UIECMAdminPortlet .UIViewManager {
   padding-left: 50px;
 }
 
-.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
-  margin: auto;
-  width: 60px;
-}
 
-.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer {
-  margin: auto;
-  width: 60px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIViewList {
+.UIECMAdminPortlet .ECMTemplate .UIECMTemplateList {
   margin-top: 5px;
 }
-
-.UIECMAdminPortlet .UIViewContainer .UIViewList .UIAction {
-  width: 70px ;
+.UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer{
+	width: 60px;
 }
-
-.UIECMAdminPortlet .UIECMTemplateList {
-  margin-top: 5px;
-}
-
 .UIECMAdminPortlet .UIECMTemplateList .UIAction  {
   width: 50px;
 }
 
-.UIECMAdminPortlet .UICBTemplateList {
+.UIECMAdminPortlet .CBTemplate .UIGrid .ActionContainer {
+  width: 50px;
+}
+
+.UIECMAdminPortlet .CBTemplate .UICBTemplateList {
   margin-top: 5px;
 }
 
-.UIECMAdminPortlet .UICBTemplateList .UIAction {
+.UIECMAdminPortlet .CBTemplate .UICBTemplateList .UIAction {
    width: 85px;
 }
 
@@ -314,8 +314,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .ECMTempForm .UIFormWithTitle .UIAction {
-	width: 230px;
-	padding: 10px 0px 0px 10px;
+	width: 330px;
+	padding-left: 70px;
 }
 
 .CBTempForm .UIFormWithTitle .HorizontalLayout .FieldContainer {
@@ -324,8 +324,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .CBTempForm .UIFormWithTitle .UIAction {
-	width: 230px;
-	padding-left: 20px;
+	width: 330px;
+	padding-left: 70px;
 }
 
 .CBTempForm .UIFormWithTitle label {
@@ -361,6 +361,15 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 /*############################## -- UIScriptManager  -- ########################*/
+.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 60px;
+}
+
+.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 60px;
+}
 
 .UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
@@ -403,8 +412,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
-  width: 230px;
-  padding-left: 80px;
+  width: 330px;
+  padding-left: 90px;
 }
 
 .UIECMScripts .UIFormWithTitle .UIForm textarea {
@@ -422,8 +431,13 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
-  width: 230px;
-  padding-left: 30px;
+  width: 330px;
+  padding-left: 90px;
+}
+
+.UICBScripts .UIFormWithTitle .UIForm textarea {
+  width: 320px;
+  height: 300px;
 }
 
 .UICBScripts .CBScriptList .UIAction {
@@ -436,14 +450,8 @@ UIECMAdminPortlet .UIViewManager {
 
 /*############################## --Begin UITemplatesManager --##############################*/
 
-.UIECMAdminPortlet .UITemplatesManager .UIPageIterator  {
-  float: right;
-  width: 95%;
-}
-
 .UITemplatesManager .UIGrid .ActionContainer {
   width: 50px ;
-  margin: auto;
 }
 
 .UITemplatesManager .UITabPane {
@@ -459,6 +467,11 @@ UIECMAdminPortlet .UIViewManager {
 .UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout {
 	width: 550px;
 	margin: auto;
+}
+
+.UITemplatesManager .UIFormTabPane .UIAction {
+ width: 300px; 
+ margin: auto;
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
@@ -483,11 +496,6 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 /*############################## -- UIQueriesManager  -- ########################*/
-
-.UIECMAdminPortlet .UIQueriesManager .UIPageIterator  {
-  float: right;
-  width: 95%;
-}
 
 .UIQueriesManager .UIQueriesForm .HorizontalLayout .FieldContainer {
 	width: 520px;
@@ -606,8 +614,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIAction {
-	width: 230px;
-	padding-right: 35px;
+	width: 320px;
+	padding-left:50px;
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
@@ -632,8 +640,8 @@ UIECMAdminPortlet .UIViewManager {
 /*############################## -- UIViewTab -- ########################*/
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
-	width: 250px;
-	padding-right: 15px;
+	width: 320px;
+	padding-left:50px;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
