@@ -30,10 +30,18 @@
       %>
 		      <tr class="$rowClass">
 		        <td>
-		          <div class="Text"><%=action.getProperty("exo:name").getString()%></div>
+		          <div class="Text">
+		          	<%if(action.hasProperty("exo:name")){%>
+		          		<%=action.getProperty("exo:name").getString()%>
+		          	<%}%>
+		          </div>
 		        </td>
 		        <td>
-		          <div class="Text"><%=action.getProperty("exo:description").getString()%></div>
+		          <div class="Text">
+		          	<%if(action.hasProperty("exo:description")){%>
+		          		<%=action.getProperty("exo:description").getString()%>
+		          	<%}%>
+		          </div>
 		        </td>
 		        <td>
 		          <div class="Text">[<%=action.getPrimaryNodeType().getName()%>]</div>
