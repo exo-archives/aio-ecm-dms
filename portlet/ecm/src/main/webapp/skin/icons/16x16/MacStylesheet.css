@@ -274,21 +274,21 @@
 
 .DeleteIconInfo {
   float: left;
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat ; 
+  width: 17px; height: 18px;
+  background: url('/eXoResources/icons/16x16/MacSkin/DeleteIcon.png') no-repeat ; 
   cursor: pointer;
   margin-left: 3px;
 }
 
 .EditStyleIcon {
   width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  background: url('MacSkin/EditIcon.png') no-repeat ;
   cursor: pointer;
 }
 
 .EditIcon {
   width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  background: url('MacSkin/EditIcon.png') no-repeat ;
   cursor: pointer;
 }
 

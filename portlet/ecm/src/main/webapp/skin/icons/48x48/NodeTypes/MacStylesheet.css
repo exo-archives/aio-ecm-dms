@@ -113,6 +113,17 @@
   background: url('DefaultSkin/exo-template.gif') no-repeat;  
 }
 
+.exo_tag48x48Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/exo-tag.gif') no-repeat;  
+}
+
+.exo_tagStyle48x48Icon{
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/exo-tagStyle.gif') no-repeat;  
+}
+
+
 .exo_versionStorage48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/exo-versionStorage.gif') no-repeat;  
