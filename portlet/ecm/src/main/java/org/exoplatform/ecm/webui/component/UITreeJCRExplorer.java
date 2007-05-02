@@ -17,7 +17,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UITree;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -29,18 +28,11 @@ import org.exoplatform.webui.event.EventListener;
  * Oct 17, 2006
  * 10:45:01 AM 
  */
-@ComponentConfigs({
-//    @ComponentConfig(
-//        type = UITree.class, id = "UIJCRTree",
-//        template = "system:/groovy/webui/component/UITree.gtmpl" , 
-//        events = @EventConfig(listeners = UITreeJCRExplorer.ChangeNodeActionListener.class)
-//    ),
-    @ComponentConfig(
-        template =  "app:/groovy/webui/component/UITreeJCRExplorer.gtmpl",
-        events = @EventConfig(listeners = UITreeJCRExplorer.ChangeNodeActionListener.class)
-    )
+@ComponentConfig(
+    template =  "app:/groovy/webui/component/UITreeJCRExplorer.gtmpl",
+    events = @EventConfig(listeners = UITreeJCRExplorer.ChangeNodeActionListener.class)
+)
     
-})
 public class UITreeJCRExplorer extends UIContainer {
 
   private Node currentNode_ ;
@@ -48,7 +40,6 @@ public class UITreeJCRExplorer extends UIContainer {
   private boolean isTab_ = false;
   
   public UITreeJCRExplorer() throws Exception {
-//    UITree tree = addChild(UITree.class, "UIJCRTree", null) ;
     UITree tree = addChild(UITree.class, null, null) ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;
@@ -166,10 +157,7 @@ public class UITreeJCRExplorer extends UIContainer {
       String uri = event.getRequestContext().getRequestParameter(OBJECTID)  ;
       uiTreeJCR.setNodeSelect(uri) ;
       UIJCRBrowser uiJCRBrowser = uiTreeJCR.getParent() ;
-      //UIComponent uicomp = uiJCRBrowser.getReturnComponent().getParent() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiJCRBrowser) ;
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uiJCRBrowser.getParent()) ;
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uicomp) ;
     }
   }
 }

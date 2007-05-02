@@ -42,20 +42,6 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     uiDocumentForm.addNew(true) ;
     addChild(uiDocumentForm) ;    
   }
-  
-  public void initDocumentForm(boolean isEditMode) throws Exception{
-    if(isEditMode) {
-      // set flag to UISelectDocumentForm
-      // set Default path to UISelectDocumentForm
-      
-      // set flag to DocumentForm
-      // set Default path to DocumentForm
-    }else {
-      
-    }
-    
-    
-  }
 
   public void activate() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();

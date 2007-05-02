@@ -98,7 +98,7 @@ public class UILanguageDialogForm extends DialogFormFields {
       Value value = null;
       for(UIComponent uiChild : getChildren()) {
         if(propertiesName_.get(uiChild.getName()).equals(Utils.JCR_DATA)) {
-          String  str = ((UIFormInput) uiChild).getValue().toString() ;
+          String str = ((UIFormInput) uiChild).getValue().toString() ;
           value = uiExplorer.getSession().getValueFactory().createValue(str) ;
           break ;
         }

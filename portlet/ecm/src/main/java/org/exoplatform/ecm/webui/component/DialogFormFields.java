@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.jcr.Item;
 import javax.jcr.Node;
+import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
@@ -22,9 +23,11 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.faces.core.component.UIStringInput;
+import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
@@ -63,10 +66,13 @@ public class DialogFormFields extends UIForm {
 
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
+  public String rootPath_ ;
   protected Node node_ = null;
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
+  private boolean isEditMode_ = false ;
+  private String savedPath_ ;
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
   private static final String SEPARATOR = "=";
@@ -108,9 +114,18 @@ public class DialogFormFields extends UIForm {
   public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
   public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
 
+  public void setIsEditMode(boolean isEditMode) { isEditMode_ = isEditMode ; }
+  
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
+  
+  public void setSavedPath(String savedPath) { savedPath_ = savedPath ; }
+  public String getSavedPath() { 
+    if(savedPath_ == null) savedPath_ = rootPath_ ;
+    return savedPath_ ; 
+  }
+  
   public void resetScriptInterceptor(){
     prevScriptInterceptor_.clear() ;
     postScriptInterceptor_.clear() ;
@@ -817,9 +832,23 @@ public class DialogFormFields extends UIForm {
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = dialogForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currNode = uiJCRExplorer.getCurrentNode() ;
-      String path = currNode.getPath()+ "&workspaceName=" + currNode.getSession().getWorkspace().getName() ;
+      Node currNode = null;
+      String workspace = null ;
+      if(!dialogForm.isEditMode_) {
+        UIJCRExplorer uiJCRExplorer = dialogForm.getAncestorOfType(UIJCRExplorer.class) ;
+        currNode = uiJCRExplorer.getCurrentNode() ;
+        workspace = currNode.getSession().getWorkspace().getName() ;
+      } else {
+        RepositoryService repositoryService = 
+          dialogForm.getApplicationComponent(RepositoryService.class) ;
+        CmsConfigurationService cmsConfigurationService = 
+          dialogForm.getApplicationComponent(CmsConfigurationService.class) ;
+        Session session = 
+          repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
+        currNode = (Node) session.getItem(dialogForm.getSavedPath()) ;
+        workspace = cmsConfigurationService.getWorkspace() ;
+      }
+      String path = currNode.getPath()+ "&workspaceName=" + workspace ;
       
       for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;

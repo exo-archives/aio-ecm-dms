@@ -570,7 +570,6 @@ public class UIWorkingArea extends UIContainer {
         node.unlock();  
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       } catch(LockException ve) {
-        //ve.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

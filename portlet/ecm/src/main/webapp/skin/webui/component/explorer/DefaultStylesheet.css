@@ -42,3 +42,61 @@
 .UIPopupMessages .UIAction {
   width: 100px;
 }
+
+/*===========================EditMode=====================*/
+
+.UIJCRExplorerPortlet .UIEditModeController .UIAction {
+	width: 165px;
+	padding-left: 20px;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UITabPane .TabPaneContent {
+  width: 97%;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .TabPaneContent .UITabContentContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .TabPaneContent .UITabContentContainer label{
+  width: 150px;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UITabContentContainer .FieldContainer{
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UIFormWithTitle {
+  border: 1px solid #e1e1e1;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UIFormWithTitle .HorizontalLayout {
+  padding-bottom: 10px;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UIEditModeDocumentType {
+  padding-bottom: 3px; 
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UIEditModeDocumentType label{
+  width: 200px;
+  text-align: right;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UIFormWithTitle .FieldContainer label {
+  padding: 0px 3px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .UIFormWithTitle .UIAction {
+  padding: 12px 0px 0px 65px;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .TabPaneContent .UIFormWithTitle {
+  width: auto;
+}
+
+.UIJCRExplorerPortlet .UIEditModeController .TabPaneContent {
+  margin: 5px;
+}
