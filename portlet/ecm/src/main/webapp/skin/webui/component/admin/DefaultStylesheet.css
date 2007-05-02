@@ -560,7 +560,7 @@ UIECMAdminPortlet .UIViewManager {
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin-bottom: 10px ;
-  margin-left: 135px ;
+  margin-left: 165px ;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
