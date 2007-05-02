@@ -32,7 +32,7 @@
  <div class="ContentHolder">
  <%   
         
-	 	String styleWithTag = "" ;
+	 	String styleWithTag = "margin-right: 0px;" ;
 	 	if(isShowTagmap) {	
 	 		styleWithTag = "margin-right: 210px;"	 ;  		
 	 		def taglist = uicomponent.getTagLink() ;

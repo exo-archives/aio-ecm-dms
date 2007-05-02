@@ -213,7 +213,7 @@ public class UIBrowseContainer extends UIContainer {
       return (Node)getSession().getItem(nodePath) ;
     } catch(Exception e){
       getSession().refresh(true) ;
-      return null ;
+      return null  ;
     }
   }
   public Node getRootNode() {return rootNode_ ;}
@@ -635,6 +635,7 @@ public class UIBrowseContainer extends UIContainer {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;

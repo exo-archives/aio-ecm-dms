@@ -41,7 +41,7 @@
 	 }else {	 
 	 %>
 	 <%   /*Begin TagMap*/   
-			 	String styleWithTag = "" ;
+			 	String styleWithTag = "margin-right: 0px" ;
 			 	if(isShowTagmap) {	
 			 		styleWithTag = "margin-right: 210px;"	 ;  		
 			 		def taglist = uicomponent.getTagLink() ;
@@ -74,7 +74,7 @@
 		<div style="$styleWithTag">
 		
 		<% /*Begin CategoryTree*/
-			String style = "" ;
+			String style = "margin-left: 0px;" ;
 	 		if(uicomponent.isShowCategoryTree()){
 	   		style = "margin-left: 210px;" ;
 	   		String rootNode = uicomponent.getRootNode().getPath() ;
