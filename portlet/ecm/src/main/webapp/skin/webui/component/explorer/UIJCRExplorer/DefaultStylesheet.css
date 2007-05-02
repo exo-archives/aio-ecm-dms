@@ -489,6 +489,16 @@
   padding-left: 15px;
 }
 
+/*================================UIMetadataSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .FieldContainer label {
+	width: 200px;
+}
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIAction {
+	width: 160px;
+	padding-left: 100px;
+}
+
 /*================================UIActivateVersion=================================*/
 
 .UIJCRExplorerPortlet .UIActivateVersion .UIAction {

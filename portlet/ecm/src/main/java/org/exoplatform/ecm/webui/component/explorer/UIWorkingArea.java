@@ -529,8 +529,13 @@ public class UIWorkingArea extends UIContainer {
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
+      if(node.equals(uiExplorer.getCurrentNode())){
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } 
       try {
-        Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
         if(!node.isNodeType(MIX_LOCKABLE)) {
           node.addMixin(MIX_LOCKABLE);
           node.save();
@@ -551,11 +556,17 @@ public class UIWorkingArea extends UIContainer {
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
+      if(node.equals(uiExplorer.getCurrentNode())){
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } 
       try {
-        Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
         node.unlock();  
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      } catch(LockException ve) {       
+      } catch(LockException ve) {
+        //ve.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
