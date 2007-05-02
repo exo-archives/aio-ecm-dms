@@ -83,15 +83,15 @@
    line-height: 22px;
 }
 
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a:hover {
+  background: #058eee;
+}
+
 .UIBrowseContentPortlet .TagmapHolder .Icon{
 	float: left;
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
-}
-
-
-.UIBrowseContentPortlet .TagmapHolder .TagmapContent .Tag {
 }
 
 
