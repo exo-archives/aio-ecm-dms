@@ -540,7 +540,8 @@ public class UIWorkingArea extends UIContainer {
           node.addMixin(MIX_LOCKABLE);
           node.save();
         }
-        node.lock(true, true); 
+        node.lock(false, false);
+        System.out.println("\n\n node.lock(false, false) \n\n");
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       } catch(LockException le) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null)) ;

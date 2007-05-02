@@ -28,7 +28,7 @@
 	    </div>
 	  </div>
 	  <%/*End popup*/%>
-    <div class="DropSelectButton" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)">
+    <div class="DropSelectButton" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)">
       <div class="DropDownButton" title="Control Sidebar"><span></span></div>
     </div>
     <div class="ControlBody">

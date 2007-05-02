@@ -242,6 +242,8 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
+      System.out.println("\n\n" + currentNode.getPath() + " isLock() = " + currentNode.isLocked() + "\n\n");
+      System.out.println("\n\n" + currentNode.getPath() + " holdsLock() = " + currentNode.holdsLock() + "\n\n");
       Session session = uiExplorer.getSession() ;
       if(uiExplorer.isPreferenceNode(currentNode)) {
         String preferenceWS = currentNode.getSession().getWorkspace().getName() ;
