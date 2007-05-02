@@ -166,6 +166,10 @@
 
 /*############################## -- UIActionManager   -- ##############################*/
 
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
+  padding: 10px 0px;
+}
+
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UITabPane {
   padding: 10px;
 }

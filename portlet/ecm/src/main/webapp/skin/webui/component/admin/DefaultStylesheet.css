@@ -314,8 +314,9 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .ECMTempForm .UIFormWithTitle .UIAction {
-	width: 330px;
-	padding-left: 70px;
+	width: 310px;
+	padding-left: 90px;
+
 }
 
 .CBTempForm .UIFormWithTitle .HorizontalLayout .FieldContainer {
@@ -324,8 +325,9 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .CBTempForm .UIFormWithTitle .UIAction {
-	width: 330px;
-	padding-left: 70px;
+	width: 310px;
+	padding-left: 90px;
+
 }
 
 .CBTempForm .UIFormWithTitle label {
@@ -432,7 +434,8 @@ UIECMAdminPortlet .UIViewManager {
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
   width: 330px;
-  padding-left: 90px;
+  padding-left: 95px;
+
 }
 
 .UICBScripts .UIFormWithTitle .UIForm textarea {
@@ -597,6 +600,7 @@ UIECMAdminPortlet .UIViewManager {
 .UIECMAdminPortlet .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   margin: auto;
+  border: none;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {

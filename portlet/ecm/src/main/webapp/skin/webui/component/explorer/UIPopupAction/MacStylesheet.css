@@ -162,11 +162,17 @@
 }
 
 /*############################## -- UIActionManager   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
+  padding: 10px 0px;
+}
+
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   padding: 10px;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/
+
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
 	line-height: 16px ;
 }

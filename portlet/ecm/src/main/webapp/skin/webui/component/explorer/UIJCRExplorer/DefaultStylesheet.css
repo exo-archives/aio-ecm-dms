@@ -278,6 +278,24 @@
 	padding-left: 20px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent {
+  width: 97%;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer label{
+  width: 150px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .FieldContainer{
+  width: 500px;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
 }
@@ -304,7 +322,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
-  padding-top: 12px;
+  padding: 12px 0px 0px 65px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
@@ -357,7 +375,6 @@
 .UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout .UIAction {
   width: 170px;
   padding: 0px 0px 8px 10px;
-  border: solid 1px red;
 }
 
 /*==================================UIMultiLanguageForm==============================*/

@@ -22,13 +22,13 @@
 }
 
 .CollapseFolder24x24Icon {
-  background: url('DefaultSkin/BlueOpenFolder.gif') no-repeat center center;
+  background: url('MacSkin/BlueOpenFolder.gif') no-repeat center center;
   width: 24px; height: 24px;
 }
 
 .ExpandFolder24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueClosedFolder.gif') no-repeat center center;
+  background: url('MacSkin/BlueClosedFolder.gif') no-repeat center center;
 }
 
 .Style1NextArrow24x24Icon  {
@@ -53,7 +53,7 @@
 
 .ViewMetadatasIcon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/ViewMetadata.gif') no-repeat;
+	background: url('DefaultSkin/ViewMatadata.gif') no-repeat;
 }
 
 .VoteIcon {

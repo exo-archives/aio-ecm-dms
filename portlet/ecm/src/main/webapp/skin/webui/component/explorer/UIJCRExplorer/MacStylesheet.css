@@ -283,6 +283,24 @@
 	padding-left: 55px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent {
+  width: 97%;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer label{
+  width: 150px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .FieldContainer{
+  width: 500px;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
 }
@@ -393,15 +411,19 @@
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
-  padding-bottom: 15px;
+  border-bottom: none;
+  padding-top: 8px;
+  border-top: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle  {
-  border: solid 1px #b7b7b7;
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
+  border-top: none;
 }
 
-
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer label {
+  width: 120px;
+  padding-right: 5px;
+}
 /*==================================UIVoteForm==============================*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
