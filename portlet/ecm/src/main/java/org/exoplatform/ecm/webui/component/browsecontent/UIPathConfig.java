@@ -210,9 +210,7 @@ public class UIPathConfig extends UIForm implements UISelector{
         app.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null)) ;
         return ;
       } 
-      try{
-        container.getNodeByPath(jcrPatth) ;
-      } catch (Exception e) {
+      if(container.getNodeByPath(jcrPatth) == null) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null)) ;
         return ;

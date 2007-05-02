@@ -171,9 +171,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
         return ;
       } 
-      try{
-        container.getNodeByPath(jcrPatth) ;
-      } catch (Exception e) {
+      if(container.getNodeByPath(jcrPatth) == null) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
         return ;

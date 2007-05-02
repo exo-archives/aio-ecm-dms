@@ -256,7 +256,8 @@
 }
 
 .UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 40px;
+	width: 60px;
+	margin: auto;
 }
 
 .UIBrowseContentPortlet .UISearchController .ViewIcon{

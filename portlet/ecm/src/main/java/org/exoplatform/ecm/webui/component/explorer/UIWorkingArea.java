@@ -542,10 +542,14 @@ public class UIWorkingArea extends UIContainer {
         }
         node.lock(true, true); 
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      } catch(Exception e) {
-        e.printStackTrace() ;
+      } catch(LockException le) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
+      
     }
   }
 
