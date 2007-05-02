@@ -17,7 +17,7 @@
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Lifecycle</label>
+      <label>Life cycle</label>
       <% 
         String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
         uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 

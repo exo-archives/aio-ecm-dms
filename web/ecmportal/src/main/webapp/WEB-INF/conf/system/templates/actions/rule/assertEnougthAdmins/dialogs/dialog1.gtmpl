@@ -9,7 +9,7 @@
 	    #jsfDialogFormField("inputName=name" "jcrPath=/node/exo:name")
 	  	</div>		
 	  <div class="row">
-	    <label>Lifecycle:</label>
+	    <label>Life cycle:</label>
 	    #jsfDialogFormField("inputName=lifecycle" "jcrPath=/node/exo:lifecyclePhase" "widget=selectbox" "options=read,add,remove")	
 	  	</div>			  	
 	  <div class="row">

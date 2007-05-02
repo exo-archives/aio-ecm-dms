@@ -9,7 +9,7 @@
  		</td>
   </tr>
   <tr>
-    <td style="width:25%">Lifecycle:</td>
+    <td style="width:25%">Life cycle:</td>
     <td>
     	<%if(node.hasProperty("exo:lifecyclePhase")){%>
     		<%=node.getProperty("exo:lifecyclePhase").getString()%>    		

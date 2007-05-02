@@ -549,7 +549,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       try {
         Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
