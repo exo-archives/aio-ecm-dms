@@ -96,18 +96,22 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }else {      
       List<Value>  watcherList = new ArrayList<Value>() ;
       if(notifyType == NOTIFICATION_BY_EMAIL) {
-        for(Value watcher : documentNode.getProperty(EMAIL_WATCHERS_PROP).getValues()) {
-          watcherList.add(watcher) ;
+        if(documentNode.hasProperty(RSS_WATCHERS_PROP)) {
+          for(Value watcher : documentNode.getProperty(EMAIL_WATCHERS_PROP).getValues()) {
+            watcherList.add(watcher) ;
+          }
+          watcherList.add(newWatcher) ;
         }
-        watcherList.add(newWatcher) ;
         documentNode.setProperty(EMAIL_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
         documentNode.save() ;
       }
       if(notifyType == NOTIFICATION_BY_RSS) {
-        for(Value watcher : documentNode.getProperty(RSS_WATCHERS_PROP).getValues()) {
-          watcherList.add(watcher) ;
+        if(documentNode.hasProperty(RSS_WATCHERS_PROP)) {
+          for(Value watcher : documentNode.getProperty(RSS_WATCHERS_PROP).getValues()) {
+            watcherList.add(watcher) ;
+          }
+          watcherList.add(newWatcher) ;
         }
-        watcherList.add(newWatcher) ;
         documentNode.setProperty(RSS_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
         documentNode.save() ;
       }
@@ -127,7 +131,6 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         }
       }
       documentNode.setProperty(EMAIL_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
-      documentNode.save() ;      
     }
 
     if(notificationType == NOTIFICATION_BY_RSS) {
@@ -139,8 +142,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         }
       }
       documentNode.setProperty(RSS_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
-      documentNode.save() ;
     }
+    documentNode.removeMixin(EXO_WATCHABLE_MIXIN) ;
+    documentNode.save() ;  
     session.save() ;
   }  
 
