@@ -9,6 +9,47 @@
 	  <style>
 			.Comments {}
 	    
+	     .Comments .CommentBar .LeftCommentBar {
+	      height: 54px;
+	      padding-left: 5px;
+	      background: url('/ecm/skin/images/article/LeftCommentBar5x54.gif') no-repeat left ;
+	    }
+	    
+	    .Comments .CommentBar .RightCommentBar {
+	    	padding-right: 5px;
+	    	height: 54px;    	
+	      background: url('/ecm/skin/images/article/RightCommentBar5x54.gif') no-repeat right top;
+	    }
+	    
+	    .Comments .CommentBar .MiddleCommentBar {    	
+	    	height: 54px;
+	      background: url('/ecm/skin/images/article/MiddleCommentBar1x54.gif') repeat-x ;
+	      padding: 0px 3px;
+	    }
+	    
+	    .Comments .CommentBar .MiddleCommentBar .LabelPostedComment {    	
+	    	font: italic normal 12px Arial; 
+	    	padding: 8px 3px 3px 3px; 
+	    }
+	    
+	    .Comments .CommentBar .MiddleCommentBar .ShowComment {    	
+	    	color: #0489d5; 
+	    	font: normal bold 11px verdana;
+	    	padding-top: 3px;
+	    }
+	    
+	    .Comments .CommentBar .MiddleCommentBar .ShowComment a {    	
+	    	color: #0489d5; 
+	    	text-decoration: underline;
+	      cursor: pointer;
+	    }
+	    
+	    .Comments .CommentBar .MiddleCommentBar .ShowComment a:hover {    	
+	    	color: orange; 
+	    	text-decoration: none;
+	    	cursor: pointer;
+	    }
+	    
 	    .Comments .CommentInfo {
 	    	font-style: italic;  
 	    	margin: 15px 5px 5px 5px;
@@ -20,13 +61,14 @@
 	    	cursor:pointer;    	
 	    }
 	    
-	    .Comments .CommentInfo a:hover{    	
+	    .Comments .CommentInfo a:hover {     	
 	    	color: blue;
 	    	text-decoration:underline;    	     	
 	    }
 	    
 	    .Comments .CommentBox {
-		    margin: 0px 15px;
+	      width: 99%;
+	      margin-right: auto;
 	    }
 	    
 	    .Comments .CommentBox .CommentBoxTopLeft {
@@ -45,9 +87,9 @@
 	      height: 12px;
 	      background: url('/ecm/skin/images/article/CommentBoxTC1x3.gif') repeat-x bottom;
 	    }
-	    
+	   
 	    .Comments .CommentBox .CommentBoxMiddleLeft {
-	    	padding-left:3px;
+	    	padding-left: 3px;
 	      background: url('/ecm/skin/images/article/CommentBoxML3x1.gif') repeat-y left;
 	    }
 	    
@@ -57,55 +99,43 @@
 	    }
 	    
 	    .Comments .CommentBox .CommentBoxCenterBG {
-	    	padding:10px; 
-	    	background:white;
-	    	height:auto ;     	         	    	
+	    	padding: 8px; 
+	    	background: white;
+	    	height: auto ;     	         	    	
 	    }
 	    
 	    .Comments .CommentBox .CommentBoxBottomLeft {
 	      height: 3px;
 	      padding-left: 3px;
-	      background: url('/ecm/skin/images/article/CommentBoxBL3x3.gif') no-repeat left ;
+	      background: url('/ecm/skin/images/article/CommentBoxBL3x3.gif') no-repeat left top ;
 	    }
 	    
 	    .Comments .CommentBox .CommentBoxBottomRight {
-	    	padding-right:3px;
-	    	height:3px;    	
+	    	padding-right: 3px;
+	    	height: 3px;    	
 	      background: url('/ecm/skin/images/article/CommentBoxBR3x3.gif') no-repeat right top;
 	    }
 	    
 	    .Comments .CommentBox .CommentBoxBottomCenter {    	
-	    	height:3px;
+	    	height: 3px;
 	      background: url('/ecm/skin/images/article/CommentBoxBC1x3.gif') repeat-x top;
 	    }
 		</style>
     <div class="Comments">
-			<div class="DecoratorBox" style="width: 400px;">
-				<div class="GrayRoundedFillBoxStyle">
-				  <div class="TopLeftCornerBoxDecorator">
-				    <div class="TopRightCornerBoxDecorator">
-				      <div class="TopCenterBoxDecorator"><span></span></div>
-				    </div>
-				  </div>
-				  <div class="MiddleLeftSideBoxDecorator">
-				    <div class="MiddleRightSideBoxDecorator">
-				      <div class="CenterBoxDecorator" style="padding: 0px 15px;">
-				  			<div style="font: italic normal 12px Arial; padding: 3px;">
-				  			  Posted by <span style="color:#f7941e"><%=lastComment.getProperty("exo:commentor").getString()%></span> 
-				  			  at <%=dateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
-				  			</div>
-				  			<div style="color:#0489d5; font: normal bold 11px verdana;">
-					  			<div style="float: left;"><%=commentsList.size()%> Comments</div>
-					  			<div style="float: right; cursor: pointer; text-decoration: underline;" onclick="eXo.ecm.ECMUtils.showHideComponent(this, 'CommentsList')"><span>show comments</span><span style="display: none">hide comments</span></div>
-					  			<div style="clear: both;"><span></span></div>
-					  	  </div>
-			        </div>
-			      </div>
-				  </div>
-					<div class="BottomLeftCornerBoxDecorator">
-						<div class="BottomRightCornerBoxDecorator">
-						  <div class="BottomCenterBoxDecorator"><span></span></div>
-						</div>
+			<div class="CommentBar" style="width: 400px;">
+				<div class="LeftCommentBar">
+				  <div class="RightCommentBar">
+				    <div class="MiddleCommentBar">
+				    	<div class="LabelPostedComment">
+			  			  Posted by <span style="color:#f7941e"><%=lastComment.getProperty("exo:commentor").getString()%></span> 
+			  			  at <%=dateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
+			  			</div>
+			  			<div class="ShowComment">
+				  			<div style="float: left;"><%=commentsList.size()%> Comments</div>
+				  			<div style="float: right;" onclick="eXo.ecm.ECMUtils.showHideComponent(this, 'CommentsList')"><a>Show comments</a><span style="display: none"><a>Hide comments</a></span></div>
+				  			<div style="clear: both;"><span></span></div>
+				  	  </div>
+				 		</div>
 					</div>
 				</div>
 			</div>

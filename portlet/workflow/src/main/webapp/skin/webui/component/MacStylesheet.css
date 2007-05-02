@@ -190,3 +190,21 @@
 .UIWorkflowPortlet .UIDocumentContent .EventFrame .FrameContent {
   padding: 10px;
 }
+
+.UIWorkflowPortlet .UIPopupWindow .Content {
+  padding: 10px;
+}
+
+.UIWorkflowPortlet .UITabPane .UITask {
+  width: 500px;
+  margin: auto;
+  padding-bottom: 7px;
+}
+
+.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
+  width: 130px; 
+}
+
+.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
+  width: 195px; 
+}
