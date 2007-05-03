@@ -71,8 +71,10 @@
 
 <%
   def voteNode = uicomponent.getNode() ;
-  double voteRating = voteNode.getProperty("exo:votingRate").getDouble() ;
-  long voteTotal = voteNode.getProperty("exo:voteTotalOfLang").getLong() ;
+  double voteRating = 0 ;
+  if(voteNode.hasProperty("exo:votingRate")) voteNode.getProperty("exo:votingRate").getDouble() ;
+  long voteTotal = 0 ;
+  if(voteNode.hasProperty("exo:votingRate")) voteNode.getProperty("exo:voteTotalOfLang").getLong() ;
 %>
 <div class="UIVote">
   <div class="VoteResultContainer">

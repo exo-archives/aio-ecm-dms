@@ -100,7 +100,7 @@ public class CommentsServiceImpl implements CommentsService {
     Node languagesNode = null ;
     Node languageNode = null ;
     if(!isSupportedLocalize(document,language)) {
-      language = document.getProperty("exo:language").getString() ; 
+      if(document.hasProperty("exo:language")) language = document.getProperty("exo:language").getString() ; 
     }
     if(document.hasNode(LANGUAGES)) {
       languagesNode = document.getNode(LANGUAGES) ;

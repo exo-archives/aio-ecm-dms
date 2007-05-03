@@ -119,13 +119,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   }
 
   public String getDefault(Node node) throws Exception {
-    return node.getProperty(EXO_LANGUAGE).getString() ;
+    if(node.hasProperty(EXO_LANGUAGE)) return node.getProperty(EXO_LANGUAGE).getString() ;
+    return null ;
   }
 
   public List<String> getSupportedLanguages(Node node) throws Exception {
     List<String> languages = new ArrayList<String>();
     String defaultLang = getDefault(node) ;
-    languages.add(defaultLang) ;
+    if(defaultLang != null) languages.add(defaultLang) ;
     if(node.hasNode(LANGUAGES)){
       Node languageNode = node.getNode(LANGUAGES) ;
       NodeIterator iter  = languageNode.getNodes() ;      
