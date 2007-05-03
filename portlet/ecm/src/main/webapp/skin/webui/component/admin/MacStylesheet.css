@@ -44,19 +44,19 @@
 }
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
-	width: 11px;
-	background: url('DefaultSkin/background/LayoutSeparator.gif') repeat-y left center;
+	width: 6px;
+	background: url('MacSkin/background/LayoutSeparator.gif') repeat-y left center;
 }
 
 .UIECMAdminPortlet .CollapseSideBar {
-	width: 11px; height: 30px;
-	background: url('MacSkin/background/CollapseSideBar.png') no-repeat;
+	width: 6px; height: 49px;
+	background: url('MacSkin/background/CollapseSideBar.gif') no-repeat;
 	cursor: pointer;
 }
 
 .UIECMAdminPortlet .ExpandSideBar {
-	width: 11px; height: 30px;
-	background: url('MacSkin/background/ExpandSideBar.png') no-repeat;
+	width: 6px; height: 49px;
+	background: url('MacSkin/background/ExpandSideBar.gif') no-repeat;
 	cursor: pointer;
 }
 

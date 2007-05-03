@@ -56,7 +56,7 @@
 			    <div class="Icon16x16 Add16x16Icon" onclick="<%=uicomponent.event("Add",rootNode.getPath());%>" title="Add"><span></span></div>
 			    <div class="Icon16x16 Paste16x16Icon" onclick="<%=uicomponent.event("Paste",rootNode.getPath());%>" title="Paste"><span></span></div>
 			  </div>
-		    <div class="Icon24x24 BlueDiamond24x24Icon"><span></span></div>
+		    <div class="Icon24x24 UITaxonomyManagerIcon"><span></span></div>
 		    <div class="NodeLabel">$rootNode.name</div>
 		  </div>
 		  <%writeNodes(rootNode.getChildren(), clazz)%>

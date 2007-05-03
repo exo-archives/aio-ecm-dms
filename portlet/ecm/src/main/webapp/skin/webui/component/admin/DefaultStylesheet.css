@@ -46,12 +46,12 @@
 }
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
-	width: 11px;
+	width: 6px;
 	background: url('DefaultSkin/background/LayoutSeparator.gif') repeat-y left center;
 }
 
 .UIECMAdminPortlet .CollapseSideBar {
-	width: 11px; height: 27px;
+	width: 6px; height: 49px;
 	background: url('DefaultSkin/background/CollapseSideBar.gif') no-repeat;
 	cursor: pointer;
 }
@@ -62,7 +62,7 @@
 }
 
 .UIECMAdminPortlet .ExpandSideBar {
-	width: 11px; height: 27px;
+	width: 6px; height: 49px;
 	background: url('DefaultSkin/background/ExpandSideBar.gif') no-repeat;
 	cursor: pointer;
 }

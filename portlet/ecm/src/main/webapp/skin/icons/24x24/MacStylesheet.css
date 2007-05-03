@@ -190,17 +190,17 @@
 
 .UIFolksonomyManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/FolksonomyManager.gif') no-repeat ;
+  background: url('MacSkin/ManageFolksonomyIcon.gif') no-repeat ;
 }
 
 .UITaxonomyManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/TaxonomyManager.gif') no-repeat ;
+  background: url('MacSkin/ManageTaxonomyIcon.gif') no-repeat ;
 }
 
 .UIMetadataManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/MetadataManager.png') no-repeat ;
+  background: url('MacSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 
 .AddMetadataTypeIcon {
@@ -210,27 +210,27 @@
 
 .UINamespaceManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/NamespaceManager.gif') no-repeat ;
+  background: url('MacSkin/NameSpaceRegistryIcon.gif') no-repeat ;
 }
 
 .UINodeTypeManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/NodeTypeManager.gif') no-repeat ;
+  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
 .UIActionManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ActionManager.gif') no-repeat ;
+  background: url('MacSkin/CreateActionTypeIcon.gif') no-repeat ;
 }
 
 .UITemplatesManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/TemplatesManager.gif') no-repeat ;
+  background: url('MacSkin/ManageTemplateIcon.gif') no-repeat ;
 }
 
 .UIScriptManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ScriptManager.gif') no-repeat ;
+  background: url('MacSkin/ManageScriptIcon.gif') no-repeat ;
 }
 
 .ManageOntologiesIcon {
@@ -260,19 +260,38 @@
 
 .UIViewManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ViewManager.gif') no-repeat ;
+  background: url('MacSkin/ManageViewIcon.gif') no-repeat ;
 }
 
 .UIDriveManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/DriveManager.gif') no-repeat ;
+  background: url('MacSkin/ManageDriveIcon.gif') no-repeat ;
 }
 
 .UIQueriesManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/QueriesManager.gif') no-repeat ;
+  background: url('MacSkin/ManageQueriesIcon.gif') no-repeat ;
 }
 
+.ManageOntologiesIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/ManageOntologies.png') no-repeat ;
+}
+
+.CreateDocumentTypesIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/CreateDocumentTypes.png') no-repeat ;
+}
+
+.DisplayDocumentsIcon {
+	width: 24px;	height: 22px;
+  background: url('MacSkin/DisplayDocuments.png') no-repeat ;
+}
+
+.ManageDynamicContentIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/ManageDynamicContent.png') no-repeat ;
+}
 /*=================================================================*/
 
 .RefreshSession24x24Icon {
