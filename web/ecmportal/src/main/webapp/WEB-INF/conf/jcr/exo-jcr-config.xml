@@ -16,9 +16,11 @@
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
               <property name="sourceName" value="jdbcjcr"/>
+              <property name="db-type" value="generic"/>
+              <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			  <property name="max-buffer-size" value="204800"/>
+              <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/production"/>
             </properties>
             <value-storages>
@@ -31,12 +33,6 @@
                 </filters>
               </value-storage>
             </value-storages>
-            <!-- SWAP will be actual if value storage isn't used, i.e. values will storing in database -->
-            <!-- binary-swap
-              directory-path="../temp/swap/production"
-              min-file-size="100K"
-              copy-local-files="false">
-            </binary-swap -->
           </container>
          <cache enabled="true">
           <properties>
@@ -54,9 +50,11 @@
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
               <property name="sourceName" value="jdbcjcr"/>
+              <property name="db-type" value="generic"/>
+              <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			        <property name="max-buffer-size" value="204800"/>
+              <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/draft"/>
             </properties>
             <value-storages>
@@ -69,11 +67,6 @@
                 </filters>
               </value-storage>
             </value-storages>
-            <!-- binary-swap
-              directory-path="../temp/swap/draft"
-              min-file-size="100K"
-              copy-local-files="false">
-            </binary-swap -->
           </container>
          <cache enabled="true">
           <properties>
@@ -91,9 +84,11 @@
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
               <property name="sourceName" value="jdbcjcr"/>
+              <property name="db-type" value="generic"/>
+              <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			        <property name="max-buffer-size" value="204800"/>
+              <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/backup"/>
             </properties>
             <value-storages>
@@ -106,17 +101,12 @@
                 </filters>
               </value-storage>
             </value-storages>
-            <!-- binary-swap
-              directory-path="../temp/swap/backup"
-              min-file-size="100K"
-              copy-local-files="false">
-            </binary-swap -->
           </container>
          <cache enabled="true">
           <properties>
             <property name="maxSize" value="1000"/>
             <property name="liveTime" value="10000"/>
-          </properties>          
+          </properties>
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
@@ -128,9 +118,11 @@
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
               <property name="sourceName" value="jdbcjcr"/>
+              <property name="db-type" value="generic"/>
+              <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
               <property name="update-storage" value="true"/>
-			        <property name="max-buffer-size" value="204800"/>
+              <property name="max-buffer-size" value="204800"/>
               <property name="swap-directory" value="../temp/swap/digital-assets"/>
             </properties>
             <value-storages>
@@ -143,11 +135,6 @@
                 </filters>
               </value-storage>
             </value-storages>
-            <!-- binary-swap
-              directory-path="../temp/swap/digital-assets"
-              min-file-size="100K"
-              copy-local-files="false">
-            </binary-swap -->
           </container>
           <cache enabled="true">
             <properties>
