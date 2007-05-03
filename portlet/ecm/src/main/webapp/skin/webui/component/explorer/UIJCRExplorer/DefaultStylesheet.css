@@ -304,11 +304,16 @@
   padding-bottom: 10px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer {
+  width: 95%;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 3px; 
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label{
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label {
   width: 200px;
   text-align: right;
 }
@@ -319,10 +324,11 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
   padding: 0px 3px 0px 0px;
+  width: 130px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
-  padding: 12px 0px 0px 65px;
+  padding: 12px 0px 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
@@ -449,6 +455,7 @@
   width: 500px;
   margin: auto;
 }
+
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .FieldContainer {
   padding-top: 8px;
 }
@@ -473,9 +480,13 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIAction {
-  width: 250px;
-  padding-left: 60px;
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer label {
+  width: 130px;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
+  width: 220px;
+  padding-left: 25px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
@@ -491,12 +502,20 @@
 
 /*================================UIMetadataSelectForm=================================*/
 
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle {
+	border: solid 1px #b7b7b7;
+	width: 93%;
+	margin: auto;
+	background: #efefef;
+}
+
 .UIJCRExplorerPortlet .UIMetadataSelectForm .FieldContainer label {
 	width: 200px;
 }
-.UIJCRExplorerPortlet .UIMetadataSelectForm .UIAction {
-	width: 160px;
-	padding-left: 100px;
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle .UIAction {
+	width: 150px;
+	padding: 15px 0px;
 }
 
 /*================================UIActivateVersion=================================*/

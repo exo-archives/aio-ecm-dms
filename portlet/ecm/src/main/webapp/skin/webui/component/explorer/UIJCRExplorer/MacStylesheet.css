@@ -28,6 +28,10 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MyEditor {
+  margin-left: 8px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
@@ -309,11 +313,16 @@
   padding-bottom: 10px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer {
+  width: 95%;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 3px; 
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label{
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label {
   width: 200px;
   text-align: right;
 }
@@ -324,14 +333,19 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
   padding: 0px 3px 0px 0px;
+  width: 130px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer .UIUploadForm {
-  margin-left: 8px;
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer .MyEditor {
+  margin-left: 7px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer .UploadIframe {
+  margin-left: 7px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
-  padding-top: 12px;
+  padding: 12px 45px 0px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
@@ -356,7 +370,11 @@
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle input {
-  margin-left: 0px;
+  margin-left: 6px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
+  margin-left: 6px;
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .FieldContainer{
@@ -424,6 +442,14 @@
   width: 120px;
   padding-right: 5px;
 }
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer .MyEditor {
+  margin-left: 7px;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer .UploadIframe {
+  margin-left: 7px;
+}
 /*==================================UIVoteForm==============================*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
@@ -488,10 +514,45 @@
 
 /*================================UIJCRAdvancedSearch=================================*/
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIAction {
-  width: 280px;
-  padding-left: 60px;
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer {
+  width: 500px;
+  margin: auto;
 }
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer label {
+  width: 130px;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
+  width: 250px;
+  padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
+  padding: 3px;
+}
+
+/*================================UIMetadataSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle {
+	width: 93%;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle .FieldContainer {
+	width: 500px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .FieldContainer label {
+	width: 200px;
+}
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle .UIAction {
+	width: 160px;
+	padding: 15px 0px;
+}
+
 /*================================UIConstraintsForm=================================*/
 
 .UIJCRExplorerPortlet .UIConstraintsForm .HorizontalLayout .UIAction {
@@ -550,6 +611,10 @@
   width: 500px;
   margin: auto;
 }
+
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer .MultiRadioInput  {
+  margin-left: 3px;
+} 
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input  {
   width: 15px; height: 15px;

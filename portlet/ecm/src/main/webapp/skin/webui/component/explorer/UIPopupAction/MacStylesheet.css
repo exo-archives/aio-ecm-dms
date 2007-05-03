@@ -168,7 +168,9 @@
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
-  padding: 10px;
+  width: 95%;
+  margin: auto;
+  padding: 10px 0px;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/

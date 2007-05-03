@@ -161,6 +161,10 @@
   width: 15px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer label {
+  width: 150px;
+}
+
 /*############################## -- UINamespaceManager -- ########################*/
 .UIECMAdminPortlet .UINamespaceManager .UIFormWithTitle {
 	margin: auto;
@@ -275,7 +279,6 @@ UIECMAdminPortlet .UIViewManager {
   width: 250px ;
   padding-left: 50px;
 }
-
 
 .UIECMAdminPortlet .ECMTemplate .UIECMTemplateList {
   margin-top: 5px;
@@ -472,6 +475,16 @@ UIECMAdminPortlet .UIViewManager {
 	margin: auto;
 }
 
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout .FieldContainer {
+	width: 550px;
+	margin: auto;
+	border: none;
+}
+
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
+	width: 120px;
+}
+
 .UITemplatesManager .UIFormTabPane .UIAction {
  width: 300px; 
  margin: auto;
@@ -494,8 +507,12 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
-	width: 160px;
-	padding-left: 5px;
+	padding-left: 110px;
+}
+
+.UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
+  width: 240px;
+  padding-left: 100px;
 }
 
 /*############################## -- UIQueriesManager  -- ########################*/
@@ -603,6 +620,10 @@ UIECMAdminPortlet .UIViewManager {
   border: none;
 }
 
+.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout label {
+  width: 150px;
+}
+
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	margin: 30px 0px 0px 0px;
 }
@@ -618,8 +639,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIAction {
-	width: 320px;
-	padding-left:50px;
+	padding-right: 30px;
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
@@ -635,17 +655,29 @@ UIECMAdminPortlet .UIViewManager {
 	width: 100%;
 }
 
-.UITemplatesManager .DialogForm .UIFormInputSet label {
+.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
+	width: 122px;
+}
+
+.UITemplatesManager .UIDialogTab .UIFormInputSet label {
 	width: 103px;
 	margin: 0px;
 	margin-right: 10px;
 }
 
+.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithActions {
+	margin: 0px;
+	padding: 0px 8px;
+}
+
+.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+	padding: 15px 0px 0px 0px;
+}
+
 /*############################## -- UIViewTab -- ########################*/
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
-	width: 320px;
-	padding-left:50px;
+	padding-right: 30px;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
@@ -667,3 +699,11 @@ UIECMAdminPortlet .UIViewManager {
 	margin-right: 10px;
 }
 
+.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions {
+	margin: 0px;
+	padding: 0px 8px;
+}
+
+.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+	padding: 15px 0px 0px 0px;
+}

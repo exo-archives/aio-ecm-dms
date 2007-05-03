@@ -205,7 +205,7 @@
 
 .AddMetadataTypeIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/ManageMetadataIcon.gif') no-repeat ;
+  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 
 .UINamespaceManagerIcon {
@@ -231,6 +231,26 @@
 .UIScriptManagerIcon {
 	width: 24px;	height: 24px;
   background: url('MacSkin/ScriptManager.gif') no-repeat ;
+}
+
+.ManageOntologiesIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/ManageOntologies.gif') no-repeat ;
+}
+
+.DisplayDocumentsIcon {
+	width: 24px;	height:24px;
+  background: url('MacSkin/DisplayDocuments.gif') no-repeat ;
+}
+
+.ManageDynamicContentIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/ManageDynamicContent.gif') no-repeat ;
+}
+
+.CreateDocumentTypesIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/CreateDocumentTypes.gif') no-repeat ;
 }
 
 .UIRuleManagerIcon {
