@@ -49,7 +49,7 @@ public class UIEditModeDocumentType extends UIForm implements UISelector {
   public UIEditModeDocumentType() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox templateSelect = new UIFormSelectBox(FIELD_SELECT, FIELD_SELECT, options) ;
-    templateSelect.setOnChange("Change") ;
+    templateSelect.setOnChange("ChangeType") ;
     addUIFormInput(templateSelect) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction(ACTION_INPUT) ;
     uiInputAct.addUIFormInput(new UIFormStringInput(FIELD_SAVEDPATH, FIELD_SAVEDPATH, null)) ;

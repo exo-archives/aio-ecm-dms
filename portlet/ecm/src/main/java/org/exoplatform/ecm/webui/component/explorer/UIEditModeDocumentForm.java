@@ -70,9 +70,7 @@ public class UIEditModeDocumentForm extends DialogFormFields {
     }
   }
   
-  public void setTemplateNode(String type) { 
-    documentType_ = type ;
-  }
+  public void setTemplateNode(String type) { documentType_ = type ; }
   
   public boolean isEditing() { return false ; }
   
@@ -89,9 +87,7 @@ public class UIEditModeDocumentForm extends DialogFormFields {
     try {
       session = repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
       rootPath_ = session.getRootNode().getPath() ;
-    } catch(Exception e) {
-      e.printStackTrace() ;
-    }
+    } catch(Exception e) { }
     jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ; 
   }
   
@@ -118,16 +114,13 @@ public class UIEditModeDocumentForm extends DialogFormFields {
       uiEditModeType.getUIStringInput(UIEditModeDocumentType.FIELD_SAVEDPATH).setValue(null) ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.saved-successfully", args)) ;
     } catch (AccessControlException ace) {
-      ace.printStackTrace() ;
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
-      ve.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.in-versioning", null, 
           ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {
-      e.printStackTrace() ;
       String key = "UIEditModeDocumentForm.msg.cannot-save" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
