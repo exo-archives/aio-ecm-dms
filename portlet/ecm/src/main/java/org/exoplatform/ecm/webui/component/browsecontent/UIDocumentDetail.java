@@ -43,7 +43,10 @@ import org.exoplatform.webui.event.EventListener;
  */
 
 @ComponentConfig(
-    events ={ @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class) }
+    events ={ 
+        @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class),
+        @EventConfig(listeners =  UIDocumentDetail.ChangeNodeActionListener.class)
+    }
 )
 
 public class UIDocumentDetail extends UIComponent implements ECMViewComponent, UIPopupComponent{
@@ -263,6 +266,17 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       UIDocumentDetail uiDocument = event.getSource() ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiDocument.setLanguage(selectedLanguage) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+    }
+  }
+  
+  static public class ChangeNodeActionListener extends EventListener<UIDocumentDetail>{
+    public void execute(Event<UIDocumentDetail> event) throws Exception {
+      UIDocumentDetail uiDocument = event.getSource() ;
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIBrowseContainer uiContainer = uiDocument.getAncestorOfType(UIBrowseContainer.class) ; 
+      Node selected = uiContainer.getNodeByPath(path) ;
+      uiDocument.setNode(selected) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
     }
   }
