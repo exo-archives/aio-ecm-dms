@@ -65,6 +65,10 @@ public class Utils {
   final static public String EXO_SUMMARY = "exo:summary" ;
   final static public String EXO_RELATION = "exo:relation" ;
   final static public String EXO_TAXANOMY = "exo:taxonomy" ;
+  final static public String EXO_IMAGE = "exo:image" ;
+  final static public String EXO_ARTICLE = "exo:article" ;
+  final static public String EXO_LANGUAGE = "exo:language" ;
+  final static public String LANGUAGES = "languages" ;
   final static public String MIX_REFERENCEABLE = "mix:referenceable" ;
   final static public String MIX_VERSIONABLE = "mix:versionable" ;
   final static public String NT_RESOURCE = "nt:resource" ;
@@ -74,7 +78,9 @@ public class Utils {
   final static public String JCR_FROZEN = "jcr:frozenNode" ;
   final static public String JCR_DATA = "jcr:data" ;
   final static public String EXO_ROLES = "exo:roles" ;
-  final static public String EXO_TEMPLATE = "exo:templateFile" ;
+  final static public String EXO_TEMPLATEFILE = "exo:templateFile" ;
+  final static public String EXO_TEMPLATE = "exo:template" ;
+  final static public String EXO_ACTION = "exo:action" ;
   final static public String MIX_LOCKABLE = "mix:lockable" ;
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;

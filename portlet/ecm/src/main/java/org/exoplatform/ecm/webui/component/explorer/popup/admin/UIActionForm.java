@@ -19,6 +19,7 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
@@ -117,7 +118,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;      
     Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession());
     String path = parentNode_.getPath() ;
-    parentNode_.getSession().checkPermission(path, "add_node,set_property");
+    String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
+    parentNode_.getSession().checkPermission(path, pers);
     if(!isAddNew_) {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       Node storedHomeNode = getNode().getParent() ;

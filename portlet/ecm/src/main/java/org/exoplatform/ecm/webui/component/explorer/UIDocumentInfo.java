@@ -113,9 +113,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
-    Node jcrContentNode = node.getNode("jcr:content") ;
-    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
+    Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+    InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
@@ -124,8 +124,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode("exo:image") ;
-    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
@@ -182,8 +182,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
 
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    if (currentNode_.hasProperty("exo:relation")) {
-      Value[] vals = currentNode_.getProperty("exo:relation").getValues();
+    if (currentNode_.hasProperty(Utils.EXO_RELATION)) {
+      Value[] vals = currentNode_.getProperty(Utils.EXO_RELATION).getValues();
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
@@ -199,7 +199,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if ("nt:file".equals(nodeType)) attachments.add(childNode);
+      if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }
@@ -217,13 +217,13 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
 
   public List<String> getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(currentNode_.hasNode("languages")){
-      Node languages = currentNode_.getNode("languages") ;
+    if(currentNode_.hasNode(Utils.LANGUAGES)){
+      Node languages = currentNode_.getNode(Utils.LANGUAGES) ;
       NodeIterator iter = languages.getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(currentNode_.getProperty("exo:language").getString()) ;      
+      local.add(currentNode_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
     } 
     return local ;
   }
@@ -259,11 +259,11 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
 
   public Node getNode() throws Exception { 
     currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
-    if(currentNode_.hasProperty("exo:language")) {
-      String defaultLang = currentNode_.getProperty("exo:language").getString() ;
+    if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
+      String defaultLang = currentNode_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(getLanguage() == null) setLanguage(defaultLang) ;
       if(!getLanguage().equals(defaultLang)) {
-        Node curNode = currentNode_.getNode("languages/" + getLanguage()) ;
+        Node curNode = currentNode_.getNode(Utils.LANGUAGES + Utils.SLASH + getLanguage()) ;
         return curNode ;
       }
     }    

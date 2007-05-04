@@ -116,17 +116,14 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.updateAjax(event);        
     } catch (AccessControlException ace) {
-      ace.printStackTrace() ;
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
-      ve.printStackTrace() ;
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
           ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {
-      e.printStackTrace() ;
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       String key = "UIDocumentForm.msg.cannot-save" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;

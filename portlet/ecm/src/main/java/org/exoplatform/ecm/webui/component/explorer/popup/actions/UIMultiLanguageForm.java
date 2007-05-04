@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -42,20 +43,17 @@ import org.exoplatform.webui.event.Event.Phase;
 )
 public class UIMultiLanguageForm extends UIForm {
 
-  final static public String LANGUAGES = "languages" ;
-  final static public String EXO_LANGUAGE = "exo:language";
-
   public UIMultiLanguageForm() throws Exception {
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
-    addUIFormInput(new UIFormSelectBox(LANGUAGES, LANGUAGES, languages)) ;
+    addUIFormInput(new UIFormSelectBox(Utils.LANGUAGES, Utils.LANGUAGES, languages)) ;
   }
 
   public void updateSelect(Node currentNode) throws Exception {
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
-    String defaultLang = currentNode.getProperty(EXO_LANGUAGE).getString() ;
+    String defaultLang = currentNode.getProperty(Utils.EXO_LANGUAGE).getString() ;
     languages.add(new SelectItemOption<String>(defaultLang + "(default)", defaultLang)) ;
-    if(currentNode.hasNode(LANGUAGES)){
-      Node languageNode = currentNode.getNode(LANGUAGES) ;
+    if(currentNode.hasNode(Utils.LANGUAGES)){
+      Node languageNode = currentNode.getNode(Utils.LANGUAGES) ;
       NodeIterator iter  = languageNode.getNodes() ;      
       while(iter.hasNext()) {
         Node lang = iter.nextNode() ;
@@ -64,8 +62,8 @@ public class UIMultiLanguageForm extends UIForm {
         }
       }
     }
-    getUIFormSelectBox(LANGUAGES).setOptions(languages) ;
-    getUIFormSelectBox(LANGUAGES).setValue(defaultLang) ;
+    getUIFormSelectBox(Utils.LANGUAGES).setOptions(languages) ;
+    getUIFormSelectBox(Utils.LANGUAGES).setValue(defaultLang) ;
   }
   
   static public class CancelActionListener extends EventListener<UIMultiLanguageForm> {
@@ -81,7 +79,7 @@ public class UIMultiLanguageForm extends UIForm {
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       MultiLanguageService multiLanguageService = 
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
-      String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
+      String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;
       multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
       uiExplorer.setLanguage(selectedLanguage) ;
       uiExplorer.updateAjax(event) ;
@@ -96,11 +94,11 @@ public class UIMultiLanguageForm extends UIForm {
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       Node currNode = uiExplorer.getCurrentNode() ;
       UIDocumentInfo uiDocumentInfo = uiJCRExplorer.findFirstComponentOfType(UIDocumentInfo.class) ;
-      String selectedLanguage = uiForm.getUIFormSelectBox(LANGUAGES).getValue() ;
+      String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;
       if(selectedLanguage.equals(multiLanguageService.getDefault(currNode))) {
         uiJCRExplorer.cancelAction() ;
       } else {
-        uiDocumentInfo.setLanguage(uiForm.getUIFormSelectBox(LANGUAGES).getValue()) ;
+        uiDocumentInfo.setLanguage(uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue()) ;
         uiExplorer.updateAjax(event) ;
       }
     }

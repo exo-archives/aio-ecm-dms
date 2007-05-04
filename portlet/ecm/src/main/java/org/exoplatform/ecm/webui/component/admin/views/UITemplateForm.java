@@ -186,7 +186,7 @@ public class UITemplateForm extends UIForm {
       UIApplication app = getAncestorOfType(UIApplication.class) ;
       app.addMessage(new ApplicationMessage("UITemplateForm.msg.version-restored", args)) ;
     }
-    String content = template_.getProperty(Utils.EXO_TEMPLATE).getString() ;
+    String content = template_.getProperty(Utils.EXO_TEMPLATEFILE).getString() ;
     getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
   } 
   
@@ -273,7 +273,7 @@ public class UITemplateForm extends UIForm {
       String path = uiForm.template_.getVersionHistory().getVersion(version).getPath() ;
       VersionNode versionNode = uiForm.getRootVersion(uiForm.template_).findVersionNode(path);
       Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;
-      String content = frozenNode.getProperty(Utils.EXO_TEMPLATE).getString() ;
+      String content = frozenNode.getProperty(Utils.EXO_TEMPLATEFILE).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {

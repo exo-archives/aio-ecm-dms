@@ -45,6 +45,7 @@ public class UIEditModeDocumentType extends UIForm implements UISelector {
   final static public String FIELD_SELECT = "selectTemplate" ;
   final static public String FIELD_SAVEDPATH = "savedPath" ;
   final static public String ACTION_INPUT = "actionInput" ;
+  final static public String WORKSPACE_NAME = "workspaceName" ;
   
   public UIEditModeDocumentType() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -78,7 +79,11 @@ public class UIEditModeDocumentType extends UIForm implements UISelector {
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletRequest request = context.getRequest() ; 
       PortletPreferences preferences = request.getPreferences() ;
-      uiController.initPopupJCRBrowser(preferences.getValue(Utils.WORKSPACE_NAME, "")) ;
+      String wsName = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
+      if(uiTypeForm.getChildById(WORKSPACE_NAME) != null) {
+        wsName = ((UIFormSelectBox)uiTypeForm.getChildById(WORKSPACE_NAME)).getValue() ; ;
+      }
+      uiController.initPopupJCRBrowser(wsName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiController) ;
     }
   }

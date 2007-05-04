@@ -16,10 +16,12 @@ import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -54,12 +56,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
   
   final static public String FIELD_NAME =  "name" ;
   final static public String FIELD_UPLOAD = "upload" ;  
-  final public static String MIX_VERSION = "mix:versionable" ; 
-  final public static String NT_FILE = "nt:file" ;
-  final public static String NT_RESOURCE = "nt:resource" ;
-  final public static String JCR_CONTENT = "jcr:content" ;
-  final public static String JCR_DATA = "jcr:data" ;
-  final public static String JCR_MIMETYPE = "jcr:mimeType" ;
   final public static String JCR_LASTMODIFIED = "jcr:lastModified" ;
   
   private boolean isMultiLanguage_ = false ;
@@ -120,7 +116,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       
       boolean isExist = selectedNode.hasNode(name) ;
       try {
-        selectedNode.getSession().checkPermission(selectedNode.getPath(),"add_node,set_property");        
+        String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
+        selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);        
         if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
@@ -145,7 +142,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrContent.setJcrPath("/node/jcr:content") ;
             jcrContent.setValue("") ;
             jcrContent.setMixintype("dc:elementSet") ;
-            jcrContent.setNodetype(NT_RESOURCE) ;
+            jcrContent.setNodetype(Utils.NT_RESOURCE) ;
             jcrContent.setType(JcrInputProperty.NODE) ;
             inputProperties.put("/node/jcr:content",jcrContent) ;
             
@@ -169,20 +166,20 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrEncoding.setValue("UTF-8") ;
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
             CmsService cmsService = (CmsService)PortalContainer.getComponent(CmsService.class) ;
-            cmsService.storeNode(NT_FILE,selectedNode,inputProperties,true) ;
+            cmsService.storeNode(Utils.NT_FILE,selectedNode,inputProperties,true) ;
             selectedNode.save() ;
             selectedNode.getSession().save() ;                        
           } else {
             Node node = selectedNode.getNode(name) ;
-            if(!node.isNodeType(MIX_VERSION)) {
-              node.addMixin(MIX_VERSION) ;            
+            if(!node.isNodeType(Utils.MIX_VERSIONABLE)) {
+              node.addMixin(Utils.MIX_VERSIONABLE) ;            
               node.save() ;            
               node.checkin() ;
               node.checkout() ;
             }
-            Node contentNode = node.getNode(JCR_CONTENT);
-            contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(content));
-            contentNode.setProperty(JCR_MIMETYPE, mimeType);
+            Node contentNode = node.getNode(Utils.JCR_CONTENT);
+            contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
+            contentNode.setProperty(Utils.JCR_MIMETY, mimeType);
             contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
             node.save() ;       
             node.checkin() ;

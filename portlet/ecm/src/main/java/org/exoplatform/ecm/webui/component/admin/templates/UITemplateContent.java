@@ -243,7 +243,7 @@ public class UITemplateContent extends UIForm implements UISelector {
       String path = node.getVersionHistory().getVersion(version).getPath() ;           
       VersionNode versionNode = uiForm.getRootVersion(node).findVersionNode(path) ;
       Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;
-      String content = frozenNode.getProperty(Utils.EXO_TEMPLATE).getString() ;
+      String content = frozenNode.getProperty(Utils.EXO_TEMPLATEFILE).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }

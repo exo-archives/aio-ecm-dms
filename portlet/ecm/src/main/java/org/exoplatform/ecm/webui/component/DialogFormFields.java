@@ -55,12 +55,6 @@ import org.exoplatform.webui.event.Event.Phase;
  * 
  */
 
-/*@ComponentConfig(
-    events = {
-        @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-        @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class, phase = Phase.DECODE)
-    }
-)*/
 @SuppressWarnings("unused")
 public class DialogFormFields extends UIForm {
 

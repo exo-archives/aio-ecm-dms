@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.resources.LocaleConfig;
@@ -86,9 +87,9 @@ public class UILanguageTypeForm extends UIForm {
         } else {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(false) ;
         }
-        if(node.hasNode(UIMultiLanguageForm.LANGUAGES)) {
-          Node languagesNode = node.getNode(UIMultiLanguageForm.LANGUAGES) ;
-          if(node.isNodeType("nt:file")) uiDialogForm.setIsNTFile(true) ;
+        if(node.hasNode(Utils.LANGUAGES)) {
+          Node languagesNode = node.getNode(Utils.LANGUAGES) ;
+          if(node.isNodeType(Utils.NT_FILE)) uiDialogForm.setIsNTFile(true) ;
           else uiDialogForm.setIsNTFile(false) ;
           if(languagesNode.hasNode(selectedLanguage)) {
             uiDialogForm.setNode(languagesNode.getNode(selectedLanguage)) ;
@@ -98,17 +99,17 @@ public class UILanguageTypeForm extends UIForm {
             uiDialogForm.setNode(node) ;
             uiDialogForm.setIsNotEditNode(true) ;
           }
-        } else if(!node.hasNode(UIMultiLanguageForm.LANGUAGES) && selectedLanguage.equals(multiLanguageService.getDefault(node))) {
+        } else if(!node.hasNode(Utils.LANGUAGES) && selectedLanguage.equals(multiLanguageService.getDefault(node))) {
           uiDialogForm.setNode(node) ;
         } else {
           uiDialogForm.setNode(node) ;
           uiDialogForm.setIsNotEditNode(true) ;
         }
         uiDialogForm.setSelectedLanguage(selectedLanguage) ;
-        if(selectedLanguage.equals(node.getProperty(UIMultiLanguageForm.EXO_LANGUAGE).getString())) {                  
+        if(selectedLanguage.equals(node.getProperty(Utils.EXO_LANGUAGE).getString())) {                  
           uiDialogForm.setPropertyNode(node) ;
         } else {
-          if(node.hasNode("languages/"+ selectedLanguage)){
+          if(node.hasNode(Utils.LANGUAGES + Utils.SLASH + selectedLanguage)){
             uiDialogForm.getChildren().clear() ;
             Node languageNode = multiLanguageService.getLanguage(node, selectedLanguage) ;
             uiDialogForm.setPropertyNode(languageNode) ;

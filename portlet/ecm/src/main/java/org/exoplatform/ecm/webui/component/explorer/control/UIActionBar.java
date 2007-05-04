@@ -22,6 +22,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.UIVoteForm;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -129,9 +130,6 @@ public class UIActionBar extends UIForm {
   private List<SelectItemOption<String>> tabOptions = new ArrayList<SelectItemOption<String>>() ;
   private List<String[]> tabs_ = new ArrayList<String[]>();
 
-  final static private String JCRCONTENT = "jcr:content";
-  final static private String JCRMIMETYPE = "jcr:mimeType";
-  final static private String NT_FILE = "nt:file";
   final static private String FIELD_SELECT_TAB = "tabs" ;
   final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
   final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
@@ -141,8 +139,6 @@ public class UIActionBar extends UIForm {
   final static private String CMS_PATH = "cmsPath" ;
   final static private String FIELD_SQL = "SQL" ;
   final static private String FIELD_XPATH = "xPath" ;
-  final static private String EXO_ARTICLE = "exo:article" ;
-  final static private String MIX_VERSIONABLE = "mix:versionable" ;
 
   final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1')" ;
   final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
@@ -242,8 +238,6 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
-      System.out.println("\n\n" + currentNode.getPath() + " isLock() = " + currentNode.isLocked() + "\n\n");
-      System.out.println("\n\n" + currentNode.getPath() + " holdsLock() = " + currentNode.holdsLock() + "\n\n");
       Session session = uiExplorer.getSession() ;
       if(uiExplorer.isPreferenceNode(currentNode)) {
         String preferenceWS = currentNode.getSession().getWorkspace().getName() ;
@@ -296,7 +290,7 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      if(selectedNode.isNodeType("exo:action")) {
+      if(selectedNode.isNodeType(Utils.EXO_ACTION)) {
         UIActionContainer uiContainer = uiExplorer.createUIComponent(UIActionContainer.class, null, null) ;
         uiExplorer.setIsHidePopup(true) ;
         UIActionForm uiActionForm =  uiContainer.getChild(UIActionForm.class) ;
@@ -441,8 +435,8 @@ public class UIActionBar extends UIForm {
       UIMultiLanguageManager uiMultiManager = 
         uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
       UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
-      if(nodeType.getName().equals(NT_FILE)) {
-        String mimeType = uiExplorer.getCurrentNode().getNode(JCRCONTENT).getProperty(JCRMIMETYPE).getString() ;
+      if(nodeType.getName().equals(Utils.NT_FILE)) {
+        String mimeType = uiExplorer.getCurrentNode().getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETY).getString() ;
         if(mimeType.startsWith("text")) {
           uiAddContainer.setComponentDisplay(nodeType.getName()) ;
         } else {
@@ -539,12 +533,12 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      if(currentNode.canAddMixin(UIActionBar.MIX_VERSIONABLE)) {
+      if(currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
         uiPopupAction.activate(UIActivateVersion.class, 400) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }
-      if (currentNode.isNodeType(UIActionBar.MIX_VERSIONABLE)) {
+      if (currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
         uiPopupAction.activate(UIVersionInfo.class, 700) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
@@ -610,7 +604,7 @@ public class UIActionBar extends UIForm {
         uiRelationManager.getChild(UIRelationsAddedList.class) ;
       uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode())) ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
-      uiJCRBrowser.setFilterType(new String[] {EXO_ARTICLE}) ;
+      uiJCRBrowser.setFilterType(new String[] {Utils.EXO_ARTICLE}) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;

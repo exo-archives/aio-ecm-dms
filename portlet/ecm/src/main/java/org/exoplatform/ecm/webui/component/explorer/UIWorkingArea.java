@@ -36,6 +36,7 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -83,30 +84,9 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UIWorkingArea extends UIContainer {
   
-  final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
-  final static public String NT_FOLDER = "nt:folder" ;
-  final static public String EXO_RELATION = "exo:relation" ;
-  final static public String NT_FILE = "nt:file" ;
-  final static public String EXO_TAXANOMY = "exo:taxonomy" ;
-  final static public String MIX_REFERENCEABLE = "mix:referenceable" ;
-  final static public String MIX_VERSIONABLE = "mix:versionable" ;
-  final static public String NT_RESOURCE = "nt:resource" ;
-  final static public String DEFAULT = "default" ;
-  final static public String JCR_CONTENT = "jcr:content" ;
-  final static public String JCR_MIMETY = "jcr:mimeType" ;
-  final static public String EXO_ROLES = "exo:roles" ;
-  final static public String MIX_LOCKABLE = "mix:lockable" ;
-  final static public String EXO_CATEGORIZED = "exo:categorized" ;
-  final static public String EXO_CATEGORY = "exo:category" ;
   final static public String WS_NAME = "workspaceName" ;
-  final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
   
-  private ActionServiceContainer actionService_ ;
-  private SecurityService securityService_ ;
-
   public UIWorkingArea() throws Exception {
-    actionService_ = getApplicationComponent(ActionServiceContainer.class) ;
-    securityService_ = getApplicationComponent(SecurityService.class) ;
     addChild(UIRightClickPopupMenu.class, "ECMContextMenu", null) ;
     addChild(UISideBar.class, null, null) ;
     addChild(UIDocumentWorkspace.class, null, null) ;
@@ -137,7 +117,7 @@ public class UIWorkingArea extends UIContainer {
   public boolean isReferenceableNode(Node node) throws Exception {
     NodeType[] nodeTypes = node.getMixinNodeTypes() ;
     for(NodeType type:nodeTypes) {      
-      if(type.getName().equals(MIX_REFERENCEABLE)) return true ;
+      if(type.getName().equals(Utils.MIX_REFERENCEABLE)) return true ;
     }
     return false ;
   }
@@ -155,8 +135,8 @@ public class UIWorkingArea extends UIContainer {
     boolean isEdit = true;
     Node childNode = uiExplorer.getNodeByPath(nodePath, session) ; 
     String nodeType = childNode.getPrimaryNodeType().getName();
-    for (int i = 0; i < NON_EDITABLE_NODETYPES.length; i++) {
-      String nonEditableType = NON_EDITABLE_NODETYPES[i];
+    for (int i = 0; i < Utils.NON_EDITABLE_NODETYPES.length; i++) {
+      String nonEditableType = Utils.NON_EDITABLE_NODETYPES[i];
       if (nonEditableType.equals(nodeType)) return false;
     }    
     return isEdit;
@@ -164,8 +144,8 @@ public class UIWorkingArea extends UIContainer {
 
   public boolean isEditable(Node node) throws Exception {
     String nodeType = node.getPrimaryNodeType().getName();
-    for (int i = 0; i < NON_EDITABLE_NODETYPES.length; i++) {
-      String nonEditableType = NON_EDITABLE_NODETYPES[i];
+    for (int i = 0; i < Utils.NON_EDITABLE_NODETYPES.length; i++) {
+      String nonEditableType = Utils.NON_EDITABLE_NODETYPES[i];
       if (nonEditableType.equals(nodeType)) return false;
     }
     return true;
@@ -176,10 +156,6 @@ public class UIWorkingArea extends UIContainer {
     return false;
   }
 
-//  public boolean isVersionable(Node node) throws RepositoryException {
-//    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType("nt:frozenNode");
-//  }
-
   public String getVersionNumber(Node node) throws RepositoryException {
     if(!Utils.isVersionable(node)) return "-";
     return node.getBaseVersion().getName();
@@ -189,7 +165,7 @@ public class UIWorkingArea extends UIContainer {
     int depth = node.getDepth() - 1;
     Node parent = (Node) node.getAncestor(depth);
     while (parent != null && depth != 0) {
-      if (parent.isNodeType(MIX_VERSIONABLE)) return true;
+      if (parent.isNodeType(Utils.MIX_VERSIONABLE)) return true;
       depth-- ;
       parent = (Node) node.getAncestor(depth);
     }
@@ -198,20 +174,17 @@ public class UIWorkingArea extends UIContainer {
   
   public boolean hasEditPermissions(Node editNode){
     try {
-      editNode.getSession().checkPermission(editNode.getPath(), "add_node,set_property");
+      String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
+      editNode.getSession().checkPermission(editNode.getPath(), pers);
     } catch(Exception e) {
       return false ;
     } 
     return true;
   }
   
-  public String getNodePath(Node node) throws Exception {
-    return node.getPath()  ;
-  }
-  
   public boolean hasRemovePermissions(Node curNode){
     try {
-      curNode.getSession().checkPermission(curNode.getPath(), "remove");
+      curNode.getSession().checkPermission(curNode.getPath(), PermissionType.REMOVE);
     } catch(Exception e) {
       return false ;
     } 
@@ -279,14 +252,15 @@ public class UIWorkingArea extends UIContainer {
     List<Node> safeActions = new ArrayList<Node>();
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     String userName = context.getRemoteUser() ;
-    List<Node> unsafeActions = actionService_.getActions(node, ActionServiceContainer.READ_PHASE);
+    ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class) ;
+    List<Node> unsafeActions = actionContainer.getActions(node, ActionServiceContainer.READ_PHASE);
+    SecurityService securityService = getApplicationComponent(SecurityService.class) ;
     for (Iterator<Node> iter = unsafeActions.iterator(); iter.hasNext();) {
       Node actionNode = iter.next();
-      Value[] roles = actionNode.getProperty("exo:roles").getValues();
+      Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
       for (int i = 0; i < roles.length; i++) {
         String role = roles[i].getString();
-        if(securityService_.hasMembershipInGroup(userName, role))
-          safeActions.add(actionNode);
+        if(securityService.hasMembershipInGroup(userName, role)) safeActions.add(actionNode);
       }
     }      
     return safeActions;
@@ -309,7 +283,7 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }
       Node selectedNode = uiExplorer.getNodeByPath(nodePath, session);
-      if(selectedNode.isNodeType("exo:action")) {
+      if(selectedNode.isNodeType(Utils.EXO_ACTION)) {
         UIActionContainer uiContainer = uiExplorer.createUIComponent(UIActionContainer.class, null, null) ;
         uiExplorer.setIsHidePopup(true) ;
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false) ;
@@ -536,12 +510,11 @@ public class UIWorkingArea extends UIContainer {
         return ;
       } 
       try {
-        if(!node.isNodeType(MIX_LOCKABLE)) {
-          node.addMixin(MIX_LOCKABLE);
+        if(!node.isNodeType(Utils.MIX_LOCKABLE)) {
+          node.addMixin(Utils.MIX_LOCKABLE);
           node.save();
         }
         node.lock(false, false);
-        System.out.println("\n\n node.lock(false, false) \n\n");
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       } catch(LockException le) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null)) ;
@@ -769,10 +742,10 @@ public class UIWorkingArea extends UIContainer {
     private void removeReferences(Node destNode, Session session) throws Exception {
       NodeType[] mixinTypes = destNode.getMixinNodeTypes() ;
       for(int i = 0; i < mixinTypes.length; i ++) {
-        if(mixinTypes[i].getName().equals(EXO_CATEGORIZED) && destNode.hasProperty(EXO_CATEGORIZED)) {
+        if(mixinTypes[i].getName().equals(Utils.EXO_CATEGORIZED) && destNode.hasProperty(Utils.EXO_CATEGORIZED)) {
           Node valueNode = null ;
           Value valueAdd = session.getValueFactory().createValue(valueNode);
-          destNode.setProperty(EXO_CATEGORIZED, new Value[] {valueAdd}) ;            
+          destNode.setProperty(Utils.EXO_CATEGORIZED, new Value[] {valueAdd}) ;            
         }            
       }
       destNode.save() ;

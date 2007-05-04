@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.voting.VotingService;
@@ -56,8 +57,8 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
       long objId = Long.parseLong(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiForm.getApplicationComponent(VotingService.class) ;
       String language = uiDocumentDetail.getLanguage() ;
-      if(language == null && uiForm.getDocument().hasProperty("exo:language")) {
-        language = uiForm.getDocument().getProperty("exo:language").getValue().getString() ;
+      if(language == null && uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)) {
+        language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getValue().getString() ;
       }
       votingService.vote(uiForm.getDocument(), objId, userName, language) ;
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;

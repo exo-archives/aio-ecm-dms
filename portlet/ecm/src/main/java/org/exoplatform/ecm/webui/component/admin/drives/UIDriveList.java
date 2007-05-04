@@ -13,6 +13,7 @@ import javax.jcr.Session;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -64,8 +65,8 @@ public class UIDriveList extends UIGrid {
       DriveData drive = (DriveData)drives.get(i) ;
       if(drive.getIcon() != null && drive.getIcon().length() > 0) {
         Node node = (Node) session.getItem(drive.getIcon()) ;
-        Node jcrContentNode = node.getNode("jcr:content") ;
-        InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+        Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+        InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
         InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
         dresource.setDownloadName(node.getName()) ;
         drive.setIcon("<img src=\"" + dservice.getDownloadLink(dservice.addDownloadResource(dresource)) + "\" width=\"16\" height=\"16\" />") ;

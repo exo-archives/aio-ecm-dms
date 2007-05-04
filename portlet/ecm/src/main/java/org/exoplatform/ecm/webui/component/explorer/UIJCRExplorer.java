@@ -197,8 +197,8 @@ public class UIJCRExplorer extends UIContainer {
   public void setSelectNode(Node node) throws Exception {
     if(currentNode_ != null && !node.equals(currentNode_)) record(currentNode_.getPath()) ;
     currentNode_ = node ;
-    if(currentNode_.hasProperty("exo:language")) {
-      setLanguage(currentNode_.getProperty("exo:language").getValue().getString()) ;
+    if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
+      setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }
   }
 
@@ -207,8 +207,8 @@ public class UIJCRExplorer extends UIContainer {
     if(uri == null || uri.length() == 0) uri = "/" ;
     previousNode = currentNode_ ;        
     currentNode_ = (Node) session.getItem(uri);
-    if(currentNode_.hasProperty("exo:language")) {
-      setLanguage(currentNode_.getProperty("exo:language").getValue().getString()) ;
+    if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
+      setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }
     if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;
   }

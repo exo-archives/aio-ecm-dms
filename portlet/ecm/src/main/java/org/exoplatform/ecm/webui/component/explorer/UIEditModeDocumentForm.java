@@ -64,7 +64,7 @@ public class UIEditModeDocumentForm extends DialogFormFields {
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
-      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
+      uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.not-support", arg, 
                                               ApplicationMessage.ERROR)) ;
       return null ;
     }
@@ -112,6 +112,7 @@ public class UIEditModeDocumentForm extends DialogFormFields {
       Object[] args = { getSavedPath() } ;
       reset() ;
       uiEditModeType.getUIStringInput(UIEditModeDocumentType.FIELD_SAVEDPATH).setValue(null) ;
+      setSavedPath(null) ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.saved-successfully", args)) ;
     } catch (AccessControlException ace) {
       throw new AccessDeniedException(ace.getMessage());

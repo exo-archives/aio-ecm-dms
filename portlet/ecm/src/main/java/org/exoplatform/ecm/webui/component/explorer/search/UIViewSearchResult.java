@@ -21,6 +21,7 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -74,18 +75,18 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     while(childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if("nt:file".equals(nodeType)) attachments.add(childNode);
+      if(Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }
 
   public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException { 
-    if(node_.hasProperty("exo:language")) {
-      String defaultLang = node_.getProperty("exo:language").getString() ;
+    if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
+      String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(language_ == null) language_ =  defaultLang ;
-      if(node_.hasNode("languages")) {
+      if(node_.hasNode(Utils.LANGUAGES)) {
         if(!language_.equals(defaultLang)) {
-          Node curNode = node_.getNode("languages/" + language_) ;
+          Node curNode = node_.getNode(Utils.LANGUAGES + Utils.SLASH + language_) ;
           return curNode ;
         } 
       }
@@ -98,8 +99,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    if (node_.hasProperty("exo:relation")) {
-      Value[] vals = node_.getProperty("exo:relation").getValues();
+    if (node_.hasProperty(Utils.EXO_RELATION)) {
+      Value[] vals = node_.getProperty(Utils.EXO_RELATION).getValues();
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
@@ -114,13 +115,13 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
 
   public List getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(node_.hasNode("languages")){
-      Node languages = node_.getNode("languages") ;
+    if(node_.hasNode(Utils.LANGUAGES)){
+      Node languages = node_.getNode(Utils.LANGUAGES) ;
       NodeIterator iter = languages.getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(node_.getProperty("exo:language").getString()) ;      
+      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
     } 
     return local ;
   }
@@ -191,8 +192,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String getImage(Node node) throws Exception {
     DownloadService downloadService = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource inputResource ;
-    Node imageNode = node.getNode("exo:image") ;
-    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
     inputResource = new InputStreamDownloadResource(input, "image") ;
     inputResource.setDownloadName(node.getName()) ;
     return downloadService.getDownloadLink(downloadService.addDownloadResource(inputResource)) ;
@@ -225,9 +226,9 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
-    Node jcrContentNode = node.getNode("jcr:content") ;
-    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
+    Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+    InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;

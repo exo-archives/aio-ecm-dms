@@ -92,11 +92,11 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   }
   
   public Node getNode() throws RepositoryException {
-    if(node_.hasProperty("exo:language")) {
-      String defaultLang = node_.getProperty("exo:language").getString() ;
+    if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
+      String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(language_ == null) language_ = defaultLang ;
       if(!language_.equals(defaultLang)) {
-        Node curNode = node_.getNode("languages/" + language_) ;
+        Node curNode = node_.getNode(Utils.LANGUAGES + Utils.SLASH + language_) ;
         return curNode ;
       } 
     }    
@@ -113,8 +113,8 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
-    if (node_.hasProperty("exo:relation")) {
-      Value[] vals = node_.getProperty("exo:relation").getValues();
+    if (node_.hasProperty(Utils.EXO_RELATION)) {
+      Value[] vals = node_.getProperty(Utils.EXO_RELATION).getValues();
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
@@ -130,7 +130,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if ("nt:file".equals(nodeType)) attachments.add(childNode);
+      if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }
@@ -175,9 +175,9 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
-    Node jcrContentNode = node.getNode("jcr:content") ;
-    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
+    Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+    InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
@@ -186,8 +186,8 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode("exo:image") ;
-    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
@@ -207,12 +207,12 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
 
   public List getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(node_.hasNode("languages")){
-      NodeIterator iter = node_.getNode("languages").getNodes() ;
+    if(node_.hasNode(Utils.LANGUAGES)){
+      NodeIterator iter = node_.getNode(Utils.LANGUAGES).getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(node_.getProperty("exo:language").getString()) ;      
+      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
     } 
     return local ;
   }
@@ -255,7 +255,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       UIApplication uiApp = uiViewVersion.getAncestorOfType(UIApplication.class) ;
       uiApp.addMessage(new ApplicationMessage("UIViewVersion.msg.not-supported", null)) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      //uiViewVersion.setLanguage(selectedLanguage) ;
+      uiViewVersion.setLanguage(selectedLanguage) ;
       WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
       context.addUIComponentToUpdateByAjax(uiViewVersion) ;
     }

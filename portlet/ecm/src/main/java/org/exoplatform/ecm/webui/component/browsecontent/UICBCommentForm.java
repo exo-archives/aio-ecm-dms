@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.webui.component.UIForm;
@@ -76,12 +77,12 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
         String language = uiForm.getAncestorOfType(UIBrowseContentPortlet.class).
                                  findFirstComponentOfType(UIDocumentDetail.class).getLanguage() ;
         if(DEFAULT_LANGUAGE.equals(language)) { 
-          if(!uiForm.getDocument().hasProperty("exo:language")){
+          if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
             uiForm.getDocument().addMixin("mix:i18n") ;
             uiForm.getDocument().save() ;
             language = DEFAULT_LANGUAGE ;
           } else {
-            language = uiForm.getDocument().getProperty("exo:language").getString() ;
+            language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString() ;
           }
         }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
