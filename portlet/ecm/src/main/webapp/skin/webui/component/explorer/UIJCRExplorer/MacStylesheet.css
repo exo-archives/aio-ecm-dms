@@ -612,15 +612,23 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer .MultiRadioInput  {
-  margin-left: 3px;
-} 
-
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input  {
   width: 15px; height: 15px;
   margin: 0px;
   padding: 2px 0px;
 } 
+
+.UIJCRExplorerPortlet .UIExportNode .FieldContainer .nodePath {
+  margin-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput {
+  margin-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIExportNode  .FieldContainer .MultiRadioInput input.radio {
+  margin-right: 5px;
+}
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input.checkbox  {
   margin-left: 5px ;
@@ -657,6 +665,17 @@
   padding-left: 25px;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .nodePath {
+  margin-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .MultiRadioInput {
+  margin-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode  .FieldContainer .MultiRadioInput input.radio {
+  margin-right: 5px;
+}
 /*================================.UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {

@@ -694,3 +694,12 @@
   width: 55px ;
   margin: auto ;
 }
+
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIGrid {
+  margin: auto;
+  width: 98%;
+}
+
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
+  width: 270px;
+}

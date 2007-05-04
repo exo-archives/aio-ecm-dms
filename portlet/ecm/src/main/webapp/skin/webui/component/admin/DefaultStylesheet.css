@@ -707,3 +707,7 @@ UIECMAdminPortlet .UIViewManager {
 .UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
 	padding: 15px 0px 0px 0px;
 }
+
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
+  width: 260px;
+}

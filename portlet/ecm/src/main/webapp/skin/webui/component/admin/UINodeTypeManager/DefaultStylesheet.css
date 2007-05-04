@@ -48,6 +48,15 @@
   border: 1px solid white ;
 }
 
+.UIECMAdminPortlet .UINodeTypeExport .FieldContainer .UIGrid input.checkbox {
+  padding: 0px;
+  margin-left: 27px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport {
+  width: 440px;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
   width: 600px ;
   margin: auto;

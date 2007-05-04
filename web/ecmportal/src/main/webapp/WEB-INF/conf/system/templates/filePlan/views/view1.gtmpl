@@ -15,21 +15,40 @@
 %>
 <style>
 	.UIDivInfo {
-		margin:auto; padding: 5px;
+		margin: auto; padding: 10px;
 	}
+	
 	.UIDivInfo .Title {
 		font-size:13px; font-weight: bold;
+		padding-bottom: 3px;
 	}	
+	
+	.UIDivInfo .FilePlanContentTable {
+		width: 99.5%;
+		border-collapse: collapse;
+		border-top: 1px solid #dbdbdb;
+    font-size:11px;
+    margin: auto;
+	}
+	
+	.UIDivInfo .FilePlanContentTable td {
+		border: 1px solid #dbdbdb;
+		border-top: none;
+		height: 25px;
+		padding-left: 7px;
+		background: white;
+	}
+	
 </style>		
 
 <div class="UIDivInfo">
 	<div style="width:99.5%">
-		<div style="padding: 5px;">
-			<div class="$iconName" style="float:left;margin:0px 2px;"><span></span></div>
+		<div style="padding: 5px 5px 5px 2px;">
+			<div class="$iconName" style="float:left; margin: 0px 5px 0px 0px;"><span></span></div>
 			<div class="Title">File Plan Content:<%=node.getName()%></div>
 			<div style="clear:left;"><span></span></div>
 		</div>
-		<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">    
+		<table class="FilePlanContentTable">    
 			<tr>
 				<td style="width: 30%">Record Category Identifier:</td>
 				<%
@@ -106,7 +125,7 @@
 	 </div>
 
 	<%/*Begin UITabPane*/%>
-	<div class="UITabPane" style="margin-top: 5px;">
+	<div class="UITabPane" style="margin-top: 15px;">
 	  <%/*Begin TabPaneContent*/%>
 	  <div class="TabPaneContent"> 
 	    <%/*Begin WorkingArea*/%>

@@ -10,12 +10,12 @@
 	overflow: auto;
 }
 
-.UIWorkflowPortlet .UIForm .UIAction {
-	width: auto;
+.UIWorkflowPortlet .WorkflowPortletContent{
+	padding: 10px;
 }
 
-.UIWorkflowPortlet .ActionContainer {
-	float: right;
+.UIWorkflowPortlet .UIForm .UIAction {
+	width: auto;
 }
 
 .UIWorkflowPortlet .Toolbar {
@@ -197,16 +197,19 @@
   padding: 10px;
 }
 
-.UIWorkflowPortlet .UITabPane .UITask {
+.UIWorkflowPortlet .UITabPane .UIFormWithTitle  {
   width: 500px;
   margin: auto;
-  padding-bottom: 7px;
 }
 
+.UIWorkflowPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+  padding-bottom: 20px;
+}
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
-  width: 130px; 
+  width: 160px; 
 }
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 180px; 
+  width: 420px;
+  padding: 15px 0px;
 }

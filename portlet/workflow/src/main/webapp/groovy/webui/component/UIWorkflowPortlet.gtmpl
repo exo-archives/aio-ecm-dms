@@ -12,26 +12,8 @@
 	  	<div class="Separator SeparatorRight"><span></span></div>
 	  </div>
 	  
-	  <div class="DecoratorBox" style="margin: 7px;">
-		  <div class="GrayRoundedFillBoxStyle">
-			  <div class="TopLeftCornerBoxDecorator">
-			    <div class="TopRightCornerBoxDecorator">
-			      <div class="TopCenterBoxDecorator"><span></span></div>
-			    </div>
-			  </div>
-			  <div class="MiddleLeftSideBoxDecorator">
-			    <div class="MiddleRightSideBoxDecorator">
-			      <div class="CenterBoxDecorator">
-	            <% uicomponent.renderChildren(); %>
-			      </div>
-			    </div>
-			  </div>
-			  <div class="BottomLeftCornerBoxDecorator">
-			    <div class="BottomRightCornerBoxDecorator">
-			      <div class="BottomCenterBoxDecorator"><span></span></div>
-			    </div>
-			  </div>
-	  	</div>
+	  <div class="WorkflowPortletContent">
+	    <% uicomponent.renderChildren(); %>
 	  </div>
 	</div>
 </div>

@@ -2,7 +2,7 @@
   String comp = uicomponent.getRenderedChildLabel() ;
 %>
 <div id="$uicomponent.id">
-  <div class="${comp}Icon" style="float: left; margin-right: 5px;"><span></span></div>
+  <div class="${comp}Icon" style="float: left; margin: 0px 5px;"><span></span></div>
   <div class="UIECMAdminFunctionTitle"><%=_ctx.appRes("UIECMAdminControlPanel.label." + comp)%></div>
   <div style="clear: left;"><span></span></div>
 </div>

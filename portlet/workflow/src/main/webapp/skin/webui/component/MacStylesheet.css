@@ -10,12 +10,12 @@
 	overflow: auto;
 }
 
-.UIWorkflowPortlet .UIForm .UIAction {
-	width: auto;
+.UIWorkflowPortlet .WorkflowPortletContent{
+	padding: 10px;
 }
 
-.UIWorkflowPortlet .ActionContainer {
-	float: right;
+.UIWorkflowPortlet .UIForm .UIAction {
+	width: auto;
 }
 
 .UIWorkflowPortlet .Toolbar {
@@ -78,6 +78,11 @@
 .ManageStartIcon {
 	width: 16px; height: 16px;
 	background: url('DefaultSkin/icons/Execute.gif') no-repeat;
+}
+
+.Group16x16Icon {
+	width: 16px; height: 16px;
+	background: url('DefaultSkin/icons/group.gif') no-repeat;
 }
 
 .Transition16x16Icon , .EndOfState16x16Icon , .StartProcess16x16Icon {
@@ -195,16 +200,19 @@
   padding: 10px;
 }
 
-.UIWorkflowPortlet .UITabPane .UITask {
+.UIWorkflowPortlet .UITabPane .UIFormWithTitle  {
   width: 500px;
   margin: auto;
-  padding-bottom: 7px;
 }
 
+.UIWorkflowPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+  padding-bottom: 20px;
+}
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
   width: 130px; 
 }
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 195px; 
+  width: 450px;
+  padding: 15px 0px;
 }

@@ -40,25 +40,34 @@
   padding: 0px 0px 8px 10px;
 }
 
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout .UploadIframe {
+  margin-left: 7px;
+}
+
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
-  padding: 20px 0px;
+  padding: 10px 0px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle label {
 	line-height: 20px;
-	width: 140px;
+	width: 120px;
 }
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
-  width: 400px ;
+  width: 450px ;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIAction {
   width: 330px ;
 }
 
+.UIECMAdminPortlet .UINodeTypeExport .FieldContainer .UIGrid input.checkbox {
+  padding: 0px;
+  margin-left: 35px;
+}
+
 .UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
+  width: 450px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
