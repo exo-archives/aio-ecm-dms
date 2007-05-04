@@ -508,14 +508,13 @@ public class UIWorkingArea extends UIContainer {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      } 
+      }
       try {
         if(!node.isNodeType(Utils.MIX_LOCKABLE)) {
           node.addMixin(Utils.MIX_LOCKABLE);
           node.save();
         }
-        node.lock(false, false);
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        node.lock(true, false);        
       } catch(LockException le) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -541,9 +540,15 @@ public class UIWorkingArea extends UIContainer {
         return ;
       } 
       try {
-        node.unlock();  
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      } catch(LockException ve) {
+        if(node.holdsLock()){
+          node.unlock();
+        }else {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.this-node-locked-by-parent", null,
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      } catch(LockException le) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
