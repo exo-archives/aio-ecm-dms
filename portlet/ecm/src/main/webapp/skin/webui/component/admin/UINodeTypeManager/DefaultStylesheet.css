@@ -12,7 +12,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport {
-  width: 550px;
+  width: 440px;
   margin: auto;
 }
 
@@ -46,10 +46,6 @@
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
   border: 1px solid white ;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {

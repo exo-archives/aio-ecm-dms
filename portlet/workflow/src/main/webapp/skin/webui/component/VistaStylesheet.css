@@ -18,6 +18,10 @@
 	float: right;
 }
 
+.UIWorkflowPortlet .UIGrid .ActionContainer a {
+	width: 24px; height: 24px;
+}
+
 .UIWorkflowPortlet .OverflowContainer {
 	width: 100%;
 }
@@ -195,4 +199,8 @@
 
 .UIWorkflowPortlet .UIDocumentContent .EventFrame .FrameContent {
   padding: 10px;
+}
+
+.UIWorkflowPortlet .UIPopupWindow .Content {
+  padding: 8px;
 }

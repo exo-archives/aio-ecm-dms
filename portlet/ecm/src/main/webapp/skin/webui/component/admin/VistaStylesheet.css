@@ -25,7 +25,7 @@
 
 .UIECMAdminPortlet .UIFormWithTitle {
   margin: auto;
-  width: 466px;
+  width: 95%;
 }
 
 .UIECMAdminPortlet .UIECMPortletLayout {
@@ -120,6 +120,15 @@
   margin: 10px;
 }
 
+.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
+  margin: auto;
+  width: auto;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UIGrid .ActionContainer a {
 	width: 24px; height: 24px;
 }
@@ -127,6 +136,10 @@
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
   float: left ;
   margin-left: 5px ;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .checkbox {
+  width: 15px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions input {
@@ -142,11 +155,16 @@
 .UIECMAdminPortlet .UINamespaceList .UIAction{
   margin: auto ;
 	padding: 3px 0px 7px 0px;
+	width: 100px;
 }
 
 .UIECMAdminPortlet .UINamespaceForm .UIFormWithTitle .UIAction{
   width: 200px;
   margin: auto ;
+}
+
+.UIECMAdminPortlet .UINamespaceManager .FieldContainer label {
+ 	width: 120px;
 }
 
 /*############################## -- UIDriveManager -- ########################*/
@@ -165,6 +183,14 @@
   margin: auto ; 
   padding-top: 10px;
 }
+
+.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout label {
+	float:left;
+  width: 120px ;
+	text-align: right;
+	margin: 0px 10px ;
+}
+
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser{
   margin: auto ; 
@@ -199,6 +225,10 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
+  width: 100px;
+}
+
 .UIECMAdminPortlet .UIFormInputSetWithActions {
 	padding-top: 15px;
 }
@@ -216,14 +246,15 @@
 	margin: 0px auto;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
+  width: 95%;
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction{
   width: 270px ;
   padding: 7px 0px 0px 0px;
   margin: auto ;
-}
-
-.UIECMAdminPortlet .UIECMTemplateList {
-  margin-top: 5px;
 }
 
 .UIECMAdminPortlet .UICBTemplateList {
@@ -250,15 +281,13 @@
 }
 
 .ECMTempForm .UIFormWithTitle .UIForm .textarea {
-  width: 446px;
+  width: 320px;
   height: 300px;
-  margin-left: 8px;
 }
 
 .CBTempForm .UIFormWithTitle .UIForm textarea {
-  width: 446px;
+  width: 320px;
   height: 300px;
-  margin-left: 8px;
 }
 
 .CBTempForm .UIFormWithTitle .UIForm .UIAction {
@@ -275,6 +304,10 @@
 .UIActionManager .UIActionTypeForm .UIFormWithTitle .UIAction {
 	width: 185px ;
 	margin: auto ;
+}
+
+.UIActionManager .UIActionTypeForm .UIFormWithTitle label {
+	width: 140px;
 }
 
 .UIActionManager .UIActionTypeForm .UIFormWithTitle .HorizontalLayout {
@@ -320,9 +353,8 @@
 }
 
 .UIECMScripts .UIFormWithTitle .UIForm textarea {
-  width: 446px;
+  width: 320px;
   height: 300px;
-  margin-left: 8px;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
@@ -343,11 +375,14 @@
 }
 
 .UICBScripts .UIFormWithTitle .UIForm textarea {
-  width: 446px; height: 300px;
-  margin-left: 8px;
+  width: 320px; height: 300px;
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/
+
+.UITemplatesManager .UIGrid .ActionContainer {
+  width: 70px ;
+}
 
 .UITemplatesManager .UIPopupWindow .WorkingArea {
 	height: 350px ;
@@ -359,9 +394,13 @@
 	padding-top: 15px;
 }
 
-.UITemplatesManager .UIFormTabPane .UIFormInputSet .UIAction{
+.UITemplatesManager .UIFormTabPane .UIAction{
   width: 300px;
   margin: auto;
+}
+
+.UITemplatesManager .UITemplateList .UIAction {
+  width: 80px ;
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
@@ -438,13 +477,16 @@
 /*############################## -- UIQueriesManager  -- ########################*/
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea{
-	width: 400px ; height: 150px ;
-	margin: 0px 0px 0px 48px;
+	width: 320px ; height: 150px ;
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .UIAction {
 	margin: auto;
 	width: 230px;
+}
+
+.UIQueriesManager .UIQueriesList .UIAction {
+	width: 120px ;
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout {
@@ -469,5 +511,5 @@
 
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin: 0px 0px 4px 135px;
+  margin: 0px 0px 4px 175px;
 }

@@ -62,17 +62,17 @@
 
 .UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
 	width: 32px;	height: 26px;
-  background: url('VistaSkin/BackToMainDriveButton.png') no-repeat center ;
+  background: url('VistaSkin/background/BackToMainDriveButton.png') no-repeat center ;
 }
 
 .UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
   width: 32px;	height: 28px;
-  background: url('VistaSkin/SetupPreferencesButton.png') no-repeat bottom;
+  background: url('VistaSkin/background/SetupPreferencesButton.png') no-repeat bottom;
 }
 
 .UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
   width: 32px;	height: 28px;
-  background: url('VistaSkin/RefreshSessionButton.png') no-repeat bottom;
+  background: url('VistaSkin/background/RefreshSessionButton.png') no-repeat bottom;
 }
 
 /*############################## -- End UIViewBar -- ##############################*/
@@ -87,7 +87,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressBarSeparator {
   float: left;
   height: 27px;
-  padding: 2px 8px;
+  padding: 2px 6px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockLeft {
@@ -202,7 +202,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
   float: left;
   height: 33px;
-  padding: 0px 8px 0px 8px;
+  padding: 0px 6px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {

@@ -237,12 +237,9 @@
   margin: 20px auto 0px auto;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent {
-  border: 1px solid gray;  
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
   background: #f4f4f4;
+  padding: 8px;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/

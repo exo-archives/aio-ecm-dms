@@ -10,6 +10,7 @@
 
 .UIWindow .UIBrowseContentPortlet {
   overflow: auto;
+  border: none;
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
@@ -20,10 +21,6 @@
 .UIBrowseContentPortlet {
   overflow: auto;
   border: solid 1px #b7b7b7;
-}
-
-.UIBrowseContentPortlet .UIAction{
-   width: auto;
 }
 
 .UIBrowseContentPortlet .ActionContainer{
@@ -179,7 +176,7 @@
 
 .UIBrowseContentPortlet .UIToolBar .CBActionContainer {
   height: 27px;
-  width: 160px;
+  width: 130px;
   float: right;
 }
 

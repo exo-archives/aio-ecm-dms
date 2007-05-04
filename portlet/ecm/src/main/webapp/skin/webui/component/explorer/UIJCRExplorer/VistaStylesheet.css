@@ -172,7 +172,7 @@
   background: url('VistaSkin/background/FolderMiddle1x96.png') repeat-x top;
   height: 96px;
   margin: 0px;
-  padding-top: 15px;
+  padding-top: 20px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIcon {
@@ -181,7 +181,7 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .Icon48x48 {
-  width: 64px; height: 64px;
+  width: 48px; height: 64px;
   margin: auto;
   cursor: pointer;
 }
@@ -257,6 +257,11 @@
 .UIJCRExplorerPortlet .ActionContainer {
 	 width: auto;
 	 margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIGrid .ActionContainer a{
+	 width: 24px; height: 24px;
+
 }
 
 
@@ -431,8 +436,7 @@
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 280px;
-  padding-left: 130px;
+  width: 330px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -442,8 +446,7 @@
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIAction {
-  width: 250px;
-  padding-left: 60px;
+  width: 275px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {

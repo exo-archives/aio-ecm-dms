@@ -18,7 +18,7 @@
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
   width: 440px;
-  margin-left: 10px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
@@ -27,10 +27,6 @@
 
 .UIECMAdminPortlet .UINodeTypeExport .UIForm .UIAction {
 	width: 310px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .FieldContainer {
- 	border-left: solid 1px #afaeae;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
@@ -75,6 +71,7 @@
 
 .UIECMAdminPortlet .UINodeTypeExport {
   width: 440px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIAction {
@@ -87,6 +84,10 @@
   width: 270px;
   margin: auto;
   padding: 5px 0px; 
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {
+  width: 135px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
@@ -110,8 +111,12 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
-  width: 450px ;
-  margin-left: 50px;
+  width: 99.7% ;
+  margin: 1px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithActions .checkbox {
+  width: 45px;
 }
 
 /*############################## -- End UINodeTypeManager-- ########################*/
