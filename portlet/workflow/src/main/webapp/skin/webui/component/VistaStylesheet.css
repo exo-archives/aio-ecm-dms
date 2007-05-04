@@ -46,7 +46,7 @@
 
 .UIWorkflowPortlet .Toolbar .TextAdmin {
 	float: left;
-  font-weight: bold;
+  font-size:11px;
   line-height:29px;
   padding: 0px 15px 0px 10px;
 }
