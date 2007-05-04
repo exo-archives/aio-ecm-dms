@@ -135,7 +135,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       ManageDriveService dservice_ = uiDriveForm.getApplicationComponent(ManageDriveService.class) ;
       if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
-                                                ApplicationMessage.ERROR)) ;
+                                                ApplicationMessage.WARNING)) ;
         return ;
       }
       dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
