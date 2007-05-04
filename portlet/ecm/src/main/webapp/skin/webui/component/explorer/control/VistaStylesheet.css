@@ -20,6 +20,7 @@
   background: url('VistaSkin/background/LineDecorator1x30.gif') repeat-x center center;
   border-bottom: solid 1px #c5c9d2;
   line-height: 30px;
+  font-size:11px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
