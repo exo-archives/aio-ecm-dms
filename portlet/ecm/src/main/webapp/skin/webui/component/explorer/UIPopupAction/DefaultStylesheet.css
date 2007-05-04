@@ -78,6 +78,81 @@
   float: right;
 }
 
+/*############################## -- Begin UIDiff -- ##############################*/
+.UIJCRExplorerPortlet .UIDiff {
+  
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent {  
+	  padding: 10px;
+	  font-family: Verdana;
+	  color: #0e396c; font-size: 11px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
+	  padding-bottom: 5px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
+	  padding-left: 10px;
+	  height: 21px; line-height: 21px;
+	  font-family: Verdana;
+	  color: #058ee6; font-weight: bold; 
+	  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
+	  border: 1px solid #cbcbcb;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
+	  padding: 10px;
+	  border: 1px solid #cbcbcb; 
+	  border-top: none;
+	}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
+	  width: 45%;
+	  border: 1px solid #e1e1e1; 
+	  text-align: left;
+	 	float:left;
+	  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label{		
+		font-family: Verdana;
+	  color: #058ee6; font-weight: bold; 
+	  font-size: 11px;	
+} 
+.UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
+		border: 1px dotted #e1e1e1; 
+	  text-align: left;
+	  margin: 2px;
+	  padding: 3px 2px;
+	}	
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
+		font-family: Verdana;
+	  color: #058ee6; font-weight: bold; 
+	  font-size: 11px;	
+} 
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
+	  width: 45%;
+	  border: 1px solid #e1e1e1; 
+	  text-align: left;
+	 	float:right;
+	  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
+		width: 300px;
+		margin-top: 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
+		padding: 0px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIRatingInfoContainer {
+		margin:0px 0px 0px auto;
+}
+
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 5px 0px;

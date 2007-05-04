@@ -1,0 +1,72 @@
+<%
+	import org.exoplatform.services.document.diff.Delta ;
+%>
+<div class="UIDiff">
+	<div class="FileContent">
+		<div class="NavigationContainer">  			
+			<div class="TopTitle"><%=_ctx.appRes("UIDiff.label.diffTitle")%></div>
+			<div class="Content">
+				<%
+					String action = "noChange" ;
+					def chunk ;				
+					def oChunk ;
+					def rChunk ;
+					def arr = uicomponent.getDeltas() ;
+					%>
+					<div class="ContentDetailLeft">
+					<%
+					if(arr.isEmpty()) {
+					%>
+						<div class="VersionInfo">
+							<label>
+								<%=_ctx.appRes("UIDiff.label.noChange")%>
+							</label>
+						</div>
+					<%
+					} else {
+		    	for(Delta delta in uicomponent.getDeltas()){
+		    		if(uicomponent.isDeleteDelta(delta)){
+		    			action = "Delete" ;
+		        }
+						if(uicomponent.isAddDelta(delta)) {
+			        action = "Add" ;
+		        }
+		        if(uicomponent.isChangeDelta(delta)) {
+			        action = "Change" ;
+		      	}  		
+	    	%>
+	    		<label>
+	    			<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
+	    			<%=uicomponent.getBaseVersionNum()%>
+	    		</label>
+	    		<div class="VersionInfo">
+	    			<%=delta.getRevised()%>
+	    		</div>
+	    		<label>
+	    			<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
+	    			<%=uicomponent.getCurrentVersionNum()%>
+	    		</label>		
+	    		<div class="VersionInfo">
+	    			<%=delta.getOriginal()%>
+	    		</div>		
+				<%}}%>				
+				</div>					
+			    <div class="ContentDetailRight">
+			     <div class="VersionInfo">
+			     	<label>
+			     		<%=_ctx.appRes("UIDiff.label." + action)%>		
+			     	</label>
+			     </div>
+			     <%for(Delta delta in uicomponent.getDeltas()){%>
+				     <div class="VersionInfo">
+				     		<%
+				     			oChunk = delta.getOriginal() ;
+				     			rChunk = delta.getRevised() ;			     			
+				     		%>
+				     </div>
+			     <%}%>
+					</div>  
+			</div>
+		</div>
+	</div>
+</div>

@@ -52,6 +52,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
     addChild(UILabelForm.class, null, null).setRendered(false);   
     addChild(UIRemoveLabelForm.class, null, null).setRendered(false);
     addChild(UIViewVersion.class, null, null).setRendered(false);
+    addChild(UIDiff.class, null, null).setRendered(false) ;
   }
 
   public String[] getVersionLabels(VersionNode version) throws Exception {
@@ -160,8 +161,14 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
   static  public class CompareVersionActionListener extends EventListener<UIVersionInfo> {
     public void execute(Event<UIVersionInfo> event) throws Exception {
       UIVersionInfo uiVersionInfo = event.getSource();
+      for(UIComponent uiChild : uiVersionInfo.getChildren()) {
+        uiChild.setRendered(false) ;
+      }
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiVersionInfo.curentVersion_  = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
+      VersionNode node = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
+      UIDiff uiDiff = uiVersionInfo.getChild(UIDiff.class) ;
+      uiDiff.setVersions(uiVersionInfo.getCurrentNode().getBaseVersion(), node.getVersion()) ;
+      uiDiff.setRendered(true) ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
     }
   }

@@ -44,7 +44,8 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       currentNode.addMixin("mix:versionable");
-      uiExplorer.getSession().save();      
+      uiExplorer.getSession().save();   
+      uiExplorer.getSession().refresh(true) ;      
       uiExplorer.updateAjax(event) ;
     }
   }
