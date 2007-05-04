@@ -87,6 +87,7 @@
 	  padding: 10px;
 	  font-family: Verdana;
 	  color: #0e396c; font-size: 11px;
+	  text-align: left;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
@@ -106,12 +107,15 @@
 	  padding: 10px;
 	  border: 1px solid #cbcbcb; 
 	  border-top: none;
-	}
-	
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
+	text-align: center;
+	border:none ;
+}
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
 	  width: 45%;
-	  border: 1px solid #e1e1e1; 
-	  text-align: left;
+	  border: 1px solid #e1e1e1; 	  
 	 	float:left;
 	  margin:0px 10px;
 }
@@ -122,8 +126,7 @@
 	  font-size: 11px;	
 } 
 .UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
-		border: 1px dotted #e1e1e1; 
-	  text-align: left;
+		border: 1px dotted #e1e1e1; 	  
 	  margin: 2px;
 	  padding: 3px 2px;
 	}	
@@ -134,8 +137,7 @@
 } 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
 	  width: 45%;
-	  border: 1px solid #e1e1e1; 
-	  text-align: left;
+	  border: 1px solid #e1e1e1; 	  
 	 	float:right;
 	  margin:0px 10px;
 }

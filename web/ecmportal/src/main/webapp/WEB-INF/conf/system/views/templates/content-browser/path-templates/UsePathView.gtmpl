@@ -87,10 +87,12 @@
                         previousNodeName = "Root" ;
                         previousActionLink = uicomponent.event('ChangeNode',rootNode.getPath());
                       }
-                    %>    
-                    <div class="NodeNavigationIcon">                      
-                      <a class="BackButtonLabel" href="$previousActionLink">$previousNodeName</a>
-                    </div>
+                    %> 
+                    <div class="NodeHistoryContainer">   
+	                    <div class="NodeNavigationIcon"><span></span></div>
+	                    <a class="BackButtonLabel" href="$previousActionLink">$previousNodeName</a>
+	                    <div style="clear:left;"><span></span></div>
+	                  </div>  
                   </div>            
                   <%
                     for(String nodePath : content.get("history")) {
@@ -100,9 +102,9 @@
                        if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
                   %>
                       <div class="NodeHistoryContainer">
-                        <div class="NodeItemIcon">
-                          <a class="$classStyleName" href="$nodeLink">$nodeName</a>
-                        </div>
+                        <div class="NodeItemIcon"><span></span></div>
+                        <a class="$classStyleName" href="$nodeLink">$nodeName</a>
+                        <div style="clear:left;"><span></span></div>
                       </div>              
                   <%}%>
                  </div>
@@ -134,7 +136,7 @@
                             <div class="LabelButton">                            	
                               <a href="<%=uicomponent.event('ChangeNode',tab);%>">$tabName</a>
                             </div>
-                            <div style="clear:left"><span></span></div>
+                            <div style="clear:left;"><span></span></div>
                           </div>
                         </div>
                       </div>
@@ -145,7 +147,7 @@
             <div class="NavigationButtonContainer">
 							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
 							<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
-              <div style="clear:both"><span></span></div>
+              <div style="clear:both;"><span></span></div>
             </div>
           </div>
           <div class="UICBSubNavigation">

@@ -509,9 +509,11 @@ public class UIBrowseContainer extends UIContainer {
     while (items.hasNext()) {
       Node item = items.nextNode() ;
       if(canRead(item)){
-        if(!documentTemplates.contains(item.getPrimaryNodeType().getName())) subCategories.add(item.getPath()) ;
-        else if(isShowDocument) {
+        NodeType nt = item.getPrimaryNodeType() ;
+        if(documentTemplates.contains(nt.getName())&&(isShowDocument)){
           if(childDocOrReferencedDoc.size() < getRowPerBlock()) childDocOrReferencedDoc.add(item) ;
+        } else {
+          if(isCategories(item.getPrimaryNodeType())) subCategories.add(item.getPath()) ;          
         }
       }
     }

@@ -7,65 +7,37 @@
 			<div class="TopTitle"><%=_ctx.appRes("UIDiff.label.diffTitle")%></div>
 			<div class="Content">
 				<%
-					String action = "noChange" ;
-					def chunk ;				
-					def oChunk ;
-					def rChunk ;
-					def arr = uicomponent.getDeltas() ;
-					%>
-					<div class="ContentDetailLeft">
-					<%
+					def arr = uicomponent.getDeltas() ;					
 					if(arr.isEmpty()) {
-					%>
-						<div class="VersionInfo">
-							<label>
-								<%=_ctx.appRes("UIDiff.label.noChange")%>
-							</label>
-						</div>
+				%>
+					<div class="ContentDetail">						
+						<label>
+							<%=_ctx.appRes("UIDiff.label.noChange")%>
+						</label>						
+					</div>	
 					<%
 					} else {
-		    	for(Delta delta in uicomponent.getDeltas()){
-		    		if(uicomponent.isDeleteDelta(delta)){
-		    			action = "Delete" ;
-		        }
-						if(uicomponent.isAddDelta(delta)) {
-			        action = "Add" ;
-		        }
-		        if(uicomponent.isChangeDelta(delta)) {
-			        action = "Change" ;
-		      	}  		
+		    	for(Delta delta in uicomponent.getDeltas()){		    		
 	    	%>
-	    		<label>
-	    			<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
-	    			<%=uicomponent.getBaseVersionNum()%>
-	    		</label>
-	    		<div class="VersionInfo">
-	    			<%=delta.getRevised()%>
-	    		</div>
-	    		<label>
-	    			<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
-	    			<%=uicomponent.getCurrentVersionNum()%>
-	    		</label>		
-	    		<div class="VersionInfo">
-	    			<%=delta.getOriginal()%>
-	    		</div>		
-				<%}}%>				
-				</div>					
-			    <div class="ContentDetailRight">
-			     <div class="VersionInfo">
-			     	<label>
-			     		<%=_ctx.appRes("UIDiff.label." + action)%>		
-			     	</label>
-			     </div>
-			     <%for(Delta delta in uicomponent.getDeltas()){%>
-				     <div class="VersionInfo">
-				     		<%
-				     			oChunk = delta.getOriginal() ;
-				     			rChunk = delta.getRevised() ;			     			
-				     		%>
-				     </div>
-			     <%}%>
-					</div>  
+	    		<div class="ContentDetailLeft">
+		    		<label>
+		    			<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
+		    			<%=uicomponent.getBaseVersionNum()%>
+		    		</label>
+		    		<div class="VersionInfo">
+		    			<%=delta.getRevised()%>
+		    		</div>
+		    	</div>
+		    	<div class="ContentDetailRight">
+		    		<label>
+		    			<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
+		    			<%=uicomponent.getCurrentVersionNum()%>
+		    		</label>		
+		    		<div class="VersionInfo">
+		    			<%=delta.getOriginal()%>
+		    		</div>		
+					</div>		    
+				<%}}%>			      
 			</div>
 		</div>
 	</div>
