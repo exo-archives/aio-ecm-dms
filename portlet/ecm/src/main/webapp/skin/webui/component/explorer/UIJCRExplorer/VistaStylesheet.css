@@ -56,7 +56,7 @@
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl th {
   line-height: 22px; text-align: left; 
-  font-size: 12px ; font-weight: normal;
+  font-size: 11px ; font-weight: normal;
   background: url('VistaSkin/background/ThGridRepeatBg1x22.png') repeat-x center;
   border-bottom: solid 1px #d8d8d6; border-right: solid 1px #b0b0b0;
   padding: 0px 10px;
