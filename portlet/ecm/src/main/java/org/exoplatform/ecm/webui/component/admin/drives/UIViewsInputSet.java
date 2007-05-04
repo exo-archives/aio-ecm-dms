@@ -46,7 +46,7 @@ public class UIViewsInputSet extends UIFormInputSet {
     }
     if(selectedView.length() < 1 ) {
       throw new MessageException(new ApplicationMessage("UIDriveForm.msg.drive-views-invalid",
-                                                        null, ApplicationMessage.ERROR)) ;
+                                                        null, ApplicationMessage.WARNING)) ;
     }
     return selectedView.toString() ;
   }
