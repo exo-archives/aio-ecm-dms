@@ -210,7 +210,7 @@
 			              <div class="AttachmentsContaienr">
 										<%for (att in attachments) {%>	
 			                  <div class="Attachment" style="float:left"><span></span></div>
-			                  <div style="margin-left:5px;"><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
+			                  <div><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
 		                <%}%>
 		                </div>
 			            </div>						
