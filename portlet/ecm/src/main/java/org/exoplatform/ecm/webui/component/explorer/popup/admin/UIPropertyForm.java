@@ -46,8 +46,7 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UIPropertyForm.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.ChangeTypeActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.AddActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.RemoveActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.CancelActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.RemoveActionListener.class)
     }
 )
 public class UIPropertyForm extends UIForm {
@@ -84,10 +83,10 @@ public class UIPropertyForm extends UIForm {
     uiSelectBox.setOnChange("ChangeType") ;
     addUIFormInput(uiSelectBox) ;
     initMultiValuesField() ;    
-    setActions(new String[]{"Save", "Cancel"}) ;
+    setActions(new String[]{"Save"}) ;
   }
 
-  private void refresh() throws Exception {
+  public void refresh() throws Exception {
     reset() ;
     getUIFormSelectBox(FIELD_TYPE).setValue(Integer.toString(PropertyType.STRING)) ;
     removeChildById(FIELD_VALUE) ;
@@ -107,7 +106,7 @@ public class UIPropertyForm extends UIForm {
     switch (type) {
     case 2:  {
       UIFormUploadInput inputValue = (UIFormUploadInput)value ;
-      byte[] content = inputValue.getUploadData() ;
+      byte[] content = inputValue.getUploadData() ;      
       return valueFactory.createValue(new ByteArrayInputStream(content)) ;
     }
     case 3:  return valueFactory.createValue((Long.valueOf((String)value))) ;
@@ -136,7 +135,7 @@ public class UIPropertyForm extends UIForm {
       uiFormMultiValue.setId(FIELD_VALUE) ;
       uiFormMultiValue.setName(FIELD_VALUE) ;
       if(PropertyType.BINARY == type) {        
-        uiFormMultiValue.setType(UIFormUploadInput.class) ;        
+        uiFormMultiValue.setType(UIFormUploadInput.class) ;  
       } else if(PropertyType.BOOLEAN == type) {
         uiFormMultiValue.setType(UIFormCheckBoxInput.class) ;
       } else if(PropertyType.DATE == type) {
@@ -163,8 +162,7 @@ public class UIPropertyForm extends UIForm {
         String name = uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         if ((name == null) || (name.length() == 0)) {
-          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null,
-                                                  ApplicationMessage.WARNING)) ;
+          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null)) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
@@ -184,8 +182,7 @@ public class UIPropertyForm extends UIForm {
           }
         } else valueList = multiValueInputSet.getValue() ;
         if(valueList.size() == 0) {
-          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.value-invalid", null,
-                                                  ApplicationMessage.ERROR)) ;
+          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.value-invalid", null)) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
@@ -216,15 +213,6 @@ public class UIPropertyForm extends UIForm {
       UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
       uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
-    }
-  }
-  
-  static public class CancelActionListener extends EventListener<UIPropertyForm> {
-    public void execute(Event<UIPropertyForm> event) throws Exception {
-      UIPropertyForm uiForm = event.getSource() ;
-      UIPropertiesManager uiProManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
-      uiProManager.setRenderedChild(UIPropertyTab.class) ; 
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiProManager) ;
     }
   }
 }
