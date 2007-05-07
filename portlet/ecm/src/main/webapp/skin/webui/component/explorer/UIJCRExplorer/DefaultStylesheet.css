@@ -75,10 +75,6 @@
   padding: 0px 5px;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .OverHeader {
-  background: url('DefaultSkin/background/OverThGridRepeatBg1x20.gif') repeat-x center;
-}
-
 .UIJCRExplorerPortlet .UIListView .UIGridControl .HeaderLabel {
   float: left;
 }
