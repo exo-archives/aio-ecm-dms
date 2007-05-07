@@ -346,7 +346,9 @@
   width: 480px;
   margin: 0px auto;
 }
-
+.UIJCRExplorerPortlet .UIUploadForm .FileNameLabel{
+ overflow: hidden ;
+}
 /*=============================UIWatchDocumentForm=======================*/
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
   width: 480px;

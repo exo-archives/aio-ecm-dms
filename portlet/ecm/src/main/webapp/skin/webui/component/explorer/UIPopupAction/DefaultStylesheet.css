@@ -14,8 +14,7 @@
 /*############################## -- End UIFormWithTitle -- ##############################*/
 
 /*############################## -- Begin UIVersionInfo -- ##############################*/
-.UIJCRExplorerPortlet .UIVersionInfo {
-  border: solid 1px #bdbdbd;
+.UIJCRExplorerPortlet .UIVersionInfo {  
   padding: 7px;
   background-color: white;
 }
@@ -89,11 +88,11 @@
   
 }
 
-.UIJCRExplorerPortlet .UIDiff .FileContent {  
-	  padding: 10px;
+.UIJCRExplorerPortlet .UIDiff .FileContent {  	  
 	  font-family: Verdana;
 	  color: #0e396c; font-size: 11px;
 	  text-align: left;
+	  padding: 5px 0px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
