@@ -56,11 +56,12 @@
 			
 			String[] labels = uicomponent.getVersionLabels(node);
       StringBuffer label = new StringBuffer() ;
+      label.append("<label>") ;
 			for(temp in labels) {
-        label.append(temp).append(" ") ;
+       label.append("[").append(temp).append("] ") ;
         
       }
-      
+      label.append("</label>") ;
 			String show = "Version: " + node.getName() + " " + label.toString() + baseVersion;
 			println """
 				    <div class="NodeLabel">$show</div>
@@ -74,7 +75,7 @@
 <div class="UIVersionInfo" id="$uicomponent.id">
   <div class="HomeNode">
     <div class="Icon24x24 HomeIcon"><span></span></div>
-    <div class="NodeLabel">$rootNode.name</div>
+    <div class="NodeLabel"><%=uicomponent.getCurrentNode().getName()%></div>
   </div>
   <%
 		String clazz = "" ;
