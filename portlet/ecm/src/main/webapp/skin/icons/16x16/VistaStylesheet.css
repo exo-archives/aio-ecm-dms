@@ -333,7 +333,8 @@
 
 .Locked16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Lock.gif') no-repeat ;   
+  background: url('VistaSkin/Lock.gif') no-repeat ;  
+ 
 }
 
 .Unlock16x16Icon {
@@ -356,6 +357,11 @@
   background: url('DefaultSkin/CheckOut.gif') no-repeat ;   
 }
 
+.WebDAV16x16Icon {
+  width: 21px; height: 19px;
+  background: url('VistaSkin/Webdav.png') no-repeat ; 
+}
+
 .Copy16x16Icon {
   width: 24px; height: 24px;
   background: url('VistaSkin/Copy.png') no-repeat ;   
@@ -368,7 +374,7 @@
 
 .Rename16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Rename.gif') no-repeat ;   
+  background: url('VistaSkin/Rename.gif') no-repeat ;   
 }
 
 .Edit16x16Icon {

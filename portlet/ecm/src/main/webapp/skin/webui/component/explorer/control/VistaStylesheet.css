@@ -99,7 +99,6 @@
   float: left;
   font-size: 11px;
   line-height: 30px;
-  padding: 0px 10px 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockRight {
@@ -129,7 +128,7 @@
   height: 21px; line-height: 21px;
   background: white;
   border: solid 1px #8c8b8b;
-  margin: 4px 58px 0px 134px;
+  margin: 4px 58px 0px 130px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
@@ -208,7 +207,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
   float: left;
-  padding: 6px 4px 0px 4px;
+  padding: 6px 2px 0px 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox select{
