@@ -555,7 +555,7 @@
 }
 
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
-  width: 60px;	
+  width: 160px;	
   padding-right: 15px;
 }
 
@@ -633,7 +633,9 @@
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{
   margin-right: 3px;
 }
-
+.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
+  width: 160px ;
+}
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UIGrid .OddRow {

@@ -46,7 +46,8 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UIPropertyForm.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.ChangeTypeActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.AddActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.RemoveActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.RemoveActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.CancelActionListener.class)
     }
 )
 public class UIPropertyForm extends UIForm {
@@ -83,7 +84,7 @@ public class UIPropertyForm extends UIForm {
     uiSelectBox.setOnChange("ChangeType") ;
     addUIFormInput(uiSelectBox) ;
     initMultiValuesField() ;    
-    setActions(new String[]{"Save"}) ;
+    setActions(new String[]{"Save", "Cancel"}) ;
   }
 
   private void refresh() throws Exception {
@@ -215,6 +216,15 @@ public class UIPropertyForm extends UIForm {
       UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
       uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+    }
+  }
+  
+  static public class CancelActionListener extends EventListener<UIPropertyForm> {
+    public void execute(Event<UIPropertyForm> event) throws Exception {
+      UIPropertyForm uiForm = event.getSource() ;
+      UIPropertiesManager uiProManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
+      uiProManager.setRenderedChild(UIPropertyTab.class) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiProManager) ;
     }
   }
 }

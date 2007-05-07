@@ -27,7 +27,10 @@ import org.exoplatform.webui.event.EventListener;
 
 @ComponentConfig(
     template =  "app:/groovy/webui/component/explorer/popup/info/UIPropertyTab.gtmpl",
-    events = {@EventConfig(listeners = UIPropertyTab.CloseActionListener.class)}
+    events = {
+        @EventConfig(listeners = UIPropertyTab.CloseActionListener.class),
+        @EventConfig(listeners = UIPropertyTab.AddActionListener.class)
+    }
 )
 
 public class UIPropertyTab extends UIContainer {
@@ -37,7 +40,7 @@ public class UIPropertyTab extends UIContainer {
   
   public String[] getBeanFields() { return PRO_BEAN_FIELD ;}
   
-  public String[] getActions() {return  new String[] {"Close"} ;}
+  public String[] getActions() {return  new String[] { "Add", "Close"} ;}
   
   public PropertyIterator getProperties() throws Exception { 
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ; 
@@ -68,6 +71,15 @@ public class UIPropertyTab extends UIContainer {
     } 
   }
   
+  static public class AddActionListener extends EventListener<UIPropertyTab> {
+    public void execute(Event<UIPropertyTab> event){
+      UIPropertyTab uiTab = event.getSource() ;
+      UIPropertiesManager uiManager = uiTab.getAncestorOfType(UIPropertiesManager.class) ;
+      uiManager.setRenderedChild(UIPropertyForm.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+    }
+  }
+ 
   static public class CloseActionListener extends EventListener<UIPropertyTab> {
     public void execute(Event<UIPropertyTab> event) throws Exception {
       event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction() ;

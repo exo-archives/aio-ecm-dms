@@ -213,3 +213,9 @@
   width: 420px;
   padding: 15px 0px;
 }
+
+/*##############################- Begin UIProcessDetail -################################*/
+.UIWorkflowPortlet .UIProcessDetail .UIGrid .Date{
+	background: none ;
+	width: auto ;
+}
