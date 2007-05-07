@@ -237,7 +237,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       storeActionNode.addMixin(ACTIONABLE);
       storeActionNode.save();
     }
-    String newActionPath = cmsService_.storeNode(actionType, storeActionNode, mappings, true);
+    String newActionPath = cmsService_.storeNode(actionType, storeActionNode, mappings, 
+                                                true, storeActionNode.getSession().getUserID());
     storeActionNode.save();
     String srcWorkspace = storeActionNode.getSession().getWorkspace().getName();
 

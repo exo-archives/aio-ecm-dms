@@ -172,8 +172,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return service;
   }
   
-  public String getNodeOwner(Node node) throws RepositoryException { 
-    return ((ExtendedNode) node).getACL().getOwner();
+  public String getNodeOwner(Node node) throws RepositoryException {
+    String owner = ((ExtendedNode) node).getACL().getOwner();
+    if(owner != null) return owner ;
+    return "" ;
   }
   
   public String getNodePath(Node node) throws Exception {

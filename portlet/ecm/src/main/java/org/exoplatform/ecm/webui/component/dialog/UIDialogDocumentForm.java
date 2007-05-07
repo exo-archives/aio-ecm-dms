@@ -126,7 +126,7 @@ public class UIDialogDocumentForm extends DialogFormFields {
     String prefType = preferences.getValue("type", "") ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
-      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true);
+      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, Util.getUIPortal().getOwner());
       homeNode.getSession().save() ;
       Object[] args = { prefLocate } ;
       reset() ;

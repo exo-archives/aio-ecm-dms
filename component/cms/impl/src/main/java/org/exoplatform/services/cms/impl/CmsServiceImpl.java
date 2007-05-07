@@ -38,6 +38,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 
+
 /**
  * @author benjaminmestrallet
  */
@@ -55,16 +56,17 @@ public class CmsServiceImpl implements CmsService {
   }
 
   public String storeNode(String workspace, String nodeTypeName,
-      String storePath, Map mappings) throws Exception {
+      String storePath, Map mappings, String userId) throws Exception {
     Repository repository = jcrService.getRepository();
     Session session = repository.login(workspace);
     Node storeHomeNode = (Node) session.getItem(storePath);
-    String path = storeNode(nodeTypeName, storeHomeNode, mappings, true);
+    String path = storeNode(nodeTypeName, storeHomeNode, mappings, true, userId);
     storeHomeNode.save();
     return path;
   }
 
-  public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, boolean isAddNew)
+  public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
+                           boolean isAddNew, String userId)
       throws Exception {
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
@@ -73,16 +75,8 @@ public class CmsServiceImpl implements CmsService {
     if (nodeName == null || nodeName.length() == 0) {
       nodeName = idGeneratorService.generateStringID(nodeTypeName);
     }
-    /*SessionContainer sessionContainer = SessionContainer.getInstance();
-    ClientInfo clientInfo = (sessionContainer != null) ? sessionContainer.getClientInfo() : null; 
-    String owner = (clientInfo != null) ? clientInfo.getRemoteUser() : null;
-    if(owner == null || owner.length() == 0) {
-      owner = "Anonymous" ;
-    }    */
     Session session = storeHomeNode.getSession();
-    String owner = session.getUserID() ;
-    NodeTypeManager nodetypeManager = session.getWorkspace()
-        .getNodeTypeManager();
+    NodeTypeManager nodetypeManager = session.getWorkspace().getNodeTypeManager();
     NodeType nodeType = nodetypeManager.getNodeType(nodeTypeName);
     Node currentNode = null;
     String[] mixinTypes = null ;
@@ -96,8 +90,7 @@ public class CmsServiceImpl implements CmsService {
     }
     if (isAddNew) {
       currentNode = storeHomeNode.addNode(nodeName, nodeTypeName);      
-      ExtendedNode ext = (ExtendedNode)currentNode ;
-      ext.getACL().setOwner(owner) ;
+      ((ExtendedNode)currentNode).getACL().setOwner(userId) ;
       if(mixinTypes != null){
         for(String type : mixinTypes){
           NodeType mixinType = nodetypeManager.getNodeType(type);
@@ -421,14 +414,7 @@ public class CmsServiceImpl implements CmsService {
       }
       rootNode = rootNode.getNode(splittedName[i]) ;
     }
-    session.save() ;
-    /*
-    try {
-      rootNode.getNode(splittedName[splittedName.length - 2]);
-    } catch (PathNotFoundException exc) {
-      rootNode.addNode(splittedName[splittedName.length - 2], "nt:file");
-    }
-    */   
+    session.save() ;    
   }
 
   public void storeMixin(Node node, String mixinNodeType) throws Exception {
