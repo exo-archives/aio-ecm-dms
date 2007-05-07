@@ -19,8 +19,6 @@
     <supports>
       <mime-type>text/html</mime-type>
       <portlet-mode>help</portlet-mode>
-      <portlet-mode>edit</portlet-mode>
-      
     </supports>
     <supported-locale>en</supported-locale>    
     <resource-bundle>locale.portlet.ecm.JCRExplorerPortlet</resource-bundle>    																														
@@ -78,6 +76,50 @@
       <short-title>ECM Admin</short-title>
       <keywords>ecm, admin</keywords>
     </portlet-info>
+  </portlet> 
+  
+  <portlet>
+    <description xml:lang="EN">Dialog Portlet</description>
+    <portlet-name>DialogPortlet</portlet-name>
+    <display-name xml:lang="EN">Dialog Portlet</display-name>
+    <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
+    
+    <init-param>
+      <name>webui.configuration</name>
+      <value>/WEB-INF/conf/portlet/ecm/DialogPortlet/webui/configuration.xml</value>
+    </init-param>    
+
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>    
+    <resource-bundle>locale.portlet.ecm.DialogPortlet</resource-bundle>    																														
+    
+    <portlet-info>
+      <title>Dialog Portlet</title>
+      <short-title>ECM Dialog</short-title>
+      <keywords>ecm, dialog</keywords>
+    </portlet-info>
+    <portlet-preferences>
+      <preference>
+        <name>workspace</name>
+        <value>production</value>
+        <read-only>false</read-only>
+      </preference>
+      <preference>
+        <name>path</name>     
+        <value>/</value>        
+        <read-only>false</read-only>
+      </preference>
+      <preference>
+        <name>type</name>     
+        <value>exo:article</value>        
+        <read-only>false</read-only>
+      </preference>          
+    </portlet-preferences>
   </portlet> 
   
   <portlet>

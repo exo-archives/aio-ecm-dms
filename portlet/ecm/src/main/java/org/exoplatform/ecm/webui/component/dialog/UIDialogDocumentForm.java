@@ -2,7 +2,7 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.explorer;
+package org.exoplatform.ecm.webui.component.dialog;
 
 import java.security.AccessControlException;
 import java.util.List;
@@ -10,8 +10,11 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.version.VersionException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
@@ -22,8 +25,10 @@ import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -42,16 +47,16 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     events = {
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-      @EventConfig(listeners = UIEditModeDocumentForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIEditModeDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIDialogDocumentForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIDialogDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UIEditModeDocumentForm extends DialogFormFields {
+public class UIDialogDocumentForm extends DialogFormFields {
 
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
   
-  public UIEditModeDocumentForm() throws Exception {
+  public UIDialogDocumentForm() throws Exception {
     setActions(new String[]{"Save"}) ;
   }
   
@@ -64,10 +69,22 @@ public class UIEditModeDocumentForm extends DialogFormFields {
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
-      uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.not-support", arg, 
+      uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.not-support", arg, 
                                               ApplicationMessage.ERROR)) ;
       return null ;
     }
+  }
+  
+  public Node getCurrentNode() throws Exception {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    CmsConfigurationService cmsConfigurationService = 
+      getApplicationComponent(CmsConfigurationService.class) ;
+    Session session = 
+      repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
+    PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest request = portletContext.getRequest() ; 
+    PortletPreferences preferences = request.getPreferences() ;
+    return (Node) session.getItem(preferences.getValue("path", ""));
   }
   
   public void setTemplateNode(String type) { documentType_ = type ; }
@@ -91,6 +108,7 @@ public class UIEditModeDocumentForm extends DialogFormFields {
     jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ; 
   }
   
+  @SuppressWarnings("unused")
   public Node storeValue(Event event) throws Exception {
     CmsService cmsService = getApplicationComponent(CmsService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
@@ -101,43 +119,42 @@ public class UIEditModeDocumentForm extends DialogFormFields {
       repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
     List inputs = getChildren() ;
     Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), session) ;
-    Node newNode = null ;
-    Node homeNode = (Node) session.getItem(getSavedPath());
-    UIEditModeController uiController = getParent() ;
-    UIEditModeDocumentType uiEditModeType = uiController.getChild(UIEditModeDocumentType.class) ;
+    PortletRequestContext portletContext = (PortletRequestContext) event.getRequestContext() ;
+    PortletRequest request = portletContext.getRequest() ; 
+    PortletPreferences preferences = request.getPreferences() ;
+    String prefLocate = preferences.getValue("path", "") ;
+    String prefType = preferences.getValue("type", "") ;
+    Node homeNode = (Node) session.getItem(prefLocate);
     try {
-      String addedPath = cmsService.storeNode(uiEditModeType.getSelectValue(), homeNode, inputProperties, true);
+      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true);
       homeNode.getSession().save() ;
-      newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
-      Object[] args = { getSavedPath() } ;
+      Object[] args = { prefLocate } ;
       reset() ;
-      uiEditModeType.getUIStringInput(UIEditModeDocumentType.FIELD_SAVEDPATH).setValue(null) ;
-      setSavedPath(null) ;
-      uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.saved-successfully", args)) ;
+      uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.saved-successfully", args)) ;
     } catch (AccessControlException ace) {
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
-      uiApp.addMessage(new ApplicationMessage("UIEditModeDocumentForm.msg.in-versioning", null, 
+      uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.in-versioning", null, 
           ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {
-      String key = "UIEditModeDocumentForm.msg.cannot-save" ;
+      String key = "UIDialogDocumentForm.msg.cannot-save" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
-    return newNode ;
+    return null ;
   }
   
-  static public class AddActionListener extends EventListener<UIEditModeDocumentForm> {
-    public void execute(Event<UIEditModeDocumentForm> event) throws Exception {
+  static public class AddActionListener extends EventListener<UIDialogDocumentForm> {
+    public void execute(Event<UIDialogDocumentForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
   }
 
-  static public class RemoveActionListener extends EventListener<UIEditModeDocumentForm> {
-    public void execute(Event<UIEditModeDocumentForm> event) throws Exception {
+  static public class RemoveActionListener extends EventListener<UIDialogDocumentForm> {
+    public void execute(Event<UIDialogDocumentForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
   }  

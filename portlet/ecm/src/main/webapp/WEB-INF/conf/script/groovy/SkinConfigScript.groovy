@@ -52,3 +52,21 @@ SkinService.addSkin(
     "Mac",
     "/ecm/skin/webui/component/explorer/MacStylesheet.css"
 ) ;
+
+SkinService.addSkin(
+    "ecm/DialogPortlet",
+    "Default",
+    "/ecm/skin/webui/component/dialog/DefaultStylesheet.css"
+) ;
+
+SkinService.addSkin(
+    "ecm/DialogPortlet",
+    "Vista",
+    "/ecm/skin/webui/component/dialog/VistaStylesheet.css"
+) ;
+ 
+SkinService.addSkin(
+    "ecm/DialogPortlet",
+    "Mac",
+    "/ecm/skin/webui/component/dialog/MacStylesheet.css"
+) ;

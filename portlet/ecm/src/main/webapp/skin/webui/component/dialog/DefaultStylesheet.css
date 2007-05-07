@@ -7,43 +7,31 @@
  */
 
 @import url("../../../icons/DefaultStylesheet.css");
-@import url("control/DefaultStylesheet.css");
-@import url("sidebar/DefaultStylesheet.css");
-@import url("UIPopupAction/DefaultStylesheet.css");
-@import url("UIDrivesBrowser/DefaultStylesheet.css");
-@import url("UIJCRExplorer/DefaultStylesheet.css");
 @import url("../../../ExoEditor/MyEditor.css");
 
-.UIPageDesktop .UIJCRExplorerPortlet {
+.UIPageDesktop .UIDialogPortlet {
   overflow: hidden;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle {
+.UIDialogPortlet .UIFormWithTitle {
   margin-top: 0px;
   margin-bottom: 0px;
 } 
 
-.UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
+.UIDialogPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
   background: #8eeaaf ;
 }
 
-.UIJCRExplorerPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
+.UIDialogPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin-bottom: 10px ;
-  margin-left: 137px ;
-}
-
-.UIJCRExplorerPortlet .UIPreferencesForm  {
-  width: 500px;
-  padding: 15px;
+  margin-left: 140px ;
 }
 
 .UIPopupMessages .UIAction {
   width: 100px;
 }
-
-/*===========================EditMode=====================*/
 
 .UIDialogPortlet .UIAction {
 	width: 165px;
@@ -89,7 +77,7 @@
   padding: 0px 3px 0px 0px;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle .UIAction {
+.UIDialogPortlet .UIFormWithTitle .UIAction {
   padding: 12px 0px 0px 65px;
 }
 
