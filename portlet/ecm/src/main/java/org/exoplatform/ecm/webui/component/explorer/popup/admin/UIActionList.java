@@ -31,11 +31,14 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UIActionList.ViewActionListener.class),
         @EventConfig(listeners = UIActionList.DeleteActionListener.class),
-        @EventConfig(listeners = UIActionList.CloseActionListener.class)
+        @EventConfig(listeners = UIActionList.CloseActionListener.class),
+        @EventConfig(listeners = UIActionList.EditActionListener.class)
     }
 )
 public class UIActionList extends UIContainer {
-  final static public String[] ACTIONS = {"View","Delete"} ;
+  
+  final static public String[] ACTIONS = {"Edit","View","Delete"} ;
+  
 
   public UIActionList() throws Exception {
     addChild(UIPageIterator.class, null, "ActionListIterator");
@@ -68,7 +71,7 @@ public class UIActionList extends UIContainer {
     UIPageIterator uiIterator = getChild(UIPageIterator.class) ;
     return uiIterator.getCurrentPageData() ; 
   }
-
+  
   static public class ViewActionListener extends EventListener<UIActionList> {
     public void execute(Event<UIActionList> event) throws Exception {
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -89,6 +92,15 @@ public class UIActionList extends UIContainer {
     }
   }
 
+  static public class EditActionListener extends EventListener<UIActionList> {
+    public void execute(Event<UIActionList> event) throws Exception {
+      UIActionListContainer uiActionListContainer = event.getSource().getParent() ;
+      String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiActionListContainer.initEditPopup(actionName) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiActionListContainer) ;
+    }
+  }
+  
   static public class CloseActionListener extends EventListener<UIActionList> {
     public void execute(Event<UIActionList> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
@@ -104,8 +116,6 @@ public class UIActionList extends UIContainer {
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class) ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       actionService.removeAction(uiExplorer.getCurrentNode(), actionName) ;
-//      UITreeExplorer uiTreeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class) ;
-//      uiTreeExplorer.buildTree(uiExplorer.getCurrentNode().getPath()) ;
       uiActionList.updateGrid(uiExplorer.getCurrentNode()) ;
       uiActionList.setRenderSibbling(UIActionList.class) ;
     }

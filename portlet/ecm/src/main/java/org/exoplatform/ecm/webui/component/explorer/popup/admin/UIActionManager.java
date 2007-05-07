@@ -22,14 +22,14 @@ import org.exoplatform.webui.event.EventListener;
 public class UIActionManager extends UIContainer implements UIPopupComponent {
   
   public UIActionManager() throws Exception {
-    addChild(UIActionList.class, null, null) ;
+    addChild(UIActionListContainer.class, null, null) ;
     addChild(UIActionContainer.class, null, null).setRendered(false) ;
   }
   
   public void activate() throws Exception {
     UIActionTypeForm uiActionTypeForm = findFirstComponentOfType(UIActionTypeForm.class) ;
     uiActionTypeForm.update() ;
-    UIActionList uiActionList = getChild(UIActionList.class) ;
+    UIActionList uiActionList = findFirstComponentOfType(UIActionList.class) ;
     uiActionList.updateGrid(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
   }
 

@@ -55,6 +55,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private String nodeTypeName_ = null ;
   private boolean isAddNew_ ;
   private String scriptPath_ = null ;
+  private boolean isEditInList_ = false ;
   
   public UIActionForm() throws Exception {setActions(new String[]{"Save","Back"}) ;}
   
@@ -105,6 +106,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   }
   public String getPath() { return scriptPath_ ; }
   
+  public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
+  
   public void onchange(Event event) throws Exception {
     UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
     uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
@@ -125,8 +128,16 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       Node storedHomeNode = getNode().getParent() ;
       cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      uiExplorer.setIsHidePopup(false) ;
-      uiExplorer.updateAjax(event) ;
+      if(isEditInList_) {
+        UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
+        UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
+        uiPopup.setShow(false) ;
+        uiPopup.setRendered(false) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChild(UIActionListContainer.class)) ;
+      } else {
+        uiExplorer.setIsHidePopup(false) ;
+        uiExplorer.updateAjax(event) ;
+      }
       setPath(storedHomeNode.getPath()) ;
       return getNode();
     }
@@ -156,9 +167,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       actionServiceContainer.addAction(parentNode_, nodeTypeName_, sortedInputs);
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
-      UIActionList uiActionList = uiActionManager.getChild(UIActionList.class) ;  
+      UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
       uiActionList.updateGrid(parentNode_) ;
-      uiActionManager.setRenderedChild(UIActionList.class) ;
+      uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
     } catch (Exception e) {
       e.printStackTrace() ;
@@ -195,10 +206,17 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       UIActionForm uiForm = event.getSource() ;
       if(uiForm.isAddNew_) {
         UIActionContainer uiActionContainer = event.getSource().getParent() ;
-        uiActionContainer.setRenderSibbling(UIActionList.class) ;
+        uiActionContainer.setRenderSibbling(UIActionListContainer.class) ;
       } else {
-        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-        uiExplorer.cancelAction() ;
+        if(uiForm.isEditInList_) {
+          UIActionManager uiManager = uiForm.getAncestorOfType(UIActionManager.class) ;
+          UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
+          uiPopup.setShow(false) ;
+          uiPopup.setRendered(false) ;
+        } else {
+          UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+          uiExplorer.cancelAction() ;
+        }
       }
     }
   }  

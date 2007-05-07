@@ -46,7 +46,7 @@
 		        <td>
 		          <div class="Text">[<%=action.getPrimaryNodeType().getName()%>]</div>
 		        </td>
-		        <td style="width:60px;">
+		        <td style="width:80px;">
 		        <%
 		          for(act in uicomponent.getActions()) { 
 		        %>
