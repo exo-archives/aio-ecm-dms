@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
@@ -21,13 +22,13 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * 2:04:24 PM
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
-public class UISearchContainer extends UIContainer implements UIPopupComponent{
-  
+public class UISearchContainer extends UIContainer implements UIPopupComponent {
   private String selectedValue_ = "dc:elementSet";
   final static public String METADATA_POPUP = "MetadataPopup" ;
   
   public UISearchContainer() throws Exception {
     addChild(UIECMSearch.class, null, null) ;
+    addChild(UIPopupAction.class, null, METADATA_POPUP) ;
   }
   
   public void setSelectedValue(String selectedValue) { selectedValue_ = selectedValue ; }

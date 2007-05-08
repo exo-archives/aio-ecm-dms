@@ -121,4 +121,25 @@ ECMUtils.prototype.collapseExpand = function(elemt) {
 	return true
 }
 
+ECMUtils.prototype.filterValue = function(frmId) {
+	var form = document.getElementById(frmId) ;
+	var	filterValue = form['filter'].value ;
+	var re = new RegExp(filterValue, "gi") ;
+	var tempSel = form['tempSel'] ;
+	alert(tempSel)
+	if(!tempSel) {
+		tempSel = document.createElement("select") ;
+		tempSel.name = "tempSel" ;
+		form.appendChild(tempSel) ;
+		alert(form['result'].innerHTML) ;
+	}
+	alert(form.result.options)
+	var opts = form['result'].options ;
+	for(var i = 0; i < opts.length; i++) {
+		var opt = opts[i] ;
+		if(re.test(opt.value)) opt.style.display = "block" ;
+		else opt.style.display = "none" ;
+	}
+}
+
 eXo.ecm.ECMUtils = new ECMUtils(); 

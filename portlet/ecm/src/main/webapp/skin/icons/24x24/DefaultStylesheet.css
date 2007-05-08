@@ -189,22 +189,22 @@
 }
 
 .ManageOntologiesIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageOntologies.gif') no-repeat ;
 }
 
 .UITemplatesManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageTemplateIcon.gif') no-repeat ;
 }
 
 .UIViewManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageViewIcon.gif') no-repeat ;
 }
 
 .UIDriveManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageDriveIcon.gif') no-repeat ;
 }
 
@@ -214,62 +214,62 @@
 }
 
 .UIActionManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/CreateActionTypeIcon.gif') no-repeat ;
 }
 
 .UIScriptManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageScriptIcon.gif') no-repeat ;
 }
 
 .UIRuleManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageRuleIcon.gif') no-repeat ;
 }
 
 .UIFolksonomyManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageFolksonomyIcon.gif') no-repeat ;
 }
 
 .UITaxonomyManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat ;
 }
 
 .UIMetadataManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 
 .AddMetadataTypeIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 
 .UINamespaceManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/NameSpaceRegistryIcon.gif') no-repeat ;
 }
 
 .UINodeTypeManagerIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
 .CreateDocumentTypesIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat ;
 }
 
 .DisplayDocumentsIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
 }
 
 .ManageDynamicContentIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat ;
 }
 

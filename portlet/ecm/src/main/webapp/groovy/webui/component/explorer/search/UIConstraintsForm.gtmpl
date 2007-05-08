@@ -1,0 +1,60 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trong.tran@exoplatform.com
+ * @version: $Id$
+ * Oct 6, 2006  
+ */
+%>
+<div class="$uicomponent.id">
+  <div class="UIFormWithTitle">
+    <% uiform.begin() %>
+      <div class="ConstraintOption">Operator : <%uiform.renderField(uicomponent.getChild(1))%></div>
+      <div class="ConstraintOption">
+        <%=uiform.renderConstraintRadioBox(0)%> : <%uiform.renderField(uicomponent.getChild(2))%> <a href="<%=uicomponent.event("SelectProperty")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif"></a> Contain Exactly : <%uiform.renderField(uicomponent.getChild(3))%>  <a href="<%=uicomponent.event("CompareExactly")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif"></a>
+      </div>
+      <div class="ConstraintOption">
+        <%=uiform.renderConstraintRadioBox(1)%> : <%uiform.renderField(uicomponent.getChild(4))%> <a href="<%=uicomponent.event("AddMetadataType", "1")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif"></a> Contain : <%uiform.renderField(uicomponent.getChild(5))%>
+      </div>
+      <div class="ConstraintOption">
+        <%=uiform.renderConstraintRadioBox(2)%> : <%uiform.renderField(uicomponent.getChild(6))%> <a href="<%=uicomponent.event("AddMetadataType", "2")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif"></a> Not Contain : <%uiform.renderField(uicomponent.getChild(7))%>
+      </div>
+      <div class="ConstraintOption">
+        <div style="float: left;"><%=uiform.renderConstraintRadioBox(3)%><%uiform.renderField(uicomponent.getChild(8))%></div>
+        <div style="margin-left: 150px;">
+          <div class="ConstraintOption">From <%uiform.renderField(uicomponent.getChild(9))%> </div>
+          <div class="ConstraintOption">To <%uiform.renderField(uicomponent.getChild(10))%></div>
+        </div>
+      </div>
+      <div class="ConstraintOption">
+        <%=uiform.renderConstraintRadioBox(4)%> : <%uiform.renderField(uicomponent.getChild(11))%>
+      </div>
+      <div class="ConstraintOption">
+        <%=uiform.renderConstraintRadioBox(5)%> : <%uiform.renderField(uicomponent.getChild(12))%>
+      </div>
+      <div class="UIAction"> 
+        <div class="ActionContainer">
+          <% for(action in uicomponent.getActions()) { %>
+            <div class="ActionButton">
+              <div class="LightBlueStyle" >
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <% 
+                        String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+                        String link = uicomponent.event(action) ;
+                      %>
+                      <a href="$link">$actionLabel</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <%}%>          
+        </div>
+      </div>
+      <%/* end render action */%>
+    <%uiform.end()%>
+  </div>
+</div>

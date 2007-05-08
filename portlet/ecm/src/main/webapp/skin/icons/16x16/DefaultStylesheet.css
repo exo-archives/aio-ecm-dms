@@ -226,6 +226,11 @@
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }
 
+.SelectProperty16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+}
+
 .CancelTab16x16Icon {
   background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
 }

@@ -1,0 +1,39 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trong.tran@exoplatform.com
+ * @version: $Id$
+ * Oct 6, 2006  
+ */
+%>
+<div class="$uicomponent.id">
+  <div class="UIFormWithTitle">
+    <% uiform.begin() %>
+      <div class="ConstraintOption">Filter : <%uiform.renderField(uicomponent.getChild(0))%><a href="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif"></a></div>
+      <div class="ConstraintOption">Results : <%uiform.renderField(uicomponent.getChild(1))%></div>
+      <div class="UIAction"> 
+        <div class="ActionContainer">
+          <% for(action in uicomponent.getActions()) { %>
+            <div class="ActionButton">
+              <div class="LightBlueStyle" >
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <% 
+                        String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+                        String link = uicomponent.event(action) ;
+                      %>
+                      <a href="$link">$actionLabel</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <%}%>          
+        </div>
+      </div>
+      <%/* end render action */%>
+    <%uiform.end()%>
+  </div>
+</div>

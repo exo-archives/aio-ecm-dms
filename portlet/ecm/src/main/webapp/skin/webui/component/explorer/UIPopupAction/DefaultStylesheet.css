@@ -257,9 +257,6 @@
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
-	line-height: 16px ;
-}
 
 /*############################## -- UITaggingForm   -- ##############################*/
 .UIJCRExplorerPortlet .UITaggingForm .ActionField {
@@ -281,9 +278,6 @@
   width: 300px ;
 }
 
-/*############################## -- Begin UIViewMetadataForm   -- ##############################*/
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer {}
-/*############################## -- End UIViewMetadataForm   -- ##############################*/
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 .UIJCRExplorerPortlet .UIVoteForm {
 	padding: 10px;
@@ -328,9 +322,13 @@
 /*############################## -- End UIVoteForm   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
-.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle {
-	width:500px;
-	margin: auto ;
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
+  margin: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
+  width: 500px;
+  vertical-align: baseline;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {

@@ -24,7 +24,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 public class UIPopupAction extends UIContainer {
 
   public UIPopupAction() throws Exception {
-    addChild(createUIComponent(UIPopupWindow.class, null, null)) ;
+    addChild(createUIComponent(UIPopupWindow.class, null, null).setRendered(false)) ;
   }
   
   public <T extends UIComponent> T activate(Class<T> type, int width) throws Exception {
@@ -42,7 +42,8 @@ public class UIPopupAction extends UIContainer {
   }
   
   public void activate(UIComponent uiComponent, int width, int height, boolean isResizeable) throws Exception {
-    UIPopupWindow popup = getChild(UIPopupWindow.class);
+    UIPopupWindow popup = getChild(UIPopupWindow.class) ;
+    popup.setId(getId() + "_popup") ;
     popup.setUIComponent(uiComponent) ;
     ((UIPopupComponent)uiComponent).activate() ;
     popup.setWindowSize(width, height) ;
