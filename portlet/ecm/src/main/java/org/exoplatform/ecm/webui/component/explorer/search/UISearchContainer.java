@@ -28,7 +28,8 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent {
   
   public UISearchContainer() throws Exception {
     addChild(UIECMSearch.class, null, null) ;
-    addChild(UIPopupAction.class, null, METADATA_POPUP) ;
+    UIPopupAction popup = addChild(UIPopupAction.class, null, METADATA_POPUP) ;
+    popup.getChild(UIPopupWindow.class).setId(METADATA_POPUP + "_Popup") ;
   }
   
   public void setSelectedValue(String selectedValue) { selectedValue_ = selectedValue ; }
