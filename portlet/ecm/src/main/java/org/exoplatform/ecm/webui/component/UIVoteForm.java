@@ -46,7 +46,7 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
   static  public class VoteActionListener extends EventListener<UIVoteForm> {
     public void execute(Event<UIVoteForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       String language = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
       getChild(UIDocumentInfo.class).getLanguage() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;

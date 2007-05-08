@@ -157,7 +157,7 @@ public class UITask extends UIForm {
         mandatory = new Boolean(mandatoryString).booleanValue();
       }
       Object value = variablesForService.get(name);
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       if (NODE_TYPE.equals(component)) {
         dialogPath_ = dialogService.getTemplatePathByUser(true, (String) value, userName);
         isCreatedOrUpdated = true;

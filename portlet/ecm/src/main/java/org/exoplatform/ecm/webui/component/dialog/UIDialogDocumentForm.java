@@ -62,7 +62,7 @@ public class UIDialogDocumentForm extends DialogFormFields {
   
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       resetScriptInterceptor() ;
       return templateService.getTemplatePathByUser(true, documentType_, userName) ;
@@ -126,7 +126,8 @@ public class UIDialogDocumentForm extends DialogFormFields {
     String prefType = preferences.getValue("type", "") ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
-      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, Util.getUIPortal().getOwner());
+      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, 
+          Util.getPortalRequestContext().getRemoteUser());
       homeNode.getSession().save() ;
       Object[] args = { prefLocate } ;
       reset() ;

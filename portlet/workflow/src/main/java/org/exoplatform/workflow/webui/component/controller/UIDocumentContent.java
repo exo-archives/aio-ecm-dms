@@ -146,7 +146,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
 
   public String getTemplatePath() throws Exception { 
     String nodeTypeName = node_.getPrimaryNodeType().getName();
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     return templateService.getTemplatePathByUser(false, nodeTypeName, userName);
   }

@@ -57,7 +57,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public UIDocumentDetail() {} 
 
   public String getTemplatePath(){
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try{
       return templateService.getTemplatePathByUser(false, getNodeType(), userName) ;

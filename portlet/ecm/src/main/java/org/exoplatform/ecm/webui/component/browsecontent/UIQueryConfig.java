@@ -81,7 +81,7 @@ public class UIQueryConfig extends UIForm {
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
     OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
-    String username = Util.getUIPortal().getOwner() ;
+    String username = Util.getPortalRequestContext().getRemoteUser() ;
     Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(username) ;
     if(memberships != null && memberships.size() > 0){
       Object[] objects = memberships.toArray() ;      
@@ -230,7 +230,7 @@ public class UIQueryConfig extends UIForm {
     if(!isAddNewQuery_) {  
       QueryService qservice = getApplicationComponent(QueryService.class) ;   
       if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
-        String username = Util.getUIPortal().getOwner() ;
+        String username = Util.getPortalRequestContext().getRemoteUser() ;
         List<Query> queries = qservice.getQueries(username);
         for(Query query : queries) {
           String path = query.getStoredQueryPath() ;

@@ -62,7 +62,7 @@ public class UIDrivesBrowser extends UIContainer {
     
     List<DriveData> driveList = new ArrayList<DriveData>() ;
     OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userName) ;
     if(memberships == null || memberships.size() < 0) return driveList ;
     Object[] objects = memberships.toArray() ;

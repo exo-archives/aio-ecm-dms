@@ -85,7 +85,7 @@ public class UIQueriesList extends UIContainer {
   static public class DeleteActionListener extends EventListener<UIQueriesList> {
     public void execute(Event<UIQueriesList> event) throws Exception {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       String queryName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       QueryService queryService = event.getSource().getApplicationComponent(QueryService.class) ;
       queryService.removeQuery(queryName, userName) ;

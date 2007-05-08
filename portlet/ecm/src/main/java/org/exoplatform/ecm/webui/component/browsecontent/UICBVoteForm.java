@@ -53,7 +53,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
       UICBVoteForm uiForm = event.getSource() ;
       UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIDocumentDetail uiDocumentDetail = uiPortlet.findFirstComponentOfType(UIDocumentDetail.class) ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       long objId = Long.parseLong(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiForm.getApplicationComponent(VotingService.class) ;
       String language = uiDocumentDetail.getLanguage() ;
