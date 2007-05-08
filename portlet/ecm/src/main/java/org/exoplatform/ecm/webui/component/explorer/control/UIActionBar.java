@@ -701,8 +701,9 @@ public class UIActionBar extends UIForm {
       QueryResult pathQueryResult = pathQuery.execute();
       
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
-                                                      getChild(UIDocumentWorkspace.class) ;
+                                                           getChild(UIDocumentWorkspace.class) ;
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;
+      uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setIsQuickSearch(true) ;
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.setQueryResults(pathQueryResult) ;
