@@ -59,7 +59,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   public String getTemplate() {
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class);
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       String nodeType = node.getPrimaryNodeType().getName();
       if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName) ;

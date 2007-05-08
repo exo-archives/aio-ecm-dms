@@ -200,7 +200,7 @@ public class UIActionBar extends UIForm {
   }
   
   public List<Query> getSavedQueries() throws Exception {
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     return getApplicationComponent(QueryService.class).getQueries(userName) ;
   }
   

@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.jcr.UISelector;
@@ -115,7 +116,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         session.getItem(path) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.workspace-path-invalid", null, 
-                                                ApplicationMessage.INFO)) ;
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
       String icon = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
@@ -136,8 +138,19 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
                                                 ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      try {
+        RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
+        Session session = rservice.getRepository().getSystemSession("digital-assets") ;
+        session.getItem(icon) ;
+      } catch(Exception e) {
+        uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }   
       dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
                          viewNonDocument, viewSideBar) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;

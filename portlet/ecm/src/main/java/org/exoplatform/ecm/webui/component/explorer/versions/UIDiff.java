@@ -8,11 +8,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
-import javax.jcr.RepositoryException;
 import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.services.document.DocumentReaderService;
 import org.exoplatform.services.document.diff.AddDelta;
 import org.exoplatform.services.document.diff.ChangeDelta;
 import org.exoplatform.services.document.diff.DeleteDelta;
@@ -37,7 +35,7 @@ public class UIDiff extends UIComponent {
   private Version version_ ;
 
   public void setVersions(Version baseVersion, Version version)
-      throws RepositoryException {
+      throws Exception {
     baseVersion_ = baseVersion ;
     version_ = version ;
   }
@@ -47,7 +45,7 @@ public class UIDiff extends UIComponent {
       Node content = node.getNode("jcr:content");
       if(content.hasProperty("jcr:mimeType")){
         Property mime = content.getProperty("jcr:mimeType");
-        DocumentReaderService readerService = getApplicationComponent(DocumentReaderService.class) ;
+        //DocumentReaderService readerService = getApplicationComponent(DocumentReaderService.class) ;
         if(content.hasProperty("jcr:data")) {
           if(mime.getString().startsWith("text")) return content.getProperty("jcr:data").getString();          
         }

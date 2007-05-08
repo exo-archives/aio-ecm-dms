@@ -60,7 +60,7 @@ public class UILanguageDialogForm extends DialogFormFields {
   
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       resetScriptInterceptor() ;
       return templateService.getTemplatePathByUser(true, documentType_, userName) ;

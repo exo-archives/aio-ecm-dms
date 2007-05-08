@@ -70,14 +70,14 @@ public class UISavedQuery extends UIContainer {
   
   public boolean hasQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     List<Query> queries = queryService.getQueries(userName);
     if (queries == null || queries.isEmpty()) return false;
     return true;
   }
 
   public List<Query> getQueries() throws Exception {
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     return getApplicationComponent(QueryService.class).getQueries(userName);
   }
   
@@ -170,7 +170,7 @@ public class UISavedQuery extends UIContainer {
   static public class DeleteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;      
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       queryService.removeQuery(path, userName) ;

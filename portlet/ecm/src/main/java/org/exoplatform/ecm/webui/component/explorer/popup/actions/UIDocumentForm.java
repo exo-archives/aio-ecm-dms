@@ -67,7 +67,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       resetScriptInterceptor() ;
       return templateService.getTemplatePathByUser(true, documentType_, userName) ;
@@ -111,7 +111,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     }       
     try {
       String addedPath = 
-        cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(), Util.getUIPortal().getOwner());
+        cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(), Util.getPortalRequestContext().getRemoteUser());
       homeNode.getSession().save() ;
       newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;

@@ -79,7 +79,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
       if(uiExplorer.getPreference().isJcrEnable()) return uiExplorer.getDocumentInfoTemplate();
@@ -555,7 +555,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   static  public class VoteActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
       votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;

@@ -12,7 +12,6 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPortletApplication;
 import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

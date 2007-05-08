@@ -83,7 +83,7 @@ public class UIActionTypeForm extends UIForm {
       UIJCRExplorer uiExplorer = uiActionType.getAncestorOfType(UIJCRExplorer.class) ;
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue() ;
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       if(templateService.getTemplatePathByUser(true, actionType, userName) == null) {
         UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
         Object[] arg = { actionType } ;

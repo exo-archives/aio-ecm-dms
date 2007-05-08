@@ -53,7 +53,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
 
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     String temp = null ;
     try {

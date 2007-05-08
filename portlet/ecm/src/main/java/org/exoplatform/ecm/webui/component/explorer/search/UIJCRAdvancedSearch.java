@@ -146,7 +146,7 @@ public class UIJCRAdvancedSearch extends UIForm {
         return ;
       }
       String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
-      String userName = Util.getUIPortal().getOwner() ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
       try{
         queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(), userName) ;        
       } catch (Exception e){

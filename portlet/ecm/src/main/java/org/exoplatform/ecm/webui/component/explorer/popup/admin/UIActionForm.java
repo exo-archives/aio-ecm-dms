@@ -85,7 +85,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
 
   public String getDialogPath() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String userName = Util.getUIPortal().getOwner() ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String dialogPath = null ;
     if (nodeTypeName_ != null) {
       try {
@@ -127,7 +127,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       Node storedHomeNode = getNode().getParent() ;
       cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, 
-                           false, Util.getUIPortal().getOwner()) ;
+                           false, Util.getPortalRequestContext().getRemoteUser()) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       if(isEditInList_) {
         UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
