@@ -26,8 +26,10 @@ public class UIPermissionInputSet extends UIFormInputSetWithAction {
   public UIPermissionInputSet(String name) throws Exception {
     super(name);
     setComponentConfig(getClass(), null) ;
-    addUIFormInput(new UIFormStringInput(FIELD_USERORGROUP, FIELD_USERORGROUP, null).
-                       addValidator(EmptyFieldValidator.class)) ;
+    UIFormStringInput userGroup = new UIFormStringInput(FIELD_USERORGROUP, FIELD_USERORGROUP, null) ;
+    userGroup.addValidator(EmptyFieldValidator.class) ;   
+    userGroup.setEditable(false) ;
+    addUIFormInput(userGroup) ;
     for (String perm : PermissionType.ALL) {
       addUIFormInput(new UIFormCheckBoxInput<String>(perm, perm, null)) ;
     }

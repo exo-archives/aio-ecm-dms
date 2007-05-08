@@ -12,6 +12,7 @@ import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
@@ -73,6 +74,11 @@ public class UIPermissionForm extends UIForm implements UISelector {
       for(String perm : PermissionType.ALL) {
         if(uiForm.getUIFormCheckBoxInput(perm).isChecked()) permsList.add(perm) ;
       }
+      if(permsList.size() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.checkbox-require", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       String[] permsArray = permsList.toArray(new String[permsList.size()]) ;      
       try {
         UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
@@ -84,6 +90,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
         uiForm.refresh() ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiParent) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }   
