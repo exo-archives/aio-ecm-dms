@@ -10,7 +10,36 @@
 
 .UIWindow .UIJCRExplorerPortlet .UIDrivesBrowser {
   overflow: auto;
-  width: 100%;
+  padding: 10px;
+}
+
+.UIWindow .UIJCRExplorerPortlet .UIRepository {
+  float: left;
+  width: 230px;
+  border: solid 1px #d9d9d9;
+}
+
+.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
+  border: solid 1px #f3f3f3;
+}
+
+.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
+  background: url('DefaultSkin/background/RepositoryTitle228x23.gif') no-repeat center center;
+  height: 23px;
+  line-height: 23px;
+  color: white;
+  font-weight: bold;
+  padding-left: 10px;
+  font-size: 14px;
+  font-family: Arial;
+}
+
+.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
+  width: 222px;
+  border: solid 1px #e3e3e3;
+  margin: 3px auto 1px auto;
+  padding: 1px 1px 125px 1px;
+  background: #f5f5f5 url('DefaultSkin/background/BottomRepositoryList1x10.gif') repeat-x bottom;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitle {
@@ -22,78 +51,45 @@
   font-family: arial;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator {
-  margin: 10px auto;
-  width: 480px;
+.UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
+  margin: 0px 0px 0px 240px; 
+  border: 1px solid #d9d9d9; 
+  padding: 1px;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorTopLeftCorner {
-  height: 8px; line-height: 8px;
-  background: url('DefaultSkin/background/GrayRoundedCornerLT8x8.gif') no-repeat left ;
-  padding-left: 8px;
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
+  background: #d3e3f1 url('DefaultSkin/background/DrivesTitle338x23.gif') no-repeat left;
+  height: 23px;
+  line-height: 23px;
+  color: white;
+  font-weight: bold;
+  padding-left: 10px;
+  font-size: 14px;
+  font-family: Arial;
 }
 
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorTopCenterCorner {
-  background: url('DefaultSkin/background/GrayRoundedCornerTM1x8.gif') repeat-x ;
-  height: 8px; line-height: 8px;
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
+  border: 1px solid #d9d9d9; 
+  background: #f3f3f3;
+  margin: 3px 1px 1px 1px;
+  padding:5px 0px 5px 10px;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorTopRightCorner {
-  background: url('DefaultSkin/background/GrayRoundedCornerRT8x8.gif') no-repeat right ;
-  padding-right: 8px;
-  height: 8px; line-height: 8px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorMiddleRight{
-  background: url('DefaultSkin/background/GrayRoundedCornerMR8x1.gif') repeat-y right ;
-  padding-right: 8px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorMiddleLeft{
-  background: url('DefaultSkin/background/GrayRoundedCornerML8x1.gif') repeat-y left ;
-  padding-left: 8px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorMiddle {
-  background: #efefef;
-  padding: 5px 10px 5px 15px;
-  height: 100%;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorBottomLeftCorner {
-  height: 8px; line-height: 8px;
-  background: url('DefaultSkin/background/GrayRoundedCornerLB8x8.gif') no-repeat left ;
-  padding-left: 8px;
-}
-
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorBottomCenterCorner {
-  background: url('DefaultSkin/background/GrayRoundedCornerBM1x8.gif') repeat-x;
-  height: 8px; line-height: 8px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .BrowserDecorator .DecoratorBottomRightCorner {
-  height: 8px; line-height: 8px;
-  background: url('DefaultSkin/background/GrayRoundedCornerRB8x8.gif') no-repeat right ;
-  padding-right: 8px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .DriveRow {
-  padding-bottom: 10px;
-  overflow: hidden;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .LeftCol {
+.UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
   float: left;
-  width: 210px;
-  padding: 8px 0px 8px 0px;
+  border: solid 1px #ffffff;
+  margin: 7px 10px 8px 5px;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .RightCol {
-  float: right;
-  width: 210px;
-  padding: 8px 0px 8px 0px;
+.UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
+  float: left;
+  width: 194px;
+  border: solid 1px #d1d1d1;
+  background: white;
+  padding: 10px 0px 5px 0px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DecoratorMiddle {
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
@@ -102,47 +98,25 @@
   margin: 2px auto;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar {
+.UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel {
   height: 20px;
-  width: 185px;
+  line-height: 20px;
   margin: auto;
+  text-align: center;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar a {
-  color: #0442b6;
+.UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a {
+  color: #116eaa;
   text-decoration: none;
   font-weight: bold; font-size: 11px;
-  text-align: center;
-  float: right;
+  padding-top: 8px;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar a:hover {
+.UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a:hover {
   color: orange;
   text-decoration: none;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .LeftBar {
-  height: 20px;
-  background: url('DefaultSkin/background/TitleBarL9x20.gif') no-repeat left;
-  padding-left: 9px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .RightBar {
-  height: 20px;
-  background: url('DefaultSkin/background/TitleBarR9x20.gif') no-repeat right;
-  padding-right: 9px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .MiddleBar {
-  height: 20px; line-height: 19px; vertical-align: middle;
-  background: url('DefaultSkin/background/TitleBarM1x20.gif') repeat-x ;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .TitleBar .TitleBarLabel {
-  
-}
-
-/*############################## -- Begin Icon51x51-- ######################*/
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
   background: url('DefaultSkin/background/AdminProduction.gif') no-repeat;
 }

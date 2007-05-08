@@ -347,13 +347,55 @@
   padding-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer{
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer {
   width: 480px;
   margin: 0px auto;
 }
 .UIJCRExplorerPortlet .UIUploadForm .FileNameLabel{
  overflow: hidden ;
 }
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
+  width: 120px;
+  margin: 0px; 
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle input {
+  margin-left: 6px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
+  margin-left: 6px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame {
+  width: 480px;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 120px;
+  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .FileNameLabel{
+  padding: 0px 0px 0px 5px;
+  width: 180px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame {
+  width: 480px;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame .SelectFileLabel {
+  width: 120px;
+  margin: 0px;
+}
+
 /*=============================UIWatchDocumentForm=======================*/
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
   width: 480px;
@@ -589,8 +631,13 @@
 }
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer {
-  width: 450px;
+  width: 480px;
   margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer label {
+  width: 100px;
+  margin: 0px; 
 }
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input.checkbox  {
@@ -600,6 +647,42 @@
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 160px;
   padding-left: 35px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UploadIframe {
+  margin-left: 5px;
+}
+
+UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
+  width: 480px;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 100px;
+  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame .FileNameLabel{
+  padding: 0px 0px 0px 5px;
+  width: 180px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .ProgressBarFrame {
+  width: 480px;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .ProgressBarFrame .SelectFileLabel {
+  width: 100px;
+  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer{
+  width: 480px;
+  margin: 0px auto;
 }
 
 /*================================UIReferencesList=================================*/

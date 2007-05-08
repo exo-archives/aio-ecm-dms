@@ -5,6 +5,7 @@
 	
   .UIVote .VoteResultContainer {
     margin-left: auto;
+    padding-right: 8px;
     width: 370px;
     height: 26px;
 	}

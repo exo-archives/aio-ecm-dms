@@ -173,6 +173,30 @@
   padding: 10px 0px;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .HorizontalLayout .UploadIframe {
+  margin-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 155px;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
+  width: 180px;
+  padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame {
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame .SelectFileLabel {
+  width: 155px;
+}
 /*############################## -- End UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
@@ -289,11 +313,6 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
-
-.UIJCRExplorerPortlet .SelectFileFrame {
-  margin: 10px 0px 0px 50px;
-  width: 400px;
-}
 
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
 	float: left;

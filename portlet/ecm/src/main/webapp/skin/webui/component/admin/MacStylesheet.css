@@ -153,8 +153,12 @@
 
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-  margin-left: 135px ;
+  margin: 0px 0px 6px 155px;
+}
+
+.UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
+	float: left ;
+	margin: 2px 10px 0px 5px ;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
@@ -429,7 +433,6 @@
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .FieldContainer .MyEditor {
   padding-left: 7px;
-  border: solid 1px red;
 }
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
@@ -598,10 +601,6 @@
 }
 
 /*############################## -- MultiField  -- ########################*/
-.UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-  margin-left: 120px ;
-}
 
 .UIECMAdminPortlet .UINodeTypeManager .UIPageIterator  {
   float: right;

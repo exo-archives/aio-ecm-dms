@@ -1,64 +1,97 @@
+<% 
+  import org.exoplatform.web.application.JavascriptManager;
+  
+  def rcontext = _ctx.getRequestContext() ;
+  JavascriptManager jsmanager = rcontext.getJavascriptManager();
+  
+  jsmanager.importJavascript('eXo.webui.UIVerticalSlideTabs');
+%>
+
 <div class="UIDrivesBrowser UIResizableBlock">
-	<div class="DrivesTitleLeft">
-		<div class="DrivesTitleRight">
-  		<div class="DrivesTitle"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
-  	</div>
-  </div>
-  <div class="BrowserDecorator">
-    <div class="DecoratorTopLeftCorner">
-      <div class="DecoratorTopRightCorner">
-        <div class="DecoratorTopCenterCorner"><span></span></div>
-      </div>
-    </div>
-    <div class="DecoratorMiddleLeft">
-      <div class="DecoratorMiddleRight">
-        <div class="DecoratorMiddle">
-          <div>
-          <%
-            def drives = uicomponent.getDrives() ;
-            String style = "Right" ;
-            for(drive in drives) {
-              if(style == "Right") {
-                println "<div class=\"DriveRow\">" ;
-                style = "Left" ;
-              } else {
-                style = "Right" ;
-              }
-          %>
-              <div class="${style}Col">
-              <%if(drive.getIcon() != null && drive.getIcon().length() > 0) {%>
-                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><img src="${drive.icon}" width="48" height="41" /></div>
-              <%} else {%>
-                <div class="Icon Admin${drive.workspace}Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
-              <%}%>
-                <div class="TitleBar">
-                  <div class="LeftBar">
-                    <div class="RightBar">
-                      <div class="MiddleBar">
-                        <a style="margin: auto; width: 160px;" href="<%=uicomponent.event("SelectDrive","${drive.name}")%>">${drive.name}</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    
-          <%
-	            if(style == "Right"){
-	              println "</div>"
-	            }
-            }
-            if(style == "Left") {
-              println "</div>"
-            }
-          %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="DecoratorBottomLeftCorner">
-      <div class="DecoratorBottomRightCorner">
-        <div class="DecoratorBottomCenterCorner"><span></span></div>
-      </div>
-    </div>
-  </div>
+	<div class="UIRepository">
+		<div class="RepositoryContainer">
+			<div class="RepositoryTitle">Repositories</div>
+			<div class="RepositoryList">
+			 <div class="UIVerticalSlideTabs">
+			 	<div class="UIVTab">
+			 		<div class="VTabSimpleStyle">
+			 			<div class="LeftIcon"><span></span></div>
+			 			<div class="TabLabel">Repository 1</div>
+			 			<div style="clear: left"><span></span></div>
+			 		</div>
+			 		<div class="SelectedVTabSimpleStyle">
+			 			<div class="LeftIcon"><span></span></div>
+			 			<div class="TabLabel">Repository 2</div>
+			 			<div style="clear: left"><span></span></div>
+			 		</div>
+			 		<div class="VTabSimpleStyle">
+			 			<div class="LeftIcon"><span></span></div>
+			 			<div class="TabLabel">Repository 3</div>
+			 			<div style="clear: left"><span></span></div>
+			 		</div>
+			 		<div class="VTabSimpleStyle">
+			 			<div class="LeftIcon"><span></span></div>
+			 			<div class="TabLabel">Repository 4</div>
+			 			<div style="clear: left"><span></span></div>
+			 		</div>
+			 	</div>
+			 </div>
+			</div>
+		</div>
+	</div>
+	<div class="UIDrivesList">
+		<div class="DrivesListTitle" >JCR Explorer Main Drives</div>
+		<div class="DrivesListContainer" >
+			<div class="BrowserDecorator">
+		    <div class="TopLeftCorner">
+		      <div class="DecoratorTopRightCorner">
+		        <div class="DecoratorTopCenterCorner"><span></span></div>
+		      </div>
+		    </div>
+		    <div class="DecoratorMiddleLeft">
+		      <div class="DecoratorMiddleRight">
+		        <div class="DecoratorMiddle">
+		          <%
+		            def drives = uicomponent.getDrives() ;
+		            String style = "Right" ;
+		            for(drive in drives) {
+		          %>
+		              <div class="Drive">
+		              	<div class="DriveContainer">
+			              <%if(drive.getIcon() != null && drive.getIcon().length() > 0) {%>
+			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><img src="${drive.icon}" width="48" height="41" /></div>
+			              <%} else {%>
+			                <div class="Icon Admin${drive.workspace}Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
+			              <%}%>
+			                <div class="DriveLabel">
+			                  <div class="LeftBar">
+			                    <div class="RightBar">
+			                      <div class="MiddleBar">
+			                        <a href="<%=uicomponent.event("SelectDrive","${drive.name}")%>">${drive.name}</a>
+			                      </div>
+			                    </div>
+			                  </div>
+			                </div>
+			            	</div>    
+		              </div>
+		    
+		          <%}%>
+							<div style="clear: left;"><span></span></div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="DecoratorBottomLeftCorner">
+		      <div class="DecoratorBottomRightCorner">
+		        <div class="DecoratorBottomCenterCorner"><span></span></div>
+		      </div>
+		    </div>
+		  </div>
+		  
+		</div>
+	</div>
+	
+	
+	
+	
+  
 </div>

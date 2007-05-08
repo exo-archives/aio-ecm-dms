@@ -627,10 +627,6 @@ UIECMAdminPortlet .UIViewManager {
 	margin: 30px 0px 0px 0px;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
-	width: 100%;
-}
-
 .UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator{
 	margin-bottom: 15px;
 }
@@ -641,11 +637,6 @@ UIECMAdminPortlet .UIViewManager {
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
 	margin: 30px 0px 0px 0px;
-}
-
-.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout {
-	width: 550px;
-	margin: auto;
 }
 
 .UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout {
@@ -673,8 +664,16 @@ UIECMAdminPortlet .UIViewManager {
 	width: auto;
 }
 
+.UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
+	width: 100%;
+}
 /*############################## -- End UITemplatesManager -- ########################*/
 
 .UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
   width: 260px;
+}
+
+.UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
+	float: left ;
+	margin: 2px 10px 0px 5px ;
 }
