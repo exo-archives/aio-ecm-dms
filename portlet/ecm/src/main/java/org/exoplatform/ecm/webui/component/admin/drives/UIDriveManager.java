@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
@@ -55,14 +54,13 @@ public class UIDriveManager extends UIContainer {
     uiPopup.setShow(true) ;
   }
   
-  public void initPopupJCRBrowser() throws Exception {
-    CmsConfigurationService cmsService = getApplicationComponent(CmsConfigurationService.class) ;
+  public void initPopupJCRBrowser(String workspace) throws Exception {
     removeChildById("JCRBrowser") ;
     removeChildById("JCRBrowserAssets") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "JCRBrowser");
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    uiJCRBrowser.setWorkspace(cmsService.getWorkspace()) ;
+    uiJCRBrowser.setWorkspace(workspace) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_HOMEPATH}) ;
