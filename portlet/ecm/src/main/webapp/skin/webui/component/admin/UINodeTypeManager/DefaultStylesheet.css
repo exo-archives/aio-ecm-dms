@@ -68,7 +68,8 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
-  width: 70px;
+   width: 280px ;
+   padding-left: 20px;   
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {
@@ -83,10 +84,6 @@
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane textarea {
   border: solid 1px gray;
   padding: 3px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
-  width: 70px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{

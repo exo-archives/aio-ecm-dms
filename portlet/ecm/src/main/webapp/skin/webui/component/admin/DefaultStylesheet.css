@@ -454,66 +454,6 @@ UIECMAdminPortlet .UIViewManager {
   width: 120px;
 }
 
-/*############################## --Begin UITemplatesManager --##############################*/
-
-.UITemplatesManager .UIGrid .ActionContainer {
-  width: 50px ;
-}
-
-.UITemplatesManager .UITabPane {
-	width: 95%;
-	padding: 10px 0px;
-	margin: auto;
-}
-
-.UITemplatesManager .UITemplateList .UIAction {
-  width: 80px ;
-}
-
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout {
-	width: 550px;
-	margin: auto;
-}
-
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout .FieldContainer {
-	width: 550px;
-	margin: auto;
-	border: none;
-}
-
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
-	width: 120px;
-}
-
-.UITemplatesManager .UIFormTabPane .UIAction {
- width: 300px; 
- margin: auto;
-}
-
-.UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 320px; 
-  height: 300px; 
-  padding: 5px ;
-}
-
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
-	width: 500px;
-	margin: auto;
-}
-
-.UITemplatesManager .UIFormWithTitle .UIForm .textarea {
-  width: 350px; 
-  height: 250px; 
-}
-
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
-	padding-left: 110px;
-}
-
-.UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
-  width: 240px;
-  padding-left: 100px;
-}
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
@@ -612,8 +552,34 @@ UIECMAdminPortlet .UIViewManager {
   width: 315px;
   margin-left: 10px ;
 }
-/*############################## -- UITemplateEditForm -- ########################*/
 
+/*############################## --Begin UITemplatesManager --##############################*/
+
+.UITemplatesManager .UIGrid .ActionContainer {
+  width: 50px ;
+}
+
+.UITemplatesManager .UITabPane {
+	width: 95%;
+	padding: 10px 0px;
+	margin: auto;
+}
+
+.UITemplatesManager .UIFormTabPane .UIAction {
+ width: 300px; 
+ margin: auto;
+}
+
+.UITemplatesManager .UIFormTabPane .UIForm .textarea {
+  width: 320px; 
+  height: 300px; 
+  padding: 5px ;
+}
+
+.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
+	width: 500px;
+	margin: auto;
+}
 .UIECMAdminPortlet .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   margin: auto;
@@ -624,6 +590,39 @@ UIECMAdminPortlet .UIViewManager {
   width: 150px;
 }
 
+.UITemplatesManager .UITemplateList .UIAction {
+  width: 80px ;
+}
+
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout {
+	width: 550px;
+	margin: auto;
+}
+
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout .FieldContainer {
+	width: 550px;
+	margin: auto;
+	border: none;
+}
+
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
+	width: 120px;
+}
+
+.UITemplatesManager .UIFormWithTitle .UIForm .textarea {
+  width: 350px; 
+  height: 250px; 
+}
+
+.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
+	padding-left: 110px;
+}
+
+.UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
+  width: 240px;
+  padding-left: 100px;
+}
+
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	margin: 30px 0px 0px 0px;
 }
@@ -631,8 +630,6 @@ UIECMAdminPortlet .UIViewManager {
 .UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
 	width: 100%;
 }
-
-/*############################## -- UIDialogTab -- ########################*/
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator{
 	margin-bottom: 15px;
@@ -651,30 +648,14 @@ UIECMAdminPortlet .UIViewManager {
 	margin: auto;
 }
 
-.UITemplatesManager .DialogForm .UIFormInputSet .FieldContainer {
-	width: 100%;
+.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout {
+	width: 550px;
+	margin: auto;
 }
 
-.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
-	width: 122px;
+.UITemplatesManager .DialogForm .HorizontalLayout .UIFormInputSet {
+	width: auto;
 }
-
-.UITemplatesManager .UIDialogTab .UIFormInputSet label {
-	width: 103px;
-	margin: 0px;
-	margin-right: 10px;
-}
-
-.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithActions {
-	margin: 0px;
-	padding: 0px 8px;
-}
-
-.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
-	padding: 15px 0px 0px 0px;
-}
-
-/*############################## -- UIViewTab -- ########################*/
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
 	padding-right: 30px;
@@ -684,29 +665,15 @@ UIECMAdminPortlet .UIViewManager {
 	margin: 30px 0px 0px 0px;
 }
 
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout {
-	width: 550px;
-	margin: auto;
-}
-
 .UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
 	width: 100%;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet label {
-	width: 103px;
-	margin: 0px;
-	margin-right: 10px;
+.UITemplatesManager .ViewForm .HorizontalLayout .UIFormInputSet {
+	width: auto;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions {
-	margin: 0px;
-	padding: 0px 8px;
-}
-
-.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
-	padding: 15px 0px 0px 0px;
-}
+/*############################## -- End UITemplatesManager -- ########################*/
 
 .UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
   width: 260px;
