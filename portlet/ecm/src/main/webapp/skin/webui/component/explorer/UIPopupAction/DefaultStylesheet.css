@@ -182,9 +182,6 @@
   width: 105px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
-}
-
 .UIJCRExplorerPortlet .GridTitleBar {
   width: 220px;
   margin-top: 15px;
@@ -253,9 +250,8 @@
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
-  width: 500px;
   margin: auto;
-  padding: 10px 0px;
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .HorizontalLayout .UploadIframe {
