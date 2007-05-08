@@ -193,6 +193,23 @@
   width: 315px;
   margin-left: 10px ;
 }
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionFieldContainer {
+	padding-left: 136px;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
+  float: left ;
+  margin-right: 5px ;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a {
+  color: blue;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
+  color: orange;
+}
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceList {

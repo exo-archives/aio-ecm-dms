@@ -132,9 +132,21 @@
 	width: 24px; height: 24px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionFieldContainer {
+	padding-left: 170px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
   float: left ;
-  margin-left: 5px ;
+  margin-right: 5px ;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a {
+  color: blue;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
+  color: orange;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .checkbox {
@@ -383,9 +395,14 @@
   width: 70px ;
 }
 
+.UITemplatesManager .UITabPane {
+	width: 95%;
+	padding: 10px 0px;
+	margin: auto;
+}
+
 .UITemplatesManager .UIPopupWindow .WorkingArea {
 	height: 350px ;
-	overflow: auto ;
 	padding:10px;
 }
 
@@ -403,7 +420,7 @@
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 430px;  height: 300px; 
+  width: 320px;  height: 300px; 
   margin: 5px ;
 }
 

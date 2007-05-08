@@ -29,12 +29,11 @@
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
-  padding: 1px;
+  width: 570px;
+	margin: auto;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout {
-  border: none;
   background: #ffffff;
 }
 
@@ -47,7 +46,6 @@
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
-  border: 1px solid #b7b7b7;
   padding: 5px;
 }
 

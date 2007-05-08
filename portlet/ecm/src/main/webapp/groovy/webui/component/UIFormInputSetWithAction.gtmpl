@@ -74,11 +74,13 @@
 		                }
 	                } else {
 	                %>
+	                <div class="ActionFieldContainer">
 		                <div class="ActionField">
 		                  [ <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
 		                    <%=arrInfor[i]%>
 		                  </a> ]
 		                </div>  
+		               </div>
 	              <%
 	                }    	          
 	              }

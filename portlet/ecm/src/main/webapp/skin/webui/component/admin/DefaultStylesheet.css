@@ -148,9 +148,21 @@
   padding-left: 85px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionFieldContainer {
+	padding-left: 165px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
   float: left ;
-  margin-left: 5px ;
+  margin-right: 5px ;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a {
+  color: blue;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
+  color: orange;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions input {
