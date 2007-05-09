@@ -132,4 +132,15 @@ ECMUtils.prototype.filterValue = function(frmId) {
   }
 }
 
+ECMUtils.prototype.convertElemtToHTML = function(id) {
+	var elemt = document.getElementById(id) ;
+	var text = elemt.innerHTML ;
+	text = text.toString() ;
+
+	text = text.replace(/&/g, "&amp;").replace(/"/g, "&quot;")
+						 .replace(/</g, "&lt;").replace(/>/g, "&gt;") ;
+
+	elemt.innerHTML = text ;
+}
+
 eXo.ecm.ECMUtils = new ECMUtils(); 

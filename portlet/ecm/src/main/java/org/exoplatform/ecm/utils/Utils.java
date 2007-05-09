@@ -88,6 +88,11 @@ public class Utils {
   final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;
   public Map<String, Object> maps_ = new HashMap<String, Object>() ;
 
+  public static String encodeHTML(String text) {
+    return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
+               .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+  }
+  
   public static boolean isVersionable(Node node) throws RepositoryException {
     return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType(JCR_FROZEN);
   }

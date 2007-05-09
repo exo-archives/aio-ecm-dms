@@ -1,7 +1,9 @@
+<%
+	import org.exoplatform.ecm.utils.Utils ;
+%>
 <style>
- a {behavior: url(#default#AnchorClick);} 
-</style>
-<style>	
+  a {behavior: url(#default#AnchorClick);} 
+
 	.FileContent {  
 	  padding: 10px;
 	  font-family: Verdana;
@@ -56,7 +58,7 @@
 			  def contentNode = originalNode.getNode("jcr:content") ;
 			  def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
 		    if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		      println ""+ contentNode.getProperty("jcr:data").getString() +"" ;	
+		      println "<pre>" + Utils.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>";	
 		    } else if(mimeType.startsWith("image")) {
 			%>
 		      <div class="ContentDetail">
