@@ -47,7 +47,7 @@ import org.exoplatform.webui.event.Event.Phase;
 public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
   private static final String FILTER = "filter" ;
   private static final String RESULT = "result";
-
+  private static final String TEMP_RESULT = "tempSel";
   
   public UICompareExactlyForm() throws Exception {}
   
@@ -55,6 +55,7 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
     List<SelectItemOption<String>> opts = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormStringInput(FILTER, FILTER, null)) ;
     addUIFormInput(new UIFormSelectBox(RESULT, RESULT, opts).setSize(15).addValidator(EmptyFieldValidator.class)) ;
+    addUIFormInput(new UIFormSelectBox(TEMP_RESULT, TEMP_RESULT, opts)) ;
     
     UISearchContainer uiSearchContainer = getAncestorOfType(UISearchContainer.class);
     UIJCRExplorer uiExplorer = uiSearchContainer.getAncestorOfType(UIJCRExplorer.class);

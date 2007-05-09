@@ -17,14 +17,10 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 	var portlet =document.getElementById(portletId) ;
 	var child = eXo.core.DOMUtil.getChildrenByTagName(portlet, 'div') ;
 	var table = eXo.core.DOMUtil.getChildrenByTagName(child[0], 'table') ;
-//	alert(table[0].offsetHeight) ;
 	var delta = portlet.offsetHeight - child[0].offsetHeight ;
-//	alert(delta + " = " + portlet.offsetHeight + " - " + child[0].offsetHeight)
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	for(var i = 0, ln = resizeObj.length; i < ln; i++) {
-//		alert(resizeObj[i].style.height)
 		resizeObj[i].style.height = (parseInt(resizeObj[i].offsetHeight) + delta) + 'px' ;
-//		alert(resizeObj[i].style.height + " = " + parseInt(resizeObj[i].offsetHeight) + " + " +  delta)
 	}
 }
 
@@ -123,23 +119,17 @@ ECMUtils.prototype.collapseExpand = function(elemt) {
 
 ECMUtils.prototype.filterValue = function(frmId) {
 	var form = document.getElementById(frmId) ;
+	form['result'].innerHTML = form['tempSel'].innerHTML ;
 	var	filterValue = form['filter'].value ;
+	filterValue = "^" + filterValue.replace("*", ".*") ;
 	var re = new RegExp(filterValue, "gi") ;
-	var tempSel = form['tempSel'] ;
-	alert(tempSel)
-	if(!tempSel) {
-		tempSel = document.createElement("select") ;
-		tempSel.name = "tempSel" ;
-		form.appendChild(tempSel) ;
-		alert(form['result'].innerHTML) ;
-	}
-	alert(form.result.options)
-	var opts = form['result'].options ;
-	for(var i = 0; i < opts.length; i++) {
-		var opt = opts[i] ;
-		if(re.test(opt.value)) opt.style.display = "block" ;
-		else opt.style.display = "none" ;
-	}
+	var elSel = form['result'];
+  var i;
+  for (i = elSel.length - 1; i>=0; i--) {
+    if (!re.test(elSel.options[i].value)) {
+      elSel.remove(i);
+    }
+  }
 }
 
 eXo.ecm.ECMUtils = new ECMUtils(); 

@@ -11,7 +11,7 @@
   <div class="UIFormWithTitle">
     <% uiform.begin() %>
       <div class="ConstraintOption">Filter : <%uiform.renderField(uicomponent.getChild(0))%><a href="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif"></a></div>
-      <div class="ConstraintOption">Results : <%uiform.renderField(uicomponent.getChild(1))%></div>
+      <div class="ConstraintOption">Results : <%uiform.renderField(uicomponent.getChild(1))%><span style="display: none;"><%uiform.renderField(uicomponent.getChild(2))%></span></div>
       <div class="UIAction"> 
         <div class="ActionContainer">
           <% for(action in uicomponent.getActions()) { %>
