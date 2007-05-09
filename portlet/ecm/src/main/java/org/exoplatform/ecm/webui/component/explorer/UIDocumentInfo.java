@@ -561,4 +561,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;
     }
   }
+
+  public String encodeHTML(String text) throws Exception {
+    return Utils.encodeHTML(text) ;
+  }
 }

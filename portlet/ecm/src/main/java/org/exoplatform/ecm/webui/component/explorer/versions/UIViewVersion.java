@@ -259,4 +259,8 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
     
   }
+
+  public String encodeHTML(String text) throws Exception {
+    return Utils.encodeHTML(text) ;
+  }
 }

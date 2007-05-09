@@ -234,5 +234,10 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     }   
   }
 
+  public String encodeHTML(String text) throws Exception {
+    return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
+    .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+  }
+
 
 }

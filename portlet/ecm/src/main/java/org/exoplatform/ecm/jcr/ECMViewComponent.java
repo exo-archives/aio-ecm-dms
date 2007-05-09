@@ -53,4 +53,6 @@ public interface ECMViewComponent {
   
   public List<Node> getComments() throws Exception;
   public String getDownloadLink(Node node) throws Exception;
+  
+  public String encodeHTML(String text) throws Exception;
 }

@@ -281,4 +281,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     }
   }
 
+  public String encodeHTML(String text) throws Exception {
+    return Utils.encodeHTML(text) ;
+  }
+
 }

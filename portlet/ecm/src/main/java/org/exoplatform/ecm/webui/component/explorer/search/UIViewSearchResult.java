@@ -233,4 +233,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
+
+  public String encodeHTML(String text) throws Exception {
+    return Utils.encodeHTML(text) ;
+  }
 }
