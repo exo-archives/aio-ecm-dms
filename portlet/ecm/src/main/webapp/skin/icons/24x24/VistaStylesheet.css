@@ -57,33 +57,33 @@
 }
 
 .ViewMetadatasIcon {
-	width: 32px; height: 30px;
-	background: url('VistaSkin/GrayGlasses.png') no-repeat;
+	width: 24px; height:22px;
+	background: url('VistaSkin/ViewMetadatasIcon.png') no-repeat;
 }
 
 .VoteIcon {
 	width: 32px; height: 28px;
-	background: url('VistaSkin/Vote.png') no-repeat  ;
+	background: url('VistaSkin/VoteDocument.png') no-repeat  ;
 }
 
 .CommentIcon {
-	width: 32px; height: 28px;
+	width:24px; height: 24px;
 	background: url('VistaSkin/Comment.png') no-repeat bottom;
 }
 
 .TaggingDocumentIcon {
-	width: 32px; height: 30px;
-  background: url('VistaSkin/RedFlagIcon24.png') no-repeat bottom;
+	width: 26px; height: 26px;
+  background: url('VistaSkin/TaggingDocumentIcon.png') no-repeat bottom;
 }
 
 .MultiLanguageIcon {
-	width: 32px; height: 30px;
-  background: url('VistaSkin/GreenRightArrowDoubleScreen.png') no-repeat ;
+	width: 26px; height: 26px;
+  background: url('VistaSkin/MultiLanguages.gif') no-repeat ;
 }
 
 .ManageVersionsIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/DoubleWindowsUpArrow.png') no-repeat ;
+  background: url('VistaSkin/ManageVersionsIcon.png') no-repeat ;
 }
 
 .ManageActionsIcon {
@@ -93,22 +93,22 @@
 
 .ManageCategoriesIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/CogWheelBrownBox.png') no-repeat ;
+  background: url('VistaSkin/ManageCategoriesIcon.png') no-repeat ;
 }
 
 .ManageRelationsIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/MiscColorBevelRetangles.png') no-repeat ;
+  background: url('VistaSkin/ManageRelationsIcon.png') no-repeat ;
 }
 
 .ImportNodeIcon {
 	width: 32px; height: 32px;
-  background: url('VistaSkin/PageGreenArrowDown.png') no-repeat ;
+  background: url('VistaSkin/ImportNodeIcon.png') no-repeat ;
 }
 
 .ExportNodeIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/PageGreenArrowUp.png') no-repeat ;
+  background: url('VistaSkin/ExportNodeIcon.png') no-repeat ;
 }
 
 .SearchIcon {
@@ -117,7 +117,7 @@
 }
 
 .AddDocumentIcon {
-	width:24px; height:26px;
+	width:24px; height:22px;
   background: url('VistaSkin/AddDocument.png') no-repeat top;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .AddFolderIcon {
-	width: 32px; height: 26px;
+	width: 24px; height: 26px;
   background: url('VistaSkin/AddFolder.png') no-repeat ;
 }
 
@@ -138,17 +138,17 @@
 
 .ViewReferencesIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/BlueBallMultiplePage.png') no-repeat ;
+  background: url('VistaSkin/ViewReferencesIcon.png') no-repeat ;
 }
 
 .ShowJCRStructureIcon {
-	width: 32px; height: 30px;
-  background: url('VistaSkin/GraySwitcher.png') no-repeat ;
+	width: 27px; height: 20px;
+  background: url('VistaSkin/ShowJCRStructure.png') no-repeat ;
 }
 
 .ViewNodeTypeIcon {
-	width: 32px; height: 30px;
-  background: url('VistaSkin/MiscColorRegtangleRing.png') no-repeat ;
+	width: 20px; height: 24px;
+  background: url('VistaSkin/ViewNodeTypeIcon.png') no-repeat ;
 }
 
 .ViewPropertiesIcon {
@@ -158,12 +158,12 @@
 
 .ViewRelationsIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/SmallBallFlyingPages.png') no-repeat ;
+  background: url('VistaSkin/ViewRelationsIcon.png') no-repeat ;
 }
 
 .ViewPermissionsIcon {
 	width: 32px; height: 30px;
-  background: url('VistaSkin/SmallBallRedShield.png') no-repeat ;
+  background: url('VistaSkin/ViewPermissionsIcon.png') no-repeat ;
 }
 
 .HardDisk24x24Icon {

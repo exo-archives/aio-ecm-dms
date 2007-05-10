@@ -81,7 +81,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar {
   height: 31px;
-  background: url('DefaultSkin/background/LineDecorator1x31.gif') repeat-x center center;
+  background: url('VistaSkin/background/LineDecorator1x31.gif') repeat-x center center;
   border-top: solid 1px #fdfdfd; border-bottom: solid 1px #b7b7b7;
 }
 
@@ -226,7 +226,10 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg .Icon {
-  margin: 0px 3px 0px 2px;
+	width: 28px;
+	height: 28px;
+	background-position: center;
+  margin: 0px 0px 0px 2px;
   cursor: pointer;
 }
 
