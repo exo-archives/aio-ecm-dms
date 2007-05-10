@@ -34,12 +34,12 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent {
   
   public void setSelectedValue(String selectedValue) { selectedValue_ = selectedValue ; }
   
-  public void initMetadataPopup() throws Exception {
-    UIPopupWindow uiPopup = getChildById(METADATA_POPUP) ;
-    if(uiPopup == null) uiPopup = addChild(UIPopupWindow.class, null, METADATA_POPUP) ;
+  public void initMetadataPopup(String fieldName) throws Exception {
+    UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
+    uiPopup.getChild(UIPopupWindow.class).setId(fieldName + METADATA_POPUP) ;
     UIMetadataSelectForm uiSelectForm = createUIComponent(UIMetadataSelectForm.class, null, null) ;
     UIConstraintsForm uiConstraintsForm = findFirstComponentOfType(UIConstraintsForm.class) ;
-    String properties = uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).getValue() ;
+    String properties = uiConstraintsForm.getUIStringInput(fieldName).getValue() ;
     List<String> selected = new ArrayList<String> () ;
     if(properties != null && properties.length() > 0) {
       String[] array = properties.split(",") ;
@@ -47,13 +47,10 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent {
         selected.add(array[i].trim()) ;
       }
     }
-    uiPopup.setUIComponent(uiSelectForm) ;
-    uiPopup.setWindowSize(600, 500) ;
+    uiSelectForm.setFieldName(fieldName) ;
+    uiPopup.activate(uiSelectForm, 600, 500) ;
     uiSelectForm.renderProperties(selectedValue_) ;
     uiSelectForm.setMetadataOptions() ;
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
   }
 
   public void activate() throws Exception {

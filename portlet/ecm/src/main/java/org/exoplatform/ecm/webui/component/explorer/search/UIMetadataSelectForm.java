@@ -15,13 +15,14 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
-import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -46,9 +47,10 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UIMetadataSelectForm.ChangeMetadataTypeActionListener.class)
     }    
 )
-public class UIMetadataSelectForm extends UIForm {
+public class UIMetadataSelectForm extends UIForm implements UIPopupComponent {
 
   final static public String METADATA_TYPE= "metadataType" ;
+  private String fieldName_ ;
   
   private List<SelectItemOption<String>> options_ = new ArrayList<SelectItemOption<String>>() ;
  
@@ -63,6 +65,8 @@ public class UIMetadataSelectForm extends UIForm {
       return id ;
     }
   }
+  
+  public void setFieldName(String fieldName) { fieldName_ = fieldName ; }
   
   public void setMetadataOptions() throws Exception {
     CmsConfigurationService cmsConfigService = getApplicationComponent(CmsConfigurationService.class) ;
@@ -81,7 +85,7 @@ public class UIMetadataSelectForm extends UIForm {
     UISearchContainer uiSearchContainer = getAncestorOfType(UISearchContainer.class) ;
     UIConstraintsForm uiConstraintsForm = 
       uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
-    String typeValues = uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).getValue() ;
+    String typeValues = uiConstraintsForm.getUIStringInput(fieldName_).getValue() ;
     if(typeValues == null) return false ;
     if(typeValues.indexOf(",") > -1) {
       String[] values = typeValues.split(",") ;
@@ -123,15 +127,18 @@ public class UIMetadataSelectForm extends UIForm {
       if(strProperties == null) strProperties = selectedProperties.get(i) ;
       else strProperties = strProperties + "," + selectedProperties.get(i) ;
     }
-    uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).setValue(strProperties) ;
+    uiConstraintsForm.getUIStringInput(fieldName_).setValue(strProperties) ;
   }
+  
+  public void activate() throws Exception {}
+
+  public void deActivate() throws Exception {}
   
   static  public class CancelActionListener extends EventListener<UIMetadataSelectForm> {
     public void execute(Event<UIMetadataSelectForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
-      UIPopupWindow uiPopup = uiSearchContainer.getChildById(UISearchContainer.METADATA_POPUP) ;
-      uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;
+      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
   }
@@ -146,7 +153,7 @@ public class UIMetadataSelectForm extends UIForm {
       List<UIFormCheckBoxInput> listCheckbox =  new ArrayList<UIFormCheckBoxInput>();
       uiForm.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);
       String propertiesValue = 
-        uiConstraintsForm.getUIStringInput(UIConstraintsForm.METADATA_PROPERTY).getValue() ;
+        uiConstraintsForm.getUIStringInput(uiForm.fieldName_).getValue() ;
       if(propertiesValue != null && propertiesValue.length() > 0) {
         String[] array = propertiesValue.split(",") ;
         for(int i = 0; i < array.length; i ++) {
@@ -165,11 +172,10 @@ public class UIMetadataSelectForm extends UIForm {
         }
       }
       uiForm.setProperties(selectedProperties) ;
-      UIPopupWindow uiPopup = uiForm.getParent() ;
-      uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;
+      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      uiPopup.deActivate() ;
       uiSearchContainer.setSelectedValue(uiForm.getUIFormSelectBox(METADATA_TYPE).getValue()) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
   }
   

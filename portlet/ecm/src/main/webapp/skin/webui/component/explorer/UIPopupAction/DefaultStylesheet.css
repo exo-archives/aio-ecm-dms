@@ -377,16 +377,23 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
   float: left ;
-  width: 300px ;
-  padding-top: 5px;
 }
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .UIAction {
+  height:0px;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIFormWithTitle .UIAction {
+  height:0px;
+}
+
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
   padding-top: 5px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
-  padding-left: 135px ;
+  padding-left: 185px ;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
