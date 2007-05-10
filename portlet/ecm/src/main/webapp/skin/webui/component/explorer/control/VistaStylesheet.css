@@ -201,8 +201,8 @@
 }
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
   float: left;
-  height: 33px;
-  padding: 0px 6px;
+  height: 32px;
+  padding: 0px 7px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
