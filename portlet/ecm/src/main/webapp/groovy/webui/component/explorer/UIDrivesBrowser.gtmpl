@@ -10,30 +10,24 @@
 <div class="UIDrivesBrowser UIResizableBlock">
 	<div class="UIRepository">
 		<div class="RepositoryContainer">
-			<div class="RepositoryTitle">Repositories</div>
+			<div class="RepositoryTitle">	<%=_ctx.appRes("UIDrivesBrowser.title.repositoryList" )%></div>
 			<div class="RepositoryList">
 			 <div class="UIVerticalSlideTabs">
 			 	<div class="UIVTab">
-			 		<div class="VTabSimpleStyle">
+			 		<%
+			 		String cssClass = "VTabSimpleStyle" ;
+			 		for(String name in uicomponent.getRepositoryList()){			 			
+			 			if(name.equals(uicomponent.getRepository())) cssClass = "SelectedVTabSimpleStyle" ;
+			 			String actionLink = uicomponent.event("SelectRepo","$name") ;
+			 		%>
+			 		<div class="$cssClass">
 			 			<div class="LeftIcon"><span></span></div>
-			 			<div class="TabLabel">Repository 1</div>
-			 			<div style="clear: left"><span></span></div>
+			 			<div class="TabLabel">
+			 				<a href="$actionLink">$name</a>
+			 			</div>
+			 			<div style="clear:left;"><span></span></div>
 			 		</div>
-			 		<div class="SelectedVTabSimpleStyle">
-			 			<div class="LeftIcon"><span></span></div>
-			 			<div class="TabLabel">Repository 2</div>
-			 			<div style="clear: left"><span></span></div>
-			 		</div>
-			 		<div class="VTabSimpleStyle">
-			 			<div class="LeftIcon"><span></span></div>
-			 			<div class="TabLabel">Repository 3</div>
-			 			<div style="clear: left"><span></span></div>
-			 		</div>
-			 		<div class="VTabSimpleStyle">
-			 			<div class="LeftIcon"><span></span></div>
-			 			<div class="TabLabel">Repository 4</div>
-			 			<div style="clear: left"><span></span></div>
-			 		</div>
+			 		<%}%>
 			 	</div>
 			 </div>
 			 <div class="RepositoryDecorater"><span></span></div>
@@ -41,7 +35,10 @@
 		</div>
 	</div>
 	<div class="UIDrivesList">
-		<div class="DrivesListTitle" >JCR Explorer Main Drives</div>
+		<div class="DrivesListTitle" > 
+			<%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:
+			<%=uicomponent.getRepository()%>
+		</div>
 		<div class="DrivesListContainer" >
 			<div class="BrowserDecorator">
 		    <div class="TopLeftCorner">
@@ -53,7 +50,7 @@
 		      <div class="DecoratorMiddleRight">
 		        <div class="DecoratorMiddle">
 		          <%
-		            def drives = uicomponent.getDrives() ;
+		            def drives = uicomponent.getDrives(uicomponent.getRepository()) ;
 		            String style = "Right" ;
 		            for(drive in drives) {
 		          %>

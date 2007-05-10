@@ -82,7 +82,7 @@ public class UITemplateContent extends UIForm implements UISelector {
     addUIFormInput(isVersion) ;   
     UIFormInputSetWithAction uiActionTab = new UIFormInputSetWithAction("UITemplateContent") ;
     uiActionTab.addUIFormInput(new UIFormStringInput(FIELD_VIEWPERMISSION, FIELD_VIEWPERMISSION, null).
-                               addValidator(EmptyFieldValidator.class)) ;
+                               addValidator(EmptyFieldValidator.class).setEditable(false)) ;
     uiActionTab.setActionInfo(FIELD_VIEWPERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(uiActionTab) ;
   }

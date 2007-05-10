@@ -54,6 +54,7 @@ public class Utils {
   final public static String COLON = ":".intern() ;
   final public static String SLASH = "/".intern() ;
   
+  final public static String REPOSITORY = "repository".intern() ;
   final public static String VIEWS = "views".intern() ;
   final public static String DRIVE = "drive".intern() ;
   final public static String JCR_INFO = "jcrInfo";

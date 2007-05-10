@@ -72,7 +72,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     
     templateTab.addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ISTEMPLATE, FIELD_ISTEMPLATE, null));                               
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).
-                               addValidator(EmptyFieldValidator.class)) ;
+                               addValidator(EmptyFieldValidator.class).setEditable(false)) ;
     templateTab.setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(templateTab) ;
     

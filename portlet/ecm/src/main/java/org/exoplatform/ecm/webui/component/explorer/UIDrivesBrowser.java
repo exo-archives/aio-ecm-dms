@@ -13,7 +13,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
@@ -46,20 +45,35 @@ import org.exoplatform.webui.event.EventListener;
  */
 @ComponentConfig(
     template =  "app:/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl",
-    events = @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class) 
+    events = {
+        @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class),
+        @EventConfig(listeners = UIDrivesBrowser.SelectRepoActionListener.class)
+    } 
+
 )
 public class UIDrivesBrowser extends UIContainer {
-
+  private String repoName_ = "repository" ;
   public UIDrivesBrowser() throws Exception {
   }
 
-  public List<DriveData> getDrives() throws Exception {
+  public List<String> getRepositoryList() {
+    List<String> repositories = new ArrayList<String>() ;    
+    repositories.add("default") ;
+    repositories.add("repository") ;
+    return repositories ;
+  }
+
+  public String getRepository(){return repoName_ ;}
+  public void setRepository(String repoName){repoName_ = repoName ;}
+
+  public List<DriveData> getDrives(String repoName) throws Exception {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
-    ManageableRepository repository = rservice.getRepository() ;
-    Session session = repository.getSystemSession("digital-assets") ;
-    
+    //  TODO Check this code again when JCR is complete
+    if(repoName_.equals("default")) repoName = "repository" ;
+    ManageableRepository repository = rservice.getRepository(repoName) ;  
+    Session digitalSession = repository.getSystemSession("digital-assets") ;    
     List<DriveData> driveList = new ArrayList<DriveData>() ;
     OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
@@ -75,7 +89,7 @@ public class UIDrivesBrowser extends UIContainer {
         for(int j = 0; j < wsByPermission.size(); j ++) {
           DriveData drive = (DriveData)wsByPermission.get(j) ;
           if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-            Node node = (Node) session.getItem(drive.getIcon()) ;
+            Node node = (Node) digitalSession.getItem(drive.getIcon()) ;
             Node jcrContentNode = node.getNode("jcr:content") ;
             InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
             InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
@@ -89,7 +103,13 @@ public class UIDrivesBrowser extends UIContainer {
     Collections.sort(driveList) ;
     return driveList ; 
   }
-
+  static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
+    public void execute(Event<UIDrivesBrowser> event) throws Exception {
+      String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIDrivesBrowser uiDrivesBrowser = event.getSource() ;
+      uiDrivesBrowser.setRepository(repoName) ;      
+    }
+  }
   static  public class SelectDriveActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       UIDrivesBrowser uiDrive = event.getSource() ;
@@ -98,23 +118,23 @@ public class UIDrivesBrowser extends UIContainer {
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
       DriveData drive = (DriveData) dservice.getDriveByName(driveName) ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletRequest request = context.getRequest() ; 
-      PortletPreferences preferences = request.getPreferences() ;
+      PortletPreferences preferences = context.getRequest().getPreferences() ;
       preferences.setValue(Utils.WORKSPACE_NAME, drive.getWorkspace()) ;
       preferences.setValue(Utils.JCR_PATH, drive.getHomePath()) ;
       preferences.setValue(Utils.VIEWS, drive.getViews()) ;
       preferences.setValue(Utils.DRIVE, drive.getName()) ;
+      preferences.setValue(Utils.REPOSITORY, uiDrive.repoName_) ;
       preferences.store() ;
 
       UIJCRExplorerPortlet uiParent = uiDrive.getParent() ;
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class) ;
-      
+
       Preference pref = uiJCRExplorer.getPreference() ;
       pref.setShowSideBar(drive.getViewSideBar()) ;
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
       pref.setEmpty(false) ;
-      
+
       ManageableRepository repository = rservice.getRepository() ;
       Session session = repository.getSystemSession(drive.getWorkspace()) ;
       uiJCRExplorer.setSession(session) ;      
@@ -122,7 +142,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.getAllClipBoard().clear() ;
       uiJCRExplorer.setRootNode(node) ;
       uiJCRExplorer.refreshExplorer() ;
-      
+
       String[] arrView = drive.getViews().split(",") ;
       List<SelectItemOption<String>> viewOptions = 
         new ArrayList<SelectItemOption<String>> (arrView.length) ;

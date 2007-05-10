@@ -2,6 +2,7 @@
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminWorkingArea ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminFunctionTitle ;
+  import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager ;
   import org.exoplatform.webui.component.UIPopupMessages ;
 
   def rcontext = _ctx.getRequestContext() ;
@@ -10,7 +11,13 @@
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.fixHeight('UIECMAdminPortlet') ;") ;
 %>
 <div class="UIApplication UIECMAdminPortlet" id="UIECMAdminPortlet">
-  <div class="ApplicationMinWidth" >
+	<div class="ApplicationMinWidth" >	
+  <%if(!uicomponent.isSelectedRepo()) { 
+	  	println "<div class=\"UIRepositoryManager\">" ;
+	  		uicomponent.renderChild(UIRepositoryManager.class); 
+	  	println "</div>" ;
+  	}	else {
+  %>
     <table class="UIECMPortletLayout">
       <tr>
         <%if(uicomponent.isShowSideBar()) {%>
@@ -32,6 +39,7 @@
         </td>
       </tr>
     </table>
-		<% uicomponent.renderPopupMessages(); %>
+  <%}%> 
+	<%uicomponent.renderPopupMessages(); %>
 	</div>
 </div>

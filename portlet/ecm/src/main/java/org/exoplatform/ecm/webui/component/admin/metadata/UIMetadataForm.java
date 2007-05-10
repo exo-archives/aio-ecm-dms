@@ -63,7 +63,8 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     super("UIMetadataForm", false) ;
     UIFormInputSetWithAction uiMetadataType = new UIFormInputSetWithAction(METADATA_TAB) ;
     uiMetadataType.addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
-    uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).addValidator(EmptyFieldValidator.class)) ;
+    uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).
+                                  addValidator(EmptyFieldValidator.class).setEditable(false)) ;
     uiMetadataType.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(uiMetadataType) ;
     UIFormInputSet uiDialogTab = new UIFormInputSet(DIALOG_TAB) ;

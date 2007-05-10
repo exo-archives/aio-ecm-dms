@@ -58,13 +58,13 @@ public class UIDriveList extends UIGrid {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
     ManageableRepository repository = rservice.getRepository() ;
-    Session session = repository.getSystemSession("digital-assets") ;
+    Session digitalSession = repository.getSystemSession("digital-assets") ;
     
     List drives = driveService.getAllDrives() ;
     for(int i = 0; i < drives.size(); i++) {
       DriveData drive = (DriveData)drives.get(i) ;
       if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-        Node node = (Node) session.getItem(drive.getIcon()) ;
+        Node node = (Node) digitalSession.getItem(drive.getIcon()) ;
         Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
         InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
         InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;

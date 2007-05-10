@@ -1,8 +1,17 @@
 <%
   String comp = uicomponent.getRenderedChildLabel() ;
 %>
-<div id="$uicomponent.id">
-  <div class="${comp}Icon" style="float: left; margin: 0px 5px;"><span></span></div>
-  <div class="UIECMAdminFunctionTitle"><%=_ctx.appRes("UIECMAdminControlPanel.label." + comp)%></div>
-  <div style="clear: left;"><span></span></div>
+<div class="UIECMAdminFunctionTitle" id="$uicomponent.id">
+	<div class="RightFunctionTitle">
+	  <div class="${comp}Icon" style="float: left; margin: 0px 5px;"><span></span></div>
+	  <div class="FunctionTitle"><%=_ctx.appRes("UIECMAdminControlPanel.label." + comp)%></div>
+	  <div style="clear: left;"><span></span></div>
+  </div>
+  <div class="LeftFunctionBar">	  
+	    <div class="RepositoryName">Current repository : <font color="#0766e7">
+	     <%=uicomponent.getCurrentRepoName()%>
+	    </font></div>			
+		  <a class="Icon BackToRepositoryButton" href="<%=uicomponent.event("Back")%>" title="Back to repository manager"><span></span></a>	 
+  </div>
+  <div style="clear: both;"><span></span></div>
 </div>

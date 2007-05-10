@@ -13,8 +13,8 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
   
-  public UIJCRExplorerPortlet() throws Exception {
-    addChild(UIDrivesBrowser.class, null, null) ;
+  public UIJCRExplorerPortlet() throws Exception {    
+    addChild(UIDrivesBrowser.class, null, null);
     addChild(UIJCRExplorer.class, null, null).setRendered(false) ;
     addChild(UIPreferencesForm.class, null, null).setRendered(false) ;
   }

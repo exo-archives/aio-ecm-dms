@@ -2,7 +2,7 @@
 	String[] typeManage = ["ManageOntologies", "CreateDocumentTypes", "DisplayDocuments", "ManageDynamicContent"] ;
   String manageOntologies = "UIFolksonomyManager;UITaxonomyManager;UIMetadataManager" ;
   String createDocumentTypes = "UINamespaceManager;UINodeTypeManager;UITemplatesManager" ;
-  String displayDocuments = "UIViewManager;UIDriveManager;UIQueriesManager" ;
+  String displayDocuments = "UIViewManager;UIDriveManager;UIQueriesManager;" ;
   String manageDynamicContent = "UIActionManager;UIScriptManager" ;
   String[] managersGroup = [manageOntologies, createDocumentTypes, displayDocuments, manageDynamicContent] ;
 %>
