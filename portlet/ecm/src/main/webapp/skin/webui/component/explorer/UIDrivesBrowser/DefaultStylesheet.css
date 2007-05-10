@@ -21,6 +21,7 @@
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
   border: solid 1px #f3f3f3;
+  background: #f5f5f5;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
@@ -38,8 +39,14 @@
   width: 222px;
   border: solid 1px #e3e3e3;
   margin: 3px auto 1px auto;
-  padding: 1px 1px 125px 1px;
-  background: #f5f5f5 url('DefaultSkin/background/BottomRepositoryList1x10.gif') repeat-x bottom;
+  padding: 1px;
+}
+
+.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
+  background: #f5f5f5 url('DefaultSkin/background/BottomRepositoryList1x10.gif') repeat-x ;
+  height: 10px;
+  line-height: 10px;
+  margin: 80px 0px 1px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitle {
@@ -94,7 +101,7 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
   cursor: pointer;
-  width: 48px; height: 41px;
+  width: 58px; height: 45px;
   margin: 2px auto;
 }
 

@@ -368,3 +368,15 @@
   width: 315px;
   margin-left: 10px ;
 }
+
+.UIBrowseContentPortlet .UIConfigContainer {
+  padding-top: 10px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormWithTitle .UIForm .UIAction  {
+  padding-left: 45px;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser {
+  padding: 10px 0px 0px 5px;
+}

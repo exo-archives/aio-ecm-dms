@@ -110,7 +110,8 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
-  width: 80px;
+   width: 280px ;
+   padding-left: 25px;   
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {

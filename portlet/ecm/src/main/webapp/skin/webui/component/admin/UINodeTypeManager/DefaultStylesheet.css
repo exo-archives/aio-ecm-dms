@@ -16,6 +16,10 @@
   margin: auto;
 }
 
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
+  width: 260px;
+}
+
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
   width: 250px;
   padding-left: 35px;
@@ -27,6 +31,11 @@
 
 .UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
   padding:  5px 2px 0px 8px;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer label{
+  margin: 0px;
+  width: 100px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
@@ -42,6 +51,37 @@
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
   padding: 20px 0px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout .UploadIframe {
+  margin-left: 5px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame {
+  width: 450px;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 100px;
+  margin: 0px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .FileNameLabel{
+  padding: 0px 0px 0px 5px;
+  width: 150px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame {
+  width: 450px;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame .SelectFileLabel {
+  width: 100px;
+  margin: 0px;
 }
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
@@ -69,7 +109,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
    width: 280px ;
-   padding-left: 20px;   
+   padding-left: 75px;   
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {

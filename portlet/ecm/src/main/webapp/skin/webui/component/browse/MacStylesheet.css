@@ -15,7 +15,6 @@
   padding: 5px;
 }
 
-
 .UIBrowseContentPortlet {
   overflow: auto;
   border: solid 1px #b7b7b7;
@@ -23,35 +22,34 @@
 
 .UIBrowseContentPortlet .UIFormWithTitle {
 	width: 550px;
+	margin: 10px auto;
 }
 
-.UIBrowseContentPortlet .UINewConfigForm .UIAction{
+.UIBrowseContentPortlet .UINewConfigForm .UIAction {
 	padding-top: 10px;
 	width: 200px;
 	margin: auto;
 	
 }
-.UIBrowseContentPortlet .UIConfigContainer .UIAction{
-	padding-top: 10px;
+.UIBrowseContentPortlet .UIConfigContainer .UIAction {
+	padding: 10px 0px 10px 95px;
 	width: 300px;
 	margin: auto;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .ActionButton {
-	width:120px; /*FIX BUG IE*/
+	width: 120px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-	width:80px; /*FIX BUG IE*/
+	width: 80px; /*FIX BUG IE*/
 }
-
 
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout label {
   width: 150px;
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
-  border: 1px solid #b7b7b7;
   padding: 5px;
 }
 

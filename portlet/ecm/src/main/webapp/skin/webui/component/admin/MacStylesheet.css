@@ -128,26 +128,26 @@
   margin: 10px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
   margin: auto;
   padding: 15px 6px 0px 6px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .UIAction {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
   width: 270px;
   padding-left: 25px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
   float: left ;
   margin-left: 5px ;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions input {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
   width: 225px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions input.checkbox  {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.checkbox  {
   width: 15px;
 }
 
@@ -194,20 +194,20 @@
   margin-left: 10px ;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionFieldContainer {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionFieldContainer {
 	padding-left: 136px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
   float: left ;
   margin-right: 5px ;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
   color: blue;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
   color: orange;
 }
 /*############################## -- UINamespaceManager -- ########################*/
@@ -481,7 +481,7 @@
   width: 265px;
 }
 
-.UIECMAdminPortlet .UITemplatesManager .UIFormInputSet .UIFormInputSetWithActions {
+.UIECMAdminPortlet .UITemplatesManager .UIFormInputSet .UIFormInputSetWithAction {
   width: 500px;
   margin: auto;
 }
@@ -653,12 +653,12 @@
 	width: 120px;
 }
 
-.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithActions {
+.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithAction {
 	margin: 0px;
 	padding: 0px;
 }
 
-.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
 	padding:  15px 0px 0px 0px;
 }
 
@@ -688,12 +688,12 @@
 	width: 120px;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions {
+.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithAction {
 	margin: 0px;
 	padding: 0px;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
+.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
 	padding:  15px 0px 0px 0px;
 }
 

@@ -3,23 +3,20 @@
 		.UIArticle {}
 			
 		.UIArticle .ArticleTLDecorator {
-		  background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
+		  background: url('/ecm/skin/images/article/TopLeftArticle52x100.gif') no-repeat left;
 		  padding-left: 51px;
 		  height: 100px;
-		  line-height: 100px;
 		}
 		
 		.UIArticle .ArticleTRDecorator {
 		  background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
 		  padding-right:154px;
 		  height: 100px;
-		  line-height: 100px;
 		}
 		
 		.UIArticle .ArticleTCDecorator {
 		  background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
 		  height: 100px;
-		  line-height: 100px;
 		}
 		
 		.UIArticle .ArticleTCDecorator .TitleLabel {
@@ -158,21 +155,27 @@
   	  margin-left: 80px;
 		}
 		
-		.UIArticle .Language {
-	    margin-top: 10px;
+		.UIArticle .ArticleTCDecorator .Language {
 	    text-align: left;
-	    color:#bdbdbd;
+	    color: #c0c0c0;
 	    width: 400px;
+	    padding: 10px 0px 0px 2px;
+	    font-weight: bold;
 	  }
 	  
-	  .UIArticle  a.LanguageTitle {
-	    font: normal 10px Verdana;
+	  .UIArticle  .Language a.LanguageTitle {
 	    text-align: left;
-	    color: #494b88;
+	    color: #058ee6;
+	    font-weight: bold;
+	  }
+	  
+	  .UIArticle  .Language a:hover.LanguageTitle {
+	    text-align: left;
+	    color: #ffa21d;
+	    font-weight: bold;
 	  }
 	  
 		.UIVoteForm .RatingInfo {
-			font: normal bold 11px Arial;
 			color: #0489d5;
 		}
 		

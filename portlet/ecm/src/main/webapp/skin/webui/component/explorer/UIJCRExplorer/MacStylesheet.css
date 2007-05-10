@@ -782,7 +782,7 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
 }
-.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithActions a {
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithAction a {
   float: left;
 }
 
