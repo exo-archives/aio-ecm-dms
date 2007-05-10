@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -80,7 +81,13 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        } catch (Exception e) {
+        }catch(RepositoryException re) {
+          uiApp.addMessage(new ApplicationMessage(re.getMessage(), null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } 
+        catch (Exception e) {
           JCRExceptionManager.process(uiApp, e);
         }
       } else {

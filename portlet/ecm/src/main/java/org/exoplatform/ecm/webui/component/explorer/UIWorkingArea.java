@@ -762,7 +762,9 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent() ;
       UIDocumentInfo uicomp = uiWorkingArea.findFirstComponentOfType(UIDocumentInfo.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" + uicomp.getWorkspaceName() + nodePath ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" 
+                    + wsName + nodePath ;
       event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + link + "\"");
     }
   }
