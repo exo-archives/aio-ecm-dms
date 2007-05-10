@@ -100,7 +100,7 @@
 }
 
 .UIJCRExplorerPortlet .UIGrid td {
-  border: solid 1px #acc6dc;
+  border: solid 1px #909090;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
@@ -152,7 +152,6 @@
 }
 
 .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
   padding: 10px;
 }
 

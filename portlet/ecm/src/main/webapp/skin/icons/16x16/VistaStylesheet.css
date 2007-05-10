@@ -436,7 +436,7 @@
 }
 .Select16x16Icon {
   width: 16px; height: 16px;
-  background-image: url('DefaultSkin/SelectPage.gif');  
+  background-image: url('VistaSkin/SelectIcon.gif');  
 }
 
 .Export16x16Icon {
@@ -1075,7 +1075,7 @@
 }
 
 .nt_unstructured16x16Icon {
-  width: 22px; height: 22px;
+  width: 22px; height: 24px;
   background: url('VistaSkin/nodetype/nt-unstructured.png') no-repeat;  
 }
 

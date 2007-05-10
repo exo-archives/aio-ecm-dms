@@ -127,14 +127,14 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
   height: 21px; line-height: 21px;
   background: white;
-  border: solid 1px #8c8b8b;
+  border: solid 1px #aaaaaa;
   margin: 4px 58px 0px 130px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
   float: left;
-  width: 18px; height: 12px;
-  background: url('VistaSkin/background/HardDisk20x12.gif') repeat-x center center;
+  width: 21px; height: 11px;
+  background: url('VistaSkin/background/HardDisk21x11.png') repeat-x center center;
   margin: 4px 0px 0px 2px;
 }
 
@@ -188,8 +188,8 @@
 /*############################## -- Begin UIActionBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
-  height: 33px;
-  background: url('VistaSkin/background/LineDecorator1x33.gif') repeat-x center center;
+  height: 32px;
+  background: url('VistaSkin/background/LineDecorator1x32.png') repeat-x center center;
   border-top: solid 1px #fdfdfd; border-bottom: solid 1px #b7b7b7;
 }
 

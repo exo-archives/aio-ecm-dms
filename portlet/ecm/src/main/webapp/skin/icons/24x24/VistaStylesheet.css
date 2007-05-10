@@ -117,7 +117,7 @@
 }
 
 .AddDocumentIcon {
-	width: 32px; height: 30px;
+	width:24px; height:26px;
   background: url('VistaSkin/AddDocument.png') no-repeat top;
 }
 
@@ -127,12 +127,12 @@
 }
 
 .AddFolderIcon {
-	width: 32px; height: 30px;
+	width: 32px; height: 26px;
   background: url('VistaSkin/AddFolder.png') no-repeat ;
 }
 
 .UploadIcon {
-	width: 32px; height: 29px;
+	width: 26px; height: 26px;
   background: url('VistaSkin/UploadFile.png') no-repeat ;
 }
 
@@ -167,7 +167,7 @@
 }
 
 .HardDisk24x24Icon {
-	width: 24px; height: 24px;
+	width: 27px; height: 24px;
   background: url('VistaSkin/HardDisk.png') no-repeat ;
 }
 
