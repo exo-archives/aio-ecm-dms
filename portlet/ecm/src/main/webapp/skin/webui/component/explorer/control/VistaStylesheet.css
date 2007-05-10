@@ -245,7 +245,7 @@
   float: left;
   width: 24px ;  height: 24px ;
   margin-left: 5px;
-  background: url('/eXoResources/icons/24x24/DefaultSkin/QuickSearch.gif') no-repeat ;
+  background: url('/eXoResources/icons/24x24/VistaSkin/QuickSearch.png') no-repeat ;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch {
@@ -254,7 +254,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch  .SeparatorLine{
   float: left;
-  height: 25px;
+  height: 22px;
   padding: 0px 10px;
 }
 
