@@ -12,7 +12,7 @@
   def metaDatas = uicomponent.getListMetadata() ; 
   if(metaDatas == null) return ;
 %>
-<div class="UIMetadataList">
+<div class="UIMetadataList" id="UIMetadataList">
   <table class="UIGrid">
 	  <thead>
 	    <tr>

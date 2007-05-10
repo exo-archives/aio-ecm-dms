@@ -32,8 +32,13 @@ public class UIActionManager extends UIContainer implements UIPopupComponent {
     UIActionList uiActionList = findFirstComponentOfType(UIActionList.class) ;
     uiActionList.updateGrid(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
   }
-
+  
   public void deActivate() throws Exception {
+  }
+  
+  public void setDefaultConfig() throws Exception {
+    UIActionTypeForm uiActionType = getChild(UIActionContainer.class).getChild(UIActionTypeForm.class) ;
+    uiActionType.setDefaultActionType() ;
   }
   
   static public class CancelActionListener extends EventListener<UIActionManager> {

@@ -62,7 +62,6 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
     UIConstraintsForm uiConstraint = uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class);
     String prop = uiConstraint.getUIStringInput(UIConstraintsForm.PROPERTY1).getValue() ;
     String statement = "select * from nt:base where " + prop + " is not null" ;
-    System.out.println("\n\nstatement====>" +statement+ "\n\n");
     QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
     Query query = queryManager.createQuery(statement, Query.SQL) ;
     QueryResult result = query.execute() ;

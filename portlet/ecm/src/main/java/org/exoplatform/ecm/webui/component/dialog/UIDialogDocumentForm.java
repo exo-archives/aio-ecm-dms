@@ -111,21 +111,18 @@ public class UIDialogDocumentForm extends DialogFormFields {
     CmsService cmsService = getApplicationComponent(CmsService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
-    CmsConfigurationService cmsConfigurationService = 
-      getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = 
-      repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
-    List inputs = getChildren() ;
-    Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), session) ;
     PortletRequestContext portletContext = (PortletRequestContext) event.getRequestContext() ;
     PortletRequest request = portletContext.getRequest() ; 
     PortletPreferences preferences = request.getPreferences() ;
     String prefLocate = preferences.getValue("path", "") ;
     String prefType = preferences.getValue("type", "") ;
+    String workspace = preferences.getValue("workspace", "") ;
+    Session session = repositoryService.getRepository().getSystemSession(workspace) ;
+    Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, 
-          Util.getPortalRequestContext().getRemoteUser());
+                                              Util.getPortalRequestContext().getRemoteUser());
       homeNode.getSession().save() ;
       Object[] args = { prefLocate } ;
       reset() ;
@@ -134,7 +131,7 @@ public class UIDialogDocumentForm extends DialogFormFields {
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
       uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.in-versioning", null, 
-          ApplicationMessage.WARNING)) ;
+                                              ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {

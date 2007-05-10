@@ -118,11 +118,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     public void execute(Event<UIEditModeConfiguration> event) throws Exception {
       UIEditModeConfiguration uiTypeForm = event.getSource() ;
       UIDialogPortlet uiDialog = uiTypeForm.getParent() ;
-      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletRequest request = context.getRequest() ; 
-      PortletPreferences preferences = request.getPreferences() ;
-      String wsName = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
-      uiDialog.initPopupJCRBrowser(wsName) ;
+      uiDialog.initPopupJCRBrowser(uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).getValue()) ;
     }
   }
   

@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -122,6 +123,15 @@ public class UIConstraintsForm extends UIForm {
     return advanceQuery ;
   }
   
+  private String getDateTimeQueryString(String fromDate, String toDate, String type) {
+    if(type.equals("Created")) {
+      return "(jcr:created > '"+fromDate+"') AND (jcr:created < '"+toDate+"')" ;
+    } else if(type.equals("Modified")) {
+      return "(jcr:lastModified > '"+fromDate+"') AND (jcr:lastModified < '"+toDate+"')" ;
+    }
+    return "" ;
+  }
+  
   private String getContainQuery(String property, String value, boolean isContain) {
     if(value.length() > 0) {
       if(isContain) return "contains(" + property.trim() + ", '"+ value.trim() + "')" ;
@@ -171,7 +181,17 @@ public class UIConstraintsForm extends UIForm {
         advanceQuery = getContainQueryString(properties, NOT_CONTAIN, false) ;
         break;
       case 3:
-        
+        Date fDate = getUIFormDateTimeInput(START_TIME).getDateValue() ;
+        Date tDate = getUIFormDateTimeInput(END_TIME).getDateValue() ;
+        if(fDate.compareTo(tDate) == 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
+        String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
+        String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
+        advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
         break ;
       case 4:
         properties = getUIStringInput(DOC_NAME).getValue() ;

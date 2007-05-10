@@ -134,7 +134,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
         uiPopup.setShow(false) ;
         uiPopup.setRendered(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChild(UIActionListContainer.class)) ;
+        uiManager.setDefaultConfig() ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } else {
         uiExplorer.setIsHidePopup(false) ;
         uiExplorer.updateAjax(event) ;
