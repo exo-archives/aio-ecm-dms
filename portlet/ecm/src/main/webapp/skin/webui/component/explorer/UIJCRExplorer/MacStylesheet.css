@@ -363,6 +363,11 @@
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .ProgressBarFrame .SelectFileLabel {
   width: 130px;
 }
+
+.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin: 0px 0px 10px 130px;
+}
+
 /*===========================TabContainer====================*/
 
 .UIJCRExplorerPortlet .UIPopupMessages .TabsContainer {
@@ -460,10 +465,15 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .FieldContainer select {
+  width: 260px;
+  border: solid 1px #b7b7b7;
+}
+
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 260px;
   margin: auto;
-  padding-left: 80px;
+  padding-left: 90px;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadForm .UIFormWithTitle {
@@ -477,6 +487,10 @@
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
   border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
+  border-bottom: none;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer label {
@@ -795,12 +809,18 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UIGrid tr {
-  border: solid 1px yellow;
 }
 
 .UIJCRExplorerPortlet .UIGrid td {
   border: solid 1px #cfcfcf;
 }
 
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
+	float: left ;
+	margin: 2px 10px 0px 5px ;
+}
 
+.UIJCRExplorerPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer  {
+	border: none;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

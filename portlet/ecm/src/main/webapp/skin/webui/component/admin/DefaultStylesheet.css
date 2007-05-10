@@ -687,3 +687,16 @@ UIECMAdminPortlet .UIViewManager {
 .UIECMAdminPortlet .UIActionTypeForm  .FieldContainer .MultiValueContainer {
   margin-left: 165px ;
 }
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
+  margin: 0px 0px 2px 0px ;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
+  color: blue;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
+  color: orange;
+}
+

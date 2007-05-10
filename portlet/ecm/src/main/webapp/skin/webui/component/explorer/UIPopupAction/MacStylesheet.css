@@ -163,10 +163,6 @@
 
 /*############################## -- UIActionManager   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
-  padding: 10px 0px;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   width: 95%;
   margin: auto;

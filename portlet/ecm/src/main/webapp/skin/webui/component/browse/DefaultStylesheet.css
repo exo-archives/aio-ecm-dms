@@ -288,6 +288,7 @@
 	padding-top: 8px;
   background: #f4f4f4 ;
   border: 1px solid #e1e1e1 ;
+  padding: 15px 0px 0px 0px;
 }
 
 .UIBrowseContentPortlet .VoteFormContainer .UIRatingInfoContainer {
@@ -296,11 +297,11 @@
   padding: 2px 15px;
 }
 
-.UIBrowseContentPortlet .UIVoteForm .NormalVote{
+.UIBrowseContentPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
 }
 
-.UIBrowseContentPortlet .UIVoteForm .UIAction{
+.UIBrowseContentPortlet .UIVoteForm .VoteFormContainer .UIAction {
   width: 80px;
   padding-left: 13px;
 }
@@ -349,7 +350,6 @@
 }
 
 .UIBrowseContentPortlet .Explorer .ExplorerTree {
-  margin-top: 1px;
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
@@ -380,3 +380,4 @@
 .UIBrowseContentPortlet .UIJCRBrowser {
   padding: 10px 0px 0px 5px;
 }
+

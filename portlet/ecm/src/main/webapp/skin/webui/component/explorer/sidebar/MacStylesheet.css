@@ -100,6 +100,15 @@
   overflow: auto;
 }
 
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
+  padding: 5px 3px 5px 15px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .TitleLabel {
+  padding: 5px 0px 5px 8px;
+  font: normal bold 11px Verdana;
+}
+
 /*############################## -- UIViewRelationList   -- ##############################*/
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {

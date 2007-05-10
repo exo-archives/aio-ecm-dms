@@ -138,11 +138,6 @@
   padding-left: 25px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  float: left ;
-  margin-left: 5px ;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
   width: 225px;
 }
@@ -156,7 +151,7 @@
   margin: 0px 0px 6px 155px;
 }
 
-.UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
+.UIECMAdminPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
 	float: left ;
 	margin: 2px 10px 0px 5px ;
 }
@@ -183,6 +178,7 @@
 .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
+  border: solid 1px blue;
 }
 
 .Explorer .ExplorerTree .Node {
@@ -194,13 +190,8 @@
   margin-left: 10px ;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionFieldContainer {
-	padding-left: 136px;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  float: left ;
-  margin-right: 5px ;
+  margin: 0px 0px 2px 10px ;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
@@ -718,4 +709,12 @@
 
 .UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
   width: 270px;
+}
+
+.UIECMAdminPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
+  border: none;
+} 
+
+.UIECMAdminPortlet .UIPopupWindow .Content {
+  border: solid 1px #cdcdcd;
 }

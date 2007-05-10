@@ -56,23 +56,22 @@
 }
 
 .UIDialogPortlet .UIFormWithTitle {
-  border: 1px solid #e1e1e1;
   width: 650px;
   margin: 15px auto;
+}
+
+.UIDialogPortlet .UIFormWithTitle .FieldContainer .MyEditor{
+  margin-left: 7px;
 }
 
 .UIDialogPortlet .UIFormWithTitle .HorizontalLayout {
   padding-bottom: 10px;
 }
 
-.UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle  {
-  border: none;
-}
-
 .UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   margin: auto;
-  padding-top: 10px;
+  border: none;
 }
 
 .UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {
@@ -86,6 +85,10 @@
 .UIDialogPortlet .UIJCRBrowser {
   padding: 10px 0px 0px 10px;
 }
+
+.UIDialogPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
+  border: none;
+} 
 
 .UIDialogPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 

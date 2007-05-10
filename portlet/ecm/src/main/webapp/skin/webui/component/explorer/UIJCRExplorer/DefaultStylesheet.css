@@ -340,6 +340,10 @@
   margin: 5px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin: 0px 0px 10px 167px;
+}
+
 /*===========================UIUploadForm====================*/
 
 .UIJCRExplorerPortlet .UIUploadForm .UIAction {
@@ -731,5 +735,8 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   background: #f3f3f3;
 }
 
-
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
+	float: left ;
+	margin: 2px 10px 0px 5px ;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
