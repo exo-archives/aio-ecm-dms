@@ -37,8 +37,12 @@ public class UIActionManager extends UIContainer implements UIPopupComponent {
   }
   
   public void setDefaultConfig() throws Exception {
-    UIActionTypeForm uiActionType = getChild(UIActionContainer.class).getChild(UIActionTypeForm.class) ;
+    UIActionContainer uiActionContainer = getChild(UIActionContainer.class) ;
+    UIActionTypeForm uiActionType = uiActionContainer.getChild(UIActionTypeForm.class) ;
+    uiActionType.defaultActionType_ = null ;
     uiActionType.setDefaultActionType() ;
+    Class[] renderClasses = {UIActionTypeForm.class, UIActionForm.class} ;
+    uiActionContainer.setRenderedChildrenOfTypes(renderClasses) ;
   }
   
   static public class CancelActionListener extends EventListener<UIActionManager> {

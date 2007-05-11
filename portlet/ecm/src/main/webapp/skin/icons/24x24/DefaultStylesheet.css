@@ -258,6 +258,11 @@
   background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
+.AddNodeTypeIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
+
 .CreateDocumentTypesIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat ;

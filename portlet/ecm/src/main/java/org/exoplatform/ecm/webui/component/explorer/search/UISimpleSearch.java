@@ -66,9 +66,9 @@ public class UISimpleSearch extends UIForm {
     if(constraint.length() > 0) {
       if(constraints_.size() == 0) {
         firstOperator_ = operator.toUpperCase() ;
-        constraints_.add("(" + constraint + " ) ") ;
+        constraints_.add("(" + constraint + " )") ;
       } else {
-        constraints_.add(""+operator.toUpperCase()+" (" + constraint + " )") ;
+        constraints_.add(" "+operator.toUpperCase()+" (" + constraint + " ) ") ;
       }
     }
     UIFormInputSetWithAction inputInfor = getChildById("moreConstraints") ;
@@ -119,7 +119,6 @@ public class UISimpleSearch extends UIForm {
           statement = statement + constraint ;
         }
       }
-      System.out.println("\n\nstatement====>" +statement+ "\n\n");
       Query query = queryManager.createQuery(statement, Query.SQL);                
       QueryResult queryResult = query.execute();
       UIECMSearch uiECMSearch = uiForm.getParent() ; 

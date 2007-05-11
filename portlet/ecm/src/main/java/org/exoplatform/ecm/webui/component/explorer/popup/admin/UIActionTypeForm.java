@@ -56,8 +56,6 @@ public class UIActionTypeForm extends UIForm {
 
   public void setDefaultActionType() throws Exception{    
     if(defaultActionType_ == null) {
-      //Iterator actionsTypes = getCreatedActionTypes();
-      //defaultActionType_ = ((NodeType) actionsTypes.next()).getName();
       defaultActionType_ = "exo:sendMailAction" ;
       UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
       UIActionContainer uiActionContainer = getParent() ;

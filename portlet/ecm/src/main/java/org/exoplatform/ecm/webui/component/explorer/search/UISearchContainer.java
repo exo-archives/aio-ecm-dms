@@ -4,9 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.search;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.webui.component.UIContainer;
@@ -23,8 +20,10 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 public class UISearchContainer extends UIContainer implements UIPopupComponent {
+
   private String selectedValue_ = "dc:elementSet";
   final static public String METADATA_POPUP = "MetadataPopup" ;
+  final static public String NODETYPE_POPUP = "NodeTypePopup" ;
   
   public UISearchContainer() throws Exception {
     addChild(UIECMSearch.class, null, null) ;
@@ -38,19 +37,18 @@ public class UISearchContainer extends UIContainer implements UIPopupComponent {
     UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
     uiPopup.getChild(UIPopupWindow.class).setId(fieldName + METADATA_POPUP) ;
     UIMetadataSelectForm uiSelectForm = createUIComponent(UIMetadataSelectForm.class, null, null) ;
-    UIConstraintsForm uiConstraintsForm = findFirstComponentOfType(UIConstraintsForm.class) ;
-    String properties = uiConstraintsForm.getUIStringInput(fieldName).getValue() ;
-    List<String> selected = new ArrayList<String> () ;
-    if(properties != null && properties.length() > 0) {
-      String[] array = properties.split(",") ;
-      for(int i = 0; i < array.length; i ++) {
-        selected.add(array[i].trim()) ;
-      }
-    }
     uiSelectForm.setFieldName(fieldName) ;
     uiPopup.activate(uiSelectForm, 600, 500) ;
     uiSelectForm.renderProperties(selectedValue_) ;
     uiSelectForm.setMetadataOptions() ;
+  }
+  
+  public void initNodeTypePopup() throws Exception {
+    UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
+    uiPopup.getChild(UIPopupWindow.class).setId(NODETYPE_POPUP) ;
+    UINodeTypeSelectForm uiSelectForm = createUIComponent(UINodeTypeSelectForm.class, null, null) ;
+    uiPopup.activate(uiSelectForm, 400, 400) ;
+    uiSelectForm.setRenderNodeTypes() ;
   }
 
   public void activate() throws Exception {

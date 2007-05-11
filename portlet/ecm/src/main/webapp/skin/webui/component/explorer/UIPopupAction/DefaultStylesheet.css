@@ -369,6 +369,16 @@
 	margin: auto ;
 }
 
+.UIJCRExplorerPortlet .UISelectPropertyForm .UIFormWithTitle .HorizontalLayout {
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm .UIFormWithTitle .HorizontalLayout {
+  margin: auto;
+  border: 1px solid #939393;
+  width: 350px ;
+}
+
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   border: none;

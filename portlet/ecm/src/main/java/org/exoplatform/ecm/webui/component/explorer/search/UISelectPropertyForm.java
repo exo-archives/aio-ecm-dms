@@ -81,9 +81,8 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
       meta = nodeIter.nextNode() ;
       options.add(new SelectItemOption<String>(meta.getName(), meta.getName())) ;
     }
-    
     addUIFormInput(new UIFormRadioBoxInput(PROPERTY, null, properties_).
-                        setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
+                       setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
   }
   
   public void deActivate() throws Exception {}

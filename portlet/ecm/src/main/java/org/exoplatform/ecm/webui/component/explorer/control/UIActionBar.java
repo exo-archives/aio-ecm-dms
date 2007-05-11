@@ -721,7 +721,7 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UISearchContainer.class, 720) ;
+      uiPopupAction.activate(UISearchContainer.class, 800) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

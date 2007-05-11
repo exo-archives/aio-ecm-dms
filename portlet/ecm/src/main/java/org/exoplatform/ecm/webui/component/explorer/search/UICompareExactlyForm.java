@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.Value;
@@ -61,29 +62,57 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
     UIJCRExplorer uiExplorer = uiSearchContainer.getAncestorOfType(UIJCRExplorer.class);
     UIConstraintsForm uiConstraint = uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class);
     String prop = uiConstraint.getUIStringInput(UIConstraintsForm.PROPERTY1).getValue() ;
-    String statement = "select * from nt:base where " + prop + " is not null" ;
+    String operator = uiConstraint.getUIFormSelectBox(UIConstraintsForm.EXACTLY_OPERATOR).getValue() ;
+    String[] properties = {};
+    if(prop.indexOf(",") > -1) properties = prop.split(",") ;
+    String statement = "select * from nt:base where " ;
+    String whereClause = "" ;
+    if(properties.length > 0) {
+      for(String pro : properties) {
+        if(whereClause.length() == 0) whereClause = "("+pro+" is not null)" ;
+        else whereClause = whereClause + " " + operator + " " + "("+ pro +" is not null)" ;
+      }
+      statement = statement + whereClause ;
+    } else {
+      statement = statement + ""+prop+" is not null" ;
+    }
     QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
     Query query = queryManager.createQuery(statement, Query.SQL) ;
     QueryResult result = query.execute() ;
-    
     if(result != null){
       NodeIterator iter = result.getNodes() ;
       while(iter.hasNext()) {
-        Property property = iter.nextNode().getProperty(prop) ;
-        if(property.getDefinition().isMultiple()) {
-          Value[] values = property.getValues() ;
-          for(Value value : values) {
-            opts.add(new SelectItemOption<String>(value.getString(), value.getString())) ;
+        Node node = iter.nextNode() ;
+        if(properties.length > 0) {
+          for(String pro : properties) {
+            if(node.hasProperty(pro)) {
+              Property property = node.getProperty(pro) ;
+              setPropertyResult(property, opts) ;
+            }
           }
         } else {
-          Value value = property.getValue() ;
-          opts.add(new SelectItemOption<String>(value.getString(), value.getString())) ;
+          if(node.hasProperty(prop)) {
+            Property property = node.getProperty(prop) ;
+            setPropertyResult(property, opts) ;
+          }
         }
       }
     }
   }
   public void deActivate() throws Exception {}
 
+  public void setPropertyResult(Property property, List<SelectItemOption<String>> opts) throws Exception {
+    if(property.getDefinition().isMultiple()) {
+      Value[] values = property.getValues() ;
+      for(Value value : values) {
+        opts.add(new SelectItemOption<String>(value.getString(), value.getString())) ;
+      }
+    } else {
+      Value value = property.getValue() ;
+      opts.add(new SelectItemOption<String>(value.getString(), value.getString())) ;
+    }
+  }
+  
   static  public class CancelActionListener extends EventListener<UICompareExactlyForm> {
     public void execute(Event<UICompareExactlyForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
@@ -97,7 +126,6 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UICompareExactlyForm> event) throws Exception {
       UICompareExactlyForm uiForm = event.getSource() ;
       String value = uiForm.getUIFormSelectBox(RESULT).getValue();
-      System.out.println("\n\nValue = " + value  +  "\n\n");
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class);
       UISearchContainer uiSearchContainer = uiPopupAction.getParent() ;
       UIConstraintsForm uiConstraintsForm =

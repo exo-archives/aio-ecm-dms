@@ -40,15 +40,16 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(phase=Phase.DECODE, listeners = UIConstraintsForm.CancelActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.SaveActionListener.class),
-      @EventConfig(listeners = UIConstraintsForm.SelectPropertyActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.CompareExactlyActionListener.class),
-      @EventConfig(listeners = UIConstraintsForm.AddMetadataTypeActionListener.class)
+      @EventConfig(listeners = UIConstraintsForm.AddMetadataTypeActionListener.class),
+      @EventConfig(listeners = UIConstraintsForm.AddNodeTypeActionListener.class)
     }    
 )
 public class UIConstraintsForm extends UIForm {
 
   final static public String CONTAIN_OPERATOR = "containOperator" ;
   final static public String NOT_CONTAIN_OPERATOR = "notContainOperator" ;
+  final static public String EXACTLY_OPERATOR = "exactlyOperator" ;
   final static public String OPERATOR = "operator" ;
   final static public String TIME_OPTION = "timeOpt" ;
   final static public String CONSTRAINT = "constraint" ;
@@ -64,7 +65,7 @@ public class UIConstraintsForm extends UIForm {
   final static public String DOC_TYPE = "docType" ;
   final static public String AND_OPERATION = "and" ;
   final static public String OR_OPERATION = "or" ;
-  final static public String[] CONSTRAINT_LABEL = {"Property", "Property", "Property", "", "Document Name", "Document Type"} ;
+  final static public String[] CONSTRAINT_LABEL = {"Properties", "Properties", "Properties", "", "Document Name", "Document Type"} ;
   
   public UIConstraintsForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"}) ;
@@ -76,6 +77,7 @@ public class UIConstraintsForm extends UIForm {
     addUIFormInput(new UIFormSelectBox(OPERATOR, OPERATOR, typeOperation)) ;
 
     addUIFormInput(new UIFormStringInput(PROPERTY1, PROPERTY1, null)) ;
+    addUIFormInput(new UIFormSelectBox(EXACTLY_OPERATOR, EXACTLY_OPERATOR, typeOperation)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN_EXACTLY, CONTAIN_EXACTLY, null)) ;
     addUIFormInput(new UIFormStringInput(PROPERTY2, PROPERTY2, null)) ;
     addUIFormInput(new UIFormSelectBox(CONTAIN_OPERATOR, CONTAIN_OPERATOR, typeOperation)) ;
@@ -134,18 +136,44 @@ public class UIConstraintsForm extends UIForm {
   
   private String getContainQuery(String property, String value, boolean isContain) {
     if(value.length() > 0) {
-      if(isContain) return "contains(" + property.trim() + ", '"+ value.trim() + "')" ;
-      return "not(contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
+      if(isContain) return " contains(" + property.trim() + ", '"+ value.trim() + "')" ;
+      return " not(contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
     }
     return "";
   }
   
   private String getExactlyQueryString(String properties) {
     String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
+    String operator = getUIFormSelectBox(EXACTLY_OPERATOR).getValue() ;
+    String advanceQuery = "" ;
+    String[] arrProperties = {} ;
     if(value.length() > 0) {
-      return "" + properties + " = '" + value.trim() + "'" ;
+      if(properties.indexOf(",") > -1) arrProperties = properties.split(",") ;
+      if(arrProperties.length > 0) {
+        for(String pro : arrProperties) {
+          if(advanceQuery.length() == 0) advanceQuery = "(" + pro + " = '" + value.trim() + "')" ;
+          else advanceQuery = advanceQuery + " " + operator + " " + "("+ pro +" = '" + value.trim() + "')" ;
+        }
+      } else {
+        advanceQuery = "" + properties + " = '" + value.trim() + "'" ;
+      }
     }
-    return "";
+    return advanceQuery;
+  }
+  
+  private String getNodeTypeQueryString(String nodeTypes) {
+    String advanceQuery = "" ;
+    String[] arrNodeTypes = {} ;
+    if(nodeTypes.indexOf(",") > -1) arrNodeTypes = nodeTypes.split(",") ;
+    if(arrNodeTypes.length > 0) {
+      for(String nodeType : arrNodeTypes) {
+        if(advanceQuery.length() == 0) advanceQuery = "(jcr:primaryType = '" + nodeType + "')" ;
+        else advanceQuery = advanceQuery + " " + OR_OPERATION + " " + "(jcr:primaryType = '" + nodeType + "')" ;
+      }
+    } else {
+      advanceQuery = "(jcr:primaryType = '" + nodeTypes + "')" ;
+    }
+    return advanceQuery;
   }
   
   private void addConstraint(Event event, int opt) throws Exception {
@@ -216,7 +244,7 @@ public class UIConstraintsForm extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = "jcr:primaryType = '" + properties + "'" ;
+        advanceQuery = getNodeTypeQueryString(properties) ;
         break;
       default:
         break;
@@ -264,20 +292,20 @@ public class UIConstraintsForm extends UIForm {
       UIConstraintsForm uiConstraintsForm = event.getSource();
       UISearchContainer uiContainer = uiConstraintsForm.getAncestorOfType(UISearchContainer.class) ;
       String type = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String popupId = PROPERTY2;
-      if(type.equals("2")) popupId = PROPERTY3 ;
+      String popupId = PROPERTY1;
+      if(type.equals("1")) popupId = PROPERTY2 ;
+      else if(type.equals("2")) popupId = PROPERTY3 ;
       uiContainer.initMetadataPopup(popupId) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
   
-  static public class SelectPropertyActionListener extends EventListener<UIConstraintsForm> {
+  static public class AddNodeTypeActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
-      UIConstraintsForm test = event.getSource();
-      UISearchContainer uiContainer = test.getAncestorOfType(UISearchContainer.class) ;
-      UIPopupAction uiPopup = uiContainer.getChild(UIPopupAction.class);
-      uiPopup.activate(UISelectPropertyForm.class, 600) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      UIConstraintsForm uiConstraintsForm = event.getSource();
+      UISearchContainer uiContainer = uiConstraintsForm.getAncestorOfType(UISearchContainer.class) ;
+      uiContainer.initNodeTypePopup() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
   
