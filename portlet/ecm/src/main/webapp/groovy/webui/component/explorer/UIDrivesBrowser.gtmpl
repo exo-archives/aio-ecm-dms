@@ -33,39 +33,6 @@
 						 	</div>
 						</div>
 			 		</div>
-			 		<div class="SelectedVTabSimpleStyle">
-			 			<div class="TabLeft">
-			 				<div class="TabRight">
-			 					<div class="TabRepeat">
-						 			<div class="LeftIcon"><span></span></div>
-						 			<div class="TabLabel">Repository 2</div>
-						 			<div style="clear: left"><span></span></div>
-								</div>
-						 	</div>
-						</div>
-			 		</div>
-			 		<div class="VTabSimpleStyle">
-			 			<div class="TabLeft">
-			 				<div class="TabRight">
-			 					<div class="TabRepeat">
-						 			<div class="LeftIcon"><span></span></div>
-						 			<div class="TabLabel">Repository 3</div>
-						 			<div style="clear: left"><span></span></div>
-						 		</div>
-						 	</div>
-						</div>
-			 		</div>
-			 		<div class="VTabSimpleStyle">
-			 			<div class="TabLeft">
-			 				<div class="TabRight">
-			 					<div class="TabRepeat">
-						 			<div class="LeftIcon"><span></span></div>
-						 			<div class="TabLabel">Repository 4</div>
-						 			<div style="clear: left"><span></span></div>
-						 		</div>
-						 	</div>
-						</div>
-			 		</div>
 			 		<%}%>
 			 	</div>
 			 </div>
