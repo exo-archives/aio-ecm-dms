@@ -139,10 +139,11 @@
 /*############################## -- End UIExport   -- ##############################*/
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
 .Explorer {
+  margin-bottom: 10px;
   float: left ;
   width: 230px ;
-  margin-bottom: 10px;
 }
+
 
 .Explorer .ExplorerTree {
   background: #f3f3f3;

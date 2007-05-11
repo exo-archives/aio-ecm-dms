@@ -21,11 +21,50 @@
 			 			String actionLink = uicomponent.event("SelectRepo","$name") ;
 			 		%>
 			 		<div class="$cssClass">
-			 			<div class="LeftIcon"><span></span></div>
-			 			<div class="TabLabel">
-			 				<a href="$actionLink">$name</a>
-			 			</div>
-			 			<div style="clear:left;"><span></span></div>
+			 			<div class="TabLeft">
+			 				<div class="TabRight">
+			 					<div class="TabRepeat">
+						 			<div class="LeftIcon"><span></span></div>
+						 			<div class="TabLabel">
+										<a href="$actionLink">$name</a>
+									</div>
+						 			<div style="clear: left"><span></span></div>
+						 		</div>
+						 	</div>
+						</div>
+			 		</div>
+			 		<div class="SelectedVTabSimpleStyle">
+			 			<div class="TabLeft">
+			 				<div class="TabRight">
+			 					<div class="TabRepeat">
+						 			<div class="LeftIcon"><span></span></div>
+						 			<div class="TabLabel">Repository 2</div>
+						 			<div style="clear: left"><span></span></div>
+								</div>
+						 	</div>
+						</div>
+			 		</div>
+			 		<div class="VTabSimpleStyle">
+			 			<div class="TabLeft">
+			 				<div class="TabRight">
+			 					<div class="TabRepeat">
+						 			<div class="LeftIcon"><span></span></div>
+						 			<div class="TabLabel">Repository 3</div>
+						 			<div style="clear: left"><span></span></div>
+						 		</div>
+						 	</div>
+						</div>
+			 		</div>
+			 		<div class="VTabSimpleStyle">
+			 			<div class="TabLeft">
+			 				<div class="TabRight">
+			 					<div class="TabRepeat">
+						 			<div class="LeftIcon"><span></span></div>
+						 			<div class="TabLabel">Repository 4</div>
+						 			<div style="clear: left"><span></span></div>
+						 		</div>
+						 	</div>
+						</div>
 			 		</div>
 			 		<%}%>
 			 	</div>
@@ -35,9 +74,13 @@
 		</div>
 	</div>
 	<div class="UIDrivesList">
-		<div class="DrivesListTitle" > 
-			<%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:
-			<%=uicomponent.getRepository()%>
+		<div class="DrivesListTitleBG">
+			<div class="DrivesListTitleBGRight">
+				<div class="DrivesListTitle" >
+					<%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:
+					<%=uicomponent.getRepository()%>
+				</div>
+			</div>
 		</div>
 		<div class="DrivesListContainer" >
 			<div class="BrowserDecorator">
@@ -87,9 +130,5 @@
 		  
 		</div>
 	</div>
-	
-	
-	
-	
   
 </div>

@@ -247,8 +247,11 @@
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
 .UIBrowseContentPortlet .UIPopupWindow .UITree{
-  float: left;
   width: 200px;
+}
+
+.UIBrowseContentPortlet .Explorer .ExplorerTree {
+	border: none;
 }
 
 .UIBrowseContentPortlet .UIPopupWindow .UIGrid{

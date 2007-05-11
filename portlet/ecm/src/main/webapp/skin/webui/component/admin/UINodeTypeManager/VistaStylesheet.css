@@ -91,8 +91,8 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
-  width: 680px ;
-  margin:auto; margin-top: 10px;
+  width: 600px ;
+  margin: auto; margin-top: 10px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{

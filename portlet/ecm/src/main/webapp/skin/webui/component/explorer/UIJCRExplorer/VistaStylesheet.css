@@ -301,6 +301,7 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
   padding: 0px 3px 0px 0px;
+  width: 160px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {

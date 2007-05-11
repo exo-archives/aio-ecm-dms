@@ -163,13 +163,13 @@
   margin-top: 5px ;
 }
 
-.UIECMAdminPortlet .UINamespaceList .UIAction{
+.UIECMAdminPortlet .UINamespaceList .UIAction {
   margin: auto ;
 	padding: 3px 0px 7px 0px;
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UINamespaceForm .UIFormWithTitle .UIAction{
+.UIECMAdminPortlet .UINamespaceForm .UIFormWithTitle .UIAction {
   width: 200px;
   margin: auto ;
 }
@@ -189,7 +189,7 @@
   margin: auto ; margin-top: 10px; margin-bottom: 10px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction{
+.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 285px ;
   margin: auto ; 
   padding-top: 10px;
@@ -203,12 +203,12 @@
 }
 
 
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser{
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
   margin: auto ; 
   padding: 10px 7px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UIGrid{
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UIGrid {
   width: 99.8%;
   margin-left: 1px ; 
 }
@@ -218,7 +218,7 @@
   margin: auto ;
 }
 
-.UIECMAdminPortlet .UIDriveList .UIAction{
+.UIECMAdminPortlet .UIDriveList .UIAction {
   width: 120px ;
   padding-top: 5px;
   margin: auto ;
@@ -262,7 +262,7 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction{
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction {
   width: 270px ;
   padding: 7px 0px 0px 0px;
   margin: auto ;
@@ -327,7 +327,7 @@
 
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
 
-.UIECMScripts .UIBarStyle{
+.UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
 }
 
@@ -354,11 +354,11 @@
   margin-top: 7px;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout{
+.UIECMScripts .UIFormWithTitle .HorizontalLayout {
   padding-top: 7px;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction{
+.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
   width: 290px;
   margin: auto;
 }
@@ -376,11 +376,11 @@
 	padding-top: 5px;
 }
 
-.UICBScripts .UIFormWithTitle .HorizontalLayout{
+.UICBScripts .UIFormWithTitle .HorizontalLayout {
   padding-top: 7px;
 }
 
-.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction{
+.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
   width: 290px;
   margin: auto;
 }
@@ -492,7 +492,7 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
-.UIQueriesManager .UIQueriesForm .UIForm .textarea{
+.UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	width: 320px ; height: 150px ;
 }
 
@@ -511,7 +511,7 @@
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
-.UIFolksonomyManager .UITagStyleForm .UIForm .textarea{
+.UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height:250px;
 	margin: 0px 0px 10px 0px;
 	width:300px;

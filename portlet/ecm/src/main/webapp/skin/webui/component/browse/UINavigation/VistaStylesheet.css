@@ -76,24 +76,24 @@
 }
 
 .UICBNavigation .CBLeftNavigation {
-	height: 58px;
+	height: 57px;
   background: url('VistaSkin/background/LeftHorizontalTabBG3x30.png') no-repeat left bottom;
   padding-left: 3px;
 }
 
 .UICBNavigation .CBRightNavigation {
-	height: 58px;
+	height: 57px;
   background: url('VistaSkin/background/RightHorizontalTabBG3x30.png') no-repeat right bottom;
   padding-right: 3px;
 }
 
 .UICBNavigation .CBMiddleNavigation {
-	height: 58px;
+	height: 57px;
   background: url('VistaSkin/background/CenterHorizontalTabBG1x30.png') repeat-x bottom;
 }
 
 .UICBNavigation .UICBMainNavigation {
-	height: 25px;
+	height: 28px;
   font-size: 11px;
   overflow: hidden;
 }
@@ -147,6 +147,8 @@
 
 .UICBNavigation .UIHorizontalTabs {
 	float: left;
+	height: 23px;
+	margin-top: 4px;
 }
 
 .UICBNavigation .UIHorizontalTabs .TabsContainer {
@@ -257,18 +259,17 @@
 
 .UICBNavigation .NavigationButtonContainer {
 	float: right;
-	height: 16px;
 }
 
 .UICBNavigation .NavigationButtonContainer .NavigationIcon {
 	float: left;
 	cursor: pointer;
-	margin-top: 3px;
 }
 
 .UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 
-	overflow: hidden;
 	padding-left: 4px;
+	height: 19px;
+	line-height: 19px;
 }
 
 .UICBNavigation .UICBSubNavigation .ItemContainer { 
@@ -299,14 +300,14 @@
 
 .UICBNavigation .UICBSubNavigation .NodeLabel { 
 	float: left;
-	line-height: 27px;
+	line-height: 22px;
 	text-decoration: none;
 }
 
 .SeparatorLine { 
 	float: left;
 	background: url('VistaSkin/background/SeparatorLine2x1.png') repeat-y ;  
-	margin: 4px 3px;
+	margin: 0px 3px;
 	height: 23px; width: 2px;
 }
 

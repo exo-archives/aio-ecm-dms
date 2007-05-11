@@ -116,11 +116,6 @@
   cursor: pointer;
 }
 
-.false16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/False.gif') no-repeat;  
-}
-
 .true16x16Icon {
   width: 16px ;  height: 16px ;
   background: url('VistaSkin/True.gif') no-repeat;  
@@ -294,11 +289,6 @@
   width: 24px ;  height: 24px ;
   background: url('VistaSkin/Edit.png') no-repeat ;
   cursor: pointer;
-}
-
-.False16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('VistaSkin/False.png') no-repeat;  
 }
 
 .True16x16Icon {
