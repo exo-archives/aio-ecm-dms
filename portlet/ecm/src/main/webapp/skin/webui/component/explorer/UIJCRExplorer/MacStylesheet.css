@@ -823,4 +823,10 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 .UIJCRExplorerPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer  {
 	border: none;
 }
+
+/*=================================UIActionListContainer==============================*/
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
+  margin: 10px auto;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

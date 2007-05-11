@@ -739,4 +739,14 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 	float: left ;
 	margin: 2px 10px 0px 5px ;
 }
+
+/*=================================UITabContentContainer==============================*/
+
+.UIJCRExplorerPortlet .UITabContentContainer .UITabContent .UIActionViewContainer .UIGrid td {
+  border-top: solid 1px #cccccc;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

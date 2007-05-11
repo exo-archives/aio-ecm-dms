@@ -158,7 +158,6 @@
 		.UIArticle .ArticleTCDecorator .Language {
 	    text-align: left;
 	    color: #c0c0c0;
-	    width: 400px;
 	    padding: 10px 0px 0px 2px;
 	    font-weight: bold;
 	  }

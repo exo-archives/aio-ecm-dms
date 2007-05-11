@@ -324,11 +324,11 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction {
   width: 250px ;
-  padding-left: 50px;
+  padding-left: 100px;
 }
 
 .UIECMAdminPortlet .ECMTemplate .UIECMTemplateList {
-  margin-top: 5px;
+  width: 85px;
 }
 .UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer{
 	width: 60px;
@@ -390,6 +390,11 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 /*############################## -- UIActionManager -- ########################*/
+
+.UIECMAdminPortlet .UIActionTypeForm .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin-left: 165px ;
+}
+
 .UIActionManager .UIActionTypeForm .UIFormWithTitle .HorizontalLayout {
 	padding-top: 10px; 
 }
@@ -539,7 +544,7 @@ UIECMAdminPortlet .UIViewManager {
 	width: 320px ;
 }
 
-.UIQueriesManager .UIQueriesForm .UIForm label {
+.UIQueriesManager .UIQueriesForm .UIForm .FieldContainer label {
 	width: 130px ;
 }
 
