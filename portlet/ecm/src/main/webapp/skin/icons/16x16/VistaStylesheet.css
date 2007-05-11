@@ -11,7 +11,7 @@
 .AddIcon16x16 {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  background:transparent url(/eXoResources/icons/16x16/VistaSkin/AddNodeIcon.gif) no-repeat scroll left center; 
   cursor: pointer;
 }
 
@@ -41,7 +41,7 @@
 .AddIconIcon {
   float: left ;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/AddIcon.gif') no-repeat ;
+  background:transparent url(/eXoResources/icons/16x16/VistaSkin/AddNodeIcon.gif) no-repeat scroll left center;
   cursor: pointer;
 } 
 
@@ -114,11 +114,6 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/RedRoundedPlusPage.gif') no-repeat;
   cursor: pointer;
-}
-
-.true16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('VistaSkin/True.gif') no-repeat;  
 }
 
 .Style1NextArrow16x16Icon {
@@ -289,6 +284,11 @@
   width: 24px ;  height: 24px ;
   background: url('VistaSkin/Edit.png') no-repeat ;
   cursor: pointer;
+}
+
+.False16x16Icon {
+  width: 16px ;  height: 16px ;
+  background: url('VistaSkin/False.png') no-repeat;  
 }
 
 .True16x16Icon {

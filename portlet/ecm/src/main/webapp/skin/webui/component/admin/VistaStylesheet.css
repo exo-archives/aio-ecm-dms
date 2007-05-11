@@ -17,6 +17,17 @@
   padding-bottom: 30px;
 }
 
+.UIECMAdminPortlet .UIRepositoryManager .UIRepositoryList .UIAction {
+	width: 90px;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIRepositoryForm .UIAction {
+	width: 410px;
+}
+
+.UIRepositoryManager .UIWorkspaceForm .UIAction{ 
+	width: 280px;
+}
 
 .UIECMAdminPortlet .ActionButton {
   width: auto ;
@@ -124,6 +135,10 @@
   width: auto;
 }
 
+.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet .FieldContainer{
+	line-height: 20px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
   margin: auto;
 }
@@ -155,6 +170,10 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions input {
   width: 225px;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label {
+  width: 150px;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
@@ -206,11 +225,6 @@
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
   margin: auto ; 
   padding: 10px 7px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UIGrid {
-  width: 99.8%;
-  margin-left: 1px ; 
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
@@ -528,4 +542,15 @@
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin: 0px 0px 4px 175px;
+}
+
+.UITreeList .UIGrid {
+  width: 325px;
+  margin-left: 10px ;
+}
+
+.Explorer {
+  margin-bottom: 10px;
+  float: left ;
+  width: 230px ;
 }
