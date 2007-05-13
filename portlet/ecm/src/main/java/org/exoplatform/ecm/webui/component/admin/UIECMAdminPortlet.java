@@ -30,14 +30,14 @@ import org.exoplatform.webui.event.EventListener;
 public class UIECMAdminPortlet extends UIPortletApplication {
   private String renderedCompName_ = "UITaxonomyManager" ;
   private boolean isShowSideBar = true ;
-  private boolean isSelectedRepo_ = false ;
+  private boolean isSelectedRepo_ = true ;
   private String repoName_ = "" ;
   
   public UIECMAdminPortlet() throws Exception {
     addChild(UIECMAdminFunctionTitle.class, null, null) ;
     addChild(UIECMAdminControlPanel.class, null, null) ;
     addChild(UIECMAdminWorkingArea.class, null, null);
-    addChild(UIRepositoryManager.class, null, null) ; 
+    addChild(UIRepositoryManager.class, null, null) ;
   }
   
   public void renderPopupMessages() throws Exception {

@@ -7,11 +7,5 @@
 	  <div class="FunctionTitle"><%=_ctx.appRes("UIECMAdminControlPanel.label." + comp)%></div>
 	  <div style="clear: left;"><span></span></div>
   </div>
-  <div class="LeftFunctionBar">	  
-	    <div class="RepositoryName">Current repository : <font color="#0766e7">
-	     <%=uicomponent.getCurrentRepoName()%>
-	    </font></div>			
-		  <a class="Icon BackToRepositoryButton" href="<%=uicomponent.event("Back")%>" title="Back to repository manager"><span></span></a>	 
-  </div>
   <div style="clear: both;"><span></span></div>
 </div>

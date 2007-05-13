@@ -9,11 +9,11 @@ import java.util.Set;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryList.RepositoryData;
-import org.exoplatform.ecm.webui.component.admin.repository.UIWorkspaceForm.WorkspaceData;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager.RepositoryData;
+import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager.WorkspaceData;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
+import org.exoplatform.webui.component.UIDropDownItemSelector;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormInputInfo;
@@ -48,6 +48,9 @@ import org.exoplatform.webui.event.Event.Phase;
     }  
 )
 public class UIRepositoryForm extends UIForm implements UISelector {  
+  final  static public String ST_ADD = "AddRepoPopup" ;
+  final  static public String ST_EDIT = "EditRepoPopup" ;
+  
   final static public String POPUP_PERMISSION = "PopupPermission" ;
   final static public String POPUP_WORKSPACE = "PopupWorkspace" ;
   final static public String FIELD_NAME = "name" ;  
@@ -73,14 +76,13 @@ public class UIRepositoryForm extends UIForm implements UISelector {
   }  
   
   public void refresh(RepositoryData repo){
-    if(repo == null) {
-      reset() ;    
+    reset() ;  
+    if(repo == null) {        
       isAddnew_ = true ;
     } else {
       getUIStringInput(FIELD_NAME).setValue(repo.getName()) ;
       UIFormInputSetWithAction uiInputSet = getChildById(FIELD_SET) ;
       uiInputSet.getUIStringInput(FIELD_PERM).setValue(repo.getPermissions()) ;
-      workspaces_.clear() ;   
       workspaces_ = repo.getWorkspaceMap() ;
       refreshLabel() ;
       isAddnew_ = false ;
@@ -125,9 +127,9 @@ public class UIRepositoryForm extends UIForm implements UISelector {
       String repoPerm = uiForm.getUIStringInput(UIRepositoryForm.FIELD_PERM).getValue() ;
       Set<String> workSpaceSet = uiForm.getWorkspaceMap().keySet() ;      
       boolean isDefault = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_ISDEFAULT).isChecked() ;
-      UIRepositoryList uiList = uiManager.findFirstComponentOfType(UIRepositoryList.class) ;      
+      UIRepositoryControl uiControl = uiManager.findFirstComponentOfType(UIRepositoryControl.class) ;      
       if(uiForm.isAddnew_) {
-        if (uiList.isExistRepo(repoName)) {
+        if (uiControl.isExistRepo(repoName)) {
           UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
           Object[] args = new Object[]{repoName}  ;        
           uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.repoName-exist", args)) ;
@@ -142,14 +144,14 @@ public class UIRepositoryForm extends UIForm implements UISelector {
         return ; 
       }
       RepositoryData repoData = new RepositoryData(repoName,uiForm.getWorkspaceMap(),repoPerm,repoDes, isDefault) ;
-      uiList.addRepository(repoData) ;
-      uiList.updateGrid() ;
+      uiControl.addRepository(repoData) ;
+      uiControl.getChild(UIDropDownItemSelector.class).setOptions(uiControl.getRepoItem()) ;
       uiForm.refresh(null) ;
       uiForm.workspaces_.clear() ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      uiManager.removeChildById(UIRepositoryList.ST_ADD) ;
-      uiManager.removeChildById(UIRepositoryList.ST_EDIT) ;
+      uiManager.removeChildById(UIRepositoryForm.ST_ADD) ;
+      uiManager.removeChildById(UIRepositoryForm.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ; 
       
     }
@@ -176,8 +178,9 @@ public class UIRepositoryForm extends UIForm implements UISelector {
       UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      UIWorkspaceForm uiWorkspaceForm = uiManager.createUIComponent(UIWorkspaceForm.class, null, null) ;
-      uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceForm) ;      
+      UIWorkspaceWizard uiWorkspaceWizard = uiManager.createUIComponent(UIWorkspaceWizard.class, null, null) ;
+      //UIWorkspaceForm uiWorkspaceForm = uiManager.createUIComponent(UIWorkspaceForm.class, null, null) ;
+      uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceWizard) ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -186,11 +189,10 @@ public class UIRepositoryForm extends UIForm implements UISelector {
       UIRepositoryForm uiForm = event.getSource() ;
       uiForm.refresh(null) ;
       UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
-      uiForm.workspaces_.clear() ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      uiManager.removeChildById(UIRepositoryList.ST_ADD) ;
-      uiManager.removeChildById(UIRepositoryList.ST_EDIT) ;
+      uiManager.removeChildById(UIRepositoryForm.ST_ADD) ;
+      uiManager.removeChildById(UIRepositoryForm.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;  
     }
   }
@@ -201,9 +203,9 @@ public class UIRepositoryForm extends UIForm implements UISelector {
       UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      UIWorkspaceForm uiWorkspaceForm = uiManager.createUIComponent(UIWorkspaceForm.class, null, null) ;      
-      uiWorkspaceForm.refresh(uiForm.getWorkspace(workspaceName)) ;
-      uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceForm) ;      
+      UIWorkspaceWizard uiWorkspaceWizard = uiManager.createUIComponent(UIWorkspaceWizard.class, null, null) ;      
+      uiWorkspaceWizard.refresh(uiForm.getWorkspace(workspaceName)) ;
+      uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceWizard) ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

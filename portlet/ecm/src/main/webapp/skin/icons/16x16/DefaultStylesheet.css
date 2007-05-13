@@ -320,6 +320,13 @@
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
+
+.Repository16x16Icon{
+	float: left;
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/RepositoryIcon.gif') no-repeat;
+}
+
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
   float: left;

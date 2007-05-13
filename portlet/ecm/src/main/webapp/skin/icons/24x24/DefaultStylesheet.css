@@ -342,6 +342,21 @@
   background: url('DefaultSkin/BlackMonitor.gif') no-repeat ;
 }
 
+.AddRepository24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat ;
+}
+
+.EditRepository24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat ;
+}
+
+.RemoveRepository24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat ;
+}
+
 /*############################## -- Begin NodeType Icon -- ########################*/
 
 .dc_elementSet24x24Icon {

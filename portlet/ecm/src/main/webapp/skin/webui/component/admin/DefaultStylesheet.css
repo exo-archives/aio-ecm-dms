@@ -14,8 +14,54 @@
 .UIPageDesktop .UIECMAdminPortlet {
   overflow: hidden;
 }
+.UIECMAdminPortlet .UIRepositoryControl {
+	overflow: hidden;
+}
+.UIRepositoryControl .ControlLayout {
+	font-size: 11px ;
+  background: url('DefaultSkin/background/RepositoryBarBackground1x34.gif') repeat-x left top ; 
+  margin: 0px;
+}
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
+	 float: left;
+	 margin: auto ;
+}
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
+	font-weight: bold ;
+	float: left;
+	margin-top: 4px;
+	padding: 0px 10px;
+}
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
+	 width: 200px;
+	 margin: 2px;
+	 float: left;	 
+}
+.UIECMAdminPortlet .UIRepositoryControl .UISelect .SelectedItemLabel{
+	
+}
 
-/*############################## --End UIRepositoryManager -- ########################*/
+.UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
+  width: 200px;
+  float: left; 
+}
+.UIECMAdminPortlet .UIRepositoryControl .ActionButton {
+	width: 24px ; height: 24px;
+	float: left ;
+	margin-left: 5px;		
+}
+
+.UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
+  width: 2px;
+  height: 20px;
+  margin-left: 5px;		
+  margin-top: 2px;		
+  background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
+  float: left;
+}
+
+
+/*############################## --Begin UIRepositoryManager -- ########################*/
 .UIECMAdminPortlet .UIRepositoryManager {
 
 }
@@ -32,9 +78,72 @@
 	width: 100px;	
 }
 
-.UIRepositoryManager .UIWorkspaceForm .UIAction{ 
+.UIRepositoryManager .UIWorkspaceForm .UIAction { 
 	width: 280px;
 
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard {
+
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .HiddenLabel {
+	display: none  ;	
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .SelectedLabel {
+	display: block ;
+	background: #F4F4F4 none repeat scroll 0%;
+	border: 1px solid #B7B7B7 ;
+	padding: 10px 0px;
+	border-bottom: none ;
+}
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
+	float: left;
+ 	vertical-align: middle;
+  font-size: 11px; font-weight: bold; 
+}
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIWizardAction {
+	background: #F4F4F4 none repeat scroll 0%;
+	border: 1px solid #B7B7B7 ;
+	border-top: none ;
+}
+.UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
+  float: left;
+  height: 33px; line-height: 33px; vertical-align: middle;
+  font-size: 11px; font-weight: bold;
+  margin: 0px 10px 0px 15px;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
+  float: left;
+  height: 34px; line-height: 34px; vertical-align: middle;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a{
+  float: left;
+  width: 18px; height: 18px; 
+  line-height: 18px; vertical-align: middle;
+  font-size: 11px; font-weight: bold;
+  text-align: center; text-decoration: none; color: black;
+  margin: 7px 3px 0px 3px;
+  border: solid 1px gray;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a:hover {
+  height: 18px; line-height: 18px; vertical-align: middle;
+  color: orange;
+  background: #f8f8f8;
+  border: solid 1px #fdb913 ;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a.SelectedStep {
+  color: red;
+}
+
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIAction {
+	float: right;
 }
 
 /*############################## --End UIRepositoryManager -- ########################*/
@@ -108,16 +217,7 @@
   line-height: 25px;
 	height: 30px;
 }
-.UIECMAdminPortlet .UIECMAdminFunctionTitle .LeftFunctionBar {
-		font-weight: bold;
-  	line-height: 25px;
-  	padding-right: 20px;
-		float: right;
-}
-.UIECMAdminPortlet .UIECMAdminFunctionTitle .RepositoryName {
-	float: left;
-	padding: 0px 5px;
-}
+
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .Icon {
   float: left;
   margin: 2px 10px;
@@ -208,9 +308,6 @@
   width: 15px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label {
-  width: 150px;
-}
 
 /*############################## -- UINamespaceManager -- ########################*/
 .UIECMAdminPortlet .UINamespaceManager .UIFormWithTitle {
@@ -689,6 +786,10 @@ UIECMAdminPortlet .UIViewManager {
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
 	margin: 30px 0px 0px 0px;
+}
+
+.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
+	width: 120px;
 }
 
 .UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout {
