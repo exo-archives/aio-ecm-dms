@@ -546,7 +546,6 @@ public class DialogFormFields extends UIForm {
       try{
         executeScript(script, uiSelectBox, scriptParams);
       }catch(Exception e) {
-        e.printStackTrace() ;
         uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
       }      
     } else if (options != null && options.length() >0) {
