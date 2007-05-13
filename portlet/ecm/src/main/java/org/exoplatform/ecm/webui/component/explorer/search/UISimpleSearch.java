@@ -14,6 +14,8 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.component.view.Util;
+import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -39,6 +41,7 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(listeners = UISimpleSearch.CancelActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UISimpleSearch.SearchActionListener.class),
+      @EventConfig(listeners = UISimpleSearch.SaveActionListener.class),
       @EventConfig(listeners = UISimpleSearch.MoreConstraintsActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UISimpleSearch.RemoveConstraintActionListener.class, phase=Phase.DECODE)
     }    
@@ -47,6 +50,7 @@ public class UISimpleSearch extends UIForm {
 
   final static public String INPUT_SEARCH = "input" ;
   final static public String CONSTRAINTS = "constraints" ;
+  final static public String QUERY_NAME = "queryName" ;
   
   private List<String> constraints_ = new ArrayList<String>() ;
   private String firstOperator_ ;
@@ -55,11 +59,12 @@ public class UISimpleSearch extends UIForm {
   private static final String OTHER_SQL_QUERY = "select * from nt:base where ";
   
   public UISimpleSearch() throws Exception {
+    addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null)) ;
     addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints") ;
     uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null)) ;
     addUIComponentInput(uiInputAct) ;
-    setActions(new String[] {"MoreConstraints", "Search", "Cancel"}) ;
+    setActions(new String[] {"MoreConstraints", "Search", "Save", "Cancel"}) ;
   }
 
   public void updateAdvanceConstraint(String constraint, String operator) { 
@@ -76,6 +81,58 @@ public class UISimpleSearch extends UIForm {
     inputInfor.setListInfoField(CONSTRAINTS, constraints_) ;
     String[] actionInfor = {"RemoveConstraint"} ;
     inputInfor.setActionInfo(CONSTRAINTS, actionInfor) ;
+  }
+  
+  private String getQueryStatement() {
+    String statement = "" ;
+    String text = getUIStringInput(INPUT_SEARCH).getValue() ;
+    if(text != null && constraints_.size() == 0) {
+      statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
+    } else if(constraints_.size() > 0) {
+      if(text == null) {
+        statement = StringUtils.replace(OTHER_SQL_QUERY, "$1", text) ;
+      } else {
+        statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
+        statement = statement + " " + firstOperator_ + " ";
+      }
+      for(String constraint : constraints_) {
+        statement = statement + constraint ;
+      }
+    }
+    return statement ;
+  }
+  
+  static  public class SaveActionListener extends EventListener<UISimpleSearch> {
+    public void execute(Event<UISimpleSearch> event) throws Exception {
+      UISimpleSearch uiSimpleSearch = event.getSource() ;
+      UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ;
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
+      QueryService queryService = uiSimpleSearch.getApplicationComponent(QueryService.class) ;
+      String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
+      if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-save-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      String queryName = uiSimpleSearch.getUIStringInput(QUERY_NAME).getValue() ;
+      if(queryName == null || queryName.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-name-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      try {
+        queryService.addQuery(queryName, uiSimpleSearch.getQueryStatement(), Query.SQL, userName) ;        
+      } catch (Exception e){
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.save-failed", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      uiECMSearch.getChild(UISavedQuery.class).updateGrid() ;
+      uiECMSearch.setRenderedChild(UISavedQuery.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiECMSearch.getParent()) ;
+    }
   }
   
   static  public class CancelActionListener extends EventListener<UISimpleSearch> {
@@ -95,40 +152,27 @@ public class UISimpleSearch extends UIForm {
   
   static public class SearchActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      UISimpleSearch uiForm = event.getSource();
-      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      String text = uiForm.getUIStringInput(INPUT_SEARCH).getValue() ;
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      UISimpleSearch uiSimpleSearch = event.getSource();
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
+      String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
+      UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
-      String statement = null ;
-      if((text == null) && uiForm.constraints_.size() == 0) {
+      if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(text != null && uiForm.constraints_.size() == 0) {
-        statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
-      } else if(uiForm.constraints_.size() > 0) {
-        if(text == null) {
-          statement = StringUtils.replace(OTHER_SQL_QUERY, "$1", text) ;
-        } else {
-          statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
-          statement = statement + " " + uiForm.firstOperator_ + " ";
-        }
-        for(String constraint : uiForm.constraints_) {
-          statement = statement + constraint ;
-        }
-      }
+      String statement = uiSimpleSearch.getQueryStatement() ; ;
       Query query = queryManager.createQuery(statement, Query.SQL);                
       QueryResult queryResult = query.execute();
-      UIECMSearch uiECMSearch = uiForm.getParent() ; 
+      UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
       uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;
       uiECMSearch.setRenderedChild(UISearchResult.class) ;
-      uiForm.constraints_.clear() ;
-      uiForm.reset() ;
+      uiSimpleSearch.constraints_.clear() ;
+      uiSimpleSearch.reset() ;
     }
   }
   

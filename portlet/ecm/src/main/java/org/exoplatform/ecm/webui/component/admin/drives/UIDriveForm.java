@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.jcr.UISelector;
@@ -58,7 +57,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     
     UIFormInputSet driveInputSet = new UIDriveInputSet("DriveInputSet") ;
     addUIFormInput(driveInputSet) ;
-
+    
     UIFormInputSet viewInputSet = new UIViewsInputSet("ViewsInputSet") ;
     viewInputSet.setRendered(false) ;
     addUIFormInput(viewInputSet) ;

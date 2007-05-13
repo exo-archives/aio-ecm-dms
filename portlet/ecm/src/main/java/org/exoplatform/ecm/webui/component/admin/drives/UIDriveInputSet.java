@@ -45,7 +45,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     for(String wsName : wsNames) {
       workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
     }
-
+    
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
                        addValidator(EmptyFieldValidator.class)) ;
     addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, workspace)) ;    
@@ -58,7 +58,6 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"}) ;
     setActionInfo(FIELD_WORKSPACEICON, new String[] {"AddIcon"}) ;
-    
   }
 
   public void update(DriveData drive) throws Exception {

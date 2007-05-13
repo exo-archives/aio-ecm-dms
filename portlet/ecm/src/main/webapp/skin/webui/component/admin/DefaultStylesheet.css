@@ -276,6 +276,15 @@
   cursor: pointer;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  width: 225px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .UIFormInputSetWithAction .radio {
+  width: 20px;
+  margin-left: 0px;
+}
+
 .UIECMAdminPortlet .UIECMAdminWorkingArea {
   margin: 10px;
 }
@@ -298,10 +307,6 @@
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
   float: left ;
   margin-left: 5px ;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  width: 225px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .checkbox {
@@ -348,6 +353,10 @@
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 250px ;
   padding-left: 70px;
+}
+
+.UIECMAdminPortlet .MultiRadioInput {
+	float: left;
 }
 
 .UIECMAdminPortlet .UIDriveList .UIAction {
