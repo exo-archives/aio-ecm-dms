@@ -33,20 +33,24 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
   }
   
   public void execute(Object context) {
-		UIFormSelectBox selectBox = (UIFormSelectBox) context;        
-		ManageableRepository jcrRepository = repositoryService_.getRepository();
-		Session session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace());
-		String path = cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH) ;
-		Node calendar = (Node) session.getItem(cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH)) ;
-		List options = new ArrayList();
-		if (calendar != null){
-			Iterator iter = calendar.getNodes() ;
-			while(iter.hasNext()) {
-				Node categoryNode = iter.next() ;
-				options.add(new SelectItemOption(categoryNode.getName() , categoryNode.getPath().substring(1)));
-			}            
-		}
-		selectBox.setOptions(options);
+		try {
+      UIFormSelectBox selectBox = (UIFormSelectBox) context;        
+      ManageableRepository jcrRepository = repositoryService_.getRepository();
+      Session session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace());
+      String path = cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH) ;
+      Node calendar = (Node) session.getItem(cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH)) ;
+      List options = new ArrayList();
+      if (calendar != null){
+        Iterator iter = calendar.getNodes() ;
+        while(iter.hasNext()) {
+          Node categoryNode = iter.next() ;
+          options.add(new SelectItemOption(categoryNode.getName() , categoryNode.getPath().substring(1)));
+        }            
+      }
+      selectBox.setOptions(options);
+    }catch(Exception e) {
+      selectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+    }
   }
   
   public void setParams(String[] params) {}
