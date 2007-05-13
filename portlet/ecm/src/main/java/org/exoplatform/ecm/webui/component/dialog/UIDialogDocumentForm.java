@@ -5,7 +5,6 @@
 package org.exoplatform.ecm.webui.component.dialog;
 
 import java.security.AccessControlException;
-import java.util.List;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;

@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.jcr.Node;
-
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -61,11 +58,10 @@ public class UIConstraintsForm extends UIForm {
   final static public String NOT_CONTAIN = "notContain" ;
   final static public String START_TIME = "startTime" ;
   final static public String END_TIME = "endTime" ;
-  final static public String DOC_NAME = "docName" ;
   final static public String DOC_TYPE = "docType" ;
   final static public String AND_OPERATION = "and" ;
   final static public String OR_OPERATION = "or" ;
-  final static public String[] CONSTRAINT_LABEL = {"Properties", "Properties", "Properties", "", "Document Name", "Document Type"} ;
+  final static public String[] CONSTRAINT_LABEL = {"Properties", "Properties", "Properties", "", "Document Type"} ;
   
   public UIConstraintsForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"}) ;
@@ -90,10 +86,8 @@ public class UIConstraintsForm extends UIForm {
     dateOperation.add(new SelectItemOption<String>("Created", "Created"));
     dateOperation.add(new SelectItemOption<String>("Modified", "Modified"));
     addUIFormInput(new UIFormSelectBox(TIME_OPTION, TIME_OPTION, dateOperation)) ;
-    
     addUIFormInput(new UIFormDateTimeInput(START_TIME, START_TIME, null)) ;
     addUIFormInput(new UIFormDateTimeInput(END_TIME, END_TIME, null)) ;
-    addUIFormInput(new UIFormStringInput(DOC_NAME, DOC_NAME, null)) ;
     addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
   }
 
@@ -222,22 +216,6 @@ public class UIConstraintsForm extends UIForm {
         advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
         break ;
       case 4:
-        properties = getUIStringInput(DOC_NAME).getValue() ;
-        if(properties == null || properties.length() < 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
-        if ("/".equals(currentNode.getPath())) {
-          advanceQuery = "jcr:path like '%/" + properties + "'" ;
-        } else if(currentNode.getParent().getPath().equals("/")) {
-          advanceQuery = "jcr:path like '/%/" + properties + "'" ;
-        } else {
-          advanceQuery = "jcr:path like '"+currentNode.getParent().getPath()+"/%/" + properties + "'" ;
-        }
-        break;
-      case 5:
         properties = getUIStringInput(DOC_TYPE).getValue() ;
         if(properties == null || properties.length() < 1) {
           uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
@@ -276,9 +254,6 @@ public class UIConstraintsForm extends UIForm {
           break;
         case 4:
           uiForm.addConstraint(event, 4) ;
-          break;
-        case 5:
-          uiForm.addConstraint(event, 5) ;
           break;          
         default:
           break;

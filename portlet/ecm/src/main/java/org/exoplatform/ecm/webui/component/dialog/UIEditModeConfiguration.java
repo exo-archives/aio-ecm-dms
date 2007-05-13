@@ -7,6 +7,11 @@ package org.exoplatform.ecm.webui.component.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Node;
+import javax.jcr.Session;
+import javax.jcr.nodetype.NodeDefinition;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -43,7 +48,8 @@ import org.exoplatform.webui.event.Event.Phase;
     template = "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
       @EventConfig(listeners = UIEditModeConfiguration.SaveActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UIEditModeConfiguration.SelectPathActionListener.class)
+      @EventConfig(listeners = UIEditModeConfiguration.SelectPathActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIEditModeConfiguration.ChangeWorkspaceActionListener.class, phase=Phase.DECODE)
     }
 )
 public class UIEditModeConfiguration extends UIForm implements UISelector {
@@ -55,14 +61,15 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
   
   public UIEditModeConfiguration() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    addUIFormInput(new UIFormSelectBox(FIELD_SELECT, FIELD_SELECT, options)) ;
     UIFormSelectBox uiWorkspaceList = 
       new UIFormSelectBox(UIEditModeConfiguration.WORKSPACE_NAME, UIEditModeConfiguration.WORKSPACE_NAME, options) ; 
+    uiWorkspaceList.setOnChange("ChangeWorksapce") ;
     addUIFormInput(uiWorkspaceList) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction(ACTION_INPUT) ;
     uiInputAct.addUIFormInput(new UIFormStringInput(FIELD_SAVEDPATH, FIELD_SAVEDPATH, null)) ;
     uiInputAct.setActionInfo(FIELD_SAVEDPATH, new String[] {"SelectPath"}) ;
     addUIComponentInput(uiInputAct) ;
+    addUIFormInput(new UIFormSelectBox(FIELD_SELECT, FIELD_SELECT, options)) ;
     setActions(new String[] {"Save"}) ;
   }
   
@@ -70,28 +77,12 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
     PortletRequest request = context.getRequest() ; 
     PortletPreferences preferences = request.getPreferences() ;
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
-    UIFormSelectBox uiSelectBox = getUIFormSelectBox(FIELD_SELECT) ;
-    boolean hasDefaultDoc = false ;
     boolean isDefaultWs = false ;
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List templates = templateService.getDocumentTemplates() ;
-    String prefType = preferences.getValue("type", "") ;
-    for(int i = 0; i < templates.size(); i ++) {
-      String nodeTypeName = templates.get(i).toString() ;
-      if(nodeTypeName.equals(prefType)) hasDefaultDoc = true ;
-      options.add(new SelectItemOption<String>(nodeTypeName)) ;
-    }
-    uiSelectBox.setOptions(options) ;
-    if(hasDefaultDoc) {
-      uiSelectBox.setValue(prefType);
-    } else if(options.size() > 0) {
-      uiSelectBox.setValue(options.get(0).getValue());
-    }
     ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository();
     String[] wsNames = repository.getWorkspaceNames();
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
     String prefWs = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
+    setTemplateOptions(preferences.getValue("path", ""), prefWs) ;
     for(String wsName : wsNames) {
       if(wsName.equals(prefWs)) isDefaultWs = true ;
       workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
@@ -100,14 +91,97 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     uiWorkspaceList.setOptions(workspace) ;
     if(isDefaultWs) {
       uiWorkspaceList.setValue(prefWs);
-    } else if(options.size() > 0) {
+    } else if(workspace.size() > 0) {
       uiWorkspaceList.setValue(workspace.get(0).getValue());
     }
     getUIStringInput(FIELD_SAVEDPATH).setValue(preferences.getValue("path", "")) ;
   }
   
+  private void setTemplateOptions(String nodePath, String wsName) throws Exception {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    Session session = repositoryService.getRepository().getSystemSession(wsName) ;
+    Node currentNode = null ;
+    UIFormSelectBox uiSelectTemplate = getUIFormSelectBox(FIELD_SELECT) ;
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
+    boolean hasDefaultDoc = false ;
+    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest request = context.getRequest() ; 
+    PortletPreferences preferences = request.getPreferences() ;
+    String defaultValue = preferences.getValue("type", "") ;
+    try {
+      currentNode = (Node)session.getItem(nodePath) ;
+    } catch(Exception ex) {
+      UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+      uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.item-not-found", null, 
+                                              ApplicationMessage.WARNING)) ;
+      return ;
+    }
+    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
+    NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
+    NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    List templates = templateService.getDocumentTemplates() ;
+    try {
+      for(int i = 0; i < templates.size(); i ++){
+        String nodeTypeName = templates.get(i).toString() ; 
+        NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
+        NodeType[] superTypes = nodeType.getSupertypes() ;
+        boolean isCanCreateDocument = false ;
+        for(NodeDefinition childDef : childDefs){
+          NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes() ;
+          for(NodeType requiredChild : requiredChilds) {          
+            if(nodeTypeName.equals(requiredChild.getName())){            
+              isCanCreateDocument = true ;
+              break ;
+            }            
+          }
+          if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
+            if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) hasDefaultDoc = true ;
+            String label = templateService.getTemplateLabel(nodeTypeName) ;
+            options.add(new SelectItemOption<String>(label, nodeTypeName));          
+            isCanCreateDocument = true ;          
+          }
+        }      
+        if(!isCanCreateDocument){
+          for(NodeType superType:superTypes) {
+            for(NodeDefinition childDef : childDefs){          
+              for(NodeType requiredType : childDef.getRequiredPrimaryTypes()) {              
+                if (superType.getName().equals(requiredType.getName())) {
+                  if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) {
+                    hasDefaultDoc = true ;
+                  }
+                  String label = templateService.getTemplateLabel(nodeTypeName) ;
+                  options.add(new SelectItemOption<String>(label, nodeTypeName));                
+                  isCanCreateDocument = true ;
+                  break;
+                }
+              }
+              if(isCanCreateDocument) break ;
+            }
+            if(isCanCreateDocument) break ;
+          }
+        }            
+      }
+      uiSelectTemplate.setOptions(options) ;
+      if(hasDefaultDoc) {
+        uiSelectTemplate.setValue(defaultValue);
+      } else if(options.size() > 0) {
+        defaultValue = options.get(0).getValue() ;
+        uiSelectTemplate.setValue(defaultValue);
+      } 
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+  }
+  
   public void updateSelect(String selectField, String value) {
     getUIStringInput(selectField).setValue(value) ;
+    String wsName = getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
+    try {
+      setTemplateOptions(value, wsName) ;
+    } catch(Exception ex) {
+      ex.printStackTrace() ;
+    }
     UIDialogPortlet uiDialog = getParent() ;
     UIPopupWindow uiPopup = uiDialog.getChild(UIPopupWindow.class) ;
     uiPopup.setRendered(false) ;
@@ -119,6 +193,14 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       UIEditModeConfiguration uiTypeForm = event.getSource() ;
       UIDialogPortlet uiDialog = uiTypeForm.getParent() ;
       uiDialog.initPopupJCRBrowser(uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).getValue()) ;
+    }
+  }
+  
+  static public class ChangeWorkspaceActionListener extends EventListener<UIEditModeConfiguration> {
+    public void execute(Event<UIEditModeConfiguration> event) throws Exception {
+      UIEditModeConfiguration uiTypeForm = event.getSource() ;
+      uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).setValue("/") ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm.getParent()) ;
     }
   }
   
