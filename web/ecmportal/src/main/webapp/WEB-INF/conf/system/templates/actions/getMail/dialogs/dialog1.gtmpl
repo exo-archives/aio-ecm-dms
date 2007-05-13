@@ -24,56 +24,56 @@
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Protocol:</label>
+      <label>Protocol</label>
       <% 
         String[] fieldProtocol = ["jcrPath=/node/exo:protocol", "options=pop3,imap"] ; 
         uicomponent.addSelectBoxField("protocol", fieldProtocol) 
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Host:</label>
+      <label>Host</label>
       <% 
        	String[] fieldHost = ["jcrPath=/node/exo:host"] ;
         uicomponent.addTextField("host", fieldHost)  ;
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Port:</label>
+      <label>Port</label>
       <% 
         String[] fieldPort = ["jcrPath=/node/exo:port", "validate=number"] ;
         uicomponent.addTextField("port", fieldPort)  ;
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Folder:</label>
+      <label>Folder</label>
       <% 
         String[] fieldFolder = ["jcrPath=/node/exo:folder", "Inbox"] ;
         uicomponent.addTextField("folder", fieldFolder)  ;
       %>
     </div> 
     <div class="FieldContainer">		          					
-      <label>Username:</label>
+      <label>Username</label>
       <% 
         String[] fieldUsername = ["jcrPath=/node/exo:userName", "support@exoplatform.com", "validate=email"] ;
         uicomponent.addTextField("userName", fieldUsername)  ;
       %>
     </div>   
     <div class="FieldContainer">		          					
-      <label>Password:</label>
+      <label>Password</label>
       <% 
         String[] fieldPassword = ["jcrPath=/node/exo:password", "type=password"] ;
         uicomponent.addTextField("password", fieldPassword)  ;
       %>
     </div>   
     <div class="FieldContainer">		          					
-      <label>Description:</label>
+      <label>Description</label>
       <% 
         String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
 				uicomponent.addTextAreaField("description", fieldDescription) ;
       %>
     </div>   
     <div class="FieldContainer">		          					
-      <label>Store path:</label>
+      <label>Store path</label>
       <% 
         String[] fieldStorePath = ["jcrPath=/node/exo:storePath", "cms/mail"] ;
         uicomponent.addTextField("storePath", fieldStorePath)  ;
