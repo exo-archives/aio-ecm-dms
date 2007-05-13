@@ -543,7 +543,12 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiSelectBox) ;
     }
     if (script != null) {
-      executeScript(script, uiSelectBox, scriptParams);
+      try{
+        executeScript(script, uiSelectBox, scriptParams);
+      }catch(Exception e) {
+        e.printStackTrace() ;
+        uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+      }      
     } else if (options != null && options.length() >0) {
       String[] array = options.split(",");
       optionsList = new ArrayList<SelectItemOption<String>>(5);
@@ -551,6 +556,8 @@ public class DialogFormFields extends UIForm {
         optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
       }
       uiSelectBox.setOptions(optionsList);
+    }else {
+      uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
     }
     uiSelectBox.setDefaultValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
@@ -773,15 +780,11 @@ public class DialogFormFields extends UIForm {
     } 
   }
 
-  private void executeScript(String script, Object o, String[] params) {
+  private void executeScript(String script, Object o, String[] params) throws Exception{
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    try {
-      CmsScript dialogScript = scriptService.getScript(script);
-      if(params != null) dialogScript.setParams(params);
-      dialogScript.execute(o);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CmsScript dialogScript = scriptService.getScript(script);
+    if(params != null) dialogScript.setParams(params);
+    dialogScript.execute(o);
   }
 
   public void renderField(String name) throws Exception {
