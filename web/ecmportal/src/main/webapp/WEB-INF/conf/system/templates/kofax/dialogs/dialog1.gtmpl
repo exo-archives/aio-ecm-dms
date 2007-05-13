@@ -5,6 +5,13 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
+    <div class="FieldContainer">		          					
+      <label>Name</label>
+      <%
+        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
+        uicomponent.addTextField("name", fieldName) ; 
+      %>
+    </div>
     <%
       int i = 1;
       for(property in node.getProperties()) {
@@ -13,8 +20,8 @@
         <div class="FieldContainer">		          					
 		      <label><%=propertyName.substring(namespace.length(), propertyName.length())%></label>
 		      <%
-		        String[] fieldName = ["jcrPath=/node/" + propertyName] ;
-		        uicomponent.addTextField("component_" + i, fieldName) ; 
+		        String[] param = ["jcrPath=/node/" + propertyName] ;
+		        uicomponent.addTextField("component_" + i, param) ; 
 		      %>
         </div>
     <%
