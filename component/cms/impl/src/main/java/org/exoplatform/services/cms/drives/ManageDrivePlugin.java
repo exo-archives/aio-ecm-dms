@@ -6,7 +6,6 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.container.component.BaseComponentPlugin;
-import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
@@ -23,7 +22,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
-  
+  private static String FOLDER_DISPLAY = "exo:folderDisplay".intern() ;
 
   private RepositoryService repositoryService_;
   private CmsConfigurationService cmsConfigService_;
@@ -56,6 +55,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
         driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(data.getViewPreferences())) ;
         driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(data.getViewNonDocument())) ;
         driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(data.getViewSideBar())) ;
+        driveNode.setProperty(FOLDER_DISPLAY, data.getFolderDisplay()) ;
         driveHome.save() ;
       }        
     }
@@ -64,7 +64,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
                         String views, String icon, boolean viewReferences, boolean viewNonDocument, 
-                        boolean viewSideBar) throws Exception {
+                        boolean viewSideBar, String folderDisplay) throws Exception {
     String drivesPath = cmsConfigService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Node driveHome = (Node)session_.getItem(drivesPath) ;
     if (!driveHome.hasNode(name)){
@@ -77,6 +77,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(viewReferences)) ;
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
+      driveNode.setProperty(FOLDER_DISPLAY, folderDisplay) ;
       driveHome.save() ;
     }else{
       Node driveNode = driveHome.getNode(name);
@@ -88,6 +89,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(viewReferences)) ;
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
+      driveNode.setProperty(FOLDER_DISPLAY, folderDisplay) ;
       driveNode.save() ;
     }
     session_.save() ;

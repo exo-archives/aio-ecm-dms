@@ -31,6 +31,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
+  private static String FOLDER_DISPLAY = "exo:folderDisplay".intern() ;
 
   private ManageDrivePlugin drivePlugin_ ;
   private RepositoryService jcrService_ ;
@@ -71,6 +72,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
       data.setViewPreferences(Boolean.parseBoolean(drive.getProperty(VIEW_REFERENCES).getString())) ;
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
+      data.setFolderDisplay(drive.getProperty(FOLDER_DISPLAY).getString()) ;
       driveList.add(data) ;
     }
     return driveList ;    
@@ -90,6 +92,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
       data.setViewPreferences(Boolean.parseBoolean(drive.getProperty(VIEW_REFERENCES).getString())) ;
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
+      data.setFolderDisplay(drive.getProperty(FOLDER_DISPLAY).getString()) ;
       return data ;
     }
     return  null ;    
@@ -97,9 +100,9 @@ public class ManageDriveServiceImpl implements ManageDriveService {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
                         String views, String icon, boolean viewReferences, boolean viewNonDocument,
-                        boolean viewSideBar ) throws Exception{
+                        boolean viewSideBar, String folderDisplay) throws Exception{
     drivePlugin_.addDrive(name, workspace, permissions, homePath, views, icon, viewReferences, 
-                          viewNonDocument, viewSideBar) ;
+                          viewNonDocument, viewSideBar, folderDisplay) ;
   }
 
   public List<DriveData> getAllDriveByPermission(String permission) throws Exception {
