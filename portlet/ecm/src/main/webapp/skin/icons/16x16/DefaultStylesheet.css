@@ -12,6 +12,12 @@
 	float: left;
 }
 
+.UIGrid .ViewIcon {
+	width:24px; height: 24px;
+	background: url('DefaultSkin/YellowLight.gif') no-repeat;
+	float: left;
+}
+
 .AddIcon16x16 {
   float:left;
   width: 16px; height: 16px;

@@ -14,56 +14,62 @@
 .UIPageDesktop .UIECMAdminPortlet {
   overflow: hidden;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl {
 	overflow: hidden;
 }
-.UIRepositoryControl .ControlLayout {
+
+.UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
   background: url('DefaultSkin/background/RepositoryBarBackground1x34.gif') repeat-x left top ; 
-  margin: 0px;
+  height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
-	 float: left;
-	 margin: auto ;
+  float: left;
+  margin: auto ;
+  height: 34px;
+	line-height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
 	font-weight: bold ;
 	float: left;
-	margin-top: 4px;
-	padding: 0px 10px;
+	padding: 0px 7px 0px 20px;
+	line-height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
 	 width: 200px;
-	 margin: 2px;
+	 margin: 5px;
 	 float: left;	 
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .UISelect .SelectedItemLabel{
-	
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
   width: 200px;
   float: left; 
+  height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .ActionButton {
 	width: 24px ; height: 24px;
 	float: left ;
-	margin-left: 5px;		
+	margin: 5px 0px 0px 5px;		
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
   width: 2px;
-  height: 20px;
-  margin-left: 5px;		
-  margin-top: 2px;		
+  height: 30px;
+  margin: 2px 2px 0px 8px;		
   background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
   float: left;
 }
 
-
 /*############################## --Begin UIRepositoryManager -- ########################*/
 .UIECMAdminPortlet .UIRepositoryManager {
-
 }
 
 .UIECMAdminPortlet .UIRepositoryManager .UIRepositoryList .UIAction {
@@ -80,11 +86,9 @@
 
 .UIRepositoryManager .UIWorkspaceForm .UIAction { 
 	width: 280px;
-
 }
 
 .UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard {
-
 }
 
 .UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .HiddenLabel {
@@ -98,16 +102,19 @@
 	padding: 10px 0px;
 	border-bottom: none ;
 }
+
 .UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
 	float: left;
  	vertical-align: middle;
   font-size: 11px; font-weight: bold; 
 }
+
 .UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIWizardAction {
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	border-top: none ;
 }
+
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
   float: left;
   height: 33px; line-height: 33px; vertical-align: middle;
@@ -155,7 +162,6 @@
 
 .UIECMAdminPortlet .UIECMPortletLayout {
   font-size: 11px ;
-  background: url('DefaultSkin/background/ECMAdminTitleBar.gif') repeat-x left top;
 }
 
 .UIECMAdminPortlet .UIFormWithTitle {
@@ -202,20 +208,24 @@
 
 .UIECMAdminPortlet .ECMAdminTitleBar {
 	font-weight: bold; 
-  line-height: 25px;
+  line-height: 18px;
 	text-align: center;
-	height: 30px;
+	margin-top: 15px;
 }
-.UIECMAdminPortlet .UIECMAdminFunctionTitle {
 
+.UIECMAdminPortlet .UIECMAdminFunctionTitle {
+	height: 25px;
+	padding: 12px 0px 3px 10px;
 }
+
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .RightFunctionTitle {
 	float: left;
 }
+
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .RightFunctionTitle .FunctionTitle {
 	font-weight: bold;
   line-height: 25px;
-	height: 30px;
+  height: 25px;
 }
 
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .Icon {
@@ -223,16 +233,17 @@
   margin: 2px 10px;
   cursor: pointer;
 }
+
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .BackToRepositoryButton {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/background/BackToMainDriveButton.gif') no-repeat center ;
 }
+
 .UIECMAdminPortlet .UIResizableBlock {
-	overflow: auto;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
-  margin: 10px;
+  margin: 0px 10px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab {
@@ -286,7 +297,11 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminWorkingArea {
-  margin: 10px;
+  margin:  0px 10px 10px 10px;
+}
+
+.UIECMAdminPortlet .UIECMAdminWorkingArea {
+  margin:  0px 10px 10px 10px;
 }
 
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
@@ -304,15 +319,9 @@
   padding-left: 85px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  float: left ;
-  margin-left: 5px ;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .checkbox {
   width: 15px;
 }
-
 
 /*############################## -- UINamespaceManager -- ########################*/
 .UIECMAdminPortlet .UINamespaceManager .UIFormWithTitle {
@@ -375,6 +384,10 @@
   margin: auto ;
 }
 
+.UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer .OverflowContainer{
+	width: 53px;
+}
+ 
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
   width: 450px ;
   margin: auto;
@@ -398,6 +411,11 @@ UIECMAdminPortlet .UIViewManager {
 .UIECMAdminPortlet .UIViewContainer .UIViewList {
   margin-top: 5px;
 }
+
+.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer .OverflowContainer {
+  width: 75px;
+}
+
 .UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
   width: 70px;
 }
@@ -435,10 +453,13 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .ECMTemplate .UIECMTemplateList {
   width: 85px;
+  margin: auto;
 }
+
 .UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer{
 	width: 60px;
 }
+
 .UIECMAdminPortlet .UIECMTemplateList .UIAction  {
   width: 50px;
 }
@@ -543,11 +564,6 @@ UIECMAdminPortlet .UIViewManager {
   margin: auto;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
-  width: 250px;
-  padding-right: 25px;
-}
-
 .UIECMScripts .ECMScriptList .UIAction {
   width: 100px;
 }
@@ -576,7 +592,7 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
   width: 330px;
-  padding-left: 90px;
+  padding-left: 160px;
 }
 
 .UIECMScripts .UIFormWithTitle .UIForm textarea {

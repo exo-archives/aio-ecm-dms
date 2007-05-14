@@ -211,6 +211,11 @@
 }
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 420px;
+  width: 530px;
   padding: 15px 0px;
+  border: solid 1px red;
+}
+
+.UIWorkflowPortlet .UITabPane .UITabContent .UIFormWithTitle  {
+  margin: 0px 
 }

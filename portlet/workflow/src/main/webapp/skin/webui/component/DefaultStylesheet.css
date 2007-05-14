@@ -205,6 +205,7 @@
 .UIWorkflowPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
   padding-bottom: 20px;
 }
+
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
   width: 160px; 
 }
@@ -218,4 +219,12 @@
 .UIWorkflowPortlet .UIProcessDetail .UIGrid .Date{
 	background: none ;
 	width: auto ;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a{
+	color: #111caa;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover{
+	color: orange;
 }

@@ -263,7 +263,7 @@
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 100px;
+  width: 130px;
   margin: 0px 10px 0px 25px;
 }
 
@@ -277,7 +277,7 @@
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 100px;
+  width: 130px;
   margin: 0px 10px 0px 25px;
 }
 
@@ -347,6 +347,12 @@
 /*############################## -- End UIVoteForm   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
+	width: 99%;
+	margin: auto;
+}
+
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
   margin: 10px 0px;
 }
@@ -356,16 +362,8 @@
   vertical-align: baseline;
 }
 
-.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {
-	width: 280px ;
-}
-
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIFormWithTitle .UIAction {
-	width: 250px ;
-}
-
 .UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
-	width:50px;
+	width: 50px;
 	margin: auto ;
 }
 
@@ -388,15 +386,6 @@
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
   float: left ;
 }
-
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .UIAction {
-  height:0px;
-}
-
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIFormWithTitle .UIAction {
-  height:0px;
-}
-
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
   padding-top: 5px;

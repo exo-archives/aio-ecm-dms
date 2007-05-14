@@ -75,8 +75,13 @@
 	padding-left: 3px;
 }
 
+.UIDialogPortlet .UIFormWithTitle .FieldContainer textarea {
+	border: solid 1px #b7b7b7;
+	padding: 3px;
+}
+
 .UIDialogPortlet .UIFormWithTitle .FieldContainer .UploadIframe {
-  margin-left: 5px;
+  margin-left: 9px;
 }
 
 .UIDialogPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {
@@ -121,7 +126,7 @@
 }
 
 .UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout .UIAction {
-  padding-top: 0px;
+  padding-top: 10px;
 }
 
 .UIDialogPortlet .UIJCRBrowser {
@@ -146,7 +151,7 @@
 }
 
 .UIDialogPortlet .UIFormWithTitle .UIAction {
-  padding: 12px 0px 0px 65px;
+  padding: 12px 0px 0px 0px;
 }
 
 .UIDialogPortlet .TabPaneContent .UIFormWithTitle {
@@ -155,4 +160,8 @@
 
 .UIDialogPortlet .TabPaneContent {
   margin: 5px;
+}
+
+.UIDialogPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+  padding-bottom: 0px;
 }

@@ -513,8 +513,8 @@
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 340px;
-  padding-left: 130px;
+  width: 355px;
+  padding-left: 120px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -534,7 +534,7 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 220px;
-  padding-left: 25px;
+  padding-left: 60px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
@@ -749,4 +749,5 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
   border: solid 1px #ABBCCA;
 }
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
