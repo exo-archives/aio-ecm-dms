@@ -4,13 +4,14 @@
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	  
     <div class="FieldContainer">		          					     
+      <label>Id</label>
       <%
         String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
 				uicomponent.addMixinField("id", fieldId) ;  
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Get Mail Action</label>
+      <label>Name</label>
       <% 
         String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
         uicomponent.addTextField("name", fieldName)  ;

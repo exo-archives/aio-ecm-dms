@@ -3,6 +3,7 @@
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	  
 	<div class="FieldContainer">
+    <label>Id</label>
 	  <%
 		 String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
 		 uicomponent.addMixinField("id", fieldId) ;  
