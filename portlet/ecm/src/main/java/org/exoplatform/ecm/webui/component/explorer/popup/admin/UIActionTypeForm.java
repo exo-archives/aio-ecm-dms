@@ -61,6 +61,7 @@ public class UIActionTypeForm extends UIForm {
       UIActionContainer uiActionContainer = getParent() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
       uiActionForm.createNewAction(uiExplorer.getCurrentNode(), defaultActionType_, true) ;
+      uiActionForm.setNode(null) ;
       getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_) ;
     }
   }  

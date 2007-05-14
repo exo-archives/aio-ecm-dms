@@ -17,6 +17,8 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
@@ -29,6 +31,7 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormDateTimeInput;
@@ -837,12 +840,12 @@ public class DialogFormFields extends UIForm {
       } else {
         RepositoryService repositoryService = 
           dialogForm.getApplicationComponent(RepositoryService.class) ;
-        CmsConfigurationService cmsConfigurationService = 
-          dialogForm.getApplicationComponent(CmsConfigurationService.class) ;
-        Session session = 
-          repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
-        currNode = (Node) session.getItem(dialogForm.getSavedPath()) ;
-        workspace = cmsConfigurationService.getWorkspace() ;
+        PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+        PortletRequest request = context.getRequest() ; 
+        PortletPreferences preferences = request.getPreferences() ;
+        workspace = preferences.getValue("workspace", "") ;
+        Session session = repositoryService.getRepository().getSystemSession(workspace) ;
+        currNode = (Node) session.getItem(preferences.getValue("path", "")) ;
       }
       String path = currNode.getPath()+ "&workspaceName=" + workspace ;
       
@@ -853,7 +856,6 @@ public class DialogFormFields extends UIForm {
           dialogForm.executeScript(scriptPath, path, null) ;          
         } 
       }
-      
       Node newNode = dialogForm.storeValue(event) ;
       if(newNode == null) return ;      
       path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() ;

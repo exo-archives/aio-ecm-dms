@@ -212,7 +212,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       } else {
         if(uiForm.isEditInList_) {
           UIActionManager uiManager = uiForm.getAncestorOfType(UIActionManager.class) ;
-          UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
+          uiManager.setRenderedChild(UIActionListContainer.class) ;
+          uiManager.setDefaultConfig() ;
+          UIActionListContainer uiActionListContainer = uiManager.getChild(UIActionListContainer.class) ;
+          UIPopupWindow uiPopup = uiActionListContainer.findComponentById("editActionPopup") ;
           uiPopup.setShow(false) ;
           uiPopup.setRendered(false) ;
         } else {
