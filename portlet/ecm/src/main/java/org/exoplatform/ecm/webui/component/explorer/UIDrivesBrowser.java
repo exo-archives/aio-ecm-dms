@@ -123,6 +123,7 @@ public class UIDrivesBrowser extends UIContainer {
       preferences.setValue(Utils.JCR_PATH, drive.getHomePath()) ;
       preferences.setValue(Utils.VIEWS, drive.getViews()) ;
       preferences.setValue(Utils.DRIVE, drive.getName()) ;
+      preferences.setValue(Utils.DRIVE_FOLDER, drive.getFolderDisplay()) ;
       preferences.setValue(Utils.REPOSITORY, uiDrive.repoName_) ;
       preferences.store() ;
 

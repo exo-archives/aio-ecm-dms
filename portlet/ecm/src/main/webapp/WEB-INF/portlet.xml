@@ -53,6 +53,11 @@
         <name>views</name>     
         <value></value>        
         <read-only>false</read-only>
+      </preference>
+      <preference>
+        <name>folderDisplay</name>     
+        <value></value>        
+        <read-only>false</read-only>
       </preference>      
     </portlet-preferences>
   </portlet>  

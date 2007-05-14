@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -17,6 +18,8 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
@@ -50,8 +53,16 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   public List<SelectItemOption<String>> getOptions() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
-    options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences preferences = context.getRequest().getPreferences() ;
+    String folderDisplay = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
+    if(folderDisplay.indexOf(",") > -1) {
+      for(String folder : folderDisplay.split(",")) {
+        options.add(new SelectItemOption<String>(folder, folder)) ;
+      }
+    } else {
+      options.add(new SelectItemOption<String>(folderDisplay, folderDisplay)) ;
+    }
     return options ;
   }
 

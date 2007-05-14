@@ -2,10 +2,13 @@
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
- *          minhdv@exoplatform.com
+ *          minh.dang@exoplatform.com
  * @version: $Id$
  * Oct 9, 2006  
  */
+%>
+<%
+  import org.exoplatform.webui.component.UIFormRadioBoxInput ;
 %>
 <div class="UIFormInputSet">
 	<div class="UIFormInputSetWithAction">
@@ -25,7 +28,13 @@
           <label><%=label%>:</label>
           <%}%>
 	  <% 
-	        uicomponent.renderUIComponent(inputEntry) ; 
+	        if(inputEntry instanceof UIFormRadioBoxInput) {
+	          println "<div class=\"MultiRadioInput\">" ;
+	            uicomponent.renderUIComponent(inputEntry) ; 
+	          println "</div>" ;
+	        } else {
+	          uicomponent.renderUIComponent(inputEntry) ; 
+	        }
 	        String infor = uicomponent.getInfoField(inputEntry.getName()) ;
 	        def listInfor = uicomponent.getListInfoField(inputEntry.getName()) ;
 	        def actionInfo = uicomponent.getActionInfo(inputEntry.getName()) ;

@@ -54,6 +54,7 @@ public class UISimpleSearch extends UIForm {
   
   private List<String> constraints_ = new ArrayList<String>() ;
   private String firstOperator_ ;
+  private List<String> virtualConstraints_ = new ArrayList<String>() ;
   
   private static final String SQL_QUERY = "select * from nt:base where contains(*, '$1')";
   private static final String OTHER_SQL_QUERY = "select * from nt:base where ";
@@ -66,19 +67,23 @@ public class UISimpleSearch extends UIForm {
     addUIComponentInput(uiInputAct) ;
     setActions(new String[] {"MoreConstraints", "Search", "Save", "Cancel"}) ;
   }
-
-  public void updateAdvanceConstraint(String constraint, String operator) { 
+  
+  public void updateAdvanceConstraint(String constraint, String operator, String virtualDateQuery) { 
     if(constraint.length() > 0) {
       if(constraints_.size() == 0) {
         firstOperator_ = operator.toUpperCase() ;
         constraints_.add("(" + constraint + " )") ;
+        if(virtualDateQuery != null) virtualConstraints_.add("(" + virtualDateQuery + " )") ;
+        else virtualConstraints_.add("(" + constraint + " )") ;
       } else {
         constraints_.add(" "+operator.toUpperCase()+" (" + constraint + " ) ") ;
+        if(virtualDateQuery != null) virtualConstraints_.add(" "+operator.toUpperCase()+" (" + virtualDateQuery + " ) ") ;
+        else virtualConstraints_.add(" "+operator.toUpperCase()+" (" + constraint + " ) ") ;
       }
     }
     UIFormInputSetWithAction inputInfor = getChildById("moreConstraints") ;
     inputInfor.setIsDeleteOnly(true) ;
-    inputInfor.setListInfoField(CONSTRAINTS, constraints_) ;
+    inputInfor.setListInfoField(CONSTRAINTS, virtualConstraints_) ;
     String[] actionInfor = {"RemoveConstraint"} ;
     inputInfor.setActionInfo(CONSTRAINTS, actionInfor) ;
   }

@@ -17,6 +17,7 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIFormInputSet;
+import org.exoplatform.webui.component.UIFormRadioBoxInput;
 import org.exoplatform.webui.component.UIFormTabPane;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
@@ -127,7 +128,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWSIDEBAR).isChecked() ;
       boolean viewNonDocument = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked() ;
-
+      String folderDisplay =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ADD_FOLDER).getValue() ;
       UIViewsInputSet viewsInputSet = uiDriveForm.getChild(UIViewsInputSet.class) ;
       String views = viewsInputSet.getViewsSelected() ;
       
@@ -151,7 +152,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         return ;
       }   
       dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
-                         viewNonDocument, viewSideBar) ;
+                         viewNonDocument, viewSideBar, folderDisplay) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;
       uiDriveList.updateDriveListGrid() ;

@@ -59,9 +59,13 @@ public class UIConstraintsForm extends UIForm {
   final static public String START_TIME = "startTime" ;
   final static public String END_TIME = "endTime" ;
   final static public String DOC_TYPE = "docType" ;
-  final static public String AND_OPERATION = "and" ;
-  final static public String OR_OPERATION = "or" ;
+  final static public String AND_OPERATION = "AND" ;
+  final static public String OR_OPERATION = "OR" ;
+  final static public String CREATED_DATE = "CREATED" ;
+  final static public String MODIFIED_DATE = "MODIFIED" ;
   final static public String[] CONSTRAINT_LABEL = {"Properties", "Properties", "Properties", "", "Document Type"} ;
+  
+  private String virtualDateQuery_ ;
   
   public UIConstraintsForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"}) ;
@@ -83,8 +87,8 @@ public class UIConstraintsForm extends UIForm {
     addUIFormInput(new UIFormStringInput(NOT_CONTAIN, NOT_CONTAIN, null)) ;
     
     List<SelectItemOption<String>> dateOperation = new ArrayList<SelectItemOption<String>>() ;
-    dateOperation.add(new SelectItemOption<String>("Created", "Created"));
-    dateOperation.add(new SelectItemOption<String>("Modified", "Modified"));
+    dateOperation.add(new SelectItemOption<String>(CREATED_DATE, CREATED_DATE));
+    dateOperation.add(new SelectItemOption<String>(MODIFIED_DATE, MODIFIED_DATE));
     addUIFormInput(new UIFormSelectBox(TIME_OPTION, TIME_OPTION, dateOperation)) ;
     addUIFormInput(new UIFormDateTimeInput(START_TIME, START_TIME, null)) ;
     addUIFormInput(new UIFormDateTimeInput(END_TIME, END_TIME, null)) ;
@@ -119,11 +123,13 @@ public class UIConstraintsForm extends UIForm {
     return advanceQuery ;
   }
   
-  private String getDateTimeQueryString(String fromDate, String toDate, String type) {
-    if(type.equals("Created")) {
-      return "(jcr:created > '"+fromDate+"') AND (jcr:created < '"+toDate+"')" ;
-    } else if(type.equals("Modified")) {
-      return "(jcr:lastModified > '"+fromDate+"') AND (jcr:lastModified < '"+toDate+"')" ;
+  private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
+    if(type.equals(CREATED_DATE)) {
+      virtualDateQuery_ = "documents created before '"+beforeDate+"' AND after '"+afterDate+"'" ;
+      return "(jcr:created > '"+beforeDate+"') AND (jcr:created < '"+afterDate+"')" ;
+    } else if(type.equals(MODIFIED_DATE)) {
+      virtualDateQuery_ = "documents modified before '"+beforeDate+"' AND after '"+afterDate+"'" ;
+      return "(jcr:lastModified > '"+beforeDate+"') AND (jcr:lastModified < '"+afterDate+"')" ;
     }
     return "" ;
   }
@@ -174,6 +180,9 @@ public class UIConstraintsForm extends UIForm {
     UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     String advanceQuery = "" ;
     String properties ;
+    virtualDateQuery_ = null ;
+    UIECMSearch uiECMSearch = getParent() ;
+    UISimpleSearch uiSimpleSearch = uiECMSearch.getChild(UISimpleSearch.class) ;
     switch (opt) {
       case 0:
         properties = getUIStringInput(PROPERTY1).getValue() ;
@@ -227,9 +236,7 @@ public class UIConstraintsForm extends UIForm {
       default:
         break;
     }
-    UIECMSearch uiECMSearch = getParent() ;
-    UISimpleSearch uiSimpleSearch = uiECMSearch.getChild(UISimpleSearch.class) ;
-    uiSimpleSearch.updateAdvanceConstraint(advanceQuery, getUIFormSelectBox(OPERATOR).getValue()) ;
+    uiSimpleSearch.updateAdvanceConstraint(advanceQuery, getUIFormSelectBox(OPERATOR).getValue(), virtualDateQuery_) ;
     uiECMSearch.removeChild(UIConstraintsForm.class) ;
     uiECMSearch.setRenderedChild(UISimpleSearch.class) ;
   }

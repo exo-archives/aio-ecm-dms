@@ -7,11 +7,13 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
+import org.exoplatform.webui.component.UIFormRadioBoxInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.model.SelectItemOption;
@@ -35,6 +37,10 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_VIEWPREFERENCESDOC = "viewPreferences" ;
   final static public String FIELD_VIEWNONDOC = "viewNonDocument" ;
   final static public String FIELD_VIEWSIDEBAR = "viewSideBar" ;
+  final static public String FIELD_FOLDER_ONLY = "Folder" ;
+  final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder" ;
+  final static public String FIELD_BOTH_FOLDER_UNSTRUCTURED = "Both" ;
+  final static public String ADD_FOLDER = "folderDisplay" ;
 
   public UIDriveInputSet(String name) throws Exception {
     super(name);
@@ -55,6 +61,12 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null)) ;
+    List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>() ;
+    folderOptions.add(new SelectItemOption<String>(FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
+    folderOptions.add(new SelectItemOption<String>(FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
+    folderOptions.add(new SelectItemOption<String>(FIELD_BOTH_FOLDER_UNSTRUCTURED, Utils.NT_UNSTRUCTURED + "," + Utils.NT_FOLDER)) ;
+    addUIFormInput(new UIFormRadioBoxInput(ADD_FOLDER, ADD_FOLDER, folderOptions).
+                   setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"}) ;
     setActionInfo(FIELD_WORKSPACEICON, new String[] {"AddIcon"}) ;
