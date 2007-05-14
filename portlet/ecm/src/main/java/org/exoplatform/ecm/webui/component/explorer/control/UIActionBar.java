@@ -248,6 +248,10 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        return ;
+      }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIFolderForm.class, 600) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
@@ -266,6 +270,10 @@ public class UIActionBar extends UIForm {
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        return ;
+      }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         return ;
       }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
@@ -290,6 +298,10 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        return ;
+      }
       if(selectedNode.isNodeType(Utils.EXO_ACTION)) {
         UIActionContainer uiContainer = uiExplorer.createUIComponent(UIActionContainer.class, null, null) ;
         uiExplorer.setIsHidePopup(true) ;
@@ -308,6 +320,10 @@ public class UIActionBar extends UIForm {
           UIDocumentForm uiDocumentForm = 
             uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
+          if(uiDocumentForm.getTemplate() == null) {
+            uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.template-null", null)) ;
+            return ;
+          }
           uiDocumentForm.setNode(selectedNode) ;
           uiDocumentForm.addNew(false) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
@@ -333,6 +349,10 @@ public class UIActionBar extends UIForm {
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        return ;
+      }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         return ;
       }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
@@ -367,7 +387,11 @@ public class UIActionBar extends UIForm {
         return ;
       }
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      if(templateService.isManagedNodeType(nodeType.getName())) {
+      if(templateService.getDocumentTemplates().contains(nodeType.getName())) {
+        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.watch-checkedin", null)) ;
+          return ;
+        }
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(UIWatchDocumentForm .class, 600) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
@@ -397,12 +421,16 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      if(templateService.isManagedNodeType(nodeType.getName())) {
+      if(templateService.getDocumentTemplates().contains(nodeType.getName())) {
+        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.tagnode-checkedin", null)) ;
+          return ;
+        }
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(UITaggingForm.class, 600) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
-      } 
+      }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-tagging", null,
           ApplicationMessage.WARNING)) ;
     }
@@ -430,6 +458,11 @@ public class UIActionBar extends UIForm {
             ApplicationMessage.WARNING)) ;
         return ;
       }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.multilang-checkedin", null)) ;
+        return ;
+      }
+      
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIMultiLanguageManager.class, null,720, 550) ;
       UIMultiLanguageManager uiMultiManager = 
@@ -671,6 +704,10 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        return ;
+      }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIImportNode.class, 610) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
@@ -738,7 +775,13 @@ public class UIActionBar extends UIForm {
       if(!uiExplorer.getCurrentNode().isNodeType("mix:votable")) {
         uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-support", null)) ;
         return ;
-      }
+      } else {
+        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+          Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+          uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-checkedout", arg)) ;
+          return ;
+        }
+      } 
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
@@ -790,6 +833,12 @@ public class UIActionBar extends UIForm {
       if(!uiExplorer.getCurrentNode().isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-support", null)) ;
         return ;
+      } else {
+        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+          Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+          uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-checkedout", arg)) ;
+          return ;
+        }
       }
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
