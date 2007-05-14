@@ -24,7 +24,8 @@
   line-height: 26px;
   font-weight: bold;
   padding-left: 10px;
-  font-family: Arial;
+  font-family: Verdana;
+  font-size:11px;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
@@ -69,7 +70,8 @@
   line-height: 26px;
   font-weight: bold;
   padding-left: 10px;
-  font-family: Arial;
+  font-family: Verdana;
+  font-size:11px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
