@@ -8,14 +8,14 @@
 
 /*###########################-- Begin UIContextMenu --############################*/
 .UICBNavigation .UIContextMenu {
-  border: solid 1px #5d5d5d;
+  border: solid 1px #C0C0C0;
   position: absolute;
   padding:1px;
   display: none;
 }
 
 .UIContextMenu .SubContextMenu {
-  border: solid 1px #5d5d5d;  
+  border: solid 1px #E1E1E1; 
   background: #ffffff;
   width: auto; 
 }

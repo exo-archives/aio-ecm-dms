@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
@@ -35,6 +36,7 @@ import org.exoplatform.webui.event.Event.Phase;
 )
 
 public class UINewConfigForm extends UIForm {
+  final static public String FIELD_REPOSITORY = "repository" ;
   final static public String FIELD_WORKSPACE = "workspace" ;
   final static public String FIELD_BROWSETYPE = "browseType" ;
   final static public String FIELD_TEMPLATE = "template" ;
@@ -57,21 +59,35 @@ public class UINewConfigForm extends UIForm {
   final static public String[] DEFAULT_ACTION = new String[]{"Edit", "Add"} ;
   final static public String[] NORMAL_ACTION = new String[]{"Save", "Cancel"} ;
   final static public String[] ADD_NEW_ACTION = new String[]{"Back", "Save"} ;
-  
+
+  private String repoName_ = "repository" ;
+
   public UINewConfigForm() throws Exception {
+    UIFormSelectBox repoSelectBox = new UIFormSelectBox(FIELD_REPOSITORY, FIELD_REPOSITORY, getRepoOption()) ;
+    repoSelectBox.setValue(repoName_) ;
+    repoSelectBox.setOnChange("OnChange") ;
+    addChild(repoSelectBox) ;
     addChild(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, getWorkSpaceOption())) ;
     addChild( new UIFormSelectBox(FIELD_BROWSETYPE, FIELD_BROWSETYPE, getBrowseTypeOption())) ;
   }
-  
+
   public void resetForm() throws Exception{
     getUIFormSelectBox(FIELD_WORKSPACE).reset() ;
     getUIFormSelectBox(FIELD_BROWSETYPE).reset() ;
   }
-  
+
+  public List<SelectItemOption<String>>  getRepoOption() throws Exception {
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    ManageableRepository repo = repositoryService.getRepository() ;
+    options.add(new SelectItemOption<String>(repo.getConfiguration().getName(), repo.getConfiguration().getName())) ;
+    return options ;
+  }
+
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String[] workspaceNames = repositoryService.getRepository().getWorkspaceNames() ;
+    String[] workspaceNames = repositoryService.getRepository(repoName_).getWorkspaceNames() ;
     for(String workspace:workspaceNames) {
       options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
@@ -84,6 +100,18 @@ public class UINewConfigForm extends UIForm {
     options.add(new SelectItemOption<String>(Utils.USE_SCRIPT, Utils.CB_USE_SCRIPT)) ;
     options.add(new SelectItemOption<String>(Utils.USE_DOCUMENT, Utils.CB_USE_DOCUMENT)) ;
     return options ;
+  }
+
+  public static class OnChangeActionListener extends EventListener<UINewConfigForm>{
+    public void execute(Event<UINewConfigForm> event) throws Exception {
+      UINewConfigForm uiForm = event.getSource() ;
+      UIFormSelectBox repoSelect = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_REPOSITORY) ;
+      uiForm.repoName_ = repoSelect.getValue() ;
+      UIFormSelectBox workspaceSelect = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE) ;
+      workspaceSelect.setOptions(uiForm.getWorkSpaceOption()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+    }
+
   }
 
   public static class BackActionListener extends EventListener<UINewConfigForm>{
