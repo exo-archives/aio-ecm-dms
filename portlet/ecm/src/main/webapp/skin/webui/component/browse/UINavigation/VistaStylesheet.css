@@ -25,12 +25,14 @@
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeNavigationIcon {
+	float: left ;
 	height: 24px;
 	padding-left: 25px;
 	background: url('DefaultSkin/background/GreenLeftArrowFolder.gif') no-repeat left;	
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeItemIcon {
+	float: left;
 	margin-left: 10px;
 	padding-left: 17px;
 	background: url('DefaultSkin/background/SmallSelect.gif') no-repeat left;

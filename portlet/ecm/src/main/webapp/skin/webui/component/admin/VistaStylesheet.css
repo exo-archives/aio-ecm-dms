@@ -11,6 +11,57 @@
 @import url("UINodeTypeManager/VistaStylesheet.css");
 @import url("UITaxonomyManager/VistaStylesheet.css");
 
+.UIPageDesktop .UIECMAdminPortlet {
+  overflow: hidden;
+}
+.UIECMAdminPortlet .UIRepositoryControl {
+	overflow: hidden;
+}
+.UIRepositoryControl .ControlLayout {
+	font-size: 11px ;
+  background: url('DefaultSkin/background/RepositoryBarBackground1x34.gif') repeat-x left top ; 
+  margin: 0px;
+}
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
+	 float: left;
+	 margin: auto ;
+}
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
+	font-weight: bold ;
+	float: left;
+	margin-top: 4px;
+	padding: 0px 10px;
+}
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
+	 width: 200px;
+	 margin: 2px;
+	 float: left;	 
+}
+.UIECMAdminPortlet .UIRepositoryControl .UISelect .SelectedItemLabel{
+	
+}
+
+.UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
+  width: 200px;
+  float: left; 
+}
+.UIECMAdminPortlet .UIRepositoryControl .ActionButton {
+	width: 24px ; height: 24px;
+	float: left ;
+	margin-left: 5px;		
+}
+
+.UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
+  width: 2px;
+  height: 20px;
+  margin-left: 5px;		
+  margin-top: 2px;		
+  background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
+  float: left;
+}
+
+/*############################## --Begin UIRepositoryManager -- ########################*/
+
 .UIPageBody .UIECMAdminPortlet {
   background: url('VistaSkin/background/ECMAdminbottom1x30.gif') repeat-x left bottom;
   background-color: white;

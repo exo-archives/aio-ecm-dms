@@ -328,6 +328,53 @@
   margin: 0px auto;
 }
 
+.UIJCRExplorerPortlet .UIUploadForm .FileNameLabel{
+ overflow: hidden ;
+}
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
+  width: 120px;
+  margin: 0px; 
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle input {
+  margin-left: 6px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
+  margin-left: 6px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame {
+  width: 480px;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 120px;
+  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .FileNameLabel{
+  padding: 0px 0px 0px 5px;
+  width: 180px;
+  font-weight: bold;
+  line-height: 12px; 
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame {
+  width: 480px;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame .SelectFileLabel {
+  width: 120px;
+  margin: 0px;
+}
+
 /*=============================UIWatchDocumentForm=======================*/
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
   width: 480px;
@@ -355,8 +402,8 @@
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
-  width: 170px;
-  padding: 0px 0px 8px 40px;
+  width: 205px;
+  padding: 0px 0px 8px 10px;
 }
 
 /*==================================UIMultiLanguageForm==============================*/
@@ -371,7 +418,7 @@
 }
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
-  width: 240px;
+  width: 295px;
   padding-left: 15px;
 }
 
@@ -398,14 +445,14 @@
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction{
-  width: 80px;
-  padding-left: 13px;
+  width: 95px;
+  padding-left: 6px;
 }
 
 /*===============================UILanguageTypeForm===================================*/
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIAction {
-  width: 160px;
+  width: 180px;
   padding-left: 15px;
 }
 
@@ -421,8 +468,8 @@
 }
 
 .UIJCRExplorerPortlet .UICommentForm .UIAction {
-  width: 160px;
-  padding-left: 40px;
+  width: 180px;
+  padding-left: 10px;
 }
 
 /*================================UISimpleSearch=================================*/

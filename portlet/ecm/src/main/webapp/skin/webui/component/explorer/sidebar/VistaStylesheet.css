@@ -116,14 +116,14 @@
   border: solid 1px #bdbdbd;
 }
 
-.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .TitleLabel {
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .TitleLabel {
   height: 18px;
   padding: 2px 0px 0px 15px;
   font: normal bold 11px Verdana;
   background: url('/ecm/skin/images/article/EventFrameBG.gif') repeat-x;
 }
 
-.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .FrameContent {
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
   padding: 10px;
 }
 
