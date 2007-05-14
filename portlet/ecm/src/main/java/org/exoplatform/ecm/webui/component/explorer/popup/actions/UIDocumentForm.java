@@ -94,7 +94,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   
   @SuppressWarnings("unchecked")
   public Node storeValue(Event event) throws Exception {
-    CmsService cmsService = getApplicationComponent(CmsService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     List inputs = getChildren() ;
     Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), uiExplorer.getSession()) ;
@@ -110,8 +109,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       nodeType = getNode().getPrimaryNodeType().getName() ;
     }       
     try {
-      String addedPath = 
-        cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(), Util.getPortalRequestContext().getRemoteUser());
+      CmsService cmsService = getApplicationComponent(CmsService.class) ;
+      String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(), 
+                                              Util.getPortalRequestContext().getRemoteUser());
       homeNode.getSession().save() ;
       newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
@@ -121,7 +121,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     } catch(VersionException ve) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
-          ApplicationMessage.WARNING)) ;
+                                              ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {

@@ -201,13 +201,11 @@ public class UIWorkingArea extends UIContainer {
     String path = node.getPath() ;
     StringBuilder actionsList = new StringBuilder() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    String preferenceWS = node.getSession().getWorkspace().getName() ;
-    Session session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
     if(Utils.isReadAuthorized(node)) {
       if(isVersionableOrAncestor(node)) {
         if(node.isCheckedOut()) {
           if(Utils.isVersionable(node)) actionsList.append("CheckIn") ;
-          if(isEditable(path, session) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
+          if(isEditable(path, node.getSession()) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node)) {
@@ -227,7 +225,7 @@ public class UIWorkingArea extends UIContainer {
           actionsList.append(",WebDAV") ;
         }
       } else {
-        if(isEditable(path, session) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
+        if(isEditable(path, node.getSession()) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
         if(node.holdsLock() && hasEditPermissions(node)) {
           actionsList.append(",Unlock") ;
         } else if(!node.isLocked() && hasEditPermissions(node)) {
@@ -760,9 +758,11 @@ public class UIWorkingArea extends UIContainer {
   static  public class WebDAVActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent() ;
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class) ;
       UIDocumentInfo uicomp = uiWorkingArea.findFirstComponentOfType(UIDocumentInfo.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      if(wsName == null) wsName = uiExplorer.getCurrentWorkspace() ;
       String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" 
                     + wsName + nodePath ;
       event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + link + "\"");
