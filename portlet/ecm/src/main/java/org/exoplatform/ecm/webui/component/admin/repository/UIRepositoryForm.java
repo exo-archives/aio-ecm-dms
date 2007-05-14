@@ -179,7 +179,6 @@ public class UIRepositoryForm extends UIForm implements UISelector {
       uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
       UIWorkspaceWizard uiWorkspaceWizard = uiManager.createUIComponent(UIWorkspaceWizard.class, null, null) ;
-      //UIWorkspaceForm uiWorkspaceForm = uiManager.createUIComponent(UIWorkspaceForm.class, null, null) ;
       uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceWizard) ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }

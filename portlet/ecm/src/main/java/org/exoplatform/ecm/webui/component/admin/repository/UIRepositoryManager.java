@@ -107,7 +107,6 @@ public class UIRepositoryManager extends UIContainer {
   
   public static class RepositoryData {
     String name ;
-   // String workspace ;
     String permissions ;
     String description ;
     boolean isDefault ;
