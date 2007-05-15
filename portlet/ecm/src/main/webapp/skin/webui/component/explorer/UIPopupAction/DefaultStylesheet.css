@@ -267,6 +267,11 @@
   margin: 0px 10px 0px 25px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 130px;
+  margin: 0px 10px 0px 25px;
+}
+
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
   width: 180px;
   padding: 0px;
