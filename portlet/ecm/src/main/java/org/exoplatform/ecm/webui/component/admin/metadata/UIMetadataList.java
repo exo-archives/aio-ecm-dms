@@ -34,7 +34,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
       @EventConfig(listeners = UIMetadataList.ViewActionListener.class),
       @EventConfig(listeners = UIMetadataList.EditActionListener.class),
-      @EventConfig(listeners = UIMetadataList.DeleteActionListener.class),
+      @EventConfig(listeners = UIMetadataList.DeleteActionListener.class, confirm="UIMetadataList.msg.confirm-delete"),
       @EventConfig(listeners = UIMetadataList.AddActionListener.class)
     }
 )

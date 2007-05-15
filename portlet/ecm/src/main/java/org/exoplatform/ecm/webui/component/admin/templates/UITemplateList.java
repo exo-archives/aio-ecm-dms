@@ -28,7 +28,7 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
       @EventConfig(listeners = UITemplateList.EditActionListener.class),
-      @EventConfig(listeners = UITemplateList.DeleteActionListener.class),
+      @EventConfig(listeners = UITemplateList.DeleteActionListener.class, confirm = "UITemplateList.msg.confirm-delete"),
       @EventConfig(listeners = UITemplateList.AddNewActionListener.class)
     }
 )

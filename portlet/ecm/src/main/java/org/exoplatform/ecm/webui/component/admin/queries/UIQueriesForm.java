@@ -59,10 +59,10 @@ public class UIQueriesForm extends UIForm implements UISelector {
   final static public String[] ACTIONS = {"Save", "Cancel"} ;
   final static public String SQL_QUERY = "select * from exo:article where jcr:path like '/cms/publications/%'" ;
   final static public String XPATH_QUERY = "/jcr:root/cms/publications//element(*, exo:article)" ;
-  
+  final static public String[] REG_EXPRESSION = {"[","]",":","&"} ;
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
-                   addValidator(ECMNameValidator.class)) ;
+        addValidator(ECMNameValidator.class)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
     ls.add(new SelectItemOption<String>("xPath", "xpath")) ;
     ls.add(new SelectItemOption<String>("SQL", "sql")) ;
@@ -70,7 +70,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
     uiSelectBox.setOnChange("ChangeQueryType") ;
     addUIFormInput(uiSelectBox) ;
     addUIFormInput(new UIFormTextAreaInput(STATEMENT, STATEMENT, null).setValue(XPATH_QUERY).
-                   addValidator(EmptyFieldValidator.class)) ;
+        addValidator(EmptyFieldValidator.class)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(CACHE_RESULT, CACHE_RESULT, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("PermissionButton") ;
     uiInputAct.addUIFormInput( new UIFormStringInput(PERMISSIONS, PERMISSIONS, null).setEditable(false));
@@ -79,7 +79,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
   }
 
   public String[] getActions() { return ACTIONS ; }
-  
+
   public void updateSelect(String selectField, String value) {
     getUIStringInput(selectField).setValue(value) ;
     UIQueriesManager uiManager = getAncestorOfType(UIQueriesManager.class) ;
@@ -108,7 +108,10 @@ public class UIQueriesForm extends UIForm implements UISelector {
     }
     getUIStringInput(PERMISSIONS).setValue(strValues.toString()) ;      
   }
-  
+  public boolean isValidName(String name) {
+    for(String s : REG_EXPRESSION ) {if(name.contains(s)) return false ;}
+    return true ;
+  }
   static public class CancelActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
@@ -118,13 +121,13 @@ public class UIQueriesForm extends UIForm implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
-  
+
   static public class SaveActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
-      if(queryName.indexOf("[") > -1 || queryName.indexOf("]") > -1 || queryName.indexOf(":") > -1) {
+      if(!uiForm.isValidName(queryName)) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -153,7 +156,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
-  
+
   static public class ChangeQueryTypeActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm= event.getSource() ;
@@ -165,7 +168,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
       }
     }
   }
-  
+
   static public class AddPermissionActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesManager uiManager = event.getSource().getAncestorOfType(UIQueriesManager.class) ;

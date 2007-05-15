@@ -31,7 +31,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UIQueriesList.AddQueryActionListener.class),
         @EventConfig(listeners = UIQueriesList.EditActionListener.class),
-        @EventConfig(listeners = UIQueriesList.DeleteActionListener.class)
+        @EventConfig(listeners = UIQueriesList.DeleteActionListener.class, confirm = "UIQueriesList.msg.confirm-delete")
     }
 )
 public class UIQueriesList extends UIContainer {
@@ -65,7 +65,6 @@ public class UIQueriesList extends UIContainer {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
       uiQueriesMan.removeChildById(UIQueriesList.ST_EDIT) ;
       uiQueriesMan.initFormPopup(UIQueriesList.ST_ADD) ;
-      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }
   }

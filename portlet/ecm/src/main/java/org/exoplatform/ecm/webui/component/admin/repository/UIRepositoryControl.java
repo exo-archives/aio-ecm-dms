@@ -35,7 +35,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UIRepositoryControl.ChangeOptionActionListener.class),
         @EventConfig(listeners = UIRepositoryControl.EditRepositoryActionListener.class),
-        @EventConfig(listeners = UIRepositoryControl.RemoveRepositoryActionListener.class),
+        @EventConfig(listeners = UIRepositoryControl.RemoveRepositoryActionListener.class, confirm="UIRepositoryControl.msg.confirm-delete"),
         @EventConfig(listeners = UIRepositoryControl.AddRepositoryActionListener.class)
     }
 )

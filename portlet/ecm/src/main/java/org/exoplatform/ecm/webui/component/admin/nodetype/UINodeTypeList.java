@@ -42,7 +42,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
       @EventConfig(listeners = UINodeTypeList.ViewActionListener.class),
       @EventConfig(listeners = UINodeTypeList.EditActionListener.class),
-      @EventConfig(listeners = UINodeTypeList.DeleteActionListener.class),
+      @EventConfig(listeners = UINodeTypeList.DeleteActionListener.class, confirm="UINodeTypeList.msg.confirm-delete"),
       @EventConfig(listeners = UINodeTypeList.AddActionListener.class),
       @EventConfig(listeners = UINodeTypeList.ImportActionListener.class),
       @EventConfig(listeners = UINodeTypeList.ExportActionListener.class)
