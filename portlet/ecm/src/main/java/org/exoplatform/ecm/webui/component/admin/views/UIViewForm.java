@@ -66,7 +66,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     versions.setRendered(false) ;
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
     addUIFormInput(new UIFormInputInfo(FIELD_TABS, FIELD_TABS, null)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     vservice_ = getApplicationComponent(ManageViewService.class) ;
@@ -164,7 +164,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     getUIFormSelectBox(FIELD_VERSION).setRendered(!isAddNew) ;
     getUIFormSelectBox(FIELD_VERSION).setDisabled(!isAddNew) ;
     getUIStringInput(FIELD_NAME).setEditable(isAddNew).setValue(null) ;
-    getUIStringInput(FIELD_PERMISSION).setEditable(isAddNew).setValue(null) ;
+    getUIStringInput(FIELD_PERMISSION).setValue(null) ;
     getUIFormInputInfo(FIELD_TABS).setEditable(isAddNew).setValue(null) ;
     getUIFormSelectBox(FIELD_TEMPLATE).setValue(null) ;
     getUIFormSelectBox(FIELD_TEMPLATE).setDisabled(!isAddNew) ;

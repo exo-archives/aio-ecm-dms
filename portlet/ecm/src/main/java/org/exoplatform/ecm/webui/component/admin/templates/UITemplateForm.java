@@ -34,6 +34,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -71,8 +72,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
                                addValidator(EmptyFieldValidator.class)) ;
     
     templateTab.addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ISTEMPLATE, FIELD_ISTEMPLATE, null));                               
-    templateTab.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).
-                               addValidator(EmptyFieldValidator.class).setEditable(false)) ;
+    templateTab.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
     templateTab.setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(templateTab) ;
     
@@ -146,7 +146,15 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
       String dialog = uiForm.getUIFormTextAreaInput(FIELD_DIALOG).getValue() ;
       String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue() ;
       boolean isDocumentTemplate = uiForm.getUIFormCheckBoxInput(FIELD_ISTEMPLATE).isChecked() ;
-      String[] roles = {uiForm.getUIStringInput(FIELD_PERMISSION).getValue()} ; 
+      UIFormInputSetWithAction permField = uiForm.getChildById(UITemplateForm.FIELD_TAB_TEMPLATE) ;
+      String role = permField.getUIStringInput(FIELD_PERMISSION).getValue() ;
+      if((role == null ) || (role.trim().length() == 0)){
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.role-require", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      String[] roles = {role} ;
       if(dialog == null) dialog = "" ;
       if(view == null) view = "" ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;

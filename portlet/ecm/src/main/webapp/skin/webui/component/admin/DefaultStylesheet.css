@@ -875,6 +875,11 @@ UIECMAdminPortlet .UIViewManager {
   margin: 3px 5px 0px 5px;
 }
 
+.UIECMAdminPortlet .UIFormTabPane .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+  float: left;
+  margin: 3px 5px 0px 5px;
+}
+
 .UIECMAdminPortlet .UIJCRBrowser .ExplorerTree .UITree {
   border: solid 1px #ABBCCA;
 }

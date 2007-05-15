@@ -14,12 +14,15 @@ import javax.jcr.query.Query;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.queries.QueryService;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIPopupWindow;
+import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
@@ -28,6 +31,8 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+
+import com.sun.faces.lifecycle.ApplyRequestValuesPhase;
 
 /**
  * Created by The eXo Platform SARL
@@ -70,8 +75,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
                    addValidator(EmptyFieldValidator.class)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(CACHE_RESULT, CACHE_RESULT, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("PermissionButton") ;
-    uiInputAct.addUIFormInput(new UIFormStringInput(PERMISSIONS, PERMISSIONS, null).
-                              addValidator(EmptyFieldValidator.class)) ;
+    uiInputAct.addUIFormInput( new UIFormStringInput(PERMISSIONS, PERMISSIONS, null).setEditable(false));
     uiInputAct.setActionInfo(PERMISSIONS, new String[] {"AddPermission"}) ;
     addUIComponentInput(uiInputAct) ;
   }
@@ -123,7 +127,14 @@ public class UIQueriesForm extends UIForm implements UISelector {
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
       String statement = uiForm.getUIFormTextAreaInput(STATEMENT).getValue() ;
-      String permissions = uiForm.getUIStringInput(PERMISSIONS).getValue() ;
+      UIFormInputSetWithAction permField = uiForm.getChildById("PermissionButton") ;
+      String permissions = permField.getUIStringInput(PERMISSIONS).getValue() ;
+      if((permissions == null)||(permissions.trim().length() == 0)) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.permission-require", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String queryType = uiForm.getUIFormSelectBox(QUERY_TYPE).getValue() ;
       boolean cacheResult = uiForm.getUIFormCheckBoxInput(CACHE_RESULT).isChecked() ;
       if(permissions.indexOf(",") > -1) {

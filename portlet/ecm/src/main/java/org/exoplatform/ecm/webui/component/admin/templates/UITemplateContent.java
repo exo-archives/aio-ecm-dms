@@ -82,8 +82,7 @@ public class UITemplateContent extends UIForm implements UISelector {
     isVersion.setRendered(false) ;
     addUIFormInput(isVersion) ;   
     UIFormInputSetWithAction uiActionTab = new UIFormInputSetWithAction("UITemplateContent") ;
-    uiActionTab.addUIFormInput(new UIFormStringInput(FIELD_VIEWPERMISSION, FIELD_VIEWPERMISSION, null).
-                               addValidator(EmptyFieldValidator.class).setEditable(false)) ;
+    uiActionTab.addUIFormInput(new UIFormStringInput(FIELD_VIEWPERMISSION, FIELD_VIEWPERMISSION, null).setEditable(false)) ;
     uiActionTab.setActionInfo(FIELD_VIEWPERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(uiActionTab) ;
   }
@@ -212,7 +211,14 @@ public class UITemplateContent extends UIForm implements UISelector {
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       String content = uiForm.getUIStringInput(FIELD_CONTENT).getValue() ;      
       if(content == null) content = "" ;
-      String role = uiForm.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;      
+      UIFormInputSetWithAction permField = uiForm.getChildById("UITemplateContent") ;
+      String role = permField.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;      
+      if((role == null)||(role.trim().length() == 0)) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.roles-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
