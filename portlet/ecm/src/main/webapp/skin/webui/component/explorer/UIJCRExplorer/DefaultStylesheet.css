@@ -717,6 +717,9 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   padding: 8px;
 }
 
+.UIJCRExplorerPortlet .UIGrid td {
+  border: solid 1px #cccccc;
+}
 /*================================UIPropertyTab=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{

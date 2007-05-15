@@ -884,12 +884,8 @@ UIECMAdminPortlet .UIViewManager {
   border: solid 1px #ABBCCA;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .Explorer .InnerExplorerTree {
-	border: solid 1px red;
+.UIECMAdminPortlet .UISimpleSearch .UIFormWithTitle .HorizontalLayout .UIAction {
+  border: solid 1px red;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UITree .TreeLevelContainer .LevelUpArrowIcon  {
-  border: solid 1px red;
-  float: left;
-  line-height: 24px;
-}
+
