@@ -345,7 +345,8 @@ public class DialogFormFields extends UIForm {
         if(parentNode != null && parentNode.getName().equals("languages")) {
           uiInput.setValue(node_.getParent().getParent().getName()) ;
         } else {
-          uiInput.setValue(node_.getName()) ;
+          String nameValue =  node_.getPath().substring(node_.getPath().lastIndexOf("/") + 1) ;
+          uiInput.setValue(nameValue) ;
         }
         uiInput.setEditable(false) ;
       } else if(node_.hasProperty(propertyName)) {
