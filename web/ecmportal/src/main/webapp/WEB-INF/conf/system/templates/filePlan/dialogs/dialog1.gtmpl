@@ -17,8 +17,8 @@
 	     	    <div class="CenterHorizontalTabs">
 			        <div class="TabsContainer">
 
-			            <div class="UITab">
-			              <div class="SelectedTabStyle">
+			            <div class="UITab NormalTabStyle">
+			              <div class="SelectedTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
 			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Name</div>
@@ -27,8 +27,8 @@
 			              </div>
 			            </div>  
 			            
-			            <div class="UITab">
-			              <div class="NormalTabStyle">
+			            <div class="UITab NormalTabStyle">
+			              <div class="NormalTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
 			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Record properties</div>
@@ -37,8 +37,8 @@
 			              </div>
 			            </div>                
 									
-									 <div class="UITab">
-			              <div class="NormalTabStyle">
+									 <div class="UITab NormalTabStyle">
+			              <div class="NormalTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
 			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Process properties</div>
