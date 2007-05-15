@@ -221,10 +221,12 @@
 	width: auto ;
 }
 
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
+	width: 60px;
+}
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a{
 	color: #111caa;
 }
-
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover{
 	color: orange;
 }
