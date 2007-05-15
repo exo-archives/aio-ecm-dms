@@ -803,7 +803,7 @@ public class DialogFormFields extends UIForm {
       }
 
       if(name.equals(fieldName)) {
-        w.write("<div class='"+ iconClass +"' style=\"cursor:pointer;\" "
+        w.write("<div class='ActionIcon "+ iconClass +"' style=\"cursor:pointer;\" "
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
             + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><span></span></div>") ;
       } 

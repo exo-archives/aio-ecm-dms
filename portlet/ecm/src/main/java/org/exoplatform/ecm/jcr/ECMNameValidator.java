@@ -20,17 +20,17 @@ public class ECMNameValidator implements Validator {
   public void validate(UIFormInput uiInput) throws Exception {
     String s = (String)uiInput.getValue();
     if(s == null || s.trim().length() == 0) {
-      Object[] args = { uiInput.getName(), uiInput.getBindingField() };
-      throw new MessageException(new ApplicationMessage("NameValidator.msg.empty-input", args)) ;
+      Object[] args = { uiInput.getName() };
+      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, ApplicationMessage.WARNING)) ;
     } 
     for(int i = 0; i < s.length(); i ++){
       char c = s.charAt(i);
       if(Character.isLetter(c) || Character.isDigit(c) || Character.isSpaceChar(c) || c=='_'
-        || c=='-' || c=='.' || c==':' || c=='$' || c=='@' || c=='%' || c=='^') {
+        || c=='-' || c=='.' || c==':' || c=='$' || c=='@' || c=='^' || c=='[' || c==']') {
         continue ;
       }
-      Object[] args = { uiInput.getName(), uiInput.getBindingField() };
-      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args)) ;
+      Object[] args = { uiInput.getName(), s };
+      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING)) ;
     }
   }
 }
