@@ -80,7 +80,7 @@
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Mediamimetype</label>
+      <label>Media MimeType</label>
       <%
         String[] fieldMediamimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "audio/mp3", "options=audio/mp3,audio/x-m4a,video/mpeg,video/x-m4v,video/quicktime"] ;
         uicomponent.addSelectBoxField("mediamimetype", fieldMediamimetype) ;

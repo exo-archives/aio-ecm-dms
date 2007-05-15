@@ -123,7 +123,7 @@ public class UIRepositoryManager extends UIContainer {
     public HashMap<String, WorkspaceData> getWorkspaceMap(){return workspaceMap ;}
     
     public WorkspaceData getWorkspace(String wsName){return workspaceMap.get(wsName) ;}
-    
+    public String getDescription() {return description ;}
     public String getName(){return name ;}
     public String getWorkspace(){
       StringBuilder workspaceAll = new StringBuilder() ; 

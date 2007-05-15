@@ -11,6 +11,7 @@ import javax.jcr.Node;
 import javax.jcr.Value;
 import javax.jcr.query.Query;
 
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.queries.QueryService;
@@ -22,7 +23,6 @@ import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIPopupWindow;
-import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
@@ -31,8 +31,6 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-
-import com.sun.faces.lifecycle.ApplyRequestValuesPhase;
 
 /**
  * Created by The eXo Platform SARL
@@ -64,7 +62,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
   
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
-                   addValidator(EmptyFieldValidator.class)) ;
+                   addValidator(ECMNameValidator.class)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
     ls.add(new SelectItemOption<String>("xPath", "xpath")) ;
     ls.add(new SelectItemOption<String>("SQL", "sql")) ;
@@ -126,6 +124,12 @@ public class UIQueriesForm extends UIForm implements UISelector {
       UIQueriesForm uiForm = event.getSource() ;
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
+      if(queryName.indexOf("[") > -1 || queryName.indexOf("]") > -1 || queryName.indexOf(":") > -1) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String statement = uiForm.getUIFormTextAreaInput(STATEMENT).getValue() ;
       UIFormInputSetWithAction permField = uiForm.getChildById("PermissionButton") ;
       String permissions = permField.getUIStringInput(PERMISSIONS).getValue() ;

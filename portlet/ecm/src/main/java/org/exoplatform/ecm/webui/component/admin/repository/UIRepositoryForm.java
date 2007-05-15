@@ -81,10 +81,12 @@ public class UIRepositoryForm extends UIForm implements UISelector {
       isAddnew_ = true ;
     } else {
       getUIStringInput(FIELD_NAME).setValue(repo.getName()) ;
+      getUIFormTextAreaInput(FIELD_DESCRIPTION).setValue(repo.getDescription()) ;
       UIFormInputSetWithAction uiInputSet = getChildById(FIELD_SET) ;
       uiInputSet.getUIStringInput(FIELD_PERM).setValue(repo.getPermissions()) ;
       workspaces_ = repo.getWorkspaceMap() ;
       refreshLabel() ;
+      getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(Boolean.parseBoolean(repo.isDefault())) ;
       isAddnew_ = false ;
     }
   }
