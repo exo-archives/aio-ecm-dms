@@ -17,7 +17,7 @@
       %>
             <div class="FieldContainer">
               <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
-                <label><%=uicomponent.getLabel(field.getName())+": " %></label>
+                <label><%=uicomponent.getLabel(field.getName())%></label>
               <%} %>
               <% uiform.renderField(field) %>
             </div>
