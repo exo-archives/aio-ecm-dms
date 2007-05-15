@@ -793,7 +793,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
-  width: 240px;
+ 
   padding-left: 100px;
 }
 
@@ -806,6 +806,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIAction {
+	width: 300px;
 	padding-right: 30px;
 }
 
@@ -827,6 +828,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
+	width: 300px;
 	padding-right: 30px;
 }
 
