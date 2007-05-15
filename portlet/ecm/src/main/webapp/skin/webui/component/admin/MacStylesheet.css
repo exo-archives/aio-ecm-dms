@@ -205,7 +205,7 @@
 
 .UIECMAdminPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
 	float: left ;
-	margin: 2px 10px 0px 5px ;
+	margin: 2px 5px 0px 5px ;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
@@ -779,4 +779,9 @@
   width: 20px;
   margin-left: 0px;
   float: none;
+}
+
+.UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+  float: left;
+  margin: 3px 5px 0px 5px;
 }

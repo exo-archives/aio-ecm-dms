@@ -25,3 +25,8 @@
   font-weight: bold; font-size: 11px;
   background: #8eeaaf ;
 }
+
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+  float: left;
+  margin: 3px 5px 0px 5px;
+}

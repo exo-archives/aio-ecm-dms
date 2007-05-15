@@ -146,3 +146,8 @@
 .UIDialogPortlet .TabPaneContent {
   margin: 5px;
 }
+
+.UIDialogPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+  float: left;
+  margin: 3px 5px 0px 5px;
+}
