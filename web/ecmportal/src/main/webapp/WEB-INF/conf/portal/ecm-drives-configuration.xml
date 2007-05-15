@@ -27,7 +27,7 @@
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:unstructured,nt:folder</string></field>
+              <field  name="allowCreateFolder"><string>both</string></field>
              </object>
           </object-param>
           <object-param>        
@@ -45,7 +45,7 @@
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:unstructured,nt:folder</string></field>
+              <field  name="allowCreateFolder"><string>both</string></field>
             </object>
           </object-param>
           <object-param>        
@@ -63,7 +63,7 @@
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:unstructured,nt:folder</string></field>       
+              <field  name="allowCreateFolder"><string>both</string></field>       
             </object>
           </object-param>
           <object-param>        
@@ -81,7 +81,7 @@
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:unstructured,nt:folder</string></field>        
+              <field  name="allowCreateFolder"><string>both</string></field>        
             </object>
           </object-param>
           <object-param>        
@@ -99,7 +99,7 @@
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:unstructured,nt:folder</string></field>          
+              <field  name="allowCreateFolder"><string>both</string></field>          
             </object>
           </object-param>    
           <object-param>        
@@ -117,7 +117,7 @@
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:folder</string></field>        
+              <field  name="allowCreateFolder"><string>nt:folder</string></field>        
             </object>
           </object-param>
           <object-param>        
@@ -135,7 +135,7 @@
               <field  name="viewPreferences"><boolean>true</boolean></field>
               <field  name="viewNonDocument"><boolean>true</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
-              <field  name="folderDisplay"><string>nt:unstructured,nt:folder</string></field>          
+              <field  name="allowCreateFolder"><string>both</string></field>          
             </object>
           </object-param>         
         </init-params>  

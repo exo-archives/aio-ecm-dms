@@ -6,14 +6,9 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 
@@ -22,9 +17,6 @@ import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
-import org.exoplatform.services.jcr.access.AccessControlEntry;
-import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -81,6 +73,8 @@ public class UISavedQuery extends UIContainer {
     return getApplicationComponent(QueryService.class).getQueries(userName);
   }
   
+  public String getCurrentUserId() { return Util.getPortalRequestContext().getRemoteUser() ;}
+  
   public boolean hasSharedQueries() throws Exception {
     OrganizationService organizationService = getApplicationComponent(OrganizationService.class) ;
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
@@ -105,48 +99,10 @@ public class UISavedQuery extends UIContainer {
   
   public List<Node> getSharedQueries() { return sharedQueries_ ; }
   
-  public List<PermissionBean> getPermissions(String path) throws Exception {
-    List<PermissionBean> permBeans = new ArrayList<PermissionBean>();
-    Session session = getAncestorOfType(UIJCRExplorer.class).getSession();
-    Node node = (Node)session.getItem(path) ;
-    List permsList = ((ExtendedNode)node).getACL().getPermissionEntries() ;
-    Map<String, List<String>> permsMap = new HashMap<String, List<String>>() ;
-    Iterator perIter = permsList.iterator() ;
-    while(perIter.hasNext()) {
-      AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next() ;
-      String currentIdentity = accessControlEntry.getIdentity();
-      String currentPermission = accessControlEntry.getPermission();
-      List<String> currentPermissionsList = permsMap.get(currentIdentity);
-      if(!permsMap.containsKey(currentIdentity)) {
-        permsMap.put(currentIdentity, null) ;
-      }
-      if(currentPermissionsList == null) currentPermissionsList = new ArrayList<String>() ;
-      if(!currentPermissionsList.contains(currentPermission)) {
-        currentPermissionsList.add(currentPermission) ;
-      }
-      permsMap.put(currentIdentity, currentPermissionsList) ;
-    }
-    Set keys = permsMap.keySet(); 
-    Iterator keysIter = keys.iterator() ;
-    while(keysIter.hasNext()) {
-      String userOrGroup = (String) keysIter.next();            
-      List<String> permissions = permsMap.get(userOrGroup);      
-      PermissionBean permBean = new PermissionBean();
-      permBean.setUsersOrGroups(userOrGroup);
-      for(String perm : permissions) {
-        if(PermissionType.READ.equals(perm)) permBean.setRead(true);
-        else if(PermissionType.ADD_NODE.equals(perm))  permBean.setAddNode(true);
-        else if(PermissionType.SET_PROPERTY.equals(perm))  permBean.setSetProperty(true);
-        else if(PermissionType.REMOVE.equals(perm))  permBean.setRemove(true);
-      }
-      permBeans.add(permBean);
-    }
-    return permBeans;
-  }
-  
   static public class ExecuteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
+      String wsName = uiQuery.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
       UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class) ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
       String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -155,7 +111,7 @@ public class UISavedQuery extends UIContainer {
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class); 
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath) ;
+        queryResult = queryService.execute(queryPath, wsName) ;
         uiSearchResult.resultMap_.clear() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
@@ -177,33 +133,5 @@ public class UISavedQuery extends UIContainer {
       uiQuery.updateGrid() ;
       uiQuery.setRenderSibbling(UISavedQuery.class) ;
     }
-  }
-  
-  public class PermissionBean {    
-    private String usersOrGroups;
-    private boolean read;
-    private boolean addNode;
-    private boolean setProperty;
-    private boolean remove;    
-    
-    public String getUsersOrGroups() { return usersOrGroups; }
-   
-    public void setUsersOrGroups(String usersOrGroups) { this.usersOrGroups = usersOrGroups; }
-    
-    public boolean isAddNode() { return addNode; }
-    
-    public void setAddNode(boolean addNode) { this.addNode = addNode; }
-    
-    public boolean isRead() { return read; }
-    
-    public void setRead(boolean read) { this.read = read; }
-    
-    public boolean isRemove() { return remove; }
-    
-    public void setRemove(boolean remove) { this.remove = remove; }
-    
-    public boolean isSetProperty() { return setProperty; }
-    
-    public void setSetProperty(boolean setProperty) { this.setProperty = setProperty; }
   }
 }

@@ -55,7 +55,7 @@
         <read-only>false</read-only>
       </preference>
       <preference>
-        <name>folderDisplay</name>     
+        <name>allowCreateFolder</name>     
         <value></value>        
         <read-only>false</read-only>
       </preference>      

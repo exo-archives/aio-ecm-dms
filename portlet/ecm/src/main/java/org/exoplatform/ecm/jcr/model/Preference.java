@@ -13,6 +13,7 @@ public class Preference {
   private String sort = ALPHABETICAL_SORT ;
   private String order = ASCENDING_ORDER ;
   private String customOrderByProperty = "" ;
+  private String allowCreateFoder = "" ;
   private boolean showSideBar = false ;
   private boolean isShowNonDocumentType = false ;
   private boolean isShowPreferenceDocuments = false ;
@@ -38,6 +39,9 @@ public class Preference {
   
   public boolean isEmpty() { return isEmpty ; }
   public void setEmpty(boolean b) { isEmpty = b ; }
+  
+  public String getAllowCreateFoder() { return allowCreateFoder ; }
+  public void setAllowCreateFoder(String s) { allowCreateFoder = s ; }
   
   public String getProperty() { return customOrderByProperty ; }
   public void setProperty(String s) { customOrderByProperty = s ; }

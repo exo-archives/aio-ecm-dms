@@ -40,7 +40,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_FOLDER_ONLY = "Folder" ;
   final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder" ;
   final static public String FIELD_BOTH_FOLDER_UNSTRUCTURED = "Both" ;
-  final static public String ADD_FOLDER = "folderDisplay" ;
+  final static public String ALLOW_CREATE_FOLDER = "allowCreateFolder" ;
 
   public UIDriveInputSet(String name) throws Exception {
     super(name);
@@ -64,8 +64,8 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>() ;
     folderOptions.add(new SelectItemOption<String>(FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
     folderOptions.add(new SelectItemOption<String>(FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
-    folderOptions.add(new SelectItemOption<String>(FIELD_BOTH_FOLDER_UNSTRUCTURED, Utils.NT_UNSTRUCTURED + "," + Utils.NT_FOLDER)) ;
-    addUIFormInput(new UIFormRadioBoxInput(ADD_FOLDER, ADD_FOLDER, folderOptions).
+    folderOptions.add(new SelectItemOption<String>(FIELD_BOTH_FOLDER_UNSTRUCTURED, "both")) ;
+    addUIFormInput(new UIFormRadioBoxInput(ALLOW_CREATE_FOLDER, ALLOW_CREATE_FOLDER, folderOptions).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"}) ;

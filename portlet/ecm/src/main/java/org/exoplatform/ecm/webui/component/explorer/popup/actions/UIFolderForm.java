@@ -55,13 +55,12 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences preferences = context.getRequest().getPreferences() ;
-    String folderDisplay = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
-    if(folderDisplay.indexOf(",") > -1) {
-      for(String folder : folderDisplay.split(",")) {
-        options.add(new SelectItemOption<String>(folder, folder)) ;
-      }
+    String allowCreateFolder = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
+    if(allowCreateFolder.equals("both")) {
+      options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
+      options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
     } else {
-      options.add(new SelectItemOption<String>(folderDisplay, folderDisplay)) ;
+      options.add(new SelectItemOption<String>(allowCreateFolder, allowCreateFolder)) ;
     }
     return options ;
   }

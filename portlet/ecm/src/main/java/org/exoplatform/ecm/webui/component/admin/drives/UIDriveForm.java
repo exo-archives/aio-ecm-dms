@@ -120,15 +120,13 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
-      String icon = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
-      if (icon == null) icon = "" ;
       boolean viewReferences = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWPREFERENCESDOC).isChecked() ;
       boolean viewSideBar = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWSIDEBAR).isChecked() ;
       boolean viewNonDocument = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked() ;
-      String folderDisplay =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ADD_FOLDER).getValue() ;
+      String allowCreateFolder =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER).getValue() ;
       UIViewsInputSet viewsInputSet = uiDriveForm.getChild(UIViewsInputSet.class) ;
       String views = viewsInputSet.getViewsSelected() ;
       
@@ -141,18 +139,23 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      try {
-        RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
-        Session session = rservice.getRepository().getSystemSession("digital-assets") ;
-        session.getItem(icon) ;
-      } catch(Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }   
+      String icon = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
+      if(icon != null && icon.trim().length() > 0) {
+        try {
+          RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
+          Session session = rservice.getRepository().getSystemSession("digital-assets") ;
+          session.getItem(icon) ;
+        } catch(Exception e) {
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }   
+      } else {
+        icon = "" ;
+      }
       dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
-                         viewNonDocument, viewSideBar, folderDisplay) ;
+                         viewNonDocument, viewSideBar, allowCreateFolder) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;
       uiDriveList.updateDriveListGrid() ;

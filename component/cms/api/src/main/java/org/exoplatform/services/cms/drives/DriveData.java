@@ -25,7 +25,7 @@ public class DriveData implements Comparable<DriveData> {
   private boolean viewPreferences ;
   private boolean viewNonDocument ;
   private boolean viewSideBar ;
-  private String folderDisplay ;
+  private String allowCreateFolder ;
   
   public  DriveData(){}
 
@@ -44,8 +44,8 @@ public class DriveData implements Comparable<DriveData> {
   public String getIcon() { return this.icon ; }
   public void setIcon(String ico) { this.icon = ico ; }
   
-  public String getFolderDisplay() { return this.folderDisplay ; }
-  public void setFolderDisplay(String folderDisplay) { this.folderDisplay = folderDisplay ; }
+  public String getAllowCreateFolder() { return this.allowCreateFolder ; }
+  public void setAllowCreateFolder(String allowCreateFolder) { this.allowCreateFolder = allowCreateFolder ; }
 
   public String getViews() { return this.views ; }
   public void setViews(String v) { this.views = v ; }

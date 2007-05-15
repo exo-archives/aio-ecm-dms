@@ -298,6 +298,7 @@ public class UIJCRExplorer extends UIContainer {
         preferences_.setShowSideBar(drive.getViewSideBar()) ;
         preferences_.setShowNonDocumentType(drive.getViewNonDocument()) ;
         preferences_.setShowPreferenceDocuments(drive.getViewPreferences()) ;
+        preferences_.setAllowCreateFoder(drive.getAllowCreateFolder()) ;
         preferences_.setEmpty(false) ;        
       } catch(Exception e) {
         preferences_.setEmpty(true) ;

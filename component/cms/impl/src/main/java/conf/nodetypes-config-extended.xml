@@ -304,7 +304,7 @@
         onParentVersion="IGNORE" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:folderDisplay" requiredType="String" autoCreated="false" mandatory="true"
+      <propertyDefinition name="exo:allowCreateFolder" requiredType="String" autoCreated="false" mandatory="true"
         onParentVersion="IGNORE" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>      

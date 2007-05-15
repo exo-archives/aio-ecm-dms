@@ -12,9 +12,9 @@ public interface QueryService {
   
   public List<Query> getQueries(String userName) throws Exception;
   
-  public Query getQuery(String queryPath) throws Exception;
+  public Query getQuery(Node query, String workspace) throws Exception;
   
-  public QueryResult execute (String queryPath) throws Exception;
+  public QueryResult execute (String queryPath, String workspace) throws Exception;
   
   public void addQuery(String queryName, String statement, String language, String userName) throws Exception;
   

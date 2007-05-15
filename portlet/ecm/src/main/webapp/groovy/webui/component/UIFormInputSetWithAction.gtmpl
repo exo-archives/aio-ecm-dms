@@ -20,7 +20,7 @@
 	    for(inputEntry in uicomponent.getChildren()) {
 	      if(inputEntry.isRendered()) {
 	  %>
-	      <div class="FieldContainer" style="margin: 0px 0px 8px 0px; padding: 3px;">
+	      <div class="FieldContainer" style="margin: 0px 0px 8px 0px; padding: 3px 3px 3px 0px;">
           <%
             String label = _ctx.appRes(formName + ".label." + inputEntry.getId()) ;
             if(!label.equals(inputEntry.getId())) {

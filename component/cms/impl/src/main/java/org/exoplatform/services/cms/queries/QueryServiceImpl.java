@@ -9,7 +9,6 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFactory;
-import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -75,16 +74,15 @@ public class QueryServiceImpl implements QueryService{
     return queries;
   }
 
-  public Query getQuery(String queryPath) throws Exception {
+  public Query getQuery(Node query, String workspace) throws Exception {
     Session session = null;
     try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
+      session = repositoryService_.getRepository().getSystemSession(workspace);
     } catch (RepositoryException re) {
       return null;
     }    
     QueryManager manager = session.getWorkspace().getQueryManager();
-    Node queryNode = (Node) session.getItem(queryPath);
-    return manager.getQuery(queryNode);
+    return manager.getQuery(query);
   }
 
   public void addQuery(String queryName, String statement, String language, String userName) throws Exception {
@@ -262,7 +260,7 @@ public class QueryServiceImpl implements QueryService{
     return permissions.contains(permission) ;
   }
 
-  public QueryResult execute(String queryPath) throws Exception {
+  public QueryResult execute(String queryPath, String workspace) throws Exception {
     Session session = null;
     try {
       session = repositoryService_.getRepository().getSystemSession(workspace_);
@@ -276,15 +274,14 @@ public class QueryServiceImpl implements QueryService{
         String portalName = containerInfo_.getContainerName() ;
         String key = portalName + queryPath ;
         QueryResult result = (QueryResult)queryCache.get(key) ;
-        if (result != null) 
-          return result ; 
-        Query query = getQuery(queryPath) ;
+        if (result != null) return result ; 
+        Query query = getQuery(queryNode, workspace) ;
         result = query.execute() ;
         queryCache.put(key, result) ;
         return result ;      
       }
     }
-    Query query = getQuery(queryPath) ;
+    Query query = getQuery(queryNode, workspace) ;
     return query.execute() ;
   }
   

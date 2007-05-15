@@ -775,13 +775,12 @@ public class UIActionBar extends UIForm {
       if(!uiExplorer.getCurrentNode().isNodeType("mix:votable")) {
         uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-support", null)) ;
         return ;
-      } else {
-        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-          Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
-          uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-checkedout", arg)) ;
-          return ;
-        }
       } 
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+        uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-checkedout", arg)) ;
+        return ;
+      }
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
@@ -833,12 +832,11 @@ public class UIActionBar extends UIForm {
       if(!uiExplorer.getCurrentNode().isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-support", null)) ;
         return ;
-      } else {
-        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-          Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
-          uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-checkedout", arg)) ;
-          return ;
-        }
+      } 
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+        uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-checkedout", arg)) ;
+        return ;
       }
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;

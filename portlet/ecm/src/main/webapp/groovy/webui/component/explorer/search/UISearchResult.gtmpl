@@ -43,7 +43,7 @@
             <td><div class="Text"><%=node.getName()%></div></td>
 	          <%
 	            String nodePath = node.getPath() ;
-	            if(nodePath.length() > 40) nodePath = nodePath.substring(0, 40) + "..." ;
+	            if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
 	          %>
 	          <td><div class="Text"><%=nodePath%></div></td>
 	          <td style="width:80px;">

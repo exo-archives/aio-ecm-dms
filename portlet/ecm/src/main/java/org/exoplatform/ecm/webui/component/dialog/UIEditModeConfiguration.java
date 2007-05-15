@@ -16,7 +16,6 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -58,15 +57,19 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
   final static public String FIELD_SAVEDPATH = "savedPath" ;
   final static public String ACTION_INPUT = "actionInput" ;
   final static public String WORKSPACE_NAME = "workspaceName" ;
+  final static public String REPOSITORY_NAME = "repositoryName" ;
+  final static public String DEFAULT_REPOSITORY = "repository" ;
   
   public UIEditModeConfiguration() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    UIFormSelectBox uiWorkspaceList = 
-      new UIFormSelectBox(UIEditModeConfiguration.WORKSPACE_NAME, UIEditModeConfiguration.WORKSPACE_NAME, options) ; 
+    UIFormSelectBox uiRepositoryList = new UIFormSelectBox(REPOSITORY_NAME, REPOSITORY_NAME, options) ; 
+    uiRepositoryList.setOnChange("ChangeRepository") ;
+    addUIFormInput(uiRepositoryList) ;
+    UIFormSelectBox uiWorkspaceList = new UIFormSelectBox(WORKSPACE_NAME, WORKSPACE_NAME, options) ; 
     uiWorkspaceList.setOnChange("ChangeWorksapce") ;
     addUIFormInput(uiWorkspaceList) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction(ACTION_INPUT) ;
-    uiInputAct.addUIFormInput(new UIFormStringInput(FIELD_SAVEDPATH, FIELD_SAVEDPATH, null)) ;
+    uiInputAct.addUIFormInput(new UIFormStringInput(FIELD_SAVEDPATH, FIELD_SAVEDPATH, null).setEditable(false)) ;
     uiInputAct.setActionInfo(FIELD_SAVEDPATH, new String[] {"SelectPath"}) ;
     addUIComponentInput(uiInputAct) ;
     addUIFormInput(new UIFormSelectBox(FIELD_SELECT, FIELD_SELECT, options)) ;
@@ -78,10 +81,14 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     PortletRequest request = context.getRequest() ; 
     PortletPreferences preferences = request.getPreferences() ;
     boolean isDefaultWs = false ;
+    List<SelectItemOption<String>> repositories= new ArrayList<SelectItemOption<String>>() ;
+    repositories.add(new SelectItemOption<String>(DEFAULT_REPOSITORY, DEFAULT_REPOSITORY)) ;
+    UIFormSelectBox uiRepositoryList = getUIFormSelectBox(REPOSITORY_NAME) ;
+    uiRepositoryList.setOptions(repositories) ;
     ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository();
     String[] wsNames = repository.getWorkspaceNames();
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
-    String prefWs = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
+    String prefWs = preferences.getValue("workspace", "") ;
     setTemplateOptions(preferences.getValue("path", ""), prefWs) ;
     for(String wsName : wsNames) {
       if(wsName.equals(prefWs)) isDefaultWs = true ;
