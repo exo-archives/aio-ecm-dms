@@ -29,7 +29,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UITaxonomyManager.SelectActionListener.class),
         @EventConfig(listeners = UITaxonomyManager.AddActionListener.class),
-        @EventConfig(listeners = UITaxonomyManager.RemoveActionListener.class),
+        @EventConfig(listeners = UITaxonomyManager.RemoveActionListener.class, confirm = "UITaxonomyManager.msg.confirm-delete"),
         @EventConfig(listeners = UITaxonomyManager.CopyActionListener.class),
         @EventConfig(listeners = UITaxonomyManager.PasteActionListener.class),
         @EventConfig(listeners = UITaxonomyManager.CutActionListener.class)

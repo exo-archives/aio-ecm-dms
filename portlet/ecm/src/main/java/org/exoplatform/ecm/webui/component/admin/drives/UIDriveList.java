@@ -34,7 +34,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
-      @EventConfig(listeners = UIDriveList.DeleteActionListener.class),
+      @EventConfig(listeners = UIDriveList.DeleteActionListener.class, confirm = "UIDriveList.msg.confirm-delete"),
       @EventConfig(listeners = UIDriveList.EditInfoActionListener.class),
       @EventConfig(listeners = UIDriveList.AddDriveActionListener.class)
     }

@@ -35,7 +35,7 @@ import org.exoplatform.webui.event.EventListener;
     lifecycle = UIContainerLifecycle.class,
     events = {
       @EventConfig(listeners = UIViewTab.EditActionListener.class),
-      @EventConfig(listeners = UIViewTab.DeleteActionListener.class)
+      @EventConfig(listeners = UIViewTab.DeleteActionListener.class, confirm = "UIViewTab.msg.confirm-delete")
     }
 )
 
