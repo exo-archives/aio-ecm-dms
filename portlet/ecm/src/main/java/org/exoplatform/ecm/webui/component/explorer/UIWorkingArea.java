@@ -697,9 +697,8 @@ public class UIWorkingArea extends UIContainer {
         workspace.copy(srcWorkspace, srcPath, destPath);
         Node destNode = (Node) session.getItem(destPath) ;
         removeReferences(destNode, session) ;
-        RepositoryService repositoryService = 
-          uiExplorer.getApplicationComponent(RepositoryService.class) ;
-        Session srcSession = repositoryService.getRepository().login(srcWorkspace) ;
+        RepositoryService repositoryService = uiExplorer.getApplicationComponent(RepositoryService.class) ;
+        Session srcSession = repositoryService.getRepository().getSystemSession(srcWorkspace) ;
         srcSession.getItem(srcPath).remove() ;
         srcSession.save() ;
       } else {
