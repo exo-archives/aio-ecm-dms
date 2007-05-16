@@ -83,9 +83,9 @@ public class UIRepositoryControl extends UIContainer {
             isCache,maxSizeValue, liveTimeValue ) ; 
         workSpaces.put(name, wsd) ;
       }     
-      String perms = "[*]" ;      
+      String perms = "*:/admin" ;      
       RepositoryData repoData = new RepositoryData(repo.getConfiguration().getName(),
-          workSpaces, perms,"", true) ;
+          workSpaces, perms, "", true) ;
       repositoryMap_.put(repo.getConfiguration().getName(), repoData) ;
     }    
   }
