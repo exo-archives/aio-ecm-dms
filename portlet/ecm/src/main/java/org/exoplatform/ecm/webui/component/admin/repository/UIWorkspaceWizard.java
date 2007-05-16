@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager.WorkspaceData;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
@@ -41,9 +40,13 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/admin/UIWorkspaceWizard.gtmpl" ,
     events = {
+        @EventConfig(listeners = UIWorkspaceWizard.FinishActionListener.class),
         @EventConfig(listeners = UIWorkspaceWizard.NextActionListener.class ),
         @EventConfig(listeners = UIWorkspaceWizard.BackActionListener.class),
-        @EventConfig(listeners = UIWorkspaceWizard.FinishActionListener.class),
+        @EventConfig(listeners = UIWorkspaceWizard.ViewStep1ActionListener.class),
+        @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class),
+        @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
+        @EventConfig(listeners = UIWorkspaceWizard.ViewStep4ActionListener.class),
         @EventConfig(phase = Phase.DECODE, listeners = UIWorkspaceWizard.CancelActionListener.class)
     }
 
@@ -177,27 +180,56 @@ public class UIWorkspaceWizard extends UIFormTabPane {
   }
   
   public int getNumberSteps() {return wizardMaxStep_ ;}
-  public void viewStep(int step) throws Exception {
-    if(selectedStep_ < getChildren().size()+1 && step > currentStep_) selectedStep_++;
-    currentStep_ = step < selectedStep_ ? step : selectedStep_;   
-    step = currentStep_ - 1;
+  
+  public void viewStep(int step) {
+    selectedStep_ = step ;
+    currentStep_ = step - 1 ;
     List<UIComponent> children = getChildren(); 
     for(int i=0; i<children.size(); i++){
-      if(i == step) {
+      if(i == getCurrentStep()) {
         children.get(i).setRendered(true);
       } else {
         children.get(i).setRendered(false);
       }
     }
-    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;   
-    context.addUIComponentToUpdateByAjax(this) ;
   }
-  public static class ViewStepActionListener extends EventListener<UIWorkspaceWizard>{
+  
+  public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
-      String step = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      System.out.println("\n\nselect step: ++"+step);
-      uiFormWizard.viewStep(Integer.parseInt(step)) ;      
+      uiFormWizard.viewStep(1) ;
+      UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChildById(UIRepositoryForm.POPUP_WORKSPACE)) ; 
+    }
+    
+  }
+  
+  public static class ViewStep2ActionListener extends EventListener<UIWorkspaceWizard>{
+    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
+      UIWorkspaceWizard uiFormWizard = event.getSource() ;
+      uiFormWizard.viewStep(2) ;
+      UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChildById(UIRepositoryForm.POPUP_WORKSPACE)) ; 
+    }
+    
+  }
+  
+  public static class ViewStep3ActionListener extends EventListener<UIWorkspaceWizard>{
+    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
+      UIWorkspaceWizard uiFormWizard = event.getSource() ;
+      uiFormWizard.viewStep(3) ; 
+      UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChildById(UIRepositoryForm.POPUP_WORKSPACE)) ; 
+    }
+    
+  }
+  
+  public static class ViewStep4ActionListener extends EventListener<UIWorkspaceWizard>{
+    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
+      UIWorkspaceWizard uiFormWizard = event.getSource() ;
+      uiFormWizard.viewStep(4) ;
+      UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChildById(UIRepositoryForm.POPUP_WORKSPACE)) ; 
     }
     
   }
@@ -274,8 +306,7 @@ public class UIWorkspaceWizard extends UIFormTabPane {
       uiRepoForm.addWorkspaceMap(wsdata) ;      
       uiRepoForm.refreshLabel() ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;  
-      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ; 
     }
   }
   
@@ -297,7 +328,7 @@ public class UIWorkspaceWizard extends UIFormTabPane {
         }
       }
       UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChildById(UIRepositoryForm.POPUP_WORKSPACE)) ; 
     }
   }
 
@@ -319,14 +350,13 @@ public class UIWorkspaceWizard extends UIFormTabPane {
         }
       }
       UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager.getChildById(UIRepositoryForm.POPUP_WORKSPACE)) ; 
     }
   }
 
   public static class CancelActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
-      System.out.println("come here cancel button");
       uiFormWizard.refresh(null) ;
       UIRepositoryManager uiManager = uiFormWizard.getAncestorOfType(UIRepositoryManager.class) ;
       uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;

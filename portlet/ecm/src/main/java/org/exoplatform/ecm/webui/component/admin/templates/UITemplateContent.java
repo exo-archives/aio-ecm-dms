@@ -27,7 +27,6 @@ import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
-import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -60,6 +59,7 @@ public class UITemplateContent extends UIForm implements UISelector {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_VIEWPERMISSION = "viewPermission" ;
   final static public String FIELD_ENABLE_VERSION = "enableVersion" ;
+  final static public String[] REG_EXPRESSION = {"[", "]", ":", "&"} ;
 
   private boolean isDialog_  ;
   private boolean isAddNew_ = false ;
@@ -76,7 +76,7 @@ public class UITemplateContent extends UIForm implements UISelector {
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-                   addValidator(ECMNameValidator.class)) ;
+        addValidator(ECMNameValidator.class)) ;
     UIFormCheckBoxInput isVersion = 
       new UIFormCheckBoxInput<Boolean>(FIELD_ENABLE_VERSION , FIELD_ENABLE_VERSION, null) ;
     isVersion.setRendered(false) ;
@@ -127,7 +127,7 @@ public class UITemplateContent extends UIForm implements UISelector {
     setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
   } 
 
- 
+
 
   private void refresh() throws Exception {
     UIViewTemplate uiViewTemplate = getAncestorOfType(UIViewTemplate.class) ;
@@ -147,7 +147,6 @@ public class UITemplateContent extends UIForm implements UISelector {
     if(vH != null) return new VersionNode(vH.getRootVersion()) ; 
     return null ;
   }
-
   private List<String> getNodeVersions(List<VersionNode> children) throws Exception {         
     List<VersionNode> child = new ArrayList<VersionNode>() ;
     for(VersionNode version : children) {
@@ -209,16 +208,23 @@ public class UITemplateContent extends UIForm implements UISelector {
       UITemplateContent uiForm = event.getSource() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      if(!Utils.isNameValid(name, UITemplateContent.REG_EXPRESSION)){
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.name-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String content = uiForm.getUIStringInput(FIELD_CONTENT).getValue() ;      
       if(content == null) content = "" ;
       UIFormInputSetWithAction permField = uiForm.getChildById("UITemplateContent") ;
       String role = permField.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;      
-      if((role == null)||(role.trim().length() == 0)) {
+      if((role == null) || (role.trim().length() == 0)) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.roles-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;

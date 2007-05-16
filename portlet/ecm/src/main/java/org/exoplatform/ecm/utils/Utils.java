@@ -108,6 +108,11 @@ public class Utils {
     }    
   }
   
+  public static boolean isNameValid(String name, String[] regexpression) {
+    for(String c : regexpression){ if(name.contains(c)) return false ;}
+    return true ;
+  }
+  
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
     String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
     StringBuilder str = new StringBuilder(nodeType) ;

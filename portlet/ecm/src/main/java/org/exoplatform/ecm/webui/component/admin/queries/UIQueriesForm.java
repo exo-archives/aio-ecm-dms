@@ -13,6 +13,7 @@ import javax.jcr.query.Query;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -59,7 +60,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
   final static public String[] ACTIONS = {"Save", "Cancel"} ;
   final static public String SQL_QUERY = "select * from exo:article where jcr:path like '/cms/publications/%'" ;
   final static public String XPATH_QUERY = "/jcr:root/cms/publications//element(*, exo:article)" ;
-  final static public String[] REG_EXPRESSION = {"[","]",":","&"} ;
+  final static public String[] REG_EXPRESSION = {"[", "]", ":", "&"} ;
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
         addValidator(ECMNameValidator.class)) ;
@@ -108,10 +109,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
     }
     getUIStringInput(PERMISSIONS).setValue(strValues.toString()) ;      
   }
-  public boolean isValidName(String name) {
-    for(String s : REG_EXPRESSION ) {if(name.contains(s)) return false ;}
-    return true ;
-  }
+
   static public class CancelActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
@@ -125,9 +123,8 @@ public class UIQueriesForm extends UIForm implements UISelector {
   static public class SaveActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
-      QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
-      if(!uiForm.isValidName(queryName)) {
+      if(!Utils.isNameValid(queryName, UIQueriesForm.REG_EXPRESSION)) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -144,6 +141,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
       }
       String queryType = uiForm.getUIFormSelectBox(QUERY_TYPE).getValue() ;
       boolean cacheResult = uiForm.getUIFormCheckBoxInput(CACHE_RESULT).isChecked() ;
+      QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       if(permissions.indexOf(",") > -1) {
         queryService.addSharedQuery(queryName, statement, queryType, permissions.split(","), cacheResult) ;  
       } else {
