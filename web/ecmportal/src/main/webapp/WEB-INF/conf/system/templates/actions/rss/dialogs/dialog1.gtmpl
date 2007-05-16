@@ -154,7 +154,7 @@
     <div class="FieldContainer">                        
       <label>Language</label>
       <%
-        String[] fieldLanguage = ["jcrPath=/node/exo:language", "en", "options=en,fr"] ; 
+        String[] fieldLanguage = ["jcrPath=/node/exo:language", "English", "options=English,French"] ; 
         uicomponent.addSelectBoxField("language", fieldLanguage) ; 
       %>
     </div>
