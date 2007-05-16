@@ -75,8 +75,9 @@ public class UITemplateList extends UIGrid {
       uiViewTab.updateGrid(nodeType) ;
       UITemplateContent uiViewTabForm = uiViewTemplate.findComponentById(UIViewTab.VIEW_FORM_NAME) ;
       uiViewTabForm.setNodeTypeName(nodeType) ;
-      uiViewTabForm.update(null) ;      
-      uiTemplatesManager.initPopup(uiViewTemplate, null) ;
+      uiViewTabForm.update(null) ;     
+      uiTemplatesManager.removeChildById(UITemplatesManager.NEW_TEMPLATE) ;
+      uiTemplatesManager.initPopup(uiViewTemplate, UITemplatesManager.EDIT_TEMPLATE) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTemplatesManager) ;
     }
   }
@@ -96,7 +97,8 @@ public class UITemplateList extends UIGrid {
     public void execute(Event<UITemplateList> event) throws Exception {
       UITemplatesManager uiTemplatesManager = event.getSource().getAncestorOfType(UITemplatesManager.class) ;
       UITemplateForm uiTemplateForm = uiTemplatesManager.createUIComponent(UITemplateForm.class, null, null) ;
-      uiTemplatesManager.initPopup(uiTemplateForm, "TemplatePopup") ;
+      uiTemplatesManager.removeChildById(UITemplatesManager.EDIT_TEMPLATE) ;
+      uiTemplatesManager.initPopup(uiTemplateForm, UITemplatesManager.NEW_TEMPLATE) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTemplatesManager) ;
     }
   }

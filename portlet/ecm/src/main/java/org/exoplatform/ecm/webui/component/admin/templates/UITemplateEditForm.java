@@ -73,7 +73,7 @@ public class UITemplateEditForm extends UIForm {
       node.save() ;
       uiForm.reset() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
-      UIPopupWindow uiPopupWindow = uiManager.getChildById(UITemplatesManager.VIEW_TEMPLATE) ;
+      UIPopupWindow uiPopupWindow = uiManager.getChildById(UITemplatesManager.EDIT_TEMPLATE) ;
       uiPopupWindow.setRendered(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
@@ -82,7 +82,7 @@ public class UITemplateEditForm extends UIForm {
   static  public class CancelActionListener extends EventListener<UITemplateEditForm> {
     public void execute(Event<UITemplateEditForm> event) throws Exception {
       UITemplatesManager uiManager = event.getSource().getAncestorOfType(UITemplatesManager.class) ;
-      UIPopupWindow uiPopupWindow = uiManager.getChildById(UITemplatesManager.VIEW_TEMPLATE) ;
+      UIPopupWindow uiPopupWindow = uiManager.getChildById(UITemplatesManager.EDIT_TEMPLATE) ;
       uiPopupWindow.setRendered(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }

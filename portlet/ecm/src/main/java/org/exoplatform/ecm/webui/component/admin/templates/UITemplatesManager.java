@@ -22,7 +22,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 
 public class UITemplatesManager extends UIContainer{
-  final static public String VIEW_TEMPLATE = "UIViewTemplate" ;
+  final static public String EDIT_TEMPLATE = "EditTemplatePopup" ;
   final static public String NEW_TEMPLATE = "TemplatePopup" ;
 
   public UITemplatesManager() throws Exception {
