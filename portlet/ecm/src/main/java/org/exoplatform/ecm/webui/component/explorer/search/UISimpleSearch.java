@@ -151,6 +151,7 @@ public class UISimpleSearch extends UIForm {
       UISimpleSearch uiSimpleSearch = event.getSource() ;
       int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       uiSimpleSearch.constraints_.remove(intIndex) ;
+      uiSimpleSearch.virtualConstraints_.remove(intIndex) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSimpleSearch.getParent()) ;
     }
   }
@@ -177,6 +178,7 @@ public class UISimpleSearch extends UIForm {
       uiSearchResult.updateGrid() ;
       uiECMSearch.setRenderedChild(UISearchResult.class) ;
       uiSimpleSearch.constraints_.clear() ;
+      uiSimpleSearch.virtualConstraints_.clear() ;
       uiSimpleSearch.reset() ;
     }
   }

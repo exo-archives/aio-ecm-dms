@@ -63,7 +63,6 @@ public class UIConstraintsForm extends UIForm {
   final static public String OR_OPERATION = "OR" ;
   final static public String CREATED_DATE = "CREATED" ;
   final static public String MODIFIED_DATE = "MODIFIED" ;
-  final static public String[] CONSTRAINT_LABEL = {"Properties", "Properties", "Properties", "", "Document Type"} ;
   
   private String virtualDateQuery_ ;
   
@@ -100,7 +99,7 @@ public class UIConstraintsForm extends UIForm {
     input.append(CONSTRAINT).append("' value='").append(index).append("'") ;
     String value = this.<UIFormRadioBoxInput>getUIInput(CONSTRAINT).getValue();
     if(Integer.parseInt(value) == index) input.append(" checked") ;
-    input.append(">").append(CONSTRAINT_LABEL[index]) ;
+    input.append(">") ;
     return input.toString() ;
   }
   
@@ -125,7 +124,7 @@ public class UIConstraintsForm extends UIForm {
   
   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
     if(type.equals(CREATED_DATE)) {
-      virtualDateQuery_ = "documents created before '"+beforeDate+"' AND after '"+afterDate+"'" ;
+      virtualDateQuery_ = "(documents created before '"+beforeDate+"') AND (after '"+afterDate+"')" ;
       return "(jcr:created > '"+beforeDate+"') AND (jcr:created < '"+afterDate+"')" ;
     } else if(type.equals(MODIFIED_DATE)) {
       virtualDateQuery_ = "documents modified before '"+beforeDate+"' AND after '"+afterDate+"'" ;

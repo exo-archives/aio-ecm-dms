@@ -12,23 +12,22 @@
     <% uiform.begin() %>
       <div class="ConstraintOption">Operator : <%uiform.renderField(uicomponent.getChild(1))%></div>
       <div class="ConstraintOption">
-        <%=uiform.renderConstraintRadioBox(0)%> : <%uiform.renderField(uicomponent.getChild(2))%> <a href="<%=uicomponent.event("AddMetadataType", "0")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Operator : <%uiform.renderField(uicomponent.getChild(3))%>  Contain Exactly : <%uiform.renderField(uicomponent.getChild(4))%>  <a href="<%=uicomponent.event("CompareExactly")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.FindExactly")%>"></a>
+        <%=uiform.renderConstraintRadioBox(0)%>Properties : <%uiform.renderField(uicomponent.getChild(2))%> <a href="<%=uicomponent.event("AddMetadataType", "0")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Operator : <%uiform.renderField(uicomponent.getChild(3))%>  Contain Exactly : <%uiform.renderField(uicomponent.getChild(4))%>  <a href="<%=uicomponent.event("CompareExactly")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.FindExactly")%>"></a>
       </div>
       <div class="ConstraintOption">
-        <%=uiform.renderConstraintRadioBox(1)%> : <%uiform.renderField(uicomponent.getChild(5))%> <a href="<%=uicomponent.event("AddMetadataType", "1")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Operator : <%uiform.renderField(uicomponent.getChild(6))%>  Contain : <%uiform.renderField(uicomponent.getChild(7))%>
+        <%=uiform.renderConstraintRadioBox(1)%>Properties : <%uiform.renderField(uicomponent.getChild(5))%> <a href="<%=uicomponent.event("AddMetadataType", "1")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Operator : <%uiform.renderField(uicomponent.getChild(6))%>  Contain : <%uiform.renderField(uicomponent.getChild(7))%>
       </div>
       <div class="ConstraintOption">
-        <%=uiform.renderConstraintRadioBox(2)%> : <%uiform.renderField(uicomponent.getChild(8))%> <a href="<%=uicomponent.event("AddMetadataType", "2")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Operator : <%uiform.renderField(uicomponent.getChild(9))%>  Not Contain : <%uiform.renderField(uicomponent.getChild(10))%>
+        <%=uiform.renderConstraintRadioBox(2)%>Properties : <%uiform.renderField(uicomponent.getChild(8))%> <a href="<%=uicomponent.event("AddMetadataType", "2")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Operator : <%uiform.renderField(uicomponent.getChild(9))%>  Not Contain : <%uiform.renderField(uicomponent.getChild(10))%>
       </div>
       <div class="ConstraintOption">
         <div style="float: left;"><%=uiform.renderConstraintRadioBox(3)%><%uiform.renderField(uicomponent.getChild(11))%></div>
-        <div style="margin-left: 150px;">
-          <div class="ConstraintOption">Before <%uiform.renderField(uicomponent.getChild(12))%> </div>
-          <div class="ConstraintOption">After <%uiform.renderField(uicomponent.getChild(13))%></div>
+        <div style="margin-left: 130px;">
+          <div class="ConstraintOption">Before <%uiform.renderField(uicomponent.getChild(12))%>   After <%uiform.renderField(uicomponent.getChild(13))%></div>
         </div>
       </div>
       <div class="ConstraintOption">
-        <%=uiform.renderConstraintRadioBox(4)%> : <%uiform.renderField(uicomponent.getChild(14))%> <a href="<%=uicomponent.event("AddNodeType")%>"><img class="AddNodeTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>"></a>
+        <%=uiform.renderConstraintRadioBox(4)%>Document Type : <%uiform.renderField(uicomponent.getChild(14))%> <a href="<%=uicomponent.event("AddNodeType")%>"><img class="AddNodeTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>"></a>
       </div>
       <div class="UIAction"> 
         <div class="ActionContainer">
