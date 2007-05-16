@@ -453,7 +453,7 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
-      if(!templateService.isManagedNodeType(nodeType.getName())) {
+      if(!templateService.getDocumentTemplates().contains(nodeType.getName())) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null, 
             ApplicationMessage.WARNING)) ;
         return ;
