@@ -81,14 +81,14 @@ public class UIActionList extends UIContainer {
       if(uiActionManager.getChild(UIActionViewContainer.class) != null) {
         uiActionManager.removeChild(UIActionViewContainer.class) ;
       }
-        UIActionViewContainer uiActionViewContainer = 
-          uiActionManager.createUIComponent(UIActionViewContainer.class, null, null) ;
-        UIActionViewTemplate uiViewTemplate = 
-          uiActionViewContainer.createUIComponent(UIActionViewTemplate.class, null, null) ;
-        uiViewTemplate.setTemplateNode(node) ;
-        uiActionViewContainer.addChild(uiViewTemplate) ;
-        uiActionManager.addChild(uiActionViewContainer) ;
-          uiActionManager.setRenderedChild(UIActionViewContainer.class) ;
+      UIActionViewContainer uiActionViewContainer = 
+        uiActionManager.createUIComponent(UIActionViewContainer.class, null, null) ;
+      UIActionViewTemplate uiViewTemplate = 
+        uiActionViewContainer.createUIComponent(UIActionViewTemplate.class, null, null) ;
+      uiViewTemplate.setTemplateNode(node) ;
+      uiActionViewContainer.addChild(uiViewTemplate) ;
+      uiActionManager.addChild(uiActionViewContainer) ;
+      uiActionManager.setRenderedChild(UIActionViewContainer.class) ;
     }
   }
 

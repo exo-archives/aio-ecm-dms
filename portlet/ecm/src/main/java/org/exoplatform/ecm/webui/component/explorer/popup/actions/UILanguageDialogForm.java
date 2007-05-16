@@ -45,9 +45,7 @@ import org.exoplatform.webui.event.Event.Phase;
 )
 public class UILanguageDialogForm extends DialogFormFields {
 
-  final static public String LANGUAGES = "languages" ;
   private boolean isAddNew_ = false ; 
-  
   private String selectedLanguage_ ;
   private boolean isDefault_ = false;
   private String documentType_ ;

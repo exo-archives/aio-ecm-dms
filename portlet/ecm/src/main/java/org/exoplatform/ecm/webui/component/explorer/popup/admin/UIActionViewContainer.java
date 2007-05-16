@@ -32,7 +32,7 @@ public class UIActionViewContainer extends UIContainer {
     public void execute(Event<UIActionViewContainer> event) throws Exception {
       UIActionManager uiActionManager = event.getSource().getAncestorOfType(UIActionManager.class) ;
       uiActionManager.removeChild(UIActionViewContainer.class) ;
-      uiActionManager.setRenderedChild(UIActionList.class) ;
+      uiActionManager.setRenderedChild(UIActionListContainer.class) ;
     }
   }
 }
