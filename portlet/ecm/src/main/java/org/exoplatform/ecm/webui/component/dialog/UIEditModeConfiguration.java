@@ -213,21 +213,23 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
   
   static public class SaveActionListener extends EventListener<UIEditModeConfiguration> {
     public void execute(Event<UIEditModeConfiguration> event) throws Exception {
-      UIEditModeConfiguration uiSelectForm = event.getSource() ;
-      UIApplication uiApp = uiSelectForm.getAncestorOfType(UIApplication.class) ;
+      UIEditModeConfiguration uiEditModeConfiguration = event.getSource() ;
+      UIApplication uiApp = uiEditModeConfiguration.getAncestorOfType(UIApplication.class) ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletRequest request = context.getRequest() ; 
       PortletPreferences preferences = request.getPreferences() ;
-      String fileType = uiSelectForm.getUIFormSelectBox(FIELD_SELECT).getValue() ;
-      String location = uiSelectForm.getUIStringInput(FIELD_SAVEDPATH).getValue() ;
-      String wsName = uiSelectForm.getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
+      String fileType = uiEditModeConfiguration.getUIFormSelectBox(FIELD_SELECT).getValue() ;
+      String location = uiEditModeConfiguration.getUIStringInput(FIELD_SAVEDPATH).getValue() ;
+      String wsName = uiEditModeConfiguration.getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
+      String repoName = uiEditModeConfiguration.getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
       preferences.setValue("workspace", wsName) ;
       preferences.setValue("path", location) ;
       preferences.setValue("type", fileType) ;
+      preferences.setValue("repository", repoName) ;
       preferences.store() ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.save-successfully", null)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      uiSelectForm.reset() ;
+      uiEditModeConfiguration.reset() ;
     }
   }
 }

@@ -7,9 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import java.io.ByteArrayInputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
@@ -24,8 +22,6 @@ import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
-import org.exoplatform.services.document.DocumentReaderService;
-import org.exoplatform.services.document.impl.POIPropertiesReader;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -190,7 +186,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event);
       } catch(Exception e) {
-        //e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         return ;
       }

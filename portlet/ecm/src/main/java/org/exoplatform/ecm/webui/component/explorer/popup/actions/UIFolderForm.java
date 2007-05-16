@@ -64,6 +64,10 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     }
     return options ;
   }
+  
+  public void activate() throws Exception { getUIStringInput(FIELD_NAME).setValue(null) ;}
+  
+  public void deActivate() throws Exception {}
 
   static  public class SaveActionListener extends EventListener<UIFolderForm> {
     public void execute(Event<UIFolderForm> event) throws Exception {
@@ -114,9 +118,5 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       uiExplorer.cancelAction() ;
     }
   }
-
-  public void activate() throws Exception { getUIStringInput(FIELD_NAME).setValue(null) ;}
-
-  public void deActivate() throws Exception {}
 }
 
