@@ -381,8 +381,8 @@
 }
 
 .Save16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/Save.gif') no-repeat ;   
+  width: 24px; height: 24px;
+  background: url('VistaSkin/Save.png') no-repeat ;   
 }
 
 .Search16x16Icon { 

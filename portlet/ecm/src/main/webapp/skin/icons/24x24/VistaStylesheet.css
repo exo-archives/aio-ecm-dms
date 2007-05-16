@@ -13,17 +13,17 @@
 
 .Relations24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/RelationsIcon.gif') no-repeat center center;
+  background: url('VistaSkin/RelationsIcon.png') no-repeat center center;
 }
 
 .JCRExplorer24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
+  background: url('VistaSkin/JCRExplorerIcon.png') no-repeat center center;
 }
 
 .CloseSidebar24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
+  background: url('VistaSkin/CloseSidebarIcon.png') no-repeat center center;
 }
 
 .CollapseFolder24x24Icon {

@@ -27,7 +27,8 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropDownButton {
   cursor: pointer;
-  margin: 3px 0px 0px 10px;
+  width: 24px; height: 24px;
+  background: url('VistaSkin/background/DropDownButton24x24.png') no-repeat center;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .SideBarSeparator {
@@ -59,7 +60,7 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent {
-  border: solid 1px #6a6a6b;
+  border: solid 1px #e4e4e4;
   background-color: white;
   width: 140px;
   position: absolute;
@@ -67,8 +68,7 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectContentContainer {
-  border: solid 1px #b7b7b7;
-  background-color: #f4f4f4;
+  background: url('VistaSkin/background/SelectContentContainerBG1x20.png') repeat-x bottom;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
@@ -118,13 +118,13 @@
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .TitleLabel {
   height: 18px;
-  padding: 2px 0px 0px 15px;
+  padding: 2px 0px 0px 10px;
   font: normal bold 11px Verdana;
   background: url('/ecm/skin/images/article/EventFrameBG.gif') repeat-x;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
-  padding: 10px;
+  padding: 8px 0px 0px 15px;
 }
 
 /*############################## -- End UISideBar   -- ##############################*/
