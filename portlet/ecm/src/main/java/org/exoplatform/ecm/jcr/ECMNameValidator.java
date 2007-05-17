@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.jcr;
 
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.validator.Validator;
 import org.exoplatform.webui.exception.MessageException;
@@ -32,5 +33,9 @@ public class ECMNameValidator implements Validator {
       Object[] args = { uiInput.getName(), s };
       throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING)) ;
     }
+  }
+
+  public void validate(UIComponent arg0) throws Exception {
+    
   }
 }

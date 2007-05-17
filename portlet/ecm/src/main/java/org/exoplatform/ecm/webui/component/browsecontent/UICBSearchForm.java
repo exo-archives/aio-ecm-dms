@@ -88,9 +88,9 @@ public class UICBSearchForm extends UIForm {
     String statement = StringUtils.replace(CATEGORY_QUERY, "$1", keyword);
     for(String type : Utils.CATEGORY_NODE_TYPES) {            
       String queryStatement = StringUtils.replace(statement, "$0", type);
-      Query query = queryManager.createQuery(queryStatement, Query.SQL);
       long beforeTime = System.currentTimeMillis();
       try{
+        Query query = queryManager.createQuery(queryStatement, Query.SQL);
         QueryResult queryResult = query.execute();
         long searchTime = System.currentTimeMillis() - beforeTime;
         duration_ += searchTime ;
@@ -102,7 +102,7 @@ public class UICBSearchForm extends UIForm {
             resultList.add(result) ; 
           }
         }
-      }catch(Exception e){
+      } catch(Exception e) {
         return null ;
       }
     }
@@ -130,9 +130,9 @@ public class UICBSearchForm extends UIForm {
     documentNodeTypes.add("nt:resource") ;
     for(String ntDocument : documentNodeTypes) {            
       String queryStatement = StringUtils.replace(statement, "$0", ntDocument) ;      
-      Query query = queryManager.createQuery(queryStatement, Query.SQL);
       long beforeTime = System.currentTimeMillis();
       try{
+        Query query = queryManager.createQuery(queryStatement, Query.SQL);
         QueryResult queryResult = query.execute() ;
         long searchTime = System.currentTimeMillis() - beforeTime;
         duration_ += searchTime ;
@@ -150,7 +150,7 @@ public class UICBSearchForm extends UIForm {
             resultList.add(result) ;
           }
         }
-      } catch (Exception e) {
+      } catch(Exception e) {
         return null ;
       }
     }
@@ -185,13 +185,15 @@ public class UICBSearchForm extends UIForm {
       Node currentNode = container.getRootNode() ;
       String keyword = uiForm.getUIStringInput(FIELD_SEARCHVALUE).getValue();
       String type = uiForm.getUIFormSelectBox(FIELD_OPTION).getValue() ;            
-      List<ResultData> queryResult ;
+      List<ResultData> queryResult = null;
       UICBSearchResults searchResults = container.findFirstComponentOfType(UICBSearchResults.class) ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
       if(keyword == null || keyword.trim().length() == 0) {          
         app.addMessage(new ApplicationMessage("UICBSearchForm.msg.not-empty", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
+      event.getRequestContext().addUIComponentToUpdateByAjax(container.findFirstComponentOfType(UISearchController.class)) ;
       if(type.equals(CATEGORY_SEARCH)) {
         queryResult = uiForm.searchByCategory(keyword, currentNode) ;
       } else {
@@ -200,7 +202,8 @@ public class UICBSearchForm extends UIForm {
         queryResult = uiForm.searchDocument(keyword, reference, relation, currentNode) ;
       }
       if(queryResult == null){
-        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.invalid-keyword", null)) ;
+        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.suggestion-keyword", new Object[]{keyword})) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       searchResults.updateGrid(queryResult) ;
