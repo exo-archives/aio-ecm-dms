@@ -28,7 +28,7 @@
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
-  margin: 3px auto 1px auto;
+  margin: 10px auto 1px auto;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
@@ -48,7 +48,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
-  margin: 0px 0px 0px 240px; 
+  margin: 0px 0px 0px 230px; 
   border: 1px solid #b7b7b7; 
 }
 

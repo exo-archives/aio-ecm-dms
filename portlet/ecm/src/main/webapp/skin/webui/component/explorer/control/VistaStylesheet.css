@@ -190,7 +190,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
   height: 32px;
   background: url('VistaSkin/background/LineDecorator1x32.png') repeat-x center center;
-  border-top: solid 1px #fdfdfd; border-bottom: solid 1px #b7b7b7;
+  border-top: solid 1px #fdfdfd; border-bottom: solid 1px #b7b7b7;  
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
