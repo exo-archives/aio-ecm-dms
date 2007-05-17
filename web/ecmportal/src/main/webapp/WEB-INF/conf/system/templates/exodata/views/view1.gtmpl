@@ -22,6 +22,7 @@
 	  padding: 10px;
 	  border: 1px solid #cbcbcb; 
 	  border-top: none;
+	  overflow: auto;
 	}
 		
 </style>

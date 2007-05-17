@@ -24,6 +24,7 @@
 	  padding: 10px;
 	  border: 1px solid #cbcbcb; 
 	  border-top: none;
+	  overflow:auto;
 	}
 	
 	.FileContent .ContentDetail {  
@@ -46,16 +47,23 @@
 		margin:0px 0px 0px auto;
 	}
 </style>
+<%
+	def originalNode = uicomponent.getNode() ;
+%>			  
 <div class="FileContent">
 	<div class="NavigationContainer">  			
-		<div class="TopTitle">File Content</div>
+		<div class="TopTitle">$originalNode.name</div>
 		<div class="Content">
 			<%
-			  def originalNode = uicomponent.getNode() ;
 			  def contentNode = originalNode.getNode("jcr:content") ;
 			  def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
 		    if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		      println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>";	
+		    	if(mimeType.substring(mimeType.lastIndexOf("/")+ 1).equals("xml")){
+		      	println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>";	
+		      } else {
+		      	println contentNode.getProperty("jcr:data").getString() ;
+		      }
+		      
 		    } else if(mimeType.startsWith("image")) {
 			%>
 		      <div class="ContentDetail">
@@ -77,9 +85,6 @@
 								</div>
 							</div>
 						</div>
-					
-				
-					
 					
 						<div class="ActionButton">
 							<div class="LightBlueStyle">
@@ -115,9 +120,6 @@
 								</div>
 							</div>
 						</div>
-					
-				
-					
 					
 						<div class="ActionButton">
 							<div class="LightBlueStyle">
