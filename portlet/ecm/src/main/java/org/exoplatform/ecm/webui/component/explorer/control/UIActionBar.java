@@ -453,13 +453,13 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.multilang-checkedin", null)) ;
+        return ;
+      }
       if(!templateService.getDocumentTemplates().contains(nodeType.getName())) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null, 
             ApplicationMessage.WARNING)) ;
-        return ;
-      }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.multilang-checkedin", null)) ;
         return ;
       }
       

@@ -626,7 +626,7 @@
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:data</string></field>
-                      <field  name="documentTemplate"><boolean>true</boolean></field>
+                      <field  name="documentTemplate"><boolean>false</boolean></field>
                       <field  name="label"><string>Exo data</string></field>
                       <field  name="referencedView">
                         <collection type="java.util.ArrayList">
