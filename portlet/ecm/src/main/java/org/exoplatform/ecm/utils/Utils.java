@@ -14,7 +14,6 @@ import javax.jcr.Session;
 
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
-import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
