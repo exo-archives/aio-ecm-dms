@@ -94,32 +94,32 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     template =  "app:/groovy/webui/component/explorer/control/UIActionBar.gtmpl",
     events = {
-        @EventConfig(listeners = UIActionBar.AddFolderActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.AddDocumentActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.EditDocumentActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.UploadActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.SearchActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.WatchDocumentActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.TaggingDocumentActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.MultiLanguageActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ViewReferencesActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ViewNodeTypeActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ViewPermissionsActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ViewPropertiesActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ExportNodeActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ImportNodeActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
-        @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.AddFolderActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.AddDocumentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.EditDocumentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.UploadActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.SearchActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.WatchDocumentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.TaggingDocumentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.MultiLanguageActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ViewReferencesActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ViewNodeTypeActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ViewPermissionsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ViewPropertiesActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ExportNodeActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ImportNodeActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
+      @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -144,13 +144,13 @@ public class UIActionBar extends UIForm {
   final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
   private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
-  
+
   public UIActionBar() throws Exception{
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
     addUIFormInput(selectTab) ;
     addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(ECMNameValidator.class)) ;
-    
+
     List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>() ;
     typeOptions.add(new SelectItemOption<String>(FIELD_SQL, Query.SQL)) ;
     typeOptions.add(new SelectItemOption<String>(FIELD_XPATH, Query.XPATH)) ;
@@ -180,7 +180,7 @@ public class UIActionBar extends UIForm {
   }
 
   public String getTemplateName() { return templateName_ ;  }
-  
+
   private void setListButton(String tabName) throws PathNotFoundException, RepositoryException {
     Node tabNode = view_.getNode(tabName) ;
     String buttons = tabNode.getProperty("exo:buttons").getString() ;
@@ -192,23 +192,23 @@ public class UIActionBar extends UIForm {
     }
     tabs_.add(buttonsInTab) ;
   }
-  
+
   public List<String[]> getTabs() throws Exception { return tabs_ ; }
-  
+
   public int getSelectedTab() {
     return Integer.parseInt(getUIFormSelectBox(FIELD_SELECT_TAB).getValue()) ;
   }
-  
+
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     return getApplicationComponent(QueryService.class).getQueries(userName) ;
   }
-  
+
   public List<String> getMetadataTemplates() throws Exception {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     List<String> templates = new ArrayList<String>();
-    
+
     NodeType[] nodeTypes = node.getMixinNodeTypes();
     for(NodeType nt : nodeTypes) {
       try {
@@ -232,7 +232,7 @@ public class UIActionBar extends UIForm {
     }
     return templates;
   }
-  
+
   static public class AddFolderActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
@@ -279,7 +279,7 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIDocumentFormController.class, null, 700, 550) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-     }
+    }
   }
 
   static public class EditDocumentActionListener extends EventListener<UIActionBar> {
@@ -403,7 +403,7 @@ public class UIActionBar extends UIForm {
       return ;
     }
   }
-  
+
   static public class TaggingDocumentActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
@@ -435,7 +435,7 @@ public class UIActionBar extends UIForm {
           ApplicationMessage.WARNING)) ;
     }
   }
-  
+
   static public class MultiLanguageActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
@@ -462,7 +462,7 @@ public class UIActionBar extends UIForm {
             ApplicationMessage.WARNING)) ;
         return ;
       }
-      
+
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIMultiLanguageManager.class, null,720, 550) ;
       UIMultiLanguageManager uiMultiManager = 
@@ -481,7 +481,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-  
+
   static public class ViewReferencesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
@@ -742,15 +742,22 @@ public class UIActionBar extends UIForm {
       else queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", currentNode.getParent().getPath());
       String statement = StringUtils.replace(queryText, "$1", text) ;
       String statementPath = StringUtils.replace(queryPath, "$1", text) ;
-      
-      Query query = queryManager.createQuery(statement, Query.SQL);                
-      Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
-      
-      QueryResult queryResult = query.execute();
-      QueryResult pathQueryResult = pathQuery.execute();
-      
+      QueryResult queryResult ;
+      try {
+        Query query = queryManager.createQuery(statement, Query.SQL);    
+        queryResult = query.execute();
+      } catch(Exception e) {
+        queryResult = null ;
+      }
+      QueryResult pathQueryResult ;
+      try {
+        Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
+        pathQueryResult = pathQuery.execute();
+      } catch(Exception e) {
+        pathQueryResult = null ;
+      }
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
-                                                           getChild(UIDocumentWorkspace.class) ;
+      getChild(UIDocumentWorkspace.class) ;
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;
       uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setIsQuickSearch(true) ;
@@ -765,7 +772,7 @@ public class UIActionBar extends UIForm {
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class) ;
     }
   }
-  
+
   static public class AdvanceSearchActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
@@ -774,7 +781,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-  
+
   static public class VoteActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
@@ -803,7 +810,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-  
+
   static public class ViewMetadatasActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
@@ -831,7 +838,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-  
+
   static public class CommentActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
@@ -860,7 +867,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-  
+
   static public class ChangeTabActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource()) ;
