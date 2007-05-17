@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -43,7 +44,8 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       UIActivateVersion uiActivateVersion = event.getSource();
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
-      currentNode.addMixin("mix:versionable");
+      currentNode.addMixin(Utils.MIX_VERSIONABLE);
+      currentNode.save() ;
       uiExplorer.getSession().save();   
       uiExplorer.getSession().refresh(true) ;      
       uiExplorer.updateAjax(event) ;

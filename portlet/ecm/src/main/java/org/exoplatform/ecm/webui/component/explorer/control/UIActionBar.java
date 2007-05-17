@@ -558,7 +558,7 @@ public class UIActionBar extends UIForm {
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
       Session session = uiExplorer.getSession() ;
       if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
-        String preferenceWS = uiExplorer.getCurrentNode().getSession().getWorkspace().getName() ;
+        String preferenceWS = currentNode.getSession().getWorkspace().getName() ;
         session = uiExplorer.getSessionByWorkspace(preferenceWS) ;
       }   
       if(uiExplorer.nodeIsLocked(currentNode.getPath(), session)) {
@@ -625,6 +625,10 @@ public class UIActionBar extends UIForm {
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), session)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        return ;
+      }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         return ;
       }
       CmsConfigurationService cmsService = 
