@@ -671,6 +671,10 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         return ;
       }
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        return ;
+      }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIActionManager.class, null, 610, 550) ;
       uiExplorer.setIsHidePopup(true) ;

@@ -59,25 +59,25 @@ public class UIPropertyForm extends UIForm {
     setMultiPart(true);
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_STRING, 
-                                             Integer.toString(PropertyType.STRING))) ;
+        Integer.toString(PropertyType.STRING))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_BINARY, 
-                                             Integer.toString(PropertyType.BINARY))) ;
+        Integer.toString(PropertyType.BINARY))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_BOOLEAN, 
-                                             Integer.toString(PropertyType.BOOLEAN)));
+        Integer.toString(PropertyType.BOOLEAN)));
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_DATE, 
-                                             Integer.toString(PropertyType.DATE))) ;
+        Integer.toString(PropertyType.DATE))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_DOUBLE, 
-                                             Integer.toString(PropertyType.DOUBLE))) ;
+        Integer.toString(PropertyType.DOUBLE))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_LONG, 
-                                             Integer.toString(PropertyType.LONG))) ;
+        Integer.toString(PropertyType.LONG))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_NAME, 
-                                             Integer.toString(PropertyType.NAME))) ;
+        Integer.toString(PropertyType.NAME))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_PATH, 
-                                             Integer.toString(PropertyType.PATH))) ;
+        Integer.toString(PropertyType.PATH))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_REFERENCE, 
-                                             Integer.toString(PropertyType.REFERENCE))) ;
+        Integer.toString(PropertyType.REFERENCE))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_UNDEFINED, 
-                                             Integer.toString(PropertyType.UNDEFINED))) ;
+        Integer.toString(PropertyType.UNDEFINED))) ;
     addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null)) ;
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options) ; 
     uiSelectBox.setOnChange("ChangeType") ;
@@ -124,7 +124,7 @@ public class UIPropertyForm extends UIForm {
     }
     return values ;
   }
-  
+
   static public class ChangeTypeActionListener extends EventListener {
     public void execute(Event event) throws Exception {
       UIPropertyForm uiForm = (UIPropertyForm) event.getSource() ;
@@ -149,18 +149,22 @@ public class UIPropertyForm extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
-  
+
   @SuppressWarnings("unchecked")
   static public class SaveActionListener extends EventListener<UIPropertyForm> {
     public void execute(Event<UIPropertyForm> event) throws Exception {
       UIPropertyForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.node-checkedin", null)) ;
+        return ;
+      }
       NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;   
       if(nodeType.isNodeType("nt:unstructured")) {
         UIFormMultiValueInputSet multiValueInputSet = uiForm.getUIInput(FIELD_VALUE) ;
         ValueFactory valueFactory = uiExplorer.getCurrentNode().getSession().getValueFactory() ;
         String name = uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         if ((name == null) || (name.length() == 0)) {
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null)) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
@@ -197,7 +201,7 @@ public class UIPropertyForm extends UIForm {
       }
     }
   }
- 
+
   static public class AddActionListener extends EventListener<UIPropertyForm> {
     public void execute(Event<UIPropertyForm> event) throws Exception {
       UIPropertyForm uiForm = event.getSource() ;
@@ -206,7 +210,7 @@ public class UIPropertyForm extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
-  
+
   static public class RemoveActionListener extends EventListener<UIPropertyForm> {
     public void execute(Event<UIPropertyForm> event) throws Exception {
       UIPropertyForm uiForm = event.getSource() ;
