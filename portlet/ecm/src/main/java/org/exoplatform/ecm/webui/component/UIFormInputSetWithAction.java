@@ -27,7 +27,7 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   private String[] actions_ ;
   private String[] values_ ;
   private boolean isView_ ;
-  private boolean isShowOnly_ = false;
+  private boolean isShowOnly_ = false ;
   private boolean isDeleteOnly_ = false ;
   private HashMap<String, String> infor_ = new HashMap<String, String>() ;
   private HashMap<String, List<String>> listInfor_ = new HashMap<String, List<String>>() ;
@@ -102,4 +102,6 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
 
   @SuppressWarnings("unused")
   public UIFormInput setValue(Object value) throws Exception { return null; }
+
+  public Class getTypeValue() { return null ; }
 }
