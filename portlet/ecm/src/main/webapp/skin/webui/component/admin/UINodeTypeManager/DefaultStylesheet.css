@@ -130,8 +130,12 @@
 	padding-top: 5px;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
+	padding-left: 30px;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithAction .checkbox {
-  width: 15px;
+ margin-left: 30px;
 }
 
 /*############################## -- End UINodeTypeManager-- ########################*/

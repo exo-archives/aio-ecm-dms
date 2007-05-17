@@ -309,11 +309,6 @@
   width: 520px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
-  margin: auto;
-  padding: 15px 6px 0px 6px;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
   width: 250px;
   padding-left: 85px;
