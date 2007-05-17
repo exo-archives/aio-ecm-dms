@@ -12,6 +12,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.version.VersionException;
 
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
@@ -96,6 +97,8 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public Node storeValue(Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     List inputs = getChildren() ;
+    //2007-05-16T16:13:39.421+07:00
+    System.out.println("\n\nTry convert====>" +ISO8601.parse("2007-05-16T16:13:39.421+07:00")+ "\n\n");
     Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), uiExplorer.getSession()) ;
     Node newNode = null ;
     String nodeType ;
@@ -117,14 +120,17 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.updateAjax(event);        
     } catch (AccessControlException ace) {
+      ace.printStackTrace() ;
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
+      ve.printStackTrace() ;
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {
+      e.printStackTrace() ;
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       String key = "UIDocumentForm.msg.cannot-save" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;

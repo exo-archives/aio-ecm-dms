@@ -127,7 +127,7 @@ public class CmsServiceImpl implements CmsService {
       for (int i = 0; i < propertyDefs.length; i++) {      
         PropertyDefinition propertyDef = propertyDefs[i];         
         if (!propertyDef.isAutoCreated() && !propertyDef.isProtected()) {        
-          String propertyName = propertyDef.getName();        
+          String propertyName = propertyDef.getName();     
           int requiredtype = propertyDef.getRequiredType();
           String currentPath = path + "/" + propertyName;
           JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
@@ -320,10 +320,11 @@ public class CmsServiceImpl implements CmsService {
           }
         } else {
           if (value instanceof String) {
-            node.setProperty(propertyName, ISO8601.parse((String) value));
+            node.setProperty(propertyName, ISO8601.parse((String)value));
           } else if (value instanceof GregorianCalendar) {
             node.setProperty(propertyName, (GregorianCalendar) value);
-          } 
+          }
+          
         }
       }      
       

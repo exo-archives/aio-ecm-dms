@@ -569,8 +569,12 @@ public class DialogFormFields extends UIForm {
         uiSelectBox.setDefaultValue(defaultValue);
         uiSelectBox.reset();
       }
-    } else if(node_.hasProperty(getPropertyName(jcrPath))){
-      uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+    } else if(node_.hasProperty(getPropertyName(jcrPath))) {
+      if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+        uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
+      } else {
+        uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+      }
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
@@ -678,7 +682,7 @@ public class DialogFormFields extends UIForm {
     String[] arrDate = null;
     String multiValues = null ;
     String visible = "true";
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy") ;
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss") ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
