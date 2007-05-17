@@ -185,13 +185,13 @@
 .Permission24x24Icon {
   float: left ;
 	width: 24px;	height: 24px;
-  background: url('VistaSkin/PermissionIcon.gif') no-repeat ;
+  background: url('VistaSkin/PermissionIcon.png') no-repeat ;
 }
 
 .SelectPath24x24Icon {
   float: left ;
 	width: 24px;	height: 24px;
-  background: url('VistaSkin/BlueMagnifier.gif') no-repeat ;
+  background: url('VistaSkin/BlackMagnifier.png') no-repeat ;
 }
 
 .ManageOntologiesIcon {
@@ -353,4 +353,19 @@
 .BlackMonitor24x24Icon {
 	width: 24px;	height: 19px;
   background: url('VistaSkin/BlackMonitor.gif') no-repeat ;
+}
+
+.AddRepository24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat ;
+}
+
+.EditRepository24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat ;
+}
+
+.RemoveRepository24x24Icon {
+	width: 24px;	height: 19px;
+  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat ;
 }

@@ -76,6 +76,10 @@
 	width: 410px;
 }
 
+.UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
+	width: 100px;	
+}
+
 .UIRepositoryManager .UIWorkspaceForm .UIAction{ 
 	width: 280px;
 }
@@ -183,15 +187,12 @@
 
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
   margin: auto;
-  width: auto;
+  width: 520px;
 }
 
-.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet .FieldContainer{
-	line-height: 20px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .FieldContainer {
-  margin: auto;
+.UIECMAdminPortlet .HorizontalLayout .FieldContainer {
+	width: 500px;
+	margin: auto;
 }
 
 .UIECMAdminPortlet .UIGrid .ActionContainer a {
@@ -278,6 +279,10 @@
   padding: 10px 7px;
 }
 
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer{
+  margin-right: 5px;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
   width: 65px ;
   margin: auto ;
@@ -287,6 +292,10 @@
   width: 120px ;
   padding-top: 5px;
   margin: auto ;
+}
+
+.UIECMAdminPortlet .MultiRadioInput {
+	float: left;
 }
 
 /*############################## -- UIViewManager -- ########################*/
@@ -356,9 +365,38 @@
   padding: 8px 0px 5px 0px;
 }
 
+.ECMTempForm .HorizontalLayout .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.ECMTempForm .UIFormWithTitle label {
+	width: 100px;
+}
+
 .ECMTempForm .UIFormWithTitle .UIForm .textarea {
   width: 320px;
   height: 300px;
+}
+
+.ECMTempForm .UIFormWithTitle .UIAction {
+	width: 310px;
+	padding-left: 90px;
+
+}
+
+.ECMTempForm .UIFormWithTitle .UIForm .textarea {
+  width: 320px;
+  height: 300px;
+}
+
+.CBTempForm .HorizontalLayout .FieldContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.CBTempForm .UIFormWithTitle label {
+	width: 100px;
 }
 
 .CBTempForm .UIFormWithTitle .UIForm textarea {
@@ -390,6 +428,11 @@
 	padding: 10px 0px 0px 30px; 
 }
 
+.UIActionManager .HorizontalLayout .FieldContainer {
+	width: 500px;
+	margin: auto;
+}
+
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
 
 .UIECMScripts .UIBarStyle {
@@ -400,6 +443,11 @@
 	width: 120px ;
 	margin: auto ;
 	padding-top: 5px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 75px;
 }
 
 .UIECMScripts .UIScriptFilterForm .UIForm  {
@@ -445,6 +493,11 @@
   padding-top: 7px;
 }
 
+.UIECMScripts .HorizontalLayout .FieldContainer {
+  width: 520px;
+  margin: auto;
+}
+
 .UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
   width: 290px;
   margin: auto;
@@ -464,11 +517,6 @@
 	width: 95%;
 	padding: 10px 0px;
 	margin: auto;
-}
-
-.UITemplatesManager .UIPopupWindow .WorkingArea {
-	height: 350px ;
-	padding:10px;
 }
 
 .UITemplatesManager .UIFormInputSetWithActions {
@@ -522,6 +570,14 @@
   padding: 0px 0px 10px 0px;
 }
 
+.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
+	width: 100px;
+}
+
+.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
+	width: 100px;
+}
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UINamespaceManager .UIFormWithTitle .HorizontalLayout {
@@ -557,6 +613,11 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
+.UIQueriesManager .HorizontalLayout .FieldContainer {
+	width: 520px;
+	margin: auto;
+}
+
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	width: 320px ; height: 150px ;
 }
@@ -574,7 +635,16 @@
 	padding-top: 15px;
 }
 
+.UIQueriesManager .UIQueriesForm .UIForm .FieldContainer label {
+	width: 130px ;
+}
+
 /*############################## -- UIFolksonomyManager  -- ########################*/
+
+.UIFolksonomyManager .HorizontalLayout .FieldContainer {
+	width: 500px;
+	margin:auto;
+}
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height:250px;
@@ -593,11 +663,6 @@
 /*############################## -- MultiField  -- ########################*/
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin: 0px 0px 4px 175px;
-}
-
-.UITreeList .UIGrid {
-  width: 325px;
-  margin-left: 10px ;
 }
 
 .Explorer {

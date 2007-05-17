@@ -11,10 +11,16 @@
   background: white;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle{
+.UIJCRExplorerPortlet .UIFormWithTitle {
   width: 95%;
   margin: 10px auto;
 }
+
+.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .FormContainer label {
+	line-height: 20px;
+	width: 170px;
+}
+
 
 .UIJCRExplorerPortlet .DecoratorMiddle {
 	background: url('VistaSkin/background/JCRExplorerBG2x2.png') repeat ;
@@ -319,6 +325,10 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
   margin: 5px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin-left: 198px;
 }
 
 /*===========================UIUploadForm====================*/

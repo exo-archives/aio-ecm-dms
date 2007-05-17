@@ -100,7 +100,7 @@
 }
 
 .UIJCRExplorerPortlet .UIGrid td {
-  border: solid 1px #909090;
+  border: solid 1px #a4a4a4;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
@@ -247,8 +247,8 @@
 }
 
 .UITreeList .UIGrid {
-  width: 315px;
-  margin-left: 10px ;
+  width: 310px;
+  margin-left: 5px ;
 }
 
 .UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {

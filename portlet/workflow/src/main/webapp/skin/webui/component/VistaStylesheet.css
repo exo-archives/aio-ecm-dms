@@ -225,3 +225,7 @@
   margin: auto;
   width: 535px;
 }
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
+	width: 80px;
+}
