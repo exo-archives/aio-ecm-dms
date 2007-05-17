@@ -44,27 +44,22 @@ import org.exoplatform.webui.event.Event.Phase;
 public class UIFolderForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_TYPE = "type" ;
+  private String allowCreateFolder_ ;
 
   public UIFolderForm() throws Exception {
-    addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, getOptions())) ;
+    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences preferences = context.getRequest().getPreferences() ;
+    allowCreateFolder_ = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
+    if(allowCreateFolder_.equals("both")) {
+      List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+      options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
+      options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+      addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options)) ;
+    }
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
   }
 
-  public List<SelectItemOption<String>> getOptions() {
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences preferences = context.getRequest().getPreferences() ;
-    String allowCreateFolder = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
-    if(allowCreateFolder.equals("both")) {
-      options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
-      options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
-    } else {
-      options.add(new SelectItemOption<String>(allowCreateFolder, allowCreateFolder)) ;
-    }
-    return options ;
-  }
-  
   public void activate() throws Exception { getUIStringInput(FIELD_NAME).setValue(null) ;}
   
   public void deActivate() throws Exception {}
@@ -82,15 +77,17 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         return ;
       }
       if(name != null) {
-        String type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
+        if(uiFolderForm.allowCreateFolder_.equals("both")) {
+          uiFolderForm.allowCreateFolder_ = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
+        } 
         try {
-          node.addNode(name, type) ;
+          node.addNode(name, uiFolderForm.allowCreateFolder_) ;
           node.save() ;
           node.getSession().refresh(false) ;
           if(!uiExplorer.getPreference().isJcrEnable())uiExplorer.getSession().save() ;
           uiExplorer.updateAjax(event) ;
         }catch(ConstraintViolationException cve) {  
-          Object[] arg = { type } ;
+          Object[] arg = { uiFolderForm.allowCreateFolder_ } ;
           uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.constraint-violation", arg, 
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

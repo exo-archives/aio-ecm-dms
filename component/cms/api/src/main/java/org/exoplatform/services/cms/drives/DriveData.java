@@ -59,24 +59,22 @@ public class DriveData implements Comparable<DriveData> {
   public boolean getViewSideBar() { return this.viewSideBar ; }
   public void setViewSideBar(boolean b) { this.viewSideBar = b ; }
   
-  public List<String> getAllPermissions() {
-    String[] allPermissions = StringUtils.split(permissions, ",");
-    List<String> permissionList = new ArrayList<String>() ;
-    for(int i = 0 ; i < allPermissions.length ; i ++ ){
-      permissionList.add(allPermissions[i].trim()) ;
-    }
-    return permissionList ;
+  public String[] getAllPermissions() {    
+    return permissions.split(",") ;
   }
 
-  public boolean hasPermission(String permission) {
-    List<String> pers = getAllPermissions() ;
+  public boolean hasPermission(String[] allPermissions, String permission) {
+    List<String> permissionList = new ArrayList<String>() ;
+    for(String per : allPermissions){
+      permissionList.add(per.trim()) ;
+    }
     if(permission == null) return false ;
     if(permission.indexOf(":/") > -1){
-	  String[] array = StringUtils.split(permission , ":/") ;
+      String[] array = StringUtils.split(permission , ":/") ;
       if(array == null || array.length < 2) return false ;
-      if( pers.indexOf("*:/"+array[1]) > -1) return true ;
+      if( permissionList.indexOf("*:/"+array[1]) > -1) return true ;
     }    
-    return pers.contains(permission) ;
+    return permissionList.contains(permission) ;
   }
 
   public int compareTo(DriveData arg) {

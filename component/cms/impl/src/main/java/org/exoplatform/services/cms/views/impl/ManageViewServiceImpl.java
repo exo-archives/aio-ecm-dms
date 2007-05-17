@@ -259,5 +259,4 @@ public class ManageViewServiceImpl implements ManageViewService {
     }catch(Exception e) {      
     }
   }
-
 }

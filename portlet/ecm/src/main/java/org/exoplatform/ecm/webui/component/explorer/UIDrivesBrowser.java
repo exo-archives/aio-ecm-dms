@@ -6,9 +6,10 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -21,13 +22,11 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
-import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.organization.Membership;
-import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.model.SelectItemOption;
@@ -52,7 +51,9 @@ import org.exoplatform.webui.event.EventListener;
 
 )
 public class UIDrivesBrowser extends UIContainer {
+  
   private String repoName_ = "repository" ;
+  
   public UIDrivesBrowser() throws Exception {
   }
 
@@ -75,23 +76,15 @@ public class UIDrivesBrowser extends UIContainer {
     ManageableRepository repository = rservice.getRepository(repoName) ;  
     Session digitalSession = repository.getSystemSession("digital-assets") ;    
     List<DriveData> driveList = new ArrayList<DriveData>() ;
-    OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
-    String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userName) ;
-    if(memberships == null || memberships.size() < 0) return driveList ;
-    Object[] objects = memberships.toArray() ;
-    for(int i = 0 ; i < objects.length ; i ++ ){
-      Membership membership = (Membership)objects[i] ;
-      String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
-      List wsByPermission = new ArrayList() ;
-      wsByPermission = driveService.getAllDriveByPermission(role) ;
-      if(wsByPermission != null && wsByPermission.size() > 0) {
-        for(int j = 0; j < wsByPermission.size(); j ++) {
-          DriveData drive = (DriveData)wsByPermission.get(j) ;
+    List<String> userRoles = Utils.getMemberships() ;
+    for(String role : userRoles ){
+      List<DriveData> drives = driveService.getAllDriveByPermission(role) ;
+      if(drives != null && drives.size() > 0) {
+        for(DriveData drive : drives) {
           if(drive.getIcon() != null && drive.getIcon().length() > 0) {
             Node node = (Node) digitalSession.getItem(drive.getIcon()) ;
-            Node jcrContentNode = node.getNode("jcr:content") ;
-            InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+            Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+            InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
             InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
             dresource.setDownloadName(node.getName()) ;
             drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
@@ -116,7 +109,26 @@ public class UIDrivesBrowser extends UIContainer {
       String driveName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       RepositoryService rservice = uiDrive.getApplicationComponent(RepositoryService.class) ;
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
+      ManageViewService vservice = uiDrive.getApplicationComponent(ManageViewService.class) ;
       DriveData drive = (DriveData) dservice.getDriveByName(driveName) ;
+      List<String> userRoles = Utils.getMemberships() ;
+      Map<String, String> viewMap = new HashMap<String, String>() ;
+      String viewList = "";
+      for(String role : userRoles ){
+        String[] views = drive.getViews().split(",") ;
+        for(String viewName : views) {
+          viewName = viewName.trim() ;
+          Node viewNode = vservice.getViewByName(viewName) ;
+          String permiss = viewNode.getProperty("exo:permissions").getString();
+          String[] viewPermissions = permiss.split(",") ;
+          if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
+        }
+      }
+      for(String viewName : viewMap.values().toArray(new String[]{})) {
+        if(viewList.length() > 0) viewList = viewList + "," + viewName ;
+        else viewList = viewName ;
+      }
+      drive.setViews(viewList) ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletPreferences preferences = context.getRequest().getPreferences() ;
       preferences.setValue(Utils.WORKSPACE_NAME, drive.getWorkspace()) ;
@@ -142,12 +154,10 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.getAllClipBoard().clear() ;
       uiJCRExplorer.setRootNode(node) ;
       uiJCRExplorer.refreshExplorer() ;
-
-      String[] arrView = drive.getViews().split(",") ;
-      List<SelectItemOption<String>> viewOptions = 
-        new ArrayList<SelectItemOption<String>> (arrView.length) ;
-      for(int i = 0; i < arrView.length; i ++) {
-        viewOptions.add(new SelectItemOption<String>(arrView[i].trim(), arrView[i].trim())) ;
+      List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>() ;
+      String[] arrView = viewList.split(",") ;
+      for(String view : arrView) {
+        viewOptions.add(new SelectItemOption<String>(view, view)) ;
       }
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class) ;
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class) ;

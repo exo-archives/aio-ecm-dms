@@ -36,6 +36,7 @@ public class ManageDriveServiceImpl implements ManageDriveService {
   private ManageDrivePlugin drivePlugin_ ;
   private RepositoryService jcrService_ ;
   private CmsConfigurationService cmsConfigurationService_ ;
+
   private Session session_ ;
   
   public ManageDriveServiceImpl(RepositoryService jcrService, 
@@ -111,8 +112,9 @@ public class ManageDriveServiceImpl implements ManageDriveService {
       List<DriveData> driveList = getAllDrives();    
       for(int i = 0; i < driveList.size(); i ++) {
         DriveData drive = driveList.get(i) ;
-        if(drive.hasPermission(permission))
+        if(drive.hasPermission(drive.getAllPermissions(), permission)){
           driveByPermission.add(drive) ;
+        } 
       }
     }catch(Exception e) {
       e.printStackTrace() ;

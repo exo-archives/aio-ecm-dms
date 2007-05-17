@@ -1,6 +1,8 @@
 package org.exoplatform.ecm.utils;
 
 import java.security.AccessControlException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,9 +12,13 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.organization.Membership;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.webui.component.UIFormInputBase;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.UIFormUploadInput;
@@ -165,4 +171,20 @@ public class Utils {
     }
     return rawinputs;
   }
+  
+ public static List<String> getMemberships() throws Exception {
+   String userId = Util.getPortalRequestContext().getRemoteUser() ;
+   OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
+   List<String> userMemberships = new ArrayList<String> () ;
+   userMemberships.add(userId) ;
+   Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId) ;
+   if(memberships == null || memberships.size() < 0) return userMemberships ;
+   Object[] objects = memberships.toArray() ;
+   for(int i = 0 ; i < objects.length ; i ++ ){
+     Membership membership = (Membership)objects[i] ;
+     String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
+     userMemberships.add(role) ;     
+   }
+   return userMemberships ;
+ }
 }
