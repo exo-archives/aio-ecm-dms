@@ -263,7 +263,7 @@ ExoEditor.prototype.handleEvent = function(e) {
 
 ExoEditor.prototype.saveHandler = function() {
 	for(var i in eXo.ecm.ExoEditor.instances) {
-		eXo.ecm.ExoEditor.save(i) ;
+		try{eXo.ecm.ExoEditor.save(i) ;}catch(e) {}
 		delete eXo.ecm.ExoEditor.instances[i];
 	}
 	delete eXo.ecm.ExoEditor.selectedInst;
