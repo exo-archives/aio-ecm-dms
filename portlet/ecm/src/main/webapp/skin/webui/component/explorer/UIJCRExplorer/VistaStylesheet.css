@@ -502,7 +502,7 @@
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 330px;
+  width: 415px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -517,6 +517,14 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
   padding: 3px;
+}
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer label {
+  width: 130px;
+}
+
+.UIJCRExplorerPortlet .UITabContent .Execute16x16Icon {
+	margin: 4px 0px 0px 0px;
 }
 
 /*================================UIConstraintsForm=================================*/

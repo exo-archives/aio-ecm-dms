@@ -80,6 +80,70 @@
 	width: 100px;	
 }
 
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .HiddenLabel {
+	display: none  ;	
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .SelectedLabel {
+	display: block ;
+	background: #F4F4F4 none repeat scroll 0%;
+	border: 1px solid #B7B7B7 ;
+	padding: 10px 0px;
+	border-bottom: none ;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
+	float: left;
+ 	vertical-align: middle;
+  font-size: 11px; font-weight: bold; 
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIWizardAction {
+	background: #F4F4F4 none repeat scroll 0%;
+	border: 1px solid #B7B7B7 ;
+	border-top: none ;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
+  float: left;
+  height: 33px; line-height: 33px; vertical-align: middle;
+  font-size: 11px; font-weight: bold;
+  margin: 0px 10px 0px 15px;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
+  float: left;
+  height: 34px; line-height: 34px; vertical-align: middle;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a{
+  float: left;
+  width: 18px; height: 18px; 
+  line-height: 18px; vertical-align: middle;
+  font-size: 11px; font-weight: bold;
+  text-align: center; text-decoration: none; color: black;
+  margin: 7px 3px 0px 3px;
+  border: solid 1px gray;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a:hover {
+  height: 18px; line-height: 18px; vertical-align: middle;
+  color: orange;
+  background: #f8f8f8;
+  border: solid 1px #fdb913 ;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a.SelectedStep {
+  color: red;
+}
+
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIAction {
+	float: right;
+	width: auto;
+}
+
+
 .UIRepositoryManager .UIWorkspaceForm .UIAction{ 
 	width: 280px;
 }

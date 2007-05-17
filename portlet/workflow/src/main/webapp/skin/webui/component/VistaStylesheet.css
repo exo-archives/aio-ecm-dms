@@ -227,5 +227,7 @@
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
-	width: 80px;
+	width: 75px;
+	float: none;
+	
 }
