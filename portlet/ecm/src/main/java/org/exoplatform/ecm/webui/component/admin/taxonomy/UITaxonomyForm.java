@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -59,6 +60,11 @@ public class UITaxonomyForm extends UIForm {
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null || name.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      if(!Utils.isNameValid(name, new String[]{"[","]",":"})) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
