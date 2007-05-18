@@ -17,7 +17,6 @@
 	              if(renderResource) {
 	                tabName = _ctx.appRes(uicomponent.getName() + ".tab.info." + inputSet.name) ;
 	              }
-	              
 		        		boolean renderTab = uicomponent.hasWithRenderTab();
 	              if(renderTab){
 	        %>	        

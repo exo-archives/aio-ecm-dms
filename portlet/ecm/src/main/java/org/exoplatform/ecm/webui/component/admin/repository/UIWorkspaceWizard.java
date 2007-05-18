@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager.WorkspaceData;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -22,12 +23,12 @@ import org.exoplatform.webui.component.UIFormTabPane;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
-import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.component.validator.NumberFormatValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -36,7 +37,6 @@ import org.exoplatform.webui.event.EventListener;
  * May 11, 2007  
  */
 @ComponentConfig(
-    lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/admin/UIWorkspaceWizard.gtmpl" ,
     events = {
         @EventConfig(listeners = UIWorkspaceWizard.FinishActionListener.class),
@@ -46,7 +46,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class),
         @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
         @EventConfig(listeners = UIWorkspaceWizard.ViewStep4ActionListener.class),
-        @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class)
+        @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class, phase=Phase.DECODE)
     }
 
 )
@@ -99,7 +99,7 @@ public class UIWorkspaceWizard extends UIFormTabPane {
     actionMap_.put(4, new String[]{"Back", "Finish", "Cancel"}) ;
 
     UIFormInputSet step1 = new UIFormInputSet(fIELD_STEP1) ;
-    step1.addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ;
+    step1.addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
     step1.addChild(new UIFormTextAreaInput(FIELD_DESCRIPTION, FIELD_DESCRIPTION, null)) ;
     step1.addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISDEFAULT, FIELD_ISDEFAULT, null)) ;
 
