@@ -1,16 +1,20 @@
 package org.exoplatform.services.cms.i18n;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PropertyType;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.services.cms.JcrInputProperty;
 
 /**
@@ -31,6 +35,47 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   public MultiLanguageServiceImpl() throws Exception {
   }
 
+  private void setPropertyValue(String propertyName, Node node, int requiredtype, Object value) throws Exception {
+    switch (requiredtype) {
+    case PropertyType.STRING:
+      if (value == null) node.setProperty(propertyName, "");
+      else node.setProperty(propertyName, value.toString());
+      break;
+    case PropertyType.BINARY:
+      if (value == null) node.setProperty(propertyName, "");
+      else if (value instanceof byte[]) node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
+      else if (value instanceof String) node.setProperty(propertyName, new ByteArrayInputStream((value.toString()).getBytes()));
+      else if (value instanceof String[]) node.setProperty(propertyName, new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
+      break;
+    case PropertyType.BOOLEAN:
+      if (value == null) node.setProperty(propertyName, false);
+      else if (value instanceof String) node.setProperty(propertyName, new Boolean(value.toString()).booleanValue());
+      else if (value instanceof String[]) node.setProperty(propertyName, (String[]) value);         
+      break;
+    case PropertyType.LONG:
+      if (value == null || "".equals(value)) node.setProperty(propertyName, 0);
+      else if (value instanceof String) node.setProperty(propertyName, new Long(value.toString()).longValue());
+      else if (value instanceof String[]) node.setProperty(propertyName, (String[]) value);  
+      break;
+    case PropertyType.DOUBLE:
+      if (value == null || "".equals(value)) node.setProperty(propertyName, 0);
+      else if (value instanceof String) node.setProperty(propertyName, new Double(value.toString()).doubleValue());
+      else if (value instanceof String[]) node.setProperty(propertyName, (String[]) value);        
+      break;
+    case PropertyType.DATE:      
+      if (value == null) {        
+        node.setProperty(propertyName, new GregorianCalendar());
+      } else {
+        if (value instanceof String) {
+          node.setProperty(propertyName, ISO8601.parse(value.toString()));
+        } else if (value instanceof GregorianCalendar) {
+          node.setProperty(propertyName, (GregorianCalendar) value);
+        } 
+      }
+      break ;
+    }
+  }
+  
   public void addLanguage(Node node, Map inputs, String language, boolean isDefault) throws Exception {
     Node newLanguageNode = null ;
     Node languagesNode = null ;
@@ -71,9 +116,9 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         } else {          
           if(isDefault) {            
             newLanguageNode.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
-            node.setProperty(propertyName, property.getValue().toString()) ;
-          } else {           
-            newLanguageNode.setProperty(propertyName, property.getValue().toString()) ;
+            setPropertyValue(propertyName, node, node.getProperty(propertyName).getType(), property.getValue()) ;
+          } else {
+            setPropertyValue(propertyName, newLanguageNode, node.getProperty(propertyName).getType(), property.getValue()) ;
           }
         }               
       }

@@ -12,7 +12,6 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
@@ -97,8 +96,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public Node storeValue(Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     List inputs = getChildren() ;
-    //2007-05-16T16:13:39.421+07:00
-    System.out.println("\n\nTry convert====>" +ISO8601.parse("2007-05-16T16:13:39.421+07:00")+ "\n\n");
     Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), uiExplorer.getSession()) ;
     Node newNode = null ;
     String nodeType ;

@@ -729,14 +729,19 @@ public class DialogFormFields extends UIForm {
     if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
       uiDateTime.setDateValue(node_.getProperty(getPropertyName(jcrPath)).getDate().getTime()) ;
     } 
+
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
         String propertyName = jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ;
         if(propertyNode_.hasProperty(propertyName)) {
           if(!propertyNode_.getProperty(propertyName).getDefinition().isMultiple()) {
             uiDateTime.setDateValue(propertyNode_.getProperty(propertyName).getDate().getTime());
-          }
+          } 
         }
+      } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
+        uiDateTime.setDateValue(node_.getProperty(getPropertyName(jcrPath)).getDate().getTime());
+      } else {
+        uiDateTime.setDateValue(new Date()) ;
       }
     }
     if(!visible.equals("false")) renderField(name) ;
