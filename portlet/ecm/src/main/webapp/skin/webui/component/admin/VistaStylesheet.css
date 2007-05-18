@@ -190,13 +190,11 @@
 .UIECMAdminPortlet .UIECMAdminFunctionTitle {
 	font-weight: bold;
   line-height: 25px;
-	height: 33px;
+	height: 43px;
 	padding: 0px 0px 0px 7px;
 }
 
 .UIECMAdminPortlet .UIResizableBlock {
-	height: 320px;
-	background: #ffffff;
 	overflow: auto;
 }
 
@@ -246,7 +244,7 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminWorkingArea {
-  margin: 10px;
+  margin: 0px 10px 10px 10px;
 }
 
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
