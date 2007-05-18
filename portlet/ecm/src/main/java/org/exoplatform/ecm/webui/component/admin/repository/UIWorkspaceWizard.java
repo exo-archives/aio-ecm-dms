@@ -28,7 +28,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -47,7 +46,7 @@ import org.exoplatform.webui.event.Event.Phase;
         @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class),
         @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
         @EventConfig(listeners = UIWorkspaceWizard.ViewStep4ActionListener.class),
-        @EventConfig(phase = Phase.DECODE, listeners = UIWorkspaceWizard.CancelActionListener.class)
+        @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class)
     }
 
 )
