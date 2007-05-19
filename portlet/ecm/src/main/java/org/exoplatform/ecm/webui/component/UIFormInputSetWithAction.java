@@ -12,7 +12,6 @@ import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormInputSet;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
