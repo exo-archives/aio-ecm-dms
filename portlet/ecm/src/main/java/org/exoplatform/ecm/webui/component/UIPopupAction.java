@@ -2,7 +2,7 @@
  * Copyright 2001-2006 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.explorer;
+package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -22,7 +22,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 public class UIPopupAction extends UIContainer {
-
   public UIPopupAction() throws Exception {
     addChild(createUIComponent(UIPopupWindow.class, null, null).setRendered(false)) ;
   }
