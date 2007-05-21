@@ -34,7 +34,12 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager {
-  padding: 0px 5px;
+  padding: 2px 0px 0px 5px;
+}
+
+.UIECMAdminPortlet .UIMetadataList .UIPageIterator {
+  float: right;
+  width: 95%;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
@@ -68,4 +73,5 @@
   background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
   padding: 0px 10px;
 }
+
 /*############################## -- End UIMetadataManager-- ########################*/

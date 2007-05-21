@@ -319,13 +319,13 @@
 .Add16x16Icon {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+  background: url('MacSkin/BlueCirclePlus.gif') no-repeat; 
 }
 
 .Delete16x16Icon {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/DustBin.gif') no-repeat ;   
+  background: url('MacSkin/DustBin.gif') no-repeat ;   
 }
 
 .Locked16x16Icon {

@@ -148,3 +148,11 @@
 .UIDialogPortlet .TabPaneContent {
   margin: 5px;
 }
+
+.UIDialogPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+}
+
+.UIDialogPortlet .UIFormWithTitle .FieldContainer input.checkbox {
+  border: none;
+}

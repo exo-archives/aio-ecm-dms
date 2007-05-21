@@ -39,6 +39,11 @@
   padding-bottom: 15px;
 }
 
+.UIECMAdminPortlet .UIMetadataList .UIPageIterator  {
+  float: right;
+  width: 95%;
+}
+
 .UIECMAdminPortlet .UIMetadataList .UIAction {
   width: 92px;
 }

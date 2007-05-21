@@ -103,6 +103,11 @@
   width: 450px;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UIPageIterator  {
+  float: right;
+  width: 95%;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
   width: 600px ;
   margin: auto;
@@ -141,4 +146,12 @@
   margin-left: 50px;
 }
 
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIGrid {
+  margin: auto;
+  width: 98%;
+}
+
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
+  width: 270px;
+}
 /*############################## -- End UINodeTypeManager-- ########################*/

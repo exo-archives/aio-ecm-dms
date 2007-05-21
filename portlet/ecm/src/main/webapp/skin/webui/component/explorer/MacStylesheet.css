@@ -14,7 +14,9 @@
 @import url("UIJCRExplorer/MacStylesheet.css");
 @import url("../../../ExoEditor/MyEditor.css");
 
-.UIJCRExplorerPortlet {}
+.UIPageDesktop .UIJCRExplorerPortlet {
+  overflow: hidden;
+}
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
   margin-top: 0px;

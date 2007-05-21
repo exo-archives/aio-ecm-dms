@@ -11,32 +11,40 @@
 @import url("UINodeTypeManager/VistaStylesheet.css");
 @import url("UITaxonomyManager/VistaStylesheet.css");
 
-.UIPageDesktop .UIECMAdminPortlet {
+.UIECMAdminPortlet {
   overflow: hidden;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl {
 	overflow: hidden;
 }
-.UIRepositoryControl .ControlLayout {
+
+.UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
   background: url('DefaultSkin/background/RepositoryBarBackground1x34.gif') repeat-x left top ; 
-  margin: 0px;
+  height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
-	 float: left;
-	 margin: auto ;
+  float: left;
+  margin: auto ;
+  height: 34px;
+	line-height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
 	font-weight: bold ;
 	float: left;
-	margin-top: 4px;
-	padding: 0px 10px;
+	padding: 0px 7px 0px 20px;
+	line-height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
 	 width: 200px;
-	 margin: 2px;
+	 margin: 5px;
 	 float: left;	 
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .UISelect .SelectedItemLabel{
 	
 }
@@ -44,18 +52,20 @@
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
   width: 200px;
   float: left; 
+  height: 34px;
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .ActionButton {
 	width: 24px ; height: 24px;
 	float: left ;
-	margin-left: 5px;		
+	margin: 5px 0px 0px 5px;		
+	border: solid 1px red;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
   width: 2px;
-  height: 20px;
-  margin-left: 5px;		
-  margin-top: 2px;		
+  height: 30px;
+  margin: 2px 2px 0px 8px;		
   background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
   float: left;
 }

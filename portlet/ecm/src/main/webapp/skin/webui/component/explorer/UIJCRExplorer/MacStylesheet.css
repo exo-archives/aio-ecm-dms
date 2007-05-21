@@ -8,7 +8,7 @@
 
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
-  border: solid 1px #aeaeae;
+  border: solid 1px white;
   background: white;
   width: 99.9%; /*  Bug on IE */
 }
@@ -242,7 +242,7 @@
 /*############################## -- End UIThumbnailsView -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult table {
-  width: 99.6%;
+  width: 99.z%;
 }
 
 .UIJCRExplorer .UISearchResult .UIGrid .ActionContainer {
@@ -694,6 +694,11 @@
   padding-left: 25px;
 }
 
+.UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput .radio {
+  width: 20px;
+  margin-left: 0px;
+  float: none;
+}
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
@@ -771,8 +776,10 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   margin-left: 5px;
 }
 
-.UIJCRExplorerPortlet .UIImportNode  .FieldContainer .MultiRadioInput input.radio {
-  margin-right: 5px;
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .MultiRadioInput .radio {
+  width: 20px;
+  margin-left: 0px;
+  float: none;
 }
 /*================================.UIReferencesList=================================*/
 

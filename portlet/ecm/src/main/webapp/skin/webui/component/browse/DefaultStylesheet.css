@@ -384,3 +384,6 @@
   padding: 10px 0px 0px 5px;
 }
 
+.UIBrowseContentPortlet .UIFormWithTitle .FieldContainer input.checkbox {
+  border: none;
+}

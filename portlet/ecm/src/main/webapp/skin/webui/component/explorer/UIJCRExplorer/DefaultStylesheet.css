@@ -28,6 +28,10 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input.checkbox {
+  border: none;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;

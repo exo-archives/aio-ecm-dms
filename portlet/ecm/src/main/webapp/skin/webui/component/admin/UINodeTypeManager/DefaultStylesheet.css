@@ -138,4 +138,8 @@
  margin-left: 30px;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList {
+ padding: 2px 0px 0px 5px;
+}
+
 /*############################## -- End UINodeTypeManager-- ########################*/

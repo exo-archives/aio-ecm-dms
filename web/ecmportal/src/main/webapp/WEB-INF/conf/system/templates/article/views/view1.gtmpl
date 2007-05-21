@@ -1,9 +1,10 @@
 <div id="$uicomponent.id" style="margin: 10px 5px;">
 	<style>
-		.UIArticle {}
+		.UIArticle {
+		}
 			
 		.UIArticle .ArticleTLDecorator {
-		  background: url('/ecm/skin/images/article/TopLeftArticle52x100.gif') no-repeat left;
+		  background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
 		  padding-left: 51px;
 		  height: 100px;
 		}
@@ -85,7 +86,7 @@
 		}
 		
 		.UIArticle .ArticleFrame .ArticleFrameContainer {
-		  padding: 1px 8px 15px 8px;
+		  padding: 1px 8px 5px 0px;
 		}
 		
 		.UIArticle .TopCenterArticleFrame .ArticleField {
@@ -106,7 +107,8 @@
 		}
 		
 		.UIArticle  .FieldIcon {
-	    float: left; margin-right: 5px;
+	    float: left; 
+	    margin-right: 5px;
 	    width: 16px; height: 16px;
 		}
 		
@@ -139,39 +141,63 @@
 		}
 		
 		.UIArticle .FieldContent {
-		  padding: 5px;
 		  font: normal 11px Verdana;
 		  background: white;
-		  width: 95%;
-		  margin: auto;
+		  width: 100%;
+		  margin: 5px 2px 3px 18px;
 		}
 
-		.UIArticle .DocumentRating {
+		.UIArticle .FieldContent .FieldContainerContent {
+		}
+		
+    .UIArticle .DocumentRating {
   		margin-left: 150px;
   		width: 300px;
 		} 
+		
+    .UIArticle .ContainerLinks {
+		  padding: 8px 0px 0px 0px;
+		  border-top: dotted 1px #dcdcdc;
+		  font: normal 11px Verdana;
+		  margin: 12px  10px 0px 10px;
+		  overflow: auto;
+		}
 
     .UIArticle .Links {
   	  margin-left: 80px;
 		}
 		
+	 .UIArticle .Links div {
+  	  padding-bottom: 3px;
+  	}
+  	
+    .UIArticle .Links a {
+  	  text-decortaion: none;
+		  color: #058ee6;
+		}
+		
+		 .UIArticle .Links a:hover {
+  	  text-decortaion: underline;
+		  color: orange;
+		}
+		
 		.UIArticle .ArticleTCDecorator .Language {
 	    text-align: left;
-	    color: #c0c0c0;
-	    padding: 10px 0px 0px 2px;
+	    color: #7d7d7d;
+	    padding: 12px 0px 0px 10px;
 	    font-weight: bold;
 	  }
 	  
 	  .UIArticle  .Language a.LanguageTitle {
 	    text-align: left;
 	    color: #058ee6;
-	    font-weight: bold;
+	    font-weight: normal;
 	  }
 	  
 	  .UIArticle  .Language a:hover.LanguageTitle {
 	    text-align: left;
 	    color: #ffa21d;
-	    font-weight: bold;
+	    font-weight: normal;
 	  }
 	  
 		.UIVoteForm .RatingInfo {
@@ -243,13 +269,15 @@
 					    <div class="MidlleRightArticleFrame">
 		            <div class="ArticleFrameContainer">
 		              <div class="FieldContent">
-		                <%
-		                  if(node.hasProperty("exo:summary")) {
-		                    print node.getProperty("exo:summary").getString() ;
-		                  } else {
-		                    print "None Summary" ;
-		                  }
-		                %>
+		                <div class="FieldContainerContent">
+			                <%
+			                  if(node.hasProperty("exo:summary")) {
+			                    print node.getProperty("exo:summary").getString() ;
+			                  } else {
+			                    print "None Summary" ;
+			                  }
+			                %>
+			              </div>
 		              </div>
 		            </div>
 		          </div>
@@ -272,38 +300,40 @@
 					    <div class="MidlleRightArticleFrame">
 		            <div class="ArticleFrameContainer">
 		              <div class="FieldContent">
-		                <%
-		                  if(node.hasProperty("exo:text")) {
-		                    print node.getProperty("exo:text").getString() ;
-		                  } else {
-		                    print "None Content" ;
-		                  }
-		                %>
-		              </div>
-		    					<%if(relations.size() > 0) {%>
-				              <div class="ArticleField">
-					              <div class="FieldIcon LinksIcon"><span></span></div>
-					              <div class="FieldLabel">Links :</div>
-					              <div class="Links">
-												<%
-								          for (rel in relations) {
-												    String wsName = rel.getSession().getWorkspace().getName() ;
-											      String actionLink ;
-												    if(!uicomponent.isRssLink()) { 
-												      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
-											      } else { 
-												 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
-											      }
-										    %>
-		  								    <div> - <a href="$actionLink">$rel.name</a></div>
-		  							    <%}%>
-					              </div>
-					            </div>
-				          <%}%>
+		                <div class="FieldContainerContent">
+			                <%
+			                  if(node.hasProperty("exo:text")) {
+			                    print node.getProperty("exo:text").getString() ;
+			                  } else {
+			                    print "None Content" ;
+			                  }
+			                %>
+			                <div class="ContainerLinks">
+			                  <div class="FieldIcon LinksIcon"><span></span></div>
+						            <div class="FieldLabel">Links :</div>
+					    					<%if(relations.size() > 0) {%>
+								              <div class="Links">
+															<%
+											          for (rel in relations) {
+															    String wsName = rel.getSession().getWorkspace().getName() ;
+														      String actionLink ;
+															    if(!uicomponent.isRssLink()) { 
+															      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+														      } else { 
+															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
+														      }
+													    %>
+					  								    <div> - <a href="$actionLink">$rel.name</a></div>
+					  							    <%}%>
+								              </div>
+								            </div>
+							          <%}%>
+			               </div>
+			            </div>
 		            </div>
 		          </div>
-					  </div>
-          </div>
+		        </div>
+				  </div>
           <div style="height: 10px;"><span></span></div>
           <div class="ArticleFrame">
 					  <div class="TopLeftArticleFrame">
