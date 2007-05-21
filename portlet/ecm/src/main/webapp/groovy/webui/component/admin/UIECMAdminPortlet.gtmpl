@@ -1,9 +1,7 @@
 <%
+  import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminWorkingArea ;
-  import org.exoplatform.ecm.webui.component.admin.UIECMAdminFunctionTitle ;
-  import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager ;
-  import org.exoplatform.webui.component.UIPopupMessages ;
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.webui.UIVerticalSlideTabs') ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
@@ -11,28 +9,21 @@
 %>
 <div class="UIApplication UIECMAdminPortlet" id="UIECMAdminPortlet">
 	<div class="ApplicationMinWidth" >	
-	 <%uicomponent.renderChild(UIRepositoryManager.class);%> 	  
-    <table class="UIECMPortletLayout">
-      <tr>
-        <%if(uicomponent.isShowSideBar()) {%>
-		        <td valign="top" width="265">
-              <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
-		          <% uicomponent.renderChild(UIECMAdminControlPanel.class); %>
-		        </td>
-	      <%}%>
-        <td class="ECMLayoutSeparator">
-		      <div class="<%=(uicomponent.isShowSideBar() ? "CollapseSideBar" : "ExpandSideBar")%>" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
-        </td>
-        <td valign="top">
-  	      <% 
-  	      	uicomponent.renderChild(UIECMAdminFunctionTitle.class); 
-  	      %>
-				  <div class="UIResizableBlock" style="height: 400px;">
-  	        <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
-  	      </div>
-        </td>
-      </tr>
-    </table>
-	<%uicomponent.renderPopupMessages(); %>
+    <%uicomponent.renderChild(UIRepositoryManager.class);%>
+    <div class="UIResizableBlock" style="height: 400px;">
+      <div style="height: 100%; width: 260px; overflow: auto; float: left;">
+        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
+        <% uicomponent.renderChild(UIECMAdminControlPanel.class); %>
+      </div>
+      <div class="ECMLayoutSeparator" style="float: left; height: 100%;">
+        <div class="CollapseSideBar" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
+      </div>
+      <div style="margin-left: 266px; height: 100%;">
+		    <div style="overflow: auto; width: 100%; height: 100%;">
+		      <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
+			  </div>
+			</div>
+    </div>
+		<%uicomponent.renderPopupMessages(); %>
 	</div>
 </div>

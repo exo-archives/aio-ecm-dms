@@ -28,16 +28,14 @@ import org.exoplatform.webui.event.EventListener;
     events = { @EventConfig(listeners = UIECMAdminPortlet.ShowHideActionListener.class)}
 )
 public class UIECMAdminPortlet extends UIPortletApplication {
-  private String renderedCompName_ = "UITaxonomyManager" ;
   private boolean isShowSideBar = true ;
   private boolean isSelectedRepo_ = true ;
   private String repoName_ = "" ;
   
   public UIECMAdminPortlet() throws Exception {
-    addChild(UIECMAdminFunctionTitle.class, null, null) ;
+    addChild(UIRepositoryManager.class, null, null) ;
     addChild(UIECMAdminControlPanel.class, null, null) ;
     addChild(UIECMAdminWorkingArea.class, null, null);
-    addChild(UIRepositoryManager.class, null, null) ;
   }
   
   public void renderPopupMessages() throws Exception {
@@ -60,9 +58,6 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   
   public String getRepoName() {return repoName_ ;}
   public void setRepoName(String name){repoName_ = name ;}
-  
-  public String getRenderedCompName() { return renderedCompName_ ; }
-  public void setRenderedCompName(String name) { renderedCompName_ = name ; }
   
   static public class ShowHideActionListener extends EventListener<UIECMAdminPortlet> {
     public void execute(Event<UIECMAdminPortlet> event) throws Exception {

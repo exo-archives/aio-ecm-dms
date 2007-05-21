@@ -57,10 +57,8 @@ public class UIECMAdminControlPanel extends UIComponent {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
       uiWorkingArea.getChild(UITemplatesManager.class).refresh() ;
-      uiWorkingArea.setRenderedChild(UITemplatesManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UITemplatesManager.class).getId()) ;
+      uiWorkingArea.setChild(UITemplatesManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -68,12 +66,9 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      
       uiWorkingArea.getChild(UIScriptManager.class).refresh() ;
-      uiWorkingArea.setRenderedChild(UIScriptManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIScriptManager.class).getId()) ;
+      uiWorkingArea.setChild(UIScriptManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -82,10 +77,8 @@ public class UIECMAdminControlPanel extends UIComponent {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
       uiWorkingArea.getChild(UIActionManager.class).refresh() ;
-      uiWorkingArea.setRenderedChild(UIActionManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIActionManager.class).getId()) ;
+      uiWorkingArea.setChild(UIActionManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -93,10 +86,8 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UINodeTypeManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UINodeTypeManager.class).getId()) ;
+      uiWorkingArea.setChild(UINodeTypeManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -104,10 +95,8 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UIViewManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIViewManager.class).getId()) ;
+      uiWorkingArea.setChild(UIViewManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -115,10 +104,8 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UITaxonomyManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UITaxonomyManager.class).getId()) ;
+      uiWorkingArea.setChild(UITaxonomyManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -127,10 +114,8 @@ public class UIECMAdminControlPanel extends UIComponent {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
       uiWorkingArea.getChild(UINamespaceManager.class).refresh() ;
-      uiWorkingArea.setRenderedChild(UINamespaceManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UINamespaceManager.class).getId()) ;
+      uiWorkingArea.setChild(UINamespaceManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -138,12 +123,10 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UIMetadataManager.class) ;
+      uiWorkingArea.setChild(UIMetadataManager.class) ;
       UIMetadataManager uiManager = uiWorkingArea.getChild(UIMetadataManager.class) ;
       uiManager.getChild(UIMetadataList.class).updateGrid() ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIMetadataManager.class).getId()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -151,10 +134,8 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UIDriveManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIDriveManager.class).getId()) ;
+      uiWorkingArea.setChild(UIDriveManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 
@@ -162,10 +143,8 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UIQueriesManager.class) ;
-      portlet.setRenderedCompName(uiWorkingArea.getChild(UIQueriesManager.class).getId()) ;
+      uiWorkingArea.setChild(UIQueriesManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
   
@@ -173,13 +152,11 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setRenderedChild(UIFolksonomyManager.class) ;
+      uiWorkingArea.setChild(UIFolksonomyManager.class) ;
       UIFolksonomyManager uiFolkSonomyManager = uiWorkingArea.getChild(UIFolksonomyManager.class) ;
       UITagStyleList uiTagStyleList = uiFolkSonomyManager.getChild(UITagStyleList.class) ;
       uiTagStyleList.updateGrid() ;
-      portlet.setRenderedCompName(uiFolkSonomyManager.getId()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(portlet.getChild(UIECMAdminFunctionTitle.class)) ;
     }
   }
 }

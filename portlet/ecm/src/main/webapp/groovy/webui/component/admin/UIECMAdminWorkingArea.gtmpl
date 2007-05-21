@@ -1,0 +1,11 @@
+<div id="$uicomponent.id" class="UIECMAdminWorkingArea">
+	<div class="UIECMAdminFunctionTitle">
+		<div class="RightFunctionTitle">
+		  <div class="<%=uicomponent.getRenderedCompId()%>Icon" style="float: left; margin: 0px 5px;"><span></span></div>
+		  <div class="FunctionTitle"><%=_ctx.appRes("UIECMAdminControlPanel.label." + uicomponent.getRenderedCompId())%></div>
+		  <div style="clear: left;"><span></span></div>
+	  </div>
+	  <div style="clear: both;"><span></span></div>
+	</div>
+	<% uicomponent.renderChildren(); %>
+</div>

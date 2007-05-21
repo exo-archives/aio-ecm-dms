@@ -21,7 +21,7 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
-  background: url('DefaultSkin/background/RepositoryBarBackground1x34.gif') repeat-x left top ; 
+  background: url('DefaultSkin/background/RepositoryBarBG.gif') repeat-x left top ; 
   height: 34px;
 }
 
@@ -191,8 +191,8 @@
 }
 
 .UIECMAdminPortlet .CollapseSideBar {
-	width: 6px; height: 49px;
-	background: url('DefaultSkin/background/CollapseSideBar.gif') no-repeat;
+	width: 6px; height: 100%;
+	background: url('DefaultSkin/background/CollapseSideBar.gif') no-repeat center center;
 	cursor: pointer;
 }
 
@@ -238,9 +238,6 @@
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .BackToRepositoryButton {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/background/BackToMainDriveButton.gif') no-repeat center ;
-}
-
-.UIECMAdminPortlet .UIResizableBlock {
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {

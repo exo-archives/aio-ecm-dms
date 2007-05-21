@@ -15,8 +15,8 @@ import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
+import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 
 /**
@@ -26,11 +26,22 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Sep 19, 2006
  * 8:30:33 AM 
  */
-@ComponentConfig( lifecycle = UIContainerLifecycle.class )
+@ComponentConfig(
+    template = "app:/groovy/webui/component/admin/UIECMAdminWorkingArea.gtmpl"
+)
 public class UIECMAdminWorkingArea extends UIContainer {
+  private String renderedCompId_ ;
+  
+  public String getRenderedCompId() { return renderedCompId_ ; }
+  public void setRenderedCompId(String renderedId) { this.renderedCompId_ = renderedId ; }
+
+  public <T extends UIComponent> void setChild(Class<T> type) {
+    renderedCompId_ = getChild(type).getId() ;
+    setRenderedChild(type) ;
+  }
 
   public UIECMAdminWorkingArea() throws Exception {
-    addChild(UITaxonomyManager.class, null ,null) ;
+    renderedCompId_ = addChild(UITaxonomyManager.class, null , null).getId() ;
     addChild(UIViewManager.class, null, null).setRendered(false) ;
     addChild(UIMetadataManager.class, null, null).setRendered(false) ;
     addChild(UINodeTypeManager.class, null, null).setRendered(false) ;
