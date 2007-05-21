@@ -257,12 +257,13 @@
 .UICBNavigation .NavigationButtonContainer {
 	float: right;
 	height: 16px;
+	margin-top: 3px;
 }
 
 .UICBNavigation .NavigationButtonContainer .NavigationIcon {
 	float: left;
 	cursor: pointer;
-	margin-top: 3px;
+	/*margin-top: 3px;*/
 }
 
 .UICBNavigation .CBMiddleNavigation .UICBSubNavigation { 

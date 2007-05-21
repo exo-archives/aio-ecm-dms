@@ -935,6 +935,7 @@
 .ScrollBackArrow16x16Icon {
   width: 16px; height:16px;
   background: url('DefaultSkin/SrollBackArrow.gif') no-repeat;  
+  padding-left: 16px;
 }
 
 .ScrollNextArrow16x16Icon {
@@ -945,6 +946,7 @@
 .DisableBackArrow16x16Icon {
   width: 16px; height:16px;
   background: url('DefaultSkin/DisableBackArrow.gif') no-repeat;  
+  padding-left: 16px;
 }
 
 .DisableNextArrow16x16Icon {

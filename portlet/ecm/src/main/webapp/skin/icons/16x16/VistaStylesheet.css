@@ -1160,14 +1160,26 @@
 }
 /**/
 
+.ScrollBackArrow16x16Icon {
+  width: 16px; height:16px;
+  background: url('DefaultSkin/SrollBackArrow.gif') no-repeat;
+  padding-left: 16px; 
+}
+
+.ScrollNextArrow16x16Icon {
+  width: 16px;height:16px;
+  background: url('DefaultSkin/SrollNextArrow.gif') no-repeat;  
+}
+
 .DisableBackArrow16x16Icon {
-  width: 24px; height:24px;
-  background: url('VistaSkin/DisableBackArrow.png') no-repeat;  
+  width: 16px; height:16px;
+  background: url('DefaultSkin/DisableBackArrow.gif') no-repeat;  
+  padding-left: 16px;
 }
 
 .DisableNextArrow16x16Icon {
-  width: 24px; height:24px;
-  background: url('VistaSkin/DisableNextArrow.png') no-repeat;  
+  width: 16px; height:16px;
+  background: url('DefaultSkin/DisableNextArrow.gif') no-repeat;  
 }
 
 .Documents16x16Icon {

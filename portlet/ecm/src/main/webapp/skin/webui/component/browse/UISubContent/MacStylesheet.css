@@ -68,12 +68,13 @@
 .UISubContent .NavigationButtonContainer {
 	float: right;
 	height: 16px;
+	margin-top: 4px;
 }
 
 .UISubContent .NavigationButtonContainer .NavigationIcon {
 	float: left;
 	cursor: pointer;
-	margin-top: 4px;
+	/*margin-top: 4px;*/
 }
 
 .UISubContent .SubContentTitle .ChildNode { 

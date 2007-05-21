@@ -2,7 +2,15 @@
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
   import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
   import javax.jcr.Node ;
+  import org.exoplatform.web.application.JavascriptManager;
   String componentName = uicomponent.getName() ;
+  
+  def rcontext = _ctx.getRequestContext() ;
+	JavascriptManager jsmanager = rcontext.getJavascriptManager();
+	jsmanager.importJavascript('eXo.portal.UIBrowseContent');
+	jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
+	jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
+	
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
@@ -27,7 +35,7 @@
     int itemPerPage = uicomponent.getItemPerPage() ;   
     int itemPerBlock = uicomponent.getRowPerBlock() ;   
     int numbOfDocument = subDocumentList.size() ;
-    int numbOfSubCategory = subCategoryList.size() ;  
+    int numbOfSubCategory = subCategoryList.size() ;
  %>
  <div class="ContentHolder">
  <%   
@@ -145,10 +153,11 @@
               <%}%>  
             </div>
             <div class="NavigationButtonContainer">
-							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
-							<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
-              <div style="clear:both;"><span></span></div>
-            </div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
+								<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+							</div>
+				  		<!--<div style="clear:both"><span></span></div>-->
+						</div>                  
           </div>
           <div class="UICBSubNavigation">
             <div class="ItemContainer">
@@ -165,9 +174,10 @@
               <div style="clear:both"><span></span></div>
             </div>
             <div class="NavigationButtonContainer">
-							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
-							<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
-              <div style="clear:both"><span></span></div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
+								<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+							</div>
+              <!--<div style="clear:both"><span></span></div>-->
             </div>
           </div>
         </div>
@@ -278,9 +288,10 @@
 						                  <%}%>
 						                  </div>
 						                  <div class="NavigationButtonContainer">
-																<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><span></span></div>
-																<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
-									              <div style="clear:both"><span></span></div>
+																<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
+																	<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+																</div>
+									              <!--<div style="clear:both"><span></span></div>-->
 									            </div>                  
 	                   			</div>                   		
 	                   		</div>

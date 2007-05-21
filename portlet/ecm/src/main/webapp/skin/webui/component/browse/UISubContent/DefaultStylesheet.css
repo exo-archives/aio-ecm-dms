@@ -1,4 +1,4 @@
- * Created by The eXo Platform SAS
+/* Created by The eXo Platform SAS
  * Author : Vu Duy Tu
  *          duytucntt@gmail.com
  * DEC 20, 2006
@@ -67,12 +67,13 @@
 .UISubContent .NavigationButtonContainer {
 	float: right;
 	height: 16px;
+	margin-top: 4px;
 }
 
 .UISubContent .NavigationButtonContainer .NavigationIcon {
 	float: left;
 	cursor: pointer;
-	margin-top: 4px;
+	/*margin-top: 4px;*/
 }
 
 .UISubContent .SubContentTitle .ChildNode { 
