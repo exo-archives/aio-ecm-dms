@@ -11,14 +11,20 @@
 	<div class="ApplicationMinWidth" >	
     <%uicomponent.renderChild(UIRepositoryManager.class);%>
     <div class="UIResizableBlock" style="height: 400px;">
-      <div style="height: 100%; width: 260px; overflow: auto; float: left;">
-        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
-        <% uicomponent.renderChild(UIECMAdminControlPanel.class); %>
-      </div>
+      <%
+        int style = 6;
+        if(uicomponent.isShowSideBar()) {
+          style += 260;
+      %>
+		      <div style="height: 100%; width: 260px; overflow: auto; float: left;">
+		        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
+		        <% uicomponent.renderChild(UIECMAdminControlPanel.class); %>
+		      </div>
+      <%}%>
       <div class="ECMLayoutSeparator" style="float: left; height: 100%;">
-        <div class="CollapseSideBar" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
+        <div class="<%=(uicomponent.isShowSideBar() ? "CollapseSideBar" : "ExpandSideBar")%>" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
       </div>
-      <div style="margin-left: 266px; height: 100%;">
+      <div style="margin-left: ${style}px; height: 100%;">
 		    <div style="overflow: auto; width: 100%; height: 100%;">
 		      <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
 			  </div>
