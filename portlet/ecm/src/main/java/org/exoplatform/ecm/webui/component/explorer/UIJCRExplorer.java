@@ -27,6 +27,7 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.services.cms.drives.DriveData;

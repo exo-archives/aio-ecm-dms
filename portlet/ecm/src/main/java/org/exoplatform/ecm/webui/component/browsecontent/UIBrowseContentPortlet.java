@@ -7,7 +7,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;

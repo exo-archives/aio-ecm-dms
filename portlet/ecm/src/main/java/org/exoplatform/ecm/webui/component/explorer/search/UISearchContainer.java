@@ -5,7 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;

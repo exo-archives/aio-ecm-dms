@@ -23,6 +23,7 @@ import javax.jcr.version.VersionException;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;

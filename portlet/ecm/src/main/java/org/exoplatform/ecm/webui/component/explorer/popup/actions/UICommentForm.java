@@ -7,10 +7,10 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.webui.component.UIForm;

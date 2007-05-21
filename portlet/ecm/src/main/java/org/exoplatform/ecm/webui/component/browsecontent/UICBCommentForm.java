@@ -7,7 +7,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormStringInput;

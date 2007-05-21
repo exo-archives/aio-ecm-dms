@@ -10,7 +10,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;

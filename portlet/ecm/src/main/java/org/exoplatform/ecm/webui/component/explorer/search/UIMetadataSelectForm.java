@@ -16,8 +16,8 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.webui.component.UIForm;

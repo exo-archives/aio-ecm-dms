@@ -11,7 +11,7 @@ import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.component.UIPopupWindow;

@@ -13,8 +13,8 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIPopupAction;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
