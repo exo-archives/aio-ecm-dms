@@ -6,7 +6,9 @@
  * Apr 17, 2007 3:37:43 PM
  */
 %>
-<% import org.exoplatform.webui.component.UIPageIterator; %>
+<% 
+  import org.exoplatform.ecm.utils.Utils ;
+%>
 <% 
   def resultList = uicomponent.getResultList() ; 
   if(resultList == null) return ;
@@ -33,12 +35,8 @@
   	      even = !even ;
       %>
           <tr class="$rowClass">
-            <%
-              String nodeType = node.getPrimaryNodeType().getName() ;
-              nodeType = nodeType.replace(":", "_") ;
-            %>
             <td width="40px" align="center">
-              <div class="default16x16Icon ${nodeType}16x16Icon" style="margin:auto"><span></span></div>
+              <div class="default16x16Icon ItemIcon <%=Utils.getNodeTypeIcon(node, "16x16Icon")%>" style="margin:auto"><span></span></div>
             </td>
             <td><div class="Text"><%=node.getName()%></div></td>
 	          <%
@@ -59,6 +57,6 @@
     </tbody>
   </table>
   <div style="margin:1px 0px 20px 0px;">
-    <%uicomponent.renderChild(UIPageIterator.class)%>
+    <%uicomponent.renderChild(uicomponent.getUIPageIterator())%>
   </div>
 </div>

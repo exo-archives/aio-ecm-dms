@@ -7,6 +7,10 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -58,6 +62,8 @@ public class UISimpleSearch extends UIForm {
   
   private static final String SQL_QUERY = "select * from nt:base where contains(*, '$1')";
   private static final String OTHER_SQL_QUERY = "select * from nt:base where ";
+  private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
+  private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
   
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null)) ;
@@ -88,16 +94,35 @@ public class UISimpleSearch extends UIForm {
     inputInfor.setActionInfo(CONSTRAINTS, actionInfor) ;
   }
   
-  private String getQueryStatement() {
+  private String getQueryStatement() throws Exception {
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     String statement = "" ;
     String text = getUIStringInput(INPUT_SEARCH).getValue() ;
     if(text != null && constraints_.size() == 0) {
-      statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
+      statement = StringUtils.replace(SQL_QUERY, "$1", text);
+      if ("/".equals(currentNode.getPath())) {
+        statement = StringUtils.replace(SQL_QUERY, "$1", text);
+      } else if(currentNode.getParent().getPath().equals("/")) {
+        statement = statement + "and jcr:path like '/%" + text + "'" ;
+      } else {
+        statement = statement + "and jcr:path like '"+currentNode.getParent().getPath()+"/%/" + text + "'" ;
+      }
     } else if(constraints_.size() > 0) {
       if(text == null) {
         statement = StringUtils.replace(OTHER_SQL_QUERY, "$1", text) ;
+        if ("/".equals(currentNode.getPath())) {
+          statement = StringUtils.replace(OTHER_SQL_QUERY, "$1", text) ;
+        } else {
+          statement = statement + "jcr:path like '" + currentNode.getPath() + "/%'" ;
+          statement = statement + " " + firstOperator_ + " ";
+        } 
       } else {
         statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
+        if ("/".equals(currentNode.getPath())) {
+          statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
+        } else {
+          statement = statement + "or jcr:path like '"+currentNode.getPath()+"/%/" + text + "'" ;
+        } 
         statement = statement + " " + firstOperator_ + " ";
       }
       for(String constraint : constraints_) {
@@ -163,17 +188,31 @@ public class UISimpleSearch extends UIForm {
       String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
       UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ; 
+      UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
+      uiSearchResult.resultMap_.clear() ;
       if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String statement = uiSimpleSearch.getQueryStatement() ; ;
-      Query query = queryManager.createQuery(statement, Query.SQL);                
+      if(text != null) {
+        String queryPath = null;
+        if ("/".equals(uiExplorer.getCurrentNode().getPath())) {
+          queryPath = ROOT_PATH_SQL_QUERY;
+        } else if(uiExplorer.getCurrentNode().getParent().getPath().equals("/")) {
+          queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", "");
+        } else {
+          queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", uiExplorer.getCurrentNode().getParent().getPath());
+        }
+        String statementPath = StringUtils.replace(queryPath, "$1", text) ;
+        Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
+        QueryResult pathQueryResult = pathQuery.execute() ;
+        uiSearchResult.setQueryResults(pathQueryResult) ;
+      }
+      String statement = uiSimpleSearch.getQueryStatement() ;
+      Query query = queryManager.createQuery(statement, Query.SQL);      
       QueryResult queryResult = query.execute();
-      UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ; 
-      UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
-      uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;
       uiECMSearch.setRenderedChild(UISearchResult.class) ;

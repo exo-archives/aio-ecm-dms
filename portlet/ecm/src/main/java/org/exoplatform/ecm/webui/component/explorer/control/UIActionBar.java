@@ -141,7 +141,7 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_XPATH = "xPath" ;
 
   final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1')" ;
-  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%'" ;
   private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
 
@@ -777,7 +777,9 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UISearchContainer.class, 800) ;
+      UISearchContainer uiSearchContainer =
+        event.getSource().createUIComponent(UISearchContainer.class, null, null) ;
+      uiPopupAction.activate(uiSearchContainer, 800, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

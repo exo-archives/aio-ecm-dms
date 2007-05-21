@@ -53,6 +53,8 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
     changeGroup(defaultValue) ;
   }
   
+  public void setCurrentPermission(String per) throws Exception { changeGroup(per) ; }
+  
   public UIComponent getReturnComponent() { return uiComponent ; }
   public String getReturnField() { return returnFieldName ; }
 
