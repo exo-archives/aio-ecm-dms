@@ -254,7 +254,7 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminWorkingArea {
-  margin: 0px 10px 10px 10px;
+  margin: 1px 10px 10px 10px;
 }
 
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
@@ -263,7 +263,7 @@
 }
 
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer {
-	width: 500px;
+	width: 450px;
 	margin: auto;
 }
 
