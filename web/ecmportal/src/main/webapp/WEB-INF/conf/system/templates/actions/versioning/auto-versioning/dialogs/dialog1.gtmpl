@@ -41,14 +41,14 @@
 					<div class="FieldContainer">		          					
 					  <label>Start time:</label>
 					  <% 
-						String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime"] ;
+						String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime"] ;
 						uicomponent.addCalendarField("startTime", fieldStartTime) ;
 					  %>
 					</div>
 					<div class="FieldContainer">		          					
 					  <label>End time:</label>
 					  <% 
-					   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime"] ;
+					   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime"] ;
 						uicomponent.addCalendarField("endTime", fieldEndTime) ;
 					  %>
 					</div>

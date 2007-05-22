@@ -40,7 +40,7 @@
     <div class="FieldContainer">		          					
       <label>Date Time</label>
       <%
-        String[] fieldDateTime = ["jcrPath=/node/exo:datetime", "options=displaytime"] ;
+        String[] fieldDateTime = ["jcrPath=/node/exo:datetime", "options=displaytime", "validate=datetime"] ;
         uicomponent.addCalendarField("datetime", fieldDateTime) ;  
       %>
     </div>

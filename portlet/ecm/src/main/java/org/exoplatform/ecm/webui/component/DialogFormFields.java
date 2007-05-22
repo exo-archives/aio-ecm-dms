@@ -41,6 +41,7 @@ import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIFormUploadInput;
 import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.component.validator.DateTimeValidator;
 import org.exoplatform.webui.component.validator.EmailAddressValidator;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.component.validator.NumberFormatValidator;
@@ -682,6 +683,7 @@ public class DialogFormFields extends UIForm {
     String[] arrDate = null;
     String multiValues = null ;
     String visible = "true";
+    String validateType = null ;
     SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss") ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
@@ -692,7 +694,9 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(VISIBLE)) {
         visible = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
-        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
         defaultValue = argument ;
       }
@@ -724,6 +728,12 @@ public class DialogFormFields extends UIForm {
     if(uiDateTime == null) {
       uiDateTime = new UIFormDateTimeInput(name, name, date) ;
       addUIFormInput(uiDateTime) ;
+    }
+    if(options != null && options.equals("displaytime")) uiDateTime.setDisplayTime(true) ;
+    if(validateType != null) {
+      if(validateType.equals("datetime")) {
+        uiDateTime.addValidator(DateTimeValidator.class) ;
+      }
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {

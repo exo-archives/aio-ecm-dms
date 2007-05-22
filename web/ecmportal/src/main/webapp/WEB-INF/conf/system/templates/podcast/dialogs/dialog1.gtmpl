@@ -61,7 +61,7 @@
     <div class="FieldContainer">		          					
       <label>Publish Date</label>
       <%
-        String[] fieldPublishedDate = ["jcrPath=/node/exo:publishedDate", "options=displaytime"] ;
+        String[] fieldPublishedDate = ["jcrPath=/node/exo:publishedDate", "options=displaytime", "validate=datetime"] ;
         uicomponent.addCalendarField("publishedDate", fieldPublishedDate) ;
       %>
     </div>
