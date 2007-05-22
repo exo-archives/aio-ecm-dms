@@ -20,7 +20,7 @@
 
 .UISubContent .TopSubContent {
   margin-top: 5px;
-  font-weight: bold; font-size: 11px;
+  font-weight: bold; font-size: 10px;
   height: 19px;
 }
 
@@ -85,7 +85,7 @@
 .UISubContent .SubContentTitle .ChildNode a { 
 	text-decoration: none;
 	color: #515151;
-	font-size: 11px; font-weight: bold;
+	font-size: 10px; font-weight: bold;
 }
 
 .UISubContent .SubContentTitle .ChildNode a:hover { 
