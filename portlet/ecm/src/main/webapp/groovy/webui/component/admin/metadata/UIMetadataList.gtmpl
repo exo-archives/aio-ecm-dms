@@ -16,7 +16,7 @@
   <table class="UIGrid">
 	  <thead>
 	    <tr>
-	      <th></th>
+	      <th><%=_ctx.appRes("UIMetadataList.header.icon")%></th>
 		    <th><%=_ctx.appRes("UIMetadataList.header.name")%></th>
 		    <th><%=_ctx.appRes("UIMetadataList.header.type")%></th>
 		    <th><%=_ctx.appRes("UIMetadataList.header.orderable")%></th>

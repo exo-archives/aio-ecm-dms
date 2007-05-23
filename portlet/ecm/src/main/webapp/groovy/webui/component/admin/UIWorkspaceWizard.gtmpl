@@ -38,13 +38,11 @@
 		        <div class="UITabContentContainer">
 	            <%
 	              for(formInput in uicomponent.getChildren()) { 
-	                String display = "none" ;
-	                if(formInput.isRendered()) display="block" ;
+	                String display = "none;" ;
+	                if(formInput.isRendered()) display="block;" ;
 	            %>
 	                <div class="UITabContent" id="UITabContent" style="display: $display;">
-	                  <%
-	                  	uicomponent.renderUIComponent(formInput) ;
-	                  %>
+	                  <%uicomponent.renderUIComponent(formInput) ;%>
 	                </div>
 	            <%}%>
 	          </div>

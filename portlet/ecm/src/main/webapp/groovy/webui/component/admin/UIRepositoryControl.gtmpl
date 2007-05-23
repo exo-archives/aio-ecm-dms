@@ -1,5 +1,6 @@
 <% 
 	import org.exoplatform.webui.component.UIDropDownItemSelector ; 
+	import org.exoplatform.ecm.webui.component.UIPopupAction ;
 %>
 <div class="UIRepositoryControl" id="$uicomponent.id">
 	<div class="ControlLayout">
@@ -29,4 +30,5 @@
 		</div>
 		<div style="clear:left;"><span></span></div>	
 	</div>
+	<%uicomponent.renderChild(UIPopupAction.class);%>	
 </div>

@@ -4,8 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin;
 
+import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
-import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -34,8 +34,8 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   private String repoName_ = "" ;
   
   public UIECMAdminPortlet() throws Exception {
-    addChild(UIPopupAction.class, null, "ECMAdminPopupAction");
-    addChild(UIRepositoryManager.class, null, null) ;
+    addChild(UIRepositoryControl.class, null, null) ;
+    addChild(UIPopupAction.class, null, null);
     addChild(UIECMAdminControlPanel.class, null, null) ;
     addChild(UIECMAdminWorkingArea.class, null, null);
   }

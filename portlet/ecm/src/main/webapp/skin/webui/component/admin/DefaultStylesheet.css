@@ -15,10 +15,7 @@
   overflow: hidden;
 }
 
-.UIECMAdminPortlet .UIRepositoryControl {
-	overflow: hidden;
-}
-
+/*############################## --Begin UIRepositoryControl -- ########################*/
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
   background: url('DefaultSkin/background/RepositoryBarBG.gif') repeat-x left top ; 
@@ -51,7 +48,7 @@
   height: 34px;
 }
 
-.UIECMAdminPortlet .UIRepositoryControl .ActionButton {
+.UIECMAdminPortlet .UIRepositoryControl .ActionsArea .ActionButton {
 	width: 24px ; height: 24px;
 	float: left ;
 	margin: 5px 0px 0px 5px;		
@@ -65,32 +62,33 @@
   background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
 }
 
-/*############################## --Begin UIRepositoryManager -- ########################*
-.UIECMAdminPortlet .UIRepositoryManager {
-}
-
-.UIECMAdminPortlet .UIRepositoryManager .UIRepositoryList .UIAction {
+.UIECMAdminPortlet .UIRepositoryList .UIAction {
 	width: 90px;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIRepositoryForm .UIAction {
+.UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 350px;
-	border: solid 1px red;
 }
-
-.UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
+.UIECMAdminPortlet .UIRepositoryForm label {
+	width: 130px;
+}
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
 	width: 100px;	
 }
 
-.UIRepositoryManager .UIWorkspaceForm .UIAction { 
-	width: 280px;
+.UIRepositoryControl .UIWorkspaceWizard {
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .HiddenLabel {
+
+.UIRepositoryControl .UIWorkspaceWizard .UIAction {
+	float: right;
+}
+
+.UIRepositoryControl .UIWorkspaceWizard .HiddenLabel {
 	display: none  ;	
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .SelectedLabel {
+.UIRepositoryControl .UIWorkspaceWizard .SelectedLabel {
 	display: block ;
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
@@ -98,18 +96,17 @@
 	border-bottom: none ;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
+.UIRepositoryControl .UIWorkspaceWizard .WizardLabel {
 	float: left;
  	vertical-align: middle;
   font-size: 11px; font-weight: bold; 
   margin: 0px 10px;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIWizardAction {
+.UIRepositoryControl .UIWorkspaceWizard .UIWizardAction {
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	border-top: none ;
-	border: solid 1px blue;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -145,11 +142,7 @@
   color: red;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIAction {
-	float: right;
-}
-
-/*############################## --End UIRepositoryManager -- ########################*/
+/*############################## --End UIRepositoryControl -- ########################*/
 
 .UIECMAdminPortlet .UIResizableBlock {
 	overflow: auto;

@@ -12,6 +12,7 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.UIPortletApplication;
 import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -32,7 +33,8 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
-    addChild(UIPopupAction.class, null, "UICBPopupAction") ;
+    UIPopupAction popup = addChild(UIPopupAction.class, null, "UICBPopupAction");
+    popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiContainer = createUIComponent(UIBrowseContainer.class, null, null) ;
     uiContainer.loadPortletConfig(getPortletPreferences()) ;
     addChild(uiContainer) ;

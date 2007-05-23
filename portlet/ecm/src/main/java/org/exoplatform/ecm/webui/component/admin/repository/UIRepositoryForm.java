@@ -5,22 +5,26 @@
 package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.Map;
 
-import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager.RepositoryData;
-import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryManager.WorkspaceData;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.BinarySwapEntry;
+import org.exoplatform.services.jcr.config.ReplicationEntry;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
-import org.exoplatform.webui.component.UIDropDownItemSelector;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
 import org.exoplatform.webui.component.UIFormInputInfo;
 import org.exoplatform.webui.component.UIFormStringInput;
-import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
+import org.exoplatform.webui.component.validator.NumberFormatValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -34,102 +38,158 @@ import org.exoplatform.webui.event.Event.Phase;
  * May 9, 2007  
  */
 
-@ComponentConfig(
+@ComponentConfig(  
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",   
     events = {
       @EventConfig(listeners = UIRepositoryForm.SaveActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.ResetActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.CloseActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.AddPermissionActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.AddWorkspaceActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class),
+      @EventConfig(phase=Phase.DECODE, confirm = "UIRepositoryForm.msg.confirm-delete" , listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.EditWorkspaceActionListener.class)
     }  
 )
-public class UIRepositoryForm extends UIForm implements UISelector {  
+public class UIRepositoryForm extends UIForm implements UIPopupComponent {  
   final  static public String ST_ADD = "AddRepoPopup" ;
   final  static public String ST_EDIT = "EditRepoPopup" ;
-  
-  final static public String POPUP_PERMISSION = "PopupPermission" ;
   final static public String POPUP_WORKSPACE = "PopupWorkspace" ;
   final static public String FIELD_NAME = "name" ;  
-  final static public String FIELD_PERM = "permission" ; 
   final static public String FIELD_SET = "inputSet" ; 
   final static public String FIELD_WORKSPACE = "workspace" ;
-  final static public String FIELD_DESCRIPTION = "description" ;
   final static public String FIELD_ISDEFAULT = "isDefault" ;
+  final static public String FIELD_ACCESSCONTROL = "accessControl" ;
+  final static public String FIELD_AUTHENTICATION = "authenticationPolicy" ;
+  final static public String FIELD_SCURITY  = "securityDomain" ;
+  final static public String FIELD_SESSIONTIME = "sessionTime" ;
+
+  final static public String FIELD_REPCHANNEL = "channelConfig" ;
+  final static public String FIELD_REPENABLE = "enableReplication" ;
+  final static public String FIELD_REPMODE = "repMode" ;
+  final static public String FIELD_REPTESTMODE = "repTestMode" ;
+
+  final static public String FIELD_BSEPATH = "directoryPath" ;
+  final static public String FIELD_BSEMAXBUFFER = "maxBufferSize" ;
+
   public boolean isAddnew_ = true ;  
-  private HashMap<String, WorkspaceData> workspaces_ = new HashMap<String, WorkspaceData>() ;  
-  
+  public String defaulWorkspace_ = null ;
+  private RepositoryEntry repo_ = null;
+  private Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>() ; 
+
   public UIRepositoryForm() throws Exception { 
-    addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ;    
+    addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ; 
     UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(FIELD_SET) ;
-    uiInputSet.addUIFormInput(new UIFormStringInput(FIELD_PERM, FIELD_PERM, null).
-                               addValidator(EmptyFieldValidator.class).setEditable(false)) ;
-    uiInputSet.setActionInfo(FIELD_PERM, new String[] {"AddPermission"}) ;    
     uiInputSet.addUIFormInput(new UIFormInputInfo(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;
     addUIComponentInput(uiInputSet) ;
-    addChild(new UIFormTextAreaInput(FIELD_DESCRIPTION,FIELD_WORKSPACE, null)) ;
     addChild(new UIFormCheckBoxInput<String>(FIELD_ISDEFAULT,FIELD_ISDEFAULT, null).setEditable(false)) ;
+    addChild(new UIFormStringInput(FIELD_ACCESSCONTROL,FIELD_ACCESSCONTROL, null).addValidator(EmptyFieldValidator.class)) ;    
+    addChild(new UIFormStringInput(FIELD_AUTHENTICATION,FIELD_AUTHENTICATION, null).addValidator(EmptyFieldValidator.class)) ;    
+    addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
+    addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null).addValidator(NumberFormatValidator.class)) ;
+    addChild(new UIFormStringInput(FIELD_REPCHANNEL,FIELD_REPCHANNEL, null)) ;
+    addChild(new UIFormCheckBoxInput<String>(FIELD_REPENABLE,FIELD_REPENABLE, null)) ;
+    addChild(new UIFormStringInput(FIELD_REPMODE,FIELD_REPMODE, null)) ;
+    addChild(new UIFormCheckBoxInput<String>(FIELD_REPTESTMODE,FIELD_REPTESTMODE, null)) ;
+    addChild(new UIFormStringInput(FIELD_BSEPATH,FIELD_BSEPATH, null)) ;
+    addChild(new UIFormStringInput(FIELD_BSEMAXBUFFER,FIELD_BSEMAXBUFFER, null).addValidator(EmptyFieldValidator.class).
+        addValidator(NumberFormatValidator.class)) ;
     setActions(new String[] {"Save","AddWorkspace", "Reset", "Close"}) ;
   }  
-  
-  public void refresh(RepositoryData repo){
-    reset() ;  
-    if(repo == null) {        
+
+  public void refresh(RepositoryEntry repo) throws Exception{
+    reset() ;
+    workspaceMap_.clear() ;
+    if(repo == null) {
+      getUIStringInput(FIELD_NAME).setEditable(true) ;
+      repo_ = null;
+      defaulWorkspace_ = null ;
       isAddnew_ = true ;
     } else {
+      repo_ = repo ;
+      defaulWorkspace_ = repo.getDefaultWorkspaceName() ;
+      for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
+        workspaceMap_.put(ws.getName(), ws) ;
+      }
+      getUIStringInput(FIELD_NAME).setEditable(false) ;
       getUIStringInput(FIELD_NAME).setValue(repo.getName()) ;
-      getUIFormTextAreaInput(FIELD_DESCRIPTION).setValue(repo.getDescription()) ;
-      UIFormInputSetWithAction uiInputSet = getChildById(FIELD_SET) ;
-      uiInputSet.getUIStringInput(FIELD_PERM).setValue(repo.getPermissions()) ;
-      workspaces_ = repo.getWorkspaceMap() ;
       refreshLabel() ;
-      getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(Boolean.parseBoolean(repo.isDefault())) ;
+      getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
+      getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl()) ;      
+      getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
+      getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setValue(repo.getSecurityDomain()) ;
+      getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setValue(String.valueOf(repo.getSessionTimeOut())) ;
+      ReplicationEntry re = repo.getReplication() ;
+      if(re != null) {
+        getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setValue(re.getChannelConfig()) ;      
+        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled()) ;
+        getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setValue(re.getMode()) ;     
+        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(re.isTestMode()) ;
+      }
+      BinarySwapEntry bse = repo.getBinaryTemp() ;
+      if(bse != null) {
+        getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setValue(bse.getDirectoryPath()) ;     
+        getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setValue(bse.getMaxBufferSize()) ;
+      }   
       isAddnew_ = false ;
     }
   }
-  public HashMap<String ,WorkspaceData> getWorkspaceMap() {return workspaces_  ;}
-  public void addWorkspaceMap(WorkspaceData ws) {workspaces_.put(ws.getName(), ws) ;}
-  
+
+  public RepositoryEntry getRepo() {return repo_ ;} 
+
   public boolean isExistWorkspace(String workspaceName){
-    return workspaces_.keySet().contains(workspaceName) ;
+    return workspaceMap_.containsKey(workspaceName) ;
   }
-  
-  public WorkspaceData getWorkspace(String workspaceName) {
-   return workspaces_.get(workspaceName) ;
+
+  public WorkspaceEntry getWorkspace(String workspaceName) {
+    return workspaceMap_.get(workspaceName) ;
   }
-  
+
+  public Map<String, WorkspaceEntry> getWorkspaceMap() {
+    return workspaceMap_ ;
+  }
+
+  public void removeWorkspace(String workspaceName) {
+    workspaceMap_.remove(workspaceName) ;
+  }
+
   public void refreshLabel() {
     StringBuilder labels = new StringBuilder() ;
-    for(String s : getWorkspaceMap().keySet()){
+    for(String wsName : workspaceMap_.keySet()){
       if(labels.length() > 0) labels.append(",") ;
-      labels.append(s) ;
+      labels.append(wsName) ;
     }
     UIFormInputSetWithAction workspaceField = getChildById(UIRepositoryForm.FIELD_SET) ;
     workspaceField.setInfoField(UIRepositoryForm.FIELD_WORKSPACE, labels.toString()) ;
     String[] actionInfor = {"EditWorkspace", "RemoveWorkspace"} ;
     workspaceField.setActionInfo(UIRepositoryForm.FIELD_WORKSPACE, actionInfor) ;
   }
-  
-  @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(FIELD_PERM).setValue(value) ;
-    UIRepositoryManager uiManager = getAncestorOfType(UIRepositoryManager.class) ;
-    uiManager.removeChildById(POPUP_PERMISSION) ;
+
+  public boolean isDefaultRepo(String repoName) {
+    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;    
+    return rservice.getConfig().getDefaultRepositoryName().equals(repoName);
   }
-  
+  public boolean isDefaultWorkspace(String workspaceName) {
+    return workspaceName.equals(defaulWorkspace_) ;
+  }
+  public void activate() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void deActivate() throws Exception {
+    repo_ = null ;
+  }
+
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
-      UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
+      UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      uiWizardPopup.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
+
       String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
-      String repoDes = uiForm.getUIStringInput(UIRepositoryForm.FIELD_DESCRIPTION).getValue() ;
-      String repoPerm = uiForm.getUIStringInput(UIRepositoryForm.FIELD_PERM).getValue() ;
-      Set<String> workSpaceSet = uiForm.getWorkspaceMap().keySet() ;      
-      boolean isDefault = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_ISDEFAULT).isChecked() ;
-      UIRepositoryControl uiControl = uiManager.findFirstComponentOfType(UIRepositoryControl.class) ;      
       if(uiForm.isAddnew_) {
         if (uiControl.isExistRepo(repoName)) {
           UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -139,87 +199,119 @@ public class UIRepositoryForm extends UIForm implements UISelector {
           return ; 
         }
       }
-      if(workSpaceSet.size() <= 0) {
+      if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-isrequire", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
-      RepositoryData repoData = new RepositoryData(repoName,uiForm.getWorkspaceMap(),repoPerm,repoDes, isDefault) ;
-      uiControl.addRepository(repoData) ;
-      uiControl.getChild(UIDropDownItemSelector.class).setOptions(uiControl.getRepoItem()) ;
-      uiForm.refresh(null) ;
-      uiForm.workspaces_.clear() ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      uiManager.removeChildById(UIRepositoryForm.ST_ADD) ;
-      uiManager.removeChildById(UIRepositoryForm.ST_EDIT) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ; 
-      
+      String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
+      String authen = uiForm.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
+      String security = uiForm.getUIStringInput(UIRepositoryForm.FIELD_SCURITY).getValue() ;
+      String session = uiForm.getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).getValue() ;
+      String chanel = uiForm.getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).getValue() ;     
+      Boolean repEnable = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).isChecked() ;
+      String mode = uiForm.getUIStringInput(UIRepositoryForm.FIELD_REPMODE).getValue() ;     
+      Boolean testMode = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).isChecked() ;
+
+      String path = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).getValue() ;     
+      String buffer = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).getValue() ;   
+
+      RepositoryEntry re = new RepositoryEntry() ;
+      re.setName(repoName) ;
+      for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()){re.addWorkspace(ws) ;}
+      re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
+      re.setAccessControl(acess) ;
+      re.setAuthenticationPolicy(authen) ;
+      ReplicationEntry repl = new ReplicationEntry() ;
+      repl.setChannelConfig(chanel) ;
+      repl.setEnabled(repEnable) ;
+      repl.setMode(mode) ;
+      repl.setTestMode(testMode) ;
+      re.setReplication(repl) ;
+      BinarySwapEntry bse = new BinarySwapEntry() ;
+      bse.setDirectoryPath(path) ;
+      bse.setMaxBufferSize(buffer) ;
+      re.setBinaryTemp(bse) ;
+      re.setSecurityDomain(security) ;
+      re.setSessionTimeOut(Long.parseLong(session)) ;
+      uiControl.addRepo(re) ;
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
+      uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ; 
     }
   }
   public static class ResetActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
-      uiForm.refresh(null) ;
+      UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      uiWizardPopup.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
+      uiForm.refresh(uiForm.repo_) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
-  public static class AddPermissionActionListener extends EventListener<UIRepositoryForm>{
-    public void execute(Event<UIRepositoryForm> event) throws Exception{
-      UIRepositoryForm uiForm = event.getSource() ;
-      UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;   
-      uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      uiManager.initPopupPermission(UIRepositoryForm.POPUP_PERMISSION, uiForm) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;      
-    }
-  }
+
   public static class AddWorkspaceActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
-      UIRepositoryForm uiForm = event.getSource() ;
-      UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      UIWorkspaceWizard uiWorkspaceWizard = uiManager.createUIComponent(UIWorkspaceWizard.class, null, null) ;
-      uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceWizard) ;      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      UIRepositoryForm uiForm = event.getSource() ;      
+      UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
+      UIWorkspaceWizard uiWorkspaceWizard = uiPopupAction.activate(UIWorkspaceWizard.class, 600) ; 
+      uiWorkspaceWizard.refresh(null) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
   public static class CloseActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
+      UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      uiWizardPopup.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       uiForm.refresh(null) ;
-      UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      uiManager.removeChildById(UIRepositoryForm.ST_ADD) ;
-      uiManager.removeChildById(UIRepositoryForm.ST_EDIT) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;  
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class);
+      uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
   public static class EditWorkspaceActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
       String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      UIWorkspaceWizard uiWorkspaceWizard = uiManager.createUIComponent(UIWorkspaceWizard.class, null, null) ;      
+      UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
+      uiPopupAction.deActivate() ;
+      UIWorkspaceWizard uiWorkspaceWizard = uiPopupAction.activate(UIWorkspaceWizard.class, 600) ; 
       uiWorkspaceWizard.refresh(uiForm.getWorkspace(workspaceName)) ;
-      uiManager.initPopup(UIRepositoryForm.POPUP_WORKSPACE, uiWorkspaceWizard) ;      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
   public static class RemoveWorkspaceActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
-      String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIRepositoryManager uiManager = uiForm.getAncestorOfType(UIRepositoryManager.class) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_PERMISSION) ;
-      uiManager.removeChildById(UIRepositoryForm.POPUP_WORKSPACE) ;
-      uiForm.getWorkspaceMap().remove(workspaceName) ;
+      UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      uiWizardPopup.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
+      String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;     
+      if(uiForm.isDefaultWorkspace(workspaceName)) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        Object[] args = new Object[]{workspaceName}  ;        
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.default-workspace", args)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        return ; 
+      }
+      uiForm.removeWorkspace(workspaceName) ;
       uiForm.refreshLabel() ;      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;  
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;  
     }
   }
 }
