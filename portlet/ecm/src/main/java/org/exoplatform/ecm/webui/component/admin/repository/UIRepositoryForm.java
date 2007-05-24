@@ -284,14 +284,13 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
       String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      System.out.println("\n\n workspaceId>>>>>>"+ workspaceName);
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
       UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
       UIWorkspaceWizard uiWorkspaceWizard = uiPopupAction.activate(UIWorkspaceWizard.class, 600) ; 
       uiWorkspaceWizard.refresh(uiForm.getWorkspace(workspaceName)) ;
-      System.out.println("\n\n workspace Name>>>>>"+ uiForm.getWorkspace(workspaceName).getName());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

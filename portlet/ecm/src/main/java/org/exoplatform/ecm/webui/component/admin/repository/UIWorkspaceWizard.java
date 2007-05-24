@@ -407,6 +407,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       uiPopupAction.deActivate() ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiRepoForm) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction.getAncestorOfType(UIRepositoryControl.class)) ;
     }
   }
 
