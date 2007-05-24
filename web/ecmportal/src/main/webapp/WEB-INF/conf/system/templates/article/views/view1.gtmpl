@@ -143,7 +143,6 @@
 		.UIArticle .FieldContent {
 		  font: normal 11px Verdana;
 		  background: white;
-		  width: 100%;
 		  margin: 5px 2px 3px 18px;
 		}
 
@@ -328,7 +327,8 @@
 								              </div>
 								            </div>
 							          <%}%>
-			               </div>
+							        </div>
+			              </div>
 			            </div>
 		            </div>
 		          </div>

@@ -21,7 +21,7 @@
 .UIDialogPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
-  background: #8eeaaf ;
+  background: #e5fcfa;
 }
 
 .UIDialogPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
@@ -123,7 +123,8 @@
 .UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   margin: auto;
-  border: none;
+  border: solid 1px #cdcdcd;
+  background: #efefef;
 }
 
 .UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {

@@ -8,7 +8,6 @@
 
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
-  border: solid 1px white;
   background: white;
   width: 99.9%; /*  Bug on IE */
 }
@@ -698,6 +697,7 @@
   width: 20px;
   margin-left: 0px;
   float: none;
+  border: none;
 }
 /*================================.UIImportNode=================================*/
 
@@ -780,6 +780,7 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   width: 20px;
   margin-left: 0px;
   float: none;
+  border: none;
 }
 /*================================.UIReferencesList=================================*/
 
@@ -835,5 +836,23 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
   margin: 10px auto;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UIBreadcumbs{
+  margin-bottom: 8px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
+  float: left;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector{
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle{
+	border: none;
+  border-bottom: solid 1px #b7b7b7;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

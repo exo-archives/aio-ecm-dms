@@ -12,18 +12,18 @@
 		<div class="ActionsArea">			
 				<div class="ActionButton">
 					<a href="<%=uicomponent.event('EditRepository')%>">
-						<div class="EditRepository24x24Icon"><span></span></div>
+						<div class="EditRepository24x24Icon" title="Edit Repository"><span></span></div>
 					</a>
 				</div>				
 				<div class="ActionButton">
 					<a href="<%=uicomponent.event('RemoveRepository')%>">
-						<div class="RemoveRepository24x24Icon"><span></span></div>
+						<div class="RemoveRepository24x24Icon" title="Remove Repository"><span></span></div>
 				 	</a>
 				</div>				
 				<div class="SeparatorLine"><span></span></div>				
 				<div class="ActionButton">
 					<a href="<%=uicomponent.event('AddRepository')%>">
-						<div class="AddRepository24x24Icon"><span></span></div>
+						<div class="AddRepository24x24Icon" title="Add Repository"><span></span></div>
 					</a>
 				</div>				
 				<div style="clear:left;"><span></span></div>	

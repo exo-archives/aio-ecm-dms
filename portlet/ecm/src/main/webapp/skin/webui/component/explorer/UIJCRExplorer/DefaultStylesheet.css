@@ -757,4 +757,17 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   border: solid 1px #ABBCCA;
 }
 
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
+  float: left;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector{
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle{
+	border: none;
+  border-bottom: solid 1px #b7b7b7;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

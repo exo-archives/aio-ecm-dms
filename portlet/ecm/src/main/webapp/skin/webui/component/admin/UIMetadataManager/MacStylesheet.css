@@ -44,8 +44,8 @@
   width: 95%;
 }
 
-.UIECMAdminPortlet .UIMetadataList .UIAction {
-  width: 92px;
+.UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
+  width: 120px ;
 }
 
 .UIECMAdminPortlet .MetadataInfoDetails {

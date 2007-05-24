@@ -68,10 +68,6 @@
   font-size: 11px ;
 }
 
-.UIECMAdminPortlet .UIAction {
-	width: 320px;
-}
-
 .UIECMAdminPortlet .ECMLayoutSeparator {
 	width: 6px;
 	background: url('MacSkin/background/LayoutSeparator.gif') repeat-y left center;
@@ -175,11 +171,7 @@
 
 .UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
-  margin: 3px 5px 0px 5px;
-}
-
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer input.checkbox {
-  border: none;
+  margin: 2px 5px 0px 5px;
 }
 
 /*--------------------------.UIFormInputSet----------------------*/
@@ -218,10 +210,112 @@
 	float: left;
 }
 
+/*----------------------------UIRepositoryForm -------------------------*/
+
+.UIECMAdminPortlet .UIRepositoryForm .UIAction {
+	width: 355px;
+	padding-left: 80px;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIRepositoryList .UIAction {
+	width: 90px;
+}
+
+.UIRepositoryManager .UITabPane .TabPaneContent  .FieldContainer input {
+	border: solid 1px #gray;
+}
+
+.UIRepositoryManager .UIFormTabPane .UITabPane .TabPaneContent .UITabContentContainer {
+	border: solid 1px #b7b7b7;
+	border-top: none;
+	border-bottom: none;
+}
+
+.UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
+	width: 155px;	
+}
+
+.UIRepositoryManager .UIWorkspaceForm .UIAction { 
+	width: 280px;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard {
+	padding: 5px 10px;
+	font-size: 11px;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .HiddenLabel {
+	display: none  ;	
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .SelectedLabel {
+	display: block ;
+	background: #F4F4F4 none repeat scroll 0%;
+	border: 1px solid #B7B7B7 ;
+	padding: 10px 0px;
+	border-bottom: none ;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
+	float: left;
+  font-size: 11px; font-weight: bold; 
+  margin: 0px 10px 5px 10px;
+  width: 110px;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIWizardAction {
+	background: #F4F4F4 none repeat scroll 0%;
+	border: 1px solid #B7B7B7 ;
+	border-top: none ;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
+  float: left;
+  height: 33px; line-height: 33px; vertical-align: middle;
+  font-size: 11px; font-weight: bold;
+  margin: 0px 10px 0px 15px;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
+  float: left;
+  height: 34px; line-height: 34px; vertical-align: middle;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a {
+  float: left;
+  width: 18px; height: 18px; 
+  line-height: 18px; vertical-align: middle;
+  font-size: 11px; font-weight: bold;
+  text-align: center; text-decoration: none; color: black;
+  margin: 7px 3px 0px 3px;
+  border: solid 1px gray;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a:hover {
+  height: 18px; line-height: 18px; vertical-align: middle;
+  color: blue;
+  background: #f8f8f8;
+  border: solid 1px #cdb9a0 ;
+}
+
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a.SelectedStep {
+  color: red;
+}
+
+.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIAction {
+	float: right;
+	padding-right: 10px;
+}
+
 /*############################## -- MultiField  -- ########################*/
 
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin: 0px 0px 6px 155px;
+}
+
+.UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+  float: left;
+  margin: 2px 5px 0px 5px;
 }
 
 .UIECMAdminPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
@@ -232,35 +326,7 @@
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
-  background: #8eeaaf ;
-}
-
-.Explorer {
-  margin-bottom: 10px;
-  float: left ;
-  width: 230px ;
-}
-
-.Explorer .ExplorerTree {
-  margin-top: 1px;
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
-.Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-  border: solid 1px blue;
-}
-
-.Explorer .ExplorerTree .Node {
-  line-height: 30px;
-}
-
-.UITreeList .UIGrid {
-  width: 315px;
-  margin-left: 10px ;
+  background: #e5fcfa;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
@@ -315,8 +381,9 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .UIFormInputSetWithAction .radio {
   width: 20px;
-  margin-left: 0px;
+  margin: 0px;
   float: none;
+  border: none;
 }
 
 /*############################## -- UIViewManager -- ########################*/
@@ -675,12 +742,13 @@
 	padding: 10px 0px 10px 50px;
 }
 
+/*############################## -- UIDialogTab -- ########################*/
+
 .UITemplatesManager .UITabPane {
 	width: 95%;
 	padding: 10px 0px;
 	margin: auto;
 }
-/*############################## -- UIDialogTab -- ########################*/
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator {
 	margin-bottom: 15px;

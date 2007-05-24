@@ -376,8 +376,8 @@
 .Edit16x16Icon {
   float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Edit.gif') no-repeat ;
-  cursor: pointer;   
+  background: url('MacSkin/EditIcon.png') no-repeat ;
+  cursor: pointer; 
 }
 
 .EditDocument16x16Icon {
