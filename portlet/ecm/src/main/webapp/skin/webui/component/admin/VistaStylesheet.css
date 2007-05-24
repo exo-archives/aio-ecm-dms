@@ -21,8 +21,8 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
-  background: url('DefaultSkin/background/RepositoryBarBackground1x34.gif') repeat-x left top ; 
-  height: 34px;
+  background: url('VistaSkin/background/ECMAdminTitleBar1x35.gif') repeat-x left top ; 
+  height: 35px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
@@ -63,9 +63,9 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
   width: 2px;
-  height: 30px;
+  height: 25px;
   margin: 2px 2px 0px 8px;		
-  background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
+  background: url('VistaSkin/background/SeparatorLine2x1.png') repeat-y;
   float: left;
 }
 

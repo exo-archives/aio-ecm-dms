@@ -92,7 +92,7 @@
   width: 194px;height:83px;
   border: solid 1px #e4e4e4;
   background: white url('VistaSkin/background/DriverContainerBG1x20.gif') repeat-x bottom;
-  padding: 10px 0px 5px 0px;
+  padding: 10px 5px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DecoratorMiddle {
