@@ -54,7 +54,7 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 14, 2006 5:15:47 PM
  */
 @ComponentConfig(
-   template = "app:/groovy/webui/component/browse/View1.gtmpl",
+   //template = "app:/groovy/webui/component/browse/View1.gtmpl",
     events = {
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
@@ -141,7 +141,7 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
 
- /* public String getTemplate() { return templatePath_ ; }
+  public String getTemplate() { return templatePath_ ; }
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
@@ -153,7 +153,7 @@ public class UIBrowseContainer extends UIContainer {
     try {
       jcrTemplateResourceResolver_ = new JCRResourceResolver(getSession(), "exo:templateFile") ;
     } catch (Exception e) {}
-  }*/
+  }
 
   public boolean isEnableRefDocument() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_REF_DOCUMENT, "")) ;
