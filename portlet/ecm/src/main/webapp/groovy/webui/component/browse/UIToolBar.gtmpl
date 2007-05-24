@@ -27,19 +27,19 @@
     <%}%>
     <%if(isEnablePath) {%>
       <div class="CategoryListIcon"><span></span></div>
-        <a class="PathLabel" href="<%=uicomponent.event('SelectPath', Root.getPath())%>">
-          <%
-          	String nodeName = Root.getName() ;
-          if(Root.getPath().trim().equals("/")) nodeName = _ctx.appRes(uicomponent.getName() + ".label.RootNode") ;
-          %>
-          <%=nodeName%>
-        </a>
-        <%for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
-             String actionLink = uicomponent.event("SelectPath", node.getPath()); 
-         %>
-            <div class="PathIcon"><span></span></div>
-            <a class="PathChildLabel" href="$actionLink"><%=node.getName()%></a>
-        <%}%>
+      <a class="PathLabel" href="<%=uicomponent.event('SelectPath', Root.getPath())%>">
+	      <%
+	      	String nodeName = Root.getName() ;
+	      if(Root.getPath().trim().equals("/")) nodeName = _ctx.appRes(uicomponent.getName() + ".label.RootNode") ;
+	      %>
+	      <%=nodeName%>
+	    </a>
+	    <%for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
+	         String actionLink = uicomponent.event("SelectPath", node.getPath()); 
+	     %>
+	        <div class="PathIcon"><span></span></div>
+	        <a class="PathChildLabel" href="$actionLink"><%=node.getName()%></a>
+	    <%}%>
       <div style="clear:left"></div>
     <%}%> 
   </div>
