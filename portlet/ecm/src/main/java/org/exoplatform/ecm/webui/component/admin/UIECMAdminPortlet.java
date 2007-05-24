@@ -10,6 +10,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIPopupMessages;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.UIPortletApplication;
 import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -35,7 +36,8 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   
   public UIECMAdminPortlet() throws Exception {
     addChild(UIRepositoryControl.class, null, null) ;
-    addChild(UIPopupAction.class, null, null);
+    UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIECMAdminUIPopupAction");
+    uiPopupAction.getChild(UIPopupWindow.class).setId("UIECMAdminUIPopupWindow") ;
     addChild(UIECMAdminControlPanel.class, null, null) ;
     addChild(UIECMAdminWorkingArea.class, null, null);
   }
