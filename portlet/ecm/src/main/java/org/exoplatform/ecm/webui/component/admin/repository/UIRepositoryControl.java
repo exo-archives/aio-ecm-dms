@@ -104,7 +104,7 @@ public class UIRepositoryControl extends UIContainer {
     public void execute(Event<UIRepositoryControl> event) throws Exception {
       UIRepositoryControl uiControl = event.getSource() ;
       UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
-      String repoName = uiSelect.getSelected() ;
+      String repoName = uiSelect.getSelectedValue() ;
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
       UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
       UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
@@ -117,7 +117,7 @@ public class UIRepositoryControl extends UIContainer {
     public void execute(Event<UIRepositoryControl> event) throws Exception {
       UIRepositoryControl uiControl = event.getSource() ;
       UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
-      String repoName = uiSelect.getSelected() ;
+      String repoName = uiSelect.getSelectedValue() ;
       if(uiControl.isDefaultRepo(repoName)) {
         UIApplication uiApp = uiControl.getAncestorOfType(UIApplication.class) ;
         Object[] args = new Object[]{repoName} ;
