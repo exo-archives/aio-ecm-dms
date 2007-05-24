@@ -9,6 +9,9 @@
 .UIWorkflowPortlet {
 	overflow: auto;
 }
+.UIWorkflowPortlet .WorkflowPortletContent{
+	padding: 15px;
+}
 
 .UIWorkflowPortlet .UIForm .UIAction {
 	width: 210px;
@@ -37,7 +40,7 @@
 	float: left;
   border-left: solid 1px #fdfdfd;
   border-right: solid 1px #b7b7b7;
-  height: 29px;
+  height: 28px;
 }
 
 .UIWorkflowPortlet .Toolbar .ToolbarIcon {
