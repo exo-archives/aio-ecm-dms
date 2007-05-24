@@ -68,7 +68,7 @@
 .UISubContent .NavigationButtonContainer {
 	float: right;
 	height: 16px;
-	margin-top: 4px;
+	margin-top: 4px;padding-right:6px;
 }
 
 .UISubContent .NavigationButtonContainer .NavigationIcon {

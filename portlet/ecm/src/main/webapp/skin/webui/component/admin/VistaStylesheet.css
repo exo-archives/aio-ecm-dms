@@ -16,7 +16,7 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
-	overflow: hidden;
+
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
@@ -204,7 +204,7 @@
 }
 
 .UIECMAdminPortlet .UIResizableBlock {
-	overflow: auto;
+
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
