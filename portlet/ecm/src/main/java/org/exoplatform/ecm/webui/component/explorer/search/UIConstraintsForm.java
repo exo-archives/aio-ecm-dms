@@ -16,6 +16,7 @@ import org.exoplatform.webui.component.UIFormDateTimeInput;
 import org.exoplatform.webui.component.UIFormRadioBoxInput;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
+import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -211,13 +212,13 @@ public class UIConstraintsForm extends UIForm {
         advanceQuery = getContainQueryString(properties, NOT_CONTAIN, false) ;
         break;
       case 3:
-        Date fDate = getUIFormDateTimeInput(START_TIME).getDateValue() ;
-        Date tDate = getUIFormDateTimeInput(END_TIME).getDateValue() ;
-        if(fDate.compareTo(tDate) == 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
+//        Date fDate = getUIFormDateTimeInput(START_TIME).getDateValue() ;
+//        Date tDate = getUIFormDateTimeInput(END_TIME).getDateValue() ;
+//        if(fDate.compareTo(tDate) == 1) {
+//          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
+//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//          return ;
+//        }
         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
         String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
@@ -292,9 +293,10 @@ public class UIConstraintsForm extends UIForm {
   
   static public class CompareExactlyActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
-      UIConstraintsForm test = event.getSource();
-      UISearchContainer uiContainer = test.getAncestorOfType(UISearchContainer.class) ;
+      UIConstraintsForm uiConstraintForm = event.getSource();
+      UISearchContainer uiContainer = uiConstraintForm.getAncestorOfType(UISearchContainer.class) ;
       UIPopupAction uiPopup = uiContainer.getChild(UIPopupAction.class);
+      uiPopup.getChild(UIPopupWindow.class).setId("ExactlyFormPopup") ;
       uiPopup.activate(UICompareExactlyForm.class, 600) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }

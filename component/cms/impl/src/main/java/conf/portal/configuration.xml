@@ -6,6 +6,25 @@
     <key>org.exoplatform.services.cms.CmsConfigurationService</key>
     <type>org.exoplatform.services.cms.impl.CmsConfigurationServiceImpl</type>       
     <component-plugins>
+    	<component-plugin>
+    		<name>addSuperType</name>
+        <set-method>addPlugin</set-method>
+        <type>org.exoplatform.services.cms.ext.ReDefineNodeTypePlugin</type>    
+        <init-params>
+        	<object-param>
+        		<name>dc:elementSet.metadata</name>
+            <description>configuration for the cms path</description>
+            <object type="org.exoplatform.services.cms.ext.SuperTypeConfig">
+            <field  name="sourceNodeType"><string>exo:metadata</string></field>
+            <field  name="targetedNodeTypes">
+            	<collection type="java.util.ArrayList"> 
+	            	<value><string>dc:elementSet</string></value>                        
+            	</collection>
+            </field>
+            </object>
+        	</object-param>
+        </init-params>
+    	</component-plugin>      
       <component-plugin>
         <name>addPaths</name>
         <set-method>addPlugin</set-method>

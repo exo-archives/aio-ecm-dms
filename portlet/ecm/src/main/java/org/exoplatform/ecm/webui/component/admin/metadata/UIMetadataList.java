@@ -4,17 +4,16 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
-import javax.jcr.nodetype.NodeTypeManager;
+import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.metadata.MetadataService;
-import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPageIterator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -34,19 +33,12 @@ import org.exoplatform.webui.event.EventListener;
     events = {
       @EventConfig(listeners = UIMetadataList.ViewActionListener.class),
       @EventConfig(listeners = UIMetadataList.EditActionListener.class),
-      @EventConfig(listeners = UIMetadataList.DeleteActionListener.class, confirm="UIMetadataList.msg.confirm-delete"),
-      @EventConfig(listeners = UIMetadataList.AddActionListener.class)
+      @EventConfig(listeners = UIMetadataList.DeleteActionListener.class, confirm="UIMetadataList.msg.confirm-delete")
     }
 )
 public class UIMetadataList extends UIContainer {
 
-  private List<String> metadatasName_ = new ArrayList<String>() ;
-  
-  final static public String METADATA_PATH = "metadataPath" ;
-  final static public String METADATA_MAPPING = "metadataMapping" ;
-  final static public String MAPPING = "mapping" ;
-  
-  final static public String[] ACTIONS = {"Add"} ;
+  final static public String INTERNAL_USE = "exo:internalUse".intern() ;
 
   public UIMetadataList() throws Exception {
     addChild(UIPageIterator.class, null, "MetaDataListIterator") ;
@@ -59,36 +51,25 @@ public class UIMetadataList extends UIContainer {
   }
   
   @SuppressWarnings("unchecked")
-  public List getAllMetadatas() throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    CmsConfigurationService cmsConfigService = getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = 
-      repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
-    NodeTypeManager ntManager = session.getWorkspace().getNodeTypeManager();
+  public List<NodeType> getAllMetadatas() throws Exception {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    List<NodeType> metadatas = new ArrayList<NodeType>() ;
-    metadatasName_ = metadataService.getMetadataList() ;
-    for(int i = 0; i<metadatasName_.size(); i++) {
-      metadatas.add(ntManager.getNodeType(metadatasName_.get(i).toString())) ;
-    }
-    return metadatas ; 
+    return metadataService.getAllMetadatasNodeType() ; 
   }
   
-  public List<String> getMetadatas() { return metadatasName_ ;  }
-  
-  public String[] getActions() { return ACTIONS ; }
-
   public List getListMetadata() throws Exception {
     return getChild(UIPageIterator.class).getCurrentPageData() ;
   }
-
-  static public class AddActionListener extends EventListener<UIMetadataList> {
-    public void execute(Event<UIMetadataList> event) throws Exception {
-      UIMetadataList uiMetaList = event.getSource() ;
-      UIMetadataManager uiManager = uiMetaList.getParent() ;
-      uiManager.initPopup(true) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
-    }
+  
+  public boolean hasTemplate(String metadataName) throws Exception {
+    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    return metadataService.hasMetadata(metadataName) ;
+  }
+  
+  public boolean isInternalUse(String metaTypeName) throws Exception {
+    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    ExtendedNodeType metaType = (ExtendedNodeType)metadataService.getMetadataTypeByName(metaTypeName) ;
+    PropertyDefinition def = metaType.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition();
+    return def.getDefaultValues()[0].getBoolean() ;
   }
   
   static public class ViewActionListener extends EventListener<UIMetadataList> {
@@ -107,7 +88,7 @@ public class UIMetadataList extends UIContainer {
       UIMetadataList uiMetaList = event.getSource() ;
       String metadataName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIMetadataManager uiManager = uiMetaList.getParent() ;
-      uiManager.initPopup(false) ;
+      uiManager.initPopup() ;
       UIMetadataForm uiForm = uiManager.findFirstComponentOfType(UIMetadataForm.class) ;
       uiForm.update(metadataName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
@@ -121,8 +102,13 @@ public class UIMetadataList extends UIContainer {
       UIMetadataManager uiManager = uiMetaList.getParent() ;
       MetadataService metadataService = uiMetaList.getApplicationComponent(MetadataService.class) ;
       metadataService.removeMetadata(metadataName) ;
+      uiMetaList.getAncestorOfType(UIMetadataManager.class).metadatasDeleted.add(metadataName) ;
       uiMetaList.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      UIApplication uiApp = uiMetaList.getAncestorOfType(UIApplication.class) ;
+      Object[] args = {metadataName} ;
+      uiApp.addMessage(new ApplicationMessage("UIMetadataList.msg.delete-successful", args)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
   }
 }

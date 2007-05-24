@@ -62,6 +62,11 @@
   background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
 }
 
+
+/*############################## --Begin UIRepositoryManager -- ########################*/
+.UIECMAdminPortlet .UIRepositoryManager {
+}
+
 .UIECMAdminPortlet .UIRepositoryList .UIAction {
 	width: 90px;
 }

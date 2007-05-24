@@ -18,6 +18,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.webui.component.UIFormDateTimeInput;
 import org.exoplatform.webui.component.UIFormInputBase;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.UIFormUploadInput;
@@ -156,6 +157,8 @@ public class Utils {
           if (input instanceof UIFormUploadInput) {
             byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
             property.setValue(content);
+          } else if(input instanceof UIFormDateTimeInput) {
+            property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
           } else {
             property.setValue(input.getValue()) ;
           }

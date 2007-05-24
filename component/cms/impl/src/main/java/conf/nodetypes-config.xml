@@ -89,9 +89,6 @@
   </nodeType>
 
   <nodeType name="exo:move" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
-    <!--<supertypes>
-      <supertype>nt:base</supertype>
-    </supertypes>-->
     <propertyDefinitions>
       <propertyDefinition name="exo:destWorkspace" requiredType="String" autoCreated="false" mandatory="true"
         onParentVersion="COPY" protected="false" multiple="false">
@@ -100,6 +97,18 @@
       <propertyDefinition name="exo:destPath" requiredType="String" autoCreated="false" mandatory="true"
         onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
+  
+  <nodeType name="exo:metadata" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <propertyDefinitions>
+      <propertyDefinition name="exo:internalUse" requiredType="Boolean" autoCreated="true" mandatory="false"
+        onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+	      <defaultValues>
+	        <defaultValue>false</defaultValue>
+	      </defaultValues>
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>

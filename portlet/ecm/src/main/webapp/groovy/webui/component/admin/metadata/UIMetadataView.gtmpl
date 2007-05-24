@@ -31,15 +31,13 @@
 	      <tr class="EvenRow">
 	        <%
 	          String metaType = metadataType.getName() ;
-	          try {
-	            metaType = metaType.replace(":", "_") ;
-	          } catch(Exception e) {
-	            metaType = "default" ;
-	          }
+	          metaType = metaType.replace(":", "_") ;
 	        %>
 	        <td>
-	          <div class="Icon16x16 ${metaType}16x16Icon" style="margin:0px 5px 0px 3px;"><span></span></div>
-	          <div class="Text">$metadataType.name</div>
+	          <div style="float:left">
+  	          <div class="default16x16Icon ${metaType}16x16Icon" style="float:left;margin:0px 5px 0px 3px;"><span></span></div>
+	            <div class="Text">$metadataType.name</div>
+	          </div>
 	        </td>
 	        <td>
 	          <%
@@ -47,10 +45,10 @@
 	            String iconType ;
 	            if(metadataType.isMixin()) {
 	              booleanText = _ctx.appRes("UIMetadataList.label.true") ;
-	              iconType = "true" ;
+	              iconType = "True" ;
 	            } else {
 	              booleanText = _ctx.appRes("UIMetadataList.label.false") ;
-	              iconType = "false" ;
+	              iconType = "False" ;
 	            }
 	          %>
 	          <div style="width: 65px; margin: auto;">
@@ -63,10 +61,10 @@
 	          <%
 	            if(metadataType.hasOrderableChildNodes()) {
 	              booleanText = _ctx.appRes("UIMetadataList.label.true") ;
-	              iconType = "true" ;
+	              iconType = "True" ;
 	            } else {
 	              booleanText = _ctx.appRes("UIMetadataList.label.false") ;
-	              iconType = "false" ;
+	              iconType = "False" ;
 	            }
 	          %>
 	          <div style="width: 65px; margin: auto;">
@@ -111,14 +109,10 @@
 	        <tr class="$rowClass">
 	          <%
 	            String nodeType = meta.getName() ;
-	            try {
-	              nodeType = nodeType.replace(":", "_") ;
-	            } catch(Exception e) {
-	              nodeType = "default" ;
-	            }
+	            nodeType = nodeType.replace(":", "_") ;
 	          %>
 	          <td width="36px">
-	            <div class="${nodeType}16x16Icon" style="margin:auto"></div>                      
+	            <div class="default16x16Icon ${nodeType}16x16Icon" style="margin:auto"></div>                      
 	          </td>
 	          <td><div class="Text">$meta.name</div></td>
 	          <td align="center"><%=uicomponent.resolveType(meta.getRequiredType())%></td>

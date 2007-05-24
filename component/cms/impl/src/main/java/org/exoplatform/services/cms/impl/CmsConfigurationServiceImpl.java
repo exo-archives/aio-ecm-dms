@@ -4,6 +4,7 @@
 package org.exoplatform.services.cms.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,14 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Session;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PropertiesParam;
 import org.exoplatform.services.cms.CmsConfigurationService;
+import org.exoplatform.services.cms.ext.ReDefineNodeTypePlugin;
+import org.exoplatform.services.cms.ext.SuperTypeConfig;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.picocontainer.Startable;
 
 /**
@@ -29,16 +34,14 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
 
   private RepositoryService jcrService_;
 
-  List<AddPathPlugin> plugins_;
+  List<AddPathPlugin> pathPlugins_ = new ArrayList<AddPathPlugin>();
+  private List<ReDefineNodeTypePlugin> nodeTypePlugins_ = new ArrayList<ReDefineNodeTypePlugin>();
 
   private PropertiesParam propertiesParam_;
 
   public CmsConfigurationServiceImpl(InitParams params,
       RepositoryService jcrService) throws Exception {
     jcrService_ = jcrService;
-
-    plugins_ = new ArrayList<AddPathPlugin>();
-
     propertiesParam_ = params.getPropertiesParam("cms.configuration");
   }
 
@@ -54,17 +57,39 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
   }
 
   private void init() throws Exception {
-    ManageableRepository jcrRepository = jcrService_.getRepository();
-    Map<String, String[]> permissions = null;
-    for (int j = 0; j < plugins_.size(); j++) {
-      CmsConfig config = plugins_.get(j).getPaths();
+    processNodeTypePlugin() ;
+    processAddPathPlugin() ;
+  }
+  
+  private void processNodeTypePlugin() throws Exception {
+    ExtendedNodeTypeManager nodeTypeManager = jcrService_.getDefaultRepository().getNodeTypeManager() ;
+    for(ReDefineNodeTypePlugin plugin:nodeTypePlugins_) {
+      SuperTypeConfig config = plugin.getAddSuperTypeConfig() ;
+      String sourceTypeName = config.getSourceNodeType() ;
+      NodeType sourceNodeType = nodeTypeManager.getNodeType(sourceTypeName) ;
+      List<String> targetedTypeNames = config.getTargetedNodeTypes() ;      
+      for(String name:targetedTypeNames) {
+        ExtendedNodeType extNodeType = (ExtendedNodeType)nodeTypeManager.getNodeType(name) ;
+        NodeType[] declaredSuperTypes = extNodeType.getDeclaredSupertypes() ;        
+        List<NodeType> temp = new ArrayList<NodeType>() ;
+        temp.add(sourceNodeType) ;
+        temp.addAll(Arrays.<NodeType>asList(declaredSuperTypes)) ;
+        extNodeType.setDeclaredSupertypes(temp.toArray(new NodeType[temp.size()])) ;
+      }
+    }    
+  }
+
+  private void processAddPathPlugin()  throws Exception {           
+    Map<String, String[]> permissions = null;    
+    for (int j = 0; j < pathPlugins_.size(); j++) {
+      CmsConfig config = pathPlugins_.get(j).getPaths();
       List jcrPaths = config.getJcrPaths();
       for (Iterator iter = jcrPaths.iterator(); iter.hasNext();) {
         CmsConfig.JcrPath jcrPath = (CmsConfig.JcrPath) iter.next();
         List workspaces = jcrPath.getWorkspaces();
         for (Iterator iterator = workspaces.iterator(); iterator.hasNext();) {
           CmsConfig.Workspace workspace = (CmsConfig.Workspace) iterator.next();
-          Session session = jcrRepository.getSystemSession(workspace.getName());
+          Session session = jcrService_.getDefaultRepository().getSystemSession(workspace.getName());
           permissions = new HashMap<String, String[]>();
           List perms = workspace.getPermissions();
           for (Iterator iterator2 = perms.iterator(); iterator2.hasNext();) {
@@ -84,6 +109,7 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
           Utils.makePath(session.getRootNode(), jcrPath.getPath(),
               "nt:unstructured", permissions);
           session.save();
+          session.logout() ;
         }
       }
     }
@@ -106,8 +132,8 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
   }
 
   public String getJcrPath(String alias) {
-    for (int j = 0; j < plugins_.size(); j++) {
-      CmsConfig config = plugins_.get(j).getPaths();
+    for (int j = 0; j < pathPlugins_.size(); j++) {
+      CmsConfig config = pathPlugins_.get(j).getPaths();
       List jcrPaths = config.getJcrPaths();
       for (Iterator iter = jcrPaths.iterator(); iter.hasNext();) {
         CmsConfig.JcrPath jcrPath = (CmsConfig.JcrPath) iter.next();
@@ -120,10 +146,11 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
   }
 
   public void addPlugin(ComponentPlugin plugin) {
-    if (plugin instanceof AddPathPlugin)
-      plugins_.add((AddPathPlugin) plugin);
+    if (plugin instanceof AddPathPlugin) pathPlugins_.add((AddPathPlugin) plugin);
+    else if(plugin instanceof ReDefineNodeTypePlugin) nodeTypePlugins_.add((ReDefineNodeTypePlugin)plugin) ;
   }
 
+  @SuppressWarnings("unused")
   public ComponentPlugin removePlugin(String name) {
     return null;
   }

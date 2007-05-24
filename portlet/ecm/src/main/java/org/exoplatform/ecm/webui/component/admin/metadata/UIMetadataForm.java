@@ -4,20 +4,15 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.component.UIFormInputSet;
-import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.UIFormTabPane;
 import org.exoplatform.webui.component.UIFormTextAreaInput;
 import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
-import org.exoplatform.webui.component.model.SelectItemOption;
 import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -50,19 +45,19 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
   final static public String DIALOG_TEMPLATE = "dialogTemplate" ;
   final static public String VIEW_TEMPLATE = "viewTemplate" ;
-  final static public String MIXIN_TYPES = "mixinTypes" ;
+  final static public String METADATA_NAME = "metadataName" ;
   final static public String VIEW_PERMISSION = "viewPermission" ;
   final static public String METADATA_TAB = "metadataTypeTab" ;
   final static public String DIALOG_TAB = "dialogTab" ;
   final static public String VIEW_TAB = "viewTab" ;
   
-  private boolean isAddNew_ = true ;
+  private boolean isAddNew_ = false ;
   private String metadataName_ ;
 
   public UIMetadataForm() throws Exception {
     super("UIMetadataForm", false) ;
     UIFormInputSetWithAction uiMetadataType = new UIFormInputSetWithAction(METADATA_TAB) ;
-    uiMetadataType.addUIFormInput(new UIFormSelectBox(MIXIN_TYPES,MIXIN_TYPES, null)) ;
+    uiMetadataType.addUIFormInput(new UIFormStringInput(METADATA_NAME,METADATA_NAME, null)) ;
     uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).
                                   addValidator(EmptyFieldValidator.class).setEditable(false)) ;
     uiMetadataType.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
@@ -78,19 +73,6 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     setActions(new String[] {"Save", "Cancel"}) ;
   }
 
-  public void update(List metadataList){
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    for(int i = 0; i < metadataList.size(); i ++ ) {
-      String ntName = metadataList.get(i).toString() ;
-      options.add(new SelectItemOption<String>(ntName, ntName)) ;
-    }
-    isAddNew_ = true ;
-    getUIFormTextAreaInput(DIALOG_TEMPLATE).setValue("") ;
-    getUIFormTextAreaInput(VIEW_TEMPLATE).setValue("") ;
-    getUIFormSelectBox(MIXIN_TYPES).setOptions(options) ;
-    getUIFormSelectBox(MIXIN_TYPES).setEditable(true) ;
-  } 
-  
   @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
     getUIStringInput(VIEW_PERMISSION).setValue(value) ;
@@ -101,15 +83,11 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   public void update(String metadata)throws Exception{
     metadataName_ = metadata ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    options.add(new SelectItemOption<String>(metadata, metadata)) ;
-    getUIFormSelectBox(MIXIN_TYPES).setOptions(options) ;
-    getUIFormSelectBox(MIXIN_TYPES).setValue(metadata) ;
+    getUIStringInput(METADATA_NAME).setValue(metadata) ;
     String dialogTemplate = metadataService.getMetadataTemplate(metadata, true) ;
     String viewTemplate = metadataService.getMetadataTemplate(metadata, false) ;
     String role = metadataService.getMetadataRoles(metadata, true) ;
-    isAddNew_ = false ;
-    getUIFormSelectBox(MIXIN_TYPES).setDisabled(true) ;
+    getUIStringInput(METADATA_NAME).setEditable(false) ;
     getUIStringInput(VIEW_PERMISSION).setValue(role) ;
     getUIFormTextAreaInput(DIALOG_TEMPLATE).setValue(dialogTemplate) ;
     getUIFormTextAreaInput(VIEW_TEMPLATE).setValue(viewTemplate) ;
@@ -120,19 +98,20 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
       UIMetadataForm uiForm = event.getSource();      
       UIMetadataManager uiMetaManager = uiForm.getAncestorOfType(UIMetadataManager.class) ;
       MetadataService metadataService = uiForm.getApplicationComponent(MetadataService.class) ;
-      String ntName ;
-      if(uiForm.isAddNew_) ntName = uiForm.getUIFormSelectBox(MIXIN_TYPES).getValue() ;
-      else ntName = uiForm.metadataName_ ;
       String roles = uiForm.getUIStringInput(VIEW_PERMISSION).getValue() ;
       String dialogTemplate = uiForm.getUIFormTextAreaInput(DIALOG_TEMPLATE).getValue() ;
       if(dialogTemplate == null) dialogTemplate = "" ;
       String viewTemplate = uiForm.getUIFormTextAreaInput(VIEW_TEMPLATE).getValue() ;
       if(viewTemplate == null) viewTemplate = "" ;
-      metadataService.addMetadata(ntName, true, roles, dialogTemplate, uiForm.isAddNew_) ;
-      metadataService.addMetadata(ntName, false, roles, viewTemplate, uiForm.isAddNew_) ;
-      uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
+      if(uiMetaManager.metadatasDeleted.contains(uiForm.metadataName_)) {
+        uiForm.isAddNew_ = true ;
+        uiMetaManager.metadatasDeleted.remove(uiForm.metadataName_) ;
+      } else {
+        uiForm.isAddNew_ = false ;
+      }
+      metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_) ;
+      metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_) ;
       uiForm.reset() ;
-      uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
       uiMetaManager.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;
     }

@@ -6,13 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
-import javax.jcr.nodetype.NodeTypeManager;
+import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
@@ -22,6 +21,8 @@ import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.impl.TemplateConfig;
 import org.exoplatform.services.cms.templates.impl.TemplatePlugin;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.picocontainer.Startable;
 
 /**
@@ -31,14 +32,16 @@ import org.picocontainer.Startable;
 
 public class MetadataServiceImpl implements MetadataService, Startable{
   
-  static final public String NT_UNSTRUCTURED = "nt:unstructured" ;
-  static final public String EXO_TEMPLATE = "exo:template" ;
-  static final public String EXO_ROLES_PROP = "exo:roles" ;
-  static final public String EXO_TEMPLATE_FILE_PROP = "exo:templateFile" ;
-  static final public String DIALOGS = "dialogs" ;
-  static final public String VIEWS = "views" ;
-  static final public String DIALOG1 = "dialog1" ;
-  static final public String VIEW1 = "view1" ;
+  final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
+  final static public String EXO_TEMPLATE = "exo:template" ;
+  final static public String EXO_ROLES_PROP = "exo:roles" ;
+  final static public String EXO_TEMPLATE_FILE_PROP = "exo:templateFile" ;
+  final static public String INTERNAL_USE = "exo:internalUse".intern() ;
+  final static public String METADATA_TYPE = "exo:metadata".intern() ;
+  final static public String DIALOGS = "dialogs" ;
+  final static public String VIEWS = "views" ;
+  final static public String DIALOG1 = "dialog1" ;
+  final static public String VIEW1 = "view1" ;
   
   private RepositoryService repositoryService_;
   private CmsConfigurationService cmsConfigService_ ;
@@ -55,9 +58,9 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
   
   public void start() {
-    try{      
+    try {      
       init() ;
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace() ;
     }    
   }
@@ -65,21 +68,18 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   public void stop() {}
   
   public void addPlugins(ComponentPlugin plugin) {
-    if (plugin instanceof TemplatePlugin)
-      plugins_.add((TemplatePlugin) plugin);    
+    if (plugin instanceof TemplatePlugin) plugins_.add((TemplatePlugin) plugin);    
   }
   
   private void init() throws Exception{
-    session_ = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;
+    session_ = repositoryService_.getDefaultRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
     Node root = session_.getRootNode();
     Node metadataHome = null ;
     List nodetypes = null;
     for (int j = 0; j < plugins_.size(); j++) {
       nodetypes = plugins_.get(j).getNodeTypes();
-      if (nodetypes.isEmpty()){
-        return;
-      }
+      if (nodetypes.isEmpty()) return;
       TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
       String nodeTypeName = nodeType.getNodetypeName();
       try {
@@ -87,7 +87,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       } catch (PathNotFoundException e) {
       }
       String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
-      + metadataPath.substring(metadataPath.lastIndexOf("/")) ;
+                          + metadataPath.substring(metadataPath.lastIndexOf("/")) ;
       
       for (Iterator iter = nodetypes.iterator(); iter.hasNext();) {
         nodeType = (TemplateConfig.NodeType) iter.next();
@@ -95,7 +95,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
         Node nodeTypeHome = null;
         if (!metadataHome.hasNode(nodeTypeName)){
           nodeTypeHome = Utils.makePath(metadataHome, nodeTypeName, NT_UNSTRUCTURED);          
-        } else{
+        } else {
           nodeTypeHome = metadataHome.getNode(nodeTypeName);
         }
         List dialogs = nodeType.getReferencedDialog();
@@ -136,19 +136,16 @@ public class MetadataServiceImpl implements MetadataService, Startable{
         dialog1.setProperty(EXO_ROLES_PROP, role.split(";"));
         dialog1.setProperty(EXO_TEMPLATE_FILE_PROP, content);
         dialog1.save() ;
-      }else {
+      } else {
         Node view1 = metadataHome.getNode(nodetype).getNode(VIEWS).getNode(VIEW1) ;
         view1.setProperty(EXO_ROLES_PROP, role.split(";"));
         view1.setProperty(EXO_TEMPLATE_FILE_PROP, content);
         view1.save() ;
       }      
-    }else {
+    } else {
       Node metadata = null ;
-      if(metadataHome.hasNode(nodetype)) {
-        metadata = metadataHome.getNode(nodetype) ;
-      }else {
-        metadata = metadataHome.addNode(nodetype, NT_UNSTRUCTURED) ;
-      }
+      if(metadataHome.hasNode(nodetype)) metadata = metadataHome.getNode(nodetype) ;
+      else metadata = metadataHome.addNode(nodetype, NT_UNSTRUCTURED) ;
       addTemplate(metadata, role, content, isDialog) ;
       metadataHome.save() ;
     }    
@@ -159,17 +156,11 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     Node templateHome = createTemplateHome(nodetype, isDialog) ;
     Node template = null ;
     if(isDialog) {
-      if(templateHome.hasNode(DIALOG1)) {
-        template = templateHome.getNode(DIALOG1) ;
-      }else {
-        template = templateHome.addNode(DIALOG1, EXO_TEMPLATE) ;
-      }
-    }else {
-      if(templateHome.hasNode(VIEW1)) {
-        template = templateHome.getNode(VIEW1) ;
-      }else {
-        template = templateHome.addNode(VIEW1, EXO_TEMPLATE) ;
-      }
+      if(templateHome.hasNode(DIALOG1)) template = templateHome.getNode(DIALOG1) ;
+      else template = templateHome.addNode(DIALOG1, EXO_TEMPLATE) ;
+    } else {
+      if(templateHome.hasNode(VIEW1)) template = templateHome.getNode(VIEW1) ;
+      else template = templateHome.addNode(VIEW1, EXO_TEMPLATE) ;
     }    
     template.setProperty(EXO_ROLES_PROP, role.split(";")) ;
     template.setProperty(EXO_TEMPLATE_FILE_PROP, content) ;
@@ -184,34 +175,35 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     session_.save() ;
   } 
   
-  public List getMetadataList() throws Exception {
-    List<String> metadatas = new ArrayList<String>() ;
-    session_.refresh(true) ;
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);    
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;      
-    NodeIterator iter = metadataHome.getNodes() ;
-    while(iter.hasNext()) {
-      metadatas.add(iter.nextNode().getName()) ;       
+  public List<String> getMetadataList() throws Exception {
+    List<String> metadataTypes = new ArrayList<String>() ;
+    for(NodeType metadata:getAllMetadatasNodeType()) {
+      metadataTypes.add(metadata.getName()) ;
     }
-    return metadatas ;
+    return metadataTypes ;
+  }
+  
+  public List<NodeType> getAllMetadatasNodeType() throws Exception {
+    List<NodeType> metadataTypes = new ArrayList<NodeType>() ;    
+    ExtendedNodeTypeManager ntManager = repositoryService_.getDefaultRepository().getNodeTypeManager();     
+    NodeTypeIterator ntIter = ntManager.getMixinNodeTypes() ;
+    while(ntIter.hasNext()) {
+      NodeType nt = ntIter.nextNodeType() ;
+      if(nt.isNodeType(METADATA_TYPE)) metadataTypes.add(nt) ;
+    }
+    return metadataTypes ;
   }
   
   private Node createTemplateHome(Node nodetype, boolean isDialog) throws Exception{
     if(isDialog) {
       Node dialogs = null ;
-      if(nodetype.hasNode(DIALOGS)) {
-        dialogs = nodetype.getNode(DIALOGS) ;      
-      }else {
-        dialogs = nodetype.addNode(DIALOGS, NT_UNSTRUCTURED) ;
-      }    
+      if(nodetype.hasNode(DIALOGS)) dialogs = nodetype.getNode(DIALOGS) ;      
+      else dialogs = nodetype.addNode(DIALOGS, NT_UNSTRUCTURED) ;
       return dialogs ;
     }
     Node views = null ;
-    if(nodetype.hasNode(VIEWS)) {
-      views = nodetype.getNode(VIEWS) ;      
-    }else {
-      views = nodetype.addNode(VIEWS, NT_UNSTRUCTURED) ;
-    }    
+    if(nodetype.hasNode(VIEWS)) views = nodetype.getNode(VIEWS) ;      
+    else views = nodetype.addNode(VIEWS, NT_UNSTRUCTURED) ;
     return views ;    
   }
   
@@ -219,21 +211,20 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
     Node metadataHome = (Node)session_.getItem(metadataPath) ;
     Node template = null ;
-    if(isDialog){
-      template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
-    }else {
-      template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
-    }
+    if(!hasMetadata(name)) return null;
+    if(isDialog) template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
+    else template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
     return template.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
   }
   
   public String getMetadataPath(String name, boolean isDialog) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
     Node metadataHome = (Node)session_.getItem(metadataPath) ;
+    if(!hasMetadata(name)) return null;
     Node template = null ;
     if(isDialog){
       template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
-    }else {
+    } else {
       template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
     }
     return template.getPath();
@@ -243,9 +234,10 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
     Node metadataHome = (Node)session_.getItem(metadataPath) ;
     Node template = null ;
+    if(!hasMetadata(name)) return null;
     if(isDialog){
       template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
-    }else {
+    } else {
       template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
     }
     Value[] values = template.getProperty(EXO_ROLES_PROP).getValues() ;
@@ -257,23 +249,26 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     return roles.toString();
   }  
   
-  public List getMixinNodeTypes() throws Exception {
-    List<String> mixinNodetypes = new ArrayList<String>() ;
-    NodeTypeManager ntManager_ = session_.getWorkspace().getNodeTypeManager();
-    NodeTypeIterator ntIter = ntManager_.getAllNodeTypes() ;
-    while(ntIter.hasNext()) {
-      NodeType nt = ntIter.nextNodeType() ;
-      if(nt.isMixin()) {
-        mixinNodetypes.add(nt.getName()) ;
-      }
-    }
-    return mixinNodetypes ;
-  }
-  
   public boolean hasMetadata(String name) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
     Node metadataHome = (Node)session_.getItem(metadataPath) ;
     if(metadataHome.hasNode(name)) return true ;
    return false ; 
+  }
+
+  public List<String> getExternalMetadataType() throws Exception {
+    List<String> extenalMetaTypes = new ArrayList<String>() ;
+    for(NodeType metadata: getAllMetadatasNodeType()) {      
+      ExtendedNodeType extNT = (ExtendedNodeType)metadata ;
+      PropertyDefinition internalUseDef = extNT.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
+      if(!internalUseDef.getDefaultValues()[0].getBoolean()) extenalMetaTypes.add(metadata.getName()) ;
+    }
+    return extenalMetaTypes ;
+  }
+  
+  public NodeType getMetadataTypeByName(String metadataTypeName) throws Exception {
+    NodeType metadataType = repositoryService_.getDefaultRepository().getNodeTypeManager().getNodeType(metadataTypeName) ;
+    if(metadataType.isNodeType(METADATA_TYPE)) return metadataType ;
+    return null ;  
   }
 }

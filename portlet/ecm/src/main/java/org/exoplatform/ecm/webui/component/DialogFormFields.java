@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -737,7 +738,7 @@ public class DialogFormFields extends UIForm {
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
-      uiDateTime.setDateValue(node_.getProperty(getPropertyName(jcrPath)).getDate().getTime()) ;
+      uiDateTime.setCalendar(node_.getProperty(getPropertyName(jcrPath)).getDate()) ;
     } 
 
     if(isNotEditNode_) {
@@ -745,13 +746,13 @@ public class DialogFormFields extends UIForm {
         String propertyName = jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ;
         if(propertyNode_.hasProperty(propertyName)) {
           if(!propertyNode_.getProperty(propertyName).getDefinition().isMultiple()) {
-            uiDateTime.setDateValue(propertyNode_.getProperty(propertyName).getDate().getTime());
+            uiDateTime.setCalendar(propertyNode_.getProperty(propertyName).getValue().getDate());
           } 
         }
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
-        uiDateTime.setDateValue(node_.getProperty(getPropertyName(jcrPath)).getDate().getTime());
+        uiDateTime.setCalendar(node_.getProperty(getPropertyName(jcrPath)).getDate());
       } else {
-        uiDateTime.setDateValue(new Date()) ;
+        uiDateTime.setCalendar(new GregorianCalendar()) ;
       }
     }
     if(!visible.equals("false")) renderField(name) ;
