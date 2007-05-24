@@ -5,9 +5,12 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -124,12 +127,14 @@ public class UIConstraintsForm extends UIForm {
   }
   
   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
+    Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
+    Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
     if(type.equals(CREATED_DATE)) {
       virtualDateQuery_ = "(documents created before '"+beforeDate+"') AND (after '"+afterDate+"')" ;
-      return "(jcr:created > '"+beforeDate+"') AND (jcr:created < '"+afterDate+"')" ;
+      return "(jcr:created > '"+ISO8601.format(bfDate)+"') AND (jcr:created < '"+ISO8601.format(afDate)+"')" ;
     } else if(type.equals(MODIFIED_DATE)) {
       virtualDateQuery_ = "documents modified before '"+beforeDate+"' AND after '"+afterDate+"'" ;
-      return "(jcr:lastModified > '"+beforeDate+"') AND (jcr:lastModified < '"+afterDate+"')" ;
+      return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"') AND (jcr:lastModified < '"+ISO8601.format(afDate)+"')" ;
     }
     return "" ;
   }
@@ -212,13 +217,13 @@ public class UIConstraintsForm extends UIForm {
         advanceQuery = getContainQueryString(properties, NOT_CONTAIN, false) ;
         break;
       case 3:
-//        Date fDate = getUIFormDateTimeInput(START_TIME).getDateValue() ;
-//        Date tDate = getUIFormDateTimeInput(END_TIME).getDateValue() ;
-//        if(fDate.compareTo(tDate) == 1) {
-//          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
-//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//          return ;
-//        }
+        Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
+        Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
+        if(bfDate.compareTo(afDate) == 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
         String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
