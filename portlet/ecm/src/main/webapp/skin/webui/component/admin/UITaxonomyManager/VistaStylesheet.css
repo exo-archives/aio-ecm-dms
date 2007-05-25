@@ -29,7 +29,7 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .HomeNode {
-  background-color: #eaeaea;
+  background: url('VistaSkin/background/HomeNodeBG1x20.gif') repeat-x top;
   font-weight: bold; line-height: 30px;
   border-bottom: solid 1px #d9d8d8;  
   padding: 0px 7px;
@@ -37,14 +37,14 @@
 
 .UIECMAdminPortlet .UITaxonomyManager .Node {
   line-height: 29px;
-  background-color: #eaeaea;
+  background-color: #efefef;
   border-bottom: solid 1px #d9d8d8;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NodeEven {
   line-height: 29px;
-  background-color: #f4f3f3;
-  border-bottom: solid 1px #d9d8d8;
+  background-color: #f9f9f9;
+  border-bottom: solid 1px #e4e4e4;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NoneIcon {
