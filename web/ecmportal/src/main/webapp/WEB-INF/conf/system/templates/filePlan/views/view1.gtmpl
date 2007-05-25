@@ -12,6 +12,9 @@
 	def recordsService = uicomponent.getComponentInstanceOfType(className) ;
   def rcontext = _ctx.getRequestContext() ;
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.loadScroll');
+  rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.UIJCRExplorer.initScroll');
 %>
 <style>
 	.UIDivInfo {
@@ -38,6 +41,11 @@
 		padding-left: 7px;
 		background: white;
 	}
+  
+  .UIDocumentWorkspace .NavigationButtonContainer {
+    display: none;
+    float: right;
+  }
 	
 </style>		
 
@@ -226,8 +234,12 @@
 			                </div>
 			              </div>
 			            </div> 
-				                
 				        </div>
+                <div class="NavigationButtonContainer">
+                  <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
+                    <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
+                  </div>
+                </div>
 				      </div>
 				    </div>
 				  </div>
