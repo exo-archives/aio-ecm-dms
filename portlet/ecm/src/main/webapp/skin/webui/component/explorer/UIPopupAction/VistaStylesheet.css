@@ -76,13 +76,13 @@
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
   float: left;
-  width: 16px; height: 16px;
+  width: 24px; height:24px;
   margin: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
-  border: solid 1px #5f90ba;
-  background-color: #dee7f5;
+  border: solid 1px #bbbbbb;
+  background-color: #f2f2f2;
   padding: 10px;
 }
 
@@ -104,25 +104,25 @@
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
-  width: 220px;
-  margin-top: 15px;
+  width: 240px;
+  margin-top: 15px;font-size:11px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
-  line-height: 21px;
-  background: url('DefaultSkin/background/InfoBarLeftBg5x21.gif') no-repeat left;
-  padding-left: 5px;
+  line-height: 24px;
+  background: url('VistaSkin/background/InfoBarLeftBg30x24.png') no-repeat left;
+  padding-left:30px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleRightBar {
-  line-height: 21px;
-  background: url('DefaultSkin/background/InfoBarRightBg22x21.gif') no-repeat right;
-  padding-right: 21px;
+  line-height: 24px;
+  background: url('VistaSkin/background/InfoBarRightBg35x24.png') no-repeat right;
+  padding-right: 35px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
-  line-height: 21px; vertical-align: middle;
-  background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
+  line-height: 24px; vertical-align: middle;
+  background: url('VistaSkin/background/InfoBarCenterBg1x24.png') repeat-x;
   padding: 0px 10px;
 }
 /*############################## -- End UINodeTypeInfo -- ##############################*/

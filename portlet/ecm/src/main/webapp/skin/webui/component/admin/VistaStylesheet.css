@@ -178,7 +178,7 @@
 }
 
 .UIECMAdminPortlet .CollapseSideBar {
-	width: 8px; height: 33px;
+	width: 8px; height: 42px;
 	background: url('VistaSkin/background/CollapseSideBar.gif') no-repeat;
 	cursor: pointer;
 }
