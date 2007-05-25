@@ -83,16 +83,10 @@ public class UIRepositoryControl extends UIContainer {
 
   public RepositoryEntry getRepo(String name) {return repoMap_.get(name) ;}
 
-  public void initPopup(String popupId ,UIComponent uiForm) throws Exception {
-    removeChildById(popupId) ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId) ;
-    uiPopup.setUIComponent(uiForm) ;
-    uiPopup.setWindowSize(560,400) ;      
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+  public void reloadValue(){
+    UIDropDownItemSelector uiDopDownSelector = getChild(UIDropDownItemSelector.class) ;
+    uiDopDownSelector.setOptions(getRepoItem()) ;
   }
-
   public static class SelectRepoActionListener extends EventListener<UIRepositoryControl>{
     public void execute(Event<UIRepositoryControl> arg0) throws Exception {
       System.out.println("Come here");
@@ -108,6 +102,7 @@ public class UIRepositoryControl extends UIContainer {
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
       UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
       UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
+      uiForm.isAddnew_ = false ;
       uiForm.refresh(uiControl.getRepo(repoName)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -126,7 +121,7 @@ public class UIRepositoryControl extends UIContainer {
         return  ;
       }
       uiControl.removeRepo(repoName) ;
-      uiSelect.setOptions(uiControl.getRepoItem()) ;
+      uiControl.reloadValue() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ;
     }
   }
@@ -137,7 +132,9 @@ public class UIRepositoryControl extends UIContainer {
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
       UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
       UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
-      uiForm.refresh(uiControl.getRepo(null)) ;
+      RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
+      uiForm.isAddnew_ = true ;
+      uiForm.refresh(rservice.getDefaultRepository().getConfiguration()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;    }
   }
 

@@ -106,6 +106,7 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UISearchController uiSearchController = uiContainer.getChild(UISearchController.class) ;
       uiSearchController.setShowHiddenSearch() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  
   static public class VoteActionListener extends EventListener<UIToolBar> {

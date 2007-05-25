@@ -4,8 +4,14 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
@@ -13,9 +19,14 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
+import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -99,38 +110,56 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   public void refresh(RepositoryEntry repo) throws Exception{
     reset() ;
     workspaceMap_.clear() ;
-    if(repo == null) {
-      getUIStringInput(FIELD_NAME).setEditable(true) ;
-      repo_ = null;
-      defaulWorkspace_ = null ;
-      isAddnew_ = true ;
-    } else {
-      repo_ = repo ;
-      defaulWorkspace_ = repo.getDefaultWorkspaceName() ;
-      for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
-        workspaceMap_.put(ws.getName(), ws) ;
+    getUIStringInput(FIELD_NAME).setEditable(true) ;
+    if(repo != null) {
+      if(isAddnew_) {      
+        repo_ = null;
+        defaulWorkspace_ = null ;
+        refreshLabel() ;
+        getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
+        getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl()) ;      
+        getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
+        getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setValue(repo.getSecurityDomain()) ;
+        getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setValue(String.valueOf(repo.getSessionTimeOut())) ;
+        ReplicationEntry re = repo.getReplication() ;
+        if(re != null) {
+          getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setValue(re.getChannelConfig()) ;      
+          getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled()) ;
+          getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setValue(re.getMode()) ;     
+          getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(re.isTestMode()) ;
+        }
+        BinarySwapEntry bse = repo.getBinaryTemp() ;
+        if(bse != null) {
+          getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setValue(bse.getDirectoryPath()) ;     
+          getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setValue(bse.getMaxBufferSize()) ;
+        }
+      } else {
+        repo_ = repo ;
+        defaulWorkspace_ = repo.getDefaultWorkspaceName() ;
+        for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
+          workspaceMap_.put(ws.getName(), ws) ;
+        }
+        getUIStringInput(FIELD_NAME).setEditable(false) ;
+        getUIStringInput(FIELD_NAME).setValue(repo.getName()) ;
+        refreshLabel() ;
+        getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
+        getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl()) ;      
+        getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
+        getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setValue(repo.getSecurityDomain()) ;
+        getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setValue(String.valueOf(repo.getSessionTimeOut())) ;
+        ReplicationEntry re = repo.getReplication() ;
+        if(re != null) {
+          getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setValue(re.getChannelConfig()) ;      
+          getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled()) ;
+          getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setValue(re.getMode()) ;     
+          getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(re.isTestMode()) ;
+        }
+        BinarySwapEntry bse = repo.getBinaryTemp() ;
+        if(bse != null) {
+          getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setValue(bse.getDirectoryPath()) ;     
+          getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setValue(bse.getMaxBufferSize()) ;
+        }   
       }
-      getUIStringInput(FIELD_NAME).setEditable(false) ;
-      getUIStringInput(FIELD_NAME).setValue(repo.getName()) ;
-      refreshLabel() ;
-      getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
-      getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl()) ;      
-      getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
-      getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setValue(repo.getSecurityDomain()) ;
-      getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setValue(String.valueOf(repo.getSessionTimeOut())) ;
-      ReplicationEntry re = repo.getReplication() ;
-      if(re != null) {
-        getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setValue(re.getChannelConfig()) ;      
-        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled()) ;
-        getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setValue(re.getMode()) ;     
-        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(re.isTestMode()) ;
-      }
-      BinarySwapEntry bse = repo.getBinaryTemp() ;
-      if(bse != null) {
-        getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setValue(bse.getDirectoryPath()) ;     
-        getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setValue(bse.getMaxBufferSize()) ;
-      }   
-      isAddnew_ = false ;
     }
   }
 
@@ -188,6 +217,101 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
+      
+      RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
+      uiForm.getWorkspaceMap() ;
+      RepositoryImpl defRep = (RepositoryImpl) rservice.getDefaultRepository();
+      for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
+
+        try {
+          defRep = (RepositoryImpl) rservice.getDefaultRepository();
+          System.out.println("Class forname>>>"+ ws.getContainer().getType());
+          defRep.initWorkspace(ws.getName(), ws.getAutoInitializedRootNt()) ;
+          defRep.configWorkspace(ws);
+          defRep.createWorkspace(ws.getName());
+          
+          //getWorkspaceContainer(ws.getName()).getWorkspaceInitializer() ;  
+          Session sess = defRep.getSystemSession(ws.getName());
+
+          Node root = sess.getRootNode();
+          String [] wsNames = rservice.getDefaultRepository().getWorkspaceNames() ;
+          System.out.println("\\Create ws === ") ;
+          for(String name : wsNames) {
+            System.out.println("Name === " + name) ;
+          }
+
+        } catch (RepositoryException e) {
+          e.printStackTrace() ;
+        } catch (RepositoryConfigurationException e) {
+          e.printStackTrace() ;
+        }
+
+      }
+      /*List params = new ArrayList();
+      params.add(new SimpleParameterEntry("sourceName", "jdbcjcr"));
+      params.add(new SimpleParameterEntry("db-type", "generic"));
+      params.add(new SimpleParameterEntry("multi-db", "false"));
+      params.add(new SimpleParameterEntry("update-storage", "true"));
+      params.add(new SimpleParameterEntry("max-buffer-size", "204800"));
+      params.add(new SimpleParameterEntry("swap-directory", "target/temp/swap/ws"));
+
+      ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer",
+          (ArrayList) params);
+      containerEntry.setParameters(params);
+
+      WorkspaceEntry workspaceEntry = new WorkspaceEntry("newws", "nt:unstructured");
+      workspaceEntry.setContainer(containerEntry);
+
+      RepositoryImpl defRep;
+      try {
+        defRep = (RepositoryImpl) rservice.getDefaultRepository();
+        defRep.configWorkspace(workspaceEntry);
+        defRep.createWorkspace(workspaceEntry.getName());
+
+        Session sess = defRep.getSystemSession(workspaceEntry.getName());
+
+        Node root = sess.getRootNode();
+        String [] wsNames = rservice.getDefaultRepository().getWorkspaceNames() ;
+        System.out.println("\\Create ws === ") ;
+        for(String name : wsNames) {
+          System.out.println("Name === " + name) ;
+        }
+
+      } catch (RepositoryException e) {
+      } catch (RepositoryConfigurationException e) {
+      }*/
+
+      /*WorkspaceEntry ws = uiForm.getWorkspaceMap().get("test") ;
+      rservice.getDefaultRepository().configWorkspace(ws) ;
+      rservice.getDefaultRepository().createWorkspace(ws.getName()) ;
+      String [] wsNames = rservice.getDefaultRepository().getWorkspaceNames() ;
+      System.out.println("\\Create ws === ") ;
+      for(String name : wsNames) {
+        System.out.println("Name === " + name) ;
+      }*/
+
+      /*rservice.getDefaultRepository().getConfiguration().addWorkspace(ws) ;
+      wsNames = rservice.getDefaultRepository().getWorkspaceNames() ;
+      System.out.println("\\Add config ws === ") ;
+      for(String name : wsNames) {
+        System.out.println("Name === " + name) ;
+      }
+
+      rservice.getDefaultRepository().createWorkspace(ws.getName()) ;
+      //rservice.getDefaultRepository().getConfiguration().addWorkspace(ws) ;
+      rservice.getDefaultRepository().configWorkspace(ws) ;
+      rservice.getDefaultRepository().initWorkspace(ws.getName(),"nt:folder") ;
+      wsNames = rservice.getDefaultRepository().getWorkspaceNames() ;
+      System.out.println("\\Create and Config ws === ") ;
+      for(String name : wsNames) {
+        System.out.println("Name === " + name) ;
+      }
+       */
+      /*UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
+      findFirstComponentOfType(UIRepositoryControl.class) ;
+      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      uiWizardPopup.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
 
       String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
       if(uiForm.isAddnew_) {
@@ -217,7 +341,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       String path = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).getValue() ;     
       String buffer = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).getValue() ;   
 
+
       RepositoryEntry re = new RepositoryEntry() ;
+
       re.setName(repoName) ;
       for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()){re.addWorkspace(ws) ;}
       re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
@@ -236,6 +362,11 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       re.setSecurityDomain(security) ;
       re.setSessionTimeOut(Long.parseLong(session)) ;
       uiControl.addRepo(re) ;
+      RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
+
+      rservice.getCurrentRepository().getw
+      */
+      uiControl.reloadValue() ;
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
@@ -262,7 +393,16 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       findFirstComponentOfType(UIRepositoryControl.class) ;
       UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
       UIWorkspaceWizard uiWorkspaceWizard = uiPopupAction.activate(UIWorkspaceWizard.class, 600) ; 
-      uiWorkspaceWizard.refresh(null) ;
+      RepositoryService rservice =uiForm.getApplicationComponent(RepositoryService.class) ;
+      WorkspaceEntry wsdf = null ;
+      for(WorkspaceEntry ws : rservice.getDefaultRepository().getConfiguration().getWorkspaceEntries()) {
+        if(ws.getName().equals(rservice.getDefaultRepository().getConfiguration().getDefaultWorkspaceName())) {
+          wsdf = ws ;
+          break ;
+        }
+      }
+      uiWorkspaceWizard.isAddnew_ = true ;
+      uiWorkspaceWizard.refresh(wsdf) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
@@ -303,7 +443,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;     
-      if(uiForm.isDefaultWorkspace(workspaceName)) {
+      if((!uiForm.isAddnew_)&&(uiForm.isDefaultWorkspace(workspaceName))) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         Object[] args = new Object[]{workspaceName}  ;        
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.default-workspace", args)) ;
