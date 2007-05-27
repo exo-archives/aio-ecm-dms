@@ -417,3 +417,6 @@
 }
 
 /*############################## -- End Others   -- ##############################*/
+.UIJCRExplorerPortlet .UIUploadManager .UIAction {
+  width: 180px;
+}

@@ -36,7 +36,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIFolderForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIUploadForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIWatchDocumentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
@@ -61,6 +60,8 @@ import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
+import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadForm;
+import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.portal.component.view.Util;
@@ -356,7 +357,8 @@ public class UIActionBar extends UIForm {
         return ;
       }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UIUploadForm .class, 600) ;
+      UIUploadManager uiUploadManager = event.getSource().createUIComponent(UIUploadManager.class, null, null) ;
+      uiPopupAction.activate(uiUploadManager, 600, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

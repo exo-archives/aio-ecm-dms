@@ -2,7 +2,7 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.explorer.popup.info;
+package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,17 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIFormDateTimeInput;
+import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.UIFormStringInput;
-import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -33,26 +34,24 @@ import org.exoplatform.webui.event.Event.Phase;
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
  *          minh.dang@exoplatform.com
- * Jan 25, 2007  
- * 1:47:55 PM
+ * May 25, 2007 8:58:25 AM
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = UIViewMetadataForm.SaveActionListener.class),
-      @EventConfig(listeners = UIViewMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIViewMetadataForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIViewMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIAddMetadataForm.SaveActionListener.class),
+      @EventConfig(listeners = UIAddMetadataForm.CancelActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIAddMetadataForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIAddMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UIViewMetadataForm extends DialogFormFields {
+public class UIAddMetadataForm extends DialogFormFields {
 
   private String nodeType_ ;
-  
-  public UIViewMetadataForm() throws Exception {
+  public UIAddMetadataForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"}) ;
   }
-
+  
   public void setNodeType(String nodeType) { nodeType_ = nodeType ; }
   public String getNodeType() { return nodeType_ ; } 
   
@@ -74,12 +73,12 @@ public class UIViewMetadataForm extends DialogFormFields {
   }
 
   @SuppressWarnings("unchecked")
-  static public class SaveActionListener extends EventListener<UIViewMetadataForm> {
-    public void execute(Event<UIViewMetadataForm> event) throws Exception {
-      UIViewMetadataForm uiForm = event.getSource();
+  static public class SaveActionListener extends EventListener<UIAddMetadataForm> {
+    public void execute(Event<UIAddMetadataForm> event) throws Exception {
+      UIAddMetadataForm uiForm = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      UIViewMetadataManager uiViewManager = uiForm.getAncestorOfType(UIViewMetadataManager.class) ;
-      Node node = uiViewManager.getViewNode(uiForm.getNodeType());
+      UIUploadContainer uiUploadContainer = uiForm.getAncestorOfType(UIUploadContainer.class) ;
+      Node node = uiUploadContainer.getEditNode(uiForm.nodeType_) ;
       NodeTypeManager ntManager = uiJCRExplorer.getSession().getWorkspace().getNodeTypeManager();
       PropertyDefinition[] props = ntManager.getNodeType(uiForm.getNodeType()).getPropertyDefinitions();
       List<Value> valueList = new ArrayList<Value>();
@@ -99,7 +98,9 @@ public class UIViewMetadataForm extends DialogFormFields {
             }
           } else {
             if (requiredType == 6) { // boolean
-              String value = ((UIFormSelectBox)uiForm.getUIInput(inputName)).getValue() ;
+              UIFormInput uiInput = uiForm.getUIInput(inputName) ;
+              String value = "false";
+              if(uiInput instanceof UIFormSelectBox) value =  ((UIFormSelectBox)uiInput).getValue() ;
               node.setProperty(name, Boolean.parseBoolean(value));
             } else if (requiredType == 5) { // date
               UIFormDateTimeInput cal = (UIFormDateTimeInput) uiForm.getUIInput(inputName);
@@ -114,30 +115,30 @@ public class UIViewMetadataForm extends DialogFormFields {
       }
       node.save();
       node.getSession().save();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewManager) ;
-      UIPopupWindow uiPopup = uiViewManager.getChildById(UIViewMetadataManager.METADATAS_POPUP) ;
-      uiPopup.setShow(false) ;
+      uiUploadContainer.setRenderedChild(UIUploadContent.class) ;
+      uiUploadContainer.removeChild(UIAddMetadataForm.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadContainer) ;
     }
   }
   
-  static public class CancelActionListener extends EventListener<UIViewMetadataForm> {
-    public void execute(Event<UIViewMetadataForm> event) throws Exception {
-      UIViewMetadataForm uiForm = event.getSource() ;
-      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
-      uiPopup.setShow(false) ;
-      uiPopup.setRendered(false) ;
+  static public class CancelActionListener extends EventListener<UIAddMetadataForm> {
+    public void execute(Event<UIAddMetadataForm> event) throws Exception {
+      UIUploadContainer uiUploadContainer = event.getSource().getParent() ;
+      uiUploadContainer.removeChild(UIAddMetadataForm.class) ;
+      uiUploadContainer.setRenderedChild(UIUploadContent.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadContainer) ;
     }
   }
 
-  static public class AddActionListener extends EventListener<UIViewMetadataForm> {
-    public void execute(Event<UIViewMetadataForm> event) throws Exception {
+  static public class AddActionListener extends EventListener<UIAddMetadataForm> {
+    public void execute(Event<UIAddMetadataForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
   }
 
-  static public class RemoveActionListener extends EventListener<UIViewMetadataForm> {
-    public void execute(Event<UIViewMetadataForm> event) throws Exception {
+  static public class RemoveActionListener extends EventListener<UIAddMetadataForm> {
+    public void execute(Event<UIAddMetadataForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
-  }  
+  }
 }

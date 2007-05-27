@@ -2,7 +2,7 @@
  * Copyright 2001-2003 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.explorer.popup.actions;
+package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import java.io.ByteArrayInputStream;
 import java.util.GregorianCalendar;
@@ -18,6 +18,8 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -184,7 +186,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           }
         }
         uiExplorer.getSession().save() ;
-        uiExplorer.updateAjax(event);
+        UIUploadManager uiManager = uiForm.getParent() ;
+        UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
+        uiUploadContainer.setUploadedNode(selectedNode.getNode(name)) ;
+        UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
+        String fileSize = String.valueOf((((float)(content.length/100))/10));     
+        String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
+        uiUploadContent.setUploadValues(arrValues) ;
+        uiManager.setRenderedChild(UIUploadContainer.class) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return ;
