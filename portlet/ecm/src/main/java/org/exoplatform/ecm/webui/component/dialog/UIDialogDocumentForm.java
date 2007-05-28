@@ -19,7 +19,6 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -74,13 +73,11 @@ public class UIDialogDocumentForm extends DialogFormFields {
   
   public Node getCurrentNode() throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    CmsConfigurationService cmsConfigurationService = 
-      getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = 
-      repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
     PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
     PortletRequest request = portletContext.getRequest() ; 
     PortletPreferences preferences = request.getPreferences() ;
+    Session session = 
+      repositoryService.getRepository().getSystemSession(preferences.getValue("workspace", "")) ;
     return (Node) session.getItem(preferences.getValue("path", ""));
   }
   
@@ -96,10 +93,12 @@ public class UIDialogDocumentForm extends DialogFormFields {
   
   public void newJCRTemplateResourceResolver() {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    CmsConfigurationService cmsConfigurationService = getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = null;
+    PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest request = portletContext.getRequest() ; 
+    PortletPreferences preferences = request.getPreferences() ;
+    Session session = null ;
     try {
-      session = repositoryService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace()) ;
+      session = repositoryService.getRepository().getSystemSession(preferences.getValue("workspace", ""));
       rootPath_ = session.getRootNode().getPath() ;
     } catch(Exception e) { }
     jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ; 
