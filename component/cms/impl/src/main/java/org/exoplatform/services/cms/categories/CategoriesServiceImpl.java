@@ -1,13 +1,10 @@
 package org.exoplatform.services.cms.categories;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.Value;
@@ -202,13 +199,14 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
   }
   
   protected Session getAdminSession() throws Exception {
-    Session session ;
-    try {
-      session = repositoryService_.getRepository().login(cmsConfig_.getWorkspace()) ;
-    }catch(Exception e) {
-      session = repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
-    }
+//    Session session ;
+//    try {
+//      session = repositoryService_.getRepository().login(cmsConfig_.getWorkspace()) ;
+//    }catch(Exception e) {
+//      session = repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
+//    }
     
-    return session ;
+//    return session ;
+    return repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
   }
 }
