@@ -201,11 +201,12 @@ public class ManageViewServiceImpl implements ManageViewService {
   }
   
   private Session getUserSession() throws Exception{
-    try{
-      return jcrService_.getRepository().login(cmsConfigurationService_.getWorkspace()) ;
-    }catch (Exception e){
-      return session_ ;
-    }
+    return jcrService_.getRepository().getSystemSession(cmsConfigurationService_.getWorkspace()) ;
+    //    try{
+//      return jcrService_.getRepository().login(cmsConfigurationService_.getWorkspace()) ;
+//    }catch (Exception e){
+//      return session_ ;
+//    }
   }
   
   public List<Node> getAllTemplates(String homeAlias) throws Exception {

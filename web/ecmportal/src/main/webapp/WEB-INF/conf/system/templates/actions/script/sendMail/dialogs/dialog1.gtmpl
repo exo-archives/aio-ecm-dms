@@ -2,102 +2,102 @@
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	  
-	<div class="FieldContainer">		          					
-	  <label>Id</label>
-	  <%
-		 String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
-		 uicomponent.addMixinField("id", fieldId) ;  
-	  %>
-	</div>
-	<div class="FieldContainer">		          					
-	  <label>Name</label>
-	  <% 
-		String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
-		uicomponent.addTextField("name", fieldName) ;
-	  %>
-	</div>
-	<div class="FieldContainer">		          					
-	  <label>Life cycle</label>
-	  <% 
-		String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
-		uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
-	  %>
-	</div>
-	<%
-		String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;
-		if(selectValue != null) {		
-			if(selectValue.equals("schedule")) { 
-	%>
-			  <div class="FieldContainer">		          					
-			  <label>Schedule type:</label>
-			  <% 
-				String[] fieldScheduleType = ["jcrPath=/node/exo:scheduleType", "options=cron,period", "onchange=true"] ;
-				uicomponent.addSelectBoxField("scheduleType", fieldScheduleType) 
-			  %>
-			  </div>
-			<%
-				String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
-				if(ScheduleType.equals("period") ) {%>
-					<div class="FieldContainer">		          					
-					  <label>Start time:</label>
-					  <% 
-						String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime"] ;
-						uicomponent.addCalendarField("startTime", fieldStartTime) ;
-					  %>
-					</div>
-					<div class="FieldContainer">		          					
-					  <label>End time:</label>
-					  <% 
-					   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime"] ;
-						uicomponent.addCalendarField("endTime", fieldEndTime) ;
-					  %>
-					</div>
-					<div class="FieldContainer">		          					
-					  <label>Repeat Count</label>
-					  <% 
-						String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;
-						uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
-					  %>
-					</div>
-					<div class="FieldContainer">		          					
-					  <label>Time inteval</label>
-					  <% 
-						String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "-1", "validate=number"] ;
-						uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
-					  %>
-					</div>
-			<%} else {%>
-					<div class="FieldContainer">		          					
-					  <label>Cron expression</label>
-					  <% 
-						String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
-						uicomponent.addTextField("cronExpression", fieldCronExpression) ;
-					  %>
-					</div>
- <%			}	
+		<div class="FieldContainer">		          					
+		  <label>Id</label>
+		  <%
+			 String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+			 uicomponent.addMixinField("id", fieldId) ;  
+		  %>
+		</div>
+		<div class="FieldContainer">		          					
+		  <label>Name</label>
+		  <% 
+			String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+			uicomponent.addTextField("name", fieldName) ;
+		  %>
+		</div>
+		<div class="FieldContainer">		          					
+		  <label>Life cycle</label>
+		  <% 
+			String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
+			uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
+		  %>
+		</div>
+		<%
+			String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;
+			if(selectValue != null) {		
+				if(selectValue.equals("schedule")) { 
+		%>
+				  <div class="FieldContainer">		          					
+				  <label>Schedule type:</label>
+				  <% 
+					String[] fieldScheduleType = ["jcrPath=/node/exo:scheduleType", "options=cron,period", "onchange=true"] ;
+					uicomponent.addSelectBoxField("scheduleType", fieldScheduleType) 
+				  %>
+				  </div>
+				<%
+					String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
+					if(ScheduleType.equals("period") ) {%>
+						<div class="FieldContainer">		          					
+						  <label>Start time:</label>
+						  <% 
+							String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime"] ;
+							uicomponent.addCalendarField("startTime", fieldStartTime) ;
+						  %>
+						</div>
+						<div class="FieldContainer">		          					
+						  <label>End time:</label>
+						  <% 
+						   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime"] ;
+							uicomponent.addCalendarField("endTime", fieldEndTime) ;
+						  %>
+						</div>
+						<div class="FieldContainer">		          					
+						  <label>Repeat Count</label>
+						  <% 
+							String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;
+							uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
+						  %>
+						</div>
+						<div class="FieldContainer">		          					
+						  <label>Time inteval</label>
+						  <% 
+							String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "-1", "validate=number"] ;
+							uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
+						  %>
+						</div>
+				<%} else {%>
+						<div class="FieldContainer">		          					
+						  <label>Cron expression</label>
+						  <% 
+							String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
+							uicomponent.addTextField("cronExpression", fieldCronExpression) ;
+						  %>
+						</div>
+	 <%			}	
+			  }
 		  }
-	  }
-	%>	
-	<div class="FieldContainer">		          					
-	  <label>Description</label>
-	  <% 
-		String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
-		uicomponent.addTextAreaField("description", fieldDescription) ;
-	  %>
-	</div>
-	<div class="FieldContainer">		          					
-	  <label>Send mail to</label>
-	  <% 
-		String[] fieldMailTo = ["jcrPath=/node/exo:to", "validate=email"] ;
-		uicomponent.addTextField("to", fieldMailTo) ;
-	  %>
-	</div>
+		%>	
+		<div class="FieldContainer">		          					
+		  <label>Description</label>
+		  <% 
+			String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
+			uicomponent.addTextAreaField("description", fieldDescription) ;
+		  %>
+		</div>
+		<div class="FieldContainer">		          					
+		  <label>Send mail to</label>
+		  <% 
+			String[] fieldMailTo = ["jcrPath=/node/exo:to", "validate=email"] ;
+			uicomponent.addTextField("to", fieldMailTo) ;
+		  %>
+		</div>
 	<%/* start render action*/%>
 		<div class="UIAction"> 
-		<div class="ActionContainer">
-		  <% for(action in uicomponent.getActions()) { %>
-			<div class="ActionButton">
-			  <div class="LightBlueStyle">
+			<div class="ActionContainer">
+			  <% for(action in uicomponent.getActions()) { %>
+					<div class="ActionButton">
+					  <div class="LightBlueStyle">
 							<div class="ButtonLeft">
 							  <div class="ButtonRight">
 								  <div class="ButtonMiddle">
@@ -106,13 +106,13 @@
 									  String link = uicomponent.event(action) ;
 									%>
 									<a href="$link">$actionLabel</a>
+							    </div>
 							  </div>
-							</div>
-						</div>
-						</div>
+					    </div>
+					  </div>
 					</div>
-		  <%}%>          
-		</div>
+			  <%}%>          
+			</div>
 	  </div>
 	  <%/* end render action*/%>
   </div>

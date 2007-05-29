@@ -37,6 +37,11 @@
 		              </value> 
 		              <value>
 		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+		                  <field  name="name"><string>ecm-explorer/action/AddMetadataScript.groovy</string></field>
+		                </object>  
+		              </value> 
+		              <value>
+		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 		                  <field  name="name"><string>ecm-explorer/action/TransformBinaryChildrenToTextScript.groovy</string></field>
 		                </object>  
 		              </value> 		              
@@ -56,11 +61,16 @@
 										</object>  
 		              </value> 		              
 		              <!-- ecm-explorer/widget -->
-		                <value>
-		                  <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
-		                    <field  name="name"><string>ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy</string></field>
-		                  </object>  
-		                </value> 
+	                <value>
+	                  <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+	                    <field  name="name"><string>ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy</string></field>
+	                  </object>  
+	                </value> 
+	                <value>
+	                  <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+	                    <field  name="name"><string>ecm-explorer/widget/FillSelectBoxWithMetadatas.groovy</string></field>
+	                  </object>  
+	                </value> 
 		              <value>
 		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 		                  <field  name="name"><string>ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy</string></field>

@@ -212,10 +212,8 @@ public class UIActionBar extends UIForm {
 
     NodeType[] nodeTypes = node.getMixinNodeTypes();
     for(NodeType nt : nodeTypes) {
-      try {
-        String path = metadataService.getMetadataPath(nt.getName(), false);
-        templates.add("jcr:" + path);
-      } catch(Exception e) {
+      if(metadataService.getMetadataList().contains(nt.getName())) {
+        templates.add(metadataService.getMetadataPath(nt.getName(), false)) ;
       }
     }
     Item primaryItem = null;
@@ -227,8 +225,9 @@ public class UIActionBar extends UIForm {
       Node primaryNode = (Node) node.getPrimaryItem();
       NodeType[] primaryTypes = primaryNode.getMixinNodeTypes();
       for(NodeType nt : primaryTypes) {
-        String path = metadataService.getMetadataPath(nt.getName(), false);
-        templates.add("jcr:" + path);
+        if(metadataService.getMetadataList().contains(nt.getName())) {
+          templates.add(metadataService.getMetadataPath(nt.getName(), false)) ;
+        }
       }
     }
     return templates;
@@ -822,6 +821,7 @@ public class UIActionBar extends UIForm {
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
       if(uiActionBar.getMetadataTemplates().size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIViewMetadataContainer.msg.path-not-found", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;

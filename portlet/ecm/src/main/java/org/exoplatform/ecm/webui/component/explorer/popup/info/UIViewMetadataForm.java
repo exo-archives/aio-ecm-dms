@@ -16,6 +16,7 @@ import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.webui.component.UIFormInput;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.component.UIFormDateTimeInput;
 import org.exoplatform.webui.component.UIFormMultiValueInputSet;
@@ -99,7 +100,9 @@ public class UIViewMetadataForm extends DialogFormFields {
             }
           } else {
             if (requiredType == 6) { // boolean
-              String value = ((UIFormSelectBox)uiForm.getUIInput(inputName)).getValue() ;
+              UIFormInput uiInput = uiForm.getUIInput(inputName) ;
+              String value = "false";
+              if(uiInput instanceof UIFormSelectBox) value =  ((UIFormSelectBox)uiInput).getValue() ;
               node.setProperty(name, Boolean.parseBoolean(value));
             } else if (requiredType == 5) { // date
               UIFormDateTimeInput cal = (UIFormDateTimeInput) uiForm.getUIInput(inputName);

@@ -30,14 +30,14 @@
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>Start date / time</label>
+      <label>Start date/time</label>
       <%
         String[] fieldDtstart = ["jcrPath=/node/exo:dtstart", "options=displaytime", "validate=datetime"] ; 
         uicomponent.addCalendarField("dtstart", fieldDtstart) ;
       %>
     </div>
     <div class="FieldContainer">		          					
-      <label>End date / time</label>
+      <label>End date/time</label>
       <%
         String[] fieldDtend = ["jcrPath=/node/exo:dtend", "options=displaytime", "validate=datetime"] ;
         uicomponent.addCalendarField("dtend", fieldDtend) ;
