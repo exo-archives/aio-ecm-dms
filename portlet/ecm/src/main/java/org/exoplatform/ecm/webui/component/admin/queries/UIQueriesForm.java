@@ -170,7 +170,8 @@ public class UIQueriesForm extends UIForm implements UISelector {
   static public class AddPermissionActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesManager uiManager = event.getSource().getAncestorOfType(UIQueriesManager.class) ;
-      uiManager.initPermissionPopup() ;
+      String membership = event.getSource().getUIStringInput(PERMISSIONS).getValue() ;
+      uiManager.initPermissionPopup(membership) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

@@ -44,7 +44,7 @@ public class UITemplatesManager extends UIContainer{
     uiPopup.setResizable(true) ;
   }
 
-  public void initPopupPermission(String id) throws Exception {
+  public void initPopupPermission(String id, String membership) throws Exception {
     String popupId = id + UITemplateContent.TEMPLATE_PERMISSION ;
     UIPopupWindow uiPopup = getChildById(popupId) ;
     if(uiPopup == null) {
@@ -52,6 +52,10 @@ public class UITemplatesManager extends UIContainer{
       uiPopup.setWindowSize(560, 300);
       UIECMPermissionBrowser uiECMPermission = 
         createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+      if(membership != null && membership.indexOf(":/") > -1) {
+        String[] arrMember = membership.split(":/") ;
+        uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
+      }
       if(id.equals("AddNew")) {
         UITemplateForm uiForm = findFirstComponentOfType(UITemplateForm.class) ;
         uiECMPermission.setComponent(uiForm, null) ;

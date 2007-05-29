@@ -268,7 +268,8 @@ public class UITemplateContent extends UIForm implements UISelector {
       UITemplatesManager uiManager = uiTempContent.getAncestorOfType(UITemplatesManager.class) ;
       UIViewTemplate uiViewTemp = uiTempContent.getAncestorOfType(UIViewTemplate.class) ;
       uiTempContent.removeChild(UIPopupWindow.class) ;
-      uiManager.initPopupPermission(uiTempContent.getId()) ;
+      String membership = uiTempContent.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;
+      uiManager.initPopupPermission(uiTempContent.getId(), membership) ;
       if(uiTempContent.getId().equals(UIDialogTab.DIALOG_FORM_NAME)) {
         uiViewTemp.setRenderedChild(UIDialogTab.class) ;
       } else if(uiTempContent.getId().equals(UIViewTab.VIEW_FORM_NAME)) {

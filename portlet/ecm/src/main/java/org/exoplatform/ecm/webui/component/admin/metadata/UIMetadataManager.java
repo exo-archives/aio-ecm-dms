@@ -59,12 +59,16 @@ public class UIMetadataManager extends UIContainer {
     uiPopup.setResizable(true) ;
   }
   
-  public void initPopupPermission() throws Exception {
+  public void initPopupPermission(String membership) throws Exception {
     removeChildById(PERMISSION_POPUP) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PERMISSION_POPUP);
     uiPopup.setWindowSize(560, 300);
     UIECMPermissionBrowser uiECMPermission = 
       createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+    if(membership != null && membership.indexOf(":/") > -1) {
+      String[] arrMember = membership.split(":/") ;
+      uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
+    }
     uiPopup.setUIComponent(uiECMPermission);
     UIMetadataForm uiForm = findFirstComponentOfType(UIMetadataForm.class) ;
     uiECMPermission.setComponent(uiForm, null) ;

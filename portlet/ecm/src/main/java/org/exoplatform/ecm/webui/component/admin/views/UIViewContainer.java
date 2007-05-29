@@ -34,7 +34,7 @@ public class UIViewContainer extends UIContainer {
     uiPopup.setResizable(true) ;
   }
   
-  public void initPopupPermission() throws Exception {
+  public void initPopupPermission(String membership) throws Exception {
     removeChildById(UIViewFormTabPane.POPUP_PERMISSION) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UIViewFormTabPane.POPUP_PERMISSION);
     uiPopup.setWindowSize(600, 300);
@@ -42,6 +42,10 @@ public class UIViewContainer extends UIContainer {
       createUIComponent(UIECMPermissionBrowser.class, null, null) ;
     uiPopup.setUIComponent(uiECMPermission);
     UIViewForm uiViewForm = findFirstComponentOfType(UIViewForm.class) ;
+    if(membership != null && membership.indexOf(":/") > -1) {
+      String[] arrMember = membership.split(":/") ;
+      uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
+    }
     uiECMPermission.setComponent(uiViewForm, null) ;
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;

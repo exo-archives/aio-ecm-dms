@@ -42,12 +42,16 @@ public class UIDriveManager extends UIContainer {
     uiPopup.setResizable(true) ;
   }
   
-  public void initPopupPermission() throws Exception {
+  public void initPopupPermission(String membership) throws Exception {
     removeChildById(UIDriveForm.POPUP_DRIVEPERMISSION) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UIDriveForm.POPUP_DRIVEPERMISSION);
     uiPopup.setWindowSize(560, 300);
     UIECMPermissionBrowser uiECMPermission = 
       createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+    if(membership != null && membership.indexOf(":/") > -1) {
+      String[] arrMember = membership.split(":/") ;
+      uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
+    }
     uiPopup.setUIComponent(uiECMPermission);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiECMPermission.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_PERMISSION}) ;

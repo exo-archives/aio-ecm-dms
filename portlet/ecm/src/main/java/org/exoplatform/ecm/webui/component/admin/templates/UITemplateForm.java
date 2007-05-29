@@ -192,7 +192,8 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiTemplateForm = event.getSource() ;
       UITemplatesManager uiManager = uiTemplateForm.getAncestorOfType(UITemplatesManager.class) ;
-      uiManager.initPopupPermission("AddNew") ;
+      String membership = uiTemplateForm.getUIStringInput(FIELD_PERMISSION).getValue() ;
+      uiManager.initPopupPermission("AddNew", membership) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

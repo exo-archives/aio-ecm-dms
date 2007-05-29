@@ -35,12 +35,16 @@ public class UIQueriesManager extends UIContainer {
     uiPopup.setResizable(true) ;
   }
   
-  public void initPermissionPopup() throws Exception {
+  public void initPermissionPopup(String membership) throws Exception {
     removeChildById("PermissionPopup") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PermissionPopup");
     uiPopup.setWindowSize(560, 300);
     UIECMPermissionBrowser uiECMPermission = 
-      createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+      createUIComponent(UIECMPermissionBrowser.class, null, "QueriesPermissionBrowse") ;
+    if(membership != null && membership.indexOf(":/") > -1) {
+      String[] arrMember = membership.split(":/") ;
+      uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
+    }
     uiPopup.setUIComponent(uiECMPermission);
     UIQueriesForm uiForm = findFirstComponentOfType(UIQueriesForm.class) ;
     uiECMPermission.setComponent(uiForm, new String[] {UIQueriesForm.PERMISSIONS}) ;

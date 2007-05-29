@@ -307,7 +307,8 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource() ;
       UIViewContainer uiContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
-      uiContainer.initPopupPermission() ;
+      String memberShip = uiViewTabPane.getUIStringInput(UIViewForm.FIELD_PERMISSION).getValue() ;
+      uiContainer.initPopupPermission(memberShip) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }

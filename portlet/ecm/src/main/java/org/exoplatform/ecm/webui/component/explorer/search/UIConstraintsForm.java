@@ -6,8 +6,6 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.exoplatform.commons.utils.ISO8601;
@@ -299,6 +297,14 @@ public class UIConstraintsForm extends UIForm {
   static public class CompareExactlyActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UIConstraintsForm uiConstraintForm = event.getSource();
+      String properties = uiConstraintForm.getUIStringInput(PROPERTY1).getValue() ;
+      UIApplication uiApp = uiConstraintForm.getAncestorOfType(UIApplication.class) ;
+      if(properties == null || properties.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-null", null, 
+                                                 ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UISearchContainer uiContainer = uiConstraintForm.getAncestorOfType(UISearchContainer.class) ;
       UIPopupAction uiPopup = uiContainer.getChild(UIPopupAction.class);
       uiPopup.getChild(UIPopupWindow.class).setId("ExactlyFormPopup") ;

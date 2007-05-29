@@ -191,7 +191,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
-      uiManager.initPopupPermission() ;
+      String membership = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue() ;
+      uiManager.initPopupPermission(membership) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

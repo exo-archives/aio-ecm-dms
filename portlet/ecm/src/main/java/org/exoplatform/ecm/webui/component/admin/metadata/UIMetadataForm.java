@@ -121,7 +121,8 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     public void execute(Event<UIMetadataForm> event) throws Exception {
       UIMetadataForm uiView = event.getSource() ;
       UIMetadataManager uiManager = uiView.getAncestorOfType(UIMetadataManager.class) ;
-      uiManager.initPopupPermission() ;
+      String membership = uiView.getUIStringInput(VIEW_PERMISSION).getValue() ;
+      uiManager.initPopupPermission(membership) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
