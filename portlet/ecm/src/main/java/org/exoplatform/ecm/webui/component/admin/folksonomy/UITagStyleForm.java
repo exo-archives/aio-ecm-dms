@@ -32,7 +32,8 @@ import org.exoplatform.webui.event.Event.Phase;
  */
 @ComponentConfig( 
     lifecycle = UIFormLifecycle.class,
-    template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
+    //template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
+    template =  "system:/groovy/webui/component/UIForm.gtmpl",
     events = {
       @EventConfig(listeners = UITagStyleForm.UpdateStyleActionListener.class),
       @EventConfig(listeners = UITagStyleForm.CancelActionListener.class, phase = Phase.DECODE)

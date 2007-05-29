@@ -12,6 +12,7 @@ import java.util.Map;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.QueryHandlerEntry;
@@ -20,6 +21,7 @@ import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.ValueStorageEntry;
 import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
+import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
@@ -376,39 +378,33 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
           return ;
         }          
       } 
-      WorkspaceEntry workspaceEntry = new WorkspaceEntry() ;
-      workspaceEntry.setName(name) ;
-      workspaceEntry.setAutoInitializedRootNt(initNodeType) ;
-      workspaceEntry.setLockTimeOut(lockTimeOutValue);
-      //workspaceEntry.setAutoInitPermissions() ;
-      //workspaceEntry.setAccessManager(accessManager) ;
-      //workspaceEntry.setUniqueName(uniqueName) ;
-
-      ContainerEntry container = new ContainerEntry() ;
-      container.setType("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer") ;
-      ArrayList<SimpleParameterEntry> containerParams = new ArrayList<SimpleParameterEntry>() ;      
+      List containerParams = new ArrayList();
       containerParams.add(new SimpleParameterEntry("sourceName", sourceName)) ;
       containerParams.add(new SimpleParameterEntry("db-type", dbType)) ;
       containerParams.add(new SimpleParameterEntry("multi-db", String.valueOf(isMulti))) ;
       containerParams.add(new SimpleParameterEntry("update-storage", String.valueOf(isUpdateStore))) ;
       containerParams.add(new SimpleParameterEntry("max-buffer-size", String.valueOf(bufferValue))) ;
       containerParams.add(new SimpleParameterEntry("swap-directory", swapPath)) ;
-      container.setParameters(containerParams) ;    
+      ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer", (ArrayList) containerParams) ;      
       
-      ArrayList<ValueStorageEntry> valueStorages = new ArrayList<ValueStorageEntry>() ;
-      ValueStorageEntry vse = new ValueStorageEntry() ;
-      vse.setType("org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage") ;
-      ArrayList<ValueStorageFilterEntry> valuesFilter = new ArrayList<ValueStorageFilterEntry>() ;
-      ValueStorageFilterEntry valueFilter = new ValueStorageFilterEntry() ;
-      valueFilter.setPropertyType(filterType) ;
-      valuesFilter.add(valueFilter) ;      
-      vse.setFilters(valuesFilter) ;
-      ArrayList<SimpleParameterEntry> vseParams = new ArrayList<SimpleParameterEntry>() ;
-      vseParams.add(new SimpleParameterEntry("path", storePath)) ;
-      vse.setParameters(vseParams) ;
-      valueStorages.add(vse) ;
-      container.setValueStorages(valueStorages) ;
-      workspaceEntry.setContainer(container) ;
+      ArrayList<ValueStorageFilterEntry> vsparams = new ArrayList<ValueStorageFilterEntry>();
+      ValueStorageFilterEntry filterEntry = new ValueStorageFilterEntry();
+      filterEntry.setPropertyType(filterType);
+      vsparams.add(filterEntry);
+
+      ValueStorageEntry valueStorageEntry = new ValueStorageEntry("org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage",
+          vsparams);
+      ArrayList<SimpleParameterEntry> spe = new ArrayList<SimpleParameterEntry>();
+      spe.add(new SimpleParameterEntry("path", storePath));
+
+      valueStorageEntry.setParameters(spe);
+      valueStorageEntry.setFilters(vsparams);
+      containerEntry.setParameters(containerParams);
+      ArrayList list = new ArrayList(1);
+      list.add(valueStorageEntry);
+      containerEntry.setValueStorages(list);
+      WorkspaceEntry workspaceEntry = new WorkspaceEntry(name, initNodeType);
+      workspaceEntry.setContainer(containerEntry);
 
       CacheEntry cache = new CacheEntry() ;
       //cache.setType(type) ;
@@ -418,14 +414,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       cacheParams.add(new SimpleParameterEntry("liveTime", String.valueOf(liveTimeValue))) ;
       cache.setParameters(cacheParams) ;
       workspaceEntry.setCache(cache) ;
-
-      QueryHandlerEntry queryHandler = new QueryHandlerEntry() ;
-      queryHandler.setType("org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex") ;
       ArrayList<SimpleParameterEntry> queryParams = new ArrayList<SimpleParameterEntry>() ;
       queryParams.add(new SimpleParameterEntry("indexDir", indexPath)) ;
+
+      QueryHandlerEntry queryHandler = new QueryHandlerEntry("org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex", queryParams) ;
       queryHandler.setParameters(queryParams) ;
       workspaceEntry.setQueryHandler(queryHandler) ;
-
+      
       if(isDefault) uiRepoForm.defaulWorkspace_ = name ;
       uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
       uiRepoForm.refreshLabel() ;      

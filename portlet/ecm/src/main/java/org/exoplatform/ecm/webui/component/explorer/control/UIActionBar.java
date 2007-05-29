@@ -557,6 +557,11 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
+      if(currentNode.equals(uiExplorer.getRootNode())) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version-rootnode", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       Session session = uiExplorer.getSession() ;
       if(uiExplorer.isPreferenceNode(uiExplorer.getCurrentNode())) {
         String preferenceWS = currentNode.getSession().getWorkspace().getName() ;
@@ -565,6 +570,7 @@ public class UIActionBar extends UIForm {
       if(uiExplorer.nodeIsLocked(currentNode.getPath(), session)) {
         Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
@@ -578,6 +584,7 @@ public class UIActionBar extends UIForm {
         return ;
       }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
   }
 
