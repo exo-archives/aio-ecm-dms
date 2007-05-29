@@ -74,8 +74,8 @@
 }
 
 .UIECMAdminPortlet .CollapseSideBar {
-	width: 6px; height: 49px;
-	background: url('MacSkin/background/CollapseSideBar.gif') no-repeat;
+	width: 6px; height: 100%;
+	background: url('MacSkin/background/CollapseSideBar.gif') no-repeat center center;
 	cursor: pointer;
 }
 
@@ -177,8 +177,11 @@
 /*--------------------------.UIFormInputSet----------------------*/
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
-  margin: auto;
-  padding: 15px 6px 0px 6px;
+  overflow: hidden;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer input {
+	float: left;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
@@ -329,6 +332,33 @@
   background: #e5fcfa;
 }
 
+.Explorer {
+  margin-bottom: 10px;
+  float: left ;
+  width: 230px ;
+}
+
+.Explorer .ExplorerTree {
+  margin-top: 1px;
+  border: solid 1px #c6c6c9;
+  background: #f3f3f3;
+  padding: 1px;
+}
+
+.Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.Explorer .ExplorerTree .Node {
+  line-height: 30px;
+}
+
+.UITreeList .UIGrid {
+  width: 315px;
+  margin-left: 10px ;
+}
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceList {
@@ -341,8 +371,7 @@
 }
 
 .UIECMAdminPortlet .UINamespaceForm .UIFormWithTitle .FieldContainer {
-	width: 500px;
-	margin: auto;
+	width: 98%;
 }
 /*############################## -- UIDriveManager -- ########################*/
 
@@ -539,8 +568,7 @@
 }
 
 .UIECMScripts .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
+  width: 98%;
   border: none;
 }
 
@@ -569,8 +597,7 @@
 }
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
+  width: 98%;
   border: none;
 }
 
@@ -699,8 +726,7 @@
 }
 
 .UIQueriesManager .UIQueriesForm .HorizontalLayout .FieldContainer  {
-	width: 500px;
-	margin: auto;
+	width: 98%;
 }
 
 .UIQueriesManager .UIQueriesForm .HorizontalLayout .UIFormInputSet {
@@ -734,7 +760,6 @@
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 250px ;
 	width: 300px ;
-	margin-left: 8px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIAction {

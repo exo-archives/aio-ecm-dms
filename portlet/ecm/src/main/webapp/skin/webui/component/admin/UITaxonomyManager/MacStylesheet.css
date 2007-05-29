@@ -24,12 +24,6 @@
   float: left;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .HorizontalLayout{
-	width: 400px;
-	margin: auto;
-	border: none;
-}
-
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
 	border-top: solid 1px #d9d8d8;
 	border-left: solid 1px #d9d8d8;
@@ -87,7 +81,6 @@
 
 .UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
   width: 170px;
-  padding-left: 30px;
 }
 
 .UIECMAdminPortlet .TrueFalseContainer{
@@ -104,8 +97,7 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout .FieldContainer {
-  width: 450px;
-  margin: auto;
+	width: 98%;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {

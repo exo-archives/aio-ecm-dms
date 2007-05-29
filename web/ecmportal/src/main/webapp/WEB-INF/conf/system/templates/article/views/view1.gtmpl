@@ -159,12 +159,17 @@
 		  border-top: dotted 1px #dcdcdc;
 		  font: normal 11px Verdana;
 		  margin: 12px  10px 0px 10px;
-		  overflow: hidden;
-		  border: solid 1px red;
+		  overflow: auto;
+		}
+		
+		 .UIArticle .ContainerLinks .ContentLinks{
+		  float: left;
+		  border: solid 1px yellow;
 		}
 
-    .UIArticle .Links {
+    .UIArticle .ContainerLinks.Links {
   	  margin-left: 80px;
+  	  border: solid 1px blue;
 		}
 		
 	 .UIArticle .Links div {
@@ -309,8 +314,10 @@
 			                  }
 			                %>
 			                <div class="ContainerLinks">
-			                  <div class="FieldIcon LinksIcon"><span></span></div>
-						            <div class="FieldLabel">Links :</div>
+			                	<div class="ContentLinks">
+				                  <div class="FieldIcon LinksIcon"><span></span></div>
+							            <div class="FieldLabel">Links :</div>
+							          </div>
 					    					<%if(relations.size() > 0) {%>
 								              <div class="Links">
 															<%

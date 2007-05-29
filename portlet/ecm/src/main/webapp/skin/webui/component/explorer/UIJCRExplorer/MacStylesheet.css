@@ -859,13 +859,29 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   float: left;
   border: solid 1px #b7b7b7;
 }
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector{
-  border: solid 1px #b7b7b7;
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
+	float: left;
+	margin: 4px 3px 0px 3px;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle{
 	border: none;
-  border-bottom: solid 1px #b7b7b7;
+	border-bottom: solid 1px #b7b7b7;
 }
+
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
+	border: none;
+	background: none;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
+	border: solid 1px #b7b7b7;
+}
+
+/*=================================UICategoryManager==============================*/
+
+.UIJCRExplorer .UICategoryManager .UIAction{
+	width: 80px;
+}
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

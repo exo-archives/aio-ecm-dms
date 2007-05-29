@@ -20,6 +20,22 @@
   background-color: white;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
+  padding-top: 10px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldContainer{  
+  width: 500px;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldLabel{  
+  float: left;
+  width: 120px;
+  text-align: right;
+  margin-right: 5px;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
   margin: 7px 5px;
   float: left;

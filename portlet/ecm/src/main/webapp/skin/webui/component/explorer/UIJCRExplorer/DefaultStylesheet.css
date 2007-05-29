@@ -23,9 +23,14 @@
   padding: 3px;
 }
 
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer label{
+	margin-right: 5px;
+}
+
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
+  float: left;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input.checkbox {
@@ -574,8 +579,11 @@
 
 .UIJCRExplorerPortlet .UIActionContainer .HorizontalLayout .FieldContainer {
   width: 95%;
-  border: solid 1px red;
   overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .HorizontalLayout .FieldContainer .ActionIcon  {
+  margin: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm {
@@ -600,9 +608,9 @@
 /*================================UIPropertyForm=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle .HorizontalLayout {
-  width: 500px;
-  margin: auto;
+  width: 98%;
   border: none;
+  overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
@@ -773,12 +781,35 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector{
-  border: solid 1px #b7b7b7;
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
+	float: left;
+	margin: 4px 3px 0px 3px;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle{
 	border: none;
-  border-bottom: solid 1px #b7b7b7;
+	border-bottom: solid 1px #b7b7b7;
 }
+
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
+	border: none;
+	background: none;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
+	border: solid 1px #b7b7b7;
+}
+
+/*=================================UICategoryManager==============================*/
+
+.UIJCRExplorer .UICategoryManager .UIAction{
+	width: 70px;
+}
+
+/*=================================UILabelForm==============================*/
+
+.UIJCRExplorer .UICategoryManager .UIAction{
+	width: 70px;
+}
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
