@@ -43,6 +43,10 @@
   padding-left: 40px;
 }
 
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer input  {
+  float: left;
+}
+
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
   margin: 3px 5px 0px 5px;

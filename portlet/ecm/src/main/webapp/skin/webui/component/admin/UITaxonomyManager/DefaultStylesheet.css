@@ -31,12 +31,11 @@
 
 .UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
 	width: 160px;
-	padding-left: 60px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout .FieldContainer {
-  width: 450px;
-  margin: auto;
+  width: 98%;
+  overflow: hidden;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {

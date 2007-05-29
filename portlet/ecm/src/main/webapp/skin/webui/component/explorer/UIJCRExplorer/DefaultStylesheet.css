@@ -10,7 +10,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer {
   border: solid 1px #aeaeae;
   background: white;
-  width: 99.9%; /* Bug on IE */
+  width: 99.8%; /* Bug on IE */
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
@@ -298,11 +298,6 @@
   width: 150px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .FieldContainer{
-  width: 500px;
-  margin: auto;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
 }
@@ -312,13 +307,7 @@
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-  margin-left: 137px ;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer {
-  width: 95%;
-  margin: auto;
+  margin-left: 130px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
@@ -351,10 +340,6 @@
   margin: 5px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin: 0px 0px 10px 167px;
-}
-
 /*===========================UIUploadForm====================*/
 
 .UIJCRExplorerPortlet .UIUploadForm .UIAction {
@@ -364,11 +349,12 @@
 
 .UIJCRExplorerPortlet .UIUploadForm .FieldContainer {
   width: 480px;
-  margin: 0px auto;
 }
+
 .UIJCRExplorerPortlet .UIUploadForm .FileNameLabel{
  overflow: hidden ;
 }
+
 .UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
   width: 120px;
   margin: 0px; 
@@ -586,6 +572,12 @@
 
 /*================================UIActionContainer=================================*/
 
+.UIJCRExplorerPortlet .UIActionContainer .HorizontalLayout .FieldContainer {
+  width: 95%;
+  border: solid 1px red;
+  overflow: hidden;
+}
+
 .UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm {
   padding-bottom: 8px;
 }
@@ -638,6 +630,12 @@
   padding-left: 25px;
 }
 
+.UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput .radio {
+  width: 20px;
+  margin-left: 0px;
+  float: none;
+  border: none;
+}
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
@@ -699,6 +697,12 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
   margin: 0px auto;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .MultiRadioInput .radio {
+  width: 20px;
+  margin-left: 0px;
+  float: none;
+  border: none;
+}
 /*================================UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {

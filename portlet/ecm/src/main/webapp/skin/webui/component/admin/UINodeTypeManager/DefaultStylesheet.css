@@ -112,8 +112,14 @@
    padding-left: 75px;   
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .FieldContainer {
+  width: 98%;
+  overflow: hidden;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {
   width: 130px;
+  margin-right: 5px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane input {
@@ -131,7 +137,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
-	padding-left: 30px;
+	padding: 2px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithAction .checkbox {

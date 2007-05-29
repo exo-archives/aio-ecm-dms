@@ -13,6 +13,11 @@
   margin: auto;
 }
 
+.UIECMAdminPortlet .UIMetadataManager .UIForm .HorizontalLayout .FieldContainer {
+	width: 98%;
+	overflow: hidden;
+}
+
 .UIECMAdminPortlet .UIMetadataManager .UIForm .HorizontalLayout label {
 	float:left;
   width: 120px ;
@@ -40,8 +45,8 @@
   padding-bottom: 15px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager {
-  padding: 2px 0px 0px 5px;
+.UIECMAdminPortlet .UIMetadataManager .UIWindowContent .Content{
+  padding: 2px 0px 0px 15px;
 }
 
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator {

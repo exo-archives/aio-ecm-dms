@@ -14,7 +14,6 @@
 
 .UIJCRExplorerPortlet .UIFormWithTitle{
   width: 95%;
-  margin: 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer textarea {
@@ -520,7 +519,6 @@
   background: white ;
   width: 145px;
   padding: 2px 15px;
-  border: soldi 1px red;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
@@ -635,6 +633,15 @@
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
   width: 170px;
   padding-left: 15px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .FieldContainer {
+  overflow: hidden;
+  width: 98%;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .FieldContainer input {
+  float: left;
 }
 
 /*================================UIActionList=================================*/
@@ -804,7 +811,13 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
 }
-.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithAction a {
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithAction .FieldContainer {
+  width: 98%;
+  overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithAction .FieldContainer input {
   float: left;
 }
 

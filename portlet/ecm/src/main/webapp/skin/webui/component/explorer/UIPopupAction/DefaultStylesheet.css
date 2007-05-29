@@ -254,10 +254,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .HorizontalLayout .UploadIframe {
-  margin-left: 5px;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
   width: 100%;
 }

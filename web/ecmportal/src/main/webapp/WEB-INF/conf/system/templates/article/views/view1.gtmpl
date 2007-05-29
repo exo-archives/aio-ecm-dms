@@ -159,7 +159,8 @@
 		  border-top: dotted 1px #dcdcdc;
 		  font: normal 11px Verdana;
 		  margin: 12px  10px 0px 10px;
-		  overflow: auto;
+		  overflow: hidden;
+		  border: solid 1px red;
 		}
 
     .UIArticle .Links {
