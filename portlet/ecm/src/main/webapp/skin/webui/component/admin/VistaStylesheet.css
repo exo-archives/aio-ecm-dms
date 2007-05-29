@@ -81,6 +81,10 @@
 	width: 90px;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .UIAction {
+	width: 400px;
+}
+
 .UIECMAdminPortlet .UIRepositoryManager .UIRepositoryForm .UIAction {
 	width: 410px;
 }
@@ -204,7 +208,7 @@
 }
 
 .UIECMAdminPortlet .UIResizableBlock {
-
+	overflow: auto; height: 400px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
@@ -259,6 +263,7 @@
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
   margin: auto;
   width: 520px;
+  padding-bottom: 0px;
 }
 
 .UIECMAdminPortlet .HorizontalLayout .FieldContainer {
@@ -295,7 +300,7 @@
   width: 225px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label {
+.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout .FieldContainer label {
   width: 150px;
 }
 

@@ -260,6 +260,11 @@
   background: url('VistaSkin/YellowLight.png') no-repeat;  
 }
 
+.OpenFolder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/OpenFolder.gif') no-repeat;  
+}
+
 .MetaView16x16Icon {
   width: 24px; height: 24px;
   background: url('VistaSkin/YellowLight.png') no-repeat;  
