@@ -138,12 +138,12 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   }
   
   public Node getTemplatesHome() throws Exception {
-    Session session ;
-    try {
-      session = repositoryService_.getRepository().login(cmsConfigService_.getWorkspace());
-    }catch(Exception e) {
-      session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());
-    }
+    Session session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());
+//    try {
+//      session = repositoryService_.getRepository().login(cmsConfigService_.getWorkspace());
+//    }catch(Exception e) {
+//      session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());
+//    }
     return (Node) session.getItem(cmsTemplatesBasePath_);
   }  
   
