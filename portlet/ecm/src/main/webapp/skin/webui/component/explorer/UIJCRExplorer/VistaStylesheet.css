@@ -601,7 +601,6 @@
 }
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer {
-  width: 450px;
   margin: auto;
 }
 
@@ -610,7 +609,7 @@
 } 
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
-  width: 190px;
+  width: 200px;
   padding-left: 35px;
 }
 
@@ -659,6 +658,51 @@
   background: #f3f3f3;
 }
 
+/*=================================UITabContentContainer==============================*/
+
+.UIJCRExplorerPortlet .UITabContentContainer .UITabContent .UIActionViewContainer .UIGrid td {
+  border-top: solid 1px #cccccc;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
+  float: left;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
+	float: left;
+	margin: 4px 3px 0px 3px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle{
+	border: none;
+	border-bottom: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
+	border: none;
+	background: none;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
+	border: solid 1px #b7b7b7;
+}
+
+/*=================================UICategoryManager==============================*/
+
+.UIJCRExplorer .UICategoryManager .UIAction{
+	width: 70px;
+}
+
+/*=================================UILabelForm==============================*/
+
+.UIJCRExplorer .UICategoryManager .UIAction{
+	width: 70px;
+}
 
 
 

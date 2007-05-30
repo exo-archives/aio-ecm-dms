@@ -20,6 +20,10 @@
   cursor: pointer;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .View16x16Icon {
+  background:transparent url(/eXoResources/icons/16x16/VistaSkin/BlueBoxLight.gif) no-repeat scroll 0%;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
   float: left;
   width: 24px; height: 24px;
@@ -76,8 +80,13 @@
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
   float: left;
-  width: 24px; height:24px;
+  width: 16px; height:16px;
   margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .default16x16Icon {
+  float: left;
+  background: url('VistaSkin/background/default.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {

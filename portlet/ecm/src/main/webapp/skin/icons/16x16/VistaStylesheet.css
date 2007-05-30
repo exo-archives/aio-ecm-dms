@@ -353,8 +353,8 @@
 }
 
 .WebDAV16x16Icon {
-  width: 21px; height: 19px;
-  background: url('VistaSkin/Webdav.png') no-repeat ; 
+  width: 24px; height: 24px;
+  background: url('VistaSkin/Webdav.png') no-repeat center ; 
 }
 
 .Copy16x16Icon {
