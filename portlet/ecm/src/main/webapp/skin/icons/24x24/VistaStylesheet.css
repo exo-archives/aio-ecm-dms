@@ -260,9 +260,8 @@
 }
 
 .AddMetadataTypeIcon {
-  float: left ;
 	width: 24px;	height: 24px;
-  background: url('VistaSkin/ManageMetadataIcon.gif') no-repeat ;
+  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 
 .UINamespaceManagerIcon {

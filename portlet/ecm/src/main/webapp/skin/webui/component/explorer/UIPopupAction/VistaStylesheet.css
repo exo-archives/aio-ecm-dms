@@ -271,6 +271,74 @@
 /*############################## --End UITreeJCRExplorer   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
+	width: 99%;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
+  margin: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
+  width: 500px;
+  vertical-align: baseline;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
+	width: 50px;
+	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISelectPropertyForm .UIFormWithTitle .HorizontalLayout {
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm .UIFormWithTitle .HorizontalLayout {
+  margin: auto;
+  border: 1px solid #939393;
+  width: 350px ;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
+  width: 500px;
+  border: none;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
+  float: left ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
+  padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
+  padding-left: 185px ;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
+  height: 350px ;
+}
+
+/*############################## -- End UISearch   -- ##############################*/
+
+/*############################## -- Others   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
+  width: 150px ;
+}
+
+/*############################## -- End Others   -- ##############################*/
+.UIJCRExplorerPortlet .UIUploadManager .UIAction {
+  width: 180px;
+}
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- UIActionManager   -- ##############################*/
