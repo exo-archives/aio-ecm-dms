@@ -33,22 +33,22 @@
 
 .AddPathIcon {
   float: left ;
-	width: 16px;	height: 16px;
-  background: url('DefaultSkin/AddPath.gif') no-repeat ;
+	width: 17px;	height: 19px;
+  background: url('VistaSkin/AddPath.png') no-repeat ;
   cursor: pointer;
 }
 
 .AddIconIcon {
   float: left ;
-	width: 16px;	height: 16px;
-  background:transparent url(/eXoResources/icons/16x16/VistaSkin/AddNodeIcon.gif) no-repeat scroll left center;
+	width: 17px;	height: 16px;
+  background:transparent url('VistaSkin/AddNodeIcon.png') no-repeat scroll left center;
   cursor: pointer;
 } 
 
 .AddPermissionIcon {
   float: left;
-	width: 16px; height: 16px;
-  background: url('DefaultSkin/SelectPermission.gif') no-repeat; 
+	width: 19px; height: 20px;
+  background: url('VistaSkin/SelectPermission.png') no-repeat; 
   cursor: pointer;
   margin: 2px 4px 0px 4px;
 }
