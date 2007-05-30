@@ -208,7 +208,7 @@
 }
 
 .UIECMAdminPortlet .UIResizableBlock {
-	overflow: auto; height: 400px;
+  height: 400px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {

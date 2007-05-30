@@ -238,12 +238,12 @@
 
 .nt_versionLabels16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nt-versionLabels.gif') no-repeat;  
+  background: url('DefaultSkin/nt-versionLabels.gif') no-repeat; 
 }
 
 .rma_filePlan16x16Icon {
   width: 16px;	height: 16px;
-  background: url('DefaultSkin/rma-filePlan.gif') no-repeat;  
+  background: url('DefaultSkin/rma-filePlan.gif') no-repeat; 
 }
 
 .kfx_document16x16Icon {
