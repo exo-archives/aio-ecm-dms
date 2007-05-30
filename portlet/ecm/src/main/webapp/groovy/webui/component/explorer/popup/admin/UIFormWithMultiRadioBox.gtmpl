@@ -14,27 +14,33 @@
   <div class="UIFormWithTitle">
     <% uiform.begin() %>
     <div class="HorizontalLayout">
-      <% 
-        for(field in uiform.getChildren()) { 
-          if(field.isRendered()) {
-      %>
-            <div class="FieldContainer">                        
-              <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
-                <label><%=uicomponent.getLabel(field.getName())+": " %></label>
-              <%} 
-                if(field instanceof UIFormRadioBoxInput) {
-                  println "<div class=\"MultiRadioInput\">" ;
-                    uiform.renderField(field) ;
-                  println "</div>" ;
-                } else { 
-                  uiform.renderField(field) ;
-                } 
-              %>
-            </div>
-      <%
-          }
-        }
-      %>
+      <table class="UIFormGrid">
+	      <% 
+	        for(field in uiform.getChildren()) { 
+	          if(field.isRendered()) {
+	      %>
+              <tr>
+	              <td class="FieldLabel">
+		              <%if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
+		                  <%=uicomponent.getLabel(field.getName())+": " %>
+		              <%}%>
+	              </td>
+	              <td class="FieldComponent">
+	                <%if(field instanceof UIFormRadioBoxInput) {
+		                  println "<div class=\"MultiRadioInput\">" ;
+		                    uiform.renderField(field) ;
+		                  println "</div>" ;
+		                } else { 
+		                  uiform.renderField(field) ;
+		                } 
+		              %>
+	              </td>
+	            </tr>
+	      <%
+	          }
+	        }
+	      %>
+      </table>
       <div class="UIAction"> 
         <div class="ActionContainer">
           <% for(action in uicomponent.getActions()) { %>

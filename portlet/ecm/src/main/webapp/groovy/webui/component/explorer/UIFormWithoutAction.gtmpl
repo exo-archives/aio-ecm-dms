@@ -11,20 +11,24 @@
   <div class="UIFormWithTitle">
     <% uiform.begin() %>
     <div class="HorizontalLayout" style="border: none;">
+      <table class="UIFormGrid">
       <% 
         for(field in uiform.getChildren()) { 
           if(field.isRendered()) {
       %>
-            <div class="FieldContainer">
-              <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
-                <label><%=uicomponent.getLabel(field.getName())%></label>
-              <%} %>
-              <% uiform.renderField(field) %>
-            </div>
+						<tr>
+						  <td class="FieldLabel">
+	              <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
+	                <%=uicomponent.getLabel(field.getName())%>
+	              <%} %>
+	            </td>
+						  <td class="FieldComponent"><% uiform.renderField(field) %></td>
+						</tr>
       <%
           }
         }
       %>
+      </table>
     </div>
     <%uiform.end()%>
   </div>

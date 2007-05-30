@@ -13,17 +13,19 @@
       <div class="LeftBar">
         <div class="RightBar">
           <div class="MiddleBar">
-          <%uiform.begin() 
-					  for(field in uiform.getChildren()) { 
-					    if(field.isRendered()) {%>					
-							  <div class="FieldContainer">		          					
-							    <label><%=uicomponent.getLabel(field.getName())+ ": " %></label>
-							    <% uiform.renderField(field) %>
-							  </div>
-					 <% }
-					  }
-					  uiform.end()
-					 %>
+	          <%uiform.begin()%>
+              <table class="UIFormGrid">
+							  <%for(field in uiform.getChildren()) { 
+							      if(field.isRendered()) {%>
+			              <tr>
+				              <td class="FieldLabel"><%=uicomponent.getLabel(field.getName())+ ": " %></td>
+									    <td class="FieldComponent"><% uiform.renderField(field) %></td>
+									  </tr>
+							  <%  
+							      }
+							    }%>
+  						</table>
+  				  <%uiform.end()%>
           </div>
         </div>
       </div>

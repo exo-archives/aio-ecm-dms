@@ -5,22 +5,26 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Owner</label>
-      <%
-        String[] fieldOwner = ["jcrPath=/node/exo:accessControllable/exo:owner"] ;
-        uicomponent.addTextField("owner", fieldOwner) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Permissions</label>
-      <%
-        String[] fieldPermissions = ["jcrPath=/node/exo:accessControllable/exo:permissions"] ;
-        uicomponent.addTextField("permissions", fieldPermissions) ;
-      %>
-    </div>
-    
+    <table>
+			<tr>
+			  <td class="FieldLabel">Owner</td>
+			  <td class="FieldComponent">
+		      <%
+		        String[] fieldOwner = ["jcrPath=/node/exo:accessControllable/exo:owner"] ;
+		        uicomponent.addTextField("owner", fieldOwner) ;
+		      %>
+        </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Permissions</td>
+			  <td class="FieldComponent">
+					<%
+						String[] fieldPermissions = ["jcrPath=/node/exo:accessControllable/exo:permissions"] ;
+						uicomponent.addTextField("permissions", fieldPermissions) ;
+					%>
+        </td>
+			</tr>
+    </table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

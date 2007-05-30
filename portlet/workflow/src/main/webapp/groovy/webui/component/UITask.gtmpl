@@ -30,12 +30,14 @@
   %>
   <div class="TitleBar"><%=resWorkflow.getString("title")%></div>
   <div class="HorizontalLayout">
-		<%for(inputInfo in uicomponent.getInputInfo())  {%>
-	    <div class="FieldContainer">
-	  	  <label><%=inputInfo.getLabel()%></label>
-        <% uicomponent.renderField(inputInfo.getInput()); %>
-	  	</div>
-		<%}%>
+    <table class="UIFormGrid">
+			<%for(inputInfo in uicomponent.getInputInfo())  {%>
+					<tr>
+					  <td class="FieldLabel"><%=inputInfo.getLabel()%></td>
+					  <td class="FieldComponent"><% uicomponent.renderField(inputInfo.getInput()); %></td>
+					</tr>
+			<%}%>
+		</table>
 	  <div class="UIAction"> 
 	    <div class="ActionContainer">
 			  <%
