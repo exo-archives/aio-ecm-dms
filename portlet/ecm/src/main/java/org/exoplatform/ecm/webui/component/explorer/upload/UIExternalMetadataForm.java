@@ -37,7 +37,7 @@ import org.exoplatform.webui.event.Event.Phase;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
+    template =  "system:/groovy/webui/component/UIForm.gtmpl",
     events = {
       @EventConfig(listeners = UIExternalMetadataForm.AddActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIExternalMetadataForm.CancelActionListener.class)

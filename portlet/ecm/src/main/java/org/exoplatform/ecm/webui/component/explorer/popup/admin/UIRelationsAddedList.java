@@ -52,6 +52,20 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
     uiGrid.getUIPageIterator().setPageList(objPageList) ;
   }
   
+  @SuppressWarnings("unused")
+  public void updateSelect(String selectField, String value) {
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    RelationsService relateService = getApplicationComponent(RelationsService.class) ;
+    try {
+      relateService.addRelation(uiJCRExplorer.getCurrentNode(), value) ;
+      uiJCRExplorer.getCurrentNode().save() ;
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode())) ;
+      setRenderSibbling(UIRelationsAddedList.class) ;
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+  }
+
   static public class DeleteActionListener extends EventListener<UIRelationsAddedList> {
     public void execute(Event<UIRelationsAddedList> event) throws Exception {
       UIRelationsAddedList uiAddedList = event.getSource() ;
@@ -68,19 +82,6 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
         JCRExceptionManager.process(uiApp, e) ;
       }
       uiManager.setRenderedChild("UIRelationsAddedList") ;
-    }
-  }
-
-  @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    RelationsService relateService = getApplicationComponent(RelationsService.class) ;
-    try {
-      relateService.addRelation(uiJCRExplorer.getCurrentNode(), value) ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode())) ;
-      setRenderSibbling(UIRelationsAddedList.class) ;
-    } catch(Exception e) {
-      e.printStackTrace() ;
     }
   }
 }

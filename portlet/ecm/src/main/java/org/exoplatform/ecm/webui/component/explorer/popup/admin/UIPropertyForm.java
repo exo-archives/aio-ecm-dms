@@ -41,7 +41,7 @@ import org.exoplatform.webui.event.Event.Phase;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template = "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl", 
+    template = "system:/groovy/webui/component/UIForm.gtmpl", 
     events = {
       @EventConfig(listeners = UIPropertyForm.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPropertyForm.ChangeTypeActionListener.class),
@@ -158,6 +158,7 @@ public class UIPropertyForm extends UIForm {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       if(!uiExplorer.getCurrentNode().isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.node-checkedin", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;   
@@ -167,6 +168,7 @@ public class UIPropertyForm extends UIForm {
         String name = uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
         if ((name == null) || (name.length() == 0)) {
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
@@ -179,14 +181,17 @@ public class UIPropertyForm extends UIForm {
             UIFormCheckBoxInput checkbox = (UIFormCheckBoxInput)child ;
             valueList.add(checkbox.isChecked()) ;
           }
-        } else if(type == 5){
+        } else if(type == 5) {
           for(UIComponent child : multiValueInputSet.getChildren()) {
             UIFormDateTimeInput dateInput = (UIFormDateTimeInput)child ;
             valueList.add(dateInput.getCalendar()) ;
           }
-        } else valueList = multiValueInputSet.getValue() ;
+        } else {
+          valueList = multiValueInputSet.getValue() ;
+        }
         if(valueList.size() == 0) {
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.value-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
@@ -194,11 +199,19 @@ public class UIPropertyForm extends UIForm {
         Value[] values = uiForm.createValues(valueList, type, valueFactory) ;
         if(nodetype.canSetProperty(name, values)) {
           uiExplorer.getCurrentNode().setProperty(name, values) ;
+          uiExplorer.getCurrentNode().save() ;
+          uiExplorer.getSession().save() ;
         }
         uiForm.refresh() ;
         UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
         uiPropertiesManager.setRenderedChild(UIPropertyTab.class) ;
+        return ;
       }
+      uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.can-not-add", null)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
+      uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
+      return ;
     }
   }
 

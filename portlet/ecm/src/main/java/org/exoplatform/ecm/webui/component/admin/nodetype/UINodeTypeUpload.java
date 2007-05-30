@@ -34,7 +34,7 @@ import org.jibx.runtime.IUnmarshallingContext;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
+    template =  "system:/groovy/webui/component/UIForm.gtmpl",
     events = {
       @EventConfig(listeners = UINodeTypeUpload.UploadActionListener.class),
       @EventConfig(listeners = UINodeTypeUpload.CancelActionListener.class)
