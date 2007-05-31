@@ -356,15 +356,15 @@
 
 .AddRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat ;
+  background: url('VistaSkin/AddRepositoryIcon.png') no-repeat ;
 }
 
 .EditRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat ;
+  background: url('VistaSkin/EditRepositoryIcon.png') no-repeat ;
 }
 
 .RemoveRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat ;
+  background: url('VistaSkin/RemoveRepositoryIcon.png') no-repeat ;
 }

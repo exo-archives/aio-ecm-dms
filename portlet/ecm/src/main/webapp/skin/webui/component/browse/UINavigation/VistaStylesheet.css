@@ -28,7 +28,7 @@
 	float: left ;
 	height: 24px;
 	padding-left: 25px;
-	background: url('DefaultSkin/background/GreenLeftArrowFolder.gif') no-repeat left;	
+	background: url('VistaSkin/background/NodeNavigationIcon.png') no-repeat left;	
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeItemIcon {

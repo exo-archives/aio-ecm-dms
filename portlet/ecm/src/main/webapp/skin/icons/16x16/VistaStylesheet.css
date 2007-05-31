@@ -62,8 +62,8 @@
 }
  
 .SelectMemberIcon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroup.gif') no-repeat;
+  width: 24px; height: 20px;
+  background: url('VistaSkin/SmallGroup.png') no-repeat;
   cursor: pointer;  
 }
 
@@ -75,14 +75,14 @@
  
  
 .SelectGroupIcon {
-	width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+	width: 24px; height: 20px;
+  background: url('VistaSkin/SmallGroup.png') no-repeat;  
   cursor: pointer;
 }
 
 .SelectUserIcon {
-	width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+	width: 24px; height: 20px;
+  background: url('VistaSkin/SmallGroup.png') no-repeat;  
   cursor: pointer;
 }
  
@@ -343,13 +343,13 @@
 }
 
 .CheckIn16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/CheckIn.gif') no-repeat ;   
+  width: 24px; height: 20px;
+  background: url('VistaSkin/CheckIn.png') no-repeat ;   
 }
 
 .CheckOut16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/CheckOut.gif') no-repeat ;   
+  width: 24px; height: 20px;
+  background: url('VistaSkin/CheckOut.png') no-repeat ;   
 }
 
 .WebDAV16x16Icon {
