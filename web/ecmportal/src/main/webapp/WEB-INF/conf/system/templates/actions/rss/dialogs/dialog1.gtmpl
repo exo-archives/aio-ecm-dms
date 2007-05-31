@@ -2,218 +2,255 @@
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
   <% uiform.begin() %>
   <div class="HorizontalLayout">  
-    <div class="FieldContainer">                        
-      <label>Id</label>
-      <%
-        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
-        uicomponent.addMixinField("id", fieldId) ;  
-      %>
-    </div> 
-  
-    <div class="FieldContainer">                        
-      <label>Create feed action name</label>
-      <%
-        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName) ;  
-      %>
-    </div>
-    <div class="FieldContainer">                        
-      <label>Life cycle</label>
-      <%
-        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
-        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ; 
-      %>
-    </div>
-    <%
-		String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;
-		if(selectValue != null) {		
-			if(selectValue.equals("schedule")) { 
-	%>
-			  <div class="FieldContainer">		          					
-			  <label>Schedule type:</label>
-			  <% 
-				String[] fieldScheduleType = ["jcrPath=/node/exo:scheduleType", "options=cron,period", "onchange=true"] ;
-				uicomponent.addSelectBoxField("scheduleType", fieldScheduleType) 
-			  %>
-			  </div>
+  	<table class="UIFormGrid">
+  		<tr>
+	      <td class="FieldLabel">Id</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+		        uicomponent.addMixinField("id", fieldId) ;  
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Create feed action name</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+		        uicomponent.addTextField("name", fieldName) ;  
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Life cycle</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
+		        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) ; 
+		      %>
+		    </td>
+			</tr>
+	    <%
+				String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;
+				if(selectValue != null) {
+					if(selectValue.equals("schedule")) {
+			%>
+		  <tr>
+	      <td class="FieldLabel">Schedule type:</td>
+	      <td class="FieldComponent">
+				  <% 
+						String[] fieldScheduleType = ["jcrPath=/node/exo:scheduleType", "options=cron,period", "onchange=true"] ;
+						uicomponent.addSelectBoxField("scheduleType", fieldScheduleType) 
+				  %>
+			  </td>
+			</tr>
 			<%
 				String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
 				if(ScheduleType.equals("period") ) {%>
-					<div class="FieldContainer">		          					
-					  <label>Start time:</label>
-					  <% 
-						String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime"] ;
-						uicomponent.addCalendarField("startTime", fieldStartTime) ;
-					  %>
-					</div>
-					<div class="FieldContainer">		          					
-					  <label>End time:</label>
-					  <% 
-					   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime"] ;
-						uicomponent.addCalendarField("endTime", fieldEndTime) ;
-					  %>
-					</div>
-					<div class="FieldContainer">		          					
-					  <label>Repeat Count</label>
-					  <% 
-						String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number" ] ;
-						uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
-					  %>
-					</div>
-					<div class="FieldContainer">		          					
-					  <label>Time inteval</label>
-					  <% 
-						String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
-						uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
-					  %>
-					</div>
-			<%} else {%>
-					<div class="FieldContainer">		          					
-					  <label>Cron expression</label>
-					  <% 
-						String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
-						uicomponent.addTextField("cronExpression", fieldCronExpression) ;
-					  %>
-					</div>
- <%			}	
-		  }
-	  }
-	%>	
-    <div class="FieldContainer">                        
-      <label>Feed node name</label>
-      <%
-         String[] fieldFeedName = ["jcrPath=/node/exo:feedName"] ;
-         uicomponent.addTextField("feed-name", fieldFeedName) ; 
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Feed store path</label>
-      <% 
-         String[] fieldFeedStorePath = ["jcrPath=/node/exo:storePath", "/cms/feed"] ;
-         uicomponent.addTextField("store-path", fieldFeedStorePath) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Query items</label>
-      <%
-        String[] fieldQueryPath = ["jcrPath=/node/exo:queryPath", "/jcr:root/cms/publications//element(*, exo:podcast)"] ;
-        uicomponent.addTextAreaField("queryPath", fieldQueryPath) ; 
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Rss URL</label>
-      <%
-        String[] fieldURL = ["jcrPath=/node/exo:url", "http://localhost:8080/ecm/rss"] ;
-        uicomponent.addTextField("url", fieldURL) ; 
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Feed Title</label>
-      <%
-        String[] fieldTitle = ["jcrPath=/node/exo:feedTitle"] ;
-        uicomponent.addTextField("rss-title", fieldTitle) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Feed type</label>
-      <%
-        String[] fieldFeedType = ["jcrPath=/node/exo:feedType", "rss", "options=rss,podcast,video podcast"] ;
-        uicomponent.addSelectBoxField("feed-type", fieldFeedType) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Rss version</label>
-      <%
-        String[] fieldRSSVersion = ["jcrPath=/node/exo:rssVersion", "rss_2.0", "options=rss_2.0,rss_1.0,rss_0.94,rss_0.93,rss_0.92,rss_0.91,rss_0.90"] ;
-        uicomponent.addSelectBoxField("rss-version", fieldRSSVersion) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Link</label>
-      <%
-        String[] fieldLink = ["jcrPath=/node/exo:link", "validate=empty"] ;
-        uicomponent.addTextField("link", fieldLink) ; 
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Description</label>
-      <%
-        String[] fieldDescription = ["jcrPath=/node/exo:description", "This podcast provided by eXo Platform opensource company"] ; 
-        uicomponent.addTextAreaField("description", fieldDescription) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Language</label>
-      <%
-        String[] fieldLanguage = ["jcrPath=/node/exo:language", "English", "options=English,French"] ; 
-        uicomponent.addSelectBoxField("language", fieldLanguage) ; 
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Copyright</label>
-      <%
-        String[] fieldCopyright = ["jcrPath=/node/exo:copyright", "Copyright ? 2000-2005 eXo Platform SARL"] ; 
-        uicomponent.addTextField("copyright", fieldCopyright) ; 
-      %>
-    </div>
-
-    <div class="FieldContainer">                        
-      <label>Publish date</label>
-      <%
-        String[] fieldPubDate = ["jcrPath=/node/exo:pubDate"] ; 
-        uicomponent.addCalendarField("pubDate", fieldPubDate) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Owner name</label>
-      <%
-        String[] fieldOwnerName = ["jcrPath=/node/exo:ownerName", "Exoplatform"] ; 
-        uicomponent.addTextField("ownerName", fieldOwnerName) ;   
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Owner email</label>
-      <%
-        String[] fieldOwnerEmail = ["jcrPath=/node/exo:ownerEmail", "support@exoplatform.com"] ; 
-        uicomponent.addTextField("ownerEmail", fieldOwnerEmail) ;   
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Image URL</label>
-      <%
-        String[] fieldImageURL = ["jcrPath=/node/exo:imageURL"] ; 
-        uicomponent.addTextField("imageURL", fieldImageURL) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Category</label>
-      <%
-        String[] fieldCategory = ["jcrPath=/node/exo:category"] ; 
-        uicomponent.addTextField("category", fieldCategory) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">                        
-      <label>Keywords</label>
-      <%
-        String[] fieldKeyword = ["jcrPath=/node/exo:keywords"] ; 
-        uicomponent.addTextField("keywords", fieldKeyword) ;  
-      %>
-    </div>
+					<tr>		          					
+					  <td class="FieldLabel">Start time:</td>
+					  <td class="FieldComponent">
+						  <% 
+							String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime"] ;
+							uicomponent.addCalendarField("startTime", fieldStartTime) ;
+						  %>
+						</td>
+					</tr>
+					<tr>		          					
+					  <td class="FieldLabel">End time:</td>
+					  <td class="FieldComponent">
+						  <% 
+						   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime"] ;
+							uicomponent.addCalendarField("endTime", fieldEndTime) ;
+						  %>
+						</td>
+					</tr>
+					<tr>		          					
+					  <td class="FieldLabel">Repeat Count</td>
+					  <td class="FieldComponent">
+						  <% 
+							String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number" ] ;
+							uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
+						  %>
+						</td>
+					</tr>
+					<tr>		          					
+					  <td class="FieldLabel">Time inteval</td>
+					  <td class="FieldComponent">
+						  <% 
+							String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
+							uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
+						  %>
+						</td>
+					</tr>
+				<%} else {%>
+					<tr>		          					
+					  <td class="FieldLabel">Cron expression</td>
+					  <td class="FieldComponent">
+						  <% 
+							String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
+							uicomponent.addTextField("cronExpression", fieldCronExpression) ;
+						  %>
+						</td>
+					</tr>
+				<%			}	
+					  }
+				  }
+				%>	
+	    <tr>                        
+	      <td class="FieldLabel">Feed node name</td>
+	      <td class="FieldComponent">
+		      <%
+		         String[] fieldFeedName = ["jcrPath=/node/exo:feedName"] ;
+		         uicomponent.addTextField("feed-name", fieldFeedName) ; 
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Feed store path</td>
+	      <td class="FieldComponent">
+		      <% 
+		         String[] fieldFeedStorePath = ["jcrPath=/node/exo:storePath", "/cms/feed"] ;
+		         uicomponent.addTextField("store-path", fieldFeedStorePath) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Query items</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldQueryPath = ["jcrPath=/node/exo:queryPath", "/jcr:root/cms/publications//element(*, exo:podcast)"] ;
+		        uicomponent.addTextAreaField("queryPath", fieldQueryPath) ; 
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Rss URL</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldURL = ["jcrPath=/node/exo:url", "http://localhost:8080/ecm/rss"] ;
+		        uicomponent.addTextField("url", fieldURL) ; 
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Feed Title</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTitle = ["jcrPath=/node/exo:feedTitle"] ;
+		        uicomponent.addTextField("rss-title", fieldTitle) ;
+		      %>
+		    </td>
+	    </td>
+	    <tr>                        
+	      <td class="FieldLabel">Feed type</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldFeedType = ["jcrPath=/node/exo:feedType", "rss", "options=rss,podcast,video podcast"] ;
+		        uicomponent.addSelectBoxField("feed-type", fieldFeedType) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Rss version</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldRSSVersion = ["jcrPath=/node/exo:rssVersion", "rss_2.0", "options=rss_2.0,rss_1.0,rss_0.94,rss_0.93,rss_0.92,rss_0.91,rss_0.90"] ;
+		        uicomponent.addSelectBoxField("rss-version", fieldRSSVersion) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Link</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldLink = ["jcrPath=/node/exo:link", "validate=empty"] ;
+		        uicomponent.addTextField("link", fieldLink) ; 
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Description</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldDescription = ["jcrPath=/node/exo:description", "This podcast provided by eXo Platform opensource company"] ; 
+		        uicomponent.addTextAreaField("description", fieldDescription) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Language</td>
+	     	<td class="FieldComponent">
+		      <%
+		        String[] fieldLanguage = ["jcrPath=/node/exo:language", "English", "options=English,French"] ; 
+		        uicomponent.addSelectBoxField("language", fieldLanguage) ; 
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Copyright</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCopyright = ["jcrPath=/node/exo:copyright", "Copyright ? 2000-2005 eXo Platform SARL"] ; 
+		        uicomponent.addTextField("copyright", fieldCopyright) ; 
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Publish date</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldPubDate = ["jcrPath=/node/exo:pubDate"] ; 
+		        uicomponent.addCalendarField("pubDate", fieldPubDate) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Owner name</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldOwnerName = ["jcrPath=/node/exo:ownerName", "Exoplatform"] ; 
+		        uicomponent.addTextField("ownerName", fieldOwnerName) ;   
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Owner email</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldOwnerEmail = ["jcrPath=/node/exo:ownerEmail", "support@exoplatform.com"] ; 
+		        uicomponent.addTextField("ownerEmail", fieldOwnerEmail) ;   
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Image URL</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldImageURL = ["jcrPath=/node/exo:imageURL"] ; 
+		        uicomponent.addTextField("imageURL", fieldImageURL) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Category</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCategory = ["jcrPath=/node/exo:category"] ; 
+		        uicomponent.addTextField("category", fieldCategory) ;
+		      %>
+		    </td>
+	    </tr>
+	    <tr>                        
+	      <td class="FieldLabel">Keywords</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldKeyword = ["jcrPath=/node/exo:keywords"] ; 
+		        uicomponent.addTextField("keywords", fieldKeyword) ;  
+		      %>
+		    </td>
+	    </tr>
+	  </table>
     <%/* start render action*/%>
     <div class="UIAction"> 
       <div class="ActionContainer">

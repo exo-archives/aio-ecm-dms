@@ -1,13 +1,17 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">	
-      <label>Destruction Date</label>
-      <%
-        String[] fieldDestructionDate = ["jcrPath=/node/rma:destructionDate", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("destructionDate", fieldDestructionDate) ;
-      %>
-    </div>
+    <table class="UIFormGrid">	
+    	<tr>
+	      <td class="FieldLabel">Destruction Date</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldDestructionDate = ["jcrPath=/node/rma:destructionDate", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("destructionDate", fieldDestructionDate) ;
+		      %>
+		    </td>
+		  </tr>
+    </table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

@@ -5,36 +5,44 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Destination Workspace</label>
-      <%
-        String[] fieldDestWorkspace= ["jcrPath=/node/exo:move/exo:destWorkspace"] ;
-        uicomponent.addTextField("destWorkspace", fieldDestWorkspace) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Destination Path</label>
-      <%
-        String[] fieldDestPath = ["jcrPath=/node/exo:move/exo:destPath"] ;
-        uicomponent.addTextField("destPath", fieldDestPath) ;
-      %>
-    </div>
-     <div class="FieldContainer">		          					
-      <label>Primary Type</label>
-      <%
-        String[] fieldPrimaryType = ["jcrPath=/node/exo:move/jcr:primaryType"] ;
-        uicomponent.addTextField("primaryType", fieldPrimaryType) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Mixin Types</label>
-      <%
-        String[] fieldMixinTypes = ["jcrPath=/node/exo:move/jcr:mixinTypes"] ;
-        uicomponent.addTextField("mixinTypes", fieldMixinTypes) ;
-      %>
-    </div>
-    
+  	<table class="UIFormGrid">    
+  		<tr>
+	      <td class="FieldLabel">Destination Workspace</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldDestWorkspace= ["jcrPath=/node/exo:move/exo:destWorkspace"] ;
+		        uicomponent.addTextField("destWorkspace", fieldDestWorkspace) ;
+		      %>
+		    </td>
+		  </tr>
+			  <tr>
+	      <td class="FieldLabel">Destination Path</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldDestPath = ["jcrPath=/node/exo:move/exo:destPath"] ;
+		        uicomponent.addTextField("destPath", fieldDestPath) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Primary Type</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldPrimaryType = ["jcrPath=/node/exo:move/jcr:primaryType"] ;
+		        uicomponent.addTextField("primaryType", fieldPrimaryType) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Mixin Types</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldMixinTypes = ["jcrPath=/node/exo:move/jcr:mixinTypes"] ;
+		        uicomponent.addTextField("mixinTypes", fieldMixinTypes) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

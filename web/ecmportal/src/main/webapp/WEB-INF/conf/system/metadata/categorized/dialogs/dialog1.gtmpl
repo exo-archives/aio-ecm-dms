@@ -5,15 +5,17 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-   
-    <div class="FieldContainer">		          					
-      <label>Category</label>
-      <%
-        String[] fieldCategory = ["jcrPath=/node/exo:categorized/exo:category"];
-        uicomponent.addTextField("category", fieldCategory) ;
-      %>
-    </div>
-    
+  	<table class="UIFormGrid">
+  		<tr>
+      	<td class="FieldLabel">Category</td>
+      	<td class="FieldComponent">
+		      <%
+		        String[] fieldCategory = ["jcrPath=/node/exo:categorized/exo:category"];
+		        uicomponent.addTextField("category", fieldCategory) ;
+		      %>
+		    </td>
+    	</tr>
+    </table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

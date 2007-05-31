@@ -5,16 +5,17 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>UUID</label>
-      <%
-        String[] fieldUuid = ["jcrPath=/node/mix:referenceable/jcr:uuid"] ;
-        uicomponent.addTextField("uuid", fieldUuid) ;
-      %>
-    </div>
-   
-    
+    <table class="UIFormGrid">
+    	<tr>
+	      <td class="FieldLabel">UUID</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldUuid = ["jcrPath=/node/mix:referenceable/jcr:uuid"] ;
+		        uicomponent.addTextField("uuid", fieldUuid) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

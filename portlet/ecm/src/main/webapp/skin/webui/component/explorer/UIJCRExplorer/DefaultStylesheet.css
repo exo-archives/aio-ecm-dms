@@ -14,7 +14,7 @@
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
-  width: 95%;
+  width: 97%;
   margin: 0px auto;
 }
 
@@ -23,18 +23,42 @@
   padding: 3px;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer label{
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer label {
 	margin-right: 5px;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
-  float: left;
+  width: 230px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldComponent select {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input.checkbox {
-  border: none;
+  width: 15px;
+  height: 15px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input.checkbox {
+  width: 15px;
+  height: 15px;
+}
+.UIJCRExplorerPortlet .UIFormGrid input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+  width: 230px;
+}
+
+.UIJCRExplorerPortlet .HorizontalLayout .UIFormGrid td.FieldLabel {
+	width: 115px;
+}
+
+.UIJCRExplorerPortlet .UIFormGrid .FieldComponent input.checkbox{
+  width: 15px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
@@ -280,18 +304,16 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer{
 	width: 500px;
-	margin: auto;
 }
 
 /*===========================DocumentFormController=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
-	width: 165px;
-	padding-left: 20px;
+	width: 150px;
+	padding: 12px 110px 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent {
-  width: 97%;
   margin: auto;
 }
 
@@ -311,10 +333,6 @@
   padding-bottom: 10px;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-left: 130px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 3px; 
 }
@@ -324,17 +342,9 @@
   text-align: right;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController {
- 	padding: 13px 0px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
   padding: 0px 3px 0px 0px;
   width: 130px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
-  padding: 12px 0px 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
@@ -345,67 +355,9 @@
   margin: 5px;
 }
 
-/*===========================UIUploadForm====================*/
-
-.UIJCRExplorerPortlet .UIUploadForm .UIAction {
-  width: 170px;
-  padding-left: 15px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer {
-  width: 480px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FileNameLabel{
- overflow: hidden ;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
-  width: 120px;
-  margin: 0px; 
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle input {
-  margin-left: 6px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
-  margin-left: 6px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame {
-  width: 480px;
-  margin: auto;
-  padding-bottom: 10px;
-  padding-top: 0px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 120px;
-  margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px 0px 0px 5px;
-  width: 180px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame {
-  width: 480px;
-  margin: auto;
-  padding-bottom: 10px;
-  padding-top: 0px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 120px;
-  margin: 0px;
-}
-
 /*=============================UIWatchDocumentForm=======================*/
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
   width: 480px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer label {
@@ -414,14 +366,13 @@
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
   width: 160px;
-  padding-left: 40px;
+  padding-right: 60px;
 }
 
 /*=============================UITaggingForm=======================*/
 
 .UIJCRExplorerPortlet .UITaggingForm .FieldContainer {
   width: 480px;
-  margin: 0px auto;
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .FieldContainer .UIFormInputSet {
@@ -447,7 +398,7 @@
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 240px;
-  padding-left: 15px;
+  padding-right: 110px;
 }
 
 /*==================================UIVoteForm==============================*/
@@ -481,14 +432,13 @@
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIAction {
   width: 160px;
-  padding-left: 15px;
+  padding-right: 80px;
 }
 
 /*=============================UICommentForm=======================*/
 
 .UIJCRExplorerPortlet .UICommentForm .FieldContainer {
   width: 480px;
-  margin: 0px auto;
 }
 
 .UIJCRExplorerPortlet .UICommentForm .FieldContainer input {
@@ -497,7 +447,7 @@
 
 .UIJCRExplorerPortlet .UICommentForm .UIAction {
   width: 160px;
-  padding-left: 40px;
+  padding-right: 50px;
 }
 
 /*================================UISimpleSearch=================================*/
@@ -516,7 +466,7 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
   width: 355px;
-  padding-left: 120px;
+  padding-right: 120px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -527,7 +477,6 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer {
   width: 500px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer label {
@@ -536,7 +485,7 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 220px;
-  padding-left: 60px;
+  padding-right: 180px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
@@ -578,12 +527,15 @@
 /*================================UIActionContainer=================================*/
 
 .UIJCRExplorerPortlet .UIActionContainer .HorizontalLayout .FieldContainer {
-  width: 95%;
   overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .HorizontalLayout .FieldContainer .ActionIcon  {
   margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .HorizontalLayout .FieldContainer input  {
+  float: left;	
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm {
@@ -621,21 +573,30 @@
 /*================================.UIExportNode=================================*/
 
 .UIJCRExplorerPortlet .UIExportNode {
-  padding: 15px 0px;
+  padding: 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer {
-  width: 350px;
-  margin: auto;
+  overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input  {
+  width: 15px; height: 15px;
+  margin: 0px;
+  padding: 2px 0px;
+} 
+
+.UIJCRExplorerPortlet .UIExportNode .FieldContainer .nodePath {
+  margin-left: 5px;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input.checkbox  {
-  margin-left: 2px ;
+  margin-left: 5px ;
 } 
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 160px;
-  padding-left: 25px;
+  padding-right: 110px;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput .radio {
@@ -647,18 +608,14 @@
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
-  padding: 15px 0px;
+  padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer {
-  width: 480px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer label {
-  width: 100px;
-  margin: 0px; 
-}
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input  {
+  width: 15px; height: 15px;
+  margin: 0px;
+  padding:  2px 0px;
+} 
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input.checkbox  {
   margin-left: 2px ;
@@ -666,50 +623,11 @@
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 160px;
-  padding-left: 35px;
+  padding-right: 110px;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UploadIframe {
+.UIJCRExplorerPortlet .UIImportNode .FieldContainer .nodePath {
   margin-left: 5px;
-}
-
-UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
-  width: 480px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 100px;
-  margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px 0px 0px 5px;
-  width: 180px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .ProgressBarFrame {
-  width: 480px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 100px;
-  margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer{
-  width: 480px;
-  margin: 0px auto;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .MultiRadioInput .radio {
-  width: 20px;
-  margin-left: 0px;
-  float: none;
-  border: none;
 }
 /*================================UIReferencesList=================================*/
 
@@ -748,6 +666,7 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{
   margin-right: 3px;
 }
+
 .UIJCRExplorerPortlet .UIPropertyTab .UIAction {
   width: 160px ;
 }
@@ -806,10 +725,7 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 	width: 70px;
 }
 
-/*=================================UILabelForm==============================*/
-
-.UIJCRExplorer .UICategoryManager .UIAction{
+.UIJCRExplorer .UIRelationManager .UIAction{
 	width: 70px;
 }
-
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

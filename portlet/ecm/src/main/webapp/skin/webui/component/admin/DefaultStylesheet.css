@@ -81,25 +81,40 @@
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
-	width: 98%;
 	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label {
 	margin-right: 5px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer input{
-	float: left;
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer input {
+	width: 225px;
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
+  float: left;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer input.checkbox {
+	width: 15px;
+  float: left;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer select{
-	float:left;	
+	border: solid 1px #b7b7b7;
+  padding-left: 3px;
+  float: left;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer a{
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer a {
 	width: 16px;
 	height: 16px;	
+	float: left;
+	margin: 2px 5px 0px 5px;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer {
+	margin: 0px 0px 10px 125px;
 }
 
 .UIRepositoryControl .UIWorkspaceWizard .UIAction {
@@ -195,6 +210,19 @@
 .UIECMAdminPortlet .UIFormWithTitle .FieldContainer select {
   border: solid 1px #b7b7b7;
   padding-left: 3px;
+}
+
+.UIECMAdminPortlet .HorizontalLayout  {
+  margin: 10px;
+}
+
+.UIECMAdminPortlet .HorizontalLayout .FieldComponent input {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
+}
+
+.UIECMAdminPortlet .HorizontalLayout .FormContainer .UIAction {
+  width: 160px;
 }
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
@@ -320,22 +348,8 @@
   border: none;
 }
 
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
-  background: none ;
-  border: none ;
-}
-
 .UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer   {
   margin-left: 137px;
-}
-
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  margin: 3px 5px 0px 5px;
-}
-
-.UIECMAdminPortlet .UIFormTabPane .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  float: left;
-  margin: 3px 5px 0px 5px;
 }
 
 .UIECMAdminPortlet .MultiRadioInput {
@@ -343,24 +357,6 @@
 }
 
 /*############################## -- UIFormInputSet -- ########################*/
-
-.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
-  width: 520px;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
-  width: 250px;
-  padding-left: 85px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .checkbox {
-  width: 15px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  width: 225px;
-}
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
   color: blue;
@@ -605,17 +601,13 @@ UIECMAdminPortlet .UIViewManager {
   width: 60px;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 98%;
-}
-
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
+.UIECMScripts .HorizontalLayout .FormContainer .UIAction {
   width: 330px;
-  padding-left: 60px;
+  padding-left: 30px;
 }
 
-.UIECMScripts .UIFormWithTitle .UIForm textarea {
-  width: 320px;
+.UIECMScripts .HorizontalLayout .FormContainer textarea {
+  width: 380px;
   height: 300px;
 }
 
@@ -629,17 +621,13 @@ UIECMAdminPortlet .UIViewManager {
 }
 /*------------------------------UICBScripts------------------------*/
 
-.UICBScripts .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 98%;
-}
-
-.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
+.UICBScripts .HorizontalLayout .FormContainer .UIAction {
   width: 330px;
-  padding-left: 60px;
+  padding-left: 30px;
 }
 
-.UICBScripts .UIFormWithTitle .UIForm textarea {
-  width: 320px;
+.UICBScripts .HorizontalLayout .FormContainer textarea {
+  width: 380px;
   height: 300px;
 }
 
@@ -684,8 +672,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
-	height: 150px ;
-	width: 320px ;
+	height: 300px ;
+	width: 380px ;
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .FieldContainer label {
@@ -710,7 +698,7 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 290px ;
-	width: 350px ;
+	width: 380px ;
 }
 
 /*############################## -- MultiField  -- ########################*/
@@ -754,43 +742,28 @@ UIECMAdminPortlet .UIViewManager {
  	padding: 2px 0px 0px 2px;
 }
 
-.UITemplatesManager .UIGrid .ActionContainer {
+.UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {
   width: 50px ;
 }
 
-.UITemplatesManager .UIFormTabPane .UIAction {
+.UIECMAdminPortlet .UITemplatesManager .UIForm .textarea {
+  width: 400px;
+  height: 270px;
+  padding: 3px;
+}
+
+.UIECMAdminPortlet .UITemplatesManager .UIFormTabPane .UIAction {
   width: 300px; 
-  margin: auto;
 }
 
-.UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 320px; 
-  height: 300px; 
-  padding: 5px ;
-}
-
-.UIECMAdminPortlet .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
-  width: 500px;
-  margin: auto;
-  border: none;
-}
-
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout label {
-  width: 150px;
-}
-
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
+.UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
 	padding-left: 110px;
 }
 
-.UITemplatesManager .UITemplateList .UIAction {
+.UIECMAdminPortlet .UITemplatesManager .UITemplateList .UIAction {
   width: 80px ;
 }
 
-.UITemplatesManager .UIFormWithTitle .UIForm .textarea {
-  width: 350px; 
-  height: 250px; 
-}
 
 .UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
   padding-left: 100px;

@@ -458,12 +458,6 @@
   margin: auto ;
 }
 
-.ECMTempForm .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
-  border: none;
-}
-
 .ECMTempForm .UIFormWithTitle label {
 	width: 100px;
 }
@@ -497,12 +491,6 @@
 .UIECMAdminPortlet .CBTemplate .UIGrid .ActionContainer {
   width: 50px ;
   margin: auto ;
-}
-
-.CBTempForm .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
-  border: none;
 }
 
 .CBTempForm .UIFormWithTitle .UIAction {
@@ -567,18 +555,13 @@
   margin-top: 7px;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .FieldContainer {
-  width: 98%;
-  border: none;
-}
-
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
-  width: 270px;
+.UIECMScripts .HorizontalLayout .FormContainer .UIAction {
+  width: 330px;
   padding-left: 30px;
 }
 
-.UIECMScripts .UIFormWithTitle .UIForm textarea {
-  width: 320px;
+.UIECMScripts .HorizontalLayout .FormContainer textarea {
+  width: 380px;
   height: 300px;
 }
 
@@ -605,13 +588,13 @@
   padding-left: 7px;
 }
 
-.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
-  width: 340px;
-  padding-left: 85px;
+.UICBScripts .HorizontalLayout .FormContainer .UIAction {
+  width: 330px;
+  padding-left: 30px;
 }
 
-.UICBScripts .UIFormWithTitle .UIForm textarea {
-  width: 320px;
+.UICBScripts .HorizontalLayout .FormContainer textarea {
+  width: 380px;
   height: 300px;
 }
 

@@ -5,22 +5,27 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">		          					
-      <label>Lock Owner</label>
-      <%
-        String[] fieldLockOwner = ["jcrPath=/node/mix:lockable/jcr:lockOwner"] ;
-        uicomponent.addTextField("lockOwner", fieldLockOwner) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Lock Is Deep</label>
-      <%
-        String[] fieldLockIsDeep= ["jcrPath=/node/mix:lockable/jcr:lockIsDeep"] ;
-        uicomponent.addTextField("lockIsDeep", fieldLockIsDeep) ;
-      %>
-    </div>
-    
-		<%/* start render action*/%>
+  	<table class="UIFormGrid">
+    	<tr>		          					
+	      <td class="FieldLabel">Lock Owner</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldLockOwner = ["jcrPath=/node/mix:lockable/jcr:lockOwner"] ;
+		        uicomponent.addTextField("lockOwner", fieldLockOwner) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Lock Is Deep</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldLockIsDeep= ["jcrPath=/node/mix:lockable/jcr:lockIsDeep"] ;
+		        uicomponent.addTextField("lockIsDeep", fieldLockIsDeep) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
+s		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">
 	      <% for(action in uicomponent.getActions()) { %>

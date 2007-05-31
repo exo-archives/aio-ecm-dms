@@ -5,50 +5,62 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Version History</label>
-      <%
-        String[] fieldVersionHistory = ["jcrPath=/node/mix:versionable/jcr:versionHistory"] ;
-        uicomponent.addTextField("versionHistory", fieldVersionHistory) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Base Version</label>
-      <%
-        String[] fieldBaseVersion = ["jcrPath=/node/mix:versionable/jcr:baseVersion"] ;
-        uicomponent.addTextField("baseVersion", fieldBaseVersion) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>is Checked Out</label>
-      <%
-        String[] fieldIsCheckedOut = ["jcrPath=/node/mix:versionable/jcr:isCheckedOut"] ;
-        uicomponent.addTextField("isCheckedOut", fieldIsCheckedOut) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Predecessors</label>
-      <%
-        String[] fieldPredecessors = ["jcrPath=/node/mix:versionable/jcr:predecessors"] ;
-        uicomponent.addTextField("predecessors", fieldPredecessors) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Merge Failed</label>
-      <%
-        String[] fieldMergeFailed = ["jcrPath=/node/mix:versionable/jcr:mergeFailed"] ;
-        uicomponent.addTextField("mergeFailed", fieldMergeFailed) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>UUID</label>
-      <%
-        String[] fieldUuid = ["jcrPath=/node/mix:versionable/jcr:uuid"] ;
-        uicomponent.addTextField("uuid", fieldUuid) ;
-      %>
-    </div>
-   
+  	<table class="UIFormGrid">    
+  		<tr>
+	      <td class="FieldLabel">Version History</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldVersionHistory = ["jcrPath=/node/mix:versionable/jcr:versionHistory"] ;
+		        uicomponent.addTextField("versionHistory", fieldVersionHistory) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Base Version</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldBaseVersion = ["jcrPath=/node/mix:versionable/jcr:baseVersion"] ;
+		        uicomponent.addTextField("baseVersion", fieldBaseVersion) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">is Checked Out</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldIsCheckedOut = ["jcrPath=/node/mix:versionable/jcr:isCheckedOut"] ;
+		        uicomponent.addTextField("isCheckedOut", fieldIsCheckedOut) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Predecessors</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldPredecessors = ["jcrPath=/node/mix:versionable/jcr:predecessors"] ;
+		        uicomponent.addTextField("predecessors", fieldPredecessors) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Merge Failed</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldMergeFailed = ["jcrPath=/node/mix:versionable/jcr:mergeFailed"] ;
+		        uicomponent.addTextField("mergeFailed", fieldMergeFailed) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">UUID</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldUuid = ["jcrPath=/node/mix:versionable/jcr:uuid"] ;
+		        uicomponent.addTextField("uuid", fieldUuid) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

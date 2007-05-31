@@ -1,56 +1,72 @@
 <div class="UIFormWithTitle">
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
 	<% uiform.begin() %>
-  <div class="HorizontalLayout">	  
-    <div class="FieldContainer">		          					
-      <label>Id</label>
-      <%
-        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move", "editable=false", "visible=if-not-null"] ;
-        uicomponent.addMixinField("id", fieldId) ;  
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Name</label>
-      <% 
-        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName)  ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Life cycle</label>
-      <% 
-        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify"] ;
-        uiform.addSelectBoxField("lifecycle", fieldLifecycle) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Description</label>
-      <% 
-        String[] fieldDescription = ["jcrPath=/node/exo:description"] ; 
-        uicomponent.addTextAreaField("description", fieldDescription) 
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Validator</label>
-      <% 
-        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty"] ;
-        uicomponent.addActionField("validator", fieldValidator) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>To workspace</label>
-      <% 
-        String[] fieldWorkspace = ["jcrPath=/node/exo:destWorkspace", "production", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy"] ;
-        uicomponent.addSelectBoxField("destWorkspace", fieldWorkspace) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>With path</label>
-      <% 
-        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "selectorParams=#destWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty"] ;
-        uicomponent.addActionField("destPath", fieldPath)  ;
-      %>
-    </div>        
+  <div class="HorizontalLayout">
+  	<table class="UIFormGrid">	  
+  		<tr>
+	      <td class="FieldLabel">Id</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:move", "editable=false", "visible=if-not-null"] ;
+		        uicomponent.addMixinField("id", fieldId) ;  
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Name</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+		        uicomponent.addTextField("name", fieldName)  ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Life cycle</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify"] ;
+		        uiform.addSelectBoxField("lifecycle", fieldLifecycle) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Description</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldDescription = ["jcrPath=/node/exo:description"] ; 
+		        uicomponent.addTextAreaField("description", fieldDescription) 
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Validator</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty"] ;
+		        uicomponent.addActionField("validator", fieldValidator) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">To workspace</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldWorkspace = ["jcrPath=/node/exo:destWorkspace", "production", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy"] ;
+		        uicomponent.addSelectBoxField("destWorkspace", fieldWorkspace) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">With path</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "selectorParams=#destWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty"] ;
+		        uicomponent.addActionField("destPath", fieldPath)  ;
+		      %>
+		    </td>
+		  </tr>
+    </table>       
     <%/* start render action*/%>
 		<div class="UIAction" style="width:180px; margin:auto;"> 
 	    <div class="ActionContainer">

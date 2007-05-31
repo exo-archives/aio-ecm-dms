@@ -1,48 +1,62 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">	
-      <label>Cutoff Executed</label>
-      <%
-        String[] fieldCutoffExecuted = ["jcrPath=/node/rma:cutoffExecuted", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("cutoffExecuted", fieldCutoffExecuted) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Cutoff Now</label>
-      <%
-        String[] fieldCutoffNow = ["jcrPath=/node/rma:cutoffNow", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("cutoffNow", fieldCutoffNow) ;
-      %>
-    </div>
-    <div class="FieldContainer">		 
-      <label>Cutoff Date Time</label>
-      <%
-        String[] fieldCutoffDateTime = ["jcrPath=/node/rma:cutoffDateTime", "options=displaytime"] ;
-        uicomponent.addCalendarField("cutoffDateTime", fieldCutoffDateTime) ;
-      %>
-    </div>
-    <div class="FieldContainer">		
-      <label>Cutoff Event</label>
-      <%
-        String[] fieldCutoffEvent = ["jcrPath=/node/rma:cutoffEvent"] ;
-        uicomponent.addTextField("cutoffEvent", fieldCutoffEvent) ;
-      %>
-    </div>
-    <div class="FieldContainer">		 
-      <label>Cutoff Obsolete</label>
-      <%
-        String[] fieldCutoffObsolete = ["jcrPath=/node/rma:cutoffObsolete", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("cutoffObsolete", fieldCutoffObsolete) ;
-      %>
-    </div>
-    <div class="FieldContainer">	
-      <label>Cutoff Superseded </label>
-      <%
-        String[] fieldCutoffSupereded = ["jcrPath=/node/rma:cutoffSuperseded", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("cutoffSuperseded", fieldCutoffSupereded) ;
-      %>
-    </div>
+  	<table class="UIFormGrid">
+  		<tr>
+      	<td class="FieldLabel">Cutoff Executed</td>
+      	<td class="FieldComponent">
+		      <%
+		        String[] fieldCutoffExecuted = ["jcrPath=/node/rma:cutoffExecuted", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("cutoffExecuted", fieldCutoffExecuted) ;
+		      %>
+		    </td>
+		  </tr>
+    	<tr>		          					
+	      <td class="FieldLabel">Cutoff Now</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCutoffNow = ["jcrPath=/node/rma:cutoffNow", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("cutoffNow", fieldCutoffNow) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Cutoff Date Time</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCutoffDateTime = ["jcrPath=/node/rma:cutoffDateTime", "options=displaytime"] ;
+		        uicomponent.addCalendarField("cutoffDateTime", fieldCutoffDateTime) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Cutoff Event</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCutoffEvent = ["jcrPath=/node/rma:cutoffEvent"] ;
+		        uicomponent.addTextField("cutoffEvent", fieldCutoffEvent) ;
+		      %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="FieldLabel">Cutoff Obsolete</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCutoffObsolete = ["jcrPath=/node/rma:cutoffObsolete", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("cutoffObsolete", fieldCutoffObsolete) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Cutoff Superseded </td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCutoffSupereded = ["jcrPath=/node/rma:cutoffSuperseded", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("cutoffSuperseded", fieldCutoffSupereded) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

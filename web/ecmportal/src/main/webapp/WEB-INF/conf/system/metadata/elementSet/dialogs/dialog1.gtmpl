@@ -1,115 +1,143 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Title</label>
-      <%
-        String[] fieldTitle = ["jcrPath=/node/dc:elementSet/dc:title", "multiValues=true"] ;
-        uicomponent.addTextField("title", fieldTitle) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Creator</label>
-      <%
-        String[] fieldCreator = ["jcrPath=/node/dc:elementSet/dc:creator", "multiValues=true"] ;
-        uicomponent.addTextField("creator", fieldCreator) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Subject</label>
-      <%
-        String[] fieldSubject = ["jcrPath=/node/dc:elementSet/dc:subject", "multiValues=true"] ;
-        uicomponent.addTextField("subject", fieldSubject) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Source</label>
-      <%
-        String[] fieldSource = ["jcrPath=/node/dc:elementSet/dc:source", "multiValues=true"] ;
-        uicomponent.addTextField("source", fieldSource) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Contributor</label>
-      <%
-        String[] fieldContributor = ["jcrPath=/node/dc:elementSet/dc:contributor", "multiValues=true"] ;
-        uicomponent.addTextField("contributor", fieldContributor) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>ResourceType </label>
-      <%
-        String[] fieldResourceType = ["jcrPath=/node/dc:elementSet/dc:resourceType", "multiValues=true"] ;
-        uicomponent.addTextField("resourceType", fieldResourceType) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">		          					
-      <label>Date</label>
-      <%
-        String[] fieldDate = ["jcrPath=/node/dc:elementSet/dc:date", "options=displaytime"] ; 
-        uicomponent.addCalendarField("date", fieldDate) ;
-      %>
-    </div>
-    
-    <div class="FieldContainer">		          					
-      <label>Publisher</label>
-      <%
-        String[] fieldPublisher = ["jcrPath=/node/dc:elementSet/dc:publisher", "multiValues=true"] ;
-        uicomponent.addTextField("publisher", fieldPublisher) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Description</label>
-      <%
-        String[] fieldDescription = ["jcrPath=/node/dc:elementSet/dc:description", "multiValues=true"] ;
-        uicomponent.addTextField("description", fieldDescription) ; ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Rights </label>
-      <%
-        String[] fieldRights = ["jcrPath=/node/dc:elementSet/dc:rights", "multiValues=true"] ;
-        uicomponent.addTextField("rights", fieldRights) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Relation</label>
-      <%
-        String[] fieldRelation = ["jcrPath=/node/dc:elementSet/dc:relation", "multiValues=true"] ;
-        uicomponent.addTextField("relation", fieldRelation) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Format</label>
-      <%
-        String[] fieldFormat = ["jcrPath=/node/dc:elementSet/dc:format", "multiValues=true"] ;
-        uicomponent.addTextField("format", fieldFormat) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Coverage </label>
-      <%
-        String[] fieldCoverage = ["jcrPath=/node/dc:elementSet/dc:coverage", "multiValues=true"] ;
-        uicomponent.addTextField("coverage", fieldCoverage) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Identifier</label>
-      <%
-        String[] fieldIdentifier = ["jcrPath=/node/dc:elementSet/dc:identifier", "multiValues=true"] ;
-        uicomponent.addTextField("identifier", fieldIdentifier) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Language</label>
-      <%
-        String[] fieldLanguage= ["jcrPath=/node/dc:elementSet/dc:language", "multiValues=true"] ;
-        uicomponent.addTextField("language", fieldLanguage) ;
-      %>
-    </div>
-    
+  	<table class="UIFormGrid">
+  		<tr>
+	      <td class="FieldLabel">Title</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTitle = ["jcrPath=/node/dc:elementSet/dc:title", "multiValues=true"] ;
+		        uicomponent.addTextField("title", fieldTitle) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Creator</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCreator = ["jcrPath=/node/dc:elementSet/dc:creator", "multiValues=true"] ;
+		        uicomponent.addTextField("creator", fieldCreator) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Subject</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldSubject = ["jcrPath=/node/dc:elementSet/dc:subject", "multiValues=true"] ;
+		        uicomponent.addTextField("subject", fieldSubject) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Source</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldSource = ["jcrPath=/node/dc:elementSet/dc:source", "multiValues=true"] ;
+		        uicomponent.addTextField("source", fieldSource) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Contributor</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldContributor = ["jcrPath=/node/dc:elementSet/dc:contributor", "multiValues=true"] ;
+		        uicomponent.addTextField("contributor", fieldContributor) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">ResourceType </td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldResourceType = ["jcrPath=/node/dc:elementSet/dc:resourceType", "multiValues=true"] ;
+		        uicomponent.addTextField("resourceType", fieldResourceType) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Date</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldDate = ["jcrPath=/node/dc:elementSet/dc:date", "options=displaytime"] ; 
+		        uicomponent.addCalendarField("date", fieldDate) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Publisher</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldPublisher = ["jcrPath=/node/dc:elementSet/dc:publisher", "multiValues=true"] ;
+		        uicomponent.addTextField("publisher", fieldPublisher) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Description</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldDescription = ["jcrPath=/node/dc:elementSet/dc:description", "multiValues=true"] ;
+		        uicomponent.addTextField("description", fieldDescription) ; ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Rights </td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldRights = ["jcrPath=/node/dc:elementSet/dc:rights", "multiValues=true"] ;
+		        uicomponent.addTextField("rights", fieldRights) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td ckass="FieldLabel">Relation</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldRelation = ["jcrPath=/node/dc:elementSet/dc:relation", "multiValues=true"] ;
+		        uicomponent.addTextField("relation", fieldRelation) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Format</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldFormat = ["jcrPath=/node/dc:elementSet/dc:format", "multiValues=true"] ;
+		        uicomponent.addTextField("format", fieldFormat) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Coverage </td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldCoverage = ["jcrPath=/node/dc:elementSet/dc:coverage", "multiValues=true"] ;
+		        uicomponent.addTextField("coverage", fieldCoverage) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Identifier</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldIdentifier = ["jcrPath=/node/dc:elementSet/dc:identifier", "multiValues=true"] ;
+		        uicomponent.addTextField("identifier", fieldIdentifier) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Language</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldLanguage= ["jcrPath=/node/dc:elementSet/dc:language", "multiValues=true"] ;
+		        uicomponent.addTextField("language", fieldLanguage) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

@@ -1,27 +1,35 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">	
-      <label>Transfer Executed</label>
-      <%
-        String[] fieldTransferExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("transferExecuted", fieldTransferExecuted) ;
-      %>
-    </div>
-    <div class="FieldContainer">		
-      <label>Transfer Date</label>
-      <%
-        String[] fieldTransferDate = ["jcrPath=/node/rma:transferDate"] ;
-        uicomponent.addCalendarField("transferDate", fieldTransferDate) ;
-      %>
-    </div>
-    <div class="FieldContainer">		
-      <label>Holds Discretionary</label>
-      <%
-        String[] fieldTransferLocation = ["jcrPath=/node/rma:transferLocation" ] ;
-        uicomponent.addTextField("transferLocation", fieldTransferLocation) ;
-      %>
-    </div>
+  	<table class="UIFormGrid">
+  		<tr>
+	      <td class="FieldLabel">Transfer Executed</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTransferExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("transferExecuted", fieldTransferExecuted) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Transfer Date</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTransferDate = ["jcrPath=/node/rma:transferDate"] ;
+		        uicomponent.addCalendarField("transferDate", fieldTransferDate) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Holds Discretionary</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTransferLocation = ["jcrPath=/node/rma:transferLocation" ] ;
+		        uicomponent.addTextField("transferLocation", fieldTransferLocation) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

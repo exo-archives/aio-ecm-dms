@@ -24,10 +24,6 @@
   background: #8eeaaf ;
 }
 
-.UIJCRExplorerPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-}
-
 .UIJCRExplorerPortlet .UIPreferencesForm  {
   width: 500px;
   padding: 15px;
@@ -35,9 +31,4 @@
 
 .UIPopupMessages .UIAction {
   width: 100px;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  float: left;
-  margin: 3px 5px 0px 5px;
 }

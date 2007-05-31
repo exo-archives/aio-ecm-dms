@@ -17,111 +17,111 @@
 				<tr>
 				  <td class="FieldLabel">Name</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
-		        uicomponent.addTextField("name", fieldName) ; 
-		      %>
+			      <%
+			        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
+			        uicomponent.addTextField("name", fieldName) ; 
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Title</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldTitle = ["jcrPath=/node/jcr:content/dc:title", "multiValues=true"] ;
-		        uicomponent.addTextField("title", fieldTitle) ;
-		      %>
+			      <%
+			        String[] fieldTitle = ["jcrPath=/node/jcr:content/dc:title", "multiValues=true"] ;
+			        uicomponent.addTextField("title", fieldTitle) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Creator</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldCreator = ["jcrPath=/node/jcr:content/dc:creator", "multiValues=true"] ;
-		        uicomponent.addTextField("creator", fieldCreator) ;
-		      %>
+			      <%
+			        String[] fieldCreator = ["jcrPath=/node/jcr:content/dc:creator", "multiValues=true"] ;
+			        uicomponent.addTextField("creator", fieldCreator) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Subject</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldSubject = ["jcrPath=/node/jcr:content/dc:subject", "multiValues=true"] ;
-		        uicomponent.addTextField("subject", fieldSubject) ;
-		      %>
+			      <%
+			        String[] fieldSubject = ["jcrPath=/node/jcr:content/dc:subject", "multiValues=true"] ;
+			        uicomponent.addTextField("subject", fieldSubject) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Description</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldDescription = ["jcrPath=/node/jcr:content/dc:description"] ;
-		        uicomponent.addTextAreaField("description", fieldDescription) ;
-		      %>
+			      <%
+			        String[] fieldDescription = ["jcrPath=/node/jcr:content/dc:description"] ;
+			        uicomponent.addTextAreaField("description", fieldDescription) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Publisher</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldPublisher = ["jcrPath=/node/jcr:content/dc:publisher", "multiValues=true"] ;
-		        uicomponent.addTextField("publisher", fieldPublisher) ;
-		      %>
+			      <%
+			        String[] fieldPublisher = ["jcrPath=/node/jcr:content/dc:publisher", "multiValues=true"] ;
+			        uicomponent.addTextField("publisher", fieldPublisher) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Contributor</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldContributor = ["jcrPath=/node/jcr:content/dc:contributor", "multiValues=true"] ;
-		        uicomponent.addTextField("contributor", fieldContributor) ;
-		      %>
+			      <%
+			        String[] fieldContributor = ["jcrPath=/node/jcr:content/dc:contributor", "multiValues=true"] ;
+			        uicomponent.addTextField("contributor", fieldContributor) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Source</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldSource = ["jcrPath=/node/jcr:content/dc:source", "multiValues=true"] ;
-		        uicomponent.addTextField("source", fieldSource) ;
-		      %>
+			      <%
+			        String[] fieldSource = ["jcrPath=/node/jcr:content/dc:source", "multiValues=true"] ;
+			        uicomponent.addTextField("source", fieldSource) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Rights</td>
 				  <td class="FieldComponent">
-		      <%
-		        String[] fieldRights = ["jcrPath=/node/jcr:content/dc:rights", "multiValues=true"] ;
-		        uicomponent.addTextField("rights", fieldRights) ;
-		      %>
+			      <%
+			        String[] fieldRights = ["jcrPath=/node/jcr:content/dc:rights", "multiValues=true"] ;
+			        uicomponent.addTextField("rights", fieldRights) ;
+			      %>
 				  </td>
 				</tr>
 				<tr>
 				  <td class="FieldLabel">Content</td>
 				  <td class="FieldComponent">
-					<%
-						if(uicomponent.isEditing()) { 
-							def curNode = uicomponent.getNode() ;
-							if(curNode.hasNode("jcr:content")) {
-								def content = curNode.getNode("jcr:content") ;
-								if(content.getProperty("jcr:mimeType").getString().startsWith("text")){
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=name"] ;
-		              uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
+						<%
+							if(uicomponent.isEditing()) { 
+								def curNode = uicomponent.getNode() ;
+								if(curNode.hasNode("jcr:content")) {
+									def content = curNode.getNode("jcr:content") ;
+									if(content.getProperty("jcr:mimeType").getString().startsWith("text")){
+										String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=name"] ;
+			              uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
+									} else {
+									%>
+										<span style="font-size:12px; font-weight: bold; padding-top:5px;">
+								    	The content is binary data. You can not change it.
+								    </span>
+									<%
+									}
 								} else {
-								%>
-									<span style="font-size:12px; font-weight: bold; padding-top:5px;">
-							    	The content is binary data. You can not change it.
-							    </span>
-								<%
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+			            uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
 								}
-							} else {
+							}else {				
 								String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-		            uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
+			          uicomponent.addWYSIWYGField("summary", fieldSummary) ;
 							}
-						}else {				
-							String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-		          uicomponent.addWYSIWYGField("summary", fieldSummary) ;
-						}
-					%>			
+						%>			
 				  </td>
 				</tr>				
 		</table>	     

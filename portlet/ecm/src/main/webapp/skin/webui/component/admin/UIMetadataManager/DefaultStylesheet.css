@@ -13,29 +13,12 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UIForm .HorizontalLayout .FieldContainer {
-	width: 98%;
-	overflow: hidden;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIForm .HorizontalLayout label {
-	float:left;
-  width: 120px ;
-	text-align: right;
-	margin: 0px 10px ;
-}
-
 .UIECMAdminPortlet .UIMetadataManager .UITabPane .UIAction {
   width: 160px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UIFormInputSet {
-  width: 550 px;
-  margin: auto;
-}
-
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 350px;
+  width: 400px;
   height: 270px;
   padding: 3px;
 }
@@ -46,7 +29,7 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIWindowContent .Content{
-  padding: 2px 0px 0px 15px;
+  padding: 2px 0px 0px 8px;
 }
 
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator {

@@ -5,22 +5,26 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Start Publication</label>
-      <%
-        String[] fieldStartPublication = ["jcrPath=/node/exo:published/exo:startPublication", "options=displaytime"] ;
-        uicomponent.addCalendarField("startPublication", fieldStartPublication) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>End Publication</label>
-      <%
-        String[] fieldEndPublication= ["jcrPath=/node/exo:published/exo:endPublication"];
-        uicomponent.addTextField("endPublication", fieldEndPublication) ;
-      %>
-    </div>
-    
+  	<table class="UIFormGrid">
+  		<tr>
+	      <td class="FieldLabel">Start Publication</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldStartPublication = ["jcrPath=/node/exo:published/exo:startPublication", "options=displaytime"] ;
+		        uicomponent.addCalendarField("startPublication", fieldStartPublication) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">End Publication</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldEndPublication= ["jcrPath=/node/exo:published/exo:endPublication"];
+		        uicomponent.addTextField("endPublication", fieldEndPublication) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

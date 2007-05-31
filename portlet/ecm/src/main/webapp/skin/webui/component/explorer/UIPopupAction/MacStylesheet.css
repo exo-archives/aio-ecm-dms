@@ -185,30 +185,19 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .HorizontalLayout .UploadIframe {
-  margin-left: 5px;
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .UIFormUploadInput .UIUploadForm {
+	margin-left: 5px;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
-  width: 100%;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 155px;
+	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
-  width: 180px;
   padding: 0px;
+  float: left;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame {
-  width: 100%;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 155px;
-}
 /*############################## -- End UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
@@ -234,10 +223,8 @@
   width: 300px ;
 }
 
-/*############################## -- Begin UIViewMetadataForm   -- ##############################*/
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer {}
-/*############################## -- End UIViewMetadataForm   -- ##############################*/
 /*############################## -- Begin UIVoteForm   -- ##############################*/
+
 .UIJCRExplorerPortlet .UIVoteForm {
 	padding: 10px;
 }
@@ -327,7 +314,15 @@
 /*############################## -- Others   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
-	float: left;
+	overflow: hidden;
+	width: 200px;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput .radio {
+  width: 20px;
+  margin-left: 0px;
+  float: none;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {

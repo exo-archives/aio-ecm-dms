@@ -1,35 +1,44 @@
 <div class="UIFormWithTitle">
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
 	<% uiform.begin() %>
-  <div class="HorizontalLayout">	  
-    <div class="FieldContainer">		          					
-      <label>Id</label>
-      <%
-        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
-        uicomponent.addMixinField("id", fieldId) ;  
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Name</label>
-      <% 
-        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName) ;  
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Life cycle</label>
-      <% 
-        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
-        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Description</label>
-      <% 
-        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
-        uicomponent.addTextAreaField("description", fieldDescription) ;
-      %>
-    </div>
+  <div class="HorizontalLayout">
+  	<table class="UIFormGrid">	  
+    <tr>		          					
+      <td class="FieldLabel">Id</td>
+      <td class="FieldComponent">
+	      <%
+	        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+	        uicomponent.addMixinField("id", fieldId) ;  
+	      %>
+	    </td>
+    </tr>
+    <tr>		          					
+      <td class="FieldLabel">Name</td>
+      <td class="FieldComponent">
+	      <% 
+	        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+	        uicomponent.addTextField("name", fieldName) ;  
+	      %>
+	    </td>
+    </tr>
+    <tr>		          					
+      <td class="FieldLabel">Life cycle</td>
+      <td class="FieldComponent">
+	      <% 
+	        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove"] ;
+	        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
+	      %>
+	    </td>
+    </tr>
+    <tr>		          					
+      <td class="FieldLabel">Description</td>
+      <td class="FieldComponent">
+	      <% 
+	        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
+	        uicomponent.addTextAreaField("description", fieldDescription) ;
+	      %>
+	    </td>
+    </table>
     <%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

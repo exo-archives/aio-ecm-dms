@@ -16,6 +16,11 @@
   width: 95%;
 }
 
+.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer select {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
+}
+
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer textarea {
   border: solid 1px #b7b7b7;
   padding: 3px;
@@ -24,10 +29,6 @@
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MyEditor {
-  margin-left: 8px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
@@ -275,7 +276,6 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer{
 	width: 500px;
-	margin: auto;
 }
 
 /*===========================DocumentFormController=====================*/
@@ -300,7 +300,6 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .FieldContainer{
   width: 500px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
@@ -309,11 +308,6 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .HorizontalLayout {
   padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer {
-  width: 95%;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
@@ -334,14 +328,6 @@
   width: 130px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer .MyEditor {
-  margin-left: 7px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer .UploadIframe {
-  margin-left: 7px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
   padding: 12px 45px 0px 0px;
 }
@@ -352,18 +338,6 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
   margin: 5px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .SelectFileFrame .SelectFileLabel {
-  width: 130px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .ProgressBarFrame .SelectFileLabel {
-  width: 130px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin: 0px 0px 10px 130px;
 }
 
 /*===========================TabContainer====================*/
@@ -377,50 +351,6 @@
 .UIJCRExplorerPortlet .UIUploadForm .UIAction {
   width: 170px;
   padding: 0px 0px 9px 35px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
-  width: 120px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle input {
-  margin-left: 6px;
-  border: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
-  margin-left: 6px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame {
-  width: 480px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 120px;
-  margin-right: 0px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px 0px 0px 3px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame {
-  width: 480px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 120px;
-  margin-right: 0px;
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer{
-  width: 480px;
-  margin: 0px auto;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
@@ -500,9 +430,6 @@
   margin-left: 7px;
 }
 
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer .UploadIframe {
-  margin-left: 7px;
-}
 /*==================================UIVoteForm==============================*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
@@ -665,12 +592,11 @@
 /*================================.UIExportNode=================================*/
 
 .UIJCRExplorerPortlet .UIExportNode {
-  padding: 15px 0px;
+  padding: 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
+  overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input  {
@@ -683,21 +609,13 @@
   margin-left: 5px;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput {
-  margin-left: 5px;
-}
-
-.UIJCRExplorerPortlet .UIExportNode  .FieldContainer .MultiRadioInput input.radio {
-  margin-right: 5px;
-}
-
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input.checkbox  {
   margin-left: 5px ;
 } 
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 170px;
-  padding-left: 25px;
+  padding-right: 100px;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput .radio {
@@ -709,12 +627,7 @@
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
-  padding: 15px 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
+  padding: 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input  {
@@ -729,66 +642,13 @@
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 170px;
-  padding-left: 25px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer .UploadIframe {
-  margin-left: 5px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer label {
-  width: 120px;
-  margin: 0px; 
-}
-
-UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
-  width: 500px;
-  margin: auto;
-  padding-bottom: 10px;
-  padding-top: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 120px;
-  margin-right: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px 0px 0px 5px;
-  width: 150px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .ProgressBarFrame {
-  width: 500px;
-  margin: auto;
-  padding-bottom: 10px;
-  padding-top: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 120px;
-  margin-right: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer{
-  width: 500px;
-  margin: 0px auto;
+  padding-right: 100px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .FieldContainer .nodePath {
   margin-left: 5px;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .MultiRadioInput {
-  margin-left: 5px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .MultiRadioInput .radio {
-  width: 20px;
-  margin-left: 0px;
-  float: none;
-  border: none;
-}
 /*================================.UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {
@@ -880,8 +740,11 @@ UIJCRExplorerPortlet .UIImportNode .FieldContainer .SelectFileFrame {
 
 /*=================================UICategoryManager==============================*/
 
-.UIJCRExplorer .UICategoryManager .UIAction{
+.UIJCRExplorer .UICategoryManager .UIAction {
 	width: 80px;
 }
 
+.UIJCRExplorer .UIRelationManager .UIAction {
+	width: 80px;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

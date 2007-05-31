@@ -1,49 +1,63 @@
 <div class="UIFormWithTitle">
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
 	<% uiform.begin() %>
-  <div class="HorizontalLayout">	  
-    <div class="FieldContainer">		          					
-      <label>Id</label>
-      <%
-         String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
-         uicomponent.addMixinField("id", fieldId) ;  
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Action name</label>
-      <% 
-        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Life cycle</label>
-      <% 
-        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,modify,remove"] ;
-        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Description</label>
-      <% 
-        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
-        uicomponent.addTextAreaField("description", fieldDescription) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Calendar file name</label>
-      <%
-        String[] fieldCalendarPath = ["jcrPath=/node/exo:calendarPath", "/cms/calendar/exocalendar.ics"] ; 
-        uicomponent.addTextField("calendarPath", fieldCalendarPath) ; 
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Query items</label>
-      <%
-        String[] fieldQuery = ["jcrPath=/node/exo:query", "/jcr:root/cms/publications//element(*, exo:event)"] ; 
-        uicomponent.addTextAreaField("query", fieldQuery) ;
-      %>
-    </div>
+  <div class="HorizontalLayout">	
+  	<table class="UIFormGrid">  
+  		<tr>
+	      <td class="FieldLabel">Id</td>
+	      <td class="FieldComponent">
+		      <%
+		         String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
+		         uicomponent.addMixinField("id", fieldId) ;  
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Action name</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+		        uicomponent.addTextField("name", fieldName) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+      <td class="FieldLabel">Life cycle</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,modify,remove"] ;
+		        uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+      <td class="FieldLabel">Description</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
+		        uicomponent.addTextAreaField("description", fieldDescription) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+      <td class="FieldLabel">Calendar file name</td>
+	      <td class="FiedlComponent">
+		      <%
+		        String[] fieldCalendarPath = ["jcrPath=/node/exo:calendarPath", "/cms/calendar/exocalendar.ics"] ; 
+		        uicomponent.addTextField("calendarPath", fieldCalendarPath) ; 
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Query items</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldQuery = ["jcrPath=/node/exo:query", "/jcr:root/cms/publications//element(*, exo:event)"] ; 
+		        uicomponent.addTextAreaField("query", fieldQuery) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
     <%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

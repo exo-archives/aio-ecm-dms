@@ -1,41 +1,53 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">	
-      <label>Hold Executed</label>
-      <%
-        String[] fieldHoldExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("holdExecuted", fieldHoldExecuted) ;
-      %>
-    </div>
-    <div class="FieldContainer">		  
-      <label>Hold Until</label>
-      <%
-        String[] fieldHoldUntil = ["jcrPath=/node/rma:holdUntil"] ;
-        uicomponent.addCalendarField("holdUntil", fieldHoldUntil) ;
-      %>
-    </div>
-    <div class="FieldContainer">		
-      <label>Holds Discretionary</label>
-      <%
-        String[] fieldHoldDiscretionary = ["jcrPath=/node/rma:holdsDiscretionary", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("holdsDiscretionary", fieldHoldDiscretionary) ;
-      %>
-    </div>
-    <div class="FieldContainer">	
-      <label>Hold Until Event</label>
-      <%
-        String[] fieldHoldUntilEvent = ["jcrPath=/node/rma:holdUntilEvent"] ;
-        uicomponent.addTextField("holdUntilEvent", fieldHoldUntilEvent) ;
-      %>
-    </div>
-    <div class="FieldContainer">	
-      <label>Freeze</label>
-      <%
-        String[] fieldFreeze = ["jcrPath=/node/rma:freeze", "false", "options=false,true"] ;
-        uicomponent.addSelectBoxField("freeze", fieldFreeze) ;
-      %>
-    </div>
+    <table class="UIFormGrid">
+    	<tr>	
+	      <td class="FieldLabel">Hold Executed</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldHoldExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("holdExecuted", fieldHoldExecuted) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Hold Until</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldHoldUntil = ["jcrPath=/node/rma:holdUntil"] ;
+		        uicomponent.addCalendarField("holdUntil", fieldHoldUntil) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Holds Discretionary</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldHoldDiscretionary = ["jcrPath=/node/rma:holdsDiscretionary", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("holdsDiscretionary", fieldHoldDiscretionary) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Hold Until Event</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldHoldUntilEvent = ["jcrPath=/node/rma:holdUntilEvent"] ;
+		        uicomponent.addTextField("holdUntilEvent", fieldHoldUntilEvent) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Freeze</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldFreeze = ["jcrPath=/node/rma:freeze", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("freeze", fieldFreeze) ;
+		      %>
+		    </td>
+		  </tr>
+    </table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

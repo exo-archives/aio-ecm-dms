@@ -1,28 +1,35 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Is Vital Record</label>
-      <%
-        String[] fieldIsVitalRecord = ["jcrPath=/node/rma:isVitalRecord", "true", "options=false,true"] ;
-        uicomponent.addSelectBoxField("isVitalRecord", fieldIsVitalRecord) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Prev Review Date</label>
-      <%
-        String[] fieldPrevReviewDate = ["jcrPath=/node/rma:prevReviewDate"] ;
-        uicomponent.addCalendarField("prevReviewDate", fieldPrevReviewDate) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Next Review Date</label>
-      <%
-        String[] fieldNextReviewDate = ["jcrPath=/node/rma:nextReviewDate"] ;
-        uicomponent.addCalendarField("nextReviewDate", fieldNextReviewDate) ;
-      %>
-    </div>
+  	<table class="UIFormGrid">    
+  		<tr>
+	      <td class="FieldLabel">Is Vital Record</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldIsVitalRecord = ["jcrPath=/node/rma:isVitalRecord", "true", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("isVitalRecord", fieldIsVitalRecord) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel">Prev Review Date</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldPrevReviewDate = ["jcrPath=/node/rma:prevReviewDate"] ;
+		        uicomponent.addCalendarField("prevReviewDate", fieldPrevReviewDate) ;
+		      %>
+		    </td>
+		  </tr>
+    	<tr>
+	      <td class="FieldLabel">Next Review Date</td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldNextReviewDate = ["jcrPath=/node/rma:nextReviewDate"] ;
+		        uicomponent.addCalendarField("nextReviewDate", fieldNextReviewDate) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

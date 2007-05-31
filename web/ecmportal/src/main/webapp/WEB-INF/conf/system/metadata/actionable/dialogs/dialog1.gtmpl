@@ -5,22 +5,26 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-      
-    <div class="FieldContainer">		          					
-      <label>Primary Type</label>
-      <%
-        String[] fieldPrimaryType = ["jcrPath=/node/exo:actionable/jcr:primaryType"] ;
-        uicomponent.addTextField("primaryType", fieldPrimaryType) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Mixin Types</label>
-      <%
-        String[] fieldMixinTypes = ["jcrPath=/node/exo:actionable/jcr:mixinTypes"] ;
-        uicomponent.addTextField("mixinTypes", fieldMixinTypes) ;
-      %>
-    </div>
-    
+    <table class="UIFormGrid">	
+    	<tr>	          					
+      	<td class="FieldLabel">Primary Type</td>
+      	<td class="FieldComponent"> 
+		      <%
+		        String[] fieldPrimaryType = ["jcrPath=/node/exo:actionable/jcr:primaryType"] ;
+		        uicomponent.addTextField("primaryType", fieldPrimaryType) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+      	<td class="FieldLabel">Mixin Types</td>
+      	<td class="FieldComponent">
+		      <%
+		        String[] fieldMixinTypes = ["jcrPath=/node/exo:actionable/jcr:mixinTypes"] ;
+		        uicomponent.addTextField("mixinTypes", fieldMixinTypes) ;
+		      %>
+		    </td>
+      </tr> 
+    </table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">

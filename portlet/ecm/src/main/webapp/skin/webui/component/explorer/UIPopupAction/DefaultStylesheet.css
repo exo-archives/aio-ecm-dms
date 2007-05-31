@@ -262,40 +262,25 @@
 /*############################## -- UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
-  padding: 10px 0px;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
-  margin: auto;
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
+  width: 95%;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .UIFormUploadInput .UIUploadForm {
+	margin-left: 5px;
+}
+
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
-  width: 100%;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 130px;
-  margin: 0px 10px 0px 25px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 130px;
-  margin: 0px 10px 0px 25px;
+	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
-  width: 180px;
   padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame {
-  width: 100%;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 130px;
-  margin: 0px 10px 0px 25px;
+  float: left;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/
@@ -304,6 +289,7 @@
 .UIJCRExplorerPortlet .UITaggingForm .ActionField {
 	float: left ;
 	padding-left: 5px ;
+	margin-bottom: 2px;
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
@@ -314,10 +300,6 @@
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
-}
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
-  width: 300px ;
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
@@ -362,6 +344,18 @@
   background: url('/ecm/skin/images/vote/OverStar.gif');
 }
 /*############################## -- End UIVoteForm   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	overflow: hidden;
+	width: 200px;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput .radio {
+  width: 20px;
+  margin-left: 0px;
+  float: none;
+  border: none;
+}
 
 /*############################## -- UISearch   -- ##############################*/
 
@@ -420,10 +414,6 @@
 
 /*############################## -- Others   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
-	float: left;
-}
-
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
   width: 150px ;
 }
@@ -431,4 +421,5 @@
 /*############################## -- End Others   -- ##############################*/
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
   width: 180px;
+  padding-right: 10px;
 }

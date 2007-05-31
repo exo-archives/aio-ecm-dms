@@ -85,10 +85,6 @@
 	padding: 3px;
 }
 
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .UploadIframe {
-  margin-left: 9px;
-}
-
 .UIDialogPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {
   margin: auto;
 	width: 600px;
