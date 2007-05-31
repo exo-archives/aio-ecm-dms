@@ -12,17 +12,13 @@ import java.util.Map;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.QueryHandlerEntry;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.ValueStorageEntry;
 import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
-import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
-import org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIComponent;
@@ -419,9 +415,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
 
       QueryHandlerEntry queryHandler = new QueryHandlerEntry("org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex", queryParams) ;
       queryHandler.setParameters(queryParams) ;
-      workspaceEntry.setQueryHandler(queryHandler) ;
-      
-      if(isDefault) uiRepoForm.defaulWorkspace_ = name ;
+      workspaceEntry.setQueryHandler(queryHandler) ;      
+      if(isDefault) uiRepoForm.defaulWorkspace_ = name ;      
       uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
       uiRepoForm.refreshLabel() ;      
       UIPopupAction uiPopupAction = uiFormWizard.getAncestorOfType(UIPopupAction.class) ;

@@ -5,30 +5,36 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">		          					
-      <label>Name</label>
-      <%
-        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName) ; 
-      %>
-    </div>
-    <%
-      int i = 1;
-      for(property in node.getProperties()) {
-        def propertyName = property.getName() ;
-        if(propertyName.startsWith(namespace)) { %>
-        <div class="FieldContainer">		          					
-		      <label><%=propertyName.substring(namespace.length(), propertyName.length())%></label>
-		      <%
-		        String[] param = ["jcrPath=/node/" + propertyName] ;
-		        uicomponent.addTextField("component_" + i, param) ; 
-		      %>
-        </div>
-    <%
-        }
-        i++ ;
-      }
-    %>
+		<table class="UIFormGrid">			
+			<tr>
+			  <td class="FieldLabel">Name</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
+	        uicomponent.addTextField("name", fieldName) ; 
+	      %>			  
+			  </td>
+			</tr>		
+	    <%
+	      int i = 1;
+	      for(property in node.getProperties()) {
+	        def propertyName = property.getName() ;
+	        if(propertyName.startsWith(namespace)) { %>
+	        <tr>		 
+	        	<td class="FieldLabel"><%=propertyName.substring(namespace.length(), propertyName.length())%></td>         					
+	        	<td class="FieldComponent">
+			      <%
+			        String[] param = ["jcrPath=/node/" + propertyName] ;
+			        uicomponent.addTextField("component_" + i, param) ; 
+			      %>
+			      </td>
+	        </tr>
+	    <%
+	        }
+	        i++ ;
+	      }
+	    %>
+		</table>	    
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

@@ -1,77 +1,98 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <div class="FieldContainer">		          					
-      <label>Name</label>
-      <%
-        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Subject</label>
-      <%
-        String[] fieldSummary = ["jcrPath=/node/exo:summary"] ;
-        uicomponent.addTextField("summary", fieldSummary) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Description</label>
-      <%
-        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
-        uicomponent.addTextAreaField("description", fieldDescription) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Location</label>
-      <%
-        String[] fieldLocation = ["jcrPath=/node/exo:location"] ;
-        uicomponent.addTextField("location", fieldLocation) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Start date/time</label>
-      <%
-        String[] fieldDtstart = ["jcrPath=/node/exo:dtstart", "options=displaytime", "validate=datetime"] ; 
-        uicomponent.addCalendarField("dtstart", fieldDtstart) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>End date/time</label>
-      <%
-        String[] fieldDtend = ["jcrPath=/node/exo:dtend", "options=displaytime", "validate=datetime"] ;
-        uicomponent.addCalendarField("dtend", fieldDtend) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Comment</label>
-      <%
-        String[] fieldComment = ["jcrPath=/node/exo:comment"] ;
-        uicomponent.addTextAreaField("comment", fieldComment) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Category</label>
-      <%
-        String[] fieldCategories = ["jcrPath=/node/exo:category", "script=ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy"] ;
-        uicomponent.addSelectBoxField("categories", fieldCategories) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Availability</label>
-      <%
-        String[] fieldFbtype= ["jcrPath=/node/exo:fbtype", "options=busy,free"] ;
-        uicomponent.addSelectBoxField("fbtype", fieldFbtype) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Share type</label>
-      <%
-        String[] fieldSharetype = ["jcrPath=/node/exo:sharetype", "options=private,detail,freebusy"] ;
-        uicomponent.addSelectBoxField("sharetype", fieldSharetype) ;
-      %>
-    </div>
-    
+  <table class="UIFormGrid">
+			<tr>
+			  <td class="FieldLabel">Name</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
+	        uicomponent.addTextField("name", fieldName) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Subject</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldSummary = ["jcrPath=/node/exo:summary"] ;
+	        uicomponent.addTextField("summary", fieldSummary) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Description</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
+	        uicomponent.addTextAreaField("description", fieldDescription) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Location</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldLocation = ["jcrPath=/node/exo:location"] ;
+	        uicomponent.addTextField("location", fieldLocation) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Start date/time</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldDtstart = ["jcrPath=/node/exo:dtstart", "options=displaytime", "validate=datetime"] ; 
+	        uicomponent.addCalendarField("dtstart", fieldDtstart) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">End date/time</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldDtend = ["jcrPath=/node/exo:dtend", "options=displaytime", "validate=datetime"] ;
+	        uicomponent.addCalendarField("dtend", fieldDtend) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Comment</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldComment = ["jcrPath=/node/exo:comment"] ;
+	        uicomponent.addTextAreaField("comment", fieldComment) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Category</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldCategories = ["jcrPath=/node/exo:category", "script=ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy"] ;
+	        uicomponent.addSelectBoxField("categories", fieldCategories) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Availability</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldFbtype= ["jcrPath=/node/exo:fbtype", "options=busy,free"] ;
+	        uicomponent.addSelectBoxField("fbtype", fieldFbtype) ;
+	      %>			  
+			  </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel">Share type</td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldSharetype = ["jcrPath=/node/exo:sharetype", "options=private,detail,freebusy"] ;
+	        uicomponent.addSelectBoxField("sharetype", fieldSharetype) ;
+	      %>			  
+			  </td>
+			</tr>			
+		</table>
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

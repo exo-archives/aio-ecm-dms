@@ -5,7 +5,7 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border:0px;">
-    <table>
+    <table class="UIFormGrid">
 			<tr>
 			  <td class="FieldLabel">Owner</td>
 			  <td class="FieldComponent">

@@ -881,6 +881,7 @@ public class UIActionBar extends UIForm {
 
   static public class ChangeTabActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
+      System.out.println("come here");
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource()) ;
     }
   }

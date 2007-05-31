@@ -1,21 +1,26 @@
 <div class="UIFormWithTitle">  
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border: 0px;">	  
-    <div class="FieldContainer">		          					
-      <label>Name</label>
-      <%
-        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
-        uicomponent.addTextField("name", fieldName) ;
-      %>
-    </div>
-    <div class="FieldContainer">		          					
-      <label>Shared</label>
-      <%
-        String[] fieldShared = ["jcrPath=/node/exo:shared", "false", "options=true,false"] ;
-        uicomponent.addSelectBoxField("shared", fieldShared) ;
-      %>
-    </div>
-    
+	<div class="HorizontalLayout" style="border: 0px;">	  
+		<table class="UIFormGrid">
+			<tr>
+			  <td class="FieldLabel">Name</td>
+			  <td class="FieldComponent">
+			  <%
+	        String[] fieldName = ["jcrPath=/node", "editable=if-null", "validate=name"] ;
+	        uicomponent.addTextField("name", fieldName) ;
+	      %>
+		    </td>
+			</tr>
+			<tr>
+				<td class="FieldLabel">Shared</td>
+				<td class="FieldComponent">
+	      <%
+	        String[] fieldShared = ["jcrPath=/node/exo:shared", "false", "options=true,false"] ;
+	        uicomponent.addSelectBoxField("shared", fieldShared) ;
+	      %>				
+				</td>
+			</tr>
+		</table>		
 		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

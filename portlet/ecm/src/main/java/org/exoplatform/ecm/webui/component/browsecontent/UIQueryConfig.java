@@ -43,6 +43,7 @@ import org.exoplatform.webui.event.Event.Phase;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     template =  "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
+    //template =  "app:/groovy/webui/component/UIFormWithOutTitle.gtmpl",
     events = {
       @EventConfig(listeners = UIQueryConfig.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIQueryConfig.ChangeLangActionListener.class),
@@ -366,6 +367,7 @@ public class UIQueryConfig extends UIForm {
 
   public static class ChangeLangActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
+      System.out.println("\n\nChange Type 1\n\n");
       UIQueryConfig uiForm = event.getSource() ;
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String queryType = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYTYPE).getValue() ;
@@ -385,6 +387,7 @@ public class UIQueryConfig extends UIForm {
 
   public static class ChangeStatusActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
+      System.out.println("\n\nChange Type 2\n\n");
       UIQueryConfig uiForm = event.getSource();
       uiForm.chageStatus () ;
     }
@@ -392,6 +395,7 @@ public class UIQueryConfig extends UIForm {
 
   public static class ChangeTypeActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
+      System.out.println("\n\nChange Type 3\n\n");
       UIQueryConfig uiForm = event.getSource() ;
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String queryType = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYTYPE).getValue() ;
