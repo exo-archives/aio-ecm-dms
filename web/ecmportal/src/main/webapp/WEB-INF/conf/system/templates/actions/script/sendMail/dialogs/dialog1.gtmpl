@@ -33,8 +33,7 @@
 				</tr>
 								
 				<%
-					String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;
-					println selectValue ;
+					String selectValue = uicomponent.getSelectBoxFieldValue("lifecycle") ;					
 					if(selectValue != null) {		
 						if(selectValue.equals("schedule")) { 
 				%>		<tr>
@@ -48,7 +47,7 @@
 							</tr>
 						<%
 							String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
-							if(ScheduleType.equals("period") ) {%>
+							if(ScheduleType.equals("period")) {%>
 								<tr>  					
 								  <td class="FieldLabel">Start time</td>
 								  <td class="FieldComponent">	
@@ -57,8 +56,7 @@
 										uicomponent.addCalendarField("startTime", fieldStartTime) ;
 								  %>
 								  </td>
-								</tr>
-								
+								</tr>								
 								<tr>		          					
 								  <td class="FieldLabel">End time</td>
 								  <td class="FieldComponent">	
@@ -67,10 +65,9 @@
 										uicomponent.addCalendarField("endTime", fieldEndTime) ;
 								  %>
 								  </td>
-								</tr>
-								
+								</tr>								
 								<tr>		          					
-								  <td class="FieldLabel">Repeat Count</tr>
+								  <td class="FieldLabel">Repeat Count</td>
 								  <td class="FieldComponent">	
 								  <% 
 										String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;

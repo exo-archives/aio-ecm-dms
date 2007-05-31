@@ -4,20 +4,26 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
+import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationImpl;
+import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -201,6 +207,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   public void deActivate() throws Exception {
     repo_ = null ;
   }
+  
 
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
@@ -210,25 +217,35 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
-      if (uiForm.getWorkspaceMap().isEmpty()) {
+      WorkspaceEntry wsn = prepareWs() ;
+      
+      RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;      
+      ManageableRepository defRep = (ManageableRepository) rservice.getRepository(uiControl.repoName_);
+      RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;
+      if(config.isRetainable()) {
+        defRep.configWorkspace(wsn);
+        defRep.createWorkspace(wsn.getName());
+      }
+      
+     /* if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-isrequire", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
       RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
-      RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;
+      RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;      
       ManageableRepository defRep = (ManageableRepository) rservice.getRepository(uiControl.repoName_);
       if(config.isRetainable()) {
         for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
           if(!defRep.isWorkspaceInitialized(ws.getName())) {
             defRep.configWorkspace(ws);
             defRep.createWorkspace(ws.getName());
-
+              
           }
         }
         config.retain() ;
-      }
+      }*/
       /*String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
       String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
       String authen = uiForm.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
@@ -265,6 +282,24 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ; 
     }
+    
+    private WorkspaceEntry prepareWs() {
+      List params = new ArrayList();
+      params.add(new SimpleParameterEntry("sourceName", "jdbcjcr"));
+      params.add(new SimpleParameterEntry("db-type", "generic"));
+      params.add(new SimpleParameterEntry("multi-db", "false"));
+      params.add(new SimpleParameterEntry("update-storage", "true"));
+      params.add(new SimpleParameterEntry("max-buffer-size", "204800"));
+      params.add(new SimpleParameterEntry("swap-directory", "../temp/swap/ws"));
+
+      ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer",
+          (ArrayList) params);
+      containerEntry.setParameters(params);
+      WorkspaceEntry workspaceEntry = new WorkspaceEntry("newws", "nt:unstructured");
+      workspaceEntry.setContainer(containerEntry);
+      return workspaceEntry ;
+    }
+    
   }
   public static class ResetActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
