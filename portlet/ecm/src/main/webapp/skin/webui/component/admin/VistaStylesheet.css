@@ -304,6 +304,10 @@
   width: 150px;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .UIForm .HorizontalLayout .UIFormGrid .FieldLabel {
+  width: 150px;
+}
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceList {
@@ -325,6 +329,12 @@
  	width: 120px;
 }
 
+.UIECMAdminPortlet .UINamespaceManager .UINamespaceForm .HorizontalLayout .UIAction {
+  margin: auto ;
+	padding: 3px 0px 7px 0px;
+	width: 175px;
+}
+
 /*############################## -- UIDriveManager -- ########################*/
 
 .UIECMAdminPortlet .UIDriveList {
@@ -344,7 +354,7 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout label {
 	float:left;
-  width: 120px ;
+  width: 150px ;
 	text-align: right;
 	margin: 0px 10px ;
 }
@@ -353,6 +363,10 @@
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
   margin: auto ; 
   padding: 10px 7px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UITreeList .UIGrid{
+  width: 330px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer{
@@ -434,6 +448,9 @@
   padding: 8px 0px 5px 0px;
 }
 
+.UIECMAdminPortlet .CBTemplate .CBTempForm .UIAction{
+	width: 250px;
+}
 
 .UIECMAdminPortlet .UIECMTemplateList .UIAction {
   width: 120px ;
@@ -491,9 +508,13 @@
 	margin: auto ;
 }
 
-.UIActionManager .UIActionTypeForm .UIFormWithTitle .UIAction {
+.UIActionManager .UIActionTypeForm .UIAction {
 	width: 185px ;
 	margin: auto ;
+}
+
+.UIActionManager .UIActionTypeForm .AddNewNodeIcon {
+	margin: 3px 0px 0px 3px;
 }
 
 .UIActionManager .UIActionTypeForm .UIFormWithTitle label {
@@ -609,7 +630,7 @@
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 320px;  height: 300px; 
+  width: 300px;  height: 300px; 
   margin: 5px ;
 }
 
