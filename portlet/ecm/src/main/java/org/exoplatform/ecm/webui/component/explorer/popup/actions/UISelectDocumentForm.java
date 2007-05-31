@@ -27,7 +27,7 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/explorer/UIFormWithoutAction.gtmpl",
     events = {
-      @EventConfig(phase=Phase.DECODE, listeners = UISelectDocumentForm.ChangeActionListener.class)
+      @EventConfig(listeners = UISelectDocumentForm.ChangeActionListener.class)
     }
 )
 public class UISelectDocumentForm extends UIForm {
@@ -37,7 +37,7 @@ public class UISelectDocumentForm extends UIForm {
   public UISelectDocumentForm() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox templateSelect = new UIFormSelectBox(FIELD_SELECT, FIELD_SELECT, options) ;
-    templateSelect.setOnChange("Change") ;
+    templateSelect.setOnChange("Change") ;  
     addUIFormInput(templateSelect) ;
   }
 
@@ -49,7 +49,8 @@ public class UISelectDocumentForm extends UIForm {
       documentForm.getChildren().clear() ;
       documentForm.resetProperties() ;
       // set path to DocumentForm
-      documentForm.setTemplateNode(uiSelectForm.getUIFormSelectBox(FIELD_SELECT).getValue()) ;
+      System.out.println("\n\n nodeType here"+uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT).getValue());
+      documentForm.setTemplateNode(uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT).getValue()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDCFormController) ;
     }
   }

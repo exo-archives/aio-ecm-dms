@@ -547,31 +547,27 @@ public class DialogFormFields extends UIForm {
     if(uiSelectBox == null) {
       uiSelectBox = new UIFormSelectBox(name, name, null);
       addUIFormInput(uiSelectBox) ;
-    }
-    if (script != null) {
-      try{
-        executeScript(script, uiSelectBox, scriptParams);
-      }catch(Exception e) {
+      uiSelectBox.setValue(defaultValue) ;
+      if (script != null) {
+        try{
+          executeScript(script, uiSelectBox, scriptParams);
+        }catch(Exception e) {
+          uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+        }      
+      } else if (options != null && options.length() >0) {
+        String[] array = options.split(",");
+        optionsList = new ArrayList<SelectItemOption<String>>(5);
+        for(int i = 0; i < array.length; i++) {
+          optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
+        }
+        uiSelectBox.setOptions(optionsList);      
+      }else {
         uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
       }      
-    } else if (options != null && options.length() >0) {
-      String[] array = options.split(",");
-      optionsList = new ArrayList<SelectItemOption<String>>(5);
-      for(int i = 0; i < array.length; i++) {
-        optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
-      }
-      uiSelectBox.setOptions(optionsList);
-    }else {
-      uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
     }
-    uiSelectBox.setDefaultValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
-    if(node_ == null) {
-      if (defaultValue != null && defaultValue.length() > 0) {
-        uiSelectBox.setDefaultValue(defaultValue);
-        uiSelectBox.reset();
-      }
-    } else if(node_.hasProperty(getPropertyName(jcrPath))) {
+    if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
+      
       if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
         uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
       } else {
@@ -585,7 +581,7 @@ public class DialogFormFields extends UIForm {
     else uiSelectBox.setEditable(true) ;
     addUIFormInput(uiSelectBox) ;
     if(isNotEditNode_) {
-      if(propertyNode_ != null) uiSelectBox.setValue(getPropertyValue(jcrPath)) ;
+      if(propertyNode_ != null) uiSelectBox.setValue(getPropertyValue(jcrPath)) ; 
     }
     if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
     renderField(name) ;
