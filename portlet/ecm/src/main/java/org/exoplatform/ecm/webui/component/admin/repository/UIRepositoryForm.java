@@ -219,7 +219,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
       RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;
       ManageableRepository defRep = (ManageableRepository) rservice.getRepository(uiControl.repoName_);
-      if(config.canSave()) {
+      if(config.isRetainable()) {
         for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
           if(!defRep.isWorkspaceInitialized(ws.getName())) {
             defRep.configWorkspace(ws);
@@ -227,7 +227,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
           }
         }
-        config.saveConfiguration() ;
+        config.retain() ;
       }
       /*String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
       String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
