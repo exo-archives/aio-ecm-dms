@@ -5,13 +5,17 @@
 package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIDropDownItemSelector;
 import org.exoplatform.webui.component.UIPopupWindow;
@@ -41,13 +45,18 @@ import org.exoplatform.webui.event.EventListener;
 public class UIRepositoryControl extends UIContainer {
 
 
-  public String repoName_  ;
+  protected String repoName_  ;
+  private Map<String, RepositoryEntry> repoMap_ = new HashMap<String, RepositoryEntry>() ;
 
   public UIRepositoryControl() throws Exception{
     UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIPopupControl");
     uiPopupAction.getChild(UIPopupWindow.class).setId("UIPopupWindowControl") ;
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     String defaultName = rservice.getDefaultRepository().getConfiguration().getName() ;
+    for(Object obj : rservice.getConfig().getRepositoryConfigurations()) { 
+      RepositoryEntry repo  = (RepositoryEntry)obj ;
+      repoMap_.put(repo.getName(), repo) ;
+    }
     UIDropDownItemSelector uiDopDownSelector = addChild(UIDropDownItemSelector.class, null, null) ;
     uiDopDownSelector.setId("UIDropDownRepositoryControl") ;
     uiDopDownSelector.setOptions(getRepoItem()) ;    
@@ -57,25 +66,30 @@ public class UIRepositoryControl extends UIContainer {
     repoName_ = defaultName ;
   }
 
-  public List<SelectItemOption<String>> getRepoItem(){
+  protected Map<String, RepositoryEntry> getRepoMap(){return repoMap_ ;}
+
+  protected List<SelectItemOption<String>> getRepoItem(){
     List<SelectItemOption<String>>  options = new ArrayList<SelectItemOption<String>>() ;
-    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
-    for(Object obj : rservice.getConfig().getRepositoryConfigurations()) { 
-      RepositoryEntry repo  = (RepositoryEntry)obj ;
-    options.add(new SelectItemOption<String>(repo.getName(), repo.getName())) ;
+    for(String name : getRepoMap().keySet()) { 
+      options.add(new SelectItemOption<String>(name , name)) ;
     }
     return options ;
   }
 
-  public boolean isDefaultRepo(String repoName) {
+  protected boolean isDefaultRepo(String repoName) {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     return rservice.getConfig().getDefaultRepositoryName().equals(repoName);
   }
 
-  public void reloadValue(){
+  protected void reloadValue(){
     UIDropDownItemSelector uiDopDownSelector = getChild(UIDropDownItemSelector.class) ;
     uiDopDownSelector.setOptions(getRepoItem()) ;
   }
+  protected void setSelectedValue(String repoName) {
+    UIDropDownItemSelector uiDopDownSelector = getChild(UIDropDownItemSelector.class) ;
+    uiDopDownSelector.setSelected(repoName) ;
+  }
+
   public static class SelectRepoActionListener extends EventListener<UIRepositoryControl>{
     public void execute(Event<UIRepositoryControl> event) throws Exception {
       UIRepositoryControl uiControl = event.getSource() ;
@@ -83,7 +97,6 @@ public class UIRepositoryControl extends UIContainer {
       uiControl.repoName_ = uiDDSelect.getSelectedValue() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ;
     }
-
   }
 
   public static class EditRepositoryActionListener extends EventListener<UIRepositoryControl> {
@@ -91,25 +104,50 @@ public class UIRepositoryControl extends UIContainer {
       UIRepositoryControl uiControl = event.getSource() ;
       UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
       String repoName = uiSelect.getSelectedValue() ;
-      System.out.println("repoName==="+ repoName);
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
       UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
       UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
       uiForm.isAddnew_ = false ;
       RepositoryService rservice = uiControl.getApplicationComponent(RepositoryService.class) ;
-      ManageableRepository repo = rservice.getRepository(uiControl.repoName_) ;
-      uiForm.refresh(repo) ;
+      ManageableRepository repo = rservice.getRepository(repoName) ;
+      uiForm.refresh(repo.getConfiguration()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 
   public static class RemoveRepositoryActionListener extends EventListener<UIRepositoryControl> {
-    public void execute(Event<UIRepositoryControl> event) throws Exception {      
+    public void execute(Event<UIRepositoryControl> event) throws Exception {     
+      UIRepositoryControl uiControl = event.getSource() ;
+      UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
+      String repoName = uiSelect.getSelectedValue() ;
+      UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
+      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
+      UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
+      uiForm.isAddnew_ = false ;
+      RepositoryService rservice = uiControl.getApplicationComponent(RepositoryService.class) ;
+      if(rservice.getDefaultRepository().getConfiguration().getName().equals(repoName)) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        Object[] args = new Object[]{repoName}  ;        
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryControl.msg.cannot-deleteRepo", args)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        return ; 
+      }
+      
+      ManageableRepository repo = rservice.getRepository(repoName) ;
+      uiForm.refresh(repo.getConfiguration()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 
   public static class AddRepositoryActionListener extends EventListener<UIRepositoryControl> {
-    public void execute(Event<UIRepositoryControl> event) throws Exception {      
+    public void execute(Event<UIRepositoryControl> event) throws Exception {
+      UIRepositoryControl uiControl = event.getSource() ;
+      UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
+      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
+      UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
+      uiForm.isAddnew_ = true ;
+      uiForm.refresh(null) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 
