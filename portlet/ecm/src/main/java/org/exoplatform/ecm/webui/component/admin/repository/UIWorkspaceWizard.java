@@ -62,7 +62,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
   private int wizardMaxStep_ = 3 ;
   private int selectedStep_ = 1 ;
   private int currentStep_ = 0 ;
-  public boolean isAddnew_ = true ;
+  public boolean isNewWizard_ = true ;
   private Map<Integer, String> chidrenMap_ = new HashMap<Integer, String>() ; 
 
   private Map<Integer, String[]> actionMap_ = new HashMap<Integer, String[]>() ;
@@ -166,12 +166,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
   public void refresh(WorkspaceEntry workSpace) throws Exception{
     reset() ;
     if(workSpace != null) {
-      if(isAddnew_) { 
+      if(isNewWizard_) { 
         UIFormInputSet uiWSFormStep1 = getChildById(fIELD_STEP1) ;
         uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).setEditable(true) ;
         uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setValue(workSpace.getAutoInitializedRootNt()) ;      
         uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue(String.valueOf(workSpace.getLockTimeOut())) ;
-        uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(workSpace.getCache().isEnabled()) ;
+        uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
         UIFormInputSet uiWSFormStep2 = getChildById(fIELD_STEP2) ;
         ContainerEntry container = workSpace.getContainer() ;
         uiWSFormStep2.getUIStringInput(FIELD_SOURCENAME).setValue(container.getParameterValue("sourceName")) ;
@@ -184,7 +184,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
         ArrayList<ValueStorageEntry> valueStore = container.getValueStorages() ;
         String storePath = valueStore.get(0).getParameterValue("path").substring(0, valueStore.get(0).getParameterValue("path").lastIndexOf("/") + 1) ; ;
         uiWSFormStep2.getUIStringInput(FIELD_STOREPATH).setValue(storePath) ;
-        
         ArrayList<ValueStorageFilterEntry> valueFilters = valueStore.get(0).getFilters() ;     
         uiWSFormStep2.getUIFormSelectBox(FIELD_FILTER).setValue(valueFilters.get(0).getPropertyType()) ;
         UIFormInputSet uiWSFormStep3 = getChildById(UIWorkspaceWizard.fIELD_STEP3) ;
@@ -200,7 +199,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
         uiWSFormStep1.getUIStringInput(FIELD_NAME).setEditable(false) ;
         uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setValue(workSpace.getAutoInitializedRootNt()) ;      
         uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue(String.valueOf(workSpace.getLockTimeOut())) ;
-        uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(workSpace.getCache().isEnabled()) ;
+        UIRepositoryForm uiRepoForm = getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIRepositoryForm.class) ;
+        uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(uiRepoForm.isDefaultWorkspace(workSpace.getName())) ;
         UIFormInputSet uiWSFormStep2 = getChildById(fIELD_STEP2) ;
         ContainerEntry container = workSpace.getContainer() ;
         uiWSFormStep2.getUIStringInput(FIELD_SOURCENAME).setValue(container.getParameterValue("sourceName")) ;
@@ -366,7 +366,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       } catch(Exception e) { }
       UIECMAdminPortlet portlet = uiFormWizard.getAncestorOfType(UIECMAdminPortlet.class) ;
       UIRepositoryForm uiRepoForm = portlet.findFirstComponentOfType(UIRepositoryForm.class) ;
-      if(uiFormWizard.isAddnew_) {
+      if(uiFormWizard.isNewWizard_) {
         if(uiRepoForm.isExistWorkspace(name)){
           Object[] args = new Object[]{name}  ;        
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceForm.msg.wsname-exist", args)) ;
