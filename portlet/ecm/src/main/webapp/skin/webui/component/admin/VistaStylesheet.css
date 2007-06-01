@@ -578,12 +578,20 @@
   height: 300px;
 }
 
+.UIECMScripts .ECMScriptForm .UIAction {
+  width: 255px;
+}
+
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
 
 .UICBScripts .CBScriptList .UIAction {
 	width: 90px ;
 	margin: auto ;
 	padding-top: 5px;
+}
+
+.UICBScripts .CBScriptForm .UIAction {
+	width: 255px;
 }
 
 .UICBScripts .UIFormWithTitle .HorizontalLayout {
@@ -665,14 +673,6 @@
   width: 290px; 
   margin: auto;
   padding: 0px 0px 10px 0px;
-}
-
-.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
-	width: 100px;
-}
-
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
-	width: 100px;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/

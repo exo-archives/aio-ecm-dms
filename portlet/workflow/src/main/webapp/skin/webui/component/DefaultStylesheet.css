@@ -216,17 +216,23 @@
 }
 
 /*##############################- Begin UIProcessDetail -################################*/
-.UIWorkflowPortlet .UIProcessDetail .UIGrid .Date{
+.UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {
 	background: none ;
 	width: auto ;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail .ActionContainer {
+	width: 60px;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
 	width: 60px;
 }
-.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a{
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a {
 	color: #111caa;
 }
-.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover{
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover {
 	color: orange;
 }

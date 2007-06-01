@@ -214,10 +214,10 @@
 }
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 530px;
+  width: 190px;
   padding: 15px 0px;
   float: none;
-  margin: 0px;
+  margin: auto;
 }
 
 .UIWorkflowPortlet .UITabPane .UITabContent .UIFormWithTitle  {
@@ -232,5 +232,27 @@
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
 	width: 75px;
 	float: none;
-	
+}
+
+/*##############################- Begin UIProcessDetail -################################*/
+
+.UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {
+	background: none ;
+	width: auto ;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail .ActionContainer {
+	width: 60px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
+	width: 60px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a {
+	color: #111caa;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover {
+	color: orange;
 }

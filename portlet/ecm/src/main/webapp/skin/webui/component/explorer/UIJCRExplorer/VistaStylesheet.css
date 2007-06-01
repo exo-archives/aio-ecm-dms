@@ -11,6 +11,10 @@
   background: white;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIRelationManager .UIAction {
+	width: 85px;
+}
+
 .UIJCRExplorerPortlet .UIFormWithTitle {
   width: 95%;
   margin: 10px auto;
@@ -244,8 +248,51 @@
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormWithTitle label {
-	width: 110px;
+	width: 87px;
 	line-height: 20px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIRenameForm .UIAction {
+	width: 165px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIRenameForm .FormContainer {
+	width: 400px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIUploadManager .FormContainer {
+	width: 400px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UITaggingForm .FormContainer {
+	width: 400px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIMultiLanguageForm .FormContainer {
+	width: 400px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UILanguageTypeForm .UIFormGrid {
+	width: 400px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UICommentForm .UIFormGrid {
+	width: 400px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UISimpleSearch .FormContainer {
+	width: 450px;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIUploadManager .SelectFileFrame  {
+	margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {

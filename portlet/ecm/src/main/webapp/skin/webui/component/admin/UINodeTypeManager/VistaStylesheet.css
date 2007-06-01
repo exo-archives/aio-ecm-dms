@@ -58,7 +58,7 @@
 	padding-right: 10px;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction{
+.UIECMAdminPortlet .UINodeTypeUpload .UIAction {
   width: 200px ;
   padding: 10px 0px;
 }
@@ -68,7 +68,7 @@
   margin: 0px;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .FileNameLabel{
+.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .FileNameLabel {
   padding: 0px 0px 0px 5px;
   width: 230px;
 }
