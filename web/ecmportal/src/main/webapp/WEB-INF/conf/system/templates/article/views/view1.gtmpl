@@ -16,7 +16,7 @@
 		}
 		
 		.UIArticle .ArticleTCDecorator {
-		  background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
+		  background: url('/ecm/skin/images/article/TopCenterArticle1x100.gif') repeat-x ;
 		  height: 100px;
 		}
 		
@@ -48,7 +48,7 @@
 		}
 		
 		.UIArticle .ArticleBCDecorator {
-		  background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
+		  background: url('/ecm/skin/images/article/BottomCenterArticle1x8.gif') repeat-x ;
 		  height: 8px;
 		  line-height: 8px;
 		}
@@ -102,7 +102,6 @@
 		}
 		
 		.UIArticle .FieldLabel {
-		  float: left;
       font-weight: bold;
 		}
 		
@@ -146,30 +145,25 @@
 		  margin: 5px 2px 3px 18px;
 		}
 
-		.UIArticle .FieldContent .FieldContainerContent {
-		}
-		
     .UIArticle .DocumentRating {
   		margin-left: 150px;
   		width: 300px;
 		} 
 		
-    .UIArticle .ContainerLinks {
+    .UIArticle .FieldContent .ContainerLinks {
 		  padding: 8px 0px 0px 0px;
 		  border-top: dotted 1px #dcdcdc;
 		  font: normal 11px Verdana;
 		  margin: 12px  10px 0px 10px;
-		  overflow: auto;
+		  overflow: hidden;
 		}
 		
 		 .UIArticle .ContainerLinks .ContentLinks{
-		  float: left;
-		  border: solid 1px yellow;
+		  padding: 2px 0px;
 		}
 
     .UIArticle .ContainerLinks.Links {
   	  margin-left: 80px;
-  	  border: solid 1px blue;
 		}
 		
 	 .UIArticle .Links div {
@@ -313,30 +307,30 @@
 			                    print "None Content" ;
 			                  }
 			                %>
-			                <div class="ContainerLinks">
-			                	<div class="ContentLinks">
-				                  <div class="FieldIcon LinksIcon"><span></span></div>
-							            <div class="FieldLabel">Links :</div>
-							          </div>
-					    					<%if(relations.size() > 0) {%>
-								              <div class="Links">
-															<%
-											          for (rel in relations) {
-															    String wsName = rel.getSession().getWorkspace().getName() ;
-														      String actionLink ;
-															    if(!uicomponent.isRssLink()) { 
-															      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
-														      } else { 
-															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
-														      }
-													    %>
-					  								    <div> - <a href="$actionLink">$rel.name</a></div>
-					  							    <%}%>
-								              </div>
-								            </div>
-							          <%}%>
-							        </div>
 			              </div>
+		                <div class="ContainerLinks">
+		                	<div class="ContentLinks">
+			                  <div class="FieldIcon LinksIcon"><span></span></div>
+						            <div class="FieldLabel">Links :</div>
+						          </div>
+				    					<%if(relations.size() > 0) {%>
+							              <div class="Links">
+														<%
+										          for (rel in relations) {
+														    String wsName = rel.getSession().getWorkspace().getName() ;
+													      String actionLink ;
+														    if(!uicomponent.isRssLink()) { 
+														      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+													      } else { 
+														 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
+													      }
+												    %>
+				  								    <div> - <a href="$actionLink">$rel.name</a></div>
+				  							    <%}%>
+							              </div>
+							            </div>
+						          <%}%>
+						        </div>
 			            </div>
 		            </div>
 		          </div>

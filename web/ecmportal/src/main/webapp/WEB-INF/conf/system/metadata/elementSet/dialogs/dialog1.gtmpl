@@ -93,7 +93,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td ckass="FieldLabel">Relation</td>
+	      <td class="FieldLabel">Relation</td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldRelation = ["jcrPath=/node/dc:elementSet/dc:relation", "multiValues=true"] ;

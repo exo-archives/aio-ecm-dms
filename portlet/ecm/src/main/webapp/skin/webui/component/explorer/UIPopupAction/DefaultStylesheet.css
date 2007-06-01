@@ -14,25 +14,13 @@
 /*############################## -- End UIFormWithTitle -- ##############################*/
 
 /*############################## -- Begin UIVersionInfo -- ##############################*/
-.UIJCRExplorerPortlet .UIVersionInfo {  
-  padding: 7px;
-  background-color: white;
+
+.UIJCRExplorerPortlet .UIVersionInfo  {  
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
   padding-top: 10px;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldContainer{  
-  width: 500px;
-  margin: 0px auto;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldLabel{  
-  float: left;
-  width: 120px;
-  text-align: right;
-  margin-right: 5px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
@@ -93,10 +81,9 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .NodeLabel label {
-	color: #058ee6 ;
-  font-size: 11px;
-  font-weight: bold ;
+.UIJCRExplorerPortlet .UIVersionInfo .UIAction {
+	width: 160px;
+	padding-right: 160px;
 }
 
 /*############################## -- Begin UIDiff -- ##############################*/
@@ -105,29 +92,29 @@
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  
-	  font-family: Verdana;
-	  color: #0e396c; font-size: 11px;
-	  text-align: left;
-	  padding: 5px 0px;
+  font-family: Verdana;
+  color: #0e396c; font-size: 11px;
+  text-align: left;
+  padding: 5px 0px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
-	  padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
-	  padding-left: 10px;
-	  height: 21px; line-height: 21px;
-	  font-family: Verdana;
-	  color: #058ee6; font-weight: bold; 
-	  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
-	  border: 1px solid #cbcbcb;
+  padding-left: 10px;
+  height: 21px; line-height: 21px;
+  font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
+  border: 1px solid #cbcbcb;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
-	  padding: 10px;
-	  border: 1px solid #cbcbcb; 
-	  border-top: none;
+  padding: 10px;
+  border: 1px solid #cbcbcb; 
+  border-top: none;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
@@ -135,37 +122,40 @@
 	border:none ;
 }
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
-	  width: 45%;
-	  border: 1px solid #e1e1e1; 	  
-	 	float:left;
-	  margin:0px 10px;
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:left;
+  margin:0px 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label{		
-		font-family: Verdana;
-	  color: #058ee6; font-weight: bold; 
-	  font-size: 11px;	
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
 } 
+
 .UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
-		border: 1px dotted #e1e1e1; 	  
-	  margin: 2px;
-	  padding: 3px 2px;
-	}	
+	border: 1px dotted #e1e1e1; 	  
+  margin: 2px;
+  padding: 3px 2px;
+}	
+
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
-		font-family: Verdana;
-	  color: #058ee6; font-weight: bold; 
-	  font-size: 11px;	
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
 } 
+
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
-	  width: 45%;
-	  border: 1px solid #e1e1e1; 	  
-	 	float:right;
-	  margin:0px 10px;
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:right;
+  margin:0px 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
-		width: 300px;
-		margin-top: 10px;
+	width: 300px;
+	margin-top: 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
@@ -261,13 +251,10 @@
 
 /*############################## -- UIActionManager   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
-  padding: 10px;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   width: 95%;
   margin: auto;
+  padding-top: 10px;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .UIFormUploadInput .UIUploadForm {
@@ -284,18 +271,6 @@
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/
-
-/*############################## -- UITaggingForm   -- ##############################*/
-.UIJCRExplorerPortlet .UITaggingForm .ActionField {
-	float: left ;
-	padding-left: 5px ;
-	margin-bottom: 2px;
-}
-
-.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
-  width: 160px ;
-  padding-left: 15px;
-}
 
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
@@ -344,11 +319,6 @@
   background: url('/ecm/skin/images/vote/OverStar.gif');
 }
 /*############################## -- End UIVoteForm   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
-	overflow: hidden;
-	width: 200px;
-}
 
 .UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput .radio {
   width: 20px;
@@ -420,6 +390,6 @@
 
 /*############################## -- End Others   -- ##############################*/
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
-  width: 180px;
-  padding-right: 10px;
+  width: 160px;
+  padding-right: 60px;
 }

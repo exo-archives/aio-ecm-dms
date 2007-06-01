@@ -49,15 +49,6 @@
   margin: 80px 0px 1px 0px;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesTitle {
-  padding: 10px 0px 6px 0px ;
-  text-align: center;
-  color: #f9a606;
-  font-weight: bold;
-  font-size: 17px;
-  font-family: arial;
-}
-
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
   margin: 0px 0px 0px 240px; 
   border: 1px solid #d9d9d9; 
@@ -94,9 +85,6 @@
   border: solid 1px #d1d1d1;
   background: white;
   padding: 10px 0px 5px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .DecoratorMiddle {
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
