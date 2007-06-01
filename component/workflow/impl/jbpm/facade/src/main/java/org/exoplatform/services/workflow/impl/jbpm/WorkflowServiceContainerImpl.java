@@ -19,12 +19,14 @@ import java.util.zip.ZipInputStream;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentLifecycle;
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.database.HibernateService;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.workflow.PredefinedProcessesPlugin;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.ProcessInstance;
 import org.exoplatform.services.workflow.ProcessesConfig;
@@ -43,13 +45,15 @@ import org.jbpm.jpdl.par.ProcessArchiveDeployer;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 
 /**
- * Created y the eXo platform team User: Benjamin Mestrallet Date: 28 juin 2004
+ * Created by the eXo platform team
+ * User: Benjamin Mestrallet
+ * Date: 28 juin 2004
  */
 public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     ComponentLifecycle {
 
   private ConfigurationManager configurationManager_;
-  private ProcessesConfig config_;
+  private List<ProcessesConfig> configs_;
   private JbpmSessionFactory sessionFactory_;
   private OrganizationService orgService_;
   private ThreadLocal threadLocal_;
@@ -59,14 +63,32 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       ConfigurationManager conf, InitParams params) throws Exception {
     hibernateServiceName_ = params.getValueParam("hibernate.service")
         .getValue();
-    config_ = (ProcessesConfig) params.getObjectParamValues(
-        ProcessesConfig.class).get(0);
+    configs_ =  new ArrayList<ProcessesConfig>();
     this.configurationManager_ = conf;
     threadLocal_ = new ThreadLocal();
     orgService_ = orgService;
 
   }
 
+  /**
+   * Add a plugin to the Workflow service.
+   * This method currently only supports plugins to deploy predefined processes.
+   * 
+   * @param plugin the plugin to add
+   * @throws Exception if the plugin type is unknown.
+   */
+  public void addPlugin(ComponentPlugin plugin) throws Exception {
+    if(plugin instanceof PredefinedProcessesPlugin) {
+      this.configs_.add(((PredefinedProcessesPlugin) plugin).
+        getProcessesConfig());
+    }
+    else {
+      throw new RuntimeException(
+        plugin.getClass().getName()
+        + " is an unknown plugin type.") ;
+    }
+  }
+  
   public void initComponent(ExoContainer container) throws Exception {
     HibernateService hservice = null;
     if (hibernateServiceName_ == null || hibernateServiceName_.length() == 0
@@ -116,19 +138,22 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       if (!session.getGraphSession().findAllProcessDefinitions().isEmpty())
         return;
 
-      HashSet predefinedProcesses = config_.getPredefinedProcess();
-      String processLoc = config_.getProcessLocation();
+      // Iterate through each Processes Configuration to deploy
+      for(ProcessesConfig processConfig : this.configs_) {
+        HashSet predefinedProcesses = processConfig.getPredefinedProcess();
+        String processLoc = processConfig.getProcessLocation();
 
-      for (Iterator iter = predefinedProcesses.iterator(); iter.hasNext();) {
-        String parFile = (String) iter.next();
-        InputStream iS;
-        try {
-          iS = configurationManager_.getInputStream(processLoc + parFile);
-          ProcessArchiveDeployer.deployZipInputStream(new ZipInputStream(iS),
+        for (Iterator iter = predefinedProcesses.iterator(); iter.hasNext();) {
+          String parFile = (String) iter.next();
+          InputStream iS;
+          try {
+            iS = configurationManager_.getInputStream(processLoc + parFile);
+            ProcessArchiveDeployer.deployZipInputStream(new ZipInputStream(iS),
               this.sessionFactory_);
-        } catch (Exception e) {
-          // process does not exist
-          e.printStackTrace();
+          } catch (Exception e) {
+            // process does not exist
+            e.printStackTrace();
+          }
         }
       }
     } finally {

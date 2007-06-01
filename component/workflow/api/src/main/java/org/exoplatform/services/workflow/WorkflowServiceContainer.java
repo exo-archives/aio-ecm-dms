@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.exoplatform.container.component.ComponentPlugin;
+
 /**
  * Created by the eXo platform team
  * User: Benjamin Mestrallet
@@ -13,7 +15,8 @@ import java.util.Map;
 public interface WorkflowServiceContainer {
 
   public static final String ACTOR_ID_KEY_SEPARATOR = ":";
-    
+  
+  public void addPlugin(ComponentPlugin plugin) throws Exception;
   public void deployProcess(InputStream iS) throws IOException;
   
   public List<Process> getProcesses();

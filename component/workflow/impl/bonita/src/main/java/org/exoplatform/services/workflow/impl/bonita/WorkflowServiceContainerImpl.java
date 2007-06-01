@@ -43,6 +43,7 @@ import java.util.Map;
 import javax.security.auth.login.LoginContext;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.organization.OrganizationService;
@@ -51,6 +52,7 @@ import org.exoplatform.services.organization.UserHandler;
 import org.exoplatform.services.security.jaas.BasicCallbackHandler;
 import org.exoplatform.services.workflow.FileDefinition;
 import org.exoplatform.services.workflow.Form;
+import org.exoplatform.services.workflow.PredefinedProcessesPlugin;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.ProcessInstance;
 import org.exoplatform.services.workflow.ProcessesConfig;
@@ -72,7 +74,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
                                                      Startable {
 
   /** Configuration of the Service */
-  private ProcessesConfig configuration;
+  private ArrayList<ProcessesConfig> configurations;
   
   /** Reference to the Configuration Manager Service */
   private ConfigurationManager configurationManager = null;
@@ -98,6 +100,25 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
   /** Reference to the Portal Container */
   private PortalContainer portalContainer = null;
 
+  /**
+   * Add a plugin to the Workflow service.
+   * This method currently only supports plugins to deploy predefined processes.
+   * 
+   * @param plugin the plugin to add
+   * @throws Exception if the plugin type is unknown.
+   */
+  public void addPlugin(ComponentPlugin plugin) throws Exception {
+    if(plugin instanceof PredefinedProcessesPlugin) {
+      this.configurations.add(((PredefinedProcessesPlugin) plugin).
+        getProcessesConfig());
+    }
+    else {
+      throw new RuntimeException(
+        plugin.getClass().getName()
+        + " is an unknown plugin type.") ;
+    }
+  }
+  
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#deleteProcess(java.lang.String)
    */
@@ -693,11 +714,9 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       // Retrieve the already deployed Processes. No need to be logged in yet.
       BnProjectLocalHome projectHome = BnProjectUtil.getLocalHome();
       Collection<BnProjectLocal> projects = projectHome.findAll();
-    
+
+      // If the predefined Processes need to be deployed
       if(projects.isEmpty()) {
-        // The predefined Processes need to be deployed
-        HashSet predefinedProcesses = configuration.getPredefinedProcess();
-        String processLoc = configuration.getProcessLocation();
 
         /*
          * Account used to deploy the predefined Processes.
@@ -728,16 +747,21 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
         lc.login();
       
         // Deploy each predefined Process
-        for (Iterator iter = predefinedProcesses.iterator(); iter.hasNext();) {
-          String parFile = (String) iter.next();
-          InputStream iS;
-          try {
-            iS = this.configurationManager.getInputStream(processLoc + parFile);
-            this.deployProcess(iS);
-          }
-          catch (Exception e) {
-            // Process does not exist
-            e.printStackTrace();
+        for(ProcessesConfig processConfig : configurations) {
+          HashSet predefinedProcesses = processConfig.getPredefinedProcess();
+          String processLoc           = processConfig.getProcessLocation();
+          
+          for (Iterator iter = predefinedProcesses.iterator(); iter.hasNext();) {
+            String parFile = (String) iter.next();
+            InputStream iS;
+            try {
+              iS = this.configurationManager.getInputStream(processLoc + parFile);
+              this.deployProcess(iS);
+            }
+            catch (Exception e) {
+              // Process does not exist
+              e.printStackTrace();
+            }
           }
         }
       }
@@ -864,8 +888,8 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     this.organizationService   = organizationService;
     this.configurationManager  = configurationManager;
     this.portalContainer       = portalContainer;
-    this.configuration         = (ProcessesConfig) params.getObjectParamValues(
-                                   ProcessesConfig.class).get(0);
-
+    
+    // Initialize some fields
+    this.configurations        = new ArrayList<ProcessesConfig>();
   }
 }
