@@ -60,7 +60,6 @@ import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
-import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadForm;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
@@ -474,7 +473,7 @@ public class UIActionBar extends UIForm {
         if(mimeType.startsWith("text")) {
           uiAddContainer.setComponentDisplay(nodeType.getName()) ;
         } else {
-          uiAddContainer.addChild(UIUploadForm.class, null, null) ;
+          uiAddContainer.addChild(UIUploadManager.class, null, null) ;
         }
       } else {
         uiAddContainer.setComponentDisplay(nodeType.getName()) ;
@@ -643,6 +642,7 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         return ;
       }
+      uiExplorer.setIsHidePopup(true) ;
       CmsConfigurationService cmsService = 
         uiActionBar.getApplicationComponent(CmsConfigurationService.class) ;
       UIRelationManager uiRelationManager = 
@@ -657,7 +657,6 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
-      uiExplorer.setIsHidePopup(true) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiRelationManager, 630, 0) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;

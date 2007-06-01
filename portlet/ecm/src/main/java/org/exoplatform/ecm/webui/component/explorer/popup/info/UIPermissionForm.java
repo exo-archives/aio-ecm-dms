@@ -88,7 +88,10 @@ public class UIPermissionForm extends UIForm implements UISelector {
                                     getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).getValue() ;
         node.setPermission(userOrGroup, permsArray) ;
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;
-        if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
+        if(!uiJCRExplorer.getPreference().isJcrEnable()) {
+          node.save() ;
+          uiJCRExplorer.getSession().save() ;
+        }
         uiForm.refresh() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiParent) ;
       } catch (Exception e) {

@@ -88,7 +88,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         if(format.equals(DOC_VIEW)) session.exportDocumentView(nodePath, bos, false, false ) ;
         else session.exportSystemView(nodePath, bos, false, false ) ;
         ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
-        zipService.addInputStream("docview.xml",input);
+        zipService.addInputStream(format + ".xml",input);
         zipService.createZip(bos);
         ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
         dresource = new InputStreamDownloadResource(zipInput, "application/zip") ;

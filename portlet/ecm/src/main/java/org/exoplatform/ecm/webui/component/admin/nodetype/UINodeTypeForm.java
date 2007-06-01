@@ -63,7 +63,7 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UIChildNodeDefinitionForm.AddDefaultTypeActionListener.class),
       @EventConfig(listeners = UIChildNodeDefinitionForm.AddRequiredTypeActionListener.class),
       @EventConfig(listeners = UINodeTypeOptionList.AddTypeActionListener.class),
-      @EventConfig(listeners = UIChildNodeDefinitionForm.RemoveChildNodeActionListener.class),
+      @EventConfig(listeners = UIChildNodeDefinitionForm.RemoveChildNodeActionListener.class, confirm = "UINodeTypeForm.msg.confirm-delete-child"),
       @EventConfig(listeners = UIChildNodeDefinitionForm.EditChildNodeActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.EditPropertyActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.RemovePropertyActionListener.class),
@@ -76,7 +76,7 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = UIPropertyDefinitionForm.AddValueActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.CancelConstraintsActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.AddActionListener.class),
-      @EventConfig(listeners = UIPropertyDefinitionForm.RemoveActionListener.class)
+      @EventConfig(listeners = UIPropertyDefinitionForm.RemoveActionListener.class, confirm = "UINodeTypeForm.msg.confirm-delete-property")
     }
 )
 public class UINodeTypeForm extends UIFormTabPane {

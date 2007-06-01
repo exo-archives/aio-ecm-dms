@@ -46,7 +46,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
   }
   
   public void updateGrid (List<Node> nodes) throws Exception {
-    UIGrid uiGrid = getChild(UIGrid.class) ;   
+    UIGrid uiGrid = getChildById("RelateAddedList") ;   
     if(nodes == null) nodes = new ArrayList<Node>() ;
     ObjectPageList objPageList = new ObjectPageList(nodes, 10) ;
     uiGrid.getUIPageIterator().setPageList(objPageList) ;

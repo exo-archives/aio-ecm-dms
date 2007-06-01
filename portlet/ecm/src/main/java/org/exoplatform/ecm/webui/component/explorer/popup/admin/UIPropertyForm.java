@@ -6,7 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.PropertyType;
@@ -104,16 +104,12 @@ public class UIPropertyForm extends UIForm {
 
   private Value createValue(Object value, int type, ValueFactory valueFactory) throws Exception {
     switch (type) {
-    case 2:  {
-      UIFormUploadInput inputValue = (UIFormUploadInput)value ;
-      byte[] content = inputValue.getUploadData() ;      
-      return valueFactory.createValue(new ByteArrayInputStream(content)) ;
-    }
-    case 3:  return valueFactory.createValue((Long.valueOf((String)value))) ;
-    case 4:  return valueFactory.createValue((Double.valueOf((String)value))) ;
-    case 5:  return valueFactory.createValue((Calendar)value) ;
-    case 6:  return valueFactory.createValue(Boolean.parseBoolean(value.toString())) ;
-    default: return valueFactory.createValue((String)value) ; 
+      case 2:  return valueFactory.createValue(new ByteArrayInputStream((byte[])value)) ;
+      case 3:  return valueFactory.createValue((Long.valueOf((String)value))) ;
+      case 4:  return valueFactory.createValue((Double.valueOf((String)value))) ;
+      case 5:  return valueFactory.createValue((GregorianCalendar)value) ;
+      case 6:  return valueFactory.createValue(Boolean.parseBoolean(value.toString())) ;
+      default: return valueFactory.createValue((String)value) ; 
     }
   }
 
@@ -185,6 +181,12 @@ public class UIPropertyForm extends UIForm {
           for(UIComponent child : multiValueInputSet.getChildren()) {
             UIFormDateTimeInput dateInput = (UIFormDateTimeInput)child ;
             valueList.add(dateInput.getCalendar()) ;
+          }
+        } else if(type == 2) {
+          for(UIComponent child : multiValueInputSet.getChildren()) {
+            UIFormUploadInput binaryInput = (UIFormUploadInput)child ;
+            byte[] content = binaryInput.getUploadData() ;    
+            valueList.add(content) ;
           }
         } else {
           valueList = multiValueInputSet.getValue() ;

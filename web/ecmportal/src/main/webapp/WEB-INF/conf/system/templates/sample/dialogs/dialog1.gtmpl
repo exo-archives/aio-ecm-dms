@@ -41,7 +41,7 @@
 	      <td class="FieldLabel">Date</td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDate = ["jcrPath=/node/exo:date"] ; 
+		        String[] fieldDate = ["jcrPath=/node/exo:date", "validate=datetime"] ; 
 		        uicomponent.addCalendarField("date", fieldDate) ;
 		      %>
 		    </td>

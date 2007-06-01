@@ -41,7 +41,7 @@ import org.exoplatform.webui.event.EventListener;
 
 @ComponentConfig(
     lifecycle = UIContainerLifecycle.class,
-    events = {@EventConfig (listeners = UIPermissionInfo.DeleteActionListener.class)}
+    events = {@EventConfig (listeners = UIPermissionInfo.DeleteActionListener.class, confirm = "UIPermissionInfo.msg.confirm-delete-permission")}
 )
 
 public class UIPermissionInfo extends UIContainer {
@@ -88,9 +88,9 @@ public class UIPermissionInfo extends UIContainer {
       permBean.setUsersOrGroups(userOrGroup);
       for(String perm : permissions) {
         if(PermissionType.READ.equals(perm)) permBean.setRead(true);
-        else if(PermissionType.ADD_NODE.equals(perm))  permBean.setAddNode(true);
-        else if(PermissionType.SET_PROPERTY.equals(perm))  permBean.setSetProperty(true);
-        else if(PermissionType.REMOVE.equals(perm))  permBean.setRemove(true);
+        else if(PermissionType.ADD_NODE.equals(perm)) permBean.setAddNode(true);
+        else if(PermissionType.SET_PROPERTY.equals(perm)) permBean.setSetProperty(true);
+        else if(PermissionType.REMOVE.equals(perm)) permBean.setRemove(true);
       }
       permBeans.add(permBean);
     }
@@ -109,7 +109,10 @@ public class UIPermissionInfo extends UIContainer {
         node.removePermission(name) ;
         uicomp.updateGrid() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
-        if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
+        if(!uiJCRExplorer.getPreference().isJcrEnable()) {
+          node.save() ;
+          uiJCRExplorer.getSession().save() ;
+        }
       } catch (Exception e) {
         JCRExceptionManager.process(uicomp.getAncestorOfType(UIApplication.class), e);
       }

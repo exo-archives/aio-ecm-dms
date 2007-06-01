@@ -64,7 +64,7 @@ public class UIMetadataManager extends UIContainer {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PERMISSION_POPUP);
     uiPopup.setWindowSize(560, 300);
     UIECMPermissionBrowser uiECMPermission = 
-      createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+      createUIComponent(UIECMPermissionBrowser.class, null, "MetadataPermission") ;
     if(membership != null && membership.indexOf(":/") > -1) {
       String[] arrMember = membership.split(":/") ;
       uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
