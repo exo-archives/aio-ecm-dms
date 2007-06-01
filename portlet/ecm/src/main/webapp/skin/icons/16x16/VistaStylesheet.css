@@ -380,13 +380,13 @@
 }
 
 .EditDocument16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  width:24px; height:20px;
+  background: url('VistaSkin/Edit.png') no-repeat ;
   cursor: pointer;   
 }
 
 .Save16x16Icon {
-  width: 24px; height: 24px;
+  width: 24px; height: 20px;
   background: url('VistaSkin/Save.png') no-repeat ;   
 }
 
