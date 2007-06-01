@@ -4,26 +4,20 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
-import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
-import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationImpl;
-import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -54,7 +48,7 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.ResetActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.CloseActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.AddWorkspaceActionListener.class),
-      @EventConfig(phase=Phase.DECODE, confirm = "UIRepositoryForm.msg.confirm-delete", listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class),
+      @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class,confirm = "UIRepositoryForm.msg.confirm-delete"),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.EditWorkspaceActionListener.class)
     }  
 )
@@ -93,7 +87,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     addChild(new UIFormStringInput(FIELD_ACCESSCONTROL,FIELD_ACCESSCONTROL, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_AUTHENTICATION,FIELD_AUTHENTICATION, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
-    addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null).addValidator(NumberFormatValidator.class)) ;
+    addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null).addValidator(EmptyFieldValidator.class) 
+                  .addValidator(NumberFormatValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_REPCHANNEL,FIELD_REPCHANNEL, null)) ;
     addChild(new UIFormCheckBoxInput<String>(FIELD_REPENABLE,FIELD_REPENABLE, null)) ;
     addChild(new UIFormStringInput(FIELD_REPMODE,FIELD_REPMODE, null)) ;
@@ -104,13 +99,14 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     setActions(new String[] {"Save","AddWorkspace", "Reset", "Close"}) ;
   }  
 
-  public void refresh(ManageableRepository manaRepo) throws Exception{
-
+  public void refresh(RepositoryEntry repo) throws Exception{
     reset() ;
+    getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
+    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
+    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(false) ;
     workspaceMap_.clear() ;
     getUIStringInput(FIELD_NAME).setEditable(true) ;
-    if(manaRepo != null) {
-      RepositoryEntry repo = manaRepo.getConfiguration() ;
+    if(repo != null) {
       if(isAddnew_) {      
         repo_ = null;
         defaulWorkspace_ = null ;
@@ -162,25 +158,25 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     }
   }
 
-  public RepositoryEntry getRepo() {return repo_ ;} 
+  protected RepositoryEntry getCurrentRepo() {return repo_ ;} 
 
-  public boolean isExistWorkspace(String workspaceName){
+  protected boolean isExistWorkspace(String workspaceName){
     return workspaceMap_.containsKey(workspaceName) ;
   }
 
-  public WorkspaceEntry getWorkspace(String workspaceName) {
+  protected WorkspaceEntry getWorkspace(String workspaceName) {
     return workspaceMap_.get(workspaceName) ;
   }
 
-  public Map<String, WorkspaceEntry> getWorkspaceMap() {
+  protected Map<String, WorkspaceEntry> getWorkspaceMap() {
     return workspaceMap_ ;
   }
 
-  public void removeWorkspace(String workspaceName) {
+  protected void removeWorkspace(String workspaceName) {
     workspaceMap_.remove(workspaceName) ;
   }
 
-  public void refreshLabel() {
+  protected void refreshLabel() {
     StringBuilder labels = new StringBuilder() ;
     for(String wsName : workspaceMap_.keySet()){
       if(labels.length() > 0) labels.append(",") ;
@@ -192,22 +188,29 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     workspaceField.setActionInfo(UIRepositoryForm.FIELD_WORKSPACE, actionInfor) ;
   }
 
-  public boolean isDefaultRepo(String repoName) {
+  protected boolean isDefaultRepo(String repoName) {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;    
     return rservice.getConfig().getDefaultRepositoryName().equals(repoName);
   }
-  public boolean isDefaultWorkspace(String workspaceName) {
+  protected boolean isDefaultWorkspace(String workspaceName) {
     return workspaceName.equals(defaulWorkspace_) ;
   }
-  public void activate() throws Exception {
-    // TODO Auto-generated method stub
 
+  private void saveRepo(RepositoryEntry re) {    
+    for(WorkspaceEntry ws : getWorkspaceMap().values()){re.addWorkspace(ws) ;}
+    re.setDefaultWorkspaceName(defaulWorkspace_) ;
+    UIRepositoryControl uiControl = getAncestorOfType(UIECMAdminPortlet.class).
+                                    findFirstComponentOfType(UIRepositoryControl.class) ;
+    uiControl.getRepoMap().put(re.getName(), re) ;
+    uiControl.reloadValue() ;
+    uiControl.setSelectedValue(uiControl.repoName_) ;
   }
+  public void activate() throws Exception {}
 
   public void deActivate() throws Exception {
     repo_ = null ;
   }
-  
+
 
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
@@ -217,17 +220,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
-      WorkspaceEntry wsn = prepareWs() ;
-      
-      RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;      
-      ManageableRepository defRep = (ManageableRepository) rservice.getRepository(uiControl.repoName_);
-      RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;
-      if(config.isRetainable()) {
-        defRep.configWorkspace(wsn);
-        defRep.createWorkspace(wsn.getName());
-      }
-      
-     /* if (uiForm.getWorkspaceMap().isEmpty()) {
+      if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-isrequire", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
@@ -236,17 +229,29 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
       RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;      
       ManageableRepository defRep = (ManageableRepository) rservice.getRepository(uiControl.repoName_);
-      if(config.isRetainable()) {
-        for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
-          if(!defRep.isWorkspaceInitialized(ws.getName())) {
+      RepositoryEntry re ;
+      if(uiForm.isAddnew_) {        
+        re = new RepositoryEntry() ;
+        if(config.isRetainable()) {
+          for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
             defRep.configWorkspace(ws);
             defRep.createWorkspace(ws.getName());
-              
           }
         }
-        config.retain() ;
-      }*/
-      /*String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
+      } else {
+        re = defRep.getConfiguration() ;
+        if(config.isRetainable()) {
+          for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
+            if(!defRep.isWorkspaceInitialized(ws.getName())) {
+              defRep.configWorkspace(ws);
+              defRep.createWorkspace(ws.getName());              
+            }
+          }
+          config.retain() ;
+        }
+      }
+
+      String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
       String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
       String authen = uiForm.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
       String security = uiForm.getUIStringInput(UIRepositoryForm.FIELD_SCURITY).getValue() ;
@@ -257,10 +262,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       Boolean testMode = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).isChecked() ;
       String path = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).getValue() ;     
       String buffer = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).getValue() ;   
-      RepositoryEntry re = new RepositoryEntry() ;
       re.setName(repoName) ;
-      for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()){re.addWorkspace(ws) ;}
-      re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
       re.setAccessControl(acess) ;
       re.setAuthenticationPolicy(authen) ;
       ReplicationEntry repl = new ReplicationEntry() ;
@@ -275,31 +277,17 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       re.setBinaryTemp(bse) ;
       re.setSecurityDomain(security) ;
       re.setSessionTimeOut(Long.parseLong(session)) ;
-      uiControl.reloadValue() ;*/
-      
+
+//    TODO check here   
+      uiForm.saveRepo(re) ;
+
+
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ; 
     }
-    
-    private WorkspaceEntry prepareWs() {
-      List params = new ArrayList();
-      params.add(new SimpleParameterEntry("sourceName", "jdbcjcr"));
-      params.add(new SimpleParameterEntry("db-type", "generic"));
-      params.add(new SimpleParameterEntry("multi-db", "false"));
-      params.add(new SimpleParameterEntry("update-storage", "true"));
-      params.add(new SimpleParameterEntry("max-buffer-size", "204800"));
-      params.add(new SimpleParameterEntry("swap-directory", "../temp/swap/ws"));
 
-      ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer",
-          (ArrayList) params);
-      containerEntry.setParameters(params);
-      WorkspaceEntry workspaceEntry = new WorkspaceEntry("newws", "nt:unstructured");
-      workspaceEntry.setContainer(containerEntry);
-      return workspaceEntry ;
-    }
-    
   }
   public static class ResetActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
@@ -309,7 +297,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
-      //uiForm.refresh(uiForm.repo_) ;
+      if(uiForm.isAddnew_) uiForm.refresh(null) ;
+      else uiForm.refresh(uiForm.repo_);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
@@ -329,7 +318,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           break ;
         }
       }
-      uiWorkspaceWizard.isAddnew_ = true ;
+      uiWorkspaceWizard.isNewWizard_ = true ;
       uiWorkspaceWizard.refresh(wsdf) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -351,15 +340,16 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   public static class EditWorkspaceActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
-      /*String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
       UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
       UIWorkspaceWizard uiWorkspaceWizard = uiPopupAction.activate(UIWorkspaceWizard.class, 600) ; 
+      uiWorkspaceWizard.isNewWizard_ = false ;
       uiWorkspaceWizard.refresh(uiForm.getWorkspace(workspaceName)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;*/
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
   public static class RemoveWorkspaceActionListener extends EventListener<UIRepositoryForm>{
