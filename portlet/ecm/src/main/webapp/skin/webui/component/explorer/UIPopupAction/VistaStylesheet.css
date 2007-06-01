@@ -15,13 +15,14 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
   float: left;
-  width: 16px; height: 16px;
+  width: 20px; height: 20px;
   margin: 7px 5px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .View16x16Icon {
-  background:transparent url(/eXoResources/icons/16x16/VistaSkin/BlueBoxLight.gif) no-repeat scroll 0%;
+  background:transparent url('/eXoResources/icons/16x16/VistaSkin/View16x16Icon.png') no-repeat;
+  width:17px; height:18px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
@@ -45,7 +46,7 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeEven {
   line-height: 30px;
-  background-color: #e4e7f3;
+  background-color: #f1f1f1;
   margin-bottom: 1px;
 }
 .UIJCRExplorerPortlet .UIVersionInfo .NoneIcon {

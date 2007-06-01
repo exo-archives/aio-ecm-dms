@@ -100,19 +100,19 @@
 
 .RestoreVersion16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/RestoreVersion.gif') no-repeat;
+  background: url('VistaSkin/RestoreVersion.png') no-repeat;
   cursor: pointer;
 }
 
 .BlueRoundedPlusPage16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueRoundedPlusPage.gif') no-repeat;
+  width: 19px; height: 18px;
+  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat;
   cursor: pointer;
 }
 
 .RedRoundedPlusPage16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/RedRoundedPlusPage.gif') no-repeat;
+  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat;
   cursor: pointer;
 }
 
