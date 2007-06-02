@@ -1026,7 +1026,7 @@
 
 .nt_file16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/nt-file.gif') no-repeat;  
+  background: url('DefaultSkin/nodetype/nt-file.gif') no-repeat; 
 }
 
 .nt_folder16x16Icon {
