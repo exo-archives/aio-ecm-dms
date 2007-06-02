@@ -113,7 +113,7 @@
 	      <td class="FieldLabel">Length</td>
 	      <td class="FieldComponent">
 		      <%
-		       String[] fieldSize = ["jcrPath=/node/exo:length", "0", "validate=number"] ;
+		       String[] fieldSize = ["jcrPath=/node/exo:length", "validate=number"] ;
 		       uicomponent.addTextField("lenth", fieldSize) ; 
 		      %>
 		    </td>

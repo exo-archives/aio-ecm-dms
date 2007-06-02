@@ -9,8 +9,7 @@
 %>
 <%
   import org.exoplatform.ecm.jcr.model.VersionNode;
-  VersionNode rootNode = uicomponent.getRootVersionNode() ;
-  
+  VersionNode rootNode = uicomponent.getRootVersionNode() ;  
   public void writeNodes(List nodes, String clazz, int level) {
     int padding ;
     for(node in nodes) {
@@ -21,33 +20,39 @@
 			  <div class="Node$clazz" style="padding-left: ${padding}px;">
 			    <div class="NodeActionsContainer">
 			""";
-			if(!uicomponent.isBaseVersion(node)) {						
+			if(!uicomponent.isBaseVersion(node)&&uicomponent.getCurrentNode().isNodeType("nt:file")) {						
   			println "<div class=\"Icon16x16 CompareVersion16x16Icon\" onclick=\"" + 
 	  		         uicomponent.event("CompareVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.compareVersion") + "\"><span></span></div>" ;			
 			}
       println "<div class=\"Icon16x16 BlueRoundedPlusPage16x16Icon\" onclick=\"" + 
                uicomponent.event("AddLabel",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.addLabel") + "\"><span></span></div>" ;
-			println "<div class=\"Icon16x16 RedRoundedPlusPage16x16Icon\" onclick=\"" + 
-			         uicomponent.event("RemoveLabel",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.removeLable") + "\"><span></span></div>" ;      
-			println "<div class=\"Icon16x16 RestoreVersion16x16Icon\" onclick=\"" + 
-			         uicomponent.event("RestoreVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.restoreVersion") + "\"><span></span></div>" ;
+			if(uicomponent.getVersionLabels(node).size() > 0){
+				println "<div class=\"Icon16x16 RedRoundedPlusPage16x16Icon\" onclick=\"" + 
+				         uicomponent.event("RemoveLabel",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.removeLable") + "\"><span></span></div>" ;      
+			}         
+			if(!uicomponent.isBaseVersion(node)){
+				println "<div class=\"Icon16x16 RestoreVersion16x16Icon\" onclick=\"" + 
+				         uicomponent.event("RestoreVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.restoreVersion") + "\"><span></span></div>" ;
+			}         
 			println "<div class=\"Icon16x16 View16x16Icon\" onclick=\"" +  
 			         uicomponent.event("ViewVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.viewVersion") + "\"><span></span></div>" ;
-			println "<div class=\"Icon16x16 Remove16x16Icon\" onclick=\"" + 
-			         uicomponent.event("DeleteVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.deleteVersion") + "\"><span></span></div>" ;
+			if(!uicomponent.isBaseVersion(node)){
+				println "<div class=\"Icon16x16 Remove16x16Icon\" onclick=\"" + 
+				         uicomponent.event("DeleteVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.deleteVersion") + "\"><span></span></div>" ;
+			}         
 			println "</div>" ;
 						
 			if(node.getChildrenSize() > 0) {
 	      if(node.isExpanded()) {
 	  			println "<div class=\"ColapseIcon\" onclick=\"window.location.href='" + uicomponent.event("Select",node.getPath()) + "'\"><span></span></div>" ;
-					println "<div class=\"Icon24x24 LightBlueOpenFolder24x24Icon\"><span></span></div>" ;
+					println "<div class=\"Icon24x24 nt_versionHistory16x16Icon\"><span></span></div>" ;
 	      } else {
 	  			println "<div class=\"ExpandIcon\" onclick=\"window.location.href='" + uicomponent.event("Select",node.getPath()) + "'\"><span></span></div>" ;
-					println "<div class=\"Icon24x24 LightBlueFolder24x24Icon\"><span></span></div>" ;
+					println "<div class=\"Icon24x24 nt_versionHistory16x16Icon\"><span></span></div>" ;
 	      }
 			} else {
   			println "<div class=\"NoneIcon\"><span></span></div>" ;
-				println "<div class=\"Icon24x24 LightBlueFolder24x24Icon\"><span></span></div>" ;
+				println "<div class=\"Icon24x24 nt_versionHistory16x16Icon\"><span></span></div>" ;
 			}
 			String baseVersion = "" ;
 			if(uicomponent.isBaseVersion(node)) {			
@@ -79,7 +84,7 @@
   </div>
   <%
 		String clazz = "" ;
-    writeNodes(rootNode.getChildren(), clazz, 0 )
+    writeNodes(rootNode.getChildren(), clazz, 0 );
     uicomponent.renderChildren(); 
   %>
   <div class="UIAction" style="width: 90px; margin-top: 10px; ">

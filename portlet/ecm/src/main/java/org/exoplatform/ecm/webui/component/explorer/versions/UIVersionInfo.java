@@ -69,7 +69,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
 
   public void activate() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    node_ = uiExplorer.getCurrentNode() ;    
+    node_ = uiExplorer.getCurrentNode() ;   
     rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion()) ;
     curentVersion_ = rootVersion_ ;
     getChild(UIViewVersion.class).update() ;  
@@ -152,6 +152,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
       } catch (Exception e) {
+        e.printStackTrace() ;
         UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
       }

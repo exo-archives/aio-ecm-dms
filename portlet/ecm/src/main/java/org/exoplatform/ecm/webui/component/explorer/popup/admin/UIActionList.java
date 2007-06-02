@@ -116,8 +116,11 @@ public class UIActionList extends UIContainer {
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class) ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       actionService.removeAction(uiExplorer.getCurrentNode(), actionName) ;
+      UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
+      uiActionManager.removeChild(UIActionViewContainer.class) ;
       uiActionList.updateGrid(uiExplorer.getCurrentNode()) ;
-      uiActionList.setRenderSibbling(UIActionList.class) ;
+      uiActionManager.setRenderedChild(UIActionListContainer.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiActionManager) ;
     }
   }
 }

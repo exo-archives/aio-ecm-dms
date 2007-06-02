@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.record.formula.functions.Even;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -35,7 +36,8 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/admin/UIRepositoryControl.gtmpl",
     events = {
-        @EventConfig(listeners = UIRepositoryControl.SelectRepoActionListener.class),
+        //@EventConfig(listeners = UIRepositoryControl.RepoActionListener.class),
+        @EventConfig(listeners = UIRepositoryControl.ChangeRepositoryActionListener.class), 
         @EventConfig(listeners = UIRepositoryControl.EditRepositoryActionListener.class),
         @EventConfig(listeners = UIRepositoryControl.RemoveRepositoryActionListener.class, confirm="UIRepositoryControl.msg.confirm-delete"),
         @EventConfig(listeners = UIRepositoryControl.AddRepositoryActionListener.class)
@@ -62,7 +64,7 @@ public class UIRepositoryControl extends UIContainer {
     uiDopDownSelector.setOptions(getRepoItem()) ;    
     uiDopDownSelector.setOnServer(true);
     uiDopDownSelector.setSelected(defaultName) ;
-    uiDopDownSelector.setOnChange("SelectRepo");    
+    uiDopDownSelector.setOnChange("SelectRepo");  
     repoName_ = defaultName ;
   }
 
@@ -90,6 +92,11 @@ public class UIRepositoryControl extends UIContainer {
     uiDopDownSelector.setSelected(repoName) ;
   }
 
+  public static class ChangeRepositoryActionListener extends EventListener<UIRepositoryControl> {
+    public void execute(Event<UIRepositoryControl> event) throws Exception {
+      System.out.println("action onchange>>>"+event.getSource());
+    }
+  }
   public static class SelectRepoActionListener extends EventListener<UIRepositoryControl>{
     public void execute(Event<UIRepositoryControl> event) throws Exception {
       UIRepositoryControl uiControl = event.getSource() ;

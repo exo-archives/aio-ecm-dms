@@ -4,20 +4,33 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+
+import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
+import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.config.SimpleParameterEntry;
+import org.exoplatform.services.jcr.config.ValueStorageEntry;
+import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationImpl;
+import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -211,6 +224,43 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     repo_ = null ;
   }
 
+  public void testInitNewWS() {
+
+    List params = new ArrayList();
+    params.add(new SimpleParameterEntry("sourceName", "jdbcjcr"));
+    params.add(new SimpleParameterEntry("db-type", "generic"));
+    params.add(new SimpleParameterEntry("multi-db", "false"));
+    params.add(new SimpleParameterEntry("update-storage", "true"));
+    params.add(new SimpleParameterEntry("max-buffer-size", "204800"));
+    params.add(new SimpleParameterEntry("swap-directory", "target/temp/swap/ws"));
+
+    ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer",
+        (ArrayList) params);
+    containerEntry.setParameters(params);
+
+    WorkspaceEntry workspaceEntry = new WorkspaceEntry("newws", "nt:unstructured");
+    workspaceEntry.setContainer(containerEntry);
+
+    RepositoryService service = (RepositoryService)getApplicationComponent(ExoContainer.class).getComponentInstanceOfType(RepositoryService.class);
+    RepositoryImpl defRep;
+    try {
+      defRep = (RepositoryImpl) service.getDefaultRepository();
+      defRep.configWorkspace(workspaceEntry);
+      defRep.createWorkspace(workspaceEntry.getName());
+
+      Session sess = defRep.getSystemSession(workspaceEntry.getName());
+
+      Node root = sess.getRootNode();
+
+
+    } catch (RepositoryException e) {
+      e.printStackTrace() ;
+    } catch (RepositoryConfigurationException e) {
+      e.printStackTrace() ;
+    }
+
+  }
+
 
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
@@ -219,7 +269,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       findFirstComponentOfType(UIRepositoryControl.class) ;
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ;
+      //TODO Test
+      uiForm.testInitNewWS() ;
+        
       if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-isrequire", null)) ;
