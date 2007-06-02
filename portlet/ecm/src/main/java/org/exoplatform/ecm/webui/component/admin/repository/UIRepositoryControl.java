@@ -86,13 +86,12 @@ public class UIRepositoryControl extends UIContainer {
   }
 
   protected void reloadValue(){
-    UIDropDownItemSelector uiDopDownSelector = getChild(UIDropDownItemSelector.class) ;
-    uiDopDownSelector.setOptions(getRepoItem()) ;
+    getChild(UIRepositorySelectForm.class).setOptionValue(getRepoItem()) ;
   }
-  protected void setSelectedValue(String repoName) {
+  /*protected void setSelectedValue(String repoName) {
     UIDropDownItemSelector uiDopDownSelector = getChild(UIDropDownItemSelector.class) ;
     uiDopDownSelector.setSelected(repoName) ;
-  }
+  }*/
   
   public static class EditRepositoryActionListener extends EventListener<UIRepositoryControl> {
     public void execute(Event<UIRepositoryControl> event) throws Exception {
@@ -113,8 +112,8 @@ public class UIRepositoryControl extends UIContainer {
   public static class RemoveRepositoryActionListener extends EventListener<UIRepositoryControl> {
     public void execute(Event<UIRepositoryControl> event) throws Exception {     
       UIRepositoryControl uiControl = event.getSource() ;
-      UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
-      String repoName = uiSelect.getSelectedValue() ;
+      //UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
+      String repoName = uiControl.getChild(UIRepositorySelectForm.class).getSelectedValue() ;
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
       UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
       UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
