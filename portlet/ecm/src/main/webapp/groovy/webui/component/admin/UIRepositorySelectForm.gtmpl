@@ -1,0 +1,21 @@
+<div class="$uicomponent.id">
+  <div class="UIFormWithTitle">
+    <% uiform.begin() %>
+    <div class="HorizontalLayout" style="border: none;">
+      <table class="UIFormGrid">
+      <% 
+        for(field in uiform.getChildren()) { 
+          if(field.isRendered()) {
+      %>
+						<tr>
+						  <td class="FieldComponent"><% uiform.renderField(field) %></td>
+						</tr>
+      <%
+          }
+        }
+      %>
+      </table>
+    </div>
+    <%uiform.end()%>
+  </div>
+</div>

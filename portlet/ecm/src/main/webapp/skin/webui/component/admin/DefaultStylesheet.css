@@ -38,10 +38,13 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
 	 width: 200px;
-	 margin: 5px;
+	 margin: 0px;
 	 float: left;	 
 }
-
+.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
+	 width: 150px;
+	 float:left;
+}
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
   width: 200px;
   float: left; 

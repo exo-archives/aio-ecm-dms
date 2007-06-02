@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer.versions;
 
 import javax.jcr.Node;
+import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
 
@@ -47,7 +48,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
   protected VersionNode rootVersion_ ;
   protected VersionNode curentVersion_;
   protected Node node_ ;
-  
+
   public UIVersionInfo() throws Exception {
     addChild(UILabelForm.class, null, null).setRendered(false);   
     addChild(UIRemoveLabelForm.class, null, null).setRendered(false);
@@ -74,9 +75,9 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
     curentVersion_ = rootVersion_ ;
     getChild(UIViewVersion.class).update() ;  
   }
-  
+
   public void deActivate() throws Exception {}  
-  
+
   public VersionNode getCurrentVersionNode() { return curentVersion_ ;}
   public Node getCurrentNode() { return node_ ; }
 
@@ -147,14 +148,19 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       Node node = uiVersionInfo.getCurrentNode() ;
       VersionHistory versionHistory = node.getVersionHistory() ;
       try {
+        //TODO for JCR Group check VersionHistory.removeVersion(String versionName)
         versionHistory.removeVersion(uiVersionInfo.curentVersion_ .getName());
         uiVersionInfo.rootVersion_ = new VersionNode(node.getVersionHistory().getRootVersion()) ;
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
+      } catch (ReferentialIntegrityException rie) {
+        //rie.printStackTrace() ;
+        /*UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
+        app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;*/
       } catch (Exception e) {
-        e.printStackTrace() ;
-        UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
+        //e.printStackTrace() ;
+        //UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
+        //app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
       }
     }
   }

@@ -1,12 +1,15 @@
 <% 
 	import org.exoplatform.webui.component.UIDropDownItemSelector ; 
+	import org.exoplatform.ecm.webui.component.admin.repository.UIRepositorySelectForm ;
 	import org.exoplatform.ecm.webui.component.UIPopupAction ;
 %>
 <div class="UIRepositoryControl" id="$uicomponent.id">
 	<div class="ControlLayout">
 		<div class="SelectorArea">
 			<div class="RepoNameLabel"><%=_ctx.appRes(uicomponent.id + ".label.repoName")%>:</div>
-			<div class="UISelect"><%uicomponent.renderChild(UIDropDownItemSelector.class);%></div>
+			<div class="UISelect">
+				<%uicomponent.renderChild(UIRepositorySelectForm.class);%>
+			</div>
 			<div style="clear:left;"><span></span></div>	
 		</div>
 		<div class="ActionsArea">			
