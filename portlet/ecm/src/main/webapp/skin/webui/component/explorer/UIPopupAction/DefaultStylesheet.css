@@ -168,7 +168,7 @@
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
-  padding: 5px 0px;
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
@@ -254,11 +254,7 @@
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   width: 95%;
   margin: auto;
-  padding-top: 10px;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .UIFormUploadInput .UIUploadForm {
-	margin-left: 5px;
+  padding: 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
@@ -389,6 +385,11 @@
 }
 
 /*############################## -- End Others   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIUploadManager {
+  padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
   width: 160px;
   padding-right: 60px;

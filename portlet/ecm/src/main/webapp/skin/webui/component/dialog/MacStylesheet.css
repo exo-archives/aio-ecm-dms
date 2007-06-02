@@ -18,6 +18,21 @@
   margin-bottom: 0px;
 } 
 
+.UIDialogPortlet .UIFormWithTitle .FieldContainer select {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
+}
+
+.UIDialogPortlet .UIFormWithTitle .FieldContainer textarea {
+  border: solid 1px #b7b7b7;
+  padding: 3px;
+}
+
+.UIDialogPortlet .UIFormWithTitle .FieldContainer input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
 .UIDialogPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
@@ -29,22 +44,17 @@
   margin-left: 158px ;
 }
 
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  float: left;
-  margin: 3px 5px 0px 5px;
+.UIDialogPortlet .MultiValueContainer a  {
+  margin: 0px 5px;
 }
 
 .UIDialogPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
   border: none;
 }
 
-.UIPopupMessages .UIAction {
-  width: 100px;
-}
-
 .UIDialogPortlet .UIAction {
 	width: 165px;
-	padding-left: 20px;
+	padding-right: 70px;
 }
 
 .UIDialogPortlet .UITabPane .TabPaneContent {
@@ -57,78 +67,21 @@
   border: none;
 }
 
-.UIDialogPortlet .TabPaneContent .UITabContentContainer label{
-  width: 150px;
-}
-
-.UIDialogPortlet .UITabContentContainer .FieldContainer{
-  margin: auto;
-}
-
-.UIDialogPortlet .UIFormWithTitle {
-  width: 650px;
-  margin: 15px auto;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer input {
-	border: solid 1px #b7b7b7;
-	padding-left: 3px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer select {
-	border: solid 1px #b7b7b7;
-	padding-left: 3px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer textarea {
-	border: solid 1px #b7b7b7;
-	padding: 3px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {
-  margin: auto;
-	width: 600px;
-	padding: 0px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame .SelectFileLabel{
-  padding: 0px 3px 0px 0px;
-  width: 130px;
-  margin-right: 5px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame {
-	margin: auto;
-	width: 600px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame .SelectFileLabel {
-  padding: 0px;
-  width: 130px;
-  margin-right: 5px;
-}
-
 .UIDialogPortlet .UIFormWithTitle .FieldContainer .MyEditor{
   margin-left: 7px;
 }
 
-.UIDialogPortlet .UIFormWithTitle .HorizontalLayout {
-  padding-bottom: 10px;
-}
-
-.UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout {
-  width: 500px;
+.UIDialogPortlet .UIEditModeConfiguration {
+  padding: 10px;
   margin: auto;
-  border: solid 1px #cdcdcd;
-  background: #efefef;
+  width: 600px;
 }
 
-.UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {
-  width: 120px;
-}
-
-.UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout .UIAction {
-  padding-top: 10px;
+.UIDialogPortlet .UIFormWithTitle {
+  padding: 10px;
+  margin: 10px auto;
+  width: 600px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIDialogPortlet .UIJCRBrowser {
@@ -143,21 +96,8 @@
   padding-bottom: 3px; 
 }
 
-.UIDialogPortlet .UIEditModeDocumentType label{
-  width: 200px;
-  text-align: right;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer label {
-  padding: 0px 3px 0px 0px;
-}
-
 .UIDialogPortlet .UIFormWithTitle .UIAction {
   padding: 12px 0px 0px 0px;
-}
-
-.UIDialogPortlet .TabPaneContent .UIFormWithTitle {
-  width: auto;
 }
 
 .UIDialogPortlet .TabPaneContent {

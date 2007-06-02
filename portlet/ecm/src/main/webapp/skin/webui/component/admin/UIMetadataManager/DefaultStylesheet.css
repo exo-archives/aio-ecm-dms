@@ -8,6 +8,10 @@
 
 /*############################## -- UIMetadataManager-- ########################*/
 
+.UIECMAdminPortlet .UIMetadataManager  {
+  padding: 0px 0px 0px 8px;
+}
+
 .UIECMAdminPortlet .UIMetadataManager .UITabPane {
   width: 97%;
   margin: auto;
@@ -26,10 +30,6 @@
 .UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
   margin: 5px auto 15px auto;
   padding-bottom: 15px;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIWindowContent .Content{
-  padding: 2px 0px 0px 8px;
 }
 
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator {

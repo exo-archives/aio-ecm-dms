@@ -55,6 +55,10 @@
   margin: 0px 5px;
 }
 
+.UIJCRExplorerPortlet .UIFormGrid .FieldLabel {
+  width: 128px;
+}
+
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
@@ -267,12 +271,20 @@
 
 /*===========================Folder Form=====================*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm {
+	padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
 	width: 160px;
 	padding-right: 120px;
 }
 
 /*===========================DocumentFormController=====================*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
+	padding: 10px;
+}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 150px;
@@ -298,6 +310,10 @@
 
 /*=============================UIWatchDocumentForm=======================*/
 
+.UIJCRExplorerPortlet .UIWatchDocumentForm {
+  padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
   width: 160px;
   padding-right: 60px;
@@ -305,7 +321,11 @@
 
 /*=============================UITaggingForm=======================*/
 
-.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout .UIAction {
+.UIJCRExplorerPortlet .UITaggingForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIAction {
   width: 170px;
   padding: 0px 0px 8px 10px;
 }
@@ -357,8 +377,8 @@
 
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm .FieldContainer {
-  width: 480px;
+.UIJCRExplorerPortlet .UICommentForm  {
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UICommentForm .UIAction {
@@ -370,7 +390,7 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
   width: 355px;
-  padding-right: 20px;
+  padding-right: 150px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -382,7 +402,7 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 220px;
-  padding-right: 20px;
+  padding-right: 150px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
@@ -450,6 +470,7 @@
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 160px;
+  padding-right: 170px;
 }
 
 /*================================.UIImportNode=================================*/
@@ -477,6 +498,10 @@
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
+  padding-bottom: 10px;
 }
 
 /*================================DecoratorBoxNested=================================*/

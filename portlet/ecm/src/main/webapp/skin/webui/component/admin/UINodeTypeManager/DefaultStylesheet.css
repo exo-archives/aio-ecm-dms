@@ -29,21 +29,6 @@
   padding: 8px 12px 8px 0px;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
-  padding:  5px 2px 0px 8px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer label{
-  margin: 0px;
-  width: 100px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
-  width: 450px ;
-  border: 1px solid white ;
-  margin-left: auto;
-}
-
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
   width: 160px;
   padding-left: 10px;
@@ -73,12 +58,6 @@
   width: 230px;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame {
-  width: 450px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
 .UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame .SelectFileLabel {
   width: 100px;
   margin: 0px;
@@ -105,6 +84,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIAction {
   width: 240px ;
+  padding-left: 80px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
@@ -119,8 +99,12 @@
 	width: 15px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList {
- padding: 2px 0px 0px 5px;
+.UIECMAdminPortlet .UINodeTypeManager .UIForm .UIFormGrid .FieldLabel {
+ width: 0px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIFormGrid .FieldLabel {
+ padding: 0px;
 }
 
 /*############################## -- End UINodeTypeManager-- ########################*/

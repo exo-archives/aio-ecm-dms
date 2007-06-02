@@ -307,3 +307,20 @@
   cursor: pointer;
   margin: 2px 0px;
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.radio {
+  float: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .FieldComponent .ActionIcon {
+  margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
+  width: 128px;
+}

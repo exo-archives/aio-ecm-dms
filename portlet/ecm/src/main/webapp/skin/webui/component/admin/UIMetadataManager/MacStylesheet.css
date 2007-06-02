@@ -30,10 +30,6 @@
   padding: 3px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager {
-  padding: 0px 10px;
-}
-
 .UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
   margin: 5px auto 15px auto;
   padding-bottom: 15px;
@@ -42,6 +38,9 @@
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator  {
   float: right;
   width: 95%;
+}
+
+.UIECMAdminPortlet .UIMetadataManager {
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {

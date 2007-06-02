@@ -87,9 +87,9 @@
 
 .UIECMAdminPortlet .ECMAdminTitleBar {
 	font-weight: bold; 
-  line-height: 45px;
+  line-height: 18px;
 	text-align: center;
-	height: 30px;
+	margin-top: 15px;
 }
 
 .UIECMAdminPortlet .UIECMAdminFunctionTitle {
@@ -159,14 +159,21 @@
   margin: 0px auto;
 }
 
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer textarea {
+.UIECMAdminPortlet .UIFormGrid input {
+  padding-left: 3px;
   border: solid 1px #b7b7b7;
-  padding: 3px;
 }
 
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer input {
-  border: solid 1px #b7b7b7;
-  padding-left: 3px;
+.UIECMAdminPortlet .UIFormGrid input.radio {
+  float: none;
+}
+
+.UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
+  margin: 0px 5px;
+}
+
+.UIECMAdminPortlet .UIFormGrid .FieldLabel {
+  width: 128px;
 }
 
 .UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
@@ -214,6 +221,12 @@
 }
 
 /*----------------------------UIRepositoryForm -------------------------*/
+
+.UIECMAdminPortlet .UIRepositoryForm  {
+	width: 95%;
+	margin: 0px auto;
+	padding: 10px 0px;
+}
 
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 355px;
@@ -664,7 +677,7 @@
 
 /*############################## -- UINamespaceManager -- ########################*/
 .UINamespaceManager .UIAction {
-  width: 110px;
+  width: 170px;
 }
 
 .UINamespaceManager .UIFormWithTitle .HorizontalLayout {
@@ -740,9 +753,13 @@
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
+.UIFolksonomyManager .UITagStyleForm {
+	padding: 10px;
+}
+
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
-	height: 250px ;
-	width: 300px ;
+	height: 300px ;
+	width: 390px ;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIAction {
@@ -770,11 +787,6 @@
 	width: 550px;
 	margin: auto;
 	border: none;
-}
-
-.UITemplatesManager .DialogForm .UIForm .HorizontalLayout .UIFormInputSet {
-  width: 100%;
-  padding: 0px;
 }
 
 .UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
@@ -806,16 +818,6 @@
 	margin: 30px 0px 0px 0px;
 }
 
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout .FieldContainer {
-	width: 550px;
-	margin: auto;
-	border: none;
-}
-
-.UITemplatesManager .UIViewTab .ViewForm .HorizontalLayout label {
-	width: 120px;
-}
-
 .UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithAction {
 	margin: 0px;
 	padding: 0px;
@@ -823,10 +825,6 @@
 
 .UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
 	padding:  15px 0px 0px 0px;
-}
-
-.UITemplatesManager .ViewForm .UIFormInputSet .FieldContainer {
-	width: 100%;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {

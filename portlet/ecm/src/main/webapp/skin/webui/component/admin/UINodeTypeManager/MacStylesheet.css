@@ -7,42 +7,14 @@
  */
 /*############################## -- UINodeTypeManager-- ########################*/
 
-.UIECMAdminPortlet .UIFormWithTitle {
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
-  padding: 8px 12px 8px 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
-  padding:  5px 2px 0px 7px;
-}
-
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
   width: 280px;
   padding-left: 30px;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle {
-  width: 450px ;
-  border: 1px solid #e1e1e1 ;
-  margin-left: auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .UIAction {
   width: 170px;
-  padding: 0px 0px 8px 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
-  width: 450px;
-  margin: auto;
+  padding-left: 25px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout .UploadIframe {
@@ -76,31 +48,8 @@
   margin: 0px;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer{
-  width: 450px;
-  margin: 0px auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle label {
-	line-height: 20px;
-	width: 120px;
-}
-
-.UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
-  width: 450px ;
-}
-
 .UIECMAdminPortlet .UINodeTypeExport .UIAction {
   width: 330px ;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .FieldContainer .UIGrid input.checkbox {
-  padding: 0px;
-  margin-left: 35px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport {
-  width: 450px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIPageIterator  {
@@ -119,31 +68,12 @@
    padding-left: 25px;   
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {
-  width: 130px;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UIAction {
   width: 250px ;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane input {
-  border: solid 1px #b7b7b7;
-  padding-left: 3px; 
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane textarea {
-  border: solid 1px #b7b7b7;
-  padding: 3px;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{
 	padding-top: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
-  width: 450px ;
-  margin-left: 50px;
 }
 
 .UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIGrid {
@@ -151,7 +81,18 @@
   width: 98%;
 }
 
-.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
-  width: 270px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
+	width: 95%;
+	margin: auto;
 }
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
+	width: 280px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIFormGrid .FieldLabel{
+	width: 0px;
+	padding: 0px;
+}
+
 /*############################## -- End UINodeTypeManager-- ########################*/

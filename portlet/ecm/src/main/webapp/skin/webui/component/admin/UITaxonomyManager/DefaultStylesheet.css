@@ -8,9 +8,6 @@
 
 .UIECMAdminPortlet .UITaxonomyManager {
 }
-.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle {
-	width: 550px;
-}
 
 .UIECMAdminPortlet .UITaxonomyContainer {
   border: solid 1px #bdbdbd;
@@ -29,17 +26,9 @@
   float: left;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .UIAction {
 	width: 160px;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout .FieldContainer {
-  width: 98%;
-  overflow: hidden;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {
-  width: 120px;
+	padding-right: 80px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {

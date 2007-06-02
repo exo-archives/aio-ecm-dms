@@ -33,16 +33,6 @@
   background: #8eeaaf ;
 }
 
-.UIDialogPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-  margin-left: 187px ;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  float: left;
-  margin: 3px 5px 0px 5px;
-}
-
 .UIPopupMessages .UIAction {
   width: 100px;
 }
@@ -74,12 +64,6 @@
   border: none;
 }
 
-.UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout {
-  width: 500px;
-  margin: auto;
-  padding-top: 10px;
-}
-
 .UIDialogPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {
   width: 120px;
 }
@@ -96,24 +80,8 @@
   padding-bottom: 3px; 
 }
 
-.UIDialogPortlet .UIEditModeDocumentType label{
-  width: 200px;
-  text-align: right;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer label {
-  padding: 0px 3px 0px 0px;
-  width: 150px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer input {
-	border: solid 1px #b7b7b7;
-	padding-left: 3px;
-}
-
-.UIDialogPortlet .UIFormWithTitle .FieldContainer select {
-	border: solid 1px #b7b7b7;
-	padding-left: 3px;
+.UIDialogPortlet .MultiValueContainer a  {
+  margin: 0px 5px;
 }
 
 .UIDialogPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {

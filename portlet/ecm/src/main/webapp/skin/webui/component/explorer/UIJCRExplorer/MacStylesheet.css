@@ -274,10 +274,6 @@
 	padding-left: 35px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer{
-	width: 500px;
-}
-
 /*===========================DocumentFormController=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
@@ -294,50 +290,16 @@
   border: none;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer label{
-  width: 150px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .FieldContainer{
-  width: 500px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .HorizontalLayout {
-  padding-bottom: 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 3px; 
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label {
-  width: 200px;
-  text-align: right;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController {
  	padding: 13px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
-  padding: 0px 3px 0px 0px;
-  width: 130px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
-  padding: 12px 45px 0px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
-  width: auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
-  margin: 5px;
 }
 
 /*===========================TabContainer====================*/
@@ -348,38 +310,34 @@
 
 /*===========================UIUploadForm====================*/
 
-.UIJCRExplorerPortlet .UIUploadForm .UIAction {
+.UIJCRExplorerPortlet .UIUploadManager {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIAction {
   width: 170px;
-  padding: 0px 0px 9px 35px;
+  padding-right: 60px;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
 
-.UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
-  width: 500px;
-  margin: auto;
+.UIJCRExplorerPortlet .UIWatchDocumentForm {
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
   width: 180px;
-  padding-left: 40px;
+  padding-left: 10px;
 }
 
 /*=============================UITaggingForm=======================*/
 
-.UIJCRExplorerPortlet .UITaggingForm .FieldContainer {
-  width: 500px;
-  margin: auto;
+.UIJCRExplorerPortlet .UITaggingForm {
+  padding: 10px;
 }
-
-.UIJCRExplorerPortlet .UITaggingForm .FieldContainer .UIFormInputSet .FieldContainer {
-  padding: 0px;
-  margin: 0px;
-}
-
+  
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
-  width: 170px;
-  padding: 0px 0px 8px 60px;
+  width: 180px;
 }
   
 /*==================================UIMultiLanguageForm==============================*/
@@ -430,6 +388,17 @@
   margin-left: 7px;
 }
 
+/*================================UIPropertyForm=================================*/
+
+.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
+  width: 170px;	
+  padding-right: 15px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout a {
+  margin: 2px 5px 0px 5px;
+}
+
 /*==================================UIVoteForm==============================*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
@@ -461,14 +430,13 @@
 
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm .FieldContainer {
-  width: 500px;
-  margin: auto;
+.UIJCRExplorerPortlet .UICommentForm  {
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UICommentForm .UIAction {
   width: 170px;
-  padding-left: 40px;
+  padding-right: 20px;
 }
 
 /*================================UISimpleSearch=================================*/
@@ -484,7 +452,7 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
   width: 370px;
-  padding-left: 65px;
+  padding-right: 120px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -504,7 +472,7 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 250px;
-  padding-left: 25px;
+  padding-right: 180px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
