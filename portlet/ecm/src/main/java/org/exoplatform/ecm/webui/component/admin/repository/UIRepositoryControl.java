@@ -103,22 +103,15 @@ public class UIRepositoryControl extends UIContainer {
       UIRepositoryControl uiControl = event.getSource() ;
       //UIDropDownItemSelector uiSelect = uiControl.getChild(UIDropDownItemSelector.class) ;      
       String repoName = uiControl.getChild(UIRepositorySelectForm.class).getSelectedValue() ;
-      UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
-      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
-      UIRepositoryForm uiForm = uiPopupAction.activate(UIRepositoryForm.class, 600) ;
-      uiForm.isAddnew_ = false ;
       RepositoryService rservice = uiControl.getApplicationComponent(RepositoryService.class) ;
       if(rservice.getDefaultRepository().getConfiguration().getName().equals(repoName)) {
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        UIApplication uiApp = uiControl.getAncestorOfType(UIApplication.class) ;
         Object[] args = new Object[]{repoName}  ;        
         uiApp.addMessage(new ApplicationMessage("UIRepositoryControl.msg.cannot-deleteRepo", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
-
-      ManageableRepository repo = rservice.getRepository(repoName) ;
-      uiForm.refresh(repo.getConfiguration()) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ;
     }
   }
 
