@@ -210,13 +210,13 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   }
 
   private void saveRepo(RepositoryEntry re) {    
-    for(WorkspaceEntry ws : getWorkspaceMap().values()){re.addWorkspace(ws) ;}
+   /* for(WorkspaceEntry ws : getWorkspaceMap().values()){re.addWorkspace(ws) ;}
     re.setDefaultWorkspaceName(defaulWorkspace_) ;
     UIRepositoryControl uiControl = getAncestorOfType(UIECMAdminPortlet.class).
                                     findFirstComponentOfType(UIRepositoryControl.class) ;
     uiControl.getRepoMap().put(re.getName(), re) ;
     uiControl.reloadValue() ;
-    uiControl.setSelectedValue(uiControl.repoName_) ;
+    uiControl.setSelectedValue(uiControl.repoName_) ;*/
   }
   public void activate() throws Exception {}
 
