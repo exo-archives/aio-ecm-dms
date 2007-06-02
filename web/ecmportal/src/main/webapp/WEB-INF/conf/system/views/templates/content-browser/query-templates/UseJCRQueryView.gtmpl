@@ -9,7 +9,7 @@
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
 	<%
-		if(uicomponent.isShowDocumentDetail()&&uicomponent.isEnableToolBar()) {
+		if(uicomponent.isShowDocumentDetail() && uicomponent.isCommentAndVote()) {
 			uicomponent.renderChild(UIToolBar.class);
 		}
 	%>
