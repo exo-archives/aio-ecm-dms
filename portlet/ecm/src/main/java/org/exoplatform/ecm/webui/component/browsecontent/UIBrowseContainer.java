@@ -170,6 +170,7 @@ public class UIBrowseContainer extends UIContainer {
   public boolean isShowCommentForm() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_COMMENT, "")) ;
   }
+  public boolean isCommentAndVote() { return (isShowVoteForm() || isShowCommentForm()) ;}
   public boolean isShowVoteForm() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_VOTE, "")) ;
   }

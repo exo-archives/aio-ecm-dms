@@ -200,7 +200,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_DOCUMENT_NAME, docName) ;
       prefs.setValue(Utils.CB_TEMPLATE, "DocumentView") ;
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate) ;
-      prefs.setValue(Utils.CB_VIEW_TOOLBAR, "true") ;
+      prefs.setValue(Utils.CB_VIEW_TOOLBAR,String.valueOf(hasComment || hasVote)) ;
       prefs.setValue(Utils.CB_VIEW_COMMENT, String.valueOf(hasComment)) ;    
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ;    
       prefs.store() ; 

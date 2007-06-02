@@ -34,7 +34,7 @@
   boolean hasNoDocument = subDocumentList.isEmpty() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">  
-	<%uicomponent.renderChild(UIToolBar.class);%>
+	<%if(uicomponent.isEnableToolBar()){uicomponent.renderChild(UIToolBar.class);}%>
 	<div class="ContentHolder">  
 	<%
 	 if(uicomponent.isShowSearchForm()) {uicomponent.renderChild(UISearchController.class); 

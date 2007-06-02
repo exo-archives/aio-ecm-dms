@@ -14,7 +14,7 @@
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
-  uicomponent.renderChild(UIToolBar.class);
+	if(uicomponent.isEnableToolBar()){uicomponent.renderChild(UIToolBar.class);}
   if(uicomponent.isShowSearchForm()) {
   	uicomponent.renderChild(UISearchController.class);
   }
