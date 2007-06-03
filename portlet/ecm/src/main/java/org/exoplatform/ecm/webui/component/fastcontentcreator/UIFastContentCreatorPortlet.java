@@ -2,7 +2,7 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.fastcontent;
+package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
