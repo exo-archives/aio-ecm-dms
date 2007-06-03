@@ -1,12 +1,10 @@
 <%
   String[] hiddenField1 = ["jcrPath=/node/jcr:content", "nodetype=nt:resource", "mixintype=dc:elementSet", "visible=false"] ; 
   String[] hiddenField2 = ["jcrPath=/node/jcr:content/jcr:encoding", "visible=false", "UTF-8"] ;
-  String[] hiddenField3 = ["jcrPath=/node/jcr:content/jcr:mimeType", "visible=false", "text/html"] ;  
   String[] hiddenField4 = ["jcrPath=/node/jcr:content/jcr:lastModified", "visible=false"] ;
   String[] hiddenField5 = ["jcrPath=/node/jcr:content/dc:date", "visible=false"] ;
   uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
   uicomponent.addHiddenField("hiddenInput2", hiddenField2) ;
-  uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
   uicomponent.addCalendarField("hiddenInput4", hiddenField4) ;
   uicomponent.addCalendarField("hiddenInput5", hiddenField5) ;
 %>
@@ -117,7 +115,9 @@
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			            uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
 								}
-							}else {				
+							} else {				
+								String[] hiddenField3 = ["jcrPath=/node/jcr:content/jcr:mimeType", "visible=false", "text/html"] ;  
+							  uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
 								String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			          uicomponent.addWYSIWYGField("summary", fieldSummary) ;
 							}
