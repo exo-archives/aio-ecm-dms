@@ -1,0 +1,153 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Luong Trung Hieu
+ *          hieu2b1@yahoo.com
+ * May 14, 2007
+ * version: $Id$
+ */
+
+@import url("../../../icons/VistaStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
+
+.UIPageDesktop .UIDialogPortlet {
+  overflow: hidden;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
+  width: 600px;
+  margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle {
+  margin-top: 0px;
+  margin-bottom: 0px;
+} 
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
+  height: 20px ; line-height: 20px;
+  font-weight: bold; font-size: 11px;
+  background: #8eeaaf ;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin-left: 187px ;
+}
+
+.UIPopupMessages .UIAction {
+  width: 100px;
+}
+
+.UIFastContentCreatorPortlet .UIAction {
+	width: 165px;
+	padding-left: 20px;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UITabContentContainer .FieldContainer{
+  margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle {
+  border: 1px solid #e1e1e1;
+  width: 650px;
+  margin: 15px auto;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout {
+  padding-bottom: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout {
+  width: 500px;
+  margin: auto;
+  padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {
+  width: 120px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .UIFormInputSet {
+  padding-bottom: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout .UIAction {
+  padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser {
+  padding: 10px 0px 0px 10px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeDocumentType {
+  padding-bottom: 3px; 
+}
+
+.UIFastContentCreatorPortlet .UIEditModeDocumentType label{
+  width: 200px;
+  text-align: right;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer label {
+  padding: 0px 3px 0px 0px;
+  width: 150px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer input {
+	border: solid 1px #b7b7b7;
+	padding-left: 3px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
+	border: solid 1px #b7b7b7;
+	padding-left: 3px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {
+  margin: auto;
+	width: 600px;
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame .SelectFileLabel{
+  padding: 0px 3px 0px 0px;
+  width: 150px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame {
+	margin: auto;
+	width: 600px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame .SelectFileLabel {
+  padding: 0px;
+  width: 150px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
+  padding: 12px 0px 0px 65px;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent .UIFormWithTitle {
+  width: auto;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent {
+  margin: 5px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+  float: left;
+  margin: 3px 5px 0px 5px;
+}

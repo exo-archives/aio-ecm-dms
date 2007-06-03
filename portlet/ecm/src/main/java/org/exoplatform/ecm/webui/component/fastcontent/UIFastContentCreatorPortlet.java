@@ -2,7 +2,7 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.dialog;
+package org.exoplatform.ecm.webui.component.fastcontent;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -24,11 +24,11 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  */
 @ComponentConfig(
     lifecycle = UIApplicationLifecycle.class,
-    template =  "app:/groovy/webui/component/dialog/UIDialogPortlet.gtmpl"
+    template =  "app:/groovy/webui/component/fastcontentcreator/UIFastContentCreatortPortlet.gtmpl"
 )
-public class UIDialogPortlet extends UIPortletApplication {
+public class UIFastContentCreatorPortlet extends UIPortletApplication {
   
-  public UIDialogPortlet() throws Exception {
+  public UIFastContentCreatorPortlet() throws Exception {
   }
   
   public void initPopupJCRBrowser(String workspaceName) throws Exception {
@@ -46,14 +46,14 @@ public class UIDialogPortlet extends UIPortletApplication {
   
   public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
-    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIDialogPortlet') ;");
+    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIFastContentCreatorPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     if (portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
       if(getChild(UIEditModeConfiguration.class) != null) {
         removeChild(UIEditModeConfiguration.class) ;
       }
-      if(getChild(UIDialogDocumentForm.class) == null) {
-        UIDialogDocumentForm uiDialogForm = createUIComponent(UIDialogDocumentForm.class, null, null) ;
+      if(getChild(UIFastContentCreatortForm.class) == null) {
+        UIFastContentCreatortForm uiDialogForm = createUIComponent(UIFastContentCreatortForm.class, null, null) ;
         PortletRequestContext portletContext = (PortletRequestContext) context ;
         PortletRequest request = portletContext.getRequest() ; 
         PortletPreferences preferences = request.getPreferences() ;
@@ -65,8 +65,8 @@ public class UIDialogPortlet extends UIPortletApplication {
         addChild(uiDialogForm) ; 
       }
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
-      if(getChild(UIDialogDocumentForm.class) != null) {
-        removeChild(UIDialogDocumentForm.class) ;
+      if(getChild(UIFastContentCreatortForm.class) != null) {
+        removeChild(UIFastContentCreatortForm.class) ;
       }
       if(getChild(UIEditModeConfiguration.class) == null) {
         UIEditModeConfiguration uiEditMode = addChild(UIEditModeConfiguration.class, null, null) ;

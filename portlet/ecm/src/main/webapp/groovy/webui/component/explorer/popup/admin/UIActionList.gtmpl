@@ -2,7 +2,7 @@
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
- *          minhdv@exoplatform.com
+ *          minh.dang@exoplatform.com
  * Nov 8, 2006
  * 6:15:56 PM 
  */
@@ -46,12 +46,12 @@
 		        <td>
 		          <div class="Text">[<%=action.getPrimaryNodeType().getName()%>]</div>
 		        </td>
-		        <td style="width:95px;">
+		        <td style="width:100px;">
 		        <%
 		          for(act in uicomponent.getActions()) { 
 		        %>
 	              <a href="<%=uicomponent.event(act, action.getName())%>">
-	                <div class="${act}16x16Icon" title="$act" style="margin-left:5px;float:left;"></div>
+	                <div class="${act}16x16Icon" title="$act" style="margin-left:7px;float:left;"></div>
 	              </a>
 		        <%} %>
 		        </td>

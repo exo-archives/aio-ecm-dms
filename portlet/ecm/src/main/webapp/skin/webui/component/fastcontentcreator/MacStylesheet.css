@@ -1,0 +1,109 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+@import url("../../../icons/DefaultStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
+
+.UIPageDesktop .UIDialogPortlet {
+  overflow: hidden;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle {
+  margin-top: 0px;
+  margin-bottom: 0px;
+} 
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
+  border: solid 1px #b7b7b7;
+  padding-left: 3px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer textarea {
+  border: solid 1px #b7b7b7;
+  padding: 3px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
+  height: 20px ; line-height: 20px;
+  font-weight: bold; font-size: 11px;
+  background: #e5fcfa;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
+  margin-bottom: 10px ;
+  margin-left: 158px ;
+}
+
+.UIFastContentCreatorPortlet .MultiValueContainer a  {
+  margin: 0px 5px;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UIAction {
+	width: 165px;
+	padding-right: 70px;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
+  width: 600px;
+  margin: auto;
+  padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .MyEditor{
+  margin-left: 7px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration {
+  padding: 10px;
+  margin: auto;
+  width: 600px;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle {
+  padding: 10px;
+  margin: 10px auto;
+  width: 600px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser {
+  padding: 10px 0px 0px 10px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
+  border: none;
+} 
+
+.UIFastContentCreatorPortlet .UIEditModeDocumentType {
+  padding-bottom: 3px; 
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
+  padding: 12px 0px 0px 0px;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent {
+  margin: 5px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+  padding-bottom: 0px;
+}

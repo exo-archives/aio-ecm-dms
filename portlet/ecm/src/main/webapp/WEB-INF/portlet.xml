@@ -89,14 +89,14 @@
   </portlet> 
   
   <portlet>
-    <description xml:lang="EN">Dialog Portlet</description>
-    <portlet-name>DialogPortlet</portlet-name>
-    <display-name xml:lang="EN">Dialog Portlet</display-name>
+    <description xml:lang="EN">Fast Content Creator Portlet</description>
+    <portlet-name>FastContentCreatorPortlet</portlet-name>
+    <display-name xml:lang="EN">Fast Content Creator Portlet</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
       <name>webui.configuration</name>
-      <value>/WEB-INF/conf/portlet/ecm/DialogPortlet/webui/configuration.xml</value>
+      <value>/WEB-INF/conf/portlet/ecm/FastContentCreatorPortlet/webui/configuration.xml</value>
     </init-param>    
 
     <expiration-cache>0</expiration-cache>
@@ -106,12 +106,12 @@
       <portlet-mode>edit</portlet-mode>
     </supports>
     <supported-locale>en</supported-locale>    
-    <resource-bundle>locale.portlet.ecm.DialogPortlet</resource-bundle>    																														
+    <resource-bundle>locale.portlet.ecm.FastContentCreatorPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>Dialog Portlet</title>
-      <short-title>ECM Dialog</short-title>
-      <keywords>ecm, dialog</keywords>
+      <title>Fast Content Creator Portlet</title>
+      <short-title>ECM Fast Content Creator</short-title>
+      <keywords>ecm, fastcontentcreator</keywords>
     </portlet-info>
     <portlet-preferences>
       <preference>
@@ -129,6 +129,11 @@
         <value>exo:article</value>        
         <read-only>false</read-only>
       </preference>          
+      <preference>
+        <name>repository</name>     
+        <value>repository</value>        
+        <read-only>false</read-only>
+      </preference>                
     </portlet-preferences>
   </portlet> 
   

@@ -85,6 +85,7 @@ public class UILanguageTypeForm extends UIForm {
         Node node = uiExplorer.getCurrentNode() ;
         if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(true) ;
+          uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setEnable(false) ;
         } else {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(false) ;
         }
@@ -119,7 +120,7 @@ public class UILanguageTypeForm extends UIForm {
           }
         }
       } else {
-        UIUploadForm uiUploadForm =  uiContainer.getChild(UIUploadForm.class) ;
+        UIUploadForm uiUploadForm =  uiContainer.findFirstComponentOfType(UIUploadForm.class) ;
         uiUploadForm.setIsMultiLanguage(true, selectedLanguage) ;
       }
       uiContainer.setRenderSibbling(UIAddLanguageContainer.class) ;

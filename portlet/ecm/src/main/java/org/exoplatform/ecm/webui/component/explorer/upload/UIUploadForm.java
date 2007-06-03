@@ -59,7 +59,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
   
   final static public String FIELD_NAME =  "name" ;
   final static public String FIELD_UPLOAD = "upload" ;  
-  final public static String JCR_LASTMODIFIED = "jcr:lastModified" ;
   
   private boolean isMultiLanguage_ = false ;
   private String language_ = null ;
@@ -77,7 +76,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     language_ = language ;
   }
   
-  private boolean isMultiLanguage() { return isMultiLanguage_ ; }
+  public boolean isMultiLanguage() { return isMultiLanguage_ ; }
   
   private String getLanguageSelected() { return language_ ; }
   
@@ -111,7 +110,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       String mimeType = mimeTypeSolver.getMimeType(name) ;
       //String mimeType = input.getUploadResource().getMimeType() ;
       Node selectedNode = uiExplorer.getCurrentNode();      
-      
       boolean isExist = selectedNode.hasNode(name) ;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
@@ -124,7 +122,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
           uiMultiForm.updateSelect(uiExplorer.getCurrentNode()) ;
-          uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
           if(!isExist) {            
@@ -179,7 +176,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             Node contentNode = node.getNode(Utils.JCR_CONTENT);
             contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
             contentNode.setProperty(Utils.JCR_MIMETY, mimeType);
-            contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
+            contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
             node.save() ;       
             node.checkin() ;
             node.checkout() ;
@@ -188,7 +185,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         UIUploadManager uiManager = uiForm.getParent() ;
         UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
-        uiUploadContainer.setUploadedNode(selectedNode.getNode(name)) ;
+        if(uiForm.isMultiLanguage_) uiUploadContainer.setUploadedNode(selectedNode) ; 
+        else uiUploadContainer.setUploadedNode(selectedNode.getNode(name)) ;
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         String fileSize = String.valueOf((((float)(content.length/100))/10));     
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;

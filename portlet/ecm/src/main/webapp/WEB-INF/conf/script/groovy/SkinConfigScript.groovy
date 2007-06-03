@@ -54,19 +54,19 @@ SkinService.addSkin(
 ) ;
 
 SkinService.addSkin(
-    "ecm/DialogPortlet",
+    "ecm/FastContentCreatorPortlet",
     "Default",
-    "/ecm/skin/webui/component/dialog/DefaultStylesheet.css"
+    "/ecm/skin/webui/component/fastcontentcreator/DefaultStylesheet.css"
 ) ;
 
 SkinService.addSkin(
-    "ecm/DialogPortlet",
+    "ecm/FastContentCreatorPortlet",
     "Vista",
-    "/ecm/skin/webui/component/dialog/VistaStylesheet.css"
+    "/ecm/skin/webui/component/fastcontentcreator/VistaStylesheet.css"
 ) ;
  
 SkinService.addSkin(
-    "ecm/DialogPortlet",
+    "ecm/FastContentCreatorPortlet",
     "Mac",
-    "/ecm/skin/webui/component/dialog/MacStylesheet.css"
+    "/ecm/skin/webui/component/fastcontentcreator/MacStylesheet.css"
 ) ;

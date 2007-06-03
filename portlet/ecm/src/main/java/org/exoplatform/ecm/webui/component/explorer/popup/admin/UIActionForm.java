@@ -109,13 +109,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
   
   public void onchange(Event event) throws Exception {
-    System.out.println("\n\ncall onchange in ActionForm here");
-    System.out.println(getSelectBoxFieldValue("lifecycle"));
     UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
     uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
-    //event.getRequestContext().addUIComponentToUpdateByAjax(this) ;
-    
-    System.out.println(getSelectBoxFieldValue("lifecycle")+ "after component set render");
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
   }
   
   @SuppressWarnings("unchecked")
@@ -173,6 +169,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       actionServiceContainer.addAction(parentNode_, nodeTypeName_, sortedInputs);
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
+      createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;
       UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
       uiActionList.updateGrid(parentNode_) ;
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;

@@ -2,7 +2,7 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.dialog;
+package org.exoplatform.ecm.webui.component.fastcontent;
 
 import java.security.AccessControlException;
 import java.util.Map;
@@ -43,16 +43,16 @@ import org.exoplatform.webui.event.Event.Phase;
     lifecycle = UIFormLifecycle.class,
     events = {
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-      @EventConfig(listeners = UIDialogDocumentForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDialogDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIFastContentCreatortForm.AddActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIFastContentCreatortForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UIDialogDocumentForm extends DialogFormFields {
+public class UIFastContentCreatortForm extends DialogFormFields {
 
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
   
-  public UIDialogDocumentForm() throws Exception {
+  public UIFastContentCreatortForm() throws Exception {
     setActions(new String[]{"Save"}) ;
   }
   
@@ -65,7 +65,7 @@ public class UIDialogDocumentForm extends DialogFormFields {
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
-      uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.not-support", arg, 
+      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.not-support", arg, 
                                               ApplicationMessage.ERROR)) ;
       return null ;
     }
@@ -124,16 +124,16 @@ public class UIDialogDocumentForm extends DialogFormFields {
       homeNode.getSession().save() ;
       Object[] args = { prefLocate } ;
       reset() ;
-      uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.saved-successfully", args)) ;
+      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.saved-successfully", args)) ;
     } catch (AccessControlException ace) {
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
-      uiApp.addMessage(new ApplicationMessage("UIDialogDocumentForm.msg.in-versioning", null, 
+      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.in-versioning", null, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(Exception e) {
-      String key = "UIDialogDocumentForm.msg.cannot-save" ;
+      String key = "UIFastContentCreatortForm.msg.cannot-save" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
@@ -141,14 +141,14 @@ public class UIDialogDocumentForm extends DialogFormFields {
     return null ;
   }
   
-  static public class AddActionListener extends EventListener<UIDialogDocumentForm> {
-    public void execute(Event<UIDialogDocumentForm> event) throws Exception {
+  static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
+    public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
   }
 
-  static public class RemoveActionListener extends EventListener<UIDialogDocumentForm> {
-    public void execute(Event<UIDialogDocumentForm> event) throws Exception {
+  static public class RemoveActionListener extends EventListener<UIFastContentCreatortForm> {
+    public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
   }  

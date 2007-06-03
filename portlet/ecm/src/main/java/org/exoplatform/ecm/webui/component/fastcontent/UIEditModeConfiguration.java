@@ -2,7 +2,7 @@
  * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.dialog;
+package org.exoplatform.ecm.webui.component.fastcontent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     uiRepositoryList.setOnChange("ChangeRepository") ;
     addUIFormInput(uiRepositoryList) ;
     UIFormSelectBox uiWorkspaceList = new UIFormSelectBox(WORKSPACE_NAME, WORKSPACE_NAME, options) ; 
-    uiWorkspaceList.setOnChange("ChangeWorksapce") ;
+    uiWorkspaceList.setOnChange("ChangeWorkspace") ;
     addUIFormInput(uiWorkspaceList) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction(ACTION_INPUT) ;
     uiInputAct.addUIFormInput(new UIFormStringInput(FIELD_SAVEDPATH, FIELD_SAVEDPATH, null).setEditable(false)) ;
@@ -189,7 +189,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     } catch(Exception ex) {
       ex.printStackTrace() ;
     }
-    UIDialogPortlet uiDialog = getParent() ;
+    UIFastContentCreatorPortlet uiDialog = getParent() ;
     UIPopupWindow uiPopup = uiDialog.getChild(UIPopupWindow.class) ;
     uiPopup.setRendered(false) ;
     uiPopup.setShow(false) ;
@@ -198,7 +198,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
   static public class SelectPathActionListener extends EventListener<UIEditModeConfiguration> {
     public void execute(Event<UIEditModeConfiguration> event) throws Exception {
       UIEditModeConfiguration uiTypeForm = event.getSource() ;
-      UIDialogPortlet uiDialog = uiTypeForm.getParent() ;
+      UIFastContentCreatorPortlet uiDialog = uiTypeForm.getParent() ;
       uiDialog.initPopupJCRBrowser(uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).getValue()) ;
     }
   }
@@ -207,7 +207,9 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     public void execute(Event<UIEditModeConfiguration> event) throws Exception {
       UIEditModeConfiguration uiTypeForm = event.getSource() ;
       uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).setValue("/") ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm.getParent()) ;
+      String wsName = uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
+      uiTypeForm.setTemplateOptions(uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).getValue(), wsName) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;
     }
   }
   

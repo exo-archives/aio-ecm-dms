@@ -8,6 +8,8 @@ import javax.jcr.Item;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -54,6 +56,14 @@ public class UIUploadContainer extends UIContainer {
   
   static public class CloseActionListener extends EventListener<UIUploadContainer> {
     public void execute(Event<UIUploadContainer> event) throws Exception {
+      UIUploadManager uiUploadManager = event.getSource().getParent() ;
+      UIUploadForm uiUploadForm = uiUploadManager.getChild(UIUploadForm.class) ;
+      if(uiUploadForm.isMultiLanguage()) {
+        UIMultiLanguageManager uiLanguageManager = uiUploadManager.getAncestorOfType(UIMultiLanguageManager.class) ;
+        uiLanguageManager.setRenderedChild(UIMultiLanguageForm.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageManager) ;
+        return ;
+      }
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.cancelAction() ;
     }

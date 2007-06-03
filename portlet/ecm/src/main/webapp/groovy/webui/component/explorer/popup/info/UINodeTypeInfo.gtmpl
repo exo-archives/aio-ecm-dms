@@ -43,8 +43,8 @@
 				        <div class="$style">
 				          <div class="LeftTab">
 				            <div class="RightTab">
-				                  <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">$nodeType.name</div>
-				                </div>
+		                  <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">$nodeType.name</div>
+		                </div>
 				          </div>
 				        </div>
 				      </div>
