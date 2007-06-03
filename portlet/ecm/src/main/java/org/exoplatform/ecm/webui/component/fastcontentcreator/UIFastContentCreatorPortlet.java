@@ -24,7 +24,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  */
 @ComponentConfig(
     lifecycle = UIApplicationLifecycle.class,
-    template =  "app:/groovy/webui/component/fastcontentcreator/UIFastContentCreatortPortlet.gtmpl"
+    template =  "app:/groovy/webui/component/fastcontentcreator/UIFastContentCreatorPortlet.gtmpl"
 )
 public class UIFastContentCreatorPortlet extends UIPortletApplication {
   

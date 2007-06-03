@@ -1,0 +1,3 @@
+<div class="UIApplication $uicomponent.id" style="height:400px;overflow:auto;" id="$uicomponent.id">
+  <%uicomponent.renderChildren();%>
+</div>

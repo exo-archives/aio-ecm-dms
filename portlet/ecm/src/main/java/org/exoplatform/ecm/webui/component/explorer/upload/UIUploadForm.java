@@ -106,6 +106,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       byte[] content = input.getUploadData() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null) name = fileName;
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "["} ;
+      for(String filterChar : arrFilterChar) {
+        if(name.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(name) ;
       //String mimeType = input.getUploadResource().getMimeType() ;
