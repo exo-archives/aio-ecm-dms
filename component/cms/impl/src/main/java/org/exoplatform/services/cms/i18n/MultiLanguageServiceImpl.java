@@ -143,7 +143,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         node.save() ;
         ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
         jcrContent.setProperty(JCRDATA, value) ;
-      }else {
+      } else {
         if(languagesNode.hasNode(language)) newLanguageNode = languagesNode.getNode(language) ;
         else newLanguageNode = languagesNode.addNode(language) ;
         Node jcrContent = node.getNode(JCRCONTENT) ;

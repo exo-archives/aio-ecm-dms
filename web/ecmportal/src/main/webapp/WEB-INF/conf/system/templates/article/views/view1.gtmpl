@@ -158,7 +158,7 @@
 		  overflow: hidden;
 		}
 		
-		 .UIArticle .ContainerLinks .ContentLinks{
+		.UIArticle .ContainerLinks .ContentLinks {
 		  padding: 2px 0px;
 		}
 
@@ -166,7 +166,7 @@
   	  margin-left: 80px;
 		}
 		
-	 .UIArticle .Links div {
+	  .UIArticle .Links div {
   	  padding-bottom: 3px;
   	}
   	
@@ -175,7 +175,7 @@
 		  color: #058ee6;
 		}
 		
-		 .UIArticle .Links a:hover {
+		.UIArticle .Links a:hover {
   	  text-decortaion: underline;
 		  color: orange;
 		}
@@ -314,21 +314,20 @@
 						            <div class="FieldLabel">Links :</div>
 						          </div>
 				    					<%if(relations.size() > 0) {%>
-							              <div class="Links">
-														<%
-										          for (rel in relations) {
-														    String wsName = rel.getSession().getWorkspace().getName() ;
-													      String actionLink ;
-														    if(!uicomponent.isRssLink()) { 
-														      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
-													      } else { 
-														 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
-													      }
-												    %>
-				  								    <div> - <a href="$actionLink">$rel.name</a></div>
-				  							    <%}%>
-							              </div>
-							            </div>
+						              <div class="Links">
+													<%
+									          for (rel in relations) {
+													    String wsName = rel.getSession().getWorkspace().getName() ;
+												      String actionLink ;
+													    if(!uicomponent.isRssLink()) { 
+													      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+												      } else { 
+													 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
+												      }
+											    %>
+			  								    <div> - <a href="$actionLink">$rel.name</a></div>
+			  							    <%}%>
+						              </div>
 						          <%}%>
 						        </div>
 			            </div>

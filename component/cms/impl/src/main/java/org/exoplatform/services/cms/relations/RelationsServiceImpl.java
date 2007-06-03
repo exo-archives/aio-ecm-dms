@@ -97,7 +97,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     }      
 		Value value2add = userSession.getValueFactory().createValue(catNode); 
 		if (!node.isNodeType(RELATION_MIXIN)) {
-			node.addMixin(RELATION_MIXIN);    
+      node.addMixin(RELATION_MIXIN);    
 			node.setProperty(RELATION_PROP, new Value[] {value2add});
 		} else {
 			List<Value> vals = new ArrayList<Value>();
