@@ -43,8 +43,6 @@
 .UIContextMenu .NodeHistoryContainer .BackButtonLabel {
   white-space: nowrap ;
   cursor: pointer;
-  line-height: 18px;
-  font: normal bold 11px Verdana;
   margin-left: 2px;
 }
 
