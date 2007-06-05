@@ -26,7 +26,6 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
@@ -54,7 +53,6 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 14, 2006 5:15:47 PM
  */
 @ComponentConfig(
-   //template = "app:/groovy/webui/component/browse/View1.gtmpl",
     events = {
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
@@ -100,20 +98,35 @@ public class UIBrowseContainer extends UIContainer {
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-
+  private String getTemplatePath(String ucase, String tempName) {
+    ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
+    List<Node> templateList = new ArrayList<Node>() ;  
+    try {
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES)) ;
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES)) ;
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES)) ;
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES)) ;    
+      for(Node temp : templateList) {
+        Node parentNode = temp.getParent() ; 
+        if(parentNode.getName().equals(ucase)) return parentNode.getNode(tempName).getPath() ;      
+      }
+    } catch (Exception e) {
+      e.printStackTrace() ;
+    }
+    return null ;
+  } 
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
     String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
-    String templateName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
-    CmsConfigurationService cmsConfiguration = getApplicationComponent(CmsConfigurationService.class) ;
+    String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     setShowSearchForm(false) ;
     setShowDocumentDetail(false) ;
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
     rootNode_ = (Node) getSession().getItem(categoryPath) ;
+    templatePath_ = getTemplatePath(templateType, tempName) ; 
 
     if(templateType.equals(Utils.CB_USE_FROM_PATH)) {
       if(isEnableToolBar()) initToolBar(false, true, true) ;
       else initToolBar(false, false, false) ;
-      templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_PATH_TEMPLATES) + Utils.SLASH + templateName  ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
       if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
         if(isEnableToolBar()) initToolBar(true, false, true) ;
@@ -127,21 +140,18 @@ public class UIBrowseContainer extends UIContainer {
       Node documentNode = getNodeByPath(categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "")) ;
       initDocumentDetail(documentNode) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
-      templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES) + Utils.SLASH + templateName  ;
     } 
     if(templateType.equals(Utils.CB_USE_JCR_QUERY)) {
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       setPageIterator(getNodeByQuery()) ;
-      templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_QUERY_TEMPLATES) + Utils.SLASH  + templateName  ;
     } 
     if(templateType.equals(Utils.CB_USE_SCRIPT)) { 
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       setPageIterator(getNodeByScript()) ;
-      templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_SCRIPT_TEMPLATES) + Utils.SLASH  + templateName  ;
     }
   }
 
-  public String getTemplate() { return templatePath_ ; }
+  public String getTemplate() {return templatePath_ ;}
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
@@ -281,8 +291,10 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentList(hasDocList) ;
     initDocumentDetail(docNode) ;
     initToolBar(false, false, false) ;
-    CmsConfigurationService cmsConfiguration = getApplicationComponent(CmsConfigurationService.class) ;
-    templatePath_ = cmsConfiguration.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES) + Utils.SLASH + documentView_  ;
+    PortletPreferences preferences = getPortletPreferences() ;
+    String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
+    String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
+    templatePath_ = getTemplatePath(templateType, tempName) ;
   }
   public void initDocumentDetail(Node docNode) throws Exception {
     if(isShowDocumentDetail()) {
