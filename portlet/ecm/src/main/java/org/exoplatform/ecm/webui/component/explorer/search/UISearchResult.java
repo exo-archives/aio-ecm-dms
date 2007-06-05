@@ -15,6 +15,7 @@ import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -74,7 +75,17 @@ public class UISearchResult extends UIContainer {
     for(Node node : getNodeIterator()) {
       lists.add(node) ;
     }
-    return lists ;
+    List<Node> realList = new ArrayList<Node>() ;
+    for(Node node : lists) {
+      if(node.getName().equals(Utils.JCR_CONTENT)) {
+        if(!lists.contains(node.getParent())) {
+          realList.add(node.getParent()) ;
+        } 
+      } else {
+        realList.add(node) ;
+      }
+    }
+    return realList ;
   }
   
   public UIPageIterator  getUIPageIterator() {  return getChild(UIPageIterator.class) ; }

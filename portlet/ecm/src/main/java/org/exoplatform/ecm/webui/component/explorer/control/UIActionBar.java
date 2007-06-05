@@ -141,7 +141,7 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_XPATH = "xPath" ;
 
   final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1')" ;
-  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%'" ;
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
   private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
 
@@ -776,12 +776,17 @@ public class UIActionBar extends UIForm {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()) ;      
       if ("/".equals(currentNode.getPath())) queryText = ROOT_SQL_QUERY ;
-      String queryPath ;
-      if ("/".equals(currentNode.getPath()))  queryPath = ROOT_PATH_SQL_QUERY;
-      else if(currentNode.getParent().getPath().equals("/")) queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", "");
-      else queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", currentNode.getParent().getPath());
+      String statementPath ;
+      if ("/".equals(currentNode.getPath())) {
+        statementPath = StringUtils.replace(ROOT_PATH_SQL_QUERY, "$1", text) ;
+      } else if(currentNode.getParent().getPath().equals("/")) {
+        statementPath = "select * from nt:base where jcr:path like '"+currentNode.getPath()+"/"+text+"' " 
+                        + "or jcr:path like '"+currentNode.getPath()+"/%/"+text+"' ";
+      } else {
+        String queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", currentNode.getParent().getPath());
+        statementPath = StringUtils.replace(queryPath, "$1", text) ;
+      }
       String statement = StringUtils.replace(queryText, "$1", text) ;
-      String statementPath = StringUtils.replace(queryPath, "$1", text) ;
       QueryResult queryResult ;
       try {
         Query query = queryManager.createQuery(statement, Query.SQL);    

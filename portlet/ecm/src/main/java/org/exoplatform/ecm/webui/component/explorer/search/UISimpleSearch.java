@@ -7,10 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
-import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -102,10 +99,8 @@ public class UISimpleSearch extends UIForm {
       statement = StringUtils.replace(SQL_QUERY, "$1", text);
       if ("/".equals(currentNode.getPath())) {
         statement = StringUtils.replace(SQL_QUERY, "$1", text);
-      } else if(currentNode.getParent().getPath().equals("/")) {
-        statement = statement + "and jcr:path like '/%" + text + "'" ;
       } else {
-        statement = statement + "and jcr:path like '"+currentNode.getParent().getPath()+"/%/" + text + "'" ;
+        statement = statement + " and jcr:path like '"+currentNode.getPath()+"/%'" ;
       }
     } else if(constraints_.size() > 0) {
       if(text == null) {
@@ -187,6 +182,7 @@ public class UISimpleSearch extends UIForm {
       UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
       String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
       UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
+      Node currentNode = uiExplorer.getCurrentNode() ;
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
@@ -197,15 +193,16 @@ public class UISimpleSearch extends UIForm {
         return ;
       }
       if(text != null) {
-        String queryPath = null;
-        if ("/".equals(uiExplorer.getCurrentNode().getPath())) {
-          queryPath = ROOT_PATH_SQL_QUERY;
-        } else if(uiExplorer.getCurrentNode().getParent().getPath().equals("/")) {
-          queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", "");
+        String statementPath ;
+        if ("/".equals(currentNode.getPath())) {
+          statementPath = StringUtils.replace(ROOT_PATH_SQL_QUERY, "$1", text) ;
+        } else if(currentNode.getParent().getPath().equals("/")) {
+          statementPath = "select * from nt:base where jcr:path like '"+currentNode.getPath()+"/"+text+"' " 
+          + "or jcr:path like '"+currentNode.getPath()+"/%/"+text+"' ";
         } else {
-          queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", uiExplorer.getCurrentNode().getParent().getPath());
+          String queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", uiExplorer.getCurrentNode().getParent().getPath());
+          statementPath = StringUtils.replace(queryPath, "$1", text) ;
         }
-        String statementPath = StringUtils.replace(queryPath, "$1", text) ;
         Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
         QueryResult pathQueryResult = pathQuery.execute() ;
         uiSearchResult.setQueryResults(pathQueryResult) ;
