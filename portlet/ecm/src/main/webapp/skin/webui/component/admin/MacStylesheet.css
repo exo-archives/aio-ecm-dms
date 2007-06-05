@@ -843,4 +843,5 @@
 
 .UIECMAdminPortlet .UIPopupWindow .Content {
   border: solid 1px #cdcdcd;
+  padding: 15px;
 }

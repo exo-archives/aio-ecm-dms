@@ -38,13 +38,19 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
 	 width: 200px;
-	 margin:0px 0px 10px 0px;
-	 float: left;	 
+	 float: left;	
+	 height: 34px; 
 }
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
-	 width: 150px;
+	 width: 180px;
 	 float:left;
 }
+
+.UIECMAdminPortlet .UIRepositoryControl .UIRepositorySelectForm .UIForm .HorizontalLayout .UIFormGrid td  {
+	 padding: 0px;
+}
+
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
   width: 200px;
   float: left; 
@@ -236,7 +242,8 @@
 	font-weight: bold; 
   line-height: 18px;
 	text-align: center;
-	margin-top: 15px;
+	height: 18px; 
+	padding-top: 15px;
 }
 
 .UIECMAdminPortlet .UIECMAdminFunctionTitle {
@@ -665,20 +672,18 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .UIAction {
 	width: 160px;
+	padding-right: 80px;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateList .UIAction {
   width: 80px ;
 }
 
-.UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
-  padding-left: 100px;
-}
-
 .UITemplatesManager .UITabPane {
 	width: 95%;
 	padding: 10px 0px;
 	margin: auto;
+	border: solid 1px red;
 }
 
 /*----------------------------UIDialogTab-------------------------------*/

@@ -16,7 +16,7 @@
 		}
 		
 		.UIArticle .ArticleTCDecorator {
-		  background: url('/ecm/skin/images/article/TopCenterArticle1x100.gif') repeat-x ;
+		  background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
 		  height: 100px;
 		}
 		
@@ -48,7 +48,7 @@
 		}
 		
 		.UIArticle .ArticleBCDecorator {
-		  background: url('/ecm/skin/images/article/BottomCenterArticle1x8.gif') repeat-x ;
+		  background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
 		  height: 8px;
 		  line-height: 8px;
 		}
@@ -87,6 +87,7 @@
 		
 		.UIArticle .ArticleFrame .ArticleFrameContainer {
 		  padding: 1px 8px 5px 0px;
+		  overflow: hidden;
 		}
 		
 		.UIArticle .TopCenterArticleFrame .ArticleField {
@@ -102,6 +103,7 @@
 		}
 		
 		.UIArticle .FieldLabel {
+		  float: left;
       font-weight: bold;
 		}
 		
@@ -144,29 +146,37 @@
 		  background: white;
 		  margin: 5px 2px 3px 18px;
 		}
-
+		
+		.UIArticle .FieldContent .FieldContainerContent{
+		}
+		
+		.UIArticle .FieldContent .LabelContent{
+		 	padding: 5px 0px 0px 5px;
+		}
+		
     .UIArticle .DocumentRating {
   		margin-left: 150px;
   		width: 300px;
 		} 
 		
-    .UIArticle .FieldContent .ContainerLinks {
-		  padding: 8px 0px 0px 0px;
-		  border-top: dotted 1px #dcdcdc;
-		  font: normal 11px Verdana;
-		  margin: 12px  10px 0px 10px;
-		  overflow: hidden;
+    .UIArticle .ContainerLinks {
+		 	border-top: dotted 1px #dcdcdc;
+		 	margin: 12px  10px 0px 10px;
+		 	padding-top: 5px;
+		 	overflow: hidden;
 		}
 		
-		.UIArticle .ContainerLinks .ContentLinks {
-		  padding: 2px 0px;
+		.UIArticle .ContentLinks {
+		  float: left;
+		  width: 75px;
+		}
+		
+		.UIArticle .WorkContentLinks {
+		  float: left;
+		  padding-left: 5px;
 		}
 
-    .UIArticle .ContainerLinks.Links {
-  	  margin-left: 80px;
-		}
-		
-	  .UIArticle .Links div {
+	 .UIArticle .Links div {
   	  padding-bottom: 3px;
   	}
   	
@@ -175,7 +185,7 @@
 		  color: #058ee6;
 		}
 		
-		.UIArticle .Links a:hover {
+		 .UIArticle .Links a:hover {
   	  text-decortaion: underline;
 		  color: orange;
 		}
@@ -268,15 +278,17 @@
 					    <div class="MidlleRightArticleFrame">
 		            <div class="ArticleFrameContainer">
 		              <div class="FieldContent">
-		                <div class="FieldContainerContent">
-			                <%
-			                  if(node.hasProperty("exo:summary")) {
-			                    print node.getProperty("exo:summary").getString() ;
-			                  } else {
-			                    print "None Summary" ;
-			                  }
-			                %>
-			              </div>
+		              	<div class="FieldContainerContent">
+		              		<div class="LabelContent">
+				                <%
+				                  if(node.hasProperty("exo:summary")) {
+				                    print node.getProperty("exo:summary").getString() ;
+				                  } else {
+				                    print "None Summary" ;
+				                  }
+				                %>
+				              </div>
+										</div>	
 		              </div>
 		            </div>
 		          </div>
@@ -300,36 +312,42 @@
 		            <div class="ArticleFrameContainer">
 		              <div class="FieldContent">
 		                <div class="FieldContainerContent">
-			                <%
-			                  if(node.hasProperty("exo:text")) {
-			                    print node.getProperty("exo:text").getString() ;
-			                  } else {
-			                    print "None Content" ;
-			                  }
-			                %>
-			              </div>
+		                	<div class="LabelContent">
+				                <%
+				                  if(node.hasProperty("exo:text")) {
+				                    print node.getProperty("exo:text").getString() ;
+				                  } else {
+				                    print "None Content" ;
+				                  }
+				                %>
+			                </div>
+										</div>			                
 		                <div class="ContainerLinks">
 		                	<div class="ContentLinks">
 			                  <div class="FieldIcon LinksIcon"><span></span></div>
 						            <div class="FieldLabel">Links :</div>
+						            <div style="clear: left;"><span></span></div>
 						          </div>
-				    					<%if(relations.size() > 0) {%>
-						              <div class="Links">
-													<%
-									          for (rel in relations) {
-													    String wsName = rel.getSession().getWorkspace().getName() ;
-												      String actionLink ;
-													    if(!uicomponent.isRssLink()) { 
-													      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
-												      } else { 
-													 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
-												      }
-											    %>
-			  								    <div> - <a href="$actionLink">$rel.name</a></div>
-			  							    <%}%>
+						          <div class="WorkContentLinks">
+					    					<%if(relations.size() > 0) {%>
+							              <div class="Links">
+															<%
+											          for (rel in relations) {
+															    String wsName = rel.getSession().getWorkspace().getName() ;
+														      String actionLink ;
+															    if(!uicomponent.isRssLink()) { 
+															      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+														      } else { 
+															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
+														      }
+													    %>
+				  								    <div> - <a href="$actionLink">$rel.name</a></div>
+				  							    <%}%>
 						              </div>
-						          <%}%>
-						        </div>
+							          <%}%>
+							        </div>
+			              </div>
+			              <div style="clear: left;"><span></span></div>
 			            </div>
 		            </div>
 		          </div>

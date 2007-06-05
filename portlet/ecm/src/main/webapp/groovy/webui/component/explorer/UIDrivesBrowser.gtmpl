@@ -13,11 +13,11 @@
 			<div class="RepositoryTitle">	<%=_ctx.appRes("UIDrivesBrowser.title.repositoryList" )%></div>
 			<div class="RepositoryList">
 			 <div class="UIVerticalSlideTabs">
-			 	<div class="UIVTab">
+			 	<div class="UIVTab VTabSimpleStyle">
 			 		<%
-			 		String cssClass = "VTabSimpleStyle" ;
+			 		String cssClass = "NormalTab" ;
 			 		for(String name in uicomponent.getRepositoryList()){			 			
-			 			if(name.equals(uicomponent.getRepository())) cssClass = "SelectedVTabSimpleStyle" ;
+			 			if(name.equals(uicomponent.getRepository())) cssClass = "SelectedTab" ;
 			 			String actionLink = uicomponent.event("SelectRepo","$name") ;
 			 		%>
 			 		<div class="$cssClass">
