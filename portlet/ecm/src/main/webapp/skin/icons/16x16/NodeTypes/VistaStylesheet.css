@@ -212,8 +212,8 @@
 }
 
 .nt_unstructured16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nt-unstructured.gif') no-repeat;  
+  width: 21px; height: 24px;
+  background: url('VistaSkin/nt-unstructured.png') no-repeat;  
 }
 
 .nt_version16x16Icon {
