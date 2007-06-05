@@ -172,8 +172,8 @@
 }
 
 .nt_folder16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nt-folder.gif') no-repeat;  
+  width: 21px; height: 24px;
+  background: url('VistaSkin/nt-folder.png') no-repeat;  
 }
 
 .nt_frozenNode16x16Icon {
