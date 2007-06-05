@@ -61,7 +61,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UIBrowseContainer extends UIContainer {
-  private boolean isShowCategoryTree_ = true ;
+  private boolean isShowCategoryTree_ = false ;
   private boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
   private boolean isShowDocumentList_ = false ;
@@ -119,12 +119,11 @@ public class UIBrowseContainer extends UIContainer {
     String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     setShowSearchForm(false) ;
-    setShowDocumentDetail(false) ;
-    String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-    rootNode_ = (Node) getSession().getItem(categoryPath) ;
+    setShowDocumentDetail(false) ; 
     templatePath_ = getTemplatePath(templateType, tempName) ; 
-
     if(templateType.equals(Utils.CB_USE_FROM_PATH)) {
+      String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
+      rootNode_ = (Node) getSession().getItem(categoryPath) ;
       if(isEnableToolBar()) initToolBar(false, true, true) ;
       else initToolBar(false, false, false) ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
@@ -137,6 +136,7 @@ public class UIBrowseContainer extends UIContainer {
     } 
     if(templateType.equals(Utils.CB_USE_DOCUMENT)) {
       setShowDocumentDetail(true) ;
+      String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
       Node documentNode = getNodeByPath(categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "")) ;
       initDocumentDetail(documentNode) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
