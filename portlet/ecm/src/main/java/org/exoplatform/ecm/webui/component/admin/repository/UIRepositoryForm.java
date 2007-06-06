@@ -31,6 +31,7 @@ import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationImpl;
 import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
+import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIForm;
@@ -101,7 +102,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     addChild(new UIFormStringInput(FIELD_AUTHENTICATION,FIELD_AUTHENTICATION, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null).addValidator(EmptyFieldValidator.class) 
-                  .addValidator(NumberFormatValidator.class)) ;
+        .addValidator(NumberFormatValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_REPCHANNEL,FIELD_REPCHANNEL, null)) ;
     addChild(new UIFormCheckBoxInput<String>(FIELD_REPENABLE,FIELD_REPENABLE, null)) ;
     addChild(new UIFormStringInput(FIELD_REPMODE,FIELD_REPMODE, null)) ;
@@ -210,13 +211,24 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   }
 
   private void saveRepo(RepositoryEntry re) {    
-   /* for(WorkspaceEntry ws : getWorkspaceMap().values()){re.addWorkspace(ws) ;}
-    re.setDefaultWorkspaceName(defaulWorkspace_) ;
-    UIRepositoryControl uiControl = getAncestorOfType(UIECMAdminPortlet.class).
-                                    findFirstComponentOfType(UIRepositoryControl.class) ;
-    uiControl.getRepoMap().put(re.getName(), re) ;
-    uiControl.reloadValue() ;
-    uiControl.setSelectedValue(uiControl.repoName_) ;*/
+    InitialContextInitializer ic = (InitialContextInitializer)getApplicationComponent(ExoContainer.class).
+    getComponentInstanceOfType(InitialContextInitializer.class) ;
+    if(ic != null) ic.recall() ;
+    RepositoryService service = (RepositoryService)getApplicationComponent(ExoContainer.class).getComponentInstanceOfType(RepositoryService.class);
+    RepositoryImpl defRep;
+    try {
+      for(WorkspaceEntry ws : getWorkspaceMap().values()){      
+        defRep = (RepositoryImpl) service.getDefaultRepository();
+        defRep.configWorkspace(ws);
+        defRep.createWorkspace(ws.getName());
+        //Session sess = defRep.getSystemSession(ws.getName());
+        //Node root = sess.getRootNode();
+      }
+    } catch (RepositoryException e) {
+      e.printStackTrace() ;
+    } catch (RepositoryConfigurationException e) {
+      e.printStackTrace() ;
+    }
   }
   public void activate() throws Exception {}
 
@@ -272,7 +284,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ;
       //TODO Test
       uiForm.testInitNewWS() ;
-        
+
       if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-isrequire", null)) ;

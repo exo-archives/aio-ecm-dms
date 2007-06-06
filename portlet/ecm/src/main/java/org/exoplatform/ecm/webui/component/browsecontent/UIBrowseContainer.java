@@ -347,9 +347,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
     getChild(UIPageIterator.class).setPageList(objPageList) ;
   }
+  
   public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
-    List<Node> queryRecords = new ArrayList<Node>() ;
     QueryManager queryManager = getSession().getWorkspace().getQueryManager();
     String queryStatiement = getQueryStatement() ;
     if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
@@ -360,17 +360,13 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     Query query = queryManager.createQuery(queryStatiement, getQueryLanguage());
     QueryResult queryResult = query.execute();
     NodeIterator iter = queryResult.getNodes();
-    while (iter.hasNext()) {
-      queryDocuments.add(iter.nextNode()) ;
-    }
-    if(recoderNumber == -1) return queryDocuments ;
-    else {
-      for(int i = 0; i< recoderNumber; i++) {
-        queryRecords.add(queryDocuments.get(i)) ;
+    int count = 0 ; 
+      while (iter.hasNext() && (count++ != recoderNumber)) {
+        queryDocuments.add(iter.nextNode()) ;
       }
-    }
-    return queryRecords ;
+    return queryDocuments ;
   }
+  
   public List<Node> getNodeByScript() throws Exception {
     String[] array = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, "").split(Utils.SEMI_COLON) ;
     DataTransfer data = new DataTransfer() ;
@@ -700,6 +696,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
           uiContainer.setShowDocumentDetail(true) ;
           uiContainer.initDocumentDetail(selectNode) ;
           uiContainer.initToolBar(false, false, false) ;
+          uiContainer.templatePath_ = uiContainer.getTemplatePath("detail-document", "DocumentView") ;
         }
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
@@ -724,12 +721,17 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
+        PortletPreferences preferences = uiContainer.getPortletPreferences() ;
+        String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
+        String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
+        uiContainer.templatePath_ = uiContainer.getTemplatePath(templateType, tempName) ;
       }
       if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
       uiContainer.setCurrentNode(uiContainer.history_.get(uiContainer.KEY_CURRENT)) ;
       uiContainer.setSelectedTab(uiContainer.history_.get(uiContainer.KEY_SELECTED)) ;
       uiContainer.history_.clear() ;
-      uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
+      uiContainer.refresh() ;
+      //uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
