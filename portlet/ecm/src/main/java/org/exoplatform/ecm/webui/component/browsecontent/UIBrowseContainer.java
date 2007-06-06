@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,9 @@ import javax.portlet.PortletRequest;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.component.view.UIPortal;
@@ -63,7 +67,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
     }
 )
-public class UIBrowseContainer extends UIContainer {
+public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   private boolean isShowCategoryTree_ = false ;
   private boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
@@ -271,6 +275,9 @@ public class UIBrowseContainer extends UIContainer {
       if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
         setPageIterator(getSubDocumentList(getCurrentNode())) ;
       }
+    } 
+    if(templateType_.equals(Utils.CB_USE_DOCUMENT)) {
+      setShowDocumentDetail(true) ;
     } 
     if(templateType_.equals(Utils.CB_USE_JCR_QUERY)) {
       setPageIterator(getNodeByQuery(-1)) ;
@@ -755,6 +762,121 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
+  }
+
+  public String encodeHTML(String text) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public List<Node> getAttachments() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public List<Node> getComments() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Object getComponentInstanceOfType(String className) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getDownloadLink(Node node) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getImage(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+
+  public String getLanguage() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Node getNode() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getNodeType() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Node getOriginalNode() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getPortalName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public List<Node> getRelations() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getRssLink() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public List getSupportedLocalise() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getTemplatePath() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getWebDAVServerPrefix() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getWorkspaceName() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public boolean isNodeTypeSupported() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean isRssLink() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public void setLanguage(String language) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void setNode(Node node) {
+    // TODO Auto-generated method stub
+    
   }
 
 }
