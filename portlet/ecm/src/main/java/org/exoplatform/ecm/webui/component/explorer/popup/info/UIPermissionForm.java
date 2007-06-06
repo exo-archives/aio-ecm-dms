@@ -70,9 +70,16 @@ public class UIPermissionForm extends UIForm implements UISelector {
       UIPermissionForm uiForm = event.getSource();
       UIPermissionManager uiParent = uiForm.getParent() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).
+                           getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).getValue() ;
       List<String> permsList = new ArrayList<String>() ;
       for(String perm : PermissionType.ALL) {
         if(uiForm.getUIFormCheckBoxInput(perm).isChecked()) permsList.add(perm) ;
+      }
+      if(userOrGroup == null || userOrGroup.length() < 0) {
+        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
       }
       if(permsList.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.checkbox-require", null)) ;
@@ -84,8 +91,6 @@ public class UIPermissionForm extends UIForm implements UISelector {
         UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ;
         if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
-        String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).
-                                    getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).getValue() ;
         node.setPermission(userOrGroup, permsArray) ;
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) {

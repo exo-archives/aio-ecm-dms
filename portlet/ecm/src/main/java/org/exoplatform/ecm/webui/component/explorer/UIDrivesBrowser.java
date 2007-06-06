@@ -148,8 +148,7 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setEmpty(false) ;
 
       ManageableRepository repository = rservice.getRepository() ;
-      Session session = repository.getSystemSession(drive.getWorkspace()) ;
-//      Session session = repository.login(drive.getWorkspace())  ;
+      Session session = repository.login(drive.getWorkspace())  ;
       uiJCRExplorer.setSession(session) ;      
       Node node = (Node) session.getItem(drive.getHomePath()) ;
       uiJCRExplorer.getAllClipBoard().clear() ;
