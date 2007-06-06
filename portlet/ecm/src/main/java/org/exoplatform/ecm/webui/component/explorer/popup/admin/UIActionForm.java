@@ -186,7 +186,12 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   static public class ShowComponentActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;
-      UIActionContainer uiContainer = uiForm.getParent() ;
+      UIActionContainer uiContainer = null;
+      if(uiForm.isEditInList_) {
+        uiContainer = uiForm.getAncestorOfType(UIActionManager.class).getChild(UIActionContainer.class) ;
+      } else {
+        uiContainer = uiForm.getParent() ;
+      }
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;

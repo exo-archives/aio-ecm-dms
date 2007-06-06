@@ -236,3 +236,11 @@
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover {
 	color: orange;
 }
+
+.UIAdminstrationManager .UIAction {
+  width: 100px;
+}
+
+.UIUploadProcess .UIForm .UIAction {
+  width: 160px;
+}

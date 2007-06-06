@@ -18,19 +18,19 @@ SkinService.addSkin(
 ) ;
 
 SkinService.addSkin(
-    "workflow/WorkflowMonitoringPortlet",
+    "workflow/WorkflowAdministrationPortlet",
     "Default",
     "/workflow/skin/webui/component/DefaultStylesheet.css"
 ) ;
 
 SkinService.addSkin(
-    "workflow/WorkflowMonitoringPortlet",
+    "workflow/WorkflowAdministrationPortlet",
     "Vista",
     "/workflow/skin/webui/component/VistaStylesheet.css"
 ) ;
  
 SkinService.addSkin(
-    "workflow/WorkflowMonitoringPortlet",
+    "workflow/WorkflowAdministrationPortlet",
     "Mac",
     "/workflow/skin/webui/component/MacStylesheet.css"
 ) ;

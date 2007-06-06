@@ -30,14 +30,14 @@
   
   
   <portlet>
-    <description xml:lang="EN">Portlet Workflow Monitoring</description>
-    <portlet-name>WorkflowMonitoringPortlet</portlet-name>
-    <display-name xml:lang="EN">Workflow Monitoring Portlet</display-name>
+    <description xml:lang="EN">Workflow Administration Portlet</description>
+    <portlet-name>WorkflowAdministrationPortlet</portlet-name>
+    <display-name xml:lang="EN">Workflow Administration Portlet</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
       <name>webui.configuration</name>
-      <value>/WEB-INF/conf/portlet/workflow/WorkflowMonitoringPortlet/webui/configuration.xml</value>
+      <value>/WEB-INF/conf/portlet/workflow/WorkflowAdministrationPortlet/webui/configuration.xml</value>
     </init-param>    
 
     <expiration-cache>0</expiration-cache>
@@ -46,12 +46,12 @@
       <portlet-mode>help</portlet-mode>
     </supports>
     <supported-locale>en</supported-locale>    
-    <resource-bundle>locale.portlet.workflow.WorkflowMonitoringPortlet</resource-bundle>    																														
+    <resource-bundle>locale.portlet.workflow.WorkflowAdministrationPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>Workflow Monitoring Portlet</title>
-      <short-title>Wofkflow Monitoring</short-title>
-      <keywords>workflow, Monitoring</keywords>
+      <title>Workflow Administration Portlet</title>
+      <short-title>Wofkflow Administration</short-title>
+      <keywords>workflow, Administration</keywords>
     </portlet-info>
   </portlet> 
 </portlet-app>

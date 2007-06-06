@@ -29,7 +29,7 @@
 				              <div class="$style">
 				                <div class="LeftTab">
 				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes(uicomponent.getId() + ".tab.label." + uiChild.getId())%></div>
+				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes(uicomponent.getName() + ".tab.label." + uiChild.id)%></div>
 				                  </div>
 				                </div>
 				              </div>
