@@ -317,9 +317,8 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     setShowDocumentList(hasDocList) ;
     initDocumentDetail(docNode) ;
     initToolBar(false, false, false) ;
-    PortletPreferences preferences = getPortletPreferences() ;
-    String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
-    String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
+    String templateType = Utils.CB_USE_DOCUMENT ;
+    String tempName = "DocumentView" ;
     templatePath_ = getTemplatePath(templateType, tempName) ;
   }
   public void initDocumentDetail(Node docNode) throws Exception {
@@ -347,7 +346,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
     getChild(UIPageIterator.class).setPageList(objPageList) ;
   }
-  
+
   public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
     QueryManager queryManager = getSession().getWorkspace().getQueryManager();
@@ -361,12 +360,12 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     QueryResult queryResult = query.execute();
     NodeIterator iter = queryResult.getNodes();
     int count = 0 ; 
-      while (iter.hasNext() && (count++ != recoderNumber)) {
-        queryDocuments.add(iter.nextNode()) ;
-      }
+    while (iter.hasNext() && (count++ != recoderNumber)) {
+      queryDocuments.add(iter.nextNode()) ;
+    }
     return queryDocuments ;
   }
-  
+
   public List<Node> getNodeByScript() throws Exception {
     String[] array = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, "").split(Utils.SEMI_COLON) ;
     DataTransfer data = new DataTransfer() ;
@@ -685,19 +684,15 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates() ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
-        if(catPath != null) {
-          uiContainer.setCategoryPath(catPath) ;
-          Node currentCat  = uiContainer.getNodeByPath(catPath);
-          uiContainer.storeHistory() ;
-          uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
-          if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
-          uiContainer.viewDocument(selectNode, true, true) ;
-        } else {
-          uiContainer.setShowDocumentDetail(true) ;
-          uiContainer.initDocumentDetail(selectNode) ;
-          uiContainer.initToolBar(false, false, false) ;
-          uiContainer.templatePath_ = uiContainer.getTemplatePath("detail-document", "DocumentView") ;
-        }
+        uiContainer.setCategoryPath(catPath) ;
+        Node currentCat  = uiContainer.getNodeByPath(catPath);
+        uiContainer.storeHistory() ;
+        uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
+        if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
+        uiContainer.setShowDocumentDetail(true) ;
+        uiContainer.initDocumentDetail(selectNode) ;
+        uiContainer.initToolBar(false, false, false) ;
+        uiContainer.viewDocument(selectNode, true, true) ;  
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }
@@ -873,12 +868,12 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
 
   public void setLanguage(String language) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public void setNode(Node node) {
     // TODO Auto-generated method stub
-    
+
   }
 
 }

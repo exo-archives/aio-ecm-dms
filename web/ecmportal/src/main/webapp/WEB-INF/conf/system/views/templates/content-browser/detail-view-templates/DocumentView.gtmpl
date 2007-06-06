@@ -50,18 +50,18 @@
 	          </div>
 	      <%}%>
    			</div>
-		    <div class="ViewPreviousDocument"> 
-		      <div class="BackIcon"><span></span></div>
-		      <a href="<%=uicomponent.event('Back')%>">
-		      	<%=_ctx.appRes(componentName + ".label.previous")%>
-		      </a>
-		      <div style="clear:left"><span></span></div>
-		    </div>
-		    <div style="clear:left"><span></span></div>
-		    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
-		    <div style="clear:left"><span></span></div>
-   			<%}%>
-			 <%/*End UIEventViewer*/%>
+   		<%}%>
+	    <div class="ViewPreviousDocument"> 
+	      <div class="BackIcon"><span></span></div>
+	      <a href="<%=uicomponent.event('Back')%>">
+	      	<%=_ctx.appRes(componentName + ".label.previous")%>
+	      </a>
+	      <div style="clear:left"><span></span></div>
+	    </div>
+	    <div style="clear:left"><span></span></div>
+	    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+	    <div style="clear:left"><span></span></div>
+			<%/*End UIEventViewer*/%>
 			</div>
 		</div>
 	<%}%>

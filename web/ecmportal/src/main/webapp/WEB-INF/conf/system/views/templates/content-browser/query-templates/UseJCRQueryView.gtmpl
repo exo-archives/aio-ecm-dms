@@ -49,7 +49,6 @@
   <%/*End TagMap*/%>  
   <%}%>
   <div style="$styleWithTag">
-  <%if(uicomponent.isShowDocumentDetail()) uicomponent.renderChild(UIDocumentDetail.class);%>	
   <%/*Begin UIEventViewer*/%>
   <div class="UIEventViewer">
   	<%if(hasNoDocument){%>

@@ -4,14 +4,10 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.jcr.Node;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
@@ -20,13 +16,9 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
-import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
-import org.exoplatform.services.jcr.config.SimpleParameterEntry;
-import org.exoplatform.services.jcr.config.ValueStorageEntry;
-import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationImpl;
@@ -210,19 +202,20 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     return workspaceName.equals(defaulWorkspace_) ;
   }
 
-  private void saveRepo(RepositoryEntry re) {    
+  private void saveRepo(RepositoryEntry re) throws Exception {    
     InitialContextInitializer ic = (InitialContextInitializer)getApplicationComponent(ExoContainer.class).
     getComponentInstanceOfType(InitialContextInitializer.class) ;
     if(ic != null) ic.recall() ;
     RepositoryService service = (RepositoryService)getApplicationComponent(ExoContainer.class).getComponentInstanceOfType(RepositoryService.class);
-    RepositoryImpl defRep;
+    RepositoryImpl defRep = (RepositoryImpl)service.getDefaultRepository();
     try {
       for(WorkspaceEntry ws : getWorkspaceMap().values()){      
-        defRep = (RepositoryImpl) service.getDefaultRepository();
-        defRep.configWorkspace(ws);
-        defRep.createWorkspace(ws.getName());
-        //Session sess = defRep.getSystemSession(ws.getName());
-        //Node root = sess.getRootNode();
+        if(!defRep.isWorkspaceInitialized(ws.getName())) {
+          defRep.configWorkspace(ws);
+          defRep.createWorkspace(ws.getName());
+          //Session sess = defRep.getSystemSession(ws.getName());
+          //Node root = sess.getRootNode();
+        }
       }
     } catch (RepositoryException e) {
       e.printStackTrace() ;
@@ -235,45 +228,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   public void deActivate() throws Exception {
     repo_ = null ;
   }
-
-  public void testInitNewWS() {
-
-    List params = new ArrayList();
-    params.add(new SimpleParameterEntry("sourceName", "jdbcjcr"));
-    params.add(new SimpleParameterEntry("db-type", "generic"));
-    params.add(new SimpleParameterEntry("multi-db", "false"));
-    params.add(new SimpleParameterEntry("update-storage", "true"));
-    params.add(new SimpleParameterEntry("max-buffer-size", "204800"));
-    params.add(new SimpleParameterEntry("swap-directory", "../temp/swap/ws"));
-
-    ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer",
-        (ArrayList) params);
-    containerEntry.setParameters(params);
-
-    WorkspaceEntry workspaceEntry = new WorkspaceEntry("newws", "nt:unstructured");
-    workspaceEntry.setContainer(containerEntry);
-
-    RepositoryService service = (RepositoryService)getApplicationComponent(ExoContainer.class).getComponentInstanceOfType(RepositoryService.class);
-    RepositoryImpl defRep;
-    try {
-      defRep = (RepositoryImpl) service.getDefaultRepository();
-      defRep.configWorkspace(workspaceEntry);
-      defRep.createWorkspace(workspaceEntry.getName());
-
-      Session sess = defRep.getSystemSession(workspaceEntry.getName());
-
-      Node root = sess.getRootNode();
-
-
-    } catch (RepositoryException e) {
-      e.printStackTrace() ;
-    } catch (RepositoryConfigurationException e) {
-      e.printStackTrace() ;
-    }
-
-  }
-
-
+  
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
@@ -283,7 +238,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ;
       //TODO Test
-      uiForm.testInitNewWS() ;
+      //uiForm.testInitNewWS() ;
 
       if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -305,6 +260,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         }
       } else {
         re = defRep.getConfiguration() ;
+        uiForm.saveRepo(re) ;
         if(config.isRetainable()) {
           for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
             if(!defRep.isWorkspaceInitialized(ws.getName())) {
