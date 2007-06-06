@@ -13,11 +13,12 @@ import java.util.Map;
 
 import javax.jcr.PathNotFoundException;
 
-import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
 import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.component.UIPopupWindow;
@@ -69,7 +70,8 @@ public class UITaskList extends UIContainer {
   }
 
   public List<Task> getTasks() throws Exception {
-    String remoteUser = PortalRequestContext.getCurrentInstance().getRemoteUser();
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    String remoteUser = pcontext.getRemoteUser();
     if (remoteUser == null) return selectVisibleTasks(new ArrayList<Task>()) ;      
     List<Task> unsortedTasks = workflowServiceContainer.getAllTasks(remoteUser);
     return selectVisibleTasks(unsortedTasks) ; 
