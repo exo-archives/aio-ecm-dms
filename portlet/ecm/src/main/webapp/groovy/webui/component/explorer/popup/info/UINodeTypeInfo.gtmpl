@@ -132,13 +132,16 @@
 	              <td><%repairName(bean.isAutoCreated())%></td>
 	              <td><%repairName(bean.isMultiple())%></td>
 	              <%
-	                StringBuffer defaultValue = new StringBuffer("") ;
+	                StringBuilder defaultValue = new StringBuilder() ;
 	                values = bean.getDefaultValues() ;
-									    if(values != null && values.length > 0 ) {
-										    for(value in values) {											      
-										      if(value != null) defaultValue.append(value.getString()).append(",") ;
-	                  }
-	                }
+							    if(values != null && values.length > 0 ) {
+								    for(value in values) {											      
+								      if(value != null) {
+								        if(defaultValue.length() > 0) defaultValue.append(",") ;
+								        defaultValue.append(value.getString()) ;
+								      }
+                    }
+                  }
 	            %>
 	              <td><%=defaultValue.toString()%></td>
 	              <%

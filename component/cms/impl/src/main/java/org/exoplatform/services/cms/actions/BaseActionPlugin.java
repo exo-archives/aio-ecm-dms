@@ -24,9 +24,7 @@ import javax.jcr.observation.Event;
 import javax.jcr.observation.ObservationManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.container.SessionContainer;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.scheduler.JobInfo;
@@ -91,16 +89,13 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String type = 
       (String) ((JcrInputProperty) mappings.get("/node/exo:lifecyclePhase")).getValue();               
     String actionExecutable = getActionExecutable(actionType);
-    
-    if (ActionServiceContainer.READ_PHASE.equals(type))
+    if (ActionServiceContainer.READ_PHASE.equals(type)) {
       return;    
-    else if(ActionServiceContainer.SCHEDULE_PHASE.equals(type)) {
-      scheduleActionActivationJob(srcWorkspace,srcPath,actionName,actionType,
-          actionExecutable,mappings) ;
-    }else {
+    } else if(ActionServiceContainer.SCHEDULE_PHASE.equals(type)) {
+      scheduleActionActivationJob(srcWorkspace,srcPath,actionName,actionType, actionExecutable,mappings) ;
+    } else {
       Map<String,Object> variables = getExecutionVariables(mappings) ;
-      ECMEventListener listener = createEventListener(actionName, actionExecutable,
-          srcWorkspace, srcPath, variables);
+      ECMEventListener listener = createEventListener(actionName, actionExecutable, srcWorkspace, srcPath, variables);
       ObservationManager obsManager = getSystemSession(srcWorkspace).getWorkspace().getObservationManager();
       if(listeners_.containsKey(srcPath + "/" + actionName)){
         listeners_.remove(srcPath + "/" + actionName) ;      
@@ -431,23 +426,24 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     if(!actionNode.isNodeType(SCHEDULABLE_INFO_MIXIN)) {
       actionNode.addMixin(SCHEDULABLE_INFO_MIXIN) ;
       actionNode.save() ;        
-    }    
+    }
     Class activationJob = createActivationJob() ;
     String jobName = JOB_NAME_PREFIX.concat(actionName) ;
     String jobGroup = actionType ;
-    String userId = SessionContainer.getInstance().getRemoteUser() ;
-    String scheduleType = null, startTime = null, endTime = null,
-            repeatCount = null, timeInterval = null, cronExpress = null ;
+    String userId = session.getUserID() ;
+    String scheduleType = null, repeatCount = null, timeInterval = null, cronExpress = null ;
+    GregorianCalendar startTime = new GregorianCalendar() ;
+    GregorianCalendar endTime = null ;
     if(mappings.containsKey("/node/exo:scheduleType")) {
       scheduleType = (String) ((JcrInputProperty) mappings.get("/node/exo:scheduleType")).getValue();
       mappings.remove("/node/exo:scheduleType") ;
     }
     if(mappings.containsKey("/node/exo:startTime")) {
-      startTime = (String) ((JcrInputProperty) mappings.get("/node/exo:startTime")).getValue();
+      startTime = (GregorianCalendar) ((JcrInputProperty) mappings.get("/node/exo:startTime")).getValue();
       mappings.remove("/node/exo:startTime") ;
     }     
     if(mappings.containsKey("/node/exo:endTime")) {
-      endTime = (String) ((JcrInputProperty) mappings.get("/node/exo:endTime")).getValue();
+      endTime = (GregorianCalendar) ((JcrInputProperty) mappings.get("/node/exo:endTime")).getValue();
       mappings.remove("/node/exo:endTime") ;
     }   
     if(mappings.containsKey("/node/exo:repeatCount")) {
@@ -462,14 +458,13 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       cronExpress = (String) ((JcrInputProperty) mappings.get("/node/exo:cronExpress")).getValue();                   
       mappings.remove("/node/exo:cronExpress") ; 
     }    
-    
     actionNode.setProperty(JOB_NAME_PROP,jobName) ;
     actionNode.setProperty(JOB_GROUP_PROP,jobGroup) ;
+    
     actionNode.setProperty(JOB_CLASS_PROP,activationJob.getName()) ;
     actionNode.setProperty(SCHEDULED_INITIATOR,userId) ;
     actionNode.setProperty(SCHEDULE_TYPE_PROP,scheduleType) ;
     actionNode.save() ;
-    
     Map<String,Object> variables = new HashMap<String,Object>(); 
     variables.put(initiatorVar, userId);
     variables.put(actionNameVar, actionName);
@@ -481,34 +476,26 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     jdatamap.putAll(variables) ; 
     jdatamap.putAll(executionVariables) ;
     JobInfo jinfo = new JobInfo(jobName,jobGroup,activationJob) ;
-    if(scheduleType.equals(CRON_JOB)) {      
+    if(scheduleType.equals(CRON_JOB)) {    
       actionNode.setProperty(CRON_EXPRESSION_PROP,cronExpress) ;
       actionNode.save() ;        
       schedulerService.addCronJob(jinfo,cronExpress,jdatamap) ;
     } else {      
-      Date startDate = null ;
-      Date endDate = null ;
-      if(startTime != null && !startTime.equals("")) {
-        startDate = ISO8601.parse(startTime).getTime() ; 
-      }else {         
-        startDate = new Date() ;
-      }       
-      if(endTime != null && !endTime.equals("")) {
-        endDate = ISO8601.parse(endTime).getTime();
-      }
       int repeatNum = Integer.parseInt(repeatCount) ;
       long period = Long.parseLong(timeInterval) ;      
-      Calendar calendar = new GregorianCalendar() ;
-      calendar.setTime(startDate) ;
-      actionNode.setProperty(START_TIME_PROP,calendar) ;
-      if(endDate !=null ) {
-        calendar.setTime(endDate) ;
-        actionNode.setProperty(END_TIME_PROP,calendar) ;        
+      actionNode.setProperty(START_TIME_PROP, startTime) ;
+      if(endTime != null ) {
+        actionNode.setProperty(END_TIME_PROP, endTime) ;        
       }
       actionNode.setProperty(TIME_INTERVAL_PROP,period) ;
       actionNode.setProperty(REPEAT_COUNT_PROP,repeatNum) ;
-      actionNode.save() ;      
-      PeriodInfo pinfo = new PeriodInfo(startDate,endDate,repeatNum,period) ;
+      actionNode.save() ;     
+      PeriodInfo pinfo ;
+      if(endTime != null) {
+        pinfo = new PeriodInfo(startTime.getTime(),endTime.getTime(),repeatNum,period) ;
+      } else {
+        pinfo = new PeriodInfo(repeatNum,period) ;
+      }
       schedulerService.addPeriodJob(jinfo,pinfo,jdatamap) ;
     }                    
     session.save() ;

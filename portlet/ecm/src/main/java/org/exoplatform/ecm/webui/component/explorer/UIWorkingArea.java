@@ -348,6 +348,7 @@ public class UIWorkingArea extends UIContainer {
         uiPopupAction.setRendered(true) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -382,6 +383,7 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -417,6 +419,7 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -443,6 +446,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -468,31 +472,33 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      Node node ;
-      try {        
-        if ("/".equals(nodePath)) {
-          Object[] arg = { nodePath } ;
-          uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.remove-root", arg));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return;
-        }
-        if(wsName != null) {
-          node = uiExplorer.getNodeByPath(nodePath, session) ;
-          Node parentNode = node.getParent() ;
-          node.remove();
-          parentNode.getSession().save() ;
-        } else {
-          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
-          Node parentNode = uiExplorer.getCurrentNode() ;
-          node = parentNode.getNode(name);
-          node.remove();
-          parentNode.save() ;          
-        } 
-        if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;        
-        uiExplorer.updateAjax(event) ;
-      } catch(Exception e) {
-        JCRExceptionManager.process(uiApp, e);
+      if ("/".equals(nodePath)) {
+        Object[] arg = { nodePath } ;
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.remove-root", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
       }
+      Node node ;
+      Node parentNode ;
+      if(wsName != null) {
+        node = uiExplorer.getNodeByPath(nodePath, session) ;
+        parentNode = node.getParent() ;
+      } else {
+        String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
+        parentNode = uiExplorer.getCurrentNode() ;
+        node = parentNode.getNode(name);
+      }
+      try {
+        node.remove() ;
+        parentNode.save() ;
+      } catch(Exception e) {
+        JCRExceptionManager.process(uiApp, e) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.getSession().refresh(false) ;
+        uiExplorer.refreshExplorer() ;
+      }
+      if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;        
+      uiExplorer.updateAjax(event) ;
     }
   }
 
@@ -521,6 +527,7 @@ public class UIWorkingArea extends UIContainer {
         return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
       
     }
@@ -554,8 +561,8 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (Exception e) {
-        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -579,6 +586,7 @@ public class UIWorkingArea extends UIContainer {
         node.checkin();
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -602,6 +610,7 @@ public class UIWorkingArea extends UIContainer {
         node.checkout();
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
   }
@@ -627,6 +636,7 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
       
     }
@@ -685,7 +695,7 @@ public class UIWorkingArea extends UIContainer {
         return ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
-        //e.printStackTrace() ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
     

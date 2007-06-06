@@ -70,7 +70,7 @@
 								  <td class="FieldLabel">Repeat Count</td>
 								  <td class="FieldComponent">	
 								  <% 
-										String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;
+										String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "validate=number"] ;
 										uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
 								  %>
 								  </td>
@@ -79,7 +79,7 @@
 								  <td class="FieldLabel">Time inteval</td>
 								  <td class="FieldComponent">	
 								  <% 
-										String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "-1", "validate=number"] ;
+										String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "1", "validate=number"] ;
 										uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
 								  %>
 								  </td>

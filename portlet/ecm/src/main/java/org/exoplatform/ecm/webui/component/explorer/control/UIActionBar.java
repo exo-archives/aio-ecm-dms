@@ -488,8 +488,15 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar= event.getSource() ;
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
+      if(!uiJCRExplorer.isReferenceableNode(uiJCRExplorer.getCurrentNode())) {
+        Object[] args = {uiJCRExplorer.getCurrentNode().getPath()} ;
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.is-not-referenable", args,
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(uiActionBar.isRootNode(uiJCRExplorer.getCurrentNode())) {
-        UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

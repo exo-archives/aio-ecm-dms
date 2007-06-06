@@ -167,8 +167,6 @@ public class UIActionTypeForm extends UIForm {
       try {
         boolean isMove = uiForm.getUIFormCheckBoxInput(FIELD_ISMOVE).isChecked() ;
         String execute = uiForm.actionExecutables.getValue() ;
-        System.out.println("\n\nselectvalue====?>" +selectValue+ "\n\n");
-        System.out.println("\n\nsexecute====?>" +execute+ "\n\n");
         actionServiceContainer.createActionType(actionName, selectValue, execute, variables, isMove);
         uiActionManager.refresh() ;
         uiForm.refresh() ;
