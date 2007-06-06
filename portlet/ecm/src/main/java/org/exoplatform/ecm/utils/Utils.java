@@ -68,7 +68,7 @@ public class Utils {
   final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
   final static public String NT_FILE = "nt:file" ;
   final static public String NT_FOLDER = "nt:folder" ;
-  final static public String NT_FROZEN = "nt:frozenNode" ;
+  final static public String NT_FROZEN = "nt:frozenNode".intern() ;
   final static public String EXO_TITLE = "exo:title" ;
   final static public String EXO_SUMMARY = "exo:summary" ;
   final static public String EXO_RELATION = "exo:relation" ;

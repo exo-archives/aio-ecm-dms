@@ -232,7 +232,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     params.add(new SimpleParameterEntry("multi-db", "false"));
     params.add(new SimpleParameterEntry("update-storage", "true"));
     params.add(new SimpleParameterEntry("max-buffer-size", "204800"));
-    params.add(new SimpleParameterEntry("swap-directory", "target/temp/swap/ws"));
+    params.add(new SimpleParameterEntry("swap-directory", "../temp/swap/ws"));
 
     ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer",
         (ArrayList) params);

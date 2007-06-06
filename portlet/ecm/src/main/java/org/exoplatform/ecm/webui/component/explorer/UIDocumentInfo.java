@@ -272,6 +272,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return currentNode_; 
   }
   
+  public Node getOriginalNode() throws Exception {return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;}
+  
   public String getIcons(Node node, String size) throws Exception {
     return Utils.getNodeTypeIcon(node, size) ;
   }

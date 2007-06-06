@@ -18,7 +18,9 @@ public interface ECMViewComponent {
   public void setNode(Node node);
 
   public Node getNode() throws Exception;
-
+  
+  public Node getOriginalNode() throws Exception;
+  
   public String getNodeType() throws Exception;
 
   public boolean isNodeTypeSupported();

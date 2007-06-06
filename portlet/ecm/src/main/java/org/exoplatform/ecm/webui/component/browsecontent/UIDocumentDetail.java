@@ -110,6 +110,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     return node_;
   }
   
+  public Node getOriginalNode() throws Exception {return node_ ;}
+  
   private Session getSession() throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     Session session = repositoryService.getRepository().getSystemSession(getWorkSpace()) ;

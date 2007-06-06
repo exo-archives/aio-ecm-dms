@@ -11,10 +11,12 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormStringInput;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
+import org.exoplatform.webui.component.validator.EmptyFieldValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 
 /**
  * Created by The eXo Platform SARL
@@ -31,7 +33,7 @@ import org.exoplatform.webui.event.EventListener;
   template =  "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
   events = {
     @EventConfig(listeners = UILabelForm.SaveActionListener.class),
-    @EventConfig(listeners = UILabelForm.CancelActionListener.class)    
+    @EventConfig(listeners = UILabelForm.CancelActionListener.class, phase = Phase.DECODE)    
   }
 )
 
@@ -40,7 +42,7 @@ public class UILabelForm extends UIForm {
   private static  String FIELD_LABEL = "label" ;
   
   public UILabelForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_LABEL , FIELD_LABEL , null));   
+    addUIFormInput(new UIFormStringInput(FIELD_LABEL , FIELD_LABEL , null).addValidator(EmptyFieldValidator.class));   
   }
   
   @SuppressWarnings("unused")

@@ -94,7 +94,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     }    
     return node_ ; 
   }
-
+  public Node getOriginalNode() throws Exception {return node_;}
+  
   public String getNodeType() throws Exception { return null; }
   
   public List<Node> getRelations() throws Exception {

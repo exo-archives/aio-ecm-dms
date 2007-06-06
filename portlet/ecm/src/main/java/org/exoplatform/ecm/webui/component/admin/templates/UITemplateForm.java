@@ -100,6 +100,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
 
   private List<SelectItemOption<String>> getOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ; 
     CmsConfigurationService configService = getApplicationComponent(CmsConfigurationService.class) ;
     Session session = 
@@ -109,18 +110,16 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     while (iter.hasNext()) {
       NodeType nodeType = iter.nextNodeType();
       String nodeTypeName = nodeType.getName();
-      options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
+      if(!isExistedItem(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
     }
     return options ;
   }
 
   private boolean isExistedItem(String nodeType) throws Exception {
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    templateService.getTemplatesHome().getNodes() ;
-    NodeIterator iter = templateService.getTemplatesHome().getNodes() ;
-    while (iter.hasNext()) {
-      if(iter.nextNode().getName().equals(nodeType)) return true ;
-    }    
+    UITemplatesManager uiManager = getAncestorOfType(UITemplatesManager.class) ;
+    
+    uiManager.getChild(UITemplateList.class).getUIPageIterator().getPageList().getAll() ;
+    
     return false ;
   }
   

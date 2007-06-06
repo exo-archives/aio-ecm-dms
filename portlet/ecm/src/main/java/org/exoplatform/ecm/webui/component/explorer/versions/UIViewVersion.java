@@ -12,6 +12,8 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+
+import org.apache.log.output.io.rotate.OrRotateStrategy;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
@@ -48,7 +50,8 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UIViewVersion extends UIContainer implements ECMViewComponent {
-  protected Node node_ ;
+  private Node node_ ;
+  protected Node originalNode_ ;
   private String language_ ;
   
   public UIViewVersion() throws Exception {    
@@ -68,7 +71,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
     return super.getTemplate() ;
   }
-
+   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     try {
@@ -78,7 +81,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
     return super.getTemplateResourceResolver(context, template);
   }
-  
+
   public boolean isNodeTypeSupported(Node node) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class) ;
@@ -100,6 +103,8 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }    
     return node_;
   }
+  
+  public Node getOriginalNode() throws Exception {return  originalNode_ ;}
   
   public void setNode(Node node) {node_ = node ;}
   

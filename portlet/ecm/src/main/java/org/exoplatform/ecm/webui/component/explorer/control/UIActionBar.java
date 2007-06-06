@@ -495,7 +495,7 @@ public class UIActionBar extends UIForm {
         return ;
       }
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UIReferencesList .class, 600) ;
+      uiPopupAction.activate(UIReferencesList.class, 600) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

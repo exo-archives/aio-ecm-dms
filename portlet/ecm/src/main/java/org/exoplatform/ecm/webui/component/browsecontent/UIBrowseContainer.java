@@ -24,6 +24,9 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.component.view.UIPortal;
+import org.exoplatform.portal.component.view.UIPortlet;
+import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
@@ -80,6 +83,7 @@ public class UIBrowseContainer extends UIContainer {
   private Map<String, Node> history_  ;
   private String templatePath_ ;
   private String categoryPath_ ;
+  private String templateType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
   @SuppressWarnings("unused")
@@ -114,9 +118,10 @@ public class UIBrowseContainer extends UIContainer {
       e.printStackTrace() ;
     }
     return null ;
-  } 
+  }
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
     String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
+    templateType_ = templateType ;
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     setShowSearchForm(false) ;
     setShowDocumentDetail(false) ; 
@@ -143,7 +148,7 @@ public class UIBrowseContainer extends UIContainer {
     } 
     if(templateType.equals(Utils.CB_USE_JCR_QUERY)) {
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      setPageIterator(getNodeByQuery()) ;
+      setPageIterator(getNodeByQuery(-1)) ;
     } 
     if(templateType.equals(Utils.CB_USE_SCRIPT)) { 
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
@@ -249,8 +254,7 @@ public class UIBrowseContainer extends UIContainer {
     try{
       eNode.checkPermission(PermissionType.READ) ;
       return true ;
-    } catch(Exception ac){
-    }
+    } catch(Exception ac){}
     return false ;
   }
 
@@ -259,6 +263,23 @@ public class UIBrowseContainer extends UIContainer {
     Session session = repositoryService.getRepository().getSystemSession(getWorkSpace()) ;
     return session ;
   }
+
+  public void refresh() throws Exception {
+    PortletPreferences preferences = getPortletPreferences() ; 
+    if(templateType_.equals(Utils.CB_USE_FROM_PATH)) {
+      setPageIterator(getSubDocumentList(getSelectedTab())) ;
+      if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+        setPageIterator(getSubDocumentList(getCurrentNode())) ;
+      }
+    } 
+    if(templateType_.equals(Utils.CB_USE_JCR_QUERY)) {
+      setPageIterator(getNodeByQuery(-1)) ;
+    } 
+    if(templateType_.equals(Utils.CB_USE_SCRIPT)) { 
+      setPageIterator(getNodeByScript()) ;
+    }
+  }
+
   public void setCurrentNode(Node node) throws Exception {currentNode_ = node ;}
   public void setSelectedTab (Node node) { selectedTab_ = node ;}
   public boolean isShowDocumentList() {return isShowDocumentList_ ;}
@@ -266,9 +287,7 @@ public class UIBrowseContainer extends UIContainer {
   public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
 
   public String getOwner(Node node) throws Exception{
-    String owner = ((ExtendedNode) node).getACL().getOwner();    
-    if(owner != null) return owner ;
-    return "System";
+    return ((ExtendedNode) node).getACL().getOwner();  
   }
 
   private boolean isReferenceableNode(Node node) throws Exception {
@@ -321,8 +340,9 @@ public class UIBrowseContainer extends UIContainer {
     ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
     getChild(UIPageIterator.class).setPageList(objPageList) ;
   }
-  public  List<Node> getNodeByQuery() throws Exception{
+  public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
+    List<Node> queryRecords = new ArrayList<Node>() ;
     QueryManager queryManager = getSession().getWorkspace().getQueryManager();
     String queryStatiement = getQueryStatement() ;
     if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
@@ -336,9 +356,14 @@ public class UIBrowseContainer extends UIContainer {
     while (iter.hasNext()) {
       queryDocuments.add(iter.nextNode()) ;
     }
-    return queryDocuments ;
+    if(recoderNumber == -1) return queryDocuments ;
+    else {
+      for(int i = 0; i< recoderNumber; i++) {
+        queryRecords.add(queryDocuments.get(i)) ;
+      }
+    }
+    return queryRecords ;
   }
-
   public List<Node> getNodeByScript() throws Exception {
     String[] array = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, "").split(Utils.SEMI_COLON) ;
     DataTransfer data = new DataTransfer() ;

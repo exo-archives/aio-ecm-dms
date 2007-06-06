@@ -53,6 +53,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       uiTabPane.setRendered(false) ;
       uiContainer.setRendered(true) ;
       getChild(UIBrowseContainer.class).getSession().refresh(true) ;
+      getChild(UIBrowseContainer.class).refresh() ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
       uiTabPane.setRendered(true) ;
       uiContainer.setRendered(false) ;

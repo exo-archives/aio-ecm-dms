@@ -55,6 +55,7 @@ public class UIDiff extends UIComponent {
   }
   public String getBaseVersionNum() throws Exception {return  baseVersion_.getName() ;}
   public String getCurrentVersionNum() throws Exception {return version_.getName() ;}
+  
   public List<Delta> getDeltas() throws Exception {
     List<Delta> deltas = new ArrayList<Delta>();
     String previousText = getText(version_.getNode("jcr:frozenNode"));

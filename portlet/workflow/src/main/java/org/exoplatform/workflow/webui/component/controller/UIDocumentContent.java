@@ -61,7 +61,8 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     }    
     return node_;
   }
-
+  public Node getOriginalNode() throws Exception {return node_;}
+  
   public String getNodeType() throws Exception { return node_.getPrimaryNodeType().getName() ; }
   
   public String getTemplate() {
