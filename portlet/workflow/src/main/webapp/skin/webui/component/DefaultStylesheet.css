@@ -244,3 +244,25 @@
 .UIUploadProcess .UIForm .UIAction {
   width: 160px;
 }
+
+.WorkflowPortletContent .UIFormGrid td.FieldLabel {
+	width: 128px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .ProgressBarFrame { 
+	width: 350px;
+	overflow: hidden;
+}
+
+.WorkflowPortletContent .UIUploadProcess .SelectFileFrame { 
+	width: 350px;
+	overflow: hidden;
+}
+
+.WorkflowPortletContent .UIUploadProcess .FileNameLabel {
+	width: 128px;	
+}
+
+.UIWorkflowPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
+	border: none;
+}

@@ -7,92 +7,53 @@
  */
 /*############################## -- UINodeTypeManager-- ########################*/
 
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
-  width: 280px;
-  padding-left: 30px;
+.UIECMAdminPortlet .UINodeTypeManager .UIAction {
+  width: 240px ;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .UIAction {
-  width: 170px;
-  padding-left: 25px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout .UploadIframe {
-  margin-left: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame {
-  width: 450px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 100px;
-  margin: 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px 0px 0px 5px;
-  width: 230px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame {
-  width: 450px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 100px;
-  margin: 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIAction {
-  width: 330px ;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIPageIterator  {
-  float: right;
-  width: 95%;
+.UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .UIAction {
+  width: 280px ;
+  padding-right: 80px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
   width: 600px ;
-  margin: auto;
-  margin-top: 10px;
+  margin: 0px auto;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
-   width: 280px ;
-   padding-left: 25px;   
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
+	padding: 2px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIAction {
-  width: 250px ;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload {
+	padding: 10px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIFormInputSet{
-	padding-top: 5px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIGrid {
-  margin: auto;
-  width: 98%;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileNameLabel {
+	width: 128px;	
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
 	width: 95%;
-	margin: auto;
+	margin: 10px auto;	
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
+	width: 170px;	
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
-	width: 280px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIFormGrid .FieldLabel{
-	width: 0px;
-	padding: 0px;
+	width: 290px;	
 }
 
 /*############################## -- End UINodeTypeManager-- ########################*/

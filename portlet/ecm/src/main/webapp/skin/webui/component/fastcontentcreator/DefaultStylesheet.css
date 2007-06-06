@@ -60,16 +60,14 @@
   padding-bottom: 10px;
 }
 
+.UIFastContentCreatorPortlet .UIEditModeConfiguration {
+  padding: 10px;
+  margin: auto;
+  width: 600px;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
   border: none;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {
-  width: 120px;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout .UIAction {
-  padding-top: 10px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
@@ -103,10 +101,6 @@
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame .SelectFileLabel {
   padding: 0px;
   width: 150px;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
-  padding: 12px 0px 0px 65px;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent .UIFormWithTitle {

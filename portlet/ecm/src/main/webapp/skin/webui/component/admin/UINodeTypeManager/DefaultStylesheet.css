@@ -7,104 +7,43 @@
  */
 /*############################## -- UINodeTypeManager-- ########################*/
 
-.UIECMAdminPortlet .UIFormWithTitle {
-  margin: auto;
+.UIECMAdminPortlet .UINodeTypeManager .UIAction {
+  width: 200px ;
 }
 
-.UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .HorizontalLayout .UIAction {
-  width: 260px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIAction {
-  width: 250px;
-  padding-left: 35px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .HorizontalLayout {
-  padding: 8px 12px 8px 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .UIAction {
-  width: 160px;
-  padding-left: 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout {
-  padding: 20px 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle .HorizontalLayout .UploadIframe {
-  margin-left: 5px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame {
-  width: 450px;
-  margin: auto;
-  padding-bottom: 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 100px;
-  margin: 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px 0px 0px 5px;
-  width: 230px;
-}
-
-.UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .ProgressBarFrame .SelectFileLabel {
-  width: 100px;
-  margin: 0px;
-}
-
-.UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
-  border: 1px solid white ;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .FieldContainer .UIGrid input.checkbox {
-  padding: 0px;
-  margin-left: 27px;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
+.UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .UIAction {
+  width: 240px ;
+  padding-right: 80px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
   width: 600px ;
-  margin: auto;
-  margin-top: 10px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIAction {
-  width: 240px ;
-  padding-left: 80px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIAction {
-   width: 280px ;
+  margin: 0px auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
 	padding: 2px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithAction .checkbox {
-	width: 15px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload {
+	padding: 10px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIForm .UIFormGrid .FieldLabel {
- width: 0px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .SelectFileFrame { 
+	width: 320px;
+	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIFormGrid .FieldLabel {
- padding: 0px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileNameLabel {
+	width: 150px;	
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
+	width: 95%;
+	margin: 10px auto;	
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
+	width: 260px;	
+}
 /*############################## -- End UINodeTypeManager-- ########################*/

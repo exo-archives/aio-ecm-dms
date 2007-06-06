@@ -57,7 +57,7 @@
  
 .SelectMemberIcon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroup.gif') no-repeat;
+  background: url('DefaultSkin/SmallMemberIcon.gif') no-repeat;
   cursor: pointer;  
 }
 
@@ -71,13 +71,13 @@
  
 .SelectGroupIcon {
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+  background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
   cursor: pointer;
 }
 
 .SelectUserIcon {
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+  background: url('DefaultSkin/SmallUserIcon.gif') no-repeat;  
   cursor: pointer;
 }
  

@@ -257,13 +257,8 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
-	overflow: hidden;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
-  padding: 0px;
-  float: left;
+.UIJCRExplorerPortlet .UIPopupWindow .FieldComponent input{
+	float: left;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/

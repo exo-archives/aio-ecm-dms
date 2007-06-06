@@ -20,11 +20,6 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle {
-	width: 550px;
-	margin: 10px auto;
-}
-
 .UIBrowseContentPortlet .UINewConfigForm .UIAction {
 	padding-top: 10px;
 	width: 200px;
@@ -43,10 +38,6 @@
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
 	width: 80px; /*FIX BUG IE*/
-}
-
-.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout label {
-  width: 150px;
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
@@ -93,10 +84,6 @@
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapContent .Tag {
-	margin: 3px; 5px;
-}
-
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer {
   border: none;
 }
@@ -104,13 +91,6 @@
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer .FieldContainer{
 	padding: 3px 0px;
 }
-
-.UIBrowseContentPortlet .HorizontalLayout .FormContainer .FieldContainer label {
-  width: 150px;
-  border: solid 1px red;
-  margin-right: 10px;
-}
-
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
 .UIBrowseContentPortlet .UIBrowseContainer {
@@ -409,3 +389,10 @@
 }
 /*############################## -- End UIVoteForm   -- ##############################*/
 
+.UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
+	width: 128px;
+}
+
+.UIFastContentCreatortForm .UIFormGrid td.FieldLabel {
+	width: 128px;
+}

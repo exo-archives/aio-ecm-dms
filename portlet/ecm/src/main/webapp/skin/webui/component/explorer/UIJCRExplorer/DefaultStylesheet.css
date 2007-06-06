@@ -59,6 +59,10 @@
   width: 128px;
 }
 
+.UIJCRExplorerPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
+	border: none;
+}
+
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
@@ -451,6 +455,10 @@
 
 /*================================UIPropertyForm=================================*/
 
+.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent	.MultiValueContainer {
+  overflow: hidden;
+}
+
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
   width: 160px;	
   padding-right: 15px;
@@ -531,6 +539,10 @@
 
 .UIJCRExplorerPortlet .UITabContentContainer .UITabContent .UIActionViewContainer .UIGrid td {
   border-top: solid 1px #cccccc;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser {
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {

@@ -8,7 +8,6 @@
  
 /*############################## -- UIMetadataManager-- ########################*/
 
-
 .UIECMAdminPortlet .UIMetadataManager .UITabPane {
   width: 97%;
   margin: auto;
@@ -19,36 +18,19 @@
   padding-right: 20px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UIFormInputSet {
-  width: 550px;
-  margin: auto;
-}
-
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
   width: 350px;
   height: 270px;
   padding: 3px;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
-  margin: 5px auto 15px auto;
-  padding-bottom: 15px;
-}
-
-.UIECMAdminPortlet .UIMetadataList .UIPageIterator  {
-  float: right;
-  width: 95%;
-}
-
-.UIECMAdminPortlet .UIMetadataManager {
-}
-
 .UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
   width: 120px ;
 }
 
-.UIECMAdminPortlet .MetadataInfoDetails {
-  width: 550px;
+.UIECMAdminPortlet .UIMetadataManager .MetadataInfo {
+  width: 96%;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {
@@ -73,5 +55,10 @@
   vertical-align: middle;
   background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
   padding: 0px 10px;
+}
+
+.UIECMAdminPortlet .UIMetadataManager .MetadataInfoDetails{
+  width: 96%;
+  margin: auto;
 }
 /*############################## -- End UIMetadataManager-- ########################*/

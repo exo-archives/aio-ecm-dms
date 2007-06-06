@@ -43,11 +43,6 @@
 	width:80px; /*FIX BUG IE*/
 }
 
-
-.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout label {
-  width: 150px;
-}
-
 .UIBrowseContentPortlet .UIConfigTabPane {
   padding: 5px;
   background: #ffffff;
@@ -384,6 +379,10 @@
   padding: 10px 0px 0px 5px;
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle .FieldContainer input.checkbox {
-  border: none;
+.UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
+	width: 128px;
+}
+
+.UIFastContentCreatortForm .UIFormGrid td.FieldLabel {
+	width: 128px;
 }

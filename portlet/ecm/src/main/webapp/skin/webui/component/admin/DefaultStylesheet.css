@@ -12,10 +12,13 @@
 @import url("UITaxonomyManager/DefaultStylesheet.css");
 
 .UIECMAdminPortlet {
-  overflow: hidden;
+	overflow: hidden;
 }
 
-/*############################## --Begin UIRepositoryControl -- ########################*/
+.UIECMAdminPortlet .UIRepositoryControl {
+	overflow: hidden;
+}
+
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
   background: url('DefaultSkin/background/RepositoryBarBG.gif') repeat-x left top ; 
@@ -33,7 +36,7 @@
 	font-weight: bold ;
 	float: left;
 	padding: 0px 7px 0px 20px;
-	line-height: 34px;
+	line-height: 30px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
@@ -45,10 +48,7 @@
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
 	 width: 180px;
 	 float:left;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .UIRepositorySelectForm .UIForm .HorizontalLayout .UIFormGrid td  {
-	 padding: 0px;
+	 margin-top: 3px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
@@ -57,20 +57,19 @@
   height: 34px;
 }
 
-.UIECMAdminPortlet .UIRepositoryControl .ActionsArea .ActionButton {
+.UIECMAdminPortlet .UIRepositoryControl .ActionButton {
 	width: 24px ; height: 24px;
 	float: left ;
 	margin: 5px 0px 0px 5px;		
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
-  float: left;
   width: 2px;
   height: 30px;
   margin: 2px 2px 0px 8px;		
   background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
+  float: left;
 }
-
 
 /*############################## --Begin UIRepositoryManager -- ########################*/
 
@@ -96,8 +95,8 @@
 	margin: 2px 5px 0px 5px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer {
-	margin: 0px 0px 10px 125px;
+.UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
+	border: none;
 }
 
 .UIRepositoryControl .UIWorkspaceWizard {
@@ -212,10 +211,6 @@
   width: 128px;
 }
 
-.UIECMAdminPortlet .HorizontalLayout  {
-  margin: 10px;
-}
-
 .UIECMAdminPortlet .ECMLayoutSeparator {
 	width: 6px;
 	background: url('DefaultSkin/background/LayoutSeparator.gif') repeat-y left center;
@@ -309,27 +304,16 @@
 	background: url('DefaultSkin/background/LayoutSeparator.gif') repeat-y left center;
 }
 
-.UIECMAdminPortlet .ExpandSideBar {
-	width: 6px; height: 49px;
-	background: url('DefaultSkin/background/ExpandSideBar.gif') no-repeat;
-	cursor: pointer;
-}
-
 .UIECMAdminPortlet .UIECMAdminWorkingArea {
   margin: 0px 10px 10px 10px;
 }
 
 /*############################## --UIFormWithTitle -- ########################*/
-
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer   {
-  margin-left: 137px;
-}
-
-.UIECMAdminPortlet .MultiRadioInput {
-	float: left;
-}
-
 /*############################## -- UIFormInputSet -- ########################*/
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
+  margin: 0px 0px 2px 10px ;
+}
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
   color: blue;
@@ -345,13 +329,12 @@
 	padding: 2px 0px 0px 5px;
 }
 
-.UIECMAdminPortlet .UINamespaceManager .UIFormWithTitle .HorizontalLayout {
- 	padding: 10px 0px;
+.UIECMAdminPortlet .UINamespaceForm {
+  padding: 10px;
 }
 
-.UIECMAdminPortlet .UINamespaceManager  .HorizontalLayout .UIAction {
- 	width: 160px;
- 	padding-left: 25px;
+.UIECMAdminPortlet .UINamespaceForm .UIAction {
+  width: 160px;
 }
 
 .UIECMAdminPortlet .UINamespaceList {
@@ -453,10 +436,10 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .UIAction {
 	width: 310px;
-	padding-left: 20px;
+	padding-left: 50px;
 }
 
-.ECMTempForm .UIFormWithTitle .UIForm .textarea {
+.ECMTempForm .HorizontalLayout .textarea {
   width: 320px;
   height: 300px;
 }
@@ -474,31 +457,23 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .CBTemplate .CBTempForm .UIAction {
 	width: 310px;
-	padding-left: 20px;
+	padding-left: 50px;
 }
 
-.CBTempForm .UIFormWithTitle .UIForm .textarea {
-  width: 350px;
+.CBTempForm .HorizontalLayout .textarea {
+  width: 320px;
   height: 300px;
 }
 
 /*############################## -- UIActionManager -- ########################*/
 
-.UIECMAdminPortlet .UIActionManager {
-  padding: 2px 0px 0px 5px;
-}
-
-.UIActionManager .UIActionTypeForm .UIFormWithTitle .HorizontalLayout {
-	padding-top: 10px; 
+.UIActionManager .UIActionTypeForm  {
+	padding: 10px; 
 }
 
 .UIActionManager .UIActionTypeForm .HorizontalLayout .UIAction {
 	width: 160px;
 	padding-left: 15px;
-}
-
-.UIActionManager .UIActionTypeForm .UIFormWithTitle label {
-	width: 130px;
 }
 
 .UIActionManager .UIActionTypeList .UIAction {
@@ -507,33 +482,10 @@ UIECMAdminPortlet .UIViewManager {
 
 /*############################## -- UIScriptManager  -- ########################*/
 
-.UIECMScripts .UIBarStyle {
-	margin-bottom: 2px;
-}
-
-.UIECMScripts .UIScriptFilterForm .FieldContainer {
-  padding-left: 15px;
-}
-
-.UIECMScripts .UIScriptFilterForm .UIForm {
-  height: 30px; width: 100%;
-  padding: 0px;
-  margin: 0px;
-}
-
-.UIECMScripts .UIScriptFilterForm .UIForm label {
-  line-height: 16px;
-}
-
-.UIECMScripts .UIScriptFilterForm .UIForm .selectbox {
-  margin-top: 7px;
-}
-
 /*------------------------------UICBScripts------------------------*/
 
-.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
-  margin: auto;
-  width: 60px;
+.UIECMScripts .ECMScriptForm{
+  padding: 10px;
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer .UIAction {
@@ -552,9 +504,13 @@ UIECMAdminPortlet .UIViewManager {
 }
 /*------------------------------UICBScripts------------------------*/
 
+.UICBScripts .CBScriptForm {
+  padding: 10px;
+}
+
 .UICBScripts .HorizontalLayout .FormContainer .UIAction {
   width: 330px;
-  padding-left: 30px;
+  padding-left: 60px;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
@@ -569,24 +525,13 @@ UIECMAdminPortlet .UIViewManager {
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
-.UIECMAdminPortlet .UIQueriesManager {
-	padding: 2px 0px 0px 5px;
-}
-
 .UIQueriesManager .UIQueriesList .UIAction {
 	width: 100px ;
 }
 
-.UIQueriesManager .UIQueriesForm .HorizontalLayout .UIFormInputSet {
-	padding-bottom: 0px;
-}
-
-.UIQueriesManager .HorizontalLayout .FieldContainer .UIFormInputSet  {
-	width: 100%;
-}
-
-.UIQueriesManager .HorizontalLayout .UIFormInputSet .FieldContainer {
-	padding-top: 0px;
+.UIQueriesManager .UIQueriesForm {
+	width: 95%;
+	margin: 10px auto;
 }
 
 .UIQueriesManager .UIQueriesForm .UIAction {
@@ -608,6 +553,10 @@ UIECMAdminPortlet .UIViewManager {
 .UIFolksonomyManager .UITagStyleForm .UIAction {
 	width: 160px ;
 	padding: 10px 0px 10px 30px;
+}
+
+.UIFolksonomyManager .UITagStyleForm {
+	padding: 10px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
@@ -683,7 +632,6 @@ UIECMAdminPortlet .UIViewManager {
 	width: 95%;
 	padding: 10px 0px;
 	margin: auto;
-	border: solid 1px red;
 }
 
 /*----------------------------UIDialogTab-------------------------------*/

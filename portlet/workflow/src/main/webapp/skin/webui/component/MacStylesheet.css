@@ -14,10 +14,6 @@
 	padding: 10px;
 }
 
-.UIWorkflowPortlet .UIForm .UIAction {
-	width: auto;
-}
-
 .UIWorkflowPortlet .Toolbar {
 	height: 29px;
 	padding: 0px 8px;
@@ -174,6 +170,7 @@
   width: 155px; height: 100px;
   background: url('DefaultSkin/background/BannerIcon.gif') no-repeat right bottom;
 }
+
 .UIWorkflowPortlet .UIDocumentContent .Banner .BannerTitle {
   text-align: center;
   font: normal bold 40px Verdana;
@@ -200,27 +197,52 @@
   padding: 10px;
 }
 
-.UIWorkflowPortlet .UITabPane .UIFormWithTitle  {
-  width: 500px;
-  margin: auto;
-}
-
-.UIWorkflowPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
-  padding-bottom: 20px;
-}
-.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
-  width: 130px; 
-}
-
-.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 480px;
-  padding: 15px 0px;
-}
-
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a{
 	color: #111caa;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover{
 	color: orange;
+}
+
+.WorkflowPortletContent .UIAdminstrationManager .UIAction {
+  width: 140px;
+}
+
+.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
+	border: none;
+}
+
+.WorkflowPortletContent .UIAdminstrationManager .ActionContainer .OverflowContainer {
+	width: 60px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .UIAction {
+	width: 170px;
+}
+
+.WorkflowPortletContent .UIFormGrid td.FieldLabel {
+	width: 128px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .ProgressBarFrame { 
+	width: 350px;
+	overflow: hidden;
+}
+
+.WorkflowPortletContent .UIUploadProcess .SelectFileFrame { 
+	width: 350px;
+	overflow: hidden;
+}
+
+.WorkflowPortletContent .UIUploadProcess .FileNameLabel {
+	width: 128px;	
+}
+
+.WorkflowPortletContent .UITask .UIAction {
+	width: 200px;	
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .ActionContainer .OverflowContainer {
+	width: 30px;
 }
