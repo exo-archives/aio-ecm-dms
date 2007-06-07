@@ -421,16 +421,25 @@
 
 /*================================UIMetadataSelectForm=================================*/
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle {
-	border: solid 1px #b7b7b7;
-	width: 93%;
-	margin: auto;
-	background: #efefef;
+.UIJCRExplorerPortlet .UIMetadataSelectForm {
+	width: 95%;
+	margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle .UIAction {
+.UIJCRExplorerPortlet .UIMetadataSelectForm  .UIAction {
 	width: 150px;
-	padding: 15px 0px;
+	padding-right: 100px;
+}
+
+/*================================UINodeTypeSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {
+	width: 95%;
+	margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm  .UIAction {
+	width: 150px;
 }
 
 /*================================UIActivateVersion=================================*/
@@ -441,6 +450,10 @@
 }
 
 /*================================UIActionContainer=================================*/
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
+  float: left;
+}
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
   width: 140px;
@@ -503,12 +516,27 @@
 
 /*================================UIPermissionManager=================================*/
 
+.UIJCRExplorerPortlet .UIPermissionManager {
+  width: 95%;
+  margin: auto;
+  padding-top: 10px;
+}
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
   padding-bottom: 10px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
+  padding: 0px;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle  .FormContainer input {
+  float: left;
 }
 
 /*================================DecoratorBoxNested=================================*/

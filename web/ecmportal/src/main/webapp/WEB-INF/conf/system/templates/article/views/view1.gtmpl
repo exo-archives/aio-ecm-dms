@@ -69,25 +69,21 @@
 		  background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
 		  padding-left: 9px;
 		  height: 16px;
-		  line-height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .TopRightArtictleFrame {
 		  background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
 		  padding-right: 2px;
 		  height: 16px;
-		  line-height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .TopCenterArticleFrame {
 		  background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
 		  height: 16px;
-		  line-height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .ArticleFrameContainer {
 		  padding: 1px 8px 5px 0px;
-		  overflow: hidden;
 		}
 		
 		.UIArticle .TopCenterArticleFrame .ArticleField {
@@ -147,11 +143,15 @@
 		  margin: 5px 2px 3px 18px;
 		}
 		
-		.UIArticle .FieldContent .FieldContainerContent{
+		.UIArticle .FieldContent .FieldContainerContent {
+			width: 95%;
+			overflow: hidden;
 		}
 		
 		.UIArticle .FieldContent .LabelContent{
 		 	padding: 5px 0px 0px 5px;
+		 	width: 90%;
+		 	line-height: 13px;
 		}
 		
     .UIArticle .DocumentRating {
@@ -163,7 +163,6 @@
 		 	border-top: dotted 1px #dcdcdc;
 		 	margin: 12px  10px 0px 10px;
 		 	padding-top: 5px;
-		 	overflow: hidden;
 		}
 		
 		.UIArticle .ContentLinks {
@@ -346,8 +345,8 @@
 						              </div>
 							          <%}%>
 							        </div>
+							        <div style="clear: left;"><span></span></div>
 			              </div>
-			              <div style="clear: left;"><span></span></div>
 			            </div>
 		            </div>
 		          </div>
@@ -370,16 +369,18 @@
 					    <div class="MidlleRightArticleFrame">
 		            <div class="ArticleFrameContainer">
 		              <div class="FieldContent">
-				            <%if(attachments.size() > 0) {%>
-											<%for (att in attachments) {%>
-											  <div class="AttachmentsContaienr">	
-				                  <div class="AttachmentsContentIcon"><span></span></div>
-				                  <div><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
-				                  <div style="clear: left; overflow: hidden;"><span></span></div>
-				                </div>
-				              <%}%>
-										<%}%>
-										<div style="clear: left;"><span></span></div>
+		              	<div class="FieldContainerContent">
+					            <%if(attachments.size() > 0) {%>
+												<%for (att in attachments) {%>
+												  <div class="AttachmentsContaienr">	
+					                  <div class="AttachmentsContentIcon"><span></span></div>
+					                  <div><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
+					                  <div style="clear: left; overflow: hidden;"><span></span></div>
+					                </div>
+					              <%}%>
+											<%}%>
+											<div style="clear: left;"><span></span></div>
+										</div>
 									</div>
 							  </div>
 						  </div>

@@ -189,8 +189,13 @@
 
 /*--------------------------.UIFormInputSet----------------------*/
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
-  overflow: hidden;
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
+  float: none;
+  border: none;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
@@ -208,10 +213,6 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
   color: orange;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction  .MultiRadioInput {
-	float: left;
 }
 
 /*----------------------------UIRepositoryForm -------------------------*/

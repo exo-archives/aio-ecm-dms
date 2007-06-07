@@ -13,9 +13,18 @@
 }
 
 .UIGrid .ViewIcon {
-	width:24px; height: 24px;
+	width: 16px; height: 16px;
 	background: url('DefaultSkin/YellowLight.gif') no-repeat;
-	float: left;
+}
+
+.UIGrid .DeleteIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/Delete.gif') no-repeat ;
+}
+
+.UIGrid .EditInfoIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
 }
 
 .AddIcon16x16 {

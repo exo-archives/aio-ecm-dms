@@ -481,23 +481,25 @@
 
 /*================================UIMetadataSelectForm=================================*/
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle {
-	width: 93%;
-	margin: auto;
+.UIJCRExplorerPortlet .UIMetadataSelectForm {
+	width: 95%;
+	margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle .FieldContainer {
-	width: 500px;
-	margin: auto;
+.UIJCRExplorerPortlet .UIMetadataSelectForm  .UIAction {
+	width: 150px;
+	padding-right: 100px;
 }
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .FieldContainer label {
-	width: 200px;
+/*================================UINodeTypeSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {
+	width: 95%;
+	margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .UIFormWithTitle .UIAction {
-	width: 160px;
-	padding: 15px 0px;
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm  .UIAction {
+	width: 150px;
 }
 
 /*================================UIConstraintsForm=================================*/
@@ -640,10 +642,6 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithAction .FieldContainer {
-  width: 98%;
-  overflow: hidden;
-}
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormInputSetWithAction .FieldContainer input {
   float: left;

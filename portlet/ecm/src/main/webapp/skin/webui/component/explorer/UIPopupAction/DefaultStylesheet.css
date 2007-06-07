@@ -24,14 +24,14 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
-  margin: 7px 5px;
+  margin: 7px 5px 0px 5px;
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
-  margin: 2px 3px;
+  margin: 2px 3px 2px 0px;
   float: left;
   width: 24px; height: 24px;
 }
@@ -70,9 +70,9 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
-  margin: 7px 0px;
-  float: left;
+  margin: 7px 5px 0px 5px;
   width: 16px; height: 16px;
+  float: left;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
 }
@@ -257,8 +257,9 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .FieldComponent input{
-	float: left;
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIFormGrid td.FieldLabel {
+  width: 128px;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/

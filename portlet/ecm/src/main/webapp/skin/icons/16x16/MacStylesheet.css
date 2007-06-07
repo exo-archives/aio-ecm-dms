@@ -12,6 +12,21 @@
 	float: left;
 }
 
+.UIGrid .ViewIcon {
+	width: 16px; height: 16px;
+	background: url('MacSkin/YellowLight.gif') no-repeat;
+}
+
+.UIGrid .DeleteIcon {
+  width: 16px ;  height: 16px ;
+  background: url('MacSkin/Delete.gif') no-repeat ;
+}
+
+.UIGrid .EditInfoIcon {
+  width: 16px ;  height: 16px ;
+  background: url('MacSkin/EditIcon.png') no-repeat ;
+}
+
 .AddIcon16x16 {
   float:left;
   width: 16px; height: 16px;
