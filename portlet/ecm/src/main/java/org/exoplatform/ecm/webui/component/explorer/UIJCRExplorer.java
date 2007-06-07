@@ -129,6 +129,42 @@ public class UIJCRExplorer extends UIContainer {
     return false ;
   }
   
+  public boolean hasAddPermission() {
+    try {
+      session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
+    } catch(Exception e) {
+      return false ;
+    }
+    return true ;
+  }
+  
+  public boolean hasEditPermission() {
+    try {
+      session_.checkPermission(currentNode_.getPath(), PermissionType.SET_PROPERTY) ;
+    } catch(Exception e) {
+      return false ;
+    }
+    return true ;
+  }
+  
+  public boolean hasRemovePermission() {
+    try {
+      session_.checkPermission(currentNode_.getPath(), PermissionType.REMOVE) ;
+    } catch(Exception e) {
+      return false ;
+    }
+    return true ;
+  }
+  
+  public boolean hasReadPermission() {
+    try {
+      session_.checkPermission(currentNode_.getPath(), PermissionType.READ) ;
+    } catch(Exception e) {
+      return false ;
+    }
+    return true ;
+  }
+  
   public Node getViewNode(String nodeType) throws Exception { 
     try {
       Item primaryItem = getCurrentNode().getPrimaryItem() ;

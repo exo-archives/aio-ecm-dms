@@ -145,21 +145,18 @@ public class UIConstraintsForm extends UIForm {
     return "";
   }
   
-  private String getExactlyQueryString(String properties) {
-    String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
+  private String getExactlyQueryString(String value, String properties) {
     String operator = getUIFormSelectBox(EXACTLY_OPERATOR).getValue() ;
     String advanceQuery = "" ;
     String[] arrProperties = {} ;
-    if(value.length() > 0) {
-      if(properties.indexOf(",") > -1) arrProperties = properties.split(",") ;
-      if(arrProperties.length > 0) {
-        for(String pro : arrProperties) {
-          if(advanceQuery.length() == 0) advanceQuery = "(" + pro + " = '" + value.trim() + "')" ;
-          else advanceQuery = advanceQuery + " " + operator + " " + "("+ pro +" = '" + value.trim() + "')" ;
-        }
-      } else {
-        advanceQuery = "" + properties + " = '" + value.trim() + "'" ;
+    if(properties.indexOf(",") > -1) arrProperties = properties.split(",") ;
+    if(arrProperties.length > 0) {
+      for(String pro : arrProperties) {
+        if(advanceQuery.length() == 0) advanceQuery = "(" + pro + " = '" + value.trim() + "')" ;
+        else advanceQuery = advanceQuery + " " + operator + " " + "("+ pro +" = '" + value.trim() + "')" ;
       }
+    } else {
+      advanceQuery = "" + properties + " = '" + value.trim() + "'" ;
     }
     return advanceQuery;
   }
@@ -194,7 +191,14 @@ public class UIConstraintsForm extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = getExactlyQueryString(properties) ;
+        String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
+        if(value == null || value.trim().length() < 0) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.exactly-require", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        advanceQuery = getExactlyQueryString(value, properties) ;
         break;
       case 1:
         properties = getUIStringInput(PROPERTY2).getValue() ; 

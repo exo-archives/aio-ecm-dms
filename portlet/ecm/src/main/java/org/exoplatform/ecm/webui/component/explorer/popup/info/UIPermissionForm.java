@@ -93,12 +93,14 @@ public class UIPermissionForm extends UIForm implements UISelector {
         if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
         node.setPermission(userOrGroup, permsArray) ;
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;
+        node.save() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) {
-          node.save() ;
           uiJCRExplorer.getSession().save() ;
         }
         uiForm.refresh() ;
+        uiJCRExplorer.setIsHidePopup(true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiParent) ;
+        uiJCRExplorer.updateAjax(event) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }   

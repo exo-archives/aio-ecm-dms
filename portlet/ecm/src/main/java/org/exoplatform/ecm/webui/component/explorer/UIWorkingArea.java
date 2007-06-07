@@ -176,8 +176,8 @@ public class UIWorkingArea extends UIContainer {
   
   public boolean hasEditPermissions(Node editNode){
     try {
-      String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
-      editNode.getSession().checkPermission(editNode.getPath(), pers);
+      editNode.getSession().checkPermission(editNode.getPath(), PermissionType.ADD_NODE);
+      editNode.getSession().checkPermission(editNode.getPath(), PermissionType.SET_PROPERTY);
     } catch(Exception e) {
       return false ;
     } 
@@ -243,7 +243,7 @@ public class UIWorkingArea extends UIContainer {
         actionsList.append(",WebDAV") ;
       }
     }
-    if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste") ;
+    if(uiExplorer.getAllClipBoard().size() > 0 && hasEditPermissions(node)) actionsList.append(",Paste") ;
     return actionsList.toString() ;
     
   }

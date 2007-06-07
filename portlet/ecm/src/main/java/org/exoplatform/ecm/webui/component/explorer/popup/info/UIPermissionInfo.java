@@ -109,10 +109,14 @@ public class UIPermissionInfo extends UIContainer {
         node.removePermission(name) ;
         uicomp.updateGrid() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
+        node.save() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) {
-          node.save() ;
           uiJCRExplorer.getSession().save() ;
+          uiJCRExplorer.refreshExplorer() ;
         }
+        uiJCRExplorer.setIsHidePopup(true) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
+        uiJCRExplorer.updateAjax(event) ;
       } catch (Exception e) {
         JCRExceptionManager.process(uicomp.getAncestorOfType(UIApplication.class), e);
       }
