@@ -124,7 +124,7 @@
 		        <description>View configuration for Taxonomy</description>
 		        <object type="org.exoplatform.services.cms.views.impl.ViewDataImpl">
 		          <field  name="name"><string>taxonomy-list</string></field>
-		          <field  name="permissions"><string></string></field>
+		          <field  name="permissions"><string>member:/user</string></field>
 		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
 		          <field  name="tabList">
                 <collection type="java.util.ArrayList">
@@ -145,7 +145,7 @@
 		        <description>View configuration for Taxonomy</description>
 		        <object type="org.exoplatform.services.cms.views.impl.ViewDataImpl">
 		          <field  name="name"><string>taxonomy-mac</string></field>
-		          <field  name="permissions"><string></string></field>
+		          <field  name="permissions"><string>member:/user</string></field>
 		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/MacView</string></field>
 		          <field  name="tabList">
                 <collection type="java.util.ArrayList">
@@ -166,7 +166,7 @@
 		        <description>View configuration for Taxonomy</description>
 		        <object type="org.exoplatform.services.cms.views.impl.ViewDataImpl">
 		          <field  name="name"><string>taxonomy-thumbnails</string></field>
-		          <field  name="permissions"><string></string></field>
+		          <field  name="permissions"><string>member:/user</string></field>
 		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ThumbnailsView</string></field>
 		          <field  name="tabList">
                 <collection type="java.util.ArrayList">
