@@ -316,7 +316,10 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     setShowDocumentDetail(hasDocDetail) ;
     setShowDocumentList(hasDocList) ;
     initDocumentDetail(docNode) ;
-    templatePath_ = getTemplatePath(Utils.CB_USE_DOCUMENT, "DocumentView") ;
+    initToolBar(false, false, false) ;
+    String templateType = Utils.CB_USE_DOCUMENT ;
+    String tempName = getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
+    templatePath_ = getTemplatePath(templateType, tempName) ;
   }
   public void initDocumentDetail(Node docNode) throws Exception {
     if(isShowDocumentDetail()) {
