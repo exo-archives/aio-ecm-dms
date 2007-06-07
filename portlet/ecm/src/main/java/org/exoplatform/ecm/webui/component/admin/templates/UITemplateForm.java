@@ -34,7 +34,6 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -106,23 +105,20 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     Session session = 
       repositoryService.getRepository().getSystemSession(configService.getWorkspace()) ;
     NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager() ; 
+    NodeIterator templateIter = getApplicationComponent(TemplateService.class).getTemplatesHome().getNodes() ;
+    List<String> templates = new ArrayList<String>() ;
+    while (templateIter.hasNext()) {
+      templates.add(templateIter.nextNode().getName()) ;
+    }
     NodeTypeIterator iter = nodeTypeManager.getAllNodeTypes() ;
     while (iter.hasNext()) {
       NodeType nodeType = iter.nextNodeType();
       String nodeTypeName = nodeType.getName();
-      if(!isExistedItem(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
+      if(!templates.contains(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
     }
     return options ;
   }
 
-  private boolean isExistedItem(String nodeType) throws Exception {
-    UITemplatesManager uiManager = getAncestorOfType(UITemplatesManager.class) ;
-    
-    uiManager.getChild(UITemplateList.class).getUIPageIterator().getPageList().getAll() ;
-    
-    return false ;
-  }
-  
   @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
     UIFormInputSetWithAction uiFormAction = getChildById(FIELD_TAB_TEMPLATE) ;
@@ -135,12 +131,6 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource() ;
       String name = uiForm.getUIFormSelectBox(FIELD_NAME).getValue() ;
-      if(uiForm.isExistedItem(name)) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        Object[] args = {name} ;
-        app.addMessage(new ApplicationMessage("UITemplateForm.msg.item-exist", args)) ; 
-        return ;
-      }
       String label = uiForm.getUIStringInput(FIELD_LABEL).getValue() ; 
       String dialog = uiForm.getUIFormTextAreaInput(FIELD_DIALOG).getValue() ;
       String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue() ;

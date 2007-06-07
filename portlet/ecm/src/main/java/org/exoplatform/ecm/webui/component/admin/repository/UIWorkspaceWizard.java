@@ -418,6 +418,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       workspaceEntry.setQueryHandler(queryHandler) ;      
       if(isDefault) uiRepoForm.defaulWorkspace_ = name ;      
       uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+      if(!uiRepoForm.isAddnew_) uiRepoForm.saveRepo() ;
       uiRepoForm.refreshLabel() ;      
       UIPopupAction uiPopupAction = uiFormWizard.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;      

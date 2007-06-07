@@ -33,6 +33,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIToolBar.SelectPathActionListener.class),
         @EventConfig(listeners = UIToolBar.VoteActionListener.class),
         @EventConfig(listeners = UIToolBar.CommentActionListener.class),
+        @EventConfig(listeners = UIToolBar.BackActionListener.class),
+        @EventConfig(listeners = UIToolBar.NextActionListener.class),
         @EventConfig(listeners = UIToolBar.SearchActionListener.class)
     }
 )
@@ -109,6 +111,25 @@ public class UIToolBar extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  
+  
+  static public class NextActionListener extends EventListener<UIToolBar> {
+    public void execute(Event<UIToolBar> event) throws Exception {
+      UIToolBar uiComp = event.getSource() ;
+      UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      uiContainer.historyNext() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }  
+  
+  static public class BackActionListener extends EventListener<UIToolBar> {
+    public void execute(Event<UIToolBar> event) throws Exception {
+      UIToolBar uiComp = event.getSource() ;
+      UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      uiContainer.historyBack() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }  
+  
   static public class VoteActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;

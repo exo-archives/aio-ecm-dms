@@ -316,10 +316,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     setShowDocumentDetail(hasDocDetail) ;
     setShowDocumentList(hasDocList) ;
     initDocumentDetail(docNode) ;
-    initToolBar(false, false, false) ;
-    String templateType = Utils.CB_USE_DOCUMENT ;
-    String tempName = "DocumentView" ;
-    templatePath_ = getTemplatePath(templateType, tempName) ;
+    templatePath_ = getTemplatePath(Utils.CB_USE_DOCUMENT, "DocumentView") ;
   }
   public void initDocumentDetail(Node docNode) throws Exception {
     if(isShowDocumentDetail()) {
@@ -538,7 +535,11 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     }
     return historyList ;
   }
-
+  
+  protected void historyNext() {}
+  
+  protected void historyBack() {}
+  
   private Map getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
       List documentTemplates) throws Exception {
     List<String> subCategories = new ArrayList<String>() ;
@@ -684,15 +685,14 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates() ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
-        uiContainer.setCategoryPath(catPath) ;
-        Node currentCat  = uiContainer.getNodeByPath(catPath);
-        uiContainer.storeHistory() ;
-        uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
-        if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
-        uiContainer.setShowDocumentDetail(true) ;
-        uiContainer.initDocumentDetail(selectNode) ;
-        uiContainer.initToolBar(false, false, false) ;
-        uiContainer.viewDocument(selectNode, true, true) ;  
+        if(catPath != null) {
+          uiContainer.setCategoryPath(catPath) ;
+          Node currentCat  = uiContainer.getNodeByPath(catPath);
+          uiContainer.storeHistory() ;
+          uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
+          if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
+        } 
+        uiContainer.viewDocument(selectNode, true, true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }
@@ -716,17 +716,12 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
-        PortletPreferences preferences = uiContainer.getPortletPreferences() ;
-        String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
-        String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
-        uiContainer.templatePath_ = uiContainer.getTemplatePath(templateType, tempName) ;
       }
       if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
       uiContainer.setCurrentNode(uiContainer.history_.get(uiContainer.KEY_CURRENT)) ;
       uiContainer.setSelectedTab(uiContainer.history_.get(uiContainer.KEY_SELECTED)) ;
       uiContainer.history_.clear() ;
-      uiContainer.refresh() ;
-      //uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
+      uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }

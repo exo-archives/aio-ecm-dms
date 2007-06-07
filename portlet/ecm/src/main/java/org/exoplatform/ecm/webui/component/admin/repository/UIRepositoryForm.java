@@ -79,9 +79,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_BSEPATH = "directoryPath" ;
   final static public String FIELD_BSEMAXBUFFER = "maxBufferSize" ;
 
-  public boolean isAddnew_ = true ;  
-  public String defaulWorkspace_ = null ;
-  private RepositoryEntry repo_ = null;
+  protected boolean isAddnew_ = true ;  
+  protected String defaulWorkspace_ = null ;
+  protected RepositoryEntry repo_ = null;
   private Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>() ; 
 
   public UIRepositoryForm() throws Exception { 
@@ -166,6 +166,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   protected RepositoryEntry getCurrentRepo() {return repo_ ;} 
 
+  protected void setRepo(RepositoryEntry repo) {repo_ = repo ;} 
+
   protected boolean isExistWorkspace(String workspaceName){
     return workspaceMap_.containsKey(workspaceName) ;
   }
@@ -202,33 +204,39 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     return workspaceName.equals(defaulWorkspace_) ;
   }
 
-  private void saveRepo(RepositoryEntry re) throws Exception {    
+  protected void saveRepo() throws Exception {    
     InitialContextInitializer ic = (InitialContextInitializer)getApplicationComponent(ExoContainer.class).
     getComponentInstanceOfType(InitialContextInitializer.class) ;
     if(ic != null) ic.recall() ;
-    RepositoryService service = (RepositoryService)getApplicationComponent(ExoContainer.class).getComponentInstanceOfType(RepositoryService.class);
-    RepositoryImpl defRep = (RepositoryImpl)service.getDefaultRepository();
-    try {
+    RepositoryService rservice = (RepositoryService)getApplicationComponent(ExoContainer.class).getComponentInstanceOfType(RepositoryService.class);
+    RepositoryEntry repositoryEntry ;
+    if(!isAddnew_) {
+      repositoryEntry = getCurrentRepo() ;
+      RepositoryImpl defRep = (RepositoryImpl)rservice.getRepository(repositoryEntry.getName()) ;
       for(WorkspaceEntry ws : getWorkspaceMap().values()){      
         if(!defRep.isWorkspaceInitialized(ws.getName())) {
           defRep.configWorkspace(ws);
           defRep.createWorkspace(ws.getName());
-          //Session sess = defRep.getSystemSession(ws.getName());
-          //Node root = sess.getRootNode();
         }
       }
-    } catch (RepositoryException e) {
-      e.printStackTrace() ;
-    } catch (RepositoryConfigurationException e) {
-      e.printStackTrace() ;
+    } else {
+      rservice.createRepository(getCurrentRepo()) ;
+      RepositoryImpl defRep = (RepositoryImpl)rservice.getRepository(getCurrentRepo().getName()) ;
+      for(WorkspaceEntry ws : getWorkspaceMap().values()){      
+        if(!defRep.isWorkspaceInitialized(ws.getName())) {
+          defRep.configWorkspace(ws);
+          defRep.createWorkspace(ws.getName());
+        }
+      }
     }
   }
+
   public void activate() throws Exception {}
 
   public void deActivate() throws Exception {
     repo_ = null ;
   }
-  
+
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
@@ -237,9 +245,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ;
-      //TODO Test
-      //uiForm.testInitNewWS() ;
-
       if (uiForm.getWorkspaceMap().isEmpty()) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-isrequire", null)) ;
@@ -250,28 +255,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       RepositoryServiceConfigurationImpl config = (RepositoryServiceConfigurationImpl)rservice.getConfig() ;      
       ManageableRepository defRep = (ManageableRepository) rservice.getRepository(uiControl.repoName_);
       RepositoryEntry re ;
-      if(uiForm.isAddnew_) {        
-        re = new RepositoryEntry() ;
-        if(config.isRetainable()) {
-          for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
-            defRep.configWorkspace(ws);
-            defRep.createWorkspace(ws.getName());
-          }
-        }
-      } else {
-        re = defRep.getConfiguration() ;
-        uiForm.saveRepo(re) ;
-        if(config.isRetainable()) {
-          for(WorkspaceEntry ws : uiForm.getWorkspaceMap().values()) {
-            if(!defRep.isWorkspaceInitialized(ws.getName())) {
-              defRep.configWorkspace(ws);
-              defRep.createWorkspace(ws.getName());              
-            }
-          }
-          config.retain() ;
-        }
-      }
-
+      if(uiForm.isAddnew_) re = new RepositoryEntry() ;
+      else re = defRep.getConfiguration() ;
       String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
       String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
       String authen = uiForm.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
@@ -300,8 +285,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       re.setSessionTimeOut(Long.parseLong(session)) ;
 
 //    TODO check here   
-      uiForm.saveRepo(re) ;
-
+      System.out.println("\n\n isRetainable()"+config.isRetainable());
+      uiForm.setRepo(re) ;
+      uiForm.saveRepo() ;
 
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
       uiPopupAction.deActivate() ;
