@@ -241,7 +241,7 @@
   width: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction {
 	width: 185px;
 	padding-top: 12px;
 }
@@ -291,7 +291,7 @@
 	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIUploadManager .SelectFileFrame  {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIUploadManager .SelectFileFrame {
 	margin: 0px;
 }
 
@@ -316,12 +316,12 @@
 	 margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIGrid .ActionContainer a{
+.UIJCRExplorerPortlet .UIGrid .ActionContainer a {
 	 width: 24px; height: 24px;
 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer {
 	width: 500px;
 	margin: auto;
 }
@@ -348,7 +348,7 @@
   padding-bottom: 3px; 
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label{
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label {
   width: 200px;
   text-align: right;
 }
@@ -385,12 +385,12 @@
   padding-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer{
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer {
   width: 500px;
   margin: 0px auto;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .FileNameLabel{
+.UIJCRExplorerPortlet .UIUploadForm .FileNameLabel {
  overflow: hidden ;
 }
 .UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
@@ -418,7 +418,7 @@
   margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .FileNameLabel{
+.UIJCRExplorerPortlet .UIUploadForm .FieldContainer .SelectFileFrame .FileNameLabel {
   padding: 0px 0px 0px 5px;
   width: 180px;
   font-weight: bold;
@@ -502,11 +502,11 @@
   padding: 2px 15px;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .NormalVote{
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .UIAction{
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
   width: 95px;
   padding-left: 6px;
 }
@@ -691,7 +691,7 @@
 
 /*================================UIPropertyTab=================================*/
 
-.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
   margin-right: 3px;
 }
 
@@ -725,14 +725,9 @@
 	margin: 4px 3px 0px 3px;
 }
 
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle{
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
 	border: none;
 	border-bottom: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
-	border: none;
-	background: none;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
@@ -741,13 +736,13 @@
 
 /*=================================UICategoryManager==============================*/
 
-.UIJCRExplorer .UICategoryManager .UIAction{
+.UIJCRExplorer .UICategoryManager .UIAction {
 	width: 70px;
 }
 
 /*=================================UILabelForm==============================*/
 
-.UIJCRExplorer .UICategoryManager .UIAction{
+.UIJCRExplorer .UICategoryManager .UIAction {
 	width: 70px;
 }
 
