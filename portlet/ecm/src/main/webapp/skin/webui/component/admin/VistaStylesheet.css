@@ -180,9 +180,26 @@
   width: auto ;
 }
 
-.UIECMAdminPortlet .UIFormWithTitle {
+.UIECMAdminPortlet {
   margin: auto;
   width: 95%;
+}
+
+.UIECMAdminPortlet .UIFormGrid input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIECMAdminPortlet .UIFormGrid input.radio {
+  float: none;
+}
+
+.UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
+  margin: 0px 5px;
+}
+
+.UIECMAdminPortlet .UIFormGrid .FieldLabel {
+  width: 128px;
 }
 
 .UIECMAdminPortlet .UIECMPortletLayout {
@@ -335,7 +352,7 @@
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UINamespaceForm .UIFormWithTitle .UIAction {
+.UIECMAdminPortlet .UINamespaceForm .UIAction {
   width: 200px;
   margin: auto ;
 }
@@ -463,6 +480,10 @@
   padding: 8px 0px 5px 0px;
 }
 
+.UIECMAdminPortlet .CBTemplate .UIGrid .ActionContainer {
+  width: 60px;
+}
+
 .UIECMAdminPortlet .CBTemplate .CBTempForm .UIAction{
 	width: 250px;
 }
@@ -478,22 +499,22 @@
   margin: auto;
 }
 
-.ECMTempForm .UIFormWithTitle label {
+.ECMTempForm label {
 	width: 100px;
 }
 
-.ECMTempForm .UIFormWithTitle .UIForm .textarea {
+.ECMTempForm .UIForm .textarea {
   width: 320px;
   height: 300px;
 }
 
-.ECMTempForm .UIFormWithTitle .UIAction {
+.ECMTempForm .UIAction {
 	width: 310px;
 	padding-left: 90px;
 
 }
 
-.ECMTempForm .UIFormWithTitle .UIForm .textarea {
+.ECMTempForm .UIForm .textarea {
   width: 320px;
   height: 300px;
 }
@@ -503,16 +524,16 @@
   margin: auto;
 }
 
-.CBTempForm .UIFormWithTitle label {
+.CBTempForm label {
 	width: 100px;
 }
 
-.CBTempForm .UIFormWithTitle .UIForm textarea {
+.CBTempForm .UIForm textarea {
   width: 320px;
   height: 300px;
 }
 
-.CBTempForm .UIFormWithTitle .UIForm .UIAction {
+.CBTempForm .UIForm .UIAction {
   width: 270px;
 }
 
@@ -532,11 +553,11 @@
 	margin: 3px 0px 0px 3px;
 }
 
-.UIActionManager .UIActionTypeForm .UIFormWithTitle label {
+.UIActionManager .UIActionTypeForm label {
 	width: 140px;
 }
 
-.UIActionManager .UIActionTypeForm .UIFormWithTitle .HorizontalLayout {
+.UIActionManager .UIActionTypeForm .HorizontalLayout {
 	padding: 10px 0px 0px 30px; 
 }
 
@@ -579,16 +600,16 @@
   margin-top: 7px;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout {
+.UIECMScripts .HorizontalLayout {
   padding-top: 7px;
 }
 
-.UIECMScripts .UIFormWithTitle .HorizontalLayout .UIAction {
+.UIECMScripts .HorizontalLayout .UIAction {
   width: 290px;
   margin: auto;
 }
 
-.UIECMScripts .UIFormWithTitle .UIForm textarea {
+.UIECMScripts .UIForm textarea {
   width: 320px;
   height: 300px;
 }
@@ -609,7 +630,7 @@
 	width: 255px;
 }
 
-.UICBScripts .UIFormWithTitle .HorizontalLayout {
+.UICBScripts .HorizontalLayout {
   padding-top: 7px;
 }
 
@@ -618,12 +639,12 @@
   margin: auto;
 }
 
-.UICBScripts .UIFormWithTitle .HorizontalLayout .UIAction {
+.UICBScripts .HorizontalLayout .UIAction {
   width: 290px;
   margin: auto;
 }
 
-.UICBScripts .UIFormWithTitle .UIForm textarea {
+.UICBScripts .UIForm textarea {
   width: 320px; height: 300px;
 }
 
@@ -657,57 +678,57 @@
   margin: 5px ;
 }
 
-.UITemplatesManager .UIFormWithTitle {
+.UITemplatesManager {
   width:auto;
   padding-top: 7px;
   border: none;
 }
 
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
+.UITemplatesManager .UITemplateEditForm .HorizontalLayout {
 	border: none;
 	padding: 0px;
 }
 
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
-	width: 200px;
+.UITemplatesManager .UITemplateEditForm .UIAction {
+	width: 170px;
 	margin: auto;
 	padding: 5px 0px 5px 0px;
 }
 
-.UITemplatesManager .UIFormWithTitle .UIForm .textarea {
+.UITemplatesManager .UIForm .textarea {
   width: 350px;  height: 250px; 
 }
 
-.UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction {
-  width: 290px; 
+.UITemplatesManager .UIDialogTab .UIAction {
+  width: 260px; 
   padding: 0px 0px 10px 0px;
   margin: auto;
 }
 
-.UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction {
-  width: 290px; 
+.UITemplatesManager .UIViewTab .UIAction {
+  width: 260px; 
   margin: auto;
   padding: 0px 0px 10px 0px;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
 
-.UINamespaceManager .UIFormWithTitle .HorizontalLayout {
+.UINamespaceManager .HorizontalLayout {
   padding-top: 15px;
 }
 /*############################## -- UIRuleManager  -- ########################*/
 
-.UIRuleManager .UIFormWithTitle .HorizontalLayout {
+.UIRuleManager .HorizontalLayout {
   padding-top: 10px;
 }
 
-.UIRuleManager .UIFormWithTitle .HorizontalLayout .UIAction {
+.UIRuleManager .HorizontalLayout .UIAction {
   width: 290px;
   padding-top: 15px;
   margin:auto;
 }
 
-.UIRuleManager .UIFormWithTitle .textarea {
+.UIRuleManager .textarea {
   width: 446px;
   height: 300px;
   margin-left: 25px;
@@ -778,7 +799,7 @@
   width: 230px ;
 }
 
-.UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+.UIECMAdminPortlet .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
   margin: 3px 5px 0px 5px;
 }
