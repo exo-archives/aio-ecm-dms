@@ -126,7 +126,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     getUIFormSelectBox(PARENTVERSION).setOptions(getParentVersions()).setDisabled(false) ;
     getUIFormSelectBox(PROTECTED).setOptions(booleanItem).setDisabled(false) ;
     getUIFormSelectBox(MULTIPLE).setOptions(booleanItem).setDisabled(false) ;
-    getUIStringInput(VALUE_CONSTRAINTS).setValue(null) ;
+    getUIStringInput(VALUE_CONSTRAINTS).setEditable(true).setValue(null) ;
     UINodeTypeForm uiForm = getParent() ;
     UIFormInputSetWithAction uiPropertyTab = uiForm.getChildById(UINodeTypeForm.PROPERTY_DEFINITION) ; 
     uiForm.setActionInTab(uiPropertyTab) ;
@@ -184,6 +184,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     getUIFormSelectBox(PARENTVERSION).setDisabled(true) ;
     getUIFormSelectBox(PROTECTED).setDisabled(true) ;
     getUIFormSelectBox(MULTIPLE).setDisabled(true) ;
+    getUIStringInput(VALUE_CONSTRAINTS).setEditable(false) ;
   }
 
   private PropertyDefinitionValue getPropertyByName(String propertyName, List<PropertyDefinitionValue> listProperty) {

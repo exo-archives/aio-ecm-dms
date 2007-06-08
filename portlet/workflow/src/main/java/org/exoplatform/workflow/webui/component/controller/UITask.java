@@ -372,7 +372,6 @@ public class UITask extends UIForm {
           try {
             Map variables = maps.getWorkflowVariables();
             uiTask.serviceContainer.endTask(uiTask.identification, variables, transition);
-            
           } catch (Exception e) {
             e.printStackTrace();
           }

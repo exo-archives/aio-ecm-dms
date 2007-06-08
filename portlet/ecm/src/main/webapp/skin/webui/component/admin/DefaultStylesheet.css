@@ -319,6 +319,14 @@
   float: left;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer input {
+  float: none;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
 }

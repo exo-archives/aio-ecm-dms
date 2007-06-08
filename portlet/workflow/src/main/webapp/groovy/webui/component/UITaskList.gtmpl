@@ -5,7 +5,7 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-			<th>&nbsp;</th>
+			<th><%=_ctx.appRes(name+".header.actor")%></th>
 			<th><%=_ctx.appRes(name+".header.id")%></th>
 			<th><%=_ctx.appRes(name+".header.processName")%></th>
 			<th><%=_ctx.appRes(name+".header.taskName")%></th>

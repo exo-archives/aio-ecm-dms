@@ -122,3 +122,13 @@
 .UIFastContentCreatorPortlet .UIFormInputSetWithAction .FieldContainer {
   margin-left: 80px;
 }
+
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
+	margin: auto;
+	padding-bottom: 0px;
+	width: 100%;
+}

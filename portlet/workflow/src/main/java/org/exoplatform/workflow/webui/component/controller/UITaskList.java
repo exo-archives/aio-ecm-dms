@@ -93,11 +93,11 @@ public class UITaskList extends UIContainer {
       UITaskList taskList = event.getSource() ;
       String tokenId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       taskList.setRenderSibbling(UITaskList.class) ;
-      UIWorkflowControllerPortlet portlet = taskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
-      UIPopupWindow popup = portlet.getChild(UIPopupWindow.class) ;
-      popup.setShow(true) ;
-      popup.setRendered(true) ;
-      UITaskManager uiTaskManager = (UITaskManager)popup.getUIComponent() ;
+      UIWorkflowControllerPortlet uiControllerPortlet = taskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
+      UIPopupWindow uiPopup = uiControllerPortlet.getChild(UIPopupWindow.class) ;
+      uiPopup.setShow(true) ;
+      uiPopup.setRendered(true) ;
+      UITaskManager uiTaskManager = (UITaskManager)uiPopup.getUIComponent() ;
       UITask uiTask = uiTaskManager.getChild(UITask.class) ;
       try {
         uiTask.setIdentification(tokenId) ;

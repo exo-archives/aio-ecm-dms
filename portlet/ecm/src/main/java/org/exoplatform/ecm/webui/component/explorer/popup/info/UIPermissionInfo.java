@@ -112,7 +112,7 @@ public class UIPermissionInfo extends UIContainer {
         node.save() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) {
           uiJCRExplorer.getSession().save() ;
-          uiJCRExplorer.refreshExplorer() ;
+          uiJCRExplorer.getSession().refresh(false) ;
         }
         uiJCRExplorer.setIsHidePopup(true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
