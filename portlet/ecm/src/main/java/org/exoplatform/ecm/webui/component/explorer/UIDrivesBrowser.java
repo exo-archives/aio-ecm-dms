@@ -26,6 +26,7 @@ import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIContainer;
@@ -52,15 +53,19 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIDrivesBrowser extends UIContainer {
   
-  private String repoName_ = "repository" ;
+  private String repoName_ ;
   
   public UIDrivesBrowser() throws Exception {
+    RepositoryService rService = getApplicationComponent(RepositoryService.class) ;
+    repoName_ = rService.getDefaultRepository().getConfiguration().getName() ;
   }
 
   public List<String> getRepositoryList() {
+    RepositoryService rService = getApplicationComponent(RepositoryService.class) ;    
     List<String> repositories = new ArrayList<String>() ;    
-    repositories.add("default") ;
-    repositories.add("repository") ;
+    for( RepositoryEntry re : rService.getConfig().getRepositoryConfigurations()) {
+      repositories.add(re.getName()) ;
+    }
     return repositories ;
   }
 
@@ -72,7 +77,7 @@ public class UIDrivesBrowser extends UIContainer {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
     //  TODO Check this code again when JCR is complete
-    if(repoName_.equals("default")) repoName = "repository" ;
+    //if(repoName_.equals("default")) repoName = "repository" ;
     ManageableRepository repository = rservice.getRepository(repoName) ;  
     Session digitalSession = repository.getSystemSession("digital-assets") ;    
     List<DriveData> driveList = new ArrayList<DriveData>() ;

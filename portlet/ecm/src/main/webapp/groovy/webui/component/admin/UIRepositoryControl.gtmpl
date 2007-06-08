@@ -33,5 +33,4 @@
 		</div>
 		<div style="clear:left;"><span></span></div>	
 	</div>
-	<%uicomponent.renderChild(UIPopupAction.class);%>	
 </div>
