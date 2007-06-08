@@ -11,7 +11,6 @@
 			<th><%=_ctx.appRes(name+".header.taskName")%></th>
 			<th><%=_ctx.appRes(name+".header.description")%></th>
 			<th><%=_ctx.appRes(name+".header.actorId")%></th>
-			<th><%=_ctx.appRes(name+".header.taskVariables")%></th>
 			<th><%=_ctx.appRes(name+".header.processDateStart")%></th>
 			<th><%=_ctx.appRes(name+".header.action")%></th>
     </tr>
@@ -39,14 +38,7 @@
 
 	      <td class="text"><%=(task.getDescription() == null ? "&nbsp;" : task.getDescription()) ;%></td>
 	      <td class="text"><%=task.getActorId()%></td>
-	      <td class="text">
-          <% variables = uicomponent.getVariables(task)%>
-				  <ul>
-					<%for(key in variables.keySet()) {%>
-					  <li>$key :  <%=variables.get(key)%></li>
-					<%}%>
-					</ul>
-        </td>
+
 	      <td class="text"><%=uicomponent.getProcessInstanceStartDate(task)%></td>
 	      <td class="text"><a href="<%=uicomponent.event("ManageState", task.getId())%>">Manage</a></td>
 	    </tr>

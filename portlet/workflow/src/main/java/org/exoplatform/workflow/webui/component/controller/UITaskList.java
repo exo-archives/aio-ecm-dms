@@ -51,10 +51,6 @@ public class UITaskList extends UIContainer {
     return workflowServiceContainer.getProcess(task.getProcessId()).getName();
   }
 
-  public Map getVariables(Task task) {
-    return workflowServiceContainer.getVariables(task.getProcessInstanceId(), task.getId());
-  }
-
   public Date getProcessInstanceStartDate(Task task) {
     return this.workflowServiceContainer.getProcessInstance(task.getProcessInstanceId()).getStartDate();
   }
