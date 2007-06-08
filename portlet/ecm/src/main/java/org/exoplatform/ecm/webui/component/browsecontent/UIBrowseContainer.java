@@ -787,8 +787,16 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
-    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    Node contentNode = null;
+    if(node.hasNode(Utils.EXO_IMAGE)) {
+      contentNode = node.getNode(Utils.EXO_IMAGE) ;
+    } else if(node.hasNode(Utils.JCR_CONTENT)) {
+      if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
+      contentNode = node.getNode(Utils.JCR_CONTENT) ;
+      String mimeType = contentNode.getProperty(Utils.JCR_MIMETY).getString() ;
+      if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
+    }
+    InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;

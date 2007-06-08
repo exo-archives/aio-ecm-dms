@@ -145,13 +145,16 @@
 	            %>
 	              <td><%=defaultValue.toString()%></td>
 	              <%
-	                StringBuffer contraints = new StringBuffer("") ;
-									    contraintValues = bean.getValueConstraints() ;
-									    if(contraintValues != null && contraintValues.length > 0) {											    
-										    for(value in contraintValues) {											
-										      contraints.append(value).append(",") ;
-										    }
-										  }
+	                StringBuilder contraints = new StringBuilder() ;
+							    contraintValues = bean.getValueConstraints() ;
+							    if(contraintValues != null && contraintValues.length > 0) {											    
+								    for(value in contraintValues) {											
+								      if(value != null) {
+								        if(contraints.length() > 0) contraints.append(",") ;
+									      contraints.append(value.getString()) ;
+								      }
+								    }
+								  }
 	              %>
 	              <td><%=contraints.toString()%></td>
 	            </tr>

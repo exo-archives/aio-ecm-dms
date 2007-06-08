@@ -106,7 +106,14 @@ public class UIJCRExplorer extends UIContainer {
   
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {
-    jcrTemplateResourceResolver_ = new JCRResourceResolver(session_, "exo:templateFile") ; 
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    Session session ;
+    try {
+      session = repositoryService.getRepository().getSystemSession(getCurrentWorkspace()) ;
+    } catch(Exception e) {
+      session = session_ ;
+    }
+    jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ; 
   }
   
   public Session getSessionByWorkspace(String wsName) throws Exception{
