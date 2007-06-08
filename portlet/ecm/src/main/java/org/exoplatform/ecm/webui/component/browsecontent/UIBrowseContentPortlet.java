@@ -45,9 +45,10 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   }
   
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
+    UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
+    uiContainer.loadPortletConfig(getPortletPreferences()) ;
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
-    UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
       uiTabPane.setRendered(false) ;
