@@ -137,10 +137,6 @@
 	border-top: none ;
 }
 
-.UIWorkspaceWizard .UITabPane .TabPaneContent .UITabContentContainer .UITabContent {
-	margin: 10px;
-}
-
 .UIWorkspaceWizard .UIFormInputSet .FieldContainer {
 	padding-bottom: 5px;
 }

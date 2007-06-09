@@ -76,8 +76,6 @@ public class UIDrivesBrowser extends UIContainer {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
-    //  TODO Check this code again when JCR is complete
-    //if(repoName_.equals("default")) repoName = "repository" ;
     ManageableRepository repository = rservice.getRepository(repoName) ;  
     Session digitalSession = repository.getSystemSession("digital-assets") ;    
     List<DriveData> driveList = new ArrayList<DriveData>() ;

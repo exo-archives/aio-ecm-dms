@@ -92,17 +92,16 @@ public class UIRepositoryControl extends UIContainer {
       UIRepositoryControl uiControl = event.getSource() ;
       String repoName = uiControl.getChild(UIRepositorySelectForm.class).getSelectedValue() ;
       RepositoryService rservice = uiControl.getApplicationComponent(RepositoryService.class) ;
+      UIApplication uiApp = uiControl.getAncestorOfType(UIApplication.class) ;
       if(!rservice.canRemoveRepository(repoName)) {
-        UIApplication uiApp = uiControl.getAncestorOfType(UIApplication.class) ;
         Object[] args = new Object[]{repoName}  ;        
-        uiApp.addMessage(new ApplicationMessage("UIRepositoryControl.msg.cannot-deleteRepo", args)) ;
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryControl.msg.cannot-delete", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
       try {
         rservice.removeRepository(repoName) ;
       } catch (Exception e) {
-        System.out.println("\n\n exception here + ::");
         e.printStackTrace() ;
       }
       uiControl.reloadValue() ;
