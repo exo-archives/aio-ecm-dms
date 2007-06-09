@@ -74,7 +74,9 @@
 			</div>
 			<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px">
 				<%
-				  if(node.hasNode("exo:image")) {
+				  def imageNode = node.getNode("exo:image") ;
+				  def inputStream = imageNode.getProperty("jcr:data").getStream() ;
+				  if(inputStream.available() > 0) {
 				%>
       			<image src="<%=uicomponent.getImage(node)%>" width="250" height="150"/> 
       	<%}%>

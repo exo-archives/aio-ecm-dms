@@ -796,9 +796,8 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       String mimeType = contentNode.getProperty(Utils.JCR_MIMETY).getString() ;
       if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
     }
-    if(contentNode == null) return null ;
-    if(contentNode.getProperty(Utils.JCR_DATA).getValue() == null) return null ;
     InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    if(input.available() == 0) return null ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
