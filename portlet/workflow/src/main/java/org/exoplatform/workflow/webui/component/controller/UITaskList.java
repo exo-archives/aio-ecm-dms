@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.jcr.PathNotFoundException;
 
@@ -39,26 +38,26 @@ import org.exoplatform.webui.event.EventListener;
     events = {@EventConfig(listeners = UITaskList.ManageStateActionListener.class)}
 )
 public class UITaskList extends UIContainer {
-  private WorkflowServiceContainer workflowServiceContainer;
-  private WorkflowFormsService workflowFormsService;
+  private WorkflowServiceContainer workflowServiceContainer_;
+  private WorkflowFormsService workflowFormsService_;
 
   public UITaskList() throws Exception {
-    workflowServiceContainer = getApplicationComponent(WorkflowServiceContainer.class);
-    workflowFormsService = getApplicationComponent(WorkflowFormsService.class);
+    workflowServiceContainer_ = getApplicationComponent(WorkflowServiceContainer.class);
+    workflowFormsService_ = getApplicationComponent(WorkflowFormsService.class);
   }
 
   public String getProcessName(Task task) {
-    return workflowServiceContainer.getProcess(task.getProcessId()).getName();
+    return workflowServiceContainer_.getProcess(task.getProcessId()).getName();
   }
 
   public Date getProcessInstanceStartDate(Task task) {
-    return this.workflowServiceContainer.getProcessInstance(task.getProcessInstanceId()).getStartDate();
+    return this.workflowServiceContainer_.getProcessInstance(task.getProcessInstanceId()).getStartDate();
   }
 
   public String getIconURL(Task task) {
     try {
       Locale locale = getAncestorOfType(UIApplication.class).getLocale();    
-      Form form = workflowFormsService.getForm(task.getProcessId(), task.getTaskName(), locale);
+      Form form = workflowFormsService_.getForm(task.getProcessId(), task.getTaskName(), locale);
       return form.getIconURL(); 
     } catch(Exception e) {
       return "" ;
@@ -69,7 +68,7 @@ public class UITaskList extends UIContainer {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     String remoteUser = pcontext.getRemoteUser();
     if (remoteUser == null) return selectVisibleTasks(new ArrayList<Task>()) ;      
-    List<Task> unsortedTasks = workflowServiceContainer.getAllTasks(remoteUser);
+    List<Task> unsortedTasks = workflowServiceContainer_.getAllTasks(remoteUser);
     return selectVisibleTasks(unsortedTasks) ; 
   }
 
@@ -78,7 +77,7 @@ public class UITaskList extends UIContainer {
     Locale locale = getAncestorOfType(UIApplication.class).getLocale();    
     for (Iterator iter = all.iterator(); iter.hasNext();) {
       Task task = (Task) iter.next();
-      Form form = workflowFormsService.getForm(task.getProcessId(), task.getTaskName(), locale);
+      Form form = workflowFormsService_.getForm(task.getProcessId(), task.getTaskName(), locale);
       if(!form.isDelegatedView()) { filtered.add(task) ; }
     }
     return filtered;
@@ -100,9 +99,9 @@ public class UITaskList extends UIContainer {
         uiTask.setIsStart(false) ;
         uiTask.updateUITree() ;
       } catch (PathNotFoundException e){
-        Task task = taskList.workflowServiceContainer.getTask(tokenId);
+        Task task = taskList.workflowServiceContainer_.getTask(tokenId);
         String pid = task.getProcessInstanceId();       
-        taskList.workflowServiceContainer.deleteProcessInstance(pid);
+        taskList.workflowServiceContainer_.deleteProcessInstance(pid);
       }
     }
   }
