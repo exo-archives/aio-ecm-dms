@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Value;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -16,8 +17,10 @@ import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadForm;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.resources.LocaleConfig;
 import org.exoplatform.services.resources.LocaleConfigService;
+import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.component.UIForm;
 import org.exoplatform.webui.component.UIFormCheckBoxInput;
+import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.UIFormSelectBox;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.component.model.SelectItemOption;
@@ -88,6 +91,7 @@ public class UILanguageTypeForm extends UIForm {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setEnable(false) ;
         } else {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(false) ;
+          uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setEnable(true) ;
         }
         if(node.hasNode(Utils.LANGUAGES)) {
           Node languagesNode = node.getNode(Utils.LANGUAGES) ;
@@ -117,6 +121,11 @@ public class UILanguageTypeForm extends UIForm {
             uiDialogForm.setPropertyNode(languageNode) ;
           } else {
             uiDialogForm.setPropertyNode(null) ;
+            for(UIComponent uiChild : uiDialogForm.getChildren()) {
+              if(uiChild instanceof UIFormMultiValueInputSet) {
+                ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;
+              }
+            }
           }
         }
       } else {

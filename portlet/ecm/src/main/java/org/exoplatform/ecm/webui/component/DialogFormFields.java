@@ -290,8 +290,9 @@ public class DialogFormFields extends UIForm {
           uiMulti.setId(name) ;
           uiMulti.setName(name) ;
           uiMulti.setType(UIFormStringInput.class) ;
+          uiMulti.setValue(new ArrayList<Value>()) ;
           addUIFormInput(uiMulti) ;
-        }
+        } 
       } else {
         uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
         uiMulti.setId(name) ;
@@ -319,6 +320,7 @@ public class DialogFormFields extends UIForm {
         }
         uiMulti.setValue(valueList) ;        
       }
+      
       renderField(name) ;
       return ;
     } 

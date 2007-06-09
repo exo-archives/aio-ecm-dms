@@ -5,11 +5,13 @@
 package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
 import java.security.AccessControlException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -26,6 +28,8 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.component.UIApplication;
+import org.exoplatform.webui.component.UIComponent;
+import org.exoplatform.webui.component.UIFormMultiValueInputSet;
 import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -122,8 +126,13 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, 
                                               Util.getPortalRequestContext().getRemoteUser());
       homeNode.getSession().save() ;
-      Object[] args = { prefLocate } ;
       reset() ;
+      for(UIComponent uiChild : getChildren()) {
+        if(uiChild instanceof UIFormMultiValueInputSet) {
+          ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;
+        }
+      }
+      Object[] args = { prefLocate } ;
       uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.saved-successfully", args)) ;
     } catch (AccessControlException ace) {
       throw new AccessDeniedException(ace.getMessage());
