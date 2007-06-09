@@ -18,8 +18,11 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.portlet.WindowState;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
@@ -64,6 +67,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.ViewByTagActionListener.class),
+        @EventConfig(listeners = UIBrowseContainer.BackViewActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
     }
 )
@@ -160,7 +164,8 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     }
   }
 
-  public String getTemplate() {return templatePath_ ;}
+  public String getTemplate() {
+    return templatePath_ ;}
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
@@ -665,6 +670,11 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
 
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
+      String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
+      if(useMaxState != null) {
+        ActionResponse response = event.getRequestContext().getResponse() ;
+        response.setWindowState(WindowState.MAXIMIZED);
+      }
       UIBrowseContainer uiContainer = event.getSource() ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
@@ -726,6 +736,24 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       uiContainer.history_.clear() ;
       uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }
+  
+  static public class BackViewActionListener extends EventListener<UIBrowseContainer> {
+    public void execute(Event<UIBrowseContainer> event) throws Exception {
+      String normalState = event.getRequestContext().getRequestParameter("normalState") ;
+      if(normalState != null) {
+        ActionResponse response = event.getRequestContext().getResponse() ;
+        response.setWindowState(WindowState.NORMAL);
+      }
+      UIBrowseContainer uiContainer = event.getSource() ;
+      if(uiContainer.isShowDocumentDetail()) {
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+      }
+      uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
