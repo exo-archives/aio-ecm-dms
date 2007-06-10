@@ -13,7 +13,9 @@ import javax.jcr.observation.EventIterator;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.AccessControlList;
 import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.security.SecurityService;
 
 public abstract class BaseActionLauncherListener implements ECMEventListener {
@@ -54,11 +56,12 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     if (events.hasNext()) {
       Event event = events.nextEvent();  
       Node node = null;      
-      String userId = event.getUserID();
       Session jcrSession = null;
       try {
         jcrSession = repositoryService.getRepository().getSystemSession(srcWorkspace_);
         node = (Node) jcrSession.getItem(srcPath_);
+        AccessControlList acl = ((ExtendedNode) node).getACL();
+        String userId = (acl != null) ? acl.getOwner() : "__unknown";
         Node actionNode = actionServiceContainer.getInitAction(node, actionName_);
         Property rolesProp = actionNode.getProperty("exo:roles");
         boolean hasPermission = false;
@@ -73,11 +76,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         }
         if (!hasPermission)
           return;
-      } catch (Exception e) {
-        e.printStackTrace();
-        return;
-      }            
-      try {                
+
         String path = event.getPath();
         Map<String, String> variables = new HashMap<String, String>();
         variables.put("initiator", userId);
