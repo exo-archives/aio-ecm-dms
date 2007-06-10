@@ -9,6 +9,8 @@
 
 .UIWindow .UIBrowseContentPortlet {
   overflow: auto;
+  background: #ffffff;
+  border: none;
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
@@ -17,6 +19,8 @@
 
 .UIBrowseContentPortlet {
   overflow: auto;
+  background: #ffffff;
+  border: 1px solid #b7b7b7;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
