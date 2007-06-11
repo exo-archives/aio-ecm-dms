@@ -51,13 +51,12 @@
   float: none;
   border: none;
 }
+.UIJCRExplorerPortlet .UIFormGrid input.checkbox{
+  border: none;
+}
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
-}
-
-.UIJCRExplorerPortlet .UIFormGrid .FieldLabel {
-  width: 128px;
 }
 
 .UIJCRExplorerPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
@@ -406,7 +405,6 @@
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch {
   width: 500px;
   margin: auto;
-  border: solid 1px red;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
@@ -533,12 +531,12 @@
   padding-top: 10px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
-  padding-bottom: 8px;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
   padding-bottom: 10px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
+  padding-bottom: 8px;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
@@ -605,6 +603,12 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIJCRExplorer .UIGroupMembershipSelector {
+	width: 92%;
+	margin: auto;
+	padding: 10px 0px;
+}
+
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipTitle{
 	border: none;
 	border-bottom: solid 1px #b7b7b7;
@@ -618,6 +622,7 @@
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
 	background: none;
+	overflow: hidden;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {

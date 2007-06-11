@@ -203,6 +203,10 @@
   float: none;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
+ 	padding: 4px 8px 4px 0px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
   border: none;
@@ -618,62 +622,42 @@
 
 /*############################## --Begin UITemplatesManager --##############################*/
 
-.UIECMAdminPortlet .UITemplatesManager .UIPageIterator {
-  float: right;
-  width: 95%;
+.UIECMAdminPortlet .UITemplatesManager   {
+ 	padding: 2px 0px 0px 2px;
 }
 
-.UIECMAdminPortlet .UITemplatesManager .UIAction {
-  width: 80px;
+.UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer{
+  width: 550px ;
   margin: auto;
 }
 
-.UIECMAdminPortlet .UITemplatesManager .UITabPane .HorizontalLayout .UIAction {
-  width: 265px;
-}
-
-.UIECMAdminPortlet .UITemplatesManager .UIFormInputSet .UIFormInputSetWithAction {
-  width: 500px;
-  margin: auto;
-}
-
-.UITemplatesManager .UIGrid .ActionContainer {
+.UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {
   width: 50px ;
-  margin: auto;
 }
 
-.UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 350px; 
-  height: 300px; 
-  padding: 5px ;
+.UIECMAdminPortlet .UITemplatesManager .UIForm .textarea {
+  width: 400px;
+  height: 300px;
+  padding: 3px;
 }
 
-.UITemplatesManager .UIFormTabPane .UIForm label {
-  width: 120px; 
+.UIECMAdminPortlet .UITemplatesManager .UIFormTabPane .UIAction {
+  width: 300px; 
 }
 
-.UITemplatesManager .UINodeTypeList .UIAction {
-  width: 90px ; 
+.UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .UIAction {
+	width: 160px;
+	padding-right: 80px;
 }
 
-.UITemplatesManager .UIFormWithTitle {
-  padding-top: 7px;
-  width: auto;
+.UIECMAdminPortlet .UITemplatesManager .UITemplateList .UIAction {
+  width: 80px ;
 }
 
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .HorizontalLayout {
-	width: 500px;
+.UITemplatesManager .UITabPane {
+	width: 95%;
+	padding: 10px 0px;
 	margin: auto;
-	border: none;
-}
-
-.UITemplatesManager .UITemplateEditForm .UIFormWithTitle .UIAction {
-	padding-left: 85px;
-}
-
-.UITemplatesManager .UIFormWithTitle .UIForm .textarea {
-  width: 350px; 
-  height: 250px; 
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
@@ -756,64 +740,38 @@
 	padding: 10px 0px 10px 50px;
 }
 
-/*############################## -- UIDialogTab -- ########################*/
+/*----------------------------UIDialogTab-------------------------------*/
 
-.UITemplatesManager .UITabPane {
-	width: 95%;
-	padding: 10px 0px;
-	margin: auto;
+.UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator{
+	margin-bottom: 15px;
 }
 
-.UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator {
-	margin-bottom: 15px;
+.UITemplatesManager .UITabPane .UIDialogTab .UIAction {
+	width: 300px;
+	padding-left: 30px;
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
 	margin: 30px 0px 0px 0px;
 }
 
-.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout {
-	width: 550px;
-	margin: auto;
-	border: none;
+.UITemplatesManager .DialogForm .HorizontalLayout .UIFormInputSet {
+	width: auto;
 }
 
-.UITemplatesManager .UIDialogTab .DialogForm .HorizontalLayout label {
-	width: 120px;
-}
-
-.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithAction {
-	margin: 0px;
-	padding: 0px;
-}
-
-.UITemplatesManager .DialogForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
-	padding:  15px 0px 0px 0px;
-}
-
-.UITemplatesManager .UIDialogTab .UIFormWithTitle .UIAction {
-  width: 270px; 
-  padding-right: 15px;
-}
-
-/*############################## -- UIViewTab -- ########################*/
-
-.UITemplatesManager .UIViewTab .UIFormWithTitle .UIAction {
-  width: 270px;
-  padding-right: 15px; 
-}
+/*----------------------------UIViewTab-------------------------------*/
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	margin: 30px 0px 0px 0px;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithAction {
-	margin: 0px;
-	padding: 0px;
+.UITemplatesManager .UITabPane .UIViewTab .UIAction {
+	width: 300px;
+	padding-left: 30px;
 }
 
-.UITemplatesManager .ViewForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer {
-	padding:  15px 0px 0px 0px;
+.UITemplatesManager .UITabPane .UIViewTab .ViewForm {
+	margin: 30px 0px 0px 0px;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {

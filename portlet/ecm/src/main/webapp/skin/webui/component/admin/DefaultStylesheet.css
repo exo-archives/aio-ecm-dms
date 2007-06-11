@@ -92,13 +92,6 @@
 	margin-right: 5px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .FieldContainer a {
-	width: 16px;
-	height: 16px;	
-	float: left;
-	margin: 2px 5px 0px 5px;
-}
-
 .UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 }
@@ -134,16 +127,6 @@
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	border-top: none ;
-}
-
-.UIWorkspaceWizard .UIFormInputSet .FieldContainer {
-	padding-bottom: 5px;
-}
-
-.UIWorkspaceWizard .UIFormInputSet .FieldContainer label {
-	width: 128px;
-	text-align: right;
-	margin-right: 5px;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -200,13 +183,18 @@
 
 .UIECMAdminPortlet .UIFormGrid input.radio {
   float: none;
+  border: none;
+}
+
+.UIECMAdminPortlet .UIFormGrid input.checkbox{
+  border: none;
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
 }
 
-.UIECMAdminPortlet .UIFormGrid .FieldLabel {
+.UIECMAdminPortlet .FormContainer .UIFormGrid .FieldLabel {
   width: 128px;
 }
 
@@ -313,6 +301,10 @@
 	width: 100%;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
+ 	padding: 4px 8px 4px 0px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
   float: left;
 }
@@ -327,6 +319,11 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
+  border: none;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
+  border: none;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {

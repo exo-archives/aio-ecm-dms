@@ -16,21 +16,6 @@
   width: 95%;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer select {
-  border: solid 1px #b7b7b7;
-  padding-left: 3px;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer textarea {
-  border: solid 1px #b7b7b7;
-  padding: 3px;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input {
-  padding-left: 3px;
-  border: solid 1px #b7b7b7;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
@@ -440,6 +425,11 @@
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 250px;
   padding-right: 180px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
+  padding: 0px;
+  border: none;
 }
 
 /*================================UIMetadataSelectForm=================================*/
