@@ -119,8 +119,8 @@
   border: none;
 }
 
-.UIFastContentCreatorPortlet .UIFormInputSetWithAction .FieldContainer {
-  margin-left: 80px;
+.UIFastContentCreatorPortlet .UIFormInputSetWithAction .FormContainer {
+  margin-left: 20px;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {

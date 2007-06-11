@@ -38,7 +38,7 @@ public class UIECMScripts extends UIContainer {
     addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
   }
 
-  private List<SelectItemOption<String>>getECMCategoryOptions() throws Exception {
+  private List<SelectItemOption<String>> getECMCategoryOptions() throws Exception {
     List<SelectItemOption<String>> ecmOptions = new ArrayList<SelectItemOption<String>>() ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     Node ecmScriptHome = scriptService.getECMScriptHome() ;
@@ -50,7 +50,7 @@ public class UIECMScripts extends UIContainer {
     return ecmOptions ;
   }
 
-  public void refresh () throws Exception {
+  public void refresh() throws Exception {
     UIECMFilterForm ecmFilterForm = getChild(UIECMFilterForm.class) ;
     ecmFilterForm.setOptions(getECMCategoryOptions()) ;
     String categoryName = 

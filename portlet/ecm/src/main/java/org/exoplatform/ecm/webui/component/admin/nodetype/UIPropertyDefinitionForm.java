@@ -167,9 +167,9 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
             for(int j = 0 ; j < cons.length ; j ++) {
               if(conValues.length() > 0) conValues.append(", ") ;
               conValues.append(cons[j]) ;
-              getUIStringInput(CONSTRAINTS + j).setValue(conValues.toString()) ;
             }
           }
+          getUIStringInput(VALUE_CONSTRAINTS).setValue(conValues.toString()) ;
           String parentVersion = Integer.toString(propertyDefinitions[i].getOnParentVersion()) ;
           getUIFormSelectBox(PARENTVERSION).setValue(parentVersion) ;
           break ;

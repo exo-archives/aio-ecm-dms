@@ -12,7 +12,6 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 
@@ -25,7 +24,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/admin/script/UIECMFilterForm.gtmpl",
-    events = {@EventConfig(phase=Phase.DECODE, listeners = UIECMFilterForm.ChangeActionListener.class)}
+    events = {@EventConfig(listeners = UIECMFilterForm.ChangeActionListener.class)}
 )
 
 public class UIECMFilterForm extends UIForm {
@@ -52,8 +51,6 @@ public class UIECMFilterForm extends UIForm {
       UIScriptList uiScriptList = uiECMScripts.getChildById(UIECMScripts.SCRIPTLIST_NAME) ;
       String categoryName = uiForm.getUIFormSelectBox(FIELD_SELECT_SCRIPT).getValue() ;
       uiScriptList.updateGrid(uiECMScripts.getECMScript(categoryName)) ;
-      uiECMScripts.refresh() ;
-      uiECMScripts.setRendered(true) ;
       UIScriptManager sManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
       sManager.getChild(UICBScripts.class).setRendered(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMScripts) ;
