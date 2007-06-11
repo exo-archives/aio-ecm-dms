@@ -4,8 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -14,7 +14,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Jan 25, 2007  
  * 1:59:57 PM
  */
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 public class UIViewMetadataContainer extends UIContainer {
 
   public UIViewMetadataContainer() throws Exception {

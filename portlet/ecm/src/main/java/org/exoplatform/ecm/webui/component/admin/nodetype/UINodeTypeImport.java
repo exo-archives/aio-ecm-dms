@@ -15,19 +15,19 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.component.UIApplication;
-import org.exoplatform.webui.component.UIForm;
-import org.exoplatform.webui.component.UIFormCheckBoxInput;
-import org.exoplatform.webui.component.UIFormInputInfo;
-import org.exoplatform.webui.component.UIFormInputSet;
-import org.exoplatform.webui.component.UIFormTableInputSet;
-import org.exoplatform.webui.component.UIPopupWindow;
-import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormCheckBoxInput;
+import org.exoplatform.webui.form.UIFormInputInfo;
+import org.exoplatform.webui.form.UIFormInputSet;
+import org.exoplatform.webui.form.UIFormTableInputSet;
 
 /**
  * Created by The eXo Platform SARL
@@ -38,7 +38,7 @@ import org.exoplatform.webui.event.Event.Phase;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template =  "system:/groovy/webui/component/UIForm.gtmpl",
+    template =  "system:/groovy/webui/form/UIForm.gtmpl",
     events = {
       @EventConfig(listeners = UINodeTypeImport.ImportActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UINodeTypeImport.UploadActionListener.class),

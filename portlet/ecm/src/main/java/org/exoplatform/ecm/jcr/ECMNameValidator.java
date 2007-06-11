@@ -5,9 +5,9 @@
 package org.exoplatform.ecm.jcr;
 
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.component.UIFormInput;
-import org.exoplatform.webui.component.validator.Validator;
 import org.exoplatform.webui.exception.MessageException;
+import org.exoplatform.webui.form.UIFormInput;
+import org.exoplatform.webui.form.validator.Validator;
 
 /**
  * Created by The eXo Platform SARL

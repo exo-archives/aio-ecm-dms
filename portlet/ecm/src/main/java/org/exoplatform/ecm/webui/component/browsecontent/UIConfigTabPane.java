@@ -18,12 +18,12 @@ import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.UIForm;
-import org.exoplatform.webui.component.UIPopupWindow;
-import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
-import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.bean.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.form.UIForm;
 
 /**
  * Created by The eXo Platform SARL

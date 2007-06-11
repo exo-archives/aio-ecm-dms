@@ -11,8 +11,8 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
-import org.exoplatform.webui.component.UIGrid;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIGrid;
 
 /**
  * Created by The eXo Platform SARL
@@ -22,7 +22,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * 2:55:47 PM
  */
 @ComponentConfig(
-    template = "system:/groovy/webui/component/UIGrid.gtmpl"
+    template = "system:/groovy/webui/core/UIGrid.gtmpl"
 )
 public class UITagStyleList extends UIGrid {
 

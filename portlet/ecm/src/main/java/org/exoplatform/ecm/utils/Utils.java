@@ -18,10 +18,10 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
-import org.exoplatform.webui.component.UIFormDateTimeInput;
-import org.exoplatform.webui.component.UIFormInputBase;
-import org.exoplatform.webui.component.UIFormMultiValueInputSet;
-import org.exoplatform.webui.component.UIFormUploadInput;
+import org.exoplatform.webui.form.UIFormDateTimeInput;
+import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormUploadInput;
 
 public class Utils {
 	final public static String WORKSPACE_NAME = "workspace".intern() ;   

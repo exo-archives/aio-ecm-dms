@@ -7,14 +7,14 @@ package org.exoplatform.ecm.webui.component.admin.views;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.exoplatform.webui.component.UIFormTabPane;
-import org.exoplatform.webui.component.UIPopupWindow;
-import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormTabPane;
 
 /**
  * Created by The eXo Platform SARL
@@ -25,7 +25,7 @@ import org.exoplatform.webui.event.Event.Phase;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template =  "system:/groovy/webui/component/UIFormTabPane.gtmpl",
+    template =  "system:/groovy/webui/form/UIFormTabPane.gtmpl",
     events = {
         @EventConfig( listeners = UIViewFormTabPane.SaveActionListener.class),
         @EventConfig( listeners = UIViewFormTabPane.ResetActionListener.class),

@@ -3,13 +3,13 @@ package org.exoplatform.ecm.webui.component.explorer;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
-import org.exoplatform.webui.component.UIPortletApplication;
-import org.exoplatform.webui.component.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIPortletApplication;
+import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 
 @ComponentConfig(
     lifecycle = UIApplicationLifecycle.class,
-    template =  "system:/groovy/webui/component/UIApplication.gtmpl"
+    template =  "system:/groovy/webui/core/UIApplication.gtmpl"
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
   

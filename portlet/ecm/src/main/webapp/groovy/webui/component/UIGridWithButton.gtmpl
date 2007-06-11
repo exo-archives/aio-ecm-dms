@@ -1,5 +1,5 @@
 <%
-  import org.exoplatform.webui.component.UIComponent ;
+  import org.exoplatform.webui.core.UIComponent ;
 
   String[] beanFields =  uicomponent.getBeanFields() ;
   String[] beanActions =  uicomponent.getBeanActions() ;

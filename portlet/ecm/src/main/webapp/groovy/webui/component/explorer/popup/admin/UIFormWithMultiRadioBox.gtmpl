@@ -8,7 +8,7 @@
  */
 %>
 <%
-  import org.exoplatform.webui.component.UIFormRadioBoxInput ;
+  import org.exoplatform.webui.form.UIFormRadioBoxInput ;
 %>
 <div class="$uicomponent.id">
   <div class="UIFormWithTitle">

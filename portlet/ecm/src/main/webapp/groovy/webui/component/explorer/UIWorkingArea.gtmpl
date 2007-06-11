@@ -10,7 +10,7 @@
 <%
   import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar ;
   import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace ;
-  import org.exoplatform.webui.component.UIRightClickPopupMenu ;
+  import org.exoplatform.webui.core.UIRightClickPopupMenu ;
 %>
 <div class="UIWorkingArea" id="UIWorkingArea">
   <%

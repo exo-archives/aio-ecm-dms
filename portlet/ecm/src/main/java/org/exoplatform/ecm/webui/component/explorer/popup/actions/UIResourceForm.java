@@ -13,15 +13,15 @@ import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.component.UIForm;
-import org.exoplatform.webui.component.UIFormStringInput;
-import org.exoplatform.webui.component.UIFormTextAreaInput;
-import org.exoplatform.webui.component.UIFormUploadInput;
-import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.UIFormTextAreaInput;
+import org.exoplatform.webui.form.UIFormUploadInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -34,7 +34,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
   lifecycle = UIFormLifecycle.class,
   type     = UIResourceForm.class,
-  template =  "system:/groovy/webui/component/UIFormWithTitle.gtmpl",
+  template =  "system:/groovy/webui/form/UIFormWithTitle.gtmpl",
   events = {
     @EventConfig(listeners = UIResourceForm.SaveActionListener.class),
     @EventConfig(listeners = UIResourceForm.BackActionListener.class)

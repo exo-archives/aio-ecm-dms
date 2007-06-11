@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL

@@ -4,7 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.jcr;
 
-import org.exoplatform.webui.component.UIComponent;
+import org.exoplatform.webui.core.UIComponent;
 
 /**
  * Created by The eXo Platform SARL

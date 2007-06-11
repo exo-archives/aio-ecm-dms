@@ -4,9 +4,9 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.script;
 
-import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
 
 /**
  * Created by The eXo Platform SARL
@@ -15,7 +15,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * September 27, 2006
  * 09:13:15 AM
  */
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 
 public class UIScriptManager extends UIContainer {
 

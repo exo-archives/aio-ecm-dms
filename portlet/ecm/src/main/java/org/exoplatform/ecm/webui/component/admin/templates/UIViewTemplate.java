@@ -4,8 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.templates;
 
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -14,7 +14,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Oct 03, 2006
  * 9:43:23 AM 
  */
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 
 public class UIViewTemplate extends UIContainer {
   private String nodeTypeName_ ;

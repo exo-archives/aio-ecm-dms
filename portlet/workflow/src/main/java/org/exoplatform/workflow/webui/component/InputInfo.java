@@ -4,7 +4,7 @@
  **************************************************************************/
 package org.exoplatform.workflow.webui.component;
 
-import org.exoplatform.webui.component.UIFormInput;
+import org.exoplatform.webui.form.UIFormInput;
 
 /**
  * Created by The eXo Platform SARL

@@ -4,8 +4,8 @@
  **************************************************************************/
 package org.exoplatform.workflow.webui.component.controller ;
 
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -14,7 +14,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 public class UITaskManager extends UIContainer {
   
   private UIDocumentContent uiDocContent;

@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.webui.component.UIContainer;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL

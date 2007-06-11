@@ -14,12 +14,12 @@ import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.component.UIApplication;
-import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.UIGrid;
-import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -31,7 +31,7 @@ import org.exoplatform.webui.event.EventListener;
  * 10:07:15 AM
  */
 @ComponentConfig(
-    template = "system:groovy/webui/component/UITabPane.gtmpl",
+    template = "system:groovy/webui/core/UITabPane.gtmpl",
     events = {@EventConfig(listeners = UIControllerManager.ManageStartActionListener.class)}
 )
 public class UIControllerManager extends UIContainer {

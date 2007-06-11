@@ -10,8 +10,8 @@ import java.util.Iterator;
 import javax.jcr.Session;
 import javax.jcr.Node ;
 
-import org.exoplatform.webui.component.UIFormSelectBox;
-import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.form.UIFormSelectBox;
+import org.exoplatform.webui.bean.SelectItemOption;
 
 import org.exoplatform.services.cms.CmsConfigurationService ;
 import org.exoplatform.services.cms.scripts.CmsScript ;

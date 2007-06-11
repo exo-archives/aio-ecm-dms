@@ -7,9 +7,9 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 import javax.jcr.Node;
 import javax.jcr.version.Version;
 
-import org.exoplatform.webui.component.UIForm;
-import org.exoplatform.webui.component.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
+import org.exoplatform.webui.form.UIForm;
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong

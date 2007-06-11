@@ -7,7 +7,7 @@
  * 6:15:56 PM 
  */
 %>
-<% import org.exoplatform.webui.component.UIPageIterator; %>
+<% import org.exoplatform.webui.core.UIPageIterator; %>
 <div class="UIActionList" id="$uicomponent.id">
   <table class="UIGrid">
 	  <thead>

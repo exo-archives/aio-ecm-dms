@@ -6,8 +6,8 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -16,7 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * September 17, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 
 public class UIPropertiesManager extends UIContainer implements UIPopupComponent {
 

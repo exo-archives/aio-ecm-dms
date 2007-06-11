@@ -7,10 +7,10 @@ package org.exoplatform.ecm.webui.component.admin.metadata;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.services.jcr.core.ExtendedPropertyType;
-import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.UIPopupWindow;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 

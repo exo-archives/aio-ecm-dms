@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.component.UIForm;
-import org.exoplatform.webui.component.UIFormInput;
-import org.exoplatform.webui.component.UIFormInputSet;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormInput;
+import org.exoplatform.webui.form.UIFormInputSet;
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh

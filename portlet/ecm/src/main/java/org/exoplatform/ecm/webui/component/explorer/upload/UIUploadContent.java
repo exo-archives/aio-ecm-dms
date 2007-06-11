@@ -13,9 +13,9 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 

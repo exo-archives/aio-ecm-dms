@@ -14,13 +14,13 @@ import org.exoplatform.organization.webui.component.UIGroupMembershipSelector;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.impl.GroupImpl;
 import org.exoplatform.services.organization.impl.UserImpl;
-import org.exoplatform.webui.component.UIBreadcumbs;
-import org.exoplatform.webui.component.UIComponent;
-import org.exoplatform.webui.component.UIPopupWindow;
-import org.exoplatform.webui.component.UITree;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
+import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.UITree;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -41,12 +41,12 @@ import org.exoplatform.webui.event.EventListener;
   ),
   @ComponentConfig(
       type = UITree.class, id = "UITreeGroupSelector",
-      template = "system:/groovy/webui/component/UITree.gtmpl",
+      template = "system:/groovy/webui/core/UITree.gtmpl",
       events = @EventConfig(listeners = UITree.ChangeNodeActionListener.class)
   ),
   @ComponentConfig(
       type = UIBreadcumbs.class, id = "BreadcumbGroupSelector",
-      template = "system:/groovy/webui/component/UIBreadcumbs.gtmpl",
+      template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl",
       events = @EventConfig(listeners = UIBreadcumbs.SelectPathActionListener.class)
   )
 })

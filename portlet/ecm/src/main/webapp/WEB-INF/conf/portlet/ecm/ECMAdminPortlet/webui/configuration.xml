@@ -1,7 +1,7 @@
 <webui-configuration>
   <annotation-classes>
     <class>org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet</class>
-    <class>org.exoplatform.webui.component.UIPopupMessages</class> 
+    <class>org.exoplatform.webui.core.UIPopupMessages</class> 
     <class>org.exoplatform.ecm.webui.component.UIFormInputSetWithAction</class>
     <class>org.exoplatform.ecm.webui.component.admin.nodetype.UIChildNodeDefinitionForm</class>
     <class>org.exoplatform.ecm.webui.component.admin.nodetype.UIPropertyDefinitionForm</class>

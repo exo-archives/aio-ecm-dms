@@ -9,8 +9,8 @@ import java.util.ArrayList ;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 
-import org.exoplatform.webui.component.UIFormSelectBox;
-import org.exoplatform.webui.component.model.SelectItemOption;
+import org.exoplatform.webui.form.UIFormSelectBox;
+import org.exoplatform.webui.bean.SelectItemOption;
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh

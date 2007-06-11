@@ -17,8 +17,8 @@ import org.exoplatform.services.document.diff.DeleteDelta;
 import org.exoplatform.services.document.diff.Delta;
 import org.exoplatform.services.document.diff.DiffService;
 import org.exoplatform.services.document.diff.Revision;
-import org.exoplatform.webui.component.UIComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 
 /**
  * Created by The eXo Platform SARL

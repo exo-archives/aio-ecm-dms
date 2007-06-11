@@ -1,5 +1,5 @@
 <%
-  import org.exoplatform.webui.component.UIFormSelectBox ;
+  import org.exoplatform.webui.form.UIFormSelectBox ;
 %>
 
 <div class="UICBSearchForm">

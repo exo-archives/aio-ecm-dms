@@ -1,7 +1,7 @@
 package org.exoplatform.ecm.webui.component.admin.views;
 
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -11,7 +11,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * 11:45:11 AM 
  */
 
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 public class UIViewManager extends UIContainer {
   public UIViewManager() throws Exception{
     addChild(UIViewContainer.class, null, null) ;

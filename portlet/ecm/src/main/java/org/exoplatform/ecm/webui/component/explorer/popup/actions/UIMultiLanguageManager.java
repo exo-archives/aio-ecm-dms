@@ -6,8 +6,8 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -16,7 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Jan 16, 2007  
  * 11:23:26 AM
  */
-@ComponentConfig(template = "system:groovy/webui/component/UITabPane.gtmpl")
+@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
 public class UIMultiLanguageManager extends UIContainer implements UIPopupComponent {
 
   public UIMultiLanguageManager() throws Exception {

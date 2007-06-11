@@ -4,8 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.search;
 
-import org.exoplatform.webui.component.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -16,7 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Editor: pham tuan Oct 27, 2006
  */
 
-@ComponentConfig( template = "system:groovy/webui/component/UITabPane.gtmpl" )
+@ComponentConfig( template = "system:groovy/webui/core/UITabPane.gtmpl" )
 public class UIECMSearch extends UIContainer {
   public UIECMSearch() throws Exception {
     addChild(UISimpleSearch.class, null, null) ;

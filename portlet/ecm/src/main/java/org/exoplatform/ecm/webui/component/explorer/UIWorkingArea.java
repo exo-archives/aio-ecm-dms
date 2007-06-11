@@ -42,12 +42,12 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.component.UIApplication;
-import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.UIRightClickPopupMenu;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -65,7 +65,7 @@ import org.exoplatform.webui.event.EventListener;
   @ComponentConfig(
       type = UIRightClickPopupMenu.class,
       id = "ECMContextMenu",
-      template = "system:/groovy/webui/component/UIRightClickPopupMenu.gtmpl",
+      template = "system:/groovy/webui/core/UIRightClickPopupMenu.gtmpl",
       events = {
         @EventConfig(listeners = UIWorkingArea.EditDocumentActionListener.class),
         @EventConfig(listeners = UIWorkingArea.CopyActionListener.class),

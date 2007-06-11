@@ -4,9 +4,9 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.nodetype;
 
-import org.exoplatform.webui.component.UIContainer;
-import org.exoplatform.webui.component.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 /**
  * Created by The eXo Platform SARL

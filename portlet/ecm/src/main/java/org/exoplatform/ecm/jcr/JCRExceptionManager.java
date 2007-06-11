@@ -20,7 +20,7 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.component.UIApplication;
+import org.exoplatform.webui.core.UIApplication;
 
 public class JCRExceptionManager {
 
