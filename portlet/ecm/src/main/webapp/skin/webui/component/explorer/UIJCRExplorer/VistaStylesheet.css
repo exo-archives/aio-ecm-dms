@@ -348,18 +348,8 @@
   padding-bottom: 3px; 
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm label {
-  width: 200px;
-  text-align: right;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController {
  	padding: 13px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .FieldContainer label {
-  padding: 0px 3px 0px 0px;
-  width: 160px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
@@ -385,21 +375,8 @@
   padding-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer {
-  width: 500px;
-  margin: 0px auto;
-}
-
 .UIJCRExplorerPortlet .UIUploadForm .FileNameLabel {
  overflow: hidden ;
-}
-.UIJCRExplorerPortlet .UIUploadForm .FieldContainer label {
-  width: 120px;
-  margin: 0px; 
-}
-
-.UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle input {
-  margin-left: 6px;
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
@@ -443,10 +420,6 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer label {
-  width: 115px;
-}
-
 .UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
   width: 185px;
 }
@@ -458,11 +431,6 @@
   margin: 0px auto;
 }
 
-.UIJCRExplorerPortlet .UITaggingForm .FieldContainer .UIFormInputSet {
-  padding: 0px;
-  margin: 0px;
-}
-
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
   width: 205px;
   padding: 0px 0px 8px 10px;
@@ -472,11 +440,6 @@
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .HorizontalLayout  {
   border: none;
-}
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .FieldContainer {
-  width: 500px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
@@ -520,11 +483,6 @@
 
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm .FieldContainer {
-  width: 480px;
-  margin: 0px auto;
-}
-
 .UIJCRExplorerPortlet .UICommentForm .FieldContainer input {
   border: solid 1px #b7b7b7;
 }
@@ -536,20 +494,9 @@
 
 /*================================UISimpleSearch=================================*/
 
-.UIJCRExplorerPortlet .UISimpleSearch .FieldContainer {
-  width: 500px;
-  margin: auto;
-}
-.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .FieldContainer {
-  padding-top: 8px;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout label {
-  width: 150px;
-}
-
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 415px;
+  width: 410px;
+  padding-left: 40px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -558,20 +505,22 @@
 
 /*================================UIJCRAdvancedSearch=================================*/
 
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch {
+  width: 450px;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIAction {
   width: 275px;
 }
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
-  padding: 3px;
+.UIJCRExplorerPortlet .UIMetadataSelectForm {
+  width: 500px;
+  margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer label {
-  width: 130px;
-}
-
-.UIJCRExplorerPortlet .UITabContent .Execute16x16Icon {
-	margin: 4px 0px 0px 0px;
+.UIJCRExplorerPortlet .UIMetadataSelectForm .UIAction {
+  width: 190px;
 }
 
 /*================================UIConstraintsForm=================================*/
@@ -627,15 +576,6 @@
   padding: 15px 0px;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer {
-  width: 350px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input.checkbox  {
-  margin-left: 2px ;
-} 
-
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 190px;
   padding-left: 15px;
@@ -646,14 +586,6 @@
 .UIJCRExplorerPortlet .UIImportNode {
   padding: 15px 0px;
 }
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .FieldContainer {
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input.checkbox  {
-  margin-left: 2px ;
-} 
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 200px;
@@ -745,7 +677,4 @@
 .UIJCRExplorer .UICategoryManager .UIAction {
 	width: 70px;
 }
-
-
-
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

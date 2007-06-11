@@ -320,3 +320,7 @@
   cursor: pointer;
   margin: 2px 0px;
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
+  width: 128px;
+}

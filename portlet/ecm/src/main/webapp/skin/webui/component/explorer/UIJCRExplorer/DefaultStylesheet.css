@@ -403,6 +403,11 @@
 
 /*================================UIJCRAdvancedSearch=================================*/
 
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch {
+  width: 500px;
+  margin: auto;
+  border: solid 1px red;
+}
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 220px;
