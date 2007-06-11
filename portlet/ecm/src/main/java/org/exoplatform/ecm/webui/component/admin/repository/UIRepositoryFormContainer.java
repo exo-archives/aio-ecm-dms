@@ -4,13 +4,13 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.repository;
 
+import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 
 /**
  * Created by The eXo Platform SARL

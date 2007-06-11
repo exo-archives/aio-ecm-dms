@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.jcr;
 
 import java.util.List;
+
 import javax.jcr.Node;
 
 /**

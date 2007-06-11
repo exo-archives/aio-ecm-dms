@@ -6,11 +6,13 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

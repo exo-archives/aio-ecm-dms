@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.organization.webui.component.UIGroupMembershipSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -16,6 +15,7 @@ import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UITree;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.organization.UIGroupMembershipSelector;
 
 /**
  * Created by The eXo Platform SARL

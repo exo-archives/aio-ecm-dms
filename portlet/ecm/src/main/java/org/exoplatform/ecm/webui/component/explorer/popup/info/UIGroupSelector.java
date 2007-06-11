@@ -10,7 +10,6 @@ import java.util.List;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.organization.webui.component.UIGroupMembershipSelector;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.impl.GroupImpl;
 import org.exoplatform.services.organization.impl.UserImpl;
@@ -23,6 +22,7 @@ import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UITree;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.organization.UIGroupMembershipSelector;
 
 /**
  * Created by The eXo Platform SARL

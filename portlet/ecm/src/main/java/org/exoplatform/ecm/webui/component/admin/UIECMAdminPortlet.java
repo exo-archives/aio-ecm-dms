@@ -4,8 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin;
 
-import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;

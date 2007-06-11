@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component;
 import java.io.Writer;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.form.UIFormInputBase;
 

@@ -13,7 +13,14 @@
   <url>http://www.exoplatform.org</url>
   <description>exo-portal.portlets.ecm Portlet</description>
   
-  <dependencies>    
+  <dependencies> 
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.eXo</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+       
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
       <artifactId>exo.portal.webui.portal</artifactId>
