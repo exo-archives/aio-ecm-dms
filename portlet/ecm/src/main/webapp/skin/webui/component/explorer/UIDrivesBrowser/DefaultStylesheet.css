@@ -15,13 +15,12 @@
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository {
   float: left;
-  width: 230px;
+  width: 210px;
   border: solid 1px #d9d9d9;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
-  border: solid 1px #f3f3f3;
-  background: #f5f5f5;
+  border: solid 1px #ffffff;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
@@ -31,60 +30,66 @@
   color: white;
   font-weight: bold;
   padding-left: 10px;
-  font-size: 14px;
-  font-family: Arial;
+  font-size: 12px;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
-  width: 222px;
+  width: 202px;
   border: solid 1px #e3e3e3;
   margin: 3px auto 1px auto;
   padding: 1px;
 }
 
+.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList a{
+	color: #116EAA;
+}
+
+.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList a:hover{
+	color: orange;
+}
+
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
-  background: #f5f5f5 url('DefaultSkin/background/BottomRepositoryList1x10.gif') repeat-x ;
+  background: #f5f5f5 url('DefaultSkin/background/BottomRepositoryList1x10.gif') repeat-x bottom;
   height: 10px;
   line-height: 10px;
   margin: 80px 0px 1px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
-  margin: 0px 0px 0px 240px; 
+  margin: 0px 0px 0px 220px; 
   border: 1px solid #d9d9d9; 
   padding: 1px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
-  background: #d3e3f1 url('DefaultSkin/background/DrivesTitle338x23.gif') no-repeat left;
+  background: #b0cfea url('DefaultSkin/background/DrivesTitle338x23.gif') no-repeat left;
   height: 23px;
   line-height: 23px;
   color: white;
   font-weight: bold;
   padding-left: 10px;
-  font-size: 14px;
-  font-family: Arial;
+  font-size: 12px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
   border: 1px solid #d9d9d9; 
   background: #f3f3f3;
   margin: 3px 1px 1px 1px;
-  padding:5px 0px 5px 10px;
+  padding:7px 0px 5px 10px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
   float: left;
   border: solid 1px #ffffff;
-  margin: 7px 10px 8px 5px;
+  margin: 6px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   float: left;
-  width: 194px;
+  width: 95px; height: 80px;
   border: solid 1px #d1d1d1;
   background: white;
-  padding: 10px 0px 5px 0px;
+  padding: 8px 0px 5px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
@@ -94,16 +99,16 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel {
-  height: 20px;
-  line-height: 20px;
-  margin: auto;
+  line-height: 14px;
   text-align: center;
+  width: 80px;
+  margin: 3px auto 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a {
   color: #116eaa;
   text-decoration: none;
-  font-weight: bold; font-size: 11px;
+  font-size: 11px;
   padding-top: 8px;
 }
 

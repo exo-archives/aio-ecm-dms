@@ -18,8 +18,8 @@
 		  String style = "" ;
 		  
 		  if( uicomponent.isShowSideBar() ) {
-		    style = "margin-left: 244px;"
-		    println "<div style=\"float: left; width: 244px;\">" ;
+		    style = "margin-left: 224px;"
+		    println "<div style=\"float: left; width: 224px;\">" ;
 		  	uicomponent.renderChild(UISideBar.class) ; 
 		  	println "</div>" ;
 		  }

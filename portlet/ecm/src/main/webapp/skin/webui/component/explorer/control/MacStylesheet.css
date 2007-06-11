@@ -18,40 +18,39 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
   float: left;
-  padding-left: 10px;
+  padding-left: 8px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewBox {
   float: left;
-  width: 300px;
-  height: 26px;
+  height: 24px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
   float: left;
-  padding-left: 5px;
+  padding-left: 6px;
   font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
   float: right;
-  padding-right: 8px;
+  padding-right: 10px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .WorkspaceName {
+.UIJCRExplorerPortlet .UIJCRExplorer .IconFrame .WorkspaceName {
 	float: left;
-	padding-right: 8px;
+	padding-right: 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
   float: left;
-  height: 24px;
-  margin-top: 2px;
+  height: 27px;
+  margin: 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
   float: left;
-  margin: 2px 3px 0px 15px;
+  margin: 2px 7px;
   cursor: pointer;
 }
 
@@ -71,7 +70,6 @@
 }
 
 /*############################## -- End UIViewBar -- ##############################*/
-
 /*############################## -- Begin UIViewBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar {
@@ -84,7 +82,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressBarSeparator {
   float: left;
   height: 26px;
-  padding: 2px 8px;
+  padding: 2px 4px 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockLeft {
@@ -94,7 +92,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressLabel {
   float: left;
   line-height: 30px;
-  padding-left: 5px;
+  padding-left: 2px;
   font-size: 11px;
 }
 
@@ -122,7 +120,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 58px 0px 116px;
+  margin: 4px 50px 0px 93px;
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #b7b7b7;
@@ -189,6 +187,20 @@
 /*############################## -- End UIAddressBar -- ##############################*/
 /*############################## -- Begin UIActionBar -- ##############################*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.radio {
+  float: none;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.checkbox {
+  border: none;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
   border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;
@@ -203,10 +215,11 @@
   font-size: 11px; color: #058ee6;
   width: 92px;
 }
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
   float: left;
   height: 31px;
-  padding: 0px 8px;
+  padding: 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
@@ -306,23 +319,4 @@
   white-space: nowrap;
   cursor: pointer;
   margin: 2px 0px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input {
-  padding-left: 3px;
-  border: solid 1px #b7b7b7;
-  margin-bottom: 5px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.radio {
-  float: none;
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .FieldComponent .ActionIcon {
-  margin: 0px 5px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
-  width: 128px;
 }

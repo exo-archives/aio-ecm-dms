@@ -16,10 +16,11 @@
 .UIWindow .UIJCRExplorerPortlet .UIRepository {
   float: left;
   width: 234px;
+  border: solid 1px #d7d7d7;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
-  border: solid 1px #d7d7d7;
+  border: solid 1px #ffffff;
   background: url('MacSkin/background/BGRepositoryList1x3.gif') repeat;
   width: 232px;
 }
@@ -28,11 +29,10 @@
   background: url('MacSkin/background/RepositoryTitle232x31.gif') no-repeat ;
   height: 31px;
   line-height: 31px;
-  color: black;
+  color: #333333;
   font-weight: bold;
   padding-left: 10px;
-  font-size: 14px;
-  font-family: Arial;
+  font-size: 12px;
 }
 
 .UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
@@ -56,9 +56,7 @@
   padding: 10px 0px 6px 0px ;
   text-align: center;
   color: #f9a606;
-  font-weight: bold;
-  font-size: 17px;
-  font-family: arial;
+  font-size: 12px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
@@ -71,11 +69,10 @@
   background: #c8e0f2 url('MacSkin/background/DrivesListTitle195x28.gif') no-repeat left center;
   height: 28px;
   line-height: 28px;
-  color: black;
+  color: #333333;
   font-weight: bold;
   padding-left: 10px;
-  font-size: 14px;
-  font-family: Arial;
+  font-size: 12px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
@@ -85,21 +82,26 @@
   background: url('MacSkin/background/BGRepositoryList1x3.gif') repeat;
 }
 
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
+  border: 1px solid #d9d9d9; 
+  background: #f3f3f3;
+  margin: 3px 1px 1px 1px;
+  padding:7px 0px 5px 10px;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
   float: left;
   border: solid 1px #ffffff;
-  margin: 7px 10px 8px 5px;
+  margin: 6px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   float: left;
-  width: 194px;
+  width: 95px; height: 85px;
   border: solid 1px #d1d1d1;
   background: white;
-  padding: 10px 0px 5px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .DecoratorMiddle {
+  padding: 8px 0px 5px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Icon {
@@ -109,16 +111,16 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel {
-  height: 20px;
-  line-height: 20px;
-  margin: auto;
+  line-height: 14px;
   text-align: center;
+  width: 80px;
+  margin: 3px auto 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a {
-  color: #111caa;
+  color: #116eaa;
   text-decoration: none;
-  font-weight: normal; font-size: 11px;
+  font-size: 11px;
   padding-top: 8px;
 }
 
@@ -163,3 +165,4 @@
   background: url('MacSkin/background/UserTaxonomy.gif') no-repeat;
 }
 /*############################## -- End UIDrivesBrowser -- ##############################*/
+

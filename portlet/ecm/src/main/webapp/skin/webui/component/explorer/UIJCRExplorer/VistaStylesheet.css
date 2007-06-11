@@ -40,20 +40,6 @@
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .NormalBg42x30 {
-  width: 42px; height: 30px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .OverBg42x30 {
-  width: 42px; height: 30px;
-  background: url('DefaultSkin/background/SelectedBackground42x30.gif') no-repeat center center;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .SelectedBg42x30 {
-  width: 42px; height: 30px;
-  background: url('DefaultSkin/background/SelectedBackground42x30.gif') no-repeat center center;
-}
-
 /*############################## -- End UIJCRExplorer -- ##############################*/
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 .UIJCRExplorerPortlet .UIListView {

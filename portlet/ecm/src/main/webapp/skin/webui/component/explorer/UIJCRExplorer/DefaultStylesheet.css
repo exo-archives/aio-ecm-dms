@@ -18,23 +18,6 @@
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .NormalBg42x30 {
-  width: 42px;
-  height: 30px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .OverBg42x30 {
-  width: 42px;
-  height: 30px;
-  background: url('DefaultSkin/background/SelectedBackground42x30.gif') no-repeat center center;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .SelectedBg42x30 {
-  width: 42px;
-  height: 30px;
-  background: url('DefaultSkin/background/SelectedBackground42x30.gif') no-repeat center center;
-}
-
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
@@ -71,22 +54,28 @@
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl th {
-  line-height: 20px;
+  line-height: 19px;
   text-align: left;
   font-size: 11px ;
   padding: 0px 10px;
-  border-right: solid 1px #b7b7b7;
+  border: solid 1px #b7b7b7;
+  border-top: none; border-left: none;
   font-weight: normal;
-  background: url('DefaultSkin/background/ThGridRepeatBg1x20.gif') repeat-x center;
+  background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x center;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .OverHeader {
+  background: url('DefaultSkin/background/OverThGridRepeatBg1x19.gif') repeat-x center;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl td {
-  line-height: 28px;
+  line-height: 24px;
   padding: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .HeaderLabel {
   float: left;
+  font-size: 11px ;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .SortButton {
@@ -194,25 +183,24 @@
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
   width: auto;
   margin: auto;
-  float: left;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
-  margin: 15px 30px 15px 30px;
+  margin: 15px;
   float: left;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
-  width: 100px;
-  height: 90px;
-  border: solid 1px #e0e0e0;
-  background: #f5f5f5;
+  width: 80px;
+  height: 70px;
+  border: solid 1px #eeeeee;
+  background: #f8f8f8;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIcon {
-  width: 64px;
-  height: 64px;
-  margin: 20px auto 0px auto;
+  width: 50px;
+  height: 50px;
+  margin: 9px auto 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .Icon48x48 {
@@ -224,28 +212,19 @@
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
   text-align:center;
-  width: 100px;
-  height:22px; line-height: 24px; vertical-align: middle;
-}
-
-.UIJCRExplorerPortlet .UIThumbnailsView .ActionLabel {
-  text-align:center;
+  width: 80px;
+  line-height: 18px;
+  font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
   color: #000000;
   text-align:center;
-  width:100px;
-  margin:auto;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a:hover {
   color: blue;
-  text-align:center;
-  width:100px;
-  margin:auto;
-  cursor: pointer;
 }
 
 /*############################## -- End UIThumbnailsView -- ##############################*/
