@@ -311,10 +311,12 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
+  margin-bottom: 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.radio {
   float: none;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .FieldComponent .ActionIcon {

@@ -377,11 +377,3 @@
 .UIBrowseContentPortlet .UIJCRBrowser {
   padding: 10px 0px 0px 5px;
 }
-
-.UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
-	width: 128px;
-}
-
-.UIFastContentCreatortForm .UIFormGrid td.FieldLabel {
-	width: 128px;
-}

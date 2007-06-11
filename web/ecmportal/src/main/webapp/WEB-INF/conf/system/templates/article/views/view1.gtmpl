@@ -83,7 +83,8 @@
 		}
 		
 		.UIArticle .ArticleFrame .ArticleFrameContainer {
-		  padding: 1px 8px 5px 0px;
+			border: solid 1px #e0e0e0;
+	    border-top: none;
 		}
 		
 		.UIArticle .TopCenterArticleFrame .ArticleField {
@@ -92,9 +93,7 @@
 		  background: white;
 		}
 		
-		.UIArticle .MidlleRightArticleFrame  {
-	    border: solid 1px #e0e0e0;
-	    border-top: none;
+		.UIArticle .MidlleLeftArticleFrame  {
 	    background: white;
 		}
 		
@@ -138,20 +137,18 @@
 		}
 		
 		.UIArticle .FieldContent {
-		  font: normal 11px Verdana;
+		  padding: 1px 8px 5px 0px;
+		}
+		
+		.UIArticle .FieldContent .FieldContainerContent {
+			font: normal 11px Verdana;
 		  background: white;
 		  margin: 5px 2px 3px 18px;
 		}
 		
-		.UIArticle .FieldContent .FieldContainerContent {
-			width: 95%;
-			overflow: hidden;
-		}
-		
 		.UIArticle .FieldContent .LabelContent{
 		 	padding: 5px 0px 0px 5px;
-		 	width: 90%;
-		 	line-height: 13px;
+		 	overflow: hidden;
 		}
 		
     .UIArticle .DocumentRating {

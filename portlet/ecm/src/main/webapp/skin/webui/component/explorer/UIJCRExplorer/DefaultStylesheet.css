@@ -49,6 +49,7 @@
 
 .UIJCRExplorerPortlet .UIFormGrid input.radio {
   float: none;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -451,6 +452,11 @@
 
 /*================================UIActionContainer=================================*/
 
+.UIJCRExplorerPortlet .UIActionContainer {
+  padding: 10px;
+  margin-top: 10px;
+}
+
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
   float: left;
 }
@@ -548,6 +554,18 @@
 .UIJCRExplorerPortlet .UIPropertyTab .UIAction {
   width: 160px ;
 }
+
+/*===========================UIUploadForm====================*/
+
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIAction {
+  width: 170px;
+  padding-right: 60px;
+}
+
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UIGrid .OddRow {

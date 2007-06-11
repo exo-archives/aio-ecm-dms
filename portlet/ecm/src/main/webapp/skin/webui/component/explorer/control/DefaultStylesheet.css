@@ -187,6 +187,20 @@
 /*############################## -- End UIAddressBar -- ##############################*/
 /*############################## -- Begin UIActionBar -- ##############################*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.radio {
+  float: none;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.checkbox {
+  border: none;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
   border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;

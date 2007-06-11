@@ -9,11 +9,12 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIAction {
   width: 200px ;
+  padding-left: 25px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .UIAction {
   width: 240px ;
-  padding-right: 80px;
+  padding-right: 40px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
@@ -41,6 +42,10 @@
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
 	width: 95%;
 	margin: 10px auto;	
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet .text .checkbox{
+	margin-left: 15px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {

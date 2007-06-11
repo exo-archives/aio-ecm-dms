@@ -121,7 +121,6 @@
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	padding: 10px 0px;
-	border-bottom: none ;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .WizardLabel {
@@ -310,6 +309,9 @@
 
 /*############################## --UIFormWithTitle -- ########################*/
 /*############################## -- UIFormInputSet -- ########################*/
+.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+}
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
   float: left;
@@ -328,7 +330,7 @@
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  margin: 0px 0px 2px 10px ;
+  margin-bottom: 5px ;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
@@ -431,7 +433,6 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction {
   width: 250px ;
-  padding-right: 15px;
 }
 
 /*############################## -- ECMTemplate -- ########################*/

@@ -233,7 +233,7 @@
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a:hover {
   color: blue;
   text-align:center;
-  width:100px;
+  width: 100px;
   margin:auto;
   cursor: pointer;
 }
@@ -346,16 +346,6 @@
   border: none;
 }
 
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .FieldContainer {
-  width: 500px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .FieldContainer select {
-  width: 260px;
-  border: solid 1px #b7b7b7;
-}
-
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 260px;
   margin: auto;
@@ -377,11 +367,6 @@
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
   border-bottom: none;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer label {
-  width: 120px;
-  padding-right: 5px;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer .MyEditor {
@@ -441,15 +426,6 @@
 
 /*================================UISimpleSearch=================================*/
 
-.UIJCRExplorerPortlet .UISimpleSearch .FieldContainer {
-  width: 500px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .FieldContainer {
-  padding-top: 8px;
-}
-
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
   width: 370px;
   padding-right: 120px;
@@ -461,22 +437,9 @@
 
 /*================================UIJCRAdvancedSearch=================================*/
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer {
-  width: 500px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .FieldContainer label {
-  width: 130px;
-}
-
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 250px;
   padding-right: 180px;
-}
-
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
-  padding: 3px;
 }
 
 /*================================UIMetadataSelectForm=================================*/
@@ -523,22 +486,17 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet  .UIActionContainer .UIActionTypeForm label {
-  width: 170px;
+.UIJCRExplorerPortlet .UIActionContainer {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
+  float: left;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
   width: 170px;
   padding-left: 15px;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .FieldContainer {
-  overflow: hidden;
-  width: 98%;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .FieldContainer input {
-  float: left;
 }
 
 /*================================UIActionList=================================*/
@@ -548,11 +506,6 @@
 }
 
 /*================================UIPropertyForm=================================*/
-
-.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle {
-  width: 500px;
-  margin: auto;
-}
 
 .UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle .UIAction {
   width: 70px;	
@@ -569,46 +522,19 @@
   overflow: hidden;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input  {
-  width: 15px; height: 15px;
-  margin: 0px;
-  padding: 2px 0px;
-} 
-
 .UIJCRExplorerPortlet .UIExportNode .FieldContainer .nodePath {
   margin-left: 5px;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout input.checkbox  {
-  margin-left: 5px ;
-} 
-
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 170px;
   padding-right: 100px;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .FieldContainer .MultiRadioInput .radio {
-  width: 20px;
-  margin-left: 0px;
-  float: none;
-  border: none;
 }
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
   padding: 10px 0px;
 }
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input  {
-  width: 15px; height: 15px;
-  margin: 0px;
-  padding:  2px 0px;
-} 
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout input.checkbox  {
-  margin-left: 2px ;
-} 
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 170px;
@@ -685,6 +611,7 @@
   float: left;
   border: solid 1px #b7b7b7;
 }
+
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
 	float: left;
 	margin: 4px 3px 0px 3px;

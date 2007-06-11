@@ -168,10 +168,16 @@
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
+  margin-bottom: 5px;
 }
 
 .UIECMAdminPortlet .UIFormGrid input.radio {
   float: none;
+  border: none;
+}
+
+.UIECMAdminPortlet .UIFormGrid input.checkbox {
+  border: none;
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -193,6 +199,10 @@
   float: left;
 }
 
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer input {
+  float: none;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
   border: none;
@@ -204,7 +214,7 @@
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  margin: 0px 0px 2px 10px ;
+  margin: 0px 0px 5px 0px ;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
