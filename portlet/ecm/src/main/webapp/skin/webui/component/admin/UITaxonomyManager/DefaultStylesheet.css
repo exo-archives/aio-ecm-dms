@@ -30,9 +30,13 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FormContainer  {
+	width: 500px;
+	margin: auto;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .UIAction {
 	width: 160px;
-	padding-right: 80px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {

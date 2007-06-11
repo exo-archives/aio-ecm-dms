@@ -12,9 +12,23 @@
   padding-left: 25px;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .FormContainer {
+  width: 500px ;
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .UIAction {
   width: 240px ;
-  padding-right: 40px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .propertyDefinition .FormContainer {
+  width: 500px ;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .childNodeDefinition .FormContainer {
+  width: 500px ;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane {
