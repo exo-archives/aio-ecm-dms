@@ -86,15 +86,15 @@ public class UITask extends UIForm {
   private static final String WORKSPACE_VARIABLE = "srcWorkspace";
 
   private Form form;
-  private boolean isStart;
-  private String identification;
+  private boolean isStart_;
+  private String identification_;
   private WorkflowServiceContainer serviceContainer;
   private WorkflowFormsService formsService;
   private TemplateService dialogService;
   private RepositoryService jcrService;
-  private List<InputInfo> inputInfo;
-  private boolean isView;
-  private boolean isCreatedOrUpdated;
+  private List<InputInfo> inputInfo_;
+  private boolean isView_;
+  private boolean isCreatedOrUpdated_;
   private String dialogPath_;
 
   public UITask() {
@@ -102,7 +102,7 @@ public class UITask extends UIForm {
     formsService = getApplicationComponent(WorkflowFormsService.class) ;
     dialogService = getApplicationComponent(TemplateService.class) ;
     jcrService = getApplicationComponent(RepositoryService.class) ;
-    inputInfo = new ArrayList<InputInfo>();
+    inputInfo_ = new ArrayList<InputInfo>();
   }
 
   public String getManageTransition() { return MANAGE_TRANSITION ; }
@@ -110,11 +110,11 @@ public class UITask extends UIForm {
   public String getStateImageURL() {
     try {
       Locale locale = getAncestorOfType(UIApplication.class).getLocale();
-      if (isStart) {
-        Process process = serviceContainer.getProcess(identification);
-        form = formsService.getForm(identification, process.getStartStateName(), locale);
+      if (isStart_) {
+        Process process = serviceContainer.getProcess(identification_);
+        form = formsService.getForm(identification_, process.getStartStateName(), locale);
       } else {
-        Task task = serviceContainer.getTask(identification);
+        Task task = serviceContainer.getTask(identification_);
         form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
       }
       return form.getStateImageURL();
@@ -130,13 +130,13 @@ public class UITask extends UIForm {
     
     Locale locale = getAncestorOfType(UIApplication.class).getLocale();
     Map variablesForService = new HashMap();
-    if (isStart) {
-      Process process = serviceContainer.getProcess(identification);
-      form = formsService.getForm(identification, process.getStartStateName(), locale);
+    if (isStart_) {
+      Process process = serviceContainer.getProcess(identification_);
+      form = formsService.getForm(identification_, process.getStartStateName(), locale);
     } else {
-      Task task = serviceContainer.getTask(identification);
+      Task task = serviceContainer.getTask(identification_);
       String processInstanceId = task.getProcessInstanceId();
-      variablesForService = serviceContainer.getVariables(processInstanceId, identification);
+      variablesForService = serviceContainer.getVariables(processInstanceId, identification_);
       form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
     }
     String workspaceName = (String) variablesForService.get(WORKSPACE_VARIABLE);
@@ -160,19 +160,22 @@ public class UITask extends UIForm {
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       if (NODE_TYPE.equals(component)) {
         dialogPath_ = dialogService.getTemplatePathByUser(true, (String) value, userName);
-        isCreatedOrUpdated = true;
+        isCreatedOrUpdated_ = true;
       } else if (NODE_EDIT.equals(component)) {
-        String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
-        Node viewNode = (Node) jcrService.getRepository().getSystemSession(workspaceName).getItem(nodePath);
-        isView = false ;
-        docContent.setNode(viewNode);
-        String nodetype = viewNode.getPrimaryNodeType().getName();
-        dialogPath_ = dialogService.getTemplatePathByUser(true, nodetype, userName);
-        isCreatedOrUpdated = true;
+        if(getChild(UIDocumentContent.class) != null) removeChild(UIDocumentContent.class) ;
+//        String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
+//        Node viewNode = (Node) jcrService.getRepository().getSystemSession(workspaceName).getItem(nodePath);
+        isView_ = false ;
+//        docContent.setNode(viewNode);
+        Task task = serviceContainer.getTask(identification_);
+        form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
+//        String nodetype = viewNode.getPrimaryNodeType().getName();
+//        dialogPath_ = dialogService.getTemplatePathByUser(true, nodetype, userName);
+        isCreatedOrUpdated_ = false ;
       } else if (NODE_VIEW.equals(component)) {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
         Node viewNode = (Node) jcrService.getRepository().getSystemSession(workspaceName).getItem(nodePath);
-        isView = true ;
+        isView_ = true ;
         docContent.setNode(viewNode);
       } else {
         if (component == null || TEXT.equals(component)) {
@@ -240,33 +243,33 @@ public class UITask extends UIForm {
         }
 //        input.setEditable(editable);
         ResourceBundle res = form.getResourceBundle();
-        inputInfo.add(new InputInfo("", "", res.getString(name + LABEL_ENCODING), input, mandatory));
+        inputInfo_.add(new InputInfo("", "", res.getString(name + LABEL_ENCODING), input, mandatory));
         addUIFormInput(input);
       }
     }
-    if(isView || isCreatedOrUpdated) taskManager.addChild(docContent) ;
+    if(isView_ || isCreatedOrUpdated_) taskManager.addChild(docContent) ;
   }
 
-  public void setIsStart(boolean b) { isStart = b ; }
-  public boolean isStart() { return isStart ; }
+  public void setIsStart(boolean b) { isStart_ = b ; }
+  public boolean isStart() { return isStart_ ; }
 
-  public boolean isView() { return isView ; }
+  public boolean isView() { return isView_ ; }
 
-  public boolean isCreatedOrUpdated() { return isCreatedOrUpdated ; }
+  public boolean isCreatedOrUpdated() { return isCreatedOrUpdated_ ; }
 
   public String getDialogPath() { return dialogPath_ ; }
 
   public ResourceBundle getWorkflowBundle() { return form.getResourceBundle() ; }
 
-  public List getInputInfo() { return inputInfo ; }
+  public List getInputInfo() { return inputInfo_ ; }
 
   public List getSubmitButtons() { return form.getSubmitButtons() ; }
 
   public boolean isCustomizedView() { return form.isCustomizedView() ; }
   public String getCustomizedView() { return form.getCustomizedView() ; }
 
-  public void setIdentification(String identification) { this.identification = identification ; }
-  public String getIdentification() { return identification ; }
+  public void setIdentification(String identification) { this.identification_ = identification ; }
+  public String getIdentification() { return identification_ ; }
 
   public VariableMaps prepareVariables() throws Exception {
     VariableMaps maps = prepareWorkflowVariables(getChildren());
@@ -317,10 +320,10 @@ public class UITask extends UIForm {
   }
 
   public void clean() {
-    isView = false;
-    isCreatedOrUpdated = false;
+    isView_ = false;
+    isCreatedOrUpdated_ = false;
     dialogPath_ = null;
-    inputInfo.clear();
+    inputInfo_.clear();
     getAncestorOfType(UITaskManager.class).removeChild(UIDocumentContent.class) ;
   }
 
@@ -332,7 +335,7 @@ public class UITask extends UIForm {
       if (remoteUser == null) remoteUser = "anonymous";
       VariableMaps maps = uiTask.prepareVariables();
       Map variables = maps.getWorkflowVariables();
-      uiTask.serviceContainer.startProcess(remoteUser, uiTask.identification, variables);
+      uiTask.serviceContainer.startProcess(remoteUser, uiTask.identification_, variables);
       uiTask.getAncestorOfType(UIPopupWindow.class).setShow(false) ;
     }
   }
@@ -343,7 +346,7 @@ public class UITask extends UIForm {
       VariableMaps maps = uiTask.prepareVariables();
       try {
         Map variables = maps.getWorkflowVariables();
-        uiTask.serviceContainer.endTask(uiTask.identification, variables);
+        uiTask.serviceContainer.endTask(uiTask.identification_, variables);
       } catch (Exception ex) {
         ex.printStackTrace();
       }
@@ -371,7 +374,7 @@ public class UITask extends UIForm {
           String transition = (String) attributes.get("transition");
           try {
             Map variables = maps.getWorkflowVariables();
-            uiTask.serviceContainer.endTask(uiTask.identification, variables, transition);
+            uiTask.serviceContainer.endTask(uiTask.identification_, variables, transition);
           } catch (Exception e) {
             e.printStackTrace();
           }
