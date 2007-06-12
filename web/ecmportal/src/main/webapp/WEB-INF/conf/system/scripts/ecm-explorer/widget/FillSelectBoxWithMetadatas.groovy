@@ -10,7 +10,7 @@ import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 
 import org.exoplatform.webui.form.UIFormSelectBox;
-import org.exoplatform.webui.bean.SelectItemOption;
+import org.exoplatform.webui.core.model.SelectItemOption;
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh

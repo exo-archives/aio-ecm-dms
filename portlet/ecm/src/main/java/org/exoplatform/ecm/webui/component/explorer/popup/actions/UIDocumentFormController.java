@@ -15,10 +15,10 @@ import javax.jcr.nodetype.NodeTypeManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.webui.bean.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormSelectBox;
 
 /**

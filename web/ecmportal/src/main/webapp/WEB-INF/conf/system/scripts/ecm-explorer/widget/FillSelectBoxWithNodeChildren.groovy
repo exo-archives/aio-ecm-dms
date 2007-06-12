@@ -23,7 +23,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 
 import org.exoplatform.webui.form.UIFormSelectBox;
-import org.exoplatform.webui.bean.SelectItemOption;
+import org.exoplatform.webui.core.model.SelectItemOption;
 
 import org.exoplatform.services.cms.scripts.CmsScript;
 

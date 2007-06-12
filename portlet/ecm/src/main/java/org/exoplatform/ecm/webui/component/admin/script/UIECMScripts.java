@@ -13,12 +13,12 @@ import javax.jcr.NodeIterator;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
-import org.exoplatform.webui.bean.SelectItemOption;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.core.model.SelectItemOption;
 
 /**
  * Created by The eXo Platform SARL
