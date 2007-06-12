@@ -84,7 +84,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     try {
       String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
       if(uiExplorer.getPreference().isJcrEnable()) {
-        System.out.println(" =========== " + uiExplorer.getPreference().isJcrEnable()) ;
         return uiExplorer.getDocumentInfoTemplate(); 
       }else if(isNodeTypeSupported(nodeType)) {
         return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ; 
@@ -93,7 +92,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     } catch(Exception e) {
       e.printStackTrace() ;
     }
-    System.out.println(" =========== " + uiExplorer.getDocumentInfoTemplate()) ;
     return uiExplorer.getDocumentInfoTemplate(); 
   }
 
