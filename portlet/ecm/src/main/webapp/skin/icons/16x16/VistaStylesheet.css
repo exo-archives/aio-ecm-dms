@@ -7,7 +7,6 @@
  */
 @import url("NodeTypes/VistaStylesheet.css");
 
- 
 .AddIcon16x16 {
   float: left;
   width: 16px; height: 16px;
@@ -41,7 +40,7 @@
 .AddIconIcon {
   float: left ;
 	width: 17px;	height: 16px;
-  background:transparent url('VistaSkin/AddNodeIcon.png') no-repeat scroll left center;
+  background:transparent url('VistaSkin/AddNodeIcon.png') no-repeat left center;
   cursor: pointer;
 } 
 
@@ -72,8 +71,7 @@
   background: url('DefaultSkin/Execute.gif') no-repeat;  
   cursor: pointer;
 }
- 
- 
+
 .SelectGroupIcon {
 	width: 24px; height: 20px;
   background: url('VistaSkin/SmallGroup.png') no-repeat;  
@@ -328,8 +326,7 @@
 
 .Locked16x16Icon {
   width: 16px; height: 16px;
-  background: url('VistaSkin/Lock.gif') no-repeat ;  
- 
+  background: url('VistaSkin/Lock.gif') no-repeat ;
 }
 
 .Unlock16x16Icon {
@@ -447,6 +444,7 @@
   background-image: url('DefaultSkin/SelectPage.gif');  
 }
 /*############################## -- End Action Icon  -- ##############################*/
+
 /*############################## -- Begin Properties Icon -- ########################*/
 .Icon16x16 {
   float: left;
@@ -569,7 +567,7 @@
 
 .exo_lifecyclePhase16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/properties/exo-lifecyclePhase.gif') no-repeat;  
+  background: url('DefaultSkin/properties/exo-lifecyclePhase.gif') no-repeat;
 }
 
 .exo_name16x16Icon {
@@ -636,6 +634,7 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/properties/exo-title.gif') no-repeat;  
 }
+
 .exo_uri16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/properties/exo-uri.gif') no-repeat;  
@@ -867,21 +866,21 @@
 }
 
 /*############################## -- End UIPropertyTab Icon -- ########################*/
-/*############################## -- Begin NodeType Icon -- ########################*/
 
+/*############################## -- Begin NodeType Icon -- ########################*/
 .dc_elementSet16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/dc-elementSet.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/dc-elementSet.gif') no-repeat;  
 }
 
 .exo_accessControllable16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-accessControllable.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-accessControllable.gif') no-repeat;  
 }
 
 .exo_action16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-action.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-action.gif') no-repeat;  
 }
 
 .exo_actionable16x16Icon {
@@ -896,105 +895,104 @@
 
 .exo_article_reference16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-article-reference.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-article-reference.gif') no-repeat;  
 }
 
 .exo_backupAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-backupAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-backupAction.gif') no-repeat;  
 }
 
 .exo_businessProcessAction16x16Icon {
   width: 16px ;	height: 16px ;
-  background: url('DefaultSkin/nodetype/exo-businessProcessAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-businessProcessAction.gif') no-repeat;  
 }
 
 .exo_categorized16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-categorized.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-categorized.gif') no-repeat;  
 }
 
 .exo_mockNodeType16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-mockNodeType.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-mockNodeType.gif') no-repeat;  
 }
 
 .exo_move16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-move.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-move.gif') no-repeat;  
 }
 
 .exo_namespace16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-namespace.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-namespace.gif') no-repeat;  
 }
 
 .exo_published16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-published.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-published.gif') no-repeat;  
 }
 
 .exo_relationable16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-relationable.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-relationable.gif') no-repeat;  
 }
 
 .exo_ruleAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-ruleAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-ruleAction.gif') no-repeat;  
 }
 
 .exo_scriptAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-scriptAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-scriptAction.gif') no-repeat;  
 }
 
 .exo_sendMailAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-sendMailAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-sendMailAction.gif') no-repeat;  
 }
 
 .exo_tab16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-tab.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-tab.gif') no-repeat;  
 }
 
 .exo_taxonomy16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-taxonomy.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-taxonomy.gif') no-repeat;  
 }
 
 .exo_template16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-template.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-template.gif') no-repeat;  
 }
 
 .exo_versionStorage16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-versionStorage.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-versionStorage.gif') no-repeat;  
 }
 
 .exo_transformBinaryToTextAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-transformBinaryToTextAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-transformBinaryToTextAction.gif') no-repeat;  
 }
 
 .exo_view16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-view.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-view.gif') no-repeat;  
 }
 
 .exo_workflowAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-workflowAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-workflowAction.gif') no-repeat;  
 }
 
 .exo_createRSSFeedAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nodetype/exo-createRSSFeedAction.gif') no-repeat;  
+  background: url('NodeTypes/DefaultSkin/exo-createRSSFeedAction.gif') no-repeat;  
 }
 
-/**/
 .ExtendButton16x16Icon {
   width: 16px; height: 16px;
   background: url('VistaSkin/SmallSelect.gif') no-repeat;  
@@ -1049,7 +1047,6 @@
   width: 24px;height:24px;
   background: url('VistaSkin/S1DropRightGrayArrow.png') no-repeat;  
 }
-/**/
 
 .ScrollBackArrow16x16Icon {
   width: 16px; height:16px;
