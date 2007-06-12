@@ -11,12 +11,12 @@
 @import url("UINodeTypeManager/VistaStylesheet.css");
 @import url("UITaxonomyManager/VistaStylesheet.css");
 
+.UIPageDesktop .UIWindow .UIApplication 
+
 .UIECMAdminPortlet {
   overflow: hidden;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl {
-
+  margin: auto;
+  border: 1px solid red;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
@@ -44,7 +44,6 @@
 	 margin: 0px;
 	 float: left;	 
 }
-
 
 .UIECMAdminPortlet .UIRepositoryControl .UISelect .UIForm .HorizontalLayout select {
 	 width: 170px;
@@ -164,13 +163,11 @@
   color: red;
 }
 
-
 .UIECMAdminPortlet .UIWorkspaceWizard .UIAction {
 	float: right;
 	padding-right: 5px;
 	width: auto;
 }
-
 
 .UIRepositoryManager .UIWorkspaceForm .UIAction{ 
 	width: 280px;
@@ -178,11 +175,6 @@
 
 .UIECMAdminPortlet .ActionButton {
   width: auto ;
-}
-
-.UIECMAdminPortlet {
-  margin: auto;
-  width: 95%;
 }
 
 .UIECMAdminPortlet .UIFormGrid input {
