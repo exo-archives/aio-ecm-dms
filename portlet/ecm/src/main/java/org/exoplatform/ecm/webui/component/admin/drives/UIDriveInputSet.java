@@ -26,7 +26,7 @@ import org.exoplatform.webui.form.validator.EmptyFieldValidator;
  *          trongtt@gmail.com
  * Jun 28, 2006
  */
-@ComponentConfig(template = "app:/groovy/webui/form/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_WORKSPACE = "workspace" ;
