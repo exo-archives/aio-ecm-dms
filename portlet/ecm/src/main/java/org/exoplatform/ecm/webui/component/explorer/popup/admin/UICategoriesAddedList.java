@@ -8,12 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -52,37 +56,43 @@ public class UICategoriesAddedList extends UIContainer implements UISelector{
     uiGrid.getUIPageIterator().setPageList(objPageList) ;
   }
   
+  @SuppressWarnings("unused")
+  public void updateSelect(String selectField, String value) {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
+    try {
+      categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value, repository) ;
+      uiJCRExplorer.getSession().save() ;
+      updateGrid(categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), repository)) ;
+      setRenderSibbling(UICategoriesAddedList.class) ;
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+  }
+  
   static public class DeleteActionListener extends EventListener<UICategoriesAddedList> {
     public void execute(Event<UICategoriesAddedList> event) throws Exception {
       UICategoriesAddedList uiAddedList = event.getSource() ;
       UICategoryManager uiManager = uiAddedList.getParent() ;
       UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+      PortletPreferences portletPref = context.getRequest().getPreferences() ;
+      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      
       CategoriesService categoriesService = 
         uiAddedList.getApplicationComponent(CategoriesService.class) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath) ;
-        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode())) ;
+        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, repository) ;
+        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository)) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }
       uiManager.setRenderedChild("UICategoriesAddedList") ;
-    }
-  }
-
-  @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
-    try {
-      categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value) ;
-      uiJCRExplorer.getCurrentNode().save() ;
-      uiJCRExplorer.getSession().save() ;
-      updateGrid(categoriesService.getCategories(uiJCRExplorer.getCurrentNode())) ;
-      setRenderSibbling(UICategoriesAddedList.class) ;
-    } catch(Exception e) {
-      e.printStackTrace() ;
     }
   }
 }

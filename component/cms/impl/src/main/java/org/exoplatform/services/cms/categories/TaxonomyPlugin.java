@@ -18,8 +18,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
 	}
 	
 	public List<Taxonomy> getTaxonomies() { return config.getTaxonomies() ; }
+	public String getRepository() { return config.getRepository() ; }
 	
-	public String getName() {   return null; }
+  public String getName() {   return name ; }
   public void setName(String s) { name = s ; }
 
   public String getDescription() {   return description ; }

@@ -15,11 +15,12 @@
 		    		<name>htmStyleForTag.configuration</name>
 	          <description>configuration predefined html style for tag to inject in jcr</description>
 	          <object type="org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig">
+	          	<field  name="repository"><string>repository</string></field>
 	          	<field  name="tagStyleList">
 	          		<collection type="java.util.ArrayList">	          		  
 	          			<value>
 	          				<object type="org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig$HtmlTagStyle">
-		          			  <field  name="name"><string>nomal</string></field>		          				          				
+	          					<field  name="name"><string>nomal</string></field>		          				          				
 		          			  <field  name="tagRate"><string>0..2</string></field>
 		          			  <field  name="htmlStyle">
 		          			  	<string>font-size: 12px; font-weight: bold; color: #6b6b6b; font-family: verdana; text-decoration:none;</string>

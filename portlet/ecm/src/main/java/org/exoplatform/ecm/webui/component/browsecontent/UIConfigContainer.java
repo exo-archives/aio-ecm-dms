@@ -22,20 +22,20 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 public class UIConfigContainer extends UIContainer {
 
-  public void initNewConfig(String browseType, String workSpace) throws Exception {
+  public void initNewConfig(String browseType, String repository, String workSpace) throws Exception {
     PortletPreferences preference = getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
     if(browseType.equals(Utils.CB_USE_FROM_PATH)) {
       UIPathConfig uiPathConfig = addChild(UIPathConfig.class, null, null) ;
-      uiPathConfig.initForm(preference, workSpace, true, true) ;
+      uiPathConfig.initForm(preference, repository, workSpace, true, true) ;
     }else if(browseType.equals(Utils.CB_USE_JCR_QUERY)) {
       UIQueryConfig uiQueryConfig = addChild(UIQueryConfig.class, null, null) ;
-      uiQueryConfig.initForm(preference, workSpace, true, true) ;
+      uiQueryConfig.initForm(preference, repository, workSpace, true, true) ;
     } else if(browseType.equals(Utils.CB_USE_SCRIPT)) {
       UIScriptConfig uiScriptConfig = addChild(UIScriptConfig.class, null, null) ;
-      uiScriptConfig.initForm(preference, workSpace, true, true) ;
+      uiScriptConfig.initForm(preference, repository, workSpace, true, true) ;
     }else if(browseType.equals(Utils.CB_USE_DOCUMENT)) {
       UIDocumentConfig uiDocumentConfig =  addChild(UIDocumentConfig.class, null, null) ;
-      uiDocumentConfig.initForm(preference, workSpace, true, true) ;
+      uiDocumentConfig.initForm(preference, repository, workSpace, true, true) ;
     }
   }
 }

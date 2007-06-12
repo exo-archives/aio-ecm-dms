@@ -48,15 +48,16 @@ public class ScriptActionActivationJob implements Job {
     Node actionNode = null ;    
     JobDataMap jdatamap = context.getJobDetail().getJobDataMap() ;
     String userId = jdatamap.getString("initiator") ;
-    String srcWorkspace_ = jdatamap.getString("srcWorkspace") ;
-    String srcPath_ = jdatamap.getString("srcPath") ;    
-    String actionName_ = jdatamap.getString("actionName") ;
+    String srcWorkspace = jdatamap.getString("srcWorkspace") ;
+    String srcPath = jdatamap.getString("srcPath") ;    
+    String actionName = jdatamap.getString("actionName") ;
     String executable = jdatamap.getString("executable") ;
+    String repository = jdatamap.getString("repository") ;
     Map variables = jdatamap.getWrappedMap() ;        
     try {
-      jcrSession = repositoryService.getRepository().getSystemSession(srcWorkspace_);      
-      Node node = (Node) jcrSession.getItem(srcPath_);
-      actionNode = actionServiceContainer.getInitAction(node, actionName_);
+      jcrSession = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);      
+      Node node = (Node) jcrSession.getItem(srcPath);
+      actionNode = actionServiceContainer.getInitAction(node, actionName);
       Property rolesProp = actionNode.getProperty("exo:roles");
       boolean hasPermission = false;
       Value[] roles = rolesProp.getValues();
@@ -70,7 +71,7 @@ public class ScriptActionActivationJob implements Job {
       }
       if (!hasPermission)
         return;
-      scriptActionService.activateAction(userId,executable,variables) ;
+      scriptActionService.activateAction(userId,executable,variables, repository) ;
       int currentCounter = (int)actionNode.getProperty(COUNTER_PROP).getValue().getLong() ;
       actionNode.setProperty(COUNTER_PROP,currentCounter +1) ;
       actionNode.save() ;

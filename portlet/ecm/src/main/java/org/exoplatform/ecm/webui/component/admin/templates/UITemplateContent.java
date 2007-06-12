@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.version.VersionHistory;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UISelector;
@@ -17,6 +18,8 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -95,11 +98,12 @@ public class UITemplateContent extends UIForm implements UISelector {
     if(templateName != null) {
       isAddNew_ = false ;
       TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-      String templateContent = templateService.getTemplate(isDialog_, nodeTypeName_, templateName) ;
-      Node template = templateService.getTemplateNode(isDialog_, nodeTypeName_, templateName) ;      
+      String repository = getRepository() ;
+      String templateContent = templateService.getTemplate(isDialog_, nodeTypeName_, templateName, repository) ;
+      Node template = templateService.getTemplateNode(isDialog_, nodeTypeName_, templateName, repository) ;      
       getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(true) ;
       String templateRole = 
-        templateService.getTemplateRoles(isDialog_, nodeTypeName_, templateName) ;
+        templateService.getTemplateRoles(isDialog_, nodeTypeName_, templateName, repository) ;
       boolean isVersioned = template.isNodeType(Utils.MIX_VERSIONABLE) ;
       if(isVersioned) {
         getUIFormSelectBox(FIELD_SELECT_VERSION).setRendered(true) ;
@@ -181,14 +185,20 @@ public class UITemplateContent extends UIForm implements UISelector {
     UITemplatesManager uiManager = getAncestorOfType(UITemplatesManager.class) ;
     uiManager.removeChildById(getId() + TEMPLATE_PERMISSION) ;
   }
-
+  
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   static public class RestoreActionListener extends EventListener<UITemplateContent> {
     public void execute(Event<UITemplateContent> event) throws Exception {
       UITemplateContent uiForm = event.getSource() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
-      Node node = templateService.getTemplateNode(uiForm.isDialog_,  uiForm.nodeTypeName_, name) ;
+      Node node = templateService.getTemplateNode(uiForm.isDialog_,  uiForm.nodeTypeName_, 
+          name, uiForm.getRepository()) ;
       String vesion = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ;
       String baseVesion = node.getBaseVersion().getName() ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -206,6 +216,7 @@ public class UITemplateContent extends UIForm implements UISelector {
   static public class SaveActionListener extends EventListener<UITemplateContent> {
     public void execute(Event<UITemplateContent> event) throws Exception {
       UITemplateContent uiForm = event.getSource() ;
+      String repository = uiForm.getRepository() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(!Utils.isNameValid(name, UITemplateContent.REG_EXPRESSION)){
@@ -230,13 +241,13 @@ public class UITemplateContent extends UIForm implements UISelector {
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning){
         templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
-            new String[] {role},  content) ;
+            new String[] {role},  content, repository) ;
       } else {
-        Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name) ;
+        Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name, repository) ;
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;            
         templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
-            new String[] {role},  content) ;
+            new String[] {role},  content, repository) ;
         node.save() ;
         node.checkin() ;
       }
@@ -251,7 +262,8 @@ public class UITemplateContent extends UIForm implements UISelector {
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
-      Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name) ;
+      Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, 
+          name, uiForm.getRepository()) ;
       String version = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ; 
       String path = node.getVersionHistory().getVersion(version).getPath() ;           
       VersionNode versionNode = uiForm.getRootVersion(node).findVersionNode(path) ;

@@ -15,6 +15,7 @@ import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -95,7 +96,8 @@ public class UIQueriesForm extends UIForm implements UISelector {
       reset() ;
       return ;
     }
-    Node query = queryService.getSharedQuery(queryName) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    Node query = queryService.getSharedQuery(queryName, repository) ;
     getUIStringInput(QUERY_NAME).setValue(queryName) ;
     getUIStringInput(QUERY_NAME).setEditable(false) ;
     getUIFormCheckBoxInput(CACHE_RESULT).setChecked(query.getProperty("exo:cachedResult").getBoolean()) ;
@@ -123,6 +125,8 @@ public class UIQueriesForm extends UIForm implements UISelector {
   static public class SaveActionListener extends EventListener<UIQueriesForm> {
     public void execute(Event<UIQueriesForm> event) throws Exception {
       UIQueriesForm uiForm = event.getSource() ;
+      String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
       if(!Utils.isNameValid(queryName, UIQueriesForm.REG_EXPRESSION)) {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -141,11 +145,12 @@ public class UIQueriesForm extends UIForm implements UISelector {
       }
       String queryType = uiForm.getUIFormSelectBox(QUERY_TYPE).getValue() ;
       boolean cacheResult = uiForm.getUIFormCheckBoxInput(CACHE_RESULT).isChecked() ;
-      QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       if(permissions.indexOf(",") > -1) {
-        queryService.addSharedQuery(queryName, statement, queryType, permissions.split(","), cacheResult) ;  
+        queryService.addSharedQuery(queryName, statement, queryType, permissions.split(","), 
+                                   cacheResult, repository) ;  
       } else {
-        queryService.addSharedQuery(queryName, statement, queryType, new String[] {permissions}, cacheResult) ;
+        queryService.addSharedQuery(queryName, statement, queryType, new String[] {permissions}, 
+                                   cacheResult, repository) ;
       }   
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
       uiManager.getChild(UIQueriesList.class).updateQueriesGrid() ;

@@ -9,10 +9,13 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -58,8 +61,11 @@ public class UICBScripts extends UIContainer {
   
   public List<ScriptData> getCBScript() throws Exception {
     List <ScriptData> scriptData = new ArrayList <ScriptData>() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository =  portletPref.getValue(Utils.REPOSITORY, "") ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    Node cbScripts = scriptService.getCBScriptHome() ;
+    Node cbScripts = scriptService.getCBScriptHome(repository) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     ScriptData script ;
     while(nodeList.hasNext()) {

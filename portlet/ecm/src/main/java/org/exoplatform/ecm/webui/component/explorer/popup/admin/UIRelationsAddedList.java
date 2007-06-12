@@ -57,9 +57,8 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     RelationsService relateService = getApplicationComponent(RelationsService.class) ;
     try {
-      relateService.addRelation(uiJCRExplorer.getCurrentNode(), value) ;
-      uiJCRExplorer.getCurrentNode().save() ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode())) ;
+      relateService.addRelation(uiJCRExplorer.getCurrentNode(), value, uiJCRExplorer.getSession()) ;
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getSession())) ;
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
@@ -76,12 +75,12 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
         uiAddedList.getApplicationComponent(RelationsService.class) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath) ;
-        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode())) ;
+        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getSession()) ;
+        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),uiExplorer.getSession())) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }
       uiManager.setRenderedChild("UIRelationsAddedList") ;
     }
-  }
+  }  
 }

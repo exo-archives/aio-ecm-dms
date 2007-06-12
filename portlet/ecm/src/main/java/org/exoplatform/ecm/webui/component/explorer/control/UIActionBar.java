@@ -18,6 +18,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -28,6 +29,7 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.UIVoteForm;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
@@ -72,6 +74,7 @@ import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -162,8 +165,8 @@ public class UIActionBar extends UIForm {
     tabOptions.clear() ;
     tabs_.clear() ;
     tabs_ = new ArrayList<String[]>() ;
-    ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
-    view_ = vservice.getViewHome().getNode(viewName) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    view_ = getApplicationComponent(ManageViewService.class).getViewHome(repository).getNode(viewName) ;
     NodeIterator tabs = view_.getNodes() ;
     int i = 0;
     while (tabs.hasNext()) {
@@ -183,14 +186,16 @@ public class UIActionBar extends UIForm {
 
   private void setListButton(String tabName) throws PathNotFoundException, RepositoryException {
     Node tabNode = view_.getNode(tabName) ;
-    String buttons = tabNode.getProperty("exo:buttons").getString() ;
-    String[] buttonsInTab = StringUtils.split(buttons, ";") ;
-    for(int j = 0 ; j < buttonsInTab.length ; j ++ ) {
-      String buttonName = buttonsInTab[j].trim() ;
-      buttonName = buttonName.substring(0, 1).toUpperCase() + buttonName.substring(1);
-      buttonsInTab[j] = buttonName ;
+    if(tabNode.hasProperty("exo:buttons")) {
+      String buttons = tabNode.getProperty("exo:buttons").getString() ;
+      String[] buttonsInTab = StringUtils.split(buttons, ";") ;
+      for(int j = 0 ; j < buttonsInTab.length ; j ++ ) {
+        String buttonName = buttonsInTab[j].trim() ;
+        buttonName = buttonName.substring(0, 1).toUpperCase() + buttonName.substring(1);
+        buttonsInTab[j] = buttonName ;
+      }
+      tabs_.add(buttonsInTab) ;
     }
-    tabs_.add(buttonsInTab) ;
   }
 
   public List<String[]> getTabs() throws Exception { return tabs_ ; }
@@ -201,7 +206,8 @@ public class UIActionBar extends UIForm {
 
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    return getApplicationComponent(QueryService.class).getQueries(userName) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    return getApplicationComponent(QueryService.class).getQueries(userName, repository) ;
   }
 
   public List<String> getMetadataTemplates() throws Exception {
@@ -341,7 +347,8 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
-        List documentNodeType = tservice.getDocumentTemplates() ;
+        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        List documentNodeType = tservice.getDocumentTemplates(repository) ;
         String nodeType = selectedNode.getPrimaryNodeType().getName() ;
         if(documentNodeType.contains(nodeType)){
           UIDocumentForm uiDocumentForm = 
@@ -426,7 +433,8 @@ public class UIActionBar extends UIForm {
         return ;
       }
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      if(templateService.getDocumentTemplates().contains(nodeType.getName())) {
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         if(!uiExplorer.getCurrentNode().isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.watch-checkedin", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -462,7 +470,8 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(templateService.getDocumentTemplates().contains(nodeType.getName())) {
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         if(!uiExplorer.getCurrentNode().isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.tagnode-checkedin", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -501,7 +510,8 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!templateService.getDocumentTemplates().contains(nodeType.getName())) {
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      if(!templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -658,6 +668,9 @@ public class UIActionBar extends UIForm {
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
+      PortletRequestContext pcontext = (PortletRequestContext)event.getRequestContext() ;
+      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       CmsConfigurationService cmsService = uiActionBar.getApplicationComponent(CmsConfigurationService.class) ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
@@ -686,9 +699,11 @@ public class UIActionBar extends UIForm {
       CategoriesService categoriesService = uiActionBar.getApplicationComponent(CategoriesService.class) ;
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null) ;
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class) ;
-      uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode())) ;
+      uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository)) ;
       UIJCRBrowser uiJCRBrowser = uiManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(null) ;
+      uiJCRBrowser.setRepository(repository) ;
+      uiJCRBrowser.setWorkspace(cmsService.getWorkspace(repository)) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(EXO_TAXONOMIES_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiCateAddedList, null) ;
@@ -733,9 +748,12 @@ public class UIActionBar extends UIForm {
         uiActionBar.getApplicationComponent(RelationsService.class) ;
       UIRelationsAddedList uiRelateAddedList = 
         uiRelationManager.getChild(UIRelationsAddedList.class) ;
-      uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode())) ;
+      uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode(), session)) ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(new String[] {Utils.EXO_ARTICLE}) ;
+      uiJCRBrowser.setRepository(repository) ;
+      uiJCRBrowser.setWorkspace(cmsService.getWorkspace(repository)) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;

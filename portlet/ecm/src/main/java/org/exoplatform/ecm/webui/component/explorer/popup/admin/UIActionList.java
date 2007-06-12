@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -115,7 +118,10 @@ public class UIActionList extends UIContainer {
       UIJCRExplorer uiExplorer = uiActionList.getAncestorOfType(UIJCRExplorer.class) ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class) ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      actionService.removeAction(uiExplorer.getCurrentNode(), actionName) ;
+      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+      PortletPreferences preferences = context.getRequest().getPreferences() ;
+      actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 
+                                 preferences.getValue(Utils.REPOSITORY, "")) ;
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
       uiActionManager.removeChild(UIActionViewContainer.class) ;
       uiActionList.updateGrid(uiExplorer.getCurrentNode()) ;

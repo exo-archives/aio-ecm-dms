@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 public class DriveData implements Comparable<DriveData> {
 
   private String name ;
+  private String repository ;
   private String workspace ;
   private String permissions ;
   private String homePath ;
@@ -32,6 +33,9 @@ public class DriveData implements Comparable<DriveData> {
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }  
 
+  public String getRepository() { return this.repository ; }
+  public void setRepository(String rp) { this.repository = rp ; }
+  
   public String getWorkspace() { return this.workspace ; }
   public void setWorkspace(String ws) { this.workspace = ws ; }
   

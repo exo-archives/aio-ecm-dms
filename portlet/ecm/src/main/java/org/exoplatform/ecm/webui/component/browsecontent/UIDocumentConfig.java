@@ -52,6 +52,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
   final static public String FIELD_DOCSELECT = "doc" ;
   public UIDocumentConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;    
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
     categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
@@ -70,7 +71,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     return uiTabPane.getWorkSpaceOption() ;
   }
   
-  public void initForm(PortletPreferences preference, String workSpace, boolean isAddNew, 
+  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew, 
       boolean isEditable) throws Exception {
     String path = preference.getValue(Utils.JCR_PATH, "") ;
     String docName = "" ;
@@ -86,6 +87,10 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
+    UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+    repositoryField.setValue(repository) ;
+    repositoryField.setEditable(false) ;
+    
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
@@ -163,6 +168,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIBrowseContainer container = uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       PortletPreferences prefs = container.getPortletPreferences();
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPatth = categoryPathField.getValue() ;
@@ -195,6 +201,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_DOCUMENT) ;
+      prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
       prefs.setValue(Utils.JCR_PATH, jcrPatth) ;
       prefs.setValue(Utils.CB_DOCUMENT_NAME, docName) ;
@@ -251,7 +258,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIDocumentConfig uiForm  = event.getSource() ;
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
-      uiConfig.initPopupPathSelect(uiForm, workSpace) ;
+      String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
+      uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
     }
   }
   
@@ -260,6 +268,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIDocumentConfig uiForm  = event.getSource() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
+      String workspace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       String jcrPatth = categoryPathField.getValue() ;
       if((jcrPatth == null)||(jcrPatth.trim().length() == 0)) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -276,9 +286,10 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         return ;
       }
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfig.initPopupDocumentSelect(uiForm, jcrPatth) ;
+      uiConfig.initPopupDocumentSelect(uiForm, repo, workspace, jcrPatth) ;
     }
   }
 
 }
+
 

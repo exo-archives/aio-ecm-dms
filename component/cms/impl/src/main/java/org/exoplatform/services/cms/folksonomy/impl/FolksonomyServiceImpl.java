@@ -61,7 +61,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   private String exoTagStylePath_ ;
   private List<TagStylePlugin> plugin_ = new ArrayList<TagStylePlugin>() ;
   private ExoCache cache_ ;  
-  private Session systemSession_ = null;
+  //private Session systemSession_ = null;
 
   public FolksonomyServiceImpl(RepositoryService repoService,
       CmsConfigurationService cmsConfigService, CacheService cacheService ) throws Exception{
@@ -78,8 +78,8 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     }    
   }
 
-  public void addTag(Node node, String[] tagNames) throws Exception {        
-    Session systemSession = getSystemSession() ;     
+  public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
+    Session systemSession = getSystemSession(repository) ;     
     Session currentSession = node.getSession() ;    
     Node exoTagsHomeNode_ = (Node)systemSession.getItem(exoTagsPath_) ;
     Node taggingNode = null ;
@@ -113,28 +113,29 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       cache_.remove(taggingNode.getPath()) ;
       cache_.remove(exoTagsPath_) ;
       cache_.remove(node.getPath()) ;
-      updateTagStatus(taggingNode.getPath()) ;      
+      updateTagStatus(taggingNode.getPath(), repository) ;      
     }        
     currentSession.save() ;    
     systemSession.save() ;    
   }
   
-  public Node getTag(String path) throws Exception {    
-    Session systemSession = getSystemSession() ;
+  public Node getTag(String path, String repository) throws Exception {    
+    Session systemSession = getSystemSession(repository) ;
     return (Node)systemSession.getItem(path) ;
   }
 
-  public List<Node> getDocumentsOnTag(String tagPath) throws Exception {
+  public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception {
     if(cache_.get(tagPath)!=null) {
       return (List<Node>)cache_.get(tagPath) ;
     }
     List<Node> documentList = new ArrayList<Node>() ;        
-    Session systemSession = getSystemSession() ;
+    Session systemSession = getSystemSession(repository) ;
     Node tagNode = (Node)systemSession.getItem(tagPath) ;
     String uuid = tagNode.getUUID() ;
-    String[] workspaces = repoService_.getRepository().getWorkspaceNames() ;
+    String[] workspaces = repoService_.getRepository(repository).getWorkspaceNames() ;
     for(String workspaceName: workspaces) {
-      Session  sessionOnWS = getSystemSession(workspaceName) ;
+      Session  sessionOnWS = repoService_.getRepository(repository)
+      .getSystemSession(workspaceName) ;
       Node tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid) ;
       PropertyIterator iter = tagNodeOnWS.getReferences() ;
       for(;iter.hasNext();) {
@@ -147,13 +148,13 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return documentList;
   } 
 
-  public List<Node> getAllTags() throws Exception {
+  public List<Node> getAllTags(String repository) throws Exception {
     Object cachedList = cache_.get(exoTagsPath_) ;
     if(cachedList != null ) {
       return (List<Node>)cachedList ;
     }    
     List<Node> tagList = new ArrayList<Node>() ;       
-    Session systemSession = getSystemSession() ;
+    Session systemSession = getSystemSession(repository) ;
     Node exoTagsHomeNode_ = (Node)systemSession.getItem(exoTagsPath_) ;
     for(NodeIterator iter = exoTagsHomeNode_.getNodes(); iter.hasNext();) {
       tagList.add(iter.nextNode()) ;
@@ -161,14 +162,14 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     cache_.put(exoTagsPath_,tagList) ;
     return tagList ;
   }
-          
-  public List<Node> getAllTagStyle() throws Exception {
+  
+  public List<Node> getAllTagStyle(String repository) throws Exception {
     Object cachedList = cache_.get(exoTagStylePath_) ;
     if(cachedList != null ) {
       return (List<Node>)cachedList ;
     }
     List<Node> tagStyleList = new ArrayList<Node>() ;   
-    Session systemSession = getSystemSession() ;
+    Session systemSession = getSystemSession(repository) ;
     Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
     for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext() ;) {      
       tagStyleList.add(iter.nextNode()) ;
@@ -177,22 +178,21 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return tagStyleList ;
   }    
   
-  protected Session getSystemSession() throws Exception { 
+  /*protected Session getSystemSession() throws Exception { 
     if(systemSession_!=null) return systemSession_ ;
     return getSystemSession(cmsConfigService_.getWorkspace()) ;
-  }
-  protected Session getSystemSession(String workspace) throws Exception {
-    Session session = repoService_.getRepository().getSystemSession(workspace) ;    
-    return session ;
+  }*/
+  protected Session getSystemSession(String repository) throws Exception {
+    return repoService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;    
   }  
 
 
-  public String getTagStyle(String styleName) throws Exception {
+  public String getTagStyle(String styleName, String repository) throws Exception {
     Object cachedObj = cache_.get(styleName) ;
     if(cachedObj != null) {
       return (String)cachedObj ;
     }    
-    Session systemSession = getSystemSession() ;    
+    Session systemSession = getSystemSession(repository) ;    
     Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
     Node tagStyle = tagStyleHomeNode.getNode(styleName) ;
     String htmlStyle = tagStyle.getProperty(HTML_STYLE_PROP).getValue().getString() ;
@@ -200,8 +200,8 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return htmlStyle ;
   }
 
-  public void updateStype(String tagPath, String tagRate, String htmlStyle) throws Exception {
-    Session session = getSystemSession() ;
+  public void updateStype(String tagPath, String tagRate, String htmlStyle, String repository) throws Exception {
+    Session session = getSystemSession(repository) ;
     Node tagStyle = (Node)session.getItem(tagPath) ;
     tagStyle.setProperty(TAG_RATE_PROP,tagRate) ;
     tagStyle.setProperty(HTML_STYLE_PROP,htmlStyle) ;
@@ -212,9 +212,9 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     cache_.remove(exoTagStylePath_) ;
   }
 
-  private void updateTagStatus(String tagPath) throws Exception {    
-    int numberOfDocumentOnTag = getDocumentsOnTag(tagPath).size() ;
-    Session systemSession = getSystemSession() ;
+  private void updateTagStatus(String tagPath, String repository) throws Exception {    
+    int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
+    Session systemSession = getSystemSession(repository) ;
     Node selectedTagNode = (Node)systemSession.getItem(tagPath) ; 
     Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
     Node tagStyle = null ;
@@ -259,20 +259,40 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     if(minValue <=numOfDocument && numOfDocument <maxValue ) return true ;    
     return false ;
   }
-
-  private void init() throws Exception {
-    Session session = repoService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;
-    Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath_) ; 
+  
+  public void init(String repository) throws Exception {
+    String defaultRepo = repoService_.getDefaultRepository().getConfiguration().getName() ;
     for(TagStylePlugin plugin : plugin_) {
+      if(plugin.getRepository().equals(defaultRepo)) {
+        Session session = repoService_.getRepository(repository)
+        .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+         Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath_) ;
+         List<HtmlTagStyle> htmlStyle4Tag = plugin.getTagStyleList() ;
+         for(HtmlTagStyle style: htmlStyle4Tag) {
+           Node tagStyleNode = Utils.makePath(exoTagStyleHomeNode,"/"+style.getName(),EXO_TAG_STYLE) ;
+           tagStyleNode.setProperty(TAG_RATE_PROP,style.getTagRate()) ;
+           tagStyleNode.setProperty(HTML_STYLE_PROP,style.getHtmlStyle()) ;
+         }
+         exoTagStyleHomeNode.save() ;
+         session.save() ;
+      }
+    }
+  }
+  
+  private void init() throws Exception {
+    for(TagStylePlugin plugin : plugin_) {
+      Session session = repoService_.getRepository(plugin.getRepository())
+       .getSystemSession(cmsConfigService_.getWorkspace(plugin.getRepository())) ;
+      Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath_) ;
       List<HtmlTagStyle> htmlStyle4Tag = plugin.getTagStyleList() ;
       for(HtmlTagStyle style: htmlStyle4Tag) {
         Node tagStyleNode = Utils.makePath(exoTagStyleHomeNode,"/"+style.getName(),EXO_TAG_STYLE) ;
         tagStyleNode.setProperty(TAG_RATE_PROP,style.getTagRate()) ;
         tagStyleNode.setProperty(HTML_STYLE_PROP,style.getHtmlStyle()) ;
-      } 
-    }    
-    exoTagStyleHomeNode.save() ;
-    session.save() ;
+      }
+      exoTagStyleHomeNode.save() ;
+      session.save() ;
+    }
   }
 
   public void start() {
@@ -286,7 +306,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
 
   public void stop() { }
 
-  public List<Node> getLinkedTagsOfDocument(Node document) throws Exception {
+  public List<Node> getLinkedTagsOfDocument(Node document, String repository) throws Exception {
     if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 
       return new ArrayList<Node>() ;
     
@@ -294,7 +314,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       return (List<Node>) cache_.get(document.getPath()) ;
     }
     List<Node> tagList = new ArrayList<Node>() ;    
-    Session systemSession = getSystemSession() ;
+    Session systemSession = getSystemSession(repository) ;
     try{      
       Value[] values = document.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
       for(Value v:values) {
@@ -305,5 +325,5 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     }
     cache_.put(document.getPath(),tagList) ;
     return tagList;
-  }  
+  }   
 }

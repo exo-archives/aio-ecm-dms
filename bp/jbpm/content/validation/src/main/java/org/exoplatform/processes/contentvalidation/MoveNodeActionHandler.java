@@ -48,6 +48,7 @@ public class MoveNodeActionHandler implements ActionHandler {
     String nodePath = (String) context.getVariable("nodePath");
     String srcPath = (String) context.getVariable("srcPath");
     String srcWorkspace = (String) context.getVariable("srcWorkspace");
+    String repository = (String) context.getVariable("repository");
     Date startDate = (Date) context.getVariable("startDate");
     Date endDate = (Date) context.getVariable("endDate");      
     PortalContainer container = PortalContainer.getInstance();
@@ -55,12 +56,12 @@ public class MoveNodeActionHandler implements ActionHandler {
         .getComponentInstanceOfType(RepositoryService.class);
     ActionServiceContainer actionServiceContainer = (ActionServiceContainer) container
         .getComponentInstanceOfType(ActionServiceContainer.class);     
-    Session session = repositoryService.getRepository().getSystemSession(srcWorkspace);
+    Session session = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);
     Node actionableNode = (Node) session.getItem(srcPath);
     if(!actionableNode.isNodeType("exo:actionable")) {
     	  actionableNode = (Node) session.getItem(nodePath);
     } 
-    Node actionNode = actionServiceContainer.getAction(actionableNode, actionName);
+    Node actionNode = actionServiceContainer.getAction(actionableNode, actionName, repository);
     String destWorkspace = actionNode.getProperty("exo:destWorkspace").getString();
     String destPath = actionNode.getProperty("exo:destPath").getString();
     Node srcNode = (Node) session.getItem(nodePath);
@@ -82,7 +83,7 @@ public class MoveNodeActionHandler implements ActionHandler {
     if(!relPath.startsWith("/"))
       relPath = "/" + relPath;
     relPath = relPath.replaceAll("\\[\\d*\\]", "");
-    cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath + relPath);    
+    cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath + relPath, repository);    
   }
 
 }

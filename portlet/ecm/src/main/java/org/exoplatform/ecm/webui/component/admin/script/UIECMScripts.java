@@ -11,6 +11,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -40,8 +41,8 @@ public class UIECMScripts extends UIContainer {
 
   private List<SelectItemOption<String>> getECMCategoryOptions() throws Exception {
     List<SelectItemOption<String>> ecmOptions = new ArrayList<SelectItemOption<String>>() ;
-    ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    Node ecmScriptHome = scriptService.getECMScriptHome() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    Node ecmScriptHome = getApplicationComponent(ScriptService.class).getECMScriptHome(repository) ;
     NodeIterator categories = ecmScriptHome.getNodes() ;
     while(categories.hasNext()) {
       Node script = categories.nextNode() ;
@@ -54,7 +55,7 @@ public class UIECMScripts extends UIContainer {
     UIECMFilterForm ecmFilterForm = getChild(UIECMFilterForm.class) ;
     ecmFilterForm.setOptions(getECMCategoryOptions()) ;
     String categoryName = 
-      ecmFilterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;    
+      ecmFilterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;  
     UIScriptList uiScriptList = getChildById(SCRIPTLIST_NAME) ;
     uiScriptList.updateGrid(getECMScript(categoryName)) ;
   }
@@ -75,18 +76,21 @@ public class UIECMScripts extends UIContainer {
   
   public List<ScriptData> getECMScript(String name) throws Exception {
     List <ScriptData> scriptData = new ArrayList <ScriptData>() ;
-    ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    Node ecmCategory = scriptService.getECMScriptHome().getNode(name) ;
-    NodeIterator nodeList = ecmCategory.getNodes() ;
-    ScriptData script ;
-    while(nodeList.hasNext()) {
-      Node node = nodeList.nextNode() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List<Node> scripts = new ArrayList<Node> () ;
+    if(name.equals("action")) {
+      scripts = getApplicationComponent(ScriptService.class).getECMActionScripts(repository) ;
+    }else if(name.equals("widget")){
+      scripts = getApplicationComponent(ScriptService.class).getECMWidgetScripts(repository) ;
+    }else if(name.equals("interceptor")) {
+      scripts = getApplicationComponent(ScriptService.class).getECMInterceptorScripts(repository) ;
+    }
+    for(Node scriptNode : scripts) {
       String version = "" ;
-      if(node.isNodeType(Utils.MIX_VERSIONABLE) && !node.isNodeType(Utils.NT_FROZEN)){
-        version = node.getBaseVersion().getName();
+      if(scriptNode.isNodeType(Utils.MIX_VERSIONABLE) && !scriptNode.isNodeType(Utils.NT_FROZEN)){
+        version = scriptNode.getBaseVersion().getName();
       }
-      script = new ScriptData(node.getName(), node.getPath(), version) ;
-      scriptData.add(script) ;
+      scriptData.add(new ScriptData(scriptNode.getName(), scriptNode.getPath(), version)) ;
     }
     return scriptData ;
   }

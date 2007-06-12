@@ -20,7 +20,6 @@
 		    <th><%=_ctx.appRes("UIMetadataList.header.name")%></th>
 		    <th><%=_ctx.appRes("UIMetadataList.header.internalUse")%></th>
 		    <th><%=_ctx.appRes("UIMetadataList.header.type")%></th>
-		    <th><%=_ctx.appRes("UIMetadataList.header.hasTemplate")%></th>
 		    <th><%=_ctx.appRes("UIMetadataList.header.action")%></th>
 	    </tr>
 	  </thead>
@@ -46,12 +45,8 @@
             <td><div class="Text">$meta.name</div></td>
             <td>
               <%
-                String internalText = _ctx.appRes("UIMetadataList.label.false") ;
-                String internalIconType = "False" ;
-                if(uicomponent.isInternalUse(meta.getName())) {
-                  internalText = _ctx.appRes("UIMetadataList.label.true") ;
-                  internalIconType = "True" ;
-                }
+                String internalText = _ctx.appRes("UIMetadataList.label." + meta.getInternalUse()) ;
+                String internalIconType = meta.getInternalUse() ;                
               %>
               <div style="width: 65px; margin: auto;">
 	              <div class="Icon16x16 ${internalIconType}16x16Icon"><span></span></div>
@@ -59,31 +54,9 @@
 	            </div>
             </td>
             <td>
-              <%
-                String mixinText = _ctx.appRes("UIMetadataList.label.false") ;
-                String mixinIconType = "False" ;
-                if(meta.isMixin()) {
-                  mixinText = _ctx.appRes("UIMetadataList.label.true") ;
-                  mixinIconType = "True" ;
-                } 
-              %>
               <div style="width: 65px; margin: auto;">
-	              <div class="Icon16x16 ${mixinIconType}16x16Icon"><span></span></div>
-	              <div class="Text">$mixinText</div>
-	            </div>
-            </td>
-            <td>
-              <%
-                String hasTemplateText = _ctx.appRes("UIMetadataList.label.false") ;
-                String hasTemplateIconType = "False" ;
-                if(uicomponent.hasTemplate(meta.getName())) {
-                  hasTemplateText = _ctx.appRes("UIMetadataList.label.true") ;
-                  hasTemplateIconType = "True" ;
-                } 
-              %>
-              <div style="width: 65px; margin: auto;">
-	              <div class="Icon16x16 ${hasTemplateIconType}16x16Icon"><span></span></div>
-	              <div class="Text">$hasTemplateText</div>
+	              <div class="Icon16x16 True16x16Icon"><span></span></div>
+	              <div class="Text">true</div>
 	            </div>
             </td>
             <td style="width:110px;padding-left:20px;">
@@ -93,9 +66,15 @@
               <a href="<%=uicomponent.event("Edit", meta.getName())%>">
                 <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="Edit"><span></span></div>
               </a>
-              <a href="<%=uicomponent.event("Delete", meta.getName())%>">
-                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="Delete"><span></span></div>
-              </a>
+              <%
+              	if(meta.hasTemplate()) {
+              	%>
+              		<a href="<%=uicomponent.event("Delete", meta.getName())%>">
+		                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="Delete"><span></span></div>
+		              </a>	
+              	<%
+              	}
+              %>
             </td>
           </tr>
       <%}%>  

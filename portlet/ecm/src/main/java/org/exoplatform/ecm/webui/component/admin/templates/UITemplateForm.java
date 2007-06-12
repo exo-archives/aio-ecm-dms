@@ -12,13 +12,17 @@ import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -34,6 +38,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+
 
 /**
  * Created by The eXo Platform SARL
@@ -96,16 +101,20 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     getUIStringInput(FIELD_PERMISSION).setValue("") ;
     getUIFormSelectBox(FIELD_NAME).setOptions(getOption()) ; 
   }
-
+  
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   private List<SelectItemOption<String>> getOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ; 
+    String repository = getRepository() ;
     CmsConfigurationService configService = getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = 
-      repositoryService.getRepository().getSystemSession(configService.getWorkspace()) ;
+    Session session = getApplicationComponent(RepositoryService.class)
+                     .getRepository(repository).getSystemSession(configService.getWorkspace(repository)) ;
     NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager() ; 
-    NodeIterator templateIter = getApplicationComponent(TemplateService.class).getTemplatesHome().getNodes() ;
+    NodeIterator templateIter = getApplicationComponent(TemplateService.class).getTemplatesHome(repository).getNodes() ;
     List<String> templates = new ArrayList<String>() ;
     while (templateIter.hasNext()) {
       templates.add(templateIter.nextNode().getName()) ;
@@ -114,6 +123,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     while (iter.hasNext()) {
       NodeType nodeType = iter.nextNodeType();
       String nodeTypeName = nodeType.getName();
+
       if(!templates.contains(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
     }
     return options ;
@@ -148,9 +158,9 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
       if(view == null) view = "" ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       templateService.addTemplate(true, name, label, isDocumentTemplate, 
-          TemplateService.DEFAULT_DIALOG, roles, dialog) ;
+          TemplateService.DEFAULT_DIALOG, roles, dialog, uiForm.getRepository()) ;
       templateService.addTemplate(false, name, label, isDocumentTemplate,
-          TemplateService.DEFAULT_VIEW, roles, view) ;
+          TemplateService.DEFAULT_VIEW, roles, view, uiForm.getRepository()) ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       uiManager.refresh() ;
       uiForm.refresh() ;

@@ -9,9 +9,14 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.portlet.PortletPreferences;
+
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -53,7 +58,10 @@ public class UINodeTypeSelectForm extends UIForm implements UIPopupComponent {
     getChildren().clear() ;
     UIFormCheckBoxInput<String> uiCheckBox ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List<String> templates = templateService.getDocumentTemplates() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    List<String> templates = templateService.getDocumentTemplates(repository) ;
     for(String template : templates) {
       uiCheckBox = new UIFormCheckBoxInput<String>(template, template, "") ;
       if(propertiesSelected(template)) uiCheckBox.setChecked(true) ;

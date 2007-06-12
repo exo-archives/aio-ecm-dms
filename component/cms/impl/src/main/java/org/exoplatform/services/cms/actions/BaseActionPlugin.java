@@ -58,6 +58,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   final static long BUFFER_TIME = 500*1000 ; 
 
   final static String actionNameVar = "actionName".intern() ;
+  final static String srcRepository = "repository".intern() ;
   final static String srcWorkspaceVar = "srcWorkspace".intern() ;
   final static String initiatorVar = "initiator".intern() ;
   final static String srcPathVar = "srcPath".intern() ;
@@ -67,21 +68,23 @@ abstract public class BaseActionPlugin implements ActionPlugin {
 
   protected Map<String, ECMEventListener> listeners_ = new HashMap<String, ECMEventListener>();
 
+  abstract protected String getRepository();
+  
   abstract protected String getWorkspace();
 
-  abstract protected ManageableRepository getRepository() throws Exception;
+  abstract protected ManageableRepository getRepository(String repository) throws Exception;
 
   abstract protected String getActionType();
 
   abstract protected List getActions();
 
   abstract protected ECMEventListener createEventListener(String actionName,
-      String actionExecutable, String srcWorkspace, String srcPath,
+      String actionExecutable, String repository, String srcWorkspace, String srcPath,
       Map variables) throws Exception;
 
   abstract protected Class createActivationJob() throws Exception ;  
 
-  public void addAction(String actionType, String srcWorkspace, String srcPath,
+  public void addAction(String actionType, String repository, String srcWorkspace, String srcPath,
       Map mappings) throws Exception {
     String actionName = 
       (String) ((JcrInputProperty) mappings.get("/node/exo:name")).getValue();    
@@ -89,16 +92,17 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String type = 
       (String) ((JcrInputProperty) mappings.get("/node/exo:lifecyclePhase")).getValue();               
     String actionExecutable = getActionExecutable(actionType);
-    if (ActionServiceContainer.READ_PHASE.equals(type)) {
-      return;    
-    } else if(ActionServiceContainer.SCHEDULE_PHASE.equals(type)) {
-      scheduleActionActivationJob(srcWorkspace,srcPath,actionName,actionType, actionExecutable,mappings) ;
-    } else {
+    if (ActionServiceContainer.READ_PHASE.equals(type)) return;    
+    else if(ActionServiceContainer.SCHEDULE_PHASE.equals(type)) {
+      scheduleActionActivationJob(repository, srcWorkspace, srcPath, actionName,
+                                  actionType, actionExecutable, mappings) ;
+    }else {
       Map<String,Object> variables = getExecutionVariables(mappings) ;
-      ECMEventListener listener = createEventListener(actionName, actionExecutable, srcWorkspace, srcPath, variables);
-      ObservationManager obsManager = getSystemSession(srcWorkspace).getWorkspace().getObservationManager();
-      if(listeners_.containsKey(srcPath + "/" + actionName)){
-        listeners_.remove(srcPath + "/" + actionName) ;      
+      ECMEventListener listener = createEventListener(actionName, actionExecutable, repository,
+          srcWorkspace, srcPath, variables);
+      ObservationManager obsManager = getSystemSession(repository, srcWorkspace).getWorkspace().getObservationManager();
+      if(listeners_.containsKey(repository + ":" + srcPath + "/" + actionName)){
+        listeners_.remove(repository + ":" +srcPath + "/" + actionName) ;      
       }else{
         if (ActionServiceContainer.ADD_PHASE.equals(type)) {
           obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, true, null, null, false);      
@@ -108,11 +112,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
           obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, true,  null, null, false);
         }
       }
-      listeners_.put(srcPath + "/" + actionName, listener);
+      listeners_.put(repository + ":" + srcPath + "/" + actionName, listener);
     }        
   }
 
-  public void initiateActionObservation(Node storedActionNode) throws Exception {
+  public void initiateActionObservation(Node storedActionNode, String repository) throws Exception {
 	String actionName = storedActionNode.getProperty("exo:name").getString() ;
     String lifecyclePhase = storedActionNode.getProperty("exo:lifecyclePhase").getString() ;
     String actionType = storedActionNode.getPrimaryNodeType().getName() ;
@@ -137,11 +141,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }  
     String actionExecutable = getActionExecutable(actionType); 
     ECMEventListener listener = 
-      createEventListener(actionName, actionExecutable, srcWorkspace, srcPath, variables);    
+      createEventListener(actionName, actionExecutable, repository, srcWorkspace, srcPath, variables);    
     ObservationManager obsManager = 
-      getSystemSession(srcWorkspace).getWorkspace().getObservationManager(); 
-    if(listeners_.containsKey(srcPath + "/" + actionName)){
-      listeners_.remove(srcPath + "/" + actionName) ;      
+      getSystemSession(repository, srcWorkspace).getWorkspace().getObservationManager(); 
+    if(listeners_.containsKey(repository + ":" + srcPath + "/" + actionName)){
+      listeners_.remove(repository + ":" + srcPath + "/" + actionName) ;      
     }else{
       if (ActionServiceContainer.ADD_PHASE.equals(lifecyclePhase)) {
         obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, true, null, null, false);      
@@ -151,10 +155,10 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, true, null, null, false);
       }
     }
-    listeners_.put(srcPath + "/" + actionName, listener);
+    listeners_.put(repository + ":" + srcPath + "/" + actionName, listener);
   }
 
-  public void reScheduleActivations(Node storedActionNode) throws Exception {    
+  public void reScheduleActivations(Node storedActionNode, String repository) throws Exception {    
     String jobClassName = storedActionNode.getProperty(JOB_CLASS_PROP).getString() ;
     Class activationJobClass  = null ;
     try {
@@ -191,6 +195,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String actionExecutable = getActionExecutable(actionType);
     variables.put(initiatorVar,initiator) ;
     variables.put(actionNameVar, actionName);
+    variables.put(srcRepository, repository) ;
     variables.put(executableVar,actionExecutable) ;
     //variables.put("nodePath", path);
     variables.put(srcWorkspaceVar, srcWorkspace);
@@ -217,12 +222,12 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }       
   } 
 
-  protected Session getSystemSession(String workspace) throws Exception {
-    Session session = sessions.get(workspace);
+  protected Session getSystemSession(String repository, String workspace) throws Exception {
+    Session session = sessions.get(repository + workspace);
     if (session == null) {
-      ManageableRepository jcrRepository = getRepository();      
+      ManageableRepository jcrRepository = getRepository(repository);      
       session = jcrRepository.getSystemSession(workspace);
-      sessions.put(workspace, session);
+      sessions.put(repository + workspace, session);
     }
     return session;
   }
@@ -230,7 +235,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   public String getActionExecutable(String actionTypeName) throws Exception {
     Session session = null;
     try {
-      session = getSystemSession(getWorkspace());
+      session = getSystemSession(getRepository(), getWorkspace());
     } catch (RepositoryException ex) {
       return null;
     }
@@ -250,7 +255,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   public boolean isActionTypeSupported(String actionType) {
     Session session = null;
     try {
-      session = getSystemSession(getWorkspace());
+      session = getSystemSession(getRepository(), getWorkspace());
       NodeTypeManager ntmanager = session.getWorkspace().getNodeTypeManager();
       NodeType[] superTypes = ntmanager.getNodeType(actionType).getSupertypes();
       for (int i = 0; i < superTypes.length; i++) {
@@ -264,16 +269,16 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }
   }
 
-  public void removeObservation(String actionName) throws Exception {
+  public void removeObservation(String repository, String actionName) throws Exception {
 
-    ECMEventListener eventListener = listeners_.get(actionName);
+    ECMEventListener eventListener = listeners_.get(repository + ":" + actionName);
     if(eventListener != null){
       String srcWorkspace = eventListener.getSrcWorkspace();
-      ObservationManager obsManager = getSystemSession(srcWorkspace)
+      ObservationManager obsManager = getSystemSession(repository, srcWorkspace)
       .getWorkspace().getObservationManager();
       obsManager.removeEventListener(eventListener);
     }
-    listeners_.remove(actionName);
+    listeners_.remove(repository + ":" + actionName);
   }
 
   public void removeActivationJob(String jobName,String jobGroup,String jobClass) throws Exception {
@@ -293,7 +298,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   public boolean isVariable(String variable) throws Exception {
     Session session = null;
     try {
-      session = getSystemSession(getWorkspace());
+      session = getSystemSession(getRepository(), getWorkspace());
     } catch (RepositoryException ex) {
       return false;
     }
@@ -316,7 +321,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
 
     Session session = null;
     try {
-      session = getSystemSession(getWorkspace());
+      session = getSystemSession(getRepository(),getWorkspace());
     } catch (RepositoryException ex) {
     }
 
@@ -345,8 +350,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       String nodeType = action.getType();
       String srcWorkspace = action.getSrcWorkspace();
       String srcPath = action.getSrcPath();
-
-      session = getSystemSession(srcWorkspace);
+      session = getSystemSession(getRepository(), srcWorkspace);
       try {
         Node srcNode = (Node) session.getItem(srcPath);
 
@@ -412,17 +416,17 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }
   }
 
-  private void scheduleActionActivationJob(String srcWorkspace,String srcPath,
+  private void scheduleActionActivationJob(String repository, String srcWorkspace,String srcPath,
       String actionName,String actionType,String actionExecutable, Map mappings) throws Exception {
     JobSchedulerService schedulerService =
       (JobSchedulerService)PortalContainer.getComponent(JobSchedulerService.class) ;
     ActionServiceContainer actionContainer = 
       (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class) ;
 
-    Session session = getSystemSession(srcWorkspace) ;
+    Session session = getSystemSession(repository, srcWorkspace) ;
     
     Node srcNode = (Node)session.getItem(srcPath) ;
-    Node actionNode = actionContainer.getAction(srcNode,actionName) ;
+    Node actionNode = actionContainer.getAction(srcNode,actionName,repository) ;
     if(!actionNode.isNodeType(SCHEDULABLE_INFO_MIXIN)) {
       actionNode.addMixin(SCHEDULABLE_INFO_MIXIN) ;
       actionNode.save() ;        
@@ -470,6 +474,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     variables.put(actionNameVar, actionName);
     variables.put(executableVar,actionExecutable) ;
     variables.put(srcWorkspaceVar, srcWorkspace);
+    variables.put(srcRepository, repository);
     variables.put(srcPathVar, srcPath);
     Map<String,Object> executionVariables = getExecutionVariables(mappings) ; 
     JobDataMap jdatamap = new JobDataMap() ;

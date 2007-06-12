@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.nodetype.NodeType;
@@ -51,25 +52,25 @@ public class UIMetadataList extends UIContainer {
   }
   
   @SuppressWarnings("unchecked")
-  public List<NodeType> getAllMetadatas() throws Exception {
+
+  public List<Metadata> getAllMetadatas() throws Exception {
+    List<Metadata> metadatas = new ArrayList<Metadata>() ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    return metadataService.getAllMetadatasNodeType() ; 
+    List<NodeType> nodetypes = metadataService.getAllMetadatasNodeType() ;
+    for(NodeType nt : nodetypes) {
+      Metadata mt = new Metadata() ;
+      mt.setName(nt.getName()) ;
+      mt.isTemplate(metadataService.hasMetadata(nt.getName())) ;
+      PropertyDefinition def =((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
+      if(def.getDefaultValues()[0].getBoolean()) mt.setInternalUse("True") ;
+      else mt.setInternalUse("False") ;
+      metadatas.add(mt) ;
+    }
+    return metadatas ; 
   }
   
   public List getListMetadata() throws Exception {
     return getChild(UIPageIterator.class).getCurrentPageData() ;
-  }
-  
-  public boolean hasTemplate(String metadataName) throws Exception {
-    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    return metadataService.hasMetadata(metadataName) ;
-  }
-  
-  public boolean isInternalUse(String metaTypeName) throws Exception {
-    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    ExtendedNodeType metaType = (ExtendedNodeType)metadataService.getMetadataTypeByName(metaTypeName) ;
-    PropertyDefinition def = metaType.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition();
-    return def.getDefaultValues()[0].getBoolean() ;
   }
   
   static public class ViewActionListener extends EventListener<UIMetadataList> {
@@ -110,5 +111,21 @@ public class UIMetadataList extends UIContainer {
       uiApp.addMessage(new ApplicationMessage("UIMetadataList.msg.delete-successful", args)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
+  }
+  public class Metadata{
+    private String name ;
+    private String internalUse ;
+    private boolean hasTemplate = false;
+    
+    public Metadata() {}
+    
+    public String getName() { return name ;}
+    public void setName(String n) { name = n ; }
+    
+    public String getInternalUse() { return internalUse ;}
+    public void setInternalUse(String inter) { internalUse = inter ; }
+    
+    public boolean hasTemplate() { return hasTemplate ; }
+    public void isTemplate(boolean isTemplate) { hasTemplate = isTemplate ; }
   }
 }

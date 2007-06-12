@@ -1,5 +1,8 @@
 package org.exoplatform.ecm.webui.component.explorer;
 
+import javax.portlet.PortletPreferences;
+
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -28,5 +31,12 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
     super.processRender(app, context) ;
+  }
+  
+  public String getPreferenceRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    return repository ;
   }
 }

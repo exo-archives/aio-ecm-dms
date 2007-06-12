@@ -72,13 +72,14 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
   
   private void init() throws Exception{
-    session_ = repositoryService_.getDefaultRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node root = session_.getRootNode();
     Node metadataHome = null ;
     List nodetypes = null;
     for (int j = 0; j < plugins_.size(); j++) {
       nodetypes = plugins_.get(j).getNodeTypes();
+      String repository = plugins_.get(j).getRepository() ;
+      session_ = repositoryService_.getRepository(repository)
+                                   .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
       if (nodetypes.isEmpty()) return;
       TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
       String nodeTypeName = nodeType.getNodetypeName();
@@ -109,8 +110,53 @@ public class MetadataServiceImpl implements MetadataService, Startable{
           addNode(sourcePath, viewsHome, views);
         }
       }
-    }
-    root.save();
+      session_.save() ;
+    }    
+  }
+  
+  public void init(String repository) throws Exception {
+    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
+    String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
+    Node metadataHome = null ;
+    List nodetypes = null;
+    for (int j = 0; j < plugins_.size(); j++) {
+      nodetypes = plugins_.get(j).getNodeTypes();
+      if(plugins_.get(j).getRepository().equals(defaultRepo)) {
+        session_ = repositoryService_.getRepository(repository)
+        .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+        if (nodetypes.isEmpty()) return;
+          TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
+          String nodeTypeName = nodeType.getNodetypeName();
+        try {
+          metadataHome = (Node)session_.getItem(metadataPath);
+        } catch (PathNotFoundException e) {
+        }
+        String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
+          + metadataPath.substring(metadataPath.lastIndexOf("/")) ;
+        
+        for (Iterator iter = nodetypes.iterator(); iter.hasNext();) {
+          nodeType = (TemplateConfig.NodeType) iter.next();
+          nodeTypeName = nodeType.getNodetypeName();
+          Node nodeTypeHome = null;
+          if (!metadataHome.hasNode(nodeTypeName)){
+            nodeTypeHome = Utils.makePath(metadataHome, nodeTypeName, NT_UNSTRUCTURED);          
+          } else {
+            nodeTypeHome = metadataHome.getNode(nodeTypeName);
+          }
+          List dialogs = nodeType.getReferencedDialog();
+          if(dialogs.size() > 0) {
+            Node dialogsHome = createTemplateHome(nodeTypeHome, true);
+            addNode(sourcePath, dialogsHome, dialogs);
+          }
+          List views = nodeType.getReferencedView();
+          if(views.size() > 0) {
+            Node viewsHome = createTemplateHome(nodeTypeHome, false);
+            addNode(sourcePath, viewsHome, views);
+          }
+        }
+        session_.save() ;
+      }
+    }    
   }
   
   private void addNode(String metadataPath, Node templateHome, List templates)  throws Exception {
@@ -265,10 +311,5 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     }
     return extenalMetaTypes ;
   }
-  
-  public NodeType getMetadataTypeByName(String metadataTypeName) throws Exception {
-    NodeType metadataType = repositoryService_.getDefaultRepository().getNodeTypeManager().getNodeType(metadataTypeName) ;
-    if(metadataType.isNodeType(METADATA_TYPE)) return metadataType ;
-    return null ;  
-  }
+   
 }

@@ -23,7 +23,9 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 public class UIActionManager extends UIContainer {
 
-  public UIActionManager() throws Exception {addChild(UIActionTypeList.class, null, null) ;}
+  public UIActionManager() throws Exception {
+    addChild(UIActionTypeList.class, null, null) ;
+  }
 
   public void refresh() throws Exception {
     UIActionTypeList list = getChild(UIActionTypeList.class) ;

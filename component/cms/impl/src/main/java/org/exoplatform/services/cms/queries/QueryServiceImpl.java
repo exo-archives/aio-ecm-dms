@@ -26,7 +26,7 @@ public class QueryServiceImpl implements QueryService{
   
   private String relativePath_;
   private CmsConfigurationService cmsConfig_;
-  private String workspace_;
+  //private String workspace_;
   private QueryPlugin queryPlugin_ ;
   private RepositoryService repositoryService_;
   private CacheService cacheService_ ;  
@@ -35,13 +35,16 @@ public class QueryServiceImpl implements QueryService{
   public QueryServiceImpl(RepositoryService repositoryService, CmsConfigurationService cmsConf, 
       InitParams params, PortalContainerInfo containerInfo, CacheService cacheService) throws Exception {
     relativePath_ = params.getValueParam("relativePath").getValue();
-    workspace_ = params.getValueParam("workspace").getValue();
+    //workspace_ = params.getValueParam("workspace").getValue();
     cmsConfig_ = cmsConf;
     repositoryService_ = repositoryService;
     containerInfo_ = containerInfo ;
     cacheService_ = cacheService ;
   }
   
+  public void init(String repository) throws Exception {
+    queryPlugin_.init(repository) ;
+  }
   public void setQueryPlugin(QueryPlugin queryPlugin) {
     queryPlugin_ = queryPlugin ;
   }
@@ -50,17 +53,11 @@ public class QueryServiceImpl implements QueryService{
     return relativePath_;
   }
   
-  public List<Query> getQueries(String userName) throws Exception {
+  public List<Query> getQueries(String userName, String repository) throws Exception {
     List<Query> queries = new ArrayList<Query>();        
     if(userName == null) return queries;    
-    Session session = null;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return queries;
-    }    
-    QueryManager manager = session.getWorkspace().getQueryManager();
-    
+    Session session = getSession(repository) ;    
+    QueryManager manager = session.getWorkspace().getQueryManager();    
     Node usersHome = (Node) session.getItem(cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH));
     Node userHome = usersHome.getNode(userName);
     Node queriesHome = userHome.getNode(relativePath_); 
@@ -74,25 +71,10 @@ public class QueryServiceImpl implements QueryService{
     return queries;
   }
 
-  public Query getQuery(Node query, String workspace) throws Exception {
-    Session session = null;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace);
-    } catch (RepositoryException re) {
-      return null;
-    }    
-    QueryManager manager = session.getWorkspace().getQueryManager();
-    return manager.getQuery(query);
-  }
-
-  public void addQuery(String queryName, String statement, String language, String userName) throws Exception {
+  public void addQuery(String queryName, String statement, String language, 
+                       String userName, String repository) throws Exception {
     if(userName == null) return;
-    Session session = null;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return;
-    }    
+    Session session = getSession(repository) ;
     QueryManager manager = session.getWorkspace().getQueryManager();    
     Query query = manager.createQuery(statement, language);
     String usersHome = cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH);
@@ -101,14 +83,9 @@ public class QueryServiceImpl implements QueryService{
     session.getItem(usersHome).save();  
   }
 
-  public void removeQuery(String queryPath, String userName) throws Exception {
+  public void removeQuery(String queryPath, String userName, String repository) throws Exception {
     if(userName == null) return;    
-    Session session = null;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return;
-    }    
+    Session session = getSession(repository) ;
     Node queryNode = (Node) session.getItem(queryPath);
     Node queriesHome = queryNode.getParent() ;
     queryNode.remove() ;
@@ -117,16 +94,16 @@ public class QueryServiceImpl implements QueryService{
   }
   
   public void addSharedQuery(String queryName, String statement, String language, 
-                             String[] permissions, boolean cachedResult) throws Exception {
-    Session session = null;
+                             String[] permissions, boolean cachedResult, String repository) throws Exception {
+    Session session = getSession(repository);
     ValueFactory vt ;
     String queryPath ;
     List<Value> perm = new ArrayList<Value>() ;
-    
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-      vt = repositoryService_.getRepository().getSystemSession(workspace_).getValueFactory() ;
+    try {      
+      vt = repositoryService_.getRepository(repository)
+                             .getSystemSession(cmsConfig_.getWorkspace()).getValueFactory() ;
     } catch (RepositoryException re) {
+      re.printStackTrace() ;
       return;
     } 
     for(String permission : permissions) {
@@ -159,25 +136,15 @@ public class QueryServiceImpl implements QueryService{
     removeFromCache(queryPath) ;
   }
 
-  public Node getSharedQuery(String queryName) throws Exception {
-    Session session = null;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return null;
-    }
+  public Node getSharedQuery(String queryName, String repository) throws Exception {
+    Session session = getSession(repository) ;
     String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
     return (Node)session.getItem(queriesPath + "/" + queryName);
   }
   
-  public List<Node> getSharedQueries(String queryType, List permissions) throws Exception {
-    Session session = null;
+  public List<Node> getSharedQueries(String queryType, List permissions, String repository) throws Exception {
+    Session session = getSession(repository);
     List<Node> queries = new ArrayList<Node>() ;    
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return null;
-    }
     String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
     Node queriesHome = (Node)session.getItem(queriesPath) ;
     NodeIterator iter = queriesHome.getNodes() ;
@@ -196,14 +163,9 @@ public class QueryServiceImpl implements QueryService{
     return queries;
   }
   
-  public List<Node> getSharedQueries() throws Exception {
-    Session session = null;
+  public List<Node> getSharedQueries(String repository) throws Exception {
+    Session session = getSession(repository);
     List<Node> queries = new ArrayList<Node>() ;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return queries;
-    }    
     Node sharedQueryHome = (Node) session.getItem(cmsConfig_.getJcrPath(BasePath.QUERIES_PATH));
     NodeIterator iter = sharedQueryHome.getNodes();
     while (iter.hasNext()) {
@@ -214,20 +176,15 @@ public class QueryServiceImpl implements QueryService{
     return queries ;
   }
   
-  public void removeSharedQuery(String queryName) throws Exception {
-    Session session = null;
-    try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
-    } catch (RepositoryException re) {
-      return ;
-    }
+  public void removeSharedQuery(String queryName, String repository) throws Exception {
+    Session session = getSession(repository) ;
     String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
     session.getItem(queriesPath + "/" + queryName).remove();
     session.save() ;
   }
   
-  public List<Node> getSharedQueriesByPermissions(List permissions) throws Exception {
-    List<Node> queries = getSharedQueries() ;
+  public List<Node> getSharedQueriesByPermissions(List permissions, String repository) throws Exception {
+    List<Node> queries = getSharedQueries(repository) ;
     List<Node> result = new ArrayList<Node>() ;
     for(Node query : queries) {
       List applyPermissions = getPermissions(query) ;
@@ -260,10 +217,11 @@ public class QueryServiceImpl implements QueryService{
     return permissions.contains(permission) ;
   }
 
-  public QueryResult execute(String queryPath, String workspace) throws Exception {
+
+  public QueryResult execute(String queryPath, String workspace, String repository) throws Exception {
     Session session = null;
     try {
-      session = repositoryService_.getRepository().getSystemSession(workspace_);
+      session = repositoryService_.getRepository(repository).getSystemSession(workspace);
     } catch (RepositoryException re) {
       return null;
     }
@@ -275,21 +233,34 @@ public class QueryServiceImpl implements QueryService{
         String key = portalName + queryPath ;
         QueryResult result = (QueryResult)queryCache.get(key) ;
         if (result != null) return result ; 
-        Query query = getQuery(queryNode, workspace) ;
+        Query query = getQuery(queryNode, workspace, repository) ;
         result = query.execute() ;
         queryCache.put(key, result) ;
         return result ;      
       }
     }
-    Query query = getQuery(queryNode, workspace) ;
+    Query query = getQuery(queryNode, workspace, repository) ;
     return query.execute() ;
   }
   
+  private Query getQuery(Node query, String workspace, String repository) throws Exception {
+    Session session = repositoryService_.getRepository(repository).getSystemSession(workspace);
+    QueryManager manager = session.getWorkspace().getQueryManager();
+    return manager.getQuery(query);
+  }
   private void removeFromCache(String queryPath) throws Exception {
     ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
     String portalName = containerInfo_.getContainerName() ;
     String key = portalName + queryPath ;
     QueryResult result = (QueryResult)queryCache.get(key) ;
     if (result != null) queryCache.remove(key) ;
+  }
+  
+  private Session getSession(String repository) {
+    try {
+      return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository));
+    } catch (Exception re) {
+      return null;
+    }
   }
 }

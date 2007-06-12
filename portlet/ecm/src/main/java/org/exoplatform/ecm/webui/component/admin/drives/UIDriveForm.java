@@ -7,9 +7,8 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import javax.jcr.Session;
-
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -48,8 +47,7 @@ import org.exoplatform.webui.form.UIFormTabPane;
 )
 public class UIDriveForm extends UIFormTabPane implements UISelector {
 
-  private boolean isAddNew_ = true ;
-  
+  private boolean isAddNew_ = true ;  
   final static public String[] ACTIONS = {"Save", "Cancel", "Refresh"} ;
   final static public String POPUP_DRIVEPERMISSION = "PopupDrivePermission" ;
   
@@ -57,12 +55,10 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     super("UIDriveForm", false) ;
     
     UIFormInputSet driveInputSet = new UIDriveInputSet("DriveInputSet") ;
-    addUIFormInput(driveInputSet) ;
-    
+    addUIFormInput(driveInputSet) ;    
     UIFormInputSet viewInputSet = new UIViewsInputSet("ViewsInputSet") ;
     viewInputSet.setRendered(false) ;
-    addUIFormInput(viewInputSet) ;
-    
+    addUIFormInput(viewInputSet) ;    
     setActions(ACTIONS) ;
   }
   
@@ -71,7 +67,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       return res.getString("UIDriveForm.label." + id) ;
     } catch (MissingResourceException ex) {
       return id ;
-    }
+    }    
   }
   
   public void updateSelect(String selectField, String value) {
@@ -88,13 +84,15 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   }
   
   public void refresh(String driveName) throws Exception {
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     DriveData drive = null ;
     if(driveName == null) {
       isAddNew_ = true ;
     } else {
       isAddNew_ = false ;
       setActions(new String[] {"Save", "Cancel"}) ;
-      drive = (DriveData)getApplicationComponent(ManageDriveService.class).getDriveByName(driveName) ;
+      drive = (DriveData)getApplicationComponent(ManageDriveService.class)
+              .getDriveByName(driveName, repository) ;
     }
     getChild(UIDriveInputSet.class).update(drive) ;
     getChild(UIViewsInputSet.class).update(drive) ;
@@ -103,6 +101,9 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   static public class SaveActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
+      String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class)
+                                      .getPreferenceRepository() ;
+      RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
       UIDriveInputSet driveInputSet = uiDriveForm.getChild(UIDriveInputSet.class) ;
       String name = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_NAME).getValue() ;
       String workspace = 
@@ -110,10 +111,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       String path = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).getValue() ;
       if(path == null) path = "/" ;
       UIApplication uiApp = uiDriveForm.getAncestorOfType(UIApplication.class) ;
-      try {
-        RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
-        Session session = rservice.getRepository().getSystemSession(workspace) ;
-        session.getItem(path) ;
+      try {        
+        rservice.getRepository(repository).getSystemSession(workspace).getItem(path) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.workspace-path-invalid", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -128,12 +127,10 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked() ;
       String allowCreateFolder =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER).getValue() ;
       UIViewsInputSet viewsInputSet = uiDriveForm.getChild(UIViewsInputSet.class) ;
-      String views = viewsInputSet.getViewsSelected() ;
-      
+      String views = viewsInputSet.getViewsSelected() ;      
       String permissions = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue() ;
-
       ManageDriveService dservice_ = uiDriveForm.getApplicationComponent(ManageDriveService.class) ;
-      if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name) != null)) {
+      if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name, repository) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -142,20 +139,18 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       String icon = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
       if(icon != null && icon.trim().length() > 0) {
         try {
-          RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
-          Session session = rservice.getRepository().getSystemSession("digital-assets") ;
-          session.getItem(icon) ;
+          rservice.getRepository(repository).getSystemSession("digital-assets").getItem(icon) ;
         } catch(Exception e) {
           uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
-              ApplicationMessage.WARNING)) ;
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        }   
+        }  
       } else {
         icon = "" ;
       }
       dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
-                         viewNonDocument, viewSideBar, allowCreateFolder) ;
+                         viewNonDocument, viewSideBar, repository, allowCreateFolder) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;
       uiDriveList.updateDriveListGrid() ;

@@ -34,6 +34,10 @@ public class UIViewContainer extends UIContainer {
     uiPopup.setResizable(true) ;
   }
   
+  public void update() throws Exception {
+    getChild(UIViewList.class).updateViewListGrid() ;
+  }
+  
   public void initPopupPermission(String membership) throws Exception {
     removeChildById(UIViewFormTabPane.POPUP_PERMISSION) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UIViewFormTabPane.POPUP_PERMISSION);

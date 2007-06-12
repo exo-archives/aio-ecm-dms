@@ -20,6 +20,7 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -39,9 +40,11 @@ import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -106,8 +109,9 @@ public class UIWorkingArea extends UIContainer {
   
   public Node getNodeByUUID(String uuid) throws Exception{
     CmsConfigurationService cmsConfService = getApplicationComponent(CmsConfigurationService.class) ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    Session session = repositoryService.getRepository().getSystemSession(cmsConfService.getWorkspace());
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    Session session = getApplicationComponent(RepositoryService.class).getRepository(repository)
+    .getSystemSession(cmsConfService.getWorkspace(repository));
     return session.getNodeByUUID(uuid);
   }
   
@@ -295,7 +299,8 @@ public class UIWorkingArea extends UIContainer {
         uiPopupAction.activate(uiContainer, 600, 550) ;
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
-        List documentNodeType = tservice.getDocumentTemplates() ;
+        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        List documentNodeType = tservice.getDocumentTemplates(repository) ;
         String nodeType = selectedNode.getPrimaryNodeType().getName() ;
         if(documentNodeType.contains(nodeType)){
           UIDocumentForm uiDocumentForm = 
@@ -620,6 +625,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String actionName = event.getRequestContext().getRequestParameter("actionName") ;
+      String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
@@ -629,7 +635,7 @@ public class UIWorkingArea extends UIContainer {
       try {
         Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session);
         String userId = event.getRequestContext().getRemoteUser() ;
-        actionService.executeAction(userId, node, actionName);
+        actionService.executeAction(userId, node, actionName,repository);
         Object[] arg = { actionName } ;
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.execute-successfully", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -676,7 +682,9 @@ public class UIWorkingArea extends UIContainer {
         Node selectedNode = (Node)session.getItem(destPath) ;
         ActionServiceContainer actionContainer = 
           event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
-        actionContainer.initiateObservation(selectedNode) ;
+        PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+        PortletPreferences preferences = context.getRequest().getPreferences() ;
+        actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
         uiExplorer.updateAjax(event) ;
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
@@ -715,8 +723,10 @@ public class UIWorkingArea extends UIContainer {
         workspace.copy(srcWorkspace, srcPath, destPath);
         Node destNode = (Node) session.getItem(destPath) ;
         removeReferences(destNode, session) ;
-        RepositoryService repositoryService = uiExplorer.getApplicationComponent(RepositoryService.class) ;
-        Session srcSession = repositoryService.getRepository().getSystemSession(srcWorkspace) ;
+        RepositoryService repositoryService = 
+          uiExplorer.getApplicationComponent(RepositoryService.class) ;
+        String repository = ((ManageableRepository)session.getRepository()).getConfiguration().getName() ;
+        Session srcSession = repositoryService.getRepository(repository).login(srcWorkspace) ;
         srcSession.getItem(srcPath).remove() ;
         srcSession.save() ;
       } else {
@@ -737,7 +747,7 @@ public class UIWorkingArea extends UIContainer {
             while(references.hasNext()) {
               Property pro = references.nextProperty() ;
               Node refNode = pro.getParent() ;
-              relationsService.removeRelation(refNode, srcPath) ;
+              relationsService.removeRelation(refNode, srcPath, uiExplorer.getSession()) ;
               refNode.save() ;
               refList.add(refNode) ;
             }
@@ -747,7 +757,7 @@ public class UIWorkingArea extends UIContainer {
         session.save() ;
         for(int i = 0; i < refList.size(); i ++) {
           Node addRef = refList.get(i) ;
-          relationsService.addRelation(addRef, destPath) ;
+          relationsService.addRelation(addRef, destPath, session) ;
           addRef.save() ;
         }
       }

@@ -13,7 +13,11 @@ public class TemplatePlugin extends BaseComponentPlugin {
     config_ = (TemplateConfig) params
         .getObjectParamValues(TemplateConfig.class).get(0);
   }
-
+  
+  public String getRepository() {
+    return config_.getRepository();
+  }
+  
   public List getNodeTypes() {
     return config_.getNodeTypes();
   }

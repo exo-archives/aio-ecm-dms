@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.nodetype.NodeType;
+import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -55,7 +59,7 @@ public class UIActionTypeForm extends UIForm {
 
   public UIFormSelectBox actionExecutables ;
   public UIFormMultiValueInputSet uiFormMultiValue = null ;
-
+  
   public UIActionTypeForm() throws Exception {
     List<SelectItemOption<String>> actionOptions = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox actionType = 
@@ -98,10 +102,13 @@ public class UIActionTypeForm extends UIForm {
   @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getExecutableOptions(String actionTypeName) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository =  portletPref.getValue(Utils.REPOSITORY, "") ;
     ActionServiceContainer actionServiceContainer = 
       getApplicationComponent(ActionServiceContainer.class) ;    
     ActionPlugin actionPlugin = actionServiceContainer.getActionPluginForActionType(actionTypeName) ;
-    List<String> executables = (List)actionPlugin.getActionExecutables();
+    List<String> executables = (List)actionPlugin.getActionExecutables(repository);
     for(String actionExec : executables) {
       options.add(new SelectItemOption<String>(actionExec, actionExec)) ;
     } 
@@ -136,12 +143,14 @@ public class UIActionTypeForm extends UIForm {
   static public class SaveActionListener extends EventListener<UIActionTypeForm> {
     public void execute(Event<UIActionTypeForm> event) throws Exception {
       UIActionTypeForm uiForm = event.getSource() ;
+      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+      PortletPreferences preferences = context.getRequest().getPreferences() ;
+      String repository = preferences.getValue(Utils.REPOSITORY, "") ;
       UIActionManager uiActionManager = uiForm.getAncestorOfType(UIActionManager.class) ;
       ActionServiceContainer actionServiceContainer = 
         uiForm.getApplicationComponent(ActionServiceContainer.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String selectValue = uiForm.getUIFormSelectBox(FIELD_ACTIONTYPE).getValue() ;
-      System.out.println("\n\nselectvalue====?>" +selectValue+ "\n\n");
       String actionName = uiForm.getUIStringInput(FIELD_NAME).getValue();
       Object[] args = {actionName} ;
       if(!actionName.startsWith("exo:")) { 
@@ -157,7 +166,7 @@ public class UIActionTypeForm extends UIForm {
           variables.add((String)value) ;
         }
       }
-      for(NodeType nodeType : actionServiceContainer.getCreatedActionTypes()) {
+      for(NodeType nodeType : actionServiceContainer.getCreatedActionTypes(repository)) {
         if(actionName.equals(nodeType.getName())) {
           uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-exist", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -167,8 +176,9 @@ public class UIActionTypeForm extends UIForm {
       try {
         boolean isMove = uiForm.getUIFormCheckBoxInput(FIELD_ISMOVE).isChecked() ;
         String execute = uiForm.actionExecutables.getValue() ;
-        actionServiceContainer.createActionType(actionName, selectValue, execute, variables, isMove);
-        uiActionManager.refresh() ;
+        actionServiceContainer.createActionType(actionName, selectValue, execute, variables, 
+                                                isMove, repository);
+       uiActionManager.refresh() ;
         uiForm.refresh() ;
         uiActionManager.removeChild(UIPopupWindow.class) ;
       } catch(Exception e) {

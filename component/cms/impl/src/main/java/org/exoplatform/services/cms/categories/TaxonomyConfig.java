@@ -5,10 +5,13 @@ import java.util.List;
 
 public class TaxonomyConfig {			
 	
+  private String repository;
 	private List<Taxonomy> taxonomies = new ArrayList<Taxonomy>() ;
 	
-	public List<Taxonomy> getTaxonomies() { return this.taxonomies ; }
-	
+  public String getRepository() { return repository; }
+  public void setRepository(String repository) { this.repository = repository; }
+  
+	public List<Taxonomy> getTaxonomies() { return this.taxonomies ; }	
 	public void setTaxonomies(List<Taxonomy> taxonomies) { this.taxonomies = taxonomies ;}
 	
 	static public class Taxonomy {

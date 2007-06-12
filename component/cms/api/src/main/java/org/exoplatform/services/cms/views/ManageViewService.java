@@ -16,24 +16,25 @@ import javax.jcr.Node;
  */
 public interface ManageViewService {
 
-  public void addView(String name, String permissions, String template, List tabs)throws Exception ;
-  public Node getViewByName(String viewName) throws Exception;
+  public void addView(String name, String permissions, String template, List tabs, String repository)throws Exception ;
+  public Node getViewByName(String viewName, String repository) throws Exception;
   public List getButtons() throws Exception;  
-  public List getAllViewByPermission(String permission) throws Exception;
-  public Node getDefaultView() throws Exception;
-  public Node getAdminView() throws Exception;
+  public List getAllViewByPermission(String permission, String repository) throws Exception;
+  public Node getDefaultView(String repository) throws Exception;
+  public Node getAdminView(String repository) throws Exception;
 
-  public void removeView(String viewName) throws Exception;  
-  public Node getViewHome() throws Exception ;  
-  public List getAllViews() throws Exception;
+  public void removeView(String viewName, String repository) throws Exception;  
+  public Node getViewHome(String repository) throws Exception ;  
+  public List getAllViews(String repository) throws Exception;
   
-  public boolean hasView(String name) throws Exception ;
-  public Node getTemplateHome(String homeAlias) throws Exception;
-  public List<Node> getAllTemplates(String homeAlias) throws Exception;
-  public Node getTemplate(String path) throws Exception; 
-  public void addTemplate(String name, String content, String homeAlias)throws Exception ;
-  public void removeTemplate(String templatePath) throws Exception  ;
+  public boolean hasView(String name, String repository) throws Exception ;
+  public Node getTemplateHome(String homeAlias, String repository) throws Exception;
+  public List<Node> getAllTemplates(String homeAlias, String repository) throws Exception;
+  public Node getTemplate(String path, String repository) throws Exception; 
+  public void addTemplate(String name, String content, String homeAlias, String repository)throws Exception ;
+  public void removeTemplate(String templatePath, String repository) throws Exception  ;
 
   public void addTab(Node view, String name, String buttons) throws Exception ; 
+  public void init(String repository) throws Exception ;
 
 }

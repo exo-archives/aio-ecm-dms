@@ -10,11 +10,14 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Value;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -55,9 +58,9 @@ public class UIDialogTab extends UIContainer {
     uiForm.update(null) ;
   }
 
-  public void updateGrid(String nodeName) throws Exception {
+  public void updateGrid(String nodeName, String repository) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository) ;
     List<DialogData> data = new ArrayList<DialogData>() ;
     DialogData item  ;
     while (iter.hasNext()){
@@ -113,9 +116,13 @@ public class UIDialogTab extends UIContainer {
           return ;
         }
       }
-      templateService.removeTemplate(true, nodeTypeName, templateName) ;
+      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      templateService.removeTemplate(true, nodeTypeName, templateName, repository) ;
       uiForm.update(null) ;
-      dialogTab.updateGrid(nodeTypeName) ;
+      
+      dialogTab.updateGrid(nodeTypeName, repository) ;
       dialogTab.setTabRendered() ;
       UITemplatesManager uiManager = dialogTab.getAncestorOfType(UITemplatesManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

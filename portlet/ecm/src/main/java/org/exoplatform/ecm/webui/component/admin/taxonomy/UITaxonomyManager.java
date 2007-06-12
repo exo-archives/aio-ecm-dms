@@ -7,8 +7,11 @@ package org.exoplatform.ecm.webui.component.admin.taxonomy;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -37,19 +40,18 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UITaxonomyManager extends UIContainer {
 
-  private CategoriesService categoriesService_ ;
-  private TaxonomyNode rootTaxonnomy_ ;
   private ClipboardCommand clipboard_ = new ClipboardCommand() ;
   
-  public UITaxonomyManager() throws Exception {
-    categoriesService_ = getApplicationComponent(CategoriesService.class) ;
-    rootTaxonnomy_ = new TaxonomyNode(categoriesService_.getTaxonomyHomeNode(), 0) ;
+  public UITaxonomyManager() throws Exception {}
+  
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    return pcontext.getRequest().getPreferences().getValue(Utils.REPOSITORY, "") ;
   }
   
-  private TaxonomyNode getRootTaxonomyNode() throws Exception {  return rootTaxonnomy_ ; }
-  
-  private void resetTaxonomyRoot() throws Exception {
-    rootTaxonnomy_ = new TaxonomyNode(categoriesService_.getTaxonomyHomeNode(), 0) ;    
+  private TaxonomyNode getRootTaxonomyNode() throws Exception {     
+    return new TaxonomyNode(getApplicationComponent(CategoriesService.class)
+        .getTaxonomyHomeNode(getRepository()), 0) ; 
   }
   
   public void initPopup(String path) throws Exception {
@@ -63,8 +65,7 @@ public class UITaxonomyManager extends UIContainer {
   }
   
   public void addTaxonomy(String parentPath, String name) throws Exception {
-    categoriesService_.addTaxonomy(parentPath, name) ;
-    resetTaxonomyRoot() ;
+    getApplicationComponent(CategoriesService.class).addTaxonomy(parentPath, name, getRepository()) ;
   }
   
   static public class SelectActionListener extends EventListener<UITaxonomyManager> {
@@ -93,13 +94,13 @@ public class UITaxonomyManager extends UIContainer {
       UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;            
       try {
-        uiManager.categoriesService_.removeTaxonomyNode(path) ;
+        uiManager.getApplicationComponent(CategoriesService.class)
+        .removeTaxonomyNode(path, uiManager.getRepository()) ;
       } catch(Exception e) {
         Object[] arg = { path } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg)) ;
         return ;
       }
-      uiManager.resetTaxonomyRoot() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -108,7 +109,8 @@ public class UITaxonomyManager extends UIContainer {
     public void execute(Event<UITaxonomyManager> event) throws Exception {
       UITaxonomyManager uiManager = event.getSource() ;
       String realPath = event.getRequestContext().getRequestParameter(OBJECTID);            
-      Node node = uiManager.categoriesService_.getTaxonomyNode(realPath) ;
+      Node node = uiManager.getApplicationComponent(CategoriesService.class)
+      .getTaxonomyNode(realPath, uiManager.getRepository()) ;
       uiManager.clipboard_.setType(ClipboardCommand.COPY) ;
       uiManager.clipboard_.setSrcPath(node.getPath());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
@@ -128,14 +130,15 @@ public class UITaxonomyManager extends UIContainer {
         return ;
       }
       try {       
-        Node destNode = uiManager.categoriesService_.getTaxonomyNode(realPath) ;
+        Node destNode = uiManager.getApplicationComponent(CategoriesService.class)
+        .getTaxonomyNode(realPath, uiManager.getRepository()) ;
         String destPath = destNode.getPath() + srcPath.substring(srcPath.lastIndexOf("/"));       
-        uiManager.categoriesService_.moveTaxonomyNode(srcPath,destPath,type) ;                        
+        uiManager.getApplicationComponent(CategoriesService.class)
+        .moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;                        
       } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null)) ;
         return ;
       }
-      uiManager.resetTaxonomyRoot() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -144,7 +147,8 @@ public class UITaxonomyManager extends UIContainer {
     public void execute(Event<UITaxonomyManager> event) throws Exception {
       UITaxonomyManager uiManager = event.getSource() ;
       String realPath = event.getRequestContext().getRequestParameter(OBJECTID);            
-      Node node = uiManager.categoriesService_.getTaxonomyNode(realPath) ;
+      Node node = uiManager.getApplicationComponent(CategoriesService.class)
+      .getTaxonomyNode(realPath, uiManager.getRepository()) ;
       uiManager.clipboard_.setType(ClipboardCommand.CUT) ;
       uiManager.clipboard_.setSrcPath(node.getPath());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

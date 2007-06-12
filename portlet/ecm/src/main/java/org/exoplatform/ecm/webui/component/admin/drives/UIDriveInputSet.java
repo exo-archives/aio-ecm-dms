@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
@@ -45,16 +45,10 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   public UIDriveInputSet(String name) throws Exception {
     super(name);
     setComponentConfig(getClass(), null) ;
-    ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository();
-    String[] wsNames = repository.getWorkspaceNames();
-    List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
-    for(String wsName : wsNames) {
-      workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
-    }
-    
+
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
                        addValidator(EmptyFieldValidator.class)) ;
-    addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, workspace)) ;    
+    addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;    
     addUIFormInput(new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null).addValidator(EmptyFieldValidator.class)) ;
@@ -73,6 +67,14 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   }
 
   public void update(DriveData drive) throws Exception {
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    String[] wsNames = getApplicationComponent(RepositoryService.class)
+                      .getRepository(repository).getWorkspaceNames();
+    List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
+    for(String wsName : wsNames) {
+      workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+    }
+    getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace) ;
     if(drive != null) {
       invokeGetBindingField(drive) ;
       getUIStringInput(FIELD_NAME).setEditable(false) ;

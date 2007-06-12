@@ -15,7 +15,7 @@ import org.exoplatform.faces.core.component.UISelectBox;
 public class TestScript extends BaseTest{
   
   public void testScript() throws Exception{    
-    CmsScript script =  scriptService.getScript("FillSelectBoxWithWorkspaces.groovy");    
+    CmsScript script =  scriptService.getScript("FillSelectBoxWithWorkspaces.groovy", "repository");    
     UISelectBox us = new UISelectBox("type","",null);//
     script.execute(us);
   }

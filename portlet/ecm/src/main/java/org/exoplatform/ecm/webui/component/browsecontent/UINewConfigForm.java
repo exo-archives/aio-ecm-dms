@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -67,7 +66,9 @@ public class UINewConfigForm extends UIForm {
     repoSelectBox.setValue(repoName_) ;
     repoSelectBox.setOnChange("OnChange") ;
     addChild(repoSelectBox) ;
-    addChild(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, getWorkSpaceOption())) ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String repo = repositoryService.getDefaultRepository().getConfiguration().getName() ;
+    addChild(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, getWorkSpaceOption(repo))) ;
     addChild( new UIFormSelectBox(FIELD_BROWSETYPE, FIELD_BROWSETYPE, getBrowseTypeOption())) ;
   }
 
@@ -76,24 +77,27 @@ public class UINewConfigForm extends UIForm {
     getUIFormSelectBox(FIELD_BROWSETYPE).reset() ;
   }
 
-  public List<SelectItemOption<String>>  getRepoOption() throws Exception {
+  private List<SelectItemOption<String>> getRepoOption() throws Exception {
+    //TODO: get repository list from repository service
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    ManageableRepository repo = repositoryService.getRepository() ;
-    options.add(new SelectItemOption<String>(repo.getConfiguration().getName(), repo.getConfiguration().getName())) ;
+    String repo = repositoryService.getDefaultRepository().getConfiguration().getName() ;
+    options.add(new SelectItemOption<String>(repo, repo)) ;
     return options ;
   }
 
-  public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
+  
+  private List<SelectItemOption<String>> getWorkSpaceOption(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String[] workspaceNames = repositoryService.getRepository(repoName_).getWorkspaceNames() ;
+    String[] workspaceNames = getApplicationComponent(RepositoryService.class)
+                              .getRepository(repository).getWorkspaceNames() ;
     for(String workspace:workspaceNames) {
       options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
     return options ;
   }
-  public List<SelectItemOption<String>> getBrowseTypeOption() {
+  
+  private List<SelectItemOption<String>> getBrowseTypeOption() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     options.add(new SelectItemOption<String>(Utils.FROM_PATH, Utils.CB_USE_FROM_PATH)) ;
     options.add(new SelectItemOption<String>(Utils.USE_JCR_QUERY, Utils.CB_USE_JCR_QUERY)) ;
@@ -106,9 +110,8 @@ public class UINewConfigForm extends UIForm {
     public void execute(Event<UINewConfigForm> event) throws Exception {
       UINewConfigForm uiForm = event.getSource() ;
       UIFormSelectBox repoSelect = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_REPOSITORY) ;
-      uiForm.repoName_ = repoSelect.getValue() ;
       UIFormSelectBox workspaceSelect = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE) ;
-      workspaceSelect.setOptions(uiForm.getWorkSpaceOption()) ;
+      workspaceSelect.setOptions(uiForm.getWorkSpaceOption(repoSelect.getValue())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
 
@@ -127,8 +130,10 @@ public class UINewConfigForm extends UIForm {
       UINewConfigForm uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       String browseType = uiForm.getUIFormSelectBox(FIELD_BROWSETYPE).getValue() ;
-      String workSpace = uiForm.getUIFormSelectBox(FIELD_WORKSPACE).getValue() ; 
-      uiConfigTabPane.initNewConfig(browseType,workSpace) ;
+      String workSpace = uiForm.getUIFormSelectBox(FIELD_WORKSPACE).getValue() ;
+      String repository = uiForm.getUIFormSelectBox(FIELD_REPOSITORY).getValue() ;
+      uiConfigTabPane.initNewConfig(browseType, repository, workSpace) ;
     }
   }  
 }
+

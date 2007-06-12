@@ -23,6 +23,7 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -54,19 +55,14 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    String temp = null ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     try {
       String nodeType = node_.getPrimaryNodeType().getName() ;
-      if(uiExplorer.getPreference().isJcrEnable()) {
-        uiExplorer.setSelectNode(node_) ;
-        return uiExplorer.getDocumentInfoTemplate();
-      }
-      temp = templateService.getTemplatePathByUser(false, nodeType, userName) ;
+      return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ;
     } catch(Exception e) {
       e.printStackTrace() ;
     }
-    return temp; 
+    return null; 
   }
   
   public List<Node> getAttachments() throws Exception {
@@ -134,7 +130,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      return templateService.isManagedNodeType(nodeTypeName);
+      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      return templateService.isManagedNodeType(nodeTypeName, repository);
     } catch (Exception e) {
       return false;
     }
@@ -169,7 +166,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
 
   public String getLanguage() { return language_; }

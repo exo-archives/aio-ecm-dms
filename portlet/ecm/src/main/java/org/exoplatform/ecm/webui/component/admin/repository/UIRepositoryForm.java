@@ -12,6 +12,7 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
@@ -206,13 +207,34 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       repositoryEntry.setDefaultWorkspaceName(defaulWorkspace_) ;
       try { 
         rService.createRepository(repositoryEntry) ;
+        initServices(repositoryEntry.getName()) ;
       } catch (Exception e) {
         e.printStackTrace() ;
         return ;
       }
     } 
   }
-
+  
+  private void initServices(String repository) throws Exception{
+    try {
+      getApplicationComponent(CmsConfigurationService.class).init(repository) ;
+      /*getApplicationComponent(CategoriesService.class).init(repository) ;
+      getApplicationComponent(ManageDriveService.class).init(repository) ;
+      getApplicationComponent(FolksonomyService.class).init(repository) ;
+      getApplicationComponent(MetadataService.class).init(repository) ;
+      getApplicationComponent(QueryService.class).init(repository) ;
+      getApplicationComponent(RelationsService.class).init(repository) ;
+      getApplicationComponent(ScriptService.class).initRepo(repository) ;
+      getApplicationComponent(TemplateService.class).init(repository) ;
+      getApplicationComponent(ManageViewService.class).init(repository) ;
+      */
+      
+    }catch(Exception e) {
+      e.printStackTrace() ;
+    }
+    
+    
+  }
   protected void ShowHidden() {
     getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered()) ;
     getUIStringInput(FIELD_REPMODE).setRendered(!getUIStringInput(FIELD_REPMODE).isRendered()) ;

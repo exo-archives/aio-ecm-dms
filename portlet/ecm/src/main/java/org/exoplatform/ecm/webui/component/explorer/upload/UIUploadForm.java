@@ -18,6 +18,7 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.portal.component.view.Util;
@@ -169,8 +170,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrEncoding.setValue("UTF-8") ;
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
             CmsService cmsService = (CmsService)PortalContainer.getComponent(CmsService.class) ;
+            String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
             cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties,
-                                 true, Util.getPortalRequestContext().getRemoteUser()) ;
+                                 true, Util.getPortalRequestContext().getRemoteUser(), repository) ;
             selectedNode.save() ;
             selectedNode.getSession().save() ;                        
           } else {

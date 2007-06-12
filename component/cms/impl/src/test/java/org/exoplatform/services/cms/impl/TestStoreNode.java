@@ -32,7 +32,7 @@ public class TestStoreNode extends BaseTest{
     mappings.put("/node/exo:templateFile", jcrInputProperty2);
     mappings.put("/node/exo:roles", jcrInputProperty3);
     Node storeHomeNode = (Node) session.getItem("/cms");
-    cmsService.storeNode("exo:template", storeHomeNode, mappings, true, "");    
+    cmsService.storeNode("exo:template", storeHomeNode, mappings, true, "", "repository");    
     Property property = (Property) session.getItem("/cms/MyTemplateNode/exo:templateFile");   
     assertEquals(property.getString(), "PropertyOfExotemplate");
     

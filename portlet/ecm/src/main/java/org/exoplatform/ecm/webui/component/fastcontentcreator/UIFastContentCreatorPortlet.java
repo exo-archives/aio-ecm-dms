@@ -57,11 +57,8 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         PortletRequestContext portletContext = (PortletRequestContext) context ;
         PortletRequest request = portletContext.getRequest() ; 
         PortletPreferences preferences = request.getPreferences() ;
-        String prefLocate = preferences.getValue("path", "") ;
         String prefType = preferences.getValue("type", "") ;
         uiDialogForm.setTemplateNode(prefType) ;
-        uiDialogForm.setSavedPath(prefLocate) ;
-        uiDialogForm.setIsEditMode(true) ;
         addChild(uiDialogForm) ; 
       }
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {

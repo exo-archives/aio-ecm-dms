@@ -27,10 +27,11 @@ public class ScheduleBackupTimerActionHandler implements ActionHandler {
     try {
       String nodePath = (String) context.getVariable("nodePath");
       String srcWorkspace = (String) context.getVariable("srcWorkspace");
+      String repository = (String) context.getVariable("repository");
       PortalContainer container = PortalContainer.getInstance();
       RepositoryService repositoryService = (RepositoryService) container
           .getComponentInstanceOfType(RepositoryService.class);
-      Session session = repositoryService.getRepository().getSystemSession(
+      Session session = repositoryService.getRepository(repository).getSystemSession(
           srcWorkspace);
       Node srcNode = (Node) session.getItem(nodePath);
       

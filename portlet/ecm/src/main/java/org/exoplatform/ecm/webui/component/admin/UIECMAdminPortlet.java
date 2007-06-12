@@ -4,11 +4,18 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin;
 
+
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupMessages;
@@ -68,5 +75,18 @@ public class UIECMAdminPortlet extends UIPortletApplication {
       UIECMAdminPortlet uiECMAdminPortlet = event.getSource() ;
       uiECMAdminPortlet.setShowSideBar(!uiECMAdminPortlet.isShowSideBar) ;
     }
+  }
+  public String getPreferenceRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    return repository ;
+  }
+  
+  public PortletPreferences getPortletPreferences() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest prequest = pcontext.getRequest() ;
+    PortletPreferences portletPref = prequest.getPreferences() ;
+    return portletPref ;
   }
 }

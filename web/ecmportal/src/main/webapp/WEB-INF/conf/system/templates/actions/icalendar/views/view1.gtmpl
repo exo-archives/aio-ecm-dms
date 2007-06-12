@@ -33,6 +33,14 @@
 		</td>
   </tr>
   <tr>
+		<td style="width:25%">Repository:</td>
+		<td>
+		  <%if(node.hasProperty("exo:repository")) {%>
+		    <%=node.getProperty("exo:repository").getString()%>
+		  <%}%>
+		</td>
+  </tr>
+  <tr>
 		<td style="width:25%">Description:</td>
 		<td>
 		  <%if(node.hasProperty("exo:description")) {%>

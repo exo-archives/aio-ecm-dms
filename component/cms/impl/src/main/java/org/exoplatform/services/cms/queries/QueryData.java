@@ -3,10 +3,6 @@
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
 package org.exoplatform.services.cms.queries;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by The eXo Platform SARL
@@ -17,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 public class QueryData{
 
   private String name ;
+  private String repository ;
   private String language ;
   private String statement ;
   private String permissions ;
@@ -26,6 +23,9 @@ public class QueryData{
 
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }  
+  
+  public String getRepository() { return this.repository ; }
+  public void setRepository(String rp) { this.repository = rp ; }
 
   public String getLanguage() { return this.language ; }
   public void setLanguage(String l) { this.language = l ; }

@@ -5,12 +5,15 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 
@@ -36,8 +39,11 @@ public class UIActionViewTemplate extends UIContainer {
   public String getViewTemplatePath(){    
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences pref = pcontext.getRequest().getPreferences() ;
+    String repository = pref.getValue(Utils.REPOSITORY, "") ;
     try {
-      return templateService.getTemplatePathByUser(false, documentType_, userName) ;
+      return templateService.getTemplatePathByUser(false, documentType_, userName, repository) ;
     } catch (Exception e) {
       return null ;
     }         

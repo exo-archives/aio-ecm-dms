@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -26,7 +25,6 @@ import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -59,8 +57,9 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public String getTemplatePath(){
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     try{
-      return templateService.getTemplatePathByUser(false, getNodeType(), userName) ;
+      return templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
     }catch(Exception e) {
      e.printStackTrace() ;
     }    
@@ -81,7 +80,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   public void newJCRTemplateResourceResolver() {
     try {
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(getSession(), Utils.EXO_TEMPLATEFILE) ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(
+          getAncestorOfType(UIBrowseContainer.class).getSession(), Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {}
   }
 
@@ -111,16 +111,6 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   }
   
   public Node getOriginalNode() throws Exception {return node_ ;}
-  
-  private Session getSession() throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    Session session = repositoryService.getRepository().getSystemSession(getWorkSpace()) ;
-    return session ;
-  }
-  
-  public String getWorkSpace() {
-    return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
-  }
   
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
@@ -190,7 +180,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public boolean isNodeTypeSupported() {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      return templateService.isManagedNodeType(getNodeType());
+      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+      return templateService.isManagedNodeType(getNodeType(), repository);
     } catch (Exception e) {
       return false;
     }
@@ -199,14 +190,15 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      return templateService.isManagedNodeType(nodeTypeName);
+      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+      return templateService.isManagedNodeType(nodeTypeName, repository);
     } catch (Exception e) {
       return false;
     }
   }
 
   public Node getNodeByUUID(String uuid) throws Exception{ 
-    return getSession().getNodeByUUID(uuid);
+    return getAncestorOfType(UIBrowseContainer.class).getSession().getNodeByUUID(uuid);
   }
 
   public boolean hasPropertyContent(Node node, String property){
@@ -244,7 +236,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
 
   public void activate() throws Exception {
@@ -262,7 +255,11 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public String getWorkspaceName() throws Exception {
     return node_.getSession().getWorkspace().getName();
   }
-
+  
+  public String encodeHTML(String text) throws Exception {
+    return Utils.encodeHTML(text) ;
+  }
+  
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiDocument = event.getSource() ;
@@ -281,10 +278,6 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       uiDocument.setNode(selected) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
     }
-  }
-
-  public String encodeHTML(String text) throws Exception {
-    return Utils.encodeHTML(text) ;
   }
 
 }

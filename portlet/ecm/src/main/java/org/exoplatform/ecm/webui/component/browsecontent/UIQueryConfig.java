@@ -11,7 +11,6 @@ import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.BasePath;
@@ -67,6 +66,7 @@ public class UIQueryConfig extends UIForm {
 
   public UIQueryConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYSTATUS, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG, null, Options)) ;
@@ -97,7 +97,7 @@ public class UIQueryConfig extends UIForm {
     return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
   }
 
-  public void initForm(PortletPreferences preference, String workSpace, boolean isAddNew, 
+  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew, 
       boolean isEditable) throws Exception {
     String queryLang = "" ;
     String queryType = "" ;
@@ -132,6 +132,9 @@ public class UIQueryConfig extends UIForm {
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
+    UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+    repositoryField.setValue(repository) ;
+    repositoryField.setEditable(false) ;
     UIFormSelectBox queryStatusField = getChildById(UINewConfigForm.FIELD_QUERYSTATUS) ;
     queryStatusField.setOptions(getQueryStatus()) ;
     queryStatusField.setOnChange("ChangeStatus") ;
@@ -227,18 +230,19 @@ public class UIQueryConfig extends UIForm {
 
   private void setQueryValue(UIFormSelectBox select, String queryLanguage, String queryType, String queryStore) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     if(!isAddNewQuery_) {  
       QueryService qservice = getApplicationComponent(QueryService.class) ;   
       if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
         String username = Util.getPortalRequestContext().getRemoteUser() ;
-        List<Query> queries = qservice.getQueries(username);
+        List<Query> queries = qservice.getQueries(username, repository);
         for(Query query : queries) {
           String path = query.getStoredQueryPath() ;
           if(query.getLanguage().equals(queryLanguage))
             options.add(new SelectItemOption<String>(path.substring(path.lastIndexOf("/")+ 1), path)) ;
         }
       }else {
-        List<Node> queries = qservice.getSharedQueries(queryLanguage, roles_);
+        List<Node> queries = qservice.getSharedQueries(queryLanguage, roles_, repository);
         for(Node query : queries) {
           options.add(new SelectItemOption<String>(query.getName(), query.getPath())) ;
         }
@@ -249,8 +253,9 @@ public class UIQueryConfig extends UIForm {
   }   
   private List<SelectItemOption<String>> getQueryTemplate() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    ManageViewService viewService = (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
-    List<Node> querylTemplates = viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES) ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    List<Node> querylTemplates = getApplicationComponent(ManageViewService.class)
+                                 .getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository) ;
     for(Node node: querylTemplates){
       options.add(new SelectItemOption<String>(node.getName(),node.getName())) ;
     }
@@ -309,6 +314,7 @@ public class UIQueryConfig extends UIForm {
       UIQueryConfig uiForm = event.getSource() ;
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       PortletPreferences prefs = uiBrowseContentPortlet.getPortletPreferences();
+      String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String query = uiForm.getUIStringInput(UINewConfigForm.FIELD_QUERY).getValue() ;
@@ -337,6 +343,7 @@ public class UIQueryConfig extends UIForm {
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;    
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_JCR_QUERY) ;
+      prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
       prefs.setValue(Utils.CB_QUERY_LANGUAGE, queryLang) ;
       prefs.setValue(Utils.CB_NB_PER_PAGE, itemPerPage) ;

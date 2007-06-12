@@ -22,4 +22,10 @@ public class UIViewManager extends UIContainer {
     uiCBTemp.addChild(UICBTemplateList.class, null, null) ;
     uiCBTemp.setRendered(false) ;
   }
+  public void update() throws Exception {
+    getChild(UIViewContainer.class).update() ;
+    ((UITemplateContainer)getChildById("ECMTemplate")).getChild(UIECMTemplateList.class).updateTempListGrid() ;
+    ((UITemplateContainer)getChildById("CBTemplate")).getChild(UICBTemplateList.class).updateCBTempListGrid() ;
+  }
 }
+

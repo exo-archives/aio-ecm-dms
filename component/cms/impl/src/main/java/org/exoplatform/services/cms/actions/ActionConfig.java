@@ -9,14 +9,18 @@ import org.apache.commons.lang.StringUtils;
 
 public class ActionConfig {
   
+  private String repository;
   private String workspace;
   private List actions = new ArrayList(5);
   
   public List getActions() { return actions; }
   public void setActions(List actions) { this.actions = actions; }
   
+  public String getRepository() { return repository; }
+  public void setRepository(String repository) { this.repository = repository; }  
+  
   public String getWorkspace() { return workspace; }
-  public void setWorkspace(String workspace) { this.workspace = workspace; }  
+  public void setWorkspace(String workspace) { this.workspace = workspace; }
   
   static public class Mixin {
     private String name;

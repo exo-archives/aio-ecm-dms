@@ -21,20 +21,18 @@ import org.exoplatform.services.security.SecurityService;
 public abstract class BaseActionLauncherListener implements ECMEventListener {
   
   protected String actionName_;
-  
+  protected String repository_ ;
   protected String srcWorkspace_;
-  
   protected String srcPath_;
-  
   protected String executable_;
-  
   protected Map actionVariables_;
   
   public BaseActionLauncherListener(String actionName, String executable,
-      String srcWorkspace, String srcPath, Map actionVariables)
+      String repository, String srcWorkspace, String srcPath, Map actionVariables)
   throws Exception {
     actionName_ = actionName;
     executable_ = executable;
+    repository_ = repository ;
     srcWorkspace_ = srcWorkspace;
     srcPath_ = srcPath;
     actionVariables_ = actionVariables;
@@ -42,6 +40,10 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
   
   public String getSrcWorkspace() {
     return srcWorkspace_;
+  }
+  
+  public String getRepository() {
+    return repository_;
   }
   
   public void onEvent(EventIterator events) {    
@@ -58,7 +60,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       Node node = null;      
       Session jcrSession = null;
       try {
-        jcrSession = repositoryService.getRepository().getSystemSession(srcWorkspace_);
+        jcrSession = repositoryService.getRepository(repository_).getSystemSession(srcWorkspace_);
         node = (Node) jcrSession.getItem(srcPath_);
         AccessControlList acl = ((ExtendedNode) node).getACL();
         String userId = (acl != null) ? acl.getOwner() : "__unknown";
@@ -82,18 +84,19 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         variables.put("initiator", userId);
         variables.put("actionName", actionName_);
         variables.put("nodePath", path);
+        variables.put("repository", repository_);
         variables.put("srcWorkspace", srcWorkspace_);
         variables.put("srcPath", srcPath_);
         variables.putAll(actionVariables_);
         if(event.getType() == Event.NODE_ADDED) {          
           node = (Node) jcrSession.getItem(path);        
           String nodeType = node.getPrimaryNodeType().getName();
-          if (templateService.getDocumentTemplates().contains(nodeType)) {                    
+          if (templateService.getDocumentTemplates(repository_).contains(nodeType)) {                    
             variables.put("document-type", nodeType);
-            triggerAction(userId, variables);
+            triggerAction(userId, variables, repository_);
           }          
         } else {
-          triggerAction(userId, variables);
+          triggerAction(userId, variables, repository_);
         }    
       } catch (Exception e) {
         e.printStackTrace();
@@ -101,6 +104,6 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     }
   }
   
-  public abstract void triggerAction(String userId, Map variables)
+  public abstract void triggerAction(String userId, Map variables, String repository)
   throws Exception;
 }

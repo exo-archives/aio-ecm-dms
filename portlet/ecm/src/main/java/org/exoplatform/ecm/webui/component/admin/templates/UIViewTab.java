@@ -10,11 +10,14 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Value;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -57,7 +60,7 @@ public class UIViewTab extends UIContainer {
 
   public void updateGrid(String nodeName) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository()) ;
     List<ViewData> data = new ArrayList<ViewData>() ;
     ViewData item  ;
     while(iter.hasNext()) {
@@ -83,7 +86,13 @@ public class UIViewTab extends UIContainer {
     UIViewTemplate uiViewTemplate = getAncestorOfType(UIViewTemplate.class) ;
     uiViewTemplate.setRenderedChild(UIViewTab.class) ;
   }
-
+  
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
+  
   static public class EditActionListener extends EventListener<UIViewTab> {
     public void execute(Event<UIViewTab> event) throws Exception {
       UIViewTab viewTab = event.getSource() ; 
@@ -112,7 +121,7 @@ public class UIViewTab extends UIContainer {
           return ;
         }
       }
-      templateService.removeTemplate(false, nodeTypeName, templateName) ;
+      templateService.removeTemplate(false, nodeTypeName, templateName, viewTab.getRepository()) ;
       UITemplateContent uiForm = viewTab.findFirstComponentOfType(UITemplateContent.class) ;
       uiForm.update(null) ;
       viewTab.updateGrid(nodeTypeName) ;

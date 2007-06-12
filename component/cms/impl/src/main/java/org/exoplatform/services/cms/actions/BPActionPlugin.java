@@ -32,7 +32,7 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
     config_ = (ActionConfig) params.getObjectParamValues(ActionConfig.class).get(0);    
   }
 
-  public Collection<String> getActionExecutables() throws Exception {
+  public Collection<String> getActionExecutables(String repository) throws Exception {
     List<Process> processes = workflowServiceContainer_.getProcesses();
     Collection<String> businessProcesses = new ArrayList<String>();    
     for (Iterator<Process> iter = processes.listIterator(); iter.hasNext();) {
@@ -46,9 +46,10 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
     return "Business Processes:";
   }
   
-  protected ECMEventListener createEventListener(String actionName, String moveExecutable, String srcWorkspace, 
-      String srcPath, Map variables) throws Exception {
-    return new BPActionLauncherListener(actionName, moveExecutable, srcWorkspace, srcPath, variables);
+  protected ECMEventListener createEventListener(String actionName, String moveExecutable, 
+      String repository, String srcWorkspace, String srcPath, Map variables) throws Exception {
+    return new BPActionLauncherListener(actionName, moveExecutable, repository, 
+                                        srcWorkspace, srcPath, variables);
   }  
 
   public String getExecutableDefinitionName() {
@@ -58,9 +59,13 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   protected String getWorkspace() {
     return config_.getWorkspace();
   }
-
-  protected ManageableRepository getRepository() throws Exception {
-    return repositoryService_.getRepository();
+  
+  protected String getRepository() {
+    return config_.getRepository();
+  }
+  
+  protected ManageableRepository getRepository(String repository) throws Exception {
+    return repositoryService_.getRepository(repository);
   }
 
   protected String getActionType() {
@@ -85,12 +90,12 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   public void setDescription(String desc) {
   }  
   
-  public void executeAction(String userId, Node actionNode, Map variables) throws Exception {
+  public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
     String businessProcess = actionNode.getProperty("exo:businessProcess").getString();    
-    executeAction(userId, businessProcess, variables);
+    executeAction(userId, businessProcess, variables, repository);
   }
   
-  public void executeAction(String userId, String executable, Map variables) {
+  public void executeAction(String userId, String executable, Map variables, String repository) {
     PortalContainer pContainer = PortalContainer.getInstance();    
     WorkflowServiceContainer workflowSContainer = (WorkflowServiceContainer) pContainer
     .getComponentInstanceOfType(WorkflowServiceContainer.class);     
@@ -99,24 +104,24 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   
   public class BPActionLauncherListener extends BaseActionLauncherListener {
     
-    public BPActionLauncherListener(String actionName, String businessProcess, String srcWorkspace, 
-        String srcPath, Map actionVariables) throws Exception {
-      super(actionName, businessProcess, srcWorkspace, srcPath, actionVariables);
+    public BPActionLauncherListener(String actionName, String businessProcess, String repository,
+        String srcWorkspace, String srcPath, Map actionVariables) throws Exception {
+      super(actionName, businessProcess, repository, srcWorkspace, srcPath, actionVariables);
     }    
     
-    public void triggerAction(String userId, Map variables) {
-      executeAction(userId, super.executable_, variables);
+    public void triggerAction(String userId, Map variables, String repository) {
+      executeAction(userId, super.executable_, variables, repository);
     }  
 
   }
 
-  public void activateAction(String userId, String executable, Map variables) throws Exception {
-    executeAction(userId,executable,variables) ;
+  public void activateAction(String userId, String executable, Map variables, String repository) throws Exception {
+    executeAction(userId, executable, variables, repository) ;
     
   }
 
   protected Class createActivationJob() throws Exception {
     return BPActionActivationJob.class ;
-  } 
+  }
   
 }

@@ -12,12 +12,15 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -63,7 +66,6 @@ public class UITemplateForm extends UIForm {
   
   private Node template_ = null ;
   private List<String> listVersion = new ArrayList<String>() ;
-  private ManageViewService service_ ;
   private Version baseVersion_;
   private VersionNode selectedVersion_;
   public boolean isAddNew_ = false ;
@@ -80,16 +82,23 @@ public class UITemplateForm extends UIForm {
     UIFormCheckBoxInput enableVersion = new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null) ;
     enableVersion.setRendered(false) ;
     addUIFormInput(enableVersion) ;
-    service_ = getApplicationComponent(ManageViewService.class) ;
   }
-
+  
+  public String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   public void updateOptionList() throws Exception {
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>() ;
+    String repository = getRepository() ;
     if(getId().equalsIgnoreCase("ECMTempForm")) {              
-      Node ecmTemplateHome = service_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES) ; 
+      Node ecmTemplateHome = getApplicationComponent(ManageViewService.class)
+                             .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository) ; 
       typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(),ecmTemplateHome.getPath())) ;
     } else {        
-      Node cbTemplateHome = service_.getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES) ;
+      Node cbTemplateHome = getApplicationComponent(ManageViewService.class)
+                           .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, repository) ;
       NodeIterator iter = cbTemplateHome.getNodes() ;
       while(iter.hasNext()) {
         Node template = iter.nextNode() ;
@@ -159,7 +168,8 @@ public class UITemplateForm extends UIForm {
 
   public void update(String templatePath, VersionNode selectedVersion) throws Exception {
     if(templatePath != null) {
-      template_ = service_.getTemplate(templatePath) ;
+      String repository = getRepository() ; 
+      template_ = getApplicationComponent(ManageViewService.class).getTemplate(templatePath, repository) ;
       getUIStringInput(FIELD_NAME).setValue(template_.getName()) ;
       getUIStringInput(FIELD_NAME).setEditable(false) ;
       String value = templatePath.substring(0, templatePath.lastIndexOf("/")) ;
@@ -193,6 +203,7 @@ public class UITemplateForm extends UIForm {
   static  public class SaveActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource() ;
+      String repository = uiForm.getRepository() ;
       String templateName = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       String content = uiForm.getUIFormTextAreaInput(FIELD_CONTENT).getValue() ;
       String homeTemplate = uiForm.getUIFormSelectBox(FIELD_HOMETEMPLATE).getValue() ;
@@ -203,12 +214,14 @@ public class UITemplateForm extends UIForm {
       }
       boolean isEnableVersioning = uiForm.getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning){
-        uiForm.service_.addTemplate(templateName, content, homeTemplate) ;
+        uiForm.getApplicationComponent(ManageViewService.class)
+              .addTemplate(templateName, content, homeTemplate,repository) ;
       } else {
         if(isEnableVersioning) {
           if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);
           else uiForm.template_.checkout() ;
-          uiForm.service_.addTemplate(templateName, content, homeTemplate) ;
+          uiForm.getApplicationComponent(ManageViewService.class)
+                 .addTemplate(templateName, content, homeTemplate, repository) ;
           uiForm.template_.save() ;
           uiForm.template_.checkin() ;
         }

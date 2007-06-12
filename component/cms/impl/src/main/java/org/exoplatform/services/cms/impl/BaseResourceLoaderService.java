@@ -43,12 +43,12 @@ public abstract class BaseResourceLoaderService implements Startable{
   abstract protected String getBasePath(); 
   abstract protected void removeFromCache(String resourceName);
 
-  protected Session getSystemSession(String workspace)
+  /*protected Session getSystemSession(String repository, String workspace)
       throws RepositoryException, RepositoryConfigurationException {
-    ManageableRepository jcrRepository = repositoryService_.getRepository();
+    ManageableRepository jcrRepository = repositoryService_.getRepository(repository);
     return jcrRepository.getSystemSession(workspace);
   }
-
+*/
   public void start(){
     try {
       init();
@@ -69,7 +69,8 @@ public abstract class BaseResourceLoaderService implements Startable{
   protected void init() throws Exception {
     Session session = null;
     try {
-      session = getSystemSession(config_.getWorkspace());
+      //session = getSystemSession(config_.getRepositoty(), config_.getWorkspace());
+      session = repositoryService_.getRepository(config_.getRepositoty()).getSystemSession(config_.getWorkspace()) ;
     } catch (RepositoryException re) {
       return;
     }
@@ -103,7 +104,7 @@ public abstract class BaseResourceLoaderService implements Startable{
     session.save() ;
   }
 
-  private void addResource(Node resourcesHome, String resourceName, InputStream in)
+  public void addResource(Node resourcesHome, String resourceName, InputStream in)
       throws Exception {
     Node contentNode = null;
     if(resourceName.lastIndexOf("/")>-1) {
@@ -124,10 +125,18 @@ public abstract class BaseResourceLoaderService implements Startable{
     resourcesHome.save() ;
   }
   
-  protected Node getResourcesHome() throws Exception {
+  protected Node getResourcesHome(String repository) throws Exception {
     Session session = null;
     try {
-      session = getSystemSession(config_.getWorkspace());
+      if(repository != null) {
+        session = repositoryService_.getRepository(repository)
+        .getSystemSession(cmsConfigService_.getWorkspace(repository));
+      }else {
+        String repoName = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
+        session = repositoryService_.getDefaultRepository()
+        .getSystemSession(cmsConfigService_.getWorkspace(repoName));
+      }
+      
     } catch (RepositoryException re) {
       return null;
     }
@@ -135,32 +144,32 @@ public abstract class BaseResourceLoaderService implements Startable{
     return (Node) session.getItem(resourcesPath);
   }  
   
-  public String getResourceAsText(String resourceName) throws Exception {
-    Node resourcesHome = getResourcesHome();
+  public String getResourceAsText(String resourceName, String repository) throws Exception {
+    Node resourcesHome = getResourcesHome(repository);
     Node resourceNode = resourcesHome.getNode(resourceName);
     return resourceNode.getProperty("jcr:data").getString();
   }  
   
-  public NodeIterator getResources() throws Exception {
-    Node resourcesHome = getResourcesHome();
+  public NodeIterator getResources(String repository) throws Exception {
+    Node resourcesHome = getResourcesHome(repository);
     return resourcesHome.getNodes();
   }
 
-  public boolean hasResources() throws Exception {
-    Node resourcesHome = getResourcesHome();
+  public boolean hasResources(String repository) throws Exception {
+    Node resourcesHome = getResourcesHome(repository);
     return resourcesHome.hasNodes();
   }
 
-  public void addResource(String name, String text) throws Exception {
-    Node resourcesHome = getResourcesHome();
+  public void addResource(String name, String text, String repository) throws Exception {
+    Node resourcesHome = getResourcesHome(repository);
     InputStream in = new ByteArrayInputStream(text.getBytes());
     addResource(resourcesHome, name, in);
     resourcesHome.save();
   }
 
-  public void removeResource(String resourceName) throws Exception {
+  public void removeResource(String resourceName, String repository) throws Exception {
     removeFromCache(resourceName);
-    Node resourcesHome = getResourcesHome();
+    Node resourcesHome = getResourcesHome(repository);
     Node resource2remove = resourcesHome.getNode(resourceName);
     resource2remove.remove();
     resourcesHome.save();

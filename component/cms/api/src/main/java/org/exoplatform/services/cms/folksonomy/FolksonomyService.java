@@ -17,13 +17,15 @@ import javax.jcr.Node;
  */
 public interface FolksonomyService {
   
-  public void addTag(Node node, String[] tagName) throws Exception ;  
-  public List<Node> getAllTags() throws Exception ;   
-  public Node getTag(String path) throws Exception ;  
-  public List<Node> getDocumentsOnTag(String tagPath) throws Exception ;
-  public List<Node> getLinkedTagsOfDocument(Node document) throws Exception ;
+  public void addTag(Node node, String[] tagName, String repository) throws Exception ;  
+  public List<Node> getAllTags(String repository) throws Exception ;   
+  public Node getTag(String path, String repository) throws Exception ;  
+  public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception ;
+  public List<Node> getLinkedTagsOfDocument(Node document, String repository) throws Exception ;
   
-  public String getTagStyle(String tagName) throws Exception ;
-  public void updateStype(String tagPath, String tagRate, String htmlStyle) throws Exception ;  
-  public List<Node> getAllTagStyle() throws Exception ;
+  public String getTagStyle(String tagName, String repository) throws Exception ;
+  public void updateStype(String tagPath, String tagRate, String htmlStyle, String repository) throws Exception ;  
+  public List<Node> getAllTagStyle(String repository) throws Exception ;
+  public void init(String repository) throws Exception ;
+  
 }

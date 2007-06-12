@@ -13,6 +13,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
@@ -23,6 +24,7 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -57,7 +59,13 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   private List<String> listVersion = new ArrayList<String>() ;
   private Version baseVersion_;
   private VersionNode selectedVersion_;
-
+  
+  public String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
+  
   public UIViewForm(String name) throws Exception {
     super(name) ;
     setComponentConfig(getClass(), null) ;
@@ -70,7 +78,8 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     addUIFormInput(new UIFormInputInfo(FIELD_TABS, FIELD_TABS, null)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     vservice_ = getApplicationComponent(ManageViewService.class) ;
-    Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES) ;
+    String repository = getRepository() ;
+    Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
     List<SelectItemOption<String>> temp = new ArrayList<SelectItemOption<String>>() ; 
     NodeIterator iter = ecmTemplateHome.getNodes() ;
     while(iter.hasNext()) {
@@ -257,8 +266,9 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
 
     List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
     boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
+    String repository = getRepository() ;
     if(views_ == null || !isEnableVersioning) {
-      vservice_.addView(viewName, permissions, template, tabList) ;
+      vservice_.addView(viewName, permissions, template, tabList, repository) ;
     } else {
       if (!isVersioned(views_)) views_.addMixin(MIXVERSION);                            
       else views_.checkout() ;
@@ -266,7 +276,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
         Node tab = iter.nextNode() ;
         if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
       }
-      vservice_.addView(viewName, permissions, template, tabList) ;
+      vservice_.addView(viewName, permissions, template, tabList, repository) ;
       views_.checkin();
       views_.save();
     }

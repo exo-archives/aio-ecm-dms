@@ -27,7 +27,10 @@ public class UINodeTypeManager extends UIContainer {
   public UINodeTypeManager() throws Exception {
     addChild(UINodeTypeList.class, null, "ListNodeType") ;
   }
-
+  
+  public void update() throws Exception {
+    getChild(UINodeTypeList.class).refresh(null) ;
+  }
   public void setExportPopup() throws Exception {
     removeChildById(EXPORT_POPUP) ;
     UIPopupWindow  uiPopup = addChild(UIPopupWindow.class, null, EXPORT_POPUP);

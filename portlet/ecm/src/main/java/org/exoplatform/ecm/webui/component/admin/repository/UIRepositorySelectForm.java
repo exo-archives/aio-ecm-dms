@@ -6,6 +6,10 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.util.List;
 
+import javax.portlet.PortletPreferences;
+
+import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -53,7 +57,10 @@ public class UIRepositorySelectForm extends UIForm {
     public void execute(Event<UIRepositorySelectForm> event) throws Exception {
       UIRepositorySelectForm uiForm = event.getSource() ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIRepositoryControl.class) ;
-      uiControl.repoName_ = uiForm.getSelectedValue() ;
+      System.out.println("uiDDSelect.getSelectedValue() ==== " + uiForm.getSelectedValue()) ;
+      PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
+      portletPref.setValue(Utils.REPOSITORY, uiForm.getSelectedValue()) ;
+      portletPref.store() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ;
     }
   }

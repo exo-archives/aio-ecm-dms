@@ -12,10 +12,13 @@ import org.apache.commons.lang.StringUtils;
  * @author benjaminmestrallet
  */
 public class TemplateConfig {
-
+  private String repository ;
   private List nodeTypes = new ArrayList(5);
   private List templates = new ArrayList(3);
   private String location = new String("war");
+  
+  public String getRepository() { return repository; }
+  public void setRepository(String rp) { this.repository = rp ; }
   
   public List getNodeTypes() {   return this.nodeTypes; }
   public void setNodeTypes(List s) {  this.nodeTypes = s; }    

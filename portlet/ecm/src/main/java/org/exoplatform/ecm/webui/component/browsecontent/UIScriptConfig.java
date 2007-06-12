@@ -10,7 +10,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -50,6 +49,7 @@ public class UIScriptConfig extends UIForm {
 
   public UIScriptConfig() {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_SCRIPTNAME, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE, null, Options)) ;
@@ -60,7 +60,7 @@ public class UIScriptConfig extends UIForm {
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
 
-  public void initForm(PortletPreferences preference, String workSpace, boolean isAddNew, 
+  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew, 
       boolean isEditable) throws Exception {
     String hasComment = "false" ;
     String hasVote = "false" ;
@@ -72,6 +72,9 @@ public class UIScriptConfig extends UIForm {
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
     }
+    UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+    repositoryField.setValue(repository) ;
+    repositoryField.setEditable(false) ;
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
@@ -117,10 +120,10 @@ public class UIScriptConfig extends UIForm {
     return uiTabPane.getWorkSpaceOption() ;
   }
   private List<SelectItemOption<String>> getTemplateOption() throws Exception {
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    ManageViewService viewService = 
-      (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
-    List<Node> scriptTemplates = viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES) ;
+    List<Node> scriptTemplates = getApplicationComponent(ManageViewService.class).
+                                 getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository) ;
     for(Node template:scriptTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
@@ -129,8 +132,8 @@ public class UIScriptConfig extends UIForm {
 
   private List<SelectItemOption<String>> getScriptOption() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    ScriptService scriptService = (ScriptService)PortalContainer.getComponent(ScriptService.class) ;
-    Node cbScripts = scriptService.getCBScriptHome() ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     while(nodeList.hasNext()) {
       Node node = nodeList.nextNode() ;
@@ -145,6 +148,7 @@ public class UIScriptConfig extends UIForm {
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       PortletPreferences prefs = uiBrowseContentPortlet.getPortletPreferences();
+      String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String scriptName = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_SCRIPTNAME).getValue() ;
       String fullScriptName = workSpace + Utils.SEMI_COLON + scriptName ;
@@ -154,6 +158,7 @@ public class UIScriptConfig extends UIForm {
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_SCRIPT) ;
+      prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
       prefs.setValue(Utils.CB_SCRIPT_NAME, fullScriptName) ;
       prefs.setValue(Utils.CB_TEMPLATE, template) ;
@@ -163,10 +168,12 @@ public class UIScriptConfig extends UIForm {
       prefs.setValue(Utils.CB_VIEW_VOTE,String.valueOf(hasVote)) ;   
       prefs.store() ; 
       uiForm.reset() ;
+      
+      /*
       uiConfigTabPane.getCurrentConfig() ;
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
-      container.loadPortletConfig(prefs) ;
+      container.loadPortletConfig(prefs) ;*/
     }
   }  
 
@@ -198,3 +205,4 @@ public class UIScriptConfig extends UIForm {
     }
   }
 }
+

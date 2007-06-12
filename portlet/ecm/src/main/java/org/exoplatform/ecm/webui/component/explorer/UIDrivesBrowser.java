@@ -61,6 +61,7 @@ public class UIDrivesBrowser extends UIContainer {
   }
 
   public List<String> getRepositoryList() {
+
     RepositoryService rService = getApplicationComponent(RepositoryService.class) ;    
     List<String> repositories = new ArrayList<String>() ;    
     for( RepositoryEntry re : rService.getConfig().getRepositoryConfigurations()) {
@@ -76,16 +77,16 @@ public class UIDrivesBrowser extends UIContainer {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
+
     ManageableRepository repository = rservice.getRepository(repoName) ;  
-    Session digitalSession = repository.getSystemSession("digital-assets") ;    
     List<DriveData> driveList = new ArrayList<DriveData>() ;
     List<String> userRoles = Utils.getMemberships() ;
     for(String role : userRoles ){
-      List<DriveData> drives = driveService.getAllDriveByPermission(role) ;
+      List<DriveData> drives = driveService.getAllDriveByPermission(role, repoName) ;
       if(drives != null && drives.size() > 0) {
         for(DriveData drive : drives) {
           if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-            Node node = (Node) digitalSession.getItem(drive.getIcon()) ;
+            Node node = (Node) repository.getSystemSession("digital-assets").getItem(drive.getIcon()) ;
             Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
             InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
             InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
@@ -112,16 +113,15 @@ public class UIDrivesBrowser extends UIContainer {
       String driveName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       RepositoryService rservice = uiDrive.getApplicationComponent(RepositoryService.class) ;
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
-      ManageViewService vservice = uiDrive.getApplicationComponent(ManageViewService.class) ;
-      DriveData drive = (DriveData) dservice.getDriveByName(driveName) ;
-      List<String> userRoles = Utils.getMemberships() ;
+      DriveData drive = (DriveData) dservice.getDriveByName(driveName, uiDrive.repoName_) ;
+     List<String> userRoles = Utils.getMemberships() ;
       Map<String, String> viewMap = new HashMap<String, String>() ;
       String viewList = "";
       for(String role : userRoles ){
         String[] views = drive.getViews().split(",") ;
         for(String viewName : views) {
           viewName = viewName.trim() ;
-          Node viewNode = vservice.getViewByName(viewName) ;
+          Node viewNode = uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_) ;
           String permiss = viewNode.getProperty("exo:permissions").getString();
           String[] viewPermissions = permiss.split(",") ;
           if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
@@ -150,8 +150,9 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
       pref.setEmpty(false) ;
 
-      ManageableRepository repository = rservice.getRepository() ;
+      ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Session session = repository.login(drive.getWorkspace())  ;
+
       uiJCRExplorer.setSession(session) ;      
       Node node = (Node) session.getItem(drive.getHomePath()) ;
       uiJCRExplorer.getAllClipBoard().clear() ;

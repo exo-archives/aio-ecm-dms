@@ -19,6 +19,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import javax.jcr.version.Version;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -44,7 +45,8 @@ public class UINodeProperty extends UIForm{
     RepositoryService repositoryService = 
       (RepositoryService)PortalContainer.getComponent(RepositoryService.class) ;
     List<Property> list = new ArrayList<Property>() ;
-    NodeTypeManager nodeTypeManager = repositoryService.getRepository().getNodeTypeManager() ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    NodeTypeManager nodeTypeManager = repositoryService.getRepository(repository).getNodeTypeManager() ;
     NodeType jcrFrozenNode = nodeTypeManager.getNodeType("nt:frozenNode") ;        
     NodeType ntVersion = nodeTypeManager.getNodeType("nt:version") ;
     NodeType ntVersionHistory = nodeTypeManager.getNodeType("nt:versionHistory") ;
@@ -130,11 +132,11 @@ public class UINodeProperty extends UIForm{
   }
   
   private Session getSystemSession() throws Exception {
-    RepositoryService repositoryService = 
-      (RepositoryService)PortalContainer.getComponent(RepositoryService.class) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     CmsConfigurationService cmsConfigService = 
       (CmsConfigurationService) PortalContainer.getComponent(CmsConfigurationService.class) ;
-    Session session = repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
+    Session session = getApplicationComponent(RepositoryService.class).getRepository(repository)
+    .getSystemSession(cmsConfigService.getWorkspace(repository)) ;
     return session ;
   }
 }

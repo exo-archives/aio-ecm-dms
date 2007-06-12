@@ -19,6 +19,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -62,18 +63,16 @@ public class UINodeTypeList extends UIComponentDecorator {
   public UINodeTypeList() throws Exception {
     uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "UINodeTypeListIterator");
     setUIComponent(uiPageIterator_) ;
-    PageList pageList = new ObjectPageList(getAllNodeTypes(), 10) ;
-    uiPageIterator_.setPageList(pageList) ;
   }
   
   @SuppressWarnings("unchecked")
   public List getAllNodeTypes() throws Exception{
     List nodeList = new ArrayList<NodeType>(); 
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     CmsConfigurationService cmsConfigService = 
       getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = 
-      repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    Session session = getApplicationComponent(RepositoryService.class)
+                      .getRepository(repository).getSystemSession(cmsConfigService.getWorkspace(repository)) ;
     NodeTypeManager ntManager = session.getWorkspace().getNodeTypeManager() ;
     NodeTypeIterator nodeTypeIter = ntManager.getAllNodeTypes() ;
     while(nodeTypeIter.hasNext()) {
@@ -105,11 +104,11 @@ public class UINodeTypeList extends UIComponentDecorator {
   public String[] getActions() { return ACTIONS ; }
   
   public void refresh(String name) throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     CmsConfigurationService cmsConfigService = 
       getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = 
-      repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
+    Session session = getApplicationComponent(RepositoryService.class).getRepository(repository)
+                      .getSystemSession(cmsConfigService.getWorkspace(repository)) ;
     if(name != null) {
       if(session.getRootNode().hasNode(DRAFTNODETYPE)) {
         Node draftNode = session.getRootNode().getNode(DRAFTNODETYPE) ;
@@ -193,12 +192,11 @@ public class UINodeTypeList extends UIComponentDecorator {
   static public class EditActionListener extends EventListener<UINodeTypeList> {
     public void execute(Event<UINodeTypeList> event) throws Exception {
       UINodeTypeList uiNodeList = event.getSource() ;
-      RepositoryService repositoryService = 
-        uiNodeList.getApplicationComponent(RepositoryService.class) ;
+      String repository = uiNodeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       CmsConfigurationService cmsConfigService = 
         uiNodeList.getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = 
-        repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
+      Session session = uiNodeList.getApplicationComponent(RepositoryService.class)
+                        .getRepository(repository).getSystemSession(cmsConfigService.getWorkspace(repository)) ;
       String nodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node draftNodeType = session.getRootNode().getNode(DRAFTNODETYPE + "/" + nodeName) ;
       UINodeTypeManager uiManager = uiNodeList.getParent() ;
@@ -220,12 +218,11 @@ public class UINodeTypeList extends UIComponentDecorator {
   static public class DeleteActionListener extends EventListener<UINodeTypeList> {
     public void execute(Event<UINodeTypeList> event) throws Exception {
       UINodeTypeList uiNodeList = event.getSource() ;
-      RepositoryService repositoryService = 
-        uiNodeList.getApplicationComponent(RepositoryService.class) ;
       CmsConfigurationService cmsConfigService = 
         uiNodeList.getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = 
-        repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
+      String repository = uiNodeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      Session session = uiNodeList.getApplicationComponent(RepositoryService.class)
+                        .getRepository(repository).getSystemSession(cmsConfigService.getWorkspace(repository)) ;
       String nodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;  
       if(session.getRootNode().hasNode(DRAFTNODETYPE)) {
         Node draftNode = session.getRootNode().getNode(DRAFTNODETYPE) ;

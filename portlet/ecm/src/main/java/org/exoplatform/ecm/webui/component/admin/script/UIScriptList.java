@@ -9,6 +9,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -51,15 +52,16 @@ public class UIScriptList extends UIGrid {
 
   public String getScriptCategory() throws Exception {
     UIComponent parent = getParent() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     ScriptService scriptService =  getApplicationComponent(ScriptService.class) ;
     Node script = null ;
     if(parent instanceof UIECMScripts) {
       UIECMFilterForm filterForm = parent.findFirstComponentOfType(UIECMFilterForm.class) ;
       String categoryName = 
         filterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;
-      script = scriptService.getECMScriptHome().getNode(categoryName) ;
+      script = scriptService.getECMScriptHome(repository).getNode(categoryName) ;
     } else {
-      script = scriptService.getCBScriptHome() ;
+      script = scriptService.getCBScriptHome(repository) ;
     }
     String basePath = scriptService.getBaseScriptPath() + "/" ;
     return script.getPath().substring(basePath.length()) ;
@@ -95,16 +97,17 @@ public class UIScriptList extends UIGrid {
 
   public Node getScriptNode(String nodeName) throws Exception {
     UIComponent parent = getParent() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     ScriptService scriptService =  getApplicationComponent(ScriptService.class) ;
     Node script = null  ;
     if(parent instanceof UIECMScripts) {
       UIECMFilterForm filterForm = parent.findFirstComponentOfType(UIECMFilterForm.class) ;
       String categoryName = 
         filterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;
-      Node category = scriptService.getECMScriptHome().getNode(categoryName) ;
+      Node category = scriptService.getECMScriptHome(repository).getNode(categoryName) ;
       script = category.getNode(nodeName) ;  
     } else {
-      Node cbScript = scriptService.getCBScriptHome() ;
+      Node cbScript = scriptService.getCBScriptHome(repository) ;
       script = cbScript.getNode(nodeName) ; 
     }
     return script ;
@@ -170,11 +173,13 @@ public class UIScriptList extends UIGrid {
 
   static public class DeleteActionListener extends EventListener<UIScriptList> {
     public void execute(Event<UIScriptList> event) throws Exception {
-      UIScriptList uiScriptList = event.getSource() ;      
+      UIScriptList uiScriptList = event.getSource() ; 
+      String repository = uiScriptList.getAncestorOfType(UIECMAdminPortlet.class)
+                                      .getPreferenceRepository() ;
       ScriptService scriptService =  uiScriptList.getApplicationComponent(ScriptService.class) ;
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String namePrefix = uiScriptList.getScriptCategory() ;       
-      scriptService.removeScript(namePrefix + "/" + scriptName) ;
+      scriptService.removeScript(namePrefix + "/" + scriptName, repository) ;
       uiScriptList.refresh() ;
       uiScriptList.setSelectedTab() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList.getParent()) ;

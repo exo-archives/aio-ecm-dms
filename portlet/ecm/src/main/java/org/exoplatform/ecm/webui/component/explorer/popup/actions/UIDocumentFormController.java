@@ -14,6 +14,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -49,12 +50,13 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     UIFormSelectBox uiSelectBox = uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT) ;
     boolean hasDefaultDoc = false ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     Node currentNode = uiExplorer.getCurrentNode() ;
     NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
     NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
     NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List templates = templateService.getDocumentTemplates() ;
+    List templates = templateService.getDocumentTemplates(repository) ;
     try {
       for(int i = 0; i < templates.size(); i ++){
         String nodeTypeName = templates.get(i).toString() ; 
@@ -74,7 +76,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
               defaultDocument_ = DEFAULT_VALUE ;
               hasDefaultDoc = true ;
             }
-            String label = templateService.getTemplateLabel(nodeTypeName) ;
+            String label = templateService.getTemplateLabel(nodeTypeName, repository) ;
             options.add(new SelectItemOption<String>(label, nodeTypeName));          
             isCanCreateDocument = true ;          
           }
@@ -88,7 +90,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
                     defaultDocument_ = DEFAULT_VALUE ;
                     hasDefaultDoc = true ;
                   }
-                  String label = templateService.getTemplateLabel(nodeTypeName) ;
+                  String label = templateService.getTemplateLabel(nodeTypeName, repository) ;
                   options.add(new SelectItemOption<String>(label, nodeTypeName));                
                   isCanCreateDocument = true ;
                   break;

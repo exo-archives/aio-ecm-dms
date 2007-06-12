@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.application.WebuiApplication;
@@ -36,7 +37,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     UIPopupAction popup = addChild(UIPopupAction.class, null, "UICBPopupAction");
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiContainer = createUIComponent(UIBrowseContainer.class, null, null) ;
-    uiContainer.loadPortletConfig(getPortletPreferences()) ;
+    //uiContainer.loadPortletConfig(getPortletPreferences()) ;
     addChild(uiContainer) ;
     UIConfigTabPane uiConfig = createUIComponent(UIConfigTabPane.class, null, null) ;
     addChild(uiConfig) ;
@@ -69,5 +70,11 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
+  }
+  
+  public String getPreferenceRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
 }

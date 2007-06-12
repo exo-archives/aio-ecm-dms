@@ -10,6 +10,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -42,7 +43,6 @@ public class UIQueriesList extends UIContainer {
   
   public UIQueriesList() throws Exception {
     addChild(UIPageIterator.class, null, "QueriesListIterator");
-    updateQueriesGrid() ;
   }
 
   public String[] getActions() { return ACTIONS ; }
@@ -57,7 +57,8 @@ public class UIQueriesList extends UIContainer {
   
   public List<Node> getAllSharedQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
-    return queryService.getSharedQueries() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    return queryService.getSharedQueries(repository) ;
   }
   
   static public class AddQueryActionListener extends EventListener<UIQueriesList> {
@@ -84,10 +85,11 @@ public class UIQueriesList extends UIContainer {
   static public class DeleteActionListener extends EventListener<UIQueriesList> {
     public void execute(Event<UIQueriesList> event) throws Exception {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
+      String repository = uiQueriesMan.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       String queryName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       QueryService queryService = event.getSource().getApplicationComponent(QueryService.class) ;
-      queryService.removeQuery(queryName, userName) ;
+      queryService.removeQuery(queryName, userName, repository) ;
       event.getSource().updateQueriesGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }

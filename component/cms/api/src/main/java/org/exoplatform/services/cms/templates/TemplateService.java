@@ -34,29 +34,31 @@ public interface TemplateService {
   
   public String getDefaultTemplatePath(boolean isDialog, String nodeTypeName) ;  
   
-  public Node getTemplatesHome() throws Exception ;
+  public Node getTemplatesHome(String repository) throws Exception ;
   
-  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName) throws Exception ;
-  public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName) throws Exception ;
+  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception ;
+  public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
   //public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception ;
-  public String getTemplate(boolean isDialog, String nodeTypeName, String templateName) throws Exception ;
+  public String getTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
   public void addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
-      String[] roles, String templateFile) throws Exception;  
-  public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName) throws Exception;
+      String[] roles, String templateFile, String repository) throws Exception;  
+  public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception;
   
-  public boolean isManagedNodeType(String nodeTypeName) throws Exception ; 
+  public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception ; 
   
-  public List getDocumentTemplates() throws Exception ;
+  public List getDocumentTemplates(String repository) throws Exception ;
   
-  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName) throws Exception;  
+  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName, String repository) throws Exception;  
   
-  public void removeManagedNodeType(String nodeTypeName) throws Exception ;
+  public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception ;
   
-  public String getTemplateLabel(String nodeTypeName)  throws Exception ;
+  public String getTemplateLabel(String nodeTypeName, String repository)  throws Exception ;
   
-  public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName) throws Exception ;
+  public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
-  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName) throws Exception ;
+  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
+  
+  public void init(String repository) throws Exception ;
 }

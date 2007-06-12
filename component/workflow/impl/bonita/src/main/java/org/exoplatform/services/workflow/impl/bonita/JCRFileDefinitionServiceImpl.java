@@ -29,6 +29,7 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.workflow.FileDefinition;
 import org.exoplatform.services.workflow.WorkflowFileDefinitionService;
 
@@ -164,7 +165,7 @@ public class JCRFileDefinitionServiceImpl
         .getComponentInstanceOfType(RepositoryService.class);
       String workspace = cmsConfigService_.getWorkspace();
       
-      return repositoryService.getRepository().getSystemSession(workspace);
+      return repositoryService.getDefaultRepository().getSystemSession(workspace);
     }
     catch (Exception e) {
       e.printStackTrace();
@@ -326,7 +327,8 @@ public class JCRFileDefinitionServiceImpl
         PortalContainer.getComponent(ActionServiceContainer.class);
        
       if(actionServiceContainer != null) {
-        actionServiceContainer.addAction(modelNode,
+        String repository = ((ManageableRepository)session.getRepository()).getConfiguration().getName() ;
+        actionServiceContainer.addAction(modelNode, repository, 
                                          "exo:ReloadBPAction",
                                          mappings);
       }

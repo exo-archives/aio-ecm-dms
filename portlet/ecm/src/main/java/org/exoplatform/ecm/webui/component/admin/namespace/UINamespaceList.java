@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.NamespaceRegistry;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -41,8 +42,9 @@ public class UINamespaceList extends UIGrid {
   public String[] getActions() { return new String[] {"AddNamespace"} ;}
   
   public void updateGrid () throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    NamespaceRegistry namespaceRegistry = repositoryService.getRepository().getNamespaceRegistry() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    NamespaceRegistry namespaceRegistry = getApplicationComponent(RepositoryService.class)
+                                          .getRepository(repository).getNamespaceRegistry() ;
     List<NamespaceBean> nspBeans = new ArrayList<NamespaceBean>();
     String[] prefixs = namespaceRegistry.getPrefixes();
     for(int i = 0; i < prefixs.length; i++){      

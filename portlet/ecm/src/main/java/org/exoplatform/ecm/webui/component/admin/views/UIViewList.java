@@ -11,6 +11,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -48,17 +49,14 @@ public class UIViewList extends UIGrid {
   private static String[] VIEW_BEAN_FIELD = {"name", "permissions", "tabList", "baseVersion"} ;
   private static String[] VIEW_ACTION = {"View","EditInfo","Delete"} ;
   
-  private ManageViewService vservice_ = null ;
-
   public UIViewList() throws Exception {
     getUIPageIterator().setId("UIViewsGrid") ;
     configure("name", VIEW_BEAN_FIELD, VIEW_ACTION) ;
-    vservice_ = getApplicationComponent(ManageViewService.class) ;
-    updateViewListGrid() ;
   }
   
   private String getBaseVersion(String name) throws Exception {
-    Node node = vservice_.getViewByName(name);
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    Node node = getApplicationComponent(ManageViewService.class).getViewByName(name, repository);
     if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
   }
@@ -66,7 +64,8 @@ public class UIViewList extends UIGrid {
   public String[] getActions() { return ACTIONS ; }
   
   public void updateViewListGrid() throws Exception {
-    List views = vservice_.getAllViews() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List views = getApplicationComponent(ManageViewService.class).getAllViews(repository) ;
     List<ViewBean> viewBeans = new ArrayList<ViewBean>() ;
     for( int i = 0; i < views.size(); i++ ) {
       ViewDataImpl view = (ViewDataImpl)views.get(i);
@@ -106,16 +105,18 @@ public class UIViewList extends UIGrid {
   static  public class DeleteActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList viewList = event.getSource() ;
+      String repository = viewList.getAncestorOfType(UIECMAdminPortlet.class)
+                                           .getPreferenceRepository() ;
       viewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID)  ;
       ManageDriveService manageDrive = viewList.getApplicationComponent(ManageDriveService.class) ;
-      if(!viewList.canDelete(manageDrive.getAllDrives(), viewName)) {
+      if(!viewList.canDelete(manageDrive.getAllDrives(repository), viewName)) {
         UIApplication app = viewList.getAncestorOfType(UIApplication.class) ;
         Object[] args = {viewName} ;
         app.addMessage(new ApplicationMessage("UIViewList.msg.template-in-use", args)) ; 
         return ;
       }
-      viewList.vservice_.removeView(viewName) ;
+      viewList.getApplicationComponent(ManageViewService.class).removeView(viewName, repository) ;
       viewList.updateViewListGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(viewList.getParent()) ;
     }
@@ -124,9 +125,12 @@ public class UIViewList extends UIGrid {
   static  public class EditInfoActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
+      String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class)
+      .getPreferenceRepository() ;
       uiViewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Node viewNode = uiViewList.vservice_.getViewByName(viewName) ;
+      Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class)
+                                .getViewByName(viewName, repository) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_VIEW) ;
       uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      
@@ -148,9 +152,12 @@ public class UIViewList extends UIGrid {
   static  public class ViewActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
+      String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class)
+      .getPreferenceRepository() ;
       uiViewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Node viewNode = uiViewList.vservice_.getViewByName(viewName) ;
+      Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class)
+                                .getViewByName(viewName, repository) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_EDIT) ;
       uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      

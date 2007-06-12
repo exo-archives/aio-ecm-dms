@@ -37,6 +37,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
@@ -48,6 +49,7 @@ import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.workflow.webui.component.InputInfo;
 import org.exoplatform.workflow.webui.component.VariableMaps;
+import org.exoplatform.resolver.ResourceResolver;
 
 /**
  * Created by The eXo Platform SARL
@@ -84,6 +86,7 @@ public class UITask extends UIForm {
   private static final String LABEL_ENCODING = ".label";
   private static final String NODE_PATH_VARIABLE = "nodePath";
   private static final String WORKSPACE_VARIABLE = "srcWorkspace";
+  private static final String REPOSITORY_VARIABLE = "repository";
 
   private Form form;
   private boolean isStart_;
@@ -104,7 +107,23 @@ public class UITask extends UIForm {
     jcrService = getApplicationComponent(RepositoryService.class) ;
     inputInfo_ = new ArrayList<InputInfo>();
   }
-
+  
+  public String getTemplate() {
+    System.out.println("getTemplate ===== " + getComponentConfig().getTemplate()) ;
+    if(isCustomizedView()) {
+      return getIdentification() + ":" + getCustomizedView() ;
+    }
+    return getComponentConfig().getTemplate() ;
+  }
+  
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
+    if(isCustomizedView()) {
+      return new BJARResourceResolver(serviceContainer) ;
+    }
+    return super.getTemplateResourceResolver((WebuiRequestContext)WebuiRequestContext.getCurrentInstance(), 
+        getComponentConfig().getTemplate()) ;
+  }
+  
   public String getManageTransition() { return MANAGE_TRANSITION ; }
 
   public String getStateImageURL() {
@@ -140,6 +159,7 @@ public class UITask extends UIForm {
       form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
     }
     String workspaceName = (String) variablesForService.get(WORKSPACE_VARIABLE);
+    String repository = (String) variablesForService.get(REPOSITORY_VARIABLE);
     List variables = form.getVariables();
     UIFormInput input = null;
     int i = 0;
@@ -159,7 +179,7 @@ public class UITask extends UIForm {
       Object value = variablesForService.get(name);
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       if (NODE_TYPE.equals(component)) {
-        dialogPath_ = dialogService.getTemplatePathByUser(true, (String) value, userName);
+        dialogPath_ = dialogService.getTemplatePathByUser(true, (String) value, userName, repository);
         isCreatedOrUpdated_ = true;
       } else if (NODE_EDIT.equals(component)) {
         if(getChild(UIDocumentContent.class) != null) removeChild(UIDocumentContent.class) ;
@@ -174,7 +194,7 @@ public class UITask extends UIForm {
         isCreatedOrUpdated_ = false ;
       } else if (NODE_VIEW.equals(component)) {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
-        Node viewNode = (Node) jcrService.getRepository().getSystemSession(workspaceName).getItem(nodePath);
+        Node viewNode = (Node) jcrService.getRepository(repository).getSystemSession(workspaceName).getItem(nodePath);
         isView_ = true ;
         docContent.setNode(viewNode);
       } else {
@@ -257,7 +277,9 @@ public class UITask extends UIForm {
 
   public boolean isCreatedOrUpdated() { return isCreatedOrUpdated_ ; }
 
-  public String getDialogPath() { return dialogPath_ ; }
+  public String getDialogPath() {
+    System.out.println("dialogPath_ ======== " + dialogPath_) ;
+    return dialogPath_ ; }
 
   public ResourceBundle getWorkflowBundle() { return form.getResourceBundle() ; }
 

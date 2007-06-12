@@ -39,7 +39,7 @@ public class RecordsServiceImpl implements RecordsService {
     auditService_ = auditService;    
   }
 
-  public void bindFilePlanAction(Node filePlan) throws Exception {
+  public void bindFilePlanAction(Node filePlan, String repository) throws Exception {
     Map<String,JcrInputProperty> mappings = new HashMap<String,JcrInputProperty>();
 
     JcrInputProperty nodeTypeInputProperty = new JcrInputProperty();
@@ -63,7 +63,7 @@ public class RecordsServiceImpl implements RecordsService {
         .setValue("compute info such as holding dates on a new record aded to that file plan");
     mappings.put("/node/exo:description", descriptionInputProperty);
 
-    actionsService_.addAction(filePlan, "exo:processRecordAction", mappings);
+    actionsService_.addAction(filePlan, repository, "exo:processRecordAction", mappings);
   }
 
   // TODO handle a lock

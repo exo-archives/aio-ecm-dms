@@ -12,9 +12,13 @@ import java.util.List;
  * @author Benjamin Mestrallet
  * benjamin.mestrallet@exoplatform.com
  */
-public class NewUserConfig {    
+public class NewUserConfig {
+  private String repository ;
   private String template;  
   private List users = new ArrayList(5);
+  
+  public String getRepository() { return repository; }
+  public void setRepository(String rp) { this.repository = rp; }
   
   public String getTemplate() { return template; }
   public void setTemplate(String template) { this.template = template; }

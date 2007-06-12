@@ -82,11 +82,10 @@ public class NewUserListener extends UserEventListener {
   }
   
   private void prepareSystemWorkspace(String userName) throws Exception {
-    ManageableRepository jcrRepository = jcrService_.getRepository();
     Session session = null;    
     //Manage production workspace
      try {
-       session = jcrRepository.getSystemSession(cmsConfigurationService_
+       session = jcrService_.getRepository(config_.getRepository()).getSystemSession(cmsConfigurationService_
            .getWorkspace());
      } catch (RepositoryException re){
        return;
@@ -123,8 +122,7 @@ public class NewUserListener extends UserEventListener {
   private void prepareWorkpsace(String workspace, String userName) throws Exception {
     Session session = null;
     try {
-      ManageableRepository jcrRepository = jcrService_.getRepository();
-      session = jcrRepository.getSystemSession(workspace);
+      session = jcrService_.getRepository(config_.getRepository()).getSystemSession(workspace);
     } catch (RepositoryException re){
       return;
     }     

@@ -505,10 +505,12 @@
         <defaultValues>
           <defaultValue>ecm-explorer/action/ICalendarScript.groovy</defaultValue>
         </defaultValues>
-      </propertyDefinition>      
+      </propertyDefinition>
+      <propertyDefinition name="exo:repository" requiredType="String" autoCreated="false" mandatory="true"
+	      onParentVersion="COPY" protected="false" multiple="false" />      
       <propertyDefinition name="exo:calendarPath" requiredType="String" autoCreated="false" mandatory="true"
-	    onParentVersion="COPY" protected="false" multiple="false" />
-	  <propertyDefinition name="exo:query" requiredType="String" autoCreated="false" mandatory="false"
+	      onParentVersion="COPY" protected="false" multiple="false" />
+	    <propertyDefinition name="exo:query" requiredType="String" autoCreated="false" mandatory="false"
         onParentVersion="COPY" protected="false" multiple="false" />  
       <propertyDefinition name="exo:description" requiredType="String" autoCreated="false" mandatory="false"
         onParentVersion="COPY" protected="false" multiple="false" />

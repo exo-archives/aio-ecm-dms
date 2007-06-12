@@ -27,6 +27,22 @@
       <version>${org.exoplatform.ecm.version}</version>
       <scope>provided</scope>
     </dependency> 
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.engine</artifactId>
+      <version>3.0</version>
+      <scope>provided</scope>
+    </dependency> 
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.facade</artifactId>
+      <version>2.0</version>
+      <scope>provided</scope>
+    </dependency> 
+    
+    
   </dependencies>
   
   <build>

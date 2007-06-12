@@ -19,6 +19,7 @@ import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -95,7 +96,8 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class) ;
       String nodeTypeName = node_.getPrimaryNodeType().getName();
-      return templateService.isManagedNodeType(nodeTypeName);
+      
+      return templateService.isManagedNodeType(nodeTypeName, getRepository());
     } catch (Exception e) {
       return false;
     }
@@ -149,12 +151,12 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     String nodeTypeName = node_.getPrimaryNodeType().getName();
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    return templateService.getTemplatePathByUser(false, nodeTypeName, userName);
+    return templateService.getTemplatePathByUser(false, nodeTypeName, userName, getRepository());
   }
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName,getRepository()) ;
   }
 
   public List<Node> getComments() throws Exception {
@@ -225,6 +227,10 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     return node_.getSession().getWorkspace().getName();
   }
   
+  private String getRepository() throws Exception {
+    ManageableRepository manaRepo = (ManageableRepository)node_.getSession().getRepository() ;
+    return manaRepo.getConfiguration().getName() ;
+  }
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentContent> {
     public void execute(Event<UIDocumentContent> event) throws Exception {
       UIDocumentContent uiDocContent = event.getSource() ;

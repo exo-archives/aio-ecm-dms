@@ -110,13 +110,14 @@ public class RSSServiceImpl implements RSSService{
     String feedName = (String) context.get(FEED_NAME) ;      
     String queryPath = (String) context.get(QUERY_PATH) ;
     String rssUrl = (String) context.get(URL) ;
+    String repository = (String) context.get("repository") ;
     storePath = storePath + "/" + feedType ;
     if(feedName == null || feedName.length() == 0 || feedName.equals("")) 
       feedName = actionName ;
     if(feedTitle == null || feedTitle.length() == 0 || feedTitle.equals("")) 
       feedTitle = actionName ;        
     try {      
-      Session session = repositoryService_.getRepository().getSystemSession(srcWorkspace);
+      Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(queryPath, Query.XPATH);
@@ -154,7 +155,7 @@ public class RSSServiceImpl implements RSSService{
       SyndFeedOutput output = new SyndFeedOutput();      
       String feedXML = output.outputString(feed);      
       feedXML = StringUtils.replace(feedXML,"&amp;","&");      
-      storeXML(feedXML,storePath,feedName);       
+      storeXML(feedXML, storePath, feedName, repository);       
     } catch (Exception e) {
       e.printStackTrace();
     }     
@@ -186,13 +187,14 @@ public class RSSServiceImpl implements RSSService{
       String rssVersion = (String) context.get(RSS_VERSION) ;
       String queryPath = (String) context.get(QUERY_PATH) ;
       String rssUrl = (String) context.get(URL) ;
+      String repository = (String) context.get("repository") ;
       storePath = storePath + "/" + feedType ;
       if(feedName == null || feedName.length() == 0 || feedName.equals("")) 
         feedName = actionName ;
       if(feedTitle == null || feedTitle.length() == 0 || feedTitle.equals("")) 
         feedTitle = actionName ;
       
-      Session session = repositoryService_.getRepository().getSystemSession(srcWorkspace);
+      Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(queryPath, Query.XPATH);
@@ -329,15 +331,15 @@ public class RSSServiceImpl implements RSSService{
       feed.setEncoding("UTF-8") ;      
       SyndFeedOutput output = new SyndFeedOutput();      
       String feedXML = output.outputString(feed);      
-      storeXML(feedXML, storePath, feedName);
+      storeXML(feedXML, storePath, feedName, repository);
     }catch(Exception e) {
       e.printStackTrace() ;
     }
   }
-  private void storeXML(String feedXML, String rssStoredPath, String rssNodeName){   
+  private void storeXML(String feedXML, String rssStoredPath, String rssNodeName, String repository){   
     try {      
       Session session = 
-        repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());
+        repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace());
       Node rootNode = session.getRootNode();
       String[] array = rssStoredPath.split("/") ;
       for(int i = 0; i < array.length; i ++) {

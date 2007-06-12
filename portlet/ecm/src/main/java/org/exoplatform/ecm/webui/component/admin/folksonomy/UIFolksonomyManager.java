@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.admin.folksonomy;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -46,7 +47,8 @@ public class UIFolksonomyManager extends UIContainer {
   
   public Node getSelectedTagStyle(String tagStyleName) throws Exception {
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    for(Node tagStyle: folksonomyService.getAllTagStyle()) {
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    for(Node tagStyle: folksonomyService.getAllTagStyle(repository)) {
       if(tagStyle.getName().equals(tagStyleName)) return tagStyle ;
     }
     return null ;

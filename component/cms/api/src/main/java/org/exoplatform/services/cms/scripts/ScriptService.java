@@ -8,30 +8,32 @@ public interface ScriptService {
   
   //public void addScriptPlugin(ComponentPlugin plugin) ;
   
-  public Node getECMScriptHome() throws Exception ;  
+  public Node getECMScriptHome(String repository) throws Exception ;  
   
-  public Node getCBScriptHome() throws Exception ;
-  public boolean hasCBScript() throws Exception ;
-  public List<Node> getCBScripts() throws Exception ;
+  public Node getCBScriptHome(String repository) throws Exception ;
+  public boolean hasCBScript(String repository) throws Exception ;
+  public List<Node> getCBScripts(String repository) throws Exception ;
   
-  public Node getECMActionScriptHome() throws Exception ;  
-  public List<Node> getECMActionScripts() throws Exception ;
+  public Node getECMActionScriptHome(String repository) throws Exception ;  
+  public List<Node> getECMActionScripts(String repository) throws Exception ;
   
-  public Node getECMInterceptorScriptHome() throws Exception ;  
-  public List<Node> getECMInterceptorScripts() throws Exception;
+  public Node getECMInterceptorScriptHome(String repository) throws Exception ;  
+  public List<Node> getECMInterceptorScripts(String repository) throws Exception;
   
-  public Node getECMWidgetScriptHome() throws Exception ;  
-  public List<Node> getECMWidgetScripts() throws Exception ;
+  public Node getECMWidgetScriptHome(String repository) throws Exception ;  
+  public List<Node> getECMWidgetScripts(String repository) throws Exception ;
   
-  public CmsScript getScript(String scriptPath) throws Exception;
+  public CmsScript getScript(String scriptPath, String repository) throws Exception;
   
   public String getBaseScriptPath() throws Exception ;  
   
-  public String getScriptAsText(String scriptPath) throws Exception;        
+  public String getScriptAsText(String scriptPath, String repository) throws Exception;        
   
-  public void addScript(String name, String text) throws Exception;
+  public void addScript(String name, String text, String repository) throws Exception;
   
-  public void removeScript(String scriptPath) throws Exception;
+  public void removeScript(String scriptPath, String repository) throws Exception;
   
-  public Node getScriptNode(String scriptName) throws Exception; 
+  public Node getScriptNode(String scriptName, String repository) throws Exception; 
+  
+  public void initRepo(String repository) throws Exception ;
 }

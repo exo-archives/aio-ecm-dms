@@ -11,9 +11,10 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.services.cms.views.impl.ViewDataImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -46,7 +47,6 @@ public class UIECMTemplateList extends UIGrid {
   public UIECMTemplateList() throws Exception {
     getUIPageIterator().setId("UIECMTemplateGrid") ;
     configure("path", VIEW_BEAN_FIELD, VIEW_ACTION) ;
-    updateTempListGrid() ;
   }
 
   public String[] getActions() { return new String[] {"Add"} ; }
@@ -56,19 +56,10 @@ public class UIECMTemplateList extends UIGrid {
     return node.getBaseVersion().getName();    
   }
 
-  public boolean canDelete(String tempName) throws Exception{
-    ManageViewService  vservice = getApplicationComponent(ManageViewService.class) ;
-    for(Object o : vservice.getAllViews()) {
-      String tempPath = ((ViewDataImpl)o).getTemplate() ;
-      String tName = tempPath.substring(tempPath.lastIndexOf("/")+1) ;
-      if(tempName.equals(tName)) return false ;
-    }
-    return true ;
-  }
-
   public void updateTempListGrid() throws Exception {
-    ManageViewService service = getApplicationComponent(ManageViewService.class) ;
-    List<Node> nodes = service.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List<Node> nodes = getApplicationComponent(ManageViewService.class)
+                      .getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
     List<TemplateBean> tempBeans = new ArrayList<TemplateBean>() ;
     for(Node node : nodes) {
       tempBeans.add(new TemplateBean(node.getName(), node.getPath(), getBaseVersion(node))) ;
@@ -91,20 +82,19 @@ public class UIECMTemplateList extends UIGrid {
   static  public class DeleteActionListener extends EventListener<UIECMTemplateList> {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTemp = event.getSource() ;
+      String repository = uiECMTemp.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       ManageViewService vservice = uiECMTemp.getApplicationComponent(ManageViewService.class) ;
       UIViewManager uiViewManager = uiECMTemp.getAncestorOfType(UIViewManager.class) ;
       uiViewManager.setRenderedChild(UIECMTemplateList.ST_ECMTemp) ;
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Node template = vservice.getTemplate(templatePath) ;
-      String templateName = template.getName() ;
-      if(!uiECMTemp.canDelete(templateName))
-      {
+      String templateName = templatePath.substring(templatePath.lastIndexOf("/") + 1) ;
+      if(!uiECMTemp.getApplicationComponent(ManageDriveService.class).isUsedView(templateName, repository)) {
         UIApplication app = uiECMTemp.getAncestorOfType(UIApplication.class) ;
         Object[] args = {templateName} ;
         app.addMessage(new ApplicationMessage("UIECMTemplateList.msg.template-in-use", args)) ;
         return ;
       }
-      vservice.removeTemplate(templatePath) ;
+      vservice.removeTemplate(templatePath, repository) ;
       uiECMTemp.updateTempListGrid() ;
       UITemplateContainer uiTempContainer = uiECMTemp.getParent() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer) ;

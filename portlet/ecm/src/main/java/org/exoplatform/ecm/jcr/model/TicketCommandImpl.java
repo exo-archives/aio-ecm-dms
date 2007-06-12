@@ -27,7 +27,7 @@ public class TicketCommandImpl extends TicketCommand{
     RepositoryService repoService = 
       (RepositoryService)PortalContainer.getComponent(RepositoryService.class) ;    
     Map<String, String> prop = getProperties() ;
-    Session session = repoService.getRepository().getSystemSession(prop.get("workspace")) ;        
+    Session session = repoService.getDefaultRepository().getSystemSession(prop.get("workspace")) ;        
     Node child = session.getRootNode().getNode(prop.get("nodePath")) ;
     return child ;
   }

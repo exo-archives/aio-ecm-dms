@@ -22,11 +22,11 @@ public interface ActionServiceContainer {
   public ActionPlugin getActionPluginForActionType(String actionTypeName);
   
   public void createActionType(String actionTypeName, String parentActionTypeName, 
-      String executable, List<String> variableNames, boolean isMoveType) throws Exception;
+      String executable, List<String> variableNames, boolean isMoveType, String repository) throws Exception;
 
-  public Collection<NodeType> getCreatedActionTypes() throws Exception;
+  public Collection<NodeType> getCreatedActionTypes(String repository) throws Exception;
   
-  public Node getAction(Node node, String actionName) throws Exception;
+  public Node getAction(Node node, String actionName, String repository) throws Exception;
   
   public Node getInitAction(Node node, String actionName) throws Exception;
 
@@ -36,14 +36,14 @@ public interface ActionServiceContainer {
 
   public List<Node> getActions(Node node, String lifecyclePhase) throws Exception;
   
-  public void removeAction(Node node, String actionName) throws Exception;
+  public void removeAction(Node node, String actionName, String repository) throws Exception;
 
-  public void addAction(Node node, String type, Map mappings) throws Exception; 
+  public void addAction(Node node, String repository, String type, Map mappings) throws Exception; 
   
-  public void executeAction(String userId, Node node, String actionName, Map variables) throws Exception;
+  public void executeAction(String userId, Node node, String actionName, Map variables, String repository) throws Exception;
   
-  public void executeAction(String userId, Node node, String actionName) throws Exception;
+  public void executeAction(String userId, Node node, String actionName, String repository) throws Exception;
   
-  public void initiateObservation(Node node) throws Exception ;
+  public void initiateObservation(Node node, String repository) throws Exception ;
       
 }

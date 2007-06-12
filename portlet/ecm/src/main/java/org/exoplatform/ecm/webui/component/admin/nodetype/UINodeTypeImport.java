@@ -11,6 +11,7 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
@@ -62,8 +63,9 @@ public class UINodeTypeImport extends UIForm {
     } else {
       uiTableInputSet.getChildren().clear() ;
     }
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    NodeTypeManager ntManager = repositoryService.getRepository().getNodeTypeManager() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    NodeTypeManager ntManager = getApplicationComponent(RepositoryService.class).
+                                getRepository(repository).getNodeTypeManager() ;
     UIFormInputSet uiInputSet ;
     uiTableInputSet.setName(TABLE_NAME);
     uiTableInputSet.setColumns(TABLE_COLUMNS);
@@ -116,7 +118,8 @@ public class UINodeTypeImport extends UIForm {
       UINodeTypeImport uiImport = event.getSource() ;
       RepositoryService repositoryService = 
         uiImport.getApplicationComponent(RepositoryService.class) ;
-      NodeTypeManager ntManager = repositoryService.getRepository().getNodeTypeManager() ;
+      String repository = uiImport.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      NodeTypeManager ntManager = repositoryService.getRepository(repository).getNodeTypeManager() ;
       UINodeTypeManager uiManager = uiImport.getAncestorOfType(UINodeTypeManager.class) ;
       UINodeTypeImportPopup uiImportPopup = uiImport.getParent() ;
       uiImportPopup.setRenderedChild(UINodeTypeUpload.class) ;

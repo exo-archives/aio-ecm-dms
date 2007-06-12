@@ -23,6 +23,7 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.picocontainer.Startable;
 
@@ -148,9 +149,11 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     session.save() ;
   }  
 
-  private void observeNode(Node node,EventListener listener) throws Exception {
+  private void observeNode(Node node, EventListener listener) throws Exception {
     String workspace = node.getSession().getWorkspace().getName() ;
-    Session systemSession = repoService_.getRepository().getSystemSession(workspace) ;
+    ManageableRepository manageRepo = (ManageableRepository)node.getSession().getRepository() ;
+    String repository = manageRepo.getConfiguration().getName() ;
+    Session systemSession = repoService_.getRepository(repository).getSystemSession(workspace) ;
     List<String> list = getDocumentNodeTypes(node) ;          
     String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;
     ObservationManager observationManager = systemSession.getWorkspace().getObservationManager() ;
@@ -171,44 +174,50 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   private List<String> getDocumentNodeTypes(Node node) throws Exception {
     List<String> nodeTypeNameList = new ArrayList<String>() ;
     NodeType  primaryType = node.getPrimaryNodeType() ;
-    if(templateService_.isManagedNodeType(primaryType.getName())) {
+    ManageableRepository manaRepository = (ManageableRepository)node.getSession().getRepository() ;
+    String repository = manaRepository.getConfiguration().getName() ;
+    if(templateService_.isManagedNodeType(primaryType.getName(), repository)) {
       nodeTypeNameList.add(primaryType.getName()) ;
     }    
     for(NodeType nodeType: node.getMixinNodeTypes()) {
-      if(templateService_.isManagedNodeType(nodeType.getName())) 
+      if(templateService_.isManagedNodeType(nodeType.getName(), repository)) 
         nodeTypeNameList.add(nodeType.getName()) ;
     }
     return nodeTypeNameList ;
   }
   private void reInitObserver() throws Exception {
-    ManageableRepository repository = repoService_.getRepository() ;
-    String[] workspaceNames = repository.getWorkspaceNames() ;
-    for(String workspace: workspaceNames) {
-      Session session = repository.getSystemSession(workspace) ;
-      QueryManager queryManager = null ;
-      try{
-        queryManager = session.getWorkspace().getQueryManager() ;
-      }catch (Exception e) { }
-      if(queryManager == null) continue ;
-      try {        
-        Query query = queryManager.createQuery(WATCHABLE_MIXIN_QUERY,Query.XPATH) ;
-        QueryResult queryResult = query.execute() ;
-        for(NodeIterator iter = queryResult.getNodes(); iter.hasNext(); ) {          
-          Node observedNode = iter.nextNode() ;
-          EmailNotifyListener emailNotifyListener = new EmailNotifyListener(observedNode) ;
-          ObservationManager manager = session.getWorkspace().getObservationManager() ;
-          List<String> list = getDocumentNodeTypes(observedNode) ;          
-          String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;          
-          manager.addEventListener(emailNotifyListener,Event.PROPERTY_CHANGED,
-             observedNode.getPath(),true,null,observedNodeTypeNames,false) ;          
-          // TODO Add Listener for notify type by RSS
-          RssNotifyListener rssNotifyListener = new RssNotifyListener(observedNode) ;
-          manager.addEventListener(rssNotifyListener,Event.PROPERTY_CHANGED,
-              observedNode.getPath(),true,null,observedNodeTypeNames,false) ;
+    List<RepositoryEntry> repositories = repoService_.getConfig().getRepositoryConfigurations() ;
+    for(RepositoryEntry repo : repositories) {
+      ManageableRepository repository = repoService_.getRepository(repo.getName()) ;
+      String[] workspaceNames = repository.getWorkspaceNames() ;
+      for(String workspace: workspaceNames) {
+        Session session = repository.getSystemSession(workspace) ;
+        QueryManager queryManager = null ;
+        try{
+          queryManager = session.getWorkspace().getQueryManager() ;
+        }catch (Exception e) { }
+        if(queryManager == null) continue ;
+        try {        
+          Query query = queryManager.createQuery(WATCHABLE_MIXIN_QUERY,Query.XPATH) ;
+          QueryResult queryResult = query.execute() ;
+          for(NodeIterator iter = queryResult.getNodes(); iter.hasNext(); ) {          
+            Node observedNode = iter.nextNode() ;
+            EmailNotifyListener emailNotifyListener = new EmailNotifyListener(observedNode) ;
+            ObservationManager manager = session.getWorkspace().getObservationManager() ;
+            List<String> list = getDocumentNodeTypes(observedNode) ;          
+            String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;          
+            manager.addEventListener(emailNotifyListener,Event.PROPERTY_CHANGED,
+               observedNode.getPath(),true,null,observedNodeTypeNames,false) ;          
+            // TODO Add Listener for notify type by RSS
+            RssNotifyListener rssNotifyListener = new RssNotifyListener(observedNode) ;
+            manager.addEventListener(rssNotifyListener,Event.PROPERTY_CHANGED,
+                observedNode.getPath(),true,null,observedNodeTypeNames,false) ;
+          }
+        }catch (Exception e) {
+          System.out.println("==>>> Cannot init observer for node: " 
+              +e.getLocalizedMessage() + " in '"+repo.getName()+"' repository");
+          //e.printStackTrace() ;
         }
-      }catch (Exception e) {
-        System.out.println("==>>> Cannot init observer for node: " +e.getLocalizedMessage());
-        //e.printStackTrace() ;
       }
     }
   }    

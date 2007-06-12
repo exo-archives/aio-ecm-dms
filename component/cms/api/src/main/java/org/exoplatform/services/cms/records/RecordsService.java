@@ -7,7 +7,7 @@ import javax.jcr.RepositoryException;
 
 public interface RecordsService {
   
-  public void bindFilePlanAction(Node filePlan) throws Exception ;
+  public void bindFilePlanAction(Node filePlan, String repository) throws Exception ;
   
   public void addRecord(Node filePlan, Node record) throws RepositoryException;
   

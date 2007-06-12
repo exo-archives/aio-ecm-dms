@@ -89,7 +89,8 @@ public class ContentBackupBackupHook implements NodeHookI {
         projectSession.getProperty("srcPath").getTheValue();
       String srcWorkspace =
         projectSession.getProperty("srcWorkspace").getTheValue();
-    
+     String repository = 
+       projectSession.getProperty("repository").getTheValue() ;
       // Retrieve references to Services
       PortalContainer container = PortalContainer.getInstance();
       RepositoryService repositoryService = (RepositoryService)
@@ -100,13 +101,13 @@ public class ContentBackupBackupHook implements NodeHookI {
         container.getComponentInstanceOfType(CmsService.class);
 
       // Open a JCR session
-      Session session = repositoryService.getRepository().
+      Session session = repositoryService.getRepository(repository).
         getSystemSession(srcWorkspace);
       
       // Retrieve information from the Action that triggered the Worflow
       Node actionnableNode = (Node) session.getItem(srcPath);
       Node actionNode = actionServiceContainer.getAction(
-        actionnableNode, actionName);
+        actionnableNode, actionName, repository);
       String destWorkspace = actionNode.getProperty("exo:destWorkspace")
         .getString();
       String destPath = actionNode.getProperty("exo:destPath").getString();
@@ -119,7 +120,7 @@ public class ContentBackupBackupHook implements NodeHookI {
       cmsService.moveNode(nodePath,
                           srcWorkspace,
                           destWorkspace,
-                          destPath + relPath);    
+                          destPath + relPath, repository);    
     }
     catch(Exception e) {
       // TODO Use logging system instead

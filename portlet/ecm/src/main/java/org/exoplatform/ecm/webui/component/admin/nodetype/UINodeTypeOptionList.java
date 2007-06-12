@@ -12,6 +12,7 @@ import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -64,9 +65,10 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
   }
   
   public void update(String values) throws Exception {
-    UIFormTableInputSet uiTableInputSet = createUIComponent(UIFormTableInputSet.class, null, null) ; 
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    NodeTypeManager ntManager = repositoryService.getRepository().getNodeTypeManager() ;
+    UIFormTableInputSet uiTableInputSet = createUIComponent(UIFormTableInputSet.class, null, null) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    NodeTypeManager ntManager = getApplicationComponent(RepositoryService.class)
+                                .getRepository(repository).getNodeTypeManager() ;
     NodeTypeIterator nodeTypeIter = ntManager.getAllNodeTypes() ;
     UIFormInputSet uiInputSet ;
     uiTableInputSet.setName(TABLE_NAME);

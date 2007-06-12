@@ -5,7 +5,6 @@
 package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -35,12 +34,6 @@ public class UIDefaultListItem extends UITreeList {
       UIJCRBrowser uiJCRBrowser = uiDefault.getParent() ;
       String returnField = uiJCRBrowser.getReturnField() ;
       ((UISelector)uiJCRBrowser.getReturnComponent()).updateSelect(returnField, value) ;
-      UIJCRExplorer uiExplorer = uiJCRBrowser.getAncestorOfType(UIJCRExplorer.class) ;
-      if(uiExplorer != null) {
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ; 
-        if(uiExplorer.isHidePopup_) return ;
-        uiJCRBrowser.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
-      }
     }
   }
 }

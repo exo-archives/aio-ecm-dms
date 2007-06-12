@@ -9,6 +9,7 @@ import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -24,13 +25,14 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 	private static final String RELATION_PROP = "exo:relation";
 
 	private RepositoryService repositoryService_;
-
+	String repositories_ ;
 	private CmsConfigurationService cmsConfig_;
 
 	public RelationsServiceImpl(RepositoryService repositoryService,
-			CmsConfigurationService cmsConfig) {
+			CmsConfigurationService cmsConfig, InitParams params) {
 		repositoryService_ = repositoryService;
 		cmsConfig_ = cmsConfig;
+    repositories_ = params.getValueParam("repositories").getValue();
 	}
 
 	public boolean hasRelations(Node node) throws Exception {
@@ -40,32 +42,23 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 
 	}
 
-	public List<Node> getRelations(Node node) {
+	public List<Node> getRelations(Node node, Session session) {
 		List<Node> rels = new ArrayList<Node>();
-		try {
-			Session session = getSystemSession();
-			Property relations = null;
-			try {
-				relations = node.getProperty(RELATION_PROP);
-			} catch (Exception ex) {
-				// ex.printStackTrace();
-			}
-			if (relations != null) {
-				Value[] values = relations.getValues();
-				for (int i = 0; i < values.length; i++) {
-					rels.add(session.getNodeByUUID(values[i].getString()));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return rels;
+    try {
+      if(node.hasProperty(RELATION_PROP)) {
+        Value[] values = node.getProperty(RELATION_PROP).getValues();
+        for (int i = 0; i < values.length; i++) {
+          rels.add(session.getNodeByUUID(values[i].getString()));
+        }
+      }
+    }catch(Exception e) {      
+    }
+    return rels ;    
 	}
 
-	public void removeRelation(Node node, String relationPath) throws Exception {
+	public void removeRelation(Node node, String relationPath, Session session) throws Exception {
 		List<Value> vals = new ArrayList<Value>();
 		if (!"*".equals(relationPath)) {
-			Session session = getSystemSession();
 			Property relations = node.getProperty(RELATION_PROP);
 			if (relations != null) {
 				Value[] values = relations.getValues();
@@ -87,15 +80,13 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 		node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
 	}
 
-	public void addRelation(Node node, String relationPath) throws Exception {
-		Session session = getSystemSession();
-    Session userSession = node.getSession() ;
+	public void addRelation(Node node, String relationPath, Session session) throws Exception {
 		Node catNode = (Node) session.getItem(relationPath);    
     if(!catNode.isNodeType("mix:referenceable")) {
       catNode.addMixin("mix:referenceable") ;
       catNode.save() ;
     }      
-		Value value2add = userSession.getValueFactory().createValue(catNode); 
+		Value value2add = session.getValueFactory().createValue(catNode); 
 		if (!node.isNodeType(RELATION_MIXIN)) {
       node.addMixin(RELATION_MIXIN);    
 			node.setProperty(RELATION_PROP, new Value[] {value2add});
@@ -112,32 +103,34 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 			}
 			vals.add(value2add);
 			node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
-      userSession.save() ;
-      userSession.refresh(true) ;
+      session.save() ;
+      session.refresh(true) ;
 		}
 	}
 
-	public void addRelation(Node node, String relationPath, boolean replaceAll)
+	/*public void addRelation(Node node, String relationPath, boolean replaceAll)
 			throws Exception {
 		if (replaceAll) {
 			removeRelation(node, "*");
 		}
 		addRelation(node, relationPath);
-	}
+	}*/
 
 	public void start() {
 		Session session = null;
 		Node relationsHome = null;
-		String relationPath = "";
 		try {
-			relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
-			session = getSystemSession();
-			relationsHome = (Node) session.getItem(relationPath);
-			for (NodeIterator iterator = relationsHome.getNodes(); iterator.hasNext();) {
-				Node rel = iterator.nextNode();
-				rel.addMixin("mix:referenceable");
-			}
-			relationsHome.save();
+			String relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+      String[] repositories = repositories_.split(",") ;
+			for(String repo : repositories) {
+        session = getSession(repo.trim());
+        relationsHome = (Node) session.getItem(relationPath);
+        for (NodeIterator iterator = relationsHome.getNodes(); iterator.hasNext();) {
+          Node rel = iterator.nextNode();
+          rel.addMixin("mix:referenceable");
+        }
+        relationsHome.save();
+      }
 		} catch (Exception e) {
 			// e.printStackTrace() ;
 		}
@@ -145,9 +138,27 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 
 	public void stop() {
 	}
-
-	protected Session getSystemSession() throws Exception {
-		ManageableRepository jcrRepository = repositoryService_.getRepository();
-		return jcrRepository.getSystemSession(cmsConfig_.getWorkspace());
-	}
+	
+  public void init(String repository) throws Exception {
+    try {
+      Session session = getSession(repository);
+      String relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+      Node relationsHome = (Node) session.getItem(relationPath);
+      for (NodeIterator iterator = relationsHome.getNodes(); iterator.hasNext();) {
+        Node rel = iterator.nextNode();
+        rel.addMixin("mix:referenceable");
+      }
+      relationsHome.save();
+    } catch (Exception e) {
+      // e.printStackTrace() ;
+    }
+  }
+  
+	protected Session getSession(String repository){
+		try{
+      return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace());
+    }catch(Exception e) {
+      return null ; 
+    }
+	}  
 }

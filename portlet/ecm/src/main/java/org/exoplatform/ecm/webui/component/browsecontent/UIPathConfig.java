@@ -56,6 +56,7 @@ public class UIPathConfig extends UIForm implements UISelector{
   final static public String FIELD_PATHSELECT = "path" ;
   public UIPathConfig()throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
     categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
@@ -79,7 +80,7 @@ public class UIPathConfig extends UIForm implements UISelector{
   public PortletPreferences getPortletPreferences() {    
     return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
   }
-  public void initForm(PortletPreferences preference, String workSpace, boolean isAddNew, 
+  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew, 
                        boolean isEditable) throws Exception {
     String path = preference.getValue(Utils.JCR_PATH, "") ;
     String hasToolBar = "true" ;
@@ -108,6 +109,9 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
+    UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+    repositoryField.setValue(repository) ;
+    repositoryField.setEditable(false) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     if((isAddNew)||(isEditable)) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
@@ -176,9 +180,10 @@ public class UIPathConfig extends UIForm implements UISelector{
 
   public List<SelectItemOption<String>> getTemplateOption() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     ManageViewService viewService = 
       (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
-    List<Node> scriptTemplates = viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES) ;
+    List<Node> scriptTemplates = viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository) ;
     for(Node template:scriptTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
@@ -205,6 +210,8 @@ public class UIPathConfig extends UIForm implements UISelector{
       PortletPreferences prefs = container.getPortletPreferences();
       UIFormStringInput workSpaceField = uiForm.getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
       String workSpace = workSpaceField.getValue() ;
+      UIFormStringInput repositoryField = uiForm.getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+      String repository = repositoryField.getValue() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPatth = categoryPathField.getValue() ;
@@ -243,6 +250,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_FROM_PATH) ;
+      prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
       prefs.setValue(Utils.JCR_PATH, jcrPatth) ;
       prefs.setValue(Utils.CB_NB_PER_PAGE, itemPerPage) ;
@@ -295,7 +303,8 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIPathConfig uiForm  = event.getSource() ;
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
-      uiConfig.initPopupPathSelect(uiForm, workSpace) ;
+      String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
+      uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
     }
   }
 }

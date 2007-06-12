@@ -86,6 +86,13 @@
       <short-title>ECM Admin</short-title>
       <keywords>ecm, admin</keywords>
     </portlet-info>
+    <portlet-preferences>
+    	<preference>
+        <name>repository</name>
+        <value>repository</value>
+        <read-only>false</read-only>
+      </preference>
+    </portlet-preferences>  
   </portlet> 
   
   <portlet>
@@ -114,6 +121,11 @@
       <keywords>ecm, fastcontentcreator</keywords>
     </portlet-info>
     <portlet-preferences>
+    	<preference>
+        <name>repository</name>
+        <value>repository</value>
+        <read-only>false</read-only>
+      </preference>
       <preference>
         <name>workspace</name>
         <value>production</value>
@@ -128,12 +140,7 @@
         <name>type</name>     
         <value>exo:article</value>        
         <read-only>false</read-only>
-      </preference>          
-      <preference>
-        <name>repository</name>     
-        <value>repository</value>        
-        <read-only>false</read-only>
-      </preference>                
+      </preference>
     </portlet-preferences>
   </portlet> 
   
@@ -164,7 +171,12 @@
       <keywords>portlet, content</keywords>
     </portlet-info>
     
-    <portlet-preferences>    
+    <portlet-preferences> 
+    	<preference>
+        <name>repository</name>
+        <value>repository</value>
+        <read-only>false</read-only>
+      </preference>
       <preference>
         <name>workspace</name>
         <value>production</value>

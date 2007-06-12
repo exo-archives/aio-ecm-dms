@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceConfig {
-  
+  private String repository ;
   private String workspace;
   private List resources = new ArrayList(5);
   
@@ -14,6 +14,9 @@ public class ResourceConfig {
   public void setRessources(List resources) {
     this.resources = resources;
   }
+  
+  public String getRepositoty() { return repository ; }
+  public void setRepository(String repo) {repository = repo ; }
   
   public String getWorkspace() {
     return workspace;

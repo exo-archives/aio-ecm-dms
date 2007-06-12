@@ -22,32 +22,28 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   private static String CB_DETAIL_VIEW_TEMPLATE = "detailViewTemplate".intern() ;
   private static String CB_SCRIPT_TEMPLATE = "scriptTemplate".intern() ;
   private static String ECM_EXPLORER_TEMPLATE = "ecmExplorerTemplate".intern() ;
-
-  private RepositoryService repositoryService_;
-  private ConfigurationManager cservice_;
-  private CmsConfigurationService cmsConfigService_;
-  private InitParams params_ ; 
-
-  private String warViewPath_ ;  
-  private Session session_ ;  
+  private InitParams params_ ;
+  private RepositoryService repositoryService_ ;
+  private CmsConfigurationService cmsConfigService_ ; 
+  private ConfigurationManager cservice_ ;
   public ManageViewPlugin(RepositoryService repositoryService, 
       InitParams params, ConfigurationManager cservice, 
       CmsConfigurationService cmsConfigService) throws Exception {
-    repositoryService_ = repositoryService;
-    cservice_ = cservice ;
-    cmsConfigService_ = cmsConfigService ;
-    session_ = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace()) ; 
     params_ = params ;
-    initRepository() ;
+    repositoryService_ = repositoryService ;
+    cmsConfigService_ = cmsConfigService ;
+    cservice_ = cservice ;
+    initRepository(params, repositoryService, cservice, cmsConfigService) ;
   }
 
-  private void initRepository() throws Exception {
-    Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
-    String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
-    String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
-    Node viewManager = (Node)session_.getItem(viewsPath) ;
-    Node templates = (Node)session_.getItem(templatesPath) ;
-    warViewPath_ = cmsConfigService_.getContentLocation() 
+  private void initRepository(InitParams params, RepositoryService repositoryService, 
+      ConfigurationManager cservice, CmsConfigurationService cmsConfigService) throws Exception {
+    Iterator<ObjectParameter> it = params.getObjectParamIterator() ;       
+    String viewsPath = cmsConfigService.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    String templatesPath = cmsConfigService.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
+    String repositoryName = null ;
+    Node viewManager = null ;
+    String warViewPath = cmsConfigService.getContentLocation() 
     + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
     while(it.hasNext()){
       Object object = it.next().getObject() ;
@@ -55,6 +51,12 @@ public class ManageViewPlugin extends BaseComponentPlugin {
       TemplateDataImpl temp = null ;
       if(object instanceof ViewDataImpl){
         data = (ViewDataImpl)object ;
+        if(!data.getRepository().equals(repositoryName)){
+          repositoryName = data.getRepository() ;
+          String workspace = cmsConfigService.getWorkspace(repositoryName) ;
+          Session session = repositoryService.getRepository(repositoryName).getSystemSession(workspace) ;
+          viewManager = (Node)session.getItem(viewsPath) ;
+        }
         String nodeName = data.getName() ;
         if(!viewManager.hasNode(nodeName)){
           Node view = addView(viewManager, nodeName, data.getPermissions(), data.getTemplate()) ;
@@ -64,14 +66,57 @@ public class ManageViewPlugin extends BaseComponentPlugin {
             addTab(view, tab.getTabName(), tab.getButtons()) ;
           }
         }
+        viewManager.save() ;
+        viewManager.getSession().save() ;
       }else {
         temp = (TemplateDataImpl)object ;
-        addTemplate(temp) ;
+        String workspace = cmsConfigService.getWorkspace(temp.getRepository()) ;
+        Session session = repositoryService.getRepository(temp.getRepository()).getSystemSession(workspace) ;
+        addTemplate(temp, session, warViewPath, cservice, cmsConfigService) ;
       }
-      viewManager.save() ;
-      templates.save() ;
     }
-    session_.save() ;
+  }
+
+  public void init(String repository) throws Exception {
+    Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
+    String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
+    Node viewManager = null ;
+    String warViewPath = cmsConfigService_.getContentLocation() 
+    + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
+    String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
+    
+    while(it.hasNext()){
+      Object object = it.next().getObject() ;
+      ViewDataImpl data = null ;
+      TemplateDataImpl temp = null ;
+      if(object instanceof ViewDataImpl){
+        data = (ViewDataImpl)object ;
+        if(data.getRepository().equals(defaultRepo)) {
+          Session session = repositoryService_.getRepository(repository)
+          .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+          viewManager = (Node)session.getItem(viewsPath) ;
+          String nodeName = data.getName() ;
+          if(!viewManager.hasNode(nodeName)){
+            Node view = addView(viewManager, nodeName, data.getPermissions(), data.getTemplate()) ;
+            List tabList = data.getTabList() ;
+            for(Iterator iter = tabList.iterator() ; iter.hasNext() ; ){
+              ViewDataImpl.Tab tab = (ViewDataImpl.Tab) iter.next()  ;
+              addTab(view, tab.getTabName(), tab.getButtons()) ;
+            }
+          }
+          viewManager.save() ;
+          viewManager.getSession().save() ;
+        }
+      }else {
+        temp = (TemplateDataImpl)object ;
+        if(temp.getRepository().equals(defaultRepo)) {
+          String workspace = cmsConfigService_.getWorkspace(repository) ;
+          Session session = repositoryService_.getRepository(repository).getSystemSession(workspace) ;
+          addTemplate(temp, session, warViewPath, cservice_, cmsConfigService_) ;
+        }
+      }
+    }
   }
 
   public Node addView(Node viewManager, String name, String permissions, String template)
@@ -80,6 +125,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     contentNode.setProperty("exo:permissions", permissions);
     contentNode.setProperty("exo:template", template);  
     viewManager.save() ;
+
     return contentNode ;
   }
 
@@ -95,7 +141,8 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     view.save() ;
   }
 
-  private void addTemplate(TemplateDataImpl tempObject) throws Exception {
+  private void addTemplate(TemplateDataImpl tempObject, Session session, String warViewPath, 
+      ConfigurationManager cservice, CmsConfigurationService cmsConfigService) throws Exception {
     String name = tempObject.getName() ;
     String type = tempObject.getTemplateType() ;
     String alias = "" ;    
@@ -110,13 +157,14 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     }else if(type.equals(CB_DETAIL_VIEW_TEMPLATE)) {
       alias = BasePath.CB_DETAIL_VIEW_TEMPLATES ;
     }         
-    String templateHomePath = cmsConfigService_.getJcrPath(alias) ;    
-    Node templateHomeNode = (Node)session_.getItem(templateHomePath) ;        
+    String templateHomePath = cmsConfigService.getJcrPath(alias) ;    
+    Node templateHomeNode = (Node)session.getItem(templateHomePath) ;        
     if(templateHomeNode.hasNode(name)) return  ;
-    String warPath = warViewPath_ + tempObject.getWarPath() ;
-    InputStream in = cservice_.getInputStream(warPath) ;
+    String warPath = warViewPath + tempObject.getWarPath() ;
+    InputStream in = cservice.getInputStream(warPath) ;
     Node templateNode = templateHomeNode.addNode(name,"exo:template") ;
     templateNode.setProperty("exo:templateFile", in) ;
-    templateHomeNode.save() ;    
+    templateHomeNode.save() ; 
+    session.save() ;
   }
 }

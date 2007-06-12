@@ -8,16 +8,15 @@ import java.io.InputStream;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -48,7 +47,6 @@ public class UIDriveList extends UIGrid {
   private static String[] DRIVE_ACTION = {"EditInfo", "Delete"} ;
   public UIDriveList() throws Exception {
     configure("name", DRIVE_BEAN_FIELD, DRIVE_ACTION) ;
-    updateDriveListGrid() ;
   }
   
   public String[] getActions() { return ACTIONS ; }
@@ -57,14 +55,14 @@ public class UIDriveList extends UIGrid {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
-    ManageableRepository repository = rservice.getRepository() ;
-    Session digitalSession = repository.getSystemSession("digital-assets") ;
-    
-    List drives = driveService.getAllDrives() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List drives = driveService.getAllDrives(repository) ;
     for(int i = 0; i < drives.size(); i++) {
       DriveData drive = (DriveData)drives.get(i) ;
       if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-        Node node = (Node) digitalSession.getItem(drive.getIcon()) ;
+        Node node = (Node) rservice.getRepository(repository)
+        //TODO: Need to store wsName in Icon value, Maybe in new repository digital-assets ws does exists
+        .getSystemSession("digital-assets").getItem(drive.getIcon()) ;
         Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
         InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
         InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
@@ -92,7 +90,8 @@ public class UIDriveList extends UIGrid {
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIDriveList uiDriveList = event.getSource();
       ManageDriveService driveService = uiDriveList.getApplicationComponent(ManageDriveService.class) ;
-      driveService.removeDrive(name) ;
+      String repository = uiDriveList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      driveService.removeDrive(name, repository) ;
       uiDriveList.updateDriveListGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveList.getParent()) ;
     }

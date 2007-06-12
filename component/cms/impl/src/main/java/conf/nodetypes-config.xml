@@ -90,6 +90,10 @@
 
   <nodeType name="exo:move" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <propertyDefinitions>
+    	<propertyDefinition name="exo:repository" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
       <propertyDefinition name="exo:destWorkspace" requiredType="String" autoCreated="false" mandatory="true"
         onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>

@@ -16,10 +16,10 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -80,16 +80,16 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
     PortletRequest request = context.getRequest() ; 
     PortletPreferences preferences = request.getPreferences() ;
+    String repoName = preferences.getValue(Utils.REPOSITORY, "") ;
     boolean isDefaultWs = false ;
     List<SelectItemOption<String>> repositories= new ArrayList<SelectItemOption<String>>() ;
     repositories.add(new SelectItemOption<String>(DEFAULT_REPOSITORY, DEFAULT_REPOSITORY)) ;
     UIFormSelectBox uiRepositoryList = getUIFormSelectBox(REPOSITORY_NAME) ;
     uiRepositoryList.setOptions(repositories) ;
-    ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository();
-    String[] wsNames = repository.getWorkspaceNames();
+    String[] wsNames = getApplicationComponent(RepositoryService.class).getRepository(repoName).getWorkspaceNames();
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
     String prefWs = preferences.getValue("workspace", "") ;
-    setTemplateOptions(preferences.getValue("path", ""), prefWs) ;
+    setTemplateOptions(preferences.getValue("path", ""), repoName, prefWs) ;
     for(String wsName : wsNames) {
       if(wsName.equals(prefWs)) isDefaultWs = true ;
       workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
@@ -104,9 +104,9 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     getUIStringInput(FIELD_SAVEDPATH).setValue(preferences.getValue("path", "")) ;
   }
   
-  private void setTemplateOptions(String nodePath, String wsName) throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    Session session = repositoryService.getRepository().getSystemSession(wsName) ;
+  private void setTemplateOptions(String nodePath, String repoName, String wsName) throws Exception {
+    Session session = getApplicationComponent(RepositoryService.class)
+    .getRepository(repoName).getSystemSession(wsName) ;
     Node currentNode = null ;
     UIFormSelectBox uiSelectTemplate = getUIFormSelectBox(FIELD_SELECT) ;
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
@@ -127,7 +127,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
     NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List templates = templateService.getDocumentTemplates() ;
+    List templates = templateService.getDocumentTemplates(repoName) ;
     try {
       for(int i = 0; i < templates.size(); i ++){
         String nodeTypeName = templates.get(i).toString() ; 
@@ -144,7 +144,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
           }
           if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
             if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) hasDefaultDoc = true ;
-            String label = templateService.getTemplateLabel(nodeTypeName) ;
+            String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
             options.add(new SelectItemOption<String>(label, nodeTypeName));          
             isCanCreateDocument = true ;          
           }
@@ -157,7 +157,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
                   if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) {
                     hasDefaultDoc = true ;
                   }
-                  String label = templateService.getTemplateLabel(nodeTypeName) ;
+                  String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
                   options.add(new SelectItemOption<String>(label, nodeTypeName));                
                   isCanCreateDocument = true ;
                   break;
@@ -183,9 +183,10 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
   
   public void updateSelect(String selectField, String value) {
     getUIStringInput(selectField).setValue(value) ;
+    String repoName = getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
     String wsName = getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
     try {
-      setTemplateOptions(value, wsName) ;
+      setTemplateOptions(value, repoName, wsName) ;
     } catch(Exception ex) {
       ex.printStackTrace() ;
     }
@@ -207,8 +208,9 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     public void execute(Event<UIEditModeConfiguration> event) throws Exception {
       UIEditModeConfiguration uiTypeForm = event.getSource() ;
       uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).setValue("/") ;
+      String repoName = uiTypeForm.getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
       String wsName = uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
-      uiTypeForm.setTemplateOptions(uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).getValue(), wsName) ;
+      uiTypeForm.setTemplateOptions(uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).getValue(), repoName, wsName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;
     }
   }

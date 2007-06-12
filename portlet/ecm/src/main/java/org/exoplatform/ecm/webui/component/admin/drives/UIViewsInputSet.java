@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 
 import java.util.List;
 
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl;
@@ -21,21 +22,15 @@ import org.exoplatform.webui.form.UIFormInputSet;
  * Jun 28, 2006
  */
 public class UIViewsInputSet extends UIFormInputSet {
-  private ManageViewService vService_ ;
   
   public UIViewsInputSet(String name) throws Exception {
     super(name);
-    vService_ = getApplicationComponent(ManageViewService.class);
-    List views_ = vService_.getAllViews();
-    for(Object view : views_) {
-      String viewName = ((ViewDataImpl)view).getName() ;
-      addUIFormInput(new UIFormCheckBoxInput<Boolean>(viewName, viewName, null)) ;
-    }
   }
   
   public String getViewsSelected() throws Exception {
     StringBuilder selectedView = new StringBuilder() ;
-    List views_ = vService_.getAllViews();
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List views_ = getApplicationComponent(ManageViewService.class).getAllViews(repository);
     for(Object view : views_){
       String viewName= ((ViewDataImpl)view).getName() ;
       boolean checked = getUIFormCheckBoxInput(viewName).isChecked() ;
@@ -52,10 +47,16 @@ public class UIViewsInputSet extends UIFormInputSet {
   }
   
   private void clear() throws Exception {
-    List views_ = vService_.getAllViews();
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List views_ = getApplicationComponent(ManageViewService.class).getAllViews(repository);
     for(Object view : views_){
       String viewName = ((ViewDataImpl)view).getName() ;
-      getUIFormCheckBoxInput(viewName).setChecked(false) ;
+      if(getUIFormCheckBoxInput(viewName) != null) {
+        getUIFormCheckBoxInput(viewName).setChecked(false) ;
+      }else{
+        addUIFormInput(new UIFormCheckBoxInput<Boolean>(viewName, viewName, null)) ;
+      }
+      
     }    
   }
 

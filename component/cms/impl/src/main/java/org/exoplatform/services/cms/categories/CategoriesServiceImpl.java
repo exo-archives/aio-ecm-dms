@@ -42,19 +42,19 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		}
 	}
 	
-	public Node getTaxonomyHomeNode () throws Exception {    
-    Session adminSession = getAdminSession() ;    
+	public Node getTaxonomyHomeNode (String repository) throws Exception {    
+    Session adminSession = getSession(repository) ;    
 		Node homeTaxonomy = (Node)adminSession.getItem(taxonomyHomePath_) ;
 		return homeTaxonomy ;
 	}	
 	
-	public Node getTaxonomyNode(String realPath) throws Exception {
-    Session adminSession = getAdminSession() ;
+	public Node getTaxonomyNode(String realPath, String repository) throws Exception {
+    Session adminSession = getSession(repository) ;
 		return (Node)adminSession.getItem(realPath) ;
 	}	
 	
-	public void addTaxonomy(String parentPath,String childName) throws Exception  {
-    Session adminSession = getAdminSession() ;
+	public void addTaxonomy(String parentPath,String childName, String repository) throws Exception  {
+    Session adminSession = getSession(repository) ;
 		Node parent = (Node)adminSession.getItem(parentPath) ;
 		if(parent.hasNode(childName)) {
 			throw (new ItemExistsException()) ;
@@ -66,16 +66,16 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		adminSession.save() ;		
 	}
 	
-	public void removeTaxonomyNode(String realPath) throws Exception {
-    Session adminSession = getAdminSession() ;    
+	public void removeTaxonomyNode(String realPath, String repository) throws Exception {
+    Session adminSession = getSession(repository) ;    
 		Node selectedNode = (Node)adminSession.getItem(realPath) ;
 		selectedNode.remove() ;
     adminSession.save();	
     adminSession.refresh(false) ;
 	}						
 	
-	public void moveTaxonomyNode(String srcPath, String destPath, String type) throws Exception { 
-    Session session = getSystemSession() ;    		   
+	public void moveTaxonomyNode(String srcPath, String destPath, String type, String repository) throws Exception { 
+    Session session = getSession(repository) ;    		   
 		if(CUT.equals(type)) {			
       session.move(srcPath,destPath) ;
       session.save() ;
@@ -93,9 +93,12 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 	}	
 	
 	private void init() throws Exception{
-    Session session = repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
-		Node taxonomyHomeNode = (Node)session.getItem(taxonomyHomePath_) ;
+    Session session = null ; 
+		Node taxonomyHomeNode = null ; 
 		for(TaxonomyPlugin plugin:plugins_) {
+      session = repositoryService_.getRepository(plugin.getRepository()).getSystemSession(
+          cmsConfig_.getWorkspace(plugin.getRepository())) ;
+      taxonomyHomeNode = (Node)session.getItem(taxonomyHomePath_) ;
 			List<Taxonomy> taxonomies = plugin.getTaxonomies() ;
 			for(Taxonomy taxonomy:taxonomies) {
 				Node taxonomyNode = Utils.makePath(taxonomyHomeNode,taxonomy.getPath(),"exo:taxonomy") ;
@@ -108,15 +111,36 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		}
 	}
 	
+  public void init(String repository) throws Exception {
+    Session session = null ; 
+    Node taxonomyHomeNode = null ; 
+    for(TaxonomyPlugin plugin:plugins_) {
+      String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
+      if(plugin.getRepository().equals(defaultRepo)) {
+        session = repositoryService_.getRepository(repository).getSystemSession(
+            cmsConfig_.getWorkspace(repository)) ;
+        taxonomyHomeNode = (Node)session.getItem(taxonomyHomePath_) ;
+        List<Taxonomy> taxonomies = plugin.getTaxonomies() ;
+        for(Taxonomy taxonomy:taxonomies) {
+          Node taxonomyNode = Utils.makePath(taxonomyHomeNode,taxonomy.getPath(),"exo:taxonomy") ;
+          if(taxonomyNode.canAddMixin("mix:referenceable")) {
+            taxonomyNode.addMixin("mix:referenceable") ;
+          }       
+          session.save() ;
+          session.refresh(true) ;
+        }
+      }
+    }
+  }
 	public boolean hasCategories(Node node) throws Exception {
 		if (node.isNodeType(CATEGORY_MIXIN))
 			return true;
 		return false;
 	}
 	
-	public List<Node> getCategories(Node node) throws Exception {
+	public List<Node> getCategories(Node node, String repository) throws Exception {
 		List<Node> cats = new ArrayList<Node>();
-    Session systemSession = getSystemSession() ;
+    Session systemSession = getSession(repository) ;
 		try {			
       javax.jcr.Property categories = node.getProperty("exo:category");
 			Value[] values = categories.getValues();
@@ -129,8 +153,8 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		return cats;
 	}
 	
-	public void removeCategory(Node node, String categoryPath) throws Exception {
-    Session systemSession = getSystemSession() ;
+	public void removeCategory(Node node, String categoryPath, String repository) throws Exception {
+    Session systemSession = getSession(repository) ;
 		List<Value> vals = new ArrayList<Value>();
 		if (!"*".equals(categoryPath)) {						
       javax.jcr.Property categories = node.getProperty("exo:category");
@@ -152,8 +176,8 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
     node.getSession().save() ;
 	}
 	
-	public void addCategory(Node node, String categoryPath) throws Exception {    
-    Session systemSession = getSystemSession() ;
+	public void addCategory(Node node, String categoryPath, String repository) throws Exception {    
+    Session systemSession = getSession(repository) ;
 		Node catNode = (Node) systemSession.getItem(categoryPath);
 		Session currentSession = node.getSession() ;		
 		Value value2add = currentSession.getValueFactory().createValue(catNode);   		
@@ -176,11 +200,11 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		}			
 	}
 	
-	public void addCategory(Node node, String categoryPath, boolean replaceAll) throws Exception {
+	public void addCategory(Node node, String categoryPath, boolean replaceAll, String repository) throws Exception {
 		if (replaceAll) {
-			removeCategory(node, "*") ;
+			removeCategory(node, "*", repository) ;
 		}
-		addCategory(node, categoryPath) ;
+		addCategory(node, categoryPath, repository) ;
 	}    
 	
 	public void start() {		
@@ -193,20 +217,20 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 	
 	public void stop() { }
   
-  protected Session getSystemSession() throws Exception {
-    Session session = repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
-    return session ;
-  }
+  //TODO: why need two getSystemSession and getAdminSession
   
-  protected Session getAdminSession() throws Exception {
-//    Session session ;
-//    try {
-//      session = repositoryService_.getRepository().login(cmsConfig_.getWorkspace()) ;
-//    }catch(Exception e) {
-//      session = repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
-//    }
-    
-//    return session ;
-    return repositoryService_.getRepository().getSystemSession(cmsConfig_.getWorkspace()) ;
+  /*protected Session getSystemSession(String repository) throws Exception {
+    Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace()) ;
+    return session ;
+  }*/
+  
+
+  protected Session getSession(String repository) throws Exception {
+    try {
+      //return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
+      return repositoryService_.getRepository(repository).login(cmsConfig_.getWorkspace(repository)) ;
+    }catch(Exception e) {
+      return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
+    }
   }
 }

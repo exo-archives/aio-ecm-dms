@@ -12,14 +12,18 @@ package org.exoplatform.services.cms.views.impl;
  * 
  */
 public class TemplateDataImpl{
+  private String repository ;
   private String name ;
   private String warPath ;
   private String type ;   
 
   public TemplateDataImpl(){} 
 
+  public String getRepository() { return this.repository ; }
+  public void setRepository(String repo) { this.repository = repo ; }  
+  
   public String getName() { return this.name ; }
-  public void setName(String name) { this.name = name ; }  
+  public void setName(String name) { this.name = name ; }
 
   public String getWarPath() { return this.warPath ; }
   public void setWarPath(String warPath) { this.warPath = warPath ; }

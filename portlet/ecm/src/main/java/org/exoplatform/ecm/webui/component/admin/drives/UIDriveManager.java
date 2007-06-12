@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -25,7 +26,9 @@ public class UIDriveManager extends UIContainer {
   public UIDriveManager() throws Exception {
     addChild(UIDriveList.class, null, null) ;
   }
-  
+  public void update()throws Exception  {
+    getChild(UIDriveList.class).updateDriveListGrid() ;
+  }
   public void initPopup(String id) throws Exception {
     UIDriveForm uiDriveForm ;
     UIPopupWindow uiPopup = getChildById(id) ;
@@ -61,10 +64,12 @@ public class UIDriveManager extends UIContainer {
   public void initPopupJCRBrowser(String workspace) throws Exception {
     removeChildById("JCRBrowser") ;
     removeChildById("JCRBrowserAssets") ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "JCRBrowser");
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
     uiJCRBrowser.setWorkspace(workspace) ;
+    uiJCRBrowser.setRepository(repository) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_HOMEPATH}) ;
@@ -80,6 +85,8 @@ public class UIDriveManager extends UIContainer {
     uiPopup.setUIComponent(uiJCRBrowser);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiJCRBrowser.setWorkspace("digital-assets") ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    uiJCRBrowser.setRepository(repository) ;
     uiJCRBrowser.setRootPath("/") ;
     uiJCRBrowser.setFilterType(new String[] {Utils.NT_FILE}) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_WORKSPACEICON}) ;

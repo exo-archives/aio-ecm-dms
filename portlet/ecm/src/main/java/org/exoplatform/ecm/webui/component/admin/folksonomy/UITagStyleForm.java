@@ -5,11 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.folksonomy;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.services.cms.CmsConfigurationService;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -93,10 +90,6 @@ public class UITagStyleForm extends UIForm {
   static public class UpdateStyleActionListener extends EventListener<UITagStyleForm> {
     public void execute(Event<UITagStyleForm> event) throws Exception {
       UITagStyleForm uiForm = event.getSource() ;
-//      FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
-      RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
-      CmsConfigurationService cmsConfigServ = uiForm.getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = repositoryService.getRepository().getSystemSession(cmsConfigServ.getWorkspace()) ;
       UIFolksonomyManager uiManager = uiForm.getAncestorOfType(UIFolksonomyManager.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String documentRange = uiForm.getUIStringInput(DOCUMENT_RANGE).getValue() ;
@@ -106,11 +99,10 @@ public class UITagStyleForm extends UIForm {
         return ;
       }
       try {
-//        folksonomyService.updateStype(uiForm.getTagStyle().getPath(), documentRange, styleHTML) ;
         uiForm.getTagStyle().setProperty(UITagStyleList.RANGE_PROP, documentRange) ;
         uiForm.getTagStyle().setProperty(UITagStyleList.HTML_STYLE_PROP, styleHTML) ;
         uiForm.getTagStyle().save() ;
-        session.save() ;
+        uiForm.getTagStyle().getSession().save() ;
         UITagStyleList uiTagList = uiManager.getChild(UITagStyleList.class) ;
         uiTagList.updateGrid() ;
       } catch(Exception e) {

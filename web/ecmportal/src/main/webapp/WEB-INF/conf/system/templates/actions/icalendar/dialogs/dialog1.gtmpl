@@ -58,6 +58,13 @@
 		    </td>
 		  </tr>
 		</table>
+    <div class="FieldContainer">		          					
+      <label>Repository name</label>
+      <%
+        String[] fieldRepository = ["jcrPath=/node/exo:repository", "repository"] ; 
+        uicomponent.addTextField("repository", fieldRepository) ; 
+      %>
+    </div>
     <%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer">

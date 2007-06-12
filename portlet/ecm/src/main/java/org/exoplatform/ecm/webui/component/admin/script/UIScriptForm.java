@@ -12,6 +12,7 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -161,6 +162,7 @@ public class UIScriptForm extends UIForm {
   static public class SaveActionListener extends EventListener<UIScriptForm> {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
+      String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       ScriptService scriptService = uiForm.getApplicationComponent(ScriptService.class) ;
       String name = uiForm.getUIStringInput(FIELD_SCRIPT_NAME).getValue() ;
       String content = uiForm.getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).getValue() ;
@@ -170,12 +172,12 @@ public class UIScriptForm extends UIForm {
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning) { 
-        scriptService.addScript(namePrefix + "/" + name, content) ;
+        scriptService.addScript(namePrefix + "/" + name, content, repository) ;
       } else {
         Node node = curentList.getScriptNode(name) ; 
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;  
-        scriptService.addScript(namePrefix + "/" + name, content) ;
+        scriptService.addScript(namePrefix + "/" + name, content, repository) ;
         node.save() ;
         node.checkin() ;
       }
@@ -202,9 +204,6 @@ public class UIScriptForm extends UIForm {
       String vesion = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ;
       String baseVesion = node.getBaseVersion().getName() ;
       if(!vesion.equals(baseVesion)) { 
-        /*UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        Object[] args = {uiForm.getUIStringInput(FIELD_SELECT_VERSION).getValue()} ;
-        app.addMessage(new ApplicationMessage("UIScriptForm.msg.version-restored", args)) ;*/
         node.checkout() ;
         node.restore(vesion, true) ;
         curentList.refresh() ;

@@ -60,7 +60,8 @@ public class ICalendarServiceImpl implements ICalendarService{
     String fileName = (String)context.get("exo:calendarPath") ;
     String queryPath = (String)context.get("exo:query") ;
     String srcWorkspace = (String) context.get("srcWorkspace") ;
-    Session session = repositoryService_.getRepository().getSystemSession(srcWorkspace);
+    String repository = (String)context.get("repository") ;
+    Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
     
     QueryManager queryManager = session.getWorkspace().getQueryManager();
     Query query = queryManager.createQuery(queryPath, Query.XPATH);
@@ -99,16 +100,16 @@ public class ICalendarServiceImpl implements ICalendarService{
       event.getProperties().add(id) ; 
       calendar.getComponents().add(event);
     }
-    storeCalendar(calendar, fileName) ;    
+    storeCalendar(calendar, fileName, repository) ;    
   }
   
-  private void storeCalendar(Calendar calendar, String fileName){   
+  private void storeCalendar(Calendar calendar, String fileName, String repository){   
     try {
       ByteArrayOutputStream bout = new ByteArrayOutputStream();
       CalendarOutputter output = new CalendarOutputter();
       output.output(calendar, bout) ;
-      Session session = 
-        repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());
+      Session session = repositoryService_.getRepository(repository)
+                        .getSystemSession(cmsConfigService_.getWorkspace());
       Node rootNode = session.getRootNode();
       String[] array = fileName.split("/") ;
       for(int i = 0; i < array.length - 1; i ++) {

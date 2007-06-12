@@ -41,6 +41,7 @@ public class BackupNodeActionHandler implements ActionHandler {
     String nodePath = (String) context.getVariable("nodePath");
     String srcPath = (String) context.getVariable("srcPath");
     String srcWorkspace = (String) context.getVariable("srcWorkspace");
+    String repository = (String) context.getVariable("repository");
     PortalContainer container = PortalContainer.getInstance();
     CmsService cmsService = (CmsService) container
         .getComponentInstanceOfType(CmsService.class);
@@ -48,10 +49,10 @@ public class BackupNodeActionHandler implements ActionHandler {
         .getComponentInstanceOfType(ActionServiceContainer.class);
     RepositoryService repositoryService = (RepositoryService) container
          .getComponentInstanceOfType(RepositoryService.class);
-    Session session = repositoryService.getRepository().getSystemSession(srcWorkspace);
+    Session session = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);
     Node actionnableNode = (Node) session.getItem(srcPath);
     Node actionNode = actionServiceContainer.getAction(actionnableNode,
-        actionName);
+        actionName,repository);
 
     String destWorkspace = actionNode.getProperty("exo:destWorkspace")
         .getString();
@@ -63,7 +64,7 @@ public class BackupNodeActionHandler implements ActionHandler {
       relPath = "/" + relPath;
     relPath = relPath.replaceAll("\\[\\d*\\]", "");
     cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath
-        + relPath);
+        + relPath, repository);
   }
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -49,7 +50,8 @@ public class UITemplateList extends UIGrid {
   
   public void updateGrid() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator nodes = templateService.getTemplatesHome().getNodes() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    NodeIterator nodes = templateService.getTemplatesHome(repository).getNodes() ;
     List<TemplateData> templateData = new ArrayList<TemplateData>() ;
     while (nodes.hasNext()) {
       templateData.add(new TemplateData(nodes.nextNode().getName())) ;
@@ -61,13 +63,14 @@ public class UITemplateList extends UIGrid {
   static public class EditActionListener extends EventListener<UITemplateList> {
     public void execute(Event<UITemplateList> event) throws Exception {
       UITemplateList nodeTypeList = event.getSource() ;
+      String repository = nodeTypeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UITemplatesManager uiTemplatesManager = nodeTypeList.getParent() ;
       UIViewTemplate uiViewTemplate = uiTemplatesManager.createUIComponent(UIViewTemplate.class, null, null) ;
       uiViewTemplate.getChild(UITemplateEditForm.class).update(nodeType) ;
       uiViewTemplate.setNodeTypeName(nodeType) ;
       UIDialogTab uiDialogTab = uiViewTemplate.findFirstComponentOfType(UIDialogTab.class) ;
-      uiDialogTab.updateGrid(nodeType) ;
+      uiDialogTab.updateGrid(nodeType, repository) ;
       UITemplateContent uiDialogTabForm = uiViewTemplate.findComponentById(UIDialogTab.DIALOG_FORM_NAME) ;
       uiDialogTabForm.setNodeTypeName(nodeType) ;
       uiDialogTabForm.update(null) ;
@@ -87,7 +90,8 @@ public class UITemplateList extends UIGrid {
       UITemplateList nodeTypeList = event.getSource() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       TemplateService templateService = nodeTypeList.getApplicationComponent(TemplateService.class) ;
-      templateService.removeManagedNodeType(nodeType) ;
+      String repository = nodeTypeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      templateService.removeManagedNodeType(nodeType, repository) ;
       nodeTypeList.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(nodeTypeList.getParent()) ;
     }

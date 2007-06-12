@@ -12,7 +12,11 @@ import java.util.List;
  */
 public class CmsConfig {
 
+  private String repository ;
   private List jcrPaths = new ArrayList(5);
+  
+  public String getRepository() { return repository ; }
+  public void setRepository(String rp) { repository = rp ; }
   
   public List getJcrPaths() {   return jcrPaths; }
   public void setJcrPaths(List s) {  this.jcrPaths = s; }  

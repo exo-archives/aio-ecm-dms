@@ -9,12 +9,15 @@ import java.util.List;
 
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
+import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -88,7 +91,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     versionItem.add(new SelectItemOption<String>("ABORT", "6")) ;
     return versionItem ;
   }
-
+  
   private List<SelectItemOption<String>> getRequiredTypes() {
     List<SelectItemOption<String>> requireType = new ArrayList<SelectItemOption<String>>();
     requireType.add(new SelectItemOption<String>("STRING", "1")) ;
@@ -106,8 +109,11 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
   
   public List<SelectItemOption<String>> getNamespaces() throws Exception {
     List<SelectItemOption<String>> namespacesOptions = new ArrayList<SelectItemOption<String>>();
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String[] namespaces = repositoryService.getRepository().getNamespaceRegistry().getPrefixes() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    String[] namespaces = getApplicationComponent(RepositoryService.class)
+                          .getRepository(repository).getNamespaceRegistry().getPrefixes() ;
     for(int i = 0; i < namespaces.length; i ++){
       namespacesOptions.add(new SelectItemOption<String>(namespaces[i], namespaces[i])) ;
     }

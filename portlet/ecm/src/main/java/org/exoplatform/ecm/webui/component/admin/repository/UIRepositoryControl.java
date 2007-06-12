@@ -39,9 +39,6 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UIRepositoryControl extends UIContainer {
 
-
-  protected String repoName_  ;
-
   public UIRepositoryControl() throws Exception{
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     String defaultName = rservice.getDefaultRepository().getConfiguration().getName() ;
@@ -51,7 +48,6 @@ public class UIRepositoryControl extends UIContainer {
     uiSelectForm.setActionEvent() ;
     addChild(uiSelectForm) ;
     uiSelectForm.setSelectedValue(defaultName) ;
-    repoName_ = defaultName ;
   }
 
   protected List<SelectItemOption<String>> getRepoItem(){

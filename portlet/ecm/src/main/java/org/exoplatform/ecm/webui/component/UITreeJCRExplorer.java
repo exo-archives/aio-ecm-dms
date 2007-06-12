@@ -48,13 +48,9 @@ public class UITreeJCRExplorer extends UIContainer {
   }
   
   public void buildTree() throws Exception {
-    CmsConfigurationService cmsService = getApplicationComponent(CmsConfigurationService.class) ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIJCRBrowser uiJCRBrowser = getParent() ;
-    Session session = repositoryService.getRepository().getSystemSession(cmsService.getWorkspace()) ;
-    if(uiJCRBrowser.getWorkspace() != null) {
-      session = repositoryService.getRepository().getSystemSession(uiJCRBrowser.getWorkspace()) ;
-    }
+    Session session = getApplicationComponent(RepositoryService.class)
+        .getRepository(uiJCRBrowser.getRepository()).getSystemSession(uiJCRBrowser.getWorkspace()) ;
     Iterator sibbling = null ;
     Iterator children = null ;
     if(rootNode_ == null ) {
@@ -105,9 +101,11 @@ public class UITreeJCRExplorer extends UIContainer {
     CmsConfigurationService cmsService = getApplicationComponent(CmsConfigurationService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIJCRBrowser uiJCRBrowser = getParent() ;
-    Session session = repositoryService.getRepository().getSystemSession(cmsService.getWorkspace()) ;
+    Session session = repositoryService.getRepository(uiJCRBrowser.getRepository()).getSystemSession(
+        cmsService.getWorkspace(uiJCRBrowser.getRepository())) ;
     if(uiJCRBrowser.getWorkspace() != null) {
-      session = repositoryService.getRepository().getSystemSession(uiJCRBrowser.getWorkspace()) ;
+      session = repositoryService.getRepository(uiJCRBrowser.getRepository())
+      .getSystemSession(uiJCRBrowser.getWorkspace()) ;
     }
     rootNode_ = (Node) session.getItem(path) ;
     currentNode_ = rootNode_ ;
@@ -115,13 +113,10 @@ public class UITreeJCRExplorer extends UIContainer {
   }
   
   public void setNodeSelect(String path) throws Exception {
-    CmsConfigurationService cmsService = getApplicationComponent(CmsConfigurationService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIJCRBrowser uiJCRBrowser = getParent() ;
-    Session session = repositoryService.getRepository().getSystemSession(cmsService.getWorkspace()) ;
-    if(uiJCRBrowser.getWorkspace() != null) {
-      session = repositoryService.getRepository().getSystemSession(uiJCRBrowser.getWorkspace()) ;
-    }
+    Session session = repositoryService.getRepository(uiJCRBrowser.getRepository())
+    .getSystemSession(uiJCRBrowser.getWorkspace()) ;
     currentNode_ = (Node) session.getItem(path);
     if(!rootNode_.getPath().equals("/")) {
       if(currentNode_.getPath().equals(rootNode_.getParent().getPath())) currentNode_ = rootNode_ ;

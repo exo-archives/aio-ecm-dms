@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.script;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -32,7 +33,7 @@ public class UIECMFilterForm extends UIForm {
 
   public UIECMFilterForm() throws Exception { 
     UIFormSelectBox scriptSelect = 
-      new UIFormSelectBox(FIELD_SELECT_SCRIPT, FIELD_SELECT_SCRIPT, null) ;
+      new UIFormSelectBox(FIELD_SELECT_SCRIPT, FIELD_SELECT_SCRIPT, new ArrayList <SelectItemOption<String>>()) ;
     scriptSelect.setOnChange("Change") ;
     addUIFormInput(scriptSelect) ;
   }

@@ -14,7 +14,6 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
@@ -63,9 +62,10 @@ public class UIFastContentCreatortForm extends DialogFormFields {
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
+    String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
     try {
       resetScriptInterceptor() ;
-      return templateService.getTemplatePathByUser(true, documentType_, userName) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName, repository) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
@@ -77,11 +77,10 @@ public class UIFastContentCreatortForm extends DialogFormFields {
   
   public Node getCurrentNode() throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest request = portletContext.getRequest() ; 
-    PortletPreferences preferences = request.getPreferences() ;
+    PortletPreferences preferences = getPortletPreferences() ;
     Session session = 
-      repositoryService.getRepository().getSystemSession(preferences.getValue("workspace", "")) ;
+      repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
+      .getSystemSession(preferences.getValue("workspace", "")) ;
     return (Node) session.getItem(preferences.getValue("path", ""));
   }
   
@@ -95,17 +94,19 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     return jcrTemplateResourceResolver_; 
   }
   
-  public void newJCRTemplateResourceResolver() {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+  private PortletPreferences getPortletPreferences() {
     PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest request = portletContext.getRequest() ; 
-    PortletPreferences preferences = request.getPreferences() ;
+    return portletContext.getRequest().getPreferences() ;
+  }
+  public void newJCRTemplateResourceResolver() {
+    PortletPreferences preferences = getPortletPreferences();
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     Session session = null ;
     try {
-      session = repositoryService.getRepository().getSystemSession(preferences.getValue("workspace", ""));
-      rootPath_ = session.getRootNode().getPath() ;
+      session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
+      .getSystemSession(preferences.getValue("workspace", ""));
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     } catch(Exception e) { }
-    jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ; 
   }
   
   @SuppressWarnings("unused")
@@ -113,18 +114,17 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     CmsService cmsService = getApplicationComponent(CmsService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
-    PortletRequestContext portletContext = (PortletRequestContext) event.getRequestContext() ;
-    PortletRequest request = portletContext.getRequest() ; 
-    PortletPreferences preferences = request.getPreferences() ;
+    PortletPreferences preferences = getPortletPreferences() ;
+    String repository = preferences.getValue(Utils.REPOSITORY, "") ;
     String prefLocate = preferences.getValue("path", "") ;
     String prefType = preferences.getValue("type", "") ;
     String workspace = preferences.getValue("workspace", "") ;
-    Session session = repositoryService.getRepository().getSystemSession(workspace) ;
+    Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
     Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, 
-                                              Util.getPortalRequestContext().getRemoteUser());
+                                              Util.getPortalRequestContext().getRemoteUser(), repository);
       homeNode.getSession().save() ;
       reset() ;
       for(UIComponent uiChild : getChildren()) {

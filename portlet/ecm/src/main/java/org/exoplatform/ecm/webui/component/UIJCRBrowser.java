@@ -22,6 +22,7 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   
   private UIComponent uiComponent ;
   private String returnFieldName = null ;
+  private String repository_ ;
   private String wsName_ = null ;
   
   public UIJCRBrowser() throws Exception {
@@ -43,6 +44,9 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   
   public void setWorkspace(String wsName) { wsName_ = wsName ; }
   public String getWorkspace() { return wsName_ ; }
+  
+  public void setRepository(String repo) { repository_ = repo ; }
+  public String getRepository() { return repository_ ; }
   
   public UIComponent getReturnComponent() { return uiComponent ; }
   public String getReturnField() { return returnFieldName ; }

@@ -36,7 +36,7 @@
   <form>
   	  <resource-bundle>hr</resource-bundle>
   	  <state-name>hr update</state-name>
-  	  <customized-view>hr.vm</customized-view>
+  	  <customized-view>hr.gtmpl</customized-view>
     <variable name="initiator" />
     <variable name="amount-granted"/>
   </form>

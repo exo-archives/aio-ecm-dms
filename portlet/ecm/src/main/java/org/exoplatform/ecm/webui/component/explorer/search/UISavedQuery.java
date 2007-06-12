@@ -11,9 +11,11 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
@@ -21,6 +23,7 @@ import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -62,24 +65,32 @@ public class UISavedQuery extends UIContainer {
   
   public boolean hasQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    List<Query> queries = queryService.getQueries(userName);
+    List<Query> queries = queryService.getQueries(userName, repository);
     if (queries == null || queries.isEmpty()) return false;
     return true;
   }
 
   public List<Query> getQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    return getApplicationComponent(QueryService.class).getQueries(userName);
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    return getApplicationComponent(QueryService.class).getQueries(userName, repository);
   }
   
   public String getCurrentUserId() { return Util.getPortalRequestContext().getRemoteUser() ;}
   
   public boolean hasSharedQueries() throws Exception {
     OrganizationService organizationService = getApplicationComponent(OrganizationService.class) ;
-    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     QueryService queryService = getApplicationComponent(QueryService.class) ;
-    String userName = context.getRemoteUser() ;
+    String userName = pcontext.getRemoteUser() ;
     List<String> roles = new ArrayList<String>() ;
     Collection memberships = 
       organizationService.getMembershipHandler().findMembershipsByUser(userName) ;
@@ -92,8 +103,8 @@ public class UISavedQuery extends UIContainer {
       } 
     }
     if(roles.size() < 0) return false ;
-    sharedQueries_ = queryService.getSharedQueriesByPermissions(roles) ;
-    if(queryService.getSharedQueriesByPermissions(roles).size() > 0) return true ;      
+    sharedQueries_ = queryService.getSharedQueriesByPermissions(roles, repository) ;
+    if(queryService.getSharedQueriesByPermissions(roles, repository).size() > 0) return true ;      
     return false ;                
   }
   
@@ -102,6 +113,9 @@ public class UISavedQuery extends UIContainer {
   static public class ExecuteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
+      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String wsName = uiQuery.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
       UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class) ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
@@ -111,7 +125,7 @@ public class UISavedQuery extends UIContainer {
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class); 
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath, wsName) ;
+        queryResult = queryService.execute(queryPath, wsName, repository) ;
         uiSearchResult.resultMap_.clear() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
@@ -126,10 +140,13 @@ public class UISavedQuery extends UIContainer {
   static public class DeleteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
+      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;      
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      queryService.removeQuery(path, userName) ;
+      queryService.removeQuery(path, userName, repository) ;
       uiQuery.updateGrid() ;
       uiQuery.setRenderSibbling(UISavedQuery.class) ;
     }

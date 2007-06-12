@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component;
 
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

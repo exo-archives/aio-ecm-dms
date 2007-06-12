@@ -13,6 +13,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
@@ -65,7 +66,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       String nodeType = node.getPrimaryNodeType().getName();
-      if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName) ;
+      if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName, getRepository()) ;
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -86,7 +87,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class) ;
       String nodeTypeName = node.getPrimaryNodeType().getName();
-      return templateService.isManagedNodeType(nodeTypeName);
+      return templateService.isManagedNodeType(nodeTypeName, getRepository());
     } catch (Exception e) {
       return false;
     }
@@ -227,7 +228,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
   }
 
   public String getWebDAVServerPrefix() throws Exception {
@@ -245,12 +246,17 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   public boolean isNodeTypeSupported() {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      return templateService.isManagedNodeType(getNodeType());
+      return templateService.isManagedNodeType(getNodeType(), getRepository());
     } catch (Exception e) {
       return false;
     }
   }
 
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
     public void execute(Event<UIViewVersion> event) throws Exception {
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;

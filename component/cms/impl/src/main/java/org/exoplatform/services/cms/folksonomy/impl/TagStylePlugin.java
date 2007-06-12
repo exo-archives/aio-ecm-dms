@@ -17,7 +17,8 @@ public class TagStylePlugin extends BaseComponentPlugin{
 	}	 
   
 	public List<HtmlTagStyle> getTagStyleList() { return config.getTagStyleList() ; }
-	
+	public String getRepository() { return config.getRepository() ; }
+  
 	public String getName() {   return null; }
   public void setName(String s) { name = s ; }
 

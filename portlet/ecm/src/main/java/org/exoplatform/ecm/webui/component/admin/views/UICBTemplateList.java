@@ -11,6 +11,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -43,7 +44,7 @@ public class UICBTemplateList extends UIGrid {
   public UICBTemplateList() throws Exception {
     getUIPageIterator().setId("UICBTemplateGrid") ;
     configure("path", VIEW_BEAN_FIELD, VIEW_ACTION) ;
-    updateCBTempListGrid() ;
+    //updateCBTempListGrid() ;
   }
   public String[] getActions() { return new String[] {"Add"} ; }
   public String getBaseVersion(Node node) throws Exception {
@@ -54,10 +55,11 @@ public class UICBTemplateList extends UIGrid {
   public List<Node> getAllTemplates() throws Exception {
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     List<Node> templateList = new ArrayList<Node>() ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES)) ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES)) ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES)) ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES)) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository)) ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository)) ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository)) ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES,repository)) ;
     return templateList ;
   }
   
@@ -85,9 +87,9 @@ public class UICBTemplateList extends UIGrid {
   static  public class DeleteActionListener extends EventListener<UICBTemplateList> {
     public void execute(Event<UICBTemplateList> event) throws Exception {
       UICBTemplateList uiCBTemp = event.getSource() ;
-      ManageViewService viewService = uiCBTemp.getApplicationComponent(ManageViewService.class) ;
+      String repository = uiCBTemp.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      viewService.removeTemplate(templatePath) ;
+      uiCBTemp.getApplicationComponent(ManageViewService.class).removeTemplate(templatePath, repository) ;
       uiCBTemp.updateCBTempListGrid() ;
       uiCBTemp.setRenderSibbling(UICBTemplateList.class);
       UIViewManager uiViewManager = uiCBTemp.getAncestorOfType(UIViewManager.class) ;

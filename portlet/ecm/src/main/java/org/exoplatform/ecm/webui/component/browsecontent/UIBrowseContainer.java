@@ -24,7 +24,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
@@ -108,12 +107,13 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   }
   private String getTemplatePath(String ucase, String tempName) {
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
-    List<Node> templateList = new ArrayList<Node>() ;  
+    List<Node> templateList = new ArrayList<Node>() ; 
+    String repoName = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
     try {
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES)) ;
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES)) ;
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES)) ;
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES)) ;    
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName)) ;
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repoName)) ;
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repoName)) ;
+      templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repoName)) ;    
       for(Node temp : templateList) {
         Node parentNode = temp.getParent() ; 
         if(parentNode.getName().equals(ucase)) return parentNode.getNode(tempName).getPath() ;      
@@ -264,8 +264,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   }
 
   public Session getSession() throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    Session session = repositoryService.getRepository().getSystemSession(getWorkSpace()) ;
+    String repository = getRepository() ;
+    Session session = getApplicationComponent(RepositoryService.class)
+                     .getRepository(repository).getSystemSession(getWorkSpace()) ;
     return session ;
   }
 
@@ -370,11 +371,12 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public List<Node> getNodeByScript() throws Exception {
     String[] array = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, "").split(Utils.SEMI_COLON) ;
     DataTransfer data = new DataTransfer() ;
-    ScriptService scriptService = (ScriptService)PortalContainer.getComponent(ScriptService.class) ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     data.setWorkspace(array[0].trim()) ;
     data.setSession(getSession()) ;
-    Node scripts = scriptService.getCBScriptHome() ;
-    CmsScript cmsScript = scriptService.getScript(scripts.getName()+"/"+array[1].trim()) ;
+    Node scripts = scriptService.getCBScriptHome(repository) ;
+    CmsScript cmsScript = scriptService.getScript(scripts.getName()+"/"+array[1].trim(), repository) ;
     cmsScript.execute(data);
     return data.getContentList() ;
   }
@@ -383,7 +385,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public Map getContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    List templates = templateService.getDocumentTemplates() ;
+    List templates = templateService.getDocumentTemplates(getRepository()) ;
     List<String> subCategoryList = new ArrayList<String>() ;
     List<Node> subDocumentList = new ArrayList<Node>() ;
     Map content = new HashMap() ;
@@ -439,7 +441,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public Map getPathContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    List templates = templateService.getDocumentTemplates() ;
+    List templates = templateService.getDocumentTemplates(getRepository()) ;
     List<String> tabList = new ArrayList<String>() ;
     List<String> subCategoryList = new ArrayList<String>() ;
     List<Node> subDocumentList = new ArrayList<Node>() ;
@@ -569,20 +571,27 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     childMap.put("doc", childDocOrReferencedDoc) ;
     return childMap ;
   }
-
+  
+  public String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   private RepositoryService getRepositoryService() { 
     return getApplicationComponent(RepositoryService.class) ;
   }
   private List<Node> getReferences(RepositoryService repositoryService, Node node, boolean isShowAll,
       int size, List templates) throws Exception {
     List<Node> refDocuments = new ArrayList<Node>() ;
+    
+    String repository = getRepository() ;
     if(isEnableRefDocument() && isReferenceableNode(node)) {
       String uuid = node.getUUID() ;
-      String[] workspaces = repositoryService.getRepository().getWorkspaceNames() ;
+      String[] workspaces = repositoryService.getRepository(repository).getWorkspaceNames() ;
       int itemCounter = getRowPerBlock() - size ;
       if(isShowAll) itemCounter = getItemPerPage() - size ;
       for(String workspace : workspaces) {
-        Session session = repositoryService.getRepository().getSystemSession(workspace) ;
+        Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
         try {
           Node taxonomyNode = session.getNodeByUUID(uuid) ;
           PropertyIterator iter = taxonomyNode.getReferences() ;
@@ -597,8 +606,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   }
 
   public List<Node> getTagLink() throws Exception {
+    String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getAllTags() ;
+    return folksonomyService.getAllTags(repository) ;
   }
 
   public String getTagPath() {return tagPath_ ;}
@@ -606,14 +616,16 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public void setTagPath(String tagName) {tagPath_ = tagName ;}
 
   public List<Node> getDocumentByTag()throws Exception {
+    String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getDocumentsOnTag(getTagPath()) ;
+    return folksonomyService.getDocumentsOnTag(getTagPath(), repository) ;
   }
 
   public Map<String ,String> getTagStyle() throws Exception {
+    String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
     Map<String , String> tagStyle = new HashMap<String ,String>() ;
-    for(Node tag : folksonomyService.getAllTagStyle()) {
+    for(Node tag : folksonomyService.getAllTagStyle(repository)) {
       tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString()) ;
     }
     return tagStyle ;
@@ -638,7 +650,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     List<Node> subDocumentList = new ArrayList<Node>() ;
     if(selectedNode == null) return subDocumentList ;
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
-    List<String> templates = templateService.getDocumentTemplates() ;
+    List<String> templates = templateService.getDocumentTemplates(getRepository()) ;
     NodeIterator item = selectedNode.getNodes() ;
     if(isEnableChildDocument())
       while (item.hasNext()) {
@@ -692,7 +704,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         return ;
       }
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
-      List templates = templateService.getDocumentTemplates() ;
+      List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
         if(catPath != null) {
           uiContainer.setCategoryPath(catPath) ;

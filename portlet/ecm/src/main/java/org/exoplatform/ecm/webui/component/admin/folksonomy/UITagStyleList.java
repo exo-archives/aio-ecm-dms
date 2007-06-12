@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -40,8 +41,9 @@ public class UITagStyleList extends UIGrid {
   public void updateGrid() throws Exception {
     List<TagStyleData> tagStyleList = new ArrayList<TagStyleData>() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     TagStyleData tagStyleData = null ;
-    for(Node node : folksonomyService.getAllTagStyle()) {
+    for(Node node : folksonomyService.getAllTagStyle(repository)) {
       tagStyleData = new TagStyleData(node.getName(), getRangeOfStyle(node), getHtmlStyleOfStyle(node)) ;
       tagStyleList.add(tagStyleData) ;
     }

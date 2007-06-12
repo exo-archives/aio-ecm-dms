@@ -48,7 +48,7 @@ public class RssServlet extends HttpServlet {
     TemplateService tservice = 
       (TemplateService)pcontainer.getComponentInstanceOfType(TemplateService.class) ;
     try{
-      Session session = repositoryService.getRepository().getSystemSession(wsName) ;
+      Session session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
       Node rootNode = session.getRootNode() ;
       Node file = null ;
       if(rootNode.hasNode(path))
@@ -72,10 +72,10 @@ public class RssServlet extends HttpServlet {
         ServletOutputStream os = response.getOutputStream();
         os.write(buf);
       } else if (file.isNodeType("exo:rss-enable")){
-        List documentNodeType = tservice.getDocumentTemplates() ;
+        List documentNodeType = tservice.getDocumentTemplates("repository") ;
         String nodeType = file.getPrimaryNodeType().getName() ;
         if(documentNodeType.contains(nodeType)){
-          String templateName = tservice.getTemplatePath(false, nodeType, "view1") ;
+          String templateName = tservice.getTemplatePath(false, nodeType, "view1", "repository") ;
           request.setAttribute("portalName", portalName) ;
           request.setAttribute("wsName", wsName) ;
           request.setAttribute("templateName", "jcr:"+templateName) ;

@@ -10,7 +10,9 @@ import java.util.List;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
-import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -47,12 +49,14 @@ public class UIMetadataManager extends UIContainer {
   }
   
   public void initViewPopup(String metadataName) throws Exception {
-    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, VIEW_METADATA_POPUP);
     uiPopup.setShow(true) ;
     uiPopup.setWindowSize(600, 500);
     uiPopup.setRendered(true);
-    NodeType nodeType = metadataService.getMetadataTypeByName(metadataName) ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    ExtendedNodeTypeManager ntManager = repositoryService.getRepository(repository).getNodeTypeManager() ;
+    NodeType nodeType = ntManager.getNodeType(metadataName) ;
     UIMetadataView uiView = uiPopup.createUIComponent(UIMetadataView.class, null, null) ;
     uiView.setMetadata(nodeType) ;
     uiPopup.setUIComponent(uiView) ;

@@ -30,6 +30,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
+import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -102,24 +103,27 @@ public class UIJCRExplorer extends UIContainer {
   public void setRenderTemplate(String template) { 
     newJCRTemplateResourceResolver() ;
     documentInfoTemplate_  = template ; 
+   
   }
   
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    Session session ;
-    try {
-      session = repositoryService.getRepository().getSystemSession(getCurrentWorkspace()) ;
-    } catch(Exception e) {
-      session = session_ ;
-    }
-    jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ; 
+    try{
+      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
+      CmsConfigurationService cmsConfig  = getApplicationComponent(CmsConfigurationService.class) ;
+      Session session = repositoryService.getRepository(repository).getSystemSession(cmsConfig.getWorkspace(repository)) ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
+    }catch(Exception e) {
+      e.printStackTrace() ;
+    }     
   }
   
   public Session getSessionByWorkspace(String wsName) throws Exception{
     if(wsName == null ) return getSession() ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-    return repositoryService.getRepository().getSystemSession(wsName) ;    
+    return repositoryService.getRepository(repository).getSystemSession(wsName) ;    
   }
   
   public void refreshExplorer() throws Exception { 
@@ -259,17 +263,18 @@ public class UIJCRExplorer extends UIContainer {
   
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     Iterator childrenIterator = node.getNodes() ;
     List<Node> childrenList  = new ArrayList<Node>() ;
     NodeType nodeType = node.getPrimaryNodeType() ;
-    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName())) {
+    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName(), repository)) {
       return childrenList ;
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
-      String[] workspaces = repositoryService.getRepository().getWorkspaceNames() ;
+      String[] workspaces = repositoryService.getRepository(repository).getWorkspaceNames() ;
       for(String workspace:workspaces) {
-        Session session = repositoryService.getRepository().getSystemSession(workspace) ;
+        Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
         Node taxonomyNode = session.getNodeByUUID(getCurrentNode().getUUID()) ;
         PropertyIterator categoriesIter = taxonomyNode.getReferences() ;
         while(categoriesIter.hasNext()) {
@@ -280,7 +285,7 @@ public class UIJCRExplorer extends UIContainer {
       }
     }
     if(!preferences_.isShowNonDocumentType()) {
-      List documentTypes = templateService.getDocumentTemplates() ;      
+      List documentTypes = templateService.getDocumentTemplates(repository) ;      
       while(childrenIterator.hasNext()){
         Node child = (Node)childrenIterator.next() ;
         NodeType type = child.getPrimaryNodeType() ;
@@ -338,7 +343,8 @@ public class UIJCRExplorer extends UIContainer {
       PortletPreferences portletPref = getPortletPreferences() ; 
       String driveName = portletPref.getValue(Utils.DRIVE, "") ;
       try{
-        DriveData drive = (DriveData)dservice.getDriveByName(driveName) ;
+        String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+        DriveData drive = (DriveData)dservice.getDriveByName(driveName, repository) ;
         preferences_.setShowSideBar(drive.getViewSideBar()) ;
         preferences_.setShowNonDocumentType(drive.getViewNonDocument()) ;
         preferences_.setShowPreferenceDocuments(drive.getViewPreferences()) ;

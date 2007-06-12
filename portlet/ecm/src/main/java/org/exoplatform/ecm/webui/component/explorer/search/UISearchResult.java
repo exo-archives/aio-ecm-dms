@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.query.QueryResult;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
@@ -19,6 +21,8 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -95,14 +99,22 @@ public class UISearchResult extends UIContainer {
     getUIPageIterator().setPageList(pageList) ;
   }
   
+  public PortletPreferences getPortletPreferences() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest prequest = pcontext.getRequest() ;
+    PortletPreferences portletPref = prequest.getPreferences() ;
+    return portletPref ;
+  }
+  
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource() ;
+      String repository = uiSearchResult.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = (Node)uiExplorer.getSession().getItem(path) ;
       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class) ;
-      if(!templateService.isManagedNodeType(node.getPrimaryNodeType().getName())) {
+      if(!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
         UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

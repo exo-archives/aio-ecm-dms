@@ -15,6 +15,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -137,6 +138,7 @@ public class UIJCRAdvancedSearch extends UIForm {
   static  public class SaveActionListener extends EventListener<UIJCRAdvancedSearch> {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;
+      String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -148,7 +150,8 @@ public class UIJCRAdvancedSearch extends UIForm {
       String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       try{
-        queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(), userName) ;        
+        queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue()
+                             , userName, repository) ;        
       } catch (Exception e){
         uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

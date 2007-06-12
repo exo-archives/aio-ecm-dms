@@ -87,7 +87,8 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
             while (references.hasNext()) {
               Property pro = references.nextProperty() ;
               Node refNode = pro.getParent() ;
-              relationsService.removeRelation(refNode, uiRenameForm.renameNode_.getPath()) ;
+              relationsService.removeRelation(refNode, uiRenameForm.renameNode_.getPath(), 
+                                              uiJCRExplorer.getSession()) ;
               refNode.save()  ;
             }
           }
@@ -109,7 +110,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         nodeSession.refresh(false) ;
         for(int i = 0; i < refList.size(); i ++) {
           Node addRef = refList.get(i) ;
-          relationsService.addRelation(addRef, destPath) ;
+          relationsService.addRelation(addRef, destPath, nodeSession) ;
           addRef.save() ;
         }  
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;

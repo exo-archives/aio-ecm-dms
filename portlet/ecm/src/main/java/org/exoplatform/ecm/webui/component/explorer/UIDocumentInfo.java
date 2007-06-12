@@ -80,15 +80,21 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     try {
       String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
-      if(uiExplorer.getPreference().isJcrEnable()) return uiExplorer.getDocumentInfoTemplate();
-      else if(isNodeTypeSupported(nodeType)) return templateService.getTemplatePathByUser(false, nodeType, userName) ;
+      if(uiExplorer.getPreference().isJcrEnable()) {
+        System.out.println(" =========== " + uiExplorer.getPreference().isJcrEnable()) ;
+        return uiExplorer.getDocumentInfoTemplate(); 
+      }else if(isNodeTypeSupported(nodeType)) {
+        return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ; 
+      }
+      
     } catch(Exception e) {
       e.printStackTrace() ;
     }
-    String temp = uiExplorer.getDocumentInfoTemplate() ;
-    return temp; 
+    System.out.println(" =========== " + uiExplorer.getDocumentInfoTemplate()) ;
+    return uiExplorer.getDocumentInfoTemplate(); 
   }
 
   @SuppressWarnings("unused")
@@ -159,6 +165,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return getAncestorOfType(UIJCRExplorer.class).isReadAuthorized(node) ;
   }
   
+  public String getValue(Node node) {
+    return null ;
+  }
   @SuppressWarnings("unchecked")
   public Object getComponentInstanceOfType(String className) {
     Object service = null;
@@ -209,7 +218,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      return templateService.isManagedNodeType(nodeTypeName);
+      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      return templateService.isManagedNodeType(nodeTypeName, repository);
     } catch (Exception e) {
       return false;
     }
@@ -284,7 +294,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
 
   //TODO:  Need to use Comparator,  You can call me  when when you are working on this
@@ -444,6 +455,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return nameSortOrder_ ;  
   }
   
+  public String encodeHTML(String text) throws Exception {
+    return Utils.encodeHTML(text) ;
+  }
+  
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uicomp = event.getSource() ;
@@ -454,8 +469,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       if(workspaceName == null ) {
         session = uiExplorer.getSession() ;
       } else {
+        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
         RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
-        session = repositoryService.getRepository().getSystemSession(workspaceName) ;
+        session = repositoryService.getRepository(repository).login(workspaceName) ;
       }
       uiExplorer.setSelectNode(uri, session) ;
       uiExplorer.updateAjax(event) ;
@@ -562,9 +578,5 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
       votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;
     }
-  }
-
-  public String encodeHTML(String text) throws Exception {
-    return Utils.encodeHTML(text) ;
-  }
+  }  
 }

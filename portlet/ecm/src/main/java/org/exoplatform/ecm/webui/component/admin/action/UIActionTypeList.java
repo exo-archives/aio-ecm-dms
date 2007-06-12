@@ -10,6 +10,7 @@ import java.util.List;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -46,7 +47,8 @@ public class UIActionTypeList extends UIGrid {
   public void updateGrid () throws Exception {
     ActionServiceContainer actionsServiceContainer = 
       getApplicationComponent(ActionServiceContainer.class) ;
-    List actionList = (List)actionsServiceContainer.getCreatedActionTypes() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List actionList = (List)actionsServiceContainer.getCreatedActionTypes(repository) ;
     List<ActionData> actions = new ArrayList<ActionData>(actionList.size()) ;
     for(int i = 0; i < actionList.size(); i ++) {
       ActionData bean = new ActionData() ;

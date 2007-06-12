@@ -14,10 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 import javax.jcr.Value;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
@@ -27,9 +24,7 @@ import org.exoplatform.faces.core.component.UIStringInput;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -59,13 +54,12 @@ public class DialogFormFields extends UIForm {
 
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
-  public String rootPath_ ;
   protected Node node_ = null;
+  protected Node dialogPortletHomeNode_ = null ;
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
-  private boolean isEditMode_ = false ;
-  private String savedPath_ ;
+  protected String repository_ = null ;
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
   private static final String SEPARATOR = "=";
@@ -82,6 +76,7 @@ public class DialogFormFields extends UIForm {
   private static final String SELECTOR_CLASS = "selectorClass" + SEPARATOR;
   private static final String SELECTOR_ICON = "selectorIcon" + SEPARATOR;
   private static final String SELECTOR_PARAMS = "selectorParams" + SEPARATOR;
+  private static final String WORKSPACE_FIELD = "workspaceField" + SEPARATOR;
   private static final String SCRIPT = "script" + SEPARATOR;
   private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
@@ -106,19 +101,12 @@ public class DialogFormFields extends UIForm {
 
   public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
   public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
-
-  public void setIsEditMode(boolean isEditMode) { isEditMode_ = isEditMode ; }
   
+  public void setDialogHomeNode(Node node) { dialogPortletHomeNode_ = node ; }
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
-  
-  public void setSavedPath(String savedPath) { savedPath_ = savedPath ; }
-  public String getSavedPath() { 
-    if(savedPath_ == null) savedPath_ = rootPath_ ;
-    return savedPath_ ; 
-  }
-  
+  public void setRepository(String repository){ repository_ = repository ; }
   public void resetScriptInterceptor(){
     prevScriptInterceptor_.clear() ;
     postScriptInterceptor_.clear() ;
@@ -158,6 +146,7 @@ public class DialogFormFields extends UIForm {
     String selectorAction = null;
     String selectorClass = null;
     String[] selectorParams = null;
+    String workspaceField = null ;
     String selectorIcon = null ;
     String multiValues = null ;
     String validateType = null ;
@@ -178,6 +167,8 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(SELECTOR_PARAMS)) {
         String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
         selectorParams = StringUtils.split(params, ",");
+      }else if (argument.startsWith(WORKSPACE_FIELD)) {
+        workspaceField = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
@@ -189,6 +180,7 @@ public class DialogFormFields extends UIForm {
       fieldPropertiesMap.put("selectorClass", selectorClass) ;
       fieldPropertiesMap.put("returnField", name) ;
       fieldPropertiesMap.put("selectorIcon", selectorIcon) ;
+      fieldPropertiesMap.put("workspaceField", workspaceField) ;
       components.put(name, fieldPropertiesMap) ;
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -797,9 +789,13 @@ public class DialogFormFields extends UIForm {
 
   private void executeScript(String script, Object o, String[] params) throws Exception{
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    CmsScript dialogScript = scriptService.getScript(script);
-    if(params != null) dialogScript.setParams(params);
-    dialogScript.execute(o);
+    try {
+      CmsScript dialogScript = scriptService.getScript(script, repository_);
+      if(params != null) dialogScript.setParams(params);
+      dialogScript.execute(o);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void renderField(String name) throws Exception {
@@ -844,24 +840,17 @@ public class DialogFormFields extends UIForm {
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
-      Node currNode = null;
-      String workspace = null ;
-      if(!dialogForm.isEditMode_) {
-        UIJCRExplorer uiJCRExplorer = dialogForm.getAncestorOfType(UIJCRExplorer.class) ;
-        currNode = uiJCRExplorer.getCurrentNode() ;
-        workspace = currNode.getSession().getWorkspace().getName() ;
-      } else {
-        RepositoryService repositoryService = 
-          dialogForm.getApplicationComponent(RepositoryService.class) ;
-        PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-        PortletRequest request = context.getRequest() ; 
-        PortletPreferences preferences = request.getPreferences() ;
-        workspace = preferences.getValue("workspace", "") ;
-        Session session = repositoryService.getRepository().getSystemSession(workspace) ;
-        currNode = (Node) session.getItem(preferences.getValue("path", "")) ;
+      String workspace ;
+      String storePath ;
+      if(dialogForm.dialogPortletHomeNode_ != null) {
+        storePath = dialogForm.dialogPortletHomeNode_.getPath() ;
+        workspace = dialogForm.dialogPortletHomeNode_.getSession().getWorkspace().getName() ;
+      }else {
+        storePath = dialogForm.getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getPath() ;
+        workspace = dialogForm.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
       }
-      String path = currNode.getPath()+ "&workspaceName=" + workspace ;
-      
+      String path = storePath+ "&workspaceName=" + workspace + 
+                    "&repository=" + dialogForm.repository_;
       for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
         String type = interceptor.split(";")[1] ;
@@ -871,7 +860,8 @@ public class DialogFormFields extends UIForm {
       }
       Node newNode = dialogForm.storeValue(event) ;
       if(newNode == null) return ;      
-      path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() ;
+      path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() +
+             "&repository=" + dialogForm.repository_;
       for(String interceptor : dialogForm.postScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
         String type = interceptor.split(";")[1] ;

@@ -5,8 +5,12 @@
 package org.exoplatform.ecm.webui.component.admin.templates;
 
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -49,12 +53,12 @@ public class UITemplateEditForm extends UIForm {
 
   private boolean isDocumentTemplate(String nodeType)throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    return templateService.getDocumentTemplates().contains(nodeType) ;
+    return templateService.getDocumentTemplates(getRepository()).contains(nodeType) ;
   }
 
   public void update(String nodeType) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    Node node = tempService.getTemplatesHome().getNode(nodeType) ;
+    Node node = tempService.getTemplatesHome(getRepository()).getNode(nodeType) ;
     String label = node.getProperty(TemplateService.TEMPLATE_LABEL).getString() ;
     getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(isDocumentTemplate(nodeType)) ;
     getUIStringInput(FIELD_NAME).setValue(nodeType) ;
@@ -63,12 +67,18 @@ public class UITemplateEditForm extends UIForm {
     getUIStringInput(FIELD_NAME).setEditable(false) ;
     nodeType_ = nodeType ;
   }
-
+  
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
+  
   static public class SaveActionListener extends EventListener<UITemplateEditForm> {
     public void execute(Event<UITemplateEditForm> event) throws Exception {
       UITemplateEditForm uiForm = event.getSource() ;
       TemplateService tempService = uiForm.getApplicationComponent(TemplateService.class) ;
-      Node node = tempService.getTemplatesHome().getNode(nodeType_) ;
+      Node node = tempService.getTemplatesHome(uiForm.getRepository()).getNode(nodeType_) ;
       node.setProperty(TemplateService.TEMPLATE_LABEL,uiForm.getUIStringInput(FIELD_LABEL).getValue()) ;
       node.save() ;
       uiForm.reset() ;

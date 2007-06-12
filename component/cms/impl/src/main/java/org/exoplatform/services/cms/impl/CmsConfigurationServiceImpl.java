@@ -22,6 +22,7 @@ import org.exoplatform.services.cms.ext.ReDefineNodeTypePlugin;
 import org.exoplatform.services.cms.ext.SuperTypeConfig;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
+
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.picocontainer.Startable;
@@ -47,7 +48,9 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
 
   public void start() {
     try {
-      init();
+      String repository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
+      processNodeTypePlugin(repository) ;
+      processAddPathPlugin() ;
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -56,13 +59,13 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
   public void stop() {
   }
 
-  private void init() throws Exception {
-    processNodeTypePlugin() ;
-    processAddPathPlugin() ;
+  public void init(String repository) throws Exception {
+    //processNodeTypePlugin(repository) ;
+    initBasePath(repository) ;
   }
   
-  private void processNodeTypePlugin() throws Exception {
-    ExtendedNodeTypeManager nodeTypeManager = jcrService_.getDefaultRepository().getNodeTypeManager() ;
+  private void processNodeTypePlugin(String repository) throws Exception {
+    ExtendedNodeTypeManager nodeTypeManager = jcrService_.getRepository(repository).getNodeTypeManager() ;
     for(ReDefineNodeTypePlugin plugin:nodeTypePlugins_) {
       SuperTypeConfig config = plugin.getAddSuperTypeConfig() ;
       String sourceTypeName = config.getSourceNodeType() ;
@@ -89,7 +92,8 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
         List workspaces = jcrPath.getWorkspaces();
         for (Iterator iterator = workspaces.iterator(); iterator.hasNext();) {
           CmsConfig.Workspace workspace = (CmsConfig.Workspace) iterator.next();
-          Session session = jcrService_.getDefaultRepository().getSystemSession(workspace.getName());
+          Session session = jcrService_.getRepository(config.getRepository())
+                                       .getSystemSession(workspace.getName());
           permissions = new HashMap<String, String[]>();
           List perms = workspace.getPermissions();
           for (Iterator iterator2 = perms.iterator(); iterator2.hasNext();) {
@@ -114,11 +118,55 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
       }
     }
   }
-
+  
+  private void initBasePath(String repository) throws Exception {
+    Map<String, String[]> permissions = null;  
+    String defaultRepository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
+    String defaultSystemWorkspace = getWorkspace(defaultRepository);
+    for (int j = 0; j < pathPlugins_.size(); j++) {
+      CmsConfig config = pathPlugins_.get(j).getPaths();
+      List jcrPaths = config.getJcrPaths();
+      for (Iterator iter = jcrPaths.iterator(); iter.hasNext();) {
+        CmsConfig.JcrPath jcrPath = (CmsConfig.JcrPath) iter.next();
+        List workspaces = jcrPath.getWorkspaces();
+        for (Iterator iterator = workspaces.iterator(); iterator.hasNext();) {
+          CmsConfig.Workspace workspace = (CmsConfig.Workspace) iterator.next();
+          if(workspace.getName().equals(defaultSystemWorkspace)) {
+            Session session = jcrService_.getRepository(repository)
+            .getSystemSession(getWorkspace(repository));
+            permissions = new HashMap<String, String[]>();
+            List perms = workspace.getPermissions();
+            for (Iterator iterator2 = perms.iterator(); iterator2.hasNext();) {
+              CmsConfig.Permission perm = (CmsConfig.Permission) iterator2.next();
+              List<String> permsList = new ArrayList<String>();
+              if ("true".equals(perm.getRead()))
+                permsList.add(PermissionType.READ);
+              if ("true".equals(perm.getAddNode()))
+                permsList.add(PermissionType.ADD_NODE);
+              if ("true".equals(perm.getSetProperty()))
+                permsList.add(PermissionType.SET_PROPERTY);
+              if ("true".equals(perm.getRemove()))
+                permsList.add(PermissionType.REMOVE);
+              String[] permsArray = new String[permsList.size()];
+              permissions.put(perm.getOwner(), permsList.toArray(permsArray));
+            }
+            Utils.makePath(session.getRootNode(), jcrPath.getPath(),
+            "nt:unstructured", permissions);
+            session.save();
+            session.logout() ;
+          }
+        }
+      }
+    }
+  }
   public String getWorkspace() {
     return propertiesParam_.getProperty("workspace");
   }
-
+  
+  public String getWorkspace(String repository) throws Exception{
+    return jcrService_.getRepository(repository).getConfiguration().getSystemWorkspaceName() ;
+  }
+  
   public String getDraftWorkspace() {
     return propertiesParam_.getProperty("draft");
   }

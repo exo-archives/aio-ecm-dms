@@ -10,6 +10,8 @@ public interface CmsConfigurationService {
 
   public String getWorkspace();
   
+  public String getWorkspace(String repository) throws Exception ;
+  
   public String getDraftWorkspace();
   
   public String getBackupWorkspace();
@@ -17,5 +19,7 @@ public interface CmsConfigurationService {
   public String getContentLocation();
   
   public String getJcrPath(String alias);
+  
+  public void init(String repository) throws Exception ;
   
 }

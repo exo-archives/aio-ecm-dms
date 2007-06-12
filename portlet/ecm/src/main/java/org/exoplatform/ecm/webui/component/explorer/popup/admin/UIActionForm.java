@@ -12,7 +12,9 @@ import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
+import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -32,6 +34,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInputBase;
 
 /**
  * Created by The eXo Platform SARL
@@ -84,12 +87,13 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public String getTemplate() { return getDialogPath() ; }
 
   public String getDialogPath() {
+    repository_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String dialogPath = null ;
     if (nodeTypeName_ != null) {
       try {
-        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName);
+        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repository_);
       } catch (Exception e){}      
     }
     return dialogPath ;    
@@ -118,7 +122,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public Node storeValue(Event event) throws Exception {
     UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     ActionServiceContainer actionServiceContainer = getApplicationComponent(ActionServiceContainer.class) ;
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;      
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;   
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession());
     String path = parentNode_.getPath() ;
     String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
@@ -127,7 +132,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       Node storedHomeNode = getNode().getParent() ;
       cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, 
-                           false, Util.getPortalRequestContext().getRemoteUser()) ;
+                           false, Util.getPortalRequestContext().getRemoteUser(), repository) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       if(isEditInList_) {
         UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
@@ -166,7 +171,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
-      actionServiceContainer.addAction(parentNode_, nodeTypeName_, sortedInputs);
+      actionServiceContainer.addAction(parentNode_, repository, nodeTypeName_, sortedInputs);
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
       createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;
@@ -198,6 +203,15 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      if(uiComp instanceof UIJCRBrowser) {
+        String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        ((UIJCRBrowser)uiComp).setRepository(repository) ;
+        String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        if(wsFieldName != null && wsFieldName.length() > 0) {
+          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
+          ((UIJCRBrowser)uiComp).setWorkspace(wsName) ;          
+        }
+      }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
       ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;

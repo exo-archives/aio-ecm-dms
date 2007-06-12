@@ -86,6 +86,7 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
+      uiWorkingArea.getChild(UINodeTypeManager.class).update() ;
       uiWorkingArea.setChild(UINodeTypeManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     }
@@ -95,6 +96,7 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
+      uiWorkingArea.getChild(UIViewManager.class).update() ;
       uiWorkingArea.setChild(UIViewManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     }
@@ -134,6 +136,7 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
+      uiWorkingArea.getChild(UIDriveManager.class).update() ;
       uiWorkingArea.setChild(UIDriveManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     }
@@ -143,6 +146,7 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
+      uiWorkingArea.getChild(UIQueriesManager.class).update() ;
       uiWorkingArea.setChild(UIQueriesManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     }

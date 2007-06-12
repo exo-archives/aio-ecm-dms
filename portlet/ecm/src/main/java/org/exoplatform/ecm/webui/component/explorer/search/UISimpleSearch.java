@@ -15,6 +15,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -130,6 +131,7 @@ public class UISimpleSearch extends UIForm {
   static  public class SaveActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
       UISimpleSearch uiSimpleSearch = event.getSource() ;
+      String repository = uiSimpleSearch.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ;
       UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
@@ -147,7 +149,7 @@ public class UISimpleSearch extends UIForm {
         return ;
       }
       try {
-        queryService.addQuery(queryName, uiSimpleSearch.getQueryStatement(), Query.SQL, userName) ;        
+        queryService.addQuery(queryName, uiSimpleSearch.getQueryStatement(), Query.SQL, userName, repository) ;        
       } catch (Exception e){
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.save-failed", null, 
                                                 ApplicationMessage.WARNING)) ;

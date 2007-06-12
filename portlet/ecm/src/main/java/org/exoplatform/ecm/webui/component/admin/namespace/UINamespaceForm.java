@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.admin.namespace;
 import javax.jcr.NamespaceRegistry;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -50,10 +51,11 @@ public class UINamespaceForm extends UIForm {
   static public class SaveActionListener extends EventListener<UINamespaceForm> {
     public void execute(Event<UINamespaceForm> event) throws Exception {
       UINamespaceForm uiForm = event.getSource() ;
+      String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       String uri = uiForm.getUIStringInput(FIELD_URI).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
-      NamespaceRegistry namespaceRegistry = repositoryService.getRepository().getNamespaceRegistry() ;
+      NamespaceRegistry namespaceRegistry = uiForm.getApplicationComponent(RepositoryService.class)
+                                            .getRepository(repository).getNamespaceRegistry() ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
       String prefix = uiForm.getUIStringInput(FIELD_PREFIX).getValue() ;
       if(prefix == null || prefix.trim().length() == 0) {

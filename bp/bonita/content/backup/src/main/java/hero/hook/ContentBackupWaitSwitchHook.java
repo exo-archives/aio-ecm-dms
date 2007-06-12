@@ -47,6 +47,9 @@ public class ContentBackupWaitSwitchHook implements NodeHookI {
   /** Name of the Property that contains the source Workspace name */
   public static final String SRC_WORKSPACE_PROPERTY_NAME = "srcWorkspace";
   
+  /** Name of the Property that contains the source repository name */
+  public static final String REPOSITORY_PROPERTY_NAME = "repository";
+  
   /** Name of the Wait Activity */
   public static final String WAIT_ACTIVITY_NAME = "wait";
   
@@ -98,7 +101,8 @@ public class ContentBackupWaitSwitchHook implements NodeHookI {
         ContentBackupWaitSwitchHook.NODE_PATH_PROPERTY_NAME).getTheValue();
       String srcWorkspace = projectSession.getProperty(
         ContentBackupWaitSwitchHook.SRC_WORKSPACE_PROPERTY_NAME).getTheValue();
-      
+      String repository = projectSession.getProperty(
+          ContentBackupWaitSwitchHook.REPOSITORY_PROPERTY_NAME).getTheValue();
       /*
        * Retrieve the Node from the JCR. The Portal Container Thread
        * Local is currently set as the current Thread is an eXo one.
@@ -106,7 +110,7 @@ public class ContentBackupWaitSwitchHook implements NodeHookI {
       PortalContainer container = PortalContainer.getInstance();
       RepositoryService repositoryService = (RepositoryService) container.
         getComponentInstanceOfType(RepositoryService.class);
-      Session session = repositoryService.getRepository().getSystemSession(
+      Session session = repositoryService.getRepository(repository).getSystemSession(
         srcWorkspace);
       Node srcNode = (Node) session.getItem(nodePath);
       

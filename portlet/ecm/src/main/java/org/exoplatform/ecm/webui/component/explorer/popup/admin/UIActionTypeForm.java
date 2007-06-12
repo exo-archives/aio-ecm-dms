@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -51,7 +52,8 @@ public class UIActionTypeForm extends UIForm {
 
   private Iterator getCreatedActionTypes() throws Exception {
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class) ;
-    return actionService.getCreatedActionTypes().iterator();
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    return actionService.getCreatedActionTypes(repository).iterator();
   }
 
   public void setDefaultActionType() throws Exception{    
@@ -82,8 +84,9 @@ public class UIActionTypeForm extends UIForm {
       UIJCRExplorer uiExplorer = uiActionType.getAncestorOfType(UIJCRExplorer.class) ;
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue() ;
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
+      String repository = uiActionType.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      if(templateService.getTemplatePathByUser(true, actionType, userName) == null) {
+      if(templateService.getTemplatePathByUser(true, actionType, userName, repository) == null) {
         UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
         Object[] arg = { actionType } ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg)) ;

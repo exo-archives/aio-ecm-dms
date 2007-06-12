@@ -34,6 +34,7 @@
             <name>cms.configuration</name>
             <description>configuration for the cms path</description>
             <object type="org.exoplatform.services.cms.impl.CmsConfig">
+              <field  name="repository"><string>repository</string></field>
               <field  name="jcrPaths">
                 <collection type="java.util.ArrayList">                         
                   <value>

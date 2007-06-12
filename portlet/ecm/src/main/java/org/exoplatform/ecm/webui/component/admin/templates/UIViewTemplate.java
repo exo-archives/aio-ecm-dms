@@ -4,6 +4,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.templates;
 
+import javax.portlet.PortletPreferences;
+
+import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 
@@ -25,8 +30,14 @@ public class UIViewTemplate extends UIContainer {
     addChild(UIViewTab.class, null, null).setRendered(false) ;
   }
   
-  public void refresh() throws Exception {     
-    getChild(UIDialogTab.class).updateGrid(nodeTypeName_) ;
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
+  
+  public void refresh() throws Exception {
+    getChild(UIDialogTab.class).updateGrid(nodeTypeName_, getRepository()) ;
     getChild(UIViewTab.class).updateGrid(nodeTypeName_) ;
   }
   public void setNodeTypeName(String nodeType) {

@@ -28,14 +28,13 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   public ScriptActionPlugin(ScriptService scriptService, InitParams params,
                             RepositoryService repositoryService) throws Exception {
     scriptService_ = scriptService;
-    repositoryService_ = repositoryService;    
-    
+    repositoryService_ = repositoryService;
     config_ = (ActionConfig) params.getObjectParamValues(ActionConfig.class).get(0);
   }
   
-  public Collection<String> getActionExecutables() throws Exception {
+  public Collection<String> getActionExecutables(String repository) throws Exception {
     Collection<String> actionScriptNames = new ArrayList<String>();
-    List<Node> actionScriptList = scriptService_.getECMActionScripts() ;
+    List<Node> actionScriptList = scriptService_.getECMActionScripts(repository) ;
     String baseScriptPath = scriptService_.getBaseScriptPath() ;
     for(Node script:actionScriptList) {
       String actionScriptName = StringUtils.substringAfter(script.getPath(),baseScriptPath + "/") ;
@@ -49,18 +48,16 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   public String getExecutableDefinitionName() { return "exo:script"; }
   
   protected String getWorkspace() { return config_.getWorkspace(); }
-  
-  protected ManageableRepository getRepository() throws Exception {
-    return repositoryService_.getRepository();
+  protected String getRepository() {return config_.getRepository() ; }
+  protected ManageableRepository getRepository(String repository) throws Exception {
+    return repositoryService_.getRepository(repository);
   }
-  
   protected String getActionType() {  return ACTION_TYPE;  }
-  
   protected List getActions() { return config_.getActions(); }
   
   protected ECMEventListener createEventListener(String actionName, String actionExecutable,
-      String srcWorkspace, String srcPath, Map variables) throws Exception {
-    return new ScriptActionLauncherListener(actionName, actionExecutable, srcWorkspace,
+      String repository, String srcWorkspace, String srcPath, Map variables) throws Exception {
+    return new ScriptActionLauncherListener(actionName, actionExecutable, repository, srcWorkspace,
         srcPath, variables);
   }
   
@@ -70,36 +67,36 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   public String getDescription() { return "Add a action service"; }  
   public void setDescription(String desc) { }
   
-  public void executeAction(String userId, Node actionNode, Map variables) throws Exception {
+  public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
     String script = actionNode.getProperty("exo:script").getString();    
     variables.put("actionNode", actionNode);        
-    executeAction(userId, script, variables);
+    executeAction(userId, script, variables, repository);
   }      
   
-  public void executeAction(String userId, String executable, Map variables) throws Exception {    
+  public void executeAction(String userId, String executable, Map variables, String repository) throws Exception {    
     ScriptService scriptService =  (ScriptService) PortalContainer.getComponent(ScriptService.class);
-    CmsScript cmsScript = scriptService.getScript(executable);
+    CmsScript cmsScript = scriptService.getScript(executable, repository);
     cmsScript.execute(variables);
   }
   
   public class ScriptActionLauncherListener extends BaseActionLauncherListener {
     
-    public ScriptActionLauncherListener(String actionName, String script, String srcWorkspace,
+    public ScriptActionLauncherListener(String actionName, String script, String repository, String srcWorkspace,
         String srcPath, Map actionVariables) throws Exception {
-      super(actionName, script, srcWorkspace, srcPath, actionVariables);
+      super(actionName, script, repository, srcWorkspace, srcPath, actionVariables);
     }
     
-    public void triggerAction(String userId, Map variables) throws Exception {
-      executeAction(userId, super.executable_, variables);
+    public void triggerAction(String userId, Map variables, String repository) throws Exception {
+      executeAction(userId, super.executable_, variables, repository);
     }
   }
 
-  public void activateAction(String userId, String executable, Map variables) throws Exception {   
-    executeAction(userId,executable,variables) ;
+  public void activateAction(String userId, String executable, Map variables, String repository) throws Exception {   
+    executeAction(userId,executable,variables, repository) ;
   }
 
   protected Class createActivationJob() throws Exception {
     return ScriptActionActivationJob.class ;
-  } 
+  }  
   
 }

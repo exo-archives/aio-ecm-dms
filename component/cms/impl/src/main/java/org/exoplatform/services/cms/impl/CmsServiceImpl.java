@@ -17,7 +17,6 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -36,7 +35,6 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 
 
 /**
@@ -47,6 +45,7 @@ public class CmsServiceImpl implements CmsService {
   private RepositoryService jcrService;
   private CmsConfigurationService cmsConfigurationService ;
   private IDGeneratorService idGeneratorService;
+  private String repository_ ;
   
   public CmsServiceImpl(RepositoryService jcrService,
       IDGeneratorService idGeneratorService, CmsConfigurationService cmsConfigurationService) {
@@ -56,18 +55,18 @@ public class CmsServiceImpl implements CmsService {
   }
 
   public String storeNode(String workspace, String nodeTypeName,
-      String storePath, Map mappings, String userId) throws Exception {
-    Repository repository = jcrService.getRepository();
-    Session session = repository.login(workspace);
+      String storePath, Map mappings, String userId, String repository) throws Exception {
+    //Repository repository = jcrService.getRepository(repository);
+    Session session = jcrService.getRepository(repository).login(workspace);
     Node storeHomeNode = (Node) session.getItem(storePath);
-    String path = storeNode(nodeTypeName, storeHomeNode, mappings, true, userId);
+    String path = storeNode(nodeTypeName, storeHomeNode, mappings, true, userId, repository);
     storeHomeNode.save();
     return path;
   }
 
   public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
-                           boolean isAddNew, String userId)
-      throws Exception {
+                           boolean isAddNew, String userId, String repository) throws Exception {
+    repository_ = repository ;
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 
@@ -246,6 +245,7 @@ public class CmsServiceImpl implements CmsService {
      
   private void processProperty(String propertyName, Node node, int requiredtype,
       Object value, boolean isMultiple) throws Exception {
+    
     switch (requiredtype) {
     case PropertyType.STRING:
       if (value == null)
@@ -303,7 +303,8 @@ public class CmsServiceImpl implements CmsService {
         node.setProperty(propertyName, new GregorianCalendar());
       } else {
         if(isMultiple) {
-          Session session = jcrService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace());
+          Session session = jcrService.getRepository(repository_)
+                            .getSystemSession(cmsConfigurationService.getWorkspace());
           if (value instanceof String) {
             Value value2add = session.getValueFactory().createValue(ISO8601.parse((String) value));
             node.setProperty(propertyName, new Value[] {value2add});
@@ -335,7 +336,7 @@ public class CmsServiceImpl implements CmsService {
       if (value instanceof Value[]) 
       node.setProperty(propertyName, (Value[]) value);
       else if (value instanceof String){
-        Session session = jcrService.getRepository().getSystemSession(cmsConfigurationService.getWorkspace());
+        Session session = jcrService.getRepository(repository_).getSystemSession(cmsConfigurationService.getWorkspace());
         if(session.getRootNode().hasNode((String)value)) {
           Node catNode = session.getRootNode().getNode((String)value);
           Value value2add = session.getValueFactory().createValue(catNode);
@@ -360,16 +361,15 @@ public class CmsServiceImpl implements CmsService {
   }
   
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace,
-      String destPath) {
+      String destPath, String repository) {
     PortalContainer container = PortalContainer.getInstance();
     RepositoryService repService = (RepositoryService) container
         .getComponentInstanceOfType(RepositoryService.class);
     
     if(!srcWorkspace.equals(destWorkspace)){
       try {
-        ManageableRepository repository = repService.getRepository();
-        Session srcSession = repository.getSystemSession(srcWorkspace);
-        Session destSession = repository.getSystemSession(destWorkspace);
+        Session srcSession = repService.getRepository(repository).getSystemSession(srcWorkspace);
+        Session destSession = repService.getRepository(repository).getSystemSession(destWorkspace);
         Workspace workspace = destSession.getWorkspace();
         Node srcNode = (Node) srcSession.getItem(nodePath);
         try {
@@ -387,8 +387,7 @@ public class CmsServiceImpl implements CmsService {
       }
     }else {
       try{
-        ManageableRepository repository = repService.getRepository();
-        Session session = repository.getSystemSession(srcWorkspace);
+        Session session = repService.getRepository(repository).getSystemSession(srcWorkspace);
         Workspace workspace = session.getWorkspace();
         try {
           session.getItem(destPath);        

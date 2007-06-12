@@ -90,6 +90,8 @@ public class ContentValidationPublicationHook implements NodeHookI {
         projectSession.getProperty("srcPath").getTheValue();
       String srcWorkspace =
         projectSession.getProperty("srcWorkspace").getTheValue();
+      String repository =
+        projectSession.getProperty("repository").getTheValue();
       Date startDate = new Date (Long.parseLong(projectSession.
         getNodeProperty(node.getName(), "startDate").getTheValue()));
       Date endDate = new Date (Long.parseLong(projectSession.
@@ -105,7 +107,7 @@ public class ContentValidationPublicationHook implements NodeHookI {
         container.getComponentInstanceOfType(CmsService.class);
 
       // Open a JCR session
-      Session session = repositoryService.getRepository().
+      Session session = repositoryService.getRepository(repository).
         getSystemSession(srcWorkspace);
       
       // Retrieve information from the Action that triggered the Worflow
@@ -114,7 +116,7 @@ public class ContentValidationPublicationHook implements NodeHookI {
         actionableNode = (Node) session.getItem(nodePath);
       }
       Node actionNode = actionServiceContainer.getAction(
-        actionableNode, actionName);
+        actionableNode, actionName, repository);
       String destWorkspace = actionNode.getProperty(
         "exo:destWorkspace").getString();
       String destPath = actionNode.getProperty("exo:destPath").getString();
@@ -140,7 +142,8 @@ public class ContentValidationPublicationHook implements NodeHookI {
       cmsService.moveNode(nodePath,
                           srcWorkspace,
                           destWorkspace,
-                          destPath + relPath);    
+                          destPath + relPath,
+                          repository );    
     }
     catch(Exception e) {
       // TODO Use logging system instead

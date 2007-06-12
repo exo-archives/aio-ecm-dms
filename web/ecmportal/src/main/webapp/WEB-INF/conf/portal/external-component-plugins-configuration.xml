@@ -128,6 +128,7 @@
             <name>configuration</name>
             <description>description</description>
             <object type="org.exoplatform.services.cms.impl.NewUserConfig">
+              <field  name="repository"><string>repository</string></field>
               <field  name="template"><string>template</string></field>
               <field  name="users">
                 <collection type="java.util.ArrayList">
@@ -206,6 +207,7 @@
             <name>configuration</name>
             <description>description</description>
             <object type="org.exoplatform.services.cms.queries.NewUserConfig">
+            	<field  name="repository"><string>repository</string></field>
               <field  name="template"><string>template</string></field>
               <field  name="users">
                 <collection type="java.util.ArrayList">

@@ -12,6 +12,7 @@ import javax.jcr.Value;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.component.view.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -57,11 +58,12 @@ public class UILanguageDialogForm extends DialogFormFields {
   public void setTemplateNode(String type) { documentType_ = type ;}
   
   public String getTemplate() {
+    repository_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       resetScriptInterceptor() ;
-      return templateService.getTemplatePathByUser(true, documentType_, userName) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName, repository_) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;

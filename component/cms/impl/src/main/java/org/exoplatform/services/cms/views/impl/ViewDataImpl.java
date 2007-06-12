@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ViewDataImpl{
 
+  private String repository ;
   private String name ;
   private String permissions ;
   private String template ;
@@ -25,6 +26,9 @@ public class ViewDataImpl{
     tabList = new ArrayList() ;
   }
 
+  public String getRepository() { return this.repository ; }
+  public void setRepository(String repo) { this.repository = repo ; }
+  
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }  
 

@@ -15,7 +15,9 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
+import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -24,6 +26,8 @@ import org.exoplatform.services.jcr.core.nodetype.NodeDefinitionValue;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -180,11 +184,16 @@ public class UINodeTypeForm extends UIFormTabPane {
       return id ;
     }
   }  
-
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   public List<SelectItemOption<String>> getNamespaces() throws Exception {
     if (namespacesOptions_.size() == 0) {
-      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-      String[] namespaces = repositoryService.getRepository().getNamespaceRegistry().getPrefixes() ;
+      String repository = getRepository() ;
+      String[] namespaces = getApplicationComponent(RepositoryService.class)
+                            .getRepository(repository).getNamespaceRegistry().getPrefixes() ;
       for(int i = 0; i < namespaces.length; i ++){
         namespacesOptions_.add(new SelectItemOption<String>(namespaces[i], namespaces[i])) ;
       }
@@ -508,9 +517,10 @@ public class UINodeTypeForm extends UIFormTabPane {
   static public class SaveActionListener extends EventListener<UINodeTypeForm> {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
+      String repository = uiForm.getRepository() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
-      NodeTypeManager ntManager = repositoryService.getRepository().getNodeTypeManager() ;
+      NodeTypeManager ntManager = uiForm.getApplicationComponent(RepositoryService.class)
+                                 .getRepository(repository).getNodeTypeManager() ;
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
@@ -582,12 +592,13 @@ public class UINodeTypeForm extends UIFormTabPane {
   static public class SaveDraftActionListener extends EventListener<UINodeTypeForm> {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
+      String repository = uiForm.getRepository() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
       CmsConfigurationService cmsConfigService = 
         uiForm.getApplicationComponent(CmsConfigurationService.class) ;
       Session session = 
-        repositoryService.getRepository().getSystemSession(cmsConfigService.getWorkspace()) ;
+        uiForm.getApplicationComponent(RepositoryService.class).getRepository(repository)
+         .getSystemSession(cmsConfigService.getWorkspace(repository)) ;
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {

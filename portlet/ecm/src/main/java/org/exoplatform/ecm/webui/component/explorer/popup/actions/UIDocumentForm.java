@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.version.VersionException;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -22,6 +23,7 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -65,12 +67,18 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   
   public void addNew(boolean b) {isAddNew_ = b ;}
   
+  private String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
   public String getTemplate() {
+    repository_ = getRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       resetScriptInterceptor() ;
-      return templateService.getTemplatePathByUser(true, documentType_, userName) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName, repository_) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
@@ -109,9 +117,10 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       nodeType = getNode().getPrimaryNodeType().getName() ;
     }       
     try {
+      String repository = getRepository() ;
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(), 
-                                              Util.getPortalRequestContext().getRemoteUser());
+                                              Util.getPortalRequestContext().getRemoteUser(),repository);
       homeNode.getSession().save() ;
       newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
