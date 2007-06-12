@@ -57,7 +57,6 @@ public class UIRepositorySelectForm extends UIForm {
     public void execute(Event<UIRepositorySelectForm> event) throws Exception {
       UIRepositorySelectForm uiForm = event.getSource() ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIRepositoryControl.class) ;
-      System.out.println("uiDDSelect.getSelectedValue() ==== " + uiForm.getSelectedValue()) ;
       PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
       portletPref.setValue(Utils.REPOSITORY, uiForm.getSelectedValue()) ;
       portletPref.store() ;

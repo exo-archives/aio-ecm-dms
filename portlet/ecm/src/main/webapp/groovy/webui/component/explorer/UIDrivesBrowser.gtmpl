@@ -15,9 +15,10 @@
 			 <div class="UIVerticalSlideTabs">
 			 	<div class="UIVTab VTabSimpleStyle">
 			 		<%
-			 		String cssClass = "NormalTab" ;
+			 		String cssClass = "" ;
 			 		for(String name in uicomponent.getRepositoryList()){			 			
 			 			if(name.equals(uicomponent.getRepository())) cssClass = "SelectedTab" ;
+			 			else cssClass = "NormalTab" ;
 			 			String actionLink = uicomponent.event("SelectRepo","$name") ;
 			 		%>
 			 		<div class="$cssClass">

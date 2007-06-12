@@ -261,6 +261,7 @@
   border: solid 1px #b2b1b1;
   background: #ffffff;
   padding: 5px ;
+  overflow: hidden;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent a {

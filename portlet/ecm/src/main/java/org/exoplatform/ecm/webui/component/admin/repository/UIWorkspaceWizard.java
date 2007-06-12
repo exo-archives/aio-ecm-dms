@@ -272,7 +272,18 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
 
   public static class ViewStep2ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
-      UIWorkspaceWizard uiFormWizard = event.getSource() ;      
+      UIWorkspaceWizard uiFormWizard = event.getSource() ;  
+      UIFormInputSet uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP1) ;
+      String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+      UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP2) ;
+      String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
+      String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
+      if(uiWSFormStep1.isRendered()) {
+        if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
+        if(!storePath.contains(wsName))  storePath = storePath + wsName ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
+      }
       uiFormWizard.viewStep(2) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
@@ -481,6 +492,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
   public static class NextActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
+      UIFormInputSet uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP1) ;
+      String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP2) ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
@@ -525,6 +539,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
+      }
+      if(uiWSFormStep1.isRendered()) {
+        if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
+        if(!storePath.contains(wsName))  storePath = storePath + wsName ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
       }
 
       int step = uiFormWizard.getCurrentStep() ;

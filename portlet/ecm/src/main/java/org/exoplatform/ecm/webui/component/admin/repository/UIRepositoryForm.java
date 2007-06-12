@@ -214,7 +214,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       }
     } 
   }
-  
+
   private void initServices(String repository) throws Exception{
     try {
       getApplicationComponent(CmsConfigurationService.class).init(repository) ;
@@ -227,13 +227,13 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(ScriptService.class).initRepo(repository) ;
       getApplicationComponent(TemplateService.class).init(repository) ;
       getApplicationComponent(ManageViewService.class).init(repository) ;
-      */
-      
+       */
+
     }catch(Exception e) {
       e.printStackTrace() ;
     }
-    
-    
+
+
   }
   protected void ShowHidden() {
     getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered()) ;
@@ -422,11 +422,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
-      String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;     
-      if(uiForm.isAddnew_) {
-        uiForm.workspaceMap_.remove(workspaceName) ;
-        if(uiForm.isDefaultWorkspace(workspaceName)) uiForm.defaulWorkspace_ = null ;
-      } else {
+      String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;   
+      if(!uiForm.isAddnew_) {
         RepositoryService rService = uiForm.getApplicationComponent(RepositoryService.class) ;
         ManageableRepository manaRepo = rService.getRepository(uiForm.repoName_) ;
         if(manaRepo.canRemoveWorkspace(workspaceName)) {
@@ -434,15 +431,20 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           uiForm.workspaceMap_.clear() ;
           for(WorkspaceEntry ws : manaRepo.getConfiguration().getWorkspaceEntries()) {
             uiForm.workspaceMap_.put(ws.getName(), ws) ;
-          }
-        } else {
+          } 
+          uiForm.refreshWorkspaceList() ;
+        }else {
           Object[] args = new Object[]{workspaceName}  ;    
           UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
           uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-workspace", args)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ; 
+          return ;
         }
+      } else {
+        uiForm.workspaceMap_.remove(workspaceName) ;
+        if(uiForm.isDefaultWorkspace(workspaceName)) uiForm.defaulWorkspace_ = null ;
+        uiForm.refreshWorkspaceList() ;      
       }
-      uiForm.refreshWorkspaceList() ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;  
     }
   }
