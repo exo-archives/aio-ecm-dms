@@ -47,7 +47,7 @@ import org.exoplatform.webui.form.UIFormInput;
 public class UILanguageDialogForm extends DialogFormFields {
 
   private boolean isAddNew_ = false ; 
-  private String selectedLanguage_ ;
+  private String selectedLanguage_ = null;
   private boolean isDefault_ = false;
   private String documentType_ ;
   
@@ -83,6 +83,8 @@ public class UILanguageDialogForm extends DialogFormFields {
   
   public boolean isEditing() { return !isAddNew_ ; }
   
+  public Node getCurrentNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
+  
   public void setSelectedLanguage(String selectedLanguage) { selectedLanguage_ = selectedLanguage; }
   public String getSelectedLanguage() { return selectedLanguage_ ; }
   
@@ -94,6 +96,13 @@ public class UILanguageDialogForm extends DialogFormFields {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node node = uiExplorer.getCurrentNode() ;
     MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
+    if(selectedLanguage_ == null) {
+      UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+      uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.select-lang", null, 
+                                              ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    }
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
       Value value = null;
       for(UIComponent uiChild : getChildren()) {

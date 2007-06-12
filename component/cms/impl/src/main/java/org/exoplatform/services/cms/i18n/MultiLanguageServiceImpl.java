@@ -116,9 +116,13 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         } else {          
           if(isDefault) {            
             newLanguageNode.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
-            setPropertyValue(propertyName, node, node.getProperty(propertyName).getType(), property.getValue()) ;
+            if(node.hasProperty(propertyName)) {
+              setPropertyValue(propertyName, node, node.getProperty(propertyName).getType(), property.getValue()) ;
+            }
           } else {
-            setPropertyValue(propertyName, newLanguageNode, node.getProperty(propertyName).getType(), property.getValue()) ;
+            if(node.hasProperty(propertyName) && property != null) {
+              setPropertyValue(propertyName, newLanguageNode, node.getProperty(propertyName).getType(), property.getValue()) ;
+            }
           }
         }               
       }
@@ -216,8 +220,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         for(PropertyDefinition pro : properties){
           if(!pro.isProtected()){
             String propertyName = pro.getName() ;
-            newLang.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
-            node.setProperty(propertyName, selectedLangNode.getProperty(propertyName).getValue()) ;
+            if(node.hasProperty(propertyName)) {
+              newLang.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
+            }
+            if(selectedLangNode.hasProperty(propertyName)) {
+              node.setProperty(propertyName, selectedLangNode.getProperty(propertyName).getValue()) ;
+            }
           }
         }
         newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 

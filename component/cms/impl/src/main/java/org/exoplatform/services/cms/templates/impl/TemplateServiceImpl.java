@@ -3,6 +3,8 @@
  */
 package org.exoplatform.services.cms.templates.impl;
 
+import groovy.lang.GroovyResourceLoader;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -299,7 +301,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     Node contentNode = specifiedTemplatesHome.getNode(templateName);
     contentNode.remove() ;
     nodeTypeHome.save() ;
-    //removeFromCache(path) ;
+//    removeFromCache(path) ;
   }
   
   public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception {
@@ -351,7 +353,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
     
     templatesHome.save();
-    //removeFromCache(contentNode.getPath()) ;
+//    removeFromCache(contentNode.getPath()) ;
   }
   
   public List<String> getDocumentTemplates(String repository) throws Exception {
@@ -381,17 +383,19 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
     return templatesHome ;
   }*/
-  /*protected void removeFromCache(String templateName) {
-    try{
-      ExoCache jcrcache_ = cacheService_.getCacheInstance(JCRResourceLoaderImpl.class.getName()) ;
-      String portalName = containerInfo_.getContainerName() ;
-      String key = portalName + "jcr:" +templateName ; 
-      Object cachedobject = jcrcache_.get(key);
-      if (cachedobject != null) {
-        jcrcache_.remove(key);      
-      }
-    }catch(Exception e) {
-      e.printStackTrace() ;
-    }
-  }  */
+  
+//  protected void removeFromCache(String templateName) {
+//    try{
+//      ExoCache jcrcache_ = cacheService_.getCacheInstance(GroovyResourceLoader.class.getName()) ;
+////      String portalName = containerInfo_.getContainerName() ;
+////      String key = portalName + "jcr:" +templateName ; 
+////      System.out.println("\n\nkey===>" + key + "\n\n");
+//      Object cachedobject = jcrcache_.get(templateName);
+//      if (cachedobject != null) {
+//        jcrcache_.remove(templateName);      
+//      }
+//    } catch(Exception e) {
+//      e.printStackTrace() ;
+//    }
+//  }  
 }

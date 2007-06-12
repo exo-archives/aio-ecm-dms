@@ -31,11 +31,12 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
   public UIFastContentCreatorPortlet() throws Exception {
   }
   
-  public void initPopupJCRBrowser(String workspaceName) throws Exception {
+  public void initPopupJCRBrowser(String repositoryName, String workspaceName) throws Exception {
     removeChild(UIPopupWindow.class) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, null);
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
+    uiJCRBrowser.setRepository(repositoryName) ;
     uiJCRBrowser.setWorkspace(workspaceName) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;

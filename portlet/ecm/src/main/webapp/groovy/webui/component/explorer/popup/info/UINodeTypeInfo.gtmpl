@@ -119,11 +119,7 @@
 	            </tr>
 	          </thead>
 	          <tbody>
-	            <%
-	            Value[] values ;
-	            String[] contraintValues ;
-	            for(bean in nodeType.getPropertyDefinitions()) {
-	            %>
+	            <%for(bean in nodeType.getPropertyDefinitions()) {%>
 	            <tr>
 	              <td><%repairName(bean.getName())%></td>
 	              <td><%=uicomponent.resolveType(bean.getRequiredType())%></td>
@@ -133,12 +129,12 @@
 	              <td><%repairName(bean.isMultiple())%></td>
 	              <%
 	                StringBuilder defaultValue = new StringBuilder() ;
-	                values = bean.getDefaultValues() ;
+	                Value[] values = bean.getDefaultValues() ;
 							    if(values != null && values.length > 0 ) {
 								    for(value in values) {											      
 								      if(value != null) {
 								        if(defaultValue.length() > 0) defaultValue.append(",") ;
-								        defaultValue.append(value.getString()) ;
+								        defaultValue.append(value) ;
 								      }
                     }
                   }
@@ -146,12 +142,12 @@
 	              <td><%=defaultValue.toString()%></td>
 	              <%
 	                StringBuilder contraints = new StringBuilder() ;
-							    contraintValues = bean.getValueConstraints() ;
+							    String[] contraintValues = bean.getValueConstraints() ;
 							    if(contraintValues != null && contraintValues.length > 0) {											    
 								    for(value in contraintValues) {											
 								      if(value != null) {
 								        if(contraints.length() > 0) contraints.append(",") ;
-									      contraints.append(value.getString()) ;
+									      contraints.append(value) ;
 								      }
 								    }
 								  }
@@ -222,6 +218,3 @@
   	</div>
   </div>
 </div>
-
-     
-	 
