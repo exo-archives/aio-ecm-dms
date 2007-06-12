@@ -237,6 +237,11 @@
 	padding: 10px 0px;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .FormContainer{
+	width: 550px;
+	margin: auto;
+}
+
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 355px;
 	padding-left: 80px;
@@ -257,7 +262,7 @@
 }
 
 .UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
-	width: 155px;	
+	width: 128px;	
 }
 
 .UIRepositoryManager .UIWorkspaceForm .UIAction { 
@@ -277,8 +282,9 @@
 	display: block ;
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
-	padding: 10px 0px;
+	padding: 15px 0px;
 	border-bottom: none ;
+	line-height: 15px;
 }
 
 .UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
@@ -381,6 +387,11 @@
   padding: 10px;
 }
 
+.UIECMAdminPortlet .UINamespaceForm .FormContainer {
+  width: 500px;
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UINamespaceForm .UIAction {
   width: 170px;
 }
@@ -468,6 +479,16 @@
 .UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer {
   width: 50px ;
   margin: auto ;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UITabContent .FormContainer {
+  width: 500px ;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UITabForm .FormContainer {
+  width: 500px ;
+  margin: auto;
 }
 
 /*############################## -- ECMTemplate -- ########################*/
@@ -569,6 +590,11 @@
 
 .UIActionManager .UIActionTypeForm  {
 	padding: 10px; 
+}
+
+.UIActionManager .UIActionTypeForm .FormContainer {
+	width: 500px; 
+	margin: auto; 
 }
 
 .UIActionManager .UIActionTypeForm .HorizontalLayout .UIAction {

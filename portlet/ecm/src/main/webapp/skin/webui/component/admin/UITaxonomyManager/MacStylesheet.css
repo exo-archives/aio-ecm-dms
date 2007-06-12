@@ -92,6 +92,11 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FieldContainer .parentPath {
 	margin-left: 7px;
 }

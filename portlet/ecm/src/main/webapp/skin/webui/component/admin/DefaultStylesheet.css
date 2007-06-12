@@ -98,7 +98,6 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizard {
 	padding: 10px;
-	border: solid 1px red;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction {
@@ -114,12 +113,11 @@
 	display: block ;
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
-	padding: 5px 0px;
-	border: solid 1px red;
+	padding: 15px 0px;
+	line-height: 15px;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .WizardLabel {
- 	vertical-align: middle;
   font-size: 11px; font-weight: bold; 
   margin: 0px 7px;
   width: 120px;
@@ -326,7 +324,7 @@
   border: none;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.checkbox {
   border: none;
 }
 

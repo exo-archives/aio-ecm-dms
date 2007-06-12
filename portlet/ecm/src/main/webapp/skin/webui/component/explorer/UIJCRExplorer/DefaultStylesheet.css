@@ -34,6 +34,7 @@
   float: none;
   border: none;
 }
+
 .UIJCRExplorerPortlet .UIFormGrid input.checkbox{
   border: none;
 }
@@ -255,12 +256,13 @@
 /*===========================Folder Form=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm {
-	padding: 10px;
+	padding: 10px 0px;
+	width: 560px;
+	margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
 	width: 160px;
-	padding-right: 120px;
 }
 
 /*===========================DocumentFormController=====================*/
@@ -271,7 +273,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 150px;
-	padding: 12px 110px 10px 0px;
+	padding: 12px 0px 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer {
@@ -281,6 +283,7 @@
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
   margin-top: 5px;
+  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
@@ -294,7 +297,14 @@
 /*=============================UIWatchDocumentForm=======================*/
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
-  padding: 10px;
+  padding: 10px 0px;
+  width: 550px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIWatchDocumentForm .FormContainer {
+  width: 450px;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
@@ -305,7 +315,14 @@
 /*=============================UITaggingForm=======================*/
 
 .UIJCRExplorerPortlet .UITaggingForm {
-  padding: 10px;
+  padding: 10px 0px;
+  width: 550px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .FormContainer {
+  width: 450px;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
@@ -541,6 +558,23 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileName {
+	width: 230px;	
+	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {

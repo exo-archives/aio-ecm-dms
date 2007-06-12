@@ -44,22 +44,26 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .SelectFileFrame { 
-	width: 320px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .ProgressBarFrame { 
+	width: 330px;
 	overflow: hidden;
+	margin: 0px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileNameLabel {
-	width: 150px;	
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileName {
+	width: 230px;	
+	overflow: hidden;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
 	width: 95%;
 	margin: 10px auto;	
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet .text .checkbox{
-	margin-left: 15px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {

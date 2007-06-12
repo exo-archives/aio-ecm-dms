@@ -24,6 +24,10 @@
   padding-top: 10px;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIFormGrid td.FieldLabel {
+  width: 128px;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldContainer{  
   width: 500px;
   margin: 0px auto;
@@ -178,14 +182,6 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .UIFormUploadInput .UIUploadForm {
-	margin-left: 5px;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame {
-	overflow: hidden;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
   padding: 0px;
   float: left;
@@ -210,10 +206,6 @@
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
-}
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
-  width: 300px ;
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/

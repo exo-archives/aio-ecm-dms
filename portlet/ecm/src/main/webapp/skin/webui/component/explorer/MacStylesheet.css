@@ -38,3 +38,6 @@
   padding-left: 40px;
 }
 
+.UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
