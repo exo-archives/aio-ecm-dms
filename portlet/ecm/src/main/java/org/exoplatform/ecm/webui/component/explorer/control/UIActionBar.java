@@ -65,7 +65,7 @@ import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
-import org.exoplatform.portal.component.view.Util;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.metadata.MetadataService;

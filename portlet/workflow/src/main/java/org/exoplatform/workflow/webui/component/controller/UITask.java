@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 
-import org.exoplatform.portal.component.view.Util;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.workflow.Form;
