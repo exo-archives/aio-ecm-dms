@@ -9,9 +9,9 @@
   <artifactId>exo.ecm.portlet.workflow</artifactId>
   <version>${org.exoplatform.ecm.version}</version>
   <packaging>war</packaging>
-  <name>exo-ecm.portlets.workflow Portlet</name>
+  <name>ecm.portlets.workflow Portlet</name>
   <url>http://www.exoplatform.org</url>
-  <description>exo-ecm.portlets.workflow Portlet</description>
+  <description>ecm.portlets.workflow Portlet</description>
   
   <dependencies>
     <dependency>
