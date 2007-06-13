@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.faces.core.component.UIStringInput;
+//import org.exoplatform.faces.core.component.UIStringInput;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -326,7 +326,7 @@ public class DialogFormFields extends UIForm {
       }     
       addUIFormInput(uiInput) ;
     }
-    if(type.equals("password")) uiInput.setType((short)UIStringInput.PASSWORD) ;
+    //if(type.equals("password")) uiInput.setType((short)UIFormStringInput.PASSWORD) ;
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     if(node_ != null) {
