@@ -82,18 +82,17 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .FormContainer{
-	width: 500px;
-	margin: auto;
-}
-
 .UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .FormContainer .UIFormGrid .FieldLabel {
+	width: 128px;
+}
+
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 350px;
-	padding-left: 130px;
+	padding-left: 70px;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard {
@@ -301,6 +300,18 @@
 /*############################## -- UIFormInputSet -- ########################*/
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
+}
+
+.UIECMAdminPortlet .UITabContentContainer .SuperTypeTab .UIFormTableInputSet .UIGrid td {
+ 	padding: 4px;
+}
+
+.UIECMAdminPortlet .UITabContentContainer .RequiredTypeTab .UIFormTableInputSet .UIGrid td {
+ 	padding: 4px;
+}
+
+.UIECMAdminPortlet .UITabContentContainer .DefaultTypeTab .UIFormTableInputSet .UIGrid td {
+ 	padding: 4px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
@@ -540,9 +551,23 @@ UIECMAdminPortlet .UIViewManager {
   padding: 10px;
 }
 
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm  {
+  margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
+  width: 90px;
+  padding-left: 10px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer .OverflowContainer {
+  width: 75px;
+}
+
 .UIECMScripts .HorizontalLayout .FormContainer .UIAction {
   width: 330px;
   padding-left: 60px;
+  border: solid 1px red;
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer textarea {
@@ -558,6 +583,10 @@ UIECMAdminPortlet .UIViewManager {
 
 .UICBScripts .CBScriptForm {
   padding: 10px;
+}
+
+.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer .OverflowContainer {
+  width: 75px;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer .UIAction {
@@ -626,6 +655,7 @@ UIECMAdminPortlet .UIViewManager {
 
 .Explorer {
   margin-bottom: 10px;
+  margin-right: 10px;
   float: left ;
   width: 230px ;
 }
@@ -648,7 +678,6 @@ UIECMAdminPortlet .UIViewManager {
 
 .UITreeList .UIGrid {
   width: 315px;
-  margin-left: 10px ;
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/

@@ -254,9 +254,10 @@
 /*############################## -- End UIVoteForm   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
-.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle {
-	width: 700px;
-	margin: auto ;
+
+.UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
+	width: 99%;
+	margin: auto;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {
@@ -297,11 +298,6 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
-	overflow: hidden;
-	width: 200px;
-}
 
 .UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput .radio {
   width: 20px;

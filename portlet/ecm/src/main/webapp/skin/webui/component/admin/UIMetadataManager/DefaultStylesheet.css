@@ -27,9 +27,9 @@
   padding: 3px;
 }
 
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIAction {
-  margin: 5px auto 15px auto;
-  padding-bottom: 15px;
+.UIECMAdminPortlet .metadataTypeTab .FormContainer {
+  width: 500px;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator {

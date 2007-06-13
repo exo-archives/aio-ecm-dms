@@ -30,21 +30,16 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIFormGrid input.radio {
-  float: none;
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIFormGrid input.checkbox{
-  border: none;
-}
-
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
+}
+
+.UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
+ 	padding: 4px 8px 4px 0px;
 }
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
@@ -273,7 +268,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 150px;
-	padding: 12px 0px 10px 0px;
+	padding: 12px 100px 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer {
@@ -292,6 +287,23 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
   margin: 5px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileName {
+	width: 230px;	
+	overflow: hidden;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
@@ -317,11 +329,6 @@
 .UIJCRExplorerPortlet .UITaggingForm {
   padding: 10px 0px;
   width: 550px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UITaggingForm .FormContainer {
-  width: 450px;
   margin: auto;
 }
 
@@ -389,17 +396,22 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
   width: 355px;
-  padding-right: 150px;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
-  padding-bottom: 0px;
+.UIJCRExplorerPortlet .UISimpleSearch .FormContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .FormContainer {
+  width: 500px;
+  margin: auto;
 }
 
 /*================================UIJCRAdvancedSearch=================================*/
 
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch {
-  width: 500px;
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {
+  width: 550px;
   margin: auto;
 }
 
@@ -454,6 +466,11 @@
 .UIJCRExplorerPortlet .UIActionContainer {
   padding: 10px;
   margin-top: 10px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer{
+  border: solid 1px #b7b7b7;
+  border-top: none;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
@@ -604,7 +621,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser {
-  padding: 10px;
+ padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
@@ -622,11 +639,6 @@
 	padding: 10px 0px;
 }
 
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipTitle{
-	border: none;
-	border-bottom: solid 1px #b7b7b7;
-}
-	
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
 	float: left;
 	margin: 4px 3px 0px 3px;

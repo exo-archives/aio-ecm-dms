@@ -203,12 +203,28 @@
   float: none;
 }
 
+.UIECMAdminPortlet .UITabContentContainer .SuperTypeTab .UIFormTableInputSet .UIGrid td {
+ 	padding: 4px;
+}
+
+.UIECMAdminPortlet .UITabContentContainer .RequiredTypeTab .UIFormTableInputSet .UIGrid td {
+ 	padding: 4px;
+}
+
+.UIECMAdminPortlet .UITabContentContainer .DefaultTypeTab .UIFormTableInputSet .UIGrid td {
+ 	padding: 4px;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
+  border: none;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.checkbox {
   border: none;
 }
 
@@ -237,9 +253,8 @@
 	padding: 10px 0px;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .FormContainer{
-	width: 550px;
-	margin: auto;
+.UIECMAdminPortlet .UIRepositoryForm .FormContainer .UIFormGrid .FieldLabel {
+	width: 128px;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
@@ -265,36 +280,36 @@
 	width: 128px;	
 }
 
-.UIRepositoryManager .UIWorkspaceForm .UIAction { 
-	width: 280px;
+.UIRepositoryFormContainer .UIWorkspaceWizard .UIAction {
+	float: right;
+	padding-right: 15px;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard {
+.UIECMAdminPortlet .UIWorkspaceWizard {
 	padding: 5px 10px;
 	font-size: 11px;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .HiddenLabel {
+.UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
 	display: none  ;	
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .SelectedLabel {
+.UIECMAdminPortlet .UIWorkspaceWizard .SelectedLabel {
 	display: block ;
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	padding: 15px 0px;
-	border-bottom: none ;
 	line-height: 15px;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .WizardLabel {
+.UIECMAdminPortlet .UIWorkspaceWizard .WizardLabel {
+	font-size: 11px; font-weight: bold; 
+  margin: 0px 7px;
+  width: 120px;
 	float: left;
-  font-size: 11px; font-weight: bold; 
-  margin: 0px 10px 5px 10px;
-  width: 110px;
 }
 
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIWizardAction {
+.UIECMAdminPortlet  .UIWorkspaceWizard .UIWizardAction {
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	border-top: none ;
@@ -331,11 +346,6 @@
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar a.SelectedStep {
   color: red;
-}
-
-.UIECMAdminPortlet .UIRepositoryManager .UIWorkspaceWizard .UIAction {
-	float: right;
-	padding-right: 10px;
 }
 
 /*############################## -- MultiField  -- ########################*/
@@ -424,7 +434,7 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 270px ;
-  padding-left: 130px;
+  padding-left: 70px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
@@ -513,8 +523,9 @@
 }
 
 .ECMTempForm .HorizontalLayout .textarea {
-  width: 320px;
+  width: 380px;
   height: 300px;
+  padding: 3px;
 }
 
 /*############################## -- CBTemplate -- ########################*/
@@ -539,8 +550,9 @@
 }
 
 .CBTempForm .HorizontalLayout .textarea {
-  width: 320px;
+  width: 380px;
   height: 300px;
+  padding: 3px;
 }
 
 /*############################## -- UIScriptManager  -- ########################*/
@@ -746,8 +758,9 @@
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
-	height: 150px ;
-	width: 350px ;
+	height: 300px ;
+	width: 360px ;
+	padding: 3px;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
@@ -763,7 +776,7 @@
 
 .UIFolksonomyManager .UITagStyleForm .UIAction {
 	width: 170px ;
-	padding: 10px 0px 10px 50px;
+	padding: 10px 0px;
 }
 
 /*----------------------------UIDialogTab-------------------------------*/
@@ -774,7 +787,6 @@
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIAction {
 	width: 300px;
-	padding-left: 30px;
 }
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
@@ -793,7 +805,6 @@
 
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
 	width: 300px;
-	padding-left: 30px;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
@@ -803,6 +814,11 @@
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
   width: 55px ;
   margin: auto ;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
+  width: 90px;
+  padding-left: 10px;
 }
 
 .UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer {

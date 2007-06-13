@@ -364,6 +364,7 @@
 .UIBrowseContentPortlet .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
+  border: solid 1px blue;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer {
