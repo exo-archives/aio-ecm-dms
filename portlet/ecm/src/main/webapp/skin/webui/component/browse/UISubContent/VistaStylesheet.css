@@ -119,9 +119,8 @@
 }
 
 .UISubContent .ItemIcon { 
- float:left;
- margin-top: 0px;
- margin-left: 4px;
+  float:left;
+  margin: 0px 0px 4px 4px;
 }
 .UISubContent .UIDocumentContentInfo .DocumentInfo {
 	padding: 2px;

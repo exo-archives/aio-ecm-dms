@@ -216,16 +216,13 @@
 
 .UIECMAdminPortlet .ECMAdminTitleBar {
 	font-weight: bold; 
-  line-height: 25px;
 	text-align: center;
-	height: 33px;
+	padding-top: 10px;
 }
 
 .UIECMAdminPortlet .UIECMAdminFunctionTitle {
 	font-weight: bold;
-  line-height: 25px;
-	height: 43px;
-	padding: 0px 0px 0px 7px;
+	padding: 10px 0px 0px 7px;
 }
 
 .UIECMAdminPortlet .UIResizableBlock {
@@ -251,6 +248,7 @@
   border: solid 1px #b2b1b1;
   margin: 1px 3px;
   padding: 5px ;
+  overflow: hidden;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent a {
@@ -306,6 +304,10 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
   color: orange;
+}
+
+.UIECMAdminPortlet .Icon16x16 {
+	margin: 0px 5px;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
@@ -478,7 +480,7 @@
 }
 
 .UIActionManager .UIActionTypeForm .AddNewNodeIcon {
-	margin: 3px 0px 0px 3px;
+	margin: 0px 0px 0px 3px;
 }
 
 .UIActionManager .UIActionTypeForm label {
@@ -576,6 +578,14 @@
   border: none;
 }
 
+.UITemplatesManager .UITabPane .UIDialogTab{
+	padding: 10px;
+}
+
+.UITemplatesManager .UITabPane .UIViewTab{
+	padding: 10px;
+}
+
 .UITemplatesManager .UITemplateEditForm .HorizontalLayout {
 	border: none;
 	padding: 0px;
@@ -665,6 +675,9 @@
 	width: 190px;
 }
 
+.UIECMAdminPortlet .UIFolksonomyManager .UIGrid .OverflowContainer {
+	width: 30px;
+}
 /************************* UIFormInputSet ***********************************/
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {

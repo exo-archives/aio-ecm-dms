@@ -22,11 +22,6 @@
   border: none;
 }
 
-.UIFastContentCreatorPortlet .UIFormWithTitle {
-  margin-top: 0px;
-  margin-bottom: 0px;
-} 
-
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
@@ -56,8 +51,9 @@
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
   border: 1px solid #e1e1e1;
-  width: 650px;
+  width: 550px;
   margin: 15px auto;
+  padding: 20px;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout {
@@ -74,10 +70,6 @@
   padding-top: 10px;
 }
 
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .FieldContainer label {
-  width: 120px;
-}
-
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .UIFormInputSet {
   padding-bottom: 0px;
 }
@@ -92,26 +84,6 @@
 
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 
-}
-
-.UIFastContentCreatorPortlet .UIEditModeDocumentType label{
-  width: 200px;
-  text-align: right;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer label {
-  padding: 0px 3px 0px 0px;
-  width: 150px;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer input {
-	border: solid 1px #b7b7b7;
-	padding-left: 3px;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
-	border: solid 1px #b7b7b7;
-	padding-left: 3px;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {
@@ -150,4 +122,8 @@
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
   margin: 3px 5px 0px 5px;
+}
+
+.UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
+	width: 85px;
 }
