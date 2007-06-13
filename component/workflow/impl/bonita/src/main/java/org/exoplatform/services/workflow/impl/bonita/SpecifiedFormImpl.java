@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.services.download.DownloadService;
-import org.exoplatform.services.download.InputStreamDownloadResource;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.services.workflow.FileDefinition;
 import org.exoplatform.services.workflow.Form;
 

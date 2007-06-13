@@ -1,6 +1,6 @@
 package org.exoplatform.services.cms.scripts;
 
-import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyClassLoader ;
 
 import java.io.File;
 import java.io.InputStream;
@@ -290,7 +290,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         PortalContainer pC = PortalContainer.getInstance();
         pC.unregisterComponent(scriptName);
         Class scriptClass = (Class)cachedobject ;
-        groovyClassLoader_.removeFromCache(scriptClass) ;
+        //groovyClassLoader_.removeFromCache(scriptClass) ;
       }
     }catch (Exception e) {
     }        

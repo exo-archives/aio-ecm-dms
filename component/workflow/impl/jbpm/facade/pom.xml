@@ -15,7 +15,7 @@
  
   <dependencies>
 
-    <dependency> 	 
+    <!--dependency> 	 
       <groupId>exo-ecm</groupId> 	 
       <artifactId>exo-ecm.business-process.holiday.jbpm</artifactId> 	 
       <version>1.2</version> 	 
@@ -45,7 +45,7 @@
       <version>1.2</version> 	 
       <type>bpar</type> 	 
       <scope>provided</scope> 	 
-    </dependency>
+    </dependency-->
   
     <dependency>
       <groupId>org.exoplatform.ecm</groupId>

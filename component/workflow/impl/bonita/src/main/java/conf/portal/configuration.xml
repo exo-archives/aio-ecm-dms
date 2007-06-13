@@ -20,7 +20,7 @@
     <type>org.exoplatform.services.workflow.impl.bonita.WorkflowFilterServiceImpl</type>
   </component>
 
-  <external-component-plugins>
+  <!--external-component-plugins>
     <target-component>org.exoplatform.services.templates.velocity.VelocityService</target-component>
     <component-plugin>
       <name>par.resource.loader</name>
@@ -28,7 +28,7 @@
       <type>org.exoplatform.services.workflow.impl.bonita.PARResourceLoaderImpl</type>
       <description>resource loader for the velocity files inside a process archive</description>
     </component-plugin>
-  </external-component-plugins>
+  </external-component-plugins-->
   
   <external-component-plugins>
     <target-component>org.exoplatform.services.organization.OrganizationService</target-component>

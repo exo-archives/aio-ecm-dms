@@ -28,12 +28,6 @@
     </dependency>
 
     <dependency>
-      <groupId>exo-portal</groupId>
-      <artifactId>exo-portal.jsf.core-components</artifactId>
-      <version>1.1.4</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.exoplatform.ecm</groupId>
       <artifactId>exo.ecm.component.cms.api</artifactId>
       <version>${org.exoplatform.ecm.version}</version>
@@ -52,17 +46,27 @@
     </dependency>
 
     <dependency>
-      <groupId>exo-ecm</groupId>
-      <artifactId>exo-ecm.services.workflow.api</artifactId>
-      <version>1.2</version>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.api</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
       <scope>compile</scope>
     </dependency>
+
+    <!--
 
     <dependency>
       <groupId>drools</groupId>
       <artifactId>drools-io</artifactId>
       <version>2.0</version>
       <scope>provided</scope>
+    </dependency>
+    -->
+
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>

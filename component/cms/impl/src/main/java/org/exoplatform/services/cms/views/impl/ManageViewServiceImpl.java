@@ -16,14 +16,12 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cache.CacheService;
-import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.templates.velocity.impl.JCRResourceLoaderImpl;
 /**
  * Created by The eXo Platform SARL
  * Author : Nguyen Quang Hung
@@ -229,7 +227,7 @@ public class ManageViewServiceImpl implements ManageViewService {
     //removeFromCache(path) ;
   }
   
-  protected void removeFromCache(String templateName) {
+  /*protected void removeFromCache(String templateName) {
     try{
       ExoCache jcrcache_ = cacheService_.getCacheInstance(JCRResourceLoaderImpl.class.getName()) ;
       String portalName = containerInfo_.getContainerName() ;
@@ -240,5 +238,5 @@ public class ManageViewServiceImpl implements ManageViewService {
       }
     }catch(Exception e) {      
     }
-  }  
+  }  */
 }
