@@ -4,10 +4,13 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
+import javax.jcr.Node;
+import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -59,7 +62,14 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         PortletRequest request = portletContext.getRequest() ; 
         PortletPreferences preferences = request.getPreferences() ;
         String prefType = preferences.getValue("type", "") ;
+        String repo = preferences.getValue("repository", "") ;
+        String wsName = preferences.getValue("workspace", "") ;
+        String nodePath = preferences.getValue("path", "") ;
         uiDialogForm.setTemplateNode(prefType) ;
+        RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+        Session session = repositoryService.getRepository(repo).getSystemSession(wsName) ; 
+        Node node = (Node) session.getItem(nodePath) ;
+        uiDialogForm.setDialogHomeNode(node) ;
         addChild(uiDialogForm) ; 
       }
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
