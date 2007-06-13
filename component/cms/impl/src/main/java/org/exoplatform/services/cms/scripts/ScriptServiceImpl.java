@@ -249,7 +249,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       return scriptObject;
     }
     groovyClassLoader_ = createGroovyClassLoader();
-    Class scriptClass = groovyClassLoader_.loadClass(repository + ":" + scriptName) ;        
+    Class scriptClass = groovyClassLoader_.loadClass(scriptName) ;        
     pC.registerComponentImplementation(scriptName, scriptClass); 
     scriptObject = (CmsScript) pC.getComponentInstance(scriptName);
     resourceCache_.put(scriptName, scriptObject) ;
