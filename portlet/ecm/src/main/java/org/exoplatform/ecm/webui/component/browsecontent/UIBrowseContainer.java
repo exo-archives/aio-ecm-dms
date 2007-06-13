@@ -75,9 +75,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   private boolean isShowDocumentByTag_ = false ;
   private String tagPath_ = "" ;
   private TreeNode treeRoot_ ;
-  private Node rootNode_ ;
-  private Node currentNode_ ;
-  private Node selectedTab_ ;
+  private Node rootNode_  = null ;
+  private Node currentNode_  = null ;
+  private Node selectedTab_  = null ;
   private String oldTemplate_  ;
   private int rowPerBlock_ = 6 ;
   final public String documentView_ = "DocumentView" ;
@@ -85,8 +85,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   final public String KEY_SELECTED = "selectedNode" ;
   private Map<String, Node> history_  ;
   private String templatePath_ ;
+  private String templateDetail_ ;
   private String categoryPath_ ;
-  private String templateType_ ;
+  private String usecase_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
   @SuppressWarnings("unused")
@@ -105,34 +106,22 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-  private String getTemplatePath(String ucase, String tempName) {
-    ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
-    List<Node> templateList = new ArrayList<Node>() ; 
-    String repoName = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
-    try {
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName)) ;
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repoName)) ;
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repoName)) ;
-      templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repoName)) ;    
-      for(Node temp : templateList) {
-        Node parentNode = temp.getParent() ; 
-        if(parentNode.getName().equals(ucase)) return parentNode.getNode(tempName).getPath() ;      
-      }
-    } catch (Exception e) {
-      e.printStackTrace() ;
-    }
-    return null ;
-  }
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
-    String templateType = preferences.getValue(Utils.CB_USECASE, "") ;
-    templateType_ = templateType ;
+    usecase_ = preferences.getValue(Utils.CB_USECASE, "") ;
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
+    String repoName = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
     setShowSearchForm(false) ;
-    setShowDocumentDetail(false) ; 
-    templatePath_ = getTemplatePath(templateType, tempName) ; 
-    if(templateType.equals(Utils.CB_USE_FROM_PATH)) {
+    ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
+    
+    if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName).getNode(tempName).getPath() ; 
       String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-      rootNode_ = (Node) getSession().getItem(categoryPath) ;
+      
+      if(rootNode_ == null || !rootNode_.getPath().equals(categoryPath)) {
+        rootNode_ = (Node) getSession().getItem(categoryPath) ;
+        currentNode_ = rootNode_ ;
+        selectedTab_ = rootNode_ ;
+      }
       if(isEnableToolBar()) initToolBar(false, true, true) ;
       else initToolBar(false, false, false) ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
@@ -143,25 +132,29 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         setPageIterator(getSubDocumentList(getCurrentNode())) ;
       }
     } 
-    if(templateType.equals(Utils.CB_USE_DOCUMENT)) {
-      setShowDocumentDetail(true) ;
+    if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
+      templateDetail_ = viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName).getNode(tempName).getPath() ;
       String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
       Node documentNode = getNodeByPath(categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "")) ;
-      initDocumentDetail(documentNode) ;
+      viewDocument(documentNode, false) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
     } 
-    if(templateType.equals(Utils.CB_USE_JCR_QUERY)) {
+    if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       setPageIterator(getNodeByQuery(-1)) ;
     } 
-    if(templateType.equals(Utils.CB_USE_SCRIPT)) { 
+    if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       setPageIterator(getNodeByScript()) ;
     }
   }
 
   public String getTemplate() {
-    return templatePath_ ;}
+    if(isShowDocumentDetail_) return templateDetail_ ;
+    return templatePath_ ;
+  }
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
@@ -272,19 +265,19 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
 
   public void refresh() throws Exception {
     PortletPreferences preferences = getPortletPreferences() ; 
-    if(templateType_.equals(Utils.CB_USE_FROM_PATH)) {
+    if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
       if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
         setPageIterator(getSubDocumentList(getCurrentNode())) ;
       }
     } 
-    if(templateType_.equals(Utils.CB_USE_DOCUMENT)) {
+    if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
       setShowDocumentDetail(true) ;
     } 
-    if(templateType_.equals(Utils.CB_USE_JCR_QUERY)) {
+    if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
       setPageIterator(getNodeByQuery(-1)) ;
     } 
-    if(templateType_.equals(Utils.CB_USE_SCRIPT)) { 
+    if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
       setPageIterator(getNodeByScript()) ;
     }
   }
@@ -314,23 +307,14 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     toolBar.setEnableSearch(showSearch) ;
     toolBar.setRendered(true) ;
   }
-  public void viewDocument(Node docNode, boolean hasDocDetail ,boolean hasDocList) throws Exception {
-    setShowDocumentDetail(hasDocDetail) ;
+  public void viewDocument(Node docNode ,boolean hasDocList) throws Exception {
+    setShowDocumentDetail(true) ;
     setShowDocumentList(hasDocList) ;
-    initDocumentDetail(docNode) ;
     initToolBar(false, false, false) ;
-    String templateType = Utils.CB_USE_DOCUMENT ;
-    String tempName = getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
-    templatePath_ = getTemplatePath(templateType, tempName) ;
+    UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
+    uiDocumetDetail.setNode(docNode) ;
+    uiDocumetDetail.setRendered(true) ;
   }
-  public void initDocumentDetail(Node docNode) throws Exception {
-    if(isShowDocumentDetail()) {
-      UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
-      uiDocumetDetail.setNode(docNode) ;
-      uiDocumetDetail.setRendered(true) ;
-    }
-  }
-
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
   }
@@ -371,7 +355,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public List<Node> getNodeByScript() throws Exception {
     String[] array = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, "").split(Utils.SEMI_COLON) ;
     DataTransfer data = new DataTransfer() ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "" ) ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     data.setWorkspace(array[0].trim()) ;
     data.setSession(getSession()) ;
@@ -684,6 +668,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         response.setWindowState(WindowState.MAXIMIZED);
       }
       UIBrowseContainer uiContainer = event.getSource() ;
+      uiContainer.isShowDocumentDetail_ = false ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
       if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
@@ -712,8 +697,13 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
           uiContainer.storeHistory() ;
           uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
           if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
-        } 
-        uiContainer.viewDocument(selectNode, true, true) ;
+        }
+        ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
+        String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+        String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
+        uiContainer.templateDetail_ = vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName)
+                                       .getNode(detailTemplateName).getPath()  ;
+        uiContainer.viewDocument(selectNode, true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }

@@ -17,6 +17,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -38,6 +39,7 @@ public class UIConfigTabPane extends UIContainer {
   public static String PATH_SELECTOR = "pathSelector" ;
   public static String DOCUMENT_SELECTOR = "documentSelector" ;
   public String configType_ = null ;
+  protected boolean isNewConfig_ = false ;
   public UIConfigTabPane() throws Exception {
     addChild(UINewConfigForm.class, null, null).setRendered(false) ;
     addChild(UIConfigContainer.class, null, null) ;
@@ -68,43 +70,60 @@ public class UIConfigTabPane extends UIContainer {
   public void getCurrentConfig() throws Exception {
     PortletPreferences preference = getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
     UINewConfigForm uiConfigForm = getChild(UINewConfigForm.class) ;
-    UIConfigContainer uiConfigContainer = getChild(UIConfigContainer.class) ;
     uiConfigForm.setRendered(false) ;
-    uiConfigContainer.getChildren().clear() ;
+    UIConfigContainer uiConfigContainer = getChild(UIConfigContainer.class) ;
+    for(UIComponent child : uiConfigContainer.getChildren()) {
+      child.setRendered(false) ;
+    }
     String repository = preference.getValue(Utils.REPOSITORY, "") ;
-    String browseType = preference.getValue(Utils.CB_USECASE, "") ;
+    String usecase = preference.getValue(Utils.CB_USECASE, "") ;
     String workspace = preference.getValue(Utils.WORKSPACE_NAME, "") ;
-    if(browseType.equals(Utils.CB_USE_FROM_PATH)) {
-      UIPathConfig uiPathConfig = uiConfigContainer.addChild(UIPathConfig.class, null, null) ;
-      uiPathConfig.initForm(preference, repository, workspace, false, false) ;
-    } else if(browseType.equals(Utils.CB_USE_JCR_QUERY)) {
-      UIQueryConfig  uiQueryConfig = uiConfigContainer.addChild(UIQueryConfig.class, null, null) ;
-      uiQueryConfig.initForm(preference, repository, workspace, false, false) ;
-    } else if(browseType.equals(Utils.CB_USE_SCRIPT)) {
-      UIScriptConfig uiScriptConfig = uiConfigContainer.addChild(UIScriptConfig.class, null, null) ;
-      uiScriptConfig.initForm(preference, repository, workspace, false, false);
-    } else if(browseType.equals(Utils.CB_USE_DOCUMENT)) {
-      UIDocumentConfig uiDocumentConfig = uiConfigContainer.addChild(UIDocumentConfig.class, null, null) ;
-      uiDocumentConfig.initForm(preference, repository, workspace, false, false);
+    if(usecase.equals(Utils.CB_USE_FROM_PATH)) {
+      UIPathConfig uiPathConfig = uiConfigContainer.getChild(UIPathConfig.class) ;
+      if(uiPathConfig == null) {
+        uiPathConfig = uiConfigContainer.addChild(UIPathConfig.class, null, null) ;
+      }      
+      uiPathConfig.initForm(preference, repository, workspace, false) ;
+      uiPathConfig.setRendered(true) ;
+    } else if(usecase.equals(Utils.CB_USE_JCR_QUERY)) {
+      UIQueryConfig uiQueryConfig = uiConfigContainer.getChild(UIQueryConfig.class) ;
+      if(uiQueryConfig == null) {
+        uiQueryConfig = uiConfigContainer.addChild(UIQueryConfig.class, null, null) ;
+      }      
+      uiQueryConfig.initForm(preference, repository, workspace, false) ;
+      uiQueryConfig.setRendered(true) ;
+    } else if(usecase.equals(Utils.CB_USE_SCRIPT)) { 
+       UIScriptConfig uiScriptConfig = uiConfigContainer.getChild(UIScriptConfig.class);
+       if(uiScriptConfig == null) { 
+         uiScriptConfig = uiConfigContainer.addChild(UIScriptConfig.class, null, null) ;
+         
+       }
+      uiScriptConfig.initForm(preference, repository, workspace, false);
+      uiScriptConfig.setRendered(true) ;
+    } else if(usecase.equals(Utils.CB_USE_DOCUMENT)) {
+      UIDocumentConfig uiDocumentConfig = uiConfigContainer.getChild(UIDocumentConfig.class) ;
+        if(uiDocumentConfig == null) {
+          uiDocumentConfig = uiConfigContainer.addChild(UIDocumentConfig.class, null, null) ;
+        }
+      uiDocumentConfig.initForm(preference, repository, workspace, false);
     }
     uiConfigContainer.setRendered(true) ;
   }
-
-  public void loadNewConfig(boolean isAddNew) throws Exception {
+  
+  
+  public void showNewConfigForm(boolean isAddNew) throws Exception {
     UINewConfigForm uiConfigForm = getChild(UINewConfigForm.class) ;
     UIConfigContainer uiConfigContainer = getChild(UIConfigContainer.class) ;
     if(isAddNew) uiConfigForm.resetForm() ;
     uiConfigForm.setRendered(true) ;
     uiConfigContainer.setRendered(false) ;
-    uiConfigContainer.getChildren().clear() ;
   }
 
-  public void initNewConfig(String browseType, String repository, String workSpace) throws Exception {
+  public void initNewConfig(String usercase, String repository, String workSpace) throws Exception {
     UINewConfigForm uiConfigForm = getChild(UINewConfigForm.class) ;
     uiConfigForm.setRendered(false) ;
     UIConfigContainer uiConfigContainer = getChild(UIConfigContainer.class) ;
-    uiConfigContainer.getChildren().clear() ;
-    uiConfigContainer.initNewConfig(browseType, repository, workSpace) ;
+    uiConfigContainer.initNewConfig(usercase, repository, workSpace) ;
     uiConfigContainer.setRendered(true) ;
   }
 

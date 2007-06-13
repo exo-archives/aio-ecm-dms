@@ -16,6 +16,7 @@ import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -47,6 +48,8 @@ import sun.net.dns.ResolverConfiguration.Options;
 )
 public class UIScriptConfig extends UIForm {
 
+  protected boolean isEdit_ = false ;
+  
   public UIScriptConfig() {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
@@ -60,17 +63,21 @@ public class UIScriptConfig extends UIForm {
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
 
-  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew, 
-      boolean isEditable) throws Exception {
+  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew) throws Exception {
     String hasComment = "false" ;
     String hasVote = "false" ;
     String hasTagMap = "false" ;
-    if(isAddNew) setActions(UINewConfigForm.ADD_NEW_ACTION) ;
-    else {
-      isEditable = false ;
-      hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
-      hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
-      hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
+    if(isEdit_) {
+      if(isAddNew) {
+        setActions(UINewConfigForm.ADD_NEW_ACTION) ;
+      }else {
+        setActions(UINewConfigForm.NORMAL_ACTION) ;
+        hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
+        hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+        hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
+      }
+    } else {
+      setActions(UINewConfigForm.DEFAULT_ACTION) ;
     }
     UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setValue(repository) ;
@@ -80,22 +87,22 @@ public class UIScriptConfig extends UIForm {
     workSpaceField.setEditable(false) ;
     UIFormSelectBox scriptField = getChildById(UINewConfigForm.FIELD_SCRIPTNAME) ;
     scriptField.setOptions(getScriptOption()) ;
-    scriptField.setEnable(isEditable) ;
+    scriptField.setEnable(isEdit_) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     templateField.setOptions(getTemplateOption()) ;
-    templateField.setEnable(isEditable) ;
+    templateField.setEnable(isEdit_) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
-    detailtemField.setEnable(isEditable) ;
+    detailtemField.setEnable(isEdit_) ;
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
     enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
-    enableTagMapField.setEnable(isEditable) ;
+    enableTagMapField.setEnable(isEdit_) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
     enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
-    enableCommentField.setEnable(isEditable) ;  
+    enableCommentField.setEnable(isEdit_) ;  
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    enableVoteField.setEnable(isEditable) ; 
+    enableVoteField.setEnable(isEdit_) ; 
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
   }
 
@@ -145,7 +152,6 @@ public class UIScriptConfig extends UIForm {
   public static class SaveActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       PortletPreferences prefs = uiBrowseContentPortlet.getPortletPreferences();
       String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
@@ -167,13 +173,10 @@ public class UIScriptConfig extends UIForm {
       prefs.setValue(Utils.CB_VIEW_COMMENT,String.valueOf(hasComment)) ;    
       prefs.setValue(Utils.CB_VIEW_VOTE,String.valueOf(hasVote)) ;   
       prefs.store() ; 
-      uiForm.reset() ;
-      
-      /*
-      uiConfigTabPane.getCurrentConfig() ;
-      UIBrowseContainer container = 
-        uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
-      container.loadPortletConfig(prefs) ;*/
+      uiForm.isEdit_ = false ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.isNewConfig_ = false ;
+      UIConfigContainer uiConfigContainer = uiForm.getAncestorOfType(UIConfigContainer.class) ;
     }
   }  
 
@@ -181,27 +184,33 @@ public class UIScriptConfig extends UIForm {
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.loadNewConfig(true);
+      uiConfigTabPane.isNewConfig_ = true ;
+      uiConfigTabPane.showNewConfigForm(true);
     }
   }
   public static class CancelActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
+      uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.getCurrentConfig() ;
+      uiConfigTabPane.isNewConfig_ = false ;
     }
   }
   public static class BackActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.loadNewConfig(false);
+      uiConfigTabPane.isNewConfig_ = true;
+      uiConfigTabPane.showNewConfigForm(false) ;
     }
   }
   public static class EditActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
-      uiForm.editForm(true) ; 
+      uiForm.isEdit_ = true ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.isNewConfig_ = false ;
+      
     }
   }
 }

@@ -434,10 +434,14 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           } 
           uiForm.refreshWorkspaceList() ;
         }else {
-          Object[] args = new Object[]{workspaceName}  ;    
+          Object[] args = {workspaceName}  ;    
           UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+          System.out.println("\n\nworkspace name===>"+workspaceName+ "\n\n");
           uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-workspace", args)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ; 
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          uiForm.refreshWorkspaceList() ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;  
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
           return ;
         }
       } else {

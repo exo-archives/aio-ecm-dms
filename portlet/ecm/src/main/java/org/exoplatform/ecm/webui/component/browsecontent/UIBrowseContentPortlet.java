@@ -37,26 +37,27 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     UIPopupAction popup = addChild(UIPopupAction.class, null, "UICBPopupAction");
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiContainer = createUIComponent(UIBrowseContainer.class, null, null) ;
-    //uiContainer.loadPortletConfig(getPortletPreferences()) ;
     addChild(uiContainer) ;
     UIConfigTabPane uiConfig = createUIComponent(UIConfigTabPane.class, null, null) ;
     addChild(uiConfig) ;
-    uiConfig.getCurrentConfig() ;
     uiConfig.setRendered(false) ;
   }
   
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
-    uiContainer.loadPortletConfig(getPortletPreferences()) ;
-    //getChild(UIBrowseContainer.class).refresh() ;
+    PortletPreferences portletPref = getPortletPreferences() ;
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
+      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN VIEW  MODE \n");  
+      uiContainer.loadPortletConfig(portletPref) ;
       uiTabPane.setRendered(false) ;
       uiContainer.setRendered(true) ;
       getChild(UIBrowseContainer.class).getSession().refresh(true) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
+      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN EDIT  MODE \n");  
+      if(! uiTabPane.isNewConfig_) uiTabPane.getCurrentConfig() ;
       uiTabPane.setRendered(true) ;
       uiContainer.setRendered(false) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {

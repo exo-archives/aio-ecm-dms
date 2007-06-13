@@ -50,6 +50,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 public class UIDocumentConfig extends UIForm implements UISelector{
   final static public String FIELD_PATHSELECT = "path" ;
   final static public String FIELD_DOCSELECT = "doc" ;
+  protected boolean isEdit_ = false ;
   public UIDocumentConfig() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
@@ -71,8 +72,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     return uiTabPane.getWorkSpaceOption() ;
   }
   
-  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew, 
-      boolean isEditable) throws Exception {
+  public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew) throws Exception {
     String path = preference.getValue(Utils.JCR_PATH, "") ;
     String docName = "" ;
     String hasComment = "true" ;
@@ -80,7 +80,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     if(isAddNew) setActions(UINewConfigForm.ADD_NEW_ACTION) ;
     else {
       docName = preference.getValue(Utils.CB_DOCUMENT_NAME, "") ;
-      isEditable = false ;
+      //isEditable = false ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
     }
@@ -103,20 +103,26 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
     
-    if((isAddNew)||(isEditable)) {
+    if(isEdit_) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
       documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, new String[] {"DocSelect"}) ;
+      if(isAddNew) {
+        setActions(UINewConfigForm.ADD_NEW_ACTION) ;
+      }else {
+        setActions(UINewConfigForm.NORMAL_ACTION) ;
+      }
     } else { 
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
       documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
+      setActions(UINewConfigForm.DEFAULT_ACTION) ;
     }
     categoryPathField.setValue(path) ;
     documentNameField.setValue(docName) ;
-    categoryPathField.setEditable(isEditable) ;
-    documentNameField.setEditable(isEditable) ;
-    detailtempField.setEnable(isEditable) ;
-    enableCommentField.setEnable(isEditable) ;
-    enableVoteField.setEnable(isEditable) ;
+    categoryPathField.setEditable(isEdit_) ;
+    documentNameField.setEditable(isEdit_) ;
+    detailtempField.setEnable(isEdit_) ;
+    enableCommentField.setEnable(isEdit_) ;
+    enableVoteField.setEnable(isEdit_) ;
   }
 
   public void editForm(boolean isEditable) {
@@ -163,7 +169,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
   public static class SaveActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIBrowseContainer container = uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       PortletPreferences prefs = container.getPortletPreferences();
@@ -211,11 +216,14 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_VIEW_COMMENT, String.valueOf(hasComment)) ;    
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ;    
       prefs.store() ; 
-      uiForm.reset() ;
+      uiForm.isEdit_ = false ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      if(uiConfigTabPane.isNewConfig_) uiConfigTabPane.isNewConfig_ = false ;
+     /* uiForm.reset() ;
       uiConfigTabPane.getCurrentConfig() ;
       container.loadPortletConfig(container.getPortletPreferences()) ;
       container.setShowDocumentDetail(true) ;
-      container.setShowDocumentList(false) ;
+      container.setShowDocumentList(false) ;*/
     }
   }  
 
@@ -229,28 +237,33 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.loadNewConfig(true) ;
+      uiConfigTabPane.isNewConfig_ = true ;
+      uiConfigTabPane.showNewConfigForm(true);
     }
   }
   
   public static class CancelActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
+      uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.getCurrentConfig() ;
+      uiConfigTabPane.isNewConfig_ = false ;
     }
   }
   public static class BackActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.loadNewConfig(false) ;
+      uiConfigTabPane.isNewConfig_ = true;
+      uiConfigTabPane.showNewConfigForm(false) ;
     }
   }
   public static class EditActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
-      uiForm.editForm(true) ;
+      uiForm.isEdit_ = true ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.isNewConfig_ = false ;
     }
   }
   public static class AddPathActionListener extends EventListener<UIDocumentConfig> {

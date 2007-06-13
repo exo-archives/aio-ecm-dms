@@ -121,7 +121,8 @@ public class UINewConfigForm extends UIForm {
     public void execute(Event<UINewConfigForm> event) throws Exception {
       UINewConfigForm uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.getCurrentConfig() ;
+      uiConfigTabPane.isNewConfig_ = false ;
+      //uiConfigTabPane.getCurrentConfig() ;
     }
   }  
 
@@ -129,6 +130,7 @@ public class UINewConfigForm extends UIForm {
     public void execute(Event<UINewConfigForm> event) throws Exception {
       UINewConfigForm uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.isNewConfig_ = true ;
       String browseType = uiForm.getUIFormSelectBox(FIELD_BROWSETYPE).getValue() ;
       String workSpace = uiForm.getUIFormSelectBox(FIELD_WORKSPACE).getValue() ;
       String repository = uiForm.getUIFormSelectBox(FIELD_REPOSITORY).getValue() ;
