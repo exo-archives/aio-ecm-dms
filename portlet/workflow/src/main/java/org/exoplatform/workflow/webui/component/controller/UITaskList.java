@@ -10,8 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.jcr.PathNotFoundException;
-
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
@@ -22,9 +20,9 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 
 /**
  * Created by The eXo Platform SARL
@@ -85,24 +83,15 @@ public class UITaskList extends UIContainer {
 
   static  public class ManageStateActionListener extends EventListener<UITaskList> {
     public void execute(Event<UITaskList> event) throws Exception {
-      UITaskList taskList = event.getSource() ;
+      UITaskList uiTaskList = event.getSource() ;
       String tokenId = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      taskList.setRenderSibbling(UITaskList.class) ;
-      UIWorkflowControllerPortlet uiControllerPortlet = taskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
-      UIPopupWindow uiPopup = uiControllerPortlet.getChild(UIPopupWindow.class) ;
-      uiPopup.setShow(true) ;
-      uiPopup.setRendered(true) ;
-      UITaskManager uiTaskManager = (UITaskManager)uiPopup.getUIComponent() ;
-      UITask uiTask = uiTaskManager.getChild(UITask.class) ;
-      try {
-        uiTask.setIdentification(tokenId) ;
-        uiTask.setIsStart(false) ;
-        uiTask.updateUITree() ;
-      } catch (PathNotFoundException e){
-        Task task = taskList.workflowServiceContainer_.getTask(tokenId);
-        String pid = task.getProcessInstanceId();       
-        taskList.workflowServiceContainer_.deleteProcessInstance(pid);
-      }
+      uiTaskList.setRenderSibbling(UITaskList.class) ;
+      UIWorkflowControllerPortlet uiControllerPortlet = uiTaskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
+      UIWorkflowPopup uiPopupAction = uiControllerPortlet.getChild(UIWorkflowPopup.class) ;
+      UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null) ;
+      uiTaskManager.setTokenId(tokenId) ;
+      uiPopupAction.activate(uiTaskManager, 600, 550) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 }

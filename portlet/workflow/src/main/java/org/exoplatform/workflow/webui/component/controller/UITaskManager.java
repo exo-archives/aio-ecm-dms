@@ -4,8 +4,13 @@
  **************************************************************************/
 package org.exoplatform.workflow.webui.component.controller ;
 
+import javax.jcr.PathNotFoundException;
+
+import org.exoplatform.services.workflow.Task;
+import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.workflow.webui.component.UIPopupComponent;
 
 /**
  * Created by The eXo Platform SARL
@@ -15,14 +20,30 @@ import org.exoplatform.webui.core.UIContainer;
  * 10:07:15 AM
  */
 @ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
-public class UITaskManager extends UIContainer {
+public class UITaskManager extends UIContainer implements UIPopupComponent {
   
-  private UIDocumentContent uiDocContent;
-
+  private String tokenId_ ;
+  
   public UITaskManager() throws Exception {
     addChild(UITask.class, null, null) ;
-    uiDocContent = createUIComponent(UIDocumentContent.class, null, null).setRendered(false) ;
   }
+
+  public void setTokenId(String tokenId) { tokenId_ = tokenId ; }
   
-  public UIDocumentContent getUIDocContent() { return uiDocContent ; }
+  public void activate() throws Exception {
+    UITask uiTask = getChild(UITask.class) ;
+    WorkflowServiceContainer workflowServiceContainer = 
+      getApplicationComponent(WorkflowServiceContainer.class) ;
+    try {
+      uiTask.setIdentification(tokenId_) ;
+      uiTask.setIsStart(false) ;
+      uiTask.updateUITree() ;
+    } catch (PathNotFoundException e){
+      Task task = workflowServiceContainer.getTask(tokenId_);
+      String pid = task.getProcessInstanceId();       
+      workflowServiceContainer.deleteProcessInstance(pid);
+    }
+  }
+
+  public void deActivate() throws Exception { }
 }

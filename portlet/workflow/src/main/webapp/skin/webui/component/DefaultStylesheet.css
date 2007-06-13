@@ -266,3 +266,11 @@
 .UIWorkflowPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 }
+
+.UIWorkflowPortlet .UITabPane .UIForm .UIAction {
+  width: 160px;
+}
+
+.UIWorkflowPortlet .UITask .UIForm .UIAction {
+  width: 240px;
+}

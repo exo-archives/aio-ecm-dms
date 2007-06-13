@@ -18,8 +18,7 @@ import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 
-import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Process;
@@ -31,13 +30,11 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
@@ -47,9 +44,11 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
+import org.exoplatform.workflow.webui.component.UIFormWYSIWYGInput;
+import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 import org.exoplatform.workflow.webui.component.VariableMaps;
-import org.exoplatform.resolver.ResourceResolver;
 
 /**
  * Created by The eXo Platform SARL
@@ -73,14 +72,14 @@ public class UITask extends UIForm {
   public static final String MANAGE_TRANSITION = "manageTransition";
   private static final String TEXT = "text";
   private static final String TEXTAREA = "textarea";
-//  private static final String WYSIWYG = "wysiwyg";
+  private static final String WYSIWYG = "wysiwyg";
   private static final String DATE = "date";
   private static final String DATE_TIME = "datetime";
   private static final String SELECT = "select";
   private static final String UPLOAD = "upload";
   private static final String CHECK_BOX = "checkbox";
   private static final String RADIO_BOX = "radiobox";
-  private static final String NODE_TYPE = "nodetype";
+//  private static final String NODE_TYPE = "nodetype";
   private static final String NODE_VIEW = "nodeview";
   private static final String NODE_EDIT = "nodeedit";
   private static final String LABEL_ENCODING = ".label";
@@ -93,35 +92,27 @@ public class UITask extends UIForm {
   private String identification_;
   private WorkflowServiceContainer serviceContainer;
   private WorkflowFormsService formsService;
-  private TemplateService dialogService;
   private RepositoryService jcrService;
   private List<InputInfo> inputInfo_;
-  private boolean isView_;
-  private boolean isCreatedOrUpdated_;
-  private String dialogPath_;
 
   public UITask() {
     serviceContainer = getApplicationComponent(WorkflowServiceContainer.class) ;
     formsService = getApplicationComponent(WorkflowFormsService.class) ;
-    dialogService = getApplicationComponent(TemplateService.class) ;
     jcrService = getApplicationComponent(RepositoryService.class) ;
     inputInfo_ = new ArrayList<InputInfo>();
   }
   
   public String getTemplate() {
-    System.out.println("getTemplate ===== " + getComponentConfig().getTemplate()) ;
     if(isCustomizedView()) {
       return getIdentification() + ":" + getCustomizedView() ;
     }
     return getComponentConfig().getTemplate() ;
   }
   
+  @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(isCustomizedView()) {
-      return new BJARResourceResolver(serviceContainer) ;
-    }
-    return super.getTemplateResourceResolver((WebuiRequestContext)WebuiRequestContext.getCurrentInstance(), 
-        getComponentConfig().getTemplate()) ;
+    if(isCustomizedView()) return new BJARResourceResolver(serviceContainer) ;
+    return super.getTemplateResourceResolver(context, getComponentConfig().getTemplate()) ;
   }
   
   public String getManageTransition() { return MANAGE_TRANSITION ; }
@@ -144,9 +135,7 @@ public class UITask extends UIForm {
 
   public void updateUITree() throws Exception {
     clean() ;
-    UITaskManager taskManager = getAncestorOfType(UITaskManager.class) ;
-    UIDocumentContent docContent = taskManager.getUIDocContent() ;
-    
+    UITaskManager uiTaskManager = getParent() ;
     Locale locale = getAncestorOfType(UIApplication.class).getLocale();
     Map variablesForService = new HashMap();
     if (isStart_) {
@@ -168,8 +157,9 @@ public class UITask extends UIForm {
       String name = (String) attributes.get("name");
       String component = (String) attributes.get("component");
       String editableString = (String) attributes.get("editable");
+      boolean editable = true ;
       if (editableString != null && !"".equals(editableString)) {
-//        editable = new Boolean(editableString).booleanValue();
+        editable = new Boolean(editableString).booleanValue();
       }
       boolean mandatory = false;
       String mandatoryString = (String) attributes.get("mandatory");
@@ -177,33 +167,34 @@ public class UITask extends UIForm {
         mandatory = new Boolean(mandatoryString).booleanValue();
       }
       Object value = variablesForService.get(name);
-      String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      if (NODE_TYPE.equals(component)) {
-        dialogPath_ = dialogService.getTemplatePathByUser(true, (String) value, userName, repository);
-        isCreatedOrUpdated_ = true;
-      } else if (NODE_EDIT.equals(component)) {
-        if(getChild(UIDocumentContent.class) != null) removeChild(UIDocumentContent.class) ;
-//        String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
-//        Node viewNode = (Node) jcrService.getRepository().getSystemSession(workspaceName).getItem(nodePath);
-        isView_ = false ;
-//        docContent.setNode(viewNode);
+      if (NODE_EDIT.equals(component)) {
+        UIDocumentForm uiDocForm = createUIComponent(UIDocumentForm.class, null, null) ;
+        String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
+        Node dialogNode = (Node) jcrService.getRepository(repository).getSystemSession(workspaceName).getItem(nodePath);
+        String nodetype = dialogNode.getPrimaryNodeType().getName();
+        uiDocForm.setNode(dialogNode);
+        uiDocForm.setTemplateNode(nodetype) ;
         Task task = serviceContainer.getTask(identification_);
         form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
-//        String nodetype = viewNode.getPrimaryNodeType().getName();
-//        dialogPath_ = dialogService.getTemplatePathByUser(true, nodetype, userName);
-        isCreatedOrUpdated_ = false ;
+        uiTaskManager.addChild(uiDocForm) ;
+        uiDocForm.setRendered(false) ;
       } else if (NODE_VIEW.equals(component)) {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
         Node viewNode = (Node) jcrService.getRepository(repository).getSystemSession(workspaceName).getItem(nodePath);
-        isView_ = true ;
-        docContent.setNode(viewNode);
+        UIDocumentContent uiDocContent = createUIComponent(UIDocumentContent.class, null, null) ;
+        uiDocContent.setNode(viewNode);
+        uiTaskManager.addChild(uiDocContent) ;
+        uiDocContent.setRendered(false) ;
       } else {
         if (component == null || TEXT.equals(component)) {
           input = new UIFormStringInput(name, (String) value);
+          ((UIFormStringInput)input).setEditable(editable);
         } else if (TEXTAREA.equals(component)) {
           input = new UIFormTextAreaInput(name, null, (String) value);
-//        } else if (WYSIWYG.equals(component)) {
-////          input = new UIWYSIWYG(name, (String) value);
+          ((UIFormTextAreaInput)input).setEditable(editable);
+        } else if (WYSIWYG.equals(component)) {
+          input = new UIFormWYSIWYGInput(name, name, (String) value);
+          ((UIFormWYSIWYGInput)input).setEditable(editable);
         } else if (DATE.equals(component) || DATE_TIME.equals(component)) {
           input = (value == null ? new UIFormDateTimeInput(name, null, new Date()) : 
                                    new UIFormDateTimeInput(name, null, (Date)value)) ;
@@ -230,11 +221,13 @@ public class UITask extends UIForm {
             }
           }
           input = new UIFormSelectBox(name, (String) value, options);
+          ((UIFormSelectBox)input).setEditable(editable);
         } else if (CHECK_BOX.equals(component)) {
           ResourceBundle bundle = form.getResourceBundle();
           String key = name + ".checkbox";
           input = new UIFormCheckBoxInput<Boolean>(name, bundle.getString(key), Boolean.valueOf(
               (String) value).booleanValue());
+          ((UIFormCheckBoxInput)input).setEditable(editable);
         } else if (UPLOAD.equals(component)) {
           input = new UIFormUploadInput(name, name);
         } else if (RADIO_BOX.equals(component)) {
@@ -261,25 +254,15 @@ public class UITask extends UIForm {
           }
           input = new UIFormRadioBoxInput(name, (String) value, options);
         }
-//        input.setEditable(editable);
         ResourceBundle res = form.getResourceBundle();
         inputInfo_.add(new InputInfo("", "", res.getString(name + LABEL_ENCODING), input, mandatory));
         addUIFormInput(input);
       }
     }
-    if(isView_ || isCreatedOrUpdated_) taskManager.addChild(docContent) ;
   }
 
   public void setIsStart(boolean b) { isStart_ = b ; }
   public boolean isStart() { return isStart_ ; }
-
-  public boolean isView() { return isView_ ; }
-
-  public boolean isCreatedOrUpdated() { return isCreatedOrUpdated_ ; }
-
-  public String getDialogPath() {
-    System.out.println("dialogPath_ ======== " + dialogPath_) ;
-    return dialogPath_ ; }
 
   public ResourceBundle getWorkflowBundle() { return form.getResourceBundle() ; }
 
@@ -314,8 +297,8 @@ public class UITask extends UIForm {
       } else if (input instanceof UIFormDateTimeInput) {
         Calendar calendar = ((UIFormDateTimeInput) input).getCalendar();
         value = calendar.getTime();
-//      } else if (input instanceof UIWYSIWYG) {
-//        value = ((UIWYSIWYG) input).getValue();
+      } else if (input instanceof UIFormWYSIWYGInput) {
+        value = ((UIFormWYSIWYGInput)input).getValue();
       } else if (input instanceof UIFormTextAreaInput) {
         value = ((UIFormTextAreaInput) input).getValue();
       } else if (input instanceof UIFormCheckBoxInput) {
@@ -341,12 +324,11 @@ public class UITask extends UIForm {
     return new VariableMaps(workflowVariables, jcrVariables);
   }
 
-  public void clean() {
-    isView_ = false;
-    isCreatedOrUpdated_ = false;
-    dialogPath_ = null;
-    inputInfo_.clear();
-    getAncestorOfType(UITaskManager.class).removeChild(UIDocumentContent.class) ;
+  public void clean() { 
+    UITaskManager uiTaskManager = getParent() ;
+    uiTaskManager.removeChild(UIDocumentContent.class) ;
+    uiTaskManager.removeChild(UIDocumentForm.class) ;
+    inputInfo_.clear(); 
   }
 
   public static class StartProcessActionListener extends EventListener<UITask> {
@@ -358,7 +340,7 @@ public class UITask extends UIForm {
       VariableMaps maps = uiTask.prepareVariables();
       Map variables = maps.getWorkflowVariables();
       uiTask.serviceContainer.startProcess(remoteUser, uiTask.identification_, variables);
-      uiTask.getAncestorOfType(UIPopupWindow.class).setShow(false) ;
+      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
     }
   }
 
@@ -372,14 +354,14 @@ public class UITask extends UIForm {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-      uiTask.getAncestorOfType(UIPopupWindow.class).setShow(false) ;
+      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
     }
   }
 
   static  public class CancelActionListener extends EventListener<UITask> {
     public void execute(Event<UITask> event) throws Exception {
-      UIPopupWindow popup = event.getSource().getAncestorOfType(UIPopupWindow.class) ;
-      popup.setShow(false) ;
+      UIWorkflowPopup uiPopup = event.getSource().getAncestorOfType(UIWorkflowPopup.class) ;
+      uiPopup.deActivate() ;
     }
   }
 
@@ -402,7 +384,7 @@ public class UITask extends UIForm {
           }
         }
       }
-      uiTask.getAncestorOfType(UIPopupWindow.class).setRendered(false) ;
+      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
     }
   }
 }

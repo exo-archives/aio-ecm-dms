@@ -27,6 +27,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.workflow.webui.component.ECMViewComponent;
 import org.exoplatform.workflow.webui.component.JCRResourceResolver;
 
@@ -52,10 +53,10 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public void setNode(Node node) { this.node_ = node; }
   
   public Node getNode() throws Exception { 
-    if(node_.hasProperty("exo:language")) {
-      String defaultLang = node_.getProperty("exo:language").getString() ;
+    if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
+      String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(!language_.equals(DEFAULT_LANGUAGE) && !language_.equals(defaultLang)) {
-        Node curNode = node_.getNode("languages/" + language_) ;
+        Node curNode = node_.getNode(Utils.LANGUAGES + "/" + language_) ;
         language_ = defaultLang ;
         return curNode ;
       } 
@@ -67,25 +68,18 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public String getNodeType() throws Exception { return node_.getPrimaryNodeType().getName() ; }
   
   public String getTemplate() {
-    UITask task = getAncestorOfType(UITaskManager.class).getChild(UITask.class) ;
-    String temp = "" ;
     try {
-      if(task.isView()) {
-        if(isNodeTypeSupported()) temp = getTemplatePath() ;
-        else temp = super.getTemplate() ;
-      } else if(task.isCreatedOrUpdated()) temp = task.getDialogPath() ;
+      if(isNodeTypeSupported()) return getTemplatePath() ;
+      return super.getTemplate() ;
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return temp ;
+    return null ;
   }
   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    UITask task = getAncestorOfType(UITaskManager.class).getChild(UITask.class) ;
     try {
-      if((task.isView() && isNodeTypeSupported()) || task.isCreatedOrUpdated()) {
-        return new JCRResourceResolver(node_.getSession(), "exo:templateFile") ;
-      }
+      return new JCRResourceResolver(node_.getSession(), Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -106,7 +100,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>();
     try {
-      Value[] vals = node_.getProperty("exo:relation").getValues();
+      Value[] vals = node_.getProperty(Utils.EXO_RELATION).getValues();
       for (Value val : vals) {
         String uuid = val.getString();
         Node currentNode = node_.getSession().getNodeByUUID(uuid);
@@ -125,7 +119,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
       Node childNode = childrenIterator.nextNode();
       try {
         nodeType = childNode.getPrimaryNodeType().getName();
-        if ("nt:file".equals(nodeType)) attachments.add(childNode);
+        if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
       } catch (Exception e) {}
     }
     return attachments;
@@ -136,13 +130,13 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
 
   public List getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(node_.hasNode("languages")){
-      Node languages = node_.getNode("languages") ;
+    if(node_.hasNode(Utils.LANGUAGES)){
+      Node languages = node_.getNode(Utils.LANGUAGES) ;
       NodeIterator iter = languages.getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(node_.getProperty("exo:language").getString()) ;      
+      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
     } 
     return local ;
   }
@@ -166,9 +160,9 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public String getIcons(Node node, String appended) throws Exception {
     String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
     StringBuilder str = new StringBuilder(nodeType) ;
-    if(node.isNodeType("nt:file")) {
-      Node jcrContentNode = node.getNode("jcr:content") ;
-      str.append(" ").append(jcrContentNode.getProperty("jcr:mimeType").getString().replaceFirst("/", "_")).append(appended);
+    if(node.isNodeType(Utils.NT_FILE)) {
+      Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+      str.append(" ").append(jcrContentNode.getProperty(Utils.JCR_MIMETY).getString().replaceFirst("/", "_")).append(appended);
     }
     return str.toString() ;
   }
@@ -176,8 +170,8 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode("exo:image") ;
-    InputStream input = imageNode.getProperty("jcr:data").getStream() ;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
@@ -210,9 +204,9 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    if(!node.getPrimaryNodeType().getName().equals("nt:file")) return null; 
-    Node jcrContentNode = node.getNode("jcr:content") ;
-    InputStream input = jcrContentNode.getProperty("jcr:data").getStream() ;
+    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
+    Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+    InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
@@ -231,6 +225,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     ManageableRepository manaRepo = (ManageableRepository)node_.getSession().getRepository() ;
     return manaRepo.getConfiguration().getName() ;
   }
+  
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentContent> {
     public void execute(Event<UIDocumentContent> event) throws Exception {
       UIDocumentContent uiDocContent = event.getSource() ;
@@ -245,6 +240,4 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
     .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
   }
-
-
 }

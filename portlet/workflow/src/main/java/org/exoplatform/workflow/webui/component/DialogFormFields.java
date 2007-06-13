@@ -1,8 +1,8 @@
 /***************************************************************************
- * Copyright 2001-2003 The eXo Platform SARL         All rights reserved.  *
+ * Copyright 2001-2007 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component;
+package org.exoplatform.workflow.webui.component;
 
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -18,9 +18,6 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-//import org.exoplatform.faces.core.component.UIStringInput;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -43,12 +40,10 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
- * Author : nqhungvn
- *          nguyenkequanghung@yahoo.com
- * nov 6, 2006
- * 
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Jun 13, 2007 1:00:39 AM
  */
-
 @SuppressWarnings("unused")
 public class DialogFormFields extends UIForm {
 
@@ -326,7 +321,7 @@ public class DialogFormFields extends UIForm {
       }     
       addUIFormInput(uiInput) ;
     }
-    //if(type.equals("password")) uiInput.setType((short)UIFormStringInput.PASSWORD) ;
+    if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     if(node_ != null) {
@@ -840,15 +835,12 @@ public class DialogFormFields extends UIForm {
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
-      String workspace ;
-      String storePath ;
+      String workspace = null;
+      String storePath = null;
       if(dialogForm.dialogPortletHomeNode_ != null) {
         storePath = dialogForm.dialogPortletHomeNode_.getPath() ;
         workspace = dialogForm.dialogPortletHomeNode_.getSession().getWorkspace().getName() ;
-      } else {
-        storePath = dialogForm.getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getPath() ;
-        workspace = dialogForm.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
-      }
+      } 
       String path = storePath+ "&workspaceName=" + workspace + 
                     "&repository=" + dialogForm.repository_;
       for(String interceptor : dialogForm.prevScriptInterceptor_) {

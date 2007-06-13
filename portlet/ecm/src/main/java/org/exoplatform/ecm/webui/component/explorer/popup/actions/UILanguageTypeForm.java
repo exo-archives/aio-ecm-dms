@@ -121,8 +121,12 @@ public class UILanguageTypeForm extends UIForm {
             uiDialogForm.setPropertyNode(languageNode) ;
           } else {
             uiDialogForm.setPropertyNode(null) ;
+            System.out.println("\n\naaaaa====>");
+            System.out.println("\n\nuiDialogForm.getChildren()====>" +uiDialogForm.getChildren()+ "\n\n");
             for(UIComponent uiChild : uiDialogForm.getChildren()) {
+              System.out.println("\n\nUIchild===>" + uiChild.getId() + "\n\n");
               if(uiChild instanceof UIFormMultiValueInputSet) {
+                System.out.println("\n\nUIFormMultiValueInputSet===>" + uiChild.getId() + "\n\n");
                 ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;
               }
             }

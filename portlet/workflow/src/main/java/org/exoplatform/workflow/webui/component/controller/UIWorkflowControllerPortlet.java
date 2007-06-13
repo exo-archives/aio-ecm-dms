@@ -8,6 +8,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
+import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 
 /**
  * Created by The eXo Platform SARL
@@ -26,9 +27,7 @@ public class UIWorkflowControllerPortlet extends UIPortletApplication {
 
   public UIWorkflowControllerPortlet() throws Exception {
     addChild(UIControllerManager.class, null, null) ;
-    UIPopupWindow popup = addChild(UIPopupWindow.class, null, "ControllerPopup").setRendered(false) ;
-    popup.setUIComponent(createUIComponent(UITaskManager.class, null, null)) ;
-    popup.setWindowSize(600, 0) ;
-    popup.setResizable(true) ;
+    UIWorkflowPopup uiWorkflowPopup = addChild(UIWorkflowPopup.class, null, null) ;
+    uiWorkflowPopup.getChild(UIPopupWindow.class).setId("ControllerPopup") ;
   }
 }

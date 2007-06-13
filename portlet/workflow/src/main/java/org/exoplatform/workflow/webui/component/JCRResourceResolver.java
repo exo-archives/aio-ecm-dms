@@ -26,10 +26,10 @@ public class JCRResourceResolver extends ResourceResolver {
   private String workspaceId_ ;
   private String propertyName_ ;
   
-  public JCRResourceResolver(Session session, String propertyName) {
+  public JCRResourceResolver(Session session, String nodeTypeName) {
     session_ = session ;
     workspaceId_ = session.getWorkspace().getName() ;
-    propertyName_ = propertyName ;
+    propertyName_ = nodeTypeName ;
   }
   
   @SuppressWarnings("unused")
