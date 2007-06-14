@@ -17,14 +17,11 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIForm;
-
-import sun.net.dns.ResolverConfiguration.Options;
 
 /**
  * Created by The eXo Platform SARL
@@ -72,9 +69,6 @@ public class UIConfigTabPane extends UIContainer {
     UINewConfigForm uiConfigForm = getChild(UINewConfigForm.class) ;
     uiConfigForm.setRendered(false) ;
     UIConfigContainer uiConfigContainer = getChild(UIConfigContainer.class) ;
-    for(UIComponent child : uiConfigContainer.getChildren()) {
-      child.setRendered(false) ;
-    }
     String repository = preference.getValue(Utils.REPOSITORY, "") ;
     String usecase = preference.getValue(Utils.CB_USECASE, "") ;
     String workspace = preference.getValue(Utils.WORKSPACE_NAME, "") ;
@@ -84,14 +78,14 @@ public class UIConfigTabPane extends UIContainer {
         uiPathConfig = uiConfigContainer.addChild(UIPathConfig.class, null, null) ;
       }      
       uiPathConfig.initForm(preference, repository, workspace, false) ;
-      uiPathConfig.setRendered(true) ;
+      uiConfigContainer.setRenderedChild(UIPathConfig.class) ;
     } else if(usecase.equals(Utils.CB_USE_JCR_QUERY)) {
       UIQueryConfig uiQueryConfig = uiConfigContainer.getChild(UIQueryConfig.class) ;
       if(uiQueryConfig == null) {
         uiQueryConfig = uiConfigContainer.addChild(UIQueryConfig.class, null, null) ;
       }      
       uiQueryConfig.initForm(preference, repository, workspace, false) ;
-      uiQueryConfig.setRendered(true) ;
+      uiConfigContainer.setRenderedChild(UIQueryConfig.class) ;
     } else if(usecase.equals(Utils.CB_USE_SCRIPT)) { 
        UIScriptConfig uiScriptConfig = uiConfigContainer.getChild(UIScriptConfig.class);
        if(uiScriptConfig == null) { 
@@ -99,13 +93,14 @@ public class UIConfigTabPane extends UIContainer {
          
        }
       uiScriptConfig.initForm(preference, repository, workspace, false);
-      uiScriptConfig.setRendered(true) ;
+      uiConfigContainer.setRenderedChild(UIScriptConfig.class) ;
     } else if(usecase.equals(Utils.CB_USE_DOCUMENT)) {
       UIDocumentConfig uiDocumentConfig = uiConfigContainer.getChild(UIDocumentConfig.class) ;
         if(uiDocumentConfig == null) {
           uiDocumentConfig = uiConfigContainer.addChild(UIDocumentConfig.class, null, null) ;
         }
       uiDocumentConfig.initForm(preference, repository, workspace, false);
+      uiConfigContainer.setRenderedChild(UIDocumentConfig.class) ;
     }
     uiConfigContainer.setRendered(true) ;
   }

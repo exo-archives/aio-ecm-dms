@@ -66,81 +66,66 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
-  
+
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
   }
-  
+
   public void initForm(PortletPreferences preference, String repository, String workSpace, boolean isAddNew) throws Exception {
-    String path = preference.getValue(Utils.JCR_PATH, "") ;
+    String path = "" ;
     String docName = "" ;
     String hasComment = "true" ;
     String hasVote = "true" ;
-    if(isAddNew) setActions(UINewConfigForm.ADD_NEW_ACTION) ;
-    else {
-      docName = preference.getValue(Utils.CB_DOCUMENT_NAME, "") ;
-      //isEditable = false ;
-      hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
-      hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
-    }
+    String detailTemplate = "" ;
+    UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
+    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
     UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setValue(repository) ;
     repositoryField.setEditable(false) ;
-    
-    UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
-    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     UIFormStringInput documentNameField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
     UIFormSelectBox detailtempField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
-    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
-    detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
-    enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
-    
+    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     if(isEdit_) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
       documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, new String[] {"DocSelect"}) ;
       if(isAddNew) {
-        setActions(UINewConfigForm.ADD_NEW_ACTION) ;
+        setActions(UINewConfigForm.ADD_NEW_ACTION) ;      
+        detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+        enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
+        enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
+        categoryPathField.setValue(path) ;
       }else {
-        setActions(UINewConfigForm.NORMAL_ACTION) ;
+        categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
+        documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
+        setActions(UINewConfigForm.DEFAULT_ACTION) ;
       }
-    } else { 
+    } else {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
-      documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
-      setActions(UINewConfigForm.DEFAULT_ACTION) ;
+      path = preference.getValue(Utils.JCR_PATH, "") ;
+      docName = preference.getValue(Utils.CB_DOCUMENT_NAME, "") ;
+      hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
+      hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+      detailTemplate = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ; 
+      categoryPathField.setValue(path) ;
+      documentNameField.setValue(docName) ;
+      detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+      detailtempField.setValue(detailTemplate) ;
+      enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
+      enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
     }
-    categoryPathField.setValue(path) ;
-    documentNameField.setValue(docName) ;
     categoryPathField.setEditable(isEdit_) ;
     documentNameField.setEditable(isEdit_) ;
     detailtempField.setEnable(isEdit_) ;
     enableCommentField.setEnable(isEdit_) ;
     enableVoteField.setEnable(isEdit_) ;
-  }
 
-  public void editForm(boolean isEditable) {
-    UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
-    UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
-    categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
-    documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, new String[] {"DocSelect"}) ;
-    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-    UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
-    UIFormStringInput documentNameField =documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
-    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
-    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    enableCommentField.setEnable(isEditable) ;
-    enableVoteField.setEnable(isEditable) ;
-    categoryPathField.setEditable(isEditable) ;
-    detailtemField.setEnable(isEditable) ;
-    documentNameField.setEditable(isEditable) ;
-    setActions(UINewConfigForm.NORMAL_ACTION) ;
   }
 
   @SuppressWarnings("unused")
@@ -164,6 +149,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       documentNameField.setValue(value) ;
     }
     uiConfig.getChild(UIPopupWindow.class).setShow(false) ;
+    isEdit_ = true ;
+    uiConfig.isNewConfig_ = true ;
   }
 
   public static class SaveActionListener extends EventListener<UIDocumentConfig>{
@@ -210,20 +197,14 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
       prefs.setValue(Utils.JCR_PATH, jcrPatth) ;
       prefs.setValue(Utils.CB_DOCUMENT_NAME, docName) ;
-      prefs.setValue(Utils.CB_TEMPLATE, "DocumentView") ;
+      prefs.setValue(Utils.CB_TEMPLATE, boxTemplate) ;
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate) ;
       prefs.setValue(Utils.CB_VIEW_TOOLBAR,String.valueOf(hasComment || hasVote)) ;
       prefs.setValue(Utils.CB_VIEW_COMMENT, String.valueOf(hasComment)) ;    
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ;    
       prefs.store() ; 
       uiForm.isEdit_ = false ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      if(uiConfigTabPane.isNewConfig_) uiConfigTabPane.isNewConfig_ = false ;
-     /* uiForm.reset() ;
-      uiConfigTabPane.getCurrentConfig() ;
-      container.loadPortletConfig(container.getPortletPreferences()) ;
-      container.setShowDocumentDetail(true) ;
-      container.setShowDocumentList(false) ;*/
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }  
 
@@ -241,19 +222,19 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       uiConfigTabPane.showNewConfigForm(true);
     }
   }
-  
+
   public static class CancelActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }
   public static class BackActionListener extends EventListener<UIDocumentConfig>{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiForm.isEdit_ = false ;
       uiConfigTabPane.isNewConfig_ = true;
       uiConfigTabPane.showNewConfigForm(false) ;
     }
@@ -262,8 +243,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = true ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }
   public static class AddPathActionListener extends EventListener<UIDocumentConfig> {
@@ -273,9 +253,11 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
+      uiForm.isEdit_ = true ;
+      uiConfig.isNewConfig_ = true ;
     }
   }
-  
+
   public static class DocSelectActionListener extends EventListener<UIDocumentConfig> {
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm  = event.getSource() ;
@@ -300,6 +282,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       }
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfig.initPopupDocumentSelect(uiForm, repo, workspace, jcrPatth) ;
+      uiForm.isEdit_ = true ;
+      uiConfig.isNewConfig_ = true ;
     }
   }
 

@@ -16,7 +16,6 @@ import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -26,8 +25,6 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-
-import sun.net.dns.ResolverConfiguration.Options;
 
 /**
  * Created by The eXo Platform SARL
@@ -67,18 +64,9 @@ public class UIScriptConfig extends UIForm {
     String hasComment = "false" ;
     String hasVote = "false" ;
     String hasTagMap = "false" ;
-    if(isEdit_) {
-      if(isAddNew) {
-        setActions(UINewConfigForm.ADD_NEW_ACTION) ;
-      }else {
-        setActions(UINewConfigForm.NORMAL_ACTION) ;
-        hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
-        hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
-        hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
-      }
-    } else {
-      setActions(UINewConfigForm.DEFAULT_ACTION) ;
-    }
+    String scriptName = "" ;
+    String templateName = "" ;
+    String detailTemplate = "" ;
     UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setValue(repository) ;
     repositoryField.setEditable(false) ;
@@ -86,24 +74,46 @@ public class UIScriptConfig extends UIForm {
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
     UIFormSelectBox scriptField = getChildById(UINewConfigForm.FIELD_SCRIPTNAME) ;
-    scriptField.setOptions(getScriptOption()) ;
-    scriptField.setEnable(isEdit_) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    templateField.setOptions(getTemplateOption()) ;
-    templateField.setEnable(isEdit_) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
+    UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
+    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
+    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
+    if(isEdit_) {
+      if(isAddNew) {
+        setActions(UINewConfigForm.ADD_NEW_ACTION) ;
+        enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
+        enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
+        enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
+      }else {
+        setActions(UINewConfigForm.NORMAL_ACTION) ;
+      }
+    } else {
+      setActions(UINewConfigForm.DEFAULT_ACTION) ;
+      scriptName = preference.getValue(Utils.CB_SCRIPT_NAME, "") ;
+      templateName = preference.getValue(Utils.CB_TEMPLATE, "") ;
+      detailTemplate = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ; 
+      hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
+      hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+      hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
+    }
+    scriptField.setOptions(getScriptOption()) ;
+    scriptField.setValue(scriptName) ;
+    templateField.setOptions(getTemplateOption()) ;
+    templateField.setValue(templateName) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
-    detailtemField.setEnable(isEdit_) ;
-    UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
+    detailtemField.setValue(detailTemplate) ;
     enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
-    enableTagMapField.setEnable(isEdit_) ;
-    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
     enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
-    enableCommentField.setEnable(isEdit_) ;  
-    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    enableVoteField.setEnable(isEdit_) ; 
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
+    
+    enableCommentField.setEnable(isEdit_) ;  
+    enableTagMapField.setEnable(isEdit_) ;
+    scriptField.setEnable(isEdit_) ;
+    templateField.setEnable(isEdit_) ;
+    detailtemField.setEnable(isEdit_) ;
+    enableVoteField.setEnable(isEdit_) ; 
   }
 
   public void editForm(boolean isEditable) {
@@ -174,9 +184,7 @@ public class UIScriptConfig extends UIForm {
       prefs.setValue(Utils.CB_VIEW_VOTE,String.valueOf(hasVote)) ;   
       prefs.store() ; 
       uiForm.isEdit_ = false ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
-      UIConfigContainer uiConfigContainer = uiForm.getAncestorOfType(UIConfigContainer.class) ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }  
 
@@ -192,14 +200,14 @@ public class UIScriptConfig extends UIForm {
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }
   public static class BackActionListener extends EventListener<UIScriptConfig>{
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiForm.isEdit_ =  false ;
       uiConfigTabPane.isNewConfig_ = true;
       uiConfigTabPane.showNewConfigForm(false) ;
     }

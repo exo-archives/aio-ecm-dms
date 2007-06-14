@@ -30,9 +30,8 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.EmptyFieldValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
-
-import sun.net.dns.ResolverConfiguration.Options;
 
 /**
  * Created by The eXo Platform SARL
@@ -69,11 +68,12 @@ public class UIPathConfig extends UIForm implements UISelector{
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETOOLBAR, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null).addValidator(NumberFormatValidator.class)) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null).
+                                  addValidator(NumberFormatValidator.class).addValidator(EmptyFieldValidator.class)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
-  
+
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
@@ -91,22 +91,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     String hasComment = "true" ;
     String hasVote = "true" ;
     String itemPerPage = "20" ;
-    String template = preference.getValue(Utils.CB_TEMPLATE, "") ;
-    try {
-      Integer.parseInt(preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
-      itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
-    }
-    catch (Exception  e) {}
-    if(isAddNew) { setActions(UINewConfigForm.ADD_NEW_ACTION) ;
-    } else {
-      hasToolBar = preference.getValue(Utils.CB_VIEW_TOOLBAR, "") ;
-      hasRefDoc = preference.getValue(Utils.CB_REF_DOCUMENT, "") ;
-      hasChildDoc = preference.getValue(Utils.CB_CHILD_DOCUMENT, "") ;
-      hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
-      hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
-      hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
-      //isEditable = false ;
-    }
+    String template = "" ;
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
@@ -114,76 +99,68 @@ public class UIPathConfig extends UIForm implements UISelector{
     repositoryField.setValue(repository) ;
     repositoryField.setEditable(false) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
+    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
+    UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
+    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+    UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
+    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
+    UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR)  ;
+    UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC)  ;
+    UIFormCheckBoxInput enableChildDocField = getChildById(UINewConfigForm.FIELD_ENABLECHILDDOC)  ;
+    UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
+    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
+    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
     if(isEdit_) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
       if(isAddNew) {
-        setActions(UINewConfigForm.ADD_NEW_ACTION) ;
+        templateField.setOptions(getTemplateOption()) ;
+        //templateField.setValue(template) ;
+        detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+        enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
+        enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
+        enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;
+        enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
+        enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
+        enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
+        categoryPathField.setValue(path) ;
+        numbPerPageField.setValue(itemPerPage) ;
+        setActions(UINewConfigForm.ADD_NEW_ACTION) ;        
       }else {
         setActions(UINewConfigForm.NORMAL_ACTION) ;
       }
     } else {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
       setActions(UINewConfigForm.DEFAULT_ACTION) ;
+      template = preference.getValue(Utils.CB_TEMPLATE, "") ;
+      hasToolBar = preference.getValue(Utils.CB_VIEW_TOOLBAR, "") ;
+      hasRefDoc = preference.getValue(Utils.CB_REF_DOCUMENT, "") ;
+      hasChildDoc = preference.getValue(Utils.CB_CHILD_DOCUMENT, "") ;
+      hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
+      hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
+      hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+      itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
+      templateField.setOptions(getTemplateOption()) ;
+      templateField.setValue(template) ;
+      detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+      enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
+      enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
+      enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;
+      enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
+      enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
+      enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
+      categoryPathField.setValue(path) ;
+      numbPerPageField.setValue(itemPerPage) ;
     }
-    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-    UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    templateField.setOptions(getTemplateOption()) ;
-    templateField.setValue(template) ;
-    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
-    UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
-    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
-    detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
-    UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR)  ;
-    enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
-    UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC)  ;
-    enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
-    UIFormCheckBoxInput enableChildDocField = getChildById(UINewConfigForm.FIELD_ENABLECHILDDOC)  ;
-    enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;
-    UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
-    enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
-    enableTagMapField.setEnable(isEdit_) ;
-    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
-    enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
-    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
-    categoryPathField.setValue(path) ;
     categoryPathField.setEditable(isEdit_) ;
     templateField.setEnable(isEdit_) ;
-    numbPerPageField.setValue(itemPerPage) ;
-    numbPerPageField.setEditable(isEdit_) ;
     detailtemField.setEnable(isEdit_) ;
     enableToolBarField.setEnable(isEdit_) ;
     enableRefDocField.setEnable(isEdit_) ;
     enableCommentField.setEnable(isEdit_) ;
     enableVoteField.setEnable(isEdit_) ;
+    enableTagMapField.setEnable(isEdit_) ;
+    numbPerPageField.setEditable(isEdit_) ;
     enableChildDocField.setEnable(isEdit_) ;
-  }
-
-  public void editForm(boolean isEditable) {   
-    UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
-    categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
-    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-    UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    templateField.setValue(getPortletPreferences().getValue(Utils.CB_TEMPLATE, "")) ;
-    templateField.setEnable(isEditable) ;
-    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
-    numbPerPageField.setEditable(isEditable) ;
-    UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
-    detailtemField.setEnable(isEditable) ;
-    UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR)  ;
-    UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC)  ;
-    enableToolBarField.setEnable(isEditable) ;
-    UIFormCheckBoxInput enableChildDocField = getChildById(UINewConfigForm.FIELD_ENABLECHILDDOC)  ;
-    UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP)  ;
-    enableTagMapField.setEnable(isEditable) ;
-    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
-    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    categoryPathField.setEditable(isEditable) ;
-    enableRefDocField.setEnable(isEditable) ;
-    enableChildDocField.setEnable(isEditable) ;
-    enableCommentField.setEnable(isEditable) ;
-    enableVoteField.setEnable(isEditable) ;
-    setActions(UINewConfigForm.NORMAL_ACTION) ;
   }
 
   public List<SelectItemOption<String>> getTemplateOption() throws Exception {
@@ -203,15 +180,16 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     categoryPathField.setValue(value) ;
-    UIConfigTabPane uiConfig = getAncestorOfType(UIConfigTabPane.class) ;
-    UIPopupWindow uiPopupWindow = uiConfig.getChild(UIPopupWindow.class) ;
+    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
+    UIPopupWindow uiPopupWindow = uiConfigTabPane.getChild(UIPopupWindow.class) ;
     uiPopupWindow.setShow(false) ;
+    isEdit_ = true ;
+    uiConfigTabPane.isNewConfig_ = true ;
   }
 
   public static class SaveActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
-      
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIBrowseContainer container = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
@@ -223,7 +201,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPatth = categoryPathField.getValue() ;
-      if((jcrPatth == null) ||(jcrPatth.trim().length() == 0)) {
+      if((jcrPatth == null) || (jcrPatth.trim().length() == 0)) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
@@ -243,13 +221,6 @@ public class UIPathConfig extends UIForm implements UISelector{
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
-      /*try{
-        Integer.parseInt(itemPerPage) ;
-      } catch(Exception e){
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
-        return ;
-      }*/
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasChildDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECHILDDOC).isChecked() ;
       boolean hasRefDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEREFDOC).isChecked() ;
@@ -272,16 +243,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ; 
       prefs.store() ;
       uiForm.isEdit_ = false ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
-      
-      
-      //uiConfigTabPane.isNewConfig_ = true ;
-      //uiForm.reset() ;
-      //uiConfigTabPane.getCurrentConfig() ;
-      //container.setCurrentNode(null) ;
-      //container.setSelectedTab(null) ;
-      //container.loadPortletConfig(prefs) ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }  
 
@@ -297,25 +259,25 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
-      
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+
     }
   }
   public static class BackActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiForm.isEdit_ =  false ;
       uiConfigTabPane.isNewConfig_ = true;
       uiConfigTabPane.showNewConfigForm(false) ;
     }
   }
+  
   public static class EditActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = true ;
-      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
   }
   static public class AddPathActionListener extends EventListener<UIPathConfig> {
@@ -325,6 +287,8 @@ public class UIPathConfig extends UIForm implements UISelector{
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
+      uiForm.isEdit_ = true ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = true ;
     }
   }
 }
