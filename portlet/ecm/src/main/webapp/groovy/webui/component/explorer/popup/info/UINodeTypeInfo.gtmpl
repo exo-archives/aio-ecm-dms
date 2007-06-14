@@ -127,19 +127,7 @@
 	              <td><%repairName(bean.isProtected())%></td>
 	              <td><%repairName(bean.isAutoCreated())%></td>
 	              <td><%repairName(bean.isMultiple())%></td>
-	              <%
-	                StringBuilder defaultValue = new StringBuilder() ;
-	                Value[] values = bean.getDefaultValues() ;
-							    if(values != null && values.length > 0 ) {
-								    for(value in values) {											      
-								      if(value != null) {
-								        if(defaultValue.length() > 0) defaultValue.append(",") ;
-								        defaultValue.append(value) ;
-								      }
-                    }
-                  }
-	            %>
-	              <td><%=defaultValue.toString()%></td>
+	              <td><%=uicomponent.getDefaultValue(bean)%></td>
 	              <%
 	                StringBuilder contraints = new StringBuilder() ;
 							    String[] contraintValues = bean.getValueConstraints() ;

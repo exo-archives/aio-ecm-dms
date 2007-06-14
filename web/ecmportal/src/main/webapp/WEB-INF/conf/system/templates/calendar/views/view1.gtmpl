@@ -1,4 +1,7 @@
-<%def node = uicomponent.getNode() ;%>
+<%
+  def node = uicomponent.getNode() ;
+  def originalNode = uicomponent.getOriginalNode()
+%>
 <head>
 	<style>
 		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
@@ -11,7 +14,7 @@
 	<div class="HeaderBG">
 		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
 			<label class="text">Calendar: <label>
-			<span class="text"><%=node.getName()%></span>
+			<span class="text"><%=originalNode.getName()%></span>
 		</div>
 	</div>
 	<div style="border-bottom: 1px solid #a3abb6; height: 25px">

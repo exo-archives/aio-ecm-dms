@@ -2,6 +2,7 @@
 	import java.text.SimpleDateFormat ;
 	
 	def node = uicomponent.getNode() ;
+	def originalNode = uicomponent.getOriginalNode();
 	String name = node.getPrimaryNodeType().getName() ;
 	String iconName = uicomponent.getIcons(node,"16x16Icon") ;
 	String pattern = "MMMMM dd yyyy" ;
@@ -53,7 +54,7 @@
 	<div style="width:99.5%">
 		<div style="padding: 5px 5px 5px 2px;">
 			<div class="$iconName" style="float:left; margin: 0px 5px 0px 0px;"><span></span></div>
-			<div class="Title">File Plan Content:<%=node.getName()%></div>
+			<div class="Title">File Plan Content:<%=originalNode.getName()%></div>
 			<div style="clear:left;"><span></span></div>
 		</div>
 		<table class="FilePlanContentTable">    

@@ -1,7 +1,7 @@
 <%def node = uicomponent.getNode();%>
 <table class="UIGrid">      	 			
   <tr>
-    <td style="width:25%">Action name:</td>
+    <td style="width:25%">Action name</td>
     <td>
   		<%if(node.hasProperty("exo:name")){%>
   			<%=node.getProperty("exo:name").getString()%>
@@ -9,7 +9,7 @@
  		</td>
   </tr>
   <tr>
-    <td style="width:25%">Life cycle:</td>
+    <td style="width:25%">Life cycle</td>
     <td>
     	<%if(node.hasProperty("exo:lifecyclePhase")){%>
     		<%=node.getProperty("exo:lifecyclePhase").getString()%>    		
@@ -17,7 +17,7 @@
     </td>					
   </tr>
   <tr>
-		<td style="width:25%">Protocol:</td>
+		<td style="width:25%">Protocol</td>
 		<td>
 			<%if(node.hasProperty("exo:protocol")){%>
 				<%=node.getProperty("exo:protocol").getString()%>	
@@ -25,7 +25,7 @@
 		</td>
   </tr>
   <tr>
-		<td style="width:25%">Host:</td>
+		<td style="width:25%">Host</td>
 		<td>
 			<%if(node.hasProperty("exo:host")){%>	
 				<%=node.getProperty("exo:host").getString()%>
@@ -33,7 +33,7 @@
 		</td>
   </tr>
   <tr>
-		<td style="width:25%">Port:</td>
+		<td style="width:25%">Port</td>
 		<td>
 			<%if(node.hasProperty("exo:port")){%>		
 				<%=node.getProperty("exo:port").getString()%>
@@ -41,7 +41,7 @@
 		</td>
   </tr>
   <tr>
-		<td style="width:25%">Folder:</td>
+		<td style="width:25%">Folder</td>
 		<td>
 			<%if(node.hasProperty("exo:folder")){%>		
 				<%=node.getProperty("exo:folder").getString()%>	
@@ -49,7 +49,7 @@
 		</td>
   </tr>
   <tr>
-		<td style="width:25%">Username:</td>
+		<td style="width:25%">Username</td>
 		<td>
 			<%if(node.hasProperty("exo:userName")){%>		
 				<%=node.getProperty("exo:userName").getString()%>			
@@ -57,7 +57,7 @@
 		</td>
   </tr>  
   <tr>
-		<td style="width:25%">Description:</td>
+		<td style="width:25%">Description</td>
 		<td>
 			<%if(node.hasProperty("exo:description")){%>
 				<%=node.getProperty("exo:description").getString()%>			
@@ -65,7 +65,7 @@
 		</td>
   </tr>  
   <tr>
-		<td style="width:25%">Store path:</td>
+		<td style="width:25%">Store path</td>
 		<td>
 			<%if(node.hasProperty("exo:storePath")){%>
 				<%=node.getProperty("exo:storePath").getString()%>

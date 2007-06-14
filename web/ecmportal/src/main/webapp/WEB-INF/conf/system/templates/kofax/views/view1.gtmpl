@@ -1,48 +1,40 @@
-<style>
-.community .UIDivForm .row {
-	margin-top: 5px;
-}
-
-.community .UIDivForm .detail label {
-	margin-top: 0px;
-}
-</style>
-
 <%
   def node = uicomponent.getNode() ;
+  def originalNode = uicomponent.getOriginalNode();
   String namespace = "kfx:" ;
 %>
 
-<div class="UIDivForm">
-  <!-- Node name -->
-  <div class="title">Kofax document name : <%=node.getName()%></div>
-  <div class="detail">
-    <!-- Process the Node properties -->
-    <%
-      for(property in node.getProperties()) {
-        def propertyName = property.getName() ;
-        if(propertyName.startsWith(namespace)) { %>
-          <div class="row">
-            <label><%=propertyName.substring(namespace.length(), propertyName.length())%></label>
-            <%=node.getProperty(propertyName).getString()%>
-          </div>
-    <%
-        }
-      }
-    %>
-    <!-- Process the children -->
-    <%
-      int i = 1;
-      for(child in node.getNodes()) { %>
-        <div class="row">
-          <label>Downloadable file #<%=i%></label>
-          <a href="/<%=uicomponent.getPortalName()%>/jcr?workspace=<%=uicomponent.getWorkspaceName()%>&path=<%=child.getPath()%>">
-            <%=child.getName()%>
-          </a>
-         </div>
-    <%
-        i++ ;
-      } 
-    %>
-  </div>
-</div>
+<table class="UIGrid">      	 			
+  <tr>
+    <td style="width:25%">Kofax document name</td>
+    <td><%=originalNode.getName()%></td>
+  </tr>
+
+  <%
+	  for(property in node.getProperties()) {
+	    def propertyName = property.getName() ;
+	    if(propertyName.startsWith(namespace)) { %>
+			  <tr>
+			    <td style="width:25%"><%=propertyName.substring(namespace.length(), propertyName.length())%></td>
+			    <td><%=node.getProperty(propertyName).getString()%></td>
+			  </tr>
+	<%
+	    }
+	  }
+	%>
+	<%
+	  int i = 1;
+	  for(child in uicomponent.getAttachments()) { %>
+		  <tr>
+		    <td style="width:25%">Downloadable file #<%=i%></td>
+		    <td>
+		      <a href="<%=uicomponent.getDownloadLink(child)%>">
+		        <%=child.getName()%>
+		      </a>
+		    </td>
+		  </tr>
+	<%
+	    i++ ;
+	  } 
+	%>
+</table>

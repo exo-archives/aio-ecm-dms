@@ -1,7 +1,7 @@
 <%def node = uicomponent.getNode() ;%>
 <div>
   <div>
-    <span>Name:</span>
+    <span>Name</span>
     <span>
       <%if(node.hasProperty("exo:name")) {%>
         <%=node.getProperty("exo:name").getString()%>
@@ -9,7 +9,7 @@
     </span>
   </div>
   <div>
-    <span>Description:</span>
+    <span>Description</span>
     <span>
       <%if(node.hasProperty("exo:description")) {%>
         <%=node.getProperty("exo:description").getString()%>
@@ -17,7 +17,7 @@
     </span>
   </div>
   <div>
-    <span>To Workspace:</span>
+    <span>To Workspace</span>
     <span>
       <%if(node.hasProperty("exo:destWorkspace")) {%>
         <%=node.getProperty("exo:destWorkspace").getString()%>
@@ -25,7 +25,7 @@
     </span>
   </div>
   <div>
-    <span>at location:</span>
+    <span>at location</span>
     <span>
       <%if(node.hasProperty("exo:destPath")) {%>
         <%=node.getProperty("exo:destPath").getString()%>

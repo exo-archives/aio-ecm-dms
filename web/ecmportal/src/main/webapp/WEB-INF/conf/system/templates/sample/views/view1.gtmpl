@@ -1,6 +1,7 @@
 <%
 	import java.text.SimpleDateFormat ;
 	def node = uicomponent.getNode() ;
+	def originalNode = uicomponent.getOriginalNode()
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
 %>
 	<style>
@@ -14,7 +15,7 @@
 		<div style="overflow: hidden; border-bottom: 1px solid #a3abb6">
 			<div style="height: 25px; float: left; width: 49%">
 				<label class="text">Node name: <label>
-				<span class="text"><%=node.getName()%></span>
+				<span class="text"><%=originalNode.getName()%></span>
 			</div>
 			<div style="height: 25px">
 				<label class="text">Title: </label>
