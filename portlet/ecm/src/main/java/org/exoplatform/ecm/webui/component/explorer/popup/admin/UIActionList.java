@@ -33,7 +33,7 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/explorer/popup/admin/UIActionList.gtmpl",
     events = {
         @EventConfig(listeners = UIActionList.ViewActionListener.class),
-        @EventConfig(listeners = UIActionList.DeleteActionListener.class),
+        @EventConfig(listeners = UIActionList.DeleteActionListener.class, confirm = "UIActionList.msg.confirm-delete-action"),
         @EventConfig(listeners = UIActionList.CloseActionListener.class),
         @EventConfig(listeners = UIActionList.EditActionListener.class)
     }

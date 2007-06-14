@@ -38,6 +38,16 @@
 		              </value> 
 		              <value>
 		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+		                  <field  name="name"><string>ecm-explorer/action/EnableVersioningScript.groovy</string></field>
+		                </object>  
+		              </value> 
+		              <value>
+		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+		                  <field  name="name"><string>ecm-explorer/action/AutoVersioningScript.groovy</string></field>
+		                </object>  
+		              </value> 		              		              
+		              <value>
+		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 		                  <field  name="name"><string>ecm-explorer/action/AddMetadataScript.groovy</string></field>
 		                </object>  
 		              </value> 

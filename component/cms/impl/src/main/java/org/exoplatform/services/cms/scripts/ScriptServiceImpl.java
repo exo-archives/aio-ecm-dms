@@ -1,6 +1,6 @@
 package org.exoplatform.services.cms.scripts;
 
-import groovy.lang.GroovyClassLoader ;
+import groovy.lang.GroovyClassLoader;
 
 import java.io.File;
 import java.io.InputStream;
@@ -13,7 +13,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.observation.Event;
 import javax.jcr.observation.EventIterator;
@@ -54,7 +53,6 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       e.printStackTrace();
     }
   }
-  
   
   public void addScriptPlugin(ComponentPlugin plugin) {
     if(plugin instanceof ScriptPlugin) {			

@@ -163,9 +163,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return getAncestorOfType(UIJCRExplorer.class).isReadAuthorized(node) ;
   }
   
-  public String getValue(Node node) {
-    return null ;
-  }
   @SuppressWarnings("unchecked")
   public Object getComponentInstanceOfType(String className) {
     Object service = null;
@@ -185,9 +182,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return "" ;
   }
   
-  public String getNodePath(Node node) throws Exception {
-    return node.getPath() ;
-  }
+  public String getNodePath(Node node) throws Exception { return node.getPath() ; }
 
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;

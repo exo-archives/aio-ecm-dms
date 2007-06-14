@@ -9,9 +9,11 @@ import javax.jcr.Property;
 import javax.jcr.Node ;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.Session;
 
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.document.DocumentReaderService;
+import org.exoplatform.services.jcr.RepositoryService;
 
 /*
 * Will need to get The MailService when it has been moved to exo-platform
@@ -19,17 +21,22 @@ import org.exoplatform.services.document.DocumentReaderService;
 public class TransformBinaryChildrenToTextScript implements CmsScript {
   
   private DocumentReaderService readerService_;
+  private RepositoryService repositoryService_ ;
   
-  public TransformBinaryChildrenToTextScript(DocumentReaderService readerService) {  
+  public TransformBinaryChildrenToTextScript(RepositoryService repositoryService, DocumentReaderService readerService) {  
+    repositoryService_ = repositoryService ;
     readerService_ = readerService;
   }
   
   public void execute(Object context) {
     Map variables = (Map) context;       
-
-    Node actionNode = (Node) variables.get("actionNode");
-    Node folderNode = actionNode.getParent();    
-    
+    String srcWorkspace = (String)context.get("srcWorkspace") ;
+    String srcPath = (String)variables.get("srcPath") ;
+    Node folderNode = null ;
+    try {
+      Session session = repositoryService_.getRepository().getSystemSession(srcWorkspace);
+      folderNode = (Node) session.getItem(srcPath);
+    } catch(Exception e) {}
     try {
       NodeIterator iter = folderNode.getNodes();
       while(iter.hasNext()) {
