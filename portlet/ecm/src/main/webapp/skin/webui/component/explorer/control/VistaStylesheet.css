@@ -148,7 +148,6 @@
   font-size: 11px;
 }
 
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {
   float: right;
   width: 18px;  height: 18px;
@@ -198,6 +197,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.checkbox {
   border: none;
+  margin: 3px 0px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
@@ -325,4 +325,5 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
   width: 128px;
+  line-height: 20px;
 }

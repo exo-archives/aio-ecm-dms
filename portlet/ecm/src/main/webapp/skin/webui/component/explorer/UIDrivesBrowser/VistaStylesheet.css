@@ -55,7 +55,8 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBG {
   background: url('VistaSkin/background/DrivesListTitleBG1x26.gif') repeat-x ;
   height: 26px;
-  width: 100%;
+  line-height: 26px;
+	width: auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBGRight {
@@ -91,7 +92,7 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   float: left;
-  width: 135px;height:83px;
+  width: 115px; height:83px;
   border: solid 1px #e4e4e4;
   background: white url('VistaSkin/background/DriverContainerBG1x20.gif') repeat-x bottom;
   padding: 10px 5px;
@@ -108,7 +109,6 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel {
   height: 20px;
-  line-height: 20px;
   margin: auto;
   text-align: center;
 }

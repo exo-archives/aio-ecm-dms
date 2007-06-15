@@ -41,6 +41,11 @@
 	margin-top: 3px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UISearchContainer .UIFormWithTitle {
+	width: auto;
+	padding: 0px 20px;
+}
+
 /*############################## -- End UIJCRExplorer -- ##############################*/
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 .UIJCRExplorerPortlet .UIListView {
@@ -618,6 +623,50 @@
   padding-bottom: 8px;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm {
+	width: auto;
+	padding: 0px 30px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
+	padding: 10px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
+	border: none;
+	border-bottom: 1px solid #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
+	border: solid 1px #b7b7b7;
+	background: white;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
+  float: left;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeContainer {
+	height: 173px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeLevelContainer {
+	padding: 7px 0px 10px 7px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
+	border: none;
+}
+
+.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
+	float: left;
+	margin: 4px 3px 0px 3px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .permission input {
+	float: left;
+}
 /*================================DecoratorBoxNested=================================*/
 
 .UIJCRExplorerPortlet .UINodeTypeInfo {
@@ -659,31 +708,12 @@
   border: solid 1px #c9c9c9;
 }
 
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
-  float: left;
-  border: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
-	float: left;
-	margin: 4px 3px 0px 3px;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
-	border: none;
-	border-bottom: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
-	border: solid 1px #b7b7b7;
-}
-
 .UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
 	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPropertyForm .AddNewNodeIcon {
-	margin: 2px;
+	margin: 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPropertyForm .UIAction {

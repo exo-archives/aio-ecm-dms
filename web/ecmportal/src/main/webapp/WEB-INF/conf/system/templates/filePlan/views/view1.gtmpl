@@ -43,7 +43,12 @@
 		background: white;
 		line-height: 25px;
 	}
-  
+	
+  .UIDivInfo .UIHorizontalTabs .TabsContainer {
+  	float: left;
+  	overflow: hidden;
+ 		padding: 0px;
+  }
   .UIDocumentWorkspace .NavigationButtonContainer {
     display: none;
     float: right;

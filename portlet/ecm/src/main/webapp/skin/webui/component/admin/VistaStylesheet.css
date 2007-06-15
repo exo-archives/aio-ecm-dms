@@ -15,7 +15,7 @@
   overflow: hidden;
   margin: auto;
 }
-
+/***********************UIRepositoryControl**************************/
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
 	font-size: 11px ;
   background: url('VistaSkin/background/ECMAdminTitleBar1x35.gif') repeat-x left top ; 
@@ -73,6 +73,8 @@
   background: url('VistaSkin/background/SeparatorLine2x1.png') repeat-y;
   float: left;
 }
+
+/********************************** End UIRepositoryControl************************/
 
 .UIECMAdminPortlet .ProgressBarFrame {
 	margin: 0px;
@@ -239,6 +241,14 @@
 
 .UIECMAdminPortlet .UIResizableBlock {
   height: 400px;
+}
+
+.UIResizableBlock .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIForm .UITabContentContainer .UITabContent {
+	border: none;
+}
+
+.UIResizableBlock .UIFormTabPane .UITabPane .TabPaneContent .UITabContentContainer {
+	border: 1px solid #8D919D;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
@@ -618,7 +628,7 @@
 }
 
 .UITemplatesManager .UIViewTab .UIAction {
-  width: 260px; 
+  width: 350px; 
   padding: 0px 0px 10px 0px;
 }
 
@@ -701,7 +711,8 @@
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
+ 	padding: 4px 8px ;
+ 	line-height: 20px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
@@ -716,6 +727,7 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
   margin: 0px 0px 5px 0px ;
+  line-height: 20px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
