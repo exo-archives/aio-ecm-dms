@@ -41,6 +41,7 @@
 		height: 25px;
 		padding-left: 7px;
 		background: white;
+		line-height: 25px;
 	}
   
   .UIDocumentWorkspace .NavigationButtonContainer {

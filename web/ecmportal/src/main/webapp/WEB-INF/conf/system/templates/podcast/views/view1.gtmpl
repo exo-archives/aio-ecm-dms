@@ -7,19 +7,56 @@
 %>
 <head>
 	<style>
-		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
-		span.text  { font-size: 12px; vertical-align:bottom; color: #00000; text-align: left ; }
-		div.summary { width: 95%; height: 160px ; font-weight: bold; font-size: 12px; padding: 5px; color: gray ; } 
-		div.content { width: 95%; font-size: 12px; padding: 5px; color: gray; }
+		.ContentPodcast {
+			border-bottom: 1px solid #bdbdbd; 
+			height: 25px;
+			line-height: 25px;
+		}
+		
+		label.text { 
+			font: normal bold 11px Verdana;
+			color: black; 
+			line-height: 18px; 
+		}
+		
+		.TitleBG label.text { 
+			line-height: 20px;
+		}
+		
+		span.text  { 
+			font-size: 11px; 
+			vertical-align:bottom; 
+			color: black; 
+			text-align: left ;
+			font-weight: normal;
+		}
+		
+		div.summary { 
+			width: 98.3%; 
+			height: 160px ; 
+			font-size: 11px; 
+			padding: 5px 5px 5px 10px; 
+			color: black ; 
+			font-weight: normal;
+			overflow: auto;
+		} 
+		
+		div.content { 
+			width: 98.3%; 
+			font-size: 11px; 
+			padding: 5px; 
+			color: black; 
+			overflow: auto;
+		}
 	</style>
 </head>
-<div style="text-align: left; margin: 5px;" id="$uicomponent.id">
+<div style="text-align: left; margin: 5px 8px;" id="$uicomponent.id">
 	<div>
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Podcast: <label>
 			<span class="text"><%=node.getName()%></span>
 		</div>
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Title: </label>
 			<span class="text">
 				<%if(node.hasProperty("exo:title")) {%>
@@ -27,7 +64,7 @@
 				<%}%>
 			</span>
 		</div>
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Link: <label>
 			<span class="text">
 				<%if(node.hasProperty("exo:link")) {%>
@@ -35,7 +72,7 @@
 				<%}%>
 			</span>
 		</div>
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Author:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:author")) {%>
@@ -43,7 +80,7 @@
 				<%}%>
 			</span>
 		</div>
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Explicit:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:explicit")) {%>
@@ -51,7 +88,7 @@
 				<%}%>
 			</span>
 		</div>	
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Category:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:podcastCategory")) {%>
@@ -59,7 +96,7 @@
 				<%}%>
 			</span>
 		</div>		
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div style=class="ContentPodcast">
 			<label class="text">Keywords:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:keywords")) {%>
@@ -67,7 +104,7 @@
 				<%}%>
 			</span>
 		</div>
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Publish Date:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:publishedDate")) {%>
@@ -75,7 +112,7 @@
 				<%}%>
 			</span>
 		</div>		
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">MimeType:</label>
 			<span class="text">
 			<%if(node.hasNode("jcr:content")) {
@@ -86,7 +123,7 @@
 				}%>
 			</span>
 		</div>		
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContentPodcast">
 			<label class="text">Length:</label>
 			<span class="text">
 				<%if(node.hasProperty("exo:length")) {%>
@@ -97,7 +134,7 @@
 	</div>
 	<!-- div for  Description -->
 	<div style="overflow: hidden">
-		<div style="margin-top: 5px; border: 1px solid #a3abb6">
+		<div style="margin-top: 7px; border: 1px solid #bdbdbd;">
 			<div class="TitleBG">
 				<label class="text" style="padding-left: 5px">Description:</label>
 			</div>

@@ -42,6 +42,9 @@
  	padding: 4px 8px 4px 0px;
 }
 
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+}
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
@@ -233,16 +236,17 @@
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
-	background: url('DefaultSkin/background/TitleBG.gif') repeat-x ; 
-	height: 20px; 
-	border-bottom: 1px solid #a3abb6; 
+	height: 18px;
+  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
-  background:url('DefaultSkin/background/HeaderBG.gif') ;   
+  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
   margin-bottom: 1px;
   padding: 0px 5px 0px 5px; 
-  border: solid 1px #a3abb6 ;
+  height: 18px;
+  border: solid 1px #bdbdbd;
+  border-bottom: none;
 }
 
 
@@ -306,6 +310,10 @@
 	overflow: hidden;
 }
 
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: solid 1px #939393;
+  border-top: none;
+}
 /*=============================UIWatchDocumentForm=======================*/
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
@@ -381,6 +389,20 @@
   padding-right: 80px;
 }
 
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
+  width: auto;
+  border: solid 1px #939393;
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .HorizontalLayout {
+  background: #efefef;
+}
+	
 /*=============================UICommentForm=======================*/
 
 .UIJCRExplorerPortlet .UICommentForm  {
@@ -403,11 +425,6 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .FormContainer {
-  width: 500px;
-  margin: auto;
-}
-
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {
@@ -417,7 +434,6 @@
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 220px;
-  padding-right: 150px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
@@ -505,14 +521,13 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .FieldContainer .nodePath {
-  margin-left: 5px;
+.UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
+  width: 400px;
+  margin: auto;
 }
-
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 160px;
-  padding-right: 170px;
 }
 
 /*================================.UIImportNode=================================*/
@@ -544,6 +559,11 @@
   padding-top: 10px;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
+	border: none;
+  border-bottom: solid 1px #b7b7b7;
+}
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
   padding-bottom: 10px;
 }
@@ -555,10 +575,6 @@
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle  .FormContainer input {
-  float: left;
 }
 
 /*================================DecoratorBoxNested=================================*/

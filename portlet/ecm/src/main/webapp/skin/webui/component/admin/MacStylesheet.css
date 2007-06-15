@@ -95,18 +95,18 @@
   line-height: 18px;
   height: 18px;
 	text-align: center;
-	padding-top: 15px;
+	padding-top: 11px;
 }
 
 .UIECMAdminPortlet .UIECMAdminFunctionTitle {
-	font-weight: bold;
-  line-height: 25px;
-	height: 30px;
+	height: 25px;
+	padding: 0px 0px 3px 10px;
 }
 
-.UIECMAdminPortlet .UIResizableBlock {
-	height: 400px;
-	overflow: auto;
+.UIECMAdminPortlet .UIECMAdminFunctionTitle .RightFunctionTitle .FunctionTitle {
+	font-weight: bold;
+  line-height: 25px;
+  height: 25px;
 }
 
 .UIECMAdminPortlet .UIECMAdminWorkingArea {

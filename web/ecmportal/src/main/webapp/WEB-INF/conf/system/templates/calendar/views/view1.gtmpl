@@ -4,20 +4,68 @@
 %>
 <head>
 	<style>
-		label.text { font-weight: bold; font-size: 13px; vertical-align:bottom; color: gray ; }
-		span.text  { font-size: 12px; vertical-align:bottom; color: #00000; text-align: left ; }
-		div.summary { width: 95%; height: 160px ; font-weight: bold; font-size: 12px; padding: 5px; color: gray ; } 
-		div.content { width: 95%; font-size: 12px; padding: 5px; color: gray; }
+	  .WorkCalendar {
+	  	text-align: left; 
+	  	margin: 8px 5px;
+	  }
+	  
+		label.text { 
+			font: normal bold 11px Verdana;
+			color: black; 
+			line-height: 16px; 
+			height: 16px;
+		}
+		
+		span.text  { 
+			font-size: 11px; 
+			vertical-align:bottom; 
+			color: black; 
+			text-align: left ;
+		}
+		
+		div.summary { 
+			width: 95%; 
+			height: 160px ; 
+			font-size: 12px; 
+			padding: 5px 5px 5px 10px; 
+			color: black ; 
+			font-size: 11px;
+		} 
+		
+		div.content { 
+			width: 95%; 
+			font-size: 12px; 
+			padding: 5px; 
+			color: gray; 
+		}
+		
+		.ContainerCalendar {
+			height: 17px;
+			line-height: 17px;
+		}
+		
+		.ContainerCalendar span.text {
+			font-weight: normal;
+		}
+		
+		.WorkContainerCalendar {
+			border-bottom: 1px solid #bdbdbd; 
+			height: 25px;
+			line-height: 25px;
+			margin-left: 6px;
+			padding-left: 5px;
+		}
 	</style>
 </head>
-<div style="text-align: left; margin: 5px;">
+<div class="WorkCalendar">
 	<div class="HeaderBG">
-		<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+		<div class="ContainerCalendar">
 			<label class="text">Calendar: <label>
 			<span class="text"><%=originalNode.getName()%></span>
+			<div style="clear: left;"><span></span></div>
 		</div>
 	</div>
-	<div style="border-bottom: 1px solid #a3abb6; height: 25px">
+	<div class="WorkContainerCalendar">
 		<label class="text">Shared: </label>
 		<span class="text">
 			<%if(node.hasProperty("exo:shared")) {%>

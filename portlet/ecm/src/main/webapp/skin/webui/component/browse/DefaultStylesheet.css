@@ -24,15 +24,13 @@
 	margin: auto;
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle .FieldContainer .UIFormInputSet {
-  background: none ;
+.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer {
   border: none ;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .UIAction{
-	padding: 10px 0px 0px 25px;
+	padding: 10px 0px 20px 25px;
 	width: 200px;
-	margin: auto;
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser .ExplorerTree .UITree {
@@ -364,7 +362,6 @@
 .UIBrowseContentPortlet .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
-  border: solid 1px blue;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer {

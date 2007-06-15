@@ -40,8 +40,16 @@
 	padding: 2px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload {
-	padding: 10px;
+.UIECMAdminPortlet .UINodeTypeImportPopup {
+	margin: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
+	width: 260px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .UIAction {
+	width: 160px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .ProgressBarFrame { 

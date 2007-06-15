@@ -13,6 +13,14 @@
   overflow: hidden;
 }
 
+.UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
+	width: 128px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormGrid .FieldLabel {
+	width: 0px;
+}
+
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
   width: 600px;
   margin: auto;
@@ -105,6 +113,11 @@
 
 .UIFastContentCreatorPortlet .TabPaneContent .UIFormWithTitle {
   width: auto;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: solid 1px #939393;
+  border-top: none;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent {

@@ -38,6 +38,11 @@
 .UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
 }
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+}
+
 /*======================== -- End UIJCRExplorer -- ==========================================*/
 
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/
@@ -220,17 +225,17 @@
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
-	background:url('DefaultSkin/background/TitleBG.gif') repeat-x ; 
-	height: 20px; 
-	border-bottom: 1px solid #a3abb6; 
+	height: 18px;
+  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
-  background:url('DefaultSkin/background/HeaderBG.gif') ;   
-  
-  margin-bottom:1px;
+  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+  margin-bottom: 1px;
   padding: 0px 5px 0px 5px; 
-  border: solid 1px #a3abb6 ;
+  height: 18px;
+  border: solid 1px #bdbdbd;
+  border-bottom: none;
 }
 
 
@@ -571,17 +576,13 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .FieldContainer {
-  overflow: hidden;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .FieldContainer .nodePath {
-  margin-left: 5px;
+.UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
+  width: 400px;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
   width: 170px;
-  padding-right: 100px;
 }
 
 /*================================.UIImportNode=================================*/
@@ -593,10 +594,6 @@
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 170px;
   padding-right: 100px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .FieldContainer .nodePath {
-  margin-left: 5px;
 }
 
 /*================================.UIReferencesList=================================*/
@@ -618,10 +615,13 @@
   width: 100%;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo .OverflowContainer {
+  width: 30px;
+}
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
 }
-
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle  .FormContainer input {
   float: left;
@@ -631,6 +631,10 @@
 
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
   width: 170px;
+}
+
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIViewMetadataForm {
+  padding: 10px;
 }
 
 /*================================UINodeTypeInfo=================================*/

@@ -3,38 +3,39 @@
   def originalNode = uicomponent.getOriginalNode();
   String namespace = "kfx:" ;
 %>
-
-<table class="UIGrid">      	 			
-  <tr>
-    <td style="width:25%">Kofax document name</td>
-    <td><%=originalNode.getName()%></td>
-  </tr>
-
-  <%
-	  for(property in node.getProperties()) {
-	    def propertyName = property.getName() ;
-	    if(propertyName.startsWith(namespace)) { %>
+<div style=" margin: 0px 5px;">
+	<table class="UIGrid">      	 			
+	  <tr>
+	    <td style="width:25%">Kofax document name</td>
+	    <td><%=originalNode.getName()%></td>
+	  </tr>
+	
+	  <%
+		  for(property in node.getProperties()) {
+		    def propertyName = property.getName() ;
+		    if(propertyName.startsWith(namespace)) { %>
+				  <tr>
+				    <td style="width:25%"><%=propertyName.substring(namespace.length(), propertyName.length())%></td>
+				    <td><%=node.getProperty(propertyName).getString()%></td>
+				  </tr>
+		<%
+		    }
+		  }
+		%>
+		<%
+		  int i = 1;
+		  for(child in uicomponent.getAttachments()) { %>
 			  <tr>
-			    <td style="width:25%"><%=propertyName.substring(namespace.length(), propertyName.length())%></td>
-			    <td><%=node.getProperty(propertyName).getString()%></td>
+			    <td style="width:25%">Downloadable file #<%=i%></td>
+			    <td>
+			      <a href="<%=uicomponent.getDownloadLink(child)%>">
+			        <%=child.getName()%>
+			      </a>
+			    </td>
 			  </tr>
-	<%
-	    }
-	  }
-	%>
-	<%
-	  int i = 1;
-	  for(child in uicomponent.getAttachments()) { %>
-		  <tr>
-		    <td style="width:25%">Downloadable file #<%=i%></td>
-		    <td>
-		      <a href="<%=uicomponent.getDownloadLink(child)%>">
-		        <%=child.getName()%>
-		      </a>
-		    </td>
-		  </tr>
-	<%
-	    i++ ;
-	  } 
-	%>
-</table>
+		<%
+		    i++ ;
+		  } 
+		%>
+	</table>
+</div>

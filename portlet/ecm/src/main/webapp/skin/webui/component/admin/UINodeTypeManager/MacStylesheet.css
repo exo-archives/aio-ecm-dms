@@ -40,8 +40,12 @@
 	padding: 2px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload {
-	padding: 10px;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
+	width: 280px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .UIAction {
+	width: 170px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .ProgressBarFrame { 
@@ -68,11 +72,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup {
 	width: 460px;	
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
-	width: 170px;	
+	margin:  10px auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
