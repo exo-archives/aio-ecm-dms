@@ -20,6 +20,7 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentLifecycle;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.container.component.ComponentRequestLifecycle;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.database.HibernateService;
@@ -49,8 +50,10 @@ import org.jbpm.taskmgmt.exe.TaskInstance;
  * User: Benjamin Mestrallet
  * Date: 28 juin 2004
  */
-public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
-    ComponentLifecycle {
+public class WorkflowServiceContainerImpl implements
+    WorkflowServiceContainer,
+    ComponentLifecycle,
+    ComponentRequestLifecycle {
 
   private ConfigurationManager configurationManager_;
   private List<ProcessesConfig> configs_;
@@ -430,5 +433,22 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
   public void deleteProcessInstance(String processInstanceId) {
     JbpmSession session = openSession();
     session.getGraphSession().deleteProcessInstance(Long.parseLong(processInstanceId));
+  }
+
+  public void startRequest(ExoContainer arg0) {
+    /*
+     * In ECM1, the current user id was pushed into JbpmDefaultAuthenticator:
+     * JbpmDefaultAuthenticator.pushAuthenticatedActorId(remoteUser);
+     * This operation is used by jBPM when determining the initiator swimlane.
+     * However, this one is overriden when setting the actorId of the initial
+     * Task, in startProcessFromName(). So it was decided to remove it.
+     */
+  }
+  
+  public void endRequest(ExoContainer arg0) {
+    /*
+     * Commit the changes. The jBPM session is created lazily by openSession().
+     */
+    this.closeSession();
   }
 }

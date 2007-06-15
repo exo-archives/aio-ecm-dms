@@ -15,11 +15,6 @@
     <type>org.exoplatform.services.workflow.impl.bonita.JCRFileDefinitionServiceImpl</type>
   </component>
 
-  <component>
-    <key>org.exoplatform.services.workflow.WorkflowFilterService</key>
-    <type>org.exoplatform.services.workflow.impl.bonita.WorkflowFilterServiceImpl</type>
-  </component>
-
   <!--external-component-plugins>
     <target-component>org.exoplatform.services.templates.velocity.VelocityService</target-component>
     <component-plugin>
@@ -102,6 +97,6 @@
     </component-plugin>    
   </external-component-plugins>
 	
-	<import>war:/conf/portal/bonita-configuration.xml</import>
+  <import>war:/conf/portal/bonita-configuration.xml</import>
 	
 </configuration>

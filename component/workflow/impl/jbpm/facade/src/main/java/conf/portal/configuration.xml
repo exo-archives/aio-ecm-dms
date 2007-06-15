@@ -14,11 +14,6 @@
     <type>org.exoplatform.services.workflow.impl.jbpm.SchedulerService</type>
   </component>
 
-  <component>
-    <key>org.exoplatform.services.workflow.WorkflowFilterService</key>
-    <type>org.exoplatform.services.workflow.impl.jbpm.WorkflowFilterServiceImpl</type>
-  </component>
-
   <external-component-plugins>
     <target-component>org.exoplatform.services.database.HibernateService</target-component>
     <component-plugin> 
