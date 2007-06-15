@@ -9,7 +9,7 @@ import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UITabPane;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -24,7 +24,7 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/explorer/UITabPaneWithAction.gtmpl",
     events = @EventConfig(listeners = UICategoryManager.CloseActionListener.class)
 )
-public class UICategoryManager extends UITabPane implements UIPopupComponent {
+public class UICategoryManager extends UIContainer implements UIPopupComponent {
 
   final static public String[] ACTIONS = {"Close"} ;
   
