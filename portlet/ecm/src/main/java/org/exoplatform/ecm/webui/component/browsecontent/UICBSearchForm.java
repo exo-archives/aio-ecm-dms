@@ -126,7 +126,7 @@ public class UICBSearchForm extends UIForm {
     QueryManager queryManager = session.getWorkspace().getQueryManager();
     duration_ = 0 ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String repository = getApplicationComponent(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     List<String> documentNodeTypes = templateService.getDocumentTemplates(repository) ;
     documentNodeTypes.add("nt:resource") ;
     for(String ntDocument : documentNodeTypes) {            

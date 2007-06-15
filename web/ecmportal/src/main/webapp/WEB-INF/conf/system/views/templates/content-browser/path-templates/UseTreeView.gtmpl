@@ -26,10 +26,7 @@
   boolean isShowAllDoc = uicomponent.isShowAllDocument() ;
   boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
   int itemPerBlock = uicomponent.getRowPerBlock() ;  
-  if(isShowDocByTag) { 
-  	isShowAllDoc = true ;
-  	subDocumentList = uicomponent.getCurrentList() ;
-  }
+  if(isShowDocByTag) { isShowAllDoc = true ;}
   int numbOfDocument = subDocumentList.size() ;
   boolean hasNoDocument = subDocumentList.isEmpty() ;
 %>

@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -80,9 +81,10 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   private Node selectedTab_  = null ;
   private String oldTemplate_  ;
   private int rowPerBlock_ = 6 ;
-  final public String documentView_ = "DocumentView" ;
-  final public String KEY_CURRENT = "currentNode" ;
-  final public String KEY_SELECTED = "selectedNode" ;
+  final public static String KEY_CURRENT = "currentNode" ;
+  final public static String KEY_SELECTED = "selectedNode" ;
+  final public static String TREELIST = "TreeList" ;
+  private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;  
   private Map<String, Node> history_  ;
   private String templatePath_ ;
   private String templateDetail_ ;
@@ -110,27 +112,23 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     usecase_ = preferences.getValue(Utils.CB_USECASE, "") ;
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     String repoName = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
-    setShowSearchForm(false) ;
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
-    
     if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
       templatePath_ = viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName).getNode(tempName).getPath() ; 
       String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-      
       if(rootNode_ == null || !rootNode_.getPath().equals(categoryPath)) {
         rootNode_ = (Node) getSession().getItem(categoryPath) ;
         currentNode_ = rootNode_ ;
         selectedTab_ = rootNode_ ;
       }
-      if(isEnableToolBar()) initToolBar(false, true, true) ;
-      else initToolBar(false, false, false) ;
-      setPageIterator(getSubDocumentList(getSelectedTab())) ;
-      if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+      initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
+      if(getTemplateName().equals(TREELIST)) {
         if(isEnableToolBar()) initToolBar(true, false, true) ;
+        selectedTab_ = null ;
         setTreeRoot(getRootNode()) ;
-        buildTree(getRootNode().getPath()) ;
-        setPageIterator(getSubDocumentList(getCurrentNode())) ;
+        buildTree(getCurrentNode().getPath()) ;
       }
+      if(!isShowDocumentByTag_) setPageIterator(getSubDocumentList(getSelectedTab())) ;
     } 
     if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
       templateDetail_ = viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName).getNode(tempName).getPath() ;
@@ -142,12 +140,12 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
       templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      setPageIterator(getNodeByQuery(-1)) ;
+      if(!isShowDocumentByTag_) setPageIterator(getNodeByQuery(-1)) ;
     } 
     if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
       templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      setPageIterator(getNodeByScript()) ;
+      if(!isShowDocumentByTag_) setPageIterator(getNodeByScript()) ;
     }
   }
 
@@ -168,6 +166,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     } catch (Exception e) {}
   }
 
+  protected String getTemplateName() {
+    return getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
+  }
   public boolean isEnableRefDocument() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_REF_DOCUMENT, "")) ;
   }
@@ -223,11 +224,14 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public String[] getActions() { return new String[] {"back"} ;}
   public Node getNodeByUUID(String uuid) throws Exception{ return getSession().getNodeByUUID(uuid);}
 
+  public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
+  public void record(String str) {nodesHistory_.add(str); } 
+  
   public Node getNodeByPath(String nodePath) throws Exception{
+    getSession().refresh(true) ;
     try{
       return (Node)getSession().getItem(nodePath) ;
     } catch(Exception e){
-      getSession().refresh(true) ;
       return null  ;
     }
   }
@@ -259,29 +263,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public Session getSession() throws Exception {
     String repository = getRepository() ;
     Session session = getApplicationComponent(RepositoryService.class)
-                     .getRepository(repository).getSystemSession(getWorkSpace()) ;
+    .getRepository(repository).getSystemSession(getWorkSpace()) ;
     return session ;
   }
-
-  public void refresh() throws Exception {
-    PortletPreferences preferences = getPortletPreferences() ; 
-    if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
-      setPageIterator(getSubDocumentList(getSelectedTab())) ;
-      if(preferences.getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-        setPageIterator(getSubDocumentList(getCurrentNode())) ;
-      }
-    } 
-    if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
-      setShowDocumentDetail(true) ;
-    } 
-    if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
-      setPageIterator(getNodeByQuery(-1)) ;
-    } 
-    if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
-      setPageIterator(getNodeByScript()) ;
-    }
-  }
-
   public void setCurrentNode(Node node) throws Exception {currentNode_ = node ;}
   public void setSelectedTab (Node node) { selectedTab_ = node ;}
   public boolean isShowDocumentList() {return isShowDocumentList_ ;}
@@ -525,11 +509,18 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     }
     return historyList ;
   }
-  
+
   protected void historyNext() {}
-  
-  protected void historyBack() {}
-  
+
+  protected void historyBack() throws Exception {
+    if(getTemplateName().equals(TREELIST)) {
+      selectedTab_ = null ;
+      currentNode_ = getNodeByPath(nodesHistory_.removeLast());
+    } else {
+      selectedTab_  = getNodeByPath(nodesHistory_.removeLast());
+    }
+  }
+
   private Map getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
       List documentTemplates) throws Exception {
     List<String> subCategories = new ArrayList<String>() ;
@@ -555,7 +546,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     childMap.put("doc", childDocOrReferencedDoc) ;
     return childMap ;
   }
-  
+
   public String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
@@ -567,7 +558,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   private List<Node> getReferences(RepositoryService repositoryService, Node node, boolean isShowAll,
       int size, List templates) throws Exception {
     List<Node> refDocuments = new ArrayList<Node>() ;
-    
+
     String repository = getRepository() ;
     if(isEnableRefDocument() && isReferenceableNode(node)) {
       String uuid = node.getUUID() ;
@@ -602,6 +593,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public List<Node> getDocumentByTag()throws Exception {
     String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    System.out.println("\n\n tag path" + tagPath_);
     return folksonomyService.getDocumentsOnTag(getTagPath(), repository) ;
   }
 
@@ -616,12 +608,10 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   }
 
   public void changeNode(Node selectNode) throws Exception {
-    setShowDocumentByTag(false) ;
     setShowAllChildren(false) ;
     if(selectNode.equals(getRootNode())) {
       setCurrentNode(null) ;
       setSelectedTab(null) ;
-      loadPortletConfig(getPortletPreferences()) ;
       return ;
     }
     setSelectedTab(selectNode) ;
@@ -655,11 +645,6 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     history_.put(KEY_SELECTED, getSelectedTab());
   }
 
-  public void selectNode(Node node) throws Exception {
-    setCurrentNode(node) ;
-    buildTree(node.getPath()) ;
-  }
-
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
@@ -669,17 +654,20 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       }
       UIBrowseContainer uiContainer = event.getSource() ;
       uiContainer.isShowDocumentDetail_ = false ;
+      uiContainer.isShowDocumentByTag_ = false ;
+      uiContainer.isShowAllDocument_ = false ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
-      if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
+      /*if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
         uiContainer.storeHistory() ;
         String path = objectId.substring(objectId.lastIndexOf(Utils.SEMI_COLON)+1) ;
         Node selected = uiContainer.getNodeByPath(path) ;
+        System.out.println("objectId" + objectId);
         uiContainer.changeNode(selected) ;
         uiContainer.setShowAllChildren(true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
-      }
+      }*/
       Node selectNode = uiContainer.getNodeByPath(objectId) ;
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
@@ -696,13 +684,13 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
           Node currentCat  = uiContainer.getNodeByPath(catPath);
           uiContainer.storeHistory() ;
           uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
-          if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
+          //if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
         }
         ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
         String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
         uiContainer.templateDetail_ = vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName)
-                                       .getNode(detailTemplateName).getPath()  ;
+        .getNode(detailTemplateName).getPath()  ;
         uiContainer.viewDocument(selectNode, true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
@@ -737,7 +725,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
-  
+
   static public class BackViewActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String normalState = event.getRequestContext().getRequestParameter("normalState") ;
@@ -779,7 +767,10 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
-      uiContainer.selectNode(node) ;
+      uiContainer.isShowDocumentDetail_ = false ;
+      uiContainer.isShowDocumentByTag_ = false ;
+      uiContainer.isShowAllDocument_ = false ;
+      uiContainer.setCurrentNode(node) ;
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }

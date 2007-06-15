@@ -48,7 +48,7 @@ import org.exoplatform.webui.form.UIFormTabPane;
 public class UIDriveForm extends UIFormTabPane implements UISelector {
 
   private boolean isAddNew_ = true ;  
-  final static public String[] ACTIONS = {"Save", "Cancel", "Refresh"} ;
+  final static public String[] ACTIONS = {"Save", "Refresh", "Cancel"} ;
   final static public String POPUP_DRIVEPERMISSION = "PopupDrivePermission" ;
   
   public UIDriveForm() throws Exception {

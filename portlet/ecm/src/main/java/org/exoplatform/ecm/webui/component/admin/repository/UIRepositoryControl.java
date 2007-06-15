@@ -7,6 +7,9 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.portlet.PortletPreferences;
+
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -59,7 +62,9 @@ public class UIRepositoryControl extends UIContainer {
     }
     return options ;
   }
-
+  protected String getSelectedRepo() {
+    return getChild(UIRepositorySelectForm.class).getSelectedValue() ;
+  }
   protected boolean isDefaultRepo(String repoName) {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     return rservice.getConfig().getDefaultRepositoryName().equals(repoName);
@@ -92,6 +97,9 @@ public class UIRepositoryControl extends UIContainer {
       if(rservice.canRemoveRepository(repoName)) {
         try {
           rservice.removeRepository(repoName) ;
+          PortletPreferences portletPref = uiControl.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
+          portletPref.setValue(Utils.REPOSITORY, uiControl.getSelectedRepo()) ;
+          portletPref.store() ;
         } catch (Exception e) {
           e.printStackTrace() ;
         }
@@ -102,7 +110,7 @@ public class UIRepositoryControl extends UIContainer {
         return ; 
       }
       uiControl.reloadValue() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }
   }
 

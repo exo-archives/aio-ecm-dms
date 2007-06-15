@@ -90,7 +90,8 @@ public class UIToolBar extends UIContainer {
       UIToolBar uiComp = event.getSource() ;
       String nodePath =  event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
-      uiContainer.changeNode(uiContainer.getNodeByPath(nodePath)) ;
+      Node selectNode = uiContainer.getNodeByPath(nodePath) ;
+      uiContainer.changeNode(selectNode) ;
     }
   }
 

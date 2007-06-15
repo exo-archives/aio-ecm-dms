@@ -75,7 +75,7 @@ public class UICBSearchResults extends UIGrid {
       if(container.isCategories(nodeType)) {
         uiSearchController.setShowHiddenSearch() ;
         if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-          container.selectNode(node) ;
+          container.setCurrentNode(node) ;
           return ;
         }
         container.changeNode(node) ;
@@ -95,7 +95,7 @@ public class UICBSearchResults extends UIGrid {
       if(container.isCategories(nodeType)) {
         uiSearchController.setShowHiddenSearch() ;
         if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-          container.selectNode(parentNode) ;
+          container.setCurrentNode(parentNode) ;
           return ;
         }
         container.changeNode(parentNode) ;

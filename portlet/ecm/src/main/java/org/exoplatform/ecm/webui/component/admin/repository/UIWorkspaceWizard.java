@@ -79,16 +79,18 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
   final static public String FIELD_TIMEOUT = "setLockTimeOut" ;
   final static public String FIELD_ISDEFAULT = "isDefault" ;
 
+  final static public String FIELD_CONTAINER = "container" ;
   final static public String FIELD_SOURCENAME = "sourceName" ;  
   final static public String FIELD_DBTYPE = "dbType" ;
   final static public String FIELD_ISMULTI = "isMulti" ;
-  final static public String FIELD_ISUPDATESTORE = "isUpdateStore" ;
+  final static public String FIELD_STORETYPE = "storeType" ;
   final static public String FIELD_MAXBUFFER = "maxBuffer" ;
   final static public String FIELD_SWAPPATH = "swapPath" ;
   final static public String FIELD_STOREPATH = "storePath" ;  
   final static public String FIELD_FILTER = "filterType" ;  
 
-  final static public String FIELD_INDEXPATH= "indexPath" ;
+  final static public String FIELD_QUERYHANDLER = "queryHandler" ;
+  final static public String FIELD_INDEXPATH = "indexPath" ;
   final static public String FIELD_ISCACHE = "isCache" ;
   final static public String FIELD_MAXSIZE = "maxSize" ;
   final static public String FIELD_LIVETIME = "liveTime" ;
@@ -117,16 +119,19 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
     checkbox.setOnChange("SetDefault") ;
     step1.addChild(checkbox) ;
     UIFormInputSet step2 = new UIFormInputSet(fIELD_STEP2) ;
+    step2.addChild(new UIFormStringInput(FIELD_CONTAINER, FIELD_CONTAINER, null)) ;
     step2.addChild(new UIFormStringInput(FIELD_SOURCENAME, FIELD_SOURCENAME, null)) ;
     step2.addChild(new UIFormSelectBox(FIELD_DBTYPE, FIELD_DBTYPE, getDbType())) ;
     step2.addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISMULTI, FIELD_ISMULTI, null)) ;
-    step2.addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISUPDATESTORE, FIELD_ISUPDATESTORE, null)) ;
+    step2.addChild(new UIFormStringInput(FIELD_STORETYPE, FIELD_STORETYPE, null)) ;
+    step2.addChild(new UIFormSelectBox(FIELD_FILTER, FIELD_FILTER, getFilterType())) ;
+    // step2.addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISUPDATESTORE, FIELD_ISUPDATESTORE, null)) ;
     step2.addChild(new UIFormStringInput(FIELD_MAXBUFFER, FIELD_MAXBUFFER, null).addValidator(NumberFormatValidator.class)) ;
     step2.addChild(new UIFormStringInput(FIELD_SWAPPATH, FIELD_SWAPPATH, null)) ;
     step2.addChild(new UIFormStringInput(FIELD_STOREPATH, FIELD_STOREPATH, null)) ;
-    step2.addChild(new UIFormSelectBox(FIELD_FILTER, FIELD_FILTER, getFilterType())) ;
 
     UIFormInputSet step3 = new UIFormInputSet(fIELD_STEP3) ;
+    step3.addChild(new UIFormStringInput(FIELD_QUERYHANDLER, FIELD_QUERYHANDLER, null)) ;
     step3.addChild(new UIFormStringInput(FIELD_INDEXPATH, FIELD_INDEXPATH, null)) ;
     step3.addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISCACHE, FIELD_ISCACHE, null)) ;
     step3.addChild(new UIFormStringInput(FIELD_MAXSIZE, FIELD_MAXSIZE, null).addValidator(NumberFormatValidator.class)) ;
@@ -219,12 +224,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       }
       uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setValue(workSpace.getAutoInitializedRootNt()) ;      
       uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue(String.valueOf(workSpace.getLockTimeOut())) ;
+      uiWSFormStep2.getUIStringInput(FIELD_CONTAINER).setValue(container.getType()) ;
       uiWSFormStep2.getUIStringInput(FIELD_SOURCENAME).setValue(container.getParameterValue("sourceName")) ;
       uiWSFormStep2.getUIFormSelectBox(FIELD_DBTYPE).setValue(container.getParameterValue("db-type")) ;
       uiWSFormStep2.getUIFormCheckBoxInput(FIELD_ISMULTI).setChecked(Boolean.parseBoolean(container.getParameterValue("multi-db"))) ;
-      uiWSFormStep2.getUIFormCheckBoxInput(FIELD_ISUPDATESTORE).setChecked(Boolean.parseBoolean(container.getParameterValue("update-storage"))) ;
+      ArrayList<ValueStorageEntry> valueStore = container.getValueStorages() ;
+      String storeType = valueStore.get(0).getType() ;
+      uiWSFormStep2.getUIStringInput(FIELD_STORETYPE).setValue(storeType) ;
       uiWSFormStep2.getUIStringInput(FIELD_MAXBUFFER).setValue(container.getParameterValue("max-buffer-size")) ;
       QueryHandlerEntry queryHandler = workSpace.getQueryHandler() ;
+      uiWSFormStep3.getUIStringInput(FIELD_QUERYHANDLER).setValue(queryHandler.getType());
       uiWSFormStep3.getUIStringInput(FIELD_INDEXPATH).setValue(queryHandler.getParameterValue("indexDir")) ;
       CacheEntry cache = workSpace.getCache() ;
       uiWSFormStep3.getUIFormCheckBoxInput(FIELD_ISCACHE).setChecked(cache.isEnabled()) ;
@@ -295,13 +304,26 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP2) ;
+      String containerName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
+      String storeType = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STORETYPE).getValue() ;
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).getValue() ;
       if(uiWSFormStep2.isRendered()) {
+        if((containerName == null) || (containerName.trim().length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }  
+
         if((sourceName == null) || (sourceName.trim().length() == 0)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }  
+        if((storeType == null) || (storeType.trim().length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storeType-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
@@ -329,7 +351,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       uiFormWizard.viewStep(3) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
-
   }
   public static class SetDefaultActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
@@ -359,21 +380,28 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_TIMEOUT).getValue() ;
 
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP2) ;
+      String containerType = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
       String dbType =  uiWSFormStep2.getUIFormSelectBox(UIWorkspaceWizard.FIELD_DBTYPE).getValue() ;
       boolean isMulti = uiWSFormStep2.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISMULTI).isChecked() ;
-      boolean isUpdateStore = uiWSFormStep2.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISUPDATESTORE).isChecked() ;
+      String storeType = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STORETYPE).getValue() ;
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String filterType = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_FILTER).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
 
       UIFormInputSet uiWSFormStep3 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP3) ;
+      String queryHandlerType = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_QUERYHANDLER).getValue() ;
       String indexPath = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_INDEXPATH).getValue() ;
       boolean isCache = uiWSFormStep3.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISCACHE).isChecked() ;
       String maxSize = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_MAXSIZE).getValue() ;
       String liveTime = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_LIVETIME).getValue() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
+      if((queryHandlerType == null) || (queryHandlerType.trim().length() == 0)) {
+        uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.queryHandlerType-invalid", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if((indexPath == null) || (indexPath.trim().length() == 0)) {
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -413,10 +441,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
 
       WorkspaceEntry workspaceEntry = new WorkspaceEntry(name, initNodeType);
       workspaceEntry.setLockTimeOut(lockTimeOutValue) ;
-      workspaceEntry.setContainer(newContainerEntry(sourceName, dbType, isMulti, isUpdateStore,
-          bufferValue, swapPath, filterType, storePath));
+      workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
-      workspaceEntry.setQueryHandler(newQueryHandlerEntry(indexPath)) ;
+      workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;
       if(uiFormWizard.isNewWizard_ && !uiFormWizard.isNewRepo_) {
         InitialContextInitializer ic = (InitialContextInitializer)uiFormWizard.getApplicationComponent(ExoContainer.class).
         getComponentInstanceOfType(InitialContextInitializer.class) ;
@@ -442,8 +469,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
     }
 
     @SuppressWarnings("unchecked")
-    private ContainerEntry newContainerEntry(String sourceName, String dbType, boolean  isMulti,
-        boolean isUpdateStore, long bufferValue, String swapPath, String filterType, String storePath) {
+    private ContainerEntry newContainerEntry(String containerType, String sourceName, String dbType, boolean  isMulti,
+        String storeType, String filterType, long bufferValue, String swapPath, String storePath, boolean isUpdateStore) {
       List containerParams = new ArrayList();
       containerParams.add(new SimpleParameterEntry("sourceName", sourceName)) ;
       containerParams.add(new SimpleParameterEntry("db-type", dbType)) ;
@@ -451,25 +478,31 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       containerParams.add(new SimpleParameterEntry("update-storage", String.valueOf(isUpdateStore))) ;
       containerParams.add(new SimpleParameterEntry("max-buffer-size", String.valueOf(bufferValue))) ;
       containerParams.add(new SimpleParameterEntry("swap-directory", swapPath)) ;
-      ContainerEntry containerEntry = new ContainerEntry("org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer", (ArrayList) containerParams) ;      
+      ContainerEntry containerEntry = new ContainerEntry(containerType, (ArrayList) containerParams) ;      
+      containerEntry.setParameters(containerParams);
 
       ArrayList<ValueStorageFilterEntry> vsparams = new ArrayList<ValueStorageFilterEntry>();
       ValueStorageFilterEntry filterEntry = new ValueStorageFilterEntry();
       filterEntry.setPropertyType(filterType);
       vsparams.add(filterEntry);
 
-      ValueStorageEntry valueStorageEntry = new ValueStorageEntry("org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage",
+      ValueStorageEntry valueStorageEntry = new ValueStorageEntry(storeType,
           vsparams);
       ArrayList<SimpleParameterEntry> spe = new ArrayList<SimpleParameterEntry>();
       spe.add(new SimpleParameterEntry("path", storePath));
 
       valueStorageEntry.setParameters(spe);
       valueStorageEntry.setFilters(vsparams);
-      containerEntry.setParameters(containerParams);
       ArrayList list = new ArrayList(1);
       list.add(valueStorageEntry);
       containerEntry.setValueStorages(list);
       return containerEntry ;
+    }
+
+    private ValueStorageEntry newValueStorageEntry(String storeType, String value, String filter) {
+      ArrayList<ValueStorageFilterEntry> vsparams = new ArrayList<ValueStorageFilterEntry>();
+      ValueStorageEntry valueStorageEntry = new ValueStorageEntry(storeType, vsparams)  ;
+      return valueStorageEntry ;
     }
     private CacheEntry newCacheEntry(boolean isCache, long maxSizeValue, long liveTimeValue) {
       CacheEntry cache = new CacheEntry() ;
@@ -480,10 +513,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       cache.setParameters(cacheParams) ;
       return cache ;
     }
-    private QueryHandlerEntry newQueryHandlerEntry(String indexPath) {
+    private QueryHandlerEntry newQueryHandlerEntry(String queryHandlerType, String indexPath) {
       ArrayList<SimpleParameterEntry> queryParams = new ArrayList<SimpleParameterEntry>() ;
       queryParams.add(new SimpleParameterEntry("indexDir", indexPath)) ;
-      QueryHandlerEntry queryHandler = new QueryHandlerEntry("org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex", queryParams) ;
+      QueryHandlerEntry queryHandler = new QueryHandlerEntry(queryHandlerType, queryParams) ;
+      queryHandler.setType(queryHandlerType) ;
       queryHandler.setParameters(queryParams) ;
       return queryHandler ;
     }
@@ -496,6 +530,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
 
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.fIELD_STEP2) ;
+      String containerName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
@@ -507,6 +542,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
 
       if(uiWSFormStep2.isRendered()) {
+        if((containerName == null) || (containerName.trim().length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }  
         if((sourceName == null) || (sourceName.trim().length() == 0)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
