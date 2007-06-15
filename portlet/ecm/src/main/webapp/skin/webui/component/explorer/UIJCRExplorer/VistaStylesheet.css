@@ -16,15 +16,12 @@
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
-  width: 95%;
   margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .FormContainer label {
-	line-height: 20px;
-	width: 170px;
+.UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
+  margin: 0px 5px;
 }
-
 
 .UIJCRExplorerPortlet .DecoratorMiddle {
 	background: url('VistaSkin/background/JCRExplorerBG2x2.png') repeat ;
@@ -38,6 +35,10 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;  
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
+}
+
+.UIJCRExplorerPortlet .Execute16x16Icon {
+	margin-top: 3px;
 }
 
 /*############################## -- End UIJCRExplorer -- ##############################*/
@@ -276,10 +277,6 @@
 	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIUploadManager .SelectFileFrame {
-	margin: 0px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
 	height: 20px; 
 	background: url('VistaSkin/background/TitleBG1x20.png') repeat-x ; 
@@ -397,6 +394,19 @@
 .UIJCRExplorerPortlet .UIUploadForm .FieldContainer .ProgressBarFrame .SelectFileLabel {
   width: 120px;
   margin: 0px;
+}
+
+.UIJCRExplorerPortlet .ProgressBarFrame {
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .SelectFileFrame {
+	margin: 0px;
+	width: 320px;
+}
+
+.UIJCRExplorerPortlet .FileNameLabel {
+	overflow: hidden;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
@@ -528,13 +538,13 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm label {
-  width: 170px;
-}
-
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
   width: 185px;
   padding-left: 15px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
+  float: left;
 }
 
 /*================================UIActionList=================================*/
@@ -637,7 +647,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser{
-	padding: 10px 10px 10px 20px;
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {
@@ -668,7 +678,7 @@
 	border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPropertyForm .HorizontalLayout .MultiValueContainer {
+.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
 	overflow: hidden;
 }
 

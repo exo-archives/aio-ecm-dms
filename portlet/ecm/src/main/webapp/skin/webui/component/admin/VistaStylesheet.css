@@ -74,6 +74,18 @@
   float: left;
 }
 
+.UIECMAdminPortlet .ProgressBarFrame {
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .SelectFileFrame {
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .FileNameLabel {
+	overflow: hidden;
+}
+
 /*############################## --Begin UIRepositoryManager -- ########################*/
 
 .UIPageBody .UIECMAdminPortlet {
