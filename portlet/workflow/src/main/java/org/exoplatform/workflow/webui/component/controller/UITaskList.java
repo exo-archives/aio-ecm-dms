@@ -90,6 +90,7 @@ public class UITaskList extends UIContainer {
       UIWorkflowPopup uiPopupAction = uiControllerPortlet.getChild(UIWorkflowPopup.class) ;
       UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null) ;
       uiTaskManager.setTokenId(tokenId) ;
+      uiTaskManager.setIsStart(false) ;
       uiPopupAction.activate(uiTaskManager, 600, 550) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

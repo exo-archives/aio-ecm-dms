@@ -22,6 +22,7 @@ import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 
 /**
  * Created by The eXo Platform SARL
@@ -70,17 +71,11 @@ public class UIControllerManager extends UIContainer {
       String processId = event.getRequestContext().getRequestParameter(OBJECTID);
       if(uiControllerManager.service_.hasStartTask(processId)) {      
         UIWorkflowControllerPortlet portlet = uiControllerManager.getParent() ;
-        UIPopupWindow popup = portlet.getChild(UIPopupWindow.class) ;
-        popup.setResizable(true) ;
-        popup.setShow(true) ;
-        popup.setRendered(true) ;
-        UITaskManager uiTaskManager = (UITaskManager)popup.getUIComponent() ;
-        uiTaskManager.setRendered(true) ;
-        UITask uiTask = uiTaskManager.getChild(UITask.class) ;
-        uiTask.setRenderSibbling(UITask.class) ;
-        uiTask.setIdentification(processId);
-        uiTask.setIsStart(true);
-        uiTask.updateUITree();
+        UIWorkflowPopup uiPopup = portlet.getChild(UIWorkflowPopup.class) ;
+        UITaskManager uiTaskManager = portlet.createUIComponent(UITaskManager.class, null, null) ;
+        uiTaskManager.setTokenId(processId) ;
+        uiTaskManager.setIsStart(true);
+        uiPopup.activate(uiTaskManager, 600, 500) ;
       } else {
         uiControllerManager.service_.startProcess(processId);
       }

@@ -23,6 +23,7 @@ import org.exoplatform.workflow.webui.component.UIPopupComponent;
 public class UITaskManager extends UIContainer implements UIPopupComponent {
   
   private String tokenId_ ;
+  private boolean isStart_ = false;
   
   public UITaskManager() throws Exception {
     addChild(UITask.class, null, null) ;
@@ -30,13 +31,15 @@ public class UITaskManager extends UIContainer implements UIPopupComponent {
 
   public void setTokenId(String tokenId) { tokenId_ = tokenId ; }
   
+  public void setIsStart(boolean isStart) { isStart_ = isStart ; }
+  
   public void activate() throws Exception {
     UITask uiTask = getChild(UITask.class) ;
     WorkflowServiceContainer workflowServiceContainer = 
       getApplicationComponent(WorkflowServiceContainer.class) ;
     try {
       uiTask.setIdentification(tokenId_) ;
-      uiTask.setIsStart(false) ;
+      uiTask.setIsStart(isStart_) ;
       uiTask.updateUITree() ;
     } catch (PathNotFoundException e){
       Task task = workflowServiceContainer.getTask(tokenId_);
