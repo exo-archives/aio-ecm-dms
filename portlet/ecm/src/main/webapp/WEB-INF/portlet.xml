@@ -128,12 +128,12 @@
       </preference>
       <preference>
         <name>workspace</name>
-        <value>production</value>
+        <value>draft</value>
         <read-only>false</read-only>
       </preference>
       <preference>
         <name>path</name>     
-        <value>/</value>        
+        <value>/cms/publications</value>        
         <read-only>false</read-only>
       </preference>
       <preference>

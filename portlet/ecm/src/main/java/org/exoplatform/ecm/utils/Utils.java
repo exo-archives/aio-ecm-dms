@@ -24,7 +24,7 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
 public class Utils {
-	final public static String WORKSPACE_NAME = "workspace".intern() ;   
+  final public static String WORKSPACE_NAME = "workspace".intern() ;   
   final public static String JCR_PATH = "path".intern() ; 
   final public static String DRIVE_FOLDER = "allowCreateFolder".intern() ; 
   
@@ -142,15 +142,19 @@ public class Utils {
   @SuppressWarnings({"unchecked", "unused"})
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
+    HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
     for (int i = 0; i < inputs.size(); i++) {
-      JcrInputProperty property ;
+      JcrInputProperty property = null;
       if(inputs.get(i) instanceof UIFormMultiValueInputSet) {
         String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;
-        List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
-        property = (JcrInputProperty) properties.get(inputName);        
-        if(property != null){          
-          property.setValue(values.toArray(new String[values.size()])) ;
-        } 
+        if(!hasMap.containsKey(inputName)) {
+          List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
+          property = (JcrInputProperty) properties.get(inputName);        
+          if(property != null){          
+            property.setValue(values.toArray(new String[values.size()])) ;
+          }
+        }
+        hasMap.put(inputName, property) ;
       } else {
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
         property = (JcrInputProperty) properties.get(input.getName());

@@ -143,4 +143,25 @@ ECMUtils.prototype.convertElemtToHTML = function(id) {
 	elemt.innerHTML = text ;
 }
 
+ECMUtils.prototype.onKeyPress = function() {
+	var uiAddressBarControl = document.getElementById("UIAddressBarControl");
+	if(uiAddressBarControl) {
+		uiAddressBarControl.onkeypress = eXo.ecm.ECMUtils.onEnterPress ;
+	}
+};
+
+ECMUtils.prototype.onEnterPress = function(e) {
+	var uiAdressBarAction = document.getElementById("UIAddressBarAction");
+	if(uiAdressBarAction) {
+		var code;
+		if(!e) e = window.event;
+		if(e.keyCode) code = e.keyCode;
+		else if (e.which) code = e.which;
+		
+		if(code == 13) {
+			window.location.href = uiAdressBarAction.href ;
+		}
+	}
+};
+
 eXo.ecm.ECMUtils = new ECMUtils(); 

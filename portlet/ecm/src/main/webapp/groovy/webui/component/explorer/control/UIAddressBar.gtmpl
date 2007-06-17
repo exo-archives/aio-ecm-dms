@@ -7,9 +7,18 @@
 	 * version: $Id$	 
 	 */
 %>
-<div class="UIAddressBar">
+<%
+  import org.exoplatform.web.application.JavascriptManager;
+  def rcontext = _ctx.getRequestContext() ;
+  JavascriptManager jsmanager = rcontext.getJavascriptManager();
+  
+  jsmanager.addJavascript('eXo.ecm.ECMUtils.onKeyPress();') ;
+%>
+<div class="UIAddressBar" id="UIAddressBarControl">
   <div class="BlockRight">
-	  <div class="GoButton Style1NextArrow16x16Icon" onclick="<%=uicomponent.event("ChangeNode")%>" title="Go"><span></span></div>
+    <a href ="<%=uicomponent.event("ChangeNode")%>" id="UIAddressBarAction">
+  	  <div class="GoButton Style1NextArrow16x16Icon" title="Go"><span></span></div>
+    </a>	  
 	  <div class="GoText">Go</div>
 	  <div class="Separator AddressBarSeparator"><span></span></div>
   </div>
