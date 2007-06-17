@@ -59,7 +59,16 @@
     </init-param>
     <load-on-startup>4</load-on-startup>
   </servlet>
-  
+
+  <servlet>
+    <servlet-name>LinkServlet</servlet-name>
+    <description>
+      eXo - Platform LnkGenerator Servlet.
+    </description>
+    <servlet-class>org.exoplatform.frameworks.jcr.webdav.LnkGeneratorServlet</servlet-class>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+
   <!-- ================================================================= -->
   
   <servlet-mapping>
@@ -85,6 +94,11 @@
   <servlet-mapping>
     <servlet-name>portal</servlet-name>
     <url-pattern>/command/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>LinkServlet</servlet-name>
+    <url-pattern>/lnkgenerator/*</url-pattern>
   </servlet-mapping>
 
   <session-config>
