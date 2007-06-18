@@ -15,6 +15,7 @@ import org.exoplatform.services.cms.actions.activation.ScriptActionActivationJob
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 
 public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlugin {
@@ -46,7 +47,10 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   public String getActionExecutableLabel() { return "Groovy Scripts:"; }
   
   public String getExecutableDefinitionName() { return "exo:script"; }
-  
+  protected boolean getAutoCreate() { return config_.getAutoCreate() ; }
+  protected List<RepositoryEntry> getRepositories() {
+    return repositoryService_.getConfig().getRepositoryConfigurations() ;
+  }
   protected String getWorkspace() { return config_.getWorkspace(); }
   protected String getRepository() {return config_.getRepository() ; }
   protected ManageableRepository getRepository(String repository) throws Exception {

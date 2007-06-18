@@ -14,6 +14,7 @@ import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 
 public class ManageViewPlugin extends BaseComponentPlugin {
 
@@ -33,69 +34,81 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     repositoryService_ = repositoryService ;
     cmsConfigService_ = cmsConfigService ;
     cservice_ = cservice ;
-    initRepository(params, repositoryService, cservice, cmsConfigService) ;
+    //initRepository() ;
   }
 
-  private void initRepository(InitParams params, RepositoryService repositoryService, 
-      ConfigurationManager cservice, CmsConfigurationService cmsConfigService) throws Exception {
-    Iterator<ObjectParameter> it = params.getObjectParamIterator() ;       
-    String viewsPath = cmsConfigService.getJcrPath(BasePath.CMS_VIEWS_PATH);
-    String templatesPath = cmsConfigService.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
-    String repositoryName = null ;
-    Node viewManager = null ;
-    String warViewPath = cmsConfigService.getContentLocation() 
-    + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
-    while(it.hasNext()){
-      Object object = it.next().getObject() ;
-      ViewDataImpl data = null ;
-      TemplateDataImpl temp = null ;
-      if(object instanceof ViewDataImpl){
-        data = (ViewDataImpl)object ;
-        if(!data.getRepository().equals(repositoryName)){
-          repositoryName = data.getRepository() ;
-          String workspace = cmsConfigService.getWorkspace(repositoryName) ;
-          Session session = repositoryService.getRepository(repositoryName).getSystemSession(workspace) ;
-          viewManager = (Node)session.getItem(viewsPath) ;
-        }
-        String nodeName = data.getName() ;
-        if(!viewManager.hasNode(nodeName)){
-          Node view = addView(viewManager, nodeName, data.getPermissions(), data.getTemplate()) ;
-          List tabList = data.getTabList() ;
-          for(Iterator iter = tabList.iterator() ; iter.hasNext() ; ){
-            ViewDataImpl.Tab tab = (ViewDataImpl.Tab) iter.next()  ;
-            addTab(view, tab.getTabName(), tab.getButtons()) ;
-          }
-        }
-        viewManager.save() ;
-        viewManager.getSession().save() ;
-      }else {
-        temp = (TemplateDataImpl)object ;
-        String workspace = cmsConfigService.getWorkspace(temp.getRepository()) ;
-        Session session = repositoryService.getRepository(temp.getRepository()).getSystemSession(workspace) ;
-        addTemplate(temp, session, warViewPath, cservice, cmsConfigService) ;
-      }
-    }
-  }
-
-  public void init(String repository) throws Exception {
+  public void init() throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
     String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
     Node viewManager = null ;
     String warViewPath = cmsConfigService_.getContentLocation() 
     + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
-    String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
-    
     while(it.hasNext()){
       Object object = it.next().getObject() ;
       ViewDataImpl data = null ;
       TemplateDataImpl temp = null ;
       if(object instanceof ViewDataImpl){
         data = (ViewDataImpl)object ;
-        if(data.getRepository().equals(defaultRepo)) {
-          Session session = repositoryService_.getRepository(repository)
-          .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-          viewManager = (Node)session.getItem(viewsPath) ;
+        if(data.getAutoCreate()) {
+          List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+          for(RepositoryEntry repo : repositories) {
+            viewManager = (Node)getSession(repo.getName()).getItem(viewsPath) ;
+            String nodeName = data.getName() ;
+            if(!viewManager.hasNode(nodeName)){
+              Node view = addView(viewManager, nodeName, data.getPermissions(), data.getTemplate()) ;
+              List tabList = data.getTabList() ;
+              for(Iterator iter = tabList.iterator() ; iter.hasNext() ; ){
+                ViewDataImpl.Tab tab = (ViewDataImpl.Tab) iter.next()  ;
+                addTab(view, tab.getTabName(), tab.getButtons()) ;
+              }
+            }
+            viewManager.save() ;
+            viewManager.getSession().save() ;
+          }
+        }else {
+          viewManager = (Node)getSession(data.getRepository()).getItem(viewsPath) ;
+          String nodeName = data.getName() ;
+          if(!viewManager.hasNode(nodeName)){
+            Node view = addView(viewManager, nodeName, data.getPermissions(), data.getTemplate()) ;
+            List tabList = data.getTabList() ;
+            for(Iterator iter = tabList.iterator() ; iter.hasNext() ; ){
+              ViewDataImpl.Tab tab = (ViewDataImpl.Tab) iter.next()  ;
+              addTab(view, tab.getTabName(), tab.getButtons()) ;
+            }
+          }
+          viewManager.save() ;
+          viewManager.getSession().save() ;
+        }        
+      }else {
+        temp = (TemplateDataImpl)object ;
+        if(temp.getAutoCreate()) {
+          List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+          for(RepositoryEntry repo : repositories) {
+            addTemplate(temp, getSession(repo.getName()), warViewPath, cservice_, cmsConfigService_) ;
+          }
+        } else {
+          addTemplate(temp, getSession(temp.getRepository()), warViewPath, cservice_, cmsConfigService_) ;
+        }
+      }
+    }
+  }
+  
+  public void init(String repository) throws Exception {
+    Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
+    String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
+    Node viewManager = null ;
+    String warViewPath = cmsConfigService_.getContentLocation() 
+    + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;    
+    while(it.hasNext()){
+      Object object = it.next().getObject() ;
+      ViewDataImpl data = null ;
+      TemplateDataImpl temp = null ;
+      if(object instanceof ViewDataImpl){
+        data = (ViewDataImpl)object ;
+        if(data.getAutoCreate()) {
+          viewManager = (Node)getSession(repository).getItem(viewsPath) ;
           String nodeName = data.getName() ;
           if(!viewManager.hasNode(nodeName)){
             Node view = addView(viewManager, nodeName, data.getPermissions(), data.getTemplate()) ;
@@ -110,17 +123,19 @@ public class ManageViewPlugin extends BaseComponentPlugin {
         }
       }else {
         temp = (TemplateDataImpl)object ;
-        if(temp.getRepository().equals(defaultRepo)) {
-          String workspace = cmsConfigService_.getWorkspace(repository) ;
-          Session session = repositoryService_.getRepository(repository).getSystemSession(workspace) ;
-          addTemplate(temp, session, warViewPath, cservice_, cmsConfigService_) ;
+        if(temp.getAutoCreate()) {
+          addTemplate(temp, getSession(repository), warViewPath, cservice_, cmsConfigService_) ;
         }
       }
     }
   }
-
-  public Node addView(Node viewManager, String name, String permissions, String template)
-  throws Exception {
+  
+  private Session getSession(String repository) throws Exception{
+    String workspace = cmsConfigService_.getWorkspace(repository) ;
+    return repositoryService_.getRepository(repository).getSystemSession(workspace) ;
+  }
+  
+  private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
     Node contentNode = viewManager.addNode(name, "exo:view");
     contentNode.setProperty("exo:permissions", permissions);
     contentNode.setProperty("exo:template", template);  
@@ -129,8 +144,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     return contentNode ;
   }
 
-  public void addTab(Node view, String name, String buttons)
-  throws Exception {
+  private void addTab(Node view, String name, String buttons) throws Exception {
     Node tab ;
     if(view.hasNode(name)){
       tab = view.getNode(name) ;

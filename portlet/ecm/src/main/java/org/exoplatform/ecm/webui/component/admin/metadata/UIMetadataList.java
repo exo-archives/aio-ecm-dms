@@ -11,6 +11,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -56,11 +57,12 @@ public class UIMetadataList extends UIContainer {
   public List<Metadata> getAllMetadatas() throws Exception {
     List<Metadata> metadatas = new ArrayList<Metadata>() ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    List<NodeType> nodetypes = metadataService.getAllMetadatasNodeType() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    List<NodeType> nodetypes = metadataService.getAllMetadatasNodeType(repository) ;
     for(NodeType nt : nodetypes) {
       Metadata mt = new Metadata() ;
       mt.setName(nt.getName()) ;
-      mt.isTemplate(metadataService.hasMetadata(nt.getName())) ;
+      mt.isTemplate(metadataService.hasMetadata(nt.getName(), repository)) ;
       PropertyDefinition def =((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
       if(def.getDefaultValues()[0].getBoolean()) mt.setInternalUse("True") ;
       else mt.setInternalUse("False") ;
@@ -101,8 +103,9 @@ public class UIMetadataList extends UIContainer {
       UIMetadataList uiMetaList = event.getSource() ;
       String metadataName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIMetadataManager uiManager = uiMetaList.getParent() ;
+      String repository = uiMetaList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       MetadataService metadataService = uiMetaList.getApplicationComponent(MetadataService.class) ;
-      metadataService.removeMetadata(metadataName) ;
+      metadataService.removeMetadata(metadataName, repository) ;
       uiMetaList.getAncestorOfType(UIMetadataManager.class).metadatasDeleted.add(metadataName) ;
       uiMetaList.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

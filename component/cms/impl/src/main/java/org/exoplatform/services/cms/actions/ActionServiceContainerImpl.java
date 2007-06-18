@@ -57,11 +57,34 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       CmsService cmsService, CmsConfigurationService cmsConfigService) throws Exception {
     repositoryService_ = repositoryService;
     cmsService_ = cmsService;
-    cmsConfigService_ = cmsConfigService ;
-    //workspace_ = params.getValueParam("workspace").getValue();
-    //repository_ = params.getValueParam("repository").getValue();
+    cmsConfigService_ = cmsConfigService ;    
   }
-
+  
+  public void start() {
+    try {
+      for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
+        BaseActionPlugin plugin = (BaseActionPlugin) iter.next();
+        plugin.importPredefinedActionsInJcr();
+      }
+      initiateActionConfiguration();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  public void stop() {
+  }
+  
+  public void init(String repository) {
+    try {
+      for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
+        BaseActionPlugin plugin = (BaseActionPlugin) iter.next();
+        plugin.reImportPredefinedActionsInJcr(repository);
+      }
+      reInitiateActionConfiguration(repository);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
   public Collection<String> getActionPluginNames() {
     Collection<String> actionPluginNames = new ArrayList<String>();
     for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
@@ -346,35 +369,56 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         }
         if (queryManager == null)
           continue;
-        try {
-          Query query = queryManager.createQuery(ACTION_QUERY, Query.XPATH);
-          QueryResult queryResult = query.execute();
-          for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
-            Node actionNode = iter.nextNode();
-            String lifecyclePhase = actionNode.getProperty(LIFECYCLE_PHASE_PROP).getString();
-            String actionType = actionNode.getPrimaryNodeType().getName();
-            for (Iterator pluginIter = actionPlugins.iterator(); pluginIter.hasNext();) {
-              ComponentPlugin plugin = (ComponentPlugin) pluginIter.next();
-              String actionServiceName = plugin.getName();
-              ActionPlugin actionService = getActionPlugin(actionServiceName);
-              if (actionService.isActionTypeSupported(actionType)) {
-                if (lifecyclePhase.equals(ActionServiceContainer.SCHEDULE_PHASE)) {
-                  actionService.reScheduleActivations(actionNode, repository.getName());
-                } else {
-                  actionService.initiateActionObservation(actionNode, repository.getName());
-                }
-              }
-            }
-          }
-        } catch (Exception e) {
-          System.out.println(">>>> Can not launch action listeners for wokrpsace: " 
-              + workspace + " in '" + repository.getName() + "' repository");
-          // e.printStackTrace() ;
-        }
+        initAction(queryManager, repository.getName(), workspace) ;
       }
     }    
   }
-
+  
+  private void reInitiateActionConfiguration(String repository) throws Exception {
+    ManageableRepository jcrRepository = repositoryService_.getRepository(repository);
+    String[] workspaces = jcrRepository.getWorkspaceNames();
+    for (String workspace : workspaces) {
+      Session session = jcrRepository.getSystemSession(workspace);
+      QueryManager queryManager = null;
+      try {
+        queryManager = session.getWorkspace().getQueryManager();
+      } catch (RepositoryException e) {
+        System.out.println("[WARN] ActionServiceContainer - Query Manager Factory of workspace "
+            + workspace + " not found. Check configuration.");
+      }
+      if (queryManager == null) continue;
+      initAction(queryManager, repository, workspace) ;
+    }
+  }
+  
+  private void initAction(QueryManager queryManager, String repository, String workspace) throws Exception {
+    try {
+      Query query = queryManager.createQuery(ACTION_QUERY, Query.XPATH);
+      QueryResult queryResult = query.execute();
+      for (NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {
+        Node actionNode = iter.nextNode();
+        String lifecyclePhase = actionNode.getProperty(LIFECYCLE_PHASE_PROP).getString();
+        String actionType = actionNode.getPrimaryNodeType().getName();
+        for (Iterator pluginIter = actionPlugins.iterator(); pluginIter.hasNext();) {
+          ComponentPlugin plugin = (ComponentPlugin) pluginIter.next();
+          String actionServiceName = plugin.getName();
+          ActionPlugin actionService = getActionPlugin(actionServiceName);
+          if (actionService.isActionTypeSupported(actionType)) {
+            if (lifecyclePhase.equals(ActionServiceContainer.SCHEDULE_PHASE)) {
+              actionService.reScheduleActivations(actionNode, repository);
+            } else {
+              actionService.initiateActionObservation(actionNode, repository);
+            }
+          }
+        }
+      }
+    } catch (Exception e) {
+      System.out.println(">>>> Can not launch action listeners for wokrpsace: " 
+          + workspace + " in '" + repository + "' repository");
+      // e.printStackTrace() ;
+    }
+  }
+  
   public void initiateObservation(Node node, String repository) throws Exception {
     try {
       Session session = node.getSession();
@@ -409,20 +453,4 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       // ex.printStackTrace() ;
     }
   }
-
-  public void start() {
-    try {
-      for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-        BaseActionPlugin plugin = (BaseActionPlugin) iter.next();
-        plugin.importPredefinedActionsInJcr();
-      }
-      initiateActionConfiguration();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void stop() {
-  }
-
 }

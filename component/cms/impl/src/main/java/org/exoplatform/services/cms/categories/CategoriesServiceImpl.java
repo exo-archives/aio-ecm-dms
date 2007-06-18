@@ -13,8 +13,6 @@ import javax.jcr.Workspace;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
-import org.exoplatform.services.cms.categories.TaxonomyConfig.Taxonomy;
-import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.picocontainer.Startable;
 
@@ -26,16 +24,33 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 	
 	private RepositoryService repositoryService_;
 	private CmsConfigurationService cmsConfig_;	
-	private String taxonomyHomePath_ ;		
 	List<TaxonomyPlugin> plugins_ = new ArrayList<TaxonomyPlugin>() ;
 	
 	public CategoriesServiceImpl(RepositoryService repositoryService,
 			CmsConfigurationService cmsConfig) throws Exception{  
 		repositoryService_ = repositoryService;
 		cmsConfig_ = cmsConfig;
-		taxonomyHomePath_ = cmsConfig.getJcrPath(BasePath.EXO_TAXONOMIES_PATH) ;        
+		        
 	}
 	
+  public void start() {   
+    try {
+      for(TaxonomyPlugin plugin : plugins_) {
+        plugin.init() ;
+      }
+    } catch (Exception e) {
+      e.printStackTrace() ;
+    }
+  } 
+  
+  public void stop() { }
+  
+  public void init(String repository) throws Exception {
+    for(TaxonomyPlugin plugin : plugins_) {
+      plugin.init(repository) ;
+    }
+  }
+  
 	public void addTaxonomyPlugin(ComponentPlugin plugin) {
 		if(plugin instanceof TaxonomyPlugin) {			
 			plugins_.add((TaxonomyPlugin)plugin) ;
@@ -43,8 +58,8 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 	}
 	
 	public Node getTaxonomyHomeNode (String repository) throws Exception {    
-    Session adminSession = getSession(repository) ;    
-		Node homeTaxonomy = (Node)adminSession.getItem(taxonomyHomePath_) ;
+    Session session = getSession(repository) ;    
+		Node homeTaxonomy = (Node)session.getItem(cmsConfig_.getJcrPath(BasePath.EXO_TAXONOMIES_PATH)) ;
 		return homeTaxonomy ;
 	}	
 	
@@ -92,46 +107,6 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		}									
 	}	
 	
-	private void init() throws Exception{
-    Session session = null ; 
-		Node taxonomyHomeNode = null ; 
-		for(TaxonomyPlugin plugin:plugins_) {
-      session = repositoryService_.getRepository(plugin.getRepository()).getSystemSession(
-          cmsConfig_.getWorkspace(plugin.getRepository())) ;
-      taxonomyHomeNode = (Node)session.getItem(taxonomyHomePath_) ;
-			List<Taxonomy> taxonomies = plugin.getTaxonomies() ;
-			for(Taxonomy taxonomy:taxonomies) {
-				Node taxonomyNode = Utils.makePath(taxonomyHomeNode,taxonomy.getPath(),"exo:taxonomy") ;
-				if(taxonomyNode.canAddMixin("mix:referenceable")) {
-					taxonomyNode.addMixin("mix:referenceable") ;
-				}				
-        session.save() ;
-        session.refresh(true) ;
-			}
-		}
-	}
-	
-  public void init(String repository) throws Exception {
-    Session session = null ; 
-    Node taxonomyHomeNode = null ; 
-    for(TaxonomyPlugin plugin:plugins_) {
-      String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
-      if(plugin.getRepository().equals(defaultRepo)) {
-        session = repositoryService_.getRepository(repository).getSystemSession(
-            cmsConfig_.getWorkspace(repository)) ;
-        taxonomyHomeNode = (Node)session.getItem(taxonomyHomePath_) ;
-        List<Taxonomy> taxonomies = plugin.getTaxonomies() ;
-        for(Taxonomy taxonomy:taxonomies) {
-          Node taxonomyNode = Utils.makePath(taxonomyHomeNode,taxonomy.getPath(),"exo:taxonomy") ;
-          if(taxonomyNode.canAddMixin("mix:referenceable")) {
-            taxonomyNode.addMixin("mix:referenceable") ;
-          }       
-          session.save() ;
-          session.refresh(true) ;
-        }
-      }
-    }
-  }
 	public boolean hasCategories(Node node) throws Exception {
 		if (node.isNodeType(CATEGORY_MIXIN))
 			return true;
@@ -207,25 +182,7 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 		addCategory(node, categoryPath, repository) ;
 	}    
 	
-	public void start() {		
-		try {
-			init() ;
-		} catch (Exception e) {
-			e.printStackTrace() ;
-		}
-	}	
-	
-	public void stop() { }
-  
-  //TODO: why need two getSystemSession and getAdminSession
-  
-  /*protected Session getSystemSession(String repository) throws Exception {
-    Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace()) ;
-    return session ;
-  }*/
-  
-
-  protected Session getSession(String repository) throws Exception {
+	protected Session getSession(String repository) throws Exception {
     try {
       //return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
       return repositoryService_.getRepository(repository).login(cmsConfig_.getWorkspace(repository)) ;

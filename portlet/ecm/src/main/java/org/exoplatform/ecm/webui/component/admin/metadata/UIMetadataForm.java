@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.admin.metadata;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -83,10 +84,11 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   public void update(String metadata)throws Exception{
     metadataName_ = metadata ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     getUIStringInput(METADATA_NAME).setValue(metadata) ;
-    String dialogTemplate = metadataService.getMetadataTemplate(metadata, true) ;
-    String viewTemplate = metadataService.getMetadataTemplate(metadata, false) ;
-    String role = metadataService.getMetadataRoles(metadata, true) ;
+    String dialogTemplate = metadataService.getMetadataTemplate(metadata, true, repository) ;
+    String viewTemplate = metadataService.getMetadataTemplate(metadata, false, repository) ;
+    String role = metadataService.getMetadataRoles(metadata, true, repository) ;
     getUIStringInput(METADATA_NAME).setEditable(false) ;
     getUIStringInput(VIEW_PERMISSION).setValue(role) ;
     getUIFormTextAreaInput(DIALOG_TEMPLATE).setValue(dialogTemplate) ;
@@ -109,8 +111,9 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
       } else {
         uiForm.isAddNew_ = false ;
       }
-      metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_) ;
-      metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_) ;
+      String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_, repository) ;
+      metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, repository) ;
       uiForm.reset() ;
       uiMetaManager.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;

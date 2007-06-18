@@ -5,9 +5,13 @@ import java.util.List;
 
 public class TaxonomyConfig {			
 	
+  private boolean autoCreate ;
   private String repository;
 	private List<Taxonomy> taxonomies = new ArrayList<Taxonomy>() ;
 	
+  public boolean getAutoCreate() { return this.autoCreate ; }
+  public void setAutoCreate(boolean isAuto) { this.autoCreate = isAuto ; }
+  
   public String getRepository() { return repository; }
   public void setRepository(String repository) { this.repository = repository; }
   

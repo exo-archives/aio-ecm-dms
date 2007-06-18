@@ -13,6 +13,7 @@ package org.exoplatform.services.cms.queries;
 public class QueryData{
 
   private String name ;
+  private boolean autoCreate ;
   private String repository ;
   private String language ;
   private String statement ;
@@ -23,6 +24,9 @@ public class QueryData{
 
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }  
+  
+  public boolean getAutoCreate() { return this.autoCreate ; }
+  public void setAutoCreate(boolean isAuto) { this.autoCreate = isAuto ; }
   
   public String getRepository() { return this.repository ; }
   public void setRepository(String rp) { this.repository = rp ; }

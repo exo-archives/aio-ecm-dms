@@ -61,8 +61,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   private String exoTagStylePath_ ;
   private List<TagStylePlugin> plugin_ = new ArrayList<TagStylePlugin>() ;
   private ExoCache cache_ ;  
-  //private Session systemSession_ = null;
-
+  
   public FolksonomyServiceImpl(RepositoryService repoService,
       CmsConfigurationService cmsConfigService, CacheService cacheService ) throws Exception{
     repoService_ = repoService ;
@@ -72,12 +71,42 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     cache_ = cacheService.getCacheInstance(FolksonomyServiceImpl.class.getName()) ;       
   }
 
+  public void start() {
+    try {
+      init() ;
+    }catch (Exception e) {
+      System.out.println("===>>>>Exception when init FolksonomySerice"+e.getMessage());      
+    }
+  }
+
+  public void stop() { }
+
   public void addTagStylePlugin(ComponentPlugin plugin) {
     if(plugin instanceof TagStylePlugin) {
       plugin_.add((TagStylePlugin)plugin) ;
     }    
   }
-
+  
+  private void init() throws Exception {
+    for(TagStylePlugin plugin : plugin_) {
+      try{
+        plugin.init() ;
+      }catch(Exception e) {
+        //System.out.println("[WARNING]===>Can not init "+e.getMessage());
+      }
+    }
+  }
+  
+  public void init(String repository) throws Exception {
+    for(TagStylePlugin plugin : plugin_) {
+      try{
+        plugin.init(repository) ;
+      }catch(Exception e) {
+        //System.out.println("[WARNING]===>Can not init "+e.getMessage());
+      }
+    }
+  }
+  
   public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
     Session systemSession = getSystemSession(repository) ;     
     Session currentSession = node.getSession() ;    
@@ -178,14 +207,9 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return tagStyleList ;
   }    
   
-  /*protected Session getSystemSession() throws Exception { 
-    if(systemSession_!=null) return systemSession_ ;
-    return getSystemSession(cmsConfigService_.getWorkspace()) ;
-  }*/
   protected Session getSystemSession(String repository) throws Exception {
     return repoService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;    
   }  
-
 
   public String getTagStyle(String styleName, String repository) throws Exception {
     Object cachedObj = cache_.get(styleName) ;
@@ -260,52 +284,6 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return false ;
   }
   
-  public void init(String repository) throws Exception {
-    String defaultRepo = repoService_.getDefaultRepository().getConfiguration().getName() ;
-    for(TagStylePlugin plugin : plugin_) {
-      if(plugin.getRepository().equals(defaultRepo)) {
-        Session session = repoService_.getRepository(repository)
-        .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-         Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath_) ;
-         List<HtmlTagStyle> htmlStyle4Tag = plugin.getTagStyleList() ;
-         for(HtmlTagStyle style: htmlStyle4Tag) {
-           Node tagStyleNode = Utils.makePath(exoTagStyleHomeNode,"/"+style.getName(),EXO_TAG_STYLE) ;
-           tagStyleNode.setProperty(TAG_RATE_PROP,style.getTagRate()) ;
-           tagStyleNode.setProperty(HTML_STYLE_PROP,style.getHtmlStyle()) ;
-         }
-         exoTagStyleHomeNode.save() ;
-         session.save() ;
-      }
-    }
-  }
-  
-  private void init() throws Exception {
-    for(TagStylePlugin plugin : plugin_) {
-      Session session = repoService_.getRepository(plugin.getRepository())
-       .getSystemSession(cmsConfigService_.getWorkspace(plugin.getRepository())) ;
-      Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath_) ;
-      List<HtmlTagStyle> htmlStyle4Tag = plugin.getTagStyleList() ;
-      for(HtmlTagStyle style: htmlStyle4Tag) {
-        Node tagStyleNode = Utils.makePath(exoTagStyleHomeNode,"/"+style.getName(),EXO_TAG_STYLE) ;
-        tagStyleNode.setProperty(TAG_RATE_PROP,style.getTagRate()) ;
-        tagStyleNode.setProperty(HTML_STYLE_PROP,style.getHtmlStyle()) ;
-      }
-      exoTagStyleHomeNode.save() ;
-      session.save() ;
-    }
-  }
-
-  public void start() {
-    try {
-      init() ;
-    }catch (Exception e) {
-      System.out.println("===>>>>Exception when init FolksonomySerice"+e.getMessage());
-      //e.printStackTrace() ;
-    }
-  }
-
-  public void stop() { }
-
   public List<Node> getLinkedTagsOfDocument(Node document, String repository) throws Exception {
     if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 
       return new ArrayList<Node>() ;

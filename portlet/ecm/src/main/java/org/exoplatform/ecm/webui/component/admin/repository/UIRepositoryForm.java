@@ -13,6 +13,7 @@ import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.CmsConfigurationService;
+import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
@@ -227,8 +228,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(ScriptService.class).initRepo(repository) ;
       getApplicationComponent(TemplateService.class).init(repository) ;
       getApplicationComponent(ManageViewService.class).init(repository) ;
+      getApplicationComponent(ActionServiceContainer.class).init(repository) ;
        */
-
     }catch(Exception e) {
       e.printStackTrace() ;
     }

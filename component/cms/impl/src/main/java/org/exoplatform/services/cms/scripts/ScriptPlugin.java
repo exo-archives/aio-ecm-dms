@@ -1,23 +1,22 @@
 package org.exoplatform.services.cms.scripts;
 
+import java.util.Iterator;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.services.cms.impl.ResourceConfig;
-//import org.exoplatform.services.cms.scripts.ScriptConfig.Script;
+import org.exoplatform.container.xml.ObjectParameter;
+
 
 public class ScriptPlugin extends BaseComponentPlugin{	
 	
-//	private ScriptConfig config ;
-	private ResourceConfig config ;
+	private Iterator<ObjectParameter> configs_  ;
   private String name;
 	private String description;
 	
 	public ScriptPlugin(InitParams params) throws Exception {
-//		config = (ScriptConfig)params.getObjectParamValues(ScriptConfig.class).get(0) ;
-		config = (ResourceConfig)params.getObjectParamValues(ResourceConfig.class).get(0) ;	
+    configs_ = params.getObjectParamIterator() ; 
 	}
 	
-	public ResourceConfig getScripts() { return config ; }
+	public Iterator<ObjectParameter> getScriptIterator() { return configs_ ; }
 	
 	public String getName() {   return name; }
   public void setName(String s) { name = s ; }

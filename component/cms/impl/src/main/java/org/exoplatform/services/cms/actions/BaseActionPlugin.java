@@ -26,6 +26,7 @@ import javax.jcr.observation.ObservationManager;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.scheduler.JobInfo;
 import org.exoplatform.services.scheduler.JobSchedulerService;
@@ -67,17 +68,14 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   private Map<String, Session> sessions = new HashMap<String, Session>();
 
   protected Map<String, ECMEventListener> listeners_ = new HashMap<String, ECMEventListener>();
-
-  abstract protected String getRepository();
   
+  abstract protected boolean getAutoCreate();  
+  abstract protected String getRepository();  
+  abstract protected List<RepositoryEntry> getRepositories();
   abstract protected String getWorkspace();
-
   abstract protected ManageableRepository getRepository(String repository) throws Exception;
-
   abstract protected String getActionType();
-
   abstract protected List getActions();
-
   abstract protected ECMEventListener createEventListener(String actionName,
       String actionExecutable, String repository, String srcWorkspace, String srcPath,
       Map variables) throws Exception;
@@ -225,9 +223,13 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   protected Session getSystemSession(String repository, String workspace) throws Exception {
     Session session = sessions.get(repository + workspace);
     if (session == null) {
-      ManageableRepository jcrRepository = getRepository(repository);      
-      session = jcrRepository.getSystemSession(workspace);
-      sessions.put(repository + workspace, session);
+      try{
+        ManageableRepository jcrRepository = getRepository(repository);      
+        session = jcrRepository.getSystemSession(workspace);
+        sessions.put(repository + workspace, session);
+      }catch (Exception e) {
+        return null ;
+      }
     }
     return session;
   }
@@ -338,84 +340,103 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   }
 
   protected void importPredefinedActionsInJcr() throws Exception {
-    Session session = null;
-
     List actions = getActions();
-    if (actions.isEmpty())
-      return;
-
+    if (actions.isEmpty()) return;
     for (Iterator iter = actions.iterator(); iter.hasNext();) {
       ActionConfig.Action action = (ActionConfig.Action) iter.next();
-      String actionName = action.getName();
-      String nodeType = action.getType();
-      String srcWorkspace = action.getSrcWorkspace();
-      String srcPath = action.getSrcPath();
-      session = getSystemSession(getRepository(), srcWorkspace);
-      try {
-        Node srcNode = (Node) session.getItem(srcPath);
-
-        Node actionNode = null;
-        boolean firstImport = false;
-        if (!srcNode.hasNode(actionName)) {
-          firstImport = true;
-
-          if (!srcNode.isNodeType("exo:actionable")) {
-            srcNode.addMixin("exo:actionable");
-          }
-          actionNode = srcNode.addNode(actionName, nodeType);
-          actionNode.setProperty("exo:name", action.getName());
-          actionNode.setProperty("exo:description", action.getDescription());
-
-          if (action.getLifecyclePhase() != null)
-            actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
-          if (action.getRoles() != null) {
-            String[] roles = StringUtils.split(action.getRoles(), ";");
-            actionNode.setProperty("exo:roles", roles);
-          }
-
-          Iterator mixins = action.getMixins().iterator();
-          while (mixins.hasNext()) {
-            ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
-            actionNode.addMixin(mixin.getName());
-            Map<String, String> props = mixin.getParsedProperties();
-            Set keys = props.keySet();
-            for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
-              String key = (String) iterator.next();
-              actionNode.setProperty(key, props.get(key));
-            }
-          }
-        } else {
-          actionNode = srcNode.getNode(actionName);
-        }
-
-        String unparsedVariables = action.getVariables();
-        Map variablesMap = new HashMap();
-        if (unparsedVariables != null && !"".equals(unparsedVariables)) {
-          String[] variables = StringUtils.split(unparsedVariables, ";");
-          for (int i = 0; i < variables.length; i++) {
-            String variable = variables[i];
-            String[] keyValue = StringUtils.split(variable, "=");
-            String variableKey = keyValue[0];
-            String variableValue = keyValue[1];
-            variablesMap.put(variableKey, variableValue);
-            if (firstImport)
-              actionNode.setProperty(variableKey, variableValue);
+      if(getAutoCreate()) {
+        for(RepositoryEntry repo : getRepositories()) {
+          try {
+            importAction(action, getSystemSession(repo.getName(), action.getSrcWorkspace())) ;
+          } catch (Exception e) {
+            System.out.println("[WARNING] ==> Can not init action '" + action.getName() 
+                + "' in repository '"+repo.getName()+"' and workspace '"+action.getSrcWorkspace()+"'") ;
           }
         }
-        if (firstImport)
-          srcNode.save();
-
-//      if (action.getLifecyclePhase() != null) {
-//      if (ActionServiceContainer.ADD_PHASE.equals(action.getLifecyclePhase())
-//      || ActionServiceContainer.REMOVE_PHASE.equals(action.getLifecyclePhase())){
-//      launchListener(action, actionNode, variablesMap);
-//      }            
-//      }
-      } catch (PathNotFoundException e) {
+      }else {
+        try {
+          importAction(action, getSystemSession(getRepository(), action.getSrcWorkspace())) ;
+        } catch (Exception e) {
+          System.out.println("[WARNING] ==> Can not init action '" + action.getName() 
+              + "' in repository '"+getRepository()+"' and workspace '"+action.getSrcWorkspace()+"'") ;
+        }
       }
     }
   }
+  
+  protected void reImportPredefinedActionsInJcr(String repository) throws Exception {
+    List actions = getActions();
+    if (actions.isEmpty()) return;
+    for (Iterator iter = actions.iterator(); iter.hasNext();) {
+      ActionConfig.Action action = (ActionConfig.Action) iter.next();
+      if(getAutoCreate() || repository.equals(getRepository())) {
+        try {
+          importAction(action, getSystemSession(repository, action.getSrcWorkspace())) ;
+        } catch (Exception e) {
+          System.out.println("[WARNING] ==> Can not init action '" + action.getName() 
+              + "' in repository '"+repository+"' and workspace '"+action.getSrcWorkspace()+"'") ;
+        }
+      }
+    }
+  }
+  
+  private void importAction(ActionConfig.Action action, Session session) throws Exception{
+    Node srcNode = (Node) session.getItem(action.getSrcPath());
+    Node actionNode = null;
+    boolean firstImport = false;
+    if (!srcNode.hasNode(action.getName())) {
+      firstImport = true;
+      if (!srcNode.isNodeType("exo:actionable")) {
+        srcNode.addMixin("exo:actionable");
+      }
+      actionNode = srcNode.addNode(action.getName(), action.getType());
+      actionNode.setProperty("exo:name", action.getName());
+      actionNode.setProperty("exo:description", action.getDescription());
+      if (action.getLifecyclePhase() != null)
+        actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
+      if (action.getRoles() != null) {
+        String[] roles = StringUtils.split(action.getRoles(), ";");
+        actionNode.setProperty("exo:roles", roles);
+      }
+      Iterator mixins = action.getMixins().iterator();
+      while (mixins.hasNext()) {
+        ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
+        actionNode.addMixin(mixin.getName());
+        Map<String, String> props = mixin.getParsedProperties();
+        Set keys = props.keySet();
+        for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
+          String key = (String) iterator.next();
+          actionNode.setProperty(key, props.get(key));
+        }
+      }
+    } else {
+      actionNode = srcNode.getNode(action.getName());
+    }
 
+    String unparsedVariables = action.getVariables();
+    Map variablesMap = new HashMap();
+    if (unparsedVariables != null && !"".equals(unparsedVariables)) {
+      String[] variables = StringUtils.split(unparsedVariables, ";");
+      for (int i = 0; i < variables.length; i++) {
+        String variable = variables[i];
+        String[] keyValue = StringUtils.split(variable, "=");
+        String variableKey = keyValue[0];
+        String variableValue = keyValue[1];
+        variablesMap.put(variableKey, variableValue);
+        if (firstImport)
+          actionNode.setProperty(variableKey, variableValue);
+      }
+    }
+    if (firstImport)
+      srcNode.save();
+
+//  if (action.getLifecyclePhase() != null) {
+//  if (ActionServiceContainer.ADD_PHASE.equals(action.getLifecyclePhase())
+//  || ActionServiceContainer.REMOVE_PHASE.equals(action.getLifecyclePhase())){
+//  launchListener(action, actionNode, variablesMap);
+//  }            
+//  }
+  }
   private void scheduleActionActivationJob(String repository, String srcWorkspace,String srcPath,
       String actionName,String actionType,String actionExecutable, Map mappings) throws Exception {
     JobSchedulerService schedulerService =

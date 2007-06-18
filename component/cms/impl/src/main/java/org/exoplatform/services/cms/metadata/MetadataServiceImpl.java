@@ -46,15 +46,14 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   private RepositoryService repositoryService_;
   private CmsConfigurationService cmsConfigService_ ;
   private ConfigurationManager configManager_ ;
-  private Session session_ ;
-  private List<TemplatePlugin> plugins_;
+  //private Session session_ ;
+  private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
   
   public MetadataServiceImpl(CmsConfigurationService cmsConfigService, 
       RepositoryService repositoryService, ConfigurationManager configManager) throws Exception{
     cmsConfigService_ = cmsConfigService ;
     repositoryService_ = repositoryService ;
     configManager_ = configManager ;    
-    plugins_ = new ArrayList<TemplatePlugin>();
   }
   
   public void start() {
@@ -73,109 +72,32 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   
   private void init() throws Exception{
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = null ;
-    List nodetypes = null;
-    for (int j = 0; j < plugins_.size(); j++) {
-      nodetypes = plugins_.get(j).getNodeTypes();
-      String repository = plugins_.get(j).getRepository() ;
-      session_ = repositoryService_.getRepository(repository)
-                                   .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      if (nodetypes.isEmpty()) return;
-      TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
-      String nodeTypeName = nodeType.getNodetypeName();
-      try {
-        metadataHome = (Node)session_.getItem(metadataPath);
-      } catch (PathNotFoundException e) {
+    for(TemplatePlugin plugin : plugins_) {
+      try{
+        plugin.setBasePath(metadataPath) ;
+        plugin.init() ;
+      }catch(Exception e) {
+        e.printStackTrace() ;
       }
-      String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
-                          + metadataPath.substring(metadataPath.lastIndexOf("/")) ;
-      
-      for (Iterator iter = nodetypes.iterator(); iter.hasNext();) {
-        nodeType = (TemplateConfig.NodeType) iter.next();
-        nodeTypeName = nodeType.getNodetypeName();
-        Node nodeTypeHome = null;
-        if (!metadataHome.hasNode(nodeTypeName)){
-          nodeTypeHome = Utils.makePath(metadataHome, nodeTypeName, NT_UNSTRUCTURED);          
-        } else {
-          nodeTypeHome = metadataHome.getNode(nodeTypeName);
-        }
-        List dialogs = nodeType.getReferencedDialog();
-        if(dialogs.size() > 0) {
-          Node dialogsHome = createTemplateHome(nodeTypeHome, true);
-          addNode(sourcePath, dialogsHome, dialogs);
-        }
-        List views = nodeType.getReferencedView();
-        if(views.size() > 0) {
-          Node viewsHome = createTemplateHome(nodeTypeHome, false);
-          addNode(sourcePath, viewsHome, views);
-        }
-      }
-      session_.save() ;
-    }    
+    }
   }
   
   public void init(String repository) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
-    Node metadataHome = null ;
-    List nodetypes = null;
-    for (int j = 0; j < plugins_.size(); j++) {
-      nodetypes = plugins_.get(j).getNodeTypes();
-      if(plugins_.get(j).getRepository().equals(defaultRepo)) {
-        session_ = repositoryService_.getRepository(repository)
-        .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-        if (nodetypes.isEmpty()) return;
-          TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
-          String nodeTypeName = nodeType.getNodetypeName();
-        try {
-          metadataHome = (Node)session_.getItem(metadataPath);
-        } catch (PathNotFoundException e) {
-        }
-        String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
-          + metadataPath.substring(metadataPath.lastIndexOf("/")) ;
-        
-        for (Iterator iter = nodetypes.iterator(); iter.hasNext();) {
-          nodeType = (TemplateConfig.NodeType) iter.next();
-          nodeTypeName = nodeType.getNodetypeName();
-          Node nodeTypeHome = null;
-          if (!metadataHome.hasNode(nodeTypeName)){
-            nodeTypeHome = Utils.makePath(metadataHome, nodeTypeName, NT_UNSTRUCTURED);          
-          } else {
-            nodeTypeHome = metadataHome.getNode(nodeTypeName);
-          }
-          List dialogs = nodeType.getReferencedDialog();
-          if(dialogs.size() > 0) {
-            Node dialogsHome = createTemplateHome(nodeTypeHome, true);
-            addNode(sourcePath, dialogsHome, dialogs);
-          }
-          List views = nodeType.getReferencedView();
-          if(views.size() > 0) {
-            Node viewsHome = createTemplateHome(nodeTypeHome, false);
-            addNode(sourcePath, viewsHome, views);
-          }
-        }
-        session_.save() ;
+    for(TemplatePlugin plugin : plugins_) {
+      try{
+        plugin.setBasePath(metadataPath) ;
+        plugin.init(repository) ;
+      }catch(Exception e) {
+        e.printStackTrace() ;
       }
-    }    
-  }
-  
-  private void addNode(String metadataPath, Node templateHome, List templates)  throws Exception {
-    for (Iterator iterator = templates.iterator(); iterator.hasNext();) {
-      TemplateConfig.Template template = (TemplateConfig.Template) iterator.next();
-      String templateFileName = template.getTemplateFile();
-      String path = metadataPath + templateFileName;
-      InputStream in = configManager_.getInputStream(path);
-      String nodeName = 
-        templateFileName.substring(templateFileName.lastIndexOf("/") + 1, templateFileName.indexOf("."));
-      Node contentNode = templateHome.addNode(nodeName, EXO_TEMPLATE);
-      contentNode.setProperty(EXO_ROLES_PROP, template.getParsedRoles());
-      contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);
     }
   }
   
-  public void addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew) throws Exception {    
+  public void addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {    
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;
+    Session session = getSession(repository);
+    Node metadataHome = (Node)session.getItem(metadataPath) ;
     if(!isAddNew) {
       if(isDialog){
         Node dialog1 = metadataHome.getNode(nodetype).getNode(DIALOGS).getNode(DIALOG1) ;
@@ -195,7 +117,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       addTemplate(metadata, role, content, isDialog) ;
       metadataHome.save() ;
     }    
-    session_.save() ;    
+    session.save() ;    
   }
   
   private void addTemplate(Node nodetype, String role, String content, boolean isDialog) throws Exception {
@@ -212,26 +134,27 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     template.setProperty(EXO_TEMPLATE_FILE_PROP, content) ;
   }
   
-  public void removeMetadata(String nodetype) throws Exception {
+  public void removeMetadata(String nodetype, String repository) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;
+    Session session = getSession(repository) ;
+    Node metadataHome = (Node)session.getItem(metadataPath) ;
     Node metadata = metadataHome.getNode(nodetype) ; 
     metadata.remove() ;
     metadataHome.save() ;
-    session_.save() ;
+    session.save() ;
   } 
   
-  public List<String> getMetadataList() throws Exception {
+  public List<String> getMetadataList(String repository) throws Exception {
     List<String> metadataTypes = new ArrayList<String>() ;
-    for(NodeType metadata:getAllMetadatasNodeType()) {
+    for(NodeType metadata:getAllMetadatasNodeType(repository)) {
       metadataTypes.add(metadata.getName()) ;
     }
     return metadataTypes ;
   }
   
-  public List<NodeType> getAllMetadatasNodeType() throws Exception {
+  public List<NodeType> getAllMetadatasNodeType(String repository) throws Exception {
     List<NodeType> metadataTypes = new ArrayList<NodeType>() ;    
-    ExtendedNodeTypeManager ntManager = repositoryService_.getDefaultRepository().getNodeTypeManager();     
+    ExtendedNodeTypeManager ntManager = repositoryService_.getRepository(repository).getNodeTypeManager();     
     NodeTypeIterator ntIter = ntManager.getMixinNodeTypes() ;
     while(ntIter.hasNext()) {
       NodeType nt = ntIter.nextNodeType() ;
@@ -253,20 +176,20 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     return views ;    
   }
   
-  public String getMetadataTemplate(String name, boolean isDialog) throws Exception {
+  public String getMetadataTemplate(String name, boolean isDialog, String repository) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;
+    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
     Node template = null ;
-    if(!hasMetadata(name)) return null;
+    if(!hasMetadata(name, repository)) return null;
     if(isDialog) template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
     else template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
     return template.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
   }
   
-  public String getMetadataPath(String name, boolean isDialog) throws Exception {
+  public String getMetadataPath(String name, boolean isDialog, String repository) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;
-    if(!hasMetadata(name)) return null;
+    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
+    if(!hasMetadata(name, repository)) return null;
     Node template = null ;
     if(isDialog){
       template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
@@ -276,11 +199,11 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     return template.getPath();
   }
   
-  public String getMetadataRoles(String name, boolean isDialog) throws Exception {
+  public String getMetadataRoles(String name, boolean isDialog, String repository) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;
+    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
     Node template = null ;
-    if(!hasMetadata(name)) return null;
+    if(!hasMetadata(name, repository)) return null;
     if(isDialog){
       template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
     } else {
@@ -295,21 +218,25 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     return roles.toString();
   }  
   
-  public boolean hasMetadata(String name) throws Exception {
+  public boolean hasMetadata(String name, String repository) throws Exception {
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)session_.getItem(metadataPath) ;
+    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
     if(metadataHome.hasNode(name)) return true ;
    return false ; 
   }
 
-  public List<String> getExternalMetadataType() throws Exception {
+  public List<String> getExternalMetadataType(String repository) throws Exception {
     List<String> extenalMetaTypes = new ArrayList<String>() ;
-    for(NodeType metadata: getAllMetadatasNodeType()) {      
+    for(NodeType metadata: getAllMetadatasNodeType(repository)) {      
       ExtendedNodeType extNT = (ExtendedNodeType)metadata ;
       PropertyDefinition internalUseDef = extNT.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
       if(!internalUseDef.getDefaultValues()[0].getBoolean()) extenalMetaTypes.add(metadata.getName()) ;
     }
     return extenalMetaTypes ;
   }
-   
+  
+  private Session getSession(String repository) throws Exception{ 
+    return repositoryService_.getRepository(repository)
+    .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+  }
 }

@@ -62,7 +62,7 @@ public class UIViewMetadataForm extends DialogFormFields {
     repository_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     try {
-      return metadataService.getMetadataPath(nodeType_, true) ;
+      return metadataService.getMetadataPath(nodeType_, true, repository_) ;
     } catch (Exception e) {
       e.printStackTrace() ;
     } 

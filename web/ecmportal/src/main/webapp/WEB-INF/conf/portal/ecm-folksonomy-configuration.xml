@@ -15,6 +15,7 @@
 		    		<name>htmStyleForTag.configuration</name>
 	          <description>configuration predefined html style for tag to inject in jcr</description>
 	          <object type="org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig">
+	          	<field  name="autoCreate"><boolean>true</boolean></field>
 	          	<field  name="repository"><string>repository</string></field>
 	          	<field  name="tagStyleList">
 	          		<collection type="java.util.ArrayList">	          		  

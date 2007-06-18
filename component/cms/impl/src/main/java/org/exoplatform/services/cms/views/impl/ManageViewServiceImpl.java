@@ -13,22 +13,20 @@ import javax.jcr.Session;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.container.xml.ValueParam;
-import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
-import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL
  * Author : Nguyen Quang Hung
  *          nguyenkequanghung@yahoo.com
  * Feb 27, 2006
  */
-public class ManageViewServiceImpl implements ManageViewService {
+public class ManageViewServiceImpl implements ManageViewService, Startable {
 
   protected final static String EXO_TEMPLATE = "exo:template".intern() ;
   protected final static String TEMPLATE_PROP = "exo:templateFile".intern() ;
@@ -37,29 +35,41 @@ public class ManageViewServiceImpl implements ManageViewService {
   protected final static String EXO_PERMISSIONS = "exo:permissions".intern()  ;
   protected final static String BUTTON_PROP = "exo:buttons".intern() ;
 
-  private ManageViewPlugin viewPlugin_ ;
+  private List<ManageViewPlugin> plugins_ = new ArrayList<ManageViewPlugin> ();
   private String buttons_ ;
   private RepositoryService repositoryService_ ;
   private CmsConfigurationService cmsConfigurationService_ ;
-  private PortalContainerInfo containerInfo_ ;
-  private CacheService cacheService_ ;
   
   public ManageViewServiceImpl(InitParams params, RepositoryService jcrService,
-      CmsConfigurationService cmsConfigurationService, ManageDriveService dservice,
-      PortalContainerInfo containerInfo, CacheService cacheService) throws Exception{
-    containerInfo_ = containerInfo ;
-    cacheService_ = cacheService ;
+      CmsConfigurationService cmsConfigurationService) throws Exception{
     repositoryService_ = jcrService ;
     cmsConfigurationService_ = cmsConfigurationService ;
     ValueParam buttonParam = params.getValueParam("buttons") ;
     buttons_ = buttonParam.getValue() ;
   }
   
-  public void init(String repository) throws Exception  {
-    viewPlugin_.init(repository) ;
+  public void start() {
+    try{
+      for(ManageViewPlugin plugin : plugins_) {
+        plugin.init() ;
+      } 
+    }catch(Exception e) {
+      e.printStackTrace() ;
+    }    
   }
+
+  public void stop() {
+    // TODO Auto-generated method stub    
+  }
+  
+  public void init(String repository) throws Exception  {
+    for(ManageViewPlugin plugin : plugins_) {
+      plugin.init(repository) ;
+    }    
+  }
+  
   public void setManageViewPlugin(ManageViewPlugin viewPlugin) {
-    viewPlugin_ = viewPlugin ;
+    plugins_.add(viewPlugin) ;
   }
 
   public List getButtons(){
@@ -132,7 +142,7 @@ public class ManageViewServiceImpl implements ManageViewService {
       view.setProperty(EXO_PERMISSIONS, permissions) ;
       view.setProperty(EXO_TEMPLATE, template) ;
     }else {
-      view = viewPlugin_.addView(viewHome, name, permissions, template) ;
+      view = addView(viewHome, name, permissions, template) ;
     }
     String tabName ;
     String buttons ;
@@ -146,7 +156,7 @@ public class ManageViewServiceImpl implements ManageViewService {
         tabName = tab.getTabName() ;
         buttons = tab.getButtons() ;
       }
-      viewPlugin_.addTab(view, tabName, buttons) ;
+      addTab(view, tabName, buttons) ;
     }
     viewHome.save() ;
   }
@@ -174,7 +184,14 @@ public class ManageViewServiceImpl implements ManageViewService {
   }
 
   public void addTab(Node view, String name, String buttons) throws Exception {
-    viewPlugin_.addTab(view, name, buttons) ;
+    Node tab ;
+    if(view.hasNode(name)){
+      tab = view.getNode(name) ;
+    }else {
+      tab = view.addNode(name, "exo:tab"); 
+    }
+    tab.setProperty("exo:buttons", buttons); 
+    view.save() ;
   }
 
   public Node getTemplateHome(String homeAlias, String repository) throws Exception{
@@ -227,6 +244,15 @@ public class ManageViewServiceImpl implements ManageViewService {
     //removeFromCache(path) ;
   }
   
+  private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
+    Node contentNode = viewManager.addNode(name, "exo:view");
+    contentNode.setProperty("exo:permissions", permissions);
+    contentNode.setProperty("exo:template", template);  
+    viewManager.save() ;
+
+    return contentNode ;
+  }
+
   /*protected void removeFromCache(String templateName) {
     try{
       ExoCache jcrcache_ = cacheService_.getCacheInstance(JCRResourceLoaderImpl.class.getName()) ;

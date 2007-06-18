@@ -11,7 +11,6 @@ import java.util.List;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.observation.Event;
@@ -23,12 +22,14 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
+import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.BaseResourceLoaderService;
 import org.exoplatform.services.cms.impl.ResourceConfig;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
@@ -37,9 +38,9 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private CmsConfigurationService cmsConfigService_ ;
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
 
-  public ScriptServiceImpl(RepositoryService repositoryService,
-      CmsConfigurationService cmsConfigService, ConfigurationManager cservice,CacheService cacheService) throws Exception {    
-    super(null, cservice, cmsConfigService, repositoryService,cacheService);
+  public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
+      CmsConfigurationService cmsConfigService,CacheService cacheService) throws Exception {    
+    super(cservice, cmsConfigService, repositoryService, cacheService);
     groovyClassLoader_ = createGroovyClassLoader();
     repositoryService_ = repositoryService ; 
     cmsConfigService_ = cmsConfigService ;
@@ -61,9 +62,11 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }
 
   private void initPlugins() throws Exception{
-    for(ScriptPlugin plugin:plugins_) {
-      config_ = plugin.getScripts() ;
-      init(config_) ;
+    for(ScriptPlugin plugin : plugins_) {
+      Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
+      while(iter.hasNext()) {
+        init((ResourceConfig) iter.next().getObject()) ;
+      }      
     }
   }
 
@@ -73,65 +76,39 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
 
   private void initObserver() throws Exception {
     String scriptsPath = getBasePath();
-    ObservationManager obsManager = repositoryService_.getRepository(config_.getRepositoty())
-                                    .getSystemSession(config_.getWorkspace()).getWorkspace().getObservationManager();
-    obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+    List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+    for(RepositoryEntry repo : repositories) {
+      ObservationManager obsManager = repositoryService_.getRepository(repo.getName())
+        .getSystemSession(cmsConfigService_.getWorkspace(repo.getName())).getWorkspace().getObservationManager();
+      obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+    }
   }
   
   public void initRepo(String repository) throws Exception {
-    
-    for(ScriptPlugin plugin:plugins_) {
-      ResourceConfig config = plugin.getScripts() ;
-      initPlugins(config, repository) ;
-      initObserver(config, repository) ;
-    }   
+    for(ScriptPlugin plugin : plugins_) {
+      Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
+      while(iter.hasNext()) {
+        initPlugins((ResourceConfig) iter.next().getObject(), repository) ;
+        initObserver(repository) ;
+      }      
+    }      
   }
   
-  private void initObserver(ResourceConfig config, String repository) throws Exception {
+  private void initObserver(String repository) throws Exception {
     String scriptsPath = getBasePath();
-    String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
-    if(config.getRepositoty().equals(defaultRepo)) {
       ObservationManager obsManager = repositoryService_.getRepository(repository)
       .getSystemSession(cmsConfigService_.getWorkspace(repository)).getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
-    }
     
   }
   
   private void initPlugins(ResourceConfig config, String repository) throws Exception {
-    Session session = null;
-    String defaultRepo = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
-    if(config.getRepositoty().equals(defaultRepo)) {
-      session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      String resourcesPath = getBasePath();
-      List resources = config.getRessources();
-      if (resources.size() == 0)
-        return;
-
-      try {
-        String firstResourceName = ((ResourceConfig.Resource) resources.get(0)).getName();
-        session.getItem(resourcesPath + "/" + firstResourceName);
-        return;
-      } catch (PathNotFoundException e) {
-      }
-
-      Node root = session.getRootNode();
-      Node resourcesHome = (Node) session.getItem(resourcesPath);
-
-      String warPath = cmsConfigService_.getContentLocation() 
-          + "/system" + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
-
-      for (Iterator iter = resources.iterator(); iter.hasNext();) {
-        ResourceConfig.Resource resource = (ResourceConfig.Resource) iter.next();
-        String name = resource.getName();
-        String path = warPath + "/" + name;
-        InputStream in = cservice_.getInputStream(path);
-        addResource(resourcesHome, name, in);
-      }
-      root.save();
-      session.save() ;
-    }
+    if(config.getAutoCreate()) {
+      Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+      addScripts(session, config.getRessources()) ;
+    }    
   }
+  
   public Node getECMScriptHome(String repository) throws Exception {
     Node ecmScriptHome = null ;
     try {     
@@ -300,14 +277,22 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       String path = null;
       try {
         path = event.getPath();
-        Session jcrSession = 
-          repositoryService_.getRepository(config_.getRepositoty()).getSystemSession(config_.getWorkspace());
-        Property property = (Property) jcrSession.getItem(path);
-        if ("jcr:data".equals(property.getName())) {
-          Node node = property.getParent();
-          //TODO: Script cache need to redesign to support store scripts in diffirence repositories 
-          removeFromCache(node.getName());
-        }
+        List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+        for(RepositoryEntry repo : repositories) {
+          try {
+            Session jcrSession = 
+              repositoryService_.getRepository(repo.getName())
+              .getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));
+            Property property = (Property) jcrSession.getItem(path);
+            if ("jcr:data".equals(property.getName())) {
+              Node node = property.getParent();
+              //TODO: Script cache need to redesign to support store scripts in diffirence repositories 
+              removeFromCache(node.getName());
+            }
+          }catch (Exception e) {
+            continue ;
+          }
+        }        
       } catch (Exception e) {
         e.printStackTrace();
       }

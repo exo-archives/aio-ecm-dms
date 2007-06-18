@@ -13,6 +13,7 @@ import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.actions.activation.BPActionActivationJob;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
@@ -55,40 +56,22 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   public String getExecutableDefinitionName() {
     return "exo:businessProcess";
   }
-   
-  protected String getWorkspace() {
-    return config_.getWorkspace();
-  }
   
-  protected String getRepository() {
-    return config_.getRepository();
+  protected boolean getAutoCreate() { return config_.getAutoCreate() ; }
+  protected String getRepository() { return config_.getRepository() ; }
+  protected String getWorkspace() { return config_.getWorkspace() ; }
+  protected List<RepositoryEntry> getRepositories() {
+    return repositoryService_.getConfig().getRepositoryConfigurations() ;
   }
-  
   protected ManageableRepository getRepository(String repository) throws Exception {
     return repositoryService_.getRepository(repository);
   }
-
-  protected String getActionType() {
-    return ACTION_TYPE;
-  }
-
-  protected List getActions() {
-    return config_.getActions();
-  }
-
-  public String getName() {    
-    return "exo:businessProcessAction";
-  }
-
-  public void setName(String s) {    
-  }
-
-  public String getDescription() {
-    return "Add an action service";
-  }
-
-  public void setDescription(String desc) {
-  }  
+  protected String getActionType() { return ACTION_TYPE ; }
+  protected List getActions() { return config_.getActions() ; }
+  public String getName() { return "exo:businessProcessAction" ; }
+  public void setName(String s) {}
+  public String getDescription() { return "Add an action service" ; }
+  public void setDescription(String desc) {}  
   
   public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
     String businessProcess = actionNode.getProperty("exo:businessProcess").getString();    

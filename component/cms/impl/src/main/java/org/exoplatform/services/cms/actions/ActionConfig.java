@@ -9,12 +9,16 @@ import org.apache.commons.lang.StringUtils;
 
 public class ActionConfig {
   
+  private boolean autoCreate ;
   private String repository;
   private String workspace;
   private List actions = new ArrayList(5);
   
   public List getActions() { return actions; }
   public void setActions(List actions) { this.actions = actions; }
+  
+  public boolean getAutoCreate() { return this.autoCreate ; }
+  public void setAutoCreate(boolean isAuto) { this.autoCreate = isAuto ; }
   
   public String getRepository() { return repository; }
   public void setRepository(String repository) { this.repository = repository; }  

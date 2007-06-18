@@ -213,12 +213,13 @@ public class UIActionBar extends UIForm {
   public List<String> getMetadataTemplates() throws Exception {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     List<String> templates = new ArrayList<String>();
 
     NodeType[] nodeTypes = node.getMixinNodeTypes();
     for(NodeType nt : nodeTypes) {
-      if(metadataService.getMetadataList().contains(nt.getName())) {
-        templates.add(metadataService.getMetadataPath(nt.getName(), false)) ;
+      if(metadataService.getMetadataList(repository).contains(nt.getName())) {
+        templates.add(metadataService.getMetadataPath(nt.getName(), false, repository)) ;
       }
     }
     Item primaryItem = null;
@@ -230,8 +231,8 @@ public class UIActionBar extends UIForm {
       Node primaryNode = (Node) node.getPrimaryItem();
       NodeType[] primaryTypes = primaryNode.getMixinNodeTypes();
       for(NodeType nt : primaryTypes) {
-        if(metadataService.getMetadataList().contains(nt.getName())) {
-          templates.add(metadataService.getMetadataPath(nt.getName(), false)) ;
+        if(metadataService.getMetadataList(repository).contains(nt.getName())) {
+          templates.add(metadataService.getMetadataPath(nt.getName(), false, repository)) ;
         }
       }
     }

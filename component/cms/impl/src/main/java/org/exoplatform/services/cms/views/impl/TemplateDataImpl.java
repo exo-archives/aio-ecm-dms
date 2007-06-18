@@ -12,13 +12,17 @@ package org.exoplatform.services.cms.views.impl;
  * 
  */
 public class TemplateDataImpl{
+  private boolean autoCreate ;
   private String repository ;
   private String name ;
   private String warPath ;
   private String type ;   
 
   public TemplateDataImpl(){} 
-
+  
+  public boolean getAutoCreate() { return this.autoCreate ; }
+  public void setAutoCreate(boolean isAuto) { this.autoCreate = isAuto ; }
+  
   public String getRepository() { return this.repository ; }
   public void setRepository(String repo) { this.repository = repo ; }  
   

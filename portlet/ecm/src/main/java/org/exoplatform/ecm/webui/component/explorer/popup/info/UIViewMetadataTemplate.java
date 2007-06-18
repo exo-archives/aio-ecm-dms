@@ -9,6 +9,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -42,8 +43,9 @@ public class UIViewMetadataTemplate extends UIContainer {
   
   public String getViewTemplatePath() {    
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     try {
-      return metadataService.getMetadataPath(documentType_, false) ;
+      return metadataService.getMetadataPath(documentType_, false, repository) ;
     } catch (Exception e) {
       e.printStackTrace() ;
     } 

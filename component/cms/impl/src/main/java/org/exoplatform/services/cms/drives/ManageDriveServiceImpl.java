@@ -14,6 +14,7 @@ import javax.jcr.Session;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SARL
@@ -21,7 +22,7 @@ import org.exoplatform.services.jcr.RepositoryService;
  *          nguyenkequanghung@yahoo.com
  * Feb 27, 2006
  */
-public class ManageDriveServiceImpl implements ManageDriveService {
+public class ManageDriveServiceImpl implements ManageDriveService, Startable {
 
   private static String WORKSPACE = "exo:workspace".intern() ;
   private static String PERMISSIONS = "exo:permissions".intern() ;
@@ -33,21 +34,35 @@ public class ManageDriveServiceImpl implements ManageDriveService {
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
   private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
 
-  private ManageDrivePlugin drivePlugin_ ;
-  private RepositoryService jcrService_ ;
+  private List<ManageDrivePlugin> drivePlugins_  = new ArrayList<ManageDrivePlugin> ();
+  private RepositoryService repositoryService_ ;
   private CmsConfigurationService cmsConfigurationService_ ;
-  
+
   public ManageDriveServiceImpl(RepositoryService jcrService, 
-                                CmsConfigurationService cmsConfigurationService ) throws Exception{
-    jcrService_ = jcrService ;
+      CmsConfigurationService cmsConfigurationService ) throws Exception{
+    repositoryService_ = jcrService ;
     cmsConfigurationService_ = cmsConfigurationService ;
   }
-  
-  public void init(String repository) throws Exception {
-    drivePlugin_.init(repository) ;
+
+  public void start() {
+    try{
+      for(ManageDrivePlugin plugin : drivePlugins_) {
+        plugin.init() ;
+      }
+    }catch(Exception e) {      
+    }    
   }
+
+  public void stop() { }
+
+  public void init(String repository) throws Exception {
+    for(ManageDrivePlugin plugin : drivePlugins_) {
+      plugin.init(repository) ;
+    }
+  }
+
   public void setManageDrivePlugin(ManageDrivePlugin drivePlugin) {
-    drivePlugin_ = drivePlugin ;
+    drivePlugins_.add(drivePlugin) ;
   }  
 
   public Node getDriveHome(String repository) throws Exception {    
@@ -100,10 +115,38 @@ public class ManageDriveServiceImpl implements ManageDriveService {
   }
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
-                        String views, String icon, boolean viewReferences, boolean viewNonDocument,
-                        boolean viewSideBar, String repository, String allowCreateFolder ) throws Exception{
-    drivePlugin_.addDrive(name, workspace, permissions, homePath, views, icon, viewReferences,
-                          viewNonDocument, viewSideBar, repository, allowCreateFolder) ;
+      String views, String icon, boolean viewReferences, boolean viewNonDocument, 
+      boolean viewSideBar, String repository, String allowCreateFolder) throws Exception {
+    String drivesPath = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
+    Session session = repositoryService_.getRepository(repository)
+    .getSystemSession(cmsConfigurationService_.getWorkspace()) ;
+    Node driveHome = (Node)session.getItem(drivesPath) ;
+    if (!driveHome.hasNode(name)){
+      Node driveNode = driveHome.addNode(name, "exo:drive");
+      driveNode.setProperty(WORKSPACE, workspace) ;
+      driveNode.setProperty(PERMISSIONS, permissions) ;
+      driveNode.setProperty(PATH, homePath) ;      
+      driveNode.setProperty(VIEWS, views) ;
+      driveNode.setProperty(ICON, icon) ;
+      driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(viewReferences)) ;
+      driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
+      driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
+      driveNode.setProperty(ALLOW_CREATE_FOLDER, allowCreateFolder) ;
+      driveHome.save() ;
+    }else{
+      Node driveNode = driveHome.getNode(name);
+      driveNode.setProperty(WORKSPACE, workspace) ;
+      driveNode.setProperty(PERMISSIONS, permissions) ;
+      driveNode.setProperty(PATH, homePath) ;      
+      driveNode.setProperty(VIEWS, views) ;
+      driveNode.setProperty(ICON, icon) ;
+      driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(viewReferences)) ;
+      driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
+      driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
+      driveNode.setProperty(ALLOW_CREATE_FOLDER, allowCreateFolder) ;
+      driveNode.save() ;
+    }
+    session.save() ;
   }
 
   public List<DriveData> getAllDriveByPermission(String permission, String repository) throws Exception {
@@ -129,11 +172,11 @@ public class ManageDriveServiceImpl implements ManageDriveService {
       driveHome.save() ;
     }
   } 
-  
+
   private Session getSession(String repository) {
     try {
       String workspace = cmsConfigurationService_.getWorkspace(repository) ;
-      return jcrService_.getRepository(repository).getSystemSession(workspace) ;      
+      return repositoryService_.getRepository(repository).getSystemSession(workspace) ;      
     }catch(Exception e) {      
     }
     return null ;

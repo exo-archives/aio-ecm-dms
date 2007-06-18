@@ -17,10 +17,14 @@ import java.util.List;
 public class TagStyleConfig {
   
   private List<HtmlTagStyle> tagStyleList = new ArrayList<HtmlTagStyle>() ;
+  private boolean autoCreate ;
   private String repository ;
   
   public List<HtmlTagStyle> getTagStyleList() { return this.tagStyleList ; }
   public void setTagStyleList(List<HtmlTagStyle> list) { this.tagStyleList = list ; }
+  
+  public boolean getAutoCreate(){ return autoCreate ; }
+  public void setAutoCreate(boolean isAuto) { autoCreate = isAuto ; }
   
   public void setRepository(String repo) { repository = repo ; }
   public String getRepository() { return repository ; }

@@ -45,5 +45,7 @@ public interface ActionServiceContainer {
   public void executeAction(String userId, Node node, String actionName, String repository) throws Exception;
   
   public void initiateObservation(Node node, String repository) throws Exception ;
+  
+  public void init(String repository) throws Exception ;
       
 }

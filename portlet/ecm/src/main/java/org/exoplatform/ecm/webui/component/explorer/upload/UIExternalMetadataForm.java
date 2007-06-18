@@ -12,12 +12,15 @@ import java.util.ResourceBundle;
 import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -50,8 +53,11 @@ public class UIExternalMetadataForm extends UIForm {
   
   public void renderExternalList() throws Exception {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     UIFormCheckBoxInput<String> uiCheckBox ;
-    for(NodeType nodeType : metadataService.getAllMetadatasNodeType()) {
+    for(NodeType nodeType : metadataService.getAllMetadatasNodeType(repository)) {
       uiCheckBox = new UIFormCheckBoxInput<String>(nodeType.getName(), nodeType.getName(), "") ;
       if(isExternalUse(nodeType)) {
         if(hasExternalMetadata(nodeType.getName())) {

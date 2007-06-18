@@ -21,13 +21,13 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.picocontainer.Startable;
 
-public class QueryServiceImpl implements QueryService{
+public class QueryServiceImpl implements QueryService, Startable{
   
   private String relativePath_;
   private CmsConfigurationService cmsConfig_;
-  //private String workspace_;
-  private QueryPlugin queryPlugin_ ;
+  private List<QueryPlugin> queryPlugins_ = new ArrayList<QueryPlugin> ();
   private RepositoryService repositoryService_;
   private CacheService cacheService_ ;  
   private PortalContainerInfo containerInfo_ ;
@@ -35,18 +35,40 @@ public class QueryServiceImpl implements QueryService{
   public QueryServiceImpl(RepositoryService repositoryService, CmsConfigurationService cmsConf, 
       InitParams params, PortalContainerInfo containerInfo, CacheService cacheService) throws Exception {
     relativePath_ = params.getValueParam("relativePath").getValue();
-    //workspace_ = params.getValueParam("workspace").getValue();
     cmsConfig_ = cmsConf;
     repositoryService_ = repositoryService;
     containerInfo_ = containerInfo ;
     cacheService_ = cacheService ;
   }
   
-  public void init(String repository) throws Exception {
-    queryPlugin_.init(repository) ;
+  public void start() {
+    for(QueryPlugin queryPlugin : queryPlugins_){
+      try{
+        queryPlugin.init() ;
+      }catch (Exception e) {
+        System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
+        e.printStackTrace() ;
+      }
+    }
   }
+
+  public void stop() {
+    // TODO Auto-generated method stub    
+  }
+  
+  public void init(String repository) throws Exception {
+    for(QueryPlugin queryPlugin : queryPlugins_){
+      try{
+        queryPlugin.init(repository) ;
+      }catch (Exception e) { 
+        System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
+        e.printStackTrace() ;
+      }
+    } 
+  }
+  
   public void setQueryPlugin(QueryPlugin queryPlugin) {
-    queryPlugin_ = queryPlugin ;
+    queryPlugins_.add(queryPlugin) ;
   }
   
   public String getRelativePath() {
@@ -262,5 +284,5 @@ public class QueryServiceImpl implements QueryService{
     } catch (Exception re) {
       return null;
     }
-  }
+  }  
 }

@@ -3,21 +3,14 @@
  */
 package org.exoplatform.services.cms.templates.impl;
 
-import groovy.lang.GroovyResourceLoader;
-
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.Utils;
@@ -29,29 +22,27 @@ import org.picocontainer.Startable;
 /**
  * @author benjaminmestrallet
  */
-public class TemplateServiceImpl implements TemplateService, Startable {
+public class TemplateServiceImpl implements TemplateService, Startable{
   
   private RepositoryService repositoryService_;
-  private ConfigurationManager  configManager_;
   private CmsConfigurationService cmsConfigService_;
   private SecurityService securityService_;
   private String cmsTemplatesBasePath_ ;  
-  private List<TemplatePlugin> plugins_;     
+  private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
   
-  public TemplateServiceImpl(RepositoryService jcrService, ConfigurationManager configManager,
-      CmsConfigurationService cmsConfigService, SecurityService securityService) throws Exception {
-    
+  public TemplateServiceImpl(RepositoryService jcrService, CmsConfigurationService cmsConfigService,
+      SecurityService securityService) throws Exception {
     cmsConfigService_ = cmsConfigService;
     securityService_ = securityService;
     repositoryService_ = jcrService;
-    configManager_ = configManager;
-    plugins_ = new ArrayList<TemplatePlugin>();
     cmsTemplatesBasePath_ = cmsConfigService_.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;
   }
   
   public void start() {
     try {
-      initRepository();
+      for(TemplatePlugin plugin : plugins_) {
+        plugin.init() ;
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -60,127 +51,12 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   public void stop() {}
   
   public void addTemplates(ComponentPlugin plugin) {
-    if (plugin instanceof TemplatePlugin)
-      plugins_.add((TemplatePlugin) plugin);
+   if (plugin instanceof TemplatePlugin)  plugins_.add((TemplatePlugin) plugin);
   }
-  
-  private void initRepository() throws Exception {    
-    Session session = null ;    
-    Node root = null ;    
-    List nodetypes = null;
-    for (int j = 0; j < plugins_.size(); j++) {
-      session = repositoryService_.getRepository(plugins_.get(j).getRepository()).
-                  getSystemSession(cmsConfigService_.getWorkspace(plugins_.get(j).getRepository()));
-      nodetypes = plugins_.get(j).getNodeTypes();
-      String location =  plugins_.get(j).getLocation() ;        
-      if (nodetypes.isEmpty())
-        return;
-      TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
-      String nodeTypeName = nodeType.getNodetypeName();
-      try {
-        session.getItem(cmsTemplatesBasePath_ + "/" + nodeTypeName);
-        return;
-      } catch (PathNotFoundException e) {
-      }
-      root = session.getRootNode();
-      Node templatesHome = Utils.makePath(root, cmsTemplatesBasePath_, NT_UNSTRUCTURED);
-      String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
-      + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ;
-      if (location.equals("jar")) 
-        sourcePath = "jar:/conf/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ;
-      
-      for (Iterator iter = nodetypes.iterator(); iter.hasNext();) {
-        nodeType = (TemplateConfig.NodeType) iter.next();
-        nodeTypeName = nodeType.getNodetypeName();
-        Node nodeTypeHome = null;
-        if (!templatesHome.hasNode(nodeTypeName)){
-          nodeTypeHome = Utils.makePath(templatesHome, nodeTypeName,NT_UNSTRUCTURED);
-          if(nodeType.getDocumentTemplate())
-            nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true) ;
-          else
-            nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false) ;
-        } else{
-          nodeTypeHome = templatesHome.getNode(nodeTypeName);
-        }
-        nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
-        
-        List dialogs = nodeType.getReferencedDialog();
-        Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
-        addNode(sourcePath, dialogsHome, dialogs);
-        
-        List views = nodeType.getReferencedView();
-        Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-        addNode(sourcePath, viewsHome, views);
-      }
-    }
-    if(root != null) root.save();
-  }
-  
+   
   public void init(String repository) throws Exception {    
-    Session session = null ;    
-    Node root = null ;    
-    List nodetypes = null;
-    String defaultRepo  = repositoryService_.getDefaultRepository().getConfiguration().getName() ;
-    for (int j = 0; j < plugins_.size(); j++) {
-      if(plugins_.get(j).getRepository().equals(defaultRepo)) {
-        session = repositoryService_.getRepository(repository).
-        getSystemSession(cmsConfigService_.getWorkspace(repository));
-        nodetypes = plugins_.get(j).getNodeTypes();
-        String location =  plugins_.get(j).getLocation() ;        
-        if (nodetypes.isEmpty())  return;
-        TemplateConfig.NodeType nodeType = (TemplateConfig.NodeType) nodetypes.iterator().next();
-        String nodeTypeName = nodeType.getNodetypeName();
-        try {
-          session.getItem(cmsTemplatesBasePath_ + "/" + nodeTypeName);
-          return;
-        } catch (PathNotFoundException e) {
-        }
-        root = session.getRootNode();
-        Node templatesHome = Utils.makePath(root, cmsTemplatesBasePath_, NT_UNSTRUCTURED);
-        String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
-        + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ;
-        if (location.equals("jar")) 
-          sourcePath = "jar:/conf/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ;
-        
-        for (Iterator iter = nodetypes.iterator(); iter.hasNext();) {
-          nodeType = (TemplateConfig.NodeType) iter.next();
-          nodeTypeName = nodeType.getNodetypeName();
-          Node nodeTypeHome = null;
-          if (!templatesHome.hasNode(nodeTypeName)){
-            nodeTypeHome = Utils.makePath(templatesHome, nodeTypeName,NT_UNSTRUCTURED);
-            if(nodeType.getDocumentTemplate())
-              nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true) ;
-            else
-              nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false) ;
-          } else{
-            nodeTypeHome = templatesHome.getNode(nodeTypeName);
-          }
-          nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
-        
-          List dialogs = nodeType.getReferencedDialog();
-          Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
-          addNode(sourcePath, dialogsHome, dialogs);
-          
-          List views = nodeType.getReferencedView();
-          Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-          addNode(sourcePath, viewsHome, views);
-        }
-      }      
-    }
-    if(root != null) root.save();
-  }
-  
-  private void addNode(String basePath, Node nodeTypeHome, List templates)  throws Exception {
-    for (Iterator iterator = templates.iterator(); iterator.hasNext();) {
-      TemplateConfig.Template template = (TemplateConfig.Template) iterator.next();
-      String templateFileName = template.getTemplateFile();
-      String path = basePath + templateFileName;
-      InputStream in = configManager_.getInputStream(path);
-      String nodeName = 
-        templateFileName.substring(templateFileName.lastIndexOf("/") + 1, templateFileName.indexOf("."));
-      Node contentNode = nodeTypeHome.addNode(nodeName, EXO_TEMPLATE);
-      contentNode.setProperty(EXO_ROLES_PROP, template.getParsedRoles());
-      contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);
+    for(TemplatePlugin plugin : plugins_) {
+      plugin.init(repository) ;
     }
   }
   
@@ -262,10 +138,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return templateNode.getPath();
   }
   
-  /*public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception {
-    Node templateNode = getTemplateNode(nodeTypeName, userName, isDialog );
-    return templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
-  }*/
   
   public String getTemplateLabel(String nodeTypeName, String repository)  throws Exception {
     Node templateHome = getTemplatesHome(repository);
@@ -377,25 +249,5 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     }    
     return templates ;
   }      
-  
- /* private Node getSystemTemplatesHome() throws Exception {    
-    Session session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());        
-    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-    return templatesHome ;
-  }*/
-  
-//  protected void removeFromCache(String templateName) {
-//    try{
-//      ExoCache jcrcache_ = cacheService_.getCacheInstance(GroovyResourceLoader.class.getName()) ;
-////      String portalName = containerInfo_.getContainerName() ;
-////      String key = portalName + "jcr:" +templateName ; 
-////      System.out.println("\n\nkey===>" + key + "\n\n");
-//      Object cachedobject = jcrcache_.get(templateName);
-//      if (cachedobject != null) {
-//        jcrcache_.remove(templateName);      
-//      }
-//    } catch(Exception e) {
-//      e.printStackTrace() ;
-//    }
-//  }  
+ 
 }

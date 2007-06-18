@@ -1113,7 +1113,6 @@
   </component>    
   
   <import>war:/conf/portal/cms-configuration.xml</import>
-  <import>war:/conf/portal/external-component-plugins-configuration.xml</import>
   <import>war:/conf/portal/ecm-service-configuration.xml</import>
 	<import>war:/conf/portal/ecm-templates-configuration.xml</import>
 	<import>war:/conf/portal/ecm-scripts-configuration.xml</import>
@@ -1125,4 +1124,5 @@
 	<import>war:/conf/portal/ecm-folksonomy-configuration.xml</import>
 	<import>war:/conf/portal/ecm-records-configuration.xml</import>
 	<import>war:/conf/portal/ecm-queries-configuration.xml</import>
+	<import>war:/conf/portal/external-component-plugins-configuration.xml</import>
 </configuration>

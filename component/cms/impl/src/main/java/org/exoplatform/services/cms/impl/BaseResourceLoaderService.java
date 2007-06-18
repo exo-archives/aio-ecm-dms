@@ -18,23 +18,19 @@ import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.picocontainer.Startable;
 
 public abstract class BaseResourceLoaderService implements Startable{
 
   protected CmsConfigurationService cmsConfigService_;
-  protected ResourceConfig config_;
   protected RepositoryService repositoryService_;
   protected ConfigurationManager cservice_;
-  //protected Map localCache_ = new HashMap();
   protected ExoCache resourceCache_ ;
 
-  public BaseResourceLoaderService(ResourceConfig resourceConfig, ConfigurationManager cservice,
+  public BaseResourceLoaderService(ConfigurationManager cservice,
       CmsConfigurationService cmsConfigService, RepositoryService repositoryService,CacheService cacheService) throws Exception {
     cmsConfigService_ = cmsConfigService;
-    config_ = resourceConfig;
     repositoryService_ = repositoryService;    
     cservice_ = cservice;        
     resourceCache_ = cacheService.getCacheInstance(this.getClass().getName()) ;
@@ -43,43 +39,33 @@ public abstract class BaseResourceLoaderService implements Startable{
   abstract protected String getBasePath(); 
   abstract protected void removeFromCache(String resourceName);
 
-  /*protected Session getSystemSession(String repository, String workspace)
-      throws RepositoryException, RepositoryConfigurationException {
-    ManageableRepository jcrRepository = repositoryService_.getRepository(repository);
-    return jcrRepository.getSystemSession(workspace);
-  }
-*/
-  public void start(){
-    try {
-      init();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  };
-  
+  public void start(){};  
   public void stop(){};  
   
-  protected void init(ResourceConfig resourceConfig) throws Exception {
-  	ResourceConfig config  = config_ ;
-  	config_ = resourceConfig ;
-  	init() ;
-  	config_ = config ;
+  protected void init(ResourceConfig resourceConfig) throws Exception {    
+    Session session = null;    
+    if(resourceConfig.getAutoCreate()) {
+      List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+      for(RepositoryEntry repo : repositories) {
+        try {
+          session = repositoryService_.getRepository(repo.getName())
+            .getSystemSession(cmsConfigService_.getWorkspace(repo.getName())) ;
+        } catch (RepositoryException re) {
+          System.out.println("[WARN] ==> Can not init scripts in repository '" + repo.getName() + "'") ;
+          continue ;
+        }
+        addScripts(session, resourceConfig.getRessources()) ;
+      }
+    } else {
+      session = repositoryService_.getRepository(resourceConfig.getRepositoty())
+      .getSystemSession(cmsConfigService_.getWorkspace(resourceConfig.getRepositoty())) ;
+      addScripts(session, resourceConfig.getRessources()) ;
+    }
   }
   
-  protected void init() throws Exception {
-    Session session = null;
-    try {
-      //session = getSystemSession(config_.getRepositoty(), config_.getWorkspace());
-      session = repositoryService_.getRepository(config_.getRepositoty()).getSystemSession(config_.getWorkspace()) ;
-    } catch (RepositoryException re) {
-      return;
-    }
-
+  protected void addScripts(Session session, List resources) throws Exception{
     String resourcesPath = getBasePath();
-    List resources = config_.getRessources();
-    if (resources.size() == 0)
-      return;
-
+    if (resources.size() == 0) return;
     try {
       String firstResourceName = ((ResourceConfig.Resource) resources.get(0)).getName();
       session.getItem(resourcesPath + "/" + firstResourceName);
@@ -89,10 +75,8 @@ public abstract class BaseResourceLoaderService implements Startable{
 
     Node root = session.getRootNode();
     Node resourcesHome = (Node) session.getItem(resourcesPath);
-
     String warPath = cmsConfigService_.getContentLocation() 
         + "/system" + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
-
     for (Iterator iter = resources.iterator(); iter.hasNext();) {
       ResourceConfig.Resource resource = (ResourceConfig.Resource) iter.next();
       String name = resource.getName();
@@ -103,7 +87,7 @@ public abstract class BaseResourceLoaderService implements Startable{
     root.save();
     session.save() ;
   }
-
+  
   public void addResource(Node resourcesHome, String resourceName, InputStream in)
       throws Exception {
     Node contentNode = null;

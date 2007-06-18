@@ -251,7 +251,7 @@
       </component-plugin>
     </external-component-plugins>  
     
-    <external-component-plugins>
+    <!--external-component-plugins>
       <target-component>org.exoplatform.services.templates.velocity.VelocityService</target-component>
       <component-plugin>
         <name>jcr.resource.loader</name>
@@ -259,5 +259,5 @@
         <type>org.exoplatform.services.templates.velocity.impl.JCRResourceLoaderImpl</type>
         <description>resource loader for the jcr</description>
       </component-plugin>
-    </external-component-plugins>
+    </external-component-plugins-->
 </configuration>
