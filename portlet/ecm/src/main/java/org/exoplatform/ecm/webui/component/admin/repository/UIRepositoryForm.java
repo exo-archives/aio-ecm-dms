@@ -116,7 +116,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         refreshWorkspaceList() ;
         getUIStringInput(FIELD_NAME).setEditable(true) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
-        getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEditable(false) ;
+        getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
         setActions(new String[] {"Save","AddWorkspace", "Reset", "Close"}) ;
         getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
         getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setRendered(false) ;
@@ -134,7 +134,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         getUIStringInput(FIELD_NAME).setValue(repo.getName()) ;
         refreshWorkspaceList() ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
-        getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEditable(false);
+        getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false);
         setActions(new String[] {"AddWorkspace", "Reset", "Close"}) ;
         ReplicationEntry re = repo.getReplication() ;
         if(re != null) {
@@ -437,11 +437,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         }else {
           Object[] args = {workspaceName}  ;    
           UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-          System.out.println("\n\nworkspace name===>"+workspaceName+ "\n\n");
           uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-workspace", args)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;  
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           uiForm.refreshWorkspaceList() ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;  
           event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
           return ;
         }

@@ -73,11 +73,12 @@
 	      <a class="Icon CBSearchButton" href="$link" title="$actionLabel"><span></span></a>      
       <%}%>  
 	    <%
-	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Search") 
-	      link = uicomponent.event("Back") ;
+	      if(!uicomponent.isClearHistory()) {
+		      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Back") 
+		      link = uicomponent.event("Back") ;
       %>
-	    <a class="Icon Style1BackArrow24x24Icon" href="$link" title="$actionLabel"><span></span></a>   
-	       
+	    	<a class="Icon Style1BackArrow24x24Icon" href="$link" title="$actionLabel"><span></span></a>   
+	    <%}%>   
     <div style="clear: left;"><span></span></div>
   </div>
   <div style="clear:both"><span></span></div>

@@ -37,12 +37,9 @@ public class UIECMFilterForm extends UIForm {
     scriptSelect.setOnChange("Change") ;
     addUIFormInput(scriptSelect) ;
   }
-
+  
   public void setOptions(List <SelectItemOption<String>> options) {
     getUIFormSelectBox(FIELD_SELECT_SCRIPT).setOptions(options) ;
-    String category = getUIFormSelectBox(FIELD_SELECT_SCRIPT).getValue() ;
-    if(category == null) getUIFormSelectBox(FIELD_SELECT_SCRIPT).setValue(options.get(0).getLabel());
-    else getUIFormSelectBox(FIELD_SELECT_SCRIPT).setValue(category) ;    
   }
 
   static public class ChangeActionListener extends EventListener<UIECMFilterForm> {
@@ -53,7 +50,7 @@ public class UIECMFilterForm extends UIForm {
       String categoryName = uiForm.getUIFormSelectBox(FIELD_SELECT_SCRIPT).getValue() ;
       uiScriptList.updateGrid(uiECMScripts.getECMScript(categoryName)) ;
       UIScriptManager sManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
-      sManager.getChild(UICBScripts.class).setRendered(false) ;
+      sManager.setRenderedChild(UIECMScripts.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMScripts) ;
     }
   }

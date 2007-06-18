@@ -62,6 +62,7 @@ public class UIScriptForm extends UIForm {
       new UIFormSelectBox(FIELD_SELECT_VERSION , FIELD_SELECT_VERSION, null) ;
     UIFormTextAreaInput contents = 
       new UIFormTextAreaInput(FIELD_SCRIPT_CONTENT , FIELD_SCRIPT_CONTENT, null) ;
+    contents.addValidator(EmptyFieldValidator.class) ;
     UIFormCheckBoxInput isVersion = 
       new UIFormCheckBoxInput<Boolean>(FIELD_ENABLE_VERSION , FIELD_ENABLE_VERSION, null) ;
     UIFormStringInput scriptName = 

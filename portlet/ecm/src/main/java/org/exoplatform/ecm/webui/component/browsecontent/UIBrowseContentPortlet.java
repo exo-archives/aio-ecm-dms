@@ -33,7 +33,6 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
 
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
-    ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
     UIPopupAction popup = addChild(UIPopupAction.class, null, "UICBPopupAction");
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiContainer = createUIComponent(UIBrowseContainer.class, null, null) ;

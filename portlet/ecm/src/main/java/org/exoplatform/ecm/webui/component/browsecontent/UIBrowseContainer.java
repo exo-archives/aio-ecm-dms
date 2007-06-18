@@ -350,7 +350,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   }
 
   @SuppressWarnings("unchecked")
-  public Map getContent() throws Exception {
+  public Map getTreeContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     List templates = templateService.getDocumentTemplates(getRepository()) ;

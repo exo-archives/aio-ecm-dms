@@ -19,7 +19,7 @@
     }
   }
   String componentName = uicomponent.getName() ;
-  def content = uicomponent.getContent() ;                  
+  def content = uicomponent.getTreeContent() ;                  
   def subCategoryList = content.get("subCategoryList") ;
   def subDocumentList =  uicomponent.getCurrentList() ;
   boolean isShowTagmap = uicomponent.isShowTagmap() ;

@@ -4,12 +4,8 @@
   import javax.jcr.Node ;
   import org.exoplatform.web.application.JavascriptManager;
   String componentName = uicomponent.getName() ;
-  
   def rcontext = _ctx.getRequestContext() ;
 	JavascriptManager jsmanager = rcontext.getJavascriptManager();
-	jsmanager.importJavascript('eXo.portal.UIBrowseContent');
-	jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
-	jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
 	
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
@@ -19,6 +15,10 @@
   	uicomponent.renderChild(UISearchController.class);
   }
   else {
+		jsmanager.importJavascript('eXo.portal.UIBrowseContent');
+		jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
+		jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
+		
     Node rootNode = uicomponent.getRootNode() ;
     Node currentNode = uicomponent.getCurrentNode() ;
     Node selectedTab = uicomponent.getSelectedTab() ; 

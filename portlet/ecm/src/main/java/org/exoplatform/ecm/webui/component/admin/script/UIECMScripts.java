@@ -33,7 +33,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 public class UIECMScripts extends UIContainer {
   public static String SCRIPTLIST_NAME = "ECMScriptList" ;
   public static String SCRIPTFORM_NAME = "ECMScriptForm" ;
-  
+
   public UIECMScripts() throws Exception {
     addChild(UIECMFilterForm.class, null, null) ;
     addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
@@ -53,9 +53,12 @@ public class UIECMScripts extends UIContainer {
 
   public void refresh() throws Exception {
     UIECMFilterForm ecmFilterForm = getChild(UIECMFilterForm.class) ;
-    ecmFilterForm.setOptions(getECMCategoryOptions()) ;
     String categoryName = 
       ecmFilterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;  
+    if (categoryName == null)  {
+      ecmFilterForm.setOptions(getECMCategoryOptions()) ; 
+      categoryName = ecmFilterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;  
+    }
     UIScriptList uiScriptList = getChildById(SCRIPTLIST_NAME) ;
     uiScriptList.updateGrid(getECMScript(categoryName)) ;
   }
@@ -73,7 +76,7 @@ public class UIECMScripts extends UIContainer {
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
-  
+
   public List<ScriptData> getECMScript(String name) throws Exception {
     List <ScriptData> scriptData = new ArrayList <ScriptData>() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;

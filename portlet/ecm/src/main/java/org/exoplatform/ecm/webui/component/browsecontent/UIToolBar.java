@@ -43,7 +43,7 @@ public class UIToolBar extends UIContainer {
   private boolean isEnableTree_ = true ;
   private boolean isEnablePath_ = true ;
   private boolean isEnableSeach_ = false ;
-
+  
   public UIToolBar()throws Exception {}
   public void setEnablePath(boolean enablePath) {isEnablePath_ = enablePath ;}
   public boolean enablePath() {return isEnablePath_ ;}
@@ -85,6 +85,10 @@ public class UIToolBar extends UIContainer {
     return  uiBrowseContainer.isShowCategoryTree() ;
   }
 
+  public boolean isClearHistory() {
+    return getAncestorOfType(UIBrowseContainer.class).getNodesHistory().isEmpty() ;
+  }
+  
   static  public class SelectPathActionListener extends EventListener<UIToolBar> {    
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
