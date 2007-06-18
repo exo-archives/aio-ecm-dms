@@ -78,7 +78,7 @@ public class DriveData implements Comparable<DriveData> {
     }
     if(permission == null) return false ;
     if(permission.indexOf(":/") > -1){
-      String[] array = StringUtils.split(permission , ":/") ;
+      String[] array = permission.split(":/") ;
       if(array == null || array.length < 2) return false ;
       if( permissionList.indexOf("*:/"+array[1]) > -1) return true ;
     }    
