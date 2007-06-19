@@ -320,6 +320,7 @@ public class UIQueryConfig extends UIForm {
       prefs.setValue(Utils.CB_QUERY_STORE, queryPath) ;
       prefs.setValue(Utils.CB_QUERY_STATEMENT, query) ;
       prefs.store() ; 
+      uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setShowDocumentDetail(false) ;
       uiForm.isEdit_ = false ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }

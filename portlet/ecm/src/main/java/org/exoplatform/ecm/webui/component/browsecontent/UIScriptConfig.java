@@ -183,6 +183,7 @@ public class UIScriptConfig extends UIForm {
       prefs.setValue(Utils.CB_VIEW_COMMENT,String.valueOf(hasComment)) ;    
       prefs.setValue(Utils.CB_VIEW_VOTE,String.valueOf(hasVote)) ;   
       prefs.store() ; 
+      uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setShowDocumentDetail(false) ;
       uiForm.isEdit_ = false ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }
