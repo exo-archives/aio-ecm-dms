@@ -195,6 +195,7 @@
 
 .UIECMAdminPortlet .UIFormGrid input.radio {
   float: none;
+  margin-left: 0px;
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -516,7 +517,6 @@
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
 
 .UIECMScripts .UIBarStyle {
-	margin-bottom: 2px;
 }
 
 .UIECMScripts .ECMScriptList .UIAction {
@@ -679,6 +679,10 @@
 
 .UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout {
 	padding-top: 15px;
+}
+
+.UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout .UIFormGrid td {
+	padding: 4px 2px;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/

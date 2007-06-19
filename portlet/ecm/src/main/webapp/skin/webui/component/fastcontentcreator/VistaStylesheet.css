@@ -74,6 +74,12 @@
   padding-bottom: 0px;
 }
 
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout {
+	width: 500px;
+	margin: 20px auto;
+	border: 1px solid #b7b7b7;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout .UIAction {
   padding-top: 10px;
 }
@@ -124,6 +130,14 @@
   margin: 3px 5px 0px 5px;
 }
 
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
+
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
+
 .UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
-	width: 85px;
+	width: 140px;
 }
