@@ -39,7 +39,7 @@ public class TagStylePlugin extends BaseComponentPlugin{
     Session session ;
     while(it.hasNext()) {
       tagConfig = (TagStyleConfig)it.next().getObject() ;
-      if(tagConfig.getAutoCreate()) {
+      if(tagConfig.getAutoCreatedInNewRepository()) {
         List<RepositoryEntry> repositories = repoService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
           session = repoService_.getRepository(repo.getName())
@@ -60,7 +60,7 @@ public class TagStylePlugin extends BaseComponentPlugin{
     Session session ;
     while(it.hasNext()) {
       tagConfig = (TagStyleConfig)it.next().getObject() ;
-      if(tagConfig.getAutoCreate()) {
+      if(tagConfig.getAutoCreatedInNewRepository() || repository.equals(tagConfig.getRepository())) {
         session = repoService_.getRepository(repository)
         .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
         addTag(session, tagConfig) ;

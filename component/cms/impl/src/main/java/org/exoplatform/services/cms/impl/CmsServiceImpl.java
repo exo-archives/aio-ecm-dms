@@ -304,7 +304,7 @@ public class CmsServiceImpl implements CmsService {
       } else {
         if(isMultiple) {
           Session session = jcrService.getRepository(repository_)
-                            .getSystemSession(cmsConfigurationService.getWorkspace());
+                            .getSystemSession(cmsConfigurationService.getWorkspace(repository_));
           if (value instanceof String) {
             Value value2add = session.getValueFactory().createValue(ISO8601.parse((String) value));
             node.setProperty(propertyName, new Value[] {value2add});

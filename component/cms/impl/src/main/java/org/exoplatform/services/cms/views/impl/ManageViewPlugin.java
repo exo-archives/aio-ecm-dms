@@ -50,7 +50,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
       TemplateDataImpl temp = null ;
       if(object instanceof ViewDataImpl){
         data = (ViewDataImpl)object ;
-        if(data.getAutoCreate()) {
+        if(data.getAutoCreatedInNewRepository()) {
           List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
           for(RepositoryEntry repo : repositories) {
             viewManager = (Node)getSession(repo.getName()).getItem(viewsPath) ;
@@ -82,7 +82,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
         }        
       }else {
         temp = (TemplateDataImpl)object ;
-        if(temp.getAutoCreate()) {
+        if(temp.getAutoCreatedInNewRepository()) {
           List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
           for(RepositoryEntry repo : repositories) {
             addTemplate(temp, getSession(repo.getName()), warViewPath, cservice_, cmsConfigService_) ;
@@ -107,7 +107,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
       TemplateDataImpl temp = null ;
       if(object instanceof ViewDataImpl){
         data = (ViewDataImpl)object ;
-        if(data.getAutoCreate()) {
+        if(data.getAutoCreatedInNewRepository() || repository.equals(data.getRepository())) {
           viewManager = (Node)getSession(repository).getItem(viewsPath) ;
           String nodeName = data.getName() ;
           if(!viewManager.hasNode(nodeName)){
@@ -123,7 +123,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
         }
       }else {
         temp = (TemplateDataImpl)object ;
-        if(temp.getAutoCreate()) {
+        if(temp.getAutoCreatedInNewRepository() || repository.equals(temp.getRepository())) {
           addTemplate(temp, getSession(repository), warViewPath, cservice_, cmsConfigService_) ;
         }
       }

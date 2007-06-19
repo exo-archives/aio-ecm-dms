@@ -14,6 +14,15 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.services.cms.queries.QueryService;
+import org.exoplatform.services.cms.relations.RelationsService;
+import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
 import org.exoplatform.services.jcr.config.ReplicationEntry;
@@ -222,7 +231,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   private void initServices(String repository) throws Exception{
     try {
       getApplicationComponent(CmsConfigurationService.class).init(repository) ;
-      /*getApplicationComponent(CategoriesService.class).init(repository) ;
+      getApplicationComponent(CategoriesService.class).init(repository) ;
       getApplicationComponent(ManageDriveService.class).init(repository) ;
       getApplicationComponent(FolksonomyService.class).init(repository) ;
       getApplicationComponent(MetadataService.class).init(repository) ;
@@ -232,12 +241,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(TemplateService.class).init(repository) ;
       getApplicationComponent(ManageViewService.class).init(repository) ;
       getApplicationComponent(ActionServiceContainer.class).init(repository) ;
-       */
+      
     }catch(Exception e) {
       e.printStackTrace() ;
     }
-
-
   }
   protected void ShowHidden() {
     getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered()) ;

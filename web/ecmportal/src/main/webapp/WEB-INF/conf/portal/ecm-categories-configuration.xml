@@ -15,7 +15,7 @@
 		    		<name>taxonomy.configuration</name>
 	          <description>configuration predefined taxonomies to inject in jcr</description>
 	          <object type="org.exoplatform.services.cms.categories.TaxonomyConfig">
-	          	<field  name="autoCreate"><boolean>true</boolean></field>
+	          	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
 	            <field  name="repository"><string>repository</string></field>
 	          	<field  name="taxonomies">
 	          		<collection type="java.util.ArrayList">

@@ -17,7 +17,7 @@
             <description>Production workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
             	<field  name="name"><string>User on production</string></field>
-            	<field  name="autoCreate"><boolean>true</boolean></field>
+            	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
             	<field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="permissions"><string>member:/user</string></field>
@@ -37,7 +37,7 @@
             <description>Draft workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
               <field  name="name"><string>User on draft</string></field>
-              <field  name="autoCreate"><boolean>true</boolean></field>
+              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>draft</string></field>
               <field  name="permissions"><string>member:/user</string></field>
@@ -57,7 +57,7 @@
             <description>Production workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
               <field  name="name"><string>Admin on production</string></field>
-              <field  name="autoCreate"><boolean>true</boolean></field>
+              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="permissions"><string>member:/admin</string></field>
@@ -77,7 +77,7 @@
             <description>Production workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
               <field  name="name"><string>Admin on draft</string></field>
-              <field  name="autoCreate"><boolean>true</boolean></field>
+              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>draft</string></field>
               <field  name="permissions"><string>member:/admin</string></field>
@@ -97,7 +97,7 @@
             <description>Backup workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
               <field  name="name"><string>Admin on backup</string></field>
-              <field  name="autoCreate"><boolean>true</boolean></field>
+              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>backup</string></field>
               <field  name="permissions"><string>member:/admin</string></field>
@@ -117,7 +117,7 @@
             <description>Digital assets workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
               <field  name="name"><string>Admin on digital assets</string></field>
-              <field  name="autoCreate"><boolean>true</boolean></field>
+              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>digital-assets</string></field>
               <field  name="permissions"><string>member:/admin</string></field>
@@ -137,7 +137,7 @@
             <description>Taxonomy on production</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
               <field  name="name"><string>Taxonomy</string></field>
-              <field  name="autoCreate"><boolean>true</boolean></field>
+              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="permissions"><string>member:/admin</string></field>

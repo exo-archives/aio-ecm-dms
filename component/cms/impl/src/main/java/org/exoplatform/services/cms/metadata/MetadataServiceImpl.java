@@ -1,12 +1,9 @@
 package org.exoplatform.services.cms.metadata;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
@@ -17,8 +14,6 @@ import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
-import org.exoplatform.services.cms.impl.Utils;
-import org.exoplatform.services.cms.templates.impl.TemplateConfig;
 import org.exoplatform.services.cms.templates.impl.TemplatePlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
@@ -158,7 +153,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     NodeTypeIterator ntIter = ntManager.getMixinNodeTypes() ;
     while(ntIter.hasNext()) {
       NodeType nt = ntIter.nextNodeType() ;
-      if(nt.isNodeType(METADATA_TYPE)) metadataTypes.add(nt) ;
+      if(nt.isNodeType(METADATA_TYPE)) metadataTypes.add(nt) ;      
     }
     return metadataTypes ;
   }

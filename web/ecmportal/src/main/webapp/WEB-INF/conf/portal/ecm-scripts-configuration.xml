@@ -16,7 +16,7 @@
 		        <name>predefined.scripts</name>
 		        <description>description</description>
 		        <object type="org.exoplatform.services.cms.impl.ResourceConfig">
-		        	<field  name="autoCreate"><boolean>true</boolean></field>
+		        	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
 		          <field  name="repository"><string>repository</string></field>
 		          <field  name="workspace"><string>production</string></field>
 		          <field  name="resources">

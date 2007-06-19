@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 public class DriveData implements Comparable<DriveData> {
 
   private String name ;
-  private boolean autoCreate ;
+  private boolean autoCreatedInNewRepository ;
   private String repository ;
   private String workspace ;
   private String permissions ;
@@ -34,8 +34,8 @@ public class DriveData implements Comparable<DriveData> {
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }  
 
-  public void setAutoCreate(boolean isAuto) { autoCreate = isAuto ; }
-  public boolean getAutoCreate() { return autoCreate ; }
+  public void setAutoCreatedInNewRepository(boolean isAuto) { autoCreatedInNewRepository = isAuto ; }
+  public boolean getAutoCreatedInNewRepository() { return autoCreatedInNewRepository ; }
   
   public String getRepository() { return this.repository ; }
   public void setRepository(String rp) { this.repository = rp ; }

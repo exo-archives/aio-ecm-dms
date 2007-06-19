@@ -15,7 +15,7 @@
             <name>template.configuration</name>
             <description>configuration for the localtion of templates to inject in jcr</description>
             <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig">
-            	<field  name="autoCreate"><boolean>true</boolean></field>
+            	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
             	<field  name="repository"><string>repository</string></field>
               <field  name="nodeTypes">
                 <collection type="java.util.ArrayList">               

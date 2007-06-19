@@ -59,7 +59,7 @@ public class NewUserListener extends UserEventListener {
     //Manage production workspace
      try {
        session = jcrService_.getRepository(config_.getRepository()).getSystemSession(cmsConfigurationService_
-           .getWorkspace());
+           .getWorkspace(config_.getRepository()));
      } catch (RepositoryException re){
        return;
      }

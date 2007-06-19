@@ -44,7 +44,7 @@ public abstract class BaseResourceLoaderService implements Startable{
   
   protected void init(ResourceConfig resourceConfig) throws Exception {    
     Session session = null;    
-    if(resourceConfig.getAutoCreate()) {
+    if(resourceConfig.getAutoCreatedInNewRepository()) {
       List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
       for(RepositoryEntry repo : repositories) {
         try {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceConfig {
-  private boolean autoCreate ;
+  private boolean autoCreatedInNewRepository ;
   private String repository ;
   private String workspace;
   private List resources = new ArrayList(5);
@@ -12,8 +12,8 @@ public class ResourceConfig {
   public List getRessources() { return resources ; }
   public void setRessources(List resources) { this.resources = resources ; }
   
-  public boolean getAutoCreate() { return autoCreate ; }
-  public void setAutoCreate(boolean isAuto) { autoCreate = isAuto ;}
+  public boolean getAutoCreatedInNewRepository() { return autoCreatedInNewRepository ; }
+  public void setAutoCreatedInNewRepository(boolean isAuto) { autoCreatedInNewRepository = isAuto ;}
   
   public String getRepositoty() { return repository ; }
   public void setRepository(String repo) {repository = repo ; }

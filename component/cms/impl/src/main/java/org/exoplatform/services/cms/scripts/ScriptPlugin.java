@@ -8,15 +8,16 @@ import org.exoplatform.container.xml.ObjectParameter;
 
 public class ScriptPlugin extends BaseComponentPlugin{	
 	
-	private Iterator<ObjectParameter> configs_  ;
+	//private Iterator<ObjectParameter> configs_  ;
   private String name;
 	private String description;
+  private InitParams params_ ;
 	
 	public ScriptPlugin(InitParams params) throws Exception {
-    configs_ = params.getObjectParamIterator() ; 
+    params_ = params; 
 	}
 	
-	public Iterator<ObjectParameter> getScriptIterator() { return configs_ ; }
+	public Iterator<ObjectParameter> getScriptIterator() { return params_.getObjectParamIterator()  ; }
 	
 	public String getName() {   return name; }
   public void setName(String s) { name = s ; }

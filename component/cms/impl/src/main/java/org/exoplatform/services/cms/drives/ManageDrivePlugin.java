@@ -43,7 +43,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     while(it.hasNext()){
       DriveData data = (DriveData)it.next().getObject() ;
-      if(data.getAutoCreate()) {
+      if(data.getAutoCreatedInNewRepository()) {
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
           try{
@@ -69,7 +69,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     while(it.hasNext()){
       DriveData data = (DriveData)it.next().getObject() ;       
-      if(data.getAutoCreate() || repository.equals(data.getRepository())) {
+      if(data.getAutoCreatedInNewRepository() || repository.equals(data.getRepository())) {
         addDrive(data, getSession(repository)) ;
       }       
     }

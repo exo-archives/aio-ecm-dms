@@ -123,7 +123,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     List<Value> perm = new ArrayList<Value>() ;
     try {      
       vt = repositoryService_.getRepository(repository)
-                             .getSystemSession(cmsConfig_.getWorkspace()).getValueFactory() ;
+                             .getSystemSession(cmsConfig_.getWorkspace(repository)).getValueFactory() ;
     } catch (RepositoryException re) {
       re.printStackTrace() ;
       return;

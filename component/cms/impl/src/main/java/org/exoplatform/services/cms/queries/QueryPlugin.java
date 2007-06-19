@@ -38,7 +38,7 @@ public class QueryPlugin extends BaseComponentPlugin {
     String queryPath = cmsConfigService_.getJcrPath(BasePath.QUERIES_PATH);
      while(it.hasNext()){
       QueryData data = (QueryData)it.next().getObject() ;
-      if(data.getAutoCreate()) {
+      if(data.getAutoCreatedInNewRepository()) {
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
           addQuery(getSession(repo.getName()), data, queryPath) ;
@@ -53,7 +53,7 @@ public class QueryPlugin extends BaseComponentPlugin {
     String queryPath = cmsConfigService_.getJcrPath(BasePath.QUERIES_PATH);
      while(it.hasNext()){
       QueryData data = (QueryData)it.next().getObject() ;
-      if(data.getAutoCreate()) {
+      if(data.getAutoCreatedInNewRepository() || repository.equals(data.getRepository())) {
         addQuery(getSession(repository), data, queryPath) ;
       }
     }

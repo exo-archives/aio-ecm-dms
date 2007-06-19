@@ -61,7 +61,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
       Object obj = it.next().getObject() ;
       if(obj instanceof TemplateConfig) {
         templateConfig = (TemplateConfig)obj ;
-        if(templateConfig.getAutoCreate()) {
+        if(templateConfig.getAutoCreatedInNewRepository()) {
           List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
           for(RepositoryEntry repo : repositories) {
             session = repositoryService_.getRepository(repo.getName()).
@@ -83,7 +83,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
     TemplateConfig templateConfig = null ;
     while(it.hasNext()) {
       templateConfig = (TemplateConfig)it.next().getObject() ;
-      if(templateConfig.getAutoCreate()) {
+      if(templateConfig.getAutoCreatedInNewRepository() || repository.equals(templateConfig.getRepository())) {
         session = repositoryService_.getRepository(repository).
           getSystemSession(cmsConfigService_.getWorkspace(repository));
         addTemplate(templateConfig, session) ;
@@ -135,8 +135,8 @@ public class TemplatePlugin extends BaseComponentPlugin {
       InputStream in = configManager_.getInputStream(path);
       String nodeName = 
         templateFileName.substring(templateFileName.lastIndexOf("/") + 1, templateFileName.indexOf("."));
-      Node contentNode = null ;
-      if(nodeTypeHome.hasNode(nodeName)) {
+      Node contentNode = null;
+      if(nodeTypeHome.hasNode(nodeName)){
         contentNode = nodeTypeHome.getNode(nodeName);
       }else {
         contentNode = nodeTypeHome.addNode(nodeName, EXO_TEMPLATE);

@@ -103,7 +103,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }
   
   private void initPlugins(ResourceConfig config, String repository) throws Exception {
-    if(config.getAutoCreate()) {
+    if(config.getAutoCreatedInNewRepository() || repository.equals(config.getRepositoty())) {
       Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
       addScripts(session, config.getRessources()) ;
     }    
@@ -127,7 +127,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     try {     
       cbHomeNode = getScriptHome(BasePath.CONTENT_BROWSER_SCRIPTS, repository) ;
     }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace()) ;
+      Session session = repositoryService_.getRepository(repository)
+      .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
       String cbScriptHomePath = cmsConfigService_.getJcrPath(BasePath.CONTENT_BROWSER_SCRIPTS) ;
       cbHomeNode = (Node)session.getItem(cbScriptHomePath) ;      
     }
@@ -154,7 +155,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     try {     
       actionScriptHome = getScriptHome(BasePath.ECM_ACTION_SCRIPTS, repository) ;
     }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace()) ;
+      Session session = repositoryService_.getRepository(repository)
+      .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
       String actionScriptHomePath = cmsConfigService_.getJcrPath(BasePath.ECM_ACTION_SCRIPTS) ;
       actionScriptHome = (Node)session.getItem(actionScriptHomePath) ;      
     }
@@ -172,7 +174,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     try {     
       interceptorScriptHome = getScriptHome(BasePath.ECM_INTERCEPTOR_SCRIPTS, repository) ;
     }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace()) ;
+      Session session = repositoryService_.getRepository(repository)
+      .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
       String actionScriptHomePath = cmsConfigService_.getJcrPath(BasePath.ECM_INTERCEPTOR_SCRIPTS) ;
       interceptorScriptHome = (Node)session.getItem(actionScriptHomePath) ;      
     }

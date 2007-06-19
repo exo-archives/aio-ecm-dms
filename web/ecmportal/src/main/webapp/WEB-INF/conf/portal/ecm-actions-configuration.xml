@@ -15,7 +15,7 @@
             <name>predefined.actions</name>
             <description>description</description>
             <object type="org.exoplatform.services.cms.actions.ActionConfig">
-            	<field  name="autoCreate"><boolean>false</boolean></field>
+            	<field  name="autoCreatedInNewRepository"><boolean>false</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="actions">
@@ -84,7 +84,7 @@
             <name>predefined.actions</name>
             <description>description</description>
             <object type="org.exoplatform.services.cms.actions.ActionConfig">
-            	<field  name="autoCreate"><boolean>false</boolean></field>
+            	<field  name="autoCreatedInNewRepository"><boolean>false</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="actions">

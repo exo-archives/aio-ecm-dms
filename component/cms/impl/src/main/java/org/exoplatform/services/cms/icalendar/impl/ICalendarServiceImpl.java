@@ -109,7 +109,7 @@ public class ICalendarServiceImpl implements ICalendarService{
       CalendarOutputter output = new CalendarOutputter();
       output.output(calendar, bout) ;
       Session session = repositoryService_.getRepository(repository)
-                        .getSystemSession(cmsConfigService_.getWorkspace());
+                        .getSystemSession(cmsConfigService_.getWorkspace(repository));
       Node rootNode = session.getRootNode();
       String[] array = fileName.split("/") ;
       for(int i = 0; i < array.length - 1; i ++) {

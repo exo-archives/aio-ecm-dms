@@ -119,7 +119,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       boolean viewSideBar, String repository, String allowCreateFolder) throws Exception {
     String drivesPath = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Session session = repositoryService_.getRepository(repository)
-    .getSystemSession(cmsConfigurationService_.getWorkspace()) ;
+    .getSystemSession(cmsConfigurationService_.getWorkspace(repository)) ;
     Node driveHome = (Node)session.getItem(drivesPath) ;
     if (!driveHome.hasNode(name)){
       Node driveNode = driveHome.addNode(name, "exo:drive");

@@ -34,7 +34,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     Node taxonomyHomeNode = null ;
     while(it.hasNext()){
       TaxonomyConfig config = (TaxonomyConfig)it.next().getObject() ;
-      if(config.getAutoCreate()) {
+      if(config.getAutoCreatedInNewRepository()) {
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
           session = getSession(repo.getName()) ;
@@ -69,7 +69,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     Node taxonomyHomeNode = null ;
     while(it.hasNext()){
       TaxonomyConfig config = (TaxonomyConfig)it.next().getObject() ;
-      if(config.getAutoCreate() || repository.equals(config.getRepository())) {
+      if(config.getAutoCreatedInNewRepository() || repository.equals(config.getRepository())) {
         List<Taxonomy> taxonomies = config.getTaxonomies() ;
         session = getSession(repository) ;
         taxonomyHomeNode = (Node)session.getItem(cmsConfig_.getJcrPath(BasePath.EXO_TAXONOMIES_PATH)) ;

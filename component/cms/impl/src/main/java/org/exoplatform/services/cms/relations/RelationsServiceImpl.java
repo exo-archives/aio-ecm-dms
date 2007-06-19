@@ -156,7 +156,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   
 	protected Session getSession(String repository){
 		try{
-      return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace());
+      return repositoryService_.getRepository(repository)
+      .getSystemSession(cmsConfig_.getWorkspace(repository));
     }catch(Exception e) {
       return null ; 
     }

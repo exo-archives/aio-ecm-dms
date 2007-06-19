@@ -12,14 +12,14 @@ import org.apache.commons.lang.StringUtils;
  * @author benjaminmestrallet
  */
 public class TemplateConfig {
-  private boolean autoCreate ;
+  private boolean autoCreatedInNewRepository ;
   private String repository ;
   private List nodeTypes = new ArrayList(5);
   private List templates = new ArrayList(3);
   private String location = new String("war");
   
-  public boolean getAutoCreate() { return this.autoCreate ; }
-  public void setAutoCreate(boolean isAuto) { this.autoCreate = isAuto ; }
+  public boolean getAutoCreatedInNewRepository() { return this.autoCreatedInNewRepository ; }
+  public void setAutoCreatedInNewRepository(boolean isAuto) { this.autoCreatedInNewRepository = isAuto ; }
   
   public String getRepository() { return repository; }
   public void setRepository(String rp) { this.repository = rp ; }

@@ -339,7 +339,8 @@ public class RSSServiceImpl implements RSSService{
   private void storeXML(String feedXML, String rssStoredPath, String rssNodeName, String repository){   
     try {      
       Session session = 
-        repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace());
+        repositoryService_.getRepository(repository)
+        .getSystemSession(cmsConfigService_.getWorkspace(repository));
       Node rootNode = session.getRootNode();
       String[] array = rssStoredPath.split("/") ;
       for(int i = 0; i < array.length; i ++) {
