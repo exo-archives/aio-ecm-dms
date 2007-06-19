@@ -346,7 +346,7 @@
 			                             %>
 			                             	<div class="ViewMoreDocument">
 			                                	<div class="NextIcon"><span></span></div>
-			                                	<a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">
+			                                	<a href="$subCatLink">
 																					<%=_ctx.appRes(label)%>
 																				</a>
 			                                	<div style="clear: left;"><span></span></div>                               

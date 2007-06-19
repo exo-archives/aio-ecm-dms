@@ -65,7 +65,7 @@
 		</div>
 		<table class="FilePlanContentTable">    
 			<tr>
-				<td style="width: 30%">Record Category Identifier:</td>
+				<td style="width: 30%">Record Category Identifier</td>
 				<%
 					String recordCateIdentifier = "" ;
 					if(node.hasProperty("rma:recordCategoryIdentifier")) recordCateIdentifier = node.getProperty("rma:recordCategoryIdentifier").getString() ;
@@ -73,7 +73,7 @@
 				<td><%=recordCateIdentifier%></td>
 			</tr>
 			<tr>
-				<td style="width: 30%">Disposition Authority:</td>				
+				<td style="width: 30%">Disposition Authority</td>				
 				<%
 					String disPositionAuthor = "" ;
 					if(node.hasProperty("rma:dispositionAuthority")) disPositionAuthor = node.getProperty("rma:dispositionAuthority").getString() ;
@@ -89,7 +89,7 @@
 				<td><%=disInstruction%></td>  	      
 			</tr>
 			<tr>
-				<td style="width: 30%">Permanent Record Indicator:</td>
+				<td style="width: 30%">Permanent Record Indicator</td>
 				<%
 					boolean permanetRecord = false;
 					if(node.hasProperty("rma:permanentRecordIndicator")) permanetRecord = node.getProperty("rma:permanentRecordIndicator").getBoolean() ;
@@ -97,7 +97,7 @@
 				<td><%=permanetRecord%></td>
 			</tr>
 			<tr>
-				<td style="width: 30%">Contains Records Folder:</td>
+				<td style="width: 30%">Contains Records Folder</td>
 				<%
 					boolean containsRecord = false;
 					if(node.hasProperty("rma:containsRecordFolders")) containsRecord = node.getProperty("rma:containsRecordFolders").getBoolean() ;
@@ -105,7 +105,7 @@
 				<td><%=containsRecord%></td>
 			</tr>
 			<tr>
-				<td style="width: 30%">Default Media Type:</td>
+				<td style="width: 30%">Default Media Type</td>
 				<%
 					String defaultMedia = "" ;
 					if(node.hasProperty("rma:defaultMediaType")) defaultMedia = node.getProperty("rma:defaultMediaType").getString() ;
@@ -113,7 +113,7 @@
 				<td><%=defaultMedia%></td>
 			</tr>
 			<tr>
-				<td style="width: 30%">Default Marking List:</td>
+				<td style="width: 30%">Default Marking List</td>
 				<%
 					String defaultMarkingList = "" ;
 					if(node.hasProperty("rma:defaultMarkingList")) defaultMarkingList = node.getProperty("rma:defaultMarkingList").getString() ;
@@ -121,7 +121,7 @@
 				<td><%=defaultMarkingList%></td>
 			</tr>			
 			<tr>
-				<td style="width: 30%">Default Originating Organization:</td>
+				<td style="width: 30%">Default Originating Organization</td>
 				<%
 					String defaultOriginating = "" ;
 					if(node.hasProperty("rma:defaultOriginatingOrganization")) defaultOriginating = node.getProperty("rma:defaultOriginatingOrganization").getString() ;
@@ -129,7 +129,7 @@
 				<td><%=defaultOriginating%></td>
 			</tr>
 			<tr>
-				<td style="width: 30%">Number of Records:</td>
+				<td style="width: 30%">Number of Records</td>
 				<%
 					String numberOfRecord = "" ;
 					if(node.hasProperty("rma:recordCounter")) numberOfRecord = node.getProperty("rma:recordCounter").getString() ;
@@ -150,7 +150,7 @@
 	        <div class="LeftHorizontalTabs">
 		     	  <div class="RightHorizontalTabs">
 		     	    <div class="CenterHorizontalTabs">
-				        <div class="TabsContainer" style="overflow:auto;">
+				        <div class="TabsContainer">
 	
 				            <div class="UITab NormalTabStyle">
 				              <div class="SelectedTab">

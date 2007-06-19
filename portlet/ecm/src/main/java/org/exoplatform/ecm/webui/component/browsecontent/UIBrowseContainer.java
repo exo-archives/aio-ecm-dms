@@ -273,7 +273,9 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
 
   public String getOwner(Node node) throws Exception{
-    return ((ExtendedNode) node).getACL().getOwner();  
+    String owner = ((ExtendedNode) node).getACL().getOwner();  
+    if(owner == null) owner = "" ;
+    return owner ;
   }
 
   private boolean isReferenceableNode(Node node) throws Exception {
@@ -612,11 +614,11 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     if(selectNode.equals(getRootNode())) {
       setCurrentNode(null) ;
       setSelectedTab(null) ;
-      return ;
+    } else {
+      setSelectedTab(selectNode) ;
+      setCurrentNode(selectNode.getParent()) ;
+      setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
-    setSelectedTab(selectNode) ;
-    setCurrentNode(selectNode.getParent()) ;
-    setPageIterator(getSubDocumentList(getSelectedTab())) ;
   }
 
   @SuppressWarnings("unchecked")
@@ -684,7 +686,6 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
           Node currentCat  = uiContainer.getNodeByPath(catPath);
           uiContainer.storeHistory() ;
           uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
-          //if(uiContainer.isShowDocumentByTag_) uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
         }
         ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;

@@ -116,22 +116,6 @@ public class UIScriptConfig extends UIForm {
     enableVoteField.setEnable(isEdit_) ; 
   }
 
-  public void editForm(boolean isEditable) {
-    UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    templateField.setEnable(isEditable) ;
-    UIFormSelectBox scriptField = getChildById(UINewConfigForm.FIELD_SCRIPTNAME) ;
-    scriptField.setEnable(isEditable) ;
-    UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
-    detailtemField.setEnable(isEditable) ;
-    UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP)  ;
-    enableTagMapField.setEnable(isEditable) ;
-    setActions(UINewConfigForm.NORMAL_ACTION) ;
-    UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
-    enableCommentField.setEnable(isEditable) ;
-    UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    enableVoteField.setEnable(isEditable) ;
-  }
-
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
