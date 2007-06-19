@@ -27,9 +27,14 @@
 	
 }
 .UIBrowseContentPortlet .UIConfigContainer .UIAction {
-	padding: 10px 0px 10px 95px;
+	padding: 10px 0px 10px 50px;
 	width: 300px;
 	margin: auto;
+}
+
+.UIBrowseContentPortlet .UIFormWithTitle {
+	margin: 10px auto;
+	width: 600px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .ActionButton {
@@ -86,10 +91,24 @@
 
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer {
   border: none;
+  padding: 10px 0px 6px 0px;
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer .FieldContainer{
-	padding: 3px 0px;
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+  width: 100%;
+  padding-bottom: 0px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
+ 	padding: 4px 8px 4px 0px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid .FieldLabel {
+	width: 178px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
+ 	float: left;
 }
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
@@ -199,7 +218,6 @@
 .UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
 	width: 24px; height: 24px;
 	background:url('DefaultSkin/background/WriteCommentButton.gif') no-repeat;
-	
 }
 
 .UIBrowseContainer .UIDocumentList {
@@ -243,15 +261,10 @@
   width: 200px;
 }
 
-.UIBrowseContentPortlet .Explorer .ExplorerTree {
-	border: none;
-}
-
 .UIBrowseContentPortlet .UIPopupWindow .UIGrid{
   width: 350px;
   margin-left: 10px;
 }
-
 
 .UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
   margin-left: 5px;
@@ -263,7 +276,7 @@
 }
 
 .UIBrowseContentPortlet .Explorer {
-  margin-bottom: 10px;
+  margin-right: 10px;
   float: left ;
   width: 230px ;
 }
@@ -290,8 +303,7 @@
 }
 
 .UIBrowseContentPortlet .UITreeList .UIGrid {
-  width: 315px;
-  margin-left: 10px ;
+  width: 310px;
 }
 
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
@@ -388,11 +400,3 @@
   background: url('/ecm/skin/images/vote/OverStar.gif');
 }
 /*############################## -- End UIVoteForm   -- ##############################*/
-
-.UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
-	width: 128px;
-}
-
-.UIFastContentCreatortForm .UIFormGrid td.FieldLabel {
-	width: 128px;
-}

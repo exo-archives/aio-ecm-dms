@@ -53,6 +53,11 @@
     display: none;
     float: right;
   }
+  
+  .LabelFielPlan {
+  	padding-left: 5px;
+  	font-weight: normal;
+  }
 	
 </style>		
 
@@ -60,7 +65,7 @@
 	<div style="width:99.5%">
 		<div style="padding: 5px 5px 5px 2px;">
 			<div class="$iconName" style="float:left; margin: 0px 5px 0px 0px;"><span></span></div>
-			<div class="Title">File Plan Content:<%=originalNode.getName()%></div>
+			<div class="Title">File Plan Content:<label class="LabelFielPlan"><%=originalNode.getName()%></label></div>
 			<div style="clear:left;"><span></span></div>
 		</div>
 		<table class="FilePlanContentTable">    

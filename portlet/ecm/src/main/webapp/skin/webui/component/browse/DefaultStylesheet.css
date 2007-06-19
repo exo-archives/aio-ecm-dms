@@ -20,12 +20,18 @@
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
-	width: 570px;
 	margin: auto;
+	width: 600px;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer {
-  border: none ;
+  border: none;
+  padding: 6px 0px;
+}
+
+.UIBrowseContentPortlet .UIFormGrid .FieldLabel {
+	width: 128px;
+	border: solid 1px yellow;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .UIAction{
@@ -38,7 +44,7 @@
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-	width:80px; /*FIX BUG IE*/
+	width: 80px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
@@ -49,7 +55,6 @@
 .UIBrowseContentPortlet .ViewActicle {
   margin: 9px 10px 0px 0px;
 }
-
 
 .UIBrowseContentPortlet .TagmapHolder {
 	float: right ;  
@@ -83,13 +88,43 @@
   background: #058eee;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .Icon{
+.UIBrowseContentPortlet .TagmapHolder .Icon {
 	float: left;
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
 }
 
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
+	width: 500px;
+	margin: auto;
+	background: #efefef;
+}
+
+.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .FormContainer {
+	width: 500px;
+	margin: auto;
+	background: #efefef;
+}
+
+.UIBrowseContentPortlet .HorizontalLayout .UIFormGrid td.FieldComponent {
+  padding: 4px 0px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
+	float: left;
+}
+
+.UIBrowseContentPortlet  .UIConfigContainer .HorizontalLayout .UIFormInputSet {
+ 	width: 100%;
+ 	padding-bottom: 0px;
+ 	margin: auto;
+}
+
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+  padding: 0px 4px;
+  vertical-align: middle;
+}
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
 .UIBrowseContentPortlet .UIBrowseContainer {
@@ -128,7 +163,6 @@
   height: 16px; width: 16px;
   background: url('DefaultSkin/background/CategoryListIcon.gif') no-repeat;
   margin: 6px 5px 0px 8px;
-  
 }
 
 .UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathLabel {
@@ -197,7 +231,6 @@
 .UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
 	width: 24px; height: 24px;
 	background:url('DefaultSkin/background/WriteCommentButton.gif') no-repeat;
-	
 }
 
 .UIBrowseContainer .UIDocumentList {
@@ -339,7 +372,7 @@
 /*############################## -- Begin ExplorerTree   -- ##############################*/
 
 .UIBrowseContentPortlet .Explorer {
-  margin-bottom: 10px;
+  margin-right: 10px;
   float: left ;
   width: 230px ;
 }

@@ -29,6 +29,11 @@
   padding: 15px;
 }
 
+.UIJCRExplorerPortlet .UIPreferencesForm  .UIAction{
+  width: 160px;
+  padding-left: 60px;
+}
+
 .UIPopupMessages .UIAction {
   width: 100px;
 }

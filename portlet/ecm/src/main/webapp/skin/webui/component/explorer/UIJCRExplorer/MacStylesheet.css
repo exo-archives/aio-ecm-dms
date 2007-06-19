@@ -13,8 +13,19 @@
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
-  width: 97%;
+  width: 95%;
   margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp{
+  width: 95%;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle{
+  width: 99.6%;
+  margin: 0px auto;
+  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid input {
@@ -214,12 +225,12 @@
 
 /*############################## -- End UIThumbnailsView -- ##############################*/
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult table {
-  width: 99%;
-}
-
 .UIJCRExplorer .UISearchResult .UIGrid .ActionContainer {
   width: 60px ;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
+	padding: 10px;
 }
 
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
@@ -255,6 +266,10 @@
 
 /*===========================DocumentFormController=====================*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
+	padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 170px;
 	padding-right: 100px;
@@ -271,6 +286,8 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
+  background: #efefef;
+  margin-top: 5px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
@@ -279,6 +296,10 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController {
  	padding: 13px 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
+  width: auto;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBarFrame { 
@@ -298,6 +319,42 @@
 	overflow: hidden;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBar {
+	margin-left: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentForm .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: none;
+  background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: none;
+  background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: solid 1px #b7b7b7;
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: none;
+  background: #efefef;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .HorizontalLayout .UITabContentContainer {
+  border: none;
+  background: #efefef;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .UIForm .HorizontalLayout {
+  background: #efefef;
+}
 /*===========================TabContainer====================*/
 
 .UIJCRExplorerPortlet .UIPopupMessages .TabsContainer {
@@ -336,8 +393,8 @@
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
-  width: 170px;
-  padding-right: 60px;
+  width: 200px;
+  border: solid 1px red;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
@@ -391,13 +448,11 @@
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
-  border-top: none;
+	border: none;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
-	border-top: solid 1px #b7b7b7;
-	border-bottom: none;
+	border: none;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle .FieldContainer .MyEditor {
@@ -505,6 +560,14 @@
 }
 
 /*================================UINodeTypeSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UISearchResult {
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISearchResult .UIGrid td {
+	padding: 0px 5px;
+}
 
 .UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {
 	width: 95%;
@@ -639,6 +702,10 @@
 
 /*================================UINodeTypeInfo=================================*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWindowContent .UIJCRBrowser {
+	padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIGrid tr {
 }
 
@@ -649,10 +716,6 @@
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
 	float: left ;
 	margin: 2px 10px 0px 5px ;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser {
-  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer  {
@@ -702,4 +765,18 @@
 .UIJCRExplorer .UIRelationManager .UIAction {
 	width: 80px;
 }
+
+.UIJCRExplorer .UIRenameForm {
+	padding: 10px;
+}
+
+.UIJCRExplorer .UIRenameForm .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
+.UIJCRExplorer .UIRenameForm .UIAction{
+	width: 170px;
+}
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

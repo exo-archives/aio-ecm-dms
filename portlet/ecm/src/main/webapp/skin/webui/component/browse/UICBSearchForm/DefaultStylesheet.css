@@ -8,7 +8,6 @@
  
  
 .UICBSearchForm {
-  
   border: solid 1px #b7b7b7 ;
   background: #efefef;
   margin: 2px 0px 5px 0px;  
@@ -28,10 +27,10 @@
 }
 
 .UICBSearchForm .SearchIcon {
- float: left;
- width: 24px; height: 24px;
- margin-left: 10px;
- background: url('../DefaultSkin/background/CBSearchButton.gif') no-repeat ;
+  float: left;
+	width: 24px; height: 24px;
+	margin-left: 10px;
+	background: url('../DefaultSkin/background/CBSearchButton.gif') no-repeat ;
 }
 
 .UICBSearchForm form{

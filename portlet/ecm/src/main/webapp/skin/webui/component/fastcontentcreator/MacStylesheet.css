@@ -17,14 +17,20 @@
 	width: 128px;
 }
 
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormGrid .FieldLabel {
-	width: 0px;
+.UIFastContentCreatorPortlet .UIFormWithTitle {
+  border: 1px solid #e1e1e1;
+  width: 650px;
+  margin: 15px auto;
 }
 
-.UIFastContentCreatorPortlet .UIFormWithTitle {
-  margin-top: 0px;
-  margin-bottom: 0px;
-} 
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+  padding: 4px 0px;
+}
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
   border: solid 1px #b7b7b7;
@@ -41,15 +47,14 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
+  float: left;
+}
+
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
   background: #e5fcfa;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-bottom: 10px ;
-  margin-left: 158px ;
 }
 
 .UIFastContentCreatorPortlet .MultiValueContainer a  {
@@ -64,9 +69,35 @@
   border: solid 1px #939393;
   border-top: none;
 }
+
+.UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .FileName {
+	width: 230px;	
+	overflow: hidden;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .FileNameLabel {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .ProgressBar {
+	margin: 0px;
+}
+
 .UIFastContentCreatorPortlet .UIAction {
 	width: 165px;
-	padding-right: 70px;
+	padding-left: 20px;
 }
 
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
@@ -109,6 +140,19 @@
   margin: 5px;
 }
 
-.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormInputSet {
-  padding-bottom: 0px;
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
+	margin: auto;
+	padding-bottom: 0px;
+	width: 100%;
 }
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
+	width: 500px;
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+  padding: 0px 4px;
+  vertical-align: middle;
+}
+

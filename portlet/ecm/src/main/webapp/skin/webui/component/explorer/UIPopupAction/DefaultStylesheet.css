@@ -83,7 +83,11 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIAction {
 	width: 160px;
-	padding-right: 160px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
+	width: 160px;
+	padding-right: 140px;
 }
 
 /*############################## -- Begin UIDiff -- ##############################*/
@@ -380,15 +384,20 @@
   width: 150px ;
 }
 
+/*############################## -- UITaggingForm   -- ##############################*/
+.UIJCRExplorerPortlet .UITaggingForm .ActionField {
+	float: left ;
+	margin-bottom: 3px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
+  width: 220px ;
+}
+
 /*############################## -- End Others   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIUploadManager {
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIAction {
-  width: 180px;
-  padding-right: 60px;
 }
 
 .UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {

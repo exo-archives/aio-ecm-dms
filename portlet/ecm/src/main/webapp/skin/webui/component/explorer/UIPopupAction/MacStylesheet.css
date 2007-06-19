@@ -91,6 +91,15 @@
   float: right;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UIAction {
+	width: 170px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
+	width: 170px;
+	padding-right: 50px;
+}
+
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 8px;
@@ -139,29 +148,29 @@
 }
 
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
-.Explorer {
-  margin-bottom: 10px;
+
+.UIFastContentCreatorPortlet .Explorer {
+  margin-right: 10px;
   float: left ;
   width: 230px ;
 }
 
-.Explorer .ExplorerTree {
-  margin-top: 1px;
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
 }
 
-.Explorer .InnerExplorerTree {
+.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.Explorer .ExplorerTree .Node {
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
   line-height: 30px;
 }
 
-.UITreeList .UIGrid {
+.UIFastContentCreatorPortlet .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
 }
@@ -196,7 +205,7 @@
 /*############################## -- UITaggingForm   -- ##############################*/
 .UIJCRExplorerPortlet .UITaggingForm .ActionField {
 	float: left ;
-	padding-left: 5px ;
+	margin-bottom: 3px;
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {

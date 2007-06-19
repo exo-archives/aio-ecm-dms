@@ -22,7 +22,7 @@
 		}
 		
 		div.summary { 
-			width: 98.3%; 
+			width: 96%; 
 			height: 160px ; 
 			font-size: 11px; 
 			padding: 5px 5px 5px 10px; 
@@ -32,7 +32,7 @@
 		} 
 		
 		div.content { 
-			width: 98.3%; 
+			width: 96%; 
 			height: 160px ; 
 			font-size: 11px; 
 			padding: 5px 5px 5px 10px; 
@@ -48,70 +48,58 @@
 		  height: 18px;
 		  border: solid 1px #bdbdbd;
 		  border-bottom: none;
+		  line-height: 18px;
+	  }
+	  
+	  .SampleBG {
+		  height: 25px;
+		  line-height: 25px;
+		  border-bottom: solid 1px #BDBDBD;
 	  }
 		
 	</style>
 <div style="text-align: left; margin: 5px;" id="$uicomponent.id">
 	<div class="WorkSample">
-		<div class="HeaderSampleBG">
-			<div class="ContainerSample">
+		<div class="SampleBG">
 				<label class="text">Node name: </label>
 				<span class="text"><%=originalNode.getName()%></span>
-			</div>
 		</div>
-		<div class="HeaderSampleBG">
-			<div class="WorkContainerSample">
-				<label class="text">Title: </label>
-				<span class="text">
-					<%if(node.hasProperty("exo:title")) {%>
-						<%=node.getProperty("exo:title").getString()%>
-					<%}%>
-				</span>
-			</div>
+		<div class="SampleBG">
+			<label class="text">Title: </label>
+			<span class="text">
+				<%if(node.hasProperty("exo:title")) {%>
+					<%=node.getProperty("exo:title").getString()%>
+				<%}%>
+			</span>
 		</div>
-		<div class="HeaderSampleBG">
-			<div class="ContainerSample">
-				<label class="text">Date: </label>
-				<span class="text">
-					<%if(node.hasProperty("exo:date")) {
-					  dateFormat.applyPattern("MMMMM dd yyyy") ;						
-					%>
-						<%=dateFormat.format(node.getProperty("exo:date").getDate().getTime())%>
-					<%}%>
-				</span>
-			</div>
+		<div class="SampleBG">
+			<label class="text">Date: </label>
+			<span class="text">
+				<%if(node.hasProperty("exo:date")) {
+				  dateFormat.applyPattern("MMMMM dd yyyy") ;						
+				%>
+					<%=dateFormat.format(node.getProperty("exo:date").getDate().getTime())%>
+				<%}%>
+			</span>
 		</div>
-		<div class="HeaderSampleBG">
-			<div class="WorkContainerSample">
+		<div class="SampleBG">
 			<label class="text">Date Time: </label>
-				<span class="text">
-					<%if(node.hasProperty("exo:datetime")) {
-						 dateFormat.applyPattern("MMMMM dd yyyy hh:mm:ss") ;		
-					%>
-						<%=dateFormat.format(node.getProperty("exo:datetime").getDate().getTime())%>
-					<%}%>	
-				</span>
-			</div>
+			<span class="text">
+				<%if(node.hasProperty("exo:datetime")) {
+					 dateFormat.applyPattern("MMMMM dd yyyy hh:mm:ss") ;		
+				%>
+					<%=dateFormat.format(node.getProperty("exo:datetime").getDate().getTime())%>
+				<%}%>	
+			</span>
 		</div>
-		<div class="HeaderSampleBG">
-			<div class="WorkContainerSample">
-				<label class="text">Description: </label>
-				<span class="text">
-					<%if(node.hasProperty("exo:description")) {%>
-						<%=node.getProperty("exo:description").getString()%>
-					<%}%>
-				</span>
-			</div>
-		</div>
-		<!-- div for  Summary and Image -->
 		<div style="overflow: hidden">
 			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
 				<div class="TitleBG">
-					<label class="text" style="padding-left: 5px">Summary:</label>
+					<label class="text" style="padding-left: 5px">Description:</label>
 				</div>
 				<div class="summary" >
-					<%if(node.hasProperty("exo:summary")) {%>
-						<%=node.getProperty("exo:summary").getString()%>
+					<%if(node.hasProperty("exo:description")) {%>
+						<%=node.getProperty("exo:description").getString()%>
 					<%}%>
 				</div>
 			</div>
@@ -128,19 +116,32 @@
 	      			<image src="<%=uicomponent.getImage(node)%>" width="250" height="150"/> 
 	      	<%}%>
 				</div>
-			</div>	
+			</div>
+		</div>
+		<!-- div for  Summary and Image -->
+		<div style="overflow: hidden">
+			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
+				<div class="TitleBG">
+					<label class="text" style="padding-left: 5px">Summary:</label>
+				</div>
+				<div class="summary" >
+					<%if(node.hasProperty("exo:summary")) {%>
+						<%=node.getProperty("exo:summary").getString()%>
+					<%}%>
+				</div>
+			</div>
+			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
+				<div class="TitleBG" >
+					<label class="text" style= "padding: 5px">Content:</label>
+				</div>
+				<div class="content">
+					<%if(node.hasProperty("exo:content")) {%>
+						<%=node.getProperty("exo:content").getString()%>
+					<%}%>
+				</div>
+			</div>
 		</div>
 		<!-- div for Content -->
-		<div style="margin-top: 5px; border: 1px solid #bdbdbd">
-			<div class="TitleBG" >
-				<label class="text" style= "padding: 5px">Content:</label>
-			</div>
-			<div class="content">
-				<%if(node.hasProperty("exo:content")) {%>
-					<%=node.getProperty("exo:content").getString()%>
-				<%}%>
-			</div>
-		</div>
 		<!-- div for  relation and attackments -->
 		<div style="overflow: hidden">
 			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: left; margin-top: 5px">

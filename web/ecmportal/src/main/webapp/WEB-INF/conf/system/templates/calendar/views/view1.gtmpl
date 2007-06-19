@@ -24,7 +24,7 @@
 		}
 		
 		div.summary { 
-			width: 95%; 
+			width: 96.3%; 
 			height: 160px ; 
 			font-size: 12px; 
 			padding: 5px 5px 5px 10px; 
@@ -33,39 +33,31 @@
 		} 
 		
 		div.content { 
-			width: 95%; 
+			width: 96.3%; 
 			font-size: 12px; 
 			padding: 5px; 
 			color: gray; 
 		}
 		
-		.ContainerCalendar {
-			height: 17px;
-			line-height: 17px;
-		}
 		
 		.ContainerCalendar span.text {
 			font-weight: normal;
 		}
 		
-		.WorkContainerCalendar {
-			border-bottom: 1px solid #bdbdbd; 
+		.ContainerCalendar {
+			border-bottom: solid 1px #BDBDBD;
 			height: 25px;
 			line-height: 25px;
-			margin-left: 6px;
-			padding-left: 5px;
 		}
 	</style>
 </head>
 <div class="WorkCalendar">
-	<div class="HeaderBG">
-		<div class="ContainerCalendar">
-			<label class="text">Calendar: <label>
-			<span class="text"><%=originalNode.getName()%></span>
-			<div style="clear: left;"><span></span></div>
-		</div>
+	<div class="ContainerCalendar">
+		<label class="text">Calendar: <label>
+		<span class="text"><%=originalNode.getName()%></span>
+		<div style="clear: left;"><span></span></div>
 	</div>
-	<div class="WorkContainerCalendar">
+	<div class="ContainerCalendar">
 		<label class="text">Shared: </label>
 		<span class="text">
 			<%if(node.hasProperty("exo:shared")) {%>
