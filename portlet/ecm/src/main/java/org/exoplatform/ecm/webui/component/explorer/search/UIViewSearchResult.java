@@ -92,6 +92,10 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   }
   public Node getOriginalNode() throws Exception {return node_;}
   
+  public String getIcons(Node node, String size) throws Exception {
+    return Utils.getNodeTypeIcon(node, size) ;
+  }
+  
   public String getNodeType() throws Exception { return null; }
   
   public List<Node> getRelations() throws Exception {

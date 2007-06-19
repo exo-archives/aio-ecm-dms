@@ -29,7 +29,7 @@ public class ECMNameValidator implements Validator {
         || c=='-' || c=='.' || c==':' || c=='$' || c=='@' || c=='^' || c=='[' || c==']') {
         continue ;
       }
-      Object[] args = { uiInput.getName(), s };
+      Object[] args = { uiInput.getName() };
       throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.Invalid-char", args, ApplicationMessage.WARNING)) ;
     }
   }

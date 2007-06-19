@@ -717,8 +717,8 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         uiDocumentDetail.setRendered(false) ;
       }
       if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
-      uiContainer.setCurrentNode(uiContainer.history_.get(uiContainer.KEY_CURRENT)) ;
-      uiContainer.setSelectedTab(uiContainer.history_.get(uiContainer.KEY_SELECTED)) ;
+      uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
+      uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
       uiContainer.history_.clear() ;
       uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
@@ -776,30 +776,18 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     }
   }
 
-  public String encodeHTML(String text) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  @SuppressWarnings("unused")
+  public String encodeHTML(String text) throws Exception { return null; }
 
-  public List<Node> getAttachments() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public List<Node> getAttachments() throws Exception { return null; }
 
-  public List<Node> getComments() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public List<Node> getComments() throws Exception { return null; }
 
-  public Object getComponentInstanceOfType(String className) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  @SuppressWarnings("unused")
+  public Object getComponentInstanceOfType(String className) { return null; }
 
-  public String getDownloadLink(Node node) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  @SuppressWarnings("unused")
+  public String getDownloadLink(Node node) throws Exception { return null; }
 
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
@@ -821,84 +809,40 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
 
-  public String getLanguage() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getLanguage() { return null; }
 
-  public Node getNode() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public Node getNode() throws Exception { return null; }
 
-  public String getNodeType() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getNodeType() throws Exception { return null; }
 
-  public Node getOriginalNode() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public Node getOriginalNode() throws Exception { return null; }
 
-  public String getPortalName() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getPortalName() { return null; }
 
-  public List<Node> getRelations() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public List<Node> getRelations() throws Exception { return null; }
 
-  public String getRssLink() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getRssLink() { return null; }
 
-  public List getSupportedLocalise() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public List getSupportedLocalise() throws Exception { return null; }
 
-  public String getTemplatePath() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getTemplatePath() throws Exception { return null; }
 
+  @SuppressWarnings("unused")
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
-    // TODO Auto-generated method stub
     return null;
   }
 
-  public String getWebDAVServerPrefix() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getWebDAVServerPrefix() throws Exception { return null; }
 
-  public String getWorkspaceName() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  public String getWorkspaceName() throws Exception { return null; }
 
-  public boolean isNodeTypeSupported() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+  public boolean isNodeTypeSupported() { return false; }
 
-  public boolean isRssLink() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+  public boolean isRssLink() { return false; }
 
-  public void setLanguage(String language) {
-    // TODO Auto-generated method stub
+  @SuppressWarnings("unused")
+  public void setLanguage(String language) {}
 
-  }
-
-  public void setNode(Node node) {
-    // TODO Auto-generated method stub
-
-  }
-
+  @SuppressWarnings("unused")
+  public void setNode(Node node) {}
 }

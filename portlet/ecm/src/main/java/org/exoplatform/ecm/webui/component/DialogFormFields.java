@@ -306,7 +306,9 @@ public class DialogFormFields extends UIForm {
         }
         uiMulti.setValue(valueList) ;        
       }
-      
+      if(isNotEditNode_) {
+        uiMulti.setValue(new ArrayList<Value>()) ;
+      }
       renderField(name) ;
       return ;
     } 

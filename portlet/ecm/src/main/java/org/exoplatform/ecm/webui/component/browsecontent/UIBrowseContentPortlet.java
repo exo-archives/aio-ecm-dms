@@ -46,6 +46,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     PortletPreferences portletPref = getPortletPreferences() ;
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
+    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {

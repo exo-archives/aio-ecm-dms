@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.Value;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
@@ -22,12 +21,10 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-import org.exoplatform.webui.form.UIFormInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -104,15 +101,8 @@ public class UILanguageDialogForm extends DialogFormFields {
       return null;
     }
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
-      Value value = null;
-      for(UIComponent uiChild : getChildren()) {
-        if(propertiesName_.get(uiChild.getName()).equals(Utils.JCR_DATA)) {
-          String str = ((UIFormInput) uiChild).getValue().toString() ;
-          value = uiExplorer.getSession().getValueFactory().createValue(str) ;
-          break ;
-        }
-      }
-      multiLanguageService.addFileLanguage(node, value, getSelectedLanguage(), isDefaultLanguage()) ;
+      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
+      multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
     } else {
       Map map = Utils.prepareMap(getChildren(), properties, uiExplorer.getSession()) ;
       multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
