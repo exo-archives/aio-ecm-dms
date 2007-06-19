@@ -127,4 +127,13 @@
   width: 45px;
 }
 
+.UIECMAdminPortlet .UINodeTypeImportPopup .HorizontalLayout .FormContainer {
+	width: 440px;
+	margin: 40px auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .UIAction {
+	width: 330px;
+}
+
 /*############################## -- End UINodeTypeManager-- ########################*/

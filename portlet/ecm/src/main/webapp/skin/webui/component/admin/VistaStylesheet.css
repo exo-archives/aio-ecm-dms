@@ -78,6 +78,7 @@
 
 .UIECMAdminPortlet .ProgressBarFrame {
 	margin: 0px;
+	width: 320px;
 }
 
 .UIECMAdminPortlet .SelectFileFrame {
@@ -232,13 +233,23 @@
 .UIECMAdminPortlet .ECMAdminTitleBar {
 	font-weight: bold; 
 	text-align: center;
-	padding-top: 10px;
+	padding: 10px 0px 4px 0px;
+	line-height: 20px;
 }
 
 .UIECMAdminPortlet .UIECMAdminFunctionTitle {
 	font-weight: bold;
 	padding: 10px 0px 0px 7px;
 }
+
+.UIECMAdminPortlet .UIECMAdminFunctionTitle .RightFunctionTitle {
+	height: 32px;
+}
+
+.UIECMAdminPortlet .UIECMAdminFunctionTitle .FunctionTitle {
+	line-height: 20px;
+}
+
 
 .UIECMAdminPortlet .UIResizableBlock {
   height: 400px;

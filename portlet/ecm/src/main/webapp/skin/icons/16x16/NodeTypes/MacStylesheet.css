@@ -255,3 +255,74 @@
   width: 16px;	height: 16px;
   background: url('DefaultSkin/kfx-document.gif') no-repeat;  
 }
+
+/*############################## -- End NodeType Icon -- ########################*/
+.application_msword16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/doc.gif') no-repeat;  
+}
+
+.application_xls16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/xls.gif') no-repeat;  
+}
+
+.application_ppt16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/ppt.gif') no-repeat;  
+}
+
+.application_pdf16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/pdf.gif') no-repeat;  
+}
+
+.application_vnd_oasis_opendocument_text16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/odt.gif') no-repeat;
+}
+
+.application_vnd_oasis_opendocument_spreadsheet16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/ods.gif') no-repeat;  
+}
+
+.application_vnd_oasis_opendocument_presentation16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/odp.gif') no-repeat;  
+}
+
+.application_zip16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/zip.gif') no-repeat;  
+}
+
+.application_rar16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/rar.gif') no-repeat;  
+}
+
+.text_rtf16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/rtf.gif') no-repeat;  
+}
+
+.text_plain16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/txt.gif') no-repeat;  
+}
+
+.text_xml16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/xml.gif') no-repeat;  
+}
+
+.image_jpeg16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/jpg.gif') no-repeat;  
+}
+
+.image_png16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/png.gif') no-repeat;  
+}

@@ -96,9 +96,6 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer {
-  border: solid 1px #b7b7b7;
-  background-color: #ffffff;
-  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
@@ -106,6 +103,10 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UIGrid td {
+	padding-left: 2px;
 }
 
 .UIJCRExplorerPortlet .UIGrid td {

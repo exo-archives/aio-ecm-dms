@@ -403,6 +403,7 @@
 
 .UIJCRExplorerPortlet .ProgressBarFrame {
 	margin: 0px;
+	width: 320px;
 }
 
 .UIJCRExplorerPortlet .SelectFileFrame {
