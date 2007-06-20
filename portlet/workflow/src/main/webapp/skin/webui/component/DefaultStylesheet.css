@@ -5,7 +5,7 @@
  * December 18, 2006
  * version: $Id$
  */
-
+@import url("/ecm/skin/ExoEditor/MyEditor.css");
 .UIWorkflowPortlet {
 	overflow: auto;
 }

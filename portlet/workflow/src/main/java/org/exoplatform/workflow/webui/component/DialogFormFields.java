@@ -821,14 +821,6 @@ public class DialogFormFields extends UIForm {
     super.begin();
   }
 
-  public String event(String name) {
-    StringBuilder b = new StringBuilder("javascript:") ;
-    b.append("eXo.ecm.ExoEditor.saveHandler() ;").
-    append("eXo.webui.UIForm.submitForm('").append(getId()).append("','").
-    append(name).append("', true)");
-    return b.toString() ;
-  }
-
   public Node storeValue(Event event) throws Exception { return null ; }
   public void onchange(Event event) throws Exception {}
   
