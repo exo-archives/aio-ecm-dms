@@ -59,6 +59,7 @@ public class DialogFormFields extends UIForm {
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
+  private boolean isResetMultiField_ = false ;
   protected String repository_ = null ;
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
@@ -99,6 +100,10 @@ public class DialogFormFields extends UIForm {
   public Map<String, Object> getInputProperties() { return properties ; }
 
   public void resetProperties() { properties.clear() ; }
+  
+  public void setIsResetMultiField(boolean isResetMultiField) { 
+    isResetMultiField_ = isResetMultiField ; 
+  }
 
   public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
   public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
@@ -307,7 +312,7 @@ public class DialogFormFields extends UIForm {
         }
         uiMulti.setValue(valueList) ;        
       }
-      if(isNotEditNode_) {
+      if(isResetMultiField_) {
         uiMulti.setValue(new ArrayList<Value>()) ;
       }
       renderField(name) ;

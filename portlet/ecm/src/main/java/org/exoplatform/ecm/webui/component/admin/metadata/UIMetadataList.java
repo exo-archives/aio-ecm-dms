@@ -106,7 +106,6 @@ public class UIMetadataList extends UIContainer {
       String repository = uiMetaList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       MetadataService metadataService = uiMetaList.getApplicationComponent(MetadataService.class) ;
       metadataService.removeMetadata(metadataName, repository) ;
-      uiMetaList.getAncestorOfType(UIMetadataManager.class).metadatasDeleted.add(metadataName) ;
       uiMetaList.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       UIApplication uiApp = uiMetaList.getAncestorOfType(UIApplication.class) ;

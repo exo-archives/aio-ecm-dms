@@ -4,9 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
@@ -31,7 +28,6 @@ public class UIMetadataManager extends UIContainer {
   public String METADATA_POPUP = "MetadataPopupEdit" ;
   final static public String VIEW_METADATA_POPUP = "ViewMetadataPopup" ;
   final static public String PERMISSION_POPUP = "PermissionPopup" ;
-  public List<String> metadatasDeleted = new ArrayList<String>() ;
   
   public UIMetadataManager() throws Exception {
     addChild(UIMetadataList.class, null, null) ;

@@ -35,8 +35,9 @@ public class AutoVersioningScript implements CmsScript{
     try{
       Session session = repositoryService_.getRepository().getSystemSession(workspace) ;
       Node srcNode = (Node)session.getItem(srcPath) ;
-      Node actionNode = srcNode.getNode(actionName) ;      
-      String lifecycle = actionNode.getProperty("exo:lifecyclePhase").getString() ;      
+      Node actionNode = srcNode.getNode(actionName) ;
+      Node currentNode = (Node)session.getItem(nodePath) ;
+      String lifecycle = actionNode.getProperty("exo:lifecyclePhase").getString() ;
        // if action's lifecycle is: modify, auto versioning document was versionabled that modify       
       if("modify".equals(lifecycle)) {
         Property changedProp = session.getItem(nodePath) ;
@@ -51,23 +52,22 @@ public class AutoVersioningScript implements CmsScript{
       // with others lifecycle, auto versioning node that contain action's node.
       else if("add".equals(lifecycle)||"remove".equals(lifecycle)||
               "schedule".equals(lifecycle)) {
-        if(!srcNode.isNodeType("mix:versionable")) {
-          if(srcNode.canAddMixin("mix:versionable")) {
-            srcNode.addMixin("mix:versionable") ;
+        if(!currentNode.isNodeType("mix:versionable")) {
+          if(currentNode.canAddMixin("mix:versionable")) {
+            currentNode.addMixin("mix:versionable") ;
             session.save() ;
-            srcNode.checkin() ;
-            srcNode.checkout() ;
+            currentNode.checkin() ;
+            currentNode.checkout() ;
             return;
           }             
           return ;
         }
-        if(!srcNode.isCheckedOut()) 
-          srcNode.checkout() ;
-        srcNode.checkin() ;
-        srcNode.checkout() ;
+        if(!currentNode.isCheckedOut()) currentNode.checkout() ;
+        currentNode.checkin() ;
+        currentNode.checkout() ;
         session.save() ;
       }
-    }catch (Exception e) {    
+    } catch (Exception e) {    
       e.printStackTrace() ;
     }       
   }

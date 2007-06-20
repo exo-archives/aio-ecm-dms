@@ -94,7 +94,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     Session session = getSession(repository);
     Node metadataHome = (Node)session.getItem(metadataPath) ;
     if(!isAddNew) {
-      if(isDialog){
+      if(isDialog) {
         Node dialog1 = metadataHome.getNode(nodetype).getNode(DIALOGS).getNode(DIALOG1) ;
         dialog1.setProperty(EXO_ROLES_PROP, role.split(";"));
         dialog1.setProperty(EXO_TEMPLATE_FILE_PROP, content);

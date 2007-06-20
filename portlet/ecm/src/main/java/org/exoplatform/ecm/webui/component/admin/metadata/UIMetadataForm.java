@@ -54,6 +54,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   
   private boolean isAddNew_ = false ;
   private String metadataName_ ;
+  private String repository_ ;
 
   public UIMetadataForm() throws Exception {
     super("UIMetadataForm", false) ;
@@ -84,11 +85,11 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   public void update(String metadata)throws Exception{
     metadataName_ = metadata ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
-    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    repository_ = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     getUIStringInput(METADATA_NAME).setValue(metadata) ;
-    String dialogTemplate = metadataService.getMetadataTemplate(metadata, true, repository) ;
-    String viewTemplate = metadataService.getMetadataTemplate(metadata, false, repository) ;
-    String role = metadataService.getMetadataRoles(metadata, true, repository) ;
+    String dialogTemplate = metadataService.getMetadataTemplate(metadata, true, repository_) ;
+    String viewTemplate = metadataService.getMetadataTemplate(metadata, false, repository_) ;
+    String role = metadataService.getMetadataRoles(metadata, true, repository_) ;
     getUIStringInput(METADATA_NAME).setEditable(false) ;
     getUIStringInput(VIEW_PERMISSION).setValue(role) ;
     getUIFormTextAreaInput(DIALOG_TEMPLATE).setValue(dialogTemplate) ;
@@ -105,17 +106,14 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
       if(dialogTemplate == null) dialogTemplate = "" ;
       String viewTemplate = uiForm.getUIFormTextAreaInput(VIEW_TEMPLATE).getValue() ;
       if(viewTemplate == null) viewTemplate = "" ;
-      if(uiMetaManager.metadatasDeleted.contains(uiForm.metadataName_)) {
-        uiForm.isAddNew_ = true ;
-        uiMetaManager.metadatasDeleted.remove(uiForm.metadataName_) ;
-      } else {
-        uiForm.isAddNew_ = false ;
-      }
+      if(!metadataService.hasMetadata(uiForm.metadataName_, uiForm.repository_)) uiForm.isAddNew_ = true ;
+      else uiForm.isAddNew_ = false ;
       String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_, repository) ;
       metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, repository) ;
       uiForm.reset() ;
       uiMetaManager.removeChild(UIPopupWindow.class) ;
+      uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;
     }
   }

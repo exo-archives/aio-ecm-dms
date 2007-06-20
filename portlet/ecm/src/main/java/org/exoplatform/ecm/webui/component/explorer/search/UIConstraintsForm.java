@@ -8,9 +8,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
+
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -91,8 +97,12 @@ public class UIConstraintsForm extends UIForm {
     dateOperation.add(new SelectItemOption<String>(CREATED_DATE, CREATED_DATE));
     dateOperation.add(new SelectItemOption<String>(MODIFIED_DATE, MODIFIED_DATE));
     addUIFormInput(new UIFormSelectBox(TIME_OPTION, TIME_OPTION, dateOperation)) ;
-    addUIFormInput(new UIFormDateTimeInput(START_TIME, START_TIME, null)) ;
-    addUIFormInput(new UIFormDateTimeInput(END_TIME, END_TIME, null)) ;
+    UIFormDateTimeInput uiFromDate = new UIFormDateTimeInput(START_TIME, START_TIME, null) ;
+    uiFromDate.setDisplayTime(false) ;
+    addUIFormInput(uiFromDate) ;
+    UIFormDateTimeInput uiToDate = new UIFormDateTimeInput(END_TIME, END_TIME, null) ;
+    uiToDate.setDisplayTime(false) ;
+    addUIFormInput(uiToDate) ;
     addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
   }
 
@@ -126,13 +136,23 @@ public class UIConstraintsForm extends UIForm {
   
   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
     Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
-    Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
-    if(type.equals(CREATED_DATE)) {
-      virtualDateQuery_ = "(documents created before '"+beforeDate+"') AND (after '"+afterDate+"')" ;
-      return "(jcr:created > '"+ISO8601.format(bfDate)+"') AND (jcr:created < '"+ISO8601.format(afDate)+"')" ;
-    } else if(type.equals(MODIFIED_DATE)) {
-      virtualDateQuery_ = "documents modified before '"+beforeDate+"' AND after '"+afterDate+"'" ;
-      return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"') AND (jcr:lastModified < '"+ISO8601.format(afDate)+"')" ;
+    if(afterDate != null && afterDate.trim().length() > 0) {
+      Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
+      if(type.equals(CREATED_DATE)) {
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"') AND (to '"+afterDate+"')" ;
+        return "(jcr:created > '"+ISO8601.format(bfDate)+"') AND (jcr:created < '"+ISO8601.format(afDate)+"')" ;
+      } else if(type.equals(MODIFIED_DATE)) {
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') AND (to '"+afterDate+"')" ;
+        return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"') AND (jcr:lastModified < '"+ISO8601.format(afDate)+"')" ;
+      }
+    } else {
+      if(type.equals(CREATED_DATE)) {
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"')" ;
+        return "(jcr:created > '"+ISO8601.format(bfDate)+"')" ;
+      } else if(type.equals(MODIFIED_DATE)) {
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"')" ;
+        return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"')" ;
+      }
     }
     return "" ;
   }
@@ -219,15 +239,22 @@ public class UIConstraintsForm extends UIForm {
         advanceQuery = getContainQueryString(properties, NOT_CONTAIN, false) ;
         break;
       case 3:
-        Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
-        Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
-        if(bfDate.compareTo(afDate) == 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
+        String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
+        String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
+        if(fromDate == null || fromDate.trim().length() == 0) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.fromDate-required", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
-        String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
+        Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
+        if(toDate != null && toDate.trim().length() >0) {
+          Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
+          if(bfDate.compareTo(afDate) == 1) {
+            uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
         advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
         break ;
@@ -302,6 +329,7 @@ public class UIConstraintsForm extends UIForm {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UIConstraintsForm uiConstraintForm = event.getSource();
       String properties = uiConstraintForm.getUIStringInput(PROPERTY1).getValue() ;
+      UIJCRExplorer uiExplorer = uiConstraintForm.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiConstraintForm.getAncestorOfType(UIApplication.class) ;
       if(properties == null || properties.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-null", null, 
@@ -309,10 +337,35 @@ public class UIConstraintsForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      String operator = uiConstraintForm.getUIFormSelectBox(EXACTLY_OPERATOR).getValue() ;
+      String[] arrProps = {};
+      if(properties.indexOf(",") > -1) arrProps = properties.split(",") ;
+      String statement = "select * from nt:base where " ;
+      String whereClause = "" ;
+      if(arrProps.length > 0) {
+        for(String pro : arrProps) {
+          if(whereClause.length() == 0) whereClause = "("+pro+" is not null)" ;
+          else whereClause = whereClause + " " + operator + " " + "("+ pro +" is not null)" ;
+        }
+        statement = statement + whereClause ;
+      } else {
+        statement = statement + ""+properties+" is not null" ;
+      }
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      Query query = queryManager.createQuery(statement, Query.SQL) ;
+      QueryResult result = query.execute() ;
+      if(result == null || result.getNodes().getSize() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UICompareExactlyForm.msg.not-result-found", null)) ; 
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UISearchContainer uiContainer = uiConstraintForm.getAncestorOfType(UISearchContainer.class) ;
+      UICompareExactlyForm uiCompareExactlyForm = 
+        uiContainer.createUIComponent(UICompareExactlyForm.class, null, null) ;
       UIPopupAction uiPopup = uiContainer.getChild(UIPopupAction.class);
       uiPopup.getChild(UIPopupWindow.class).setId("ExactlyFormPopup") ;
-      uiPopup.activate(UICompareExactlyForm.class, 600) ;
+      uiCompareExactlyForm.init(properties, result) ;
+      uiPopup.activate(uiCompareExactlyForm, 600, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }
   }

@@ -7,7 +7,6 @@ package org.exoplatform.workflow.webui.component.administration;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

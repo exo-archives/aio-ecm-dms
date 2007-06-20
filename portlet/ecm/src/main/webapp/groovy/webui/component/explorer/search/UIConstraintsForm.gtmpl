@@ -23,7 +23,7 @@
       <div class="ConstraintOption">
         <div style="float: left;"><%=uiform.renderConstraintRadioBox(3)%><%uiform.renderField(uicomponent.getChild(11))%></div>
         <div style="margin-left: 130px;">
-          <div class="ConstraintOption">Before <%uiform.renderField(uicomponent.getChild(12))%>   After <%uiform.renderField(uicomponent.getChild(13))%></div>
+          <div class="ConstraintOption">From <%uiform.renderField(uicomponent.getChild(12))%>   To <%uiform.renderField(uicomponent.getChild(13))%></div>
         </div>
       </div>
       <div class="ConstraintOption">

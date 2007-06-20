@@ -11,13 +11,10 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.Value;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -52,54 +49,35 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
   
   public UICompareExactlyForm() throws Exception {}
   
-  public void activate() throws Exception {
+  public void activate() throws Exception {}
+  public void deActivate() throws Exception {}
+  
+  public void init(String properties, QueryResult result) throws Exception {
     List<SelectItemOption<String>> opts = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormStringInput(FILTER, FILTER, null)) ;
     addUIFormInput(new UIFormSelectBox(RESULT, RESULT, opts).setSize(15).addValidator(EmptyFieldValidator.class)) ;
     addUIFormInput(new UIFormSelectBox(TEMP_RESULT, TEMP_RESULT, opts)) ;
     
-    UISearchContainer uiSearchContainer = getAncestorOfType(UISearchContainer.class);
-    UIJCRExplorer uiExplorer = uiSearchContainer.getAncestorOfType(UIJCRExplorer.class);
-    UIConstraintsForm uiConstraint = uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class);
-    String prop = uiConstraint.getUIStringInput(UIConstraintsForm.PROPERTY1).getValue() ;
-    String operator = uiConstraint.getUIFormSelectBox(UIConstraintsForm.EXACTLY_OPERATOR).getValue() ;
-    String[] properties = {};
-    if(prop.indexOf(",") > -1) properties = prop.split(",") ;
-    String statement = "select * from nt:base where " ;
-    String whereClause = "" ;
-    if(properties.length > 0) {
-      for(String pro : properties) {
-        if(whereClause.length() == 0) whereClause = "("+pro+" is not null)" ;
-        else whereClause = whereClause + " " + operator + " " + "("+ pro +" is not null)" ;
-      }
-      statement = statement + whereClause ;
-    } else {
-      statement = statement + ""+prop+" is not null" ;
-    }
-    QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
-    Query query = queryManager.createQuery(statement, Query.SQL) ;
-    QueryResult result = query.execute() ;
-    if(result != null){
-      NodeIterator iter = result.getNodes() ;
-      while(iter.hasNext()) {
-        Node node = iter.nextNode() ;
-        if(properties.length > 0) {
-          for(String pro : properties) {
-            if(node.hasProperty(pro)) {
-              Property property = node.getProperty(pro) ;
-              setPropertyResult(property, opts) ;
-            }
-          }
-        } else {
-          if(node.hasProperty(prop)) {
-            Property property = node.getProperty(prop) ;
+    NodeIterator iter = result.getNodes() ;
+    String[] props = {} ;
+    if(properties.indexOf(",") > -1) props = properties.split(",") ;
+    while(iter.hasNext()) {
+      Node node = iter.nextNode() ;
+      if(props.length > 0) {
+        for(String pro : props) {
+          if(node.hasProperty(pro)) {
+            Property property = node.getProperty(pro) ;
             setPropertyResult(property, opts) ;
           }
+        }
+      } else {
+        if(node.hasProperty(properties)) {
+          Property property = node.getProperty(properties) ;
+          setPropertyResult(property, opts) ;
         }
       }
     }
   }
-  public void deActivate() throws Exception {}
 
   public void setPropertyResult(Property property, List<SelectItemOption<String>> opts) throws Exception {
     if(property.getDefinition().isMultiple()) {

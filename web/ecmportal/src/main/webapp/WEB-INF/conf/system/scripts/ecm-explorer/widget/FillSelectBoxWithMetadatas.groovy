@@ -29,7 +29,7 @@ public class FillSelectBoxWithMetadatas implements CmsScript {
   public void execute(Object context) {
     UIFormSelectBox selectBox = (UIFormSelectBox) context;
     List options = new ArrayList();
-    for(String metadataName : metadataService_.getMetadataList(repository_)) {
+    for(String metadataName : metadataService_.getExternalMetadataType(repository_)) {
       options.add(new SelectItemOption(metadataName, metadataName));
     }            
     selectBox.setOptions(options);

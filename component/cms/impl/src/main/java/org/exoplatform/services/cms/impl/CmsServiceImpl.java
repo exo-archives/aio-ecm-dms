@@ -116,7 +116,7 @@ public class CmsServiceImpl implements CmsService {
     processNodeRecursively(true, path, currentNode, currentNodeType,
         jcrVariables);
   }
-  
+
   private void processAddEditProperty(boolean create, Node currentNode, String path, NodeType currentNodeType, Map jcrVariables) throws Exception {
     if(create || path.equals(NODE)) {
       PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
@@ -136,9 +136,10 @@ public class CmsServiceImpl implements CmsService {
       }
     }
   }
-
-  private void processNodeRecursively(boolean create, String path, Node currentNode, 
-      NodeType currentNodeType, Map jcrVariables) throws Exception {
+  
+  private void processNodeRecursively(boolean create, String path,
+      Node currentNode, NodeType currentNodeType, Map jcrVariables)
+      throws Exception {
     if(create) {
       processAddEditProperty(true, currentNode, path, currentNodeType, jcrVariables) ;
     } else {
@@ -170,12 +171,13 @@ public class CmsServiceImpl implements CmsService {
      * the operation.
      */
     List<Object> childs = new ArrayList<Object>();
-    if(create) {
+    if (create){
       NodeDefinition[] childNodeDefs = currentNodeType.getChildNodeDefinitions();
       for (int i = 0; i < childNodeDefs.length; i++) {
         childs.add(childNodeDefs[i]);
       }
-    } else {
+    }
+    else {
       NodeIterator nodes = currentNode.getNodes();
       while(nodes.hasNext()) {
         childs.add(nodes.next());
@@ -186,20 +188,22 @@ public class CmsServiceImpl implements CmsService {
       Object o = it.next();
       NodeDefinition nodeDef;
       String nodeName;
-      if(o instanceof Node) {
+      if (o instanceof Node) {
         nodeDef = ((Node) o).getDefinition();
         nodeName = ((Node) o).getName();
       } else {
         nodeDef = (NodeDefinition) o;
         nodeName = ((NodeDefinition) o).getName();
       }
-      if (!nodeDef.isAutoCreated() && !nodeDef.isProtected() && !("*".equals(nodeDef.getName()) 
-                                   && (o instanceof NodeDefinition))) {
+      if (!nodeDef.isAutoCreated()
+          && !nodeDef.isProtected()
+          && !("*".equals(nodeDef.getName())
+          && (o instanceof NodeDefinition))) {
         String currentPath = path + "/" + nodeName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath);
         String nodetypeName = null;
         String mixintypeName = null;
-        if(inputVariable!=null) {
+        if (inputVariable!=null) {
           nodetypeName = inputVariable.getNodetype();
           mixintypeName = inputVariable.getMixintype();
         }
@@ -214,12 +218,13 @@ public class CmsServiceImpl implements CmsService {
           nodeType = nodetypeManager.getNodeType(nodetypeName);
         }
         Node childNode = null;
-        if(create) {
+        if (create) {
           childNode = currentNode.addNode(nodeName, nodeType.getName());
           if(mixintypeName != null) {
             childNode.addMixin(mixintypeName);
             NodeType mixinType = nodetypeManager.getNodeType(mixintypeName);
-            processNodeRecursively(create, path + "/" + nodeName, childNode, mixinType, jcrVariables);
+            processNodeRecursively(create, path + "/" + nodeName, childNode,
+                mixinType, jcrVariables);
           }
         } else {
           try {
@@ -229,11 +234,13 @@ public class CmsServiceImpl implements CmsService {
             if(mixintypeName != null) {
               childNode.addMixin(mixintypeName);
               NodeType mixinType = nodetypeManager.getNodeType(mixintypeName);
-              processNodeRecursively(create, path + "/" + nodeName, childNode, mixinType, jcrVariables);
+              processNodeRecursively(create, path + "/" + nodeName, childNode,
+                  mixinType, jcrVariables);
             }
           }
         }
-        processNodeRecursively(create, path + "/" + nodeName, childNode, nodeType, jcrVariables);
+        processNodeRecursively(create, path + "/" + nodeName, childNode,
+            nodeType, jcrVariables);
       }
     }    
   }
@@ -243,62 +250,63 @@ public class CmsServiceImpl implements CmsService {
     
     switch (requiredtype) {
     case PropertyType.STRING:
-      if (value == null) {
+      if (value == null)
         node.setProperty(propertyName, "");
-      } else {
+      else {
         if(isMultiple) {
-          if (value instanceof String) node.setProperty(propertyName, new String[] { value.toString() });
-          else if (value instanceof String[]) node.setProperty(propertyName, (String[]) value);          
-        } else {
-          node.setProperty(propertyName, value.toString());
-        }
+          if (value instanceof String)
+            node.setProperty(propertyName, new String[] { (String)value});
+          else if (value instanceof String[])
+            node.setProperty(propertyName, (String[]) value);          
+        } else
+          node.setProperty(propertyName, (String) value);
       }
       break;
     case PropertyType.BINARY:
-      if (value == null) {
+      if (value == null)
         node.setProperty(propertyName, "");
-      } else if (value instanceof byte[]) {
-        node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
-      } else if (value instanceof String) {
-        node.setProperty(propertyName, new ByteArrayInputStream(((String)value).getBytes()));
-      } else if (value instanceof String[]) {
-        node.setProperty(propertyName, new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
-      }
+      else if (value instanceof byte[])
+        node.setProperty(propertyName, 
+            new ByteArrayInputStream((byte[]) value));
+      else if (value instanceof String)
+        node.setProperty(propertyName, 
+            new ByteArrayInputStream(((String)value).getBytes()));
+      else if (value instanceof String[])        
+        node.setProperty(propertyName, 
+            new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
       break;
     case PropertyType.BOOLEAN:
-      if (value == null) {
+      if (value == null)
         node.setProperty(propertyName, false);
-      } else if (value instanceof String) {
-        node.setProperty(propertyName, new Boolean((String) value).booleanValue());
-      } else if (value instanceof String[]) {
+      else if (value instanceof String)
+        node.setProperty(propertyName, 
+            new Boolean((String) value).booleanValue());
+      else if (value instanceof String[])
         node.setProperty(propertyName, (String[]) value);         
-      }
       break;
     case PropertyType.LONG:
-      if (value == null || "".equals(value)) {
+      if (value == null || "".equals(value))
         node.setProperty(propertyName, 0);
-      } else if (value instanceof String) {
+      else if (value instanceof String)
         node.setProperty(propertyName, new Long((String) value).longValue());
-      } else if (value instanceof String[]) {
+      else if (value instanceof String[])
         node.setProperty(propertyName, (String[]) value);  
-      }
       break;
     case PropertyType.DOUBLE:
-      if (value == null || "".equals(value)) {
+      if (value == null || "".equals(value))
         node.setProperty(propertyName, 0);
-      } else if (value instanceof String) {
+      else if (value instanceof String)
         node.setProperty(propertyName, new Double((String) value).doubleValue());
-      } else if (value instanceof String[]) {
+      else if (value instanceof String[])
         node.setProperty(propertyName, (String[]) value);        
-      }
       break;
     case PropertyType.DATE:      
-      if (value == null) {        
+      if (value == null){        
         node.setProperty(propertyName, new GregorianCalendar());
       } else {
         if(isMultiple) {
           Session session = jcrService.getRepository(repository_)
-                            .getSystemSession(cmsConfigurationService.getWorkspace());
+                            .getSystemSession(cmsConfigurationService.getWorkspace(repository_));
           if (value instanceof String) {
             Value value2add = session.getValueFactory().createValue(ISO8601.parse((String) value));
             node.setProperty(propertyName, new Value[] {value2add});
@@ -322,18 +330,20 @@ public class CmsServiceImpl implements CmsService {
           
         }
       }      
+      
       break;
     case PropertyType.REFERENCE:      
-      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
-      if (value instanceof Value[]) {
-        node.setProperty(propertyName, (Value[]) value);
-      } else if (value instanceof String) {
+      if (value == null)
+      throw new RepositoryException("null value for a reference " + requiredtype);
+      if (value instanceof Value[]) 
+      node.setProperty(propertyName, (Value[]) value);
+      else if (value instanceof String){
         Session session = jcrService.getRepository(repository_).getSystemSession(cmsConfigurationService.getWorkspace());
         if(session.getRootNode().hasNode((String)value)) {
           Node catNode = session.getRootNode().getNode((String)value);
           Value value2add = session.getValueFactory().createValue(catNode);
           node.setProperty(propertyName, new Value[] {value2add});          
-        } else {
+        }else {
           node.setProperty(propertyName, (String) value);
         }
       }       
@@ -355,9 +365,10 @@ public class CmsServiceImpl implements CmsService {
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace,
       String destPath, String repository) {
     PortalContainer container = PortalContainer.getInstance();
-    RepositoryService repService = 
-      (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
-    if(!srcWorkspace.equals(destWorkspace)) {
+    RepositoryService repService = (RepositoryService) container
+        .getComponentInstanceOfType(RepositoryService.class);
+    
+    if(!srcWorkspace.equals(destWorkspace)){
       try {
         Session srcSession = repService.getRepository(repository).getSystemSession(srcWorkspace);
         Session destSession = repService.getRepository(repository).getSystemSession(destWorkspace);
@@ -376,8 +387,8 @@ public class CmsServiceImpl implements CmsService {
       } catch (Exception e) {
         e.printStackTrace();
       }
-    } else {
-      try {
+    }else {
+      try{
         Session session = repService.getRepository(repository).getSystemSession(srcWorkspace);
         Workspace workspace = session.getWorkspace();
         try {
@@ -387,7 +398,7 @@ public class CmsServiceImpl implements CmsService {
           session.refresh(false) ;
         }        
         workspace.move(nodePath, destPath);
-      } catch(Exception e){
+      }catch(Exception e){
         e.printStackTrace() ;
       }
     }
