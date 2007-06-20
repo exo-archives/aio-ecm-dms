@@ -119,7 +119,11 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     String prefLocate = preferences.getValue("path", "") ;
     String prefType = preferences.getValue("type", "") ;
     String workspace = preferences.getValue("workspace", "") ;
-    Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+    // Need to have a session bound to the current user. Indeed, in case the
+    // saved document triggered an action, the remote user needs to be retrieved
+    // from the session. However, it may be needed to use the System Session
+    // in case the portlet is located in a public page.
+    Session session = repositoryService.getRepository(repository).login(workspace) ;
     Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
@@ -146,6 +150,10 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
+    } finally {
+      if(session != null) {
+        session.logout();
+      }
     }
     return null ;
   }
