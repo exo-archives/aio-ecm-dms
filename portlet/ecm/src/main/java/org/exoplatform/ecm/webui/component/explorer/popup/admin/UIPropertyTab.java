@@ -55,7 +55,7 @@ public class UIPropertyTab extends UIContainer {
     try {
       if(prop.getDefinition().isMultiple()) {
         Value[] values =  prop.getValues();
-        StringBuffer sB = new StringBuffer();
+        StringBuilder sB = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
           if(i > 0) sB.append("; ") ;
           sB.append(values[i].getString());

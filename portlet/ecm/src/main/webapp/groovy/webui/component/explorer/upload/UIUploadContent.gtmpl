@@ -24,8 +24,12 @@
 	  <tbody>
 	    <tr>
 	      <td><div class="ItemIcon <%=Utils.getNodeTypeIcon(uicomponent.getUploadedNode(), "16x16Icon")%>"></div><span></span></td>
-	      <%for(value in arrValues) { %>
-	        <td><%=value%></td>
+	      <%
+	        for(value in arrValues) {
+	          String subValue = value ; 
+	          if(value.length() > 30) subValue = value.substring(0,30) + "..." ;
+	      %>
+	          <td><span title="$value"><%=subValue%></span></td>
 	      <%}%>
 	    </tr>
 	  </tbody>

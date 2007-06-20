@@ -80,6 +80,7 @@ public class DialogFormFields extends UIForm {
   private static final String SCRIPT = "script" + SEPARATOR;
   private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
+  private static final String REPOSITORY = "repository";
 
   public static final  String[]  ACTIONS = {"Save", "Cancel"};
 
@@ -793,7 +794,10 @@ public class DialogFormFields extends UIForm {
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     try {
       CmsScript dialogScript = scriptService.getScript(script, repository_);
-      if(params != null) dialogScript.setParams(params);
+      if(params != null) {
+        if(params.equals(REPOSITORY)) params = new String[] { repository_ } ; 
+        dialogScript.setParams(params);
+      }
       dialogScript.execute(o);
     } catch (Exception e) {
       e.printStackTrace();

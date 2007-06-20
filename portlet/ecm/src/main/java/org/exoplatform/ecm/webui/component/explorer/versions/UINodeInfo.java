@@ -51,7 +51,7 @@ public class UINodeInfo extends UIForm {
   public String getVersionLabels() throws Exception{
     UIVersionInfo uiVersionInfo = getAncestorOfType(UIVersionInfo.class) ;
     String[] labels = uiVersionInfo.getVersionLabels(uiVersionInfo.getCurrentVersionNode());
-    StringBuffer label = new StringBuffer() ;
+    StringBuilder label = new StringBuilder() ;
     if(labels.length  == 0 ) return "N/A" ;
     for(String temp : labels) {
       label.append(temp).append(" ") ;
@@ -63,4 +63,3 @@ public class UINodeInfo extends UIForm {
     return version_.getCreated().getTime().toString();
   }
 }
-

@@ -154,6 +154,12 @@
 			  		<%}%>
 		  		</span>
 		  		<%
+		  		  if(comment.hasProperty("exo:commentorEmail")) {
+		  		    String email = comment.getProperty("exo:commentorEmail").getString() ;
+		  		%>
+    		  		- Email:<a href="mailto:$email">$email</a> -
+    		  <%
+    		    } 
 			  		if(comment.hasProperty("exo:commentorSite")) {
 			  		  String site = comment.getProperty("exo:commentorSite").getString() ;
 		  		%>

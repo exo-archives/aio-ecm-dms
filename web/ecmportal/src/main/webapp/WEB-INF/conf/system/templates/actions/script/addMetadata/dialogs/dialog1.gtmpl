@@ -34,7 +34,7 @@
 			  <td class="FieldLabel">Metadata</td>
 			  <td class="FieldComponent">
 				  <% 
-					String[] fieldMetadata = ["jcrPath=/node/exo:mixinMetadata", "script=ecm-explorer/widget/FillSelectBoxWithMetadatas.groovy"] ;         
+					String[] fieldMetadata = ["jcrPath=/node/exo:mixinMetadata", "script=ecm-explorer/widget/FillSelectBoxWithMetadatas.groovy", "scriptParams=repository"] ;         
 					uicomponent.addSelectBoxField("metadata", fieldMetadata) ;
 				  %>
 				</td>

@@ -14,13 +14,8 @@ public class PreNodeSaveInterceptor implements CmsScript {
   }
   
   public void execute(Object context) {
-    Map inputValues = (Map) context;       
+    String path = (String) context;       
     println(" Pre Node Save, a good form validator");
-    Set keys = inputValues.keySet();
-    for(String key : keys) {
-      JcrInputProperty prop = (JcrInputProperty) inputValues.get(key);
-      println("   --> "+prop.getJcrPath());
-    }
   }
 
   public void setParams(String[] params) {}

@@ -20,6 +20,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 public class FillSelectBoxWithMetadatas implements CmsScript {
   
   private MetadataService metadataService_ ;
+  private String repository_ ;
   
   public FillSelectBoxWithMetadatas(MetadataService metadataService) {
     metadataService_ = metadataService ;
@@ -28,12 +29,12 @@ public class FillSelectBoxWithMetadatas implements CmsScript {
   public void execute(Object context) {
     UIFormSelectBox selectBox = (UIFormSelectBox) context;
     List options = new ArrayList();
-    for(String metadataName : metadataService_.getMetadataList()) {
+    for(String metadataName : metadataService_.getMetadataList(repository_)) {
       options.add(new SelectItemOption(metadataName, metadataName));
     }            
     selectBox.setOptions(options);
   }
 
-  public void setParams(String[] params) {}
+  public void setParams(String[] params) { repository_ = params[0] ; }
 
 }

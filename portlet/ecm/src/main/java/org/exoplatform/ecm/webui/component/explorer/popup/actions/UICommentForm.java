@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -20,8 +21,8 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
 
@@ -49,10 +50,10 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   
   private Node document_ ;
   public UICommentForm() throws Exception {
-    addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
-    addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
-    addChild(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-    addChild(new UIFormTextAreaInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(EmptyFieldValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
+    addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(EmptyFieldValidator.class)) ;
   }
 
   public void activate() throws Exception {
@@ -72,13 +73,21 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
     }
   }  
 
+  public String event(String name) {
+    StringBuilder b = new StringBuilder("javascript:") ;
+    b.append("eXo.ecm.ExoEditor.saveHandler() ;").
+    append("eXo.webui.UIForm.submitForm('").append(getId()).append("','").
+    append(name).append("', true)");
+    return b.toString() ;
+  }
+  
   public static class SaveActionListener extends EventListener<UICommentForm>{
     public void execute(Event<UICommentForm> event) throws Exception {
       UICommentForm uiForm = event.getSource() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
       String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
-      String comment = uiForm.getUIFormTextAreaInput(FIELD_COMMENT).getValue() ;
+      String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       try {
         String language = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).

@@ -57,7 +57,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
     formatItem.add(new SelectItemOption<String>(DOCUMENT_VIEW, DOC_VIEW));
     formatItem.add(new SelectItemOption<String>(SYSTEM_VIEW, SYS_VIEW));
     addUIFormInput(new UIFormRadioBoxInput(FORMAT, DOC_VIEW, formatItem).
-        setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
+                   setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
   }
 
   public void activate() throws Exception { }
@@ -78,7 +78,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       byte[] content = input.getUploadData() ;
       try {
         session.importXML(uiExplorer.getCurrentNode().getPath(), new ByteArrayInputStream(content),
-            ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
+                          ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
       } catch(InvalidSerializedDataException ise) {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

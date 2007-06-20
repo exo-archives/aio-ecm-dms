@@ -1,3 +1,4 @@
+<% uicomponent.addInterceptor("ecm-explorer/interceptor/PreNodeSaveInterceptor.groovy", "post") ; %>
 <div class="UIFormWithTitle"> 
 	<% uiform.begin() %>
   <div class="HorizontalLayout" style="border: 0px;">	  

@@ -77,6 +77,7 @@ public class UIJCRAdvancedSearch extends UIForm {
     String path = selectedNode.getPath() ;
     String queryText = StringUtils.replace(SQL_QUERY, "$0", path) ;
     if ("/".equals(path)) queryText = ROOT_SQL_QUERY  ; 
+    getUIStringInput(FIELD_NAME).setValue(null) ;
     getUIFormSelectBox(FIELD_SELECT_BOX).setOnChange(CHANGE_OPTION) ;
     getUIFormSelectBox(FIELD_SELECT_BOX).setValue("sql") ;
     getUIFormTextAreaInput(FIELD_QUERY).setValue(queryText) ;
@@ -159,6 +160,7 @@ public class UIJCRAdvancedSearch extends UIForm {
       }
       UIECMSearch uiSearch = uiForm.getParent() ;
       uiSearch.getChild(UISavedQuery.class).updateGrid() ;
+      uiForm.update() ;
       uiSearch.setRenderedChild(UISavedQuery.class) ;
     }
   }

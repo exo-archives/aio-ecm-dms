@@ -66,7 +66,7 @@ public class UIDialogTab extends UIContainer {
     while (iter.hasNext()){
       Node node = (Node) iter.next() ;
       String version = "" ;
-      StringBuffer rule = new StringBuffer() ;
+      StringBuilder rule = new StringBuilder() ;
       Value[] rules = node.getProperty("exo:roles").getValues() ;
       for(int i = 0; i < rules.length; i++) {
         rule.append("["+rules[i].getString()+"]") ;
