@@ -62,8 +62,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       try {
         jcrSession = repositoryService.getRepository(repository_).getSystemSession(srcWorkspace_);
         node = (Node) jcrSession.getItem(srcPath_);
-        AccessControlList acl = ((ExtendedNode) node).getACL();
-        String userId = (acl != null) ? acl.getOwner() : "__unknown";
+        String userId = event.getUserID();
         Node actionNode = actionServiceContainer.getInitAction(node, actionName_);
         Property rolesProp = actionNode.getProperty("exo:roles");
         boolean hasPermission = false;
