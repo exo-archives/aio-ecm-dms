@@ -61,10 +61,6 @@
   margin: 0px 5px;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
-  border: none;
-}
-
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: solid 1px #939393;
   border-top: none;

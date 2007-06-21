@@ -1,51 +1,53 @@
 <%def node = uicomponent.getNode() ;%>
-<table class="UIGrid">      	 			
-  <tr>
-    <td style="width:25%">Name</td>
-    <td>
-      <%if(node.hasProperty("exo:name")) {%>
-		    <%=node.getProperty("exo:name").getString()%>
-		  <%}%>
-    </td>
-  </tr>
-  <tr>
-		<td style="width:25%">Life cycle</td>
-		<td>
-      <%if(node.hasProperty("exo:lifecyclePhase")) {%>
-		    <%=node.getProperty("exo:lifecyclePhase").getString()%>
-		  <%}%>
-    </td>
-  </tr>
-  <tr>
-    <td style="width:25%">Description</td>
-    <td>
-		  <%if(node.hasProperty("exo:description")) {%>
-		    <%=node.getProperty("exo:description").getString()%>
-		  <%}%>
-		</td>
-  </tr>
-  <tr>
-    <td style="width:25%">Validator</td>
-    <td>
-      <%if(node.hasProperty("exo:validator")) {%>
-		    <%=node.getProperty("exo:validator").getString()%>
-		  <%}%>
-    </td>
-  </tr>
-  <tr>
-    <td style="width:25%">To Workspace</td>
-    <td>
-      <%if(node.hasProperty("exo:destWorkspace")) {%>
-		    <%=node.getProperty("exo:destWorkspace").getString()%>
-		  <%}%>
-    </td>
-  </tr>
-  <tr>
-    <td style="width:25%">at location</td>
-    <td>
-      <%if(node.hasProperty("exo:destPath")) {%>
-		    <%=node.getProperty("exo:destPath").getString()%>
-		  <%}%>
-    </td>
-  </tr>
-</table>
+<div class="WorkWorkflow">
+	<table class="UIGrid">      	 			
+	  <tr>
+	    <td style="width:25%">Name</td>
+	    <td>
+	      <%if(node.hasProperty("exo:name")) {%>
+			    <%=node.getProperty("exo:name").getString()%>
+			  <%}%>
+	    </td>
+	  </tr>
+	  <tr>
+			<td style="width:25%">Life cycle</td>
+			<td>
+	      <%if(node.hasProperty("exo:lifecyclePhase")) {%>
+			    <%=node.getProperty("exo:lifecyclePhase").getString()%>
+			  <%}%>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td style="width:25%">Description</td>
+	    <td>
+			  <%if(node.hasProperty("exo:description")) {%>
+			    <%=node.getProperty("exo:description").getString()%>
+			  <%}%>
+			</td>
+	  </tr>
+	  <tr>
+	    <td style="width:25%">Validator</td>
+	    <td>
+	      <%if(node.hasProperty("exo:validator")) {%>
+			    <%=node.getProperty("exo:validator").getString()%>
+			  <%}%>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td style="width:25%">To Workspace</td>
+	    <td>
+	      <%if(node.hasProperty("exo:destWorkspace")) {%>
+			    <%=node.getProperty("exo:destWorkspace").getString()%>
+			  <%}%>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td style="width:25%">at location</td>
+	    <td>
+	      <%if(node.hasProperty("exo:destPath")) {%>
+			    <%=node.getProperty("exo:destPath").getString()%>
+			  <%}%>
+	    </td>
+	  </tr>
+	</table>
+</div>

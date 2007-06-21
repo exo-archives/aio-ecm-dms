@@ -38,7 +38,7 @@
 
 .Style1BackArrow24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat center center;
+  background: url('MacSkin/BlueCircleLeftArrow.gif') no-repeat center center;
 }
 
 .EditDocumentIcon {
@@ -179,13 +179,13 @@
 .Permission24x24Icon {
   float: left;
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
+  background: url('MacSkin/PermissionIcon.png') no-repeat ;
 }
 
 .SelectPath24x24Icon {
   float: left;
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/Magnifier.gif') no-repeat ;
+  background: url('MacSkin/QuickSearchIcon.gif') no-repeat ;
 }
 
 .UIFolksonomyManagerIcon {

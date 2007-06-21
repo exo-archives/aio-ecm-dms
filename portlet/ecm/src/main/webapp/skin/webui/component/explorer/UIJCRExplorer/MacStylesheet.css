@@ -18,7 +18,6 @@
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp{
-  width: 95%;
   margin: 0px auto;
 }
 
@@ -31,6 +30,7 @@
 .UIJCRExplorerPortlet .UIFormGrid input {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
+  margin-bottom: 4px;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -394,7 +394,19 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
   width: 200px;
-  border: solid 1px red;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp {
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UIUploadManager .UITabPane {
+  width: 100%;
+  padding: 0px;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
@@ -542,6 +554,11 @@
   border: none;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .FormContainer .UIFormGrid {
+	width: 500px;
+	margin: auto;
+}
+
 /*================================UIMetadataSelectForm=================================*/
 
 .UIJCRExplorerPortlet .UIMetadataSelectForm {
@@ -604,8 +621,8 @@
   border-top: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer {
-  padding: 10px;
+.UIJCRExplorerPortlet .UIActionContainer .UIJCRBrowser{
+  padding: 10px 0px 10px 10px;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
@@ -659,6 +676,31 @@
   padding-right: 100px;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame .ProgressBar{ 
+	margin-left: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileName {
+	width: 230px;	
+	overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileNameLabel {
+	padding: 0px;
+}
+
 /*================================.UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {
@@ -702,10 +744,6 @@
 
 /*================================UINodeTypeInfo=================================*/
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIWindowContent .UIJCRBrowser {
-	padding: 10px;
-}
-
 .UIJCRExplorerPortlet .UIGrid tr {
 }
 
@@ -726,6 +764,11 @@
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
   margin: 10px auto;
+  width: 95%;
+}
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
+  float: left;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UIBreadcumbs{
@@ -777,6 +820,16 @@
 
 .UIJCRExplorer .UIRenameForm .UIAction{
 	width: 170px;
+}
+
+/*================================DecoratorBoxNested=================================*/
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{
+  margin-right: 3px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
+  width: 170px ;
 }
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

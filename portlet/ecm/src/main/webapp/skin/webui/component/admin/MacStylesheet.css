@@ -361,29 +361,29 @@
   background: #e5fcfa;
 }
 
-.Explorer {
+.UIECMAdminPortlet.Explorer {
   margin-bottom: 10px;
   float: left ;
   width: 230px ;
 }
 
-.Explorer .ExplorerTree {
+.UIECMAdminPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
 }
 
-.Explorer .InnerExplorerTree {
+.UIECMAdminPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.Explorer .ExplorerTree .Node {
+.UIECMAdminPortlet .Explorer .ExplorerTree .Node {
   line-height: 30px;
 }
 
-.UITreeList .UIGrid {
+.UIECMAdminPortlet .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
 }

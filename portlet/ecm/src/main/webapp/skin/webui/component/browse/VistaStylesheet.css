@@ -98,7 +98,6 @@
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
 	width: 128px;
-	border: solid 1px red;
 	text-align: right;
 }
 
@@ -193,7 +192,6 @@
 
 .UIBrowseContentPortlet .UIToolBar .CBActionContainer {
   height: 27px;
-  width: 170px;
   float: right;
 }
 
@@ -221,10 +219,7 @@
 .UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
 	width: 28px; height: 28px;
 	background:url('VistaSkin/background/WriteCommentButton.png') no-repeat;
-	
 }
-
-
 
 /*############################## -- Begin UIDocumentList -- ##############################*/
 .UIBrowseContainer .UIDocumentList .UIGrid{
@@ -276,7 +271,6 @@
   width: 350px;
   margin-left: 10px;
 }
-
 
 .UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
   margin-left: 5px;
@@ -414,4 +408,12 @@
   margin-left: 10px ;
 }
 
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
+  padding: 10px;
+  border: solid 1px red;
+}
 
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
+  width: 190px;
+  border: solid 1px red;
+}

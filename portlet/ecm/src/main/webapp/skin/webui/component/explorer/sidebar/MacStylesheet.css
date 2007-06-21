@@ -14,7 +14,7 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl {
-  height: 20px;
+  height: 25px;
   background: url('DefaultSkin/background/SideBarControlBG1x20.gif') repeat-x center center;
 }
 
@@ -25,8 +25,8 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropDownButton {
   cursor: pointer;
-  width: 24px; height: 20px;
-  background: url('DefaultSkin/background/DropDownButton24x20.gif') no-repeat center;
+  width: 24px; height: 24px;
+  background: url('MacSkin/background/DropDownButton24x24.png') no-repeat center;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .ControlBody {
@@ -46,7 +46,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
   float: right;
-  margin: 2px 7px 0px 7px;
+  margin: 4px 7px 0px 7px;
   cursor: pointer;
 }
 

@@ -149,28 +149,28 @@
 
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
 
-.UIFastContentCreatorPortlet .Explorer {
+.UIJCRExplorerPortlet .Explorer {
   margin-right: 10px;
   float: left ;
-  width: 230px ;
+  width: 220px ;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
+.UIJCRExplorerPortlet .Explorer .ExplorerTree {
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
+.UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
+.UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
   line-height: 30px;
 }
 
-.UIFastContentCreatorPortlet .UITreeList .UIGrid {
+.UIJCRExplorerPortlet .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
 }

@@ -24,14 +24,8 @@
 	width: 600px;
 }
 
-.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer {
-  border: none;
-  padding: 6px 0px;
-}
-
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 128px;
-	border: solid 1px yellow;
+	width: 140px;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .UIAction{
@@ -95,10 +89,9 @@
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer .UIFormGrid {
 	width: 500px;
 	margin: auto;
-	background: #efefef;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .FormContainer {
@@ -107,23 +100,34 @@
 	background: #efefef;
 }
 
-.UIBrowseContentPortlet .HorizontalLayout .UIFormGrid td.FieldComponent {
+.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
+	float: left;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
+	width: 500px;
+	padding: 0px;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
   padding: 4px 0px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
-	float: left;
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+  padding: 0px 4px;
+  vertical-align: middle;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormWithTitle .HorizontalLayout .FormContainer {
+	padding: 3px 0px;
+	border: none;
+	background: #efefef;
 }
 
 .UIBrowseContentPortlet  .UIConfigContainer .HorizontalLayout .UIFormInputSet {
  	width: 100%;
  	padding-bottom: 0px;
  	margin: auto;
-}
-
-.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
-  padding: 0px 4px;
-  vertical-align: middle;
 }
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
@@ -275,7 +279,6 @@
 }
 
 .UIBrowseContentPortlet .UISearchController .UIPageIterator{
-	
 }
 
 .UIBrowseContentPortlet .UISearchController .ResultInfo{
@@ -408,3 +411,12 @@
 .UIBrowseContentPortlet .UIJCRBrowser {
   padding: 10px 0px 0px 5px;
 }
+
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
+  padding: 10px;
+}
+
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
+  width: 160px;
+}
+

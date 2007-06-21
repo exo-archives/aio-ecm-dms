@@ -92,7 +92,7 @@
 
 /*############################## -- Begin UIDiff -- ##############################*/
 .UIJCRExplorerPortlet .UIDiff {
-  
+  border: solid 1px red;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  
@@ -125,6 +125,7 @@
 	text-align: center;
 	border:none ;
 }
+
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
   width: 45%;
   border: 1px solid #e1e1e1; 	  
@@ -218,29 +219,29 @@
 }
 
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
-.Explorer {
-  margin-bottom: 10px;
+.UIJCRExplorerPortlet .Explorer {
   float: left ;
   width: 230px ;
+  margin-right: 10px;
 }
 
-.Explorer .ExplorerTree {
+.UIJCRExplorerPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
 }
 
-.Explorer .InnerExplorerTree {
+.UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.Explorer .ExplorerTree .Node {
+.UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
   line-height: 30px;
 }
 
-.UITreeList .UIGrid {
+.UIJCRExplorerPortlet .UITreeList .UIGrid {
   width: 315px;
   margin-left: 10px ;
 }

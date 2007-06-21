@@ -28,10 +28,6 @@
   background: #8eeaaf ;
 }
 
-.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-left: 187px ;
-}
-
 .UIPopupMessages .UIAction {
   width: 100px;
 }
@@ -43,10 +39,6 @@
 
 .UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
   border: none;
-}
-
-.UIFastContentCreatorPortlet .UITabContentContainer .FieldContainer{
-  margin: auto;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
@@ -68,10 +60,6 @@
   width: 500px;
   margin: auto;
   padding-top: 10px;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .UIFormInputSet {
-  padding-bottom: 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout {
@@ -106,27 +94,6 @@
   padding-bottom: 3px; 
 }
 
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame {
-  margin: auto;
-	width: 600px;
-	padding: 0px;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .ProgressBarFrame .SelectFileLabel{
-  padding: 0px 3px 0px 0px;
-  width: 150px;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame {
-	margin: auto;
-	width: 600px;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .SelectFileFrame .SelectFileLabel {
-  padding: 0px;
-  width: 150px;
-}
-
 .UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
   padding: 12px 0px 0px 65px;
 }
@@ -150,4 +117,29 @@
 
 .UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
 	width: 128px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .FileName {
+	width: 230px;	
+	overflow: hidden;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .FileNameLabel {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .ProgressBar {
+	margin: 0px;
 }

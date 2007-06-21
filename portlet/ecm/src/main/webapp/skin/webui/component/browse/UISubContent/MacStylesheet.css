@@ -185,9 +185,8 @@
 	float: left;
 	width: 16px; height: 16px;
 	margin: 3px 5px 0px 0px;
-	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat; 
+	background: url('MacSkin/background/InfoIcon.gif') no-repeat; 
 }
-
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
 	float: left;

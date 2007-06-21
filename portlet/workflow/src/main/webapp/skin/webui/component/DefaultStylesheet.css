@@ -197,13 +197,31 @@
   padding: 10px;
 }
 
-.UIWorkflowPortlet .UITabPane .UIFormWithTitle  {
-  width: 500px;
+.UIWorkflowPortlet .UIPopupWindow .Content .UITabPane .UIArticle{
   margin: auto;
+  background: white;
+  border: solid 1px #b7b7b7;
+  padding: 5px 0px 5px 7px;
 }
 
-.UIWorkflowPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
-  padding-bottom: 20px;
+.UIWorkflowPortlet .UIPopupWindow .Content .UIFormWithTitle {
+  margin: auto;
+  width: 530px;
+}
+
+.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer {
+	border: solid 1px #939393;
+	border-top: none;
+}
+
+.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
+	border: none;
+	padding-bottom: 15px;
+	background: #efefef;
+}
+
+.UIWorkflowPortlet .UIPopupWindow .Content .UIFormWithTitle .HorizontalLayout {
+  background: white;
 }
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
@@ -261,10 +279,6 @@
 
 .WorkflowPortletContent .UIUploadProcess .FileNameLabel {
 	width: 128px;	
-}
-
-.UIWorkflowPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
 }
 
 .UIWorkflowPortlet .UITabPane .UIForm .UIAction {

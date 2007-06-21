@@ -209,17 +209,6 @@
   padding: 8px;
 }
 
-.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
-  width: 160px; 
-}
-
-.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 190px;
-  padding: 15px 0px;
-  float: none;
-  margin: auto;
-}
-
 .UIWorkflowPortlet .UITabPane .UITabContent .UIFormWithTitle  {
   margin: 0px;
 }
@@ -234,6 +223,10 @@
 	float: none;
 }
 
+.WorkflowPortletContent .UITask .UIAction {
+	width: 500px;	
+	padding: 15px 0px;
+}
 /*##############################- Begin UIProcessDetail -################################*/
 
 .UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {
@@ -255,4 +248,28 @@
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover {
 	color: orange;
+}
+
+.WorkflowPortletContent .UIUploadProcess .ProgressBarFrame { 
+	width: 350px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .SelectFileFrame { 
+	width: 350px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .FileNameLabel {
+	width: 128px;	
+}
+
+.WorkflowPortletContent .UIFormGrid td.FieldLabel {
+	width: 128px;
+}
+
+.WorkflowPortletContent .UIAdminstrationManager .UIAction {
+	width: 150px;
 }

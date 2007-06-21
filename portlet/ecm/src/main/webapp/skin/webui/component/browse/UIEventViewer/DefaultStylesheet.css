@@ -38,7 +38,7 @@
 }
 
 .UIEventViewer .EventContent .EventDocumentLabel {
-	margin-left: 20px;
+	margin-left: 5px;
   line-height: 16px; vertical-align: middle;
 }
 
@@ -65,6 +65,7 @@
 
 .UIEventViewer .EventContent .SummaryTitleLabel {
   line-height: 16px; vertical-align: middle;
+  overflow: auto;
 }
 
 .UIEventViewer .EventContent .EventContentDetail {

@@ -114,6 +114,15 @@
 
 /*############################## -- Begin MenuPopup -- ##############################*/
 
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
+  margin: 10px auto;
+  width: 95%;
+}
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
+  float: left;
+}
+
 .UIJCRExplorerPortlet .UIMenuPopup {
   height: 23px;
 }
@@ -506,14 +515,13 @@
 
 /*================================UIActionContainer=================================*/
 
-.UIJCRExplorerPortlet .UIActionContainer {
-  padding: 10px;
-  margin-top: 10px;
-}
-
 .UIJCRExplorerPortlet .UIActionContainer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer{
   border: solid 1px #b7b7b7;
   border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIJCRBrowser{
+  padding: 10px 0px 10px 10px;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
@@ -641,6 +649,15 @@
   width: 170px;
 }
 
+.UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp {
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UIUploadManager .UITabPane {
+  width: 98%;
+  padding: 0px;
+}
+
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UIGrid .OddRow {
@@ -660,10 +677,6 @@
 
 .UIJCRExplorerPortlet .UITabContentContainer .UITabContent .UIActionViewContainer .UIGrid td {
   border-top: solid 1px #cccccc;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIWindowContent .UIJCRBrowser {
-	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {

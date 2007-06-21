@@ -136,11 +136,6 @@
   background: url('DefaultSkin/BlackBorderDownArrow.gif') no-repeat;
 }
 
-.Close16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/CloseButton.gif') no-repeat center center;
-}
-
 .BlueDownArrow16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
