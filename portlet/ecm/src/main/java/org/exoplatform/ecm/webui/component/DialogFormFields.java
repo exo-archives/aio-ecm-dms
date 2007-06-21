@@ -17,10 +17,10 @@ import javax.jcr.Node;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-//import org.exoplatform.faces.core.component.UIStringInput;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -737,9 +737,14 @@ public class DialogFormFields extends UIForm {
       if(propertyNode_ != null) {
         String propertyName = jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ;
         if(propertyNode_.hasProperty(propertyName)) {
-          if(!propertyNode_.getProperty(propertyName).getDefinition().isMultiple()) {
+          if(propertyNode_.getProperty(propertyName).getDefinition().isMultiple()) {
+            Value[] values = propertyNode_.getProperty(propertyName).getValues() ;
+            for(Value value : values) {
+              uiDateTime.setCalendar(value.getDate()) ;
+            }
+          } else {
             uiDateTime.setCalendar(propertyNode_.getProperty(propertyName).getValue().getDate());
-          } 
+          }
         }
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         uiDateTime.setCalendar(node_.getProperty(getPropertyName(jcrPath)).getDate());

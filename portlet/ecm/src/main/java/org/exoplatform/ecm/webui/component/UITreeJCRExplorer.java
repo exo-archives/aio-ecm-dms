@@ -47,6 +47,8 @@ public class UITreeJCRExplorer extends UIContainer {
     tree.setSelectedIcon("Icon LightBlueOpenFolder24x24Icon") ;
   }
   
+  public void setRootNode(Node rootNode) { rootNode_ = rootNode ; }
+  
   public void buildTree() throws Exception {
     UIJCRBrowser uiJCRBrowser = getParent() ;
     Session session = getApplicationComponent(RepositoryService.class)

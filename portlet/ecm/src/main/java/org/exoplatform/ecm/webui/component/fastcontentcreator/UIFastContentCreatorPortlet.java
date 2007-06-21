@@ -40,7 +40,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
     uiJCRBrowser.setRepository(repositoryName) ;
-    uiJCRBrowser.setWorkspace(workspaceName) ;
+    uiJCRBrowser.setIsDisable(workspaceName, true) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;
     uiJCRBrowser.setComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;

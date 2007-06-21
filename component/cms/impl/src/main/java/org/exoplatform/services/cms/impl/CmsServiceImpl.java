@@ -151,10 +151,7 @@ public class CmsServiceImpl implements CmsService {
         String currentPath = path + "/" + propertyName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
         Object value = null;
-        if(inputVariable != null) {
-          value = inputVariable.getValue();
-          jcrVariables.remove(currentPath) ;
-        }
+        if(inputVariable != null) value = inputVariable.getValue();
         if(value != null &&  !propertyDef.isProtected()) {
           processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
         }

@@ -171,3 +171,8 @@
 	padding: 0px;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+  border:1px solid #E1E1E1;
+  margin:5px 0px;
+  width:560px;
+}

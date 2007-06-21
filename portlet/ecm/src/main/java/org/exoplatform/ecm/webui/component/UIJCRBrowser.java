@@ -4,7 +4,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component;
 
+import javax.jcr.RepositoryException;
+
 import org.exoplatform.ecm.jcr.ComponentSelector;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -22,10 +26,11 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   
   private UIComponent uiComponent ;
   private String returnFieldName = null ;
-  private String repository_ ;
+  private String repository_ = null;
   private String wsName_ = null ;
   
   public UIJCRBrowser() throws Exception {
+    addChild(UIWorkspaceList.class, null, null) ;
     addChild(UITreeJCRExplorer.class, null, null) ;
     addChild(UIDefaultListItem.class, null, null) ;
   }
@@ -42,10 +47,31 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
     getChild(UITreeJCRExplorer.class).setIsTab(isTab) ;
   }
   
-  public void setWorkspace(String wsName) { wsName_ = wsName ; }
-  public String getWorkspace() { return wsName_ ; }
+  public void setIsDisable(String wsName, boolean isDisable) {
+    setWorkspace(wsName) ;
+    getChild(UIWorkspaceList.class).setIsDisable(wsName, isDisable) ;
+  }
   
-  public void setRepository(String repo) { repository_ = repo ; }
+  public void setWorkspace(String wsName) { wsName_ = wsName ; }
+  public String getWorkspace() throws Exception { 
+    if(wsName_ == null || wsName_.trim().length() ==0) {
+      String[] wsNames = 
+        getApplicationComponent(RepositoryService.class).getRepository(repository_).getWorkspaceNames();
+      return wsNames[0] ;
+    }
+    return wsName_ ; 
+  }
+  
+  public void setRepository(String repo) {
+    repository_ = repo ; 
+    try {
+      UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class) ;
+      uiWorkspaceList.setWorkspaceList(repository_) ;
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+  }
+  
   public String getRepository() { return repository_ ; }
   
   public UIComponent getReturnComponent() { return uiComponent ; }

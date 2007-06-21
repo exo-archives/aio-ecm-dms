@@ -61,15 +61,15 @@ public class UIDriveManager extends UIContainer {
     uiPopup.setShow(true) ;
   }
   
-  public void initPopupJCRBrowser(String workspace) throws Exception {
+  public void initPopupJCRBrowser(String workspace, boolean isDisable) throws Exception {
     removeChildById("JCRBrowser") ;
     removeChildById("JCRBrowserAssets") ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "JCRBrowser");
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    uiJCRBrowser.setWorkspace(workspace) ;
     uiJCRBrowser.setRepository(repository) ;
+    uiJCRBrowser.setIsDisable(workspace, isDisable) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_HOMEPATH}) ;
@@ -84,7 +84,6 @@ public class UIDriveManager extends UIContainer {
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
-    uiJCRBrowser.setWorkspace("digital-assets") ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     uiJCRBrowser.setRepository(repository) ;
     uiJCRBrowser.setRootPath("/") ;

@@ -209,7 +209,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
         if(wsFieldName != null && wsFieldName.length() > 0) {
           String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
-          ((UIJCRBrowser)uiComp).setWorkspace(wsName) ;          
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;          
         }
       }
       uiContainer.initPopup(uiComp) ;

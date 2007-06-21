@@ -116,7 +116,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         }
       }
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
-      String mimeType = mimeTypeSolver.getMimeType(name) ;
+      String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       //String mimeType = input.getUploadResource().getMimeType() ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
