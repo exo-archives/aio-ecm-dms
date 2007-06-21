@@ -297,7 +297,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
-      boolean isDefaultRepo = uiForm.getUIFormCheckBoxInput(FIELD_ISDEFAULT).isChecked() ;
+      //boolean isDefaultRepo = uiForm.getUIFormCheckBoxInput(FIELD_ISDEFAULT).isChecked() ;
       String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
       String authen = uiForm.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
       String security = uiForm.getUIStringInput(UIRepositoryForm.FIELD_SCURITY).getValue() ;
@@ -353,6 +353,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
       uiRepoControl.reloadValue() ;
+      System.out.println("\n\n is saved ? \n\n");
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 

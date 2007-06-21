@@ -98,6 +98,7 @@ public class UIRepositoryControl extends UIContainer {
         try {
           rservice.removeRepository(repoName) ;
           PortletPreferences portletPref = uiControl.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
+          uiControl.reloadValue() ;
           portletPref.setValue(Utils.REPOSITORY, uiControl.getSelectedRepo()) ;
           portletPref.store() ;
         } catch (Exception e) {

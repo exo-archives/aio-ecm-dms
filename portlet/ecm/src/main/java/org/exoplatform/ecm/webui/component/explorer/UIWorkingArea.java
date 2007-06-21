@@ -34,6 +34,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
+import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -88,9 +89,9 @@ import org.exoplatform.webui.event.EventListener;
 })
 
 public class UIWorkingArea extends UIContainer {
-  
+
   final static public String WS_NAME = "workspaceName" ;
-  
+
   public UIWorkingArea() throws Exception {
     addChild(UIRightClickPopupMenu.class, "ECMContextMenu", null) ;
     addChild(UISideBar.class, null, null) ;
@@ -106,7 +107,7 @@ public class UIWorkingArea extends UIContainer {
     UIJCRExplorer jcrExplorer = getParent() ;
     jcrExplorer.getPreference().setShowSideBar(b) ;
   }
-  
+
   public Node getNodeByUUID(String uuid) throws Exception{
     CmsConfigurationService cmsConfService = getApplicationComponent(CmsConfigurationService.class) ;
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
@@ -114,12 +115,12 @@ public class UIWorkingArea extends UIContainer {
     .getSystemSession(cmsConfService.getWorkspace(repository));
     return session.getNodeByUUID(uuid);
   }
-  
+
   protected Node getCurrentNode() {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     return uiExplorer.getCurrentNode() ;
   }
-  
+
   public boolean isReferenceableNode(Node node) throws Exception {
     NodeType[] nodeTypes = node.getMixinNodeTypes() ;
     for(NodeType type:nodeTypes) {      
@@ -127,7 +128,7 @@ public class UIWorkingArea extends UIContainer {
     }
     return false ;
   }
-  
+
   public boolean isPreferenceNode(Node node) throws RepositoryException {
     return getAncestorOfType(UIJCRExplorer.class).isPreferenceNode(node) ;
   }
@@ -156,7 +157,7 @@ public class UIWorkingArea extends UIContainer {
     }
     return true;
   }
-  
+
   public boolean isVersionableOrAncestor(Node node) throws RepositoryException {
     if (Utils.isVersionable(node) || isAncestorVersionable(node)) return true;
     return false;
@@ -177,7 +178,7 @@ public class UIWorkingArea extends UIContainer {
     }
     return false;
   }
-  
+
   public boolean hasEditPermissions(Node editNode){
     try {
       editNode.getSession().checkPermission(editNode.getPath(), PermissionType.ADD_NODE);
@@ -187,7 +188,7 @@ public class UIWorkingArea extends UIContainer {
     } 
     return true;
   }
-  
+
   public boolean hasRemovePermissions(Node curNode){
     try {
       curNode.getSession().checkPermission(curNode.getPath(), PermissionType.REMOVE);
@@ -196,13 +197,13 @@ public class UIWorkingArea extends UIContainer {
     } 
     return true;
   }
-  
+
   public boolean isJcrViewEnable() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(uiExplorer.getPreference().isJcrEnable()) return true ;
     return false ;
   }
-  
+
   public String getActionsList(Node node) throws Exception {
     String path = node.getPath() ;
     StringBuilder actionsList = new StringBuilder() ;
@@ -249,9 +250,9 @@ public class UIWorkingArea extends UIContainer {
     }
     if(uiExplorer.getAllClipBoard().size() > 0 && hasEditPermissions(node)) actionsList.append(",Paste") ;
     return actionsList.toString() ;
-    
+
   }
-  
+
   public List<Node> getCustomActions(Node node) throws Exception {
     List<Node> safeActions = new ArrayList<Node>();
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
@@ -269,7 +270,7 @@ public class UIWorkingArea extends UIContainer {
     }      
     return safeActions;
   }
-  
+
   @SuppressWarnings("unused")
   static  public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
@@ -293,7 +294,7 @@ public class UIWorkingArea extends UIContainer {
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false) ;
         UIActionForm uiActionForm = uiContainer.getChild(UIActionForm.class) ;
         uiActionForm.createNewAction(uiExplorer.getCurrentNode(), 
-                                     selectedNode.getPrimaryNodeType().getName(), false) ;
+            selectedNode.getPrimaryNodeType().getName(), false) ;
         uiActionForm.setNode(selectedNode) ;
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(uiContainer, 600, 550) ;
@@ -455,7 +456,7 @@ public class UIWorkingArea extends UIContainer {
       }
     }
   }
-  
+
   static  public class DeleteActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
@@ -483,6 +484,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       }
+
       Node node ;
       Node parentNode ;
       if(wsName != null) {
@@ -492,6 +494,12 @@ public class UIWorkingArea extends UIContainer {
         String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
         parentNode = uiExplorer.getCurrentNode() ;
         node = parentNode.getNode(name);
+      }
+      if (node.isNodeType(Utils.MIX_VERSIONABLE)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete-version", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
       try {
         node.remove() ;
@@ -531,10 +539,11 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
-      
+
     }
   }
 
@@ -554,7 +563,7 @@ public class UIWorkingArea extends UIContainer {
       try {
         if(node.holdsLock()){
           node.unlock();
-        }else {
+        } else {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.this-node-locked-by-parent", null,
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -644,10 +653,10 @@ public class UIWorkingArea extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
-      
+
     }
   }
-  
+
   static public class PasteActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
@@ -706,18 +715,18 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
     }
-    
+
     private void pasteByCopy(Session session, String srcWorkspace, 
-                             String srcPath, String destPath) throws Exception {
+        String srcPath, String destPath) throws Exception {
       Workspace workspace = session.getWorkspace();
       if(srcWorkspace != null) workspace.copy(srcWorkspace, srcPath, destPath);
       else workspace.copy(srcPath, destPath);
       Node destNode = (Node) session.getItem(destPath) ;
       removeReferences(destNode, session) ;
     }
-    
+
     private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcWorkspace, 
-                            String srcPath, String destPath) throws Exception {
+        String srcPath, String destPath) throws Exception {
       Workspace workspace = session.getWorkspace();
       if(srcWorkspace != null) {
         workspace.copy(srcWorkspace, srcPath, destPath);
@@ -768,7 +777,7 @@ public class UIWorkingArea extends UIContainer {
         }
       }
     }
-    
+
     private void removeReferences(Node destNode, Session session) throws Exception {
       NodeType[] mixinTypes = destNode.getMixinNodeTypes() ;
       for(int i = 0; i < mixinTypes.length; i ++) {
@@ -781,7 +790,7 @@ public class UIWorkingArea extends UIContainer {
       destNode.save() ;
     }
   }
-  
+
   static  public class WebDAVActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent() ;
@@ -791,7 +800,7 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       if(wsName == null) wsName = uiExplorer.getCurrentWorkspace() ;
       String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" 
-                    + wsName + nodePath ;
+      + wsName + nodePath ;
       event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + link + "\"");
     }
   }

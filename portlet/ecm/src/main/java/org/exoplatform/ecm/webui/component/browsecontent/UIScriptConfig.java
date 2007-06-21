@@ -79,6 +79,10 @@ public class UIScriptConfig extends UIForm {
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
+    scriptField.setOptions(getScriptOption()) ;
+    templateField.setOptions(getTemplateOption()) ;
+    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
+    detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
     if(isEdit_) {
       if(isAddNew) {
         setActions(UINewConfigForm.ADD_NEW_ACTION) ;
@@ -91,29 +95,27 @@ public class UIScriptConfig extends UIForm {
     } else {
       setActions(UINewConfigForm.DEFAULT_ACTION) ;
       scriptName = preference.getValue(Utils.CB_SCRIPT_NAME, "") ;
+      scriptField.setValue(scriptName) ;
       templateName = preference.getValue(Utils.CB_TEMPLATE, "") ;
+      templateField.setValue(templateName) ;
       detailTemplate = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ; 
+      detailtemField.setValue(detailTemplate) ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
     }
-    scriptField.setOptions(getScriptOption()) ;
-    scriptField.setValue(scriptName) ;
-    templateField.setOptions(getTemplateOption()) ;
-    templateField.setValue(templateName) ;
-    UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
-    detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
-    detailtemField.setValue(detailTemplate) ;
+    System.out.println("\n\n scirpt name get form preferences "+scriptName);
+    System.out.println("\n\n script after set value"+ scriptField.getValue());
     enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
     enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
-    
     enableCommentField.setEnable(isEdit_) ;  
     enableTagMapField.setEnable(isEdit_) ;
     scriptField.setEnable(isEdit_) ;
     templateField.setEnable(isEdit_) ;
     detailtemField.setEnable(isEdit_) ;
     enableVoteField.setEnable(isEdit_) ; 
+    System.out.println("\n\n script after iz"+ scriptField.getValue());
   }
 
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {

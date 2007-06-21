@@ -347,7 +347,11 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     data.setSession(getSession()) ;
     Node scripts = scriptService.getCBScriptHome(repository) ;
     CmsScript cmsScript = scriptService.getScript(scripts.getName()+"/"+array[1].trim(), repository) ;
-    cmsScript.execute(data);
+    try {
+      cmsScript.execute(data);
+    } catch (Exception e) {
+      e.printStackTrace() ;
+    }
     return data.getContentList() ;
   }
 
