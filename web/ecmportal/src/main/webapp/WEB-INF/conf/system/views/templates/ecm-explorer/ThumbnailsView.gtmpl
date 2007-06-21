@@ -16,10 +16,10 @@
           String nodePath = data.getPath() ;
           String actionLink  ;
           if(isPreferenceNode) {
-            actionLink = uicomponent.event("ViewNode", data.path, new Parameter("workspaceName", preferenceWS)) ;
+            actionLink = uicomponent.event("ViewNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
             nodePath = nodePath + "&workspaceName=" + preferenceWS ;
           } else if(uicomponent.isReadAuthorized(data)) {
-            actionLink = uicomponent.event("ChangeNode", data.path) ;
+            actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path)) ;
           }
           String subName ;
           List customActs = uicomponent.getCustomActions(data) ;
@@ -40,7 +40,7 @@
         <div class="ActionIconContainer">
           <div class="NodeLabel">
             <div class="ActionIcon">
-              <div onclick="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>$strActs<span></span></div>
+              <div onclick="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>$strActs<span></span></div>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
           if(name.length() < 20) subName = name ;
           else subName = name.substring(0,15) + "..." ;
         %>
-        <div class="ActionIconLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
+        <div class="ActionIconLabel" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
           $strActs<a class="ActionLabel" href="$actionLink" title="$name">$subName</a>
         </div>
       </div> 

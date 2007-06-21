@@ -81,10 +81,10 @@
           String nodePath = data.getPath() ;
           String subName ;
           if(isPreferenceNode) {
-            actionLink = uicomponent.event("ViewNode",data.path, new Parameter("workspaceName", preferenceWS)) ;
+            actionLink = uicomponent.event("ViewNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
             nodePath = nodePath + "&workspaceName=" + preferenceWS ;
           } else if(uicomponent.isReadAuthorized(data)) {
-            actionLink = uicomponent.event("ChangeNode", data.path) ;
+            actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path)) ;
           }
           List customActs = uicomponent.getCustomActions(data) ;
           String strActs = "" ;
@@ -103,7 +103,7 @@
       %>
 	      <tr>
 	        <td>
-						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
 					    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
   					</div>
 	        </td>
@@ -112,7 +112,7 @@
 		        else subName = name.substring(0,50) + "..." ;
 	        %>
 	        <td>
-						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(nodePath, uicomponent.getActionsList(data));%>>
+						<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
 							$strActs<a href="$actionLink" title="$name">$subName</a>
 	 					</div>
 	        </td>
