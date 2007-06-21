@@ -60,7 +60,7 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
   }
 
   public void init(String repository) throws Exception {
-    //processNodeTypePlugin(repository) ;
+    processNodeTypePlugin(repository) ;
     initBasePath(repository) ;
   }
   
