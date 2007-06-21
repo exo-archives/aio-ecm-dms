@@ -137,6 +137,7 @@ ExoEditor.prototype.createInstance = function(instId, settings) {
 		frameBorder = 0 ;
 		scrolling = "auto" ;
 	}
+	try{ifrm.onmouseover = new Function("this.contentDocument.designMode = 'on';")} catch(ex){}
 	editorObj.appendChild(ifrm) ;
 	
 	txtAreaObj.style.display = 'none' ;
