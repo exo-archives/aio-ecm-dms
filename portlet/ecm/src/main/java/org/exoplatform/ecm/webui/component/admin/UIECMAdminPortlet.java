@@ -45,10 +45,20 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     addChild(UIRepositoryControl.class, null, null) ;
     UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIECMAdminUIPopupAction");
     uiPopupAction.getChild(UIPopupWindow.class).setId("UIECMAdminUIPopupWindow") ;
-    addChild(UIECMAdminControlPanel.class, null, null) ;
-    addChild(UIECMAdminWorkingArea.class, null, null);
+    String repo = getPreferenceRepository() ;
+    try{
+      getApplicationComponent(RepositoryService.class).getRepository(repo) ;
+      addChild(UIECMAdminControlPanel.class, null, null) ;
+      addChild(UIECMAdminWorkingArea.class, null, null);
+    }catch(Exception e) {}        
   }
   
+  public void initChilds() throws Exception{
+    UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class) ;
+    if(controlPanel == null) addChild(UIECMAdminControlPanel.class, null, null) ;
+    UIECMAdminWorkingArea workingArea = getChild(UIECMAdminWorkingArea.class) ;
+    if(workingArea == null) addChild(UIECMAdminWorkingArea.class, null, null) ;
+  }
   public void renderPopupMessages() throws Exception {
     UIPopupMessages popupMess = getUIPopupMessages();
     if(popupMess == null)  return ;

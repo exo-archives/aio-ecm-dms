@@ -13,7 +13,7 @@ import javax.jcr.nodetype.NodeType;
 public interface MetadataService {  
 	public List<String> getMetadataList(String repository) throws Exception;
   public List<NodeType> getAllMetadatasNodeType(String repository) throws Exception ;
-  public void addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception;
+  public String addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception;
   public void removeMetadata(String nodetype, String repository) throws Exception;
   public List<String> getExternalMetadataType(String repository) throws Exception ;
   public String getMetadataTemplate(String name, boolean isDialog, String repository) throws Exception;  

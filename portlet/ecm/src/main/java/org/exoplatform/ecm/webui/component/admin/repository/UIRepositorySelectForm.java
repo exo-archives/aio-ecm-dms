@@ -10,7 +10,7 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.explorer.search.UIJCRAdvancedSearch;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -61,6 +61,8 @@ public class UIRepositorySelectForm extends UIForm {
       PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
       portletPref.setValue(Utils.REPOSITORY, uiForm.getSelectedValue()) ;
       portletPref.store() ;
+      uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
+      uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }
   }

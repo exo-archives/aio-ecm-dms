@@ -89,21 +89,24 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     }
   }
   
-  public void addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {    
+  public String addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {    
     String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
     Session session = getSession(repository);
     Node metadataHome = (Node)session.getItem(metadataPath) ;
+    String path = null ;
     if(!isAddNew) {
       if(isDialog) {
         Node dialog1 = metadataHome.getNode(nodetype).getNode(DIALOGS).getNode(DIALOG1) ;
         dialog1.setProperty(EXO_ROLES_PROP, role.split(";"));
         dialog1.setProperty(EXO_TEMPLATE_FILE_PROP, content);
         dialog1.save() ;
+        path = dialog1.getPath() ;
       } else {
         Node view1 = metadataHome.getNode(nodetype).getNode(VIEWS).getNode(VIEW1) ;
         view1.setProperty(EXO_ROLES_PROP, role.split(";"));
         view1.setProperty(EXO_TEMPLATE_FILE_PROP, content);
         view1.save() ;
+        path = view1.getPath() ;
       }      
     } else {
       Node metadata = null ;
@@ -112,7 +115,8 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       addTemplate(metadata, role, content, isDialog) ;
       metadataHome.save() ;
     }    
-    session.save() ;    
+    session.save() ; 
+    return path ;
   }
   
   private void addTemplate(Node nodetype, String role, String content, boolean isDialog) throws Exception {

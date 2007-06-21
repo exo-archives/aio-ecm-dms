@@ -14,8 +14,10 @@ import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.groovyscript.text.TemplateService;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -213,19 +215,23 @@ public class UITemplateForm extends UIForm {
         homeTemplate = tempPath.substring(0, tempPath.lastIndexOf("/")) ;
       }
       boolean isEnableVersioning = uiForm.getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
+      String path = null ;
       if(uiForm.isAddNew_ || !isEnableVersioning){
-        uiForm.getApplicationComponent(ManageViewService.class)
+        path = uiForm.getApplicationComponent(ManageViewService.class)
               .addTemplate(templateName, content, homeTemplate,repository) ;
       } else {
         if(isEnableVersioning) {
           if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);
           else uiForm.template_.checkout() ;
-          uiForm.getApplicationComponent(ManageViewService.class)
+          path = uiForm.getApplicationComponent(ManageViewService.class)
                  .addTemplate(templateName, content, homeTemplate, repository) ;
           uiForm.template_.save() ;
           uiForm.template_.checkin() ;
         }
       }
+      JCRResourceResolver resourceResolver = new JCRResourceResolver(null, "exo:templateFile") ;
+      TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
+      if(path != null) templateService.invalidateTemplate(path, resourceResolver) ;
       uiForm.refresh();
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class) ;

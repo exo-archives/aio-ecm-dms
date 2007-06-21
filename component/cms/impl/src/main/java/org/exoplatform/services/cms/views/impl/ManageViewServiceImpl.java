@@ -222,7 +222,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return (Node)getSession(repository).getItem(path) ;
   }
   
-  public void addTemplate(String name, String content, String homeTemplate, String repository) throws Exception {
+  public String addTemplate(String name, String content, String homeTemplate, String repository) throws Exception {
     Node templateHome = (Node)getSession(repository).getItem(homeTemplate) ;
     Node newTemp = null ;
     if(templateHome.hasNode(name)) {
@@ -232,6 +232,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
     newTemp.setProperty(TEMPLATE_PROP,content) ;
     templateHome.save() ;
+    return newTemp.getPath() ;
     //removeFromCache(newTemp.getPath()) ;
   }
 

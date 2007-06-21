@@ -352,7 +352,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       uiForm.saveRepo(re) ;
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
-      uiRepoControl.reloadValue() ;
+      uiRepoControl.reloadValue(true, rService) ;
       System.out.println("\n\n is saved ? \n\n");
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
       uiPopupAction.deActivate() ;

@@ -4,9 +4,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
+import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.groovyscript.text.TemplateService;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -109,8 +111,12 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
       if(!metadataService.hasMetadata(uiForm.metadataName_, uiForm.repository_)) uiForm.isAddNew_ = true ;
       else uiForm.isAddNew_ = false ;
       String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-      metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_, repository) ;
-      metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, repository) ;
+      JCRResourceResolver resourceResolver = new JCRResourceResolver(null, "exo:templateFile") ;
+      TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
+      String path = metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_, repository) ;
+      if(path != null) templateService.invalidateTemplate(path, resourceResolver) ;
+      path = metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, repository) ;
+      if(path != null) templateService.invalidateTemplate(path, resourceResolver) ;
       uiForm.reset() ;
       uiMetaManager.removeChild(UIPopupWindow.class) ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;

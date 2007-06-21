@@ -12,6 +12,7 @@ import javax.jcr.version.VersionHistory;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
@@ -239,19 +240,24 @@ public class UITemplateContent extends UIForm implements UISelector {
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
+      String path = null ;
       if(uiForm.isAddNew_ || !isEnableVersioning){
-        templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
+        path = templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
             new String[] {role},  content, repository) ;
       } else {
         Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name, repository) ;
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;            
-        templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
+        path = templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
             new String[] {role},  content, repository) ;
         node.save() ;
         node.checkin() ;
       }
       uiForm.refresh() ;
+      JCRResourceResolver resourceResolver = new JCRResourceResolver(null, "exo:templateFile") ;
+      org.exoplatform.groovyscript.text.TemplateService groovyService = 
+        uiForm.getApplicationComponent(org.exoplatform.groovyscript.text.TemplateService.class) ;
+      if(path != null) groovyService.invalidateTemplate(path, resourceResolver) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

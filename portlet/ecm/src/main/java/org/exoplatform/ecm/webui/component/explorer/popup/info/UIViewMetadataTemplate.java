@@ -56,6 +56,8 @@ public class UIViewMetadataTemplate extends UIContainer {
   
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
+    //return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
+    getAncestorOfType(UIJCRExplorer.class).newJCRTemplateResourceResolver() ;
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 

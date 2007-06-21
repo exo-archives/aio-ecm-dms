@@ -42,7 +42,7 @@ public interface TemplateService {
   //public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception ;
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
-  public void addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
+  public String addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
       String[] roles, String templateFile, String repository) throws Exception;  
   public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception;
   

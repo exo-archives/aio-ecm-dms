@@ -31,7 +31,7 @@ public interface ManageViewService {
   public Node getTemplateHome(String homeAlias, String repository) throws Exception;
   public List<Node> getAllTemplates(String homeAlias, String repository) throws Exception;
   public Node getTemplate(String path, String repository) throws Exception; 
-  public void addTemplate(String name, String content, String homeAlias, String repository)throws Exception ;
+  public String addTemplate(String name, String content, String homeAlias, String repository)throws Exception ;
   public void removeTemplate(String templatePath, String repository) throws Exception  ;
 
   public void addTab(Node view, String name, String buttons) throws Exception ; 

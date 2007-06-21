@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.utils.Utils;
@@ -44,14 +46,30 @@ public class UITaxonomyManager extends UIContainer {
   
   public UITaxonomyManager() throws Exception {}
   
-  private String getRepository() {
+  private String getRepository() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    return pcontext.getRequest().getPreferences().getValue(Utils.REPOSITORY, "") ;
+    PortletPreferences pref = pcontext.getRequest().getPreferences() ;
+    String repository = pref.getValue(Utils.REPOSITORY, "") ;
+    /*try{
+      getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    }catch(Exception e) {
+      String defaultRepo = getApplicationComponent(RepositoryService.class)
+      .getDefaultRepository().getConfiguration().getName();
+      pref.setValue(Utils.REPOSITORY, defaultRepo) ;
+      pref.store() ;
+      return defaultRepo ;
+    }*/
+    return repository ;
   }
   
-  private TaxonomyNode getRootTaxonomyNode() throws Exception {     
-    return new TaxonomyNode(getApplicationComponent(CategoriesService.class)
-        .getTaxonomyHomeNode(getRepository()), 0) ; 
+  private TaxonomyNode getRootTaxonomyNode() throws Exception {
+    try{
+      return new TaxonomyNode(getApplicationComponent(CategoriesService.class)
+          .getTaxonomyHomeNode(getRepository()), 0) ;
+    }catch(RepositoryException e) { 
+      
+    }
+    return null ;
   }
   
   public void initPopup(String path) throws Exception {

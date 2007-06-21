@@ -16,6 +16,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -43,19 +45,28 @@ import org.exoplatform.webui.event.EventListener;
 public class UIRepositoryControl extends UIContainer {
 
   public UIRepositoryControl() throws Exception{
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences pref = pcontext.getRequest().getPreferences() ;
+    String repository = pref.getValue(Utils.REPOSITORY, "") ;
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
-    String defaultName = rservice.getDefaultRepository().getConfiguration().getName() ;
     UIRepositorySelectForm uiSelectForm = createUIComponent(UIRepositorySelectForm.class, null, null) ;
-    uiSelectForm.setOptionValue(getRepoItem()) ;
-    uiSelectForm.setSelectedValue(defaultName) ;
+    try{
+      rservice.getRepository(repository) ;
+      uiSelectForm.setOptionValue(getRepoItem(true, rservice)) ;
+      uiSelectForm.setSelectedValue(repository) ;      
+    }catch(Exception e) {
+      uiSelectForm.setOptionValue(getRepoItem(false, rservice)) ;
+      uiSelectForm.setSelectedValue("") ;
+    }
     uiSelectForm.setActionEvent() ;
     addChild(uiSelectForm) ;
-    uiSelectForm.setSelectedValue(defaultName) ;
   }
 
-  protected List<SelectItemOption<String>> getRepoItem(){
+  protected List<SelectItemOption<String>> getRepoItem(boolean isExists, RepositoryService rservice ){
     List<SelectItemOption<String>>  options = new ArrayList<SelectItemOption<String>>() ;
-    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
+    if(!isExists){
+      options.add(new SelectItemOption<String>("", "")) ;
+    }
     for(Object obj : rservice.getConfig().getRepositoryConfigurations()) { 
       RepositoryEntry repo  = (RepositoryEntry)obj ;
       options.add(new SelectItemOption<String>(repo.getName(), repo.getName())) ;
@@ -70,8 +81,16 @@ public class UIRepositoryControl extends UIContainer {
     return rservice.getConfig().getDefaultRepositoryName().equals(repoName);
   }
 
-  protected void reloadValue(){
-    getChild(UIRepositorySelectForm.class).setOptionValue(getRepoItem()) ;
+  protected void reloadValue(boolean isExists, RepositoryService rservice){
+    getChild(UIRepositorySelectForm.class).setOptionValue(getRepoItem(isExists, rservice)) ;
+    if(isExists) {
+      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+      PortletPreferences pref = pcontext.getRequest().getPreferences() ;
+      String repository = pref.getValue(Utils.REPOSITORY, "") ;
+      getChild(UIRepositorySelectForm.class).setSelectedValue(repository) ;
+    }else {
+      getChild(UIRepositorySelectForm.class).setSelectedValue("") ;
+    }
   }
 
   public static class EditRepositoryActionListener extends EventListener<UIRepositoryControl> {
@@ -110,7 +129,7 @@ public class UIRepositoryControl extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
-      uiControl.reloadValue() ;
+      uiControl.reloadValue(false, rservice) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }
   }

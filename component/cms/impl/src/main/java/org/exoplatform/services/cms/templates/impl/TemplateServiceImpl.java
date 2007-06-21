@@ -183,7 +183,7 @@ public class TemplateServiceImpl implements TemplateService, Startable{
     templatesHome.save() ;
   }
   
-  public void addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, 
+  public String addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, 
       String templateName, String[] roles, String templateFile, String repository) throws Exception {    
     Node templatesHome = getTemplatesHome(repository) ;
     
@@ -225,7 +225,7 @@ public class TemplateServiceImpl implements TemplateService, Startable{
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
     
     templatesHome.save();
-//    removeFromCache(contentNode.getPath()) ;
+    return contentNode.getPath() ;
   }
   
   public List<String> getDocumentTemplates(String repository) throws Exception {

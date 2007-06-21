@@ -23,12 +23,10 @@ import org.exoplatform.resolver.ResourceResolver;
  */
 public class JCRResourceResolver extends ResourceResolver {
   private Session session_ ;
-  private String workspaceId_ ;
   private String propertyName_ ;
   
   public JCRResourceResolver(Session session, String propertyName) {
     session_ = session ;
-    workspaceId_ = session.getWorkspace().getName() ;
     propertyName_ = propertyName ;
   }
 
@@ -56,7 +54,7 @@ public class JCRResourceResolver extends ResourceResolver {
   @SuppressWarnings("unused")
   public boolean isModified(String url, long lastAccess) {  return false ; }
   
-  public String createResourceId(String url) { return workspaceId_ + ":" +  url ; }
+  public String createResourceId(String url) { return url ; }
   
   public String getResourceScheme() {  return "jcr:" ; }
   

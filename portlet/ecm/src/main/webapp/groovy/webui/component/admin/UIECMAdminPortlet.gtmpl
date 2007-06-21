@@ -20,7 +20,9 @@
       %>
 		      <div style="height: 100%; width: 260px; overflow: auto; float: left;">
 		        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
-		        <% uicomponent.renderChild(UIECMAdminControlPanel.class); %>
+		        <% 
+		        if(uicomponent.getChild(UIECMAdminControlPanel.class) != null) uicomponent.renderChild(UIECMAdminControlPanel.class);
+		         %>
 		      </div>
       <%}%>
       <div class="ECMLayoutSeparator" style="float: left; height: 100%;">
@@ -28,7 +30,8 @@
       </div>
       <div style="margin-left: ${style}px; height: 100%;">
 		    <div style="overflow: auto; width: 100%; height: 100%;">
-		      <% uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
+		      <% 
+		      if(uicomponent.getChild(UIECMAdminWorkingArea.class) != null) uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
 			  </div>
 			</div>
     </div>

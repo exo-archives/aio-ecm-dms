@@ -4,6 +4,9 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin;
 
+import javax.portlet.PortletPreferences;
+
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.action.UIActionManager;
 import org.exoplatform.ecm.webui.component.admin.drives.UIDriveManager;
 import org.exoplatform.ecm.webui.component.admin.folksonomy.UIFolksonomyManager;
@@ -15,6 +18,9 @@ import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -53,4 +59,19 @@ public class UIECMAdminWorkingArea extends UIContainer {
     addChild(UIQueriesManager.class, null, null).setRendered(false) ;
     addChild(UIFolksonomyManager.class, null, null).setRendered(false) ;
   }
+  
+  public void checkRepository() throws Exception{
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences pref = pcontext.getRequest().getPreferences() ;
+    String repository = pref.getValue(Utils.REPOSITORY, "") ;
+    try{
+      getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    }catch(Exception e) {
+      String defaultRepo = getApplicationComponent(RepositoryService.class)
+      .getDefaultRepository().getConfiguration().getName();
+      pref.setValue(Utils.REPOSITORY, defaultRepo) ;
+      pref.store() ;      
+    }
+  }
+  
 }

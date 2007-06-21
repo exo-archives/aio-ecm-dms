@@ -109,18 +109,20 @@ public class TemplatePlugin extends BaseComponentPlugin {
           nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true) ;
         else
           nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false) ;
-      } else{
+        
+        nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
+        
+        List dialogs = nodeType.getReferencedDialog();
+        Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
+        addNode(sourcePath, dialogsHome, dialogs);
+        
+        List views = nodeType.getReferencedView();
+        Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
+        addNode(sourcePath, viewsHome, views);
+      }/* else{
         nodeTypeHome = templatesHome.getNode(nodeType.getNodetypeName());
       }
-      nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
-      
-      List dialogs = nodeType.getReferencedDialog();
-      Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
-      addNode(sourcePath, dialogsHome, dialogs);
-      
-      List views = nodeType.getReferencedView();
-      Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-      addNode(sourcePath, viewsHome, views);
+      */
     }
     session.save() ;
   }
