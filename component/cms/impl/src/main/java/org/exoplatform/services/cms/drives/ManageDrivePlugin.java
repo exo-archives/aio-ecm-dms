@@ -43,44 +43,37 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     while(it.hasNext()){
       DriveData data = (DriveData)it.next().getObject() ;
-      if(data.getAutoCreatedInNewRepository()) {
-        List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
-        for(RepositoryEntry repo : repositories) {
-          try{
-            addDrive(data, getSession(repo.getName())) ;
-          }catch(Exception e) {
-            System.out.println("[WARNING] ==> Can not init drive '"+ data.getName()
-                +"' in repository '" + repo.getName()+"'");
-          }          
-        }        
-      }else {
-        try{
-          addDrive(data, getSession(data.getRepository())) ;
-        }catch(Exception e) {
-          System.out.println("[WARNING] ==> Can not init drive '"+ data.getName()
-              +"' in repository '" + data.getRepository()+"'");
-        }
-        
+      try{
+        addDrive(data, getSession(data.getRepository())) ;
+      }catch(Exception e) {
+        System.out.println("[WARNING] ==> Can not init drive '"+ data.getName()
+            +"' in repository '" + data.getRepository()+"'");
       }
+        
     }
   }
   
   public void init(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
+    DriveData data = null ;
     while(it.hasNext()){
-      DriveData data = (DriveData)it.next().getObject() ;       
-      if(data.getAutoCreatedInNewRepository() || repository.equals(data.getRepository())) {
-        addDrive(data, getSession(repository)) ;
-      }       
-    }
-     
+      data = (DriveData)it.next().getObject() ;       
+      try{
+        if(data.getRepository().equals(repository)) {
+          addDrive(data, getSession(repository)) ;
+        }
+      }catch(Exception e) {        
+      }      
+             
+    }     
   }
   
   private void addDrive(DriveData data, Session session) throws Exception {
     String drivesPath = cmsConfigService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Node driveHome = (Node)session.getItem(drivesPath) ;
+    Node driveNode = null ;
     if(!driveHome.hasNode(data.getName())){
-      Node driveNode = driveHome.addNode(data.getName(), "exo:drive");
+      driveNode = driveHome.addNode(data.getName(), "exo:drive");
       driveNode.setProperty(WORKSPACE, data.getWorkspace()) ;
       driveNode.setProperty(PERMISSIONS, data.getPermissions()) ;
       driveNode.setProperty(PATH, data.getHomePath()) ;
@@ -91,8 +84,8 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(data.getViewSideBar())) ;
       driveNode.setProperty(ALLOW_CREATE_FOLDER, data.getAllowCreateFolder()) ;
       driveHome.save() ;
+      session.save() ;
     }
-    session.save() ;
   }
   
   private Session getSession(String repository)throws Exception {

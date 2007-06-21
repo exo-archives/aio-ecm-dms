@@ -68,7 +68,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   public Node getDriveHome(String repository) throws Exception {    
     String drivesPath = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Session session = getSession(repository) ;
-    session.refresh(false) ;
+    //session.refresh(false) ;
     return (Node) session.getItem(drivesPath);
   }
 
