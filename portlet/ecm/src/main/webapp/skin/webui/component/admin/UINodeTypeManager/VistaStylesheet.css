@@ -17,7 +17,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle {
-  width: 440px;
+  width: auto;
   margin: auto;
 }
 
@@ -31,6 +31,10 @@
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
   border-right: 0px ; border-left: 0px ;
+}
+
+.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FormContainer {
+	width: 430px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {

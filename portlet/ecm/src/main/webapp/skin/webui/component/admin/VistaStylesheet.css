@@ -100,20 +100,20 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
-	width: 400px;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm label {
-	width: 130px;
-	margin-right: 5px;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 410px;
+	padding-left: 120px;
+}
+
+.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout .FormContainer {
+	width: auto;
 }
 
 .UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
 	width: 100px;	
+}
+
+.UIECMAdminPortlet .childNodeDefinition .UIFormInputSet .UIFormInputSetWithAction .UIAction {
+	padding-left: 40px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -132,6 +132,7 @@
 	float: left;
  	vertical-align: middle;
   font-weight: bold; 
+  padding-right: 10px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction {
@@ -728,7 +729,7 @@
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px ;
+ 	padding: 4px 8px 4px 0px;
  	line-height: 20px;
 }
 

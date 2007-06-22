@@ -17,6 +17,7 @@
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
   margin: 10px auto;
+  border: 1px solid #8D919D;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -271,6 +272,15 @@
 	margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
+	margin: 15px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddLanguageContainer .UIFormWithTitle {
+	width: auto;
+	padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UILanguageTypeForm .UIFormGrid {
 	margin: auto;
 }
@@ -348,6 +358,7 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
   width: auto;
+  border: 1px solid #8D919D;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid .FieldLabel {

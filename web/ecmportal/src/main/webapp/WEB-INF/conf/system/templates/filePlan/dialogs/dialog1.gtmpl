@@ -55,7 +55,7 @@
       <%/*End UIHorizontalTabs*/%>
       <%/*Start UITabContentContainer*/%>
       
-      <div class="UIFormWithTitle" style="margin:0px; border: 1px solid #b7b7b7; border-top: none;background: #f4f4f4;"> 
+      <div class="UIFormWithTitle" style="margin:0px; "> 
 			<%uiform.begin()%>
 				<div class="HorizontalLayout" style="border: none; margin:0px;">	  
       
