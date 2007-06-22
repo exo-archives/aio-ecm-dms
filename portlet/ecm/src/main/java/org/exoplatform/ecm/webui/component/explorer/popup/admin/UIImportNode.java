@@ -79,7 +79,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       try {
         session.importXML(uiExplorer.getCurrentNode().getPath(), new ByteArrayInputStream(content),
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
-      } catch(InvalidSerializedDataException ise) {
+      } catch(Exception ise) {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

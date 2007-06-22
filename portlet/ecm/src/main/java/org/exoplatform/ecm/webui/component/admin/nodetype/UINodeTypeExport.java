@@ -131,7 +131,7 @@ public class UINodeTypeExport extends UIForm {
       dresource.setDownloadName("nodetype_export.xml");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
 
-      event.getRequestContext().getJavascriptManager().addJavascript("window.location=\'" + downloadLink + "\'") ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');") ;
 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.EXPORT_POPUP) ;
