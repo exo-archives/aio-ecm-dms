@@ -59,9 +59,11 @@ public class UIRepositorySelectForm extends UIForm {
       UIRepositorySelectForm uiForm = event.getSource() ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIRepositoryControl.class) ;
       PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
-      portletPref.setValue(Utils.REPOSITORY, uiForm.getSelectedValue()) ;
+      String selectRepo = uiForm.getSelectedValue() ;
+      portletPref.setValue(Utils.REPOSITORY, selectRepo) ;
       portletPref.store() ;
       uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
+      uiForm.setSelectedValue(selectRepo) ;
       uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }
