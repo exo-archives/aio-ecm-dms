@@ -130,7 +130,7 @@ public class UIQueryConfig extends UIForm {
         setActions(UINewConfigForm.ADD_NEW_ACTION) ;
         templateField.setOptions(getQueryTemplate()) ;
         UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
-        detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+        detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
         queryStatusField.setOptions(getQueryStatus()) ;
         queryStatusField.setValue(NEW_QUERY) ;
         queryLangField.setOptions(getQueryLang()) ;
@@ -148,6 +148,7 @@ public class UIQueryConfig extends UIForm {
       }
     } else {
       setActions(UINewConfigForm.DEFAULT_ACTION) ;
+      repository = preference.getValue(Utils.REPOSITORY, "") ;
       queryNew = preference.getValue(Utils.CB_QUERY_ISNEW, "") ;
       queryType = preference.getValue(Utils.CB_QUERY_TYPE, "") ;
       queryStoreName = preference.getValue(Utils.CB_QUERY_STORE, "") ;
@@ -160,7 +161,7 @@ public class UIQueryConfig extends UIForm {
       templateField.setOptions(getQueryTemplate()) ;
       numbPerPageField.setValue(itemPerPage) ;
       UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
-      detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+      detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
       enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
       enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
       enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;

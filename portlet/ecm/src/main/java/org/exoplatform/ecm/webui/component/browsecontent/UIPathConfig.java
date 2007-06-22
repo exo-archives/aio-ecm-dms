@@ -100,6 +100,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     repositoryField.setEditable(false) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
+    categoryPathField.setEditable(false) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
@@ -113,16 +114,14 @@ public class UIPathConfig extends UIForm implements UISelector{
     if(isEdit_) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"}) ;
       if(isAddNew) {
-        templateField.setOptions(getTemplateOption()) ;
-        //templateField.setValue(template) ;
-        detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+        templateField.setOptions(getTemplateOption(repository)) ;
+        detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
         enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
         enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
         enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;
         enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
         enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
         enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
-        categoryPathField.setValue(path) ;
         numbPerPageField.setValue(itemPerPage) ;
         setActions(UINewConfigForm.ADD_NEW_ACTION) ;        
       }else {
@@ -131,6 +130,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     } else {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
       setActions(UINewConfigForm.DEFAULT_ACTION) ;
+      repository = preference.getValue(Utils.REPOSITORY, "") ;
       template = preference.getValue(Utils.CB_TEMPLATE, "") ;
       hasToolBar = preference.getValue(Utils.CB_VIEW_TOOLBAR, "") ;
       hasRefDoc = preference.getValue(Utils.CB_REF_DOCUMENT, "") ;
@@ -139,9 +139,9 @@ public class UIPathConfig extends UIForm implements UISelector{
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
-      templateField.setOptions(getTemplateOption()) ;
+      templateField.setOptions(getTemplateOption(repository)) ;
       templateField.setValue(template) ;
-      detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+      detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
       enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
       enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
       enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;
@@ -151,7 +151,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       categoryPathField.setValue(path) ;
       numbPerPageField.setValue(itemPerPage) ;
     }
-    categoryPathField.setEditable(isEdit_) ;
+    //categoryPathField.setEditable(isEdit_) ;
     templateField.setEnable(isEdit_) ;
     detailtemField.setEnable(isEdit_) ;
     enableToolBarField.setEnable(isEdit_) ;
@@ -163,9 +163,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     enableChildDocField.setEnable(isEdit_) ;
   }
 
-  public List<SelectItemOption<String>> getTemplateOption() throws Exception {
+  public List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     ManageViewService viewService = 
       (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
     List<Node> scriptTemplates = viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository) ;
@@ -207,12 +206,12 @@ public class UIPathConfig extends UIForm implements UISelector{
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       } 
-      if(container.getNodeByPath(jcrPatth) == null) {
+      /*if(container.getNodeByPath(jcrPatth) == null) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
-      }
+      }*/
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
       String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       if(Integer.parseInt(itemPerPage) <= 0) {
@@ -285,8 +284,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm  = event.getSource() ;
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
+      String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
       uiForm.isEdit_ = true ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = true ;

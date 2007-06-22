@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -30,7 +31,8 @@ import org.exoplatform.webui.form.UIFormSelectBox;
     template =  "system:/groovy/webui/form/UIFormWithTitle.gtmpl",
     events = {
       @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.BackActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.NextActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.NextActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UINewConfigForm.OnChangeActionListener.class)
     }
 )
 
@@ -59,44 +61,44 @@ public class UINewConfigForm extends UIForm {
   final static public String[] NORMAL_ACTION = new String[]{"Save", "Cancel"} ;
   final static public String[] ADD_NEW_ACTION = new String[]{"Back", "Save"} ;
 
-  private String repoName_ = "repository" ;
-
   public UINewConfigForm() throws Exception {
     UIFormSelectBox repoSelectBox = new UIFormSelectBox(FIELD_REPOSITORY, FIELD_REPOSITORY, getRepoOption()) ;
-    repoSelectBox.setValue(repoName_) ;
     repoSelectBox.setOnChange("OnChange") ;
     addChild(repoSelectBox) ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String repo = repositoryService.getDefaultRepository().getConfiguration().getName() ;
+    String repo = repoSelectBox.getValue() ;
     addChild(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, getWorkSpaceOption(repo))) ;
     addChild( new UIFormSelectBox(FIELD_BROWSETYPE, FIELD_BROWSETYPE, getBrowseTypeOption())) ;
+    setActions(new String[]{"Back", "Next"}) ;
   }
 
   public void resetForm() throws Exception{
+    UIFormSelectBox repoField = getUIFormSelectBox(FIELD_REPOSITORY) ;
+    repoField.setOptions(getRepoOption()) ;
+    getUIFormSelectBox(FIELD_WORKSPACE).setOptions(getWorkSpaceOption(repoField.getValue()));
     getUIFormSelectBox(FIELD_WORKSPACE).reset() ;
+    getUIFormSelectBox(FIELD_BROWSETYPE).setOptions(getBrowseTypeOption()) ;
     getUIFormSelectBox(FIELD_BROWSETYPE).reset() ;
   }
 
   private List<SelectItemOption<String>> getRepoOption() throws Exception {
-    //TODO: get repository list from repository service
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String repo = repositoryService.getDefaultRepository().getConfiguration().getName() ;
-    options.add(new SelectItemOption<String>(repo, repo)) ;
+    for(RepositoryEntry repo : repositoryService.getConfig().getRepositoryConfigurations()) {
+      options.add(new SelectItemOption<String>(repo.getName(), repo.getName())) ;
+    }
     return options ;
   }
 
-  
   private List<SelectItemOption<String>> getWorkSpaceOption(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String[] workspaceNames = getApplicationComponent(RepositoryService.class)
-                              .getRepository(repository).getWorkspaceNames() ;
+    .getRepository(repository).getWorkspaceNames() ;
     for(String workspace:workspaceNames) {
       options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
     return options ;
   }
-  
+
   private List<SelectItemOption<String>> getBrowseTypeOption() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     options.add(new SelectItemOption<String>(Utils.FROM_PATH, Utils.CB_USE_FROM_PATH)) ;
@@ -122,7 +124,6 @@ public class UINewConfigForm extends UIForm {
       UINewConfigForm uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfigTabPane.isNewConfig_ = false ;
-      //uiConfigTabPane.getCurrentConfig() ;
     }
   }  
 

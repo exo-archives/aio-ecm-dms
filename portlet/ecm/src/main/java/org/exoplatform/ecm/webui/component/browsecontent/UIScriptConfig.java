@@ -82,7 +82,7 @@ public class UIScriptConfig extends UIForm {
     scriptField.setOptions(getScriptOption()) ;
     templateField.setOptions(getTemplateOption()) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
-    detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+    detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
     if(isEdit_) {
       if(isAddNew) {
         setActions(UINewConfigForm.ADD_NEW_ACTION) ;
@@ -94,6 +94,7 @@ public class UIScriptConfig extends UIForm {
       }
     } else {
       setActions(UINewConfigForm.DEFAULT_ACTION) ;
+      repository = preference.getValue(Utils.REPOSITORY, "") ;
       scriptName = preference.getValue(Utils.CB_SCRIPT_NAME, "") ;
       scriptField.setValue(scriptName) ;
       templateName = preference.getValue(Utils.CB_TEMPLATE, "") ;
@@ -104,8 +105,6 @@ public class UIScriptConfig extends UIForm {
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       hasTagMap = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
     }
-    System.out.println("\n\n scirpt name get form preferences "+scriptName);
-    System.out.println("\n\n script after set value"+ scriptField.getValue());
     enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
     enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
     enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
@@ -115,7 +114,6 @@ public class UIScriptConfig extends UIForm {
     templateField.setEnable(isEdit_) ;
     detailtemField.setEnable(isEdit_) ;
     enableVoteField.setEnable(isEdit_) ; 
-    System.out.println("\n\n script after iz"+ scriptField.getValue());
   }
 
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {

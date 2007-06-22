@@ -275,8 +275,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       RepositoryEntry re = new RepositoryEntry() ;
       String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
       RepositoryService rService = uiForm.getApplicationComponent(RepositoryService.class) ;
-      for(Object obj : rService.getConfig().getRepositoryConfigurations()) { 
-        RepositoryEntry repo  = (RepositoryEntry)obj ;
+      for(RepositoryEntry repo : rService.getConfig().getRepositoryConfigurations()) { 
         if(repo.getName().equals(repoName) && uiForm.isAddnew_) {
           Object[] args = new Object[]{repo.getName()}  ;    
           UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -353,7 +352,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
       uiRepoControl.reloadValue(true, rService) ;
-      System.out.println("\n\n is saved ? \n\n");
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
@@ -376,19 +374,25 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   public static class AddWorkspaceActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
-      UIRepositoryForm uiForm = event.getSource() ;      
+      UIRepositoryForm uiForm = event.getSource() ;  
+      String repoName = uiForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
+      RepositoryService rService = uiForm.getApplicationComponent(RepositoryService.class) ;
+      for(RepositoryEntry repo : rService.getConfig().getRepositoryConfigurations()) { 
+        if(repo.getName().equals(repoName) && uiForm.isAddnew_) {
+          Object[] args = new Object[]{repo.getName()}  ;    
+          UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.repoName-exist", args)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+          return ;
+        }
+      }
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupAction.class) ;
       UIPopupAction uiWorkspaceAction = uiControl.getChild(UIPopupAction.class) ;
       UIWorkspaceWizard uiWorkspaceWizard = uiWorkspaceAction.activate(UIWorkspaceWizard.class, 600) ; 
-      RepositoryService rService =uiForm.getApplicationComponent(RepositoryService.class) ;
+     
       WorkspaceEntry wsdf = null ;
-      RepositoryEntry repoEntry = null ;
-      if(uiForm.isAddnew_) {
-        repoEntry = rService.getDefaultRepository().getConfiguration() ;
-      } else {
-        repoEntry = rService.getRepository(uiForm.repoName_).getConfiguration() ;
-      }
+      RepositoryEntry  repoEntry = rService.getDefaultRepository().getConfiguration() ;
       for(WorkspaceEntry ws : repoEntry.getWorkspaceEntries()) {
         if(ws.getName().equals(repoEntry.getDefaultWorkspaceName())) {
           wsdf = ws ;

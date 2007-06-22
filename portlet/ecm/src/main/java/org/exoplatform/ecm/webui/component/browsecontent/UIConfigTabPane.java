@@ -53,9 +53,8 @@ public class UIConfigTabPane extends UIContainer {
     return Options ;
   }
 
-  public List<SelectItemOption<String>> getBoxTemplateOption() throws Exception {
+  public List<SelectItemOption<String>> getBoxTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     List<Node> docTemplates = getApplicationComponent(ManageViewService.class)
                              .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository) ;
     for(Node template: docTemplates) {
@@ -138,14 +137,15 @@ public class UIConfigTabPane extends UIContainer {
   }
 
   @SuppressWarnings("unchecked")
-  public void initPopupDocumentSelect(UIForm uiForm, String repo, String workspace, String path) throws Exception {
+  public void initPopupDocumentSelect(UIForm uiForm, String repo, String workSpace, String path) throws Exception {
     removeChildById(PATH_SELECTOR) ;
     removeChildById(DOCUMENT_SELECTOR) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, DOCUMENT_SELECTOR);
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
     uiJCRBrowser.setRepository(repo) ;
-    uiJCRBrowser.setWorkspace(workspace) ;
+    uiJCRBrowser.setWorkspace(workSpace) ;
+    uiJCRBrowser.setIsDisable(workSpace, true) ;
     uiJCRBrowser.setRootPath(path) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documents = templateService.getDocumentTemplates(repo) ;

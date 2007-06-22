@@ -85,6 +85,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     if(!catNode.isNodeType("mix:referenceable")) {
       catNode.addMixin("mix:referenceable") ;
       catNode.save() ;
+      session.save() ;
+      session.refresh(true) ;
     }      
 		Value value2add = session.getValueFactory().createValue(catNode); 
 		if (!node.isNodeType(RELATION_MIXIN)) {

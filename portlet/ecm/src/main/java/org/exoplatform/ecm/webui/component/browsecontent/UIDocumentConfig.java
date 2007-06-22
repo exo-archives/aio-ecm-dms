@@ -79,15 +79,17 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     String hasVote = "true" ;
     String detailTemplate = "" ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
-    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
     UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setValue(repository) ;
     repositoryField.setEditable(false) ;
+    UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
+    categoryPathField.setEditable(false) ;
     UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
     UIFormStringInput documentNameField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
+    documentNameField.setEditable(false) ;
     UIFormSelectBox detailtempField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
@@ -97,7 +99,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, new String[] {"DocSelect"}) ;
       if(isAddNew) {
         setActions(UINewConfigForm.ADD_NEW_ACTION) ;      
-        detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+        detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
         enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
         enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
         categoryPathField.setValue(path) ;
@@ -108,6 +110,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       }
     } else {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
+      repository = preference.getValue(Utils.REPOSITORY, "") ;
       path = preference.getValue(Utils.JCR_PATH, "") ;
       docName = preference.getValue(Utils.CB_DOCUMENT_NAME, "") ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
@@ -115,17 +118,16 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       detailTemplate = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ; 
       categoryPathField.setValue(path) ;
       documentNameField.setValue(docName) ;
-      detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption()) ;
+      detailtempField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
       detailtempField.setValue(detailTemplate) ;
       enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
       enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
     }
-    categoryPathField.setEditable(isEdit_) ;
-    documentNameField.setEditable(isEdit_) ;
+    //categoryPathField.setEditable(isEdit_) ;
+    //documentNameField.setEditable(isEdit_) ;
     detailtempField.setEnable(isEdit_) ;
     enableCommentField.setEnable(isEdit_) ;
     enableVoteField.setEnable(isEdit_) ;
-
   }
 
   @SuppressWarnings("unused")
@@ -169,11 +171,11 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
         return ;
       } 
-      if(container.getNodeByPath(jcrPatth) == null) {
+      /*if(container.getNodeByPath(jcrPatth) == null) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
         return ;
-      }
+      }*/
       UIFormInputSetWithAction documentSelect = uiForm.getChildById(FIELD_DOCSELECT) ;
       UIFormStringInput documentField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
       String docName = documentField.getValue() ;
@@ -182,13 +184,13 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-doc", null)) ;
         return ;
       } 
-      try{
+      /*try{
         container.getNodeByPath(jcrPatth + Utils.SLASH + docName) ;
       } catch (Exception e) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null)) ;
         return ;
-      }
+      }*/
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;

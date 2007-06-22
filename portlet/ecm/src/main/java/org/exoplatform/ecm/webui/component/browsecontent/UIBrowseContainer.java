@@ -99,7 +99,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
     addChild(UIDocumentDetail.class, null, null).setRendered(false) ;
-    loadPortletConfig(getPortletPreferences()) ;
+    //loadPortletConfig(getPortletPreferences()) ;
   }
 
   public PortletPreferences getPortletPreferences() {
@@ -226,7 +226,7 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
 
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
   public void record(String str) {nodesHistory_.add(str); } 
-  
+
   public Node getNodeByPath(String nodePath) throws Exception{
     getSession().refresh(true) ;
     try{
@@ -261,9 +261,8 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
   }
 
   public Session getSession() throws Exception {
-    String repository = getRepository() ;
     Session session = getApplicationComponent(RepositoryService.class)
-    .getRepository(repository).getSystemSession(getWorkSpace()) ;
+    .getRepository(getRepository()).getSystemSession(getWorkSpace()) ;
     return session ;
   }
   public void setCurrentNode(Node node) throws Exception {currentNode_ = node ;}
@@ -722,9 +721,11 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
         uiDocumentDetail.setRendered(false) ;
       }
       if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
-      uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
-      uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
-      uiContainer.history_.clear() ;
+      if(uiContainer.usecase_.equals(Utils.CB_USE_FROM_PATH) && uiContainer.history_ != null) {
+        uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
+        uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
+        uiContainer.history_.clear() ;
+      }
       uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
