@@ -128,8 +128,8 @@ public class UIConfigTabPane extends UIContainer {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PATH_SELECTOR);
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    uiJCRBrowser.setIsDisable(workSpace, true) ;
     uiJCRBrowser.setRepository(repo) ;
+    uiJCRBrowser.setIsDisable(workSpace, true) ;
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED} ;
     uiJCRBrowser.setFilterType(filterType) ;
     uiPopup.setUIComponent(uiJCRBrowser) ;
