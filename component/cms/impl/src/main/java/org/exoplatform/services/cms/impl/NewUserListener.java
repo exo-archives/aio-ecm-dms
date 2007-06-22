@@ -16,7 +16,6 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -28,7 +27,7 @@ import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.log.LogService;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserEventListener;
@@ -75,18 +74,23 @@ public class NewUserListener extends UserEventListener {
   public void preSave(User user, boolean isNew)
       throws Exception {        
     String userName = user.getUserName();
-
-    prepareSystemWorkspace(userName);
-    prepareWorkpsace(cmsConfigurationService_.getDraftWorkspace(), userName);
-    prepareWorkpsace(cmsConfigurationService_.getBackupWorkspace(), userName);
+    List<RepositoryEntry> repositories = jcrService_.getConfig().getRepositoryConfigurations() ;
+    String defaultRepository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
+    for(RepositoryEntry repo : repositories) {
+      prepareSystemWorkspace(repo.getName(), userName);
+      if(repo.getName().equals(defaultRepository)) {
+        prepareWorkpsace(defaultRepository, cmsConfigurationService_.getDraftWorkspace(), userName);
+        prepareWorkpsace(defaultRepository, cmsConfigurationService_.getBackupWorkspace(), userName);
+      }
+    }
   }
   
-  private void prepareSystemWorkspace(String userName) throws Exception {
+  private void prepareSystemWorkspace(String repository, String userName) throws Exception {
     Session session = null;    
-    //Manage production workspace
+    //Manage system workspace
      try {
-       session = jcrService_.getRepository(config_.getRepository()).getSystemSession(cmsConfigurationService_
-           .getWorkspace(config_.getRepository()));
+       session = jcrService_.getRepository(repository).getSystemSession(cmsConfigurationService_
+           .getWorkspace(repository));
      } catch (RepositoryException re){
        return;
      }      
@@ -119,10 +123,10 @@ public class NewUserListener extends UserEventListener {
      usersHome.save();    
   }
   
-  private void prepareWorkpsace(String workspace, String userName) throws Exception {
+  private void prepareWorkpsace(String repository, String workspace, String userName) throws Exception {
     Session session = null;
     try {
-      session = jcrService_.getRepository(config_.getRepository()).getSystemSession(workspace);
+      session = jcrService_.getRepository(repository).getSystemSession(workspace);
     } catch (RepositoryException re){
       return;
     }     
@@ -195,7 +199,36 @@ public class NewUserListener extends UserEventListener {
     try {
       //use a anonymous connection for the configuration as the user is not
       // authentified at that time
-      Repository jcrRepository = jcrService_.getRepository();
+      
+      List<RepositoryEntry> repositories = jcrService_.getConfig().getRepositoryConfigurations() ;
+      String defaultRepository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
+      for(RepositoryEntry repo : repositories) {
+        try{
+          session = jcrService_.getRepository(repo.getName()).login();
+          Node usersHome = (Node) session.getItem(
+              cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
+          usersHome.getNode(user.getUserName()).remove();
+          usersHome.save();
+          if(repo.getName().equals(defaultRepository)) {
+            // Manage draft workspace
+            session = jcrService_.getRepository(defaultRepository).login(cmsConfigurationService_.getDraftWorkspace());
+            usersHome = (Node) session.getItem(
+                cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
+            usersHome.getNode(user.getUserName()).remove();
+            usersHome.save(); 
+            
+            // Manage backup workspace
+            session = jcrService_.getRepository(defaultRepository).login(cmsConfigurationService_.getBackupWorkspace());
+            usersHome = (Node) session.getItem(
+                cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
+            usersHome.getNode(user.getUserName()).remove();
+            usersHome.save();
+          }  
+        }catch(Exception e) {          
+        }       
+      }
+      
+      /*Repository jcrRepository = jcrService_.getRepository();
       
       //Manage production workspace
       session = jcrRepository.login();
@@ -209,7 +242,7 @@ public class NewUserListener extends UserEventListener {
       usersHome = (Node) session.getItem(
           cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
       usersHome.getNode(user.getUserName()).remove();
-      usersHome.save();                  
+      usersHome.save();  */                
     } catch (PathNotFoundException ex) {
       log_.info("Can not delete home dir of user " + user.getUserName());
     } catch (RepositoryException e) {

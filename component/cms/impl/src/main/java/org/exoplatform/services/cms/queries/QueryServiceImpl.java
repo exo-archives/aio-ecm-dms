@@ -1,7 +1,9 @@
 package org.exoplatform.services.cms.queries;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -21,10 +23,13 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.picocontainer.Startable;
 
 public class QueryServiceImpl implements QueryService, Startable{
-  
+  private static final String[] perms = {PermissionType.READ, PermissionType.ADD_NODE, 
+    PermissionType.SET_PROPERTY, PermissionType.REMOVE };
   private String relativePath_;
   private CmsConfigurationService cmsConfig_;
   private List<QueryPlugin> queryPlugins_ = new ArrayList<QueryPlugin> ();
@@ -81,9 +86,23 @@ public class QueryServiceImpl implements QueryService, Startable{
     Session session = getSession(repository) ;    
     QueryManager manager = session.getWorkspace().getQueryManager();    
     Node usersHome = (Node) session.getItem(cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH));
-    Node userHome = usersHome.getNode(userName);
-    Node queriesHome = userHome.getNode(relativePath_); 
-    
+    Node userHome = null ;
+    if(usersHome.hasNode(userName)) {
+      userHome = usersHome.getNode(userName);
+    }else{
+      userHome = usersHome.addNode(userName);
+      if (userHome.canAddMixin("exo:privilegeable")){
+        userHome.addMixin("exo:privilegeable");
+      }
+      ((ExtendedNode)userHome).setPermissions(getPermissions(userName));
+      Node query = userHome.addNode(relativePath_) ;
+      if (query.canAddMixin("exo:privilegeable")){
+        query.addMixin("exo:privilegeable");
+      }
+      ((ExtendedNode)query).setPermissions(getPermissions(userName));
+      usersHome.save() ;
+    }
+    Node queriesHome = userHome.getNode(relativePath_);
     NodeIterator iter = queriesHome.getNodes();
     while (iter.hasNext()) {
       Node node = iter.nextNode();
@@ -92,7 +111,15 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
     return queries;
   }
-
+  
+  private Map getPermissions(String owner) {
+    Map<String, String[]> permissions = new HashMap<String, String[]>();
+    permissions.put(owner, perms);     
+    permissions.put("any", new String[] {PermissionType.READ});
+    permissions.put("*:/admin", perms);
+    return permissions;
+  } 
+  
   public void addQuery(String queryName, String statement, String language, 
                        String userName, String repository) throws Exception {
     if(userName == null) return;

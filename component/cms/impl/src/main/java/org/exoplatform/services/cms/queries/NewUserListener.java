@@ -22,7 +22,7 @@ import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserEventListener;
 
@@ -57,45 +57,50 @@ public class NewUserListener extends UserEventListener {
   private void prepareSystemWorkspace(String userName) throws Exception {
     Session session = null;    
     //Manage production workspace
-     try {
-       session = jcrService_.getRepository(config_.getRepository()).getSystemSession(cmsConfigurationService_
-           .getWorkspace(config_.getRepository()));
-     } catch (RepositoryException re){
-       return;
-     }
-     
-     Node usersHome = (Node) session.getItem(
-         cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));   
-     
-     Node userHome = Utils.makePath(usersHome, userName, "nt:unstructured", getPermissions(userName));
-     if(userHome.hasNode(relativePath_)) {
-       session.refresh(false);
-       return;
-     }     
-     Node queriesHome =  Utils.makePath(userHome, relativePath_, "nt:unstructured", getQueryPermissions(userName)); 
-       
-     List users = config_.getUsers();
-     boolean userFound = false;
-     NewUserConfig.User templateConfig = null;
-     for (Iterator iter = users.iterator(); iter.hasNext();) {
-       NewUserConfig.User userConfig = (NewUserConfig.User) iter.next();
-       String currentName = userConfig.getUserName();            
-       if (config_.getTemplate().equals(currentName))  templateConfig = userConfig;
-       if (currentName.equals(userName)) {
-         List queries = userConfig.getQueries();
-         importQueries(queriesHome, queries);
-         userFound = true;
-         break;
-       }
-     }
-     if (!userFound) {
-       //use template conf
-       List queries = templateConfig.getQueries();
-       importQueries(queriesHome, queries);
-     }
-     usersHome.save();    
+    List<RepositoryEntry> repositories = jcrService_.getConfig().getRepositoryConfigurations() ;
+    for(RepositoryEntry repo : repositories) {
+      try {
+        session = jcrService_.getRepository(repo.getName()).getSystemSession(cmsConfigurationService_
+            .getWorkspace(repo.getName()));
+        initSystemData(session, userName) ;
+      } catch (RepositoryException re){
+        return;
+      }
+    }   
   }
   
+  private void initSystemData(Session session, String userName) throws Exception{
+    Node usersHome = (Node) session.getItem(
+        cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));   
+    
+    Node userHome = Utils.makePath(usersHome, userName, "nt:unstructured", getPermissions(userName));
+    if(userHome.hasNode(relativePath_)) {
+      session.refresh(false);
+      return;
+    }     
+    Node queriesHome =  Utils.makePath(userHome, relativePath_, "nt:unstructured", getQueryPermissions(userName)); 
+      
+    List users = config_.getUsers();
+    boolean userFound = false;
+    NewUserConfig.User templateConfig = null;
+    for (Iterator iter = users.iterator(); iter.hasNext();) {
+      NewUserConfig.User userConfig = (NewUserConfig.User) iter.next();
+      String currentName = userConfig.getUserName();            
+      if (config_.getTemplate().equals(currentName))  templateConfig = userConfig;
+      if (currentName.equals(userName)) {
+        List queries = userConfig.getQueries();
+        importQueries(queriesHome, queries);
+        userFound = true;
+        break;
+      }
+    }
+    if (!userFound) {
+      //use template conf
+      List queries = templateConfig.getQueries();
+      importQueries(queriesHome, queries);
+    }
+    usersHome.save();   
+  }
   public Map getPermissions(String owner) {
     Map<String, String[]> permissions = new HashMap<String, String[]>();
     permissions.put(owner, perms);     
