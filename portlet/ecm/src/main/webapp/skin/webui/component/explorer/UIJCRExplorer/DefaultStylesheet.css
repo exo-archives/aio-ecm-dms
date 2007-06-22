@@ -732,4 +732,13 @@
 	width: 160px;
 }
 
+.UIJCRExplorer .UIDocumentWorkspace .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIJCRExplorer .UIDocumentWorkspace .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
+}
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

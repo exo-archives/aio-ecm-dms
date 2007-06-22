@@ -3,7 +3,13 @@
   def originalNode = uicomponent.getOriginalNode();
   String namespace = "kfx:" ;
 %>
-<div style=" margin: 0px 5px;">
+<style>
+	.WorkKofax {
+		margin: 10px;
+	}
+	
+</style>
+<div class="WorkKofax">
 	<table class="UIGrid">      	 			
 	  <tr>
 	    <td style="width:25%">Kofax document name</td>

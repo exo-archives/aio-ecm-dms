@@ -404,3 +404,12 @@
 .UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
   width: 40px;
 }
+
+.UIJCRExplorer .UIPopupWindow .Content .WorkWorkFlow .UIGrid {
+	border-top: none;
+}
+
+.UIJCRExplorer .UIPopupWindow .Content .WorkWorkFlow .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
+}

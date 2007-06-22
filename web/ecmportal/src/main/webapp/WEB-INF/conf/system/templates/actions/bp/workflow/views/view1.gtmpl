@@ -1,5 +1,11 @@
 <%def node = uicomponent.getNode() ;%>
-<div class="WorkWorkflow">
+<style>
+	.WorkWorkFlow {
+		margin: 10px;
+	}
+	
+</style>
+<div class="WorkWorkFlow">
 	<table class="UIGrid">      	 			
 	  <tr>
 	    <td style="width:25%">Name</td>
