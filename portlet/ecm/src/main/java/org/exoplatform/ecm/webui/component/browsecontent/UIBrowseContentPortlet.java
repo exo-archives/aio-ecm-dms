@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
+import java.io.Writer;
+
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -41,12 +43,8 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     addChild(uiContainer) ;
     UIConfigTabPane uiTabPane = createUIComponent(UIConfigTabPane.class, null, null) ;
     if(!isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
-      //UIApplication  app = getAncestorOfType(UIApplication.class) ;
       uiTabPane.isNewConfig_ = true ;
       uiTabPane.showNewConfigForm(true);
-      addMessage(new ApplicationMessage("UIBrowseContentPortlet.msg.repository-missing", null)) ;
-      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-      context.addUIComponentToUpdateByAjax(getUIPopupMessages()) ;
     }
     addChild(uiTabPane) ;
     uiTabPane.setRendered(false) ;
@@ -54,6 +52,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
 
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     PortletPreferences portletPref = getPortletPreferences() ;
+    
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;

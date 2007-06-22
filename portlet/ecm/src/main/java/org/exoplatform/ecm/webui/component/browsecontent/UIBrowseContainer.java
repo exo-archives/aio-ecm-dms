@@ -42,6 +42,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -102,6 +103,17 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     //loadPortletConfig(getPortletPreferences()) ;
   }
 
+  public void  processRender(WebuiRequestContext context) throws Exception {
+    try {
+      getApplicationComponent(RepositoryService.class).getRepository(getPortletPreferences().
+          getValue(Utils.REPOSITORY, "")) ;
+      super.processRender(context) ;
+    } catch (Exception e) {
+      context.getWriter().write("Can not load repository " + getPortletPreferences().
+          getValue(Utils.REPOSITORY, "")) ;
+      return ;
+    }
+  }
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;

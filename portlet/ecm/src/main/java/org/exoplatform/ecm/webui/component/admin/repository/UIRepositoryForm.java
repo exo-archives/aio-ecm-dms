@@ -210,8 +210,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     RepositoryService rService = (RepositoryService)getApplicationComponent(ExoContainer.class).
     getComponentInstanceOfType(RepositoryService.class);
     if(isAddnew_){
+      WorkspaceEntry wsDefault = getWorkspaceMap().get(defaulWorkspace_) ;
+      repositoryEntry.addWorkspace(wsDefault) ;
       for(WorkspaceEntry ws : getWorkspaceMap().values()){   
-        repositoryEntry.addWorkspace(ws) ;
+        if(!ws.equals(wsDefault)) repositoryEntry.addWorkspace(ws) ;
       }
       repositoryEntry.setSystemWorkspaceName(defaulWorkspace_) ;
       repositoryEntry.setDefaultWorkspaceName(defaulWorkspace_) ;
@@ -241,7 +243,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(TemplateService.class).init(repository) ;
       getApplicationComponent(ManageViewService.class).init(repository) ;
       getApplicationComponent(ActionServiceContainer.class).init(repository) ;
-      
+
     }catch(Exception e) {
       e.printStackTrace() ;
     }
@@ -390,7 +392,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupAction.class) ;
       UIPopupAction uiWorkspaceAction = uiControl.getChild(UIPopupAction.class) ;
       UIWorkspaceWizard uiWorkspaceWizard = uiWorkspaceAction.activate(UIWorkspaceWizard.class, 600) ; 
-     
+
       WorkspaceEntry wsdf = null ;
       RepositoryEntry  repoEntry = rService.getDefaultRepository().getConfiguration() ;
       for(WorkspaceEntry ws : repoEntry.getWorkspaceEntries()) {
