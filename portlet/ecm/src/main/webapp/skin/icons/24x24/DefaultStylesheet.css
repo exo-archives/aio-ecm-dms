@@ -11,6 +11,14 @@
   background: url('DefaultSkin/RelationsIcon.gif') no-repeat center center;
 }
 
+.SavedQueries {
+  float: left;
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/SavedQueries.gif') no-repeat ;
+  cursor: pointer;
+  margin: 2px 0px 0px 5px;
+}
+
 .JCRExplorer24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;

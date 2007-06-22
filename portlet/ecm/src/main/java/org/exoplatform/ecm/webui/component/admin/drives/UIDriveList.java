@@ -60,9 +60,9 @@ public class UIDriveList extends UIGrid {
     for(int i = 0; i < drives.size(); i++) {
       DriveData drive = (DriveData)drives.get(i) ;
       if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+        String[] iconPath = drive.getIcon().split(":/") ;
         Node node = (Node) rservice.getRepository(repository)
-        //TODO: Need to store wsName in Icon value, Maybe in new repository digital-assets ws does exists
-        .getSystemSession("digital-assets").getItem(drive.getIcon()) ;
+        .getSystemSession(iconPath[0]).getItem("/" + iconPath[1]) ;
         Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
         InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
         InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;

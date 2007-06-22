@@ -4,11 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component;
 
-import javax.jcr.RepositoryException;
-
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -28,6 +25,7 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   private String returnFieldName = null ;
   private String repository_ = null;
   private String wsName_ = null ;
+  private boolean isDisable_ = false ;
   
   public UIJCRBrowser() throws Exception {
     addChild(UIWorkspaceList.class, null, null) ;
@@ -49,8 +47,11 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   
   public void setIsDisable(String wsName, boolean isDisable) {
     setWorkspace(wsName) ;
+    isDisable_ = isDisable ;
     getChild(UIWorkspaceList.class).setIsDisable(wsName, isDisable) ;
   }
+  
+  public boolean isDisable() { return isDisable_ ; }
   
   public void setWorkspace(String wsName) { wsName_ = wsName ; }
   public String getWorkspace() throws Exception { 

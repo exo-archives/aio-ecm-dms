@@ -86,7 +86,8 @@ public class UIDrivesBrowser extends UIContainer {
       if(drives != null && drives.size() > 0) {
         for(DriveData drive : drives) {
           if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-            Node node = (Node) repository.getSystemSession("digital-assets").getItem(drive.getIcon()) ;
+            String[] iconPath = drive.getIcon().split(":/") ;
+            Node node = (Node) repository.getSystemSession(iconPath[0]).getItem("/" + iconPath[1]) ;
             Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
             InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
             InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;

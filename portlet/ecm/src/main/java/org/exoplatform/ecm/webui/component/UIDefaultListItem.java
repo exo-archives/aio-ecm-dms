@@ -33,6 +33,7 @@ public class UIDefaultListItem extends UITreeList {
       String value = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRBrowser uiJCRBrowser = uiDefault.getParent() ;
       String returnField = uiJCRBrowser.getReturnField() ;
+      if(!uiJCRBrowser.isDisable()) value = uiJCRBrowser.getWorkspace() + ":" + value ;
       ((UISelector)uiJCRBrowser.getReturnComponent()).updateSelect(returnField, value) ;
     }
   }

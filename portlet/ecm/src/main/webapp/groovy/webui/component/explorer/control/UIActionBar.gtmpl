@@ -44,6 +44,8 @@
 		      <a class="SearchIcon" href="<%=uicomponent.event("SimpleSearch")%>" title="Quick Search"><span></span></a>
 		      <div class="SeparatorLine Separator"><span></span></div>
 		      <div class="SwitchSearch" onclick="<%=uicomponent.event("AdvanceSearch")%>" title="Advance Search"><span></span></div>
+		      <div class="SeparatorLine Separator"><span></span></div>
+		      <div class="SavedQueries" onclick="<%=uicomponent.event("SavedQueries")%>" title="Saved queries"><span></span></div>
 		    </div>
 		  </div>
 	  </div>

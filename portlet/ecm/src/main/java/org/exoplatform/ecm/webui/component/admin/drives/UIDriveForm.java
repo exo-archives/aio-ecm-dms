@@ -136,10 +136,13 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String icon = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
-      if(icon != null && icon.trim().length() > 0) {
+      String iconPath = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
+      if(iconPath != null && iconPath.trim().length() > 0) {
         try {
-          rservice.getRepository(repository).getSystemSession("digital-assets").getItem(icon) ;
+          if(iconPath.indexOf(":/") > -1) {
+            String[] paths = iconPath.split(":/") ;
+            rservice.getRepository(repository).getSystemSession(paths[0]).getItem("/" + paths[1]) ;
+          }
         } catch(Exception e) {
           uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
                                                   ApplicationMessage.WARNING)) ;
@@ -147,9 +150,9 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
           return ;
         }  
       } else {
-        icon = "" ;
+        iconPath = "" ;
       }
-      dservice_.addDrive(name, workspace, permissions, path, views, icon, viewReferences, 
+      dservice_.addDrive(name, workspace, permissions, path, views, iconPath, viewReferences, 
                          viewNonDocument, viewSideBar, repository, allowCreateFolder) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;

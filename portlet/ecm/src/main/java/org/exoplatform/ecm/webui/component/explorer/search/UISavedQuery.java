@@ -15,8 +15,12 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.organization.Membership;
@@ -27,6 +31,7 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
@@ -46,9 +51,10 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 
-public class UISavedQuery extends UIContainer {
+public class UISavedQuery extends UIContainer implements UIPopupComponent {
 
   private List<Node> sharedQueries_ = new ArrayList<Node>() ;
+  private boolean isQuickSearch_ = false ;
 
   public UISavedQuery() throws Exception {        
     addChild(UIPageIterator.class, null, "SavedQueryIterator");
@@ -110,9 +116,16 @@ public class UISavedQuery extends UIContainer {
   
   public List<Node> getSharedQueries() { return sharedQueries_ ; }
   
+  public void activate() throws Exception { }
+  
+  public void deActivate() throws Exception { }
+  
+  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
+  
   static public class ExecuteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
+      UIJCRExplorer uiExplorer = uiQuery.getAncestorOfType(UIJCRExplorer.class) ;
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
@@ -120,19 +133,38 @@ public class UISavedQuery extends UIContainer {
       UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class) ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
       String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIECMSearch uiSearch = uiQuery.getParent() ;
-      uiSearch.setRenderedChild(UISearchResult.class) ;
-      UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class); 
+      UIComponent uiSearch = null;
+      UISearchResult uiSearchResult = null ;
+      if(uiQuery.isQuickSearch_) {
+        uiSearch = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class) ;
+        uiSearchResult = ((UIDocumentWorkspace)uiSearch).getChild(UISearchResult.class) ;
+        uiSearchResult.setIsQuickSearch(true) ;
+      } else {
+        uiSearch = uiQuery.getParent() ;
+        ((UIECMSearch)uiSearch).setRenderedChild(UISearchResult.class) ;
+        uiSearchResult = ((UIECMSearch)uiSearch).getChild(UISearchResult.class); 
+      }
       QueryResult queryResult = null ;
       try {
         queryResult = queryService.execute(queryPath, wsName, repository) ;
+        if(queryResult == null || queryResult.getNodes().getSize() ==0) {
+          uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)) ; 
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
+          return ;
+        }
         uiSearchResult.resultMap_.clear() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null)) ;
-        uiSearch.setRenderedChild(UISavedQuery.class) ;
+        if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
         return ;
+      }
+      if(uiQuery.isQuickSearch_) {
+        ((UIDocumentWorkspace)uiSearch).setRenderedChild(UISearchResult.class) ;
+        UIPopupAction uiPopup = uiExplorer.getChild(UIPopupAction.class) ;
+        uiPopup.deActivate() ;
       }
     }
   }

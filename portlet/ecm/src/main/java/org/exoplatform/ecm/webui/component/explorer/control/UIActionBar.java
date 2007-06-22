@@ -57,6 +57,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataCon
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
+import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchContainer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
@@ -119,6 +120,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ImportNodeActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
       @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.SavedQueriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
@@ -704,7 +706,7 @@ public class UIActionBar extends UIForm {
       UIJCRBrowser uiJCRBrowser = uiManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(null) ;
       uiJCRBrowser.setRepository(repository) ;
-      uiJCRBrowser.setWorkspace(cmsService.getWorkspace(repository)) ;
+      uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), true) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(EXO_TAXONOMIES_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiCateAddedList, null) ;
@@ -754,7 +756,7 @@ public class UIActionBar extends UIForm {
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(new String[] {Utils.EXO_ARTICLE}) ;
       uiJCRBrowser.setRepository(repository) ;
-      uiJCRBrowser.setWorkspace(cmsService.getWorkspace(repository)) ;
+      uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), true) ;
       uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
@@ -898,6 +900,17 @@ public class UIActionBar extends UIForm {
       UISearchContainer uiSearchContainer =
         event.getSource().createUIComponent(UISearchContainer.class, null, null) ;
       uiPopupAction.activate(uiSearchContainer, 800, 500) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+    }
+  }
+  
+  static public class SavedQueriesActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
+      UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null) ;
+      uiSavedQuery.setIsQuickSearch(true) ;
+      uiPopupAction.activate(uiSavedQuery, 700, 400) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
