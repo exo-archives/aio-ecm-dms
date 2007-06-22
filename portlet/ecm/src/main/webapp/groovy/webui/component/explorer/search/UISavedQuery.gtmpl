@@ -36,7 +36,11 @@
 	  	      even = !even ;
       %>
 	          <tr class="$rowClass">
-	            <td><div class="Text"><%=query.getStoredQueryPath()%></div></td>
+	            <%
+	              String storedQueryPath = query.getStoredQueryPath() ;
+	              storedQueryPath =  storedQueryPath.substring(storedQueryPath.lastIndexOf("/") + 1, storedQueryPath.length()) ;
+	            %>
+	            <td><div class="Text"><%=storedQueryPath%></div></td>
 	            <td><div class="Text"><%=query.getLanguage()%></div></td>
 	            <td>
 	            	<%
@@ -63,7 +67,7 @@
 	  	      even = !even ;
 	  	   %>
 		  	   <tr class="$rowClass">
-            <td><div class="Text"><%=sharedQueries.getPath()%></div></td>
+            <td><div class="Text"><%=sharedQueries.getName()%></div></td>
             <td><div class="Text"><%=sharedQueries.getProperty("jcr:language").getString()%></div></td>
             <td>
             	<div class="Text" title="<%=sharedQueries.getProperty("jcr:statement").getString()%>">
