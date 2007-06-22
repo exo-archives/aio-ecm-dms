@@ -127,7 +127,6 @@
 }
 
 .UISubContent .UIDocumentContentInfo .DocumentLabel {
-	font-size: 11px;
 	margin-left: 20px;
   line-height: 16px;
 }
@@ -141,13 +140,11 @@
 }
 
 .UISubContent .UIDocumentContentInfo .AuthorNameLabel {
-	font-size: 11px;
   line-height: 20px;
   color: gray;
 }
 
 .UISubContent .UIDocumentContentInfo .DateTimeLabel {
-	font-size: 11px;
   line-height: 20px;
   color: gray;
 }
@@ -160,7 +157,6 @@
 
 .ViewMoreDocument a{
   margin-right: 10px;
-  font-size: 11px;
   color: #058ee6;
   float: left;
   padding-left: 3px;
@@ -192,6 +188,5 @@
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
 	float: left;
 	color: #b7b7b7;
-	font-size: 11px;
   line-height: 20px;
 }

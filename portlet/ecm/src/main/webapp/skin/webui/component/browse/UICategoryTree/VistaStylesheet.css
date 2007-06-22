@@ -16,7 +16,6 @@
 .UICategoryTree a {
   text-decoration: none;
 	color: #058ee6;
-	font-size: 11px;
 }
 
 .UICategoryTree .TitleCategoryTree {
@@ -51,7 +50,6 @@
 .UICategoryTree .MiddleCategoryTree .RootTreeNode{
 	float: left;
 	font-weight:  bold;
-	font-size: 11px;
 	line-height: 16px; height: 16px;		
 }
 
@@ -71,12 +69,10 @@
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {
 	margin-left: 24px;
 	line-height: 16px;
-	font-size: 11px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategorySelectLabel {
 	margin-left: 24px;
 	line-height: 16px;
 	font-weight:  bold;
-	font-size: 11px;
 }

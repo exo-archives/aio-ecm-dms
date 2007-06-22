@@ -49,7 +49,6 @@
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .Label {
   float: left;
   font-weight: bold;
-  font-size: 11px;
   padding-left: 5px;
 }
 
@@ -183,19 +182,16 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
-  font-size: 11px;
   color: black;
-  line-height: 24px;
+  line-height: 27px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a{
-  font-size: 11px;
   color: black;
   text-decoration: none;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
-  font-size: 11px;
   color: #2e61b6;
 }
 /*############################## -- End UITreeExplorer   -- ##############################*/

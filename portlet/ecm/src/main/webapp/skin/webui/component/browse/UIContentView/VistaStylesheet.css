@@ -23,8 +23,7 @@
 .UIContentView .TiteContentView a {
 	float: left;
 	margin-left: 6px;
-	line-height: 18px; vertical-align: middle;
-	font-size: 11px; font-weight: bold;
+	line-height: 18px; font-weight: bold;
 	color: #058ee6;
 }
 
@@ -91,7 +90,6 @@
 	height: 16px;
 	line-height: 16px;
 	font-weight: bold;
-	font-size: 11px;
 }
 
 .UIContentView .SubFormContent .Author {

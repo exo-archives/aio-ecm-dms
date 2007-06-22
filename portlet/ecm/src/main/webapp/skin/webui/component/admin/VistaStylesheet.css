@@ -17,7 +17,6 @@
 }
 /***********************UIRepositoryControl**************************/
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
-	font-size: 11px ;
   background: url('VistaSkin/background/ECMAdminTitleBar1x35.gif') repeat-x left top ; 
   height: 35px;
 }
@@ -51,7 +50,6 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .UISelect .SelectedItemLabel {
-	
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
@@ -133,7 +131,7 @@
 .UIECMAdminPortlet .UIWorkspaceWizard .WizardLabel {
 	float: left;
  	vertical-align: middle;
-  font-size: 11px; font-weight: bold; 
+  font-weight: bold; 
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction {
@@ -144,8 +142,8 @@
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
   float: left;
-  height: 33px; line-height: 33px; vertical-align: middle;
-  font-size: 11px; font-weight: bold;
+  height: 33px; line-height: 33px;
+  font-weight: bold;
   margin: 0px 10px 0px 15px;
 }
 
@@ -158,7 +156,7 @@
   float: left;
   width: 18px; height: 18px; 
   line-height: 18px; vertical-align: middle;
-  font-size: 11px; font-weight: bold;
+  font-weight: bold;
   text-align: center; text-decoration: none; color: black;
   margin: 7px 3px 0px 3px;
   border: solid 1px gray;
@@ -191,7 +189,7 @@
 
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
-  border: solid 1px #b7b7b7;
+  border: solid 1px #808080;
 }
 
 .UIECMAdminPortlet .UIFormGrid input.radio {
@@ -210,7 +208,6 @@
 .UIECMAdminPortlet .UIECMPortletLayout {
   background: url('VistaSkin/background/ECMAdminTitleBar1x33.gif') repeat-x left top;
   border-collapse: collapse ;
-  font-size: 11px ;
 }
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
@@ -249,7 +246,6 @@
 .UIECMAdminPortlet .UIECMAdminFunctionTitle .FunctionTitle {
 	line-height: 20px;
 }
-
 
 .UIECMAdminPortlet .UIResizableBlock {
   height: 400px;
@@ -442,6 +438,7 @@
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
   width: 95%;
   margin: auto;
+  padding: 15px 10px;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction {
@@ -477,6 +474,7 @@
 
 .UIECMAdminPortlet .CBTemplate .CBTempForm .UIAction{
 	width: 250px;
+	padding-left: 30px;
 }
 
 .UIECMAdminPortlet .UIECMTemplateList .UIAction {
@@ -554,7 +552,8 @@
 }
 
 .UIECMScripts .ECMScriptForm .UIAction {
-  width: 255px;
+  width: 260px;
+  padding-left: 30px;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
@@ -577,6 +576,12 @@
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/
+
+.UITemplatesManager {
+  width:auto;
+  padding-top: 7px;
+  border: none;
+}
 
 .UITemplatesManager .UIGrid .ActionContainer {
   width: 70px ;
@@ -604,13 +609,6 @@
   width: 300px;  height: 300px; 
   margin: 5px ;
 }
-
-.UITemplatesManager {
-  width:auto;
-  padding-top: 7px;
-  border: none;
-}
-
 .UITemplatesManager .UITabPane .UIDialogTab{
 	padding: 10px;
 }
@@ -643,6 +641,10 @@
   padding: 0px 0px 10px 0px;
 }
 
+.UITemplatesManager .UIFormTabPane .HorizontalLayout .template { 
+	height: 305px;
+	padding-top: 15px;
+}
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UINamespaceManager .HorizontalLayout {
@@ -681,7 +683,7 @@
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .UIAction {
-	width: 190px;
+	width: 160px;
 }
 
 .UIQueriesManager .UIQueriesList .UIAction {

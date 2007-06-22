@@ -192,38 +192,39 @@
 
 /*############################## -- End UIExport   -- ##############################*/
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
-.UIFastContentCreatorPortlet .Explorer {
-  margin-right: 10px;
+.Explorer {
+  margin-bottom: 10px;
   float: left ;
   width: 230px ;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
+
+.Explorer .ExplorerTree {
   background: #f3f3f3;
   border: solid 1px #c6c6c9;
   padding: 1px;
   margin-top: 1px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
+.Explorer .InnerExplorerTree {
   padding: 10px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
+.Explorer .ExplorerTree .Node {
   line-height: 32px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .NodeLevel1 {
+.Explorer .ExplorerTree .NodeLevel1 {
   height: 30px; line-height: 30px;
   padding-left: 15px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .NodeLevel2 {
+.Explorer .ExplorerTree .NodeLevel2 {
   height: 30px; line-height: 30px;
   padding-left: 30px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .ExpandIcon {
+.Explorer .ExplorerTree .ExpandIcon {
   float: left;
   width: 16px; height: 16px;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
@@ -231,7 +232,7 @@
   margin: 1px 0px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .ColapseIcon {
+.Explorer .ExplorerTree .ColapseIcon {
   float: left;
   width: 16px; height: 16px;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
@@ -239,23 +240,23 @@
   margin: 3px 0px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .NodeIcon {
+.Explorer .ExplorerTree .NodeIcon {
   float: left;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .NodeLabel {
+.Explorer .ExplorerTree .NodeLabel {
   float: left;
   color: #01060d;
   padding: 0px 10px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .NodeLabelSelected {
+.Explorer .ExplorerTree .NodeLabelSelected {
   float: left;
   color: #0848c1;
   padding: 0px 10px;
 }
 
-.UIFastContentCreatorPortlet .UITreeList .UIGrid {
+.UITreeList .UIGrid {
   width: 310px;
   margin-left: 5px ;
 }
@@ -350,7 +351,7 @@
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   margin: auto;
-  padding: 10px;
+  padding: 15px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .FieldContainer .SelectFileFrame .SelectFileLabel {
@@ -371,7 +372,4 @@
   background: #ffffff;
 }
 
-.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
-  padding: 4px 0px;
-}
 /*############################## -- End UIActionManager   -- ##############################*/

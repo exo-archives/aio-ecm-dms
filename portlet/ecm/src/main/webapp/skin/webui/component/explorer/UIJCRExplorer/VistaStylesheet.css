@@ -53,7 +53,6 @@
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
   float: left;      
-  font-size: 11px ;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl a { 
@@ -62,7 +61,7 @@
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl th {
   line-height: 22px; text-align: left; 
-  font-size: 11px ; font-weight: normal;
+  font-weight: normal;
   background: url('VistaSkin/background/ThGridRepeatBg1x22.png') repeat-x center;
   border-bottom: solid 1px #d8d8d6; border-right: solid 1px #b0b0b0;
   padding: 0px 10px;
@@ -258,6 +257,10 @@
 	margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIExternalMetadataForm .FormContainer {
+	width: 300px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UITaggingForm .FormContainer {
 	width: 400px;
 	margin: auto;
@@ -318,6 +321,10 @@
 
 /*===========================DocumentFormController=====================*/
 
+.UIJCRExplorerPortlet .UIDocumentFormController {
+ 	padding: 13px 0px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 185px;
 	padding-left: 20px;
@@ -335,16 +342,21 @@
   padding-bottom: 3px; 
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController {
- 	padding: 13px 0px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIAction {
   padding-top: 12px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
   width: auto;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid .FieldLabel {
+	width: 160px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid {
+	width: 500px;
+	margin: 10px auto;	
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
@@ -696,8 +708,10 @@
   border-top: solid 1px #cccccc;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser{
-	padding: 10px;
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser {
+	width: 560px;
+	margin: 10px auto 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {

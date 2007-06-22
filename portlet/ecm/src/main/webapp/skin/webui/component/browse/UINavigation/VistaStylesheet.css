@@ -48,7 +48,6 @@
 
 .UIContextMenu .NodeHistoryContainer .NodeLabel {
 	white-space: nowrap ;
-	font-size: 11px;
   line-height: 16px;
   margin-left: 3px;
 }
@@ -94,7 +93,6 @@
 
 .UICBNavigation .UICBMainNavigation {
 	height: 28px;
-  font-size: 11px;
   overflow: hidden;
 }
 
