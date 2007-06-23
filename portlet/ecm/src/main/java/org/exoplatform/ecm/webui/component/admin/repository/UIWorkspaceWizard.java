@@ -226,7 +226,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
       uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue(String.valueOf(workSpace.getLockTimeOut())) ;
       uiWSFormStep2.getUIStringInput(FIELD_CONTAINER).setValue(container.getType()) ;
       uiWSFormStep2.getUIStringInput(FIELD_SOURCENAME).setValue(container.getParameterValue("sourceName")) ;
-      uiWSFormStep2.getUIFormSelectBox(FIELD_DBTYPE).setValue(container.getParameterValue("db-type")) ;
+      uiWSFormStep2.getUIFormSelectBox(FIELD_DBTYPE).setValue(container.getParameterValue("dialect")) ;
       uiWSFormStep2.getUIFormCheckBoxInput(FIELD_ISMULTI).setChecked(Boolean.parseBoolean(container.getParameterValue("multi-db"))) ;
       ArrayList<ValueStorageEntry> valueStore = container.getValueStorages() ;
       String storeType = valueStore.get(0).getType() ;
@@ -473,7 +473,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UIPopupComponent
         String storeType, String filterType, long bufferValue, String swapPath, String storePath, boolean isUpdateStore) {
       List containerParams = new ArrayList();
       containerParams.add(new SimpleParameterEntry("sourceName", sourceName)) ;
-      containerParams.add(new SimpleParameterEntry("db-type", dbType)) ;
+      containerParams.add(new SimpleParameterEntry("dialect", dbType)) ;
       containerParams.add(new SimpleParameterEntry("multi-db", String.valueOf(isMulti))) ;
       containerParams.add(new SimpleParameterEntry("update-storage", String.valueOf(isUpdateStore))) ;
       containerParams.add(new SimpleParameterEntry("max-buffer-size", String.valueOf(bufferValue))) ;
