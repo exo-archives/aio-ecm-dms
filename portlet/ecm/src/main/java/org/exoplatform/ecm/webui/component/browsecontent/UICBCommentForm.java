@@ -7,6 +7,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -16,6 +17,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
@@ -39,7 +41,6 @@ import org.exoplatform.webui.form.validator.EmptyFieldValidator;
 
 public class UICBCommentForm extends UIForm implements UIPopupComponent {
   final public static String DEFAULT_LANGUAGE = "default".intern() ;
-  final private static String FIELD_NAME = "name" ;
   final private static String FIELD_EMAIL = "email" ;
   final private static String FIELD_WEBSITE = "website" ;
   final private static String FIELD_COMMENT = "comment" ;
@@ -47,10 +48,9 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
 
 
   public UICBCommentForm() throws Exception {
-    addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-    addChild(new UIFormTextAreaInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(EmptyFieldValidator.class)) ;
+    addChild(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(EmptyFieldValidator.class)) ;
     setActions(new String[] {"Save", "Cancel"}) ;
   }
 
@@ -65,14 +65,18 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       uiPopupAction.deActivate() ;
     }
   }  
+  
+  public void activate() throws Exception { }
+  public void deActivate() throws Exception { }
 
   public static class SaveActionListener extends EventListener<UICBCommentForm>{
     public void execute(Event<UICBCommentForm> event) throws Exception {
       UICBCommentForm uiForm = event.getSource() ;
-      String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      String name = event.getRequestContext().getRemoteUser() ;
+      if(name == null || name.trim().length() == 0) name = "anonymous" ;
       String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
       String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
-      String comment = uiForm.getUIFormTextAreaInput(FIELD_COMMENT).getValue() ;
+      String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue() ;
       try {
         String language = uiForm.getAncestorOfType(UIBrowseContentPortlet.class).
                                  findFirstComponentOfType(UIDocumentDetail.class).getLanguage() ;
@@ -94,15 +98,4 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       uiPopupAction.deActivate() ;
     }
   }
-
-  public void activate() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void deActivate() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
 }

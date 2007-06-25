@@ -16,14 +16,15 @@
     </tr>
   </thead>
   <tbody>
-    <%
+  <%
+    if(uicomponent.getTasks().size() > 0) {
       def rowClass = null ;
 	    boolean even = true ;
       for(task in uicomponent.getTasks()) {
         if(even) rowClass = "EvenRow" ;  
 	      else rowClass =  "OddRow" ; 
 	      even = !even ;
-    %>
+  %>
 	    <tr class="$rowClass">
 	      <td class="text"><img src="<%=uicomponent.getIconURL(task)%>"/></td>
 	      <td class="text">
@@ -42,6 +43,13 @@
 	      <td class="text"><%=uicomponent.getProcessInstanceStartDate(task)%></td>
 	      <td class="text"><a href="<%=uicomponent.event("ManageState", task.getId())%>">Manage</a></td>
 	    </tr>
-    <%}%>
+  <%
+      }
+    } else {
+  %>
+      <tr class="EvenRow"> 
+        <td colspan="9" style="text-align:center;font-style:italic"><%=_ctx.appRes("UITaksList.msg.no-task")%></td>
+      </tr>
+  <%}%>
   </tbody>
 </table>

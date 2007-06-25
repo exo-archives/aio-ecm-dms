@@ -161,13 +161,13 @@
 		  		  if(comment.hasProperty("exo:commentorEmail")) {
 		  		    String email = comment.getProperty("exo:commentorEmail").getString() ;
 		  		%>
-    		  		- Email:<a href="mailto:$email">$email</a> -
+    		  		- Email: <a href="mailto:$email">$email</a> -
     		  <%
     		    } 
 			  		if(comment.hasProperty("exo:commentorSite")) {
 			  		  String site = comment.getProperty("exo:commentorSite").getString() ;
 		  		%>
-		  			  (Site:<a href="$site" target="_blank">$site</a> ) - at
+		  			  (Site: <a href="$site" target="_blank">$site</a>) - at
 		  		<%}%>
 		  		<%if(comment.hasProperty("exo:commentDate")){%>
 		  			<%=dateFormat.format(comment.getProperty("exo:commentDate").getDate().getTime())%>
