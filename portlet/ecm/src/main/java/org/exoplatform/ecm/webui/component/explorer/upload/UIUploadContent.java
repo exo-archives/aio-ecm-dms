@@ -12,9 +12,13 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -40,6 +44,14 @@ public class UIUploadContent extends UIContainer {
   public Node getUploadedNode() { return ((UIUploadContainer)getParent()).getUploadedNode() ; }
   
   public List<String> getExternalList() throws Exception { 
+    NodeType[] mixinTypes = getUploadedNode().getMixinNodeTypes() ;
+    for(NodeType nodeType : mixinTypes) {
+      for(NodeType superType : nodeType.getSupertypes()) {
+        if(superType.getName().equals(Utils.EXO_METADATA) && !externalList_.contains(nodeType.getName())) {
+          externalList_.add(nodeType.getName()) ;
+        }
+      }
+    }
     if(getUploadedNode().hasNode(Utils.JCR_CONTENT)) {
       for(NodeType nodeType : getUploadedNode().getNode(Utils.JCR_CONTENT).getMixinNodeTypes()) {
         if(nodeType.isMixin() && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
@@ -62,8 +74,21 @@ public class UIUploadContent extends UIContainer {
   
   static public class EditActionListener extends EventListener<UIUploadContent> {
     public void execute(Event<UIUploadContent> event) throws Exception {
-      UIUploadContainer uiUploadContainer = event.getSource().getParent() ;
+      UIUploadContent uiUploadContent = event.getSource() ;
+      UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
+      MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
+      UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class) ;
+      String repository = uiExplorer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String template = metadataService.getMetadataTemplate(nodeType, true, repository) ;
+      if(template == null || template.trim().length() == 0) {
+        UIApplication uiApp = uiUploadContent.getAncestorOfType(UIApplication.class) ;
+        Object[] args = {nodeType} ;
+        uiApp.addMessage(new ApplicationMessage("UIUploadContent.msg.has-not-template", args, 
+                         ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       uiUploadContainer.removeChild(UIAddMetadataForm.class) ;
       UIAddMetadataForm uiAddMetadataForm = 
         uiUploadContainer.createUIComponent(UIAddMetadataForm.class, null, null) ;

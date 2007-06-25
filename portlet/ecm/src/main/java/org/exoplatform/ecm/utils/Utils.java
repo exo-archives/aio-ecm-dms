@@ -77,6 +77,7 @@ public class Utils {
   final static public String EXO_ARTICLE = "exo:article" ;
   final static public String EXO_LANGUAGE = "exo:language" ;
   final static public String LANGUAGES = "languages" ;
+  final static public String EXO_METADATA = "exo:metadata" ;
   final static public String MIX_REFERENCEABLE = "mix:referenceable" ;
   final static public String MIX_VERSIONABLE = "mix:versionable" ;
   final static public String NT_RESOURCE = "nt:resource" ;
