@@ -756,8 +756,8 @@ public class UIActionBar extends UIForm {
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setFilterType(new String[] {Utils.EXO_ARTICLE}) ;
       uiJCRBrowser.setRepository(repository) ;
-      uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), true) ;
-      uiJCRBrowser.setRootPath(cmsService.getJcrPath(CMS_PATH)) ;
+      uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), false) ;
+      uiJCRBrowser.setRootPath("/") ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;

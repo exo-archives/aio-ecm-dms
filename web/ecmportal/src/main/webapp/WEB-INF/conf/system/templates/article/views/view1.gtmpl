@@ -332,7 +332,7 @@
 															    String wsName = rel.getSession().getWorkspace().getName() ;
 														      String actionLink ;
 															    if(!uicomponent.isRssLink()) { 
-															      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+															      actionLink = uicomponent.event("ChangeNode", rel.getPath() + "&workspaceName=" + wsName) ;
 														      } else { 
 															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
 														      }

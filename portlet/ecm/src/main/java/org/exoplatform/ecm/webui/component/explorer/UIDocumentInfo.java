@@ -38,6 +38,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -105,9 +106,17 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   }
   
   public Node getNodeByUUID(String uuid) throws Exception{
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Session session = uiExplorer.getSession() ;
-    return session.getNodeByUUID(uuid);
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    String[] workspaces = manageRepo.getWorkspaceNames() ;
+    for(String ws : workspaces) {
+      try{
+        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+      }catch(Exception e) {
+        
+      }      
+    }
+    return null;
   }
 
   public List<String> getMultiValues(Node node, String name) throws Exception {
@@ -482,7 +491,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       String prefPath = uiExplorer.getPreferencesPath() ;
       String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
       if((prefPath.length() > 0) && (uiExplorer.getCurrentWorkspace().equals(prefWorkspace))) {
-        if(!uri.contains(prefPath)) {         
+        if(!uri.contains(prefPath)) {
           JCRExceptionManager.process(uiApp,new PathNotFoundException());
           return ;
         }
@@ -497,6 +506,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
+          //e.printStackTrace() ;
           JCRExceptionManager.process(uiApp, e);
         }
       } else {
@@ -511,6 +521,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
+          //e.printStackTrace() ;
           JCRExceptionManager.process(uiApp, e);
         }
       }

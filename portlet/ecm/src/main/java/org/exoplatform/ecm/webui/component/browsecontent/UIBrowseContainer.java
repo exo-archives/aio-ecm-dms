@@ -69,7 +69,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
-  private boolean isShowCategoryTree_ = false ;
+  private boolean isShowCategoryTree_ = true ;
   private boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
   private boolean isShowDocumentList_ = false ;

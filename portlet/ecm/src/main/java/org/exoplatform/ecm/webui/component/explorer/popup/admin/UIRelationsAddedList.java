@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.relations.RelationsService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -57,8 +60,12 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     RelationsService relateService = getApplicationComponent(RelationsService.class) ;
     try {
-      relateService.addRelation(uiJCRExplorer.getCurrentNode(), value, uiJCRExplorer.getSession()) ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getSession())) ;
+      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String wsName = value.substring(0, value.indexOf(":")) ;
+      String path = value.substring(value.indexOf(":") + 1) ;
+      Session session = getApplicationComponent(RepositoryService.class).getRepository(repository).getSystemSession(wsName) ;
+      relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, session) ;
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), session)) ;
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
