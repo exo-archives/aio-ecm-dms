@@ -20,6 +20,10 @@
   border: 1px solid #8D919D;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIFormWithTitle {
+	border: none;	
+}
+
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
 }
@@ -340,10 +344,6 @@
 	padding-left: 20px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
-  border: 1px solid #e1e1e1;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .HorizontalLayout {
   padding: 10px;
 }
@@ -530,7 +530,7 @@
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch {
-  width: 450px;
+  width: 550px;
   margin: auto;
 }
 
@@ -649,7 +649,7 @@
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm {
 	width: auto;
-	padding: 0px 30px;
+	padding: 30px;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
@@ -681,6 +681,7 @@
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
+	height: auto;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
