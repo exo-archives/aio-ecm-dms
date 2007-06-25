@@ -41,10 +41,12 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UITaxonomyManager extends UIContainer {
-
   private ClipboardCommand clipboard_ = new ClipboardCommand() ;
+  private TaxonomyNode rootNode_ ;
   
-  public UITaxonomyManager() throws Exception {}
+  public UITaxonomyManager() throws Exception {
+    resetTaxonomyRootNode() ;
+  }
   
   private String getRepository() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
@@ -62,15 +64,11 @@ public class UITaxonomyManager extends UIContainer {
     return repository ;
   }
   
-  private TaxonomyNode getRootTaxonomyNode() throws Exception {
-    try{
-      return new TaxonomyNode(getApplicationComponent(CategoriesService.class)
-          .getTaxonomyHomeNode(getRepository()), 0) ;
-    }catch(RepositoryException e) { 
-      
-    }
-    return null ;
+  public void resetTaxonomyRootNode() throws Exception {
+    rootNode_ = new TaxonomyNode(getApplicationComponent(CategoriesService.class)
+        .getTaxonomyHomeNode(getRepository()), 0) ;
   }
+  private TaxonomyNode getRootTaxonomyNode() throws Exception { return rootNode_ ; }
   
   public void initPopup(String path) throws Exception {
     removeChildById("TaxonomyPopup") ;
@@ -114,6 +112,7 @@ public class UITaxonomyManager extends UIContainer {
       try {
         uiManager.getApplicationComponent(CategoriesService.class)
         .removeTaxonomyNode(path, uiManager.getRepository()) ;
+        uiManager.resetTaxonomyRootNode() ;
       } catch(Exception e) {
         Object[] arg = { path } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg)) ;
@@ -152,7 +151,8 @@ public class UITaxonomyManager extends UIContainer {
         .getTaxonomyNode(realPath, uiManager.getRepository()) ;
         String destPath = destNode.getPath() + srcPath.substring(srcPath.lastIndexOf("/"));       
         uiManager.getApplicationComponent(CategoriesService.class)
-        .moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;                        
+        .moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
+        uiManager.resetTaxonomyRootNode() ;
       } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null)) ;
         return ;
