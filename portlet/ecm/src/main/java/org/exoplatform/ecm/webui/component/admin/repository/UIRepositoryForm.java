@@ -391,8 +391,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupAction.class) ;
       UIPopupAction uiWorkspaceAction = uiControl.getChild(UIPopupAction.class) ;
-      UIWorkspaceWizard uiWorkspaceWizard = uiWorkspaceAction.activate(UIWorkspaceWizard.class, 600) ; 
-
+      UIWorkspaceWizardContainer uiWsContainer = uiWorkspaceAction.activate(UIWorkspaceWizardContainer.class, 600) ; 
       WorkspaceEntry wsdf = null ;
       RepositoryEntry  repoEntry = rService.getDefaultRepository().getConfiguration() ;
       for(WorkspaceEntry ws : repoEntry.getWorkspaceEntries()) {
@@ -401,8 +400,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           break ;
         }
       }
-      uiWorkspaceWizard.isNewWizard_ = true ;
-      uiWorkspaceWizard.refresh(wsdf) ;
+      uiWsContainer.initWizard(true, wsdf) ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
@@ -426,9 +424,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class) ;
       UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
-      UIWorkspaceWizard uiWorkspaceWizard = uiPopupAction.activate(UIWorkspaceWizard.class, 600) ; 
-      uiWorkspaceWizard.isNewWizard_ = false ;
-      uiWorkspaceWizard.refresh(uiForm.getWorkspace(workspaceName)) ;
+      UIWorkspaceWizardContainer uiWsContainer = uiPopupAction.activate(UIWorkspaceWizardContainer.class, 600) ; 
+      uiWsContainer.initWizard(false, uiForm.getWorkspace(workspaceName)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
