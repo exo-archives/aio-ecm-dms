@@ -19,6 +19,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -99,15 +100,31 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
 
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>();
+    String repository = 
+      ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
     try {
       Value[] vals = node_.getProperty(Utils.EXO_RELATION).getValues();
       for (Value val : vals) {
         String uuid = val.getString();
-        Node currentNode = node_.getSession().getNodeByUUID(uuid);
-        relations.add(currentNode);
+        Node relationNode = getNodeByUUID(uuid, repository);
+        relations.add(relationNode);
       }
     } catch (Exception e) {}
     return relations;
+  }
+  
+  private Node getNodeByUUID(String uuid, String repository) throws Exception{ 
+    ManageableRepository manageRepo = 
+      getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    String[] workspaces = manageRepo.getWorkspaceNames() ;
+    for(String ws : workspaces) {
+      try{
+        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+      }catch(Exception e) {
+        
+      }      
+    }
+    return null;
   }
   
   public List<Node> getAttachments() throws Exception {
