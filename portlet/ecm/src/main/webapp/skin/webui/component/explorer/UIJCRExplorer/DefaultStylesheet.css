@@ -28,15 +28,27 @@
 .UIJCRExplorerPortlet .UIFormWithTitle {
   width: 97%;
   margin: 0px auto;
+  border: solid 1px #939393;
+  border-top: none;
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle{
-  width: 99.6%;
+  width: 99.7%;
   margin: 0px auto;
   background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid input {
+  padding-left: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIFormGrid textarea {
+  padding: 3px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIFormGrid select {
   padding-left: 3px;
   border: solid 1px #b7b7b7;
 }
@@ -277,7 +289,6 @@
   border-bottom: none;
 }
 
-
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*===========================Folder Form=====================*/
@@ -434,9 +445,17 @@
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
-  width: auto;
+   width: auto;
   border: solid 1px #939393;
   border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
+	border: solid 1px #939393;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
+	border: solid 1px #939393;
 }
 
 /*=============================UICommentForm=======================*/
@@ -668,11 +687,6 @@
   background: #f3f3f3;
 }
 
-.UIJCRExplorerPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
-	float: left ;
-	margin: 2px 5px 0px 5px ;
-}
-
 /*=================================UITabContentContainer==============================*/
 
 .UIJCRExplorerPortlet .UITabContentContainer .UITabContent .UIActionViewContainer .UIGrid td {
@@ -711,12 +725,58 @@
 
 /*=================================UICategoryManager==============================*/
 
+.UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
+	width: 100px;
+}
+
+.UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+}
+
+.UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	border: solid 1px white;
+}
+
+.UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+}
+
+.UIJCRExplorer .UIPopupWindow .UICategoryManager .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+	width: 100px;
+}
+
 .UIJCRExplorer .UICategoryManager .UIAction{
 	width: 70px;
 }
 
 .UIJCRExplorer .UIRelationManager .UIAction{
 	width: 70px;
+}
+
+.UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+}
+
+.UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	border: solid 1px white;
+}
+
+.UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+}
+
+.UIJCRExplorer .UIPopupWindow .UIRelationManager .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+	width: 100px;
 }
 
 .UIJCRExplorer .UIRenameForm {
@@ -741,4 +801,10 @@
 	line-height: 26px;
 }
 
+/*====================================UIActivateVersion==================================*/
+
+.UIJCRExplorer .UIActivateVersion {
+	border: solid 1px #b7b7b7;
+	margin: 10px;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

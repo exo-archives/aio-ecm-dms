@@ -393,6 +393,10 @@
   padding: 2px 0px 0px 5px;
 }
 
+.UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
+  width: 140px;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 250px ;
   padding-left: 70px;
@@ -579,8 +583,12 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
+  padding: 3px;
+  border: solid 1px #b7b7b7;
+}
+
 }
 
 .UIECMScripts .ECMScriptList .UIAction {
@@ -603,8 +611,10 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
+  padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UICBScripts .CBScriptList .UIAction {
@@ -658,7 +668,6 @@ UIECMAdminPortlet .UIViewManager {
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
-  background: #8eeaaf ;
 }
 
 .UIECMAdminPortlet .Explorer {
@@ -699,9 +708,10 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIForm .textarea {
-  width: 400px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
   padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIFormTabPane .UIAction {

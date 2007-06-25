@@ -267,3 +267,12 @@
 .UIWorkflowPortlet .WorkflowPortletContent .ActionContainer .OverflowContainer {
 	width: 60px;
 }
+
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
+	border-top: solid 1px #AFAEAE;
+	line-height: 26px;
+}

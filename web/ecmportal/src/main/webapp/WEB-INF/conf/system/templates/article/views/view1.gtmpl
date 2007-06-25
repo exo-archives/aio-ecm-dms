@@ -138,6 +138,7 @@
 		
 		.UIArticle .FieldContent {
 		  padding: 1px 8px 5px 0px;
+		  overflow: hidden;
 		}
 		
 		.UIArticle .FieldContent .FieldContainerContent {
@@ -148,7 +149,7 @@
 		
 		.UIArticle .FieldContent .LabelContent{
 		 	padding: 5px 0px 0px 5px;
-		 	overflow: hidden;
+		 	overflow: auto
 		}
 		
     .UIArticle .DocumentRating {
@@ -159,7 +160,7 @@
     .UIArticle .ContainerLinks {
 		 	border-top: dotted 1px #dcdcdc;
 		 	margin: 12px  10px 0px 10px;
-		 	padding-top: 5px;
+		 	padding: 5px;
 		}
 		
 		.UIArticle .ContentLinks {
@@ -332,7 +333,7 @@
 															    String wsName = rel.getSession().getWorkspace().getName() ;
 														      String actionLink ;
 															    if(!uicomponent.isRssLink()) { 
-															      actionLink = uicomponent.event("ChangeNode", rel.getPath() + "&workspaceName=" + wsName) ;
+															      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
 														      } else { 
 															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
 														      }

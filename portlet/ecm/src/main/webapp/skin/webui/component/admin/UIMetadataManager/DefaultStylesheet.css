@@ -22,9 +22,10 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 400px;
-  height: 270px;
+  width: 95%;
+  height: 350px;
   padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIECMAdminPortlet .metadataTypeTab .FormContainer {

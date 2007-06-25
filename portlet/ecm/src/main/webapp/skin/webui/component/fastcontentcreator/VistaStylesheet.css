@@ -52,6 +52,11 @@
   padding-bottom: 10px;
 }
 
+.UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
+	width: 128px;
+	border: solid 1px red;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
   border: none;
 }
@@ -60,6 +65,15 @@
   width: 500px;
   margin: auto;
   padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+  padding: 0px 4px;
+  vertical-align: middle;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+  padding: 4px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout {
@@ -71,10 +85,6 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
 	width: 500px;
 	margin: auto;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer .UIFormInputSet .UIFormGrid td {
-	padding: 4px 8px 4px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIForm .HorizontalLayout .UIFormInputSet {
@@ -109,6 +119,7 @@
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
   margin: 3px 5px 0px 5px;
+  border: solid 1px red;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {

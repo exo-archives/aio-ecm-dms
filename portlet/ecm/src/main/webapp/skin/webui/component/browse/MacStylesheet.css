@@ -426,3 +426,16 @@
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
   width: 170px;
 }
+
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
+  width: 160px;
+}
+
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
+}

@@ -98,6 +98,8 @@
 	width: 500px;
 	margin: auto;
 	background: #efefef;
+	border: none;
+	padding-top: 20px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
@@ -420,3 +422,11 @@
   width: 160px;
 }
 
+.UIBrowseContentPortlet .UITabContent .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIBrowseContentPortlet .UITabContent .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
+}

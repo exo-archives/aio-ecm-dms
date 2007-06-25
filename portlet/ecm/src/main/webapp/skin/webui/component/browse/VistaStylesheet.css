@@ -97,12 +97,25 @@
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 128px;
-	text-align: right;
+	width: 140px;
+	border: solid 1px red;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
 	float: left;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer .UIFormGrid {
+	width: 500px;
+	margin: auto;
+}
+
+.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .FormContainer {
+	width: 500px;
+	margin: auto;
+	background: #efefef;
+	border: none;
+	padding-top: 20px;
 }
 
 .UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormInputSet {
@@ -113,10 +126,6 @@
 .UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer {
   border: none;
   padding: 10px 0px 6px 0px;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
 }
 
 /*############################## -- Begin UIToolBar -- ##############################*/
@@ -410,10 +419,17 @@
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
   padding: 10px;
-  border: solid 1px red;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
   width: 190px;
-  border: solid 1px red;
+}
+
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
 }

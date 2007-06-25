@@ -358,7 +358,6 @@
 .UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
-  background: #e5fcfa;
 }
 
 .UIECMAdminPortlet.Explorer {
@@ -418,6 +417,10 @@
   width: 110px ;
 }
 
+.UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
+  width: 140px;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane {
   width: 95%;
   margin: auto;
@@ -435,7 +438,7 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 270px ;
-  padding-left: 70px;
+  padding-left: 120px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
@@ -570,8 +573,10 @@
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
+  padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIECMScripts .ECMScriptList .UIAction {
@@ -590,8 +595,10 @@
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
+  padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UICBScripts .CBScriptList .UIAction {
@@ -634,11 +641,6 @@
 	width: 90px ;
 }
 
-.UIECMScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
-  height: 300px;
-}
-
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
 
 .UICBScripts .CBScriptList .UIAction {
@@ -675,9 +677,10 @@
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIForm .textarea {
-  width: 400px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
   padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIFormTabPane .UIAction {

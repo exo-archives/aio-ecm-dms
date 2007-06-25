@@ -6,7 +6,9 @@
     def lastComment = commentsList.get(0) ;
 %>
   <style>
-		.Comments {}
+		.Comments {
+			padding: 10px 0px;
+		}
     
      .Comments .CommentBar .LeftCommentBar {
       height: 54px;
@@ -55,14 +57,16 @@
     }
     
      .Comments .CommentInfo a {
-	    color: #0615a5;   	
+	    color: #0489D5;   	
     	font-weight: bold; font-style:normal ;
-    	cursor:pointer;    	
+    	cursor:pointer;
+    	padding-left: 5px;    	
     }
     
     .Comments .CommentInfo a:hover {     	
     	color: blue;
-    	text-decoration:underline;    	     	
+    	text-decoration:underline;
+    	padding-left: 5px;    	     	
     }
     
     .Comments .CommentBox {

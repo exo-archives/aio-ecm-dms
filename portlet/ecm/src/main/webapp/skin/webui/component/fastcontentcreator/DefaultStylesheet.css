@@ -26,15 +26,9 @@
   border: none;
 }
 
-.UIFastContentCreatorPortlet .UIFormWithTitle {
-  margin-top: 0px;
-  margin-bottom: 0px;
-} 
-
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
-  background: #8eeaaf ;
 }
 
 .UIPopupMessages .UIAction {
@@ -57,7 +51,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout {
-  padding-bottom: 10px;
+  padding: 20px 0px 10px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
@@ -80,7 +74,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 10px;
+  padding: 0px 0px 0px 10px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
@@ -131,7 +125,6 @@
 
 .UIFastContentCreatorPortlet .UITreeList .UIGrid {
   width: 315px;
-  margin-left: 10px ;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
@@ -172,7 +165,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-  border:1px solid #E1E1E1;
-  margin:5px 0px;
-  width:560px;
+  border: 1px solid #E1E1E1;
+  margin: 5px 0px;
+  width: 560px;
 }

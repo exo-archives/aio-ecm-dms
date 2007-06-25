@@ -54,7 +54,6 @@
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
-  background: #e5fcfa;
 }
 
 .UIFastContentCreatorPortlet .MultiValueContainer a  {
@@ -117,7 +116,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 10px;
+  padding: 0px 0px 0px 10px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
@@ -150,5 +149,67 @@
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
+	border: none;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #B1B0B0;
+}
+
+.UIFastContentCreatorPortlet .Explorer {
+  margin-right: 10px;
+  float: left ;
+  width: 220px ;
+}
+
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
+  border: solid 1px #c6c6c9;
+  background: #f3f3f3;
+  padding: 1px;
+}
+
+.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
+  line-height: 30px;
+}
+
+.UIFastContentCreatorPortlet .UITreeList .UIGrid {
+  width: 315px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList {
+	padding: 0px;
+	margin: 0px;
+	width: 540px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	border: solid 1px #B1B0B0;
+	width: 540px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px white;
+	width: 536px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: #efefef;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormGrid select{
+	width: 100px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+	width: 100px;
 }
 

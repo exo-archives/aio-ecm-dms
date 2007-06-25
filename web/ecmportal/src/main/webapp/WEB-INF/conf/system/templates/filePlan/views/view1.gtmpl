@@ -49,9 +49,11 @@
   	overflow: hidden;
  		padding: 0px;
   }
+  
   .UIDocumentWorkspace .NavigationButtonContainer {
     display: none;
     float: right;
+    cursor: pointer;
   }
   
   .LabelFielPlan {

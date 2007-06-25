@@ -372,6 +372,10 @@
   margin: auto ; margin-top: 10px; margin-bottom: 10px;
 }
 
+.UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
+  width: 140px;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 285px ;
   padding-top: 10px;

@@ -758,4 +758,20 @@
 .UIJCRExplorer .UICategoryManager .UIAction {
 	width: 70px;
 }
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp {
+  width: 97%;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle {
+  width: 97%;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle{
+  width: 99.6%;
+  margin: 0px auto;
+  background: #efefef;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

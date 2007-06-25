@@ -288,3 +288,12 @@
 .UIWorkflowPortlet .UITask .UIForm .UIAction {
   width: 240px;
 }
+
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
+}
