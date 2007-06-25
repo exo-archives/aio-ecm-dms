@@ -129,7 +129,9 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       if(templateHome.hasNode(VIEW1)) template = templateHome.getNode(VIEW1) ;
       else template = templateHome.addNode(VIEW1, EXO_TEMPLATE) ;
     }    
-    template.setProperty(EXO_ROLES_PROP, role.split(";")) ;
+    String[] arrRoles = {} ;
+    if(role != null && role.indexOf(";") > -1) arrRoles = role.split(";") ;
+    template.setProperty(EXO_ROLES_PROP, arrRoles) ;
     template.setProperty(EXO_TEMPLATE_FILE_PROP, content) ;
   }
   
