@@ -565,7 +565,8 @@
 /*------------------------------UICBScripts------------------------*/
 
 .UIECMScripts .ECMScriptForm{
-  padding: 10px;
+  width: 95%; 
+  margin: 15px auto;
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer .UIAction {
@@ -587,7 +588,8 @@
 /*------------------------------UICBScripts------------------------*/
 
 .UICBScripts .CBScriptForm {
-  padding: 10px;
+  width: 95%;
+  margin: 15px auto;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer .UIAction {

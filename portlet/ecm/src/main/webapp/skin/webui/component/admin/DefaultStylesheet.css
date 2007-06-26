@@ -563,7 +563,8 @@ UIECMAdminPortlet .UIViewManager {
 /*------------------------------UICBScripts------------------------*/
 
 .UIECMScripts .ECMScriptForm {
-  padding: 10px;
+  width: 95%;
+  margin: 15px auto;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm  {
@@ -584,7 +585,7 @@ UIECMAdminPortlet .UIViewManager {
   padding-left: 60px;
 }
 
-.UIECMScripts .ECMScriptForm .HorizontalLayout .FormContainer td.FieldComponent .textarea {
+.UIECMScripts .HorizontalLayout .FormContainer textarea {
   height: 350px;
   width: 380px;
   padding: 3px;
@@ -598,7 +599,8 @@ UIECMAdminPortlet .UIViewManager {
 /*------------------------------UICBScripts------------------------*/
 
 .UICBScripts .CBScriptForm {
-  padding: 10px;
+  width: 95%;
+  margin: 15px auto;
 }
 
 .UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer .OverflowContainer {
