@@ -97,7 +97,8 @@ public class UIActionList extends UIContainer {
 
   static public class EditActionListener extends EventListener<UIActionList> {
     public void execute(Event<UIActionList> event) throws Exception {
-      UIActionListContainer uiActionListContainer = event.getSource().getParent() ;
+      UIActionList uiActionList = event.getSource() ;
+      UIActionListContainer uiActionListContainer = uiActionList.getParent() ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiActionListContainer.initEditPopup(actionName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionListContainer) ;
