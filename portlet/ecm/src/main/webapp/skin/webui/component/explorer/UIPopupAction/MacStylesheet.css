@@ -21,7 +21,8 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
-  padding-top: 10px;
+  margin-top: 10px;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIFormGrid td.FieldLabel {
@@ -92,7 +93,7 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 170px;
+	width: 300px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
@@ -172,7 +173,6 @@
 
 .UIJCRExplorerPortlet .UITreeList .UIGrid {
   width: 315px;
-  margin-left: 10px ;
 }
 
 .UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {
@@ -219,45 +219,121 @@
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIVoteForm {
-	padding: 10px;
-}
-
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
   width: 100px ;
 }
 
-.UIVoteForm .UIRatingInfoContainer {
+.UIJCRExplorerPortlet .UIDiff .UIVoteForm .UIRatingInfoContainer {
 	width: 150px; padding: 5px 12px;
 	margin: auto;
 	background: white;
 	border: solid 1px #b7b7b7;
 }
 
-.UIVoteForm .OptionsContainer {
+.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer {
 	margin: auto;
 	width: 120px; height: 20px;
 }
 
-.UIVoteForm .OptionsContainer .NormalVote {
+.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
 	margin: 0px 2px;
 	width: 19px; height: 18px;
   background: url('/ecm/skin/images/vote/GrayStar.gif');
 }
 
-.UIVoteForm .OptionsContainer .RatedVote {
+.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
 	margin: 0px 2px;
 	width: 19px; height: 18px;
   background: url('/ecm/skin/images/vote/YellowStar.gif');
 }
 
-.UIVoteForm .OptionsContainer .OverVote {
+.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
 	margin: 0px 2px;
 	width: 19px; height: 18px;
   background: url('/ecm/skin/images/vote/OverStar.gif');
+}
+
+.UIJCRExplorerPortlet .UIDiff {
+	margin-top: 10px;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent {  	  
+  font-family: Verdana;
+  color: #0e396c; font-size: 11px;
+  text-align: left;
+  padding: 5px 0px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
+  padding-bottom: 5px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
+  padding-left: 10px;
+  height: 21px; line-height: 21px;
+  font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
+  border: 1px solid #cbcbcb;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
+  padding: 10px;
+  border: 1px solid #cbcbcb; 
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
+	text-align: center;
+	border:none ;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:left;
+  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label{		
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
+	border: 1px dotted #e1e1e1; 	  
+  margin: 2px;
+  padding: 3px 2px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:right;
+  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
+	width: 300px;
+	margin-top: 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
+		padding: 0px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIRatingInfoContainer {
+		margin:0px 0px 0px auto;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/

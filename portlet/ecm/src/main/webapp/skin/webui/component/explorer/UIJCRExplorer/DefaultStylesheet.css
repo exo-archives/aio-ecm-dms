@@ -27,7 +27,7 @@
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
   width: 97%;
-  margin: 0px auto;
+  margin: auto;
   border: solid 1px #939393;
   border-top: none;
 }
@@ -547,6 +547,37 @@
   float: left;
 }
 
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	border: solid 1px white;
+	width: 553px;
+	margin: 0px;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+}
+
+.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+	width: 100px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer  {
+	border: none;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle  {
+	border: none;
+}
+
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
   width: 140px;
   padding-left: 15px;
@@ -562,6 +593,11 @@
 
 .UIJCRExplorerPortlet .UIPropertyForm .FieldComponent	.MultiValueContainer {
   overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIFormGrid {
+  width: 500px;	
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
@@ -584,6 +620,14 @@
   width: 160px;
 }
 
+.UIJCRExplorerPortlet .UIExportNode .UIForm .HorizontalLayout {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle {
+  border: solid 1px #b7b7b7;
+}
+
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
@@ -593,6 +637,14 @@
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 160px;
   padding-right: 110px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle {
+  border: solid 1px #b7b7b7;
 }
 
 /*================================UIReferencesList=================================*/

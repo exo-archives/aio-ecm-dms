@@ -47,6 +47,7 @@
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
 	 width: 180px;
 	 float:left;
+	 margin-top: 3px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
@@ -573,7 +574,7 @@
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer textarea {
-  width: 95%;
+  width: 380px;
   height: 350px;
   padding: 3px;
   border: solid 1px #b7b7b7;
@@ -595,7 +596,7 @@
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
-  width: 95%;
+  width: 380px;
   height: 350px;
   padding: 3px;
   border: solid 1px #b7b7b7;

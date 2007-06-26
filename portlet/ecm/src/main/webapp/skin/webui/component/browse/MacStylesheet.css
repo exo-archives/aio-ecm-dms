@@ -27,22 +27,13 @@
 	
 }
 .UIBrowseContentPortlet .UIConfigContainer .UIAction {
-	padding: 10px 0px 10px 50px;
+	padding: 10px 0px 10px 80px;
 	width: 300px;
-	margin: auto;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 600px;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .ActionButton {
-	width: 120px; /*FIX BUG IE*/
-}
-
-.UIBrowseContentPortlet .UINewConfigForm .ActionButton {
-	width: 80px; /*FIX BUG IE*/
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
