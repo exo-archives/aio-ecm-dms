@@ -66,49 +66,17 @@
             println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) ;
           }
           
-        } else if(mimeType.startsWith("image")) {
-      %>
-          <div class="ContentDetail">
+        } else {
+        	if(mimeType.startsWith("image")){
+        %> 	
+	    		<div class="ContentDetail">
             <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
           </div>
-          <div class="UIAction">                                          
-          <div class="ActionContainer">
-            
-            <div class="ActionButton">
-              <div class="LightBlueStyle">
-                <div class="ButtonLeft">
-                  <div class="ButtonRight">
-                    <div class="ButtonMiddle">
-                      <a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
-                        WebDAV View
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          
-            <div class="ActionButton">
-              <div class="LightBlueStyle">
-                <div class="ButtonLeft">
-                  <div class="ButtonRight">
-                    <div class="ButtonMiddle">
-                      <a href="<%=uicomponent.getDownloadLink(originalNode)%>">
-                        Download this File
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      <%} else {%>    
-        <div style="text-align:center; font-style:italic">This content is not viewable. Please download it or use WebDAV to access the content</div>
+        <%}else {%> 
+					<div style="text-align:center; font-style:italic">This content is not viewable. Please download it or use WebDAV to access the content</div>        
+        <%}%>
         <div class="UIAction">                                          
-          <div class="ActionContainer">
-            
+          <div class="ActionContainer">            
             <div class="ActionButton">
               <div class="LightBlueStyle">
                 <div class="ButtonLeft">
