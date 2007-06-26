@@ -10,7 +10,7 @@
   import org.exoplatform.ecm.utils.Utils ;
 %>
 <% 
-  def resultList = uicomponent.getResultList() ; 
+  def resultList = uicomponent.getCurrentList() ; 
   if(resultList == null) return ;
 %>
 <div class="UISearchResult" id="$uicomponent.id">

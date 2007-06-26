@@ -46,20 +46,20 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/explorer/search/UISearchResult.gtmpl",
     events = { 
-      @EventConfig(listeners = UISearchResult.ViewActionListener.class),
-      @EventConfig(listeners = UISearchResult.OpenFolderActionListener.class)
+        @EventConfig(listeners = UISearchResult.ViewActionListener.class),
+        @EventConfig(listeners = UISearchResult.OpenFolderActionListener.class)
     }
 )
 public class UISearchResult extends UIContainer {
   public Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
   private boolean isQuickSearch_ = false ;
-  
+
   public UISearchResult() throws Exception {
     addChild(UIPageIterator.class, null, null) ;
   }
-  
+
   public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
-  
+
   public void setQueryResults(QueryResult queryResult) throws Exception {
     if(queryResult != null){
       NodeIterator iter = queryResult.getNodes() ;
@@ -69,11 +69,17 @@ public class UISearchResult extends UIContainer {
       }
     }
   }
-  
+
   public Node[] getNodeIterator() throws Exception { 
     return resultMap_.values().toArray(new Node[]{}) ; 
   }
-  
+  public List<Node> getCurrentList() throws Exception {
+    List<Node> dataList = new ArrayList<Node>() ;
+    for(Object data : getUIPageIterator().getCurrentPageData()) {
+      dataList.add((Node)data) ;
+    }
+    return dataList ;
+  }
   public List<Node> getResultList() throws Exception {
     List<Node> lists = new ArrayList<Node>() ;
     for(Node node : getNodeIterator()) {
@@ -91,21 +97,21 @@ public class UISearchResult extends UIContainer {
     }
     return realList ;
   }
-  
+
   public UIPageIterator  getUIPageIterator() {  return getChild(UIPageIterator.class) ; }
-  
+
   public void updateGrid() throws Exception {
     PageList pageList = new ObjectPageList(getResultList(), 10) ;
     getUIPageIterator().setPageList(pageList) ;
   }
-  
+
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-  
+
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource() ;
@@ -128,7 +134,7 @@ public class UISearchResult extends UIContainer {
         uiPopup.setResizable(true) ;
         UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null) ;
         uiViewSearch.setNode(node) ;
-        
+
         uiPopup.setWindowSize(560,450) ;
         uiPopup.setUIComponent(uiViewSearch) ;
         uiPopup.setRendered(true) ;
@@ -143,7 +149,7 @@ public class UISearchResult extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMSearch.getParent()) ;
     }
   }
-  
+
   static  public class OpenFolderActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource() ;

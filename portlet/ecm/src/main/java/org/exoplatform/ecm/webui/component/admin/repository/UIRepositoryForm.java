@@ -210,16 +210,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     RepositoryService rService = (RepositoryService)getApplicationComponent(ExoContainer.class).
     getComponentInstanceOfType(RepositoryService.class);
     if(isAddnew_){
-      WorkspaceEntry wsDefault = getWorkspaceMap().get(defaulWorkspace_) ;
-      repositoryEntry.addWorkspace(wsDefault) ;
-      for(WorkspaceEntry ws : getWorkspaceMap().values()){   
-        if(!ws.equals(wsDefault)) repositoryEntry.addWorkspace(ws) ;
-      }
-      repositoryEntry.setSystemWorkspaceName(defaulWorkspace_) ;
-      repositoryEntry.setDefaultWorkspaceName(defaulWorkspace_) ;
       try { 
         rService.createRepository(repositoryEntry) ;
-        initServices(repositoryEntry.getName()) ;
+        for(WorkspaceEntry ws : getWorkspaceMap().values()) {
+          if(!rService.getRepository(repositoryEntry.getName()).isWorkspaceInitialized(ws.getName())) {
+            rService.getRepository(repositoryEntry.getName()).configWorkspace(ws);
+            rService.getRepository(repositoryEntry.getName()).createWorkspace(ws.getName()) ;
+          }
+        }
+        initServices(repositoryEntry.getName()) ;        
         if(rService.getConfig().isRetainable()) {
           rService.getConfig().retain() ;
         }
@@ -350,6 +349,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         bse.setMaxBufferSize(buffer) ;
         re.setBinaryTemp(bse) ;        
       }
+      re.setSystemWorkspaceName(uiForm.defaulWorkspace_) ;
+      re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
+      re.addWorkspace(uiForm.getWorkspace(uiForm.defaulWorkspace_)) ;
       uiForm.saveRepo(re) ;
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;

@@ -9,19 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIInput;
-
 import org.exoplatform.container.ExoContainer;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplateContent;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplateForm;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
-import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionInputSet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.CacheEntry;
@@ -32,13 +25,13 @@ import org.exoplatform.services.jcr.config.ValueStorageEntry;
 import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -46,7 +39,6 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
-import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormInputSet;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -71,7 +63,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
       @EventConfig(listeners = UIWorkspaceWizard.ViewStep1ActionListener.class),
       @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class),
       @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.SetDefaultActionListener.class,  phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.SetDefaultActionListener.class),
       @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class, phase=Phase.DECODE)
     }
 
@@ -130,6 +122,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     UIFormInputSetWithAction step1 = new UIFormInputSetWithAction(FIELD_STEP1) ;
     step1.addChild(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ;
     step1.addChild(new UIFormSelectBox(FIELD_NODETYPE, FIELD_NODETYPE, getNodeType())) ;
+    UIFormCheckBoxInput<Boolean> checkbox = new UIFormCheckBoxInput<Boolean>(FIELD_ISDEFAULT, FIELD_ISDEFAULT, null) ;
+    checkbox.setOnChange("SetDefault") ;
+    step1.addChild(checkbox) ;
     step1.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).addValidator(EmptyFieldValidator.class).setEditable(false)) ;
     step1.setActionInfo(FIELD_PERMISSION, new String[]{"AddPermission"}) ;
     for (String perm : PermissionType.ALL) {
@@ -137,9 +132,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     }
     step1.addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(EmptyFieldValidator.class).
         addValidator(NumberFormatValidator.class)) ;
-    UIFormCheckBoxInput<Boolean> checkbox = new UIFormCheckBoxInput<Boolean>(FIELD_ISDEFAULT, FIELD_ISDEFAULT, null) ;
-    checkbox.setOnChange("SetDefault") ;
-    step1.addChild(checkbox) ;
     UIFormInputSet step2 = new UIFormInputSet(FIELD_STEP2) ;
     step2.addChild(new UIFormStringInput(FIELD_CONTAINER, FIELD_CONTAINER, null)) ;
     step2.addChild(new UIFormStringInput(FIELD_SOURCENAME, FIELD_SOURCENAME, null)) ;
@@ -164,19 +156,25 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     setRenderedChild(getCurrentChild()) ;
   }
 
-  public List<SelectItemOption<String>>  getNodeType() {
+  private List<SelectItemOption<String>>  getNodeType() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    options.add(new SelectItemOption<String>("nt:unstructured", "nt:unstructured")) ;
-    options.add(new SelectItemOption<String>("nt:folder", "nt:folder")) ;
+    options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
+    options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+    return options ;
+  }
+  private List<SelectItemOption<String>> getNodeTypeDefault() {
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
     return options ;
   }
   protected void removePopup(String id) {
     getAncestorOfType(UIWorkspaceWizardContainer.class).removePopup(id) ;
   }
-  public List<SelectItemOption<String>> getDbType() {
+  private List<SelectItemOption<String>> getDbType() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    options.add(new SelectItemOption<String>("generic", "generic")) ; 
-    options.add(new SelectItemOption<String>("mysql", "mysql")) ; 
+    for(String dataType : JDBCWorkspaceDataContainer.DB_DIALECTS) {
+      options.add(new SelectItemOption<String>(dataType, dataType)) ;
+    }
     return options ;
   }
   public List<SelectItemOption<String>> getFilterType() {
@@ -233,7 +231,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       } else {
         uiWSFormStep1.getUIStringInput(FIELD_NAME).setValue(workSpace.getName()) ;
         uiWSFormStep1.getUIStringInput(FIELD_NAME).setEditable(false) ;
+        String permission = workSpace.getAutoInitPermissions() ;
+        if(!isEmpty(permission)) {
+          uiWSFormStep1.getUIStringInput(FIELD_PERMISSION).setValue(permission.substring(0, permission.indexOf(" "))) ;
+          for(String perm : PermissionType.ALL) {
+            getUIFormCheckBoxInput(perm).setChecked(permission.contains(perm)) ;
+          }
+        }
         uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(uiRepoForm.isDefaultWorkspace(workSpace.getName())) ;
+        if(uiRepoForm.isDefaultWorkspace(workSpace.getName())) uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setOptions(getNodeTypeDefault()) ;
+        else uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setOptions(getNodeType()) ;
         if(isNewRepo_) uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(true) ;
         else uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
         String swapPath = container.getParameterValue("swap-directory") ;
@@ -288,7 +295,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       }
     }
   }
-  
+  protected boolean isEmpty(String value) {
+    return (value == null) || (value.trim().length() == 0) ;
+  }
   public void updateSelect(String selectField, String value) {
     UIFormInputSetWithAction uiFormAction = getChildById(FIELD_STEP1) ;
     UIFormStringInput permissionField = uiFormAction.getUIStringInput(FIELD_PERMISSION) ;
@@ -296,9 +305,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   }
   protected boolean isCheck() {
     for(String perm : PermissionType.ALL) {
-      return getUIFormCheckBoxInput(perm).isChecked();
+      if(getUIFormCheckBoxInput(perm).isChecked()) return true ;
     }
-    return true ;
+    return false ;
   }
   public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
@@ -310,20 +319,26 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
   public static class ViewStep2ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
-      UIWorkspaceWizard uiFormWizard = event.getSource() ;  
+      UIWorkspaceWizard uiFormWizard = event.getSource() ;
+
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
+      UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       if(uiWSFormStep1.isRendered()) {
+        if(uiFormWizard.isEmpty(wsName)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
         if(!storePath.contains(wsName))  storePath = storePath + wsName ;
         uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
         uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
       }
       if(!uiFormWizard.isCheck()) {
-        UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -331,7 +346,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiFormWizard.viewStep(2) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
-
   }
 
   public static class ViewStep3ActionListener extends EventListener<UIWorkspaceWizard>{
@@ -339,6 +353,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
+      String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+      String perm = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
       String containerName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
@@ -347,6 +363,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).getValue() ;
       if(uiWSFormStep1.isRendered()) {
+        if(uiFormWizard.isEmpty(wsName)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        if(uiFormWizard.isEmpty(perm)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         if(!uiFormWizard.isCheck()) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -354,23 +380,23 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         }
       }
       if(uiWSFormStep2.isRendered()) {
-        if((containerName == null) || (containerName.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(containerName)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
 
-        if((sourceName == null) || (sourceName.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(sourceName)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
-        if((storeType == null) || (storeType.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(storeType)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storeType-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
-        if((maxBuffer == null) ||(maxBuffer.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(maxBuffer)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
@@ -385,7 +411,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         } 
-        if((storePath == null) || (storePath.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(storePath)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
@@ -401,12 +427,27 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       UIRepositoryFormContainer formContainer = uiWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
       UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
       UIFormInputSetWithAction uiWSFormStep1 = uiWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
+      UIApplication uiApp = uiWizard.getAncestorOfType(UIApplication.class) ;
+      String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+      if(uiWizard.isEmpty(wsName)) {
+        uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require",null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        return ;
+      }
+      String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).isChecked() ;
       if(isDefault){
-        uiRepoForm.defaulWorkspace_ = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+        if(!Utils.NT_UNSTRUCTURED.equals(nodeType)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        }
+        uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).setOptions(uiWizard.getNodeTypeDefault()) ;
+        uiRepoForm.defaulWorkspace_ = wsName ;
       } else {
+        uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).setOptions(uiWizard.getNodeType()) ;
         uiRepoForm.defaulWorkspace_ = null ;
       }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizard) ;
     }
   }
   public static class FinishActionListener extends EventListener<UIWorkspaceWizard>{
@@ -441,18 +482,18 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String maxSize = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_MAXSIZE).getValue() ;
       String liveTime = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_LIVETIME).getValue() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
-      if((queryHandlerType == null) || (queryHandlerType.trim().length() == 0)) {
+      if(uiFormWizard.isEmpty(queryHandlerType)) {
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.queryHandlerType-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if((indexPath == null) || (indexPath.trim().length() == 0)) {
+      if(uiFormWizard.isEmpty(indexPath)) {
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(isCache){
-        if((maxSize == null) ||(maxSize.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(maxSize)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-require", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
@@ -462,7 +503,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
         }
-        if((liveTime == null) ||(liveTime.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(liveTime)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-require", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
@@ -579,7 +620,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiFormWizard.removePopup(UIWorkspaceWizard.POPUPID) ;
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
-
+      String perm = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
       String containerName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
@@ -592,6 +633,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       if(uiWSFormStep1.isRendered()) {
+        if(uiFormWizard.isEmpty(wsName)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        if(uiFormWizard.isEmpty(perm)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         if(!uiFormWizard.isCheck()) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -599,17 +650,17 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         }
       }
       if(uiWSFormStep2.isRendered()) {
-        if((containerName == null) || (containerName.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(containerName)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
-        if((sourceName == null) || (sourceName.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(sourceName)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
-        if((maxBuffer == null) ||(maxBuffer.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(maxBuffer)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
@@ -619,12 +670,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
         }
-        if((swapPath == null) || (swapPath.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(swapPath)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.swapPath-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         } 
-        if((storePath == null) || (storePath.trim().length() == 0)) {
+        if(uiFormWizard.isEmpty(storePath)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
