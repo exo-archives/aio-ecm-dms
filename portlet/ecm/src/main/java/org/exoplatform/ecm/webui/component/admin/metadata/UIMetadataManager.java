@@ -33,6 +33,9 @@ public class UIMetadataManager extends UIContainer {
     addChild(UIMetadataList.class, null, null) ;
   }
   
+  public void update()throws Exception {
+    getChild(UIMetadataList.class).updateGrid() ;
+  }
   public void initPopup() throws Exception {
     removeChildById(METADATA_POPUP) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, METADATA_POPUP);

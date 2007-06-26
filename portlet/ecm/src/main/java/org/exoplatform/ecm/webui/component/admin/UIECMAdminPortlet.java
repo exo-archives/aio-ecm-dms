@@ -12,6 +12,7 @@ import javax.portlet.PortletRequest;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -56,8 +57,13 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   public void initChilds() throws Exception{
     UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class) ;
     if(controlPanel == null) addChild(UIECMAdminControlPanel.class, null, null) ;
+    
     UIECMAdminWorkingArea workingArea = getChild(UIECMAdminWorkingArea.class) ;
-    if(workingArea == null) addChild(UIECMAdminWorkingArea.class, null, null) ;
+    if(workingArea == null){
+      addChild(UIECMAdminWorkingArea.class, null, null) ;
+    } else {
+      workingArea.init() ;      
+    }
   }
   public void renderPopupMessages() throws Exception {
     UIPopupMessages popupMess = getUIPopupMessages();

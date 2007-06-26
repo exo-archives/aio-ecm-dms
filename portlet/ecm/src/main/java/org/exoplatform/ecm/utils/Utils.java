@@ -100,7 +100,7 @@ public class Utils {
 
   public static String encodeHTML(String text) {
     return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
-               .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+               .replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") ;
   }
   
   public static String formatNodeName(String text) {

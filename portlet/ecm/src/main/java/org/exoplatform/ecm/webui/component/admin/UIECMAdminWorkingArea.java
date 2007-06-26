@@ -52,12 +52,26 @@ public class UIECMAdminWorkingArea extends UIContainer {
     addChild(UIMetadataManager.class, null, null).setRendered(false) ;
     addChild(UINodeTypeManager.class, null, null).setRendered(false) ;
     addChild(UIDriveManager.class, null, null).setRendered(false) ;
-    addChild(UINamespaceManager .class, null, null).setRendered(false) ;
+    addChild(UINamespaceManager.class, null, null).setRendered(false) ;
     addChild(UIActionManager.class, null ,null).setRendered(false) ;
     addChild(UIScriptManager.class, null ,null).setRendered(false) ;
     addChild(UITemplatesManager.class, null, null).setRendered(false) ;
     addChild(UIQueriesManager.class, null, null).setRendered(false) ;
     addChild(UIFolksonomyManager.class, null, null).setRendered(false) ;
+  }
+  
+  public void init() throws Exception {
+    getChild(UITaxonomyManager.class).resetTaxonomyRootNode() ;
+    getChild(UIViewManager.class).update() ;
+    getChild(UIMetadataManager.class).update() ;
+    getChild(UINodeTypeManager.class).update() ;
+    getChild(UIDriveManager.class).update() ;
+    getChild(UINamespaceManager.class).refresh() ;
+    getChild(UIActionManager.class).refresh() ;
+    getChild(UIScriptManager.class).refresh() ;
+    getChild(UITemplatesManager.class).refresh() ;
+    getChild(UIQueriesManager.class).update() ;
+    getChild(UIFolksonomyManager.class).update() ;
   }
   
   public void checkRepository() throws Exception{

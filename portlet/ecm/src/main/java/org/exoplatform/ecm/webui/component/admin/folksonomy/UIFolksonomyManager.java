@@ -33,6 +33,9 @@ public class UIFolksonomyManager extends UIContainer {
     addChild(UITagStyleList.class, null, null) ;
   }
   
+  public void update() throws Exception {
+    getChild(UITagStyleList.class).updateGrid() ;
+  }
   public void initTaggingFormPopup(Node selectedTagStyle) throws Exception {
     removeChildById("FolksonomyPopup") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "FolksonomyPopup") ;

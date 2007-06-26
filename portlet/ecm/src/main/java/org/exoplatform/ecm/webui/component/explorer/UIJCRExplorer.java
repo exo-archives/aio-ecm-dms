@@ -304,11 +304,7 @@ public class UIJCRExplorer extends UIContainer {
   }
   
   public boolean isReferenceableNode(Node node) throws Exception {
-    NodeType[] nodeTypes = node.getMixinNodeTypes() ;
-    for(NodeType type : nodeTypes) {
-      if(type.getName().equals(Utils.MIX_REFERENCEABLE)) return true ;
-    }
-    return false ;
+    return node.isNodeType(Utils.MIX_REFERENCEABLE) ;    
   }
   
   public boolean isPreferenceNode(Node node) throws RepositoryException {

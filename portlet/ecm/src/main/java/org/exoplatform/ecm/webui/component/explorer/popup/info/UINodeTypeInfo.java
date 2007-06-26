@@ -51,9 +51,13 @@ public class UINodeTypeInfo extends UIContainer implements UIPopupComponent {
     Node node = uiJCRExplorer.getCurrentNode() ;
     try {
       NodeType nodetype = node.getPrimaryNodeType() ;
+      System.out.println(" type ==== " + nodetype.getName()) ;
       Collection<NodeType> types = new ArrayList<NodeType>() ;
       types.add(nodetype) ;
       NodeType[] mixins = node.getMixinNodeTypes() ;
+      for(NodeType nt :mixins) {
+        System.out.println(" nt ==== " + nt.getName()) ;
+      }
       if (mixins != null) {
         List<NodeType> list = Arrays.asList(mixins) ;
         types.addAll(list) ;

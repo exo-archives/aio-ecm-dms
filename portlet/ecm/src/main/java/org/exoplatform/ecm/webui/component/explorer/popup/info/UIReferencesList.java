@@ -60,14 +60,18 @@ public class UIReferencesList extends UIGrid implements UIPopupComponent{
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node currentNode = uiJCRExplorer.getCurrentNode() ;
     String uuid = currentNode.getUUID() ;
-    for(String workspace : repositoryService.getRepository().getWorkspaceNames()) {
-      Session session = repositoryService.getRepository().getSystemSession(workspace) ;
-      Node lookupNode = session.getNodeByUUID(uuid) ;
-      PropertyIterator iter = lookupNode.getReferences() ;
-      if( iter != null && iter.hasNext()) {
-        Node refNode = iter.nextProperty().getParent() ;
-        referBeans.add(new ReferenceBean(workspace, refNode.getPath())) ;
+    for(String workspace : repositoryService.getDefaultRepository().getWorkspaceNames()) {
+      Session session = repositoryService.getDefaultRepository().getSystemSession(workspace) ;
+      try{
+        Node lookupNode = session.getNodeByUUID(uuid) ;
+        PropertyIterator iter = lookupNode.getReferences() ;
+        if( iter != null && iter.hasNext()) {
+          Node refNode = iter.nextProperty().getParent() ;
+          referBeans.add(new ReferenceBean(workspace, refNode.getPath())) ;
+        }
+      }catch(Exception e) {        
       }
+      
     }
     return referBeans ;
   }
