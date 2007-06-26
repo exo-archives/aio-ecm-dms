@@ -54,7 +54,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
   float: right;
-  margin: 1px;
+  margin: 4px;
   cursor: pointer;
 }
 

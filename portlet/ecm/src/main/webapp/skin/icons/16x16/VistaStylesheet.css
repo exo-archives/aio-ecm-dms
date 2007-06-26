@@ -15,19 +15,19 @@
 }
 
 .UIGrid .ViewIcon {
-	width:24px; height: 24px;
-	background: url('VistaSkin/YellowLight.png') no-repeat;
+	width:16px; height: 16px;
+	background: url('VistaSkin/YellowLight.png') no-repeat center;
 	float: left;
 }
 
 .UIGrid .DeleteIcon {
-	width:24px; height: 24px;
-	background: url('VistaSkin/Delete.png') no-repeat;
+	width: 18px; height: 20px;
+	background: url('VistaSkin/Delete.png') no-repeat center;
 }
 
 .UIGrid .EditInfoIcon {
-	width:24px; height: 24px;
-	background: url('VistaSkin/Edit.png') no-repeat;
+	width: 18px; height: 17px;
+	background: url('VistaSkin/Edit.png') no-repeat center;
 }
 
 .AddPathIcon {
@@ -62,7 +62,7 @@
  
 .SelectMemberIcon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/SmallGroup.png') no-repeat;
+  background: url('VistaSkin/SmallMemberIcon.png') no-repeat;
   cursor: pointer;  
 }
 
@@ -79,8 +79,8 @@
 }
 
 .SelectUserIcon {
-	width: 24px; height: 20px;
-  background: url('VistaSkin/SmallGroup.png') no-repeat;  
+	width: 16px; height: 16px;
+  background: url('VistaSkin/SmallUserIcon.png') no-repeat;  
   cursor: pointer;
 }
  
@@ -1050,24 +1050,24 @@
 
 .ScrollBackArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('VistaSkin/SrollBackArrow.png') no-repeat;
+  background: url('VistaSkin/ScrollLeft14x15.png') no-repeat;
   padding-left: 16px; 
 }
 
 .ScrollNextArrow16x16Icon {
   width: 16px;height:16px;
-  background: url('VistaSkin/SrollNextArrow.png') no-repeat;  
+  background: url('VistaSkin/ScrollRight14x15.png') no-repeat;  
 }
 
 .DisableBackArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('VistaSkin/DisableBackArrow.png') no-repeat;  
+  background: url('VistaSkin/DisableScrollLeft14x15.png') no-repeat;  
   padding-left: 16px;
 }
 
 .DisableNextArrow16x16Icon {
   width: 16px; height:16px;
-  background: url('VistaSkin/DisableNextArrow.png') no-repeat;  
+  background: url('VistaSkin/DisableScrollRight14x15.png') no-repeat;  
 }
 
 .Documents16x16Icon {

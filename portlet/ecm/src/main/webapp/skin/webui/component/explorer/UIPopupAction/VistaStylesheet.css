@@ -12,6 +12,10 @@
   padding: 7px;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
+	border: none;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
   float: left;
   width: 20px; height: 20px;
@@ -67,12 +71,95 @@
   width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
-  margin: 7px 0px;
+  margin: 7px 0px 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
   float: right;
 }
+
+/*############################## -- Begin UIDiff -- ##############################*/
+	
+.UIJCRExplorerPortlet .UIDiff {
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent {  	  
+  font-family: Verdana;
+  color: #0e396c; font-size: 11px;
+  text-align: left;
+  padding: 5px 0px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
+  padding-bottom: 5px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
+  padding-left: 10px;
+  height: 21px; line-height: 21px;
+  font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
+  border: 1px solid #cbcbcb;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
+  padding: 10px;
+  border: 1px solid #cbcbcb; 
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
+	text-align: center;
+	border:none ;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:left;
+  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label{		
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
+	border: 1px dotted #e1e1e1; 	  
+  margin: 2px;
+  padding: 3px 2px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:right;
+  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
+	width: 300px;
+	margin-top: 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
+		padding: 0px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIRatingInfoContainer {
+		margin:0px 0px 0px auto;
+}
+
+
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 5px 0px;
@@ -207,7 +294,7 @@
 }
 
 .Explorer .InnerExplorerTree {
-  padding: 10px;
+  padding: 6px;
 }
 
 .Explorer .ExplorerTree .Node {
@@ -306,6 +393,10 @@
   width: 500px;
   border: none;
   margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .ActionField {
+  float: left ;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {

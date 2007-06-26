@@ -111,6 +111,11 @@
   background: url('VistaSkin/ExportNodeIcon.png') no-repeat ;
 }
 
+.AddNodeTypeIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
+
 .SearchIcon {
 	width: 32px; height: 28px;
   background: url('VistaSkin/BlackMagnifier.png') no-repeat ;
