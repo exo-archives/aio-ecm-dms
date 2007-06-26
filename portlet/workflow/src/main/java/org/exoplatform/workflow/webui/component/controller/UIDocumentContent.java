@@ -120,8 +120,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     for(String ws : workspaces) {
       try{
         return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
-        
+      }catch(Exception e) {        
       }      
     }
     return null;
@@ -238,7 +237,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     return node_.getSession().getWorkspace().getName();
   }
   
-  private String getRepository() throws Exception {
+  public String getRepository() throws Exception {
     ManageableRepository manaRepo = (ManageableRepository)node_.getSession().getRepository() ;
     return manaRepo.getConfiguration().getName() ;
   }

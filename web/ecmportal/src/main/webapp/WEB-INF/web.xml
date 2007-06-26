@@ -68,6 +68,8 @@
     <servlet-class>org.exoplatform.frameworks.jcr.webdav.LnkGeneratorServlet</servlet-class>
     <load-on-startup>4</load-on-startup>
   </servlet>
+  
+  
 
   <!-- ================================================================= -->
   

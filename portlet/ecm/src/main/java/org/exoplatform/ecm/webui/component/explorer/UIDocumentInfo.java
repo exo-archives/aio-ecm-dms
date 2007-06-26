@@ -266,7 +266,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     PortalContainer pcontainer =  PortalContainer.getInstance() ;
     return pcontainer.getPortalContainerInfo().getContainerName() ;  
   }
-
+  
+  public String getRepository() throws Exception {
+    return ((ManageableRepository)currentNode_.getSession().getRepository()).getConfiguration().getName() ;
+  }
   public String getWorkspaceName() throws Exception {
     return currentNode_.getSession().getWorkspace().getName();
   }

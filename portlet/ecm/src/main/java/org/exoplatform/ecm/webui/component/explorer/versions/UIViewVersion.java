@@ -22,10 +22,13 @@ import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -110,9 +113,17 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   public void setNode(Node node) {node_ = node ;}
   
   public Node getNodeByUUID(String uuid) throws Exception{
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Session session = uiExplorer.getSession() ;
-    return session.getNodeByUUID(uuid);
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    String[] workspaces = manageRepo.getWorkspaceNames() ;
+    for(String ws : workspaces) {
+      try{
+        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+      }catch(Exception e) {
+        
+      }      
+    }
+    return null;
   }
   
   public List<Node> getRelations() throws Exception {
@@ -252,11 +263,12 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
   }
 
-  private String getRepository() {
+  public String getRepository() throws Exception{
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
+  
   static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
     public void execute(Event<UIViewVersion> event) throws Exception {
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;

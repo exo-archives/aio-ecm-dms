@@ -67,7 +67,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
     }
 )
-public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
+public class UIBrowseContainer extends UIContainer{
   private boolean isShowCategoryTree_ = true ;
   private boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
@@ -660,7 +660,27 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
     history_.put(KEY_CURRENT, getCurrentNode());
     history_.put(KEY_SELECTED, getSelectedTab());
   }
-
+  
+  public String getImage(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node contentNode = null;
+    if(node.hasNode(Utils.EXO_IMAGE)) {
+      contentNode = node.getNode(Utils.EXO_IMAGE) ;
+    } else if(node.hasNode(Utils.JCR_CONTENT)) {
+      if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
+      contentNode = node.getNode(Utils.JCR_CONTENT) ;
+      String mimeType = contentNode.getProperty(Utils.JCR_MIMETY).getString() ;
+      if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
+    }
+    if(contentNode == null) return null;
+    InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    if(input.available() == 0) return null ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+  
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
@@ -792,74 +812,4 @@ public class UIBrowseContainer extends UIContainer implements ECMViewComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
-
-  @SuppressWarnings("unused")
-  public String encodeHTML(String text) throws Exception { return null; }
-
-  public List<Node> getAttachments() throws Exception { return null; }
-
-  public List<Node> getComments() throws Exception { return null; }
-
-  @SuppressWarnings("unused")
-  public Object getComponentInstanceOfType(String className) { return null; }
-
-  @SuppressWarnings("unused")
-  public String getDownloadLink(Node node) throws Exception { return null; }
-
-  public String getImage(Node node) throws Exception {
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource dresource ;
-    Node contentNode = null;
-    if(node.hasNode(Utils.EXO_IMAGE)) {
-      contentNode = node.getNode(Utils.EXO_IMAGE) ;
-    } else if(node.hasNode(Utils.JCR_CONTENT)) {
-      if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
-      contentNode = node.getNode(Utils.JCR_CONTENT) ;
-      String mimeType = contentNode.getProperty(Utils.JCR_MIMETY).getString() ;
-      if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
-    }
-    if(contentNode == null) return null;
-    InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    if(input.available() == 0) return null ;
-    dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
-    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-  }
-
-  public String getLanguage() { return null; }
-
-  public Node getNode() throws Exception { return null; }
-
-  public String getNodeType() throws Exception { return null; }
-
-  public Node getOriginalNode() throws Exception { return null; }
-
-  public String getPortalName() { return null; }
-
-  public List<Node> getRelations() throws Exception { return null; }
-
-  public String getRssLink() { return null; }
-
-  public List getSupportedLocalise() throws Exception { return null; }
-
-  public String getTemplatePath() throws Exception { return null; }
-
-  @SuppressWarnings("unused")
-  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
-    return null;
-  }
-
-  public String getWebDAVServerPrefix() throws Exception { return null; }
-
-  public String getWorkspaceName() throws Exception { return null; }
-
-  public boolean isNodeTypeSupported() { return false; }
-
-  public boolean isRssLink() { return false; }
-
-  @SuppressWarnings("unused")
-  public void setLanguage(String language) {}
-
-  @SuppressWarnings("unused")
-  public void setNode(Node node) {}
 }

@@ -49,6 +49,8 @@ public interface ECMViewComponent {
   
   public String getPortalName() ;
   
+  public String getRepository() throws Exception ;
+  
   public String getWorkspaceName() throws Exception ;
   
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception ;

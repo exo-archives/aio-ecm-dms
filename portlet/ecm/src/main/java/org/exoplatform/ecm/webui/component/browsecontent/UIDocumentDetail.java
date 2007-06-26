@@ -266,6 +266,10 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     return pcontainer.getPortalContainerInfo().getContainerName() ; 
   }
   
+  public String getRepository() throws Exception {
+    return ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
+  }
+  
   public String getWorkspaceName() throws Exception {
     return node_.getSession().getWorkspace().getName();
   }
@@ -300,5 +304,4 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
     }
   }
-
 }

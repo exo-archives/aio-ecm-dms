@@ -1,147 +1,147 @@
 <style>
   a {behavior: url(#default#AnchorClick);} 
 
-	.FileContent {  
-	  padding: 10px;
-	  font-family: Verdana;
-	  color: #0e396c; font-size: 11px;
-	}
-	
-	.FileContent .NavigationContainer{  
-	  padding-bottom: 5px;
-	}
-	
-	.FileContent .TopTitle{  
-	  padding-left: 10px;
-	  height: 21px; line-height: 21px;
-	  font-family: Verdana;
-	  color: #058ee6; font-weight: bold; 
-	  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
-	  border: 1px solid #cbcbcb;
-	  overflow: auto;
-	}
-	
-	.FileContent .Content {  
-	  padding: 10px;
-	  border: 1px solid #cbcbcb; 
-	  border-top: none;
-	  overflow: auto;
-	}
-	
-	.FileContent .ContentDetail {  
-	  width: 99.5%;
-	  border: 1px solid #e1e1e1; 
-	  text-align: center;
-	  overflow: auto;
-	}
-	
-	.FileContent .UIAction {
-		width: 300px;
-		margin-top: 10px;
-	}
-	
-	.FileContent .UIVoteForm {
-		padding: 0px;
-	}
-	
-	.FileContent .UIRatingInfoContainer {
-		margin:0px 0px 0px auto;
-	}
+  .FileContent {  
+    padding: 10px;
+    font-family: Verdana;
+    color: #0e396c; font-size: 11px;
+  }
+  
+  .FileContent .NavigationContainer{  
+    padding-bottom: 5px;
+  }
+  
+  .FileContent .TopTitle{  
+    padding-left: 10px;
+    height: 21px; line-height: 21px;
+    font-family: Verdana;
+    color: #058ee6; font-weight: bold; 
+    background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
+    border: 1px solid #cbcbcb;
+    overflow: auto;
+  }
+  
+  .FileContent .Content {  
+    padding: 10px;
+    border: 1px solid #cbcbcb; 
+    border-top: none;
+    overflow: auto;
+  }
+  
+  .FileContent .ContentDetail {  
+    width: 99.5%;
+    border: 1px solid #e1e1e1; 
+    text-align: center;
+    overflow: auto;
+  }
+  
+  .FileContent .UIAction {
+    width: 380px;
+    margin-top: 10px;
+  }
+  
+  .FileContent .UIVoteForm {
+    padding: 0px;
+  }
+  
+  .FileContent .UIRatingInfoContainer {
+    margin:0px 0px 0px auto;
+  }
 </style>
 <%
-	def originalNode = uicomponent.getOriginalNode();
-	def currentNode = uicomponent.getNode() ;
-%>			  
+  def originalNode = uicomponent.getOriginalNode();
+  def currentNode = uicomponent.getNode() ;
+%>        
 <div class="FileContent">
-	<div class="NavigationContainer">  			
-		<div class="TopTitle">$originalNode.name</div>
-		<div class="Content">
-			<%
-			  def contentNode = currentNode.getNode("jcr:content") ;
-			  def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
-		    if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		    	if(mimeType.substring(mimeType.lastIndexOf("/")+ 1).equals("xml")){
-		      	println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>";	
-		      } else {
-		      	println contentNode.getProperty("jcr:data").getString() ;
-		      }
-		      
-		    } else if(mimeType.startsWith("image")) {
-			%>
-		      <div class="ContentDetail">
-					  <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
-				  </div>
-				  <div class="UIAction">																					
-					<div class="ActionContainer">
-						
-						<div class="ActionButton">
-							<div class="LightBlueStyle">
-								<div class="ButtonLeft">
-									<div class="ButtonRight">
-										<div class="ButtonMiddle">
-											<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
-												WebDAV View
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-						<div class="ActionButton">
-							<div class="LightBlueStyle">
-								<div class="ButtonLeft">
-									<div class="ButtonRight">
-										<div class="ButtonMiddle">
-											<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
-												Download this File
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-				</div>
-			<%} else {%>	  
-	     	<div style="text-align:center; font-style:italic">This content is not viewable. Please download it or use WebDAV to access the content</div>
-				<div class="UIAction">																					
-					<div class="ActionContainer">
-						
-						<div class="ActionButton">
-							<div class="LightBlueStyle">
-								<div class="ButtonLeft">
-									<div class="ButtonRight">
-										<div class="ButtonMiddle">
-											<a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
-												WebDAV View
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-						<div class="ActionButton">
-							<div class="LightBlueStyle">
-								<div class="ButtonLeft">
-									<div class="ButtonRight">
-										<div class="ButtonMiddle">
-											<a href="<%=uicomponent.getDownloadLink(originalNode)%>">
-												Download this File
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-				</div>
-	  	<%}%>			
-		</div>	
-	</div>  			  			
+  <div class="NavigationContainer">       
+    <div class="TopTitle">$originalNode.name</div>
+    <div class="Content">
+      <%
+        def contentNode = currentNode.getNode("jcr:content") ;
+        def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
+        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
+          if(mimeType.substring(mimeType.lastIndexOf("/")+ 1).equals("xml")){
+            println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
+          } else {
+            println contentNode.getProperty("jcr:data").getString() ;
+          }
+          
+        } else if(mimeType.startsWith("image")) {
+      %>
+          <div class="ContentDetail">
+            <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
+          </div>
+          <div class="UIAction">                                          
+          <div class="ActionContainer">
+            
+            <div class="ActionButton">
+              <div class="LightBlueStyle">
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <a href="/<%=uicomponent.getPortalName()%>/repository/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
+                        WebDAV View
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div class="ActionButton">
+              <div class="LightBlueStyle">
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <a href="<%=uicomponent.getDownloadLink(originalNode)%>">
+                        Download this File
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      <%} else {%>    
+        <div style="text-align:center; font-style:italic">This content is not viewable. Please download it or use WebDAV to access the content</div>
+        <div class="UIAction">                                          
+          <div class="ActionContainer">
+            
+            <div class="ActionButton">
+              <div class="LightBlueStyle">
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <a href="/<%=uicomponent.getPortalName()%>/lnkgenerator/openit.lnk?path=/<%=uicomponent.getRepository()%>/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
+                        WebDAV View(Windows only)
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div class="ActionButton">
+              <div class="LightBlueStyle">
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <a href="<%=uicomponent.getDownloadLink(originalNode)%>">
+                        Download this File
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      <%}%>     
+    </div>  
+  </div>                
   <div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
   <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
 </div>

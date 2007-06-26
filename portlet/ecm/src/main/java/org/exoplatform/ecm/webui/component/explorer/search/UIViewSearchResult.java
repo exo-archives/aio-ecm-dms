@@ -28,6 +28,8 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -154,9 +156,17 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public void setNode(Node node) { node_ = node ; }
   
   public Node getNodeByUUID(String uuid) throws Exception{
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Session session = uiExplorer.getSession() ;
-    return session.getNodeByUUID(uuid);
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    String[] workspaces = manageRepo.getWorkspaceNames() ;
+    for(String ws : workspaces) {
+      try{
+        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+      }catch(Exception e) {
+        
+      }      
+    }
+    return null;
   }
   
   @SuppressWarnings("unused")
@@ -206,7 +216,11 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     PortalContainer pContainer = PortalContainer.getInstance() ;
     return pContainer.getPortalContainerInfo().getContainerName() ;
   }
-
+  
+  public String getRepository() throws Exception {
+    return ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
+  }
+  
   public String getWebDAVServerPrefix() throws Exception {
     PortletRequestContext pRequestContext = PortletRequestContext.getCurrentInstance() ;
     PortletRequest pRequest = pRequestContext.getRequest() ;
