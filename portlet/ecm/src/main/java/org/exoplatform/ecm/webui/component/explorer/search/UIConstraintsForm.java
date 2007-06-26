@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -16,7 +17,6 @@ import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -340,7 +340,9 @@ public class UIConstraintsForm extends UIForm {
       String operator = uiConstraintForm.getUIFormSelectBox(EXACTLY_OPERATOR).getValue() ;
       String[] arrProps = {};
       if(properties.indexOf(",") > -1) arrProps = properties.split(",") ;
+      String currentPath = uiExplorer.getCurrentNode().getPath() ;
       String statement = "select * from nt:base where " ;
+      if(!currentPath.equals("/")) statement = statement + "jcr:path like '"+ currentPath +"/%' AND " ;
       String whereClause = "" ;
       if(arrProps.length > 0) {
         for(String pro : arrProps) {
