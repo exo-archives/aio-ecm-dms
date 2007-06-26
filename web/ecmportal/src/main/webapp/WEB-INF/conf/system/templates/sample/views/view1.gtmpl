@@ -103,20 +103,22 @@
 					<%}%>
 				</div>
 			</div>
-			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
-				<div class="TitleBG" >
-					<label class="text" style="padding-left: 5px">Image: </label>
-				</div>
-				<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px">
-					<%
-					  def imageNode = node.getNode("exo:image") ;
-					  def inputStream = imageNode.getProperty("jcr:data").getStream() ;
-					  if(inputStream.available() > 0) {
-					%>
-	      			<image src="<%=uicomponent.getImage(node)%>" width="250" height="150"/> 
-	      	<%}%>
-				</div>
-			</div>
+			<% if(node.hasNode("exo:image")) {%>
+					<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
+						<div class="TitleBG" >
+							<label class="text" style="padding-left: 5px">Image: </label>
+						</div>
+						<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px">
+							<%
+							  def imageNode = node.getNode("exo:image") ;
+							  def inputStream = imageNode.getProperty("jcr:data").getStream() ;
+							  if(inputStream.available() > 0) {
+							%>
+			      			<image src="<%=uicomponent.getImage(node)%>" width="250" height="150"/> 
+			      	<%}%>
+						</div>
+					</div>
+			<% } %>
 		</div>
 		<!-- div for  Summary and Image -->
 		<div style="overflow: hidden">
