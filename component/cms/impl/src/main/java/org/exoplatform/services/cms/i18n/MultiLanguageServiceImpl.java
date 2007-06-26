@@ -11,6 +11,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
@@ -316,6 +317,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return voteTotal ;
   }
   
+  private boolean hasMixin(Node node, String nodeTypeName) throws Exception {
+    NodeType[] mixinTypes = node.getMixinNodeTypes() ; 
+    for(NodeType nodeType : mixinTypes) {
+      if(nodeType.getName().equals(nodeTypeName)) return true ;
+    }
+    return false ;
+  }
+  
   public void setDefault(Node node, String language) throws Exception {
     String defaultLanguage = getDefault(node) ;
     if(!defaultLanguage.equals(language)){
@@ -344,15 +353,17 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         tempNode.remove() ;
         node.setProperty(EXO_LANGUAGE, language) ;
       } 
-      newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
-      newLang.setProperty(VOTE_TOTAL_LANG_PROP, node.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
-      newLang.setProperty(VOTING_RATE_PROP, node.getProperty(VOTING_RATE_PROP).getLong()) ;
-      newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
-      
-      node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
-      node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
-      node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
-      node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
+      if(hasMixin(newLang, "mix:votable")) {
+        newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
+        newLang.setProperty(VOTE_TOTAL_LANG_PROP, node.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+        newLang.setProperty(VOTING_RATE_PROP, node.getProperty(VOTING_RATE_PROP).getLong()) ;
+        newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
+        
+        node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
+        node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+        node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
+        node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
+      }
       node.setProperty(EXO_LANGUAGE, language) ;
       if(node.hasNode(COMMENTS)) {
         node.getSession().move(node.getPath() + "/" + COMMENTS, newLang.getPath() + "/" + COMMENTS) ;
