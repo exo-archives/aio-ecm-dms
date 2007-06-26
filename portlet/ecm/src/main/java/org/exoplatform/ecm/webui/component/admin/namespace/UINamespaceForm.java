@@ -72,7 +72,7 @@ public class UINamespaceForm extends UIForm {
       try {
         namespaceRegistry.registerNamespace(prefix, uri) ;
       } catch (Exception e) {
-        app.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args, ApplicationMessage.ERROR)) ;
+        app.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args)) ;
         return ;
       }
       UINamespaceManager uiManager = uiForm.getAncestorOfType(UINamespaceManager.class) ;
