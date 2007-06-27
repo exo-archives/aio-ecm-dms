@@ -980,11 +980,16 @@
   width: 170px ;
 }
 
-.UIJCRExplorer .UIDocumentWorkspace .WorkKofax .UIGrid {
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
+  width: 50px;
+  margin: auto;
+}
+
+.UIJCRExplorer .WorkKofax .UIGrid {
 	border-top: none;
 }
 
-.UIJCRExplorer .UIDocumentWorkspace .WorkKofax .UIGrid td{
+.UIJCRExplorer .WorkKofax .UIGrid td{
 	border-top: solid 1px #cfcfcf;
 	line-height: 26px;
 }
@@ -995,4 +1000,12 @@
 	border: solid 1px #b7b7b7;
 	margin: 10px;
 }
+
+/*====================================UISavedQuery==================================*/
+
+.UIJCRExplorer .UISavedQuery {
+	padding: 10px;
+}
+
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

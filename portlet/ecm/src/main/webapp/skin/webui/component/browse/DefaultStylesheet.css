@@ -297,6 +297,7 @@
 	width: 16px ;  height: 16px ;
 	float: left;
 }
+
 .UIBrowseContentPortlet .UISearchController .GotoIcon{
 	width: 16px ;  height: 16px ;
   background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
@@ -304,7 +305,7 @@
 
 .UIBrowseContentPortlet .UISearchController .UIAction{
 	width: 70px; margin: auto;
-	padding-bottom:8px;
+	padding-bottom: 8px;
 }
 
 .UIBrowseContentPortlet .UISearchController .ActionButton{

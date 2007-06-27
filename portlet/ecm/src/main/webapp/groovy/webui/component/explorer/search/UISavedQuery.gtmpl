@@ -7,7 +7,7 @@
  * 4:28:26 PM 
  */
 %>
-<div class="" id="UISavedQuery">
+<div class="UISavedQuery" id="UISavedQuery">
   <table class="UIGrid">
     <thead>
       <tr>

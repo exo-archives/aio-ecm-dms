@@ -562,6 +562,10 @@
 	width: 150px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .UIConstraintsForm  .UIFormWithTitle {
+	border: none;
+}
+
 /*================================UIActivateVersion=================================*/
 
 .UIJCRExplorerPortlet .UIActivateVersion .UIAction {
@@ -727,6 +731,11 @@
   width: 160px ;
 }
 
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
+  width: 70px;
+  margin: auto;
+  border: solid 1px red;
+}
 /*===========================UIUploadForm====================*/
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
@@ -888,11 +897,11 @@
 	width: 160px;
 }
 
-.UIJCRExplorer .UIDocumentWorkspace .WorkKofax .UIGrid {
+.UIJCRExplorer  .WorkKofax .UIGrid {
 	border-top: none;
 }
 
-.UIJCRExplorer .UIDocumentWorkspace .WorkKofax .UIGrid td{
+.UIJCRExplorer .WorkKofax .UIGrid td{
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
@@ -902,5 +911,11 @@
 .UIJCRExplorer .UIActivateVersion {
 	border: solid 1px #b7b7b7;
 	margin: 10px;
+}
+
+/*====================================UISavedQuery==================================*/
+
+.UIJCRExplorer .UISavedQuery {
+	padding: 10px;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

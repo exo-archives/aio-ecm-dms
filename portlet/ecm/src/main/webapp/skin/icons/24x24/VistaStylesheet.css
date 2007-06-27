@@ -16,6 +16,14 @@
   background: url('VistaSkin/RelationsIcon.png') no-repeat center center;
 }
 
+.SavedQueries {
+  float: left;
+  width: 24px; height: 24px;
+  background: url('VistaSkin/SavedQueries.png') no-repeat ;
+  cursor: pointer;
+  margin: 0px 0px 0px 5px;
+}
+
 .JCRExplorer24x24Icon {
   width: 24px; height: 24px;
   background: url('VistaSkin/JCRExplorerIcon.png') no-repeat center center;
@@ -29,6 +37,11 @@
 .CollapseFolder24x24Icon {
   width: 30px; height: 30px;
   background: url('VistaSkin/BlueOpenFolder.png') no-repeat;
+}
+
+.AddNodeTypeIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
 .ExpandFolder24x24Icon {

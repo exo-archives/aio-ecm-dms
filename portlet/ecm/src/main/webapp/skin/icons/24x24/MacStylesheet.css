@@ -16,6 +16,14 @@
   background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
 }
 
+.SavedQueries {
+  float: left;
+  width: 24px; height: 24px;
+  background: url('MacSkin/SavedQueries.gif') no-repeat ;
+  cursor: pointer;
+  margin: 2px 0px 0px 5px;
+}
+
 .CloseSidebar24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
@@ -54,6 +62,11 @@
 .ViewMetadatasIcon {
 	width: 24px; height: 24px;
 	background: url('DefaultSkin/ViewMatadata.gif') no-repeat;
+}
+
+.AddNodeTypeIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
 .VoteIcon {
@@ -204,7 +217,7 @@
 }
 
 .AddMetadataTypeIcon {
-	width: 24px;	height: 22px;
+	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 

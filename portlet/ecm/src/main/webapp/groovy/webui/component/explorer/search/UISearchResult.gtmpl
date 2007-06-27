@@ -49,7 +49,7 @@
 	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
 	            </a>
 	            <a href="<%=uicomponent.event("OpenFolder", node.getPath())%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
-	              <div class="OpenFolder16x16Icon" style="margin-left:10px;float:left"><span></span></div>
+	              <div class="OpenFolder16x16Icon" style="margin-left:10px ;float:left; "><span></span></div>
 	            </a>
 	          </td>	                    
           </tr>

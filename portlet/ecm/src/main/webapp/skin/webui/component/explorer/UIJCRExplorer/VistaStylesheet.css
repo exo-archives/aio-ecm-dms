@@ -789,4 +789,9 @@
   margin: 0px auto;
 }
 
+/*====================================UISavedQuery==================================*/
+
+.UIJCRExplorer .UISavedQuery {
+	padding: 10px;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
