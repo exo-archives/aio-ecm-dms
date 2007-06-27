@@ -297,3 +297,14 @@
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
+
+.EmptyGrid {
+  width: 150px ;
+  padding-top: 10px;
+  font-style: italic;
+  margin: auto;
+}
+
+.UIWorkflowPortlet .UIAdministrationManager .UIAction {
+  width: 120px;
+}

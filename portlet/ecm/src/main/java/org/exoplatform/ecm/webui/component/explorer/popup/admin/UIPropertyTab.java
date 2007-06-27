@@ -44,7 +44,6 @@ public class UIPropertyTab extends UIContainer {
     return uiExplorer.getCurrentNode().getProperties() ; 
   }
   
-  @SuppressWarnings("unused")
   /*private boolean isMultiValue(Property prop) throws Exception {
     return prop.getDefinition().isMultiple() ;
   }*/
@@ -52,7 +51,7 @@ public class UIPropertyTab extends UIContainer {
   public String getPropertyValue(Property prop) throws Exception {
     if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;
     try {
-      if(prop.getDefinition().isMultiple()) {
+      if(prop.getDefinition() != null && prop.getDefinition().isMultiple()) {
         Value[] values =  prop.getValues();
         StringBuilder sB = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
@@ -73,4 +72,3 @@ public class UIPropertyTab extends UIContainer {
     }
   }
 }
-

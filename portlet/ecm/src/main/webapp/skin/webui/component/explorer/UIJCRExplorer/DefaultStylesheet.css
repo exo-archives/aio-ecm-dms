@@ -912,7 +912,15 @@
 	border: solid 1px #b7b7b7;
 	margin: 10px;
 }
+/*======================================================================*/
 
+.UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle {
+  background:#EFEFEF none repeat scroll 0%;
+  border: 1px solid #b7b7b7;
+  margin-top: 5px;
+  padding-left: 5px;
+  width:98.8%;
+}
 /*====================================UISavedQuery==================================*/
 
 .UIJCRExplorer .UISavedQuery {

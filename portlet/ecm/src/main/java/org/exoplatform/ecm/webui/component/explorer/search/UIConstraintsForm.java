@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -27,8 +26,8 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
-import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 
@@ -52,12 +51,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 public class UIConstraintsForm extends UIForm {
 
-  final static public String CONTAIN_OPERATOR = "containOperator" ;
-  final static public String NOT_CONTAIN_OPERATOR = "notContainOperator" ;
-  final static public String EXACTLY_OPERATOR = "exactlyOperator" ;
   final static public String OPERATOR = "operator" ;
   final static public String TIME_OPTION = "timeOpt" ;
-  final static public String CONSTRAINT = "constraint" ;
   final static public String PROPERTY1 = "property1" ; 
   final static public String PROPERTY2 = "property2" ; 
   final static public String PROPERTY3 = "property3" ; 
@@ -71,28 +66,35 @@ public class UIConstraintsForm extends UIForm {
   final static public String OR_OPERATION = "OR" ;
   final static public String CREATED_DATE = "CREATED" ;
   final static public String MODIFIED_DATE = "MODIFIED" ;
+  final static public String EXACTLY_PROPERTY = "exactlyPro" ;
+  final static public String CONTAIN_PROPERTY = "containPro" ;
+  final static public String NOT_CONTAIN_PROPERTY = "notContainPro" ;
+  final static public String DATE_PROPERTY = "datePro" ;
+  final static public String NODETYPE_PROPERTY = "nodetypePro" ;
   
   private String virtualDateQuery_ ;
   
   public UIConstraintsForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"}) ;
-    addUIFormInput(new UIFormRadioBoxInput(CONSTRAINT, "0")) ;
-
     List<SelectItemOption<String>> typeOperation = new ArrayList<SelectItemOption<String>>() ;
     typeOperation.add(new SelectItemOption<String>(AND_OPERATION, AND_OPERATION));
     typeOperation.add(new SelectItemOption<String>(OR_OPERATION, OR_OPERATION));
     addUIFormInput(new UIFormSelectBox(OPERATOR, OPERATOR, typeOperation)) ;
-
+    
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(EXACTLY_PROPERTY, EXACTLY_PROPERTY, null)) ;
     addUIFormInput(new UIFormStringInput(PROPERTY1, PROPERTY1, null)) ;
-    addUIFormInput(new UIFormSelectBox(EXACTLY_OPERATOR, EXACTLY_OPERATOR, typeOperation)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN_EXACTLY, CONTAIN_EXACTLY, null)) ;
+    
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(CONTAIN_PROPERTY, CONTAIN_PROPERTY, null)) ;
     addUIFormInput(new UIFormStringInput(PROPERTY2, PROPERTY2, null)) ;
-    addUIFormInput(new UIFormSelectBox(CONTAIN_OPERATOR, CONTAIN_OPERATOR, typeOperation)) ;
     addUIFormInput(new UIFormStringInput(CONTAIN, CONTAIN, null)) ;
+    
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(NOT_CONTAIN_PROPERTY, NOT_CONTAIN_PROPERTY, null)) ;
     addUIFormInput(new UIFormStringInput(PROPERTY3, PROPERTY3, null)) ;
-    addUIFormInput(new UIFormSelectBox(NOT_CONTAIN_OPERATOR, NOT_CONTAIN_OPERATOR, typeOperation)) ;
     addUIFormInput(new UIFormStringInput(NOT_CONTAIN, NOT_CONTAIN, null)) ;
     
+    
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(DATE_PROPERTY, DATE_PROPERTY, null)) ;
     List<SelectItemOption<String>> dateOperation = new ArrayList<SelectItemOption<String>>() ;
     dateOperation.add(new SelectItemOption<String>(CREATED_DATE, CREATED_DATE));
     dateOperation.add(new SelectItemOption<String>(MODIFIED_DATE, MODIFIED_DATE));
@@ -104,34 +106,19 @@ public class UIConstraintsForm extends UIForm {
     uiToDate.setDisplayTime(false) ;
     addUIFormInput(uiToDate) ;
     addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
+
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(NODETYPE_PROPERTY, NODETYPE_PROPERTY, null)) ;
+    addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
   }
 
-  public String renderConstraintRadioBox(int index) {
-    StringBuilder input = new StringBuilder("<input class='radio' type='radio' name='") ;
-    input.append(CONSTRAINT).append("' value='").append(index).append("'") ;
-    String value = this.<UIFormRadioBoxInput>getUIInput(CONSTRAINT).getValue();
-    if(Integer.parseInt(value) == index) input.append(" checked") ;
-    input.append(">") ;
-    return input.toString() ;
-  }
-  
-  private String getContainQueryString(String properties, String type, boolean isContain) {
+  private String getContainQueryString(String property, String type, boolean isContain) {
     String value = getUIStringInput(type).getValue() ;
-    String operator = getUIFormSelectBox(CONTAIN_OPERATOR).getValue() ;
-    if(!isContain) operator = getUIFormSelectBox(NOT_CONTAIN_OPERATOR).getValue() ;
-    if(value == null) value = "" ;
-    else value = value.trim() ;
-    String advanceQuery = "" ;
-    if(properties.indexOf(",") > -1) {
-      String[] array = properties.split(",") ;
-      for(String property : array) {
-        if(advanceQuery.length() > 0) advanceQuery = advanceQuery + operator ;
-        advanceQuery = advanceQuery + getContainQuery(property, value, isContain) ;
-      }
-    } else {
-      advanceQuery = getContainQuery(properties, value, isContain) ;
+    if(value == null) return "" ;
+    if(value.trim().length() > 0) {
+      if(isContain) return " contains(" + property.trim() + ", '"+ value.trim() + "')" ;
+      return " not(contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
     }
-    return advanceQuery ;
+    return "" ;
   }
   
   private String getDateTimeQueryString(String beforeDate, String afterDate, String type) {
@@ -139,10 +126,10 @@ public class UIConstraintsForm extends UIForm {
     if(afterDate != null && afterDate.trim().length() > 0) {
       Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
       if(type.equals(CREATED_DATE)) {
-        virtualDateQuery_ = "(documents created from '"+beforeDate+"') AND (to '"+afterDate+"')" ;
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"') AND (documents created to '"+afterDate+"')" ;
         return "(jcr:created > '"+ISO8601.format(bfDate)+"') AND (jcr:created < '"+ISO8601.format(afDate)+"')" ;
       } else if(type.equals(MODIFIED_DATE)) {
-        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') AND (to '"+afterDate+"')" ;
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') AND (documents modified to '"+afterDate+"')" ;
         return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"') AND (jcr:lastModified < '"+ISO8601.format(afDate)+"')" ;
       }
     } else {
@@ -155,30 +142,6 @@ public class UIConstraintsForm extends UIForm {
       }
     }
     return "" ;
-  }
-  
-  private String getContainQuery(String property, String value, boolean isContain) {
-    if(value.length() > 0) {
-      if(isContain) return " contains(" + property.trim() + ", '"+ value.trim() + "')" ;
-      return " not(contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
-    }
-    return "";
-  }
-  
-  private String getExactlyQueryString(String value, String properties) {
-    String operator = getUIFormSelectBox(EXACTLY_OPERATOR).getValue() ;
-    String advanceQuery = "" ;
-    String[] arrProperties = {} ;
-    if(properties.indexOf(",") > -1) arrProperties = properties.split(",") ;
-    if(arrProperties.length > 0) {
-      for(String pro : arrProperties) {
-        if(advanceQuery.length() == 0) advanceQuery = "(" + pro + " = '" + value.trim() + "')" ;
-        else advanceQuery = advanceQuery + " " + operator + " " + "("+ pro +" = '" + value.trim() + "')" ;
-      }
-    } else {
-      advanceQuery = "" + properties + " = '" + value.trim() + "'" ;
-    }
-    return advanceQuery;
   }
   
   private String getNodeTypeQueryString(String nodeTypes) {
@@ -199,14 +162,13 @@ public class UIConstraintsForm extends UIForm {
   private void addConstraint(Event event, int opt) throws Exception {
     UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     String advanceQuery = "" ;
-    String properties ;
+    String property ;
     virtualDateQuery_ = null ;
-    UIECMSearch uiECMSearch = getParent() ;
-    UISimpleSearch uiSimpleSearch = uiECMSearch.getChild(UISimpleSearch.class) ;
+    UISimpleSearch uiSimpleSearch = ((UISearchContainer)getParent()).getChild(UISimpleSearch.class) ;
     switch (opt) {
       case 0:
-        properties = getUIStringInput(PROPERTY1).getValue() ;
-        if(properties == null || properties.length() < 1) {
+        property = getUIStringInput(PROPERTY1).getValue() ;
+        if(property == null || property.length() < 1) {
           uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
@@ -218,25 +180,25 @@ public class UIConstraintsForm extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = getExactlyQueryString(value, properties) ;
+        advanceQuery = "" + property + " = '" + value.trim() + "'" ;
         break;
       case 1:
-        properties = getUIStringInput(PROPERTY2).getValue() ; 
-        if(properties == null || properties.length() < 1) {
+        property = getUIStringInput(PROPERTY2).getValue() ; 
+        if(property == null || property.length() < 1) {
           uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = getContainQueryString(properties, CONTAIN, true) ;
+        advanceQuery = getContainQueryString(property, CONTAIN, true) ;
         break;
       case 2:
-        properties = getUIStringInput(PROPERTY3).getValue() ; 
-        if(properties == null || properties.length() < 1) {
+        property = getUIStringInput(PROPERTY3).getValue() ; 
+        if(property == null || property.length() < 1) {
           uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = getContainQueryString(properties, NOT_CONTAIN, false) ;
+        advanceQuery = getContainQueryString(property, NOT_CONTAIN, false) ;
         break;
       case 3:
         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
@@ -259,54 +221,50 @@ public class UIConstraintsForm extends UIForm {
         advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
         break ;
       case 4:
-        properties = getUIStringInput(DOC_TYPE).getValue() ;
-        if(properties == null || properties.length() < 1) {
+        property = getUIStringInput(DOC_TYPE).getValue() ;
+        if(property == null || property.length() < 1) {
           uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = getNodeTypeQueryString(properties) ;
+        advanceQuery = getNodeTypeQueryString(property) ;
         break;
       default:
         break;
     }
     uiSimpleSearch.updateAdvanceConstraint(advanceQuery, getUIFormSelectBox(OPERATOR).getValue(), virtualDateQuery_) ;
-    uiECMSearch.removeChild(UIConstraintsForm.class) ;
-    uiECMSearch.setRenderedChild(UISimpleSearch.class) ;
+  }
+  
+  private void resetConstraintForm() {
+    reset() ;
+    getUIFormCheckBoxInput(EXACTLY_PROPERTY).setChecked(false) ;
+    getUIFormCheckBoxInput(CONTAIN_PROPERTY).setChecked(false) ;
+    getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).setChecked(false) ;
+    getUIFormCheckBoxInput(DATE_PROPERTY).setChecked(false) ;
+    getUIFormCheckBoxInput(NODETYPE_PROPERTY).setChecked(false) ;
   }
   
   static public class SaveActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UIConstraintsForm uiForm = event.getSource();
-      UISearchContainer uiContainer = uiForm.getAncestorOfType(UISearchContainer.class) ;
-      int opt = Integer.parseInt(uiForm.<UIFormRadioBoxInput>getUIInput(CONSTRAINT).getValue()) ;
-      switch (opt) {
-        case 0:
-          uiForm.addConstraint(event, 0) ;
-          break;
-        case 1:
-          uiForm.addConstraint(event, 1) ;
-          break;
-        case 2:
-          uiForm.addConstraint(event, 2) ;
-          break;
-        case 3:
-          uiForm.addConstraint(event, 3);
-          break;
-        case 4:
-          uiForm.addConstraint(event, 4) ;
-          break;          
-        default:
-          break;
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+      boolean isExactly = uiForm.getUIFormCheckBoxInput(EXACTLY_PROPERTY).isChecked() ;
+      boolean isContain = uiForm.getUIFormCheckBoxInput(CONTAIN_PROPERTY).isChecked() ;
+      boolean isNotContain = uiForm.getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).isChecked() ;
+      boolean isDateTime = uiForm.getUIFormCheckBoxInput(DATE_PROPERTY).isChecked() ;
+      boolean isNodeType = uiForm.getUIFormCheckBoxInput(NODETYPE_PROPERTY).isChecked() ;
+      if(isExactly) uiForm.addConstraint(event, 0) ;
+      if(isContain) uiForm.addConstraint(event, 1) ;
+      if(isNotContain) uiForm.addConstraint(event, 2) ;
+      if(isDateTime) uiForm.addConstraint(event, 3);
+      if(isNodeType) uiForm.addConstraint(event, 4) ;
+      uiForm.resetConstraintForm() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
   
   static public class AddMetadataTypeActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
-      UIConstraintsForm uiConstraintsForm = event.getSource();
-      UISearchContainer uiContainer = uiConstraintsForm.getAncestorOfType(UISearchContainer.class) ;
+      UISearchContainer uiContainer = event.getSource().getParent() ;
       String type = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String popupId = PROPERTY1;
       if(type.equals("1")) popupId = PROPERTY2 ;
@@ -318,8 +276,7 @@ public class UIConstraintsForm extends UIForm {
   
   static public class AddNodeTypeActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
-      UIConstraintsForm uiConstraintsForm = event.getSource();
-      UISearchContainer uiContainer = uiConstraintsForm.getAncestorOfType(UISearchContainer.class) ;
+      UISearchContainer uiContainer = event.getSource().getParent() ;
       uiContainer.initNodeTypePopup() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
@@ -328,31 +285,19 @@ public class UIConstraintsForm extends UIForm {
   static public class CompareExactlyActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UIConstraintsForm uiConstraintForm = event.getSource();
-      String properties = uiConstraintForm.getUIStringInput(PROPERTY1).getValue() ;
+      String property = uiConstraintForm.getUIStringInput(PROPERTY1).getValue() ;
       UIJCRExplorer uiExplorer = uiConstraintForm.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiConstraintForm.getAncestorOfType(UIApplication.class) ;
-      if(properties == null || properties.trim().length() == 0) {
+      if(property == null || property.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-null", null, 
                                                  ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String operator = uiConstraintForm.getUIFormSelectBox(EXACTLY_OPERATOR).getValue() ;
-      String[] arrProps = {};
-      if(properties.indexOf(",") > -1) arrProps = properties.split(",") ;
       String currentPath = uiExplorer.getCurrentNode().getPath() ;
       String statement = "select * from nt:base where " ;
       if(!currentPath.equals("/")) statement = statement + "jcr:path like '"+ currentPath +"/%' AND " ;
-      String whereClause = "" ;
-      if(arrProps.length > 0) {
-        for(String pro : arrProps) {
-          if(whereClause.length() == 0) whereClause = "("+pro+" is not null)" ;
-          else whereClause = whereClause + " " + operator + " " + "("+ pro +" is not null)" ;
-        }
-        statement = statement + whereClause ;
-      } else {
-        statement = statement + ""+properties+" is not null" ;
-      }
+      statement = statement + ""+property+" is not null" ;
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       Query query = queryManager.createQuery(statement, Query.SQL) ;
       QueryResult result = query.execute() ;
@@ -361,12 +306,12 @@ public class UIConstraintsForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      UISearchContainer uiContainer = uiConstraintForm.getAncestorOfType(UISearchContainer.class) ;
+      UISearchContainer uiContainer = uiConstraintForm.getParent() ;
       UICompareExactlyForm uiCompareExactlyForm = 
         uiContainer.createUIComponent(UICompareExactlyForm.class, null, null) ;
       UIPopupAction uiPopup = uiContainer.getChild(UIPopupAction.class);
       uiPopup.getChild(UIPopupWindow.class).setId("ExactlyFormPopup") ;
-      uiCompareExactlyForm.init(properties, result) ;
+      uiCompareExactlyForm.init(property, result) ;
       uiPopup.activate(uiCompareExactlyForm, 600, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }
@@ -374,10 +319,9 @@ public class UIConstraintsForm extends UIForm {
   
   static  public class CancelActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
-      UIECMSearch uiECMSearch = event.getSource().getParent() ;
-      uiECMSearch.removeChild(UIConstraintsForm.class) ;
-      uiECMSearch.setRenderedChild(UISimpleSearch.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiECMSearch.getParent()) ;
+      UISearchContainer uiSearchContainer = event.getSource().getParent() ;
+      event.getSource().setRendered(false) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
   }
 }

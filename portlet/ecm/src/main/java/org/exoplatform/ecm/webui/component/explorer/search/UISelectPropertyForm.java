@@ -47,8 +47,11 @@ import org.exoplatform.webui.form.UIFormSelectBox;
     }    
 )
 public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
+  
   final static public String METADATA_TYPE= "metadataType" ;
   final static public String PROPERTY = "property" ;
+  
+  private String fieldName_ = null ;
   
   private List<SelectItemOption<String>> properties_ = new ArrayList<SelectItemOption<String>>() ;
   
@@ -86,6 +89,8 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
   }
   
   public void deActivate() throws Exception {}
+  
+  public void setFieldName(String fieldName) { fieldName_ = fieldName ; }
 
   public void renderProperties(String metadata) throws Exception {
     properties_.clear() ;
@@ -116,7 +121,7 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
       UISearchContainer uiSearchContainer = uiPopupAction.getParent() ;
       UIConstraintsForm uiConstraintsForm =
         uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
-      uiConstraintsForm.getUIStringInput(UIConstraintsForm.PROPERTY1).setValue(property) ;
+      uiConstraintsForm.getUIStringInput(uiForm.fieldName_).setValue(property) ;
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConstraintsForm) ;

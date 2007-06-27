@@ -53,6 +53,7 @@ public class UISimpleSearch extends UIForm {
   final static public String INPUT_SEARCH = "input" ;
   final static public String CONSTRAINTS = "constraints" ;
   final static public String QUERY_NAME = "queryName" ;
+  final static public String NODE_PATH = "nodePath" ;
   
   private List<String> constraints_ = new ArrayList<String>() ;
   private String firstOperator_ ;
@@ -64,6 +65,7 @@ public class UISimpleSearch extends UIForm {
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
   
   public UISimpleSearch() throws Exception {
+    addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null)) ;
     addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints") ;
@@ -132,7 +134,7 @@ public class UISimpleSearch extends UIForm {
     public void execute(Event<UISimpleSearch> event) throws Exception {
       UISimpleSearch uiSimpleSearch = event.getSource() ;
       String repository = uiSimpleSearch.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-      UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ;
+      UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ;
       UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiSimpleSearch.getApplicationComponent(QueryService.class) ;
@@ -181,15 +183,15 @@ public class UISimpleSearch extends UIForm {
   static public class SearchActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
       UISimpleSearch uiSimpleSearch = event.getSource();
-      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
       String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
       UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
       Node currentNode = uiExplorer.getCurrentNode() ;
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
-      UIECMSearch uiECMSearch = uiSimpleSearch.getParent() ; 
+      UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
       uiSearchResult.resultMap_.clear() ;
       if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
+        UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -223,14 +225,11 @@ public class UISimpleSearch extends UIForm {
   
   static  public class MoreConstraintsActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      UIECMSearch uiECMSearch = event.getSource().getParent() ;
-      UIConstraintsForm uiConstraintsForm = uiECMSearch.getChild(UIConstraintsForm.class) ;
-      if(uiConstraintsForm == null) {
-        uiECMSearch.addChild(UIConstraintsForm.class, null, null) ;
-      }
-      UISearchContainer uiContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
-      uiECMSearch.setRenderedChild(UIConstraintsForm.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+      UISearchContainer uiSearchContainer = event.getSource().getParent() ;
+      UIConstraintsForm uiConstraintsForm = uiSearchContainer.getChild(UIConstraintsForm.class) ;
+      if(uiConstraintsForm.isRendered()) uiConstraintsForm.setRendered(false) ;
+      else uiConstraintsForm.setRendered(true) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
   }
 }

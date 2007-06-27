@@ -53,8 +53,9 @@
 <div style="text-align: left; margin: 5px 8px;" id="$uicomponent.id">
 	<div>
 		<div class="ContentPodcast">
+			<% def originalNode = uicomponent.getOriginalNode(); %>
 			<label class="text">Podcast: <label>
-			<span class="text"><%=node.getName()%></span>
+			<span class="text"><%=originalNode.getName()%></span>
 		</div>
 		<div class="ContentPodcast">
 			<label class="text">Title: </label>
@@ -146,4 +147,6 @@
 		</div>
   </div>	
   <!-- End div for  Description -->	
+  <div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
+  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
 </div>

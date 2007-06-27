@@ -415,3 +415,7 @@
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
+
+.UIJCRExplorer .UISelectPropertyForm .UIAction {
+  width: 140px;
+}

@@ -6,15 +6,14 @@
 	 * September 14, 2006
 	 * 2:10:23 PM
 	 */
-
-  import org.exoplatform.webui.core.UIComponent ;  
-  String[] beanFields =  uicomponent.getBeanFields() ;  
 %>
 <div class="UIPropertyTab" >
   <table class="UIGrid">
 	  <thead>
 			<tr>
-			  <%for(field in beanFields) {%>
+			  <%
+			    String[] beanFields =  uicomponent.getBeanFields() ;  
+			    for(field in beanFields) {%>
 			    <th><%=_ctx.appRes("UIPropertyTab.header." + field)%></th>
 			  <%}%>  
 			</tr>

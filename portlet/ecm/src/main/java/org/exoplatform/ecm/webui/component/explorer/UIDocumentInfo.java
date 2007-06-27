@@ -86,7 +86,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
       if(uiExplorer.getPreference().isJcrEnable()) {
         return uiExplorer.getDocumentInfoTemplate(); 
-      }else if(isNodeTypeSupported(nodeType)) {
+      } else if(isNodeTypeSupported(nodeType)) {
         return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ; 
       }
       

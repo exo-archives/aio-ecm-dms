@@ -44,4 +44,6 @@
 		  } 
 		%>
 	</table>
+	<div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
+  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
 </div>

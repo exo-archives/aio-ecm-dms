@@ -60,6 +60,7 @@ import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchContainer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
@@ -897,9 +898,10 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      UISearchContainer uiSearchContainer =
-        event.getSource().createUIComponent(UISearchContainer.class, null, null) ;
-      uiPopupAction.activate(uiSearchContainer, 800, 500) ;
+      UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null) ;
+      UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class) ;
+      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(uiJCRExplorer.getCurrentNode().getPath()) ;
+      uiPopupAction.activate(uiECMSearch, 600, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

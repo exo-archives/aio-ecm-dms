@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.ImportUUIDBehavior;
-import javax.jcr.InvalidSerializedDataException;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
