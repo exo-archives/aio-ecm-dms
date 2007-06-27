@@ -343,6 +343,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      if(uiFormWizard.isNewWizard_){
+        String swapPathAuto = swapPath ;
+        String storePathAuto = storePath ;
+        swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
+        storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPathAuto) ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePathAuto) ;
+      }
       uiFormWizard.viewStep(2) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
@@ -417,6 +425,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           return ;
         }  
       }
+      if(uiFormWizard.isNewWizard_){
+        String swapPathAuto = swapPath ;
+        String storePathAuto = storePath ;
+        swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
+        storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPathAuto) ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePathAuto) ;
+      }
       uiFormWizard.viewStep(3) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
@@ -431,6 +447,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
       if(uiWizard.isEmpty(wsName)) {
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require",null)) ;
+        uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).setChecked(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ;
       }
@@ -699,13 +716,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           return ;
         }
       }
-      if(uiWSFormStep1.isRendered()) {
-        if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
-        if(!storePath.contains(wsName))  storePath = storePath + wsName ;
-        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
-        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
+      
+      if(uiFormWizard.isNewWizard_){
+        String swapPathAuto = swapPath ;
+        String storePathAuto = storePath ;
+        swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
+        storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPathAuto) ;
+        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePathAuto) ;
       }
-
+     
       int step = uiFormWizard.getCurrentStep() ;
       List<UIComponent> children = uiFormWizard.getChildren() ;
       if(step < uiFormWizard.getMaxStep()) {
