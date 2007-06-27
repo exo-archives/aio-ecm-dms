@@ -24,19 +24,19 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:groovy/webui/component/UITabPaneWithAction.gtmpl",
     events = {
-        @EventConfig(listeners = UIAdminstrationManager.ViewActionListener.class),
-        @EventConfig(listeners = UIAdminstrationManager.DeleteActionListener.class),
-        @EventConfig(listeners = UIAdminstrationManager.UploadProcessActionListener.class)
+        @EventConfig(listeners = UIAdministrationManager.ViewActionListener.class),
+        @EventConfig(listeners = UIAdministrationManager.DeleteActionListener.class),
+        @EventConfig(listeners = UIAdministrationManager.UploadProcessActionListener.class)
     }
 )
-public class UIAdminstrationManager extends UIContainer {
+public class UIAdministrationManager extends UIContainer {
   private static String[] MONITOR_BEAN_FIELD = {"id", "name", "version"} ;
   private static String[] TIMERS_BEAN_FIELD = {"id", "name", "dueDate"} ;
   
   private static String[] ACTION = {"View","Delete"} ;
   private static String[] ACTIONS = {"UploadProcess"} ;
   
-  public UIAdminstrationManager() throws Exception {
+  public UIAdministrationManager() throws Exception {
     UIGrid uiMonitorGrid = addChild(UIGrid.class, null, "UIMonitor") ;
     UIGrid uiTimersGrid = addChild(UIGrid.class, null, "UITimers").setRendered(false) ;
     uiMonitorGrid.setLabel("UIMonitor") ;
@@ -64,8 +64,8 @@ public class UIAdminstrationManager extends UIContainer {
     uiGrid.getUIPageIterator().setPageList(new ObjectPageList(workflowServiceContainer.getTimers(), 10)) ;
   }
 
-  static  public class ViewActionListener extends EventListener<UIAdminstrationManager> {
-    public void execute(Event<UIAdminstrationManager> event) throws Exception {
+  static  public class ViewActionListener extends EventListener<UIAdministrationManager> {
+    public void execute(Event<UIAdministrationManager> event) throws Exception {
       UIWorkflowAdministrationPortlet uiAdministrationPortlet = event.getSource().getParent() ;
       String id = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIPopupWindow popup = uiAdministrationPortlet.getChild(UIPopupWindow.class);
@@ -75,9 +75,9 @@ public class UIAdminstrationManager extends UIContainer {
     }
   }
   
-  static  public class DeleteActionListener extends EventListener<UIAdminstrationManager> {
-    public void execute(Event<UIAdminstrationManager> event) throws Exception {
-      UIAdminstrationManager uiAdminManager = event.getSource() ;
+  static  public class DeleteActionListener extends EventListener<UIAdministrationManager> {
+    public void execute(Event<UIAdministrationManager> event) throws Exception {
+      UIAdministrationManager uiAdminManager = event.getSource() ;
       String processDef = event.getRequestContext().getRequestParameter(OBJECTID) ;
       WorkflowServiceContainer workflowServiceContainer = 
         uiAdminManager.getApplicationComponent(WorkflowServiceContainer.class) ;
@@ -87,8 +87,8 @@ public class UIAdminstrationManager extends UIContainer {
     }
   }
   
-  static  public class UploadProcessActionListener extends EventListener<UIAdminstrationManager> {
-    public void execute(Event<UIAdminstrationManager> event) throws Exception {
+  static  public class UploadProcessActionListener extends EventListener<UIAdministrationManager> {
+    public void execute(Event<UIAdministrationManager> event) throws Exception {
       UIWorkflowAdministrationPortlet uiAdministrationPortlet = event.getSource().getParent() ;
       uiAdministrationPortlet.initUploadPopup() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiAdministrationPortlet) ;
