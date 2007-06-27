@@ -89,7 +89,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected boolean isAddnew_ = true ;  
   protected String defaulWorkspace_ = null ;
   protected String repoName_ = null ;
-  private Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>() ; 
+  protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>() ; 
 
   public UIRepositoryForm() throws Exception { 
     addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ; 
@@ -370,7 +370,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       RepositoryService rService = uiForm.getApplicationComponent(RepositoryService.class) ;
-      if(uiForm.isAddnew_) uiForm.refresh(null) ;
+      if(uiForm.isAddnew_) uiForm.refresh(rService.getDefaultRepository().getConfiguration()) ;
       else uiForm.refresh(rService.getRepository(uiForm.repoName_).getConfiguration());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
@@ -456,7 +456,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-workspace", args)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;  
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          uiForm.refreshWorkspaceList() ;
+          //uiForm.refreshWorkspaceList() ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
           return ;
         }

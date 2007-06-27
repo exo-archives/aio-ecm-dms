@@ -462,6 +462,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String name = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
       String initNodeType = uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).getValue() ;
+      boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).isChecked() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_TIMEOUT).getValue() ;
 
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
@@ -535,7 +536,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
       workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;
-      if(uiFormWizard.isNewWizard_ && !uiFormWizard.isNewRepo_) {
+      
+      if(uiRepoForm.isAddnew_ && uiFormWizard.isNewWizard_) {
+        if(isDefault) uiRepoForm.defaulWorkspace_ = name ;
+        uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+        uiRepoForm.refreshWorkspaceList() ;  
+      }
+      
+      if(!uiRepoForm.isAddnew_ && uiFormWizard.isNewWizard_) {
         InitialContextInitializer ic = (InitialContextInitializer)uiFormWizard.getApplicationComponent(ExoContainer.class).
         getComponentInstanceOfType(InitialContextInitializer.class) ;
         if(ic != null) ic.recall() ;
@@ -545,14 +553,17 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         try {
           manageRepository.configWorkspace(workspaceEntry) ;
           manageRepository.createWorkspace(workspaceEntry.getName()) ;
+          uiRepoForm.workspaceMap_.clear() ;
+          for(WorkspaceEntry ws : manageRepository.getConfiguration().getWorkspaceEntries()) {
+            uiRepoForm.workspaceMap_.put(ws.getName(), ws) ;
+          }
+          uiRepoForm.refreshWorkspaceList() ;   
         }
         catch (Exception e) {
           e.printStackTrace() ;
           return;
         }
       }
-      uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
-      uiRepoForm.refreshWorkspaceList() ;      
       UIPopupAction uiPopupAction = uiFormWizard.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
