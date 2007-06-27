@@ -580,10 +580,6 @@
   padding: 10px 0px 10px 10px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
-  float: left;
-}
-
 .UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
 }
