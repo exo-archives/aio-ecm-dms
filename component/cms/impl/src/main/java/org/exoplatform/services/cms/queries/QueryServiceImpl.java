@@ -52,7 +52,7 @@ public class QueryServiceImpl implements QueryService, Startable{
         queryPlugin.init() ;
       }catch (Exception e) {
         System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
-        e.printStackTrace() ;
+        //e.printStackTrace() ;
       }
     }
   }
@@ -67,7 +67,7 @@ public class QueryServiceImpl implements QueryService, Startable{
         queryPlugin.init(repository) ;
       }catch (Exception e) { 
         System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
-        e.printStackTrace() ;
+        //e.printStackTrace() ;
       }
     } 
   }

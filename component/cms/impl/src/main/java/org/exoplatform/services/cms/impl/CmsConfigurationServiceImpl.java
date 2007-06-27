@@ -49,7 +49,12 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService,
   public void start() {
     try {
       String repository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
-      processNodeTypePlugin(repository) ;
+      processNodeTypePlugin(repository) ;      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+    try {
       processAddPathPlugin() ;
     } catch (Exception e) {
       e.printStackTrace();

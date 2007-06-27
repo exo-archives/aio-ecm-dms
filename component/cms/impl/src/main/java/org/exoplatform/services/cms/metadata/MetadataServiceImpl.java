@@ -40,15 +40,12 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   
   private RepositoryService repositoryService_;
   private CmsConfigurationService cmsConfigService_ ;
-  private ConfigurationManager configManager_ ;
-  //private Session session_ ;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
   
   public MetadataServiceImpl(CmsConfigurationService cmsConfigService, 
-      RepositoryService repositoryService, ConfigurationManager configManager) throws Exception{
+      RepositoryService repositoryService) throws Exception{
     cmsConfigService_ = cmsConfigService ;
     repositoryService_ = repositoryService ;
-    configManager_ = configManager ;    
   }
   
   public void start() {

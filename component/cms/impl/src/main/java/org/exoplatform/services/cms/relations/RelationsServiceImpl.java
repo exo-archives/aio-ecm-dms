@@ -110,14 +110,6 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 		}
 	}
 
-	/*public void addRelation(Node node, String relationPath, boolean replaceAll)
-			throws Exception {
-		if (replaceAll) {
-			removeRelation(node, "*");
-		}
-		addRelation(node, relationPath);
-	}*/
-
 	public void start() {
 		Session session = null;
 		Node relationsHome = null;

@@ -7,7 +7,7 @@
 	  <init-params>
 	    <value-param>
 	      <name>repositories</name>
-	      <value>production</value>
+	      <value>repository</value>
 	    </value-param>
 	  </init-params>
 	</component>	

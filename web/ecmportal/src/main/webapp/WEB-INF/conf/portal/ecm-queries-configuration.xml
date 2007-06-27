@@ -41,10 +41,6 @@
       </component-plugin> 
     </component-plugins>
     <init-params>
-	    <!--value-param>
-	      <name>workspace</name>
-	      <value>production</value>
-	    </value-param-->   
 	    <value-param>
 	      <name>relativePath</name>
 	      <value>queries</value>

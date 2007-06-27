@@ -47,7 +47,6 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   public String getActionExecutableLabel() { return "Groovy Scripts:"; }
   
   public String getExecutableDefinitionName() { return "exo:script"; }
-  protected boolean getAutoCreate() { return config_.getAutoCreatedInNewRepository() ; }
   protected List<RepositoryEntry> getRepositories() {
     return repositoryService_.getConfig().getRepositoryConfigurations() ;
   }

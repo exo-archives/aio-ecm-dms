@@ -57,7 +57,6 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
     return "exo:businessProcess";
   }
   
-  protected boolean getAutoCreate() { return config_.getAutoCreatedInNewRepository() ; }
   protected String getRepository() { return config_.getRepository() ; }
   protected String getWorkspace() { return config_.getWorkspace() ; }
   protected List<RepositoryEntry> getRepositories() {

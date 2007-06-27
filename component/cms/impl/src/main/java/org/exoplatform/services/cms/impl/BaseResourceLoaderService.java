@@ -51,7 +51,7 @@ public abstract class BaseResourceLoaderService implements Startable{
           session = repositoryService_.getRepository(repo.getName())
             .getSystemSession(cmsConfigService_.getWorkspace(repo.getName())) ;
         } catch (RepositoryException re) {
-          System.out.println("[WARN] ==> Can not init scripts in repository '" + repo.getName() + "'") ;
+          System.out.println("[WARNING] ==> Can not init scripts in repository '" + repo.getName() + "'") ;
           continue ;
         }
         addScripts(session, resourceConfig.getRessources()) ;

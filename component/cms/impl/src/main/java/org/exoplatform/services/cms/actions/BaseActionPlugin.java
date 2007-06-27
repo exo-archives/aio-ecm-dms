@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
@@ -69,7 +68,6 @@ abstract public class BaseActionPlugin implements ActionPlugin {
 
   protected Map<String, ECMEventListener> listeners_ = new HashMap<String, ECMEventListener>();
   
-  abstract protected boolean getAutoCreate();  
   abstract protected String getRepository();  
   abstract protected List<RepositoryEntry> getRepositories();
   abstract protected String getWorkspace();
@@ -344,22 +342,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     if (actions.isEmpty()) return;
     for (Iterator iter = actions.iterator(); iter.hasNext();) {
       ActionConfig.Action action = (ActionConfig.Action) iter.next();
-      if(getAutoCreate()) {
-        for(RepositoryEntry repo : getRepositories()) {
-          try {
-            importAction(action, getSystemSession(repo.getName(), action.getSrcWorkspace())) ;
-          } catch (Exception e) {
-            System.out.println("[WARNING] ==> Can not init action '" + action.getName() 
-                + "' in repository '"+repo.getName()+"' and workspace '"+action.getSrcWorkspace()+"'") ;
-          }
-        }
-      }else {
-        try {
-          importAction(action, getSystemSession(getRepository(), action.getSrcWorkspace())) ;
-        } catch (Exception e) {
-          System.out.println("[WARNING] ==> Can not init action '" + action.getName() 
-              + "' in repository '"+getRepository()+"' and workspace '"+action.getSrcWorkspace()+"'") ;
-        }
+      try {
+        importAction(action, getSystemSession(getRepository(), action.getSrcWorkspace())) ;
+      } catch (Exception e) {
+        System.out.println("[WARNING] ==> Can not init action '" + action.getName() 
+            + "' in repository '"+getRepository()+"' and workspace '"+action.getSrcWorkspace()+"'") ;
       }
     }
   }
@@ -369,7 +356,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     if (actions.isEmpty()) return;
     for (Iterator iter = actions.iterator(); iter.hasNext();) {
       ActionConfig.Action action = (ActionConfig.Action) iter.next();
-      if(getAutoCreate() || repository.equals(getRepository())) {
+      if(repository.equals(getRepository())) {
         try {
           importAction(action, getSystemSession(repository, action.getSrcWorkspace())) ;
         } catch (Exception e) {
