@@ -385,13 +385,18 @@
 /*===========================UIUploadForm====================*/
 
 .UIJCRExplorerPortlet .UIUploadManager {
-  padding: 10px;
+  width: 95%;
+  margin: 10px auto;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame .ProgressBar{ 
@@ -533,6 +538,19 @@
   padding-right: 50px;
 }
 
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .FormContainer .UIFormGrid{
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIAction {
+	width: 210px;
+	padding-right: 0px;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIFormWithTitle {
+	border: none;
+}
 /*=============================UICommentForm=======================*/
 
 .UIJCRExplorerPortlet .UICommentForm  {
@@ -569,6 +587,10 @@
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
   width: 250px;
   padding-right: 10px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {

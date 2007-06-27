@@ -412,6 +412,11 @@
   border: none;
 }
 
+.UIJCRExplorerPortlet .UIMultiLanguageForm .FormContainer {
+  width: 500px;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 240px;
   padding-right: 110px;
@@ -456,9 +461,23 @@
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
-   width: auto;
+  width: auto;
   border: solid 1px #939393;
   border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: solid 1px #939393;
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .FormContainer .UIFormGrid{
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIFormWithTitle {
+	border: none;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
@@ -690,6 +709,7 @@
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
   padding-bottom: 10px;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
@@ -715,6 +735,10 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
