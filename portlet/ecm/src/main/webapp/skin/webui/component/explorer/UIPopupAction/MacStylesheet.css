@@ -15,12 +15,21 @@
 
 /*############################## -- Begin UIVersionInfo -- ##############################*/
 .UIJCRExplorerPortlet .UIVersionInfo {
-  border: solid 1px #bdbdbd;
+  padding: 7px;
+  background-color: white;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .{
   padding: 7px;
   background-color: white;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
+  margin-top: 10px;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm {  
   margin-top: 10px;
   border: none;
 }

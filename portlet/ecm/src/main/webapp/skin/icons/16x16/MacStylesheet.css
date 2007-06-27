@@ -28,31 +28,36 @@
 }
 
 .AddIcon16x16 {
+  float:left;
   width: 16px; height: 16px;
   background: url('MacSkin/BlueCirclePlus.gif') no-repeat; 
   cursor: pointer;
 }
 
 .AddPathIcon {
+  float: left ;
 	width: 16px;	height: 16px;
   background: url('MacSkin/AddPath.gif') no-repeat ;
   cursor: pointer;
 }
 
 .AddIconIcon {
+  float: left ;
 	width: 16px;	height: 16px;
   background: url('MacSkin/BlueCirclePlus.gif') no-repeat ;
   cursor: pointer;
 } 
 
 .AddPermissionIcon {
+  float:left;
 	width: 16px; height: 16px;
-  margin: 2px 4px 0px 4px;
+  margin: 0px 4px 0px 4px;
   background: url('MacSkin/SelectPermission.png') no-repeat; 
   cursor: pointer;
 }
  
 .PermissionIcon16x16 {
+  float:left;
   width: 16px; height: 16px;
   margin: 4px;
   background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
@@ -65,11 +70,13 @@
   cursor: pointer;  
 }
 
+ 
 .ExecuteIcon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Execute.gif') no-repeat;  
   cursor: pointer;
 }
+ 
  
 .SelectGroupIcon {
 	width: 16px; height: 16px;
@@ -276,6 +283,7 @@
 }
 
 .DeleteIconInfo {
+  float: left;
   width: 17px; height: 18px;
   background: url('/eXoResources/icons/16x16/MacSkin/DeleteIcon.png') no-repeat ; 
   cursor: pointer;
@@ -301,11 +309,13 @@
 }
 
 .True16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('MacSkin/True.gif') no-repeat;  
 }
 
 .SelectPath16x16Icon {
+  float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
@@ -316,13 +326,14 @@
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
 /*############################## -- Action Icon  -- ##############################*/
-
 .Add16x16Icon {
+  float: left;
   width: 16px; height: 16px;
-  background: url('MacSkin/AquaBlueAddSign.gif') no-repeat; 
+  background: url('MacSkin/AquaBlueAddSign.gif.gif') no-repeat; 
 }
 
 .Delete16x16Icon {
+  float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/DustBin.gif') no-repeat ;   
 }
@@ -373,10 +384,10 @@
 }
 
 .Edit16x16Icon {
+  float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/EditIcon.png') no-repeat ;
   cursor: pointer; 
-  border: solid 1px red;
 }
 
 .EditDocument16x16Icon {

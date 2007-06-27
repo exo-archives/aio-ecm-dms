@@ -54,7 +54,6 @@
 
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
 	width: 128px;
-	border: solid 1px red;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
@@ -97,7 +96,8 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 10px;
+  width: 560px;
+	margin: 10px auto 0px auto;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
@@ -126,10 +126,6 @@
   float: left;
 }
 
-.UIFastContentCreatorPortlet .UIFormGrid td.FieldLabel {
-	width: 128px;
-}
-
 .UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
@@ -154,3 +150,92 @@
 .UIFastContentCreatorPortlet .UIFormUploadInput  .ProgressBar {
 	margin: 0px;
 }
+
+.UIFastContentCreatorPortlet  .UIJCRBrowser {
+	width: 560px;
+	margin: 10px auto 0px auto;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
+	padding-top: 2px;
+	margin-left: 240px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
+	padding-top: 2px;
+	margin-left: 240px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #c9c9c9;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer {
+  margin-bottom: 10px;
+  float: left ;
+  width: 230px ;
+}
+
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree {
+  background: #f3f3f3;
+  border: solid 1px #c6c6c9;
+  padding: 1px;
+  margin-top: 1px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .InnerExplorerTree {
+  padding: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .Node {
+  line-height: 32px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLevel1 {
+  height: 30px; line-height: 30px;
+  padding-left: 15px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLevel2 {
+  height: 30px; line-height: 30px;
+  padding-left: 30px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .ExpandIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  cursor: pointer;
+  margin: 1px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .ColapseIcon {
+  float: left;
+  width: 16px; height: 16px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  cursor: pointer;
+  margin: 3px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeIcon {
+  float: left;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLabel {
+  float: left;
+  color: #01060d;
+  padding: 0px 10px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLabelSelected {
+  float: left;
+  color: #0848c1;
+  padding: 0px 10px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList .UIGrid {
+  width: 310px;
+  margin-left: 5px ;
+}
+

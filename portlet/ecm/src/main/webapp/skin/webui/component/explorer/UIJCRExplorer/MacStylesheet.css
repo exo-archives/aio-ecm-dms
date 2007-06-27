@@ -13,14 +13,9 @@
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
+  margin: 15px auto;
+  border: solid 1px #939393;
   width: 95%;
-  margin: 0px auto;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle {
-  margin: 0px auto;
-  border: solid 1px #B7B7B7;
-  border-top: none;
 }
 
 
@@ -28,6 +23,16 @@
   width: 99.7%;
   margin: 0px auto;
   background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .UIFormGrid {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .UIFormGrid {
+  width: 500px;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid input {
@@ -284,7 +289,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 170px;
-	padding-right: 100px;
+	padding-left: 30px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent {
@@ -300,6 +305,10 @@
   border: 1px solid #e1e1e1;
   background: #efefef;
   margin-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .HorizontalLayout td.FieldLabel {
+  width: 160px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
@@ -461,6 +470,7 @@
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 260px;
+  padding-left: 20px;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
@@ -730,7 +740,6 @@
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 170px;
-  padding-right: 100px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame { 
@@ -830,6 +839,7 @@
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
   margin: 10px auto;
   width: 95%;
+  border: none;
 }
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
@@ -866,8 +876,13 @@
 
 /*=================================UICategoryManager==============================*/
 
+.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIFormGrid {
+	margin: 0px;
+}
+
 .UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
+	width: 545px;
 }
 
 .UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
@@ -914,6 +929,7 @@
 
 .UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
+	width: 
 }
 
 .UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {

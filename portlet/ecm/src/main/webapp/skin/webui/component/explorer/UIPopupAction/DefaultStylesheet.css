@@ -88,9 +88,11 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
 	width: 160px;
-	padding-right: 140px;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
+	border: none;
+}
 /*############################## -- Begin UIDiff -- ##############################*/
 .UIJCRExplorerPortlet .UIDiff {
 	margin-top: 10px;

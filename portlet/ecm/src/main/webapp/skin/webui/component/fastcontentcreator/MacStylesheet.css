@@ -116,7 +116,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
-  padding: 0px 0px 0px 10px;
+  padding: 0px 0px 15px 10px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
@@ -185,21 +185,35 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList {
-	padding: 0px;
-	margin: 0px;
-	width: 540px;
+	padding-bottom: 8px ;
+	margin: 10px 0px 0px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	border: solid 1px #B1B0B0;
-	width: 540px;
+	border: solid 1px white;
+	width: 545px;
+	margin: 0px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
 	padding: 1px;
-	border: solid 1px white;
-	width: 536px;
+	border: solid 1px #B1B0B0;
 }
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+	padding: 0px;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout .FieldLabel{
+	width: 100px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
+	width: 100px;
+}
+
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: #efefef;
