@@ -89,8 +89,8 @@ public class UIUploadProcess extends UIForm {
       } catch(Exception e) {
         e.printStackTrace() ;
       }
-      UIAdminstrationManager uiAdminstrationManager = 
-        uiWorkflowAdministrationPortlet.getChild(UIAdminstrationManager.class) ;
+      UIAdministrationManager uiAdminstrationManager = 
+        uiWorkflowAdministrationPortlet.getChild(UIAdministrationManager.class) ;
       uiAdminstrationManager.updateMonitorGrid() ;
       UIPopupWindow uiPopup = uiWorkflowAdministrationPortlet.getChildById("UploadProcessPopup") ;
       uiPopup.setRendered(false) ;

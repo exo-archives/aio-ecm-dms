@@ -29,7 +29,7 @@
 	    String key ;
 	    for (bean in uicomponent.getProperties())  {
 	      nodeIcon = bean.name.replace(":", "_");
-		    multiValue  = uicomponent.isMultiValue(bean) ;
+		    multiValue  = bean.getDefinition().isMultiple() ;
 		    value = uicomponent.getPropertyValue(bean) ;
 	      if(even) rowClass = "EvenRow" ;  
 	      else rowClass =  "OddRow" ; 

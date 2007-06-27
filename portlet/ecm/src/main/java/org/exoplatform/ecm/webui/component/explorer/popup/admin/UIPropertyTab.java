@@ -45,10 +45,9 @@ public class UIPropertyTab extends UIContainer {
   }
   
   @SuppressWarnings("unused")
-  private boolean isMultiValue(Property prop) throws Exception {
-    if (prop.getDefinition().isMultiple()) return true ;
-    return false ;
-  }
+  /*private boolean isMultiValue(Property prop) throws Exception {
+    return prop.getDefinition().isMultiple() ;
+  }*/
   
   public String getPropertyValue(Property prop) throws Exception {
     if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;

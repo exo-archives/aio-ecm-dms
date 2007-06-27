@@ -21,7 +21,7 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 )
 public class UIWorkflowAdministrationPortlet extends UIPortletApplication {  
   public UIWorkflowAdministrationPortlet() throws Exception {
-    addChild(UIAdminstrationManager.class, null, null) ;
+    addChild(UIAdministrationManager.class, null, null) ;
     UIPopupWindow popup = addChild(UIPopupWindow.class, null, "AdministrationPopup") ;
     popup.setUIComponent(createUIComponent(UIProcessDetail.class, null, null)) ;
   }

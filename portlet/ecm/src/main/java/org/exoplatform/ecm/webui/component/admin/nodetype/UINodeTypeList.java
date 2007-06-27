@@ -52,7 +52,6 @@ import org.exoplatform.webui.form.UIFormInputInfo;
 public class UINodeTypeList extends UIComponentDecorator {
 
   private UIPageIterator uiPageIterator_ ;
-  private List<NodeType> nodeTypeList_ = new ArrayList<NodeType>() ;
   final static public String DRAFTNODETYPE = "jcr:system/jcr:nodetypesDraft" ;
   final static public String[] ACTIONS = {"Add", "Import", "Export"} ;
   final static public String[] CANCEL = {"Cancel"} ;
@@ -86,20 +85,12 @@ public class UINodeTypeList extends UIComponentDecorator {
         nodeList.add(nodeIter.nextNode()) ;
       }
     }
-    nodeTypeList_ = nodeList ;    
     return nodeList ;
   }
   
   public UIPageIterator  getUIPageIterator() {  return uiPageIterator_ ; }
   
   public List getNodeTypeList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
-  
-  public NodeType getNodeTypeByName(String nodeTypeName) throws Exception {
-    for(NodeType node : nodeTypeList_) {
-      if(node.getName().equals(nodeTypeName)) return node ;
-    }
-    return null ;
-  }
   
   public String[] getActions() { return ACTIONS ; }
   
@@ -165,8 +156,14 @@ public class UINodeTypeList extends UIComponentDecorator {
   static public class ViewActionListener extends EventListener<UINodeTypeList> {
     public void execute(Event<UINodeTypeList> event) throws Exception {
       UINodeTypeList uiList = event.getSource() ;
-      String nodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      NodeType nodeType = uiList.getNodeTypeByName(nodeName) ;
+      String ntName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String repository = uiList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      CmsConfigurationService cmsConfigService = 
+        uiList.getApplicationComponent(CmsConfigurationService.class) ;
+      Session session = uiList.getApplicationComponent(RepositoryService.class)
+                        .getRepository(repository).getSystemSession(cmsConfigService.getWorkspace(repository)) ;
+      NodeTypeManager ntManager = session.getWorkspace().getNodeTypeManager() ;
+      NodeType nodeType = ntManager.getNodeType(ntName) ;
       UINodeTypeManager uiManager = uiList.getParent() ;
       uiManager.initPopup(true) ;
       UINodeTypeForm uiForm = uiManager.findFirstComponentOfType(UINodeTypeForm.class) ;
