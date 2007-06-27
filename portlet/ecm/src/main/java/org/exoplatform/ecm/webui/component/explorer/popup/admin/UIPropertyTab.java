@@ -44,13 +44,10 @@ public class UIPropertyTab extends UIContainer {
     return uiExplorer.getCurrentNode().getProperties() ; 
   }
   
-<<<<<<< .mine
-=======
   /*private boolean isMultiValue(Property prop) throws Exception {
     return prop.getDefinition().isMultiple() ;
   }*/
-  
->>>>>>> .r17321
+
   public String getPropertyValue(Property prop) throws Exception {
     if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;
     try {
