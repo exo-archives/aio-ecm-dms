@@ -7,6 +7,7 @@ package org.exoplatform.workflow.webui.component.administration ;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
@@ -21,13 +22,19 @@ import org.exoplatform.webui.event.EventListener;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(
-    lifecycle = UIContainerLifecycle.class,
-    events = {
-      @EventConfig(listeners = UIProcessDetail.ViewActionListener.class),
-      @EventConfig(listeners = UIProcessDetail.DeleteActionListener.class)
-    }
-)
+@ComponentConfigs({
+  @ComponentConfig(
+      type = UIGrid.class, id = "UIProcessGrid",
+      template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+  ),
+  @ComponentConfig(
+      lifecycle = UIContainerLifecycle.class,
+      events = {
+        @EventConfig(listeners = UIProcessDetail.ViewActionListener.class),
+        @EventConfig(listeners = UIProcessDetail.DeleteActionListener.class)
+      }
+  )
+})
 public class UIProcessDetail extends UIContainer {
   private static String[] PROCESS_BEAN_FIELD = {"processInstanceId", "processId", "processName", "startDate", "endDate"} ;
   private static String[] TASK_BEAN_FIELD = {"id", "taskName", "actorId", "end"} ;
@@ -36,8 +43,8 @@ public class UIProcessDetail extends UIContainer {
   private String processInstanceId;
   
   public UIProcessDetail() throws Exception {
-    UIGrid uiProcessDetail = addChild(UIGrid.class, null, "UIProcessDetailGrid") ;
-    UIGrid uiTasksGrid = addChild(UIGrid.class, null, "UITasksGrid").setRendered(false) ;
+    UIGrid uiProcessDetail = addChild(UIGrid.class, "UIProcessGrid", "UIProcessDetailGrid") ;
+    UIGrid uiTasksGrid = addChild(UIGrid.class, "UIProcessGrid", "UITasksGrid").setRendered(false) ;
     
     uiProcessDetail.setLabel("UIProcessDetailGrid") ;
     uiProcessDetail.getUIPageIterator().setId("UIProcessDetailGrid") ;

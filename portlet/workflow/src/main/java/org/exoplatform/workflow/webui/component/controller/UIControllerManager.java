@@ -15,6 +15,7 @@ import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
@@ -30,10 +31,16 @@ import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(
-    template = "system:groovy/webui/core/UITabPane.gtmpl",
-    events = {@EventConfig(listeners = UIControllerManager.ManageStartActionListener.class)}
-)
+@ComponentConfigs({
+  @ComponentConfig(
+      type = UIGrid.class, id = "UIControllerGrid",
+      template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+  ),
+  @ComponentConfig(
+      template = "system:groovy/webui/core/UITabPane.gtmpl",
+      events = {@EventConfig(listeners = UIControllerManager.ManageStartActionListener.class)}
+  )
+})
 public class UIControllerManager extends UIContainer {
   private static String[] BPDEFINITION_BEAN_FIELD = {"id", "name", "version"} ;
   private static String[] ACTION = {"ManageStart"} ;
@@ -42,7 +49,7 @@ public class UIControllerManager extends UIContainer {
   public UIControllerManager() throws Exception {
     service_ = getApplicationComponent(WorkflowServiceContainer.class) ;
     addChild(UITaskList.class, null, null) ;
-    UIGrid uiBPDefinitionGrid = addChild(UIGrid.class, null, "UIBPDefinition").setRendered(false) ;
+    UIGrid uiBPDefinitionGrid = addChild(UIGrid.class, "UIControllerGrid", "UIBPDefinition").setRendered(false) ;
     uiBPDefinitionGrid.setLabel("UIBPDefinition") ;
     uiBPDefinitionGrid.getUIPageIterator().setId("UIBPDefinitionGrid") ;
     uiBPDefinitionGrid.configure("id", BPDEFINITION_BEAN_FIELD, ACTION) ;

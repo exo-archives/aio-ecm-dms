@@ -7,10 +7,12 @@ package org.exoplatform.workflow.webui.component.administration ;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.UITree;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -21,13 +23,20 @@ import org.exoplatform.webui.event.EventListener;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(
-    template = "app:groovy/webui/component/UITabPaneWithAction.gtmpl",
-    events = {
-        @EventConfig(listeners = UIAdministrationManager.ViewActionListener.class),
-        @EventConfig(listeners = UIAdministrationManager.DeleteActionListener.class),
-        @EventConfig(listeners = UIAdministrationManager.UploadProcessActionListener.class)
-    }
+@ComponentConfigs({
+    @ComponentConfig(
+        type = UIGrid.class, id = "UIECMGrid",
+        template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+    ),
+    @ComponentConfig(
+        template = "app:groovy/webui/component/UITabPaneWithAction.gtmpl",
+        events = {
+            @EventConfig(listeners = UIAdministrationManager.ViewActionListener.class),
+            @EventConfig(listeners = UIAdministrationManager.DeleteActionListener.class),
+            @EventConfig(listeners = UIAdministrationManager.UploadProcessActionListener.class)
+        }
+    )}
+    
 )
 public class UIAdministrationManager extends UIContainer {
   private static String[] MONITOR_BEAN_FIELD = {"id", "name", "version"} ;
@@ -37,8 +46,8 @@ public class UIAdministrationManager extends UIContainer {
   private static String[] ACTIONS = {"UploadProcess"} ;
   
   public UIAdministrationManager() throws Exception {
-    UIGrid uiMonitorGrid = addChild(UIGrid.class, null, "UIMonitor") ;
-    UIGrid uiTimersGrid = addChild(UIGrid.class, null, "UITimers").setRendered(false) ;
+    UIGrid uiMonitorGrid = addChild(UIGrid.class, "UIECMGrid", "UIMonitor") ;
+    UIGrid uiTimersGrid = addChild(UIGrid.class, "UIECMGrid", "UITimers").setRendered(false) ;
     uiMonitorGrid.setLabel("UIMonitor") ;
     uiMonitorGrid.getUIPageIterator().setId("UIMonitorGrid") ;
     uiMonitorGrid.configure("id", MONITOR_BEAN_FIELD, ACTION) ;
