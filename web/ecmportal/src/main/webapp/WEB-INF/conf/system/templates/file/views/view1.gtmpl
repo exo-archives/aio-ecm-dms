@@ -63,7 +63,7 @@
           if(mimeType.substring(mimeType.lastIndexOf("/")+ 1).equals("xml")){
             println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
           } else {
-            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) ;
+            println contentNode.getProperty("jcr:data").getString().replaceAll("\n", "<br/>") ;
           }
           
         } else {
