@@ -14,7 +14,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
-	width: 128px;
+	width: 160px;
 }
 
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
@@ -40,18 +40,18 @@
 	padding-left: 20px;
 }
 
+.UIFastContentCreatorPortlet .UITabPane {
+  padding: 10px 0px 20px 0px;
+}
+
 .UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
   border: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
-  border: 1px solid #e1e1e1;
+  border: 1px solid #939393;
   width: 650px;
   margin: 15px auto;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout {
-  padding: 20px 0px 10px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
@@ -87,11 +87,11 @@
 
 .UIFastContentCreatorPortlet .TabPaneContent .UIFormWithTitle {
   width: auto;
+  border-top: none;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #939393;
-  border-top: none;
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
+	border: none;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent {

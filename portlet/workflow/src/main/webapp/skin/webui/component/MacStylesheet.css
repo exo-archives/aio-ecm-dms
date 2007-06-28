@@ -276,3 +276,27 @@
 	border-top: solid 1px #AFAEAE;
 	line-height: 26px;
 }
+
+.EmptyGrid {
+  width: 150px ;
+  padding-top: 10px;
+  font-style: italic;
+  margin: auto;
+}
+
+.UIWorkflowPortlet .UITask .UIForm .UIAction {
+  width: 240px;
+}
+
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
+}
+
+.UIWorkflowPortlet .UIAdministrationManager .UIAction {
+  width: 130px;
+}

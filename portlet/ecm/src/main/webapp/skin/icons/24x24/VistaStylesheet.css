@@ -41,7 +41,7 @@
 
 .AddNodeTypeIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  background: url('zSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
 .ExpandFolder24x24Icon {

@@ -329,7 +329,7 @@
 .Add16x16Icon {
   float: left;
   width: 16px; height: 16px;
-  background: url('MacSkin/AquaBlueAddSign.gif.gif') no-repeat; 
+  background: url('MacSkin/AquaBlueAddSign.gif') no-repeat; 
 }
 
 .Delete16x16Icon {

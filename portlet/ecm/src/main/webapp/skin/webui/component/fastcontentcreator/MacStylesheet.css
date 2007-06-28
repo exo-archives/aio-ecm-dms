@@ -14,14 +14,23 @@
 }
 
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
-	width: 128px;
+	width: 160px;
+}
+
+.UIFastContentCreatorPortlet .UITabPane {
+  padding: 10px 0px 20px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
-  border: 1px solid #e1e1e1;
-  width: 650px;
+  border: 1px solid #939393;
+  width: 598px;
   margin: 15px auto;
+  background: #efefef;
 }
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+	border: none;
+} 
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
 	width: 500px;
@@ -35,6 +44,10 @@
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
   border: solid 1px #b7b7b7;
   padding-left: 3px;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
+	border: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer textarea {
@@ -58,11 +71,6 @@
 
 .UIFastContentCreatorPortlet .MultiValueContainer a  {
   margin: 0px 5px;
-}
-
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #939393;
-  border-top: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
@@ -110,7 +118,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
-  padding: 10px;
+  padding: 20px 10px;
   margin: auto;
   width: 600px;
 }
@@ -128,7 +136,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
-  padding: 12px 0px 0px 0px;
+  padding: 12px 0px 12px 0px;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent {
@@ -190,7 +198,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	border: solid 1px white;
+	border: solid 1px #E1E1E1;
 	width: 545px;
 	margin: 0px;
 }
@@ -213,7 +221,6 @@
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
 	width: 100px;
 }
-
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: #efefef;
