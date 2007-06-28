@@ -419,7 +419,7 @@
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 240px;
-  padding-right: 110px;
+  padding-left: 30px;
 }
 
 /*==================================UIVoteForm==============================*/
@@ -562,6 +562,9 @@
 	width: 150px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
+	padding: 10px;
+}
 /*================================UIActivateVersion=================================*/
 
 .UIJCRExplorerPortlet .UIActivateVersion .UIAction {

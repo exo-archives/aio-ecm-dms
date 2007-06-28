@@ -565,18 +565,37 @@
 /*================================UISimpleSearch=================================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 370px;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .FormContainer {
-  width: 550px;
-  margin: auto;
+  width: 420px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
   padding-bottom: 0px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer  .UIConstraintsForm  {
+  margin-top: 10px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer  .UIConstraintsForm  .UIAction{
+  width: 180px;
+  padding-left: 20px;
+}
+
+.UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
+	margin-top: 10px;
+	border: solid 1px #b7b7b7;
+	width: 99.8%;
+	padding-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
+	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm .UIAction {
+	width: 180px;
+	padding-left: 30px;
+}
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {

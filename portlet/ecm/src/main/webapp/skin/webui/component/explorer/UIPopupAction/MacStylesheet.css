@@ -410,7 +410,6 @@
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
   margin: 10px 0px;
-  padding: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption select.selectbox {
@@ -418,17 +417,8 @@
   margin-left: 0px;
 }
 
-
-.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption input {
-  width: 110px;
-}
-
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption img {
   vertical-align: bottom;
-}
-
-.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption input.radio {
-  width: 15px;
 }
 
 /*############################## -- End Others   -- ##############################*/
