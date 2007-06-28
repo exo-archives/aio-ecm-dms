@@ -248,12 +248,12 @@
   width: 315px;
 }
 
-.UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {
-  margin-left: 15px ;
+.UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {
+  width: 30px;
 }
 
-.UIJCRExplorerPortlet .UIRelationsAddedList .DeleteIcon {
-  margin-left: 15px ;
+.UIJCRExplorerPortlet .UIRelationsAddedList .OverflowContainer {
+  width: 30px;
 }
 
 /*############################## -- UIActionManager   -- ##############################*/
@@ -264,9 +264,17 @@
   padding: 10px 0px;
 }
 
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIFormGrid td.FieldLabel {
   width: 128px;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
+  width: 160px;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle .UIAction {
+  width: 160px;
+  padding-left: 30px;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/

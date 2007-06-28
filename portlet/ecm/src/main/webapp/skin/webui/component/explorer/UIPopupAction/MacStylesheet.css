@@ -38,6 +38,10 @@
   width: 128px;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
+  width: 160px;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldContainer{  
   width: 500px;
   margin: 0px auto;
@@ -184,12 +188,12 @@
   width: 315px;
 }
 
-.UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {
-  margin-left: 15px ;
+.UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {
+  width: 30px;
 }
 
-.UIJCRExplorerPortlet .UIRelationsAddedList .DeleteIcon {
-  margin-left: 15px ;
+.UIJCRExplorerPortlet .UIRelationsAddedList .OverflowContainer {
+  width: 30px;
 }
 
 /*############################## -- UIActionManager   -- ##############################*/

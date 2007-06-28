@@ -14,7 +14,7 @@
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
   margin: 15px auto;
-  border: solid 1px #939393;
+  border: solid 1px #b7b7b7;
   width: 95%;
 }
 
@@ -23,16 +23,6 @@
   width: 99.7%;
   margin: 0px auto;
   background: #efefef;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .UIFormGrid {
-  width: 500px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .UIFormGrid {
-  width: 500px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid input {
@@ -376,6 +366,16 @@
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .UIForm .HorizontalLayout {
   background: #efefef;
 }
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer td.FieldLabel {
+  width: 160px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UIAction {
+  width: 160px;
+	padding: 12px 0px 10px 20px;
+}
+
 /*===========================TabContainer====================*/
 
 .UIJCRExplorerPortlet .UIPopupMessages .TabsContainer {
@@ -702,12 +702,14 @@
 
 .UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIFormWithTitle {
 	background: white;
+	border: solid 1px #E1E1E1;
+	width: 543px;
+	margin: 0px;
 }
 
 .UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
 	padding: 1px;
 	border: solid 1px #B1B0B0;
-	width: 540px;
 }
 
 .UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
@@ -1024,6 +1026,13 @@
 
 .UIJCRExplorer .UISavedQuery {
 	padding: 10px;
+}
+
+.EmptyGrid {
+  width: 100px ;
+  padding-top: 10px;
+  font-style: italic;
+  margin: auto;
 }
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

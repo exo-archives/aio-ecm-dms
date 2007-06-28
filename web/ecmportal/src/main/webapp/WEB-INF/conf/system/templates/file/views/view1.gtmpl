@@ -33,6 +33,7 @@
     border: 1px solid #e1e1e1; 
     text-align: center;
     overflow: auto;
+    padding: 15px 0px;
   }
   
   .FileContent .UIAction {
