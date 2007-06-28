@@ -445,7 +445,8 @@
            values when the document is created through WebDAV. -->
       <supertype>mix:i18n</supertype>
       <!-- Allow Dublin Core metadata to be set. -->
-      <supertype>dc:elementSet</supertype>
+      <!-- Comment by Hoa Pham-->
+      <!--supertype>dc:elementSet</supertype -->
     </supertypes>
   </nodeType>
   
