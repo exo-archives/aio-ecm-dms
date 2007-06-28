@@ -723,6 +723,15 @@
   margin-right: 3px;
 }
 
+.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
+  width: 190px ;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
+  width: 80px;
+  margin: auto;
+}
+
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UIGrid .OddRow {
