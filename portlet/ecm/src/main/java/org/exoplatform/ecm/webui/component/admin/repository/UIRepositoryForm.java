@@ -171,6 +171,23 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setValue(String.valueOf(repo.getSessionTimeOut())) ;
     }
   }
+  protected void lockRepoForm(boolean isLock) {
+    //getUIStringInput(FIELD_NAME).setEnable(isLock) ;
+    //getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(isLock) ;
+    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setEnable(isLock) ;
+    
+    getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setEditable(isLock); 
+    getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setEditable(isLock);     
+    getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setEditable(isLock); 
+    getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setEditable(isLock);
+    
+    getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setEditable(isLock) ;
+    getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setEditable(isLock) ;
+    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setEnable(isLock) ;;
+    
+    getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setEditable(isLock) ;
+    getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setEditable(isLock) ;
+  }
   protected boolean isDefaultWorkspace(String workspaceName) {
     return workspaceName.equals(defaulWorkspace_) ;
   }
@@ -402,7 +419,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           break ;
         }
       }
-      uiWsContainer.initWizard(true, wsdf) ;      
+      uiWsContainer.initWizard(uiForm.isAddnew_, true, wsdf) ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
@@ -427,7 +444,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
       UIWorkspaceWizardContainer uiWsContainer = uiPopupAction.activate(UIWorkspaceWizardContainer.class, 600) ; 
-      uiWsContainer.initWizard(false, uiForm.getWorkspace(workspaceName)) ;
+      uiWsContainer.initWizard(uiForm.isAddnew_, false, uiForm.getWorkspace(workspaceName)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

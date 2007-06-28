@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.ItemExistsException;
+import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -707,6 +708,11 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }catch (ItemExistsException iee){
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.paste-node-same-name", null, 
+            ApplicationMessage.INFO)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (LoginException e){
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-paste-nodetype", null, 
             ApplicationMessage.INFO)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

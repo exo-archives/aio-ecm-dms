@@ -182,7 +182,37 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     options.add(new SelectItemOption<String>("Binary", "Binary")) ;
     return options ;
   }
+  protected void lockForm(boolean isLock) {
+    boolean isEdiable = !isLock ;
+    UIFormInputSetWithAction wsStep1 = getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
+    wsStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).setEditable(isEdiable) ;
+    if(isLock) wsStep1.setActionInfo(UIWorkspaceWizard.FIELD_PERMISSION, null) ;
+    //wsStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).setEnable(false) ;
+    for(String perm : PermissionType.ALL) {
+      wsStep1.getUIFormCheckBoxInput(perm).setEnable(isEdiable) ;
+    }
+    wsStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).setEnable(isEdiable) ;
+    wsStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).setEnable(isEdiable) ;
+    wsStep1.getUIStringInput(UIWorkspaceWizard.FIELD_TIMEOUT).setEditable(isEdiable) ;
 
+    UIFormInputSet wsStep2 = getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).setEditable(isEdiable) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).setEditable(isEdiable) ;
+    wsStep2.getUIFormSelectBox(UIWorkspaceWizard.FIELD_DBTYPE).setEnable(isEdiable) ;
+    wsStep2.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISMULTI).setEnable(isEdiable) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STORETYPE).setEditable(isEdiable) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setEditable(isEdiable) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_FILTER).setEditable(isEdiable) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).setEditable(isEdiable) ;
+    wsStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setEditable(isEdiable) ;
+
+    UIFormInputSet wsStep3 = getChildById(UIWorkspaceWizard.FIELD_STEP3) ;
+    wsStep3.getUIStringInput(UIWorkspaceWizard.FIELD_QUERYHANDLER).setEditable(isEdiable) ;
+    wsStep3.getUIStringInput(UIWorkspaceWizard.FIELD_INDEXPATH).setEditable(isEdiable) ;
+    wsStep3.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISCACHE).setEnable(isEdiable) ;
+    wsStep3.getUIStringInput(UIWorkspaceWizard.FIELD_MAXSIZE).setEditable(isEdiable) ;
+    wsStep3.getUIStringInput(UIWorkspaceWizard.FIELD_LIVETIME).setEditable(isEdiable) ;
+  }
   public void setCurrentSep(int step){ currentStep_ = step ;}
 
   public int getCurrentStep() { return currentStep_; }
@@ -478,6 +508,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String name = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+      String user = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
       String initNodeType = uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).isChecked() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_TIMEOUT).getValue() ;
@@ -543,7 +574,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       } 
 
       WorkspaceEntry workspaceEntry = new WorkspaceEntry(name, initNodeType);
-      String user = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
       StringBuilder sb = new StringBuilder() ;
       for(String perm : PermissionType.ALL) {
         if(uiWSFormStep1.getUIFormCheckBoxInput(perm).isChecked()) sb.append(user +" "+ perm + ";") ;
@@ -570,6 +600,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         try {
           manageRepository.configWorkspace(workspaceEntry) ;
           manageRepository.createWorkspace(workspaceEntry.getName()) ;
+          if(rService.getConfig().isRetainable()) {
+            rService.getConfig().retain() ;
+          }
           uiRepoForm.workspaceMap_.clear() ;
           for(WorkspaceEntry ws : manageRepository.getConfiguration().getWorkspaceEntries()) {
             uiRepoForm.workspaceMap_.put(ws.getName(), ws) ;

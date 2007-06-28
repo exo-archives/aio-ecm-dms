@@ -5,11 +5,9 @@
 package org.exoplatform.ecm.webui.component.admin.repository;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -33,6 +31,7 @@ public UIRepositoryFormContainer() throws Exception {
 protected void refresh(boolean isAddnew, RepositoryEntry re) throws Exception {
   getChild(UIRepositoryForm.class).isAddnew_ = isAddnew ;
   getChild(UIRepositoryForm.class).refresh(re) ;
+  getChild(UIRepositoryForm.class).lockRepoForm(isAddnew) ;
 }
 
 public void activate() throws Exception {
