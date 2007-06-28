@@ -419,3 +419,11 @@
 .UIJCRExplorer .UISelectPropertyForm .UIAction {
   width: 140px;
 }
+
+.UIJCRExplorer .UISaveQueryForm .UIAction {
+  width: 140px ;
+}
+
+.UIPopupWindow .UIWindowContent .UISaveQueryForm .UIFormGrid td.FieldLabel {
+  width:68px;
+}

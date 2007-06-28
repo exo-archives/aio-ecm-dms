@@ -58,7 +58,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataMan
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
-import org.exoplatform.ecm.webui.component.explorer.search.UISearchContainer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;

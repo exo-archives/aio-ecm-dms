@@ -22,6 +22,7 @@ public class UISearchContainer extends UIContainer {
 
   final static public String METADATA_POPUP = "MetadataPopup" ;
   final static public String NODETYPE_POPUP = "NodeTypePopup" ;
+  final static public String SAVEQUERY_POPUP = "SaveQueryPopup" ;
   
   public UISearchContainer() throws Exception {
     addChild(UISimpleSearch.class, null, null) ;
@@ -44,5 +45,15 @@ public class UISearchContainer extends UIContainer {
     UINodeTypeSelectForm uiSelectForm = createUIComponent(UINodeTypeSelectForm.class, null, null) ;
     uiPopup.activate(uiSelectForm, 400, 400) ;
     uiSelectForm.setRenderNodeTypes() ;
+  }
+  
+  public void initSaveQueryPopup(String statement, boolean isSimpleSearch, String queryType) throws Exception {
+    UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
+    uiPopup.getChild(UIPopupWindow.class).setId(SAVEQUERY_POPUP) ;
+    UISaveQueryForm uiSaveQueryForm = createUIComponent(UISaveQueryForm.class, null, null) ;
+    uiSaveQueryForm.setStatement(statement) ;
+    uiSaveQueryForm.setSimpleSearch(isSimpleSearch) ;
+    uiSaveQueryForm.setQueryType(queryType) ;
+    uiPopup.activate(uiSaveQueryForm, 400, 300) ;
   }
 }

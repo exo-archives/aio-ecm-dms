@@ -181,6 +181,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       queryService.removeQuery(path, userName, repository) ;
       uiQuery.updateGrid() ;
       uiQuery.setRenderSibbling(UISavedQuery.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery) ;
     }
   }
 }

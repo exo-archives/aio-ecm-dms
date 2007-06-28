@@ -143,17 +143,23 @@ public class UIJCRAdvancedSearch extends UIForm {
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      if((name == null) || (name.trim().length() == 0)) {
-        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.name-invalid", null)) ;
+      String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
+      if(statement == null || statement.trim().length() ==0) {
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.value-save-null", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
+      if(name == null || name.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.query-name-null", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      try{
-        queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue()
-                             , userName, repository) ;        
-      } catch (Exception e){
+      try {
+        queryService.addQuery(name, statement, uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue(),
+                              userName, repository) ;        
+      } catch(Exception e){
         uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -162,6 +168,7 @@ public class UIJCRAdvancedSearch extends UIForm {
       uiSearch.getChild(UISavedQuery.class).updateGrid() ;
       uiForm.update() ;
       uiSearch.setRenderedChild(UISavedQuery.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearch) ;
     }
   }
 }
