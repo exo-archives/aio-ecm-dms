@@ -10,9 +10,9 @@ import java.util.List;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.OrganizationService;
-import org.exoplatform.services.organization.impl.GroupImpl;
-import org.exoplatform.services.organization.impl.UserImpl;
+import org.exoplatform.services.organization.User;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -96,7 +96,7 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
     List children = new ArrayList() ;    
     OrganizationService service = getApplicationComponent(OrganizationService.class) ;
     for (Object child : service.getGroupHandler().findGroups(this.getCurrentGroup())) {
-      children.add((GroupImpl)child) ;
+      children.add((Group)child) ;
     }
     return children ;
   }
@@ -107,7 +107,7 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
     OrganizationService service = getApplicationComponent(OrganizationService.class) ;
     PageList userPageList = service.getUserHandler().findUsersByGroup(this.getCurrentGroup().getId()) ;    
     for(Object child : userPageList.getAll()){
-      children.add((UserImpl)child) ;
+      children.add((User)child) ;
     }
     return children ;
   }
