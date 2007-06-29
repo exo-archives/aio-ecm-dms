@@ -13,10 +13,14 @@ import javax.portlet.PortletPreferences;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
@@ -98,8 +102,24 @@ public class UIActionList extends UIContainer {
   static public class EditActionListener extends EventListener<UIActionList> {
     public void execute(Event<UIActionList> event) throws Exception {
       UIActionList uiActionList = event.getSource() ;
+      UIJCRExplorer uiExplorer = uiActionList.getAncestorOfType(UIJCRExplorer.class) ;
       UIActionListContainer uiActionListContainer = uiActionList.getParent() ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
+      String userName = event.getRequestContext().getRemoteUser() ;
+      String repository = 
+        uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      Node currentNode = uiExplorer.getCurrentNode() ;
+      Node selectedNode = currentNode.getNode(actionName) ;
+      String nodeTypeName = selectedNode.getPrimaryNodeType().getName() ;
+      String dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName, userName, repository);
+      if(dialogPath == null || dialogPath.trim().length() == 0) {
+        UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
+        Object[] args = {actionName} ;
+        uiApp.addMessage(new ApplicationMessage("UIActionList.msg.template-empty", args, 
+                         ApplicationMessage.WARNING)) ;
+        return ;
+      }
       uiActionListContainer.initEditPopup(actionName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionListContainer) ;
     }

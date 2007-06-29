@@ -113,9 +113,13 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
   
   public void onchange(Event event) throws Exception {
-    UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
-    uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
+    if(!isEditInList_ || !isAddNew_) {
+      UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
+      uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
+    } else {
+      event.getRequestContext().addUIComponentToUpdateByAjax(getParent()) ;
+    }
   }
   
   @SuppressWarnings("unchecked")

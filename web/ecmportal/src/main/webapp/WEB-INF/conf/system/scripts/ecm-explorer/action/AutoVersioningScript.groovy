@@ -14,9 +14,9 @@ import org.exoplatform.services.jcr.RepositoryService;
 
 /**
  * Created by The eXo Platform SAS
- * Author : Pham Xuan Hoa
- *          hoa.pham@exoplatform.com
- * Jan 9, 2007  
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * June 29, 2007  
  */
 public class AutoVersioningScript implements CmsScript{
 
@@ -36,22 +36,21 @@ public class AutoVersioningScript implements CmsScript{
       Session session = repositoryService_.getRepository().getSystemSession(workspace) ;
       Node srcNode = (Node)session.getItem(srcPath) ;
       Node actionNode = srcNode.getNode(actionName) ;
-      Node currentNode = (Node)session.getItem(nodePath) ;
       String lifecycle = actionNode.getProperty("exo:lifecyclePhase").getString() ;
-       // if action's lifecycle is: modify, auto versioning document was versionabled that modify       
       if("modify".equals(lifecycle)) {
-        Property changedProp = session.getItem(nodePath) ;
-        Node modifiedNode = changedProp.getParent() ;
-        if(!modifiedNode.isNodeType("mix:versionable")) return ;
-        if(!modifiedNode.isCheckedOut()) modifiedNode.checkout() ;
-        modifiedNode.checkin() ;
-        modifiedNode.checkout() ;
-        session.save();
-        session.refresh(true) ;        
-      }
-      // with others lifecycle, auto versioning node that contain action's node.
-      else if("add".equals(lifecycle)||"remove".equals(lifecycle)||
-              "schedule".equals(lifecycle)) {
+        String propertyName = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;
+        if(!propertyName.equals("jcr:isCheckedOut")) {
+          Property changedProp = session.getItem(nodePath) ;
+          Node modifiedNode = changedProp.getParent() ;
+          if(!modifiedNode.isNodeType("mix:versionable")) return ;
+          if(!modifiedNode.isCheckedOut()) modifiedNode.checkout() ;
+          modifiedNode.checkin() ;
+          modifiedNode.checkout() ;
+          session.save();
+          session.refresh(true) ;        
+        }
+      } else if("add".equals(lifecycle)||"remove".equals(lifecycle)|| "schedule".equals(lifecycle)) {
+        Node currentNode = (Node)session.getItem(nodePath) ;
         if(!currentNode.isNodeType("mix:versionable")) {
           if(currentNode.canAddMixin("mix:versionable")) {
             currentNode.addMixin("mix:versionable") ;
@@ -73,7 +72,5 @@ public class AutoVersioningScript implements CmsScript{
   }
 
   public void setParams(String[] arg0) {
-    
   }
-
 }

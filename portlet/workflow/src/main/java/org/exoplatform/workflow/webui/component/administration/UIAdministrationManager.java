@@ -24,19 +24,18 @@ import org.exoplatform.webui.event.EventListener;
  * 10:07:15 AM
  */
 @ComponentConfigs({
-    @ComponentConfig(
-        type = UIGrid.class, id = "UIECMGrid",
-        template = "app:groovy/webui/component/UIECMGrid.gtmpl"
-    ),
-    @ComponentConfig(
-        template = "app:groovy/webui/component/UITabPaneWithAction.gtmpl",
-        events = {
-            @EventConfig(listeners = UIAdministrationManager.ViewActionListener.class),
-            @EventConfig(listeners = UIAdministrationManager.DeleteActionListener.class),
-            @EventConfig(listeners = UIAdministrationManager.UploadProcessActionListener.class)
-        }
-    )}
-    
+  @ComponentConfig(
+      type = UIGrid.class, id = "UIECMGrid",
+      template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+  ),
+  @ComponentConfig(
+      template = "app:groovy/webui/component/UITabPaneWithAction.gtmpl",
+      events = {
+          @EventConfig(listeners = UIAdministrationManager.ViewActionListener.class),
+          @EventConfig(listeners = UIAdministrationManager.DeleteActionListener.class),
+          @EventConfig(listeners = UIAdministrationManager.UploadProcessActionListener.class)
+      }
+  )}
 )
 public class UIAdministrationManager extends UIContainer {
   private static String[] MONITOR_BEAN_FIELD = {"id", "name", "version"} ;
