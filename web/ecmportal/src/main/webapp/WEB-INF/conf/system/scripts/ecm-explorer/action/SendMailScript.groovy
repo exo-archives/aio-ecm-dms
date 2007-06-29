@@ -19,7 +19,7 @@ public class SendMailScript implements CmsScript {
     Map variables = (Map) context;       
 
     //TODO Should send an email
-    println("Send message in SendMailScript....");
+    println("Send message in SendMailScript to " + variables.get("exo:to"));
   }
 
   public void setParams(String[] params) {}
