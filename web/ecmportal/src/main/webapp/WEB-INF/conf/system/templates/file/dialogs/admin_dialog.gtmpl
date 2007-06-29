@@ -35,7 +35,7 @@
 									} else {
 									%>
 										<span style="font-size:12px; font-weight: bold; padding-top:5px;">
-								    	The content is binary data. You can not change it.
+								    	You need to re-upload the file to change it.
 								    </span>
 									<%
 									}
