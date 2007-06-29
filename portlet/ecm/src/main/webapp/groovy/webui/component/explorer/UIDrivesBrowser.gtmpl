@@ -70,7 +70,7 @@
 			              <%if(drive.getIcon() != null && drive.getIcon().length() > 0) {%>
 			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><img src="${drive.icon}" width="48" height="41" /></div>
 			              <%} else {%>
-			                <div class="Icon Admin${drive.workspace}Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
+			                <div class="Icon DefaultDriveIcon Admin${drive.workspace}Icon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
 			              <%}%>
 			                <div class="DriveLabel">
 			                  <div class="LeftBar">
