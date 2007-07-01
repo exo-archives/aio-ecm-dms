@@ -141,7 +141,6 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_SEARCH_TYPE = "searchType" ;
   final static private String OPT_SEARCH = "Search" ;
   final static private String EXO_TAXONOMIES_PATH = "exoTaxonomiesPath" ;
-  final static private String CMS_PATH = "cmsPath" ;
   final static private String FIELD_SQL = "SQL" ;
   final static private String FIELD_XPATH = "xPath" ;
 

@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -46,6 +47,7 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
   private static final String FILTER = "filter" ;
   private static final String RESULT = "result";
   private static final String TEMP_RESULT = "tempSel";
+  private List<String> listValue_ ;
   
   public UICompareExactlyForm() throws Exception {}
   
@@ -53,6 +55,7 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
   public void deActivate() throws Exception {}
   
   public void init(String properties, QueryResult result) throws Exception {
+    listValue_ = new ArrayList<String>() ;
     List<SelectItemOption<String>> opts = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormStringInput(FILTER, FILTER, null)) ;
     addUIFormInput(new UIFormSelectBox(RESULT, RESULT, opts).setSize(15).addValidator(EmptyFieldValidator.class)) ;
@@ -67,27 +70,31 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
         for(String pro : props) {
           if(node.hasProperty(pro)) {
             Property property = node.getProperty(pro) ;
-            setPropertyResult(property, opts) ;
+            setPropertyResult(property) ;
           }
         }
       } else {
         if(node.hasProperty(properties)) {
           Property property = node.getProperty(properties) ;
-          setPropertyResult(property, opts) ;
+          setPropertyResult(property) ;
         }
       }
     }
+    Collections.sort(listValue_) ;
+    for(String value : listValue_) {
+      opts.add(new SelectItemOption<String>(value, value)) ;
+    }
   }
 
-  public void setPropertyResult(Property property, List<SelectItemOption<String>> opts) throws Exception {
+  public void setPropertyResult(Property property) throws Exception {
     if(property.getDefinition().isMultiple()) {
       Value[] values = property.getValues() ;
       for(Value value : values) {
-        opts.add(new SelectItemOption<String>(value.getString(), value.getString())) ;
+        if(!listValue_.contains(value.getString())) listValue_.add(value.getString()) ;
       }
     } else {
       Value value = property.getValue() ;
-      opts.add(new SelectItemOption<String>(value.getString(), value.getString())) ;
+      if(!listValue_.contains(value.getString())) listValue_.add(value.getString()) ;
     }
   }
   
