@@ -100,7 +100,7 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
     PropertyDefinition[] properties = nt.getPropertyDefinitions() ;
     for(PropertyDefinition property : properties) {
       String name = property.getName() ;
-      properties_.add(new SelectItemOption<String>(name, name)) ;
+      if(!name.equals("exo:internalUse")) properties_.add(new SelectItemOption<String>(name, name)) ;
     }
   }
   
