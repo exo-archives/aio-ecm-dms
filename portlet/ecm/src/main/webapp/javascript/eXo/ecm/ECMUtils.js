@@ -2,7 +2,7 @@ eXo.require('eXo.webui.UIRightClickPopupMenu');
 
 function ECMUtils() {
 	this.popupArray =  new Array() ;
-}
+};
 
 ECMUtils.prototype.init = function(portletId) {
 	eXo.webui.UIRightClickPopupMenu.disableContextMenu(portletId) ;
@@ -11,7 +11,7 @@ ECMUtils.prototype.init = function(portletId) {
 		eXo.ecm.ECMUtils.closeAllPopup() ;
 	}
 	if(document.getElementById("UIPageDesktop")) this.fixHeight(portletId) ;
-}
+};
 
 ECMUtils.prototype.fixHeight = function(portletId) {
 	var portlet =document.getElementById(portletId) ;
@@ -22,7 +22,7 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 	for(var i = 0, ln = resizeObj.length; i < ln; i++) {
 		resizeObj[i].style.height = (parseInt(resizeObj[i].offsetHeight) + delta) + 'px' ;
 	}
-}
+};
 
 ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 	evnt.cancelBubble = true;
@@ -43,14 +43,14 @@ ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 	this.popupArray.push(showBlock);
 	showBlock.style.top = (popupSelector.offsetTop + popupSelector.offsetHeight) + "px";
 	showBlock.style.left = popupSelector.offsetLeft + "px";
-}
+};
 
 ECMUtils.prototype.closeAllPopup = function() {
 	for(var i = 0; i < this.popupArray.length; i++) {
 		this.popupArray[i].style.display = "none" ;
 	}
 	this.popupArray.clear() ;
-}
+};
 
 ECMUtils.prototype.initVote = function(voteId, rate) {
 	var vote = document.getElementById(voteId) ;
@@ -74,7 +74,7 @@ ECMUtils.prototype.initVote = function(voteId, rate) {
 		if(!e) e = window.event ;
 		e.cancelBubble = true ;
 	}
-}
+};
 
 ECMUtils.prototype.overVote = function(event) {
 	var optsCont = eXo.core.DOMUtil.findAncestorByClass(this, "OptionsContainer") ;
@@ -88,7 +88,7 @@ ECMUtils.prototype.overVote = function(event) {
 	for(; i >= 0; i--) {
 		opts[i].className = "OverVote" ;
 	}
-}
+};
 
 ECMUtils.prototype.showHideComponent = function(elemtClicked, elemtId) {
 	var elemt = document.getElementById(elemtId) ;
@@ -101,7 +101,7 @@ ECMUtils.prototype.showHideComponent = function(elemtClicked, elemtId) {
 		elemtClicked.childNodes[1].style.display = 'none' ;
 		elemt.style.display = 'none' ;
 	}
-}
+};
 
 ECMUtils.prototype.collapseExpand = function(elemt) {
 	var node = elemt.parentNode ;
@@ -115,7 +115,7 @@ ECMUtils.prototype.collapseExpand = function(elemt) {
 		subGroup.style.display = "none" ;
 	}
 	return true
-}
+};
 
 ECMUtils.prototype.filterValue = function(frmId) {
 	var form = document.getElementById(frmId) ;
@@ -130,7 +130,7 @@ ECMUtils.prototype.filterValue = function(frmId) {
       elSel.remove(i);
     }
   }
-}
+};
 
 ECMUtils.prototype.convertElemtToHTML = function(id) {
 	var elemt = document.getElementById(id) ;
@@ -141,7 +141,7 @@ ECMUtils.prototype.convertElemtToHTML = function(id) {
 						 .replace(/</g, "&lt;").replace(/>/g, "&gt;") ;
 
 	elemt.innerHTML = text ;
-}
+};
 
 ECMUtils.prototype.onKeyPress = function() {
 	var uiAddressBarControl = document.getElementById("UIAddressBarControl");

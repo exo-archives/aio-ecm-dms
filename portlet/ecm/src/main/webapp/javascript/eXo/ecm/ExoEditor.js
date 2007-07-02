@@ -1,7 +1,7 @@
 function Instance(ifrm) {
 	this.win = ifrm.contentWindow ;
 	this.isWYSIWYG = true ;
-}
+};
 
 Instance.prototype.setWYSIWYG = function(bln) {
 	this.isWYSIWYG = bln ;
@@ -47,7 +47,7 @@ function MyToolbar() {
 	this.buttonstest["Basic"] = [
 		['Source','Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','Undo','InsertHorizontalRule','SubScript','SuperScript','FormatBlock','FontSize']
 	] ;
-}
+};
 
 MyToolbar.prototype.create = function(instance, mode) {
 	var tBarMode = this.buttonstest[mode] ;
@@ -67,7 +67,7 @@ MyToolbar.prototype.create = function(instance, mode) {
 	}
 	tBar.innerHTML += str ;
 	return tBar ;
-}
+};
 
 MyToolbar.prototype.getButton = function(instance, btName) {
 	switch (btName) {
@@ -97,7 +97,7 @@ MyToolbar.prototype.getButton = function(instance, btName) {
 						'</select>';
 	}
 	return '<a href="#" class="MyButtonNormal" onclick="return eXo.ecm.ExoEditor.execCommand(\'' + instance + '\',\'' + btName + '\');"><img title="' + btName + '" src="/ecm/skin/ExoEditor/images/toolbar/' + btName + '.gif" /></a>' ;
-}
+};
 var myToolbar = new MyToolbar() ;
 
 function ExoEditor() {
@@ -111,7 +111,7 @@ function ExoEditor() {
 	this.isIE = (navigator.appName == "Microsoft Internet Explorer") ;
 	this.isGecko = ua.indexOf('Gecko') != -1 ;
 	this.instances = new Object() ;
-}
+};
 
 ExoEditor.prototype.init = function(instId, settings) {
 	this.createInstance(instId, settings) ;
@@ -149,7 +149,7 @@ ExoEditor.prototype.createInstance = function(instId, settings) {
 	this.instances[instId] = inst ;
 	inst.writeContent(txtAreaObj.value) ;
 	this.setEventHandlers(inst) ;
-}
+};
 
 ExoEditor.prototype.execCommand = function(instId, cmd, user, value) {
 	if(!user) user = false;
@@ -268,14 +268,14 @@ ExoEditor.prototype.saveHandler = function() {
 		delete eXo.ecm.ExoEditor.instances[i];
 	}
 	delete eXo.ecm.ExoEditor.selectedInst;
-}
+};
 
 ExoEditor.prototype.save = function(instId) {
 	inst = this.instances[instId] ;
 	if(inst.getDoc() == null || !inst.isWYSIWYG) return;
 	var txtArea = document.getElementById(inst.instId) ;
 	txtArea.value = inst.getContent() ;
-}
+};
 
 ExoEditor.prototype.switchMode = function(instId) {
 	var inst = this.instances[instId] ;
@@ -323,7 +323,7 @@ ExoEditor.prototype.removeInstance = function(instId) {
 			re.parentNode.removeChild(re);
 		}
 	}
-}
+};
 
 ExoEditor.prototype.encodeHTML = function(text) {
 	if ( typeof( text ) != "string" )
@@ -333,7 +333,7 @@ ExoEditor.prototype.encodeHTML = function(text) {
 						 .replace(/</g, "&lt;").replace(/>/g, "&gt;") ;
 
 	return text ;
-}
+};
 
 ExoEditor.prototype.insertHtmlBefore = function(html, element) {
 	if ( element.insertAdjacentHTML )	// IE
