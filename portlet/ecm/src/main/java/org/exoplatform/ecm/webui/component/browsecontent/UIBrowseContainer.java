@@ -27,7 +27,6 @@ import javax.portlet.WindowState;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.resolver.ResourceResolver;
@@ -633,6 +632,7 @@ public class UIBrowseContainer extends UIContainer{
       setCurrentNode(selectNode.getParent()) ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
+    loadPortletConfig(getPortletPreferences()) ;
   }
 
   @SuppressWarnings("unchecked")

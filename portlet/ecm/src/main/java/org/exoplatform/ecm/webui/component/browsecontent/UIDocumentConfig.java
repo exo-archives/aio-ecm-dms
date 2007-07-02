@@ -205,6 +205,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_VIEW_COMMENT, String.valueOf(hasComment)) ;    
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ;    
       prefs.store() ; 
+      container.loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
     }

@@ -4,20 +4,16 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
-import java.io.Writer;
-
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
@@ -45,6 +41,8 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     if(!isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
       uiTabPane.isNewConfig_ = true ;
       uiTabPane.showNewConfigForm(true);
+    } else {
+      uiContainer.loadPortletConfig(getPortletPreferences()) ;
     }
     addChild(uiTabPane) ;
     uiTabPane.setRendered(false) ;
@@ -61,7 +59,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN VIEW  MODE \n");  
       if(isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
-        uiContainer.loadPortletConfig(portletPref) ;
+        //uiContainer.loadPortletConfig(portletPref) ;
         uiTabPane.setRendered(false) ;
         uiContainer.setRendered(true) ;
         getChild(UIBrowseContainer.class).getSession().refresh(true) ;
