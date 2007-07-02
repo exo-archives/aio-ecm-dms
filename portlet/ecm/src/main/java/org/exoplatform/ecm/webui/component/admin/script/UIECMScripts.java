@@ -11,11 +11,11 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -37,6 +37,8 @@ public class UIECMScripts extends UIContainer {
   public UIECMScripts() throws Exception {
     addChild(UIECMFilterForm.class, null, null) ;
     addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
+    UIPopupAction uiPopupAction = addChild(UIPopupAction.class,null, "ECMScriptPopupAction") ;
+    uiPopupAction.getChild(UIPopupWindow.class).setId("ECMScriptPopupWindow") ;
   }
 
   private List<SelectItemOption<String>> getECMCategoryOptions() throws Exception {
@@ -62,21 +64,7 @@ public class UIECMScripts extends UIContainer {
     UIScriptList uiScriptList = getChildById(SCRIPTLIST_NAME) ;
     uiScriptList.updateGrid(getECMScript(categoryName)) ;
   }
-
-  public void initPopup(UIComponent uiRuleForm) throws Exception {
-    UIPopupWindow uiPopup = getChild(UIPopupWindow.class) ;
-    if(uiPopup == null) {
-      uiPopup = addChild(UIPopupWindow.class, null, "UIECMScriptsPopup") ;     
-      uiPopup.setUIComponent(uiRuleForm) ;
-      uiPopup.setWindowSize(600, 0) ;
-      uiPopup.setShow(true) ;
-      return ;
-    }
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
-  }
-
+  
   public List<ScriptData> getECMScript(String name) throws Exception {
     List <ScriptData> scriptData = new ArrayList <ScriptData>() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;

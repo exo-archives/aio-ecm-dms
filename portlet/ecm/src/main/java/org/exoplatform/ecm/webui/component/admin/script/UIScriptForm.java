@@ -10,14 +10,14 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.version.VersionHistory;
 
+import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -47,7 +47,7 @@ import org.exoplatform.webui.form.validator.EmptyFieldValidator;
       @EventConfig(phase=Phase.DECODE, listeners = UIScriptForm.RefreshActionListener.class)
     }
 )
-public class UIScriptForm extends UIForm {
+public class UIScriptForm extends UIForm implements UIPopupComponent {
 
   final static public String FIELD_SELECT_VERSION = "selectVersion" ;
   final static public String FIELD_SCRIPT_CONTENT = "scriptContent" ;
@@ -147,19 +147,15 @@ public class UIScriptForm extends UIForm {
     setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
   } 
 
-  private UIScriptList getCurentList() {
-    UIScriptManager sManager = getAncestorOfType(UIScriptManager.class) ;
-    UIPopupWindow uiPopupWindow = getParent() ;
-    UIComponent parent = uiPopupWindow.getParent() ;
-    UIScriptList uiScriptList = null ;
-    if(parent instanceof UIECMScripts) {
-      uiScriptList = sManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME) ;
-    } else if(parent instanceof UICBScripts) {
-      uiScriptList = sManager.findComponentById(UICBScripts.SCRIPTLIST_NAME) ; 
-    }
-    return uiScriptList ;
+  public void activate() throws Exception {
+    // TODO Auto-generated method stub
+
   }
 
+  public void deActivate() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
   static public class SaveActionListener extends EventListener<UIScriptForm> {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
@@ -168,7 +164,13 @@ public class UIScriptForm extends UIForm {
       String name = uiForm.getUIStringInput(FIELD_SCRIPT_NAME).getValue() ;
       String content = uiForm.getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).getValue() ;
       if(content == null) content = "" ;
-      UIScriptList curentList = uiForm.getCurentList() ;
+      UIScriptList curentList = null ;
+      UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
+      if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
+        curentList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
+      } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)){
+        curentList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
+      }
       String namePrefix = curentList.getScriptCategory() ;
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
@@ -182,16 +184,11 @@ public class UIScriptForm extends UIForm {
         node.save() ;
         node.checkin() ;
       }
-      curentList.refresh() ;
-      curentList.setSelectedTab() ;
-      UIScriptManager uiScriptManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
-      UIPopupWindow uiPopupWindow = uiForm.getAncestorOfType(UIPopupWindow.class) ;
       uiForm.reset() ;
-      UIComponent comp = uiPopupWindow.getParent() ;
-      if(comp instanceof UIECMScripts ) uiScriptManager.removeECMScripForm() ;
-      else uiScriptManager.removeCBScripForm() ;
-      uiPopupWindow.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupWindow) ;
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      curentList.refresh() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(curentList) ;
     }
   }
@@ -200,7 +197,13 @@ public class UIScriptForm extends UIForm {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
       String name = uiForm.getUIStringInput(FIELD_SCRIPT_NAME).getValue() ;
-      UIScriptList curentList = uiForm.getCurentList() ;
+      UIScriptList curentList = null ;
+      UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
+      if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
+        curentList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
+      } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)){
+        curentList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
+      }
       Node node = curentList.getScriptNode(name) ; 
       String vesion = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ;
       String baseVesion = node.getBaseVersion().getName() ;
@@ -208,16 +211,9 @@ public class UIScriptForm extends UIForm {
         node.checkout() ;
         node.restore(vesion, true) ;
         curentList.refresh() ;
-        curentList.setSelectedTab() ;
       }
-      UIScriptManager uiScriptManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
-      UIPopupWindow uiPopupWindow = uiForm.getAncestorOfType(UIPopupWindow.class) ;
-      UIComponent comp = uiPopupWindow.getParent() ;
-      if(comp instanceof UIECMScripts ) uiScriptManager.removeECMScripForm() ;
-      else uiScriptManager.removeCBScripForm() ;
-      uiPopupWindow.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupWindow) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(curentList) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
 
@@ -225,14 +221,21 @@ public class UIScriptForm extends UIForm {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource();
       String name = uiForm.getUIStringInput(FIELD_SCRIPT_NAME).getValue() ;
-      Node node = uiForm.getCurentList().getScriptNode(name)  ;
+      UIScriptList uiScript = null ;
+      UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
+      if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
+        uiScript = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME) ;
+      } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)) {
+        uiScript = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME) ;
+      }
+      Node node = uiScript.getScriptNode(name)  ;
       String version = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ; 
       String path = node.getVersionHistory().getVersion(version).getPath() ;           
       VersionNode versionNode = uiForm.getRootVersion(node).findVersionNode(path) ;
       Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;    
       String scriptContent = frozenNode.getProperty(Utils.JCR_DATA).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).setValue(scriptContent) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
 
@@ -240,7 +243,9 @@ public class UIScriptForm extends UIForm {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
       String sciptName = uiForm.getUIStringInput(UIScriptForm.FIELD_SCRIPT_NAME).getValue() ;
-      if(!uiForm.isAddNew_) { 
+      if(uiForm.isAddNew_) {
+        uiForm.update(null, true) ;
+      } else {
         UIScriptManager uiScriptManager = uiForm.getAncestorOfType(UIScriptManager.class);
         UIScriptList uiScriptList ;
         if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
@@ -250,10 +255,8 @@ public class UIScriptForm extends UIForm {
         }
         Node script = uiScriptList.getScriptNode(sciptName) ;  
         uiForm.update(script, false) ;
-      } else {
-        uiForm.update(null, true) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
 
@@ -261,15 +264,11 @@ public class UIScriptForm extends UIForm {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource();
       uiForm.reset() ;
-      UIScriptManager uiScriptManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
-      UIPopupWindow uiPopupWindow = uiForm.getAncestorOfType(UIPopupWindow.class) ;
-      UIComponent comp = uiPopupWindow.getParent() ;
-      if(comp instanceof UIECMScripts ) {
-        uiScriptManager.removeECMScripForm() ;
-      } else {
-        uiScriptManager.removeCBScripForm() ;
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(comp) ;
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
+
+
 }

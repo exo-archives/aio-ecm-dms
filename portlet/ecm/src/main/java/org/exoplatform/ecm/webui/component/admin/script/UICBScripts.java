@@ -12,12 +12,12 @@ import javax.jcr.NodeIterator;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -35,9 +35,11 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UICBScripts extends UIContainer {
   public static String SCRIPTLIST_NAME = "CBScriptList" ;
   public static String SCRIPTFORM_NAME = "CBScriptForm" ;
-  
+
   public UICBScripts() throws Exception {
     addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
+    UIPopupAction uiPopupAction = addChild(UIPopupAction.class,null, "BCScriptPopupAction") ;
+    uiPopupAction.getChild(UIPopupWindow.class).setId("BCScriptPopupWindow") ;
   }
 
   public void refresh () throws Exception {
@@ -45,20 +47,6 @@ public class UICBScripts extends UIContainer {
     uiScriptList.updateGrid(getCBScript()) ;
   }
 
-  public void initPopup(UIComponent uiComp) throws Exception {
-    UIPopupWindow uiPopup = getChild(UIPopupWindow.class) ;
-    if(uiPopup == null) {
-      uiPopup = addChild(UIPopupWindow.class, null, "UICBScriptsPopup") ;     
-      uiPopup.setUIComponent(uiComp) ;
-      uiPopup.setWindowSize(600, 0) ;
-      uiPopup.setShow(true) ;
-      return ;
-    }
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
-  }
-  
   public List<ScriptData> getCBScript() throws Exception {
     List <ScriptData> scriptData = new ArrayList <ScriptData>() ;
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;

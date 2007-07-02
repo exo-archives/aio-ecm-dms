@@ -24,6 +24,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInputSet;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
+import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormTabPane;
 
 /**
@@ -42,7 +43,8 @@ import org.exoplatform.webui.form.UIFormTabPane;
       @EventConfig(listeners = UIDriveForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDriveForm.AddPermissionActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDriveForm.AddPathActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDriveForm.AddIconActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIDriveForm.AddIconActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIDriveForm.ChangeActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIDriveForm extends UIFormTabPane implements UISelector {
@@ -50,18 +52,20 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   private boolean isAddNew_ = true ;  
   final static public String[] ACTIONS = {"Save", "Refresh", "Cancel"} ;
   final static public String POPUP_DRIVEPERMISSION = "PopupDrivePermission" ;
-  
+
   public UIDriveForm() throws Exception {
     super("UIDriveForm", false) ;
-    
+
     UIFormInputSet driveInputSet = new UIDriveInputSet("DriveInputSet") ;
+    UIFormSelectBox selectBox = driveInputSet.getChildById(UIDriveInputSet.FIELD_WORKSPACE) ;
+    selectBox.setOnChange("Change") ;
     addUIFormInput(driveInputSet) ;    
     UIFormInputSet viewInputSet = new UIViewsInputSet("ViewsInputSet") ;
     viewInputSet.setRendered(false) ;
     addUIFormInput(viewInputSet) ;    
     setActions(ACTIONS) ;
   }
-  
+
   public String getLabel(ResourceBundle res, String id)  {
     try {
       return res.getString("UIDriveForm.label." + id) ;
@@ -69,7 +73,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       return id ;
     }    
   }
-  
+
   public void updateSelect(String selectField, String value) {
     getUIStringInput(selectField).setValue(value) ;
     UIDriveManager uiContainer = getAncestorOfType(UIDriveManager.class) ;
@@ -82,7 +86,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       }
     }
   }
-  
+
   public void refresh(String driveName) throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     DriveData drive = null ;
@@ -92,30 +96,30 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       isAddNew_ = false ;
       setActions(new String[] {"Save", "Cancel"}) ;
       drive = (DriveData)getApplicationComponent(ManageDriveService.class)
-              .getDriveByName(driveName, repository) ;
+      .getDriveByName(driveName, repository) ;
     }
     getChild(UIDriveInputSet.class).update(drive) ;
     getChild(UIViewsInputSet.class).update(drive) ;
   }
-  
+
   static public class SaveActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
       String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class)
-                                      .getPreferenceRepository() ;
+      .getPreferenceRepository() ;
       RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
       UIDriveInputSet driveInputSet = uiDriveForm.getChild(UIDriveInputSet.class) ;
       String name = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_NAME).getValue() ;
       String workspace = 
         driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
       String path = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).getValue() ;
-      if(path == null) path = "/" ;
+      if((path == null)||(path.trim().length() == 0)) path = "/" ;
       UIApplication uiApp = uiDriveForm.getAncestorOfType(UIApplication.class) ;
       try {        
         rservice.getRepository(repository).getSystemSession(workspace).getItem(path) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.workspace-path-invalid", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
@@ -132,7 +136,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       ManageDriveService dservice_ = uiDriveForm.getApplicationComponent(ManageDriveService.class) ;
       if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name, repository) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -145,7 +149,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
           }
         } catch(Exception e) {
           uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
-                                                  ApplicationMessage.WARNING)) ;
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  
@@ -153,7 +157,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         iconPath = "" ;
       }
       dservice_.addDrive(name, workspace, permissions, path, views, iconPath, viewReferences, 
-                         viewNonDocument, viewSideBar, repository, allowCreateFolder) ;
+          viewNonDocument, viewSideBar, repository, allowCreateFolder) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;
       uiDriveList.updateDriveListGrid() ;
@@ -165,7 +169,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;
     }
   }
-  
+
   static  public class CancelActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
@@ -177,14 +181,14 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;
     }
   }
-  
+
   static  public class RefreshActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       event.getSource().refresh(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource()) ;
     }
   }
-  
+
   static public class AddPermissionActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
@@ -194,7 +198,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
-  
+
   static public class AddPathActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
@@ -206,13 +210,29 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
-  
+
   static public class AddIconActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       uiManager.initPopupJCRBrowserAssets() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+    }
+  }
+
+  static public class ChangeActionListener extends EventListener<UIDriveForm> {
+    public void execute(Event<UIDriveForm> event) throws Exception {
+      UIDriveForm uiDriveForm = event.getSource() ;
+      if(!uiDriveForm.isAddNew_) {
+        String driverName = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_NAME).getValue() ;
+        String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+        String selectedWorkspace = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
+        DriveData drive = (DriveData)uiDriveForm.getApplicationComponent(ManageDriveService.class)
+        .getDriveByName(driverName, repository) ;
+        String defaultPath = drive.getHomePath() ;
+        if(!drive.getWorkspace().equals(selectedWorkspace)) defaultPath = "/" ;
+        uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).setValue(defaultPath) ;
+      }
     }
   }
 }

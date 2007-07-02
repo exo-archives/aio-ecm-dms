@@ -48,10 +48,16 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
 
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
                        addValidator(EmptyFieldValidator.class)) ;
-    addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;    
-    addUIFormInput(new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null)) ;
+    addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;  
+    UIFormStringInput homePathField = new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null) ;
+    homePathField.setValue("/") ;
+    homePathField.setEditable(false) ;
+    addUIFormInput(homePathField) ;
     addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null).addValidator(EmptyFieldValidator.class)) ;
+    UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null) ;
+    permissonSelectField.addValidator(EmptyFieldValidator.class) ;
+    permissonSelectField.setEditable(false) ;
+    addUIFormInput(permissonSelectField) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null)) ;

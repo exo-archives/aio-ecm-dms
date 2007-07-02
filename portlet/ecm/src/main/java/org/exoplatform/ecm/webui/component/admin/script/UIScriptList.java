@@ -9,6 +9,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -30,8 +31,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UIScriptList.EditActionListener.class),
         @EventConfig(listeners = UIScriptList.DeleteActionListener.class, confirm="UIScriptList.msg.confirm-delete"),
-        @EventConfig(listeners = UIScriptList.AddNewActionListener.class),
-        @EventConfig(listeners = UIScriptList.ShowPageActionListener.class )
+        @EventConfig(listeners = UIScriptList.AddNewActionListener.class)
     }
 )
 
@@ -69,32 +69,14 @@ public class UIScriptList extends UIGrid {
 
   public void refresh() throws Exception {
     UIScriptManager sManager = getAncestorOfType(UIScriptManager.class) ;
-    UICBScripts uiCBScripts = sManager.getChild(UICBScripts.class) ;
-    UIECMScripts uiECMScripts = sManager.getChild(UIECMScripts.class) ;
     UIComponent parent = getParent() ;
     if(parent instanceof UICBScripts) {
-      uiCBScripts.refresh() ;
-    } else {
-      uiECMScripts.refresh() ;
+      sManager.getChild(UICBScripts.class).refresh() ;
+    } else if(parent instanceof UIECMScripts) {
+      sManager.getChild(UIECMScripts.class).refresh() ;
     }
   }
-
-  public void setSelectedTab() {
-    UIComponent parent = getParent() ;
-    UIScriptManager sManager = getAncestorOfType(UIScriptManager.class) ;
-    UICBScripts uiCBScripts = sManager.getChild(UICBScripts.class) ;
-    UIECMScripts uiECMScripts = sManager.getChild(UIECMScripts.class) ;
-    if(parent instanceof UICBScripts) {
-      uiCBScripts.setRendered(true) ;
-      uiECMScripts.setRendered(false) ;
-    } else {
-      uiECMScripts.setRendered(true) ;
-      uiCBScripts.setRendered(false) ;
-    }
-  }
-
   public String[] getActions() {return new String[]{"AddNew"} ;}
-
   public Node getScriptNode(String nodeName) throws Exception {
     UIComponent parent = getParent() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
@@ -116,28 +98,22 @@ public class UIScriptList extends UIGrid {
   static public class AddNewActionListener extends EventListener<UIScriptList> {
     public void execute(Event<UIScriptList> event) throws Exception {
       UIScriptList uiScriptList = event.getSource() ;
-      UIComponent parent = uiScriptList.getParent() ;
-      UIScriptManager sManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
-      UICBScripts uiCBScripts = sManager.getChild(UICBScripts.class) ;
-      UIECMScripts uiECMScripts = sManager.getChild(UIECMScripts.class) ;
-      if(parent instanceof UICBScripts) {
-        uiCBScripts.setRendered(true) ;
-        UIScriptForm CBScriptForm = uiCBScripts.findFirstComponentOfType(UIScriptForm.class) ;
-        if(CBScriptForm == null) CBScriptForm = 
-          uiCBScripts.createUIComponent(UIScriptForm.class, null,UICBScripts.SCRIPTFORM_NAME) ;
-        CBScriptForm.update(null, true) ;
-        uiCBScripts.initPopup(CBScriptForm) ;
-        uiECMScripts.setRendered(false) ;
-      } else {
-        uiECMScripts.setRendered(true) ;
-        UIScriptForm uiECMScriptForm =  uiECMScripts.findFirstComponentOfType(UIScriptForm.class) ;
-        if(uiECMScriptForm == null) uiECMScriptForm = 
-          uiCBScripts.createUIComponent(UIScriptForm.class, null,UIECMScripts.SCRIPTFORM_NAME) ;
-        uiECMScriptForm.update(null, true) ;
-        uiECMScripts.initPopup(uiECMScriptForm) ;
-        uiCBScripts.setRendered(false) ;
+      UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
+      if(uiScriptList.getId().equals(UIECMScripts.SCRIPTLIST_NAME)) {
+        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupAction.class) ;
+        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
+        uiForm.setId(UIECMScripts.SCRIPTFORM_NAME ) ;
+        uiForm.update(null, true) ;
+        uiManager.setRenderedChild(UIECMScripts.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      } else if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)) {
+        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupAction.class) ;
+        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
+        uiForm.setId(UICBScripts.SCRIPTFORM_NAME ) ;
+        uiForm.update(null, true) ;
+        uiManager.setRenderedChild(UICBScripts.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList.getParent()) ;
     }
   }
 
@@ -145,54 +121,43 @@ public class UIScriptList extends UIGrid {
     public void execute(Event<UIScriptList> event) throws Exception {
       UIScriptList uiScriptList = event.getSource() ;
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID); 
-      UIScriptManager sManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
-      UICBScripts uiCBScripts = sManager.getChild(UICBScripts.class) ;
-      UIECMScripts uiECMScripts = sManager.getChild(UIECMScripts.class) ;
-      if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)){
-        uiCBScripts.setRendered(true) ;
-        UIScriptForm ScriptForm = sManager.findComponentById(UICBScripts.SCRIPTFORM_NAME) ;
-        if(ScriptForm == null) {
-          ScriptForm = uiCBScripts.createUIComponent(UIScriptForm.class, null,UICBScripts.SCRIPTFORM_NAME) ;
-        } 
-        ScriptForm.update(uiScriptList.getScriptNode(scriptName), false) ;
-        uiCBScripts.initPopup(ScriptForm) ;
-        uiECMScripts.setRendered(false) ;
-      } else {
-        uiECMScripts.setRendered(true) ;
-        UIScriptForm ScriptForm = sManager.findComponentById(UIECMScripts.SCRIPTFORM_NAME) ;
-        if(ScriptForm == null) {
-          ScriptForm = uiCBScripts.createUIComponent(UIScriptForm.class, null,UIECMScripts.SCRIPTFORM_NAME) ;
-        } 
-        ScriptForm.update(uiScriptList.getScriptNode(scriptName), false) ;
-        uiECMScripts.initPopup(ScriptForm) ;
-        uiCBScripts.setRendered(false) ;
+      UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;      
+      if(uiScriptList.getId().equals(UIECMScripts.SCRIPTLIST_NAME)) {
+        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupAction.class) ;
+        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
+        uiForm.setId(UIECMScripts.SCRIPTFORM_NAME ) ;
+        uiForm.update(uiScriptList.getScriptNode(scriptName), false) ;
+        uiManager.setRenderedChild(UIECMScripts.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      } else if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)) {
+        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupAction.class) ;
+        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
+        uiForm.setId(UICBScripts.SCRIPTFORM_NAME ) ;
+        uiForm.update(uiScriptList.getScriptNode(scriptName), false) ;
+        uiManager.setRenderedChild(UICBScripts.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList.getParent()) ;
     }
   }
 
   static public class DeleteActionListener extends EventListener<UIScriptList> {
     public void execute(Event<UIScriptList> event) throws Exception {
       UIScriptList uiScriptList = event.getSource() ; 
-      String repository = uiScriptList.getAncestorOfType(UIECMAdminPortlet.class)
-                                      .getPreferenceRepository() ;
+      String repository = uiScriptList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       ScriptService scriptService =  uiScriptList.getApplicationComponent(ScriptService.class) ;
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String namePrefix = uiScriptList.getScriptCategory() ;       
       scriptService.removeScript(namePrefix + "/" + scriptName, repository) ;
       uiScriptList.refresh() ;
-      uiScriptList.setSelectedTab() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList.getParent()) ;
+      UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
+      if((UIComponent)uiScriptList.getParent() instanceof UIECMScripts) {
+        uiManager.setRenderedChild(UIECMScripts.class) ;
+      } else  if((UIComponent)uiScriptList.getParent() instanceof UICBScripts){
+        uiManager.setRenderedChild(UICBScripts.class) ;
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList) ;
     }
   }
-  
-  static  public class ShowPageActionListener extends EventListener<UIScriptList> {
-    public void execute(Event<UIScriptList> event) throws Exception {
-      System.out.println("\n\nGo here\n\n");
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
-    }
-  }
-
   public static class ScriptData {
     private String name ;
     private String path ;
