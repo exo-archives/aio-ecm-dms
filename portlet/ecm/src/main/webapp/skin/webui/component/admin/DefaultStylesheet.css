@@ -584,6 +584,10 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMScripts .ECMScriptForm {
   width: 95%;
+  margin: auto;
+}
+
+.UIECMScripts .ECMScriptForm .HorizontalLayout {
   margin: 15px auto;
 }
 
@@ -596,6 +600,10 @@ UIECMAdminPortlet .UIViewManager {
   padding-left: 10px;
 }
 
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
+  margin: 10px 0px 0px 0px;
+}
+
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer .OverflowContainer {
   width: 75px;
 }
@@ -605,9 +613,9 @@ UIECMAdminPortlet .UIViewManager {
   padding-left: 60px;
 }
 
-.UIECMScripts .HorizontalLayout .FormContainer textarea {
+.UIECMScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
   height: 350px;
-  width: 380px;
+  width: 90%;
   padding: 3px;
   border: solid 1px #b7b7b7;
 }
@@ -628,6 +636,10 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .UICBScripts .CBScriptForm {
   width: 95%;
+  margin: auto;
+}
+
+.UICBScripts .CBScriptForm .HorizontalLayout {
   margin: 15px auto;
 }
 
@@ -636,11 +648,11 @@ UIECMAdminPortlet .UIViewManager {
   padding-left: 60px;
 }
 
-.UICBScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
+.UICBScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
+  width: 90%;
   height: 350px;
-  padding: 3px;
   border: solid 1px #b7b7b7;
+  padding: 3px;
 }
 
 .UICBScripts .CBScriptList .UIAction {

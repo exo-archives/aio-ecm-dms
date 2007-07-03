@@ -608,6 +608,10 @@
 
 .UIECMScripts .ECMScriptForm{
   width: 95%; 
+  margin: auto;
+}
+
+.UIECMScripts .ECMScriptForm .HorizontalLayout {
   margin: 15px auto;
 }
 
@@ -631,6 +635,10 @@
 
 .UICBScripts .CBScriptForm {
   width: 95%;
+  margin: auto;
+}
+
+.UICBScripts .CBScriptForm .HorizontalLayout {
   margin: 15px auto;
 }
 
