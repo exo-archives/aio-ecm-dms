@@ -442,7 +442,7 @@
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   margin: auto;
-  padding: 15px;
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .FieldContainer .SelectFileFrame .SelectFileLabel {

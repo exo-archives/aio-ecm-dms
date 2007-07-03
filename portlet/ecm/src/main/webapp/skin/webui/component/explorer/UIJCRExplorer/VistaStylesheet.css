@@ -17,6 +17,7 @@
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
 	width: auto;
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
@@ -280,11 +281,6 @@
 	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddLanguageContainer .UIFormWithTitle {
-	padding: 10px;
-	width: 520px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UILanguageTypeForm .UIFormGrid {
 	margin: auto;
 }
@@ -310,10 +306,9 @@
 }
 
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
-	margin-top: 10px;
+	margin: 10px auto;
 	border: solid 1px #b7b7b7;
-	width: 99.8%;
-	padding-left: 5px;
+	padding: 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
@@ -356,6 +351,14 @@
  	padding: 13px 0px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
+	width: 611px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .UIFormWithTitle {
+	width: auto;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 185px;
 	padding-left: 20px;
@@ -374,8 +377,12 @@
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid {
-	width: 500px;
+	width: 550px;
 	margin: 10px auto;	
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid .FieldLabel{
+	width: 140px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
@@ -532,7 +539,7 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
   width: 430px;
-  padding-left: 40px;
+  padding-left: 20px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
@@ -768,6 +775,10 @@
   border: solid 1px #c9c9c9;
 }
 
+.UIJCRExplorer .UIJCRBrowser .UIFormWithTitle{
+	padding: 3px;
+}
+
 .UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
 	overflow: hidden;
 }
@@ -783,24 +794,17 @@
 /*=================================UICategoryManager==============================*/
 
 .UIJCRExplorer .UICategoryManager {
-	height: 320px;
 	overflow: auto;
-	border: 1px soild red;
 }
 
 .UIJCRExplorer .UICategoryManager .UIAction {
 	width: 70px;
 }
 
-.UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIFormWithTitle{
-	width: 520px;
-	margin-bottom: 5px;
-}
 
 /*=================================UIRelationManager==============================*/
 
 .UIJCRExplorer .UIRelationManager {
-	height: 320px;
 	overflow: auto;
 }
 
