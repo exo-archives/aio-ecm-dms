@@ -4,8 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.search;
 
-import javax.jcr.query.Query;
-
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;

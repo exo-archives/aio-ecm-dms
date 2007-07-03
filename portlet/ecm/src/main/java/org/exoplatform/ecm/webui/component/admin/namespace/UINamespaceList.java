@@ -47,9 +47,9 @@ public class UINamespaceList extends UIGrid {
                                           .getRepository(repository).getNamespaceRegistry() ;
     List<NamespaceBean> nspBeans = new ArrayList<NamespaceBean>();
     String[] prefixs = namespaceRegistry.getPrefixes();
-    for(int i = 0; i < prefixs.length; i++){      
+    for(int i = 0; i < prefixs.length - 1; i++){      
       NamespaceBean bean = new NamespaceBean(prefixs[i], namespaceRegistry.getURI(prefixs[i])) ;
-      nspBeans.add (bean) ;
+      nspBeans.add(bean) ;
     }
     ObjectPageList objPageList = new ObjectPageList(nspBeans, 10) ;
     getUIPageIterator().setPageList(objPageList) ; 

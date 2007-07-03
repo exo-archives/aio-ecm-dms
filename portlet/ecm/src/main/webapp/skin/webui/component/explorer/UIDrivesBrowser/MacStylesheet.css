@@ -129,6 +129,10 @@
   text-decoration: none;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
+  background: url('MacSkin/background/MacDefaultDrive.gif') no-repeat;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
   background: url('MacSkin/background/AdminProduction.gif') no-repeat;
 }

@@ -18,7 +18,7 @@ import org.exoplatform.webui.core.UIContainer;
  */
 
 @ComponentConfig( template = "system:groovy/webui/core/UITabPane.gtmpl" )
-public class UIECMSearch extends UIContainer implements UIPopupComponent{
+public class UIECMSearch extends UIContainer implements UIPopupComponent {
   public UIECMSearch() throws Exception {
     addChild(UISearchContainer.class, null, null) ;
     addChild(UIJCRAdvancedSearch.class, null, null).setRendered(false);
@@ -28,7 +28,7 @@ public class UIECMSearch extends UIContainer implements UIPopupComponent{
 
   public void activate() throws Exception {
     UIJCRAdvancedSearch advanceSearch = getChild(UIJCRAdvancedSearch.class);
-    advanceSearch.update();
+    advanceSearch.update(null);
     UISavedQuery uiQuery = getChild(UISavedQuery.class);
     uiQuery.updateGrid();
   }

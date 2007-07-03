@@ -34,6 +34,7 @@ import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 /**
@@ -47,14 +48,18 @@ import org.exoplatform.webui.event.EventListener;
     template =  "app:/groovy/webui/component/explorer/search/UISavedQuery.gtmpl",
     events = {
         @EventConfig(listeners = UISavedQuery.ExecuteActionListener.class),
-        @EventConfig(listeners = UISavedQuery.DeleteActionListener.class)
+        @EventConfig(listeners = UISavedQuery.DeleteActionListener.class, confirm = "UISavedQuery.msg.confirm-delete-query"),
+        @EventConfig(listeners = UISavedQuery.EditActionListener.class)
     }
 )
 
 public class UISavedQuery extends UIContainer implements UIPopupComponent {
 
+  final static public String EDIT_FORM = "EditSavedQueryForm" ;
+  
   private List<Node> sharedQueries_ = new ArrayList<Node>() ;
   private boolean isQuickSearch_ = false ;
+  
 
   public UISavedQuery() throws Exception {        
     addChild(UIPageIterator.class, null, "SavedQueryIterator");
@@ -68,6 +73,21 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   }
 
   public UIPageIterator getUIPageIterator() { return getChild(UIPageIterator.class) ; }
+  
+  public void initPopupEditForm(Query query) throws Exception {
+    removeChildById(EDIT_FORM) ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, EDIT_FORM) ;
+    uiPopup.setWindowSize(500,0) ;
+    UIJCRAdvancedSearch uiJAdvancedSearch = 
+      createUIComponent(UIJCRAdvancedSearch.class, null, "EditQueryForm") ;
+    uiJAdvancedSearch.setActions(new String[] {"Save", "Cancel"}) ;
+    uiPopup.setUIComponent(uiJAdvancedSearch) ;
+    uiPopup.setRendered(true) ;
+    uiJAdvancedSearch.setIsEdit(true) ;
+    uiJAdvancedSearch.update(query) ;
+    uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
+  }
   
   public boolean hasQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
@@ -169,6 +189,27 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     }
   }
 
+  static public class EditActionListener extends EventListener<UISavedQuery> {
+    public void execute(Event<UISavedQuery> event) throws Exception {      
+      UISavedQuery uiQuery = event.getSource() ;
+      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      String userName = Util.getPortalRequestContext().getRemoteUser() ;
+      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
+      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      Query query = queryService.getQueryByPath(queryPath, userName, repository) ;
+      uiQuery.initPopupEditForm(query) ;
+      if(!uiQuery.isQuickSearch_) {
+        UIECMSearch uiECSearch = uiQuery.getParent() ;
+        uiECSearch.setRenderedChild(UISavedQuery.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiECSearch) ;
+      } else {
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery.getParent()) ;
+      }
+    }
+  }
+  
   static public class DeleteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;

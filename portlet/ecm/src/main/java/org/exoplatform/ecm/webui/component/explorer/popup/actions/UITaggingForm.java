@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
@@ -51,7 +50,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
   final static public String ASCENDING_ORDER = "Ascending".intern();
   
   public UITaggingForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null).addValidator(ECMNameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null)) ;
     UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET) ;
     uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null)) ;
     addUIComponentInput(uiInputSet) ;
@@ -80,18 +79,28 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       UITaggingForm uiForm = event.getSource() ;
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(tagName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String[] tagNames = null ;
       if(tagName.indexOf(";") > -1) tagNames = tagName.split(";") ;
       else tagNames = new String[] {tagName} ;
       for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository)) {
         for(String t : tagNames) {
           if(t.equals(tag.getName())) {
-            uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.name-exist", null)) ;
+            Object[] args = {t} ;
+            uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.name-exist", args, 
+                                                    ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }

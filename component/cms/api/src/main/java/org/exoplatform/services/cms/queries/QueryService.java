@@ -31,5 +31,7 @@ public interface QueryService {
   
   public List<Node> getSharedQueries( String repository) throws Exception ;
   
+  public Query getQueryByPath(String queryPath, String userName, String repository) throws Exception ;
+  
   public void init(String repository) throws Exception ;
 }

@@ -435,3 +435,7 @@
 .UIPopupWindow .UIWindowContent .UISaveQueryForm .UIFormGrid td.FieldLabel {
   width:68px;
 }
+
+.UIJCRExplorer .EditQueryForm .UIAction {
+  width: 140px;
+}

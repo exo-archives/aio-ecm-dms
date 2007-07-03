@@ -225,6 +225,14 @@ public class QueryServiceImpl implements QueryService, Startable{
     return queries ;
   }
   
+  public Query getQueryByPath(String queryPath, String userName, String repository) throws Exception {
+    List<Query> queries = getQueries(userName, repository) ;
+    for(Query query : queries) {
+      if(query.getStoredQueryPath().equals(queryPath)) return query ;
+    }
+    return null ;
+  }
+  
   public void removeSharedQuery(String queryName, String repository) throws Exception {
     Session session = getSession(repository) ;
     String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);

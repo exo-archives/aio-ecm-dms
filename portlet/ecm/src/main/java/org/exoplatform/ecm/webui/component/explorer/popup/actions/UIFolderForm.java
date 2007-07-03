@@ -89,12 +89,11 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         }catch(ConstraintViolationException cve) {  
           Object[] arg = { uiFolderForm.allowCreateFolder_ } ;
           uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.constraint-violation", arg, 
-              ApplicationMessage.WARNING)) ;
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }catch(RepositoryException re) {
-          uiApp.addMessage(new ApplicationMessage(re.getMessage(), null, 
-              ApplicationMessage.WARNING)) ;
+          uiApp.addMessage(new ApplicationMessage(re.getMessage(), null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         } 

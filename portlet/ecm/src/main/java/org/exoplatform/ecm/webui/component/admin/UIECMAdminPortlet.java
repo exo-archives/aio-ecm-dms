@@ -4,15 +4,12 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin;
 
-
-
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;

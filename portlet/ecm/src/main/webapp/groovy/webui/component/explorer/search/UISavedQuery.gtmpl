@@ -7,6 +7,9 @@
  * 4:28:26 PM 
  */
 %>
+<%
+  import org.exoplatform.webui.core.UIPopupWindow;
+%>
 <div class="UISavedQuery" id="UISavedQuery">
   <table class="UIGrid">
     <thead>
@@ -40,7 +43,7 @@
 	              String storedQueryPath = query.getStoredQueryPath() ;
 	              storedQueryPath =  storedQueryPath.substring(storedQueryPath.lastIndexOf("/") + 1, storedQueryPath.length()) ;
 	            %>
-	            <td><div class="Text"><%=storedQueryPath%></div></td>
+	            <td><div class="Text" title="<%=query.getStoredQueryPath()%>"><%=storedQueryPath%></div></td>
 	            <td><div class="Text"><%=query.getLanguage()%></div></td>
 	            <td>
 	            	<%
@@ -50,9 +53,12 @@
 	            	<div class="Text" title="<%=query.getStatement()%>"><%=statement%></div>
 	            </td>
 	            <td><%=uicomponent.getCurrentUserId()%></td>
-		          <td style="width:60px;">
+		          <td style="width:80px;">
 		            <a href="<%=uicomponent.event("Execute", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
 		              <div class="Execute16x16Icon" style="margin-left:5px;float:left"><span></span></div>
+		            </a>
+		            <a href="<%=uicomponent.event("Edit", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Edit")%>">
+		              <div class="Edit16x16Icon" style="margin-left:5px;float:left"><span></span></div>
 		            </a>
 		            <a href="<%=uicomponent.event("Delete", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Delete")%>">
 		              <div class="Delete16x16Icon" style="margin-left:10px;"><span></span></div>
@@ -88,7 +94,7 @@
             %>
             	<div class="Text"><%=sharedPermissions%></div>
             </td>
-	          <td style="width:60px;">
+	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("Execute", sharedQueries.getPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
 	              <div class="Execute16x16Icon" style="margin-left:5px;"><span></span></div>
 	            </a>
@@ -104,3 +110,7 @@
     <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
   </div>
 </div>
+<%
+if(uicomponent.getChild(UIPopupWindow.class) != null) { %>
+  <%uicomponent.renderChild(UIPopupWindow.class)%>    
+<%}%>
