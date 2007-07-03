@@ -835,6 +835,11 @@
   margin: 10px auto;
   width: 95%;
   border: none;
+  padding: 0px;
+}
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle .UIAction {
+  width: 180px;
+  padding-right: 50px;
 }
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {

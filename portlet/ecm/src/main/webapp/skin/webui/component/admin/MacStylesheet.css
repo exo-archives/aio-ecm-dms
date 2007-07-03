@@ -269,6 +269,7 @@
 
 .UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
+	background: none;
 }
 
 .UIRepositoryManager .UIFormTabPane .UITabPane .TabPaneContent .UITabContentContainer {
@@ -653,7 +654,7 @@
 /*############################## -- UIActionManager -- ########################*/
 
 .UIECMAdminPortlet .UIActionManager {
-  width: 98.5%;
+  width: 98%;
   padding: 2px 0px 0px 0px;
 }
 
@@ -822,8 +823,9 @@
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 300px ;
-	width: 360px ;
+	width: 95%;
 	padding: 3px;
+	border: solid 1px #b7b7b7;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/

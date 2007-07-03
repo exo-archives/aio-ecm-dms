@@ -29,8 +29,8 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 300px;
-  height: 270px;
+  width: 92%;
+  height: 320px;
   padding: 3px;
 }
 
@@ -44,12 +44,18 @@
   padding: 0px 5px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
-  width: 135px ;
+.UIECMAdminPortlet .UIMetadataManager .Content .UIMetadataManager{
+  width: 95%;
+  margin: 0px auto 10px auto;
 }
 
-.UIECMAdminPortlet .MetadataInfoDetails {
-  width: 550px;
+.UIECMAdminPortlet .UIMetadataManager .UITabPane{
+  width: 97%;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
+  width: 135px ;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {

@@ -18,7 +18,6 @@
   width: 95%;
 }
 
-
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle{
   width: 99.7%;
   margin: 0px auto;
@@ -280,7 +279,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
 	width: 170px;
-	padding-left: 30px;
+	padding-right: 60px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent {
@@ -341,31 +340,21 @@
 
 .UIJCRExplorerPortlet .UIDocumentForm .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
-  background: #efefef;
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
-  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: solid 1px #b7b7b7;
   border-top: none;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: none;
-  background: #efefef;
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .HorizontalLayout .UITabContentContainer {
   border: none;
-  background: #efefef;
-}
-
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .UIForm .HorizontalLayout {
-  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer td.FieldLabel {
@@ -375,6 +364,14 @@
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UIAction {
   width: 160px;
 	padding: 12px 0px 10px 20px;
+}
+
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
+	background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIFormWithTitle{
+	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 /*===========================TabContainer====================*/
@@ -872,6 +869,7 @@
 
 .UIJCRExplorerPortlet .UIGrid td {
   border: solid 1px #cfcfcf;
+  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {

@@ -73,9 +73,19 @@
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
   margin: 7px 0px 0px 10px;
 }
-
+		
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
   float: right;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
+  padding-top: 10px;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm {  
+  padding-top: 10px;
+  border: none;
 }
 
 /*############################## -- Begin UIDiff -- ##############################*/

@@ -25,12 +25,12 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
-  margin-top: 10px;
+  padding-top: 10px;
   border: none;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm {  
-  margin-top: 10px;
+  padding-top: 10px;
   border: none;
 }
 
@@ -116,9 +116,8 @@
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
-  padding: 8px;
-  width: 96%;
-  margin: auto;
+  width: 95%;
+  margin: 10px auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
@@ -131,6 +130,11 @@
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
   border: solid 1px #b7b7b7;
   padding: 10px;
+  background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UIGrid {
+  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UIAction{

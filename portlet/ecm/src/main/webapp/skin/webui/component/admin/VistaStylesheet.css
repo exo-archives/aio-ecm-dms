@@ -43,6 +43,7 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .UISelect .UIForm .HorizontalLayout select {
 	 width: 170px;
+	 margin-top: 3px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .UISelect .UIForm .HorizontalLayout {
@@ -126,13 +127,14 @@
 	border: 1px solid #B7B7B7 ;
 	padding: 10px 0px 10px 10px;
 	border-bottom: none ;
+	line-height: 15px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .WizardLabel {
 	float: left;
- 	vertical-align: middle;
   font-weight: bold; 
   padding-right: 10px;
+  width: 120px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction {
@@ -463,6 +465,11 @@
 	width: 90px;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
+  width: 93%;
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UICBTemplateList {
   margin-top: 5px;
 }
@@ -582,8 +589,8 @@
 }
 
 .UICBScripts .CBScriptForm .UIAction {
-	width: 255px;
-	padding-left: 50px;
+	width: 260px;
+	padding-left: 30px;
 }
 
 .UICBScripts .HorizontalLayout {
@@ -701,7 +708,7 @@
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .UIAction {
-	width: 160px;
+	width: 190px;
 }
 
 .UIQueriesManager .UIQueriesList .UIAction {
@@ -719,9 +726,9 @@
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
-	height: 250px;
-	margin: 0px 0px 10px 0px;
-	width: 300px;
+	height: 320px;
+	padding: 3px;
+	width: 95%;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .HorizontalLayout {

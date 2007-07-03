@@ -93,10 +93,13 @@
   width: 97.5%;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIAction {
+.UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .UIFormInputSet .UIAction {
   width: 340px;
-  margin: auto;	
-  padding: 5px;;
+  padding-left: 100px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .propertyDefinition .UIFormInputSet .UIAction {
+	padding-left: 80px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeList .UIAction {

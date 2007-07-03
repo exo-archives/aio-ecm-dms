@@ -368,7 +368,7 @@
 
 .UIECMAdminPortlet .UINamespaceManager {
 	padding: 2px 0px 0px 0px;
-	width: 98.5%;
+	width: 98%;
 }
 
 .UIECMAdminPortlet .UINamespaceForm {
@@ -543,7 +543,7 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .CBTempForm .HorizontalLayout .textarea {
-  width: 95%;
+  width: 380px;
   height: 350px;
   padding: 3px;
   border: solid 1px #b7b7b7;
@@ -552,7 +552,7 @@ UIECMAdminPortlet .UIViewManager {
 /*############################## -- UIActionManager -- ########################*/
 
 .UIECMAdminPortlet .UIActionManager {
-  width: 98.5%;
+  width: 98%;
 }
 
 .UIActionManager .UIActionTypeForm  {
@@ -691,7 +691,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIFolksonomyManager .UITagStyleForm {
-	padding: 10px;
+	width: 96%;
+	margin: 10px auto;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
@@ -777,7 +778,7 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .UITemplatesManager   {
  	padding: 2px 0px 0px 0px;
- 	width: 98.5%;
+ 	width: 98%;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {
