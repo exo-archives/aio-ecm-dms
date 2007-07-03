@@ -17,7 +17,7 @@
 		    def formName = uicomponent.getFormName() ;
 		    def actions = uicomponent.getInputSetActions() ;
 		    def actionValues = uicomponent.getActionValues() ;
-		     
+		    def isShowAction = uicomponent.isShowActionInfo()
 		    for(inputEntry in uicomponent.getChildren()) {
 		      if(inputEntry.isRendered()) {
 		  %>
@@ -128,7 +128,16 @@
 							      <%
 						            }
 							        }
-						        } 
+						        } else if(isShowAction) {						        	 
+							          for(String action : uicomponent.getFieldActions(inputEntry.getName())) {
+							      %>      
+						              <a href="javascript:eXo.webui.UIForm.submitForm('<%=formName%>', '<%=action%>', true)" title='<%=action%>'>
+						                <div class="AddIcon16x16 <%=action%>Icon" style="margin: 2px 5px;"><span></span></div>
+						              </a>
+							      <%
+						            }
+							        
+						        }
 								    %>
 		              </td>
 		            </tr>

@@ -16,7 +16,6 @@ import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.QueryHandlerEntry;
@@ -39,6 +38,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
+import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormInputSet;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -64,7 +64,9 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
       @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class),
       @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
       @EventConfig(listeners = UIWorkspaceWizard.SetDefaultActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class, phase=Phase.DECODE)
+      @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.EditPermissionActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.RemovePermissionActionListener.class, phase=Phase.DECODE)
     }
 
 )
@@ -74,6 +76,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   private int currentStep_ = 0 ;
   public boolean isNewWizard_ = true ;
   public boolean isNewRepo_ = true ;
+  public Map<String, String> permissions_ = new HashMap<String, String>() ;
 
   private Map<Integer, String> chidrenMap_ = new HashMap<Integer, String>() ; 
 
@@ -82,7 +85,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   final static public String POPUPID = "UIPopupWindowInWizard" ;
   final static public String FIELD_NAME = "name" ;  
   final static public String FIELD_NODETYPE = "autoInitializedRootNt" ;
-  final static public String FIELD_PERMISSION_ACTION = "permission_field" ;
   final static public String FIELD_PERMISSION = "permission" ;
   final static public String FIELD_TIMEOUT = "setLockTimeOut" ;
   final static public String FIELD_ISDEFAULT = "isDefault" ;
@@ -125,11 +127,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     UIFormCheckBoxInput<Boolean> checkbox = new UIFormCheckBoxInput<Boolean>(FIELD_ISDEFAULT, FIELD_ISDEFAULT, null) ;
     checkbox.setOnChange("SetDefault") ;
     step1.addChild(checkbox) ;
-    step1.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).addValidator(EmptyFieldValidator.class).setEditable(false)) ;
+    step1.addUIFormInput(new UIFormInputInfo(FIELD_PERMISSION, FIELD_PERMISSION, null)) ;
     step1.setActionInfo(FIELD_PERMISSION, new String[]{"AddPermission"}) ;
-    for (String perm : PermissionType.ALL) {
-      step1.addUIFormInput(new UIFormCheckBoxInput<String>(perm, perm, null)) ;
-    }
+    step1.setFieldActions(FIELD_PERMISSION, new String[]{"AddPermission"}) ;
+    step1.showActionInfo(true) ;
     step1.addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(EmptyFieldValidator.class).
         addValidator(NumberFormatValidator.class)) ;
     UIFormInputSet step2 = new UIFormInputSet(FIELD_STEP2) ;
@@ -154,6 +155,34 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     addUIComponentInput(step2) ;
     addUIComponentInput(step3) ;
     setRenderedChild(getCurrentChild()) ;
+  }
+  public void setPermissionMap(String permission) {
+    List<String> userList = new ArrayList<String>() ;
+    for(String perm : permission.split(";")) {
+      String userName = perm.substring(0,perm.lastIndexOf(" ")) ;
+      if(!userList.contains(userName)) userList.add(userName) ;      
+    }
+    for(String user : userList) {
+      StringBuilder sb = new StringBuilder() ;
+      for(String perm : permission.split(";")) {
+        if(perm.contains(user)) {
+          if(sb.length() > 1) sb.append(";") ;
+          sb.append(perm) ;
+        }
+      }
+      permissions_.put(user, sb.toString()) ;
+    }
+  }
+  public void refreshPermissionList() {
+    StringBuilder labels = new StringBuilder() ;
+    for(String perm : permissions_.keySet()){
+      if(labels.length() > 0) labels.append(",") ;
+      labels.append(perm) ;
+    }
+    UIFormInputSetWithAction step1 = getChildById(FIELD_STEP1) ;
+    step1.setInfoField(FIELD_PERMISSION, labels.toString()) ;
+    String[] actionInfor = {"EditPermission", "RemovePermission"} ;
+    step1.setActionInfo(FIELD_PERMISSION, actionInfor) ;
   }
 
   private List<SelectItemOption<String>>  getNodeType() {
@@ -186,11 +215,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     boolean isEdiable = !isLock ;
     UIFormInputSetWithAction wsStep1 = getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
     wsStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).setEditable(isEdiable) ;
-    if(isLock) wsStep1.setActionInfo(UIWorkspaceWizard.FIELD_PERMISSION, null) ;
-    //wsStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).setEnable(false) ;
-    for(String perm : PermissionType.ALL) {
-      wsStep1.getUIFormCheckBoxInput(perm).setEnable(isEdiable) ;
-    }
     wsStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).setEnable(isEdiable) ;
     wsStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).setEnable(isEdiable) ;
     wsStep1.getUIStringInput(UIWorkspaceWizard.FIELD_TIMEOUT).setEditable(isEdiable) ;
@@ -262,12 +286,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         uiWSFormStep1.getUIStringInput(FIELD_NAME).setValue(workSpace.getName()) ;
         uiWSFormStep1.getUIStringInput(FIELD_NAME).setEditable(false) ;
         String permission = workSpace.getAutoInitPermissions() ;
-        if(!isEmpty(permission)) {
-          uiWSFormStep1.getUIStringInput(FIELD_PERMISSION).setValue(permission.substring(0, permission.indexOf(" "))) ;
-          for(String perm : PermissionType.ALL) {
-            getUIFormCheckBoxInput(perm).setChecked(permission.contains(perm)) ;
-          }
-        }
+        setPermissionMap(permission) ;
+        refreshPermissionList() ;
         uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(uiRepoForm.isDefaultWorkspace(workSpace.getName())) ;
         if(uiRepoForm.isDefaultWorkspace(workSpace.getName())) uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setOptions(getNodeTypeDefault()) ;
         else uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setOptions(getNodeType()) ;
@@ -300,13 +320,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiWSFormStep3.getUIStringInput(FIELD_LIVETIME).setValue(cache.getParameterValue("liveTime")) ;
     }
   }
+
   public String url(String name) throws Exception {
     UIComponent renderedChild = getChild(currentStep_);
     if(!(renderedChild instanceof UIForm)) return super.event(name);
-
     org.exoplatform.webui.config.Event event = config.getUIComponentEventConfig(name) ;
     if(event == null) return "??config??" ;
-
     UIForm uiForm = (UIForm) renderedChild;
     return uiForm.event(name);
   }
@@ -333,12 +352,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     UIFormStringInput permissionField = uiFormAction.getUIStringInput(FIELD_PERMISSION) ;
     permissionField.setValue(value) ;
   }
-  protected boolean isCheck() {
-    for(String perm : PermissionType.ALL) {
-      if(getUIFormCheckBoxInput(perm).isChecked()) return true ;
-    }
-    return false ;
-  }
+
   public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
@@ -350,7 +364,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class ViewStep2ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
-
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
@@ -367,11 +380,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         if(!storePath.contains(wsName))  storePath = storePath + wsName ;
         uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
         uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
-      }
-      if(!uiFormWizard.isCheck()) {
-        uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-invalid", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
       }
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
@@ -392,7 +400,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
-      String perm = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
       String containerName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
@@ -406,13 +413,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        if(uiFormWizard.isEmpty(perm)) {
+        if(uiFormWizard.permissions_.isEmpty()) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        if(!uiFormWizard.isCheck()) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -508,7 +510,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String name = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
-      String user = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
       String initNodeType = uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).isChecked() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_TIMEOUT).getValue() ;
@@ -574,22 +575,22 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       } 
 
       WorkspaceEntry workspaceEntry = new WorkspaceEntry(name, initNodeType);
-      StringBuilder sb = new StringBuilder() ;
-      for(String perm : PermissionType.ALL) {
-        if(uiWSFormStep1.getUIFormCheckBoxInput(perm).isChecked()) sb.append(user +" "+ perm + ";") ;
+      StringBuilder permSb = new StringBuilder() ;
+      for(String s : uiFormWizard.permissions_.values()) {
+        permSb.append(s) ;
       }
-      workspaceEntry.setAutoInitPermissions(sb.toString()) ;
+      workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
       workspaceEntry.setLockTimeOut(lockTimeOutValue) ;
       workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
       workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;
-      
-      if(uiRepoForm.isAddnew_ && uiFormWizard.isNewWizard_) {
+
+      if(uiRepoForm.isAddnew_) {
         if(isDefault) uiRepoForm.defaulWorkspace_ = name ;
         uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
         uiRepoForm.refreshWorkspaceList() ;  
       }
-      
+
       if(!uiRepoForm.isAddnew_ && uiFormWizard.isNewWizard_) {
         InitialContextInitializer ic = (InitialContextInitializer)uiFormWizard.getApplicationComponent(ExoContainer.class).
         getComponentInstanceOfType(InitialContextInitializer.class) ;
@@ -681,7 +682,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiFormWizard.removePopup(UIWorkspaceWizard.POPUPID) ;
       UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
-      String perm = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION).getValue() ;
+      String perm = null ;
+      StringBuffer sb = new StringBuffer() ;        
+      for(String s :  uiFormWizard.permissions_.values()) {
+        sb.append(s) ;
+      }
+      if(sb != null) perm = sb.toString() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
       String containerName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_CONTAINER).getValue() ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SOURCENAME).getValue() ;
@@ -701,11 +707,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         }
         if(uiFormWizard.isEmpty(perm)) {
           uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        if(!uiFormWizard.isCheck()) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-invalid", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -749,7 +750,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           return ;
         }
       }
-      
+
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
         String storePathAuto = storePath ;
@@ -758,7 +759,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPathAuto) ;
         uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePathAuto) ;
       }
-     
+
       int step = uiFormWizard.getCurrentStep() ;
       List<UIComponent> children = uiFormWizard.getChildren() ;
       if(step < uiFormWizard.getMaxStep()) {
@@ -801,14 +802,36 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class AddPermissionActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiWizardForm = event.getSource() ;
-      UIFormInputSetWithAction uiInputsetWithAction = uiWizardForm.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
-      UIFormStringInput permissionField = uiInputsetWithAction.getUIStringInput(UIWorkspaceWizard.FIELD_PERMISSION) ;
-      UIWorkspaceWizardContainer uiContainer = uiWizardForm.getAncestorOfType(UIWorkspaceWizardContainer.class) ;
-      uiContainer.initPopupPermission(UIWorkspaceWizard.POPUPID, permissionField.getValue(), uiWizardForm) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+      UIPopupAction uiPopupAction = uiWizardForm.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupAction.class) ;
+      uiPopupAction.activate(UIPermissionContainer.class, 600) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
 
   }
+  public static class EditPermissionActionListener extends EventListener<UIWorkspaceWizard> {
+    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
+      UIWorkspaceWizard uiForm = event.getSource() ;
+      String permName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupAction.class) ;
+      UIPermissionContainer uiContainer = uiPopupAction.activate(UIPermissionContainer.class, 600) ;
+      uiContainer.setValues(permName, uiForm.permissions_.get(permName)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+    }
+  }
+
+  public static class RemovePermissionActionListener extends EventListener<UIWorkspaceWizard> {
+    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
+      UIWorkspaceWizard uiForm = event.getSource() ;
+      String permName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiForm.permissions_.remove(permName) ;
+      uiForm.refreshPermissionList() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+    }
+  }
+
   public static class CancelActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;

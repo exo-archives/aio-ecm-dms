@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -24,8 +25,9 @@ public class UIWorkspaceWizardContainer extends UIContainer implements UIPopupCo
 
   public UIWorkspaceWizardContainer() throws Exception {
     addChild(UIWorkspaceWizard.class, null, null) ;
-    //UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIPopupWizard");
-    //uiPopupAction.getChild(UIPopupWindow.class).setId("UIPopupWindowInWizard") ;
+    UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIPopupWizard");
+    uiPopupAction.getChild(UIPopupWindow.class).setId("UIPopupWindowInWizard") ;
+    //addChild(UIPermissionContainer.class, null, null) ;
   }
   protected void initWizard(boolean isAddnewRepo, boolean isAddNewWizard, WorkspaceEntry ws) throws Exception {
     getChild(UIWorkspaceWizard.class).isNewWizard_ = isAddNewWizard ;
@@ -55,15 +57,15 @@ public class UIWorkspaceWizardContainer extends UIContainer implements UIPopupCo
   protected void removePopup(String id) {
     removeChildById(id) ;
   }
-  
+
   public void activate() throws Exception {
     // TODO Auto-generated method stub
-    
+
   }
 
   public void deActivate() throws Exception {
     // TODO Auto-generated method stub
-    
+
   }
 
 }

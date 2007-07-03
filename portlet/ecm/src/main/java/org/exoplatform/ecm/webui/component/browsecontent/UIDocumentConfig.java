@@ -103,6 +103,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
         enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
         categoryPathField.setValue(path) ;
+        documentNameField.setValue(docName) ;
       }else {
         categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
         documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
@@ -110,6 +111,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       }
     } else {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
+      documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
       repository = preference.getValue(Utils.REPOSITORY, "") ;
       path = preference.getValue(Utils.JCR_PATH, "") ;
       docName = preference.getValue(Utils.CB_DOCUMENT_NAME, "") ;

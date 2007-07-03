@@ -4,7 +4,10 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
@@ -19,6 +22,8 @@ import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+
+import com.sun.rmi.rmid.ExecPermission;
 
 /**
  * Created by The eXo Platform SARL
@@ -37,6 +42,8 @@ import org.exoplatform.webui.event.EventListener;
 public class UICBSearchResults extends UIGrid {
   private static String[] GRID_FIELD = {"name", "path"} ;
   private static String[] GRID_ACTIONS = {"View", "Goto"} ;
+  protected Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
+  
   public UICBSearchResults() throws Exception { 
     getUIPageIterator().setId("ResultListIterator") ;
     configure("path", GRID_FIELD, GRID_ACTIONS) ;
@@ -53,7 +60,12 @@ public class UICBSearchResults extends UIGrid {
       uiSearchController.setShowHiddenSearch() ;
     }
   }
-
+  private void getResultData() throws Exception {
+    List<ResultData> results = new ArrayList<ResultData>() ;
+    for(String nodeName : resultMap_.keySet()) {
+      results.add(new ResultData(nodeName, resultMap_.get(nodeName).getPath())) ;
+    }
+  }
   static public class ViewActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
       UICBSearchResults uiResults = event.getSource() ;

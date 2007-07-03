@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -48,13 +49,13 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
   final static public String defaultValue = "/admin" ;
   private UIComponent uiComponent ;
   private String returnFieldName = null ;
-  
+  public boolean isUsePopup_ = true ;
   public UIECMPermissionBrowser() throws Exception {
     changeGroup(defaultValue) ;
   }
-  
+
   public void setCurrentPermission(String per) throws Exception { changeGroup(per) ; }
-  
+
   public UIComponent getReturnComponent() { return uiComponent ; }
   public String getReturnField() { return returnFieldName ; }
 
@@ -70,25 +71,29 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
       returnFieldName = initParams[0] ;
     }
   }
-  
+
   static  public class SelectMembershipActionListener extends EventListener<UIECMPermissionBrowser> {   
     public void execute(Event<UIECMPermissionBrowser> event) throws Exception {
       UIECMPermissionBrowser uiPermissionSelector = event.getSource();
       if(uiPermissionSelector.getCurrentGroup() == null) return ;
       String groupId = uiPermissionSelector.getCurrentGroup().getId() ;
       String permission = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      if(permission.equalsIgnoreCase("any")) permission = "*" ;
+      if(permission.equalsIgnoreCase(SystemIdentity.ANY)) permission = "*" ;
       String value = permission + ":" + groupId ;
       String returnField = uiPermissionSelector.getReturnField() ;
       ((UISelector)uiPermissionSelector.getReturnComponent()).updateSelect(returnField, value) ;
-      UIPopupWindow uiPopup = uiPermissionSelector.getParent() ;
-      uiPopup.setShow(false) ;
-      UIComponent uicomp = uiPermissionSelector.getReturnComponent().getParent() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uicomp) ;
-      if(!uiPopup.getId().equals("PopupComponent"))event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      if(uiPermissionSelector.isUsePopup_) {
+        UIPopupWindow uiPopup = uiPermissionSelector.getParent() ;
+        uiPopup.setShow(false) ;
+        UIComponent uicomp = uiPermissionSelector.getReturnComponent().getParent() ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp) ;
+        if(!uiPopup.getId().equals("PopupComponent"))event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      } else {
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector.getReturnComponent()) ;
+      }
     }
   }
-  
+
   static  public class ChangeNodeActionListener extends EventListener<UITree> {   
     public void execute(Event<UITree> event) throws Exception {   
       UIECMPermissionBrowser uiPermissionSelector = event.getSource().getParent() ;
@@ -97,7 +102,7 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector) ;
     }
   }
-  
+
   static  public class SelectPathActionListener extends EventListener<UIBreadcumbs> {
     public void execute(Event<UIBreadcumbs> event) throws Exception {
       UIBreadcumbs uiBreadcumbs = event.getSource() ;
@@ -106,8 +111,10 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
       uiBreadcumbs.setSelectPath(objectId);     
       String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId() ;
       uiPermissionSelector.changeGroup(selectGroupId) ;
-      UIPopupWindow uiPopup = uiBreadcumbs.getAncestorOfType(UIPopupWindow.class) ;
-      uiPopup.setShow(true);
+      if(uiPermissionSelector.isUsePopup_) {
+        UIPopupWindow uiPopup = uiBreadcumbs.getAncestorOfType(UIPopupWindow.class) ;
+        uiPopup.setShow(true);
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector) ;
     }
   }

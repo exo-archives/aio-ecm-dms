@@ -31,12 +31,14 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   private HashMap<String, String> infor_ = new HashMap<String, String>() ;
   private HashMap<String, List<String>> listInfor_ = new HashMap<String, List<String>>() ;
   private HashMap<String, String[]> actionInfo_ = new HashMap<String, String[]>() ;
-  
+  private HashMap<String, String[]> fieldActions_ = new HashMap<String, String[]>() ;
+  private boolean isShowActionInfo_ = false ;
   public UIFormInputSetWithAction(String name) {  
     setId(name) ;
     setComponentConfig(getClass(), null) ;  
   }
-  
+  public boolean isShowActionInfo() {return isShowActionInfo_ ;}
+  public void showActionInfo(boolean isShow) {isShowActionInfo_ = isShow ;}
   public void processRender(WebuiRequestContext context) throws Exception {
     super.processRender(context) ;
   }
@@ -81,10 +83,16 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   public void setActionInfo(String fieldName, String[] actionNames) {
     actionInfo_.put(fieldName, actionNames) ;
   }
-  
   public String[] getActionInfo(String fieldName) {
     if(actionInfo_.containsKey(fieldName)) return actionInfo_.get(fieldName) ;
     return null ;
+  }
+  public void setFieldActions(String fieldName, String[] actionNames) {
+    fieldActions_.put(fieldName, actionNames) ;
+  }
+  
+  public String[] getFieldActions(String fieldName) {
+   return fieldActions_.get(fieldName) ;
   }
   
   public void setIsView(boolean isView) { isView_ = isView; }
