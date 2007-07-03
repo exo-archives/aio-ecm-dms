@@ -283,6 +283,11 @@
 	padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPopupWindow .UITabContent .UIArticle {
+	border: solid 1px #cdcdcd;
+	padding: 5px;
+}
+
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
@@ -516,7 +521,8 @@
 /*================================UISimpleSearch=================================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 355px;
+  width: 400px;
+  padding-left: 60px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .FormContainer {

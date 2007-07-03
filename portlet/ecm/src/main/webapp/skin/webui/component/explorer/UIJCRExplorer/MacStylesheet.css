@@ -237,7 +237,9 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
-	padding: 10px;
+	margin: 10px auto;
+	width: 97%;
+	padding: 0px 10px;
 }
 
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
@@ -658,6 +660,11 @@
 	width: 180px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPopupWindow .UITabContent .UIArticle {
+	border: solid 1px #cdcdcd;
+	padding: 5px;
+}
+
 /*================================UIConstraintsForm=================================*/
 
 .UIJCRExplorerPortlet .UIConstraintsForm .HorizontalLayout .UIAction {
@@ -972,7 +979,7 @@
 
 .UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
-	width: 
+	width: 546px;
 }
 
 .UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {

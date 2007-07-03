@@ -7,6 +7,11 @@
  */
 /*############################## -- UINodeTypeManager-- ########################*/
 
+.UIECMAdminPortlet .UINodeTypeManager {
+  padding: 2px 0px 0px 0px;
+  width: 98.5%;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UIAction {
   width: 200px ;
   padding-left: 25px;

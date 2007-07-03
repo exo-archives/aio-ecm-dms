@@ -1,6 +1,7 @@
-<div id="$uicomponent.id" style="margin: 10px 5px;">
+<div id="$uicomponent.id" style="padding: 10px 5px;">
 	<style>
 		.UIArticle {
+			background: white;
 		}
 			
 		.UIArticle .ArticleTLDecorator {

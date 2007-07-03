@@ -367,7 +367,7 @@
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceManager {
-	padding: 2px 0px 0px 5px;
+	padding: 2px 0px 0px 0px;
 }
 
 .UIECMAdminPortlet .UINamespaceForm {
@@ -394,7 +394,7 @@
 /*############################## -- UIDriveManager -- ########################*/
 
 .UIECMAdminPortlet .UIDriveManager {
-  padding: 2px 0px 0px 5px;
+  padding: 2px 0px 0px 0px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
@@ -437,7 +437,6 @@
 .UIECMAdminPortlet .UIDriveManager .UIDriveForm  .FormContainer {
   width: 500px ;
   margin: auto;
-  border: solid 1px red;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIDriveForm .FormContainer {
@@ -515,8 +514,10 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .ECMTempForm .HorizontalLayout .textarea {
-  width: 360px;
-  height: 300px;
+  width: 95%;
+  height: 350px;
+  border: solid 1px #b7b7b7;
+  padding: 3px;
 }
 
 /*############################## -- CBTemplate -- ########################*/
@@ -549,6 +550,10 @@ UIECMAdminPortlet .UIViewManager {
 
 /*############################## -- UIActionManager -- ########################*/
 
+.UIECMAdminPortlet .UIActionManager {
+  width: 98.5%;
+}
+
 .UIActionManager .UIActionTypeForm  {
 	padding: 10px; 
 }
@@ -570,6 +575,11 @@ UIECMAdminPortlet .UIViewManager {
 /*############################## -- UIScriptManager  -- ########################*/
 
 /*------------------------------UICBScripts------------------------*/
+
+.UIECMAdminPortlet .UIECMScripts  {
+  width: 98%;
+  margin: auto;
+}
 
 .UIECMScripts .ECMScriptForm {
   width: 95%;
@@ -607,13 +617,17 @@ UIECMAdminPortlet .UIViewManager {
 }
 /*------------------------------UICBScripts------------------------*/
 
-.UICBScripts .CBScriptForm {
-  width: 95%;
-  margin: 15px auto;
+.UIECMAdminPortlet .UICBScripts  {
+  padding: 2px 0px 0px 0px;
 }
 
 .UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer .OverflowContainer {
   width: 75px;
+}
+
+.UIECMAdminPortlet .UICBScripts .CBScriptForm {
+  width: 95%;
+  margin: 15px auto;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer .UIAction {
@@ -635,6 +649,14 @@ UIECMAdminPortlet .UIViewManager {
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
+.UIECMAdminPortlet .UIQueriesManager {
+  padding: 2px 0px 0px 0px;
+}
+
+.UIQueriesManager .UIQueriesList .UIAction {
+	width: 100px ;
+}
+
 .UIQueriesManager .UIQueriesList .UIAction {
 	width: 100px ;
 }
@@ -650,14 +672,16 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
-	height: 300px ;
-	width: 380px ;
+	height: 350px ;
+	width: 95%;
+	border: solid 1px #b7b7b7	;
+	padding: 3px;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
 .UIECMAdminPortlet .UIFolksonomyManager {
-  padding: 2px 0px 0px 5px;
+  padding: 2px 0px 0px 0px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIAction {
@@ -670,8 +694,10 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
-	height: 290px ;
-	width: 380px ;
+	height: 350px ;
+	width: 95%;
+	border: solid 1px #b7b7b7;
+	padding: 3px;
 }
 
 /*############################## -- MultiField  -- ########################*/
@@ -749,7 +775,8 @@ UIECMAdminPortlet .UIViewManager {
 /*############################## --Begin UITemplatesManager --##############################*/
 
 .UIECMAdminPortlet .UITemplatesManager   {
- 	padding: 2px 0px 0px 2px;
+ 	padding: 2px 0px 0px 0px;
+ 	width: 98.5%;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {
@@ -762,11 +789,15 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .UIAction {
 	width: 160px;
-	padding-right: 80px;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateList .UIAction {
   width: 80px ;
+}
+
+.UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {
+  width: 500px;
+  margin: auto;
 }
 
 .UITemplatesManager .UITabPane {

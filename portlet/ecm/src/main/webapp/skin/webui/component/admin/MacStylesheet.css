@@ -445,6 +445,10 @@
 
 /*############################## -- UIDriveManager -- ########################*/
 
+.UIECMAdminPortlet .UIDriveManager {
+  padding: 2px 0px 0px 0px;
+}
+
 .UIECMAdminPortlet .UIDriveList {
   margin-top: 5px ;
 }
@@ -554,7 +558,7 @@
 }
 
 .UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer {
-	width: 60px;
+	width: 50px;
 }
 
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .UIAction {
@@ -563,9 +567,10 @@
 }
 
 .ECMTempForm .HorizontalLayout .textarea {
-  width: 380px;
+  width: 95%;
   height: 300px;
   padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 /*############################## -- CBTemplate -- ########################*/
@@ -593,6 +598,7 @@
   width: 380px;
   height: 300px;
   padding: 3px;
+  border: solid 1px #b7b7b7;
 }
 
 /*############################## -- UIScriptManager  -- ########################*/
@@ -610,7 +616,7 @@
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
+  width: 360px;
   height: 350px;
   padding: 3px;
   border: solid 1px #b7b7b7;
@@ -633,7 +639,7 @@
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
+  width: 360px;
   height: 350px;
   padding: 3px;
   border: solid 1px #b7b7b7;
@@ -645,6 +651,11 @@
 }
 
 /*############################## -- UIActionManager -- ########################*/
+
+.UIECMAdminPortlet .UIActionManager {
+  width: 98.5%;
+  padding: 2px 0px 0px 0px;
+}
 
 .UIActionManager .UIActionTypeForm  {
 	padding: 10px; 
@@ -741,6 +752,12 @@
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
+
+.UIECMAdminPortlet .UINamespaceManager {
+	padding: 2px 0px 0px 0px;
+	width: 98%;
+}
+
 .UINamespaceManager .UIAction {
   width: 170px;
 }
@@ -780,6 +797,10 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
+.UIECMAdminPortlet .UIQueriesManager {
+  padding: 2px 0px 0px 0px;
+}
+
 .UIECMAdminPortlet .UIQueriesManager .UIPageIterator  {
   float: right;
   width: 95%;
@@ -807,13 +828,19 @@
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
+.UIECMAdminPortlet .UIFolksonomyManager {
+  padding: 2px 0px 0px 0px;
+}
+
 .UIFolksonomyManager .UITagStyleForm {
 	padding: 10px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 300px ;
-	width: 390px ;
+	width: 95% ;
+	border: solid 1px #b7b7b7;
+	padding: 3px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIAction {
@@ -822,6 +849,11 @@
 }
 
 /*----------------------------UIDialogTab-------------------------------*/
+
+.UIECMAdminPortlet .UITemplatesManager   {
+ 	padding: 2px 0px 0px 0px;
+ 	width: 98%;
+}
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIPageIterator{
 	margin-bottom: 15px;
@@ -851,6 +883,13 @@
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	margin: 30px 0px 0px 0px;
+}
+
+/*------------------------------UICBScripts------------------------*/
+
+.UIECMAdminPortlet .UIECMScripts  {
+  width: 97%;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
