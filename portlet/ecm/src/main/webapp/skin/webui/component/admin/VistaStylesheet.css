@@ -343,6 +343,10 @@
 
 /*############################## -- UINamespaceManager -- ########################*/
 
+.UIECMAdminPortlet .UINamespaceManager {
+  width: 97.5%;
+}
+
 .UIECMAdminPortlet .UINamespaceList {
   margin-top: 5px ;
 }
@@ -508,6 +512,10 @@
 
 /*############################## -- UIActionManager -- ########################*/
 
+.UIECMAdminPortlet .UIActionManager {
+	width: 97.5%;
+}
+
 .UIActionManager .UIActionTypeList .UIAction {
 	width: 80px ;
 }
@@ -529,6 +537,11 @@
 }
 
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
+
+.UIECMAdminPortlet .UIECMScripts {
+	width: 97%;
+	margin: auto;
+}
 
 .UIECMScripts .UIBarStyle {
 }
@@ -583,9 +596,8 @@
 
 /*############################## --Begin UITemplatesManager --##############################*/
 
-.UITemplatesManager {
-  width:auto;
-  padding-top: 7px;
+.UIECMAdminPortlet .UITemplatesManager   {
+ 	width: 97.5%;
   border: none;
 }
 

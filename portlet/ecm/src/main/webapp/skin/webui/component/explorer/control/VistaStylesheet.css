@@ -35,7 +35,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
   float: left;
-  padding: 3px 15px 3px 25px;
+  padding: 2px 15px 0px 15px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
@@ -204,14 +204,14 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
   float: left;
-  width: 100px;
+  width: 86px;
   line-height: 32px; text-align: center;
   color: #2e61b6;
 }
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
   float: left;
   height: 32px;
-  padding: 0px 7px;
+  padding: 0px 6px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {

@@ -133,6 +133,16 @@
   padding: 10px 0px 6px 0px;
 }
 
+.UIBrowseContentPortlet .path .UIFormInputSet .FormContainer {
+  border: none;
+  padding: 0px;
+}
+
+.UIBrowseContentPortlet .doc .UIFormInputSet .FormContainer {
+  border: none;
+  padding: 0px;
+}
+
 /*############################## -- Begin UIToolBar -- ##############################*/
 .UIBrowseContentPortlet .UIToolBar {
   background: url('VistaSkin/background/CBToolbarBG1x31.png') repeat-x;

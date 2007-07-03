@@ -280,7 +280,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
-	padding: 10px;
+	width: 97%;
+	margin: 10px auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPopupWindow .UITabContent .UIArticle {

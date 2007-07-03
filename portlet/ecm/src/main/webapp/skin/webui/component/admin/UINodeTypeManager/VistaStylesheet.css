@@ -89,6 +89,10 @@
   margin: auto;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager {
+  width: 97.5%;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIAction {
   width: 340px;
   margin: auto;	

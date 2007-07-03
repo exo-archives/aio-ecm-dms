@@ -254,7 +254,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIRenameForm .UIAction {
-	width: 165px;
+	width: 180px;
+	padding-left: 100px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIRenameForm .FormContainer {
@@ -546,6 +547,11 @@
   padding-bottom: 0px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
+	width: 97%;
+	margin: 10px auto;
+}
+
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch {
@@ -823,5 +829,15 @@
 
 .UIJCRExplorer .UISavedQuery {
 	padding: 10px;
+}
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
+  margin: 10px auto;
+  width: 95%;
+  border: none;
+}
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
+  float: left;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
