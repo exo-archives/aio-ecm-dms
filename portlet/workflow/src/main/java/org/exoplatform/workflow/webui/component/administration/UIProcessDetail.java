@@ -31,7 +31,7 @@ import org.exoplatform.webui.event.EventListener;
       lifecycle = UIContainerLifecycle.class,
       events = {
         @EventConfig(listeners = UIProcessDetail.ViewActionListener.class),
-        @EventConfig(listeners = UIProcessDetail.DeleteActionListener.class)
+        @EventConfig(listeners = UIProcessDetail.DeleteActionListener.class, confirm = "UIProcessDetail.msg.confirm-delete-process")
       }
   )
 })
