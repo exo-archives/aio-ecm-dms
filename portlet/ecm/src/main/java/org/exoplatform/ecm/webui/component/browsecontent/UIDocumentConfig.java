@@ -107,9 +107,10 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       }else {
         categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
         documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
-        setActions(UINewConfigForm.DEFAULT_ACTION) ;
+        setActions(UINewConfigForm.NORMAL_ACTION) ;
       }
     } else {
+      setActions(UINewConfigForm.DEFAULT_ACTION) ;
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
       documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
       repository = preference.getValue(Utils.REPOSITORY, "") ;

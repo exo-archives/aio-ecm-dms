@@ -155,7 +155,8 @@ public class UIBrowseContainer extends UIContainer{
     if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
       templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      if(!isShowDocumentByTag_) setPageIterator(getNodeByScript()) ;
+      String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
+      if(!isShowDocumentByTag_) setPageIterator(getNodeByScript(repoName, scriptName)) ;
     }
   }
 
@@ -347,15 +348,13 @@ public class UIBrowseContainer extends UIContainer{
     return queryDocuments ;
   }
 
-  public List<Node> getNodeByScript() throws Exception {
-    String[] array = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, "").split(Utils.SEMI_COLON) ;
+  protected List<Node> getNodeByScript(String repository,String scriptName) throws Exception {
     DataTransfer data = new DataTransfer() ;
-    String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "" ) ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    data.setWorkspace(array[0].trim()) ;
+    data.setWorkspace(getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "")) ;
     data.setSession(getSession()) ;
     Node scripts = scriptService.getCBScriptHome(repository) ;
-    CmsScript cmsScript = scriptService.getScript(scripts.getName()+"/"+array[1].trim(), repository) ;
+    CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository) ;
     try {
       cmsScript.execute(data);
     } catch (Exception e) {
@@ -608,7 +607,6 @@ public class UIBrowseContainer extends UIContainer{
   public List<Node> getDocumentByTag()throws Exception {
     String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    System.out.println("\n\n tag path" + tagPath_);
     return folksonomyService.getDocumentsOnTag(getTagPath(), repository) ;
   }
 
@@ -660,7 +658,7 @@ public class UIBrowseContainer extends UIContainer{
     history_.put(KEY_CURRENT, getCurrentNode());
     history_.put(KEY_SELECTED, getSelectedTab());
   }
-  
+
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
@@ -680,7 +678,7 @@ public class UIBrowseContainer extends UIContainer{
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
-  
+
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;

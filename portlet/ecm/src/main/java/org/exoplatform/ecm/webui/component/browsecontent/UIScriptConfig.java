@@ -79,8 +79,8 @@ public class UIScriptConfig extends UIForm {
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE) ;
-    scriptField.setOptions(getScriptOption()) ;
-    templateField.setOptions(getTemplateOption()) ;
+    scriptField.setOptions(getScriptOption(repository)) ;
+    templateField.setOptions(getTemplateOption(repository)) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
     if(isEdit_) {
@@ -120,8 +120,8 @@ public class UIScriptConfig extends UIForm {
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
   }
-  private List<SelectItemOption<String>> getTemplateOption() throws Exception {
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+  private List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
+    //String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> scriptTemplates = getApplicationComponent(ManageViewService.class).
                                  getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository) ;
@@ -131,9 +131,9 @@ public class UIScriptConfig extends UIForm {
     return Options ;
   }
 
-  private List<SelectItemOption<String>> getScriptOption() throws Exception {
+  private List<SelectItemOption<String>> getScriptOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    //String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     while(nodeList.hasNext()) {
@@ -160,7 +160,7 @@ public class UIScriptConfig extends UIForm {
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_SCRIPT) ;
       prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
-      prefs.setValue(Utils.CB_SCRIPT_NAME, fullScriptName) ;
+      prefs.setValue(Utils.CB_SCRIPT_NAME, scriptName) ;
       prefs.setValue(Utils.CB_TEMPLATE, template) ;
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate) ; 
       prefs.setValue(Utils.CB_VIEW_TAGMAP, String.valueOf(hasTagMap)) ; 
