@@ -33,6 +33,8 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   private HashMap<String, String[]> actionInfo_ = new HashMap<String, String[]>() ;
   private HashMap<String, String[]> fieldActions_ = new HashMap<String, String[]>() ;
   private boolean isShowActionInfo_ = false ;
+  private HashMap<String, String> msgKey_ = new HashMap<String, String>();
+  
   public UIFormInputSetWithAction(String name) {  
     setId(name) ;
     setComponentConfig(getClass(), null) ;  
@@ -111,4 +113,7 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   public UIFormInput setValue(Object value) throws Exception { return null; }
 
   public Class getTypeValue() { return null ; }
+  
+  public void setIntroduction(String fieldName, String msgKey) { msgKey_.put(fieldName, msgKey) ; }
+  public String getMsgKey(String fieldName) { return msgKey_.get(fieldName) ; }
 }

@@ -439,3 +439,7 @@
 .UIJCRExplorer .EditQueryForm .UIAction {
   width: 140px;
 }
+
+.UIJCRExplorer .UIFormInputSetWithAction .FieldComponent .Introduction{
+	font-style: italic;
+}

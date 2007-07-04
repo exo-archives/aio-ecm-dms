@@ -47,12 +47,14 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
   final static public String LINKED_TAGS = "linked" ;
   final static public String LINKED_TAGS_SET = "tagSet" ;
   final static public String TAG_STATUS_PROP = "exo:tagStatus".intern() ;  
+  final static public String TAG_NAME_ACTION = "tagNameAct".intern() ;
   final static public String ASCENDING_ORDER = "Ascending".intern();
   
   public UITaggingForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null)) ;
     UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET) ;
+    uiInputSet.addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null)) ;
     uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null)) ;
+    uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName") ;
     addUIComponentInput(uiInputSet) ;
     uiInputSet.setIsView(false) ;
   }
@@ -82,10 +84,11 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
-      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      String[] arrFilterChar = {"&", "'", "$", "@", ":","]", "[", "*", "%", "!"} ;
       for(String filterChar : arrFilterChar) {
         if(tagName.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }

@@ -129,16 +129,17 @@
 						            }
 							        }
 						        } else if(isShowAction) {						        	 
-							          for(String action : uicomponent.getFieldActions(inputEntry.getName())) {
+							        for(String action : uicomponent.getFieldActions(inputEntry.getName())) {
 							      %>      
 						              <a href="javascript:eXo.webui.UIForm.submitForm('<%=formName%>', '<%=action%>', true)" title='<%=action%>'>
 						                <div class="AddIcon16x16 <%=action%>Icon" style="margin: 2px 5px;"><span></span></div>
 						              </a>
 							      <%
-						            }
-							        
+						          }
 						        }
-								    %>
+						        if(uicomponent.getMsgKey(inputEntry.getName()) != null) { %>
+                      <span class="Introduction"><%=_ctx.appRes(uicomponent.getMsgKey(inputEntry.getName()))%></span>						          
+						        <%}%>
 		              </td>
 		            </tr>
 		          </tbody>
