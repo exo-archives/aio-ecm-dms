@@ -33,10 +33,12 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 public class UIECMScripts extends UIContainer {
   public static String SCRIPTLIST_NAME = "ECMScriptList" ;
   public static String SCRIPTFORM_NAME = "ECMScriptForm" ;
+  public static String SCRIPT_PAGE =  "PageIterator" ;
 
   public UIECMScripts() throws Exception {
     addChild(UIECMFilterForm.class, null, null) ;
-    addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
+    UIScriptList list = addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
+    list.getUIPageIterator().setId(SCRIPTLIST_NAME + SCRIPT_PAGE) ;
     UIPopupAction uiPopupAction = addChild(UIPopupAction.class,null, "ECMScriptPopupAction") ;
     uiPopupAction.getChild(UIPopupWindow.class).setId("ECMScriptPopupWindow") ;
   }

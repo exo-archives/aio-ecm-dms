@@ -121,7 +121,6 @@ public class UIScriptConfig extends UIForm {
     return uiTabPane.getWorkSpaceOption() ;
   }
   private List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
-    //String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> scriptTemplates = getApplicationComponent(ManageViewService.class).
                                  getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository) ;
@@ -133,7 +132,6 @@ public class UIScriptConfig extends UIForm {
 
   private List<SelectItemOption<String>> getScriptOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    //String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     while(nodeList.hasNext()) {
@@ -151,7 +149,6 @@ public class UIScriptConfig extends UIForm {
       String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String scriptName = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_SCRIPTNAME).getValue() ;
-      String fullScriptName = workSpace + Utils.SEMI_COLON + scriptName ;
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasTagMap = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLETAGMAP).isChecked() ;

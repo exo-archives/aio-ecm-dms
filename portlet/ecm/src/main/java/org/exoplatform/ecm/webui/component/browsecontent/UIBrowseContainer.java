@@ -806,6 +806,7 @@ public class UIBrowseContainer extends UIContainer{
       uiContainer.isShowDocumentByTag_ = false ;
       uiContainer.isShowAllDocument_ = false ;
       uiContainer.setCurrentNode(node) ;
+      uiContainer.buildTree(node.getPath()) ;
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }

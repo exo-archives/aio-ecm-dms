@@ -189,7 +189,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       curentList.refresh() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(curentList) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(curentList.getParent()) ;
     }
   }
 

@@ -41,7 +41,6 @@ public class UIScriptList extends UIGrid {
   private static String[] ACTIONS = {"Edit", "Delete"} ;
 
   public UIScriptList() throws Exception { 
-    getUIPageIterator().setId("ScriptListIterator") ;
     configure("name", BEAN_FIELD, ACTIONS) ;
   }
 
@@ -72,7 +71,7 @@ public class UIScriptList extends UIGrid {
     UIComponent parent = getParent() ;
     if(parent instanceof UICBScripts) {
       sManager.getChild(UICBScripts.class).refresh() ;
-    } else if(parent instanceof UIECMScripts) {
+    } else {
       sManager.getChild(UIECMScripts.class).refresh() ;
     }
   }
@@ -155,7 +154,7 @@ public class UIScriptList extends UIGrid {
       } else  if((UIComponent)uiScriptList.getParent() instanceof UICBScripts){
         uiManager.setRenderedChild(UICBScripts.class) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList.getParent()) ;
     }
   }
   public static class ScriptData {

@@ -35,9 +35,11 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UICBScripts extends UIContainer {
   public static String SCRIPTLIST_NAME = "CBScriptList" ;
   public static String SCRIPTFORM_NAME = "CBScriptForm" ;
+  public static String SCRIPT_PAGE =  "PageIterator" ;
 
   public UICBScripts() throws Exception {
-    addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
+    UIScriptList list = addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
+    list.getUIPageIterator().setId(SCRIPTLIST_NAME + SCRIPT_PAGE) ;
     UIPopupAction uiPopupAction = addChild(UIPopupAction.class,null, "BCScriptPopupAction") ;
     uiPopupAction.getChild(UIPopupWindow.class).setId("BCScriptPopupWindow") ;
   }
