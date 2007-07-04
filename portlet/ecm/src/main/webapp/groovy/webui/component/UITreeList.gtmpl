@@ -35,6 +35,7 @@
 		        <td>
 		          <%
 		            String[] arrType = uicomponent.getFilterType() ;
+		            String[] arrMimeType = uicomponent.getMimeTypes() ;
 		            if(arrType == null) {
 		          %>
 			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
@@ -46,11 +47,24 @@
 		                String type = arrType[i] ;
 		                String name = node.getPrimaryNodeType().getName() ;
 		                if(node.getPrimaryNodeType().getName().equals(arrType[i])) {
-		           %>
-		             		  <a href="<%=uicomponent.event("Select", node.getPath())%>">
-			                  <div class="Select16x16Icon" style="margin-left:15px;"></div>
-	  		              </a>
-		           <%     
+		                  if(arrType[i].equals("nt:file") && arrMimeType != null && arrMimeType.length > 0) {
+								        def contentNode = node.getNode("jcr:content") ;
+								        def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
+								        for(mType in arrMimeType) {
+									        if(mimeType.equals(mType)) { %>
+									          <a href="<%=uicomponent.event("Select", node.getPath())%>">
+	    			                  <div class="Select16x16Icon" style="margin-left:15px;"></div>
+		      		              </a>
+							<%
+				                  }
+				                  break ;
+								        }
+		                  } else { %>
+			             		  <a href="<%=uicomponent.event("Select", node.getPath())%>">
+				                  <div class="Select16x16Icon" style="margin-left:15px;"></div>
+		  		              </a>
+              <%      		                    
+		                  } 
 		                } 
 		              }
 		            } 

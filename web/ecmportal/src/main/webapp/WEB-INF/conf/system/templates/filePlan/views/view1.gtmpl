@@ -144,7 +144,7 @@
 				<td><%=numberOfRecord%></td>
 			</tr>
 		</table>
-	 </div>
+	</div>
 
 	<%/*Begin UITabPane*/%>
 	<div class="UITabPane" style="margin-top: 15px;">
@@ -158,86 +158,86 @@
 		     	  <div class="RightHorizontalTabs">
 		     	    <div class="CenterHorizontalTabs">
 				        <div class="TabsContainer">
-	
-				            <div class="UITab NormalTabStyle">
-				              <div class="SelectedTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Records</div>
-				                  </div>
+
+				          <div class="UITab NormalTabStyle">
+				            <div class="SelectedTab">
+				              <div class="LeftTab">
+				                <div class="RightTab">                
+				                  <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Records</div>
 				                </div>
 				              </div>
 				            </div>
+				          </div>
 				            
-				            <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Obsolete Records</div>
-				                  </div>
+				          <div class="UITab NormalTabStyle">
+				            <div class="NormalTab">
+				              <div class="LeftTab">
+				                <div class="RightTab">                
+				                  <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Obsolete Records</div>
 				                </div>
 				              </div>
-				            </div> 
+				            </div>
+				          </div> 
 				            
-				             <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Superseded Records</div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div>   
-				            
-				             <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Vitals Records</div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div> 
-				            
-				            <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Cutoff Records</div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div>  
-				            
-				            <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Holdable Records</div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div>  
-				            
-				             <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Transferable Records</div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div> 
-				            
-			             <div class="UITab NormalTabStyle">
+			            <div class="UITab NormalTabStyle">
 			              <div class="NormalTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Accessionable Records</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Superseded Records</div>
 			                  </div>
 			                </div>
 			              </div>
 			            </div>   
+				            
+			            <div class="UITab NormalTabStyle">
+			              <div class="NormalTab">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Vitals Records</div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div> 
+				            
+			            <div class="UITab NormalTabStyle">
+			              <div class="NormalTab">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Cutoff Records</div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>  
+				            
+			            <div class="UITab NormalTabStyle">
+			              <div class="NormalTab">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Holdable Records</div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>  
+				            
+			            <div class="UITab NormalTabStyle">
+			              <div class="NormalTab">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Transferable Records</div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div> 
+				            
+		              <div class="UITab NormalTabStyle">
+		                <div class="NormalTab">
+		                  <div class="LeftTab">
+		                    <div class="RightTab">                
+		                      <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">Accessionable Records</div>
+		                    </div>
+		                  </div>
+		                </div>
+		              </div>   
 			            
 			            <div class="UITab NormalTabStyle">
 			              <div class="NormalTab">
@@ -248,6 +248,7 @@
 			                </div>
 			              </div>
 			            </div> 
+
 				        </div>
                 <div class="NavigationButtonContainer">
                   <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">

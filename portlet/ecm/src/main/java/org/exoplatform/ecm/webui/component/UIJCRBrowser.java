@@ -41,6 +41,10 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
     getChild(UITreeList.class).setFilterType(arrType) ;
   }
   
+  public void setMimeTypes(String[] arrMimeType) {
+    getChild(UITreeList.class).setMimeTypes(arrMimeType) ;
+  }
+  
   public void setIsTab(boolean isTab) { 
     getChild(UITreeJCRExplorer.class).setIsTab(isTab) ;
   }

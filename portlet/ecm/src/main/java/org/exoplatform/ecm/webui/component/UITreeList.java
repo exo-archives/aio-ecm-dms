@@ -19,8 +19,9 @@ import org.exoplatform.webui.core.UIContainer;
  */
 public abstract class UITreeList extends UIContainer {
   
-  public List<Node> nodes_ ;
-  public String[] arrType_ ;
+  private List<Node> nodes_ ;
+  private String[] arrType_ ;
+  private String[] arrMimeType_ ;
   
   public UITreeList() throws Exception {
   }
@@ -31,4 +32,6 @@ public abstract class UITreeList extends UIContainer {
   public void setFilterType(String[] arrType) { arrType_ = arrType ; }
   public String[] getFilterType() { return arrType_ ;};
   
+  public void setMimeTypes(String[] arrMimeType) { arrMimeType_ = arrMimeType ; }
+  public String[] getMimeTypes() { return arrMimeType_ ; }
 }

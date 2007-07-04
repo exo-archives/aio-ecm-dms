@@ -88,6 +88,7 @@ public class UIDriveManager extends UIContainer {
     uiJCRBrowser.setRepository(repository) ;
     uiJCRBrowser.setRootPath("/") ;
     uiJCRBrowser.setFilterType(new String[] {Utils.NT_FILE}) ;
+    uiJCRBrowser.setMimeTypes(new String[] {"image/jpeg", "image/gif", "image/png"}) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_WORKSPACEICON}) ;
     uiPopup.setShow(true) ;
   }
