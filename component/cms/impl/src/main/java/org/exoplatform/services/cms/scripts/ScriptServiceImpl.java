@@ -227,7 +227,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       return scriptObject;
     }
     groovyClassLoader_ = createGroovyClassLoader();
-    Class scriptClass = groovyClassLoader_.loadClass(scriptName) ;        
+    Class scriptClass = groovyClassLoader_.loadClass(repository + ":" +scriptName) ;        
     pC.registerComponentImplementation(scriptName, scriptClass); 
     scriptObject = (CmsScript) pC.getComponentInstance(scriptName);
     resourceCache_.put(scriptName, scriptObject) ;
@@ -310,10 +310,10 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         String filename = null ;
         String nodeName = null ;
         if(className.indexOf(":") > -1) {
-          String[] array = className.split(":") ;
-          repository = array[0] ;
-          nodeName = array[1] ;
-          filename = array[1].replace('.', File.separatorChar) + ".groovy";
+          //String[] array = className.split(":") ;
+          repository = className.substring(0, className.indexOf(":")) ;
+          nodeName = className.substring(className.indexOf(":") + 1) ;
+          filename = nodeName.replace('.', File.separatorChar) + ".groovy";
         }else {
           nodeName = className ;
           filename = className.replace('.', File.separatorChar) + ".groovy";
@@ -324,6 +324,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
           Node scriptNode = scriptsHome.getNode(nodeName);
           in = scriptNode.getProperty("jcr:data").getStream();
         } catch (Exception e) {
+          //e.printStackTrace() ;
           throw new ClassNotFoundException("Could not read " + nodeName + ": " + e);
         }
         try {
