@@ -35,7 +35,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
   float: left;
-  padding: 2px 15px 0px 15px;
+  padding: 3px 15px 3px 25px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
@@ -135,7 +135,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .InputContainer {
-  margin: 0px 24px;
+  margin: 0px 25px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar input {

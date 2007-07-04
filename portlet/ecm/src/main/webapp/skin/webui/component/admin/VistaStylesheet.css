@@ -373,17 +373,13 @@
   margin-top: 5px ;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane {
-  margin: auto ; margin-top: 10px; margin-bottom: 10px;
-  padding: 0px;
-}
-
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UITabPane .TabPaneContent .HorizontalLayout {
-	border: solid 1px red;
+.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UITabPane {
+	width: 95%;
+	margin: 10px auto;
 }
 
 .UIECMAdminPortlet .UIDriveManager .WorkingArea .UITabContentContainer .UITabContent {
@@ -396,7 +392,7 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UIAction {
   width: 285px ;
-  padding-top: 10px;
+  padding-left: 80px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
@@ -643,12 +639,13 @@
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 300px;  height: 300px; 
-  margin: 5px ;
+  width: 95%;  height: 300px; 
+  padding: 3px;
 }
 .UITemplatesManager .UITabPane .UIDialogTab{
 	padding: 10px;
 }
+
 
 .UITemplatesManager .UITabPane .UIViewTab{
 	padding: 10px;
@@ -664,18 +661,27 @@
 	padding: 5px 0px 5px 0px;
 }
 
-.UITemplatesManager .UIForm .textarea {
-  width: 350px;  height: 250px; 
+.UITemplatesManager .UIDialogTab .UIAction {
+  width: 270px; 
+  padding: 0px 0px 10px 0px;
+  border: solid 1px red;
 }
 
-.UITemplatesManager .UIDialogTab .UIAction {
-  width: 260px; 
-  padding: 0px 0px 10px 0px;
+.UITemplatesManager .UIDialogTab .UIForm .textarea {
+  width: 90%;  
+  height: 320px; 
+  padding: 3px;
 }
 
 .UITemplatesManager .UIViewTab .UIAction {
   width: 350px; 
   padding: 0px 0px 10px 0px;
+}
+
+.UITemplatesManager .UIViewTab .UIForm .textarea {
+  width: 90%;  
+  height: 320px; 
+  padding: 3px;
 }
 
 .UITemplatesManager .UIFormTabPane .HorizontalLayout .template { 
@@ -715,8 +721,20 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
+.UIQueriesManager .UIQueriesForm .FormContainer {
+	width: 95%;
+	margin: auto;
+}
+
+.UIQueriesManager .UIQueriesForm .UIFormInputSet .UIFormInputSetWithAction .FormContainer {
+	width: 100%;
+	margin: auto;
+}
+
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
-	width: 320px ; height: 150px ;
+	width: 80%; 
+	height: 320px ;
+	padding: 3px;
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .UIAction {

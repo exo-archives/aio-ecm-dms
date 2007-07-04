@@ -224,6 +224,11 @@
   background: white;
 }
 
+.UIWorkflowPortlet .UITask  {
+  width: auto;
+  border: solid 1px red; 
+}
+
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
   width: 160px; 
 }

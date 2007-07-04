@@ -37,7 +37,7 @@
   }
   
   .FileContent .UIAction {
-    width: 380px;
+    width: 390px;
     margin-top: 10px;
   }
   

@@ -699,6 +699,14 @@
 	width: 90px ;
 }
 
+.UIECMScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
+  height: 350px;
+  width: 90%;
+  padding: 3px;
+  border: solid 1px #b7b7b7;
+  float: left;
+}
+
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
 
 .UICBScripts .CBScriptList .UIAction {
@@ -714,9 +722,12 @@
   padding-left: 7px;
 }
 
-.UICBScripts .HorizontalLayout .FormContainer textarea {
-  width: 380px;
-  height: 300px;
+.UICBScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
+  height: 350px;
+  width: 90%;
+  padding: 3px;
+  border: solid 1px #b7b7b7;
+  float: left;
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/

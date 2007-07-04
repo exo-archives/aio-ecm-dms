@@ -8,11 +8,6 @@
  
 /*############################## -- UIMetadataManager-- ########################*/
 
-.UIECMAdminPortlet .HorizontalLayout .FormContainer {
-	width: 500px;
-	margin:auto;
-}
-
 .UIECMAdminPortlet .UIMetadataForm .UIGrid {
   width: 100% ;
   border-left: 0px ; border-right: 0px ;
@@ -41,7 +36,7 @@
 }
 
 .UIECMAdminPortlet .UIMetadataManager {
-  padding: 0px 5px;
+  width: 97%;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .Content .UIMetadataManager{

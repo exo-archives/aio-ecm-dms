@@ -613,11 +613,12 @@ UIECMAdminPortlet .UIViewManager {
   padding-left: 60px;
 }
 
-.UIECMScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
+.UIECMScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
   height: 350px;
   width: 90%;
   padding: 3px;
   border: solid 1px #b7b7b7;
+  float: left;
 }
 
 .UIECMScripts .ECMScriptList .UIAction {
@@ -653,6 +654,7 @@ UIECMAdminPortlet .UIViewManager {
   height: 350px;
   border: solid 1px #b7b7b7;
   padding: 3px;
+  float: left;
 }
 
 .UICBScripts .CBScriptList .UIAction {
