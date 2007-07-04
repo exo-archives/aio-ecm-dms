@@ -88,7 +88,7 @@ public class UIECMTemplateList extends UIGrid {
       uiViewManager.setRenderedChild(UIECMTemplateList.ST_ECMTemp) ;
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String templateName = templatePath.substring(templatePath.lastIndexOf("/") + 1) ;
-      if(!uiECMTemp.getApplicationComponent(ManageDriveService.class).isUsedView(templateName, repository)) {
+      if(uiECMTemp.getApplicationComponent(ManageDriveService.class).isUsedView(templateName, repository)) {
         UIApplication app = uiECMTemp.getAncestorOfType(UIApplication.class) ;
         Object[] args = {templateName} ;
         app.addMessage(new ApplicationMessage("UIECMTemplateList.msg.template-in-use", args)) ;

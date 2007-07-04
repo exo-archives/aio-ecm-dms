@@ -11,6 +11,7 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -91,6 +92,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
         UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ;
         if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+        node.removePermission(SystemIdentity.ANY) ;
         node.setPermission(userOrGroup, permsArray) ;
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;
         node.save() ;
