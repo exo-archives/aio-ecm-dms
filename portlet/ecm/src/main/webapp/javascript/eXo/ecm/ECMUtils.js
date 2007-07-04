@@ -5,8 +5,11 @@ function ECMUtils() {
 };
 
 ECMUtils.prototype.init = function(portletId) {
-	eXo.webui.UIRightClickPopupMenu.disableContextMenu(portletId) ;
 	var portlet = document.getElementById(portletId) ;
+	// TODO: Fix temporary for the problem Minimize window in Page Mode
+	if(!portlet) return ;
+
+	eXo.webui.UIRightClickPopupMenu.disableContextMenu(portletId) ;
 	portlet.onmousedown = function(event) {
 		eXo.ecm.ECMUtils.closeAllPopup() ;
 	}
