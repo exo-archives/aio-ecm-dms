@@ -33,6 +33,6 @@ public class UIPermissionInputSet extends UIFormInputSetWithAction {
     for (String perm : PermissionType.ALL) {
       addUIFormInput(new UIFormCheckBoxInput<String>(perm, perm, null)) ;
     }
-    setActionInfo(FIELD_USERORGROUP, new String[] {"SelectUser", "SelectGroup", "SelectMember"}) ;
+    setActionInfo(FIELD_USERORGROUP, new String[] {"SelectUser", "SelectMember", "AddAny"}) ;
   }
 }

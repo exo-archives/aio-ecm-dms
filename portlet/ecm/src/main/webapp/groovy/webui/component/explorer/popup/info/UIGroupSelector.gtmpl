@@ -3,80 +3,32 @@
   import  org.exoplatform.webui.core.UITree; 
 %>
 <div class="UIGroupMembershipSelector" id="$uicomponent.id">
-	<div class="SelectedGroupPath"><% uicomponent.renderChild(UIBreadcumbs.class); %></div>
-	<div style="clear:both;"></div>
-	<div class="OverflowContainer">
-	  <%uicomponent.renderChild(UITree.class);%>	   
+  <div class="Container">
+		<div class="SelectedGroupPath"><% uicomponent.renderChild(UIBreadcumbs.class); %></div>
+		<div class="GroupSelector">
+		  <div class="MembershipTitle"><%=_ctx.appRes(uicomponent.id+".label.selectGroup")%></div>
+		  <%uicomponent.renderChild(UITree.class);%>
+		</div>
 	  <div class="MembershipSelector">
-	    <%boolean even = true ;
-		    String rowCssClass = "OddRow" ;
-	      if(uicomponent.isSelectGroup()) {%>
-	      <div class="MembershipTitle">Select Group</div>
-	      <%if(uicomponent.getCurrentGroup() != null) {
-	        String groupName = uicomponent.getCurrentGroup().getGroupName() ;%>
-          <div class="$rowCssClass">
-			      <div class="OverflowContainer">
+	    <div class="MembershipTitle"><%=_ctx.appRes(uicomponent.id+".label.selectUser")%></div>
+      <div class="OverflowContainer">
+	      <%                
+	      boolean even = true ;
+	      if(uicomponent.getCurrentGroup() != null) {
+		      for(user in uicomponent.getUsers()){
+		        String rowCssClass = "OddRow" ;
+		        if(even) rowCssClass = "EvenRow" ;  
+		        even = !even ;
+	      %>
+			      <div class="$rowCssClass">
 			        <div class="ItemIcon"><span></span></div>
-			        <div style="float:left;">
-			          <a href="<%=uicomponent.event("SelectMembership", groupName)%>">$groupName</a>									           
-			        </div>
-			        <div class="Icon16x16 True16x16Icon" ><span></span></div>
-			        <div style="clear:left;"><span></span></div>
+			        <a href="<%=uicomponent.event('SelectMembership', user.getUserName())%>"><%=user.getUserName()%></a>	
+			        <div style="clear: left"><span></span></div>								           
 			      </div>
-			    </div>
-		      <%String childName ;
-				    for(child in uicomponent.getChildGroup()) {
-				      childName = child.getGroupName() ;
-			        if(even) rowCssClass = "EvenRow" ;  
-			        even = !even ;%>
-	            <div class="$rowCssClass" >
-					      <div class="OverflowContainer">
-					        <div class="Icon16x16 ExpandIcon"><span></span></div>
-				          <div style="float:left;">
-				            <a href="<%=uicomponent.event("SelectMembership", childName)%>">$childName</a>									           
-				          </div>
-					        <div class="Icon16x16 True16x16Icon" ><span></span></div>
-					        <div style="clear:left;"><span></span></div>
-			          </div>
-					    </div>
-		    <%}}}%>
-	      <%if(uicomponent.isSelectUser())  {%>
-		      <div class="MembershipTitle">Select User</div>  
-		      <%if(uicomponent.getCurrentGroup() != null) { 
-		         String userName ;
-			       for(child in uicomponent.getUsers()) {
-			         userName = child.getUserName() ;
-		           if(even) rowCssClass = "EvenRow" ;  
-		           even = !even ;%>
-		           <div class="$rowCssClass">
-				         <div class="OverflowContainer">
-				           <div class="Icon16x16 ExpandIcon"><span></span></div>
-				           <div class="" style="float:left;">
-				             <a href="<%=uicomponent.event("SelectMembership", userName)%>">$userName</a>									           
-				           </div>
-				           <div class="Icon16x16 True16x16Icon"><span></span></div>
-				           <div style="clear:left;"><span></span></div>
-		             </div>
-				       </div>
-		    <%}}}%>
-	      <%if(uicomponent.isSelectMember())  {%>
-	        <div class="MembershipTitle">Select Membership</div>  
-	        <%if(uicomponent.getCurrentGroup() != null) { 
-		          for(member in uicomponent.getListMemberhip()) {
-		           if(even) rowCssClass = "EvenRow" ;  
-		           even = !even ;%>
-		           <div class="$rowCssClass">
-				         <div class="OverflowContainer">
-				           <div class="Icon16x16 ExpandIcon"><span></span></div>
-				           <div class="" style="float:left;">
-				             <a href="<%=uicomponent.event("SelectMembership", member)%>">$member</a>									           
-				           </div>
-				           <div class="Icon16x16 True16x16Icon"><span></span></div>
-				           <div style="clear:left;"><span></span></div>
-		             </div>
-				       </div>
-	      <%}}}%>
+	      <%}
+	      }%>
+      </div>
 	  </div>
-  </div>
+		<div style="clear: left"><span></span></div>
+	</div>
 </div> 		
-
