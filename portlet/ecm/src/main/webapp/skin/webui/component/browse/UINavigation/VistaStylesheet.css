@@ -75,20 +75,20 @@
 }
 
 .UICBNavigation .CBLeftNavigation {
-	height: 57px;
-  background: url('VistaSkin/background/LeftHorizontalTabBG3x30.png') no-repeat left bottom;
+	height: 52px;
+  background: url('VistaSkin/background/LeftHorizontalTabBG3x25.jpg') no-repeat left bottom;
   padding-left: 3px;
 }
 
 .UICBNavigation .CBRightNavigation {
-	height: 57px;
-  background: url('VistaSkin/background/RightHorizontalTabBG3x30.png') no-repeat right bottom;
+	height: 52px;
+  background: url('VistaSkin/background/RightHorizontalTabBG3x25.jpg') no-repeat right bottom;
   padding-right: 3px;
 }
 
 .UICBNavigation .CBMiddleNavigation {
-	height: 57px;
-  background: url('VistaSkin/background/CenterHorizontalTabBG1x30.png') repeat-x bottom;
+	height: 52px;
+  background: url('VistaSkin/background/CenterHorizontalTabBG1x25.jpg') repeat-x bottom;
 }
 
 .UICBNavigation .UICBMainNavigation {

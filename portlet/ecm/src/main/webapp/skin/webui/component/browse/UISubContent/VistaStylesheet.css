@@ -37,23 +37,23 @@
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
-	height: 30px; line-height: 30px;
+	height: 26px; line-height:26px;
 	overflow: hidden;
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
-	line-height: 30px; height: 26px;
-	background: url('VistaSkin/background/LeftHorizontalTabBG3x30.png') no-repeat left;
+	line-height: 30px; height: 25px;
+	background: url('VistaSkin/background/LeftHorizontalTabBG3x25.jpg') no-repeat left;
   padding-left: 3px;
 }
 .UISubContent .SubContentTitle .RightBar{ 
-	line-height: 30px; height: 30px;
-	background: url('VistaSkin/background/RightHorizontalTabBG3x30.png') no-repeat right;
+	line-height: 25px; height: 25px;
+	background: url('VistaSkin/background/RightHorizontalTabBG3x25.jpg') no-repeat right;
   padding-right: 3px;
 }
 .UISubContent .SubContentTitle .MiddleBar { 
-	line-height: 30px; height: 30px;
-	background: url('VistaSkin/background/CenterHorizontalTabBG1x30.png') repeat-x;
+	line-height: 25px; height:25px;
+	background: url('VistaSkin/background/CenterHorizontalTabBG1x25.jpg') repeat-x;
 }
 
 .UISubContent .SubContentTitle .ChildContainer{
