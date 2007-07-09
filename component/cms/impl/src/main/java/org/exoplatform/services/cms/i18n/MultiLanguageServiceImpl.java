@@ -146,7 +146,6 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }
       }
     }   
-    
     PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
     for(PropertyDefinition pro : properties){
       if(!pro.isProtected()) {
@@ -173,6 +172,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       }
     }
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
+    if(isDefault && languagesNode.hasNode(language)) languagesNode.getNode(language).remove() ;
     node.save() ;
     node.getSession().save() ;    
   }

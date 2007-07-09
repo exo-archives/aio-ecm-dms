@@ -56,6 +56,11 @@ public class UILanguageTypeForm extends UIForm {
     addUIFormInput(uiCheckbox) ;
   }
   
+  public void resetLanguage() {
+    getUIFormSelectBox(LANGUAGE_TYPE).setValue("") ;
+    getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(false) ;
+  }
+  
   public List<SelectItemOption<String>> languages() throws Exception {
     LocaleConfigService localService = getApplicationComponent(LocaleConfigService.class) ;
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;

@@ -133,6 +133,12 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       UIViewsInputSet viewsInputSet = uiDriveForm.getChild(UIViewsInputSet.class) ;
       String views = viewsInputSet.getViewsSelected() ;      
       String permissions = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue() ;
+      if(permissions == null || permissions.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.permission-null", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       ManageDriveService dservice_ = uiDriveForm.getApplicationComponent(ManageDriveService.class) ;
       if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name, repository) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
