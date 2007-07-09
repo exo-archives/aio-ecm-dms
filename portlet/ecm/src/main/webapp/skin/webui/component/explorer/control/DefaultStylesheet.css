@@ -127,6 +127,7 @@
   border: solid 1px #b7b7b7;
   border-right: solid 1px #cdcdcd;
   border-bottom: solid 1px #cdcdcd;
+  position: relative;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
@@ -160,16 +161,20 @@
   cursor: pointer;
   margin: auto;
 }
-
+/*
+	TODO: minh.js.exo
+*/
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent {
   border: solid 1px #716f64;
-  border-top:none;
+  border-top: none;
   position: absolute;
   height: 150px;
   width: 100%;
   overflow: auto;
   background: white;
+  left: -1px;
   display: none;
+
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent .AddressItem {
