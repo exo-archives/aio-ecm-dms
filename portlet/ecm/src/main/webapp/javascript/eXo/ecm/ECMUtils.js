@@ -30,34 +30,11 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 // minh.js.exo
 // bug: display UIPopupSelector in IE 7.
 
-ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
-	evnt.cancelBubble = true;
-	popupSelector = eXo.core.DOMUtil.findAncestorByClass(clickedElemt, "UIPopupSelector");
-	showBlock = eXo.core.DOMUtil.findFirstDescendantByClass(popupSelector,"div", "UISelectContent");
-	if(option) showBlock.style.width = (popupSelector.offsetWidth - 2) + "px";
-	if(showBlock.style.display == "block") {
-		eXo.webui.UIPopup.hide(showBlock) ;
-		return ;
-	}
-	eXo.webui.UIPopup.show(showBlock) ;
-	showBlock.onmousedown = function(e) {
-		if(!e) e = window.event ;
-		e.cancelBubble = true ;
-	}
-	this.popupArray.push(showBlock);
-	with(popupSelector) {
-		showBlock.style.top = clientHeight + "px";
-		showBlock.style.left =  "-1px";
-	}
-} ;
-
 //ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 //	evnt.cancelBubble = true;
 //	popupSelector = eXo.core.DOMUtil.findAncestorByClass(clickedElemt, "UIPopupSelector");
 //	showBlock = eXo.core.DOMUtil.findFirstDescendantByClass(popupSelector,"div", "UISelectContent");
-//	if(option == 1) {
-//		showBlock.style.width = (popupSelector.offsetWidth - 2) + "px";
-//	}
+//	if(option) showBlock.style.width = (popupSelector.offsetWidth - 2) + "px";
 //	if(showBlock.style.display == "block") {
 //		eXo.webui.UIPopup.hide(showBlock) ;
 //		return ;
@@ -68,10 +45,32 @@ ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 //		e.cancelBubble = true ;
 //	}
 //	this.popupArray.push(showBlock);
-//	showBlock.style.top = (popupSelector.offsetTop + popupSelector.offsetHeight) + "px";
-//	showBlock.style.left = popupSelector.offsetLeft + "px";
-//};
-//end 
+//	with(popupSelector) {
+//		showBlock.style.top = clientHeight + "px";
+//		showBlock.style.left =  "-1px";
+//	}
+//} ;
+
+ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
+	evnt.cancelBubble = true;
+	popupSelector = eXo.core.DOMUtil.findAncestorByClass(clickedElemt, "UIPopupSelector");
+	showBlock = eXo.core.DOMUtil.findFirstDescendantByClass(popupSelector,"div", "UISelectContent");
+	if(option == 1) {
+		showBlock.style.width = (popupSelector.offsetWidth - 2) + "px";
+	}
+	if(showBlock.style.display == "block") {
+		eXo.webui.UIPopup.hide(showBlock) ;
+		return ;
+	}
+	eXo.webui.UIPopup.show(showBlock) ;
+	showBlock.onmousedown = function(e) {
+		if(!e) e = window.event ;
+		e.cancelBubble = true ;
+	}
+	this.popupArray.push(showBlock);
+	showBlock.style.top = (popupSelector.offsetTop + popupSelector.offsetHeight) + "px";
+	showBlock.style.left = popupSelector.offsetLeft + "px";
+};
 
 ECMUtils.prototype.closeAllPopup = function() {
 	for(var i = 0; i < this.popupArray.length; i++) {
