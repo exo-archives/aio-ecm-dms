@@ -731,6 +731,14 @@
 	height: 305px;
 	padding-top: 15px;
 }
+
+.UITemplatesManager .UIFormTabPane .HorizontalLayout .UIFormInputSet .UIForm .HorizontalLayout .textarea{ 
+	width: 95%;
+	height: 350px;
+	padding: 3px;
+	border: solid 1px #b7b7b7;
+}
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UINamespaceManager .HorizontalLayout {

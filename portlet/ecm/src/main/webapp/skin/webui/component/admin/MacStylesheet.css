@@ -469,6 +469,7 @@
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
 	width: 100px;
 }
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceList {
@@ -487,7 +488,6 @@
 .UIECMAdminPortlet .UINamespaceForm .UIAction {
   width: 170px;
 }
-
 
 /*############################## -- UIDriveManager -- ########################*/
 

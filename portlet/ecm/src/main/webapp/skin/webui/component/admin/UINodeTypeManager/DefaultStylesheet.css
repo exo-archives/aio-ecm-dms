@@ -45,10 +45,6 @@
 	padding: 2px;
 }
 
-.UIECMAdminPortlet .UINodeTypeImportPopup {
-	margin: 10px;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
 	width: 260px;
 }

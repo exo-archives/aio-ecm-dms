@@ -872,6 +872,13 @@ UIECMAdminPortlet .UIViewManager {
 	margin: auto;
 }
 
+.UITemplatesManager .UIFormTabPane .UIFormInputSet .UIFormGrid .textarea { 
+	width: 90%;
+	height: 350px;
+	padding: 3px;
+	border: solid 1px #b7b7b7;
+}
+
 /*----------------------------UIDialogTab-------------------------------*/
 
 .UITemplatesManager .UITabPane .UIDialogTab .UIAction {
