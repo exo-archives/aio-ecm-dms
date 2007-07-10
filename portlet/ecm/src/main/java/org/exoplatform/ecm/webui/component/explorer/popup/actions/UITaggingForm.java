@@ -84,20 +84,34 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
-      String[] arrFilterChar = {"&", "'", "$", "@", ":","]", "[", "*", "%", "!"} ;
-      for(String filterChar : arrFilterChar) {
-        if(tagName.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-      }
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      if(tagName == null || tagName.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String[] tagNames = null ;
       if(tagName.indexOf(";") > -1) tagNames = tagName.split(";") ;
       else tagNames = new String[] {tagName} ;
+      for(String t : tagNames) {
+        if(t.trim().length() == 0) {
+          uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        String[] arrFilterChar = {"&", "'", "$", "@", ":","]", "[", "*", "%", "!"} ;
+        for(String filterChar : arrFilterChar) {
+          if(t.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+      }
       for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository)) {
         for(String t : tagNames) {
           if(t.equals(tag.getName())) {
