@@ -121,6 +121,33 @@ public class Utils {
     }    
   }
   
+  public static boolean isAddNodeAuthorized(Node node) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(PermissionType.ADD_NODE);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
+  }
+  public static boolean isSetPropertyNodeAuthorized(Node node) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(PermissionType.SET_PROPERTY);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
+  }
+  
+  public static boolean isRemoveNodeAuthorized(Node node) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(PermissionType.REMOVE);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
+  }
+  
+  
   public static boolean isNameValid(String name, String[] regexpression) {
     for(String c : regexpression){ if(name.contains(c)) return false ;}
     return true ;
