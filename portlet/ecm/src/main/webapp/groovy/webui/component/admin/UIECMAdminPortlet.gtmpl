@@ -16,9 +16,9 @@
       <%
         int style = 6;
         if(uicomponent.isShowSideBar()) {
-          style += 260;
+          style += 250;
       %>
-		      <div style="height: 100%; width: 260px; overflow: auto; float: left;">
+		      <div style="height: 100%; width: 250px; overflow: auto; float: left;">
 		        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
 		        <% 
 		        if(uicomponent.getChild(UIECMAdminControlPanel.class) != null) uicomponent.renderChild(UIECMAdminControlPanel.class);

@@ -664,7 +664,6 @@
 .UITemplatesManager .UIDialogTab .UIAction {
   width: 270px; 
   padding: 0px 0px 10px 0px;
-  border: solid 1px red;
 }
 
 .UITemplatesManager .UIDialogTab .UIForm .textarea {
