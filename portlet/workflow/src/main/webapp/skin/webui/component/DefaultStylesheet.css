@@ -205,8 +205,7 @@
 }
 
 .UIWorkflowPortlet .UIPopupWindow .Content .UIFormWithTitle {
-  margin: auto;
-  width: 530px;
+  width: auto;
 }
 
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer {
@@ -222,11 +221,6 @@
 
 .UIWorkflowPortlet .UIPopupWindow .Content .UIFormWithTitle .HorizontalLayout {
   background: white;
-}
-
-.UIWorkflowPortlet .UITask  {
-  width: auto;
-  border: solid 1px red; 
 }
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
@@ -284,6 +278,23 @@
 
 .WorkflowPortletContent .UIUploadProcess .FileNameLabel {
 	width: 128px;	
+}
+
+.WorkflowPortletContent .UIUploadProcess .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.WorkflowPortletContent .UIUploadProcess .FileName {
+	width: 230px;	
+	overflow: hidden;
 }
 
 .UIWorkflowPortlet .UITabPane .UIForm .UIAction {

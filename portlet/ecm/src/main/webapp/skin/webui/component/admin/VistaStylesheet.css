@@ -126,7 +126,6 @@
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	padding: 10px 0px 10px 10px;
-	border-bottom: none ;
 	line-height: 15px;
 }
 
@@ -139,8 +138,10 @@
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction {
 	background: #F4F4F4 none repeat scroll 0%;
-	border: 1px solid #B7B7B7 ;
-	border-top: none ;
+	border: none ;
+	border-top: 1px solid #939393 ;
+	border-bottom: 1px solid #B7B7B7 ;
+	height: 34px;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -174,6 +175,49 @@
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar a.SelectedStep {
   color: red;
+}
+
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane {
+	padding: 0px;
+	margin: 0px;
+}
+
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .HorizontalLayout {
+	padding: 0px;
+	margin: 0px;
+	border: solid 1px #b7b7b7;
+	border-top: none;
+	border-bottom: none;
+}
+
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
+	padding: 0px;
+	margin: 0px;
+	border: none;
+}
+
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .UITabContentContainer .UITabContent {
+	padding: 0px;
+	margin: 0px;
+	border: none;
+}
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
+	padding: 0px;
+	margin: 0px;
+}
+
+.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
+  padding: 10px;
+}
+
+.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
+  width: 500px;
+  margin: auto;
+}
+
+.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIAction {
+  width: 180px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIAction {

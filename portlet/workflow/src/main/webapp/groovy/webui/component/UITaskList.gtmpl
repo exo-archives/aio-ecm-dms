@@ -48,7 +48,7 @@
     } else {
   %>
       <tr class="EvenRow"> 
-        <td colspan="9" style="text-align:center;font-style:italic"><%=_ctx.appRes("UITaksList.msg.no-task")%></td>
+        <td colspan="9" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UITaksList.msg.no-task")%></td>
       </tr>
   <%}%>
   </tbody>
