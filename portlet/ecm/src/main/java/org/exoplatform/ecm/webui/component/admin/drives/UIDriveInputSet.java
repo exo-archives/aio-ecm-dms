@@ -53,7 +53,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     homePathField.setValue("/") ;
     homePathField.setEditable(false) ;
     addUIFormInput(homePathField) ;
-    addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null).setEditable(false)) ;
     UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null) ;
     permissonSelectField.addValidator(EmptyFieldValidator.class) ;
     permissonSelectField.setEditable(false) ;
