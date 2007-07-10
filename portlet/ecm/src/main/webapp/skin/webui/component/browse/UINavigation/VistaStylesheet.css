@@ -278,7 +278,7 @@
 .UICBNavigation .UICBSubNavigation .ChildNodeItem { 
 	float: left;
 	height: 23px;
-	lineheight: 23px;
+	line-height: 23px;
 	padding: 1px 5px 0px 5px;
 }
 

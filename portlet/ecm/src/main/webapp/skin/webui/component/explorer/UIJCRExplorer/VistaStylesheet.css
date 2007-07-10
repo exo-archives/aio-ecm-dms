@@ -23,6 +23,7 @@
 .UIJCRExplorerPortlet .UIFormWithTitle {
   margin: 10px auto;
   border: 1px solid #8D919D;
+  width: 95%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIFormWithTitle {
@@ -54,8 +55,8 @@
 .UIJCRExplorerPortlet .Execute16x16Icon {
 	margin-top: 3px;
 }
-
 /*############################## -- End UIJCRExplorer -- ##############################*/
+
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 .UIJCRExplorerPortlet .UIListView {
 }
@@ -484,7 +485,7 @@
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
   width: 295px;
-  padding-left: 120px;
+  padding-left: 100px;
 }
 
 /*==================================UIVoteForm==============================*/
@@ -689,6 +690,10 @@
 	padding: 10px;
 }
 
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .GroupSelector {
+	border: 1px solid #b7b7b7;
+}
+
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
 	border: none;
 	border-bottom: 1px solid #b7b7b7;
@@ -697,11 +702,12 @@
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
 	border: solid 1px #b7b7b7;
 	background: white;
+	height: 206px;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
   float: left;
-  border: solid 1px #b7b7b7;
+  border: none;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeContainer {
@@ -794,7 +800,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPropertyForm .UIAction {
-	width: 70px;
+	width: 80px;
 }
 
 /*=================================UICategoryManager==============================*/
