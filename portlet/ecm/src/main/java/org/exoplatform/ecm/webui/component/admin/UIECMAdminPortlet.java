@@ -48,7 +48,9 @@ public class UIECMAdminPortlet extends UIPortletApplication {
       getApplicationComponent(RepositoryService.class).getRepository(repo) ;
       addChild(UIECMAdminControlPanel.class, null, null) ;
       addChild(UIECMAdminWorkingArea.class, null, null);
-    }catch(Exception e) {}        
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }        
   }
   
   public void initChilds() throws Exception{

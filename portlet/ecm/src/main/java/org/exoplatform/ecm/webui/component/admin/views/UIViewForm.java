@@ -15,6 +15,7 @@ import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
@@ -27,6 +28,8 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -45,7 +48,6 @@ import org.exoplatform.webui.form.UIFormStringInput;
 @ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   
-  final static public String MIXVERSION = "mix:versionable" ;
   final static public String FIELD_VERSION = "version" ;
   final static public String FIELD_NAME = "viewName" ;
   final static public String FIELD_PERMISSION = "permission" ;
@@ -107,6 +109,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   }
   
   public boolean isView() { return isView_ ; }
+  
   public Node getViews() { return views_; }
   
   public boolean canEnableVersionning(Node node) throws Exception {
@@ -258,10 +261,13 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
     String repository = getRepository() ;
     List<ViewDataImpl> viewList = vservice_.getAllViews(getRepository()) ;
-    for(ViewDataImpl view : viewList) {
-      if(view.getName().equals(viewName) && !isEnableVersioning) {
-        message = new ApplicationMessage("UIViewForm.msg.view-exist", null) ;
-        throw new MessageException(message) ;
+    UIPopupWindow uiPopup = getAncestorOfType(UIPopupWindow.class) ;
+    if(uiPopup.getId().equals(UIViewList.ST_ADD)) {
+      for(ViewDataImpl view : viewList) {
+        if(view.getName().equals(viewName) && !isEnableVersioning) {
+          message = new ApplicationMessage("UIViewForm.msg.view-exist", null) ;
+          throw new MessageException(message) ;
+        }
       }
     }
     String permissions = getUIStringInput(FIELD_PERMISSION).getValue() ;
@@ -279,15 +285,26 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     if(views_ == null || !isEnableVersioning) {
       vservice_.addView(viewName, permissions, template, tabList, repository) ;
     } else {
-      if (!isVersioned(views_)) views_.addMixin(MIXVERSION);                            
-      else views_.checkout() ;
+      if (!isVersioned(views_)) {
+        views_.addMixin(Utils.MIX_VERSIONABLE);
+        views_.save();
+      } else {
+        views_.checkout() ;
+      }
       for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
         Node tab = iter.nextNode() ;
         if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
       }
       vservice_.addView(viewName, permissions, template, tabList, repository) ;
-      views_.checkin();
-      views_.save();
+      try {
+        views_.checkin();
+      } catch (Exception e) {
+        UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+        JCRExceptionManager.process(uiApp, e);
+        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+        context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
     }
     getAncestorOfType(UIViewContainer.class).getChild(UIViewList.class).updateViewListGrid() ;
     refresh(true) ;

@@ -183,11 +183,12 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 	}    
 	
 	protected Session getSession(String repository) throws Exception {
-    try {
-      //return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
-      return repositoryService_.getRepository(repository).login(cmsConfig_.getWorkspace(repository)) ;
-    }catch(Exception e) {
-      return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
-    }
+    return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
+//    try {
+//      //return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
+//      return repositoryService_.getRepository(repository).login(cmsConfig_.getWorkspace(repository)) ;
+//    }catch(Exception e) {
+//      return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository)) ;
+//    }
   }
 }
