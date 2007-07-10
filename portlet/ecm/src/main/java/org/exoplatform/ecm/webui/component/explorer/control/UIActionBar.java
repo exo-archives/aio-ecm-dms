@@ -899,7 +899,7 @@ public class UIActionBar extends UIForm {
       UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null) ;
       UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class) ;
       uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(uiJCRExplorer.getCurrentNode().getPath()) ;
-      uiPopupAction.activate(uiECMSearch, 600, 500) ;
+      uiPopupAction.activate(uiECMSearch, 620, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

@@ -27,15 +27,15 @@ import org.exoplatform.webui.form.UIFormTabPane;
     lifecycle = UIFormLifecycle.class,
     template =  "system:/groovy/webui/form/UIFormTabPane.gtmpl",
     events = {
-        @EventConfig( listeners = UIViewFormTabPane.SaveActionListener.class),
-        @EventConfig( listeners = UIViewFormTabPane.ResetActionListener.class),
-        @EventConfig( listeners = UIViewFormTabPane.EditTabActionListener.class),
-        @EventConfig( listeners = UIViewFormTabPane.DeleteTabActionListener.class),
-        @EventConfig( listeners = UIViewFormTabPane.ChangeVersionActionListener.class),
-        @EventConfig( listeners = UIViewFormTabPane.CancelActionListener.class, phase = Phase.DECODE),
-        @EventConfig( listeners = UIViewFormTabPane.CloseActionListener.class, phase = Phase.DECODE),
-        @EventConfig( listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE)
-      }
+      @EventConfig(listeners = UIViewFormTabPane.SaveActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.ResetActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.EditTabActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.DeleteTabActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.ChangeVersionActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.CancelActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIViewFormTabPane.CloseActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE)
+    }
 )
 public class UIViewFormTabPane extends UIFormTabPane {  
 

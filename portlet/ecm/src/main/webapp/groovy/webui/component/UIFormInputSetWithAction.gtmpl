@@ -165,12 +165,12 @@
 		                     %>
 		                           <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>','<%=actions[i]%>','&objectId=<%=actionValues[i]%>');"> 
 		                       <%} else { %>
-		                           <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>','<%=actions[i]%>');">     
+		                           <a href="javascript:eXo.webui.UIForm.submitForm('<%=formName%>','<%=actions[i]%>', true);">     
 		                     <%
 		                         }
 		                       } else { 
 		                     %>
-		                         <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>','<%=actions[i]%>');">     
+		                         <a href="javascript:eXo.webui.UIForm.submitForm('<%=formName%>','<%=actions[i]%>', true);">     
 		                     <%
 		                       }
 		                       if(actions[i].length() < 1) {

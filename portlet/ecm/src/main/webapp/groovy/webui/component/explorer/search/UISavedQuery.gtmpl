@@ -53,7 +53,7 @@
 	            	<div class="Text" title="<%=query.getStatement()%>"><%=statement%></div>
 	            </td>
 	            <td><%=uicomponent.getCurrentUserId()%></td>
-		          <td style="width:80px;">
+		          <td style="width:100px;">
 		            <a href="<%=uicomponent.event("Execute", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
 		              <div class="Execute16x16Icon" style="margin-left:5px;float:left"><span></span></div>
 		            </a>

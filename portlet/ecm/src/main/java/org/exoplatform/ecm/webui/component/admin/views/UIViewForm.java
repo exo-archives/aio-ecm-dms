@@ -21,6 +21,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.cms.views.impl.ViewDataImpl;
 import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -247,11 +248,21 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     setActionInfo(FIELD_TABS, actionInfor) ;
   }
 
+  @SuppressWarnings("unchecked")
   public void save() throws Exception {
     String viewName = getUIStringInput(FIELD_NAME).getValue() ;
     ApplicationMessage message ;
     if(viewName == null || viewName.trim().length() == 0){
       throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null)) ;
+    }
+    boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
+    String repository = getRepository() ;
+    List<ViewDataImpl> viewList = vservice_.getAllViews(getRepository()) ;
+    for(ViewDataImpl view : viewList) {
+      if(view.getName().equals(viewName) && !isEnableVersioning) {
+        message = new ApplicationMessage("UIViewForm.msg.view-exist", null) ;
+        throw new MessageException(message) ;
+      }
     }
     String permissions = getUIStringInput(FIELD_PERMISSION).getValue() ;
     if(permissions == null || permissions.length() < 1){
@@ -265,8 +276,6 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     String template = getUIFormSelectBox(FIELD_TEMPLATE).getValue() ;
 
     List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
-    boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
-    String repository = getRepository() ;
     if(views_ == null || !isEnableVersioning) {
       vservice_.addView(viewName, permissions, template, tabList, repository) ;
     } else {

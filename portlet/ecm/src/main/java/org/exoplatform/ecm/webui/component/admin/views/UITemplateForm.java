@@ -210,21 +210,45 @@ public class UITemplateForm extends UIForm {
       String content = uiForm.getUIFormTextAreaInput(FIELD_CONTENT).getValue() ;
       String homeTemplate = uiForm.getUIFormSelectBox(FIELD_HOMETEMPLATE).getValue() ;
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
+      ManageViewService manageViewService = uiForm.getApplicationComponent(ManageViewService.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       if(homeTemplate == null) {
         String tempPath = uiForm.template_.getPath() ;
         homeTemplate = tempPath.substring(0, tempPath.lastIndexOf("/")) ;
       }
       boolean isEnableVersioning = uiForm.getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
       String path = null ;
+      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+        List<Node> ecmTemps = manageViewService.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
+        for(Node temp : ecmTemps) {
+          if(temp.getName().equals(templateName)) {
+            Object[] args = {templateName} ;
+            uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist", args, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+      } else if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+        UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class) ;
+        List<Node> cbTemps = uiCBTempList.getAllTemplates() ;
+        for(Node temp : cbTemps) {
+          if(temp.getName().equals(templateName)) {
+            Object[] args = {templateName} ;
+            uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist", args, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+      }
       if(uiForm.isAddNew_ || !isEnableVersioning){
-        path = uiForm.getApplicationComponent(ManageViewService.class)
-              .addTemplate(templateName, content, homeTemplate,repository) ;
+        path = manageViewService.addTemplate(templateName, content, homeTemplate,repository) ;
       } else {
         if(isEnableVersioning) {
           if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);
           else uiForm.template_.checkout() ;
-          path = uiForm.getApplicationComponent(ManageViewService.class)
-                 .addTemplate(templateName, content, homeTemplate, repository) ;
+          path = manageViewService.addTemplate(templateName, content, homeTemplate, repository) ;
           uiForm.template_.save() ;
           uiForm.template_.checkin() ;
         }
