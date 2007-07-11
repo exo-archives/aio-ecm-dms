@@ -75,7 +75,9 @@ public class UIScriptList extends UIGrid {
       sManager.getChild(UIECMScripts.class).refresh() ;
     }
   }
+  
   public String[] getActions() {return new String[]{"AddNew"} ;}
+  
   public Node getScriptNode(String nodeName) throws Exception {
     UIComponent parent = getParent() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;

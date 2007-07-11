@@ -15,9 +15,12 @@ import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -147,31 +150,50 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
     setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
   } 
 
-  public void activate() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void deActivate() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
+  public void activate() throws Exception { }
+  public void deActivate() throws Exception { }
+  
   static public class SaveActionListener extends EventListener<UIScriptForm> {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
       String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       ScriptService scriptService = uiForm.getApplicationComponent(ScriptService.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String name = uiForm.getUIStringInput(FIELD_SCRIPT_NAME).getValue() ;
       String content = uiForm.getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).getValue() ;
       if(content == null) content = "" ;
+      if(name == null || name.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIScriptForm.msg.name-null", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIScriptList curentList = null ;
       UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
+      String namePrefix = null;
+      List<String> listScript = new ArrayList<String>() ;
+      List<ScriptData> scriptDatas = new ArrayList<ScriptData>() ;
       if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
         curentList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
+        namePrefix = curentList.getScriptCategory() ;
+        UIECMScripts uiEScripts = uiManager.getChild(UIECMScripts.class) ;
+        namePrefix = namePrefix.substring(namePrefix.lastIndexOf("/") + 1, namePrefix.length()) ;
+        scriptDatas = uiEScripts.getECMScript(namePrefix) ;
       } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)){
         curentList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
+        UICBScripts uiCBScripts = uiManager.getChild(UICBScripts.class) ;
+        scriptDatas = uiCBScripts.getCBScript() ;
       }
-      String namePrefix = curentList.getScriptCategory() ;
+      for(ScriptData data : scriptDatas) {
+        listScript.add(data.getName()) ;
+      }
+      if(listScript.contains(name) && uiForm.isAddNew_) {
+        Object[] args = { name } ;
+        uiApp.addMessage(new ApplicationMessage("UIScriptForm.msg.name-exist", args, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning) { 
@@ -269,6 +291,4 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-
-
 }
