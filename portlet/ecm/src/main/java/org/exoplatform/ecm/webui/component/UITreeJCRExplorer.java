@@ -107,7 +107,7 @@ public class UITreeJCRExplorer extends UIContainer {
         cmsService.getWorkspace(uiJCRBrowser.getRepository())) ;
     if(uiJCRBrowser.getWorkspace() != null) {
       session = repositoryService.getRepository(uiJCRBrowser.getRepository())
-      .getSystemSession(uiJCRBrowser.getWorkspace()) ;
+                                 .getSystemSession(uiJCRBrowser.getWorkspace()) ;
     }
     rootNode_ = (Node) session.getItem(path) ;
     currentNode_ = rootNode_ ;

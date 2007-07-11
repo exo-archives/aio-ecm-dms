@@ -52,7 +52,7 @@
 	      <td class="FieldLabel">To workspace</td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldWorkspace = ["jcrPath=/node/exo:destWorkspace", "production", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy"] ;
+		        String[] fieldWorkspace = ["jcrPath=/node/exo:destWorkspace", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy", "scriptParams=repository"] ;
 		        uicomponent.addSelectBoxField("destWorkspace", fieldWorkspace) ;
 		      %>
 		    </td>

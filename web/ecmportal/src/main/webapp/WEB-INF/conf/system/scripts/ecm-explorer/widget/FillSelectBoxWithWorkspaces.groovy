@@ -17,6 +17,7 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 public class FillSelectBoxWithWorkspaces implements CmsScript {
   
   private RepositoryService repositoryService_;
+  private String repository_ ;
   
   public FillSelectBoxWithWorkspaces(RepositoryService repositoryService) {
     repositoryService_ = repositoryService;
@@ -25,7 +26,7 @@ public class FillSelectBoxWithWorkspaces implements CmsScript {
   public void execute(Object context) {
     UIFormSelectBox selectBox = (UIFormSelectBox) context;
 
-    ManageableRepository jcrRepository = repositoryService_.getRepository();
+    ManageableRepository jcrRepository = repositoryService_.getRepository(repository_);
     List options = new ArrayList();
     String[] workspaceNames = jcrRepository.getWorkspaceNames();
     for(i in 0..<workspaceNames.length) {
@@ -35,6 +36,5 @@ public class FillSelectBoxWithWorkspaces implements CmsScript {
     selectBox.setOptions(options);
   }
 
-  public void setParams(String[] params) {}
-
+  public void setParams(String[] params) { repository_ = params[0]; }
 }

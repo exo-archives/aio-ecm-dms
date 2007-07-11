@@ -545,9 +545,10 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiSelectBox) ;
       uiSelectBox.setValue(defaultValue) ;
       if (script != null) {
-        try{
+        try {
+          if(scriptParams[0].equals("repository")) scriptParams[0] = repository_ ;
           executeScript(script, uiSelectBox, scriptParams);
-        }catch(Exception e) {
+        } catch(Exception e) {
           uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
         }      
       } else if (options != null && options.length() >0) {
