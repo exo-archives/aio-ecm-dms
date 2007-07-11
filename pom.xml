@@ -12,9 +12,8 @@
     <module>component/workflow/impl/jbpm/engine</module>
     <module>component/workflow/impl/jbpm/facade</module>
 
-    <module>component/cms/api</module>
-    <module>component/cms/impl</module>
-
+    <module>component/cms</module>
+   
     <module>bp</module>
 
     <module>portlet/ecm</module>
