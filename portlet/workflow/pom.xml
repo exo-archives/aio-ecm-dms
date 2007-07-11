@@ -23,7 +23,7 @@
 
     <dependency>
       <groupId>org.exoplatform.ecm</groupId>
-      <artifactId>exo.ecm.component.cms.impl</artifactId>
+      <artifactId>exo.ecm.component.cms</artifactId>
       <version>${org.exoplatform.ecm.version}</version>
       <scope>provided</scope>
     </dependency> 
