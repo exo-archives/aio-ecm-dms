@@ -95,8 +95,8 @@ public class UIDocumentForm extends DialogFormFields {
     try {
       String repository = getRepository() ;
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
-      String addedPath = cmsService.storeNode(documentType_, homeNode, inputProperties, false, 
-                                              Util.getPortalRequestContext().getRemoteUser(), repository);
+      String addedPath = 
+        cmsService.storeNode(documentType_, homeNode, inputProperties, false,repository);
       homeNode.getSession().save() ;
       newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
       homeNode.save() ;
