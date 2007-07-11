@@ -62,6 +62,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
   private static final String CHANGE_OPTION = "ChangeOption" ;
   private boolean isEdit_ = false ;
   private String queryPath_ ;
+  private Query query_ = null ;
 
   public UIJCRAdvancedSearch() throws Exception  {
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
@@ -99,6 +100,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
     }
   }
 
+  public void setQuery(Query query) { query_ = query ; }
+  
   public void setIsEdit(boolean isEdit) { isEdit_ = isEdit ; }
   public boolean isEdit() { return isEdit_ ; }
   
@@ -150,14 +153,9 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
   static  public class ChangeOptionActionListener extends EventListener<UIJCRAdvancedSearch> {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;     
-      if(uiForm.isEdit_) {
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
-        return ;
-      }
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       String  currentPath = uiExplorer.getCurrentNode().getPath() ;
       String queryText = "" ;      
-      uiForm.setRenderSibbling(UIJCRAdvancedSearch.class) ;
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       if(searchType.equals(Query.SQL)){
         if ("/".equals(currentPath)) queryText = ROOT_SQL_QUERY ;
@@ -167,6 +165,11 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         if ("/".equals(currentPath)) queryText = ROOT_XPATH_QUERY ;
         else queryText = StringUtils.replace(XPATH_QUERY, "$0", currentPath) ;
         uiForm.getUIFormTextAreaInput(FIELD_QUERY).setValue(queryText) ;       
+      }
+      if(uiForm.isEdit_ && uiForm.query_ != null) {
+        if(searchType.equals(uiForm.query_.getLanguage())) {
+          uiForm.getUIFormTextAreaInput(FIELD_QUERY).setValue(uiForm.query_.getStatement()) ; 
+        }
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }

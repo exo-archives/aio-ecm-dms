@@ -59,7 +59,6 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   
   private List<Node> sharedQueries_ = new ArrayList<Node>() ;
   private boolean isQuickSearch_ = false ;
-  
 
   public UISavedQuery() throws Exception {        
     addChild(UIPageIterator.class, null, "SavedQueryIterator");
@@ -84,6 +83,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     uiPopup.setUIComponent(uiJAdvancedSearch) ;
     uiPopup.setRendered(true) ;
     uiJAdvancedSearch.setIsEdit(true) ;
+    uiJAdvancedSearch.setQuery(query) ;
     uiJAdvancedSearch.update(query) ;
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
