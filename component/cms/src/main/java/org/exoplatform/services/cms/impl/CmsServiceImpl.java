@@ -34,7 +34,6 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ExtendedNode;
 
 
 /**
@@ -55,17 +54,16 @@ public class CmsServiceImpl implements CmsService {
   }
 
   public String storeNode(String workspace, String nodeTypeName,
-      String storePath, Map mappings, String userId, String repository) throws Exception {
-    //Repository repository = jcrService.getRepository(repository);
+      String storePath, Map mappings,String repository) throws Exception {    
     Session session = jcrService.getRepository(repository).login(workspace);
     Node storeHomeNode = (Node) session.getItem(storePath);
-    String path = storeNode(nodeTypeName, storeHomeNode, mappings, true, userId, repository);
+    String path = storeNode(nodeTypeName, storeHomeNode, mappings, true,repository);
     storeHomeNode.save();
     return path;
   }
 
   public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
-                           boolean isAddNew, String userId, String repository) throws Exception {
+                           boolean isAddNew,String repository) throws Exception {
     repository_ = repository ;
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
@@ -88,8 +86,7 @@ public class CmsServiceImpl implements CmsService {
       }
     }
     if (isAddNew) {
-      currentNode = storeHomeNode.addNode(nodeName, nodeTypeName);      
-      ((ExtendedNode)currentNode).getACL().setOwner(userId) ;
+      currentNode = storeHomeNode.addNode(nodeName, nodeTypeName);            
       if(mixinTypes != null){
         for(String type : mixinTypes){
           NodeType mixinType = nodetypeManager.getNodeType(type);
