@@ -37,6 +37,7 @@ import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -186,9 +187,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   }
   
   public String getNodeOwner(Node node) throws RepositoryException {
-    String owner = ((ExtendedNode) node).getACL().getOwner();
-    if(owner != null) return owner ;
-    return "" ;
+    if(node.hasProperty("exo:owner")) {
+      return node.getProperty("exo:owner").getString();
+    }
+    return SystemIdentity.ANONIM ;
   }
   
   public String getNodePath(Node node) throws Exception { return node.getPath() ; }

@@ -127,8 +127,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
-      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, 
-                                              Util.getPortalRequestContext().getRemoteUser(), repository);
+      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;
       reset() ;
       for(UIComponent uiChild : getChildren()) {

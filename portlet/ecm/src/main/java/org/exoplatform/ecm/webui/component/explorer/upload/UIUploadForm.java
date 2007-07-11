@@ -171,8 +171,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
             CmsService cmsService = (CmsService)PortalContainer.getComponent(CmsService.class) ;
             String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-            cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties,
-                                 true, Util.getPortalRequestContext().getRemoteUser(), repository) ;
+            cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
             selectedNode.getSession().save() ;                        
           } else {

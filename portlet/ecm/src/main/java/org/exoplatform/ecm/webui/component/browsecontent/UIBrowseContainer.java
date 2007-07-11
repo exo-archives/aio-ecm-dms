@@ -39,6 +39,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -283,9 +284,10 @@ public class UIBrowseContainer extends UIContainer{
   public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
 
   public String getOwner(Node node) throws Exception{
-    String owner = ((ExtendedNode) node).getACL().getOwner();  
-    if(owner == null) owner = "" ;
-    return owner ;
+    if(node.hasProperty("exo:owner")) {
+      return node.getProperty("exo:owner").getString();
+    }
+    return SystemIdentity.ANONIM ;
   }
 
   private boolean isReferenceableNode(Node node) throws Exception {
