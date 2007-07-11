@@ -2,11 +2,9 @@
 
 <configuration>  
 
-	<component>
-	  <key>org.exoplatform.services.cms.folksonomy.FolksonomyService</key>  
-	  <type>org.exoplatform.services.cms.folksonomy.impl.FolksonomyServiceImpl</type>      
-	  <component-plugins>
-		  <component-plugin>
+	<external-component-plugins>
+    <target-component>org.exoplatform.services.cms.folksonomy.FolksonomyService</target-component>  	  
+    	<component-plugin>
 			  <name>predefinedTagStylePlugin</name>
 		    <set-method>addTagStylePlugin</set-method>
 		    <type>org.exoplatform.services.cms.folksonomy.impl.TagStylePlugin</type>
@@ -76,7 +74,7 @@
 		    	</object-param>
 		    </init-params>	  
 		  </component-plugin> 
-	  </component-plugins>
-	</component>   
+
+	</external-component-plugins>
 	
 </configuration>

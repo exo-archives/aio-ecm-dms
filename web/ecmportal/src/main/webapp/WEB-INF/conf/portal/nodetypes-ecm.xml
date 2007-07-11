@@ -1,11 +1,6 @@
 <nodeTypes xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0"
   xmlns:jcr="http://www.jcp.org/jcr/1.0">
-
-  <!-- For DTD rules look at nodetypes.dtd (
-    Original version live in exo-jcr.services.jcr.impl-1.0.jar at 
-    org\exoplatform\services\jcr\impl\core\nodetype\ path
-    ) -->
-
+  
   <nodeType name="rma:filePlan" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>nt:folder</supertype>
@@ -445,66 +440,8 @@
            values when the document is created through WebDAV. -->
       <supertype>mix:i18n</supertype>
       <!-- Allow Dublin Core metadata to be set. -->
-      <!-- Comment by Hoa Pham-->
-      <!--supertype>dc:elementSet</supertype -->
+      <supertype>dc:elementSet</supertype>
     </supertypes>
   </nodeType>
-  
-	<nodeType name="mix:votable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
-    <propertyDefinitions>
-      <propertyDefinition name="exo:votingRate" requiredType="Double" autoCreated="true" mandatory="false"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-        <defaultValues>
-          <defaultValue>0</defaultValue>
-        </defaultValues>
-      </propertyDefinition>
-			<propertyDefinition name="exo:voteTotal" requiredType="Long" autoCreated="true" mandatory="false"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-        <defaultValues>
-          <defaultValue>0</defaultValue>
-        </defaultValues>
-      </propertyDefinition>
-			<propertyDefinition name="exo:voteTotalOfLang" requiredType="Long" autoCreated="true" mandatory="false"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-        <defaultValues>
-          <defaultValue>0</defaultValue>
-        </defaultValues>
-      </propertyDefinition>
-			<propertyDefinition name="exo:voter" requiredType="String" autoCreated="true" mandatory="false"
-        onParentVersion="COPY" protected="false" multiple="true">        
-        <defaultValues>
-          <defaultValue> </defaultValue>
-        </defaultValues>
-      </propertyDefinition>			
-    </propertyDefinitions>			
-  </nodeType>
-  
-  <nodeType name="mix:commentable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
-  </nodeType>
-  	
-	<nodeType	name="exo:comments" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">  		
-		<supertypes>      
-      <supertype>nt:unstructured</supertype>           
-    </supertypes>
-		<propertyDefinitions>
-			<propertyDefinition name="exo:commentor" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-				<valueConstraints/>
-			</propertyDefinition>
-			<propertyDefinition name="exo:commentorEmail" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-				<valueConstraints/>
-			</propertyDefinition>
-			<propertyDefinition name="exo:commentorSite" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-				<valueConstraints/>
-			</propertyDefinition>
-			<propertyDefinition name="exo:commentDate" requiredType="Date" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-				<valueConstraints/>
-			</propertyDefinition>	  			  		
-			<propertyDefinition name="exo:commentContent" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-				<valueConstraints/>
-			</propertyDefinition>	  		
-		</propertyDefinitions>			
- 	</nodeType>
+    	
 </nodeTypes>

@@ -2,25 +2,24 @@
 
 <configuration>  
     
-  <component>
-    <key>org.exoplatform.services.cms.actions.ActionServiceContainer</key>  
-    <type>org.exoplatform.services.cms.actions.ActionServiceContainerImpl</type>
-    <component-plugins>
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cms.actions.ActionServiceContainer</target-component>      
+
       <component-plugin>
         <name>exo:businessProcessAction</name>
         <set-method>addPlugin</set-method>
-        <type>org.exoplatform.services.cms.actions.BPActionPlugin</type>
+        <type>org.exoplatform.services.cms.actions.impl.BPActionPlugin</type>
         <init-params>
           <object-param>
             <name>predefined.actions</name>
             <description>description</description>
-            <object type="org.exoplatform.services.cms.actions.ActionConfig">
+            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig">
             	<field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="actions">
                 <collection type="java.util.ArrayList">
                   <value>
-                    <object type="org.exoplatform.services.cms.actions.ActionConfig$Action">
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
                       <field  name="type"><string>exo:workflowAction</string></field>
                       <field  name="name"><string>publication</string></field>                  
                       <field  name="description"><string>publication workflow</string></field>
@@ -34,7 +33,7 @@
                       <field name="mixins">
                         <collection type="java.util.ArrayList">
                           <value>
-                            <object type="org.exoplatform.services.cms.actions.ActionConfig$Mixin">
+                            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
                               <field  name="name"><string>exo:move</string></field>
                               <field  name="properties">
                                 <string>exo:destWorkspace=production;exo:destPath=/cms/publications;exo:repository=repository</string>
@@ -46,7 +45,7 @@
                     </object>  
                   </value> 
                   <value>
-                    <object type="org.exoplatform.services.cms.actions.ActionConfig$Action">
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
                       <field  name="type"><string>exo:backupAction</string></field>
                       <field  name="name"><string>backup</string></field>                  
                       <field  name="description"><string>backup workflow</string></field>
@@ -57,7 +56,7 @@
                       <field name="mixins">
                         <collection type="java.util.ArrayList">
                           <value>
-                            <object type="org.exoplatform.services.cms.actions.ActionConfig$Mixin">
+                            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
                               <field  name="name"><string>exo:move</string></field>
                               <field  name="properties">
                                 <string>exo:destWorkspace=backup;exo:destPath=/cms/publications;exo:repository=repository</string>
@@ -77,18 +76,18 @@
       <component-plugin>
         <name>exo:scriptAction</name>   
         <set-method>addPlugin</set-method>
-        <type>org.exoplatform.services.cms.actions.ScriptActionPlugin</type>
+        <type>org.exoplatform.services.cms.actions.impl.ScriptActionPlugin</type>
         <init-params>
           <object-param>
             <name>predefined.actions</name>
             <description>description</description>
-            <object type="org.exoplatform.services.cms.actions.ActionConfig">
+            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig">
             	<field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>production</string></field>
               <field  name="actions">
                 <collection type="java.util.ArrayList">
                   <value>
-                    <object type="org.exoplatform.services.cms.actions.ActionConfig$Action">
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
                       <field  name="type"><string>exo:sendMailAction</string></field>
                       <field  name="name"><string>sendMail</string></field>                  
                       <field  name="description"><string>send a notification mail</string></field>
@@ -107,17 +106,7 @@
           </object-param>
         </init-params>    
       </component-plugin>      
-    </component-plugins>
-    <init-params>
-      <value-param>
-        <name>workspace</name>
-        <value>production</value>
-      </value-param>
-      <value-param>
-        <name>repository</name>
-        <value>repository</value>
-      </value-param>            
-    </init-params>    
-  </component>    
+    
+ </external-component-plugins>
 
 </configuration>

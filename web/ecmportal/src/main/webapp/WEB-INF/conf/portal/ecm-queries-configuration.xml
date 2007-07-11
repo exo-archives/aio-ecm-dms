@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>
-  <component>
-    <key>org.exoplatform.services.cms.queries.QueryService</key>
-    <type>org.exoplatform.services.cms.queries.QueryServiceImpl</type>
-    <component-plugins>
+   <external-component-plugins>
+    <target-component>org.exoplatform.services.cms.queries.QueryService</target-component>    
       <component-plugin> 
         <name>query.plugin</name>
         <set-method>setQueryPlugin</set-method>
-        <type>org.exoplatform.services.cms.queries.QueryPlugin</type>
+        <type>org.exoplatform.services.cms.queries.impl.QueryPlugin</type>
         <description>Nothing</description>
         <init-params>
           <object-param>        
             <name>News</name>
             <description>Nothing</description>
-            <object type="org.exoplatform.services.cms.queries.QueryData">
+            <object type="org.exoplatform.services.cms.queries.impl.QueryData">
               <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="name"><string>news</string></field>
@@ -27,7 +25,7 @@
           <object-param>        
             <name>Events</name>
             <description>Nothing</description>
-            <object type="org.exoplatform.services.cms.queries.QueryData">
+            <object type="org.exoplatform.services.cms.queries.impl.QueryData">
               <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="name"><string>events</string></field>
@@ -39,12 +37,5 @@
           </object-param>          
         </init-params>  
       </component-plugin> 
-    </component-plugins>
-    <init-params>
-	    <value-param>
-	      <name>relativePath</name>
-	      <value>queries</value>
-	    </value-param>            
-	  </init-params>
-  </component>
+  </external-component-plugins>
 </configuration>

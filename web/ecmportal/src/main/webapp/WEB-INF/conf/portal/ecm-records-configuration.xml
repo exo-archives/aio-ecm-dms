@@ -14,7 +14,7 @@
           <description>save the monitor data  periodically</description>
           <property name="jobName" value="RecordsJob"/>
           <property name="groupName" value="RecordsManagement"/>
-          <property name="job" value="org.exoplatform.services.cms.records.RecordsJob"/>
+          <property name="job" value="org.exoplatform.services.cms.records.impl.RecordsJob"/>
           <property name="repeatCount" value="0"/>
           <property name="period" value="120000"/>     
           <property name="startTime" value="+0"/>

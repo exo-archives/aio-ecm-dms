@@ -2,129 +2,127 @@
 
 <configuration>  
 
-	<component>
-	  <key>org.exoplatform.services.cms.categories.CategoriesService</key>  
-	  <type>org.exoplatform.services.cms.categories.CategoriesServiceImpl</type>  	
-	  <component-plugins>
+	<external-component-plugins>
+    <target-component>org.exoplatform.services.cms.categories.CategoriesService</target-component>  	  
 		  <component-plugin>
 			  <name>predefinedTaxonomyPlugin</name>
 		    <set-method>addTaxonomyPlugin</set-method>
-		    <type>org.exoplatform.services.cms.categories.TaxonomyPlugin</type>
+		    <type>org.exoplatform.services.cms.categories.impl.TaxonomyPlugin</type>
 		    <init-params>
 		    	<object-param>
 		    		<name>taxonomy.configuration</name>
 	          <description>configuration predefined taxonomies to inject in jcr</description>
-	          <object type="org.exoplatform.services.cms.categories.TaxonomyConfig">
+	          <object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig">
 	          	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
 	            <field  name="repository"><string>repository</string></field>
 	          	<field  name="taxonomies">
 	          		<collection type="java.util.ArrayList">
 	          		  <!-- cms taxonomy -->
 	          			<value>
-	          				<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+	          				<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>cmsTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>	
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>newsTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/news</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>sportsTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/sports</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>worldTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/news/world</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>economyTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/news/economy</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>footballTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/sports/football</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>champions-leagueTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/sports/football/champions-league</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>uefaTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/cms/sports/football/uefa</string></field>		          				          						          				
 		          			</object>
 		          		</value>		          		
 	          		  <!-- calendar taxonomy -->
 	          			<value>
-	          				<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+	          				<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>calendarTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>	
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>birthdayTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Birthday</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>breakfastTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Breakfast</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>callTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Call</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>lunchTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Lunch</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>meetingTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Meeting</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>otherCalendarTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Other</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>persionalTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Personal</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>professionalTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Professional</string></field>		          				          						          				
 		          			</object>
 		          		</value>
 		          		<value>
-		          			<object type="org.exoplatform.services.cms.categories.TaxonomyConfig$Taxonomy">
+		          			<object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig$Taxonomy">
 		          			  <field  name="name"><string>vacationsTaxonomy</string></field>		          				          				
 		          				<field  name="path"><string>/calendar/Vacations</string></field>		          				          						          				
 		          			</object>
@@ -135,7 +133,6 @@
 		    	</object-param>
 		    </init-params>	  
 		  </component-plugin> 
-	  </component-plugins>
-	</component>   
+	</external-component-plugins>
 	
 </configuration>

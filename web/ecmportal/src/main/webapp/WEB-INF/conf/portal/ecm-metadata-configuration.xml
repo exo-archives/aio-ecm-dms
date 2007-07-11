@@ -2,10 +2,8 @@
 
 <configuration>
   
-  <component>
-    <key>org.exoplatform.services.cms.metadata.MetadataService</key>
-    <type>org.exoplatform.services.cms.metadata.MetadataServiceImpl</type>    
-    <component-plugins>
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cms.metadata.MetadataService</target-component>
       <component-plugin>
         <name>addPlugins</name>
         <set-method>addPlugins</set-method>
@@ -549,7 +547,6 @@
           </object-param>
         </init-params>       
       </component-plugin>
-    </component-plugins>
-  </component> 
+  </external-component-plugins>
   
 </configuration>

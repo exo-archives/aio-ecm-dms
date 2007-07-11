@@ -2,14 +2,13 @@
 
 <configuration>  
   
-  <component>
-    <key>org.exoplatform.services.cms.drives.ManageDriveService</key>
-    <type>org.exoplatform.services.cms.drives.ManageDriveServiceImpl</type>
-    <component-plugins>
+   <external-component-plugins>
+   	<target-component>org.exoplatform.services.cms.drives.ManageDriveService</target-component>    
+
       <component-plugin> 
         <name>manage.drive.plugin</name>
         <set-method>setManageDrivePlugin</set-method>
-        <type>org.exoplatform.services.cms.drives.ManageDrivePlugin</type>
+        <type>org.exoplatform.services.cms.drives.impl.ManageDrivePlugin</type>
         <description>Nothing</description>
         <init-params>
           <object-param>        
@@ -147,7 +146,6 @@
           </object-param>         
         </init-params>  
       </component-plugin> 
-    </component-plugins>    
-  </component>
 
+   </external-component-plugins>
 </configuration>

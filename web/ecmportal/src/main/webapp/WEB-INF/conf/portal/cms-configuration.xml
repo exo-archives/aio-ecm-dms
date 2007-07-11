@@ -205,6 +205,6 @@
             </object>
           </object-param>
         </init-params>            
-      </component-plugin>     
+      </component-plugin>
     </external-component-plugins> 
 </configuration>
