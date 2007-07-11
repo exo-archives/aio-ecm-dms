@@ -531,6 +531,14 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .EditQueryForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .EditQueryForm .UIAction {
+  width: 170px;
+}
+
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {
@@ -839,6 +847,11 @@
 }
 
 /*=================================UICategoryManager==============================*/
+
+.UIJCRExplorer .UITabPane {
+	padding: 10px;
+	border: solid 1px red;
+}
 
 .UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
 	width: 100px;

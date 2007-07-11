@@ -384,7 +384,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid .FieldLabel{
-	width: 140px;
+	width: 160px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
@@ -540,12 +540,16 @@
 /*================================UISimpleSearch=================================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 430px;
+  width: 450px;
   padding-left: 20px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
   padding-bottom: 0px;
+}
+
+.UIJCRExplorerPortlet .EditQueryForm .UIAction {
+  width: 180px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {

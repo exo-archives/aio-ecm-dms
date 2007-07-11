@@ -594,6 +594,17 @@
 	width: 180px;
 	padding-left: 30px;
 }
+
+.UIJCRExplorerPortlet .EditQueryForm {
+  width: 97%;
+  margin: 10px auto;
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+}
+
+.UIJCRExplorerPortlet .EditQueryForm .UIAction {
+  width: 170px;
+}
+
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {

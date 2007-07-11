@@ -233,6 +233,11 @@
 }
 
 /*##############################- Begin UIProcessDetail -################################*/
+
+.UIWorkflowPortlet .UIProcessDetail {
+	padding: 10px;
+}
+
 .UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {
 	background: none ;
 	width: auto ;
@@ -323,4 +328,12 @@
 
 .UIWorkflowPortlet .UIAdministrationManager .UIAction {
   width: 120px;
+}
+
+.UIWorkflowPopup .UITabPane {
+	padding: 10px;
+}
+
+.UIWorkflowPopup .UITabPane .UIFormWithTitle {
+	width: auto;
 }

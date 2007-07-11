@@ -192,9 +192,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer {
-}
-
 .UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
   width: 105px;
 }
@@ -425,6 +422,10 @@
   height: 350px ;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
+  width: 160px;
+}
+
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
@@ -437,10 +438,16 @@
   width: 170px ;
 }
 
+.UIJCRExplorerPortlet .UIUploadManager {
+  padding: 10px;
+}
+
 /*############################## -- End Others   -- ##############################*/
+
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
   width: 210px;
 }
+
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- UIActionManager   -- ##############################*/

@@ -106,7 +106,7 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 300px;
+	width: 400px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
@@ -171,6 +171,7 @@
   margin-right: 10px;
   float: left ;
   width: 220px ;
+  overflow: auto;
 }
 
 .UIJCRExplorerPortlet .Explorer .ExplorerTree {
@@ -182,6 +183,10 @@
 .UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .Explorer .ExplorerTree .UITree {
+  overflow: auto;
 }
 
 .UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {

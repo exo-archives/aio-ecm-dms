@@ -83,7 +83,7 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 300px;
+	width: 360px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
@@ -238,10 +238,18 @@
 .UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
+  overflow: auto;
 }
 
-.UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
+.UIJCRExplorerPortlet .UITree .TreeContainer .Node {
+  white-space: nowrap;
+}
+
+.UIJCRExplorerPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	margin: 0px;
+	line-height: 24px;
+	height: 24px;
 }
 
 .UIJCRExplorerPortlet .UITreeList .UIGrid {
@@ -434,12 +442,4 @@
 
 .UIPopupWindow .UIWindowContent .UISaveQueryForm .UIFormGrid td.FieldLabel {
   width:68px;
-}
-
-.UIJCRExplorer .EditQueryForm .UIAction {
-  width: 140px;
-}
-
-.UIJCRExplorer .UIFormInputSetWithAction .FieldComponent .Introduction{
-	font-style: italic;
 }

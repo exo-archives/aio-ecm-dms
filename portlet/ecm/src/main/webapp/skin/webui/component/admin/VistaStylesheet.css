@@ -498,12 +498,6 @@
 	margin: 0px auto;
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
-  width: 95%;
-  margin: auto;
-  padding: 15px 10px;
-}
-
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane .UIAction {
   width: 270px ;
   padding: 7px 0px 0px 0px;
@@ -551,8 +545,9 @@
 }
 
 .ECMTempForm .UIForm .textarea {
-  width: 320px;
+  width: 95%;
   height: 300px;
+  padding: 3px;
 }
 
 .ECMTempForm .UIAction {
@@ -561,8 +556,9 @@
 }
 
 .CBTempForm .UIForm textarea {
-  width: 320px;
+  width: 95%;
   height: 300px;
+  padding: 3px;
 }
 
 .CBTempForm .UIForm .UIAction {
@@ -624,13 +620,14 @@
 }
 
 .UIECMScripts .UIForm textarea {
-  width: 320px;
+  width: 90%;
   height: 300px;
+  padding: 3px;
 }
 
 .UIECMScripts .ECMScriptForm .UIAction {
   width: 270px;
-  padding-left: 60px;
+  padding-right: 10px;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
@@ -642,7 +639,7 @@
 
 .UICBScripts .CBScriptForm .UIAction {
 	width: 270px;
-	padding-left: 60px;
+	padding-right: 10px;
 }
 
 .UICBScripts .HorizontalLayout {
@@ -650,7 +647,9 @@
 }
 
 .UICBScripts .UIForm textarea {
-  width: 320px; height: 300px;
+  width: 90%; 
+  height: 300px;
+  padding: 3px;
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/

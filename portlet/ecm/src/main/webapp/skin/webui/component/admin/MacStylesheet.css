@@ -196,6 +196,11 @@
 
 /*--------------------------.UIFormInputSet----------------------*/
 
+.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	width: 95%;
+	margin: auto;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
   float: left;
 }
