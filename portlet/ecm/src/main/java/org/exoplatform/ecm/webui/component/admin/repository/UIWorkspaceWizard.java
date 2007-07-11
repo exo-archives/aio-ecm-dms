@@ -132,7 +132,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     step1.setFieldActions(FIELD_PERMISSION, new String[]{"AddPermission"}) ;
     step1.showActionInfo(true) ;
     step1.addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(EmptyFieldValidator.class).
-        addValidator(NumberFormatValidator.class)) ;
+                   addValidator(NumberFormatValidator.class)) ;
     UIFormInputSet step2 = new UIFormInputSet(FIELD_STEP2) ;
     step2.addChild(new UIFormStringInput(FIELD_CONTAINER, FIELD_CONTAINER, null)) ;
     step2.addChild(new UIFormStringInput(FIELD_SOURCENAME, FIELD_SOURCENAME, null)) ;
@@ -251,6 +251,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
   public String[] getCurrentAction() {return actionMap_.get(selectedStep_) ;}
 
+  @SuppressWarnings("unchecked")
   protected void refresh(WorkspaceEntry workSpace) throws Exception{
     reset() ;
     UIFormInputSetWithAction uiWSFormStep1 = getChildById(FIELD_STEP1) ;
@@ -347,6 +348,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   protected boolean isEmpty(String value) {
     return (value == null) || (value.trim().length() == 0) ;
   }
+  
+  @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
     UIFormInputSetWithAction uiFormAction = getChildById(FIELD_STEP1) ;
     UIFormStringInput permissionField = uiFormAction.getUIStringInput(FIELD_PERMISSION) ;
@@ -652,6 +655,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       return containerEntry ;
     }
 
+    @SuppressWarnings("unused")
     private ValueStorageEntry newValueStorageEntry(String storeType, String value, String filter) {
       ArrayList<ValueStorageFilterEntry> vsparams = new ArrayList<ValueStorageFilterEntry>();
       ValueStorageEntry valueStorageEntry = new ValueStorageEntry(storeType, vsparams)  ;
@@ -679,9 +683,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class NextActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
-      uiFormWizard.removePopup(UIWorkspaceWizard.POPUPID) ;
-      UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
-      String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
+      uiFormWizard.removePopup(POPUPID) ;
+      UIFormInputSetWithAction uiWSFormStep1 = uiFormWizard.getChildById(FIELD_STEP1) ;
+      String wsName = uiWSFormStep1.getUIStringInput(FIELD_NAME).getValue() ;
+      String lockTimeOut = uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).getValue() ;
       String perm = null ;
       StringBuffer sb = new StringBuffer() ;        
       for(String s :  uiFormWizard.permissions_.values()) {
@@ -710,6 +715,19 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
+        if(lockTimeOut == null || lockTimeOut.trim().length() == 0) {
+          uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue("0") ;
+        } else {
+          for(int i = 0; i < lockTimeOut.length(); i++) {
+            char c = lockTimeOut.charAt(i);
+            if(Character.isDigit(c)) continue ;
+            Object[] args = { lockTimeOut } ;
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.invalid-input", args, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        } 
       }
       if(uiWSFormStep2.isRendered()) {
         if(uiFormWizard.isEmpty(containerName)) {

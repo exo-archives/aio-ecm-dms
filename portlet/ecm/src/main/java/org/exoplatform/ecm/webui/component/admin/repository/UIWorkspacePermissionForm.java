@@ -50,9 +50,10 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
     }
     return false ;
   }
+  
+  @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
     getUIStringInput(FIELD_PERMISSION).setValue(value) ;
-
   }
   
   public void reset() {

@@ -101,7 +101,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     addChild(new UIFormStringInput(FIELD_AUTHENTICATION,FIELD_AUTHENTICATION, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null).addValidator(EmptyFieldValidator.class) 
-        .addValidator(NumberFormatValidator.class)) ;
+            .addValidator(NumberFormatValidator.class)) ;
     UIFormCheckBoxInput<Boolean> bseCheckbox = new UIFormCheckBoxInput<Boolean>(FIELD_REPENABLE,FIELD_REPENABLE, null) ;
     bseCheckbox.setOnChange("ShowHidden") ;
     addChild(bseCheckbox) ;

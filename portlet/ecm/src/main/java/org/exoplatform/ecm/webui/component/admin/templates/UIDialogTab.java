@@ -48,6 +48,8 @@ public class UIDialogTab extends UIContainer {
   final private static String[] ACTIONS = {"Edit", "Delete"} ;
   final public static String DIALOG_LIST_NAME = "DialogList" ;
   final public static String DIALOG_FORM_NAME = "DialogForm" ;
+  
+  private List<String> listDialog_ = new ArrayList<String>() ;
 
   public UIDialogTab() throws Exception {
     UIGrid uiGrid = addChild(UIGrid.class, null, DIALOG_LIST_NAME) ;
@@ -58,6 +60,8 @@ public class UIDialogTab extends UIContainer {
     uiForm.update(null) ;
   }
 
+  public List<String> getListDialog() { return listDialog_ ; }
+  
   public void updateGrid(String nodeName, String repository) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
     NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository) ;
@@ -74,6 +78,7 @@ public class UIDialogTab extends UIContainer {
       if(node.isNodeType(Utils.MIX_VERSIONABLE) && !node.isNodeType(Utils.NT_FROZEN)){
         version = node.getBaseVersion().getName() ;
       }
+      listDialog_.add(node.getName()) ;
       item = new DialogData(node.getName(), rule.toString(), version) ;
       data.add(item) ;
     }

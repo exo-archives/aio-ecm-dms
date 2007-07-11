@@ -48,6 +48,8 @@ public class UIViewTab extends UIContainer {
   final private static String[] ACTIONS = {"Edit", "Delete"} ;
   final public static String VIEW_LIST_NAME = "VewList" ;
   final public static String VIEW_FORM_NAME = "ViewForm" ;
+  
+  private List<String> listView_ = new ArrayList<String>() ;
 
   public UIViewTab() throws Exception { 
     UIGrid uiGrid = addChild(UIGrid.class, null, VIEW_LIST_NAME) ;
@@ -58,6 +60,8 @@ public class UIViewTab extends UIContainer {
     uiForm.update(null) ;
   }
 
+  public List<String> getListView() { return listView_ ; }
+  
   public void updateGrid(String nodeName) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
     NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository()) ;
@@ -74,6 +78,7 @@ public class UIViewTab extends UIContainer {
       if(node.isNodeType(Utils.MIX_VERSIONABLE) && !node.isNodeType(Utils.NT_FROZEN)) {
         version = node.getBaseVersion().getName();
       }
+      listView_.add(node.getName()) ;
       item = new ViewData(node.getName(), rule.toString(), version) ;
       data.add(item);
     }

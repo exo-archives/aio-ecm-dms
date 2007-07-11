@@ -11,7 +11,6 @@ import javax.jcr.Node;
 import javax.jcr.version.VersionHistory;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
@@ -66,7 +65,7 @@ public class UITemplateContent extends UIForm implements UISelector {
   final static public String[] REG_EXPRESSION = {"[", "]", ":", "&"} ;
 
   private boolean isDialog_  ;
-  private boolean isAddNew_ = false ;
+  private boolean isAddNew_ = true ;
   private String nodeTypeName_ ;  
   private List<String> listVersion_ = new ArrayList<String>() ;
 
@@ -79,8 +78,7 @@ public class UITemplateContent extends UIForm implements UISelector {
     versions.setRendered(false) ;    
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-        addValidator(ECMNameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     UIFormCheckBoxInput isVersion = 
       new UIFormCheckBoxInput<Boolean>(FIELD_ENABLE_VERSION , FIELD_ENABLE_VERSION, null) ;
     isVersion.setRendered(false) ;
@@ -219,9 +217,16 @@ public class UITemplateContent extends UIForm implements UISelector {
       UITemplateContent uiForm = event.getSource() ;
       String repository = uiForm.getRepository() ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      if(name == null || name.trim().length() == 0) {
+        Object[] args = { FIELD_NAME } ;
+        uiApp.addMessage(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(!Utils.isNameValid(name, UITemplateContent.REG_EXPRESSION)){
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -231,12 +236,30 @@ public class UITemplateContent extends UIForm implements UISelector {
       UIFormInputSetWithAction permField = uiForm.getChildById("UITemplateContent") ;
       String role = permField.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;      
       if((role == null) || (role.trim().length() == 0)) {
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.roles-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-
+      UIViewTemplate uiViewTemplate = uiForm.getAncestorOfType(UIViewTemplate.class) ;
+      if(uiForm.getId().equals(UIDialogTab.DIALOG_FORM_NAME)) {
+        UIDialogTab uiDialogTab = uiViewTemplate.getChild(UIDialogTab.class) ;
+        if(uiDialogTab.getListDialog().contains(name) && uiForm.isAddNew_) {
+          Object[] args = { name } ;
+          uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.name-exist", args, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      } else if(uiForm.getId().equals(UIViewTab.VIEW_FORM_NAME)) {
+        UIViewTab uiViewTab = uiViewTemplate.getChild(UIViewTab.class) ;
+        if(uiViewTab.getListView().contains(name) && uiForm.isAddNew_) {
+          Object[] args = { name } ;
+          uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.name-exist", args, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
@@ -258,6 +281,7 @@ public class UITemplateContent extends UIForm implements UISelector {
       org.exoplatform.groovyscript.text.TemplateService groovyService = 
         uiForm.getApplicationComponent(org.exoplatform.groovyscript.text.TemplateService.class) ;
       if(path != null) groovyService.invalidateTemplate(path, resourceResolver) ;
+      uiForm.isAddNew_ = true ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

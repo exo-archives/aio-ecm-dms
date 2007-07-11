@@ -130,6 +130,7 @@ public class UINodeTypeImport extends UIForm {
       uiImport.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);
       for(int i = 0 ; i < uiImport.nodeTypeList_.size() ; i ++){
         NodeTypeValue nodeTypeValue = (NodeTypeValue)uiImport.nodeTypeList_.get(i) ;
+        System.out.println("\n\nnodetype value====>" + nodeTypeValue.getName() + "\n\n");
         if(listCheckbox.get(i).isChecked()) {         
           extManager.registerNodeType(nodeTypeValue, ExtendedNodeTypeManager.IGNORE_IF_EXISTS) ;
           counter += 1 ;          
@@ -141,13 +142,10 @@ public class UINodeTypeImport extends UIForm {
       } else {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeImport.msg.no-nodetype-registered", null)) ;
       }
-      UINodeTypeExport uiExport = uiManager.findComponentById("UINodeTypeExport") ;
-      uiExport.update() ;
       UINodeTypeList uiNodeTypeList = uiManager.getChild(UINodeTypeList.class) ;
       uiNodeTypeList.refresh(null) ;
       UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.IMPORT_POPUP) ;
       uiPopup.setRendered(false) ;
     }
   }
-
 }
