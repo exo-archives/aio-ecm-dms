@@ -60,6 +60,10 @@
 	width: 100%;
 }
 
+.UIJCRExplorer .UITabPane {
+	padding: 10px;
+}
+
 /*======================== -- End UIJCRExplorer -- ==========================================*/
 
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/

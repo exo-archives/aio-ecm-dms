@@ -399,10 +399,6 @@
 
 /*############################## -- Others   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
-  width: 150px ;
-}
-
 /*############################## -- UITaggingForm   -- ##############################*/
 .UIJCRExplorerPortlet .UITaggingForm .ActionField {
 	float: left ;

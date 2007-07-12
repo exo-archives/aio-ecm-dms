@@ -849,8 +849,8 @@
 /*=================================UICategoryManager==============================*/
 
 .UIJCRExplorer .UITabPane {
-	padding: 10px;
-	border: solid 1px red;
+	width: 95%;
+	margin: 10px auto;
 }
 
 .UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
@@ -941,7 +941,13 @@
 	border: solid 1px #b7b7b7;
 	margin: 10px;
 }
-/*======================================================================*/
+/*================================ UIViewMetadataManager ====================================*/
+
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
+  width: 150px ;
+}
+
+/*=============================== UIConstraintsForm =======================================*/
 
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle {
   background:#EFEFEF none repeat scroll 0%;

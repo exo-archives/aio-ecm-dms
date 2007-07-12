@@ -15,7 +15,6 @@
       font-size: 12px;  font-weight: bold;
     }
     .ContentBlock{
-      width: 99.5%;     
       margin:20px 20px 20px 20px;
     }
     .Label {
@@ -33,7 +32,7 @@
       text-align: left ;      
     }
     .Line {
-      background: url('/ecm/skin/images/metadata/dot.gif')repeat-x center;
+      background: url('/ecm/skin/images/metadata/dot.gif') repeat-x center;
       height: 10px;
     }       
   </style>  
@@ -69,7 +68,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:45%;">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Date</div>
@@ -78,7 +77,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:45%;">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label">Subject</div>
@@ -86,7 +85,8 @@
         </div>
         <div><% renderDCValues("dc:subject") %></div>
       </div>
-    </div>              
+    </div>
+    <div style="clear: both;"><span></span></div>
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
@@ -107,7 +107,8 @@
         </div>
         <div><% renderDCValues("dc:language") %></div>
       </div>
-    </div>              
+    </div> 
+    <div style="clear: both;"><span></span></div>             
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
@@ -128,7 +129,8 @@
         </div>
         <div><% renderDCValues("dc:publisher") %></div>
       </div>
-    </div>              
+    </div>  
+    <div style="clear: both;"><span></span></div>            
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
@@ -149,7 +151,8 @@
         </div>
         <div><% renderDCValues("dc:identifier") %></div>
       </div>
-    </div>              
+    </div>  
+    <div style="clear: both;"><span></span></div>            
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
@@ -170,7 +173,8 @@
         </div>
         <div><% renderDCValues("dc:format") %></div>
       </div>
-    </div>              
+    </div>   
+    <div style="clear: both;"><span></span></div>           
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
@@ -191,7 +195,8 @@
         </div>
         <div><% renderDCValues("dc:rights") %></div>
       </div>
-    </div>              
+    </div>  
+    <div style="clear: both;"><span></span></div>            
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
@@ -213,6 +218,7 @@
         <div><% renderDCValues("dc:coverage") %></div>
       </div>
     </div>              
+    <div style="clear: both;"><span></span></div>
   </div>  
 </div>
 <%/* start render action*/%>
