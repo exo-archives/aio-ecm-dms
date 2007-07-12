@@ -113,13 +113,13 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
   
   public void onchange(Event event) throws Exception {
-    if(!isEditInList_ || !isAddNew_) {
-      UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
-      uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
-    } else {
+    if(isEditInList_ || !isAddNew_) {
       event.getRequestContext().addUIComponentToUpdateByAjax(getParent()) ;
+      return ;
     }
+    UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
+    uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
   }
   
   @SuppressWarnings("unchecked")
@@ -175,6 +175,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         return null;
       }
       actionServiceContainer.addAction(parentNode_, repository, nodeTypeName_, sortedInputs);
+      setIsOnchange(false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
       createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;

@@ -168,6 +168,14 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(name.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIScriptForm.msg.fileName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       UIScriptList curentList = null ;
       UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
       String namePrefix = null;
@@ -177,8 +185,9 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         curentList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
         namePrefix = curentList.getScriptCategory() ;
         UIECMScripts uiEScripts = uiManager.getChild(UIECMScripts.class) ;
-        namePrefix = namePrefix.substring(namePrefix.lastIndexOf("/") + 1, namePrefix.length()) ;
-        scriptDatas = uiEScripts.getECMScript(namePrefix) ;
+        String subNamePrefix = 
+          namePrefix.substring(namePrefix.lastIndexOf("/") + 1, namePrefix.length()) ;
+        scriptDatas = uiEScripts.getECMScript(subNamePrefix) ;
       } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)){
         curentList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
         UICBScripts uiCBScripts = uiManager.getChild(UICBScripts.class) ;
