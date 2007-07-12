@@ -114,15 +114,14 @@
   float: left;
   height: 16px;
 }
-
+ 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
   margin: 4px 50px 0px 93px;
   height: 20px; line-height: 20px;
   background: white;
-  border: solid 1px #b7b7b7;
+  border: solid 1px #d8d8d8;
   border-right: solid 1px #cdcdcd;
   border-bottom: solid 1px #cdcdcd;
-  position: relative;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
@@ -155,9 +154,6 @@
   margin: auto;
 }
 
-/*
-	TODO: minh.js.exo
-*/
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent {
   border: solid 1px #716f64;
   border-top: none;
