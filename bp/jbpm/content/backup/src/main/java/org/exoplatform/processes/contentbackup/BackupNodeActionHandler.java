@@ -6,7 +6,8 @@ package org.exoplatform.processes.contentbackup;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -42,29 +43,26 @@ public class BackupNodeActionHandler implements ActionHandler {
     String srcPath = (String) context.getVariable("srcPath");
     String srcWorkspace = (String) context.getVariable("srcWorkspace");
     String repository = (String) context.getVariable("repository");
-    PortalContainer container = PortalContainer.getInstance();
-    CmsService cmsService = (CmsService) container
-        .getComponentInstanceOfType(CmsService.class);
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    CmsService cmsService = (CmsService) container.getComponentInstanceOfType(CmsService.class);
     ActionServiceContainer actionServiceContainer = (ActionServiceContainer) container
-        .getComponentInstanceOfType(ActionServiceContainer.class);
+    .getComponentInstanceOfType(ActionServiceContainer.class);
     RepositoryService repositoryService = (RepositoryService) container
-         .getComponentInstanceOfType(RepositoryService.class);
+    .getComponentInstanceOfType(RepositoryService.class);
     Session session = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);
     Node actionnableNode = (Node) session.getItem(srcPath);
-    Node actionNode = actionServiceContainer.getAction(actionnableNode,
-        actionName,repository);
+    Node actionNode = actionServiceContainer.getAction(actionnableNode,actionName);
 
-    String destWorkspace = actionNode.getProperty("exo:destWorkspace")
-        .getString();
+    String destWorkspace = actionNode.getProperty("exo:destWorkspace").getString();
     String destPath = actionNode.getProperty("exo:destPath").getString();
 
-    
     String relPath = nodePath.substring(srcPath.length() + 1);
     if (!relPath.startsWith("/"))
       relPath = "/" + relPath;
     relPath = relPath.replaceAll("\\[\\d*\\]", "");
     cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath
         + relPath, repository);
+    session.logout();
   }
 
 }

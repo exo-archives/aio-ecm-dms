@@ -6,14 +6,12 @@ package org.exoplatform.processes.contentvalidation;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.jcr.observation.EventListener;
-import javax.jcr.observation.EventListenerIterator;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -51,7 +49,7 @@ public class MoveNodeActionHandler implements ActionHandler {
     String repository = (String) context.getVariable("repository");
     Date startDate = (Date) context.getVariable("startDate");
     Date endDate = (Date) context.getVariable("endDate");      
-    PortalContainer container = PortalContainer.getInstance();
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
     RepositoryService repositoryService = (RepositoryService) container
         .getComponentInstanceOfType(RepositoryService.class);
     ActionServiceContainer actionServiceContainer = (ActionServiceContainer) container
@@ -61,7 +59,7 @@ public class MoveNodeActionHandler implements ActionHandler {
     if(!actionableNode.isNodeType("exo:actionable")) {
     	  actionableNode = (Node) session.getItem(nodePath);
     } 
-    Node actionNode = actionServiceContainer.getAction(actionableNode, actionName, repository);
+    Node actionNode = actionServiceContainer.getAction(actionableNode, actionName);
     String destWorkspace = actionNode.getProperty("exo:destWorkspace").getString();
     String destPath = actionNode.getProperty("exo:destPath").getString();
     Node srcNode = (Node) session.getItem(nodePath);
@@ -76,14 +74,14 @@ public class MoveNodeActionHandler implements ActionHandler {
     }
     srcNode.save();
 
-    CmsService cmsService = (CmsService) container
-        .getComponentInstanceOfType(CmsService.class);
+    CmsService cmsService = (CmsService) container.getComponentInstanceOfType(CmsService.class);
     
     String relPath = nodePath.substring(srcPath.length() + 1); 
     if(!relPath.startsWith("/"))
       relPath = "/" + relPath;
     relPath = relPath.replaceAll("\\[\\d*\\]", "");
-    cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath + relPath, repository);    
+    cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath + relPath, repository);
+    session.logout();
   }
 
 }

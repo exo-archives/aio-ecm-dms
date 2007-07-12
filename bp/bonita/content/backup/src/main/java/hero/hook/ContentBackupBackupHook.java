@@ -106,8 +106,7 @@ public class ContentBackupBackupHook implements NodeHookI {
       
       // Retrieve information from the Action that triggered the Worflow
       Node actionnableNode = (Node) session.getItem(srcPath);
-      Node actionNode = actionServiceContainer.getAction(
-        actionnableNode, actionName, repository);
+      Node actionNode = actionServiceContainer.getAction(actionnableNode, actionName);
       String destWorkspace = actionNode.getProperty("exo:destWorkspace")
         .getString();
       String destPath = actionNode.getProperty("exo:destPath").getString();
@@ -120,9 +119,9 @@ public class ContentBackupBackupHook implements NodeHookI {
       cmsService.moveNode(nodePath,
                           srcWorkspace,
                           destWorkspace,
-                          destPath + relPath, repository);    
-    }
-    catch(Exception e) {
+                          destPath + relPath, repository);
+      session.logout();
+    }catch(Exception e) {
       // TODO Use logging system instead
       e.printStackTrace();
     }

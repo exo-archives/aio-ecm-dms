@@ -160,8 +160,8 @@ public class ContentBackupWaitSwitchHook implements NodeHookI {
                                           false);
         }
       }
-    }
-    catch(Exception e) {
+      session.logout();
+    }catch(Exception e) {
       // TODO Use logging system instead
       e.printStackTrace();
     }

@@ -115,8 +115,7 @@ public class ContentValidationPublicationHook implements NodeHookI {
       if(!actionableNode.isNodeType("exo:actionable")) {
         actionableNode = (Node) session.getItem(nodePath);
       }
-      Node actionNode = actionServiceContainer.getAction(
-        actionableNode, actionName, repository);
+      Node actionNode = actionServiceContainer.getAction(actionableNode, actionName);
       String destWorkspace = actionNode.getProperty(
         "exo:destWorkspace").getString();
       String destPath = actionNode.getProperty("exo:destPath").getString();
@@ -139,13 +138,9 @@ public class ContentValidationPublicationHook implements NodeHookI {
       if(!relPath.startsWith("/"))
         relPath = "/" + relPath;
       relPath = relPath.replaceAll("\\[\\d*\\]", "");
-      cmsService.moveNode(nodePath,
-                          srcWorkspace,
-                          destWorkspace,
-                          destPath + relPath,
-                          repository );    
-    }
-    catch(Exception e) {
+      cmsService.moveNode(nodePath,srcWorkspace,destWorkspace,destPath + relPath,repository );
+      session.logout();
+    }catch(Exception e) {
       // TODO Use logging system instead
       e.printStackTrace();
     }
