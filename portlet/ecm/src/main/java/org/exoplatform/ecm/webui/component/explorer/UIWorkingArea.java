@@ -75,7 +75,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIWorkingArea.CopyActionListener.class),
         @EventConfig(listeners = UIWorkingArea.CutActionListener.class),
         @EventConfig(listeners = UIWorkingArea.SaveActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.DeleteActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.DeleteActionListener.class, confirm = "UIWorkingArea.msg.confirm-delete"),
         @EventConfig(listeners = UIWorkingArea.LockActionListener.class),
         @EventConfig(listeners = UIWorkingArea.UnlockActionListener.class),
         @EventConfig(listeners = UIWorkingArea.CheckInActionListener.class),
