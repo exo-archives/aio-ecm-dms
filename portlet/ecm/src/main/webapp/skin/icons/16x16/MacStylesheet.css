@@ -278,7 +278,7 @@
 .MetaView16x16Icon {
 	float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/YellowLight.gif') no-repeat;  
+  background: url('MacSkin/YellowLight.gif') no-repeat;  
   cursor: pointer;
 }
 

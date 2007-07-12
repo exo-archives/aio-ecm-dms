@@ -818,6 +818,8 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
   border: solid 1px #ABBCCA;
+  overflow: auto;
+  background: white;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
@@ -849,8 +851,7 @@
 /*=================================UICategoryManager==============================*/
 
 .UIJCRExplorer .UITabPane {
-	width: 95%;
-	margin: 10px auto;
+	padding: 10px;
 }
 
 .UIJCRExplorer .UIWorkspaceList .UIFormGrid select{

@@ -417,6 +417,16 @@
   width: 220px ;
 }
 
+.UIECMAdminPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+  overflow: auto;
+  background: white;
+}
+
+.UIECMAdminPortlet .UITree .TreeContainer .Node {
+	white-space: nowrap;
+}
+
 .UIECMAdminPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
@@ -433,13 +443,20 @@
   line-height: 30px;
 }
 
-.UIECMAdminPortlet .UITreeList .UIGrid {
-  width: 315px;
+.UIECMAdminPortlet .UITreeList{
+  width: 300px;
+  border: solid 1px red;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
 	margin: 10px 0px 0px 0px;
+}
+
+.UIECMAdminPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	height: 24px;
+	line-height: 24px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
@@ -939,7 +956,8 @@
 }
 
 .UITemplatesManager .DialogForm .HorizontalLayout .UIFormInputSet {
-	width: auto;
+	width: 100%;
+	padding: 0px;
 }
 
 /*----------------------------UIViewTab-------------------------------*/
@@ -954,6 +972,11 @@
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	margin: 30px 0px 0px 0px;
+}
+
+.UITemplatesManager .ViewForm .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+	padding: 0px;
 }
 
 /*------------------------------UICBScripts------------------------*/
