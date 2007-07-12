@@ -26,7 +26,7 @@ import org.picocontainer.Startable;
  */
 
 public class MetadataServiceImpl implements MetadataService, Startable{
-  
+
   final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
   final static public String EXO_TEMPLATE = "exo:template" ;
   final static public String EXO_ROLES_PROP = "exo:roles" ;
@@ -37,17 +37,19 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   final static public String VIEWS = "views" ;
   final static public String DIALOG1 = "dialog1" ;
   final static public String VIEW1 = "view1" ;
-  
+
   private RepositoryService repositoryService_;
   private CmsConfigurationService cmsConfigService_ ;
+  private String baseMetadataPath_ ;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
-  
+
   public MetadataServiceImpl(CmsConfigurationService cmsConfigService, 
       RepositoryService repositoryService) throws Exception{
     cmsConfigService_ = cmsConfigService ;
     repositoryService_ = repositoryService ;
+    baseMetadataPath_ = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
   }
-  
+
   public void start() {
     try {      
       init() ;
@@ -55,41 +57,38 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       e.printStackTrace() ;
     }    
   }
-  
+
   public void stop() {}
-  
+
   public void addPlugins(ComponentPlugin plugin) {
     if (plugin instanceof TemplatePlugin) plugins_.add((TemplatePlugin) plugin);    
   }
-  
-  private void init() throws Exception{
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
+
+  private void init() throws Exception{    
     for(TemplatePlugin plugin : plugins_) {
       try{
-        plugin.setBasePath(metadataPath) ;
+        plugin.setBasePath(baseMetadataPath_) ;
         plugin.init() ;
       }catch(Exception e) {
         e.printStackTrace() ;
       }
     }
   }
-  
-  public void init(String repository) throws Exception {
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
+
+  public void init(String repository) throws Exception {    
     for(TemplatePlugin plugin : plugins_) {
       try{
-        plugin.setBasePath(metadataPath) ;
+        plugin.setBasePath(baseMetadataPath_) ;
         plugin.init(repository) ;
       }catch(Exception e) {
         e.printStackTrace() ;
       }
     }
   }
-  
-  public String addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {    
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
+
+  public String addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {        
     Session session = getSession(repository);
-    Node metadataHome = (Node)session.getItem(metadataPath) ;
+    Node metadataHome = (Node)session.getItem(baseMetadataPath_) ;
     String path = null ;
     if(!isAddNew) {
       if(isDialog) {
@@ -113,9 +112,10 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       metadataHome.save() ;
     }    
     session.save() ; 
+    session.logout();
     return path ;
   }
-  
+
   private void addTemplate(Node nodetype, String role, String content, boolean isDialog) throws Exception {
     Node templateHome = createTemplateHome(nodetype, isDialog) ;
     Node template = null ;
@@ -131,17 +131,17 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     template.setProperty(EXO_ROLES_PROP, arrRoles) ;
     template.setProperty(EXO_TEMPLATE_FILE_PROP, content) ;
   }
-  
-  public void removeMetadata(String nodetype, String repository) throws Exception {
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
+
+  public void removeMetadata(String nodetype, String repository) throws Exception {    
     Session session = getSession(repository) ;
-    Node metadataHome = (Node)session.getItem(metadataPath) ;
+    Node metadataHome = (Node)session.getItem(baseMetadataPath_) ;
     Node metadata = metadataHome.getNode(nodetype) ; 
     metadata.remove() ;
     metadataHome.save() ;
     session.save() ;
+    session.logout();
   } 
-  
+
   public List<String> getMetadataList(String repository) throws Exception {
     List<String> metadataTypes = new ArrayList<String>() ;
     for(NodeType metadata:getAllMetadatasNodeType(repository)) {
@@ -149,7 +149,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     }
     return metadataTypes ;
   }
-  
+
   public List<NodeType> getAllMetadatasNodeType(String repository) throws Exception {
     List<NodeType> metadataTypes = new ArrayList<NodeType>() ;    
     ExtendedNodeTypeManager ntManager = repositoryService_.getRepository(repository).getNodeTypeManager();     
@@ -160,7 +160,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     }
     return metadataTypes ;
   }
-  
+
   private Node createTemplateHome(Node nodetype, boolean isDialog) throws Exception{
     if(isDialog) {
       Node dialogs = null ;
@@ -173,20 +173,21 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     else views = nodetype.addNode(VIEWS, NT_UNSTRUCTURED) ;
     return views ;    
   }
-  
+
   public String getMetadataTemplate(String name, boolean isDialog, String repository) throws Exception {
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
+    Session session = getSession(repository);
+    Node metadataHome = (Node)session.getItem(baseMetadataPath_) ;
     Node template = null ;
     if(!hasMetadata(name, repository)) return null;
     if(isDialog) template = metadataHome.getNode(name).getNode(DIALOGS).getNode(DIALOG1) ;
     else template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
+    session.logout();
     return template.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
   }
-  
+
   public String getMetadataPath(String name, boolean isDialog, String repository) throws Exception {
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
+    Session session = getSession(repository);
+    Node metadataHome = (Node)session.getItem(baseMetadataPath_) ;
     if(!hasMetadata(name, repository)) return null;
     Node template = null ;
     if(isDialog){
@@ -194,12 +195,13 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     } else {
       template = metadataHome.getNode(name).getNode(VIEWS).getNode(VIEW1) ;
     }
+    session.logout();
     return template.getPath();
   }
-  
+
   public String getMetadataRoles(String name, boolean isDialog, String repository) throws Exception {
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
+    Session session = getSession(repository);
+    Node metadataHome = (Node)session.getItem(baseMetadataPath_) ;
     Node template = null ;
     if(!hasMetadata(name, repository)) return null;
     if(isDialog){
@@ -213,14 +215,19 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       if(roles.length() > 0 )roles.append("; ") ;
       roles.append(values[i].getString()) ;
     }
+    session.logout();
     return roles.toString();
   }  
-  
+
   public boolean hasMetadata(String name, String repository) throws Exception {
-    String metadataPath = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
-    Node metadataHome = (Node)getSession(repository).getItem(metadataPath) ;
-    if(metadataHome.hasNode(name)) return true ;
-   return false ; 
+    Session session = getSession(repository);
+    Node metadataHome = (Node)session.getItem(baseMetadataPath_) ;
+    if(metadataHome.hasNode(name)) {
+      session.logout();
+      return true ; 
+    }
+    session.logout();
+    return false ; 
   }
 
   public List<String> getExternalMetadataType(String repository) throws Exception {
@@ -232,7 +239,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     }
     return extenalMetaTypes ;
   }
-  
+
   private Session getSession(String repository) throws Exception{ 
     return repositoryService_.getRepository(repository)
     .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;

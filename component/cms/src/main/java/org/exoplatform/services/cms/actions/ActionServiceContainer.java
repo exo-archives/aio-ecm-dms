@@ -25,10 +25,8 @@ public interface ActionServiceContainer {
       String executable, List<String> variableNames, boolean isMoveType, String repository) throws Exception;
 
   public Collection<NodeType> getCreatedActionTypes(String repository) throws Exception;
-  
-  public Node getAction(Node node, String actionName, String repository) throws Exception;
-  
-  public Node getInitAction(Node node, String actionName) throws Exception;
+    
+  public Node getAction(Node node, String actionName) throws Exception;
 
   public boolean hasActions(Node node) throws Exception;
 

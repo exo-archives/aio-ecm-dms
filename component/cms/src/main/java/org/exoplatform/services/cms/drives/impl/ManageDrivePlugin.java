@@ -29,13 +29,11 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   private CmsConfigurationService cmsConfigService_;
   private InitParams params_ ; 
 
-  //private Session session_ ;  
   public ManageDrivePlugin(RepositoryService repositoryService, 
       InitParams params, CmsConfigurationService cmsConfigService) throws Exception {
     repositoryService_ = repositoryService;
     cmsConfigService_ = cmsConfigService ;
-    params_ = params ;
-    //init() ;
+    params_ = params ;  
   }
 
   public void init() throws Exception {
@@ -43,30 +41,35 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     while(it.hasNext()){
       DriveData data = (DriveData)it.next().getObject() ;
       try{
-        addDrive(data, getSession(data.getRepository())) ;
+        Session session  = getSession(data.getRepository());
+        addDrive(data, session) ;
+        session.logout();
       }catch(Exception e) {
         System.out.println("[WARNING] ==> Can not init drive '"+ data.getName()
             +"' in repository '" + data.getRepository()+"'");
       }
-        
+
     }
   }
-  
+
   public void init(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     DriveData data = null ;
+    Session session = null ;
     while(it.hasNext()){
       data = (DriveData)it.next().getObject() ;       
       try{
-        if(data.getRepository().equals(repository)) {
-          addDrive(data, getSession(repository)) ;
+        if(data.getRepository().equals(repository)) { 
+          session = getSession(repository) ;
+          addDrive(data, session) ;
+          session.logout();
         }
       }catch(Exception e) {        
       }      
-             
+
     }     
   }
-  
+
   private void addDrive(DriveData data, Session session) throws Exception {
     String drivesPath = cmsConfigService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Node driveHome = (Node)session.getItem(drivesPath) ;
@@ -86,9 +89,8 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       session.save() ;
     }
   }
-  
+
   private Session getSession(String repository)throws Exception {
-    return repositoryService_.getRepository(repository)
-    .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+    return repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
   }
 }

@@ -4,7 +4,8 @@
  **************************************************************************/
 package org.exoplatform.services.cms.queries.impl;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.scheduler.BaseJob;
@@ -18,9 +19,9 @@ import org.exoplatform.services.scheduler.JobContext;
  */
 public class ClearQueryServiceCacheJob extends BaseJob {  
   public  void  execute(JobContext context) throws Exception {
-    PortalContainer pcontainer = PortalContainer.getInstance() ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
     CacheService cacheService = 
-      (CacheService)pcontainer.getComponentInstanceOfType(CacheService.class) ;
+      (CacheService)container.getComponentInstanceOfType(CacheService.class) ;
     ExoCache queryCache = cacheService.getCacheInstance(QueryServiceImpl.class.getName()) ;
     queryCache.clearCache() ;    
   }

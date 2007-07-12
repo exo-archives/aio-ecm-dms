@@ -11,7 +11,8 @@ import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.actions.impl.ScriptActionPlugin;
@@ -30,18 +31,17 @@ import org.quartz.JobExecutionException;
  * Dec 21, 2006  
  */
 public class ScriptActionActivationJob implements Job {
-  
+
   final private static String COUNTER_PROP = "exo:counter".intern() ;
-  
-  public void execute(JobExecutionContext context) throws JobExecutionException {    
+
+  public void execute(JobExecutionContext context) throws JobExecutionException {
+    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
     RepositoryService repositoryService = 
-      (RepositoryService) PortalContainer.getComponent(RepositoryService.class);    
+      (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
-      (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class);
+      (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
     SecurityService securityService = 
-      (SecurityService) PortalContainer.getComponent(SecurityService.class);
-//    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
-//    SecurityService securityService2 = (SecurityService)exoContainer.getComponentInstanceOfType(SecurityService.class) ;
+      (SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);    
     ActionPlugin scriptActionService = actionServiceContainer.getActionPlugin(ScriptActionPlugin.ACTION_TYPE) ;
 
     Session jcrSession = null;
@@ -57,7 +57,7 @@ public class ScriptActionActivationJob implements Job {
     try {
       jcrSession = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);      
       Node node = (Node) jcrSession.getItem(srcPath);
-      actionNode = actionServiceContainer.getInitAction(node, actionName);
+      actionNode = actionServiceContainer.getAction(node, actionName);
       Property rolesProp = actionNode.getProperty("exo:roles");
       boolean hasPermission = false;
       Value[] roles = rolesProp.getValues();
@@ -69,8 +69,10 @@ public class ScriptActionActivationJob implements Job {
           break;
         }
       }
-      if (!hasPermission)
-        return;
+      if (!hasPermission) {
+        jcrSession.logout();
+        return; 
+      }        
       scriptActionService.activateAction(userId,executable,variables, repository) ;
       int currentCounter = (int)actionNode.getProperty(COUNTER_PROP).getValue().getLong() ;
       actionNode.setProperty(COUNTER_PROP,currentCounter +1) ;

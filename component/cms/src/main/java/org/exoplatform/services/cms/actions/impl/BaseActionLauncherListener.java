@@ -10,7 +10,8 @@ import javax.jcr.Value;
 import javax.jcr.observation.Event;
 import javax.jcr.observation.EventIterator;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -45,15 +46,16 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     return repository_;
   }
   
-  public void onEvent(EventIterator events) {    
+  public void onEvent(EventIterator events) {
+    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
     RepositoryService repositoryService = 
-      (RepositoryService) PortalContainer.getComponent(RepositoryService.class);
-    TemplateService templateService = 
-      (TemplateService) PortalContainer.getComponent(TemplateService.class);
+      (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
-      (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class);
+      (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
     SecurityService securityService = 
-      (SecurityService) PortalContainer.getComponent(SecurityService.class);    
+      (SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);        
+    TemplateService templateService = 
+      (TemplateService) exoContainer.getComponentInstanceOfType(TemplateService.class);       
     if (events.hasNext()) {
       Event event = events.nextEvent();  
       Node node = null;      
@@ -62,7 +64,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         jcrSession = repositoryService.getRepository(repository_).getSystemSession(srcWorkspace_);
         node = (Node) jcrSession.getItem(srcPath_);
         String userId = event.getUserID();
-        Node actionNode = actionServiceContainer.getInitAction(node, actionName_);
+        Node actionNode = actionServiceContainer.getAction(node, actionName_);
         Property rolesProp = actionNode.getProperty("exo:roles");
         boolean hasPermission = false;
         Value[] roles = rolesProp.getValues();
@@ -74,9 +76,10 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
             break;
           }
         }
-        if (!hasPermission)
+        if (!hasPermission) {
+          jcrSession.logout();
           return;
-
+        }          
         String path = event.getPath();
         Map<String, String> variables = new HashMap<String, String>();
         variables.put("initiator", userId);
@@ -95,8 +98,10 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
           }          
         } else {
           triggerAction(userId, variables, repository_);
-        }    
+        }
+        jcrSession.logout();
       } catch (Exception e) {
+        jcrSession.logout();
         e.printStackTrace();
       }
     }

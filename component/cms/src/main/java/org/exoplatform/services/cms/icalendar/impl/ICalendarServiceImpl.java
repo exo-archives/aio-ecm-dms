@@ -39,7 +39,7 @@ import org.exoplatform.services.jcr.RepositoryService;
  */
 
 public class ICalendarServiceImpl implements ICalendarService{
-  
+
   static private String JCR_CONTENT = "jcr:content".intern() ;
   static private String JCR_DATA = "jcr:data".intern() ;
   static private String JCR_MIMETYPE = "jcr:mimeType".intern() ;
@@ -48,21 +48,21 @@ public class ICalendarServiceImpl implements ICalendarService{
   static private String NT_FILE = "nt:file".intern() ;
   static private String NT_RESOURCE = "nt:resource".intern() ;  
   static private String MIX_VERSIONABLE = "mix:versionable".intern() ;
-  
+
   private RepositoryService repositoryService_;
   private CmsConfigurationService cmsConfigService_ ;
   public ICalendarServiceImpl(CmsConfigurationService cmsConfigService, RepositoryService repositoryService) {
     cmsConfigService_ = cmsConfigService ;
     repositoryService_ = repositoryService ;
   }
-  
+
   public void generateICalendar(Map context) throws Exception {
     String fileName = (String)context.get("exo:calendarPath") ;
     String queryPath = (String)context.get("exo:query") ;
     String srcWorkspace = (String) context.get("srcWorkspace") ;
     String repository = (String)context.get("repository") ;
     Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
-    
+
     QueryManager queryManager = session.getWorkspace().getQueryManager();
     Query query = queryManager.createQuery(queryPath, Query.XPATH);
     QueryResult queryResult = query.execute(); 
@@ -91,25 +91,27 @@ public class ICalendarServiceImpl implements ICalendarService{
         String desc = refEvent.getProperty("exo:description").getString() ;
         event.getProperties().add(new Description(desc));
       }
-      
+
       String location = refEvent.getProperty("exo:location").getString() ;
       event.getProperties().add(new Location(location));
-      
+
       String uuid = refEvent.getProperty("jcr:uuid").getString() ;
       Uid id = new Uid(uuid) ; 
       event.getProperties().add(id) ; 
       calendar.getComponents().add(event);
     }
     storeCalendar(calendar, fileName, repository) ;    
+    session.logout();
   }
-  
-  private void storeCalendar(Calendar calendar, String fileName, String repository){   
+
+  private void storeCalendar(Calendar calendar, String fileName, String repository){
+    Session session = null ;
     try {
+      session = repositoryService_.getRepository(repository)
+      .getSystemSession(cmsConfigService_.getWorkspace(repository));
       ByteArrayOutputStream bout = new ByteArrayOutputStream();
       CalendarOutputter output = new CalendarOutputter();
-      output.output(calendar, bout) ;
-      Session session = repositoryService_.getRepository(repository)
-                        .getSystemSession(cmsConfigService_.getWorkspace(repository));
+      output.output(calendar, bout) ;      
       Node rootNode = session.getRootNode();
       String[] array = fileName.split("/") ;
       for(int i = 0; i < array.length - 1; i ++) {
@@ -153,19 +155,22 @@ public class ICalendarServiceImpl implements ICalendarService{
         rss.save() ;
         rss.checkin() ;        
       }
+      session.logout();
     } catch (Exception e) {
+      session.logout();
       e.printStackTrace();
     }
   }
 
   public Object generateICalendar(String categoryName) throws Exception {
     Calendar calendar = new Calendar();
+    Session session = null ;
     try{
-      Session session = repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace());
+      session = repositoryService_.getDefaultRepository().getSystemSession(cmsConfigService_.getWorkspace());
       calendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
       calendar.getProperties().add(Version.VERSION_2_0);
       calendar.getProperties().add(CalScale.GREGORIAN);
-      
+
       Node calendarTaxonomy = (Node)session.getItem(cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH)) ;
       Node category = calendarTaxonomy.getNode(categoryName) ;
       boolean isReference = false ;
@@ -198,18 +203,20 @@ public class ICalendarServiceImpl implements ICalendarService{
             String desc = refEvent.getProperty("exo:description").getString() ;
             event.getProperties().add(new Description(desc));
           }
-          
+
           String location = refEvent.getProperty("exo:location").getString() ;
           event.getProperties().add(new Location(location));
-          
+
           String uuid = refEvent.getProperty("jcr:uuid").getString() ;
           Uid id = new Uid(uuid) ; 
           event.getProperties().add(id) ; 
           event.getProperties().add(new Categories(categoryName)) ;
           calendar.getComponents().add(event);          
         }
-      }      
+      }
+      session.logout();      
     }catch(Exception e) {
+      session.logout();
       e.printStackTrace() ;
     }    
     return calendar ;

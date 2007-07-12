@@ -38,12 +38,14 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
 
   private List<ManageDrivePlugin> drivePlugins_  = new ArrayList<ManageDrivePlugin> ();
   private RepositoryService repositoryService_ ;
+  private String baseDrivePath_ ;
   private CmsConfigurationService cmsConfigurationService_ ;
 
   public ManageDriveServiceImpl(RepositoryService jcrService, 
       CmsConfigurationService cmsConfigurationService ) throws Exception{
     repositoryService_ = jcrService ;
     cmsConfigurationService_ = cmsConfigurationService ;
+    baseDrivePath_ = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
   }
 
   public void start() {
@@ -67,15 +69,14 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     drivePlugins_.add(drivePlugin) ;
   }  
 
-  public Node getDriveHome(String repository) throws Exception {    
-    String drivesPath = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
+  public Node getDriveHome(String repository) throws Exception {        
     Session session = getSession(repository) ;
-    //session.refresh(false) ;
-    return (Node) session.getItem(drivesPath);
+    return (Node) session.getItem(baseDrivePath_);
   }
 
   public List<DriveData> getAllDrives(String repository) throws Exception {
-    Node driveHome = getDriveHome(repository) ;
+    Session session = getSession(repository) ;    
+    Node driveHome = (Node)session.getItem(baseDrivePath_);
     NodeIterator itr = driveHome.getNodes() ;
     List<DriveData> driveList = new ArrayList<DriveData>() ;
     while(itr.hasNext()) {
@@ -93,11 +94,13 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setAllowCreateFolder(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
       driveList.add(data) ;
     }
+    session.logout();
     return driveList ;    
   }
 
   public DriveData getDriveByName(String name, String repository) throws Exception{  
-    Node driveHome = getDriveHome(repository) ;
+    Session session = getSession(repository) ;    
+    Node driveHome = (Node)session.getItem(baseDrivePath_);
     if (driveHome.hasNode(name)){
       Node drive = driveHome.getNode(name) ;
       DriveData data = new DriveData() ;
@@ -111,18 +114,18 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
       data.setAllowCreateFolder(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
+      session.logout();
       return data ;
-    }
+    }    
+    session.logout();
     return  null ;    
   }
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
       String views, String icon, boolean viewReferences, boolean viewNonDocument, 
-      boolean viewSideBar, String repository, String allowCreateFolder) throws Exception {
-    String drivesPath = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
-    Session session = repositoryService_.getRepository(repository)
-    .getSystemSession(cmsConfigurationService_.getWorkspace(repository)) ;
-    Node driveHome = (Node)session.getItem(drivesPath) ;
+      boolean viewSideBar, String repository, String allowCreateFolder) throws Exception {    
+    Session session = getSession(repository);
+    Node driveHome = (Node)session.getItem(baseDrivePath_) ;
     if (!driveHome.hasNode(name)){
       Node driveNode = driveHome.addNode(name, "exo:drive");
       driveNode.setProperty(WORKSPACE, workspace) ;
@@ -149,6 +152,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       driveNode.save() ;
     }
     session.save() ;
+    session.logout();
   }
 
   public List<DriveData> getAllDriveByPermission(String permission, String repository) throws Exception {
@@ -168,32 +172,35 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   }
 
   public void removeDrive(String driveName, String repository) throws Exception {
-    Node driveHome = getDriveHome(repository) ;
+    Session session = getSession(repository);
+    Node driveHome = (Node)session.getItem(baseDrivePath_) ;
     if(driveHome.hasNode(driveName)){
       driveHome.getNode(driveName).remove() ;
       driveHome.save() ;
     }
+    session.logout();
   } 
 
-  private Session getSession(String repository) {
-    try {
-      String workspace = cmsConfigurationService_.getWorkspace(repository) ;
-      return repositoryService_.getRepository(repository).getSystemSession(workspace) ;      
-    }catch(Exception e) {      
-    }
-    return null ;
+  private Session getSession(String repository) throws Exception{    
+    String workspace = cmsConfigurationService_.getWorkspace(repository) ;
+    return repositoryService_.getRepository(repository).getSystemSession(workspace) ;          
   }
 
   public boolean isUsedView(String viewName, String repository) throws Exception {
-    Node driveHome = getDriveHome(repository) ;
+    Session session = getSession(repository);      
+    Node driveHome = (Node)session.getItem(baseDrivePath_) ;
     NodeIterator iter = driveHome.getNodes() ;
     while(iter.hasNext()) {
       Node drive = iter.nextNode() ;
       String[] views = drive.getProperty("exo:views").getString().split(",") ;
       for(String view : views) {
-        if(viewName.equals(view)) return true ;
+        if(viewName.equals(view)) {
+          session.logout();
+          return true ;
+        }
       }
     }
+    session.logout();
     return false;
   }
 }

@@ -47,7 +47,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
             if(taxonomyNode.canAddMixin("mix:referenceable")) {
               taxonomyNode.addMixin("mix:referenceable") ;
             }       
-            session.save() ;            
+            session.save() ; 
+            session.logout();
           }
         }
       }else {
@@ -59,7 +60,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
           if(taxonomyNode.canAddMixin("mix:referenceable")) {
             taxonomyNode.addMixin("mix:referenceable") ;
           }       
-          session.save() ;            
+          session.save() ; 
+          session.logout();
         }
       }
     }
@@ -80,7 +82,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
           if(taxonomyNode.canAddMixin("mix:referenceable")) {
             taxonomyNode.addMixin("mix:referenceable") ;
           }       
-          session.save() ;            
+          session.save() ;  
+          session.logout();
         }
       }
     }

@@ -50,8 +50,8 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   protected List<RepositoryEntry> getRepositories() {
     return repositoryService_.getConfig().getRepositoryConfigurations() ;
   }
-  protected String getWorkspace() { return config_.getWorkspace(); }
-  protected String getRepository() {return config_.getRepository() ; }
+  protected String getWorkspaceName() { return config_.getWorkspace(); }
+  protected String getRepositoryName() {return config_.getRepository() ; }
   protected ManageableRepository getRepository(String repository) throws Exception {
     return repositoryService_.getRepository(repository);
   }

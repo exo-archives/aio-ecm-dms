@@ -36,21 +36,21 @@ public class TagStylePlugin extends BaseComponentPlugin{
   public void init() throws Exception {   
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     TagStyleConfig tagConfig ;
-    Session session ;
+    Session session = null;
     while(it.hasNext()) {
       tagConfig = (TagStyleConfig)it.next().getObject() ;
       if(tagConfig.getAutoCreatedInNewRepository()) {
         List<RepositoryEntry> repositories = repoService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
-          session = repoService_.getRepository(repo.getName())
-          .getSystemSession(cmsConfigService_.getWorkspace(repo.getName())) ;
+          session = repoService_.getRepository(repo.getName()).getSystemSession(cmsConfigService_.getWorkspace(repo.getName())) ;
           addTag(session, tagConfig) ;
+          session.logout();
         }
       }else {
-        session = repoService_.getRepository(tagConfig.getRepository())
-        .getSystemSession(cmsConfigService_.getWorkspace(tagConfig.getRepository())) ;
+        session = repoService_.getRepository(tagConfig.getRepository()) .getSystemSession(cmsConfigService_.getWorkspace(tagConfig.getRepository())) ;
         addTag(session, tagConfig) ;
-      }
+        session.logout();
+      }      
     }
   }
   
@@ -64,6 +64,7 @@ public class TagStylePlugin extends BaseComponentPlugin{
         session = repoService_.getRepository(repository)
         .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
         addTag(session, tagConfig) ;
+        session.logout();
       }
     }
   }
@@ -78,6 +79,6 @@ public class TagStylePlugin extends BaseComponentPlugin{
       tagStyleNode.setProperty(HTML_STYLE_PROP,style.getHtmlStyle()) ;
     }
     exoTagStyleHomeNode.save() ;
-    session.save() ;
+    session.save() ;    
   }
 }

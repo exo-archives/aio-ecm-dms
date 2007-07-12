@@ -41,13 +41,13 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   final public static String RSS_WATCHERS_PROP = "exo:rssWatcher".intern() ;
   final private String initParamName = "messageConfig".intern();
   final private static String WATCHABLE_MIXIN_QUERY = "//element(*,exo:watchable)" ;
-  
+
   private RepositoryService repoService_ ;
   private MessageConfig messageConfig_ ;
   private TemplateService templateService_ ;
 
   public WatchDocumentServiceImpl(InitParams params, 
-                 RepositoryService repoService, TemplateService templateService) {        
+      RepositoryService repoService, TemplateService templateService) {        
     repoService_ = repoService ;
     templateService_ = templateService ;
     messageConfig_ = 
@@ -158,7 +158,8 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;
     ObservationManager observationManager = systemSession.getWorkspace().getObservationManager() ;
     observationManager.addEventListener(listener,Event.PROPERTY_CHANGED,
-        node.getPath(),true,null,observedNodeTypeNames,false) ;    
+        node.getPath(),true,null,observedNodeTypeNames,false) ;   
+    systemSession.logout();
   }
 
   private boolean checkNotifyTypeOfWatcher(Node documentNode, String userName,String notificationType) throws Exception {
@@ -170,7 +171,7 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }
     return false ;
   }  
-  
+
   private List<String> getDocumentNodeTypes(Node node) throws Exception {
     List<String> nodeTypeNameList = new ArrayList<String>() ;
     NodeType  primaryType = node.getPrimaryNodeType() ;
@@ -196,7 +197,10 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         try{
           queryManager = session.getWorkspace().getQueryManager() ;
         }catch (Exception e) { }
-        if(queryManager == null) continue ;
+        if(queryManager == null) { 
+          session.logout(); 
+          continue ;
+        }
         try {        
           Query query = queryManager.createQuery(WATCHABLE_MIXIN_QUERY,Query.XPATH) ;
           QueryResult queryResult = query.execute() ;
@@ -207,12 +211,13 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
             List<String> list = getDocumentNodeTypes(observedNode) ;          
             String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;          
             manager.addEventListener(emailNotifyListener,Event.PROPERTY_CHANGED,
-               observedNode.getPath(),true,null,observedNodeTypeNames,false) ;          
+                observedNode.getPath(),true,null,observedNodeTypeNames,false) ;          
             // TODO Add Listener for notify type by RSS
             RssNotifyListener rssNotifyListener = new RssNotifyListener(observedNode) ;
             manager.addEventListener(rssNotifyListener,Event.PROPERTY_CHANGED,
                 observedNode.getPath(),true,null,observedNodeTypeNames,false) ;
           }
+          session.logout();
         }catch (Exception e) {
           System.out.println("==>>> Cannot init observer for node: " 
               +e.getLocalizedMessage() + " in '"+repo.getName()+"' repository");
@@ -221,9 +226,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
       }
     }
   }    
-  
+
   protected MessageConfig getMessageConfig() { return messageConfig_ ; }
-  
+
   public void start() {
     try {
       reInitObserver() ;

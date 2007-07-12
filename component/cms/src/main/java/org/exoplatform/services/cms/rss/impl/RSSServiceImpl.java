@@ -155,7 +155,8 @@ public class RSSServiceImpl implements RSSService{
       SyndFeedOutput output = new SyndFeedOutput();      
       String feedXML = output.outputString(feed);      
       feedXML = StringUtils.replace(feedXML,"&amp;","&");      
-      storeXML(feedXML, storePath, feedName, repository);       
+      storeXML(feedXML, storePath, feedName, repository);
+      session.logout();
     } catch (Exception e) {
       e.printStackTrace();
     }     
@@ -332,6 +333,7 @@ public class RSSServiceImpl implements RSSService{
       SyndFeedOutput output = new SyndFeedOutput();      
       String feedXML = output.outputString(feed);      
       storeXML(feedXML, storePath, feedName, repository);
+      session.logout();
     }catch(Exception e) {
       e.printStackTrace() ;
     }
@@ -383,6 +385,7 @@ public class RSSServiceImpl implements RSSService{
         rss.save() ;
         rss.checkin() ;        
       }
+      session.logout();
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -94,7 +94,8 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
               convertedCalendarValues[i] = value2add;
               i++;
             }
-            node.setProperty(propertyName, convertedCalendarValues);       
+            node.setProperty(propertyName, convertedCalendarValues);
+            session.logout();
           }
         } else {
           if (value instanceof String) {

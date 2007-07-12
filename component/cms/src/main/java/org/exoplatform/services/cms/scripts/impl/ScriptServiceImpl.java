@@ -19,6 +19,8 @@ import javax.jcr.observation.EventListener;
 import javax.jcr.observation.ObservationManager;
 
 import org.codehaus.groovy.control.CompilationFailedException;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
@@ -32,6 +34,8 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+
+import com.sun.codemodel.JCase;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
@@ -56,7 +60,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       e.printStackTrace();
     }
   }
-  
+
   public void addScriptPlugin(ComponentPlugin plugin) {
     if(plugin instanceof ScriptPlugin) {			
       plugins_.add((ScriptPlugin)plugin) ;
@@ -79,13 +83,15 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private void initObserver() throws Exception {
     String scriptsPath = getBasePath();
     List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+    Session session = null ;
     for(RepositoryEntry repo : repositories) {
-      ObservationManager obsManager = repositoryService_.getRepository(repo.getName())
-        .getSystemSession(cmsConfigService_.getWorkspace(repo.getName())).getWorkspace().getObservationManager();
+      session = repositoryService_.getRepository(repo.getName()).getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));    
+      ObservationManager obsManager = session.getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+      session.logout();
     }
   }
-  
+
   public void initRepo(String repository) throws Exception {
     for(ScriptPlugin plugin : plugins_) {
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
@@ -95,22 +101,23 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       }      
     }      
   }
-  
+
   private void initObserver(String repository) throws Exception {
     String scriptsPath = getBasePath();
-      ObservationManager obsManager = repositoryService_.getRepository(repository)
-      .getSystemSession(cmsConfigService_.getWorkspace(repository)).getWorkspace().getObservationManager();
-      obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
-    
+    Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository));
+    ObservationManager obsManager = session.getWorkspace().getObservationManager();
+    obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+    session.logout();
   }
-  
+
   private void initPlugins(ResourceConfig config, String repository) throws Exception {
     if(config.getAutoCreatedInNewRepository() || repository.equals(config.getRepositoty())) {
       Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
       addScripts(session, config.getRessources()) ;
+      session.logout();
     }    
   }
-  
+
   public Node getECMScriptHome(String repository) throws Exception {
     Node ecmScriptHome = null ;
     try {     
@@ -233,7 +240,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     pC.registerComponentImplementation(scriptName, scriptClass); 
     scriptObject = (CmsScript) pC.getComponentInstance(scriptName);
     resourceCache_.put(scriptName, scriptObject) ;
-  
+
     return scriptObject;
   }
 
@@ -267,8 +274,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       Object cachedobject = resourceCache_.get(scriptName);
       if (cachedobject != null) {        
         resourceCache_.remove(scriptName) ;
-        PortalContainer pC = PortalContainer.getInstance();
-        pC.unregisterComponent(scriptName);
+        ExoContainer container = ExoContainerContext.getCurrentContainer();
+        container.unregisterComponent(scriptName);
         Class scriptClass = (Class)cachedobject ;
         //groovyClassLoader_.removeFromCache(scriptClass) ;
       }
@@ -280,21 +287,23 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     while (events.hasNext()) {
       Event event = events.nextEvent();
       String path = null;
+      Session jcrSession = null ;
       try {
         path = event.getPath();
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
           try {
-            Session jcrSession = 
-              repositoryService_.getRepository(repo.getName())
+            jcrSession = repositoryService_.getRepository(repo.getName())
               .getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));
             Property property = (Property) jcrSession.getItem(path);
             if ("jcr:data".equals(property.getName())) {
               Node node = property.getParent();
               //TODO: Script cache need to redesign to support store scripts in diffirence repositories 
-              removeFromCache(node.getName());
+              removeFromCache(node.getName());             
             }
-          }catch (Exception e) {
+            jcrSession.logout();
+          }catch (Exception e) { 
+            jcrSession.logout();
             continue ;
           }
         }        

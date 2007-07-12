@@ -63,7 +63,9 @@ public class NewUserListener extends UserEventListener {
         session = jcrService_.getRepository(repo.getName()).getSystemSession(cmsConfigurationService_
             .getWorkspace(repo.getName()));
         initSystemData(session, userName) ;
+        session.logout();
       } catch (RepositoryException re){
+        session.logout();
         return;
       }
     }   
@@ -103,8 +105,7 @@ public class NewUserListener extends UserEventListener {
   }
   public Map getPermissions(String owner) {
     Map<String, String[]> permissions = new HashMap<String, String[]>();
-    permissions.put(owner, perms);     
-    permissions.put("any", new String[] {PermissionType.READ});
+    permissions.put(owner, perms);         
     permissions.put("*:/admin", perms);
     return permissions;
   }

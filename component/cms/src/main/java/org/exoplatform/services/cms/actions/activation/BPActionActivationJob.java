@@ -11,7 +11,8 @@ import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.actions.impl.BPActionPlugin;
@@ -29,16 +30,16 @@ import org.quartz.JobExecutionException;
  *          hoa.pham@exoplatform.com
  * Dec 21, 2006  
  */
-public class BPActionActivationJob implements Job {
+public class BPActionActivationJob implements Job {    
   final private static String COUNTER_PROP = "exo:counter".intern() ;
-
   public void execute(JobExecutionContext context) throws JobExecutionException {    
+    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
     RepositoryService repositoryService = 
-      (RepositoryService) PortalContainer.getComponent(RepositoryService.class);    
+      (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
-      (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class);
+      (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
     SecurityService securityService = 
-      (SecurityService) PortalContainer.getComponent(SecurityService.class);
+      (SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
     ActionPlugin bpActionService = actionServiceContainer.getActionPlugin(BPActionPlugin.ACTION_TYPE) ;
 
     Session jcrSession = null;
@@ -55,7 +56,7 @@ public class BPActionActivationJob implements Job {
     try {
       jcrSession = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);
       Node node = (Node) jcrSession.getItem(srcPath);
-      actionNode = actionServiceContainer.getInitAction(node, actionName);
+      actionNode = actionServiceContainer.getAction(node, actionName);
       Property rolesProp = actionNode.getProperty("exo:roles");
       boolean hasPermission = false;
       Value[] roles = rolesProp.getValues();
@@ -67,14 +68,18 @@ public class BPActionActivationJob implements Job {
           break;
         }
       }
-      if (!hasPermission) return;
+      if (!hasPermission)  {
+        jcrSession.logout();
+        return; 
+      }
       bpActionService.activateAction(userId,executable,variables,repository) ;
       int currentCounter = (int)actionNode.getProperty(COUNTER_PROP).getValue().getLong() ;
       actionNode.setProperty(COUNTER_PROP,currentCounter +1) ;
       actionNode.save() ;
       jcrSession.save() ;
+      jcrSession.logout();
     } catch (Exception e) {
-      e.printStackTrace();     
+      jcrSession.logout();
     }    
   }
 
