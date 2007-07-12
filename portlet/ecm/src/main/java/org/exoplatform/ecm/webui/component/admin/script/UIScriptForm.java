@@ -168,7 +168,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "'", "[", "*", "%", "!"} ;
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
           uiApp.addMessage(new ApplicationMessage("UIScriptForm.msg.fileName-invalid", null)) ;

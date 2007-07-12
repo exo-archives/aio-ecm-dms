@@ -109,12 +109,27 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       .getPreferenceRepository() ;
       RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
       UIDriveInputSet driveInputSet = uiDriveForm.getChild(UIDriveInputSet.class) ;
+      UIApplication uiApp = uiDriveForm.getAncestorOfType(UIApplication.class) ;
       String name = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_NAME).getValue() ;
+      if(name == null || name.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.name-null", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(name.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.fileName-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       String workspace = 
         driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
       String path = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).getValue() ;
       if((path == null)||(path.trim().length() == 0)) path = "/" ;
-      UIApplication uiApp = uiDriveForm.getAncestorOfType(UIApplication.class) ;
+      
       try {        
         rservice.getRepository(repository).getSystemSession(workspace).getItem(path) ;
       } catch(Exception e) {

@@ -20,6 +20,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -48,7 +49,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
     events = {
       @EventConfig(listeners = UIEditModeConfiguration.SaveActionListener.class),
       @EventConfig(listeners = UIEditModeConfiguration.SelectPathActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIEditModeConfiguration.ChangeWorkspaceActionListener.class, phase=Phase.DECODE)
+      @EventConfig(listeners = UIEditModeConfiguration.ChangeWorkspaceActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIEditModeConfiguration.ChangeRepositoryActionListener.class, phase=Phase.DECODE)
     }
 )
 public class UIEditModeConfiguration extends UIForm implements UISelector {
@@ -82,10 +84,14 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     PortletPreferences preferences = request.getPreferences() ;
     String repoName = preferences.getValue(Utils.REPOSITORY, "") ;
     boolean isDefaultWs = false ;
+    RepositoryService rService = getApplicationComponent(RepositoryService.class) ;  
     List<SelectItemOption<String>> repositories= new ArrayList<SelectItemOption<String>>() ;
-    repositories.add(new SelectItemOption<String>(DEFAULT_REPOSITORY, DEFAULT_REPOSITORY)) ;
+    for(RepositoryEntry re : rService.getConfig().getRepositoryConfigurations()) {
+      repositories.add(new SelectItemOption<String>(re.getName(), re.getName())) ;
+    }
     UIFormSelectBox uiRepositoryList = getUIFormSelectBox(REPOSITORY_NAME) ;
     uiRepositoryList.setOptions(repositories) ;
+    uiRepositoryList.setValue(repoName) ;
     String[] wsNames = getApplicationComponent(RepositoryService.class).getRepository(repoName).getWorkspaceNames();
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
     String prefWs = preferences.getValue("workspace", "") ;
@@ -105,8 +111,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
   }
   
   private void setTemplateOptions(String nodePath, String repoName, String wsName) throws Exception {
-    Session session = getApplicationComponent(RepositoryService.class)
-    .getRepository(repoName).getSystemSession(wsName) ;
+    Session session = getApplicationComponent(RepositoryService.class).getRepository(repoName).getSystemSession(wsName) ;
     Node currentNode = null ;
     UIFormSelectBox uiSelectTemplate = getUIFormSelectBox(FIELD_SELECT) ;
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
@@ -213,6 +218,22 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       String repoName = uiTypeForm.getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
       String wsName = uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
       uiTypeForm.setTemplateOptions(uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).getValue(), repoName, wsName) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;
+    }
+  }
+  
+  static public class ChangeRepositoryActionListener extends EventListener<UIEditModeConfiguration> {
+    public void execute(Event<UIEditModeConfiguration> event) throws Exception {
+      UIEditModeConfiguration uiTypeForm = event.getSource() ;
+      RepositoryService repositoryService = uiTypeForm.getApplicationComponent(RepositoryService.class) ;
+      uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).setValue("/") ;
+      String repoName = uiTypeForm.getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
+      String[] wsNames = repositoryService.getRepository(repoName).getWorkspaceNames();
+      List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
+      for(String ws : wsNames) {
+        workspace.add(new SelectItemOption<String>(ws, ws)) ;
+      }
+      uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).setOptions(workspace) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;
     }
   }
