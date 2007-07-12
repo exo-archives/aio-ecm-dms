@@ -811,8 +811,8 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       if(wsName == null) wsName = uiExplorer.getCurrentWorkspace() ;
       String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" 
-      + wsName + nodePath ;
-      event.getRequestContext().getJavascriptManager().addJavascript("window.location=\"" + link + "\"");
+                    + wsName + nodePath ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + link + "');") ;
     }
   }
 }

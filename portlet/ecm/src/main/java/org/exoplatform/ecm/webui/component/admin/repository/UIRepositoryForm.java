@@ -144,7 +144,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         refreshWorkspaceList() ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false);
-        setActions(new String[] {"AddWorkspace", "Reset", "Close"}) ;
+        setActions(new String[] {"AddWorkspace", "Close"}) ;
         ReplicationEntry re = repo.getReplication() ;
         if(re != null) {
           getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled()) ;
