@@ -8,12 +8,12 @@
     	<component-plugin>
     		<name>addSuperType</name>
         <set-method>addPlugin</set-method>
-        <type>org.exoplatform.services.cms.ext.ReDefineNodeTypePlugin</type>    
+        <type>org.exoplatform.services.cms.jcrext.ReDefineNodeTypePlugin</type>    
         <init-params>
         	<object-param>
         		<name>dc:elementSet.metadata</name>
             <description>configuration for the cms path</description>
-            <object type="org.exoplatform.services.cms.ext.SuperTypeConfig">
+            <object type="org.exoplatform.services.cms.jcrext.SuperTypeConfig">
             <field  name="sourceNodeType"><string>exo:metadata</string></field>
             <field  name="targetedNodeTypes">
             	<collection type="java.util.ArrayList"> 
@@ -1192,12 +1192,12 @@
 	</external-component-plugins>
 	
 	<external-component-plugins>
-    <target-component>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</target-component>
+    <target-component>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</target-component>    
     <component-plugin>
 	    <name>addActions</name>
 	    <set-method>addPlugin</set-method>
 	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
-	    <description>add actions plugin</description>
+	    <description>add exo:ownable mixin for node</description>
 	    <init-params>
 	      <object-param>
 	        <name>actions</name>
@@ -1216,7 +1216,28 @@
 	      </object-param>
 	    </init-params>
 	  </component-plugin>
-	</external-component-plugins>
-	
-	          
+	  <component-plugin>
+	    <name>addActions</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
+	    <description>add actions plugin</description>
+	    <init-params>
+	      <object-param>
+	        <name>actions</name>
+	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
+	          <field  name="actions">
+	            <collection type="java.util.ArrayList">	              
+	              <value>
+	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
+	                  <field  name="eventTypes"><string>addNode,addProperty,changeProperty,removeProperty</string></field>	                  
+	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.AddDateTimeAction</string></field>
+	                </object>
+	              </value>
+	            </collection>
+	          </field>
+	        </object>
+	      </object-param>
+	    </init-params>
+	  </component-plugin>
+	</external-component-plugins>				          
 </configuration>
