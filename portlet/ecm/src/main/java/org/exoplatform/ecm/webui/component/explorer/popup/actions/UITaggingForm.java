@@ -102,6 +102,12 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
+        if(t.trim().length() > 20) {
+          uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-too-long", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         String[] arrFilterChar = {"&", "'", "$", "@", ":","]", "[", "*", "%", "!"} ;
         for(String filterChar : arrFilterChar) {
           if(t.indexOf(filterChar) > -1) {
