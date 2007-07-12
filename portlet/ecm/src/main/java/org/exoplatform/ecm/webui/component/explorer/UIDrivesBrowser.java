@@ -28,9 +28,11 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -127,6 +129,13 @@ public class UIDrivesBrowser extends UIContainer {
           String[] viewPermissions = permiss.split(",") ;
           if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
         }
+      }
+      if(viewMap.isEmpty()) {
+        UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class) ;
+        Object[] args = { driveName } ;
+        uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.no-view-found", args)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
       for(String viewName : viewMap.values().toArray(new String[]{})) {
         if(viewList.length() > 0) viewList = viewList + "," + viewName ;
