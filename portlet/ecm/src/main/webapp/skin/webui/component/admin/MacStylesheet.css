@@ -446,6 +446,7 @@
 .UIECMAdminPortlet .UITreeList{
   width: 300px;
   border: solid 1px red;
+  float: left;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
@@ -540,7 +541,7 @@
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
-  width: 450px ;
+  width: 450px;
   margin: auto;
 }
 
