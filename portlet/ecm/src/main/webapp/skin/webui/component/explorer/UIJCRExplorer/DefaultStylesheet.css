@@ -310,9 +310,9 @@
 /*===========================Folder Form=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm {
-	padding: 10px 0px;
+	margin: 10px auto;
 	width: 560px;
-	margin: auto;
+	background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
@@ -669,10 +669,6 @@
 
 /*================================.UIExportNode=================================*/
 
-.UIJCRExplorerPortlet .UIExportNode {
-  padding: 10px 0px;
-}
-
 .UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
   width: 400px;
   margin: auto;
@@ -691,10 +687,6 @@
 }
 
 /*================================.UIImportNode=================================*/
-
-.UIJCRExplorerPortlet .UIImportNode {
-  padding: 10px 0px;
-}
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 160px;
@@ -764,6 +756,10 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm {
+  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
@@ -941,6 +937,7 @@
 .UIJCRExplorer .UIActivateVersion {
 	border: solid 1px #b7b7b7;
 	margin: 10px;
+	background: #efefef;
 }
 /*================================ UIViewMetadataManager ====================================*/
 

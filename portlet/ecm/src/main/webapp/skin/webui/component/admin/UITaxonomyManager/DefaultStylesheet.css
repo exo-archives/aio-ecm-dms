@@ -30,6 +30,11 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .HorizontalLayout  {
+	padding-top: 10px;
+	background: #F7F7F7;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FormContainer  {
 	width: 500px;
 	margin: auto;

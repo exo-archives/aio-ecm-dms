@@ -80,6 +80,11 @@
 	margin:  10px auto;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .HorizontalLayout{
+	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	padding-top: 10px;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
 	width: 290px;	
 }

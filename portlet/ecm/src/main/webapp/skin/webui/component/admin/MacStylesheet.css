@@ -259,6 +259,11 @@
 	padding: 10px 0px;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
+	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	padding-top: 10px;
+}
+
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer .UIFormGrid .FieldLabel {
 	width: 128px;
 }
@@ -292,9 +297,8 @@
 	padding-right: 15px;
 }
 
-.UIECMAdminPortlet .UIWorkspaceWizard {
-	padding: 5px 10px;
-	font-size: 11px;
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer{
+	padding: 10px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -383,12 +387,17 @@
 }
 
 .UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
-	padding: 0px;
+	padding: 10px 0px;
 	margin: 0px;
 }
 
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
   padding: 10px;
+}
+
+.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .HorizontalLayout{
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	padding-top: 10px;
 }
 
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
@@ -445,13 +454,11 @@
 
 .UIECMAdminPortlet .UITreeList{
   width: 300px;
-  border: solid 1px red;
   float: left;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
-	margin: 10px 0px 0px 0px;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .NodeLabel a {
@@ -501,6 +508,11 @@
 
 .UIECMAdminPortlet .UINamespaceForm {
   padding: 10px;
+}
+
+.UIECMAdminPortlet .UINamespaceForm .HorizontalLayout{
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	padding-top: 10px;
 }
 
 .UIECMAdminPortlet .UINamespaceForm .FormContainer {
@@ -626,6 +638,11 @@
   margin: 10px auto;
 }
 
+.UIECMAdminPortlet .ECMTemplate .ECMTempForm .HorizontalLayout {
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
+}
+
 .UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer {
 	width: 50px;
 }
@@ -670,22 +687,27 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIECMAdminPortlet .CBTemplate .CBTempForm .HorizontalLayout {
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
+}
 /*############################## -- UIScriptManager  -- ########################*/
 
 /*------------------------------UICBScripts------------------------*/
 
 .UIECMScripts .ECMScriptForm{
   width: 95%; 
-  margin: auto;
+  margin: 10px auto;
 }
 
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
-  margin: 15px auto;
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer .UIAction {
   width: 330px;
-  padding-left: 60px;
+  padding-left: 90px;
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer textarea {
@@ -703,16 +725,17 @@
 
 .UICBScripts .CBScriptForm {
   width: 95%;
-  margin: auto;
+  margin: 10px auto;
 }
 
 .UICBScripts .CBScriptForm .HorizontalLayout {
-  margin: 15px auto;
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer .UIAction {
   width: 330px;
-  padding-left: 60px;
+  padding-left: 90px;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
@@ -736,6 +759,10 @@
 
 .UIActionManager .UIActionTypeForm  {
 	padding: 10px; 
+}
+
+.UIActionManager .UIActionTypeForm .HorizontalLayout {
+	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
 }
 
 .UIActionManager .UIActionTypeForm .FormContainer {
@@ -894,10 +921,21 @@
   width: 95%;
 }
 
+.UIECMAdminPortlet .UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout .UIFormInputSet  {
+  width: 100%;
+  padding: 0px;
+}
+
 .UIQueriesManager .UIQueriesForm {
 	width: 95%;
 	margin: 10px auto;
 }
+
+.UIQueriesManager .UIQueriesForm .HorizontalLayout {
+	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	padding-top: 10px;
+}
+
 
 .UIQueriesManager .UIQueriesList .UIAction {
 	width: 110px ;
@@ -923,6 +961,10 @@
 
 .UIFolksonomyManager .UITagStyleForm {
 	padding: 10px;
+}
+
+.UIFolksonomyManager .UITagStyleForm .HorizontalLayout {
+	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {

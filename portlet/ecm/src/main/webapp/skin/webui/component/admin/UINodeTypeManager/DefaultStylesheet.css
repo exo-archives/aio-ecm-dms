@@ -49,6 +49,11 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .HorizontalLayout {
+	padding-top: 10px;
+	background: #f7f7f7;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
 	width: 260px;
 }

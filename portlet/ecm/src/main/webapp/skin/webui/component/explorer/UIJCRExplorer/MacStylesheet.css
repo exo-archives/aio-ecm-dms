@@ -64,6 +64,10 @@
 	padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .FormContainer {
+	padding-top: 10px;
+}
+
 /*======================== -- End UIJCRExplorer -- ==========================================*/
 
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/
@@ -266,9 +270,12 @@
 /*===========================Folder Form=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm {
-	padding: 10px 0px;
 	width: 560px;
-	margin: auto;
+	margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .HorizontalLayout {
+	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
@@ -276,6 +283,14 @@
 }
 
 /*===========================DocumentFormController=====================*/
+
+.UIJCRExplorerPortlet .UIFormWithTitle .UIDocumentForm {
+	background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .UIDocumentForm .HorizontalLayout {
+	padding-top: 10px;
+}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
 	padding: 10px;
@@ -299,6 +314,7 @@
   border: 1px solid #e1e1e1;
   background: #efefef;
   margin-top: 5px;
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .HorizontalLayout td.FieldLabel {
@@ -307,6 +323,10 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 3px; 
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
+  padding: 10px 0px; 
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController {
@@ -440,9 +460,11 @@
 /*=============================UIWatchDocumentForm=======================*/
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
-  padding: 10px 0px;
-  width: 550px;
-  margin: auto;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIWatchDocumentForm .HorizontalLayout{
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FormContainer {
@@ -458,9 +480,11 @@
 /*=============================UITaggingForm=======================*/
 
 .UIJCRExplorerPortlet .UITaggingForm {
-  padding: 10px 0px;
-  width: 550px;
-  margin: auto;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout {
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
@@ -602,6 +626,9 @@
 .UIJCRExplorerPortlet .EditQueryForm {
   width: 97%;
   margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .EditQueryForm .HorizontalLayout{
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
 }
 
@@ -773,8 +800,9 @@
 }
 /*================================.UIExportNode=================================*/
 
-.UIJCRExplorerPortlet .UIExportNode {
-  padding: 10px 0px;
+.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout{
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
 }
 
 .UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
@@ -795,8 +823,9 @@
 }
 /*================================.UIImportNode=================================*/
 
-.UIJCRExplorerPortlet .UIImportNode {
-  padding: 10px 0px;
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout{
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
@@ -978,6 +1007,10 @@
 
 .UIJCRExplorer .UIRenameForm {
 	padding: 10px;
+}
+
+.UIJCRExplorer .UIRenameForm .HorizontalLayout {
+	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
 }
 
 .UIJCRExplorer .UIRenameForm .FormContainer {

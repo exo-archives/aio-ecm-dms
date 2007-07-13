@@ -19,9 +19,9 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
-  margin-top: 10px;
-  border: none;
+.UIJCRExplorerPortlet .UIVersionInfo .FormContainer .UIFormGrid {
+  width: 500px;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
@@ -92,7 +92,9 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
 	border: none;
+	padding: 10px 0px;
 }
+
 /*############################## -- Begin UIDiff -- ##############################*/
 .UIJCRExplorerPortlet .UIDiff {
 	margin-top: 10px;
