@@ -68,8 +68,10 @@ ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 		e.cancelBubble = true ;
 	}
 	this.popupArray.push(showBlock);
-	showBlock.style.top = (popupSelector.offsetTop + popupSelector.offsetHeight) + "px";
-	showBlock.style.left = popupSelector.offsetLeft + "px";
+	showBlock.style.top = popupSelector.offsetHeight + "px";
+
+	
+
 };
 
 ECMUtils.prototype.closeAllPopup = function() {

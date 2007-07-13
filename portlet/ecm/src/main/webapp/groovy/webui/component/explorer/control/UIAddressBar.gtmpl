@@ -29,6 +29,15 @@
 	</div>
 	<% uiform.begin() %>
 	<div class="BlockMiddle UIPopupSelector">
+    <div style="position: relative;">
+	    <div class="UISelectContent">
+	      <%
+	      for(node in uicomponent.getHistory()) {
+	        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\""  + uicomponent.event("History", node) + "\">$node</div>" ;
+	      }
+	      %>
+	    </div>
+	  </div>
 	  <div class="HardDisk"><span></span></div>
 	  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
 	    <div class="DropDownButton Style1DownArrow16x16Icon" title="Show history address"><span></span></div>
@@ -37,13 +46,6 @@
       <% uicomponent.renderChildren(); %>
     </div>
     <div style="clear: both;"><span></span></div>
-    <div class="UISelectContent">
-      <%
-      for(node in uicomponent.getHistory()) {
-        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\""  + uicomponent.event("History", node) + "\">$node</div>" ;
-      }
-      %>
-    </div>
   </div>
 	<% uiform.end() %>
 </div>
