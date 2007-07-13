@@ -440,6 +440,17 @@
 
 .UIJCRExplorerPortlet .UIUploadManager {
   padding: 10px;
+  border: 1px solid #b7b7b7;
+  margin: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
+	border: 1px solid #b7b7b7;
+	margin: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm .UIAction {
+	width: 180px;
 }
 
 /*############################## -- End Others   -- ##############################*/

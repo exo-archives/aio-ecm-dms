@@ -28,6 +28,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIFormWithTitle {
 	border: none;	
+	padding: 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIActionTypeForm .UIFormWithTitle {
@@ -55,6 +56,7 @@
 .UIJCRExplorerPortlet .Execute16x16Icon {
 	margin-top: 3px;
 }
+
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
@@ -271,6 +273,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIExternalMetadataForm .FormContainer {
 	width: 300px;
+	margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UITaggingForm .FormContainer {
@@ -384,7 +387,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid .FieldLabel{
-	width: 160px;
+	width: 140px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
@@ -403,7 +406,8 @@
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .FileNameLabel {
- overflow: hidden ;
+  overflow: hidden ;
+  line-height: 20px;
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
@@ -540,16 +544,12 @@
 /*================================UISimpleSearch=================================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 450px;
+  width: 430px;
   padding-left: 20px;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
   padding-bottom: 0px;
-}
-
-.UIJCRExplorerPortlet .EditQueryForm .UIAction {
-  width: 180px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
@@ -609,7 +609,7 @@
 /*================================UIActionList=================================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
-  padding-left: 20px;
+  padding-left: 15px;
 }
 
 /*================================UIPropertyForm=================================*/
@@ -749,6 +749,7 @@
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIAction {
   width: 190px ;
+  padding-left: 30px;
 }
 
 .UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
@@ -789,6 +790,10 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
   border: solid 1px #c9c9c9;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UIFormGrid td.FieldLabel {
+	width: 70px;
 }
 
 .UIJCRExplorer .UIJCRBrowser .UIFormWithTitle{
@@ -832,7 +837,7 @@
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp {
   width: 97%;
-  margin: 0px auto;
+  margin: 8px auto;
 }
 
 /*====================================UISavedQuery==================================*/
@@ -856,3 +861,8 @@
   float: left;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
+
+.UIJCRExplorerPortlet  .UIPopupWindow .UIPropertyForm .UIFormGrid {
+	width: 500px;
+	margin: auto;
+}

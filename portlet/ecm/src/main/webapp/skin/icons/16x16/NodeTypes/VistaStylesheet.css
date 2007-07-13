@@ -174,6 +174,7 @@
 .nt_folder16x16Icon {
   width: 21px; height: 24px;
   background: url('VistaSkin/nt-folder.png') no-repeat;  
+  border: 1px soild red;
 }
 
 .nt_frozenNode16x16Icon {

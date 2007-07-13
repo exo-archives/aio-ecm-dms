@@ -104,6 +104,11 @@
 	margin: 10px auto 0px auto;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIFormWithTitle {
+	padding: 0px;
+	width: auto;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 
 }

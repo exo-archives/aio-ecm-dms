@@ -27,15 +27,12 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIForm .UIAction {
-	width: 310px;
+	width: 300px;
+	padding-left: 30px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIFormWithTitle .UIGrid {
   border-right: 0px ; border-left: 0px ;
-}
-
-.UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FormContainer {
-	width: 430px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
@@ -58,14 +55,9 @@
   margin-left: auto;
 }
 
-.UIECMAdminPortlet .UINodeTypeUpload .UIFormWithTitle label {
-	line-height: 20px;
-	padding-right: 10px;
-}
-
 .UIECMAdminPortlet .UINodeTypeUpload .UIAction {
   width: 200px ;
-  padding: 10px 0px;
+  padding-left: 30px;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .SelectFileLabel {
@@ -94,8 +86,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .UIFormInputSet .UIAction {
-  width: 340px;
-  padding-left: 100px;
+  width: 300px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .propertyDefinition .UIFormInputSet .UIAction {

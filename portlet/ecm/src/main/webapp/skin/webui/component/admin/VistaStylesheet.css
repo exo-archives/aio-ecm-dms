@@ -109,12 +109,8 @@
 	width: auto;
 }
 
-.UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
-	width: 100px;	
-}
-
 .UIECMAdminPortlet .childNodeDefinition .UIFormInputSet .UIFormInputSetWithAction .UIAction {
-	padding-left: 80px;
+	padding-left: 110px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -208,7 +204,8 @@
 }
 
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
-  padding: 10px;
+  margin: 5px 5px 10px 5px;
+  border: 1px solid #b7b7b7;
 }
 
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
@@ -675,6 +672,7 @@
 
 .UITemplatesManager .UIFormTabPane .UIAction{
   width: 300px;
+  padding-left: 40px;
 }
 
 .UITemplatesManager .UITemplateList .UIAction {
@@ -688,7 +686,6 @@
 .UITemplatesManager .UITabPane .UIDialogTab{
 	padding: 10px;
 }
-
 
 .UITemplatesManager .UITabPane .UIViewTab{
 	padding: 10px;
@@ -743,6 +740,7 @@
 .UINamespaceManager .HorizontalLayout {
   padding-top: 15px;
 }
+
 /*############################## -- UIRuleManager  -- ########################*/
 
 .UIRuleManager .HorizontalLayout {
@@ -819,7 +817,7 @@
 	width: 190px;
 }
 
-.UIECMAdminPortlet .UIFolksonomyManager .UIGrid .OverflowContainer {
+.UIFolksonomyManager .UIGrid .OverflowContainer {
 	width: 30px;
 }
 /************************* UIFormInputSet ***********************************/

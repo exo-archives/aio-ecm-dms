@@ -255,7 +255,7 @@
 }
 
 .UIBrowseContainer .UIDocumentList {
-	padding-top: 10px;
+	margin: 10px 5px;
 }
 
 .UIBrowseContainer .DocNodeIcon{
