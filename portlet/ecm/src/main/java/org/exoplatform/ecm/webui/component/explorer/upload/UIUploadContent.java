@@ -54,7 +54,7 @@ public class UIUploadContent extends UIContainer {
     }
     if(getUploadedNode().hasNode(Utils.JCR_CONTENT)) {
       for(NodeType nodeType : getUploadedNode().getNode(Utils.JCR_CONTENT).getMixinNodeTypes()) {
-        if(nodeType.isMixin() && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
+        if(nodeType.isNodeType(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
           externalList_.add(nodeType.getName()) ;
         }
       }
