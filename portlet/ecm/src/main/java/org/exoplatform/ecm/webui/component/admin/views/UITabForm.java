@@ -70,7 +70,15 @@ public class UITabForm extends UIFormInputSetWithAction {
     String tabName = getUIStringInput(FIELD_NAME).getValue() ;
     if(tabName == null || tabName.trim().length() == 0) {
       setRenderSibbling(UITabForm.class) ;
-      throw new MessageException(new ApplicationMessage("UITabForm.msg.tab-name-error", null)) ;
+      throw new MessageException(new ApplicationMessage("UITabForm.msg.tab-name-error", null, 
+                                                        ApplicationMessage.WARNING)) ;
+    }
+    String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!"} ;
+    for(String filterChar : arrFilterChar) {
+      if(tabName.indexOf(filterChar) > -1) {
+        throw new MessageException(new ApplicationMessage("UITabForm.msg.fileName-invalid", null, 
+                                                          ApplicationMessage.WARNING)) ;
+      }
     }
     StringBuilder selectedButton = new StringBuilder() ;
     boolean isSelected = false ;

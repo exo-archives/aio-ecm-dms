@@ -149,7 +149,8 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
       String role = permField.getUIStringInput(FIELD_PERMISSION).getValue() ;
       if((role == null ) || (role.trim().length() == 0)){
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.role-require", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.role-require", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }

@@ -227,7 +227,8 @@ public class UITemplateContent extends UIForm implements UISelector {
         return ;
       }
       if(!Utils.isNameValid(name, UITemplateContent.REG_EXPRESSION)){
-        uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.name-invalid", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.name-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -236,7 +237,8 @@ public class UITemplateContent extends UIForm implements UISelector {
       UIFormInputSetWithAction permField = uiForm.getChildById("UITemplateContent") ;
       String role = permField.getUIStringInput(FIELD_VIEWPERMISSION).getValue() ;      
       if((role == null) || (role.trim().length() == 0)) {
-        uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.roles-invalid", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateContent.msg.roles-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }

@@ -256,7 +256,15 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     String viewName = getUIStringInput(FIELD_NAME).getValue() ;
     ApplicationMessage message ;
     if(viewName == null || viewName.trim().length() == 0){
-      throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null)) ;
+      throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null, 
+                                                        ApplicationMessage.WARNING)) ;
+    }
+    String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!"} ;
+    for(String filterChar : arrFilterChar) {
+      if(viewName.indexOf(filterChar) > -1) {
+        throw new MessageException(new ApplicationMessage("UIViewForm.msg.fileName-invalid", null, 
+                                                          ApplicationMessage.WARNING)) ;
+      }
     }
     boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
     String repository = getRepository() ;
@@ -265,18 +273,21 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     if(uiPopup.getId().equals(UIViewList.ST_ADD)) {
       for(ViewDataImpl view : viewList) {
         if(view.getName().equals(viewName) && !isEnableVersioning) {
-          message = new ApplicationMessage("UIViewForm.msg.view-exist", null) ;
+          message = new ApplicationMessage("UIViewForm.msg.view-exist", null, 
+                                           ApplicationMessage.WARNING) ;
           throw new MessageException(message) ;
         }
       }
     }
     String permissions = getUIStringInput(FIELD_PERMISSION).getValue() ;
     if(permissions == null || permissions.length() < 1){
-      message = new ApplicationMessage("UIViewForm.msg.permission-not-empty", null) ;
+      message = new ApplicationMessage("UIViewForm.msg.permission-not-empty", null, 
+                                       ApplicationMessage.WARNING) ;
       throw new MessageException(message) ;
     }
     if(tabMap_.size() < 1 ){
-      message = new ApplicationMessage("UIViewForm.msg.mustbe-add-tab", null) ;
+      message = new ApplicationMessage("UIViewForm.msg.mustbe-add-tab", null, 
+                                       ApplicationMessage.WARNING) ;
       throw new MessageException(message) ;
     }
     String template = getUIFormSelectBox(FIELD_TEMPLATE).getValue() ;

@@ -120,7 +120,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.fileName-invalid", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.fileName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -134,7 +135,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         rservice.getRepository(repository).getSystemSession(workspace).getItem(path) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.workspace-path-invalid", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
@@ -157,7 +158,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       ManageDriveService dservice_ = uiDriveForm.getApplicationComponent(ManageDriveService.class) ;
       if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name, repository) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -170,7 +171,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
           }
         } catch(Exception e) {
           uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
-              ApplicationMessage.WARNING)) ;
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }  

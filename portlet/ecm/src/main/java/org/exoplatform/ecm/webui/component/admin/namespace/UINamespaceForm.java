@@ -56,15 +56,16 @@ public class UINamespaceForm extends UIForm {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       NamespaceRegistry namespaceRegistry = uiForm.getApplicationComponent(RepositoryService.class)
                                             .getRepository(repository).getNamespaceRegistry() ;
-      UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
       String prefix = uiForm.getUIStringInput(FIELD_PREFIX).getValue() ;
       if(prefix == null || prefix.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-null", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-null", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(uri == null || uri.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-null", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-null", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -72,7 +73,9 @@ public class UINamespaceForm extends UIForm {
       try {
         namespaceRegistry.registerNamespace(prefix, uri) ;
       } catch (Exception e) {
-        app.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args)) ;
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args, 
+                                              ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       UINamespaceManager uiManager = uiForm.getAncestorOfType(UINamespaceManager.class) ;

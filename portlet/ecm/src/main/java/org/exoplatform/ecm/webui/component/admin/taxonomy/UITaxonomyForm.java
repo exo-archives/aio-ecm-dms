@@ -59,12 +59,15 @@ public class UITaxonomyForm extends UIForm {
       UITaxonomyManager uiManager = uiForm.getAncestorOfType(UITaxonomyManager.class) ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null || name.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-null", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-null", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!Utils.isNameValid(name, new String[]{"[","]",":"})) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-invalid", null)) ;
+      
+      if(!Utils.isNameValid(name, new String[]{"&", "$", "@", ",", ":","]", "[", "*", "%", "!"})) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -75,7 +78,7 @@ public class UITaxonomyForm extends UIForm {
       } catch(Exception e) {
         Object[] arg = {name} ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", arg, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
