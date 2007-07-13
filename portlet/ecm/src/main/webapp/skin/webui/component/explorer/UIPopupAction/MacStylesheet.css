@@ -172,12 +172,23 @@
   float: left ;
   width: 220px ;
   overflow: auto;
+  background: white;
 }
 
 .UIJCRExplorerPortlet .Explorer .ExplorerTree {
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UITree .TreeContainer .Node {
+	white-space: nowrap;
+}
+
+.UIJCRExplorerPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	height: 24px;
+	line-height: 24px;
 }
 
 .UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
@@ -187,6 +198,7 @@
 
 .UIJCRExplorerPortlet .Explorer .ExplorerTree .UITree {
   overflow: auto;
+  background: white;
 }
 
 .UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {

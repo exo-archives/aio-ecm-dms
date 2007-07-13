@@ -303,6 +303,21 @@
   float: left ;
 }
 
+.UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
+  overflow: auto;
+  background: white;
+}
+
+.UIBrowseContentPortlet .UITree .TreeContainer .Node {
+	white-space: nowrap;
+}
+
+.UIBrowseContentPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	height: 24px;
+	line-height: 24px;
+}
+
 .UIBrowseContentPortlet .Explorer .ExplorerTree .Node {
   line-height: 30px;
 }

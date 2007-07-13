@@ -24,6 +24,14 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
   margin: 7px 5px 0px 5px;
   float: left;

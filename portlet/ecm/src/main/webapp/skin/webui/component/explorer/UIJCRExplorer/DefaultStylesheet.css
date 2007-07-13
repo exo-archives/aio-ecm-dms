@@ -77,6 +77,12 @@
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout{
+	padding-top: 10px;
+	background: #efefef;
+}
+
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
@@ -337,6 +343,10 @@
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   margin-top: 5px;
   background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
+	padding-bottom: 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
@@ -736,6 +746,12 @@
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;
+  background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer .UIFormGrid {
+  width: 500px;
+  margin: auto;
 }
 
 /*================================DecoratorBoxNested=================================*/
@@ -818,15 +834,29 @@
   background: white;
 }
 
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
-  float: left;
-  border: solid 1px #b7b7b7;
-}
-
 .UIJCRExplorer .UIGroupMembershipSelector {
 	width: 92%;
 	margin: auto;
 	padding: 10px 0px;
+}
+
+.UIJCRExplorer .UIGroupMembershipSelector .SelectedGroupPath {
+	padding-bottom: 4px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .GroupSelector {
+	border: 1px solid #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
+  float: left;
+  border: none;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
+	border: solid 1px #b7b7b7;
+	background: white;
+	height: 181px;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
@@ -840,10 +870,6 @@
 	overflow: hidden;
 }
 
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
-	border: solid 1px #b7b7b7;
-}
-
 /*=================================UICategoryManager==============================*/
 
 .UIJCRExplorer .UITabPane {
@@ -852,6 +878,10 @@
 
 .UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
 	width: 100px;
+}
+
+.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList .HorizontalLayout {
+	padding: 5px 0px;
 }
 
 .UIJCRExplorer .UICategoryManager .UIJCRBrowser .UIWorkspaceList {
@@ -912,6 +942,11 @@
 
 .UIJCRExplorer .UIRenameForm {
 	padding: 10px;
+}
+
+.UIJCRExplorer .UIRenameForm .HorizontalLayout {
+	background: #efefef;
+	padding-top: 10px;
 }
 
 .UIJCRExplorer .UIRenameForm .FormContainer {

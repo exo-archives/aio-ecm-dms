@@ -811,10 +811,6 @@ UIECMAdminPortlet .UIViewManager {
   background: white;
 }
 
-.UIECMAdminPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
-}
-
 .UIECMAdminPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;

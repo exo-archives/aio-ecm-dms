@@ -224,7 +224,7 @@
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 	padding-bottom: 15px;
-	background: #efefef;
+	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .WorkflowPortletContent .UIUploadProcess .UIAction {
@@ -264,6 +264,11 @@
 	padding: 15px 0px;
 }
 
+.WorkflowPortletContent .UITabPane .UIFormWithTitle {
+	margin: auto;
+	background: #efefef;
+}
+
 .UIWorkflowPortlet .WorkflowPortletContent .ActionContainer .OverflowContainer {
 	width: 60px;
 }
@@ -299,4 +304,21 @@
 
 .UIWorkflowPortlet .UIAdministrationManager .UIAction {
   width: 130px;
+}
+
+.UIWorkflowPortlet .UIWorkflowPopup .UITabPane {
+  padding: 10px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UIUploadProcess {
+	padding: 10px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail {
+	padding: 10px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UIUploadProcess .HorizontalLayout {
+	background: url('MacSkin/background/Background1x4.png') repeat;
+	padding-top: 10px;
 }

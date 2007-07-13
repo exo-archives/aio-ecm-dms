@@ -21,11 +21,15 @@
   padding: 10px 0px 20px 0px;
 }
 
+.UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout {
+  padding-top: 10px;
+}
+
 .UIFastContentCreatorPortlet .UIFormWithTitle {
   border: 1px solid #939393;
   width: 598px;
   margin: 15px auto;
-  background: #efefef;
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
@@ -118,9 +122,13 @@
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
-  padding: 20px 10px;
-  margin: auto;
+  margin: 15px auto;
   width: 600px;
+  background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout {
+  padding-top: 10px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
