@@ -902,6 +902,12 @@
   width: 170px;
 }
 
+.UIJCRExplorerPortlet .UIViewMetadataManager .UITabPane {
+  width: 95%;
+  margin: 10px auto;
+  padding: 0px;
+}
+
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIViewMetadataForm {
   padding: 10px;
 }
@@ -1090,6 +1096,7 @@
 .UIJCRExplorer .UIActivateVersion {
 	border: solid 1px #b7b7b7;
 	margin: 10px;
+	background:  url(MacSkin/background/Background1x4.png) repeat ;
 }
 
 /*====================================UISavedQuery==================================*/

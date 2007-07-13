@@ -762,7 +762,8 @@
 }
 
 .UIActionManager .UIActionTypeForm .HorizontalLayout {
-	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	background:  url(MacSkin/background/Background1x4.png) repeat ;
+	padding-top: 10px;
 }
 
 .UIActionManager .UIActionTypeForm .FormContainer {
@@ -965,6 +966,7 @@
 
 .UIFolksonomyManager .UITagStyleForm .HorizontalLayout {
 	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	padding-top: 10px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {

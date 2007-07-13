@@ -14,48 +14,32 @@
 /*############################## -- End UIFormWithTitle -- ##############################*/
 
 /*############################## -- Begin UIVersionInfo -- ##############################*/
-.UIJCRExplorerPortlet .UIVersionInfo {
-  padding: 7px;
-  background-color: white;
+.UIJCRExplorerPortlet .UIVersionInfo  {  
+  padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .{
-  padding: 7px;
-  background-color: white;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
-  padding-top: 10px;
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm {  
-  padding-top: 10px;
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIFormGrid td.FieldLabel {
-  width: 128px;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
-  width: 160px;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .FieldContainer{  
+.UIJCRExplorerPortlet .UIVersionInfo .FormContainer .UIFormGrid {
   width: 500px;
-  margin: 0px auto;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout {
+  padding: 1px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
-  margin: 7px 5px;
+  margin: 7px 5px 0px 5px;
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
-  margin: 2px 3px;
+  margin: 2px 3px 2px 0px;
   float: left;
   width: 24px; height: 24px;
 }
@@ -94,9 +78,9 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
-  margin: 7px 0px;
-  float: left;
+  margin: 7px 5px 0px 5px;
   width: 16px; height: 16px;
+  float: left;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
 }
@@ -106,12 +90,16 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 400px;
+	width: 360px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
-	width: 170px;
-	padding-right: 50px;
+	width: 180px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
+	border: none;
+	padding: 10px 0px;
 }
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/

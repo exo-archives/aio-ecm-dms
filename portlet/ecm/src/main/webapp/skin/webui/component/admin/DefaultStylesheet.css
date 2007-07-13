@@ -564,7 +564,8 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm {
-  padding: 10px;
+  width: 95%;
+  margin: 10px auto;
 }
 
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .HorizontalLayout {
@@ -625,6 +626,11 @@ UIECMAdminPortlet .UIViewManager {
 
 .UIActionManager .UIActionTypeForm  {
 	padding: 10px; 
+}
+
+.UIActionManager .UIActionTypeForm .HorizontalLayout{
+	padding-top: 10px; 
+	background: #f7f7f7;
 }
 
 .UIActionManager .UIActionTypeForm .FormContainer  {
@@ -749,6 +755,11 @@ UIECMAdminPortlet .UIViewManager {
 .UIQueriesManager .UIQueriesForm {
 	width: 95%;
 	margin: 10px auto;
+}
+
+.UIQueriesManager .UIQueriesForm .HorizontalLayout{
+	background: #f7f7f7;
+	padding-top: 10px;
 }
 
 .UIQueriesManager .UIQueriesForm .UIAction {
