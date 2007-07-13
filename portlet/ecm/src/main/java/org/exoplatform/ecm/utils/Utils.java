@@ -8,7 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -129,6 +131,16 @@ public class Utils {
       return false;
     }    
   }
+
+  public static boolean isChangePermissionAuthorized(Node node) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(PermissionType.CHANGE_PERMISSION);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
+  }
+  
   public static boolean isSetPropertyNodeAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.SET_PROPERTY);
@@ -170,6 +182,23 @@ public class Utils {
   
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
+  }
+  
+  public static NodeIterator getAuthorizedChildNodes(Node node) throws Exception {
+    NodeIterator iter = node.getNodes() ;
+    while(iter.hasNext()) {
+      if(!isReadAuthorized(iter.nextNode())) iter.remove() ; 
+    }  
+    return iter ;
+  }
+  public static List<Node> getAuthorizedChildList(Node node) throws Exception {
+    List<Node> children = new ArrayList<Node>() ;
+    NodeIterator iter = node.getNodes() ;
+    while(iter.hasNext()) {
+      Node child = iter.nextNode() ;
+      if(isReadAuthorized(child)) children.add(child) ;
+    }  
+    return children ;
   }
   
   @SuppressWarnings({"unchecked", "unused"})

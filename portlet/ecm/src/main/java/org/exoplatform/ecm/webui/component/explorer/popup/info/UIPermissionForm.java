@@ -75,8 +75,10 @@ public class UIPermissionForm extends UIForm implements UISelector {
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).
                            getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).getValue() ;
       List<String> permsList = new ArrayList<String>() ;
+      List<String> permsRemoveList = new ArrayList<String>() ;
       for(String perm : PermissionType.ALL) {
         if(uiForm.getUIFormCheckBoxInput(perm).isChecked()) permsList.add(perm) ;
+        else permsRemoveList.add(perm) ;
       }
       if(userOrGroup == null || userOrGroup.length() < 0) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null)) ;
@@ -93,6 +95,9 @@ public class UIPermissionForm extends UIForm implements UISelector {
         UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ;
         if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+        for(String perm : permsRemoveList) {
+          node.removePermission(userOrGroup, perm);
+        }         
         node.setPermission(userOrGroup, permsArray) ;
         if(!uiForm.isAddAny_) node.removePermission(SystemIdentity.ANY) ;
         uiParent.getChild(UIPermissionInfo.class).updateGrid() ;

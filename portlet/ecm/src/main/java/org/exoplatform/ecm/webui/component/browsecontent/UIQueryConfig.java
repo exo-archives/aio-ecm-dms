@@ -58,7 +58,7 @@ public class UIQueryConfig extends UIForm {
   final private String xpathDefault_ = "/jcr:root/cms/publications//element(*, exo:article)" ;
   final private String sqlDefault_ = "select * from exo:article where jcr:path like '/cms/publications/%'" ;
   final private static String NEW_QUERY = "New Query".intern() ;
-  final private static String EXITING_QUERY = "Exiting Query".intern() ;
+  final private static String EXISTING_QUERY = "Existing Query".intern() ;
   final private static String PERSONAL_QUERY = "Personal Query".intern() ;
   final private static String SHARED_QUERY = "Shared Query".intern() ;
   private List<String> roles_ = new ArrayList<String>();
@@ -166,7 +166,7 @@ public class UIQueryConfig extends UIForm {
       enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
       enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
       queryStatusField.setOptions(getQueryStatus()) ;
-      queryStatusField.setValue(EXITING_QUERY) ;
+      queryStatusField.setValue(EXISTING_QUERY) ;
       if(Boolean.parseBoolean(queryNew)) queryStatusField.setValue(NEW_QUERY) ;
       queryLangField.setOptions(getQueryLang()) ;
       queryLangField.setValue(queryLang) ;
@@ -240,7 +240,7 @@ public class UIQueryConfig extends UIForm {
   private List<SelectItemOption<String>> getQueryStatus() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     options.add(new SelectItemOption<String>(NEW_QUERY, NEW_QUERY)) ;
-    options.add(new SelectItemOption<String>(EXITING_QUERY, EXITING_QUERY)) ;
+    options.add(new SelectItemOption<String>(EXISTING_QUERY, EXISTING_QUERY)) ;
     return options ;
   }
 

@@ -6,7 +6,9 @@ package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,11 +16,13 @@ import java.util.Set;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
+import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -47,7 +51,7 @@ import org.exoplatform.webui.event.EventListener;
 public class UIPermissionInfo extends UIContainer {
 
   private static String[] PERMISSION_BEAN_FIELD = {"usersOrGroups", "read", "addNode", 
-                                                   "setProperty", "remove"} ;
+    "setProperty", "remove"} ;
   private static String[] PERMISSION_ACTION = {"Delete"} ;
 
   public UIPermissionInfo() throws Exception {
@@ -104,22 +108,43 @@ public class UIPermissionInfo extends UIContainer {
       UIPermissionInfo uicomp = event.getSource() ;
       UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
+      String nodePath = node.getPath() ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      try {
-        node.removePermission(name) ;
-        uicomp.updateGrid() ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
-        node.save() ;
-        if(!uiJCRExplorer.getPreference().isJcrEnable()) {
-          uiJCRExplorer.getSession().save() ;
-          uiJCRExplorer.getSession().refresh(false) ;
-        }
-        uiJCRExplorer.setIsHidePopup(true) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
-        uiJCRExplorer.updateAjax(event) ;
-      } catch (Exception e) {
-        JCRExceptionManager.process(uicomp.getAncestorOfType(UIApplication.class), e);
+      Node parentNode = node.getParent() ;
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      if(!Utils.isChangePermissionAuthorized(node)) {
+        uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
+      if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+      node.removePermission(name) ;        
+      uicomp.updateGrid() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
+      node.save() ;
+      if(!uiJCRExplorer.getPreference().isJcrEnable()) {
+        uiJCRExplorer.getSession().save() ;
+        uiJCRExplorer.getSession().refresh(false) ;
+      }
+      UIPopupAction uiPopup = uicomp.getAncestorOfType(UIPopupAction.class) ;
+      if(!Utils.isReadAuthorized(node)) {
+        Set<String> tempaddress = new HashSet<String>() ;        
+        for(String s : uiJCRExplorer.getAddressPath()) {
+          if(!s.contains(nodePath)) tempaddress.add(s) ;
+        }
+        uiJCRExplorer.setAddressPath(tempaddress) ;
+        LinkedList<String> temphistory = new LinkedList<String>() ;          
+        for (String h : uiJCRExplorer.getNodesHistory()) {          
+          if(!h.contains(nodePath)) temphistory.add(h) ;
+        }
+        uiJCRExplorer.setNodesHistory(temphistory) ;     
+        uiJCRExplorer.setSelectNode(parentNode) ;
+        uiJCRExplorer.setBackNode(parentNode.getPath()) ;        
+        uiPopup.deActivate() ;
+      }
+      uiJCRExplorer.setIsHidePopup(true) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      uiJCRExplorer.updateAjax(event) ;
     }
   }
 

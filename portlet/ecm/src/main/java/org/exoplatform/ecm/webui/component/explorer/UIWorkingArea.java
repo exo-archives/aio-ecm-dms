@@ -205,10 +205,10 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public String getActionsList(Node node) throws Exception {
-    String path = node.getPath() ;
     StringBuilder actionsList = new StringBuilder() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(Utils.isReadAuthorized(node)) {
+      String path = node.getPath() ;
       if(isVersionableOrAncestor(node)) {
         if(node.isCheckedOut()) {
           if(Utils.isVersionable(node)) actionsList.append("CheckIn") ;
@@ -246,9 +246,9 @@ public class UIWorkingArea extends UIContainer {
         if(isJcrViewEnable()) actionsList.append(",Save") ;
         if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
         actionsList.append(",WebDAV") ;
-      }
-    }
+      }   
     if(uiExplorer.getAllClipBoard().size() > 0 && hasEditPermissions(node)) actionsList.append(",Paste") ;
+    }
     return actionsList.toString() ;
 
   }

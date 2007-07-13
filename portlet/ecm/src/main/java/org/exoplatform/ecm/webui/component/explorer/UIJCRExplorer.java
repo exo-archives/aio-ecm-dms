@@ -71,13 +71,13 @@ public class UIJCRExplorer extends UIContainer {
     addChild(UIControl.class, null, null) ;
     addChild(UIWorkingArea.class, null, null) ;
   }
-  
+
   private String filterPath(String currentPath) throws RepositoryException {
     if(rootNode_.getDepth() == 0) return currentPath ;
     if(rootNode_.equals(currentNode_)) return "/" ;
     return currentPath.replaceFirst(rootNode_.getPath(), "") ;
   }
-  
+
   public void setRootNode(Node node) {
     rootNode_ = node ;
     currentNode_ = node ;
@@ -89,23 +89,26 @@ public class UIJCRExplorer extends UIContainer {
     currentNode_ = (Node)session_.getItem(historyNode) ;
     refreshExplorer() ;
   }
-  
+
   public void setLanguage(String language) { language_ = language ; }
   public String getLanguage() { return language_ ; }
-  
+
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
+  public void setNodesHistory(LinkedList<String> h) {nodesHistory_ = h;}
+  
   public Set<String> getAddressPath() { return addressPath_ ; }
+  public void setAddressPath(Set<String> s) {addressPath_ = s;} ;
   
   public Session getSession() { return session_ ; }
   public void setSession(Session session) { this.session_ = session ; }
-  
+
   public String getDocumentInfoTemplate() { return documentInfoTemplate_ ; }
   public void setRenderTemplate(String template) { 
     newJCRTemplateResourceResolver() ;
     documentInfoTemplate_  = template ; 
-   
+
   }
-  
+
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {
     try{
@@ -118,28 +121,28 @@ public class UIJCRExplorer extends UIContainer {
       e.printStackTrace() ;
     }     
   }
-  
+
   public Session getSessionByWorkspace(String wsName) throws Exception{
     if(wsName == null ) return getSession() ;
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
     return repositoryService.getRepository(repository).getSystemSession(wsName) ;    
   }
-  
+
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
-                                                 setValue(filterPath(currentNode_.getPath())) ;
+    setValue(filterPath(currentNode_.getPath())) ;
     UIWorkingArea workingArea = getChild(UIWorkingArea.class) ;
     workingArea.getChild(UIDocumentWorkspace.class).setRenderedChild(UIDocumentInfo.class) ;
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
     popupAction.deActivate() ;
   }
-  
+
   public boolean nodeIsLocked(String path, Session session) throws Exception {
     if(getNodeByPath(path, session).isLocked()) return true;
     return false ;
   }
-  
+
   public boolean hasAddPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
@@ -148,7 +151,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     return true ;
   }
-  
+
   public boolean hasEditPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.SET_PROPERTY) ;
@@ -157,7 +160,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     return true ;
   }
-  
+
   public boolean hasRemovePermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.REMOVE) ;
@@ -166,7 +169,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     return true ;
   }
-  
+
   public boolean hasReadPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.READ) ;
@@ -175,7 +178,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     return true ;
   }
-  
+
   public Node getViewNode(String nodeType) throws Exception { 
     try {
       Item primaryItem = getCurrentNode().getPrimaryItem() ;
@@ -187,7 +190,7 @@ public class UIJCRExplorer extends UIContainer {
     } catch(Exception e) { }
     return getCurrentNode() ;
   }
-  
+
   public List<String> getMultiValues(Node node, String name) throws Exception {
     List<String> list = new ArrayList<String>();
     if(!node.hasProperty(name)) return list;
@@ -205,9 +208,9 @@ public class UIJCRExplorer extends UIContainer {
     }
     return list;
   }
-  
+
   public void setIsHidePopup(boolean isHidePopup) { isHidePopup_ = isHidePopup ; }
-  
+
   public void updateAjax(Event event) throws Exception { 
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
     uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(filterPath(currentNode_.getPath())) ;
@@ -232,14 +235,14 @@ public class UIJCRExplorer extends UIContainer {
     popupAction.deActivate() ;
     context.addUIComponentToUpdateByAjax(popupAction) ;
   }
-  
+
   public String getCurrentWorkspace() { return session_.getWorkspace().getName() ; }
-  
+
   public void record(String str) {
     nodesHistory_.add(str) ;
     addressPath_.add(str) ;
   }
-  
+
   public String rewind() { return nodesHistory_.removeLast() ; }
 
   public void setSelectNode(Node node) throws Exception {
@@ -260,7 +263,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;
   }
-  
+
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
@@ -288,42 +291,47 @@ public class UIJCRExplorer extends UIContainer {
       List documentTypes = templateService.getDocumentTemplates(repository) ;      
       while(childrenIterator.hasNext()){
         Node child = (Node)childrenIterator.next() ;
-        NodeType type = child.getPrimaryNodeType() ;
-        if(Utils.NT_UNSTRUCTURED.equals(type.getName()) || Utils.NT_FOLDER.equals(type.getName())) {
-          childrenList.add(child) ;
-        } else if(documentTypes.contains(type.getName())) {
-          childrenList.add(child) ;
+        if(Utils.isReadAuthorized(child)) {
+          NodeType type = child.getPrimaryNodeType() ;
+          if(Utils.NT_UNSTRUCTURED.equals(type.getName()) || Utils.NT_FOLDER.equals(type.getName())) {
+            childrenList.add(child) ;
+          } else if(documentTypes.contains(type.getName())) {
+            childrenList.add(child) ;
+          }
         }
       }
     } else {
       while(childrenIterator.hasNext()) {
-        childrenList.add((Node)childrenIterator.next()) ;
+        Node child = (Node)childrenIterator.next() ;
+        if(Utils.isReadAuthorized(child)) {
+          childrenList.add(child) ;
+        }
       }
     }
     return childrenList ;
   }
-  
+
   public boolean isReferenceableNode(Node node) throws Exception {
     return node.isNodeType(Utils.MIX_REFERENCEABLE) ;    
   }
-  
+
   public boolean isPreferenceNode(Node node) throws RepositoryException {
     return (getCurrentNode().hasNode(node.getName())) ? false : true ;
   }
-  
+
   public Node getNodeByPath(String nodePath, Session session) throws Exception {
     return (Node)session.getItem(nodePath) ;    
   }
-  
+
   public LinkedList<ClipboardCommand> getAllClipBoard() { return clipboards_ ;}
-  
+
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-  
+
   public boolean isReadAuthorized(ExtendedNode node) throws RepositoryException {
     try {
       node.checkPermission(PermissionType.READ);
@@ -332,7 +340,7 @@ public class UIJCRExplorer extends UIContainer {
       return false;
     }    
   }  
-  
+
   public Preference getPreference() throws Exception { 
     if(preferences_.isEmpty()){
       ManageDriveService dservice = getApplicationComponent(ManageDriveService.class) ;
@@ -353,14 +361,14 @@ public class UIJCRExplorer extends UIContainer {
     }
     return preferences_; 
   }
-  
+
   public String getPreferencesPath() {
     PortletPreferences prefs_ = getPortletPreferences() ;
     String prefPath = prefs_.getValue(Utils.JCR_PATH, "") ;
     if (prefPath == null || prefPath.length() == 0 || prefPath == "/") return "" ;
     return prefPath ;
   }
-  
+
   public String getPreferencesWorkspace() {       
     PortletPreferences prefs_ = getPortletPreferences() ;
     String workspaceName = prefs_.getValue(Utils.WORKSPACE_NAME, "") ;
