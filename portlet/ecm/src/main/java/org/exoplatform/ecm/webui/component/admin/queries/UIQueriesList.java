@@ -70,7 +70,7 @@ public class UIQueriesList extends UIContainer {
       try {
         String name1 = ((Node) o1).getName() ;
         String name2 = ((Node) o2).getName() ;
-        return name1.compareToIgnoreCase(name2) ;
+        return name2.compareToIgnoreCase(name1) ;
       } catch(Exception e) {
         return 0;
       }

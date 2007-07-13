@@ -117,9 +117,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(getParent()) ;
       return ;
     }
-    UIActionContainer uiActionContainer = getAncestorOfType(UIActionContainer.class) ;
-    uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
+    UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
+    uiManager.setRenderedChild(UIActionContainer.class) ;
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
   }
   
   @SuppressWarnings("unchecked")
@@ -143,6 +143,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         uiPopup.setShow(false) ;
         uiPopup.setRendered(false) ;
         uiManager.setDefaultConfig() ;
+        isEditInList_ = false ;
+        isAddNew_ = true ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } else {
         uiExplorer.setIsHidePopup(false) ;
@@ -183,6 +185,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       uiActionList.updateGrid(parentNode_) ;
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
+      isEditInList_ = false ;
     } catch (Exception e) {
       e.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
