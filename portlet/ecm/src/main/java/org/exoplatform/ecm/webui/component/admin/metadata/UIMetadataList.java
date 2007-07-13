@@ -5,12 +5,15 @@
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
@@ -59,6 +62,7 @@ public class UIMetadataList extends UIContainer {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List<NodeType> nodetypes = metadataService.getAllMetadatasNodeType(repository) ;
+    Collections.sort(nodetypes, new Utils.NodeTypeNameComparator()) ;
     for(NodeType nt : nodetypes) {
       Metadata mt = new Metadata() ;
       mt.setName(nt.getName()) ;

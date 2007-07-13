@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.queries;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -47,7 +49,9 @@ public class UIQueriesList extends UIContainer {
 
   public String[] getActions() { return ACTIONS ; }
   
+  @SuppressWarnings("unchecked")
   public void updateQueriesGrid() throws Exception {
+    Collections.sort(getAllSharedQueries(), new QueryComparator()) ;
     PageList pageList = new ObjectPageList(getAllSharedQueries(), 10) ;
     UIPageIterator uiPateIterator = getChild(UIPageIterator.class) ;
     uiPateIterator.setPageList(pageList) ;    
@@ -59,6 +63,18 @@ public class UIQueriesList extends UIContainer {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     return queryService.getSharedQueries(repository) ;
+  }
+  
+  static public class QueryComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((Node) o1).getName() ;
+        String name2 = ((Node) o2).getName() ;
+        return name1.compareToIgnoreCase(name2) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
   }
   
   static public class AddQueryActionListener extends EventListener<UIQueriesList> {
@@ -94,5 +110,4 @@ public class UIQueriesList extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }
   }
-
 }

@@ -3,6 +3,7 @@ package org.exoplatform.ecm.utils;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -159,6 +161,13 @@ public class Utils {
     }    
   }
   
+  static public class NodeTypeNameComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((NodeType) o1).getName() ;
+      String name2 = ((NodeType) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
+  }
   
   public static boolean isNameValid(String name, String[] regexpression) {
     for(String c : regexpression){ if(name.contains(c)) return false ;}

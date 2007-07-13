@@ -5,9 +5,12 @@
 package org.exoplatform.ecm.webui.component.admin.namespace;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.NamespaceRegistry;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
@@ -41,6 +44,7 @@ public class UINamespaceList extends UIGrid {
   
   public String[] getActions() { return new String[] {"AddNamespace"} ;}
   
+  @SuppressWarnings("unchecked")
   public void updateGrid () throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     NamespaceRegistry namespaceRegistry = getApplicationComponent(RepositoryService.class)
@@ -51,10 +55,19 @@ public class UINamespaceList extends UIGrid {
       NamespaceBean bean = new NamespaceBean(prefixs[i], namespaceRegistry.getURI(prefixs[i])) ;
       nspBeans.add(bean) ;
     }
+    Collections.sort(nspBeans, new NameSpaceComparator()) ;
     ObjectPageList objPageList = new ObjectPageList(nspBeans, 10) ;
     getUIPageIterator().setPageList(objPageList) ; 
   }   
 
+  static public class NameSpaceComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((NamespaceBean) o1).getPrefix() ;
+      String name2 = ((NamespaceBean) o2).getPrefix() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
+  }
+  
   static public class AddNamespaceActionListener extends EventListener<UINamespaceList> {
     public void execute(Event<UINamespaceList> event) throws Exception {
       UINamespaceManager uiManager = event.getSource().getParent() ;

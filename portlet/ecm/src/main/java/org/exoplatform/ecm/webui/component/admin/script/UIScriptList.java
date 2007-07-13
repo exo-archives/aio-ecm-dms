@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.script;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -11,6 +13,7 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -44,7 +47,9 @@ public class UIScriptList extends UIGrid {
     configure("name", BEAN_FIELD, ACTIONS) ;
   }
 
+  @SuppressWarnings("unchecked")
   public void updateGrid(List<ScriptData> scriptData) throws Exception {
+    Collections.sort(scriptData, new ScriptComparator()) ;
     ObjectPageList objPageList = new ObjectPageList(scriptData, 10) ;
     getUIPageIterator().setPageList(objPageList) ;
   }
@@ -94,6 +99,14 @@ public class UIScriptList extends UIGrid {
       script = cbScript.getNode(nodeName) ; 
     }
     return script ;
+  }
+  
+  static public class ScriptComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((ScriptData) o1).getName() ;
+      String name2 = ((ScriptData) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
   }
 
   static public class AddNewActionListener extends EventListener<UIScriptList> {

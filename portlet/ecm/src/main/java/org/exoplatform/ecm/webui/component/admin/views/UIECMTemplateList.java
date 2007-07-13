@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -56,6 +58,7 @@ public class UIECMTemplateList extends UIGrid {
     return node.getBaseVersion().getName();    
   }
 
+  @SuppressWarnings("unchecked")
   public void updateTempListGrid() throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List<Node> nodes = getApplicationComponent(ManageViewService.class)
@@ -64,9 +67,18 @@ public class UIECMTemplateList extends UIGrid {
     for(Node node : nodes) {
       tempBeans.add(new TemplateBean(node.getName(), node.getPath(), getBaseVersion(node))) ;
     }
+    Collections.sort(tempBeans, new ECMViewComparator()) ;
     getUIPageIterator().setPageList(new ObjectPageList(tempBeans, 10)) ;
   }
 
+  static public class ECMViewComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((TemplateBean) o1).getName() ;
+      String name2 = ((TemplateBean) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
+  }
+  
   static  public class AddActionListener extends EventListener<UIECMTemplateList> {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTempList = event.getSource() ;

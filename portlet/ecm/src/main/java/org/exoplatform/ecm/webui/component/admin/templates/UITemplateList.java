@@ -5,12 +5,15 @@
 package org.exoplatform.ecm.webui.component.admin.templates;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.namespace.UINamespaceList.NamespaceBean;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -48,6 +51,7 @@ public class UITemplateList extends UIGrid {
     return new String[] {"AddNew"} ;
   }
   
+  @SuppressWarnings("unchecked")
   public void updateGrid() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
@@ -56,8 +60,17 @@ public class UITemplateList extends UIGrid {
     while (nodes.hasNext()) {
       templateData.add(new TemplateData(nodes.nextNode().getName())) ;
     }
+    Collections.sort(templateData, new TemplateComparator()) ;
     ObjectPageList objPageList = new ObjectPageList(templateData, 10) ;
     getUIPageIterator().setPageList(objPageList) ;
+  }
+  
+  static public class TemplateComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((TemplateData) o1).getName() ;
+      String name2 = ((TemplateData) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
   }
 
   static public class EditActionListener extends EventListener<UITemplateList> {

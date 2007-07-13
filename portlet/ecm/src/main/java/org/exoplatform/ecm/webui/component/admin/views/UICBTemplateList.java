@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -12,6 +14,7 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.views.UIViewList.ViewBean;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -63,13 +66,23 @@ public class UICBTemplateList extends UIGrid {
     return templateList ;
   }
   
+  @SuppressWarnings("unchecked")
   public void updateCBTempListGrid() throws Exception {
     List<Node> nodes = getAllTemplates() ;
     List<TemplateBean> tempBeans = new ArrayList<TemplateBean>() ;
     for(Node node : nodes) {
       tempBeans.add(new TemplateBean(node.getName(), node.getPath(), getBaseVersion(node))) ;
     }
+    Collections.sort(tempBeans, new CBViewComparator()) ;
     getUIPageIterator().setPageList(new ObjectPageList(tempBeans, 10)) ;
+  }
+  
+  static public class CBViewComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((TemplateBean) o1).getName() ;
+      String name2 = ((TemplateBean) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
   }
   
   static  public class AddActionListener extends EventListener<UICBTemplateList> {

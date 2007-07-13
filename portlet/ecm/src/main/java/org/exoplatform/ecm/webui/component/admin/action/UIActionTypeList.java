@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.nodetype.NodeType;
@@ -12,6 +14,7 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -62,9 +65,18 @@ public class UIActionTypeList extends UIGrid {
       bean.setExtendType(types.toString()) ;
       actions.add(bean) ;
     }
+    Collections.sort(actions, new ActionComparator()) ;
     ObjectPageList objPageList = new ObjectPageList(actions, 10) ;
     getUIPageIterator().setPageList(objPageList) ;
   }   
+  
+  static public class ActionComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((ActionData) o1).getName() ;
+      String name2 = ((ActionData) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
+  }
   
   static public class AddActionActionListener extends EventListener<UIActionTypeList> {
     public void execute(Event<UIActionTypeList> event) throws Exception {

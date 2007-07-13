@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.drives;
 
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -14,6 +16,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.views.UIViewList.ViewBean;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -51,6 +54,7 @@ public class UIDriveList extends UIGrid {
   
   public String[] getActions() { return ACTIONS ; }
   
+  @SuppressWarnings("unchecked")
   public void updateDriveListGrid() throws Exception {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
@@ -70,8 +74,17 @@ public class UIDriveList extends UIGrid {
         drive.setIcon("<img src=\"" + dservice.getDownloadLink(dservice.addDownloadResource(dresource)) + "\" width=\"16\" height=\"16\" />") ;
       }
     }
+    Collections.sort(drives, new DriveComparator()) ;
     ObjectPageList objPageList = new ObjectPageList(drives, 10) ;
     getUIPageIterator().setPageList(objPageList) ;    
+  }
+  
+  static public class DriveComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((DriveData) o1).getName() ;
+      String name2 = ((DriveData) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
   }
   
   static  public class AddDriveActionListener extends EventListener<UIDriveList> {

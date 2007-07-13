@@ -18,6 +18,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.CmsConfigurationService;
@@ -77,7 +78,7 @@ public class UINodeTypeList extends UIComponentDecorator {
     while(nodeTypeIter.hasNext()) {
       nodeList.add(nodeTypeIter.nextNodeType()) ;
     }    
-    Collections.sort(nodeList, new NodeTypeNameComparator()) ;
+    Collections.sort(nodeList, new Utils.NodeTypeNameComparator()) ;
     if(session.getRootNode().hasNode(DRAFTNODETYPE)) {
       Node draftNode = session.getRootNode().getNode(DRAFTNODETYPE) ;
       NodeIterator nodeIter = draftNode.getNodes() ;
@@ -116,14 +117,6 @@ public class UINodeTypeList extends UIComponentDecorator {
     }
     PageList pageList = new ObjectPageList(getAllNodeTypes(), 10) ;
     uiPageIterator_.setPageList(pageList);        
-  }
-  
-  static public class NodeTypeNameComparator implements Comparator {
-    public int compare(Object o1, Object o2) throws ClassCastException {
-      String name1 = ((NodeType) o1).getName() ;
-      String name2 = ((NodeType) o2).getName() ;
-      return name1.compareToIgnoreCase(name2) ;
-    }
   }
   
   static public class AddActionListener extends EventListener<UINodeTypeList> {

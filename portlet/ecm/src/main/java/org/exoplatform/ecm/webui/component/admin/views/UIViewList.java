@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.admin.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -12,6 +14,7 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.templates.UITemplateList.TemplateData;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -63,6 +66,7 @@ public class UIViewList extends UIGrid {
   
   public String[] getActions() { return ACTIONS ; }
   
+  @SuppressWarnings("unchecked")
   public void updateViewListGrid() throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List views = getApplicationComponent(ManageViewService.class).getAllViews(repository) ;
@@ -73,7 +77,16 @@ public class UIViewList extends UIGrid {
       bean.setBaseVersion(getBaseVersion(view.getName())) ;
       viewBeans.add(bean) ;
     }      
+    Collections.sort(viewBeans, new ViewComparator()) ;
     getUIPageIterator().setPageList(new ObjectPageList(viewBeans, 10)) ;    
+  }
+  
+  static public class ViewComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      String name1 = ((ViewBean) o1).getName() ;
+      String name2 = ((ViewBean) o2).getName() ;
+      return name1.compareToIgnoreCase(name2) ;
+    }
   }
   
   public boolean canDelete(List drivers, String viewName) {
