@@ -21,7 +21,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
-import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;

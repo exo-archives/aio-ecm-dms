@@ -131,13 +131,15 @@ public class UIQueriesForm extends UIForm implements UISelector {
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
       for(Node queryNode : queryService.getSharedQueries(repository)) {
         if(queryNode.getName().equals(queryName)) {
-          uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-existing", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-existing", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
       }
       if(!Utils.isNameValid(queryName, REG_EXPRESSION)) {
-        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-invalid", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -145,7 +147,8 @@ public class UIQueriesForm extends UIForm implements UISelector {
       UIFormInputSetWithAction permField = uiForm.getChildById("PermissionButton") ;
       String permissions = permField.getUIStringInput(PERMISSIONS).getValue() ;
       if((permissions == null)||(permissions.trim().length() == 0)) {
-        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.permission-require", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.permission-require", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
