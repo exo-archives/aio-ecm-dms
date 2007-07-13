@@ -23,6 +23,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -35,6 +36,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormUploadInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -123,7 +125,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     // saved document triggered an action, the remote user needs to be retrieved
     // from the session. However, it may be needed to use the System Session
     // in case the portlet is located in a public page.
-    Session session = repositoryService.getRepository(repository).login(workspace) ;
+    Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
     Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
     Node homeNode = (Node) session.getItem(prefLocate);
     try {
@@ -133,6 +135,9 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       for(UIComponent uiChild : getChildren()) {
         if(uiChild instanceof UIFormMultiValueInputSet) {
           ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;
+        } else if(uiChild instanceof UIFormUploadInput) {
+          UploadService uploadService = getApplicationComponent(UploadService.class) ;
+          uploadService.removeUpload(((UIFormUploadInput)uiChild).getUploadId()) ;
         }
       }
       Object[] args = { prefLocate } ;

@@ -571,7 +571,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       if(uiFormWizard.isNewWizard_) {
         if(uiRepoForm.isExistWorkspace(name)){
           Object[] args = new Object[]{name}  ;        
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceForm.msg.wsname-exist", args)) ;
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
         }          
