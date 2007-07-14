@@ -651,10 +651,6 @@
   padding-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIFormGrid input {
-  float: left;
-}
-
 /*================================UIActionList=================================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
