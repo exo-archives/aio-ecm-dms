@@ -4,7 +4,7 @@ function UIJCRExplorer() {
 };
 
 UIJCRExplorer.prototype.loadScroll = function(e) {
-	console.log("load scroll jcr");
+//	console.log("load scroll jcr");
 	var jcr = eXo.ecm.UIJCRExplorer;
 	var uiDocumentWorkspace = document.getElementById("UIDocumentWorkspace");
 	if (uiDocumentWorkspace) {
