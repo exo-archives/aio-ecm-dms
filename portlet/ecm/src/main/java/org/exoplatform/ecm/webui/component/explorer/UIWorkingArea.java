@@ -247,7 +247,7 @@ public class UIWorkingArea extends UIContainer {
         if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
         actionsList.append(",WebDAV") ;
       }   
-    if(uiExplorer.getAllClipBoard().size() > 0 && hasEditPermissions(node)) actionsList.append(",Paste") ;
+      if(uiExplorer.getAllClipBoard().size() > 0 && hasEditPermissions(node)) actionsList.append(",Paste") ;
     }
     return actionsList.toString() ;
 
@@ -811,7 +811,7 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       if(wsName == null) wsName = uiExplorer.getCurrentWorkspace() ;
       String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" 
-                    + wsName + nodePath ;
+      + wsName + nodePath ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + link + "');") ;
     }
   }

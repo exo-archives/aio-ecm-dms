@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -31,7 +30,7 @@ public class Utils {
   final public static String WORKSPACE_NAME = "workspace".intern() ;   
   final public static String JCR_PATH = "path".intern() ; 
   final public static String DRIVE_FOLDER = "allowCreateFolder".intern() ; 
-  
+
   final public static String CB_DOCUMENT_NAME = "documentName".intern() ;
   final public static String CB_SCRIPT_NAME = "scriptName".intern() ;
   final public static String CB_REF_DOCUMENT = "reference".intern() ;  
@@ -46,25 +45,28 @@ public class Utils {
   final public static String CB_VIEW_TAGMAP = "viewTagMap".intern();
   final public static String CB_VIEW_COMMENT = "viewComment".intern();
   final public static String CB_VIEW_VOTE= "viewVote".intern();
-  
+
   final public static String CB_BOX_TEMPLATE = "boxTemplate".intern();   
   final public static String CB_TEMPLATE = "template" ;
   final public static String CB_USECASE = "usecase".intern() ;
-  
+
   final public static String FROM_PATH = "From Path".intern() ;
   final public static String USE_DOCUMENT = "Document".intern() ;
   final public static String USE_JCR_QUERY = "Using a JCR query".intern() ;
   final public static String USE_SCRIPT = "Using a script".intern() ;
-  
+
   final public static String CB_USE_FROM_PATH = "path".intern() ;
   final public static String CB_USE_DOCUMENT = "detail-document".intern() ;
   final public static String CB_USE_JCR_QUERY = "query".intern() ;
   final public static String CB_USE_SCRIPT = "script".intern() ;  
-  
+
   final public static String SEMI_COLON = ";".intern() ;
   final public static String COLON = ":".intern() ;
   final public static String SLASH = "/".intern() ;
+  final public static String BACKSLASH = "\\".intern() ;
   
+   
+  final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<","\"", "?", "!", "@", "#", "$", "%","^","&","*"} ;
   final public static String REPOSITORY = "repository".intern() ;
   final public static String VIEWS = "views".intern() ;
   final public static String DRIVE = "drive".intern() ;
@@ -105,17 +107,17 @@ public class Utils {
 
   public static String encodeHTML(String text) {
     return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
-               .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+    .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
   }
-  
+
   public static String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
   }
-  
+
   public static boolean isVersionable(Node node) throws RepositoryException {
     return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType(JCR_FROZEN);
   }
-  
+
   public static boolean isReadAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.READ);
@@ -124,7 +126,7 @@ public class Utils {
       return false;
     }    
   }
-  
+
   public static boolean isAddNodeAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.ADD_NODE);
@@ -142,7 +144,7 @@ public class Utils {
       return false;
     }    
   }
-  
+
   public static boolean isSetPropertyNodeAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.SET_PROPERTY);
@@ -151,7 +153,7 @@ public class Utils {
       return false;
     }    
   }
-  
+
   public static boolean isRemoveNodeAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.REMOVE);
@@ -160,6 +162,7 @@ public class Utils {
       return false;
     }    
   }
+ 
   
   static public class NodeTypeNameComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
@@ -169,30 +172,36 @@ public class Utils {
     }
   }
   
+ 
   public static boolean isNameValid(String name, String[] regexpression) {
     for(String c : regexpression){ if(name.contains(c)) return false ;}
     return true ;
   }
-  
+ public static boolean isNameEmpty(String name) {
+   return (name == null || name.trim().length() == 0) ;
+ }
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
-    String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
-    StringBuilder str = new StringBuilder(nodeType) ;
-    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
-    if(node.isNodeType(NT_FILE)) {
-      Node jcrContentNode = node.getNode(JCR_CONTENT) ;
-      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceAll("/|\\.","_")).append(appended);
+    StringBuilder str = new StringBuilder() ;
+    if(isReadAuthorized(node)) {
+      String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
+      str.append(nodeType) ;
+      if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
+      if(node.isNodeType(NT_FILE)) {
+        Node jcrContentNode = node.getNode(JCR_CONTENT) ;
+        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceAll("/|\\.","_")).append(appended);
+      }
     }
     return str.toString() ;
   }
-  
+
   public static String getNodeTypeIcon(Node node, String appended) throws RepositoryException {
     return getNodeTypeIcon(node, appended, null) ;
   }
-  
+
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
-  
+
   public static NodeIterator getAuthorizedChildNodes(Node node) throws Exception {
     NodeIterator iter = node.getNodes() ;
     while(iter.hasNext()) {
@@ -209,7 +218,7 @@ public class Utils {
     }  
     return children ;
   }
-  
+
   @SuppressWarnings({"unchecked", "unused"})
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
@@ -249,20 +258,20 @@ public class Utils {
     }
     return rawinputs;
   }
-  
- public static List<String> getMemberships() throws Exception {
-   String userId = Util.getPortalRequestContext().getRemoteUser() ;
-   OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
-   List<String> userMemberships = new ArrayList<String> () ;
-   userMemberships.add(userId) ;
-   Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId) ;
-   if(memberships == null || memberships.size() < 0) return userMemberships ;
-   Object[] objects = memberships.toArray() ;
-   for(int i = 0 ; i < objects.length ; i ++ ){
-     Membership membership = (Membership)objects[i] ;
-     String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
-     userMemberships.add(role) ;     
-   }
-   return userMemberships ;
- }
+
+  public static List<String> getMemberships() throws Exception {
+    String userId = Util.getPortalRequestContext().getRemoteUser() ;
+    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
+    List<String> userMemberships = new ArrayList<String> () ;
+    userMemberships.add(userId) ;
+    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId) ;
+    if(memberships == null || memberships.size() < 0) return userMemberships ;
+    Object[] objects = memberships.toArray() ;
+    for(int i = 0 ; i < objects.length ; i ++ ){
+      Membership membership = (Membership)objects[i] ;
+      String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
+      userMemberships.add(role) ;     
+    }
+    return userMemberships ;
+  }
 }

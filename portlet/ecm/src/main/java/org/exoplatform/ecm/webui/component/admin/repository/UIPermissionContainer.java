@@ -30,9 +30,9 @@ public class UIPermissionContainer  extends UIContainer implements UIPopupCompon
     uiECMPermission.setComponent(uiWsPermissionForm, null) ;
   }
 
-  protected void setValues(String user, String permission) {
-    
+  protected void setValues(String user, String permission) {    
     UIWorkspacePermissionForm uiWsPremForm = getChild(UIWorkspacePermissionForm.class) ;
+    uiWsPremForm.reset() ;
     UIFormStringInput permissionField =  uiWsPremForm.getUIStringInput(UIWorkspacePermissionForm.FIELD_PERMISSION) ;
     permissionField.setValue(user) ;
     if( permission != null) {
