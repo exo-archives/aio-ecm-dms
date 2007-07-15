@@ -633,7 +633,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       for(String s : uiFormWizard.permissions_.values()) {
         permSb.append(s) ;
       }
-      System.out.println("\n\n permSb >>>"+ permSb.toString());
       workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
       workspaceEntry.setLockTimeOut(lockTimeOutValue) ;
       workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
