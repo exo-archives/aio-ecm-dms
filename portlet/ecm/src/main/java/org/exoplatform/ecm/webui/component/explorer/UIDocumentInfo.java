@@ -252,14 +252,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return node.getBaseVersion().getName() ;
   }
   
-  public void setNode(Node node) {
-    currentNode_ = node ;
-   /* try {
-      getAncestorOfType(UIJCRExplorer.class).setSelectNode(node) ;
-    } catch(Exception e) {
-      e.printStackTrace() ;
-    }*/
-  }
+  public void setNode(Node node) { currentNode_ = node ; }
   
   public boolean isRssLink() { return false ; }
   public String getRssLink() { return null ; }
