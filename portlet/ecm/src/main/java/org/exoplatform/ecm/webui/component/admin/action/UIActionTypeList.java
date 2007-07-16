@@ -14,7 +14,6 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
-import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;

@@ -16,7 +16,6 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.views.UIViewList.ViewBean;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;

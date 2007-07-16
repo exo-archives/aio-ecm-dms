@@ -839,9 +839,6 @@
       </propertyDefinition>
 			<propertyDefinition name="exo:voter" requiredType="String" autoCreated="true" mandatory="false"
         onParentVersion="COPY" protected="false" multiple="true">        
-        <defaultValues>
-          <defaultValue> </defaultValue>
-        </defaultValues>
       </propertyDefinition>			
     </propertyDefinitions>			
   </nodeType>

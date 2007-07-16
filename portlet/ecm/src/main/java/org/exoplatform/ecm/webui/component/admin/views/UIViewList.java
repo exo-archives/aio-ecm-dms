@@ -14,7 +14,6 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplateList.TemplateData;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;

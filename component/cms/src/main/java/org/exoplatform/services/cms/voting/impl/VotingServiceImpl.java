@@ -77,7 +77,10 @@ public class VotingServiceImpl implements VotingService {
     double newRating = ((voteTotalOfLang*votingRate)+rate)/(voteTotalOfLang+1) ;    
     DecimalFormat format = new DecimalFormat("###.##") ;
     double fomatedRating= format.parse(format.format(newRating)).doubleValue() ;
-    Value[] voters = languageNode.getProperty(VOTER_PROP).getValues() ;        
+    Value[] voters = {} ;
+    if(languageNode.hasProperty(VOTER_PROP)) {
+      voters = languageNode.getProperty(VOTER_PROP).getValues() ;        
+    }
     Value newVoter = session.getValueFactory().createValue(userName) ;    
     List<Value> newVoterList = new ArrayList<Value>() ;
     newVoterList.addAll(Arrays.<Value>asList(voters)) ;    
@@ -90,5 +93,4 @@ public class VotingServiceImpl implements VotingService {
     document.save() ;
     session.save() ;
   }       
-
 }

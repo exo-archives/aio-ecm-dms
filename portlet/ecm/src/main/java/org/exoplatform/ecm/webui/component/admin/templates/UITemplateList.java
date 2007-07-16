@@ -13,7 +13,6 @@ import javax.jcr.NodeIterator;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.namespace.UINamespaceList.NamespaceBean;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;

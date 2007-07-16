@@ -5,8 +5,11 @@
 package org.exoplatform.ecm.webui.component.admin.templates;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
@@ -107,6 +110,20 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
+  
+  static public class TemplateNameComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((SelectItemOption) o1).getValue().toString() ;
+        String name2 = ((SelectItemOption) o2).getValue().toString() ;
+        return name1.compareToIgnoreCase(name2) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getRepository() ;
@@ -123,9 +140,9 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     while (iter.hasNext()) {
       NodeType nodeType = iter.nextNodeType();
       String nodeTypeName = nodeType.getName();
-
       if(!templates.contains(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
     }
+    Collections.sort(options, new TemplateNameComparator()) ;
     return options ;
   }
 

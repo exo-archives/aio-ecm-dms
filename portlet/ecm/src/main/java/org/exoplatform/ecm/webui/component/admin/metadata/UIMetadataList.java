@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component.admin.metadata;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.nodetype.NodeType;

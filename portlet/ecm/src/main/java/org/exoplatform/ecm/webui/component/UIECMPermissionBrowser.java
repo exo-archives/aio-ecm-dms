@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;

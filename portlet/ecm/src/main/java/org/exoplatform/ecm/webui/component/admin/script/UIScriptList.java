@@ -13,7 +13,6 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;

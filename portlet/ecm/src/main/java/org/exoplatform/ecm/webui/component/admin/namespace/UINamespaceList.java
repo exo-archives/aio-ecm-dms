@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.NamespaceRegistry;
-import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;

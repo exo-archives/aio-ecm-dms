@@ -51,7 +51,6 @@ public class UIQueriesList extends UIContainer {
   
   @SuppressWarnings("unchecked")
   public void updateQueriesGrid() throws Exception {
-    Collections.sort(getAllSharedQueries(), new QueryComparator()) ;
     PageList pageList = new ObjectPageList(getAllSharedQueries(), 10) ;
     UIPageIterator uiPateIterator = getChild(UIPageIterator.class) ;
     uiPateIterator.setPageList(pageList) ;    
@@ -59,10 +58,13 @@ public class UIQueriesList extends UIContainer {
   
   public UIPageIterator getUIPageIterator() { return getChild(UIPageIterator.class) ; }
   
+  @SuppressWarnings("unchecked")
   public List<Node> getAllSharedQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    return queryService.getSharedQueries(repository) ;
+    List<Node> queries = queryService.getSharedQueries(repository) ;
+    Collections.sort(queries, new QueryComparator()) ;
+    return queries ;
   }
   
   static public class QueryComparator implements Comparator {
@@ -70,7 +72,7 @@ public class UIQueriesList extends UIContainer {
       try {
         String name1 = ((Node) o1).getName() ;
         String name2 = ((Node) o2).getName() ;
-        return name2.compareToIgnoreCase(name1) ;
+        return name1.compareToIgnoreCase(name2) ;
       } catch(Exception e) {
         return 0;
       }
