@@ -153,8 +153,8 @@
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
 	margin: auto;
-	padding-bottom: 0px;
-	width: 100%;
+	padding: 0px;
+	width: 500px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {

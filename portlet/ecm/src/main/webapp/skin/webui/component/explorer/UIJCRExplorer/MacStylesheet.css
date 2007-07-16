@@ -912,6 +912,11 @@
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIViewMetadataManager .HorizontalLayout {
+  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+  padding-top: 10px;
+}
+
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UIGrid tr {
