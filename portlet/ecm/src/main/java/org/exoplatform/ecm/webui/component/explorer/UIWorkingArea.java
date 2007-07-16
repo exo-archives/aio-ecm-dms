@@ -216,7 +216,7 @@ public class UIWorkingArea extends UIContainer {
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node)) {
-            actionsList.append(",Copy") ;
+            if(hasEditPermissions(node)) actionsList.append(",Copy") ;
             if(hasRemovePermissions(node)) actionsList.append(",Cut") ;
           }
           if(hasEditPermissions(node)) actionsList.append(",Rename") ;
@@ -227,7 +227,7 @@ public class UIWorkingArea extends UIContainer {
           if(Utils.isVersionable(node)) actionsList.append(",CheckOut") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
-          if(!isSameNameSibling(node)) actionsList.append(",Copy") ;
+          if(!isSameNameSibling(node) && hasEditPermissions(node)) actionsList.append(",Copy") ;
           if(hasEditPermissions(node)) actionsList.append(",Rename") ;
           actionsList.append(",WebDAV") ;
         }

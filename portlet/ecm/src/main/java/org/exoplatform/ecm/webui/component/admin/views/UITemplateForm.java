@@ -221,10 +221,10 @@ public class UITemplateForm extends UIForm {
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         List<Node> ecmTemps = manageViewService.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
         for(Node temp : ecmTemps) {
-          if(temp.getName().equals(templateName)) {
+          if(temp.getName().equals(templateName) && uiForm.isAddNew_) {
             Object[] args = {templateName} ;
             uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist", args, 
-                                                    ApplicationMessage.WARNING)) ;
+                ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
