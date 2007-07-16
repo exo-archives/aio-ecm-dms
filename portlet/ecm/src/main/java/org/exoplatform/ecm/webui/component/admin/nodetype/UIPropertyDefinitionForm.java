@@ -330,6 +330,15 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(propertyName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       if(prefix != null && prefix.length() > 0 ) propertyName = prefix + ":" + propertyName ;
       UIPropertyDefinitionForm uiPropertyForm = uiForm.getChild(UIPropertyDefinitionForm.class) ;
       PropertyDefinitionValue propertyInfo = new PropertyDefinitionValue() ;      

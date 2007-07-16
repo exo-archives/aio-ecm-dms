@@ -179,19 +179,20 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       }
       UIScriptList curentList = null ;
       UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
-      String namePrefix = null;
       List<String> listScript = new ArrayList<String>() ;
       List<ScriptData> scriptDatas = new ArrayList<ScriptData>() ;
+      String namePrefix = null ;
       if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
         curentList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
-        namePrefix = curentList.getScriptCategory() ;
         UIECMScripts uiEScripts = uiManager.getChild(UIECMScripts.class) ;
+        namePrefix = curentList.getScriptCategory() ; 
         String subNamePrefix = 
           namePrefix.substring(namePrefix.lastIndexOf("/") + 1, namePrefix.length()) ;
         scriptDatas = uiEScripts.getECMScript(subNamePrefix) ;
       } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)){
         curentList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
         UICBScripts uiCBScripts = uiManager.getChild(UICBScripts.class) ;
+        namePrefix = curentList.getScriptCategory() ;
         scriptDatas = uiCBScripts.getCBScript() ;
       }
       for(ScriptData data : scriptDatas) {

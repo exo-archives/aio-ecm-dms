@@ -524,16 +524,27 @@ public class UINodeTypeForm extends UIFormTabPane {
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
+      }
+      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(nodeTypeName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
       }
       if(prefix != null && prefix.length() > 0 ) nodeTypeName = prefix + ":" + nodeTypeName ;
       String superTypes = uiForm.getUIStringInput(SUPER_TYPE).getValue() ;
       if(uiForm.getUIFormSelectBox(MIXIN_TYPE).getValue().equals("false")) {
         if(superTypes == null || superTypes.trim().length() == 0) {
-          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.supertype-is-madatory", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.supertype-is-madatory", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           uiForm.setTabRender(NODETYPE_DEFINITION) ;
           return ;
@@ -565,7 +576,8 @@ public class UINodeTypeForm extends UIFormTabPane {
       try {        
         extNTManager.registerNodeType(newNodeType, ExtendedNodeTypeManager.FAIL_IF_EXISTS) ;
       } catch(Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.register-failed", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.register-failed", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
@@ -602,10 +614,20 @@ public class UINodeTypeForm extends UIFormTabPane {
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.nodeType-name", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
+      }
+      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(nodeTypeName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
       }
       if(prefix != null && prefix.length() > 0 ) nodeTypeName = prefix + ":" + nodeTypeName ;
       Node systemNode = (Node)session.getItem("/jcr:system") ;

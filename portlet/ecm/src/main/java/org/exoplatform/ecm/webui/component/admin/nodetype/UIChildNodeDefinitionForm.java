@@ -312,6 +312,15 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
         uiApp.addMessage(new ApplicationMessage("UIChildNodeDefinitionForm.msg.child-name", null)) ;
         return ;
       }
+      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(childNodeName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       if(prefix != null && prefix.length() > 0) childNodeName = prefix + ":" + childNodeName ;
       nodeTypeValue.setName(childNodeName) ;
       String defaultType =

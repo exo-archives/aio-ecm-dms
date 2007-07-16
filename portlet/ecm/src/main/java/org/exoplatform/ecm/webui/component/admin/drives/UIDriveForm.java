@@ -4,14 +4,18 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.drives;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -19,6 +23,7 @@ import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
+import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
@@ -245,12 +250,34 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   static public class ChangeActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
+      String driverName = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_NAME).getValue() ;
+      String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      String selectedWorkspace = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
+      UIDriveInputSet driveInputSet = uiDriveForm.getChild(UIDriveInputSet.class) ;
+      ManageDriveService manageDriveService = 
+        uiDriveForm.getApplicationComponent(ManageDriveService.class) ;
+      RepositoryService repositoryService = 
+        uiDriveForm.getApplicationComponent(RepositoryService.class) ;
+      List<WorkspaceEntry> wsEntries = 
+        repositoryService.getRepository(repository).getConfiguration().getWorkspaceEntries() ;
+      String wsInitRootNodeType = null ;
+      for(WorkspaceEntry wsEntry : wsEntries) {
+        if(wsEntry.getName().equals(selectedWorkspace)) {
+          wsInitRootNodeType = wsEntry.getAutoInitializedRootNt() ;
+        }
+      }
+      List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>() ;
+      UIFormRadioBoxInput uiInput = driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER) ;
+      if(wsInitRootNodeType != null && wsInitRootNodeType.equals(Utils.NT_FOLDER)) {
+        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
+      } else {
+        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
+        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
+        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_BOTH_FOLDER_UNSTRUCTURED, "both")) ;
+      }
+      uiInput.setOptions(folderOptions) ;
       if(!uiDriveForm.isAddNew_) {
-        String driverName = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_NAME).getValue() ;
-        String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-        String selectedWorkspace = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
-        DriveData drive = (DriveData)uiDriveForm.getApplicationComponent(ManageDriveService.class)
-        .getDriveByName(driverName, repository) ;
+        DriveData drive = (DriveData)manageDriveService.getDriveByName(driverName, repository) ;
         String defaultPath = drive.getHomePath() ;
         if(!drive.getWorkspace().equals(selectedWorkspace)) defaultPath = "/" ;
         uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).setValue(defaultPath) ;
