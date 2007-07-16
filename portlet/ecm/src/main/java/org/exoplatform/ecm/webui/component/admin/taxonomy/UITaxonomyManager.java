@@ -51,15 +51,6 @@ public class UITaxonomyManager extends UIContainer {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences pref = pcontext.getRequest().getPreferences() ;
     String repository = pref.getValue(Utils.REPOSITORY, "") ;
-    /*try{
-      getApplicationComponent(RepositoryService.class).getRepository(repository) ;
-    }catch(Exception e) {
-      String defaultRepo = getApplicationComponent(RepositoryService.class)
-      .getDefaultRepository().getConfiguration().getName();
-      pref.setValue(Utils.REPOSITORY, defaultRepo) ;
-      pref.store() ;
-      return defaultRepo ;
-    }*/
     return repository ;
   }
   
@@ -142,18 +133,22 @@ public class UITaxonomyManager extends UIContainer {
       String srcPath = uiManager.clipboard_.getSrcPath();
       if(srcPath == null){
         Object[] arg = { realPath } ;
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.no-taxonomy-selected", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.no-taxonomy-selected", arg, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       try {       
-        Node destNode = uiManager.getApplicationComponent(CategoriesService.class)
-        .getTaxonomyNode(realPath, uiManager.getRepository()) ;
+        CategoriesService categoriesService = 
+          uiManager.getApplicationComponent(CategoriesService.class) ;
+        Node destNode = categoriesService.getTaxonomyNode(realPath, uiManager.getRepository()) ;
         String destPath = destNode.getPath() + srcPath.substring(srcPath.lastIndexOf("/"));       
-        uiManager.getApplicationComponent(CategoriesService.class)
-        .moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
+        categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
         uiManager.resetTaxonomyRootNode() ;
       } catch (Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

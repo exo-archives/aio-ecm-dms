@@ -13,9 +13,9 @@ import javax.jcr.Node ;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.core.model.SelectItemOption;
 
-import org.exoplatform.services.cms.CmsConfigurationService ;
+import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.scripts.CmsScript ;
-import org.exoplatform.services.cms.BasePath ;
+import org.exoplatform.services.cms.BasePath;
 
 import org.exoplatform.services.jcr.RepositoryService ;
 import org.exoplatform.services.jcr.core.ManageableRepository ;
@@ -25,6 +25,7 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
   
   private RepositoryService repositoryService_ ;
   private CmsConfigurationService cmsConfigService_ ;
+  private String repository_ ;
   
   public FillSelectBoxWithCalendarCategories(RepositoryService repositoryService,
                                              CmsConfigurationService cmsConfigurationService) {
@@ -35,10 +36,10 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
   public void execute(Object context) {
 		try {
       UIFormSelectBox selectBox = (UIFormSelectBox) context;        
-      ManageableRepository jcrRepository = repositoryService_.getRepository();
-      Session session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace());
+      ManageableRepository jcrRepository = repositoryService_.getRepository(repository_);
+      Session session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace(repository_));
       String path = cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH) ;
-      Node calendar = (Node) session.getItem(cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH)) ;
+      Node calendar = (Node) session.getItem(path) ;
       List options = new ArrayList();
       if (calendar != null){
         Iterator iter = calendar.getNodes() ;
@@ -48,11 +49,10 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
         }            
       }
       selectBox.setOptions(options);
-    }catch(Exception e) {
+    } catch(Exception e) {
       selectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
     }
   }
   
-  public void setParams(String[] params) {}
-  
+  public void setParams(String[] params) { repository_ = params[0]; }
 }

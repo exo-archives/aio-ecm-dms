@@ -67,6 +67,7 @@ import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.metadata.MetadataService;
@@ -140,7 +141,6 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
   final static private String FIELD_SEARCH_TYPE = "searchType" ;
   final static private String OPT_SEARCH = "Search" ;
-  final static private String EXO_TAXONOMIES_PATH = "exoTaxonomiesPath" ;
   final static private String FIELD_SQL = "SQL" ;
   final static private String FIELD_XPATH = "xPath" ;
 
@@ -706,7 +706,7 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setFilterType(null) ;
       uiJCRBrowser.setRepository(repository) ;
       uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), true) ;
-      uiJCRBrowser.setRootPath(cmsService.getJcrPath(EXO_TAXONOMIES_PATH)) ;
+      uiJCRBrowser.setRootPath(cmsService.getJcrPath(BasePath.EXO_TAXONOMIES_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiCateAddedList, null) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;

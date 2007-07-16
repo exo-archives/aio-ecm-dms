@@ -14,7 +14,6 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.views.UIViewList.ViewBean;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

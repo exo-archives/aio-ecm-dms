@@ -366,7 +366,34 @@
                       </field>                  
                     </object>
                   </value>
-                  
+                  <value>
+                    <object type="org.exoplatform.services.cms.impl.CmsConfig$JcrPath">
+                      <field  name="alias"><string>calendarPath</string></field>
+                      <field  name="path"><string>/jcr:system/exo:ecm/exo:taxonomies/calendar</string></field>                  
+                      <field name="workspaces">
+                        <collection type="java.util.ArrayList">               
+                          <value>  
+                            <object type="org.exoplatform.services.cms.impl.CmsConfig$Workspace">
+                              <field name="name"><string>production</string></field>   
+                              <field name="permissions">
+                                <collection type="java.util.ArrayList">               
+                                  <value>                                         
+                                    <object type="org.exoplatform.services.cms.impl.CmsConfig$Permission">             
+                                      <field name="owner"><string>*:/admin</string></field>
+                                      <field name="read"><string>true</string></field>                
+                                      <field name="addNode"><string>true</string></field>                
+                                      <field name="setProperty"><string>true</string></field>                
+                                      <field name="remove"><string>true</string></field>                
+                                    </object>  
+                                  </value>
+                                </collection>
+                              </field>      
+                            </object>
+                          </value>                                 
+                        </collection> 
+                      </field>                  
+                    </object>
+                  </value>
                   <value>
                     <object type="org.exoplatform.services.cms.impl.CmsConfig$JcrPath">
                       <field  name="alias"><string>exoDrivesPath</string></field>

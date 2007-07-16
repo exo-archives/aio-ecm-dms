@@ -69,7 +69,7 @@
 			  <td class="FieldLabel">Category</td>
 			  <td class="FieldComponent">
 	      <%
-	        String[] fieldCategories = ["jcrPath=/node/exo:category", "script=ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy"] ;
+	        String[] fieldCategories = ["jcrPath=/node/exo:category", "script=ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy", "scriptParams=repository"] ;
 	        uicomponent.addSelectBoxField("categories", fieldCategories) ;
 	      %>			  
 			  </td>
