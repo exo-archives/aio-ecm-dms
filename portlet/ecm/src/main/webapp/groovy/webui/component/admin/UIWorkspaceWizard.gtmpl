@@ -101,8 +101,5 @@
 			  </div>
 			</div>  
 	  </div>  
-	  <%
-	    rcontext.getJavascriptManager().addOnLoadJavascript('eXo.webui.UIForm.onFixSize');  
-	  %>
 	</div>
 </div>
