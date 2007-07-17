@@ -28,6 +28,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
   float: left;
   padding-left: 6px;
+  margin-top: 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {

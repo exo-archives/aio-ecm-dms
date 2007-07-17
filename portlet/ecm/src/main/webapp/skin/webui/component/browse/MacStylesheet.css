@@ -306,6 +306,7 @@
 .UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
   overflow: auto;
   background: white;
+  width: 100%;
 }
 
 .UIBrowseContentPortlet .UITree .TreeContainer .Node {
@@ -427,6 +428,11 @@
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
   padding: 10px;
+}
+
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
+  padding-top: 10px;
+  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {

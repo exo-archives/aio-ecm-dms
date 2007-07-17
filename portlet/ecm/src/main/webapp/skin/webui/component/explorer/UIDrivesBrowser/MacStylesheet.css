@@ -137,6 +137,10 @@
   background: url('MacSkin/background/AdminProduction.gif') no-repeat;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
+  background: url('DefaultSkin/background/DefaultDrive.gif') no-repeat;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmindraftIcon {
   background: url('MacSkin/background/AdminDraft.gif') no-repeat;
 }

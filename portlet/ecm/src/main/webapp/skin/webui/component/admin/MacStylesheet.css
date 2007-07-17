@@ -430,6 +430,7 @@
   border: solid 1px #ABBCCA;
   overflow: auto;
   background: white;
+  width: 100%;
 }
 
 .UIECMAdminPortlet .UITree .TreeContainer .Node {
@@ -469,7 +470,6 @@
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
 	border: solid 1px #E1E1E1;
-	width: 545px;
 	margin: 0px;
 }
 

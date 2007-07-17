@@ -820,6 +820,11 @@ UIECMAdminPortlet .UIViewManager {
   border: solid 1px #ABBCCA;
   overflow: auto;
   background: white;
+  width: 100%;
+}
+
+.UIECMAdminPortlet .UITree .TreeContainer .Node {
+	white-space: nowrap;
 }
 
 .UIECMAdminPortlet .Explorer .ExplorerTree {

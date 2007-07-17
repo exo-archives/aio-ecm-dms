@@ -238,6 +238,13 @@
   margin-right: 10px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+  overflow: auto;
+  background: white;
+  width: 100%;
+}
+
 .UIJCRExplorerPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
@@ -248,7 +255,6 @@
 .UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-  overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UITree .TreeContainer .Node {

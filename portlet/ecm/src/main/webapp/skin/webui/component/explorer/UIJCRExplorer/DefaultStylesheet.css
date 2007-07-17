@@ -651,6 +651,10 @@
   padding-left: 15px;
 }
 
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIFormGrid input {
+  float: left;
+}
+
 /*================================UIActionList=================================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
@@ -824,12 +828,6 @@
   border-top: solid 1px #cccccc;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-}
-
 .UIJCRExplorer .UIGroupMembershipSelector {
 	width: 92%;
 	margin: auto;
@@ -852,7 +850,6 @@
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
 	border: solid 1px #b7b7b7;
 	background: white;
-	height: 181px;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
@@ -863,7 +860,7 @@
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
 	background: none;
-	overflow: hidden;
+	overflow: auto;
 }
 
 /*=================================UICategoryManager==============================*/

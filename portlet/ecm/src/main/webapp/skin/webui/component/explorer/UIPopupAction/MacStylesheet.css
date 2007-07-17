@@ -184,11 +184,12 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .Explorer .ExplorerTree .UITree {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
   overflow: auto;
   background: white;
+  width: 100%;
 }
-
 .UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
   line-height: 30px;
 }

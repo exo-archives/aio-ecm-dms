@@ -43,10 +43,6 @@
   margin: 0px 5px;
 }
 
-.UIJCRExplorerPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
@@ -64,8 +60,9 @@
 	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .FormContainer {
+.UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout {
 	padding-top: 10px;
+	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 /*======================== -- End UIJCRExplorer -- ==========================================*/
@@ -392,6 +389,7 @@
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
 	background: url('MacSkin/background/Background1x4.png') repeat;
+	border: none;
 }
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIFormWithTitle{
@@ -559,14 +557,14 @@
 
 /*===============================UILanguageTypeForm===================================*/
 
+.UIJCRExplorerPortlet .UIAddLanguageContainer {
+  width: 95%;
+  margin: 10px auto;
+}
+
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIAction {
   width: 170px;
   padding-right: 50px;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .FormContainer .UIFormGrid{
-  width: 500px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIAction {
@@ -701,6 +699,11 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPopupWindow .UITabContent .UIArticle {
 	border: solid 1px #cdcdcd;
 	padding: 5px;
+}
+
+.UIJCRExplorerPortlet .UIRelationManager {
+  border: solid 1px red;
+  height: 150px;
 }
 
 /*================================UIConstraintsForm=================================*/
@@ -990,9 +993,8 @@
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
 	background: none;
-	overflow: hidden;
+	overflow: auto;
 }
-
 
 /*=================================UICategoryManager==============================*/
 

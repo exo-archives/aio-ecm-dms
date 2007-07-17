@@ -24,6 +24,7 @@
 
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
   border: none;
+  background: #efefef;
 }
 
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
@@ -69,7 +70,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
-	width: 500px;
+	width: 550px;
 	margin: auto;
 }
 
@@ -135,6 +136,16 @@
   width: 315px;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+  overflow: auto;
+  background: white;
+}
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
+	white-space: nowrap;
+}
+
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
   float: left;
 }
@@ -168,7 +179,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
-	width: 500px;
+	width: 550px;
 	padding: 0px;
 }
 
@@ -178,7 +189,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: 553px;
+	width: 550px;
 	margin: 0px;
 	border: 1px solid #E1E1E1;
 }

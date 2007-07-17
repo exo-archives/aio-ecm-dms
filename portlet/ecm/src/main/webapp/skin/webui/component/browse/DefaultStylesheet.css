@@ -381,6 +381,7 @@
   margin-right: 10px;
   float: left ;
   width: 230px ;
+    overflow: hidden;
 }
 
 .UIBrowseContentPortlet .Explorer .ExplorerTree {
@@ -406,6 +407,7 @@
 .UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
   overflow: auto;
   background: white;
+  width: 100%;
 }
 
 .UIBrowseContentPortlet .UITree .TreeContainer .Node {
@@ -427,11 +429,16 @@
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 5px;
+  padding: 10px 0px 15px 5px;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
   padding: 10px;
+}
+
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
+  padding-top: 10px;
+  background: #efefef;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
