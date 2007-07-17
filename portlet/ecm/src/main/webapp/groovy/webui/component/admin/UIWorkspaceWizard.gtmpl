@@ -29,21 +29,75 @@
 				        		$tabName
 				        	</div>
 				        	<div style="clear:left;"><span></span></div>
-				        	<div class="InfoDetail">
-				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".name") %>
-				        	</div>		
-				        	<div class="InfoDetail">
-				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".rootnode") %>
-				        	</div>	
-				        	<div class="InfoDetail">
-				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".default") %>
-				        	</div>	
-				        	<div class="InfoDetail">
-				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".permission") %>
-				        	</div>	
-				        	<div class="InfoDetail">
-				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".timeout") %>
-				        	</div>			        	 
+				        	<% if(inputSet.name.equals("step1")) { %>
+					        	<div class="step1" style="display:block;">
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".name") %>
+						        	</div>		
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".rootnode") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".default") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".permission") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".timeout") %>
+						        	</div>
+						        </div>	
+					        <%}%>
+					        <% if(inputSet.name.equals("step2")) { %>
+						        <div class="step2" style="display:block;">
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".container") %>
+						        	</div>		
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".sourceName") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".dbType") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".isMulti") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".storeType") %>
+						        	</div>
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".filterType") %>
+						        	</div>
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".maxBuffer") %>
+						        	</div>
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".swapPath") %>
+						        	</div>
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".storePath") %>
+						        	</div>
+						        </div>
+					        <%}%>			
+					        <% if(inputSet.name.equals("step3")) { %>
+						        <div class="step3" style="display:block;">
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".queryHandler") %>
+						        	</div>		
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".indexPath") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".isCache") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".maxSize") %>
+						        	</div>	
+						        	<div class="InfoDetail">
+						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".liveTime") %>
+						        	</div>
+						        </div>
+					        <%}%>					        	 
 				        </div>
 	        <%  }
 	          }
