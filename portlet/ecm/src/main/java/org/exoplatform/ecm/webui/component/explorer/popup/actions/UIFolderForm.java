@@ -60,7 +60,14 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     setActions(new String[]{"Save", "Cancel"}) ;
   }
 
-  public void activate() throws Exception { getUIStringInput(FIELD_NAME).setValue(null) ;}
+  public void activate() throws Exception { 
+    getUIStringInput(FIELD_NAME).setValue(null) ;
+    if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
+      List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+      options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+      getUIFormSelectBox(FIELD_TYPE).setOptions(options) ;
+    }
+  }
   
   public void deActivate() throws Exception {}
 

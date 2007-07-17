@@ -14,6 +14,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -22,6 +23,8 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
@@ -176,6 +179,7 @@ public class Utils {
   public static boolean isNodeAuthorized(Node node, String owner) throws Exception {
    return ((ExtendedNode)node).getACL().getOwner().equals(owner) ;
   }
+  
   static public class NodeTypeNameComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
       String name1 = ((NodeType) o1).getName() ;
@@ -183,15 +187,16 @@ public class Utils {
       return name1.compareToIgnoreCase(name2) ;
     }
   }
-  
  
   public static boolean isNameValid(String name, String[] regexpression) {
     for(String c : regexpression){ if(name.contains(c)) return false ;}
     return true ;
   }
- public static boolean isNameEmpty(String name) {
-   return (name == null || name.trim().length() == 0) ;
- }
+  
+  public static boolean isNameEmpty(String name) {
+    return (name == null || name.trim().length() == 0) ;
+  }
+  
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
     StringBuilder str = new StringBuilder() ;
     if(isReadAuthorized(node)) {
@@ -221,6 +226,7 @@ public class Utils {
     }  
     return iter ;
   }
+
   public static List<Node> getAuthorizedChildList(Node node) throws Exception {
     List<Node> children = new ArrayList<Node>() ;
     NodeIterator iter = node.getNodes() ;
@@ -229,6 +235,12 @@ public class Utils {
       if(isReadAuthorized(child)) children.add(child) ;
     }  
     return children ;
+  }
+  
+  public static String getRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
 
   @SuppressWarnings({"unchecked", "unused"})

@@ -65,6 +65,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelector{
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
     try {
       categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value, repository) ;
+      uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), repository)) ;
       setRenderSibbling(UICategoriesAddedList.class) ;

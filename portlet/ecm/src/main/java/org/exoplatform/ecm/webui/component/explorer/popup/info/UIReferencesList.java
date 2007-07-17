@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 
@@ -65,11 +66,13 @@ public class UIReferencesList extends UIGrid implements UIPopupComponent{
       try{
         Node lookupNode = session.getNodeByUUID(uuid) ;
         PropertyIterator iter = lookupNode.getReferences() ;
-        if( iter != null && iter.hasNext()) {
-          Node refNode = iter.nextProperty().getParent() ;
-          referBeans.add(new ReferenceBean(workspace, refNode.getPath())) ;
+        if(iter != null) {
+          while(iter.hasNext()) {
+            Node refNode = iter.nextProperty().getParent() ;
+            referBeans.add(new ReferenceBean(workspace, refNode.getPath())) ;
+          }
         }
-      }catch(Exception e) {        
+      } catch(Exception e) {        
       }
       
     }

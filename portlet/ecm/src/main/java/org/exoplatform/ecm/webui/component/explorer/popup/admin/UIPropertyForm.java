@@ -14,7 +14,10 @@ import javax.jcr.Value;
 import javax.jcr.ValueFactory;
 import javax.jcr.nodetype.NodeType;
 
+import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -54,6 +57,7 @@ public class UIPropertyForm extends UIForm {
   final static public String FIELD_PROPERTY = "property" ;
   final static public String FIELD_TYPE = "type" ;
   final static public String FIELD_VALUE = "value" ;
+  final static public String NAMESPACE = "namespace" ;
 
   public UIPropertyForm() throws Exception {
     setMultiPart(true);
@@ -78,7 +82,8 @@ public class UIPropertyForm extends UIForm {
         Integer.toString(PropertyType.REFERENCE))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_UNDEFINED, 
         Integer.toString(PropertyType.UNDEFINED))) ;
-    addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null)) ;
+    addUIFormInput(new UIFormSelectBox(NAMESPACE,NAMESPACE, getNamespaces())) ;
+    addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null).addValidator(ECMNameValidator.class)) ;
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options) ; 
     uiSelectBox.setOnChange("ChangeType") ;
     addUIFormInput(uiSelectBox) ;
@@ -86,6 +91,16 @@ public class UIPropertyForm extends UIForm {
     setActions(new String[]{"Save"}) ;
   }
 
+  public List<SelectItemOption<String>> getNamespaces() throws Exception {
+    List<SelectItemOption<String>> namespaceOptions = new ArrayList<SelectItemOption<String>>() ; 
+    String[] namespaces = getApplicationComponent(RepositoryService.class)
+                          .getRepository(Utils.getRepository()).getNamespaceRegistry().getPrefixes() ;
+    for(String namespace : namespaces){
+      namespaceOptions.add(new SelectItemOption<String>(namespace, namespace)) ;
+    }
+    return namespaceOptions;    
+  }
+  
   public void refresh() throws Exception {
     reset() ;
     getUIFormSelectBox(FIELD_TYPE).setValue(Integer.toString(PropertyType.STRING)) ;
@@ -158,17 +173,28 @@ public class UIPropertyForm extends UIForm {
         return ;
       }
       NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;   
-      if(nodeType.isNodeType("nt:unstructured")) {
+      if(nodeType.isNodeType(Utils.NT_UNSTRUCTURED)) {
         UIFormMultiValueInputSet multiValueInputSet = uiForm.getUIInput(FIELD_VALUE) ;
         ValueFactory valueFactory = uiExplorer.getCurrentNode().getSession().getValueFactory() ;
-        String name = uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
-        if ((name == null) || (name.length() == 0)) {
-          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null)) ;
+        String namespace = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
+        String name = namespace + ":" + uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
+        if(uiExplorer.getCurrentNode().hasProperty(name)) {
+          Object[] args = { name } ;
+          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyName-exist", args, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
-        } 
+        }
+//        if ((name == null) || (name.trim().length() == 0)) {
+//          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null, 
+//                                                  ApplicationMessage.WARNING)) ;
+//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//          UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
+//          uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
+//          return ;
+//        } 
         int type = Integer.parseInt(uiForm.getUIFormSelectBox(FIELD_TYPE).getValue()) ;        
         NodeType nodetype = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
         List valueList = new ArrayList() ;

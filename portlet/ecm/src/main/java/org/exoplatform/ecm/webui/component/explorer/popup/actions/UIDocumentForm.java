@@ -72,6 +72,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
+  
   public String getTemplate() {
     repository_ = getRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
