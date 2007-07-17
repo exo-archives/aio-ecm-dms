@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.admin.repository;
 
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -50,17 +51,33 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
     }
     return false ;
   }
-  
+
   @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
     getUIStringInput(FIELD_PERMISSION).setValue(value) ;
+    checkAll(false) ;
   }
-  
+
   public void reset() {
     getUIStringInput(FIELD_PERMISSION).setValue(null) ;
+    checkAll(false) ;
+  }
+  private void checkAll(boolean check) {
     for(String perm : PermissionType.ALL) {
-      getUIFormCheckBoxInput(perm).setChecked(false) ;
+      getUIFormCheckBoxInput(perm).setChecked(check) ;
     }
+  }
+  
+  protected void lockForm(boolean lock) {
+    boolean editable = !lock ;
+    UIPermissionContainer uiContainer = getAncestorOfType(UIPermissionContainer.class) ;
+    uiContainer.getChild(UIECMPermissionBrowser.class).setRendered(editable) ;
+    getUIStringInput(FIELD_PERMISSION).setEditable(editable) ;
+    for(String perm : PermissionType.ALL) {
+      getUIFormCheckBoxInput(perm).setEnable(editable) ;
+    }
+    if(!editable) setActions(new String[]{"Cancel"}) ; 
+    else {setActions(new String[]{"Save", "Cancel"}); } 
   }
   
   public static class SaveActionListener extends EventListener<UIWorkspacePermissionForm> {
@@ -70,14 +87,22 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
       UIWorkspaceWizard uiWizardForm = uiWizardContainer.getChild(UIWorkspaceWizard.class) ;
       String user = uiForm.getUIStringInput(UIWorkspacePermissionForm.FIELD_PERMISSION).getValue() ;
       if(!uiForm.isCheckedAny()) {
-         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-         uiApp.addMessage(new ApplicationMessage("UIWorkspacePermissionForm.msg.check-one", null)) ;
-         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-         return ;
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIWorkspacePermissionForm.msg.check-one", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
       StringBuilder sb = new StringBuilder() ;
       for(String perm : PermissionType.ALL) {
         if(uiForm.getUIFormCheckBoxInput(perm).isChecked()) sb.append(user +" "+ perm + ";") ;
+      }
+      if(uiForm.getUIFormCheckBoxInput(PermissionType.ADD_NODE).isChecked() ||
+          uiForm.getUIFormCheckBoxInput(PermissionType.REMOVE).isChecked() || 
+          uiForm.getUIFormCheckBoxInput(PermissionType.SET_PROPERTY).isChecked())
+      {
+        String readperm = user +" "+ PermissionType.READ + ";" ;
+        if(!sb.toString().contains(readperm))
+          sb.append(readperm) ;
       }
       uiWizardForm.permissions_.put(user, sb.toString()) ;
       uiWizardForm.refreshPermissionList() ;

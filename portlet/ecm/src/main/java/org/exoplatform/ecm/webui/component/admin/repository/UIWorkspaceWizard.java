@@ -224,7 +224,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     step1.setActionInfo(FIELD_PERMISSION, actionInfor) ;
   }
 
-
   protected void removePopup(String id) {
     getAncestorOfType(UIWorkspaceWizardContainer.class).removePopup(id) ;
   }
@@ -288,7 +287,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     UIFormInputSet uiWSFormStep3 = getChildById(FIELD_STEP3) ;
     uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
     UIRepositoryForm uiRepoForm = getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIRepositoryForm.class) ;
-    isNewRepo_ = uiRepoForm.isAddnew_ ;
     String repoName = uiRepoForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
     if(workSpace != null) {
       String name = workSpace.getName() ;
@@ -299,7 +297,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       } else {
         nodeTypeOptions = getNodeType() ;
       }
-      boolean canEdit =  isNewRepo_ ;
       String  lockTime = String.valueOf(workSpace.getLockTimeOut()) ; 
       String autoInitNodeType = workSpace.getAutoInitializedRootNt() ;
       String permission = workSpace.getAutoInitPermissions() ;
@@ -340,16 +337,15 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         maxCache =  cache.getParameterValue("maxSize")  ;
         liveTime = cache.getParameterValue("liveTime") ;
       }
+
       if(isNewWizard_) { 
-        uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).setEditable(true) ;
         StringBuilder sb1 = new StringBuilder() ;
         StringBuilder sb2 = new StringBuilder() ;
         if(isNewRepo_) {
-          uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(true) ;
+          uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEditable(true) ;
           sb1.append(swapPath.substring(0, swapPath.lastIndexOf("/")+1)).append(repoName).append("/") ;
           sb2.append(storePath.substring(0, storePath.lastIndexOf("/")+1)).append(repoName).append("/") ;
         } else {
-          uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
           sb1.append(swapPath.substring(0, swapPath.lastIndexOf("/")+1));
           sb2.append(storePath.substring(0, storePath.lastIndexOf("/")+1));
         }
@@ -358,12 +354,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         uiWSFormStep2.getUIFormSelectBox(FIELD_FILTER).setValue(filterType) ;
       } else {
         uiWSFormStep1.getUIStringInput(FIELD_NAME).setValue(name) ;
-        uiWSFormStep1.getUIStringInput(FIELD_NAME).setEditable(false) ;
         setPermissionMap(permission) ;
         refreshPermissionList() ;
         uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultWS) ;
         uiWSFormStep1.getUIFormSelectBox(FIELD_NODETYPE).setOptions(nodeTypeOptions) ;
-        uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(canEdit) ;
         uiWSFormStep2.getUIStringInput(FIELD_SWAPPATH).setValue(swapPath) ;         
         uiWSFormStep2.getUIStringInput(FIELD_STOREPATH).setValue(storePath) ;
         uiWSFormStep2.getUIFormSelectBox(FIELD_FILTER).setValue(filterType) ;
@@ -382,6 +376,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiWSFormStep3.getUIStringInput(FIELD_MAXSIZE).setValue(maxCache) ;
       uiWSFormStep3.getUIStringInput(FIELD_LIVETIME).setValue(liveTime) ;
     }
+    if(isNewRepo_) {
+      lockForm(false) ;
+    } else {
+      if(isNewWizard_) {
+        lockForm(false) ;
+        uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
+      } else {lockForm(true) ;}
+    } 
   }
 
   public String url(String name) throws Exception {
@@ -886,6 +888,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       getChild(UIPopupAction.class) ;
       UIPermissionContainer uiContainer = uiPopupAction.activate(UIPermissionContainer.class, 600) ;
       uiContainer.setValues(permName, uiForm.permissions_.get(permName)) ;
+      if(!uiForm.isNewRepo_ && !uiForm.isNewWizard_) uiContainer.lockForm(true) ;
       uiForm.refreshPermissionList() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIWorkspaceWizardContainer.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;

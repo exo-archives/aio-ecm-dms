@@ -250,6 +250,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         initServices(repositoryEntry.getName()) ;        
         if(rService.getConfig().isRetainable()) {
           rService.getConfig().retain() ;
+          System.out.println("Repository Entry Saved");
         }
       } catch (Exception e) {
         e.printStackTrace() ;

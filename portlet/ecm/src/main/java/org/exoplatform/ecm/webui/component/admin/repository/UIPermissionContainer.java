@@ -41,7 +41,9 @@ public class UIPermissionContainer  extends UIContainer implements UIPopupCompon
       }
     }
   }
-
+  protected void lockForm(boolean lock) {
+    getChild(UIWorkspacePermissionForm.class).lockForm(lock) ;
+  }
   protected void disposePopup() {}
 
   public void activate() throws Exception {
