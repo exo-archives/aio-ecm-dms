@@ -6,6 +6,11 @@
  * version: $Id$
  */
 
+.CBDefaultFolder16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/DefaultFolderIcon.gif') no-repeat;
+}
+
 .default16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/default.gif') no-repeat;  

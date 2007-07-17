@@ -290,17 +290,30 @@
   width: 220px ;
 }
 
+UIBrowseContentPortlet .Explorer {
+  margin-right: 10px;
+  float: left ;
+  width: 230px ;
+  overflow: hidden;
+}
+
 .UIBrowseContentPortlet .Explorer .ExplorerTree {
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
-  float: left ;
 }
 
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-  float: left ;
+}
+
+.UIBrowseContentPortlet .Explorer .ExplorerTree .Node {
+  line-height: 30px;
+}
+
+.UIBrowseContentPortlet .UITreeList .UIGrid {
+  width: 310px;
 }
 
 .UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
@@ -319,18 +332,9 @@
 	line-height: 24px;
 }
 
-.UIBrowseContentPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
+.UIBrowseContentPortlet .UITree .TreeContainer{
+	border: none;
 }
-
-.UIBrowseContentPortlet .InnerExplorerTree .UITree .TreeContainer {
-  border: none;
-}
-
-.UIBrowseContentPortlet .UITreeList .UIGrid {
-  width: 310px;
-}
-
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
 
 .UIBrowseContentPortlet .UISearchController {

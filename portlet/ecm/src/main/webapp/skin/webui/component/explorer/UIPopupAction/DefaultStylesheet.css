@@ -101,18 +101,16 @@
 .UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
 	border: none;
 	padding: 10px 0px;
+	margin: 0px auto;
 }
 
 /*############################## -- Begin UIDiff -- ##############################*/
-.UIJCRExplorerPortlet .UIDiff {
-	margin-top: 10px;
-}
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  
   font-family: Verdana;
   color: #0e396c; font-size: 11px;
   text-align: left;
-  padding: 5px 0px;
+  padding: 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  

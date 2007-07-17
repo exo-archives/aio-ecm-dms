@@ -142,6 +142,7 @@
 .UISubContent .UIDocumentContentInfo .AuthorNameLabel {
   line-height: 20px;
   color: gray;
+  text-align: right;
 }
 
 .UISubContent .UIDocumentContentInfo .DateTimeLabel {

@@ -243,12 +243,8 @@
 	width: auto ;
 }
 
-.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail .ActionContainer {
-	width: 60px;
-}
-
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
-	width: 60px;
+	width: 50px;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a {
@@ -269,16 +265,6 @@
 
 .WorkflowPortletContent .UIFormGrid td.FieldLabel {
 	width: 128px;
-}
-
-.WorkflowPortletContent .UIUploadProcess .ProgressBarFrame { 
-	width: 350px;
-	overflow: hidden;
-}
-
-.WorkflowPortletContent .UIUploadProcess .SelectFileFrame { 
-	width: 350px;
-	overflow: hidden;
 }
 
 .WorkflowPortletContent .UIUploadProcess .FileNameLabel {
@@ -317,6 +303,15 @@
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
+}
+
+.UIWorkflowPortlet .UIUploadProcess {
+	padding: 10px;	
+}
+
+.UIWorkflowPortlet .UIUploadProcess .HorizontalLayout {
+	background: #efefef;
+	padding-top: 10px;	
 }
 
 .EmptyGrid {

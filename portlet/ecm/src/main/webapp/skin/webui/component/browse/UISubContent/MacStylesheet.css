@@ -144,6 +144,7 @@
 	font-size: 11px;
   line-height: 20px;
   color: gray;
+  text-align: right;
 }
 
 .UISubContent .UIDocumentContentInfo .DateTimeLabel {

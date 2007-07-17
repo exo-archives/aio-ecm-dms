@@ -8,11 +8,12 @@
 
 
 .UIContentView {
-  margin: 9px 0px 0px 0px;
+  margin: 1px 0px 0px 0px;
 }
+
 .UIContentView .TiteContentView {
-  margin: 8px 0px 1px 0px;
-  height: 18px; line-height: 18px; vertical-align: middle;
+	padding: 8px 0px 1px 0px;
+  height: 20px; line-height: 20px;
 }
 
 .UIContentView .TiteContentIcon {
@@ -34,7 +35,7 @@
 }
 
 .UIContentView .FormContentView {
-  margin-left: 0px;
+	margin: 0px;
 	border: 1px solid #dee7ef;
 }
 
@@ -52,7 +53,6 @@
 
 .UIContentView .SubFormContent .ChildrenContent {
   width: 99.5%;
-  border: 1px solid red;
 }
 
 .UIContentView .SubFormContent .ChildrenContentHolder {
@@ -60,18 +60,19 @@
 	margin: 5px;
 	padding: 1px;
 }
+
 .UIContentView .SubFormContent .ChildrenContentHolderLeft{
 	float: left;
-	width: 48%;
+	width: 46%;
 	margin: 5px;
-	padding: 1px;
+	padding: 5px;
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
 	float: Right;
-	width: 48%;
+	width: 46%;
 	margin: 5px;
-	padding: 1px;
+	padding: 5px;
 } 
 
 .UIContentView .SubFormContent .ImageNote {

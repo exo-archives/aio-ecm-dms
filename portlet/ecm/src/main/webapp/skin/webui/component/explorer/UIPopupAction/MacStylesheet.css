@@ -100,6 +100,7 @@
 .UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
 	border: none;
 	padding: 10px 0px;
+	margin: 0px auto;
 }
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
@@ -246,6 +247,8 @@
   width: 100px ;
 }
 
+/*############################## -- Begin UIDiff -- ##############################*/
+
 .UIJCRExplorerPortlet .UIDiff .UIVoteForm .UIRatingInfoContainer {
 	width: 150px; padding: 5px 12px;
 	margin: auto;
@@ -279,15 +282,15 @@
   background: url('/ecm/skin/images/vote/OverStar.gif');
 }
 
-.UIJCRExplorerPortlet .UIDiff {
-	margin-top: 10px;
+.UIJCRExplorerPortlet .FileContent {  	  
+	border: solid 1px red;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  
   font-family: Verdana;
   color: #0e396c; font-size: 11px;
   text-align: left;
-  padding: 5px 0px;
+  padding: 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
@@ -352,11 +355,11 @@
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
-		padding: 0px;
+	padding: 0px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIRatingInfoContainer {
-		margin:0px 0px 0px auto;
+	margin:0px 0px 0px auto;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/

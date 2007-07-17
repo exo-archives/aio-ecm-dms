@@ -247,6 +247,11 @@
 	margin: 0px;
 }
 
+.WorkflowPortletContent .UIUploadProcess .FileName {
+	width: 230px;	
+	overflow: hidden;
+}
+
 .WorkflowPortletContent .UIUploadProcess .FileNameLabel {
 	width: 128px;	
 }
@@ -265,12 +270,13 @@
 }
 
 .WorkflowPortletContent .UITabPane .UIFormWithTitle {
-	margin: auto;
+	width: auto;
+	margin: 0px auto;
 	background: #efefef;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .ActionContainer .OverflowContainer {
-	width: 60px;
+	width: 50px;
 }
 
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
@@ -302,6 +308,10 @@
 	line-height: 26px;
 }
 
+.UIWorkflowPortlet .UIAdministrationManager .UIGrid {
+  background: #efefef;
+}
+
 .UIWorkflowPortlet .UIAdministrationManager .UIAction {
   width: 130px;
 }
@@ -314,8 +324,17 @@
 	padding: 10px;
 }
 
+.UIWorkflowPortlet .WorkflowPortletContent .UIUploadProcess .HorizontalLayout {
+	padding-top: 10px;
+	background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
 .UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail {
 	padding: 10px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail .UIGrid {
+	background: #efefef;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UIUploadProcess .HorizontalLayout {
