@@ -59,7 +59,10 @@ public class UITemplateEditForm extends UIForm {
   public void update(String nodeType) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
     Node node = tempService.getTemplatesHome(getRepository()).getNode(nodeType) ;
-    String label = node.getProperty(TemplateService.TEMPLATE_LABEL).getString() ;
+    String label = null ;
+    if(node.hasProperty(TemplateService.TEMPLATE_LABEL)) {
+      label = node.getProperty(TemplateService.TEMPLATE_LABEL).getString() ;
+    }
     getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(isDocumentTemplate(nodeType)) ;
     getUIStringInput(FIELD_NAME).setValue(nodeType) ;
     getUIStringInput(FIELD_LABEL).setValue(label) ;

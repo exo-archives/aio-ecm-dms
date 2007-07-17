@@ -44,7 +44,7 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIActionList extends UIContainer {
   
-  final static public String[] ACTIONS = {"Edit","View","Delete"} ;
+  final static public String[] ACTIONS = {"View", "Edit", "Delete"} ;
   
 
   public UIActionList() throws Exception {
