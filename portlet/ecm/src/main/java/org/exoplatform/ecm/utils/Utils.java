@@ -18,6 +18,7 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
@@ -144,7 +145,16 @@ public class Utils {
       return false;
     }    
   }
-
+ 
+  public static boolean isAnyPermissionAuthorized(Node node)throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(SystemIdentity.ANY);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
+  }
+  
   public static boolean isSetPropertyNodeAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.SET_PROPERTY);
@@ -163,7 +173,9 @@ public class Utils {
     }    
   }
  
-  
+  public static boolean isNodeAuthorized(Node node, String owner) throws Exception {
+   return ((ExtendedNode)node).getACL().getOwner().equals(owner) ;
+  }
   static public class NodeTypeNameComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
       String name1 = ((NodeType) o1).getName() ;
