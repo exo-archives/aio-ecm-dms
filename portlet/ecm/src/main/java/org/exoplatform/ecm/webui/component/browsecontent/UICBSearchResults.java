@@ -23,8 +23,6 @@ import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
-import com.sun.rmi.rmid.ExecPermission;
-
 /**
  * Created by The eXo Platform SARL
  * Author : Pham Tuan

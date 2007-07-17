@@ -49,7 +49,8 @@ public class UIECMAdminPortlet extends UIPortletApplication {
       addChild(UIECMAdminControlPanel.class, null, null) ;
       addChild(UIECMAdminWorkingArea.class, null, null);
     } catch(Exception e) {
-      e.printStackTrace() ;
+     // e.printStackTrace() ;
+      System.out.println("RepositoryException: Repository '"+repo+"' not found !");
     }        
   }
   

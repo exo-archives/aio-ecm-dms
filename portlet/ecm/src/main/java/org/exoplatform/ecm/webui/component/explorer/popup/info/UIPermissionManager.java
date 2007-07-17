@@ -24,7 +24,6 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 
 public class UIPermissionManager extends UIContainer implements UIPopupComponent{
-  
   public UIPermissionManager() throws Exception {
     addChild(UIPermissionInfo.class, null, null);    
     addChild(UIPermissionForm.class, null, null);    
@@ -42,8 +41,9 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
-  
-  public void activate() throws Exception {getChild(UIPermissionInfo.class).updateGrid() ;}
+  public void activate() throws Exception {
+    getChild(UIPermissionInfo.class).updateGrid() ;
+  }
 
   public void deActivate() throws Exception {} 
 }

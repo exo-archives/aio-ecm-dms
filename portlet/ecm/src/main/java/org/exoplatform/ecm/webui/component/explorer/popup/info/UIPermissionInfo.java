@@ -66,6 +66,7 @@ public class UIPermissionInfo extends UIContainer {
     Node currentNode = uiJCRExplorer.getCurrentNode() ;
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
     ExtendedNode node = (ExtendedNode) currentNode ;
+   // node.getACL().getOwner() ;
     List permsList = node.getACL().getPermissionEntries() ;
     Map<String, List<String>> permsMap = new HashMap<String, List<String>>() ;
     Iterator perIter = permsList.iterator() ;
@@ -110,7 +111,11 @@ public class UIPermissionInfo extends UIContainer {
       ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
       String nodePath = node.getPath() ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Node parentNode = node.getParent() ;
+      Node parentNode = null ;
+      if(node != uiJCRExplorer.getRootNode()) {
+        parentNode = node.getParent() ;  
+      }
+      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       if(!Utils.isChangePermissionAuthorized(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null)) ;
