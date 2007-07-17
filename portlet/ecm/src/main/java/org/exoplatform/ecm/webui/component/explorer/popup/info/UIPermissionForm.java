@@ -80,8 +80,6 @@ import org.exoplatform.webui.form.UIForm;
           UIPermissionInputSet.FIELD_USERORGROUP).getValue();
       List<String> permsList = new ArrayList<String>();
       List<String> permsRemoveList = new ArrayList<String>();
-      
-      
       for (String perm : PermissionType.ALL) {
         if (uiForm.getUIFormCheckBoxInput(perm).isChecked())
           permsList.add(perm);

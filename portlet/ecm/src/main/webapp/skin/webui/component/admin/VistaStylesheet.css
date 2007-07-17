@@ -139,7 +139,9 @@
 	border-bottom: 1px solid #B7B7B7 ;
 	height: 34px;
 }
-
+.UIWorkspaceWizard .TabPaneContent .InfoDetail {
+  /*moi them*/
+}
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
   float: left;
   height: 33px; line-height: 33px;

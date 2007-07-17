@@ -206,7 +206,10 @@
 	margin: 0px;
 	background: #f4f4f4;
 }
-
+.UIWorkspaceWizard .TabPaneContent .InfoDetail {
+ padding: 0px 0px 2px 50px;  
+ color:#ef5604 ;
+}
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
   padding: 10px;
 }

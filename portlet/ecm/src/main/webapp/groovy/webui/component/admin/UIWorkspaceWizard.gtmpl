@@ -2,6 +2,7 @@
   def rcontext = _ctx.getRequestContext() ;
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs') ;
 	int step = uicomponent.getSelectedStep();
+	String compName = uicomponent.getName() ;
 %>
 <div class="UIWorkspaceWizard">
 	<div class="UIFormTabPane" >
@@ -15,19 +16,34 @@
 	        		boolean renderResource = uicomponent.hasRenderResourceTabName(); 
               String tabName = inputSet.getName() ; 
               if(renderResource) {
-                tabName = _ctx.appRes(uicomponent.getName() + ".tab.info." + inputSet.name) ;
+                tabName = _ctx.appRes(compName + ".tab.info." + inputSet.name) ;
               }
 	        		boolean renderTab = uicomponent.hasWithRenderTab();
               if(renderTab){
 	        %>	        
 				        <div class="$className">
 				        	<div class="WizardLabel">
-				        		<%=_ctx.appRes(uicomponent.getName()+".label")%>:
+				        		<%=_ctx.appRes(compName+".label")%>:
 				        	</div>
-				        	<div>
+				        	<div style="font-weight:bold;">
 				        		$tabName
 				        	</div>
 				        	<div style="clear:left;"><span></span></div>
+				        	<div class="InfoDetail">
+				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".name") %>
+				        	</div>		
+				        	<div class="InfoDetail">
+				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".rootnode") %>
+				        	</div>	
+				        	<div class="InfoDetail">
+				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".default") %>
+				        	</div>	
+				        	<div class="InfoDetail">
+				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".permission") %>
+				        	</div>	
+				        	<div class="InfoDetail">
+				        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".timeout") %>
+				        	</div>			        	 
 				        </div>
 	        <%  }
 	          }
