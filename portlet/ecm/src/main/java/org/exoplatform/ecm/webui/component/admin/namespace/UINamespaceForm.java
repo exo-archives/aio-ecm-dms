@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.namespace;
 
+import javax.jcr.ItemExistsException;
+import javax.jcr.NamespaceException;
 import javax.jcr.NamespaceRegistry;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -43,9 +45,9 @@ public class UINamespaceForm extends UIForm {
 
   public UINamespaceForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_PREFIX, FIELD_PREFIX, null).
-                   addValidator(ECMNameValidator.class)) ;
+        addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_URI, FIELD_URI, null).
-                   addValidator(EmptyFieldValidator.class)) ;
+        addValidator(EmptyFieldValidator.class)) ;
   }
 
   static public class SaveActionListener extends EventListener<UINamespaceForm> {
@@ -55,27 +57,39 @@ public class UINamespaceForm extends UIForm {
       String uri = uiForm.getUIStringInput(FIELD_URI).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       NamespaceRegistry namespaceRegistry = uiForm.getApplicationComponent(RepositoryService.class)
-                                            .getRepository(repository).getNamespaceRegistry() ;
+      .getRepository(repository).getNamespaceRegistry() ;
       String prefix = uiForm.getUIStringInput(FIELD_PREFIX).getValue() ;
       if(prefix == null || prefix.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-null", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(uri == null || uri.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-null", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      Object[] args = { prefix } ; 
       try {
         namespaceRegistry.registerNamespace(prefix, uri) ;
-      } catch (Exception e) {
+      }
+      catch (ItemExistsException IEE) {
+        Object[] args = { prefix } ; 
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args, 
-                                              ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      catch (NamespaceException NE) {
+        Object[] args = { uri } ; 
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-already-exists", args, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      catch (Exception e) {
+        e.printStackTrace() ;
         return ;
       }
       UINamespaceManager uiManager = uiForm.getAncestorOfType(UINamespaceManager.class) ;
