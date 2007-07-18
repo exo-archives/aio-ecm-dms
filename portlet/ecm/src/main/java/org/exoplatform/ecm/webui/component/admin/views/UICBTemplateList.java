@@ -120,6 +120,7 @@ public class UICBTemplateList extends UIGrid {
       uiTempContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Add") ;
       uiTempContainer.initPopup(UICBTemplateList.ST_CBTempForm, "Edit") ;
       UITemplateForm uiTempForm = uiTempContainer.findComponentById(UICBTemplateList.ST_CBTempForm) ;
+      uiTempForm.isAddNew_ = false ;
       uiTempForm.update(tempPath, null) ;
       uiViewManager.setRenderedChild(UICBTemplateList.ST_CBTemp) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer) ;
