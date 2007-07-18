@@ -75,7 +75,7 @@ public class UICBSearchForm extends UIForm {
     options.add(new SelectItemOption<String>(CATEGORY_SEARCH,CATEGORY_SEARCH)) ;
     return options ;
   } 
-  
+  public Node getNode() {return getAncestorOfType(UIBrowseContainer.class).getCurrentNode();}
   public long searchTime() { return duration_; }
   
   public List<ResultData> searchByCategory(String keyword, Node currentNode) throws Exception{
@@ -183,7 +183,7 @@ public class UICBSearchForm extends UIForm {
     public void execute(Event<UICBSearchForm> event) throws Exception {
       UICBSearchForm uiForm = event.getSource() ;
       UIBrowseContainer container = uiForm.getAncestorOfType(UIBrowseContainer.class) ;
-      Node currentNode = container.getRootNode() ;
+      Node currentNode = container.getCurrentNode() ;
       String keyword = uiForm.getUIStringInput(FIELD_SEARCHVALUE).getValue();
       String type = uiForm.getUIFormSelectBox(FIELD_OPTION).getValue() ;            
       List<ResultData> queryResult = null;
@@ -203,7 +203,9 @@ public class UICBSearchForm extends UIForm {
         queryResult = uiForm.searchDocument(keyword, reference, relation, currentNode) ;
       }
       if(queryResult == null){
-        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.suggestion-keyword", new Object[]{keyword})) ;
+        String nodeName = uiForm.getNode().getName() ;
+        Object[] args = new Object[]{keyword, nodeName} ;
+        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.suggestion-keyword", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }

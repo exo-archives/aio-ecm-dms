@@ -49,10 +49,7 @@
 						        </div>	
 					        <%}%>
 					        <% if(inputSet.name.equals("step2")) { %>
-						        <div class="step2" style="display:block;">
-						        	<div class="InfoDetail">
-						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".container") %>
-						        	</div>		
+						        <div class="step2" style="display:block;">						        	
 						        	<div class="InfoDetail">
 						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".sourceName") %>
 						        	</div>	
@@ -60,13 +57,7 @@
 						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".dbType") %>
 						        	</div>	
 						        	<div class="InfoDetail">
-						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".isMulti") %>
-						        	</div>	
-						        	<div class="InfoDetail">
 						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".storeType") %>
-						        	</div>
-						        	<div class="InfoDetail">
-						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".filterType") %>
 						        	</div>
 						        	<div class="InfoDetail">
 						        		<%=_ctx.appRes(compName + ".tab.info." + inputSet.name+".maxBuffer") %>

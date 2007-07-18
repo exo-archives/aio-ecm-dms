@@ -77,6 +77,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   private int currentStep_ = 0 ;
   public boolean isNewWizard_ = true ;
   public boolean isNewRepo_ = true ;
+  public boolean isCheckValid_ = true ;
   public Map<String, String> permissions_ = new HashMap<String, String>() ;
 
   private Map<Integer, String> chidrenMap_ = new HashMap<Integer, String>() ; 
@@ -384,6 +385,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
       } else {lockForm(true) ;}
     } 
+    if( isNewWizard_)  isCheckValid_ = true ;
+    else {
+      if( isNewRepo_) {
+        isCheckValid_ = true ;
+      } else {
+        isCheckValid_ = false ;
+      }
+    }
   }
 
   public String url(String name) throws Exception {
@@ -437,23 +446,28 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
-      if(uiWSFormStep1.isRendered()) {
-        if(uiFormWizard.isEmpty(wsName)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+      if(uiFormWizard.isCheckValid_) {
+        if(uiWSFormStep1.isRendered()) {
+          if(uiFormWizard.isEmpty(wsName)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+          if(uiFormWizard.isNewWizard_ && uiFormWizard.permissions_.isEmpty()) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+          if(!Utils.isNameEmpty(swapPath)) {
+            if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
+
+          }
+          if(!Utils.isNameEmpty(storePath)) {
+            if(!storePath.contains(wsName))  storePath = storePath + wsName ;
+          }
+          uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
+          uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
         }
-        if(uiFormWizard.isNewWizard_ && uiFormWizard.permissions_.isEmpty()) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        if(!Utils.isNameEmpty(swapPath)) {
-          if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
-          if(!storePath.contains(wsName))  storePath = storePath + wsName ;
-        }
-        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).setValue(swapPath) ;
-        uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).setValue(storePath) ;
       }
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
@@ -479,44 +493,46 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).getValue() ;
-      if(uiWSFormStep1.isRendered()) {
-        if(uiFormWizard.isEmpty(wsName)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+      if(uiFormWizard.isCheckValid_) {
+        if(uiWSFormStep1.isRendered()) {
+          if(uiFormWizard.isEmpty(wsName)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+          if(uiFormWizard.isNewWizard_ && uiFormWizard.permissions_.isEmpty()) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         }
-        if(uiFormWizard.isNewWizard_ && uiFormWizard.permissions_.isEmpty()) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+        if(uiWSFormStep2.isRendered()) {
+          if(uiFormWizard.isEmpty(sourceName)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }  
+          if(uiFormWizard.isEmpty(maxBuffer)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(Integer.parseInt(maxBuffer) <= 0) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(Utils.isNameEmpty(swapPath)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.swapPath-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          } 
+          if(uiFormWizard.isEmpty(storePath)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }  
         }
-      }
-      if(uiWSFormStep2.isRendered()) {
-        if(uiFormWizard.isEmpty(sourceName)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }  
-        if(uiFormWizard.isEmpty(maxBuffer)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
-        }
-        if(Integer.parseInt(maxBuffer) <= 0) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
-        }
-        if(Utils.isNameEmpty(swapPath)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.swapPath-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        } 
-        if(uiFormWizard.isEmpty(storePath)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }  
       }
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
@@ -593,43 +609,44 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String maxSize = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_MAXSIZE).getValue() ;
       String liveTime = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_LIVETIME).getValue() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
-      if(uiFormWizard.isEmpty(indexPath)) {
-        uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      if(isCache){
-        if(uiFormWizard.isEmpty(maxSize)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
-        }
-        if(Integer.parseInt(maxBuffer) <= 0) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
-        }
-        if(uiFormWizard.isEmpty(liveTime)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
-        }
-        maxSizeValue = Integer.parseInt(maxSize) ;
-        liveTimeValue = Integer.parseInt(liveTime) ;
-      }
-      lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
-      bufferValue = Integer.parseInt(maxBuffer) ;
       UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
       UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
-      if(uiFormWizard.isNewWizard_) {
-        if(uiRepoForm.isExistWorkspace(name)){
-          Object[] args = new Object[]{name}  ;        
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+      if(uiFormWizard.isCheckValid_){
+        if(uiFormWizard.isEmpty(indexPath)) {
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        }          
-      } 
-
+        }
+        if(isCache){
+          if(uiFormWizard.isEmpty(maxSize)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(Integer.parseInt(maxBuffer) <= 0) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(uiFormWizard.isEmpty(liveTime)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          maxSizeValue = Integer.parseInt(maxSize) ;
+          liveTimeValue = Integer.parseInt(liveTime) ;
+        }
+        lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
+        bufferValue = Integer.parseInt(maxBuffer) ;
+        if(uiFormWizard.isNewWizard_) {
+          if(uiRepoForm.isExistWorkspace(name)){
+            Object[] args = new Object[]{name}  ;        
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }          
+        } 
+      }
       WorkspaceEntry workspaceEntry = new WorkspaceEntry(name, initNodeType);
       StringBuilder permSb = new StringBuilder() ;
       for(String s : uiFormWizard.permissions_.values()) {
@@ -757,71 +774,72 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String indexPath = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_INDEXPATH).getValue() ;
 
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
-      if(uiWSFormStep1.isRendered()) {
-        if(uiFormWizard.isEmpty(wsName)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        if(uiFormWizard.isNewWizard_ && uiFormWizard.isEmpty(perm)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        if(Utils.isNameEmpty(lockTimeOut)) {
-          uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue("0") ;
-        } else {
-          for(int i = 0; i < lockTimeOut.length(); i++) {
-            char c = lockTimeOut.charAt(i);
-            if(Character.isDigit(c)) continue ;
-            Object[] args = { lockTimeOut } ;
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.invalid-input", args, 
-                ApplicationMessage.WARNING)) ;
+      if(uiFormWizard.isCheckValid_) {
+        if(uiWSFormStep1.isRendered()) {
+          if(uiFormWizard.isEmpty(wsName)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-        } 
-      }
-      if(uiWSFormStep2.isRendered()) {
-        if(uiFormWizard.isEmpty(containerName)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }  
-        if(uiFormWizard.isEmpty(sourceName)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }  
-        if(uiFormWizard.isEmpty(maxBuffer)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
+          if(uiFormWizard.isNewWizard_ && uiFormWizard.isEmpty(perm)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+          if(Utils.isNameEmpty(lockTimeOut)) {
+            uiWSFormStep1.getUIStringInput(FIELD_TIMEOUT).setValue("0") ;
+          } else {
+            for(int i = 0; i < lockTimeOut.length(); i++) {
+              char c = lockTimeOut.charAt(i);
+              if(Character.isDigit(c)) continue ;
+              Object[] args = { lockTimeOut } ;
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.invalid-input", args, 
+                  ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+              return ;
+            }
+          } 
         }
-        if(Integer.parseInt(maxBuffer) <= 0) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-          return ;
+        if(uiWSFormStep2.isRendered()) {
+          if(uiFormWizard.isEmpty(containerName)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }  
+          if(uiFormWizard.isEmpty(sourceName)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.sourceName-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }  
+          if(uiFormWizard.isEmpty(maxBuffer)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(Integer.parseInt(maxBuffer) <= 0) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(uiFormWizard.isEmpty(swapPath)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.swapPath-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          } 
+          if(uiFormWizard.isEmpty(storePath)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }  
         }
-        if(uiFormWizard.isEmpty(swapPath)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.swapPath-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        } 
-        if(uiFormWizard.isEmpty(storePath)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }  
-      }
-      if(uiWSFormStep3.isRendered()) {
-        if((indexPath == null) || (indexPath.trim().length() == 0)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+        if(uiWSFormStep3.isRendered()) {
+          if((indexPath == null) || (indexPath.trim().length() == 0)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         }
       }
-
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
         String storePathAuto = storePath ;

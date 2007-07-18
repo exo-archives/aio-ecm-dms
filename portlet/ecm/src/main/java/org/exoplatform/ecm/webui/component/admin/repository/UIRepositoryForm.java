@@ -439,7 +439,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupAction.class) ;
       UIPopupAction uiWorkspaceAction = uiControl.getChild(UIPopupAction.class) ;
-      UIWorkspaceWizardContainer uiWsContainer = uiWorkspaceAction.activate(UIWorkspaceWizardContainer.class, 600) ; 
+      UIWorkspaceWizardContainer uiWsContainer = uiWorkspaceAction.activate(UIWorkspaceWizardContainer.class, 700) ; 
       WorkspaceEntry wsdf = null ;
       RepositoryEntry  repoEntry = rService.getDefaultRepository().getConfiguration() ;
       for(WorkspaceEntry ws : repoEntry.getWorkspaceEntries()) {

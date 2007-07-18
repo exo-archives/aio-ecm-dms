@@ -67,7 +67,7 @@
       
       <%
       if(isEnableSearch) {
-	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Search") 
+	      actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.showSearch") 
 	      link = uicomponent.event("Search") ;
       %>
 	      <a class="Icon CBSearchButton" href="$link" title="$actionLabel"><span></span></a>      
