@@ -8,8 +8,10 @@
 
 
 .UIContentView {
-  margin: 9px 0px 0px 0px;
+  width: 98.5%;
+  margin: auto;
 }
+
 .UIContentView .TiteContentView {
   margin: 8px 0px 1px 0px;
   height: 18px; line-height: 18px; vertical-align: middle;

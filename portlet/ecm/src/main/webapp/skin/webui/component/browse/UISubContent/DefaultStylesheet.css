@@ -1,4 +1,4 @@
-/* Created by The eXo Platform SAS
+ * Created by The eXo Platform SAS
  * Author : Vu Duy Tu
  *          duytucntt@gmail.com
  * DEC 20, 2006
@@ -37,7 +37,8 @@
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
-	height: 26px; line-height: 26px;	
+	height: 26px; line-height: 26px;
+	overflow: hidden;
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
@@ -108,8 +109,9 @@
 
 .UISubContent .UIDocumentContentInfo {
 	border: solid 1px #e1e1e1 ;
-	margin-top: 1px;
-	padding: 5px;
+	padding: 5px 0px;
+	width: 98.5%;
+	margin: auto;
 }
 
 .UISubContent .UIHorizontalTabs {
@@ -186,8 +188,8 @@
 	width: 16px; height: 16px;
 	margin: 3px 5px 0px 0px;
 	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat; 
+	border: solid 1px red;
 }
-
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
 	float: left;

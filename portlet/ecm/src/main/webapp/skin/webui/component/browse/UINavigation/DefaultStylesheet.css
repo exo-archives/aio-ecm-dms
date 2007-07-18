@@ -30,7 +30,7 @@
 	width: 24px;
 	float: left ;	
 	margin: 4px ;
-	background: url('../DefaultSkin/background/CategoryListIcon.gif') no-repeat;
+	background: url('../DefaultSkin/background/GreenLeftArrowFolder.gif') no-repeat;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeItemIcon {	

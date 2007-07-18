@@ -109,8 +109,9 @@
 
 .UISubContent .UIDocumentContentInfo {
 	border: solid 1px #e1e1e1 ;
-	margin-top: 1px;
-	padding: 5px;
+	padding: 5px 0px;
+	width: 98.5%;
+	margin: auto;
 }
 
 .UISubContent .UIHorizontalTabs {
