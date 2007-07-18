@@ -54,7 +54,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 public class UIPropertyForm extends UIForm {
 
-  final static public String FIELD_PROPERTY = "property" ;
+  final static public String FIELD_PROPERTY = "name" ;
   final static public String FIELD_TYPE = "type" ;
   final static public String FIELD_VALUE = "value" ;
   final static public String NAMESPACE = "namespace" ;

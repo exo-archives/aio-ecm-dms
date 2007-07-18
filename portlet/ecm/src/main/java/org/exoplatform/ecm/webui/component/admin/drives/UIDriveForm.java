@@ -110,8 +110,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   static public class SaveActionListener extends EventListener<UIDriveForm> {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
-      String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class)
-      .getPreferenceRepository() ;
+      String repository = uiDriveForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       RepositoryService rservice = uiDriveForm.getApplicationComponent(RepositoryService.class) ;
       UIDriveInputSet driveInputSet = uiDriveForm.getChild(UIDriveInputSet.class) ;
       UIApplication uiApp = uiDriveForm.getAncestorOfType(UIApplication.class) ;
