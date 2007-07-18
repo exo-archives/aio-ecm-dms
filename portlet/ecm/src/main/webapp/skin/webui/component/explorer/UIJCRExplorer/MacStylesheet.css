@@ -39,10 +39,6 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
-  margin: 0px 5px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
@@ -481,13 +477,32 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout {
-  background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
   width: 180px;
-  padding-right: 50px;
+  padding-right: 100px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout .UIFormInputSet {
+	padding: 0px;
+	width: auto;
+}
+  
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid td.FieldLabel {
+  width: 90px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid .Introduction {
+  padding-left: 5px;
+  color: #ef5604;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .ActionField {
+	float: left ;
+	margin-bottom: 3px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
+  width: 220px ;
 }
   
 /*==================================UIMultiLanguageForm==============================*/
@@ -953,6 +968,16 @@
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
   float: left;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormGrid .FieldComponent .ActionIcon {
+  margin: -3px 5px 0px 238px;
+  float: none;
+}
+
+.UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent .ActionIcon {
+  margin: 0px 5px 0px 238px;
+  float: none;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector {

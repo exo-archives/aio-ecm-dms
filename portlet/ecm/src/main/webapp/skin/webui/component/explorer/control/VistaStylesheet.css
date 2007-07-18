@@ -30,7 +30,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewBox {
   float: left;
-  width: 320px; height: 28px;
+  height: 28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {

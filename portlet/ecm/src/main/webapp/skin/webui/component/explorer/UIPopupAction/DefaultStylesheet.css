@@ -28,8 +28,16 @@
   padding: 1px;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout .FormContainer {
+  border: none;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout {
   padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout .FormContainer {
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
@@ -54,6 +62,7 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Node {
+  height: 30px;
   line-height: 30px;
   background-color: #eaedf6;
   margin-bottom: 1px;
@@ -285,10 +294,6 @@
   padding: 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIFormGrid td.FieldLabel {
-  width: 128px;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
   width: 160px;
 }
@@ -411,18 +416,6 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
-
-/*############################## -- UITaggingForm   -- ##############################*/
-.UIJCRExplorerPortlet .UITaggingForm .ActionField {
-	float: left ;
-	margin-bottom: 3px;
-}
-
-.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
-  width: 220px ;
-}
-
-/*############################## -- End Others   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIUploadManager {
   padding: 10px;

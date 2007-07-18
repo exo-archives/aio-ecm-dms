@@ -188,7 +188,6 @@
 	width: 16px; height: 16px;
 	margin: 3px 5px 0px 0px;
 	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat; 
-	border: solid 1px red;
 }
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {

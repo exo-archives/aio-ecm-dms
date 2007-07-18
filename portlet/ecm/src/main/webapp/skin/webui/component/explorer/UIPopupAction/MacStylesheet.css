@@ -53,6 +53,7 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Node {
+	height: 30px;
   line-height: 30px;
   background-color: #eaedf6;
   margin-bottom: 1px;
@@ -226,16 +227,6 @@
 	line-height: 16px ;
 }
 
-/*############################## -- UITaggingForm   -- ##############################*/
-.UIJCRExplorerPortlet .UITaggingForm .ActionField {
-	float: left ;
-	margin-bottom: 3px;
-}
-
-.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
-  width: 220px ;
-}
-
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
@@ -283,7 +274,6 @@
 }
 
 .UIJCRExplorerPortlet .FileContent {  	  
-	border: solid 1px red;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  

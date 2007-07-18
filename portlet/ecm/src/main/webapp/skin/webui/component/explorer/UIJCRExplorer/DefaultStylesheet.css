@@ -62,10 +62,6 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
-  margin: 0px 5px;
-}
-
 .UIJCRExplorerPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 }
@@ -139,7 +135,7 @@
   color: #fb8404;
 }
 
-/*############################## -- Begin MenuPopup -- ##############################*/
+/*############################## -- Begin UIActionListContainer -- ##############################*/
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
   margin: 10px auto;
@@ -150,6 +146,18 @@
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
   float: left;
 }
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormGrid .FieldComponent .ActionIcon {
+  margin: -19px 5px 0px 238px;
+  float: none;
+}
+
+.UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent .ActionIcon {
+  margin: 0px 5px 0px 238px;
+  float: none;
+}
+
+/*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet .UIMenuPopup {
   height: 23px;
@@ -224,6 +232,7 @@
   padding-left: 10px ;
 }
 /*############################## -- End UIMenuPopup   -- ##############################*/
+
 .UIJCRExplorerPortlet .UIThumbnailsView {
 }
 
@@ -274,7 +283,7 @@
   color: blue;
 }
 
-/*############################## -- End UIThumbnailsView -- ##############################*/
+/*############################## -- UISearchContainer -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UISearchContainer .UITabPane .UIGrid td {
 	padding: 4px 3px 0px 5px;
@@ -384,11 +393,6 @@
   background: #efefef;
 }
 
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .HorizontalLayout .UITabContentContainer {
-  border: none;
-  background: #efefef;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer td.FieldLabel {
   width: 160px;
 }
@@ -424,9 +428,27 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid td.FieldLabel {
+  width: 90px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid .Introduction {
+  padding-left: 5px;
+  color: #ef5604;
+}
+
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
-  width: 170px;
-  padding: 0px 0px 8px 10px;
+  width: 160px;
+  padding: 10px 90px 8px 0px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .ActionField {
+	float: left ;
+	margin-bottom: 3px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormWithTitle .UIAction {
+  width: 220px ;
 }
 
 /*==================================UIMultiLanguageForm==============================*/
@@ -646,15 +668,6 @@
 	border: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
-  width: 140px;
-  padding-left: 15px;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIFormGrid input {
-  float: left;
-}
-
 /*================================UIActionList=================================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
@@ -746,7 +759,6 @@
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;
-  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer .UIFormGrid {
@@ -768,14 +780,11 @@
   width: 70px;
   margin: auto;
 }
+
 /*===========================UIUploadForm====================*/
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm {
-  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
@@ -937,11 +946,6 @@
 	padding: 10px;
 }
 
-.UIJCRExplorer .UIRenameForm .HorizontalLayout {
-	background: #efefef;
-	padding-top: 10px;
-}
-
 .UIJCRExplorer .UIRenameForm .FormContainer {
 	width: 500px;
 	margin: auto;
@@ -965,7 +969,6 @@
 .UIJCRExplorer .UIActivateVersion {
 	border: solid 1px #b7b7b7;
 	margin: 10px;
-	background: #efefef;
 }
 /*================================ UIViewMetadataManager ====================================*/
 
@@ -976,7 +979,6 @@
 /*=============================== UIConstraintsForm =======================================*/
 
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle {
-  background:#EFEFEF none repeat scroll 0%;
   border: 1px solid #b7b7b7;
   margin-top: 5px;
   padding-left: 5px;
