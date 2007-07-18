@@ -756,6 +756,7 @@ public class UIActionBar extends UIForm {
     }
   }
 
+  @SuppressWarnings("unchecked")
   static public class ManageRelationsActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
@@ -800,7 +801,14 @@ public class UIActionBar extends UIForm {
       uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode(), session)) ;
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
-      uiJCRBrowser.setFilterType(new String[] {Utils.EXO_ARTICLE}) ;
+      TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class) ;
+      List<String> documentNodeType = tservice.getDocumentTemplates(repository) ;
+      StringBuilder filters = new StringBuilder() ;
+      for(String document : documentNodeType) {
+        if(filters.length() > 0) filters.append(",") ;
+        filters.append(document) ;
+      }
+      uiJCRBrowser.setFilterType(filters.toString().split(",")) ;
       uiJCRBrowser.setRepository(repository) ;
       uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), false) ;
       uiJCRBrowser.setRootPath("/") ;
