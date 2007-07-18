@@ -31,6 +31,7 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
@@ -173,9 +174,15 @@ public class UIBrowseContainer extends UIContainer{
   }
 
   public void newJCRTemplateResourceResolver() {
-    try {
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(getSession(), "exo:templateFile") ;
-    } catch (Exception e) {}
+    try{
+      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
+      CmsConfigurationService cmsConfig  = getApplicationComponent(CmsConfigurationService.class) ;
+      Session session = repositoryService.getRepository(repository).getSystemSession(cmsConfig.getWorkspace(repository)) ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
+    }catch(Exception e) {
+      e.printStackTrace() ;
+    }     
   }
 
   protected String getTemplateName() {

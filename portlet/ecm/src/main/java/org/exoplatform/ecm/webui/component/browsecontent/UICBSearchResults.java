@@ -41,7 +41,7 @@ public class UICBSearchResults extends UIGrid {
   private static String[] GRID_FIELD = {"name", "path"} ;
   private static String[] GRID_ACTIONS = {"View", "Goto"} ;
   protected Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
-  
+
   public UICBSearchResults() throws Exception { 
     getUIPageIterator().setId("ResultListIterator") ;
     configure("path", GRID_FIELD, GRID_ACTIONS) ;
@@ -58,7 +58,7 @@ public class UICBSearchResults extends UIGrid {
       uiSearchController.setShowHiddenSearch() ;
     }
   }
-  private void getResultData() throws Exception {
+  protected void getResultData() throws Exception {
     List<ResultData> results = new ArrayList<ResultData>() ;
     for(String nodeName : resultMap_.keySet()) {
       results.add(new ResultData(nodeName, resultMap_.get(nodeName).getPath())) ;
@@ -75,10 +75,10 @@ public class UICBSearchResults extends UIGrid {
       if(uiResults.isDocumentTemplate(nodeType.getName())) {
         UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
         UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
-        UIDocumentDetail uiDocument = cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
+        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
         uiDocument.setNode(node) ;
-        uiPopupAction.activate(uiDocument, 600, 0) ;
-        uiPopupAction.getChild(UIPopupWindow.class).setResizable(true) ;
+        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow") ;
+        uiPopup.setResizable(true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }
@@ -128,7 +128,7 @@ public class UICBSearchResults extends UIGrid {
       name = rName ;
       path = rpath ;
     }
-    
+
     public String getName() { return name ; }
     public String getPath() { return path ; }
   }

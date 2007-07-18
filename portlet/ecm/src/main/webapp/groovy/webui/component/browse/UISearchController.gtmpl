@@ -6,6 +6,9 @@
 	<%uicomponent.renderChild(UICBSearchForm.class);%>
 	<div class="SearchResult">
 		<div class="ResultInfo">
+			<%=_ctx.appRes(uicomponent.name + ".label.nodePath")%>: <%=uicomponent.getNodeName()%>	 
+		</div>
+		<div class="ResultInfo">
 			<%=_ctx.appRes(uicomponent.name + ".label.searchTime")%>
 			<%=uicomponent.getResultRecord()%> node ; 
 			<%=_ctx.appRes(uicomponent.name + ".label.duration")%>

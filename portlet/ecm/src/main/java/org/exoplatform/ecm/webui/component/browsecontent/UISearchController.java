@@ -29,7 +29,7 @@ public class UISearchController extends UIContainer  {
     addChild(UICBSearchForm.class, null, null) ;
     addChild(UICBSearchResults.class, null, null) ;
   }
-
+  
   public void setShowHiddenSearch() throws Exception {
     UICBSearchForm uiSearch = getChild(UICBSearchForm.class) ;
     uiSearch.reset() ;
@@ -48,4 +48,7 @@ public class UISearchController extends UIContainer  {
   public long getSearchTime() {return searchTime_ ;}
   public void setResultRecord(int val) {records_ = val ;}
   public int getResultRecord() {return records_ ;}
+  public String getNodeName() throws Exception {
+    return getAncestorOfType(UIBrowseContainer.class).getCurrentNode().getName() ;
+  }
 }

@@ -24,11 +24,11 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -55,7 +55,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   protected Node node_ ;
   private String language_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
-  
+
   public UIDocumentDetail() {} 
 
   public String getTemplatePath(){
@@ -65,17 +65,17 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     try{
       return templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
     }catch(Exception e) {
-     e.printStackTrace() ;
+      e.printStackTrace() ;
     }    
     return null ;
   }
-  
+
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
   }
 
   public String getTemplate(){ return getTemplatePath() ;}
-  
+
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
@@ -83,10 +83,15 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   }
 
   public void newJCRTemplateResourceResolver() {
-    try {
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(
-          getAncestorOfType(UIBrowseContainer.class).getSession(), Utils.EXO_TEMPLATEFILE) ;
-    } catch (Exception e) {}
+    try{
+      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
+      CmsConfigurationService cmsConfig  = getApplicationComponent(CmsConfigurationService.class) ;
+      Session session = repositoryService.getRepository(repository).getSystemSession(cmsConfig.getWorkspace(repository)) ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
+    }catch(Exception e) {
+      e.printStackTrace() ;
+    }     
   }
 
   @SuppressWarnings("unchecked")
@@ -101,7 +106,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     } 
     return service;
   }
-  
+
   public Node getNode() throws Exception { 
     if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
       String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
@@ -113,16 +118,16 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     }    
     return node_;
   }
-  
+
   public Node getOriginalNode() throws Exception {return node_ ;}
-  
+
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-  
+
   public void setLanguage(String language) { language_ = language ; }
   public String getLanguage() { return language_ ; }
 
@@ -190,7 +195,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       return false;
     }
   }
-  
+
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
@@ -209,7 +214,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       try{
         return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
       }catch(Exception e) {
-        
+
       }      
     }
     return null;
@@ -257,7 +262,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public void activate() throws Exception {
     // TODO Auto-generated method stub
   }
-  
+
   public void deActivate() throws Exception {
     // TODO Auto-generated method stub
   }
@@ -265,19 +270,19 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     PortalContainer pcontainer =  PortalContainer.getInstance() ;
     return pcontainer.getPortalContainerInfo().getContainerName() ; 
   }
-  
+
   public String getRepository() throws Exception {
     return ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
   }
-  
+
   public String getWorkspaceName() throws Exception {
     return node_.getSession().getWorkspace().getName();
   }
-  
+
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
   }
-  
+
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiDocument = event.getSource() ;
@@ -286,7 +291,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
     }
   }
-  
+
   static public class ChangeNodeActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiDocument = event.getSource() ;

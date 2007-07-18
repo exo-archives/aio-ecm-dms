@@ -50,7 +50,7 @@ public class UICBSearchForm extends UIForm {
   final static  private String FIELD_OPTION = "option" ;
   final static  private String FIELD_CB_REF = "referencesDoc" ;
   final static  private String FIELD_CB_CHILD = "childDoc" ;
-  
+
   public static final String CATEGORY_SEARCH = "Category" ;
   public static final String DOCUMENT_SEARCH = "Content" ;  
   public static final String CATEGORY_QUERY = "select * from $0 where jcr:path like '%/$1[%]' "  ;
@@ -68,7 +68,7 @@ public class UICBSearchForm extends UIForm {
     addChild(cbRef.setRendered(isDocumentType)) ;
     addChild(cbRel.setRendered(isDocumentType)) ;
   }
-  
+
   public List<SelectItemOption<String>> getOptions() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     options.add(new SelectItemOption<String>(DOCUMENT_SEARCH,DOCUMENT_SEARCH)) ;
@@ -77,7 +77,7 @@ public class UICBSearchForm extends UIForm {
   } 
   public Node getNode() {return getAncestorOfType(UIBrowseContainer.class).getCurrentNode();}
   public long searchTime() { return duration_; }
-  
+
   public List<ResultData> searchByCategory(String keyword, Node currentNode) throws Exception{
     List<ResultData> resultList = new ArrayList<ResultData>() ;
     ResultData result ;
@@ -155,20 +155,20 @@ public class UICBSearchForm extends UIForm {
         return null ;
       }
     }
-    
+
     UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
     uiController.setSearchTime(duration_) ;
     uiController.setResultRecord(resultList.size()) ;
     return resultList ;
   }
-  
+
   public void reset() {
     getUIStringInput(FIELD_SEARCHVALUE).setValue("") ;
     getUIFormSelectBox(FIELD_OPTION).setOptions(getOptions()) ;
     getUIFormCheckBoxInput(FIELD_CB_REF).setRendered(isDocumentType) ;
     getUIFormCheckBoxInput(FIELD_CB_CHILD).setRendered(isDocumentType) ;
   }
-  
+
   static public class ChangeTypeActionListener extends EventListener <UICBSearchForm> {
     public void execute(Event<UICBSearchForm>  event) throws Exception {
       UICBSearchForm uiForm = event.getSource() ;
@@ -202,14 +202,12 @@ public class UICBSearchForm extends UIForm {
         boolean relation = uiForm.getUIFormCheckBoxInput(FIELD_CB_CHILD).isChecked() ;   
         queryResult = uiForm.searchDocument(keyword, reference, relation, currentNode) ;
       }
-      if(queryResult == null){
-        String nodeName = uiForm.getNode().getName() ;
-        Object[] args = new Object[]{keyword, nodeName} ;
+      searchResults.updateGrid(queryResult) ;
+      if(queryResult == null || queryResult.size() == 0){
+        Object[] args = new Object[]{keyword} ;
         app.addMessage(new ApplicationMessage("UICBSearchForm.msg.suggestion-keyword", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
-        return ;
       }
-      searchResults.updateGrid(queryResult) ;
     }
   }
 }
