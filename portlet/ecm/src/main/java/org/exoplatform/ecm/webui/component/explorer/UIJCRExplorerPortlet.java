@@ -11,8 +11,7 @@ import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 
 @ComponentConfig(
-    lifecycle = UIApplicationLifecycle.class,
-    template =  "system:/groovy/webui/core/UIApplication.gtmpl"
+    lifecycle = UIApplicationLifecycle.class
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
   

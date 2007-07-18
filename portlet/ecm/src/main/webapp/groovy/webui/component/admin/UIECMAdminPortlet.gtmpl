@@ -8,33 +8,31 @@
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.fixHeight('UIECMAdminPortlet') ;") ;
 %>
-<div class="UIApplication UIECMAdminPortlet" id="UIECMAdminPortlet">
-	<div class="ApplicationMinWidth" >
-	  <%uicomponent.renderChild(UIPopupAction.class);%>
-    <%uicomponent.renderChild(UIRepositoryControl.class);%>
-    <div class="UIResizableBlock" style="height: 400px;">
-      <%
-        int style = 6;
-        if(uicomponent.isShowSideBar()) {
-          style += 250;
-      %>
+<div class="UIECMAdminPortlet" id="UIECMAdminPortlet">
+  <%uicomponent.renderChild(UIPopupAction.class);%>
+	<%uicomponent.renderChild(UIRepositoryControl.class);%>
+	<div class="UIResizableBlock" style="height: 400px;">
+	  <%
+	    int style = 6;
+	    if(uicomponent.isShowSideBar()) {
+	      style += 250;
+	  %>
 		      <div style="height: 100%; width: 250px; overflow: auto; float: left;">
 		        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
 		        <% 
 		        if(uicomponent.getChild(UIECMAdminControlPanel.class) != null) uicomponent.renderChild(UIECMAdminControlPanel.class);
 		         %>
 		      </div>
-      <%}%>
-      <div class="ECMLayoutSeparator" style="float: left; height: 100%;">
-        <div class="<%=(uicomponent.isShowSideBar() ? "CollapseSideBar" : "ExpandSideBar")%>" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
-      </div>
-      <div style="margin-left: ${style}px; height: 100%;">
+	  <%}%>
+	  <div class="ECMLayoutSeparator" style="float: left; height: 100%;">
+	    <div class="<%=(uicomponent.isShowSideBar() ? "CollapseSideBar" : "ExpandSideBar")%>" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>
+	  </div>
+	  <div style="margin-left: ${style}px; height: 100%;">
 		    <div style="overflow: auto; width: 100%; height: 100%;">
 		      <% 
 		      if(uicomponent.getChild(UIECMAdminWorkingArea.class) != null) uicomponent.renderChild(UIECMAdminWorkingArea.class); %>
 			  </div>
 			</div>
-    </div>
-		<%uicomponent.renderPopupMessages(); %>
 	</div>
+	<%uicomponent.renderPopupMessages(); %>
 </div>

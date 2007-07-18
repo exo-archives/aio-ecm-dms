@@ -19,8 +19,7 @@ ECMUtils.prototype.init = function(portletId) {
 ECMUtils.prototype.fixHeight = function(portletId) {
 	var portlet =document.getElementById(portletId) ;
 	var child = eXo.core.DOMUtil.getChildrenByTagName(portlet, 'div') ;
-	var table = eXo.core.DOMUtil.getChildrenByTagName(child[0], 'table') ;
-	var delta = portlet.offsetHeight - child[0].offsetHeight ;
+	var delta = portlet.parentNode.offsetHeight - portlet.offsetHeight ;	//portlet.offsetHeight - child[0].offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	for(var i = 0, ln = resizeObj.length; i < ln; i++) {
 		resizeObj[i].style.height = (parseInt(resizeObj[i].offsetHeight) + delta) + 'px' ;
@@ -69,9 +68,6 @@ ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 	}
 	this.popupArray.push(showBlock);
 	showBlock.style.top = popupSelector.offsetHeight + "px";
-
-	
-
 };
 
 ECMUtils.prototype.closeAllPopup = function() {
