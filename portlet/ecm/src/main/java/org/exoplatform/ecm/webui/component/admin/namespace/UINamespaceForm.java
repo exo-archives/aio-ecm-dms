@@ -73,22 +73,19 @@ public class UINamespaceForm extends UIForm {
       }
       try {
         namespaceRegistry.registerNamespace(prefix, uri) ;
-      }
-      catch (ItemExistsException IEE) {
+      } catch (ItemExistsException IEE) {
         Object[] args = { prefix } ; 
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      catch (NamespaceException NE) {
+      } catch (NamespaceException NE) {
         Object[] args = { uri } ; 
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-already-exists", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         e.printStackTrace() ;
         return ;
       }

@@ -80,9 +80,8 @@ public class UIFastContentCreatortForm extends DialogFormFields {
   public Node getCurrentNode() throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     PortletPreferences preferences = getPortletPreferences() ;
-    Session session = 
-      repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
-      .getSystemSession(preferences.getValue("workspace", "")) ;
+    Session session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
+                                       .getSystemSession(preferences.getValue("workspace", "")) ;
     return (Node) session.getItem(preferences.getValue("path", ""));
   }
   
@@ -106,7 +105,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     Session session = null ;
     try {
       session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
-      .getSystemSession(preferences.getValue("workspace", ""));
+                                 .getSystemSession(preferences.getValue("workspace", ""));
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     } catch(Exception e) { }
   }

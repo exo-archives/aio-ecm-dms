@@ -103,6 +103,7 @@ public class UIDrivesBrowser extends UIContainer {
     Collections.sort(driveList) ;
     return driveList ; 
   }
+  
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -110,6 +111,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiDrivesBrowser.setRepository(repoName) ;      
     }
   }
+  
   static  public class SelectDriveActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       UIDrivesBrowser uiDrive = event.getSource() ;
@@ -117,10 +119,11 @@ public class UIDrivesBrowser extends UIContainer {
       RepositoryService rservice = uiDrive.getApplicationComponent(RepositoryService.class) ;
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
       DriveData drive = (DriveData) dservice.getDriveByName(driveName, uiDrive.repoName_) ;
-     List<String> userRoles = Utils.getMemberships() ;
+      UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class) ;
+      List<String> userRoles = Utils.getMemberships() ;
       Map<String, String> viewMap = new HashMap<String, String>() ;
       String viewList = "";
-      for(String role : userRoles ){
+      for(String role : userRoles){
         String[] views = drive.getViews().split(",") ;
         for(String viewName : views) {
           viewName = viewName.trim() ;
@@ -131,7 +134,6 @@ public class UIDrivesBrowser extends UIContainer {
         }
       }
       if(viewMap.isEmpty()) {
-        UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class) ;
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.no-view-found", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -163,8 +165,17 @@ public class UIDrivesBrowser extends UIContainer {
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Session session = repository.login(drive.getWorkspace())  ;
 
-      uiJCRExplorer.setSession(session) ;      
-      Node node = (Node) session.getItem(drive.getHomePath()) ;
+      uiJCRExplorer.setSession(session) ;
+      Node node = null ;
+      try {
+        node = (Node) session.getItem(drive.getHomePath()) ;
+      } catch(Exception e) {
+        Object[] args = { driveName } ;
+        uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } 
       uiJCRExplorer.getAllClipBoard().clear() ;
       uiJCRExplorer.setRootNode(node) ;
       uiJCRExplorer.refreshExplorer() ;
@@ -182,4 +193,3 @@ public class UIDrivesBrowser extends UIContainer {
     }
   }
 }
-
