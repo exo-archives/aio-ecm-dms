@@ -18,12 +18,12 @@
 
 .SelectFolder16x16Icon  {
 	width: 16px; height:16px;
-  background: url('DefaultSkin/SmallSelectFolderIcon.gif') no-repeat;
+  background: url('VistaSkin/SmallSelectFolderIcon.gif') no-repeat;
 }
 
 .NormalFolder16x16Icon  {
 	width: 16px; height:16px;
-  background: url('DefaultSkin/SmallNormalFolderIcon.gif') no-repeat;
+  background: url('VistaSkin/SmallNormalFolderIcon.gif') no-repeat;
 }
 
 .default16x16Icon {

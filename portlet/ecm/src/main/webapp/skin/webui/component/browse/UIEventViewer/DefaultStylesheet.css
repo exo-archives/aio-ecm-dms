@@ -4,15 +4,19 @@
   padding: 10px;
 }
 
-.UIEventViewer .UIPageIterator {
+.UIEventViewer .DocumentsPageIterator {
+	width: 98%;
+}
+
+.UIEventViewer .DocumentsPageIterator .UIPageIterator {
 	margin-right: 0px;
 }
 
 .UIEventViewer .EventContent {
   border: solid 1px #e1e1e1;
-  padding: 10px;
-  margin-bottom: 2px;
   font-size: 11px;
+  padding: 10px 0px;
+  width: 98.5%;
 }
 
 .UIEventViewer .ViewPreviousDocument {

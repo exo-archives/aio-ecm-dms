@@ -163,7 +163,6 @@
 					    <div style="clear:left"><span></span></div>
 	    		<%}%>
 			    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
-			    <div style="clear:left"><span></span></div>
 	   			<%}%>
 				  <%/*End UIEventViewer*/%>
 				  <%if(!isShowAllDoc) {%>			        
@@ -242,7 +241,6 @@
 					 </div>
 		      <%/*End UIContentView*/%>
 		      <%}%>
-		      <div style="clear: both;"><span></span></div>
 			  </div>
 		  </div>
 	  	<div style="clear: both;"><span></span></div>
