@@ -697,28 +697,28 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(VersionException ve) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.copied-node-in-versioning", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }catch (ItemExistsException iee){
+      } catch (ItemExistsException iee){
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.paste-node-same-name", null, 
-            ApplicationMessage.INFO)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (LoginException e){
         if(ClipboardCommand.CUT.equals(type)) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-paste-nodeversion", null, 
-              ApplicationMessage.WARNING)) ;
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-paste-nodetype", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
@@ -743,8 +743,7 @@ public class UIWorkingArea extends UIContainer {
         workspace.copy(srcWorkspace, srcPath, destPath);
         Node destNode = (Node) session.getItem(destPath) ;
         removeReferences(destNode, session) ;
-        RepositoryService repositoryService = 
-          uiExplorer.getApplicationComponent(RepositoryService.class) ;
+        RepositoryService repositoryService = uiExplorer.getApplicationComponent(RepositoryService.class) ;
         String repository = ((ManageableRepository)session.getRepository()).getConfiguration().getName() ;
         Session srcSession = repositoryService.getRepository(repository).login(srcWorkspace) ;
         srcSession.getItem(srcPath).remove() ;

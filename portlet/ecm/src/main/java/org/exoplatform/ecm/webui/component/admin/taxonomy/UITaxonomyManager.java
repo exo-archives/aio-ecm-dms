@@ -108,6 +108,9 @@ public class UITaxonomyManager extends UIContainer {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg)) ;
         return ;
       }
+      if(uiManager.getChildById("TaxonomyPopup") != null) {
+        uiManager.removeChildById("TaxonomyPopup") ;
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -116,6 +119,7 @@ public class UITaxonomyManager extends UIContainer {
     public void execute(Event<UITaxonomyManager> event) throws Exception {
       UITaxonomyManager uiManager = event.getSource() ;
       String realPath = event.getRequestContext().getRequestParameter(OBJECTID);            
+      uiManager.clipboard_ = new ClipboardCommand() ;
       Node node = uiManager.getApplicationComponent(CategoriesService.class)
       .getTaxonomyNode(realPath, uiManager.getRepository()) ;
       uiManager.clipboard_.setType(ClipboardCommand.COPY) ;
@@ -143,9 +147,15 @@ public class UITaxonomyManager extends UIContainer {
           uiManager.getApplicationComponent(CategoriesService.class) ;
         Node destNode = categoriesService.getTaxonomyNode(realPath, uiManager.getRepository()) ;
         String destPath = destNode.getPath() + srcPath.substring(srcPath.lastIndexOf("/"));       
+        if(destNode.hasNode(srcPath.substring(srcPath.lastIndexOf("/")))) {
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", null,
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
         uiManager.resetTaxonomyRootNode() ;
-      } catch (Exception e) {
+      } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

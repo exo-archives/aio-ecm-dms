@@ -120,13 +120,23 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     String prefLocate = preferences.getValue("path", "") ;
     String prefType = preferences.getValue("type", "") ;
     String workspace = preferences.getValue("workspace", "") ;
-    // Need to have a session bound to the current user. Indeed, in case the
-    // saved document triggered an action, the remote user needs to be retrieved
-    // from the session. However, it may be needed to use the System Session
-    // in case the portlet is located in a public page.
-    Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+    Session session = null ;
+    try {
+      session = repositoryService.getRepository(repository).login(workspace) ;
+    } catch(Exception e) {
+      session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+    }
     Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
-    Node homeNode = (Node) session.getItem(prefLocate);
+    Node homeNode = null;
+    try {
+      homeNode = (Node) session.getItem(prefLocate);
+    } catch(Exception e) {
+      Object[] args = { prefLocate } ;
+      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.access-denied", args, 
+                                              ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    }
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;

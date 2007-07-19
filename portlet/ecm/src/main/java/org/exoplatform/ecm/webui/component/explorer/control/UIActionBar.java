@@ -751,7 +751,7 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiCateAddedList, null) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(uiManager, 630, 0) ;
+      uiPopupAction.activate(uiManager, 630, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
@@ -815,7 +815,7 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(uiRelationManager, 630, 0) ;
+      uiPopupAction.activate(uiRelationManager, 630, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

@@ -174,6 +174,7 @@ public class UITask extends UIForm {
         String nodetype = dialogNode.getPrimaryNodeType().getName();
         uiDocForm.setNode(dialogNode);
         uiDocForm.setTemplateNode(nodetype) ;
+        uiDocForm.setRepository(repository) ;
         Task task = serviceContainer.getTask(identification_);
         form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
         uiTaskManager.addChild(uiDocForm) ;

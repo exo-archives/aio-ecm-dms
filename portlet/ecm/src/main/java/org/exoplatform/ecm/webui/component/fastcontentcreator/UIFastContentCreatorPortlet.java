@@ -70,6 +70,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         Session session = repositoryService.getRepository(repo).getSystemSession(wsName) ; 
         Node node = (Node) session.getItem(nodePath) ;
         uiDialogForm.setDialogHomeNode(node) ;
+        uiDialogForm.setRepository(repo) ;
         addChild(uiDialogForm) ; 
       }
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
