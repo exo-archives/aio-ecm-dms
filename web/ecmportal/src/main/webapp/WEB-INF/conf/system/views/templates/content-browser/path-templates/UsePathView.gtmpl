@@ -226,14 +226,14 @@
                 </tr>        
               </table>
             </div>
-            <div class="MainEventContent">
-              <div class="SummaryTitleLabel">
-								<%=_ctx.appRes(componentName + ".label.summary")%>:
-                <%if(doc.hasProperty("exo:summary")){%>
-                 <%=doc.getProperty("exo:summary").getString()%>
-               <%}%>
-              </div>
-            </div>
+            <%if(doc.hasProperty("exo:summary")){%>
+	            <div class="MainEventContent">
+	              <div class="SummaryTitleLabel">
+									<%=_ctx.appRes(componentName + ".label.summary")%>:
+	                <%=doc.getProperty("exo:summary").getString()%>
+	              </div>
+	            </div>
+            <%}%>
           </div>
       <%
         }

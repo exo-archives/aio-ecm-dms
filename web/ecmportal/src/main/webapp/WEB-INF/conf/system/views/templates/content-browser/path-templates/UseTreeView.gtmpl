@@ -177,9 +177,11 @@
 								   	def docChilds = child.get("doc") ;
 								   	int numbDocument = docChilds.size() ;
 							%>
-										<div class="TiteContentView">
-										  <div class="TiteContentIcon CBDefaultFolder16x16Icon"><span></span></div>
-										  <a class="TiteLabel" href="$actionLinkSub"><%=catName%></a>
+										<div class="TiteContentView">										  
+										  <a class="TiteLabel" href="$actionLinkSub">
+										  	<div class="TiteContentIcon CBDefaultFolder16x16Icon"><span></span></div>
+										  	<%=catName%>
+										  </a>
 										  <div style="clear:left"><span></span></div>
 										</div>
 										<%if(docChilds.isEmpty()) {%>

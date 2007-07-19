@@ -15,6 +15,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.categories.CategoriesService;
@@ -38,14 +39,12 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
-import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormInputInfo;
-import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
@@ -62,6 +61,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
     template = "system:/groovy/webui/form/UIForm.gtmpl",   
     events = {
       @EventConfig(listeners = UIRepositoryForm.SaveActionListener.class),
+      @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.SelectActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.ResetActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.CloseActionListener.class),
       @EventConfig(listeners = UIRepositoryForm.AddWorkspaceActionListener.class),
@@ -75,11 +75,13 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   final  static public String ST_EDIT = "EditRepoPopup" ;
   final static public String POPUP_WORKSPACE = "PopupWorkspace" ;
   final static public String FIELD_NAME = "name" ;  
-  final static public String FIELD_SET = "inputSet" ; 
+  final static public String FIELD_WSINPUTSET = "wsInputSet" ; 
   final static public String FIELD_WORKSPACE = "workspace" ;
   final static public String FIELD_ISDEFAULT = "isDefault" ;
   final static public String FIELD_ACCESSCONTROL = "accessControl" ;
+  final static public String FIELD_AUTHINPUTSET = "authInputSet" ;
   final static public String FIELD_AUTHENTICATION = "authenticationPolicy" ;
+
   final static public String FIELD_SCURITY  = "securityDomain" ;
   final static public String FIELD_SESSIONTIME = "sessionTime" ;
 
@@ -98,12 +100,14 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   public UIRepositoryForm() throws Exception { 
     addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ; 
-    UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(FIELD_SET) ;
+    UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(FIELD_WSINPUTSET) ;
     uiInputSet.addUIFormInput(new UIFormInputInfo(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;
     addUIComponentInput(uiInputSet) ;
     addChild(new UIFormCheckBoxInput<String>(FIELD_ISDEFAULT,FIELD_ISDEFAULT, null).setEditable(false)) ;
-    addChild(new UIFormStringInput(FIELD_ACCESSCONTROL,FIELD_ACCESSCONTROL, null).addValidator(EmptyFieldValidator.class)) ;    
-    addChild(new UIFormSelectBox(FIELD_AUTHENTICATION, FIELD_AUTHENTICATION, getAuthentiacions())) ;    
+    addChild(new UIFormStringInput(FIELD_ACCESSCONTROL,FIELD_ACCESSCONTROL, null).addValidator(EmptyFieldValidator.class)) ;  
+    UIFormInputSetWithAction autField = new UIFormInputSetWithAction(FIELD_AUTHINPUTSET) ;
+    autField.addChild(new UIFormStringInput(FIELD_AUTHENTICATION, FIELD_AUTHENTICATION, null)) ;
+    addChild(autField) ;
     addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null).addValidator(EmptyFieldValidator.class) 
         .addValidator(NumberFormatValidator.class)) ;
@@ -117,24 +121,19 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     addChild(new UIFormStringInput(FIELD_BSEMAXBUFFER,FIELD_BSEMAXBUFFER, null).addValidator(NumberFormatValidator.class).setRendered(false)) ;
   }  
 
-  private List<SelectItemOption<String>> getAuthentiacions() {
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    options.add(new SelectItemOption<String>( KEY_AUTHENTICATIONPOLICY.substring(KEY_AUTHENTICATIONPOLICY.lastIndexOf(".")+1),
-        KEY_AUTHENTICATIONPOLICY)) ;
-    return options ;
-  }  
-
   public void refresh(RepositoryEntry repo) throws Exception{
     reset() ;
     getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
     getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
     getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(false) ;
+    UIFormInputSetWithAction autField = getChildById(FIELD_AUTHINPUTSET) ;
     workspaceMap_.clear() ;
     if(repo != null) {
       if(isAddnew_) {      
         repoName_ = null ;
         defaulWorkspace_ = null ;
         refreshWorkspaceList() ;
+        autField.setActionInfo(FIELD_AUTHENTICATION, new String[]{"Select"}) ;
         getUIStringInput(FIELD_NAME).setEditable(true) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
@@ -156,6 +155,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         refreshWorkspaceList() ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(isDefaultRepo(repo.getName())) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false);
+        autField.setActionInfo(FIELD_AUTHENTICATION, null) ;
         setActions(new String[] {"AddWorkspace", "Close"}) ;
         ReplicationEntry re = repo.getReplication() ;
         if(re != null) {
@@ -178,18 +178,17 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         }
       }
       getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl()) ;      
-      getUIFormSelectBox(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
+      autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
       getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setValue(repo.getSecurityDomain()) ;
       getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setValue(String.valueOf(repo.getSessionTimeOut())) ;
     }
   }
   protected void lockRepoForm(boolean isLock) {
-    //getUIStringInput(FIELD_NAME).setEnable(isLock) ;
-    //getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(isLock) ;
     getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setEnable(isLock) ;
 
     getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setEditable(isLock); 
-    getUIFormSelectBox(UIRepositoryForm.FIELD_AUTHENTICATION).setEnable(isLock);     
+    UIFormInputSetWithAction autField = getChildById(UIRepositoryForm.FIELD_AUTHINPUTSET) ;
+    autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setEditable(isLock);     
     getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setEditable(isLock); 
     getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setEditable(isLock);
 
@@ -221,7 +220,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       if(labels.length() > 0) labels.append(",") ;
       labels.append(wsName) ;
     }
-    UIFormInputSetWithAction workspaceField = getChildById(UIRepositoryForm.FIELD_SET) ;
+    UIFormInputSetWithAction workspaceField = getChildById(UIRepositoryForm.FIELD_WSINPUTSET) ;
     workspaceField.setInfoField(UIRepositoryForm.FIELD_WORKSPACE, labels.toString()) ;
     String[] actionInfor = {"EditWorkspace", "RemoveWorkspace"} ;
     workspaceField.setActionInfo(UIRepositoryForm.FIELD_WORKSPACE, actionInfor) ;
@@ -272,7 +271,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(TemplateService.class).init(repository) ;
       getApplicationComponent(ManageViewService.class).init(repository) ;
       getApplicationComponent(ActionServiceContainer.class).init(repository) ;
-
     }catch(Exception e) {
       e.printStackTrace() ;
     }
@@ -289,6 +287,17 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   public void deActivate() throws Exception { repoName_ = null ;}
 
+
+  public static class SelectActionListener extends EventListener<UIRepositoryForm>{
+    public void execute(Event<UIRepositoryForm> event) throws Exception{
+      UIRepositoryFormContainer uiRepoContainer = event.getSource().getAncestorOfType(UIRepositoryFormContainer.class) ;
+      UIRepositoryValueSelect uiSelect = uiRepoContainer.getChild(UIPopupAction.class).activate(UIRepositoryValueSelect.class, 500) ;
+      uiSelect.isSetAuthentication_  = true ;
+      List<ClassData> datas = new ArrayList<ClassData>() ;
+      datas.add(new ClassData(UIRepositoryForm.KEY_AUTHENTICATIONPOLICY)) ;
+      uiSelect.updateGrid(datas) ;
+    }
+  }
   public static class ShowHiddenActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm =  event.getSource() ;
@@ -335,9 +344,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ; 
       }
-      //boolean isDefaultRepo = uiForm.getUIFormCheckBoxInput(FIELD_ISDEFAULT).isChecked() ;
       String acess = uiForm.getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).getValue() ;
-      String authen = uiForm.getUIFormSelectBox(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
+      UIFormInputSetWithAction autField = uiForm.getChildById(UIRepositoryForm.FIELD_AUTHINPUTSET) ;
+      String authen = autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).getValue() ;
+      if(Utils.isNameEmpty(authen)) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.authen-isrequire", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        return ;
+      }
       String security = uiForm.getUIStringInput(UIRepositoryForm.FIELD_SCURITY).getValue() ;
       String sessionTimeOut = uiForm.getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).getValue() ;
       re.setName(repoName) ;
@@ -511,7 +526,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     }
   }
   public void setAuthentication(String value) {
-    // TODO Auto-generated method stub
-    
+    UIFormInputSetWithAction autField =  getChildById(FIELD_AUTHINPUTSET) ;
+    autField.getUIStringInput(FIELD_AUTHENTICATION).setValue(value);
   }
 }
