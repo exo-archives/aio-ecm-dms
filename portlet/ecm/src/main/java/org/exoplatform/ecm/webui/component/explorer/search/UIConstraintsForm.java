@@ -127,18 +127,18 @@ public class UIConstraintsForm extends UIForm {
       Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
       if(type.equals(CREATED_DATE)) {
         virtualDateQuery_ = "(documents created from '"+beforeDate+"') AND (documents created to '"+afterDate+"')" ;
-        return "(jcr:created > '"+ISO8601.format(bfDate)+"') AND (jcr:created < '"+ISO8601.format(afDate)+"')" ;
+        return "(exo:dateCreated > '"+ISO8601.format(bfDate)+"') AND (exo:dateCreated < '"+ISO8601.format(afDate)+"')" ;
       } else if(type.equals(MODIFIED_DATE)) {
         virtualDateQuery_ = "(documents modified from '"+beforeDate+"') AND (documents modified to '"+afterDate+"')" ;
-        return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"') AND (jcr:lastModified < '"+ISO8601.format(afDate)+"')" ;
+        return "(exo:dateModified > '"+ISO8601.format(bfDate)+"') AND (exo:dateModified < '"+ISO8601.format(afDate)+"')" ;
       }
     } else {
       if(type.equals(CREATED_DATE)) {
         virtualDateQuery_ = "(documents created from '"+beforeDate+"')" ;
-        return "(jcr:created > '"+ISO8601.format(bfDate)+"')" ;
+        return "(exo:dateCreated > '"+ISO8601.format(bfDate)+"')" ;
       } else if(type.equals(MODIFIED_DATE)) {
         virtualDateQuery_ = "(documents modified from '"+beforeDate+"')" ;
-        return "(jcr:lastModified > '"+ISO8601.format(bfDate)+"')" ;
+        return "(exo:dateModified > '"+ISO8601.format(bfDate)+"')" ;
       }
     }
     return "" ;

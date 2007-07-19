@@ -662,6 +662,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String destPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String realDestPath = destPath ;
       String destWorkspace = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(destWorkspace) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
@@ -682,19 +683,17 @@ public class UIWorkingArea extends UIContainer {
         destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/")) ;
       }
       try {
-        if (ClipboardCommand.COPY.equals(type)) {
+        if(ClipboardCommand.COPY.equals(type)) {
           pasteByCopy(session, srcWorkspace, srcPath, destPath) ;
         } else {
+          if(srcPath.equals(realDestPath)) {
+            uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
           pasteByCut(uiExplorer, session, srcWorkspace, srcPath, destPath) ;
         }
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-        Node selectedNode = (Node)session.getItem(destPath) ;
-        ActionServiceContainer actionContainer = 
-          event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
-        PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-        PortletPreferences preferences = context.getRequest().getPreferences() ;
-        actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
-        uiExplorer.updateAjax(event) ;
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -724,7 +723,16 @@ public class UIWorkingArea extends UIContainer {
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
+      if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+      Node selectedNode = (Node)session.getItem(destPath) ;
+      ActionServiceContainer actionContainer = 
+        event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
+      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+      PortletPreferences preferences = context.getRequest().getPreferences() ;
+      actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
+      uiExplorer.updateAjax(event) ;
     }
 
     private void pasteByCopy(Session session, String srcWorkspace, 
