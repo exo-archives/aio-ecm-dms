@@ -11,6 +11,7 @@ import javax.jcr.Property;
 import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.services.document.DocumentReaderService;
 import org.exoplatform.services.document.diff.AddDelta;
 import org.exoplatform.services.document.diff.ChangeDelta;
 import org.exoplatform.services.document.diff.DeleteDelta;
@@ -28,26 +29,33 @@ import org.exoplatform.webui.core.UIComponent;
  */
 
 @ComponentConfig(template = "app:/groovy/webui/component/explorer/versions/UIDiff.gtmpl")
-  
+
 public class UIDiff extends UIComponent {
 
   private Version baseVersion_ ;
   private Version version_ ;
 
   public void setVersions(Version baseVersion, Version version)
-      throws Exception {
+  throws Exception {
     baseVersion_ = baseVersion ;
     version_ = version ;
   }
-  
+
   public String getText(Node node) throws Exception {
     if(node.hasNode("jcr:content")) {
       Node content = node.getNode("jcr:content");
       if(content.hasProperty("jcr:mimeType")){
-        Property mime = content.getProperty("jcr:mimeType");
-        //DocumentReaderService readerService = getApplicationComponent(DocumentReaderService.class) ;
+        String mimeType = content.getProperty("jcr:mimeType").getString();         
         if(content.hasProperty("jcr:data")) {
-          if(mime.getString().startsWith("text")) return content.getProperty("jcr:data").getString();          
+          if(mimeType.startsWith("text")) { 
+            return content.getProperty("jcr:data").getString(); 
+          }
+          DocumentReaderService readerService = getApplicationComponent(DocumentReaderService.class) ;
+          try{
+            return readerService.getDocumentReader(mimeType).
+                    getContentAsText(content.getProperty("jcr:data").getStream()) ;
+          }catch (Exception e) {
+          }         
         }
       }
     }
@@ -55,7 +63,7 @@ public class UIDiff extends UIComponent {
   }
   public String getBaseVersionNum() throws Exception {return  baseVersion_.getName() ;}
   public String getCurrentVersionNum() throws Exception {return version_.getName() ;}
-  
+
   public List<Delta> getDeltas() throws Exception {
     List<Delta> deltas = new ArrayList<Delta>();
     String previousText = getText(version_.getNode("jcr:frozenNode"));
