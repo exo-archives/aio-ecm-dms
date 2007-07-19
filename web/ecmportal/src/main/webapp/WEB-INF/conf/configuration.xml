@@ -9,6 +9,7 @@
   <import>war:/conf/hibernate-organization-configuration.xml</import> 
   <import>war:/conf/web-content-configuration.xml</import> 
   
+  <import>war:/conf/resource-bundle-configuration.xml</import> 
 	<import>war:/conf/portal/jcr-component-plugins-configuration.xml</import>
 	<import>war:/conf/portal/cms-configuration.xml</import>
 	<import>war:/conf/portal/ecm-templates-configuration.xml</import>
