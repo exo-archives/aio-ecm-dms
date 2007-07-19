@@ -24,11 +24,11 @@ Instance.prototype.getContent = function() {
 };
 
 Instance.prototype.writeContent = function(html) {
-	var doc = this.getDoc() ;
-	doc.open() ;
-	doc.write(html) ;
-	doc.close() ;
 	try {
+		var doc = this.getDoc() ;
+		doc.open() ;
+		doc.write(html) ;
+		doc.close() ;
 		doc.designMode = 'on' ;
 		doc.execCommand("useCSS", false, true);
 	} catch (ex) {}
@@ -137,7 +137,7 @@ ExoEditor.prototype.createInstance = function(instId, settings) {
 		frameBorder = 0 ;
 		scrolling = "auto" ;
 	}
-	try{ifrm.onmouseover = new Function("this.contentDocument.designMode = 'on';")} catch(ex){}
+	ifrm.onmouseover = this.onMouseOverEvt ;
 	editorObj.appendChild(ifrm) ;
 	
 	txtAreaObj.style.display = 'none' ;
@@ -151,6 +151,12 @@ ExoEditor.prototype.createInstance = function(instId, settings) {
 	this.setEventHandlers(inst) ;
 };
 
+ExoEditor.prototype.onMouseOverEvt = function() {
+	try {
+		this.contentDocument.designMode = 'on';
+	} catch (ex) {}
+}
+ 
 ExoEditor.prototype.execCommand = function(instId, cmd, user, value) {
 	if(!user) user = false;
 	if(!value) value = null ;
