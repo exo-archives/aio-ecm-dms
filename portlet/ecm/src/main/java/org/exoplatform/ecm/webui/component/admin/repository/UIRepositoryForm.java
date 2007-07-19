@@ -510,4 +510,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIRepositoryFormContainer.class)) ;  
     }
   }
+  public void setAuthentication(String value) {
+    // TODO Auto-generated method stub
+    
+  }
 }

@@ -8,7 +8,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
+import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
@@ -16,6 +19,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -61,6 +65,7 @@ public class UIQueryConfig extends UIForm {
   final private static String EXISTING_QUERY = "Existing Query".intern() ;
   final private static String PERSONAL_QUERY = "Personal Query".intern() ;
   final private static String SHARED_QUERY = "Shared Query".intern() ;
+  final private static String EMPTYQUERY = "Query not found".intern() ;
   private List<String> roles_ = new ArrayList<String>();
   protected boolean isEdit_ = false ;
 
@@ -118,7 +123,7 @@ public class UIQueryConfig extends UIForm {
     UIFormSelectBox queryLangField = getChildById(UINewConfigForm.FIELD_QUERYLANG) ;
     UIFormSelectBox queryTypeField = getChildById(UINewConfigForm.FIELD_QUERYTYPE) ;
     UIFormSelectBox queryStoreField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
-    //UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
+    UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
@@ -128,7 +133,7 @@ public class UIQueryConfig extends UIForm {
     if(isEdit_) {
       if(isAddNew) {
         setActions(UINewConfigForm.ADD_NEW_ACTION) ;
-        templateField.setOptions(getQueryTemplate()) ;
+        templateField.setOptions(getQueryTemplate(repository)) ;
         UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
         detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
         queryStatusField.setOptions(getQueryStatus()) ;
@@ -158,7 +163,7 @@ public class UIQueryConfig extends UIForm {
       hasTagMap  = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
-      templateField.setOptions(getQueryTemplate()) ;
+      templateField.setOptions(getQueryTemplate(repository)) ;
       numbPerPageField.setValue(itemPerPage) ;
       UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
@@ -200,8 +205,7 @@ public class UIQueryConfig extends UIForm {
       if(queryLanguage.equals(Query.XPATH)) {
         if(queryStatement == null) queryStatement = xpathDefault_ ;
         query.setValue(queryStatement) ;
-      }
-      if(queryLanguage.equals(Query.SQL)&& queryStatement != null) {
+      } else if(queryLanguage.equals(Query.SQL)) {
         if(queryStatement == null) queryStatement = sqlDefault_ ;
         query.setValue(queryStatement) ;
       }
@@ -214,9 +218,8 @@ public class UIQueryConfig extends UIForm {
     query.setRendered(isNewquery) ;
   }
 
-  private List<SelectItemOption<String>> getQueryTemplate() throws Exception {
+  private List<SelectItemOption<String>> getQueryTemplate(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     List<Node> querylTemplates = getApplicationComponent(ManageViewService.class)
     .getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository) ;
     for(Node node: querylTemplates){
@@ -269,7 +272,16 @@ public class UIQueryConfig extends UIForm {
         options.add(new SelectItemOption<String>(queryNode.getName(), queryNode.getPath())) ;
       }
     } 
+    if(options.isEmpty()) {
+      options.add(new SelectItemOption<String>(EMPTYQUERY, EMPTYQUERY)) ;
+    }
     return options ;
+  }
+  private Session getSession() throws Exception{
+    Session session = getApplicationComponent(RepositoryService.class)
+    .getRepository(getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue()).getSystemSession(
+        getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue());
+    return session ;
   }
   public static class SaveActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
@@ -289,10 +301,27 @@ public class UIQueryConfig extends UIForm {
       boolean isNewquery = queryStatu.equals(UIQueryConfig.NEW_QUERY) ;
       if((!queryStatu.equals(UIQueryConfig.NEW_QUERY))&&(queryValueField.isRendered())) {
         queryPath = queryValueField.getValue() ;
-        if((queryPath == null )||(queryPath.trim().length() == 0)){
+        if(queryPath.equals(UIQueryConfig.EMPTYQUERY)){
           UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
           app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-name", null)) ;
           return ;
+        }
+      }
+      if(isNewquery) {
+        if(Utils.isNameEmpty(query)) {
+          UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
+          return ;
+        } else {
+          try {
+            QueryManager queryManager =uiForm.getSession().getWorkspace().getQueryManager();
+            Query queryObj = queryManager.createQuery(query, queryLang);
+            queryObj.execute();
+          } catch(InvalidQueryException iqe) {
+            UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+            app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
+            return ;
+          }
         }
       }
       try{

@@ -933,4 +933,17 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     }
   }
 
+  public void setContainerName(String value) {
+    // TODO Auto-generated method stub
+    
+  }
+  public void setStoreTypeName(String value) {
+    // TODO Auto-generated method stub
+    
+  }
+  public void setQueryHandlerName(String value) {
+    // TODO Auto-generated method stub
+    
+  }
+
 }

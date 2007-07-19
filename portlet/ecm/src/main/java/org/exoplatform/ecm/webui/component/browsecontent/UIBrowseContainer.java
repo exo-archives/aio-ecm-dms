@@ -265,7 +265,7 @@ public class UIBrowseContainer extends UIContainer{
   }
   protected boolean isCategories(NodeType nodeType) {
     for(String type : Utils.CATEGORY_NODE_TYPES) {
-      if(nodeType.isNodeType(type)) return true ;
+      if(nodeType.getName().equals(type)) return true ;
     }
     return false ;
   }
