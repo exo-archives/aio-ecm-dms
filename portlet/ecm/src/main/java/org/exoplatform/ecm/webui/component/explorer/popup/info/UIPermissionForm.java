@@ -41,10 +41,7 @@ import org.exoplatform.webui.form.UIForm;
   public class UIPermissionForm extends UIForm implements UISelector {
 
   final static public String PERMISSION   = "permission";
-
   final static public String POPUP_SELECT = "SelectUserOrGroup";
-
-  protected boolean          isAddAny_    = false;
 
   public UIPermissionForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
@@ -122,8 +119,6 @@ import org.exoplatform.webui.form.UIForm;
       }
       try {
         node.setPermission(userOrGroup, permsArray);
-        if (!uiForm.isAddAny_)
-          node.removePermission(SystemIdentity.ANY);
         uiParent.getChild(UIPermissionInfo.class).updateGrid();
         node.save();
         if (!uiJCRExplorer.getPreference().isJcrEnable()) {
@@ -136,14 +131,12 @@ import org.exoplatform.webui.form.UIForm;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
       }
-      uiForm.isAddAny_ = false;
     }
   }
 
   static public class SelectUserActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      uiForm.isAddAny_ = false;
       UIGroupSelector uiGroupSelector = uiForm.createUIComponent(UIGroupSelector.class, null, null);
       uiGroupSelector.setSelectUser(true);
       uiGroupSelector.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
@@ -155,7 +148,6 @@ import org.exoplatform.webui.form.UIForm;
   static public class AddAnyActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      uiForm.isAddAny_ = true;
       UIPermissionInputSet uiInputSet = uiForm.getChildById(UIPermissionForm.PERMISSION);
       uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).setValue(
           SystemIdentity.ANY);
@@ -167,7 +159,6 @@ import org.exoplatform.webui.form.UIForm;
   static public class SelectMemberActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      uiForm.isAddAny_ = false;
       UIECMPermissionBrowser uiMemberSelect = uiForm.createUIComponent(
           UIECMPermissionBrowser.class, null, null);
       uiMemberSelect.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
