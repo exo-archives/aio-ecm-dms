@@ -96,8 +96,11 @@ public class CmsServiceImpl implements CmsService {
       }        
       createNodeRecursively(NODE, currentNode, nodeType, mappings);      
     } else {
-      currentNode = storeHomeNode.getNode(nodeName);
+      currentNode = storeHomeNode.getNode(nodeName);      
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
+      if(currentNode.isNodeType("exo:datetime")) {
+        currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
+      }
     }
     return currentNode.getPath();
   }

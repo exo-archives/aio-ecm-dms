@@ -1256,7 +1256,7 @@
 	            <collection type="java.util.ArrayList">	              
 	              <value>
 	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
-	                  <field  name="eventTypes"><string>addNode,addProperty,changeProperty,removeProperty</string></field>	                  
+	                  <field  name="eventTypes"><string>addNode</string></field>	                  
 	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.AddDateTimeAction</string></field>
 	                </object>
 	              </value>
