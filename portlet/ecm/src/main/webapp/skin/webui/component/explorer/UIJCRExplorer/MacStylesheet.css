@@ -268,19 +268,11 @@
 	margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .HorizontalLayout {
-	background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
 	width: 170px;
 }
 
 /*===========================DocumentFormController=====================*/
-
-.UIJCRExplorerPortlet .UIFormWithTitle .UIDocumentForm {
-	background: url('MacSkin/background/Background1x4.png') repeat;
-}
 
 .UIJCRExplorerPortlet .UIFormWithTitle .UIDocumentForm .HorizontalLayout {
 	padding-top: 10px;
@@ -308,7 +300,6 @@
   border: 1px solid #e1e1e1;
   background: #efefef;
   margin-top: 5px;
-  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .HorizontalLayout td.FieldLabel {
@@ -358,7 +349,6 @@
 
 .UIJCRExplorerPortlet .UIDocumentForm .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
-  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
@@ -385,8 +375,8 @@
 }
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
-	background: url('MacSkin/background/Background1x4.png') repeat;
 	border: none;
+	background: none;
 }
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIFormWithTitle{
@@ -456,10 +446,6 @@
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIWatchDocumentForm .HorizontalLayout{
-  background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FormContainer {
@@ -642,10 +628,6 @@
   margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .EditQueryForm .HorizontalLayout{
-  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-}
-
 .UIJCRExplorerPortlet .EditQueryForm .UIAction {
   width: 170px;
 }
@@ -819,11 +801,6 @@
 }
 /*================================.UIExportNode=================================*/
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout{
-  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-  padding-top: 10px;
-}
-
 .UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
   width: 400px;
   margin: auto;
@@ -841,11 +818,6 @@
   border: solid 1px #b7b7b7;
 }
 /*================================.UIImportNode=================================*/
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout{
-  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-  padding-top: 10px;
-}
 
 .UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
   width: 170px;
@@ -929,11 +901,6 @@
 
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIViewMetadataForm {
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIViewMetadataManager .HorizontalLayout {
-  background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-  padding-top: 10px;
 }
 
 /*================================UINodeTypeInfo=================================*/
@@ -1066,10 +1033,6 @@
 	padding: 10px;
 }
 
-.UIJCRExplorer .UIRenameForm .HorizontalLayout {
-	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-}
-
 .UIJCRExplorer .UIRenameForm .FormContainer {
 	width: 500px;
 	margin: auto;
@@ -1129,7 +1092,6 @@
 .UIJCRExplorer .UIActivateVersion {
 	border: solid 1px #b7b7b7;
 	margin: 10px;
-	background:  url(MacSkin/background/Background1x4.png) repeat ;
 }
 
 /*====================================UISavedQuery==================================*/

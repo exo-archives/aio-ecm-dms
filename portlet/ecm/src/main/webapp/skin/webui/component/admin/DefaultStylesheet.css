@@ -117,7 +117,7 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .SelectedLabel {
 	display: block ;
-	background: #F4F4F4 none repeat scroll 0%;
+	background: #f9f9f9;
 	border: 1px solid #B7B7B7 ;
 	padding: 15px 0px;
 	line-height: 15px;
@@ -131,7 +131,7 @@
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIWizardAction {
-	background: #F4F4F4 none repeat scroll 0%;
+	background: #f9f9f9;
 	border: none ;
 	border-top: 1px solid #939393 ;
 	border-bottom: 1px solid #b7b7b7 ;

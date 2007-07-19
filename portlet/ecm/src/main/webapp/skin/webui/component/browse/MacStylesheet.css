@@ -235,7 +235,7 @@
 
 .UIBrowseContainer .DocNodeIcon{
 	float: left;
-	margin: 0px 3px 0px 0px;
+	margin:2px 3px 0px 0px;
 }
 
 .UIBrowseContainer .UIDocumentList .DocumentLabel{
@@ -356,7 +356,7 @@ UIBrowseContentPortlet .Explorer {
 }
 
 .UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 18px; margin: auto;
+	width: 50px; 
 }
 
 .UIBrowseContentPortlet .UISearchController .UIAction{
@@ -366,6 +366,11 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .UISearchController .ActionButton{
 	width: 70px; margin: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .GotoIcon{
+	width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/

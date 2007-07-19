@@ -38,14 +38,15 @@
 .UICategoryTree .MiddleCategoryTree {
 	border: solid 1px #e1e1e1 ;	
   background: #ffffff;
-	padding-bottom: 5px;
-	padding: 9px 0px 10px 5px;
+	padding: 9px 0px 10px 0px;
 	overflow: auto;
+	white-space: nowrap;
+	width: 99%;
 }
 
 .UICategoryTree .MiddleCategoryTree .TreeRootIcon{
   float: left;
-  margin: 2px 5px 0px 2px;
+  margin: 2px 3px 0px 5px;
 }
 
 .UICategoryTree .MiddleCategoryTree .RootTreeNode{
@@ -56,7 +57,6 @@
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu {
-
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .ParentSupMenu {
@@ -65,18 +65,18 @@
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .SelectIcon {
 	float: left;
-	margin-top: 3px;
+	margin-top: 2px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {
-	margin-left: 24px;
-	line-height: 16px;
+	margin-left: 20px;
+	line-height: 20px;
 	font-size: 11px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategorySelectLabel {
-	margin-left: 24px;
-	line-height: 16px;
+	margin-left: 20px;
+	line-height: 20px;
 	font-weight:  bold;
 	font-size: 11px;
 }

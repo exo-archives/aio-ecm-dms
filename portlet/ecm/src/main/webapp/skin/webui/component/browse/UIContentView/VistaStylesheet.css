@@ -8,8 +8,10 @@
 
 
 .UIContentView {
-  margin: 9px 0px 0px 0px;
+  width: 98.5%;
+  margin: auto;
 }
+
 .UIContentView .TiteContentView {
   margin: 8px 0px 1px 0px;
   height: 18px; line-height: 18px; vertical-align: middle;
@@ -23,7 +25,8 @@
 .UIContentView .TiteContentView a {
 	float: left;
 	margin-left: 6px;
-	line-height: 18px; font-weight: bold;
+	line-height: 18px; vertical-align: middle;
+	font-size: 11px; font-weight: bold;
 	color: #058ee6;
 }
 
@@ -51,7 +54,6 @@
 
 .UIContentView .SubFormContent .ChildrenContent {
   width: 99.5%;
-  border: 1px solid red;
 }
 
 .UIContentView .SubFormContent .ChildrenContentHolder {
@@ -61,14 +63,14 @@
 }
 .UIContentView .SubFormContent .ChildrenContentHolderLeft{
 	float: left;
-	width: 48%;
+	width: 46%;
 	margin: 5px;
 	padding: 1px;
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
-	float: Right;
-	width: 48%;
+	float: right;
+	width: 46%;
 	margin: 5px;
 	padding: 1px;
 } 
@@ -90,6 +92,7 @@
 	height: 16px;
 	line-height: 16px;
 	font-weight: bold;
+	font-size: 11px;
 }
 
 .UIContentView .SubFormContent .Author {

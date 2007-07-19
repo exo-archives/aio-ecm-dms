@@ -1,6 +1,6 @@
 .UIEventViewer {  
+  margin: 0px 1px;
   border: solid 1px #c0c0c0 ;
-  margin: 2px;
   padding: 10px;
 }
 
@@ -8,17 +8,16 @@
 	margin-right: 0px;
 }
 
-
 .UIEventViewer .EventContent {
   border: solid 1px #e1e1e1;
   padding: 10px;
   margin-bottom: 2px;
+  font-size: 11px;
 }
 
 .UIEventViewer .ViewPreviousDocument {
   margin: 0px 0px 5px 0px;
-  height: 19px; width: 130px;
-  vertical-align: middle;
+  height: 19px; vertical-align: middle;
   border: 1px #e1e1e1 solid; background: #f3f3f3;
 }
 
@@ -33,6 +32,7 @@
 	float: left;
 	color: #333333;
 	line-height: 19px; 
+	font-size: 11px;
 	padding: 0px 10px 0px 4px;
 }
 
@@ -42,7 +42,8 @@
 
 .UIEventViewer .EventContent .EventDocumentLabel {
 	margin-left: 5px;
-  line-height: 16px; vertical-align: middle;
+  height: 16px; vertical-align: middle;
+  float: left;
 }
 
 .UIEventViewer .EventContent .EventDocumentLabel a{
@@ -55,7 +56,7 @@
 
 .UIEventViewer .EventContent .EventAuthorNameLabel {
 	text-align: left;
-	width: 25%;
+	width: 45%;
 	color: gray;
   line-height: 16px; vertical-align: middle;
 }
@@ -64,7 +65,8 @@
 	text-align: left;
 	width: 180px;
 	color: gray;
-  line-height: 16px; vertical-align: middle;
+  vertical-align: middle;
+  float: left;
 }
 
 .UIEventViewer .EventContent .SummaryTitleLabel {
@@ -94,4 +96,5 @@
   border-top: solid 1px #bdbdbd;
   background: #ffffff;
 }
+
 

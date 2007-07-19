@@ -11,6 +11,16 @@
   background: url('DefaultSkin/DefaultFolderIcon.gif') no-repeat;
 }
 
+.SelectFolder16x16Icon  {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/SmallSelectFolderIcon.gif') no-repeat;
+}
+
+.NormalFolder16x16Icon  {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/SmallNormalFolderIcon.gif') no-repeat;
+}
+
 .CBDefaultDocument16x16Icon {
 	width: 16px; height:16px;
   background: url('DefaultSkin/DefaultDocumentIcon.gif') no-repeat;

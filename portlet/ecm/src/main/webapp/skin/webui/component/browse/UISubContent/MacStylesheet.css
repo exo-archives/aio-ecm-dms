@@ -124,7 +124,9 @@
  margin-left: 4px;
 }
 .UISubContent .UIDocumentContentInfo .DocumentInfo {
-	padding: 2px;
+	height: 20px;
+	line-height: 20px;
+	padding: 2px 0px 2px 10px;
 }
 
 .UISubContent .UIDocumentContentInfo .DocumentLabel {
@@ -146,6 +148,7 @@
   line-height: 20px;
   color: gray;
   text-align: right;
+  padding-right: 10px;
 }
 
 .UISubContent .UIDocumentContentInfo .DateTimeLabel {
@@ -158,6 +161,7 @@
 	float: right;
 	height: 16px; line-height: 16px; vertical-align: middle;
 	border: 1px solid #e1e1e1;
+	margin: 3px 12px 0px 0px;
 }
 
 .ViewMoreDocument a{

@@ -216,6 +216,10 @@
   padding: 10px 0px;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
+  width: 160px;
+}
+
 .UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
   padding: 0px;
   float: left;
