@@ -218,6 +218,7 @@
   width: 80px;
   line-height: 20px; vertical-align: middle;
   font-size: 11px;
+  height: 30px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
