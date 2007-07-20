@@ -93,7 +93,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-        
       }
       String fileName = input.getUploadResource().getFileName() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
@@ -168,7 +167,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrEncoding.setJcrPath("/node/jcr:content/jcr:encoding") ;
             jcrEncoding.setValue("UTF-8") ;
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
-            CmsService cmsService = (CmsService)PortalContainer.getComponent(CmsService.class) ;
+            CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
             String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
             cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
