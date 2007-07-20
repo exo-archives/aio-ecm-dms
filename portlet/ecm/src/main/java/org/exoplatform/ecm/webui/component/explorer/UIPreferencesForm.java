@@ -95,7 +95,7 @@ public class UIPreferencesForm extends UIForm {
       pref.setShowPreferenceDocuments(
           uiForm.getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).isChecked()) ;
       pref.setSort(uiForm.getUIFormSelectBox(FIELD_SHORTBY).getValue()) ;
-      pref.setSort(uiForm.getUIFormSelectBox(FIELD_ORDERBY).getValue()) ;
+      pref.setOrder(uiForm.getUIFormSelectBox(FIELD_ORDERBY).getValue()) ;
       pref.setProperty(uiForm.getUIStringInput(FIELD_PROPERTY).getValue()) ;
       uiExplorer.refreshExplorer() ;
       uiForm.setRenderSibbling(UIJCRExplorer.class) ;      

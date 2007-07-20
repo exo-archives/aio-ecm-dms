@@ -42,7 +42,8 @@ import org.exoplatform.workflow.webui.component.JCRResourceResolver;
 @ComponentConfig(
     template = "app:/groovy/webui/component/UIDocumentContent.gtmpl",
     events = {
-        @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class)
+        @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class),
+        @EventConfig(listeners = UIDocumentContent.DownloadActionListener.class)
     }
 )
 public class UIDocumentContent extends UIContainer implements ECMViewComponent {
@@ -250,6 +251,14 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
       uiDocContent.setRenderSibbling(UIDocumentContent.class) ;
       uiDocContent.setLanguage(selectedLanguage) ;
     }   
+  }
+  
+  static  public class DownloadActionListener extends EventListener<UIDocumentContent> {
+    public void execute(Event<UIDocumentContent> event) throws Exception {
+      UIDocumentContent uiComp = event.getSource() ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+    }
   }
 
   public String encodeHTML(String text) throws Exception {

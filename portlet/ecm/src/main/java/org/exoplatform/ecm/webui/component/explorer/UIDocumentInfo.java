@@ -66,7 +66,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIDocumentInfo.ViewNodeActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.SortActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.VoteActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class)
+        @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class),
+        @EventConfig(listeners = UIDocumentInfo.DownloadActionListener.class)
     }
 )
 public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
@@ -580,5 +581,13 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       VotingService votingService = uiComp.getApplicationComponent(VotingService.class) ;
       votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;
     }
-  }  
+  }
+  
+  static  public class DownloadActionListener extends EventListener<UIDocumentInfo> {
+    public void execute(Event<UIDocumentInfo> event) throws Exception {
+      UIDocumentInfo uiComp = event.getSource() ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+    }
+  }
 }

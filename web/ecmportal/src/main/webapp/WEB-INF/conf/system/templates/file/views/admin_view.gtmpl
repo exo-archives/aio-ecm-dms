@@ -52,7 +52,8 @@
 <%
   def originalNode = uicomponent.getOriginalNode();
   def currentNode = uicomponent.getNode() ;
-%>        
+%>
+
 <div class="FileContent">
   <div class="NavigationContainer">       
     <div class="TopTitle">$originalNode.name</div>
@@ -97,7 +98,7 @@
                 <div class="ButtonLeft">
                   <div class="ButtonRight">
                     <div class="ButtonMiddle">
-                      <a href="<%=uicomponent.getDownloadLink(originalNode)%>">
+                      <a href="<%=uicomponent.event("Download")%>" title="Download this File">
                         Download this File
                       </a>
                     </div>
@@ -105,7 +106,6 @@
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       <%}%>     

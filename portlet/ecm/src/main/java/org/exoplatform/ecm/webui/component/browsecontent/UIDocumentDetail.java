@@ -47,7 +47,8 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     events ={ 
         @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class),
-        @EventConfig(listeners =  UIDocumentDetail.ChangeNodeActionListener.class)
+        @EventConfig(listeners =  UIDocumentDetail.ChangeNodeActionListener.class),
+        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class)
     }
 )
 
@@ -259,13 +260,10 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
 
-  public void activate() throws Exception {
-    // TODO Auto-generated method stub
-  }
+  public void activate() throws Exception {}
 
-  public void deActivate() throws Exception {
-    // TODO Auto-generated method stub
-  }
+  public void deActivate() throws Exception {}
+  
   public String getPortalName() {
     PortalContainer pcontainer =  PortalContainer.getInstance() ;
     return pcontainer.getPortalContainerInfo().getContainerName() ; 
@@ -307,6 +305,14 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
         uiDocument.setNode(uiContainer.getNodeByPath(path)) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+    }
+  }
+  
+  static  public class DownloadActionListener extends EventListener<UIDocumentDetail> {
+    public void execute(Event<UIDocumentDetail> event) throws Exception {
+      UIDocumentDetail uiComp = event.getSource() ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
     }
   }
 }

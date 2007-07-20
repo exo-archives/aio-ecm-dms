@@ -44,7 +44,10 @@ import org.exoplatform.webui.event.EventListener;
  * Apr 6, 2007 4:21:18 PM
  */
 @ComponentConfig(
-    events = @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class)
+    events = {
+        @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class),
+        @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class)
+    }
 )
 public class UIViewSearchResult extends UIContainer implements ECMViewComponent {
   
@@ -252,5 +255,13 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
 
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
+  }
+  
+  static  public class DownloadActionListener extends EventListener<UIViewSearchResult> {
+    public void execute(Event<UIViewSearchResult> event) throws Exception {
+      UIViewSearchResult uiComp = event.getSource() ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+    }
   }
 }
