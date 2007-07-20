@@ -376,7 +376,7 @@
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
 	border: none;
-	background: none;
+	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIFormWithTitle{
@@ -648,14 +648,31 @@
   border: none;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIAction {
+  width: 240px;
+  padding-left: 40px;
+}
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;
+  width: 500px;
+  margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .FormContainer .UIFormGrid {
-	width: 500px;
-	margin: auto;
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .SelectUserIcon {
+  float: none;
+  margin: -18px 5px 0px 240px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .SelectMemberIcon {
+  float: none;
+  margin: -16px 5px 0px 264px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddAnyIcon {
+ float: none;
+  margin: -15px 5px 0px 288px;
 }
 
 /*================================UIMetadataSelectForm=================================*/
@@ -699,9 +716,10 @@
 	padding: 5px;
 }
 
-.UIJCRExplorerPortlet .UIRelationManager {
-  border: solid 1px red;
-  height: 150px;
+.UIJCRExplorerPortlet .UIRelationManager .UITabPane {
+	width: 95%;
+	margin: 10px auto;
+	padding: 0px;
 }
 
 /*================================UIConstraintsForm=================================*/
@@ -840,7 +858,7 @@
 }
 
 .UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileName {
-	width: 230px;	
+	width: 190px;	
 	overflow: hidden;
 }
 
@@ -864,27 +882,6 @@
 
 .UIJCRExplorerPortlet .UIReferencesList .UIPageIterator {
   width: 98%;
-}
-
-/*================================UIPermissionManager=================================*/
-.UIJCRExplorerPortlet .UIPermissionManager {
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIPageIterator {
-  width: 100%;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo .OverflowContainer {
-  width: 30px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
-  padding-bottom: 8px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle  .FormContainer input {
-  float: left;
 }
 
 /*================================UIViewMetadataManager=================================*/
@@ -946,6 +943,26 @@
 .UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px 0px 238px;
   float: none;
+}
+/*================================UIPermissionManager=================================*/
+.UIJCRExplorerPortlet .UIPermissionManager {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPageIterator {
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo .OverflowContainer {
+  width: 30px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
+  padding-bottom: 8px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
+  width: 60px;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector {
@@ -1107,4 +1124,11 @@
   margin: auto;
 }
 
+/*====================================UIPropertyTab==================================*/
+
+.UIJCRExplorer .UIPropertyTab {
+	width: 95%;
+	margin: auto;
+	padding: 10px 0px;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

@@ -114,13 +114,18 @@
   width: 16px;
   height: 16px;
   float: left;
-  margin: 0px 5px;
+  margin: 0px 3px 0px 0px; 
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
   border: solid 1px #b7b7b7;
-  padding: 10px;
+  padding: 10px 0px 10px 4px;
   background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UITabContentContainer {
+  width: 97%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UIGrid {
@@ -161,7 +166,6 @@
   margin-right: 10px;
   float: left ;
   width: 220px ;
-  overflow: auto;
   background: white;
 }
 
@@ -196,7 +200,7 @@
   line-height: 30px;
 }
 
-.UIJCRExplorerPortlet .UITreeList .UIGrid {
+.UIJCRExplorerPortlet .UITreeList {
   width: 315px;
 }
 

@@ -200,13 +200,17 @@
   width: 16px;
   height: 16px;
   float: left;
-  margin: 0px 5px;
+  margin: 0px 3px 0px 0px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
-  padding: 10px;
-  border: solid 1px gray; border-top: none;
-  background: #eeeeee;
+  border: solid 1px #939393; border-top: none;
+  padding: 10px 0px 10px 4px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UITabContentContainer {
+  width: 97%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
@@ -274,7 +278,7 @@
 	height: 24px;
 }
 
-.UIJCRExplorerPortlet .UITreeList .UIGrid {
+.UIJCRExplorerPortlet .UITreeList {
   width: 315px;
 }
 
@@ -419,10 +423,6 @@
 
 .UIJCRExplorerPortlet .UIUploadManager {
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-  width: 40px;
 }
 
 .UIJCRExplorer .UIPopupWindow .Content .WorkWorkFlow .UIGrid {
