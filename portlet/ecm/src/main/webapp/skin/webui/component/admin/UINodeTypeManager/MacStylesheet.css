@@ -37,8 +37,13 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane{
-  width: 600px ;
-  margin: 0px auto;
+  width: 95%;
+  margin: 10px auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .AddIcon16x16{
+  float: none;
+  margin: -18px 5px 0px 240px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
@@ -66,7 +71,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileName {
-	width: 230px;	
+	width: 190px;	
 	overflow: hidden;
 }
 

@@ -81,8 +81,14 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
-	background: #f7f7f7;
+	background: #efefef;
 	padding-top: 10px;
+}
+
+
+.UIECMAdminPortlet .UIRepositoryForm .FormContainer {
+	width: 500px;
+	margin: auto;
 }
 
 .UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
@@ -96,6 +102,20 @@
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 350px;
 	padding-left: 70px;
+}
+
+.UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
+	margin: -17px 5px 0px 240px;
+	float: none;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
+	width: 95%;
+	margin: 10px auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIRepositoryValueSelect .UIAction{
+	width: 70px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer{
@@ -205,6 +225,21 @@
 	margin: 0px;
 	background: #f4f4f4;
 }
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContent .step1 .UIFormInputSet .AddPermissionIcon  {
+	margin: 0px;
+}
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContent .UIFormInputSet .AddIcon16x16   {
+	float: none;
+	margin: -18px 5px 0px 240px;
+}
+
 .UIWorkspaceWizard .TabPaneContent .InfoDetail {
  padding: 0px 0px 2px 50px;  
  color:#ef5604 ;
@@ -370,6 +405,7 @@
 /*############################## -- UIFormInputSet -- ########################*/
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UITabContentContainer .SuperTypeTab .UIFormTableInputSet .UIGrid td {
@@ -388,16 +424,8 @@
  	padding: 4px 8px 4px 0px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  float: left;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer input {
   float: none;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  float: left;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
@@ -506,6 +534,21 @@
   margin: auto;
 }
 
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIconIcon {
+  float: none;
+  margin: -17px 5px 0px 240px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddPermissionIcon {
+  float: none;
+  margin: -17px 5px 0px 240px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddPathIcon {
+  float: none;
+  margin: -18px 5px 0px 240px;
+}
+
 .UIECMAdminPortlet .UIDriveList .UIAction {
   width: 100px ;
 }
@@ -554,6 +597,12 @@ UIECMAdminPortlet .UIViewManager {
   width: 500px ;
   margin: auto;
 }
+
+.UIECMAdminPortlet .UIViewContainer .UIFormInputSet .AddPermissionIcon{
+  float: none;
+  margin: -14px 5px 0px 240px;
+}
+
 /*############################## -- ECMTemplate -- ########################*/
 
 .UIECMAdminPortlet .ECMTemplate .UIECMTemplateList {
@@ -776,6 +825,11 @@ UIECMAdminPortlet .UIViewManager {
 	padding: 3px;
 }
 
+.UIQueriesManager .UIQueriesForm .UIFormInputSet .AddPermissionIcon {
+	float: none;
+	margin: -18px 5px 0px 240px;
+}
+
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
 .UIECMAdminPortlet .UIFolksonomyManager {
@@ -903,6 +957,11 @@ UIECMAdminPortlet .UIViewManager {
   width: 300px; 
 }
 
+.UIECMAdminPortlet .UITemplatesManager .UITabContentContainer .UIFormInputSet .AddPermissionIcon {
+  float: none;
+  margin: -18px 5px 0px 240px;
+}
+
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .UIAction {
 	width: 160px;
 }
@@ -912,6 +971,11 @@ UIECMAdminPortlet .UIViewManager {
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UITemplatesManager .template .FormContainer {
   width: 500px;
   margin: auto;
 }

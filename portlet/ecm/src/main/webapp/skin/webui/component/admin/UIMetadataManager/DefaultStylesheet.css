@@ -46,6 +46,16 @@
   width: 110px ;
 }
 
+.UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
+.UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .AddPermissionIcon {
+	float: none;
+	margin: -18px 5px 0px 240px;
+}
+
 .UIECMAdminPortlet .MetadataInfoDetails {
   width: 550px;
 }

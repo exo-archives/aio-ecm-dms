@@ -919,9 +919,14 @@
 	width: 70px;
 }
 
+.UIJCRExplorerPortlet .UIRelationManager .UITabPane {
+	width: 95%;
+	margin: auto;
+}
+
 .UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
-	width: 556px;
+	width: auto;
 }
 
 .UIJCRExplorer .UIRelationManager .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
@@ -1006,4 +1011,5 @@
   font-style: italic;
   margin: auto;
 }
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
