@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -14,6 +15,7 @@ import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -34,18 +36,18 @@ import org.exoplatform.webui.form.UIForm;
  */
 @ComponentConfig(lifecycle = UIFormLifecycle.class, template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", events = {
   @EventConfig(listeners = UIPermissionForm.SaveActionListener.class),
+  @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.ResetActionListener.class),
   @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.CancelActionListener.class),
   @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectUserActionListener.class),
   @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectMemberActionListener.class),
   @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.AddAnyActionListener.class) })
-  public class UIPermissionForm extends UIForm implements UISelector {
 
+  public class UIPermissionForm extends UIForm implements UISelector {
   final static public String PERMISSION   = "permission";
   final static public String POPUP_SELECT = "SelectUserOrGroup";
-
   public UIPermissionForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
-    setActions(new String[] { "Save", "Cancel" });
+    setActions(new String[] { "Save", "Reset", "Cancel" });
   }
 
   private void refresh() {
@@ -54,20 +56,67 @@ import org.exoplatform.webui.form.UIForm;
   }
 
   private void checkAll(boolean check) {
+    UIPermissionInputSet uiInputSet = getChildById(PERMISSION) ;
     for (String perm : PermissionType.ALL) {
-      getUIFormCheckBoxInput(perm).setChecked(check);
+      uiInputSet.getUIFormCheckBoxInput(perm).setChecked(check);
     }
   }
 
   protected boolean isEditable(Node node) throws Exception {
     return Utils.isChangePermissionAuthorized(node);
   }
+  public void fillForm(String user, ExtendedNode node) throws Exception {
+    UIPermissionInputSet uiInputSet = getChildById(PERMISSION) ;
+    refresh() ;
+    uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).setValue(user) ;
+    if(user.equals(Utils.getNodeOwner(node))) {
+      for (String perm : PermissionType.ALL) { 
+        uiInputSet.getUIFormCheckBoxInput(perm).setChecked(true) ;
+      }
+    } else {
+      List<AccessControlEntry> permsList = node.getACL().getPermissionEntries() ;
+      Iterator perIter = permsList.iterator() ;
+      StringBuilder userPermission = new StringBuilder() ;
+      while(perIter.hasNext()) {
+        AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next() ;
+        if(user.equals(accessControlEntry.getIdentity())) {
+          userPermission.append(accessControlEntry.getPermission()).append(" ");
+        }
+      }
+      for (String perm : PermissionType.ALL) { 
+        boolean isCheck = userPermission.toString().contains(perm) ;
+        uiInputSet.getUIFormCheckBoxInput(perm).setChecked(isCheck) ;
+      }   
+    }
+
+  }
+  protected void lockForm(boolean isLock) {
+    UIPermissionInputSet uiInputSet = getChildById(PERMISSION) ;
+    if(isLock) {
+      setActions(new String[] {"Reset", "Cancel" });
+      uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, null) ;
+    } else {
+      setActions(new String[] { "Save", "Reset", "Cancel" });
+      uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, new String[] {"SelectUser", "SelectMember", "AddAny"}) ;
+    }
+    //uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).setEditable(!isLock) ;
+    for (String perm : PermissionType.ALL) { 
+      uiInputSet.getUIFormCheckBoxInput(perm).setEnable(!isLock) ;
+    }
+  }
 
   public void updateSelect(String selectField, String value) {
     getUIStringInput(selectField).setValue(value);
     checkAll(false);
   }
-
+  static public class ResetActionListener extends EventListener<UIPermissionForm> {
+    public void execute(Event<UIPermissionForm> event) throws Exception {
+      UIPermissionForm uiForm = event.getSource();
+      uiForm.lockForm(false) ;
+      uiForm.refresh() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+    }
+  }
   static public class SaveActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
@@ -90,7 +139,7 @@ import org.exoplatform.webui.form.UIForm;
         if(!permsList.contains(PermissionType.READ))
           permsList.add(PermissionType.READ) ;
       }
-      
+
       if (userOrGroup == null || userOrGroup.length() < 0) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

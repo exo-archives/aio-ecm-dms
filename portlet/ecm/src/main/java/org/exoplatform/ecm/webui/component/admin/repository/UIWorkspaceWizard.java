@@ -881,7 +881,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           } 
         }
       }     
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIWorkspaceWizardContainer.class)) ; 
     }
   }
 
@@ -903,7 +903,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           } 
         }
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIWorkspaceWizardContainer.class)) ;
     }
   }
   public static class AddPermissionActionListener extends EventListener<UIWorkspaceWizard> {
@@ -924,7 +924,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       getChild(UIPopupAction.class) ;
       UIPermissionContainer uiContainer = uiPopupAction.activate(UIPermissionContainer.class, 600) ;
       uiContainer.setValues(permName, uiForm.permissions_.get(permName)) ;
-      if(!uiForm.isNewRepo_ && !uiForm.isNewWizard_) uiContainer.lockForm(true) ;
+      uiContainer.lockForm(!uiForm.isNewRepo_ && !uiForm.isNewWizard_) ;
       uiForm.refreshPermissionList() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIWorkspaceWizardContainer.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
@@ -947,7 +947,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiFormWizard.refresh(null) ;
       UIPopupAction uiPopupAction = uiFormWizard.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIWorkspaceWizardContainer.class)) ;
     }
   }
 

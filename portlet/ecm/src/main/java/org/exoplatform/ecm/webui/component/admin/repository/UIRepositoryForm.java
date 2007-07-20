@@ -302,7 +302,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm =  event.getSource() ;
       uiForm.ShowHidden() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{

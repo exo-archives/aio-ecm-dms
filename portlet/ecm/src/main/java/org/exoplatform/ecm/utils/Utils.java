@@ -298,4 +298,11 @@ public class Utils {
     }
     return userMemberships ;
   }
+  
+  public static String  getNodeOwner(Node node) throws Exception {
+    if(node.hasProperty("exo:owner")) {
+      return node.getProperty("exo:owner").getString();
+    }
+    return null ;
+  }
 }

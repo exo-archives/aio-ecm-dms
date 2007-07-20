@@ -7,15 +7,21 @@ package org.exoplatform.ecm.webui.component.explorer.popup.info;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Node;
+
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -80,17 +86,17 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
   public void setSelectGroup(boolean isSelect) { isSelectGroup_ = isSelect ;}
   public void setSelectMember(boolean isSelect) { isSelectMember_ = isSelect ;}
   public void setSelectUser(boolean isSelect) { isSelectUSer_ = isSelect ;}
-  
+
   public boolean isSelectGroup() {return isSelectGroup_ ;}
   public boolean isSelectMember() {return isSelectMember_ ;}
   public boolean isSelectUser() {return isSelectUSer_ ;}
-  
+
   private void setDefaultValue() {
     isSelectGroup_ = false ;
     isSelectMember_ = false ;
     isSelectUSer_ = false ;
   }
-  
+
   @SuppressWarnings({ "unchecked", "cast" })
   public List getChildGroup() throws Exception {
     List children = new ArrayList() ;    
@@ -100,7 +106,7 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
     }
     return children ;
   }
-  
+
   @SuppressWarnings({ "unchecked", "cast" })
   public List getUsers() throws Exception {
     List children = new ArrayList() ; 
@@ -115,14 +121,17 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
   static  public class SelectMembershipActionListener extends EventListener<UIGroupSelector> {   
     public void execute(Event<UIGroupSelector> event) throws Exception {
       UIGroupSelector uiGroupSelector = event.getSource();
-      if(uiGroupSelector.getCurrentGroup() == null) return ;
-      String groupId = uiGroupSelector.getCurrentGroup().getId() ;
-      String value = "" ;
-      String permission = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      if(uiGroupSelector.isSelectMember_) value = permission + ":" + groupId ;
-      else value = permission ;
+      String user = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIJCRExplorer uiExplorer = uiGroupSelector.getAncestorOfType(UIJCRExplorer.class) ;
+      Node node = uiExplorer.getCurrentNode() ;
+      if(user.equals(Utils.getNodeOwner(node))) {
+        UIApplication uiApp = uiGroupSelector.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIGroupSelector.msg.not-change-owner", new Object[]{user})) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String returnField = uiGroupSelector.getReturnField() ;
-      ((UISelector)uiGroupSelector.getReturnComponent()).updateSelect(returnField, value) ;
+      ((UISelector)uiGroupSelector.getReturnComponent()).updateSelect(returnField, user) ;
       UIPopupWindow uiPopup = uiGroupSelector.getParent() ;
       uiGroupSelector.setDefaultValue() ;
       uiPopup.setShow(false) ;

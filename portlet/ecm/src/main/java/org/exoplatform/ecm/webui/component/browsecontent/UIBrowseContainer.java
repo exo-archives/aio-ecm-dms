@@ -759,12 +759,15 @@ public class UIBrowseContainer extends UIContainer{
         uiDocumentDetail.setRendered(false) ;
       }
       if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
-      if(uiContainer.usecase_.equals(Utils.CB_USE_FROM_PATH) && uiContainer.history_ != null) {
-        uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
-        uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
-        uiContainer.history_.clear() ;
+      if(!uiContainer.isShowDocumentByTag_){
+        if(uiContainer.usecase_.equals(Utils.CB_USE_FROM_PATH) && uiContainer.history_ != null) {
+          uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
+          uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
+          uiContainer.history_.clear() ;
+        }
+        uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       }
-      uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
+     
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
