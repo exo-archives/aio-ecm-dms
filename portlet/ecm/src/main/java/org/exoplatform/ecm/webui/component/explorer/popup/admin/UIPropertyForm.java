@@ -135,6 +135,18 @@ public class UIPropertyForm extends UIForm {
     }
     return values ;
   }
+  
+  protected void lockForm(boolean isLock) {
+    for(UIComponent component : getChildren()) {
+      if(isLock) setActions(null) ;
+      else setActions(new String[]{"Save"}) ;
+      if(component instanceof UIFormStringInput) {
+        ((UIFormStringInput)component).setEditable(!isLock) ;
+      }  else if (component instanceof UIFormSelectBox) {
+         ((UIFormSelectBox)component).setEnable(!isLock) ;
+      }
+    }
+  }
 
   static public class ChangeTypeActionListener extends EventListener {
     public void execute(Event event) throws Exception {

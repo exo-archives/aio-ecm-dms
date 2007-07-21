@@ -35,7 +35,9 @@ public class UIPropertiesManager extends UIContainer implements UIPopupComponent
   }
 
   public void deActivate() throws Exception {}
-  
+  public void setLockForm(boolean isLockForm) {
+    getChild(UIPropertyForm.class).lockForm(isLockForm) ;
+  }
   static public class ChangeTabActionListener extends EventListener<UIPropertiesManager> {
     public void execute(Event<UIPropertiesManager> event) throws Exception {
       System.out.println("\n\nGo here\n\n");

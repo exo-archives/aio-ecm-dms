@@ -20,6 +20,7 @@ import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSel
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
+import org.exoplatform.services.jcr.config.LockManagerEntry;
 import org.exoplatform.services.jcr.config.QueryHandlerEntry;
 import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.ValueStorageEntry;
@@ -277,7 +278,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       boolean isDefaultWS = uiRepoForm.isDefaultWorkspace(name) ;
       List<SelectItemOption<String>> nodeTypeOptions = new ArrayList<SelectItemOption<String>>() ;
       nodeTypeOptions = getNodeType() ;
-      String  lockTime = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
+      String  lockTime = "0";
+      if(workSpace.getLockManager() != null) {
+        lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
+      }
       String autoInitNodeType = workSpace.getAutoInitializedRootNt() ;
       String permission = workSpace.getAutoInitPermissions() ;
       String swapPath = "" ;
@@ -658,7 +662,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         permSb.append(s) ;
       }
       workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
-      workspaceEntry.getLockManager().setTimeout(lockTimeOutValue) ;
+      LockManagerEntry lockEntry = new LockManagerEntry() ;
+      lockEntry.setTimeout(lockTimeOutValue) ;
+      workspaceEntry.setLockManager(lockEntry) ;
      /// workspaceEntry.setLockTimeOut(lockTimeOutValue) ;
       workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
