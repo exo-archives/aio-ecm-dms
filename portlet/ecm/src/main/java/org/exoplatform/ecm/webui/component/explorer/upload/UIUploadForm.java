@@ -13,7 +13,6 @@ import javax.jcr.Node;
 import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;

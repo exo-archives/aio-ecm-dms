@@ -349,6 +349,7 @@ public class UIActionBar extends UIForm {
         UIActionForm uiActionForm =  uiContainer.getChild(UIActionForm.class) ;
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false) ;
         uiActionForm.createNewAction(selectedNode, selectedNode.getPrimaryNodeType().getName(), false) ;
+        uiActionForm.setIsUpdateSelect(false) ;
         uiActionForm.setNode(selectedNode) ;
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(uiContainer, 700, 550) ;

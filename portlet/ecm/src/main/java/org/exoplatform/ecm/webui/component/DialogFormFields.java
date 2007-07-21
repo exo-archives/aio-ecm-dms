@@ -61,6 +61,7 @@ public class DialogFormFields extends UIForm {
   private boolean isNTFile_ = false ;
   private boolean isResetMultiField_ = false ;
   private boolean isOnchange_ = false ;
+  protected boolean isUpdateSelect_ = false ;
   protected String repository_ = null ;
   
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
@@ -106,6 +107,8 @@ public class DialogFormFields extends UIForm {
   public void setIsResetMultiField(boolean isResetMultiField) { 
     isResetMultiField_ = isResetMultiField ; 
   }
+  
+  public void setIsUpdateSelect(boolean isUpdateSelect) { isUpdateSelect_ = isUpdateSelect ; } ;
   
   public void setIsOnchange(boolean isOnchange) { isOnchange_ = isOnchange ; }
 
@@ -228,9 +231,9 @@ public class DialogFormFields extends UIForm {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
         uiInput.setValue(node_.getName()) ;
         uiInput.setEditable(false) ;
-      } else if(node_.hasProperty(getPropertyName(jcrPath))) {
+      } else if(node_.hasProperty(getPropertyName(jcrPath)) && !isUpdateSelect_) {
         uiInput.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
-      }
+      } 
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
@@ -353,7 +356,7 @@ public class DialogFormFields extends UIForm {
         uiInput.setEditable(false) ;
       } else if(node_.hasProperty(propertyName)) {
         uiInput.setValue(node_.getProperty(propertyName).getValue().getString()) ;
-      }
+      } 
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {

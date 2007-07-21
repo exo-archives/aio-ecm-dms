@@ -147,8 +147,9 @@ public class UITaxonomyManager extends UIContainer {
           uiManager.getApplicationComponent(CategoriesService.class) ;
         Node destNode = categoriesService.getTaxonomyNode(realPath, uiManager.getRepository()) ;
         String destPath = destNode.getPath() + srcPath.substring(srcPath.lastIndexOf("/"));       
-        if(destNode.hasNode(srcPath.substring(srcPath.lastIndexOf("/")))) {
-          uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", null,
+        if(destNode.hasNode(srcPath.substring(srcPath.lastIndexOf("/") + 1))) {
+          Object[] args = {srcPath.substring(srcPath.lastIndexOf("/") + 1)} ;
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", args,
                                                   ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
@@ -156,6 +157,7 @@ public class UITaxonomyManager extends UIContainer {
         categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
         uiManager.resetTaxonomyRootNode() ;
       } catch(Exception e) {
+        e.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

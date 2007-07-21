@@ -73,10 +73,16 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   }
   
   public void updateSelect(String selectField, String value) {
+    isUpdateSelect_ = true ;
     getUIStringInput(selectField).setValue(value) ;
-    UIContainer uiContainer = getParent() ;
-    UIPopupWindow uiPopup = uiContainer.getChild(UIPopupWindow.class) ;
-    uiPopup.setShow(false) ;
+    if(isEditInList_) {
+      UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
+      UIActionListContainer uiActionListContainer = uiManager.getChild(UIActionListContainer.class) ;
+      uiActionListContainer.removeChildById("PopupComponent") ;
+    } else {
+      UIActionContainer uiActionContainer = getParent() ;
+      uiActionContainer.removeChildById("PopupComponent") ;
+    }
   }
   
   @SuppressWarnings("unused")
@@ -129,14 +135,6 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;   
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession());
-    //String path = parentNode_.getPath() ;
-    ///String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
-    /*try {
-    parentNode_.getSession().checkPermission(path, pers);
-    }*/
-    System.out.println("\n\n parent node ====" +  parentNode_.getName());
-    System.out.println("\n\n current node ====" + uiExplorer.getCurrentNode().getName());
-    
     if(!Utils.isAddNodeAuthorized(uiExplorer.getCurrentNode()) || !Utils.isSetPropertyNodeAuthorized(uiExplorer.getCurrentNode())) {
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -208,9 +206,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   static public class ShowComponentActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;
-      UIActionContainer uiContainer = null;
+      UIContainer uiContainer = null;
       if(uiForm.isEditInList_) {
-        uiContainer = uiForm.getAncestorOfType(UIActionManager.class).getChild(UIActionContainer.class) ;
+        uiContainer = uiForm.getAncestorOfType(UIActionListContainer.class) ;
       } else {
         uiContainer = uiForm.getParent() ;
       }
@@ -229,7 +227,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
           ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;          
         }
       }
-      uiContainer.initPopup(uiComp) ;
+      if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp) ;
+      else ((UIActionContainer)uiContainer).initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
       ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
       if(uiForm.isAddNew_) {
@@ -255,6 +254,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
           UIPopupWindow uiPopup = uiActionListContainer.findComponentById("editActionPopup") ;
           uiPopup.setShow(false) ;
           uiPopup.setRendered(false) ;
+          uiForm.isEditInList_ = false ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
           UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;

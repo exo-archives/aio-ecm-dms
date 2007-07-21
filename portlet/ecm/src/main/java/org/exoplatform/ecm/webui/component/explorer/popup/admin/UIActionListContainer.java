@@ -8,6 +8,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -38,11 +39,21 @@ public class UIActionListContainer extends UIContainer {
     uiContainer.getChild(UIActionTypeForm.class).setRendered(false) ;
     UIActionForm uiActionForm = uiContainer.getChild(UIActionForm.class) ;
     uiActionForm.createNewAction(currentNode, selectedNode.getPrimaryNodeType().getName(), false) ;
+    uiActionForm.setIsUpdateSelect(false) ;
     uiActionForm.setNode(selectedNode) ;
     uiActionForm.setIsEditInList(true) ;
     uiPopup.setWindowSize(650, 450);
     uiPopup.setUIComponent(uiActionForm) ;
     uiPopup.setRendered(true);
+    uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
+  }
+  
+  public void initPopup(UIComponent uiComp) throws Exception {
+    removeChildById("PopupComponent") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent") ;
+    uiPopup.setUIComponent(uiComp) ;
+    uiPopup.setWindowSize(640, 300) ;
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
