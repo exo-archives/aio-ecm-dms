@@ -622,8 +622,8 @@ public class UIActionBar extends UIForm {
       UIPropertiesManager uiPropertiesManager = 
         uiJCRExplorer.createUIComponent(UIPropertiesManager.class, null, null) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
-      uiPropertiesManager.setLockForm(!Utils.isSetPropertyNodeAuthorized(node)) ;
       uiPopupAction.activate(uiPropertiesManager, 700, 0) ;
+      uiPropertiesManager.setLockForm(!Utils.isSetPropertyNodeAuthorized(node)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

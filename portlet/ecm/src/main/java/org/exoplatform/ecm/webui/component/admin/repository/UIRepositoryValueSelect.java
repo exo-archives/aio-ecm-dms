@@ -25,13 +25,13 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
-        @EventConfig(listeners = UIRepositoryValueSelect.EditActionListener.class),
+        @EventConfig(listeners = UIRepositoryValueSelect.SelectActionListener.class),
         @EventConfig(listeners = UIRepositoryValueSelect.CloseActionListener.class)
     }
 )
 public class UIRepositoryValueSelect  extends UIGrid implements UIPopupComponent {
   private static String[] NODETYPE_BEAN_FIELD = {"name"} ;
-  private static String[] NODETYPE_ACTION = {"Edit"} ;
+  private static String[] NODETYPE_ACTION = {"Select"} ;
   protected boolean isSetAuthentication_ = false ;
   protected boolean isSetContainer_ = false ;
   protected boolean isSetStoreType_ = false ;
@@ -50,7 +50,7 @@ public class UIRepositoryValueSelect  extends UIGrid implements UIPopupComponent
     getUIPageIterator().setPageList(objPageList) ;
   }
 
-  static public class EditActionListener extends EventListener<UIRepositoryValueSelect> {
+  static public class SelectActionListener extends EventListener<UIRepositoryValueSelect> {
     public void execute(Event<UIRepositoryValueSelect> event) throws Exception {
       UIRepositoryValueSelect repoValueList = event.getSource() ;
       String value =  event.getRequestContext().getRequestParameter(OBJECTID) ;

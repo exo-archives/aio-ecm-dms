@@ -57,7 +57,7 @@ public class UIPropertyForm extends UIForm {
   final static public String FIELD_PROPERTY = "name" ;
   final static public String FIELD_TYPE = "type" ;
   final static public String FIELD_VALUE = "value" ;
-  final static public String NAMESPACE = "namespace" ;
+  final static public String FIELD_NAMESPACE = "namespace" ;
 
   public UIPropertyForm() throws Exception {
     setMultiPart(true);
@@ -82,7 +82,7 @@ public class UIPropertyForm extends UIForm {
         Integer.toString(PropertyType.REFERENCE))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_UNDEFINED, 
         Integer.toString(PropertyType.UNDEFINED))) ;
-    addUIFormInput(new UIFormSelectBox(NAMESPACE,NAMESPACE, getNamespaces())) ;
+    addUIFormInput(new UIFormSelectBox(FIELD_NAMESPACE,FIELD_NAMESPACE, getNamespaces())) ;
     addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null).addValidator(ECMNameValidator.class)) ;
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options) ; 
     uiSelectBox.setOnChange("ChangeType") ;
@@ -94,13 +94,13 @@ public class UIPropertyForm extends UIForm {
   public List<SelectItemOption<String>> getNamespaces() throws Exception {
     List<SelectItemOption<String>> namespaceOptions = new ArrayList<SelectItemOption<String>>() ; 
     String[] namespaces = getApplicationComponent(RepositoryService.class)
-                          .getRepository(Utils.getRepository()).getNamespaceRegistry().getPrefixes() ;
+    .getRepository(Utils.getRepository()).getNamespaceRegistry().getPrefixes() ;
     for(String namespace : namespaces){
       namespaceOptions.add(new SelectItemOption<String>(namespace, namespace)) ;
     }
     return namespaceOptions;    
   }
-  
+
   public void refresh() throws Exception {
     reset() ;
     getUIFormSelectBox(FIELD_TYPE).setValue(Integer.toString(PropertyType.STRING)) ;
@@ -119,12 +119,12 @@ public class UIPropertyForm extends UIForm {
 
   private Value createValue(Object value, int type, ValueFactory valueFactory) throws Exception {
     switch (type) {
-      case 2:  return valueFactory.createValue(new ByteArrayInputStream((byte[])value)) ;
-      case 3:  return valueFactory.createValue((Long.valueOf((String)value))) ;
-      case 4:  return valueFactory.createValue((Double.valueOf((String)value))) ;
-      case 5:  return valueFactory.createValue((GregorianCalendar)value) ;
-      case 6:  return valueFactory.createValue(Boolean.parseBoolean(value.toString())) ;
-      default: return valueFactory.createValue((String)value) ; 
+    case 2:  return valueFactory.createValue(new ByteArrayInputStream((byte[])value)) ;
+    case 3:  return valueFactory.createValue((Long.valueOf((String)value))) ;
+    case 4:  return valueFactory.createValue((Double.valueOf((String)value))) ;
+    case 5:  return valueFactory.createValue((GregorianCalendar)value) ;
+    case 6:  return valueFactory.createValue(Boolean.parseBoolean(value.toString())) ;
+    default: return valueFactory.createValue((String)value) ; 
     }
   }
 
@@ -135,17 +135,13 @@ public class UIPropertyForm extends UIForm {
     }
     return values ;
   }
-  
+
   protected void lockForm(boolean isLock) {
-    for(UIComponent component : getChildren()) {
-      if(isLock) setActions(null) ;
-      else setActions(new String[]{"Save"}) ;
-      if(component instanceof UIFormStringInput) {
-        ((UIFormStringInput)component).setEditable(!isLock) ;
-      }  else if (component instanceof UIFormSelectBox) {
-         ((UIFormSelectBox)component).setEnable(!isLock) ;
-      }
-    }
+    if(isLock) setActions(new String[]{}) ;
+    else setActions(new String[]{"Save"}) ;
+    getUIStringInput(FIELD_PROPERTY).setEditable(!isLock) ;
+    getUIFormSelectBox(FIELD_TYPE).setEnable(!isLock) ;
+    getUIFormSelectBox(FIELD_NAMESPACE).setEnable(!isLock) ;
   }
 
   static public class ChangeTypeActionListener extends EventListener {
@@ -188,25 +184,25 @@ public class UIPropertyForm extends UIForm {
       if(nodeType.isNodeType(Utils.NT_UNSTRUCTURED)) {
         UIFormMultiValueInputSet multiValueInputSet = uiForm.getUIInput(FIELD_VALUE) ;
         ValueFactory valueFactory = uiExplorer.getCurrentNode().getSession().getValueFactory() ;
-        String namespace = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
+        String namespace = uiForm.getUIFormSelectBox(FIELD_NAMESPACE).getValue() ;
         String name = namespace + ":" + uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
         if(uiExplorer.getCurrentNode().hasProperty(name)) {
           Object[] args = { name } ;
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyName-exist", args, 
-                                                  ApplicationMessage.WARNING)) ;
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
         }
-//        if ((name == null) || (name.trim().length() == 0)) {
-//          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null, 
-//                                                  ApplicationMessage.WARNING)) ;
-//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//          UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
-//          uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
-//          return ;
-//        } 
+//      if ((name == null) || (name.trim().length() == 0)) {
+//      uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null, 
+//      ApplicationMessage.WARNING)) ;
+//      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//      UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
+//      uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
+//      return ;
+//      } 
         int type = Integer.parseInt(uiForm.getUIFormSelectBox(FIELD_TYPE).getValue()) ;        
         NodeType nodetype = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
         List valueList = new ArrayList() ;
