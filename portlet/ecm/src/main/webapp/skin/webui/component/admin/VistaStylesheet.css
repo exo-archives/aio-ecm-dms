@@ -596,6 +596,11 @@
 	margin: auto;
 }
 
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
+  text-align: center;
+  width: 100px;
+}
+
 .UIECMScripts .UIBarStyle {
 }
 
@@ -843,7 +848,7 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
   width: 270px;
-  padding-left: 25px;
+  padding-left: 40px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {

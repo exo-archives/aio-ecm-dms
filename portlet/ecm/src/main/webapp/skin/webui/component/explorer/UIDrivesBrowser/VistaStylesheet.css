@@ -123,6 +123,10 @@
   text-decoration: none;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
+  background: url('VistaSkin/background/DefaultDrive.gif') no-repeat;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
   background: url('VistaSkin/background/AdminProduction.png') no-repeat;
 }

@@ -120,6 +120,13 @@
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid .text{
   width: 100% ;
 }
+.UIECMAdminPortlet .UINodeTypeManager .UIGrid .label{
+	padding-left: 10px;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIGrid .checkbox {
+	margin-left: 10px;
+}
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane .UIGrid {
   width: 99.7% ;

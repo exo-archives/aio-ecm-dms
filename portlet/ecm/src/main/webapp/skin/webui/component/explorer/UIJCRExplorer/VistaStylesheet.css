@@ -395,6 +395,10 @@
   margin: 5px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent{
+	padding: 4px 0px;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
   margin-left: 198px;
 }
@@ -691,6 +695,11 @@
 	padding: 30px;
 }
 
+.UIJCRExplorerPortlet .UIPermissionForm .UIForm .UIAction{
+	width: 255px;
+	padding-left: 30px;
+}
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
 	padding: 10px;
 }
@@ -725,7 +734,7 @@
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
-	height: auto;
+	height: 173px;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
