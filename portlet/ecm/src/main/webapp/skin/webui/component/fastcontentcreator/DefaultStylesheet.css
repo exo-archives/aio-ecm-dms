@@ -146,10 +146,6 @@
 	white-space: nowrap;
 }
 
-.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  float: left;
-}
-
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
@@ -176,6 +172,11 @@
 	margin: auto;
 	padding-bottom: 0px;
 	width: 100%;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
+	margin: -18px 5px 0px 240px;
+	float: none;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {

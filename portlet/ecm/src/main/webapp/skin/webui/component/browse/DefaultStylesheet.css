@@ -68,8 +68,18 @@
    border: solid 1px #e1e1e1 ;	
    background: #ffffff;
    padding: 5px;
-   text-align: justify ;
+   text-align: left ;
    line-height: 22px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a{
+   color: red;
+   padding: 3px 7px 3px 0px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a:hover {
+   color: yellow;
+   padding: 3px 7px 3px 0px;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .Icon{
@@ -102,6 +112,11 @@
 	padding: 0px;
 }
 
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddPathIcon{
+	float:none;
+	margin: -18px 5px 0px 240px;
+}
+
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
@@ -116,10 +131,6 @@
   width: 100%;
   padding: 0px;
   margin: auto;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
- 	float: left;
 }
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
@@ -297,12 +308,6 @@ UIBrowseContentPortlet .Explorer {
   overflow: hidden;
 }
 
-.UIBrowseContentPortlet .Explorer .ExplorerTree {
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
@@ -319,6 +324,7 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
   overflow: auto;
   background: white;
+ 	border: 1px solid #ABBCCA;
   width: 100%;
 }
 

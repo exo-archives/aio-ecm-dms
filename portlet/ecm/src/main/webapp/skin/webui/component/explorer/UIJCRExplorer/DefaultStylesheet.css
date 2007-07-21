@@ -76,6 +76,7 @@
 
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout{
@@ -425,9 +426,23 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid td.FieldLabel {
+  width: 90px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid .Introduction {
+  padding-left: 5px;
+  color: #ef5604;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .ActionField {
+	float: left ;
+	margin-bottom: 3px;
+}
+
 .UIJCRExplorerPortlet .UITaggingForm .UIAction {
   width: 170px;
-  padding: 0px 0px 8px 10px;
+  padding: 0px 100px 8px 0px;
 }
 
 /*==================================UIMultiLanguageForm==============================*/
@@ -762,19 +777,12 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .SelectUserIcon {
-  float: none;
-  margin: -18px 5px 0px 240px;
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet input {
+  float: left;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .SelectMemberIcon {
-  float: none;
-  margin: -16px 5px 0px 264px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddAnyIcon {
- float: none;
-  margin: -15px 5px 0px 288px;
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
+  margin: 0px 3px;
 }
 
 /*================================DecoratorBoxNested=================================*/

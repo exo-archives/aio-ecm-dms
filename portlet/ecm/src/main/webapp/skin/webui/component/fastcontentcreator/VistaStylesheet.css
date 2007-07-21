@@ -133,10 +133,6 @@
   border: solid 1px red;
 }
 
-.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  float: left;
-}
-
 .UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
@@ -250,3 +246,7 @@
   margin-left: 5px ;
 }
 
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
+	margin: -18px 5px 0px 240px;
+	float: none;
+}

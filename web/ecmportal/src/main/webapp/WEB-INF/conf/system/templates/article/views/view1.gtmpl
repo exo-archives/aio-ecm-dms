@@ -150,7 +150,8 @@
 		
 		.UIArticle .FieldContent .LabelContent{
 		 	padding: 5px 0px 0px 5px;
-		 	overflow: auto
+		 	overflow: auto;
+		 	width: 100%;
 		}
 		
     .UIArticle .DocumentRating {

@@ -108,6 +108,20 @@
 	width: auto;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
+	margin: -17px 5px 0px 240px;
+	float: none;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIPageIterator {
+	border: solid 1px red;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
+	width: 95%;
+	margin: 10px auto;
+}
+
 .UIECMAdminPortlet .childNodeDefinition .UIFormInputSet .UIFormInputSetWithAction .UIAction {
 	padding-left: 110px;
 }
@@ -138,9 +152,13 @@
 	border-bottom: 1px solid #B7B7B7 ;
 	height: 34px;
 }
-.UIWorkspaceWizard .TabPaneContent .InfoDetail {
-  /*moi them*/
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContent .UIFormInputSet .AddIcon16x16   {
+	float: none;
+	margin: -18px 5px 0px 240px;
+	border: solid 1px red;
 }
+
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
   float: left;
   height: 33px; line-height: 33px;
@@ -828,14 +846,6 @@
 }
 /************************* UIFormInputSet ***********************************/
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  float: left;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer input {
-  float: none;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
  	line-height: 20px;
@@ -843,7 +853,6 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
-  border: none;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {

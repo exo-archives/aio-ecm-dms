@@ -65,10 +65,6 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction input {
-  float: left;
-}
-
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;
@@ -161,6 +157,11 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
 	width: 555px;
 	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
+	margin: -18px 5px 0px 240px;
+	float: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {

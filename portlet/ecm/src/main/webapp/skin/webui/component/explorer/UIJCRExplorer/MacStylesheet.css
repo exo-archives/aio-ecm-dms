@@ -50,6 +50,7 @@
 
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
+	padding: 0px;
 }
 
 .UIJCRExplorer .UITabPane {
@@ -953,16 +954,13 @@
   width: 100%;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo .OverflowContainer {
-  width: 30px;
-}
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
 }
 
 .UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-  width: 60px;
+  width: 50px;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector {

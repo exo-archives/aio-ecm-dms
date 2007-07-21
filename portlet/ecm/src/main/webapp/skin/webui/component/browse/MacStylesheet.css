@@ -102,6 +102,11 @@
 	padding: 0px;
 }
 
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddPathIcon{
+	float:none;
+	margin: -18px 5px 0px 240px;
+}
+
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
@@ -116,10 +121,6 @@
   width: 100%;
   padding: 0px;
   margin: auto;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid input {
- 	float: left;
 }
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/

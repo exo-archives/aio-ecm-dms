@@ -424,17 +424,8 @@
  	padding: 4px 8px 4px 0px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .MultiValueContainer input {
-  float: none;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
-  border: none;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.checkbox {
-  border: none;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
