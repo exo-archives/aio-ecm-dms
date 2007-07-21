@@ -277,7 +277,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       boolean isDefaultWS = uiRepoForm.isDefaultWorkspace(name) ;
       List<SelectItemOption<String>> nodeTypeOptions = new ArrayList<SelectItemOption<String>>() ;
       nodeTypeOptions = getNodeType() ;
-      String  lockTime = String.valueOf(workSpace.getLockTimeOut()) ; 
+      String  lockTime = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
       String autoInitNodeType = workSpace.getAutoInitializedRootNt() ;
       String permission = workSpace.getAutoInitPermissions() ;
       String swapPath = "" ;
@@ -658,7 +658,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         permSb.append(s) ;
       }
       workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
-      workspaceEntry.setLockTimeOut(lockTimeOutValue) ;
+      workspaceEntry.getLockManager().setTimeout(lockTimeOutValue) ;
+     /// workspaceEntry.setLockTimeOut(lockTimeOutValue) ;
       workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
       workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;

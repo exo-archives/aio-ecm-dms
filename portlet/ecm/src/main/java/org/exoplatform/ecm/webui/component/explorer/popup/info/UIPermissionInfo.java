@@ -142,14 +142,14 @@ public class UIPermissionInfo extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      Node parentNode = null ;
-      if(node != uiJCRExplorer.getRootNode()) {
-        parentNode = node.getParent() ;  
-      }
-      if(!Utils.isChangePermissionAuthorized(node)) {
+      if(!Utils.isSetPropertyNodeAuthorized(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      }
+      Node parentNode = null ;
+      if(node != uiJCRExplorer.getRootNode()) {
+        parentNode = node.getParent() ;  
       }
       if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
       node.removePermission(name) ;        

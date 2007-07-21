@@ -129,9 +129,19 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;   
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession());
-    String path = parentNode_.getPath() ;
-    String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
+    //String path = parentNode_.getPath() ;
+    ///String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
+    /*try {
     parentNode_.getSession().checkPermission(path, pers);
+    }*/
+    System.out.println("\n\n parent node ====" +  parentNode_.getName());
+    System.out.println("\n\n current node ====" + uiExplorer.getCurrentNode().getName());
+    
+    if(!Utils.isAddNodeAuthorized(uiExplorer.getCurrentNode()) || !Utils.isSetPropertyNodeAuthorized(uiExplorer.getCurrentNode())) {
+      uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    }
     if(!isAddNew_) {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       Node storedHomeNode = getNode().getParent() ;
