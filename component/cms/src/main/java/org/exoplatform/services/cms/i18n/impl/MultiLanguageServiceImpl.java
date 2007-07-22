@@ -133,7 +133,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           newLanguageNode = languagesNode.addNode(language) ;
           NodeType[] mixins = node.getMixinNodeTypes() ;
           for(NodeType mixin:mixins) {
-            newLanguageNode.addMixin(mixin.getName()) ;
+            if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;
             for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
               String propName = def.getName() ;
               if(def.isMandatory() && !def.isAutoCreated()) {

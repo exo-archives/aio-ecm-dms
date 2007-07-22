@@ -303,7 +303,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission() && !uiExplorer.hasAddPermission()) {
+      if(!uiExplorer.hasAddPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -408,7 +408,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!uiExplorer.hasAddPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -844,7 +844,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!uiExplorer.hasEditPermission() || !uiExplorer.hasAddPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -904,7 +904,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!uiExplorer.hasAddPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -1084,7 +1084,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!uiExplorer.hasEditPermission() && !uiExplorer.hasAddPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
