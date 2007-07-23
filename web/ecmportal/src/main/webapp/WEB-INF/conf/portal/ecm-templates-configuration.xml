@@ -9,12 +9,22 @@
         <set-method>addTemplates</set-method>
         <type>org.exoplatform.services.cms.templates.impl.TemplatePlugin</type>    
         <init-params>
+	        <value-param>
+	        	<name>autoCreateInNewRepository</name>
+	        	<value>true</value>
+	        </value-param>
+	        <value-param>
+	        	<name>storedLocation</name>
+	        	<value>war:/conf/system/templates</value>
+	        </value-param>
+	        <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>	        
           <object-param>
             <name>template.configuration</name>
             <description>configuration for the localtion of templates to inject in jcr</description>
-            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig">
-            	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
-            	<field  name="repository"><string>repository</string></field>
+            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig">            	
               <field  name="nodeTypes">
                 <collection type="java.util.ArrayList">               
                   <value>
