@@ -79,6 +79,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   private int wizardMaxStep_ = 3 ;
   private int selectedStep_ = 1 ;
   private int currentStep_ = 0 ;
+  private String selectedWsName_ = null ;
   public boolean isNewWizard_ = true ;
   public boolean isNewRepo_ = true ;
   public boolean isCheckValid_ = true ;
@@ -372,6 +373,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     else {
       if( isNewRepo_) {
         isCheckValid_ = true ;
+        if(workSpace != null) selectedWsName_ = workSpace.getName() ;
       } else {
         isCheckValid_ = false ;
       }
@@ -550,36 +552,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
-  /*public static class SetDefaultActionListener extends EventListener<UIWorkspaceWizard>{
-    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
-      UIWorkspaceWizard uiWizard = event.getSource() ;
-      UIRepositoryFormContainer formContainer = uiWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
-      UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
-      UIFormInputSetWithAction uiWSFormStep1 = uiWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
-      UIApplication uiApp = uiWizard.getAncestorOfType(UIApplication.class) ;
-      String wsName = uiWSFormStep1.getUIStringInput(UIWorkspaceWizard.FIELD_NAME).getValue() ;
-      if(uiWizard.isEmpty(wsName)) {
-        uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.name-require",null)) ;
-        uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).setChecked(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-        return ;
-      }
-      String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).getValue() ;
-      boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWorkspaceWizard.FIELD_ISDEFAULT).isChecked() ;
-      if(isDefault){
-        if(!Utils.NT_UNSTRUCTURED.equals(nodeType)) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-        }
-        uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).setOptions(uiWizard.getNodeTypeDefault()) ;
-        uiRepoForm.defaulWorkspace_ = wsName ;
-      } else {
-        uiWSFormStep1.getUIFormSelectBox(UIWorkspaceWizard.FIELD_NODETYPE).setOptions(uiWizard.getNodeType()) ;
-        uiRepoForm.defaulWorkspace_ = null ;
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizard) ;
-    }
-  }*/
   public static class FinishActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
@@ -671,7 +643,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
       if(uiRepoForm.isAddnew_) {
         if(isDefault) uiRepoForm.defaulWorkspace_ = name ;
-        uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+        if(uiFormWizard.isNewWizard_) {
+          uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+        } else {
+          uiRepoForm.getWorkspaceMap().remove(uiFormWizard.selectedWsName_) ;
+          uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+        }
         uiRepoForm.refreshWorkspaceList() ;  
       }
 
