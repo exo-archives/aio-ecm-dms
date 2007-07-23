@@ -13,6 +13,10 @@
   overflow: hidden;
 }
 
+.UIFastContentCreatorPortlet {
+	padding: 15px 0px ;
+}
+
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
 	width: 160px;
 }
@@ -52,7 +56,7 @@
 .UIFastContentCreatorPortlet .UIFormWithTitle {
   border: 1px solid #939393;
   width: 650px;
-  margin: 15px auto;
+  margin: auto ;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
