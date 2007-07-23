@@ -7,41 +7,54 @@
  */
 
 
-.UIJCRExplorerPortlet .UIVersionInfo {
-  background-color: white;
-  padding: 7px;
+.UIJCRExplorerPortlet .UIVersionInfo  {  
+  padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
-	border: none;
+.UIJCRExplorerPortlet .UIVersionInfo .FormContainer .UIFormGrid {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout .FormContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout .FormContainer {
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
+  margin: 7px 5px 0px 5px;
   float: left;
-  width: 20px; height: 20px;
-  margin: 7px 5px;
+  width: 16px; height: 16px;
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .View16x16Icon {
-  background:transparent url('/eXoResources/icons/16x16/VistaSkin/View16x16Icon.png') no-repeat;
-  width:17px; height:18px;
-}
-
 .UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
+  margin: 2px 3px 2px 0px;
   float: left;
   width: 24px; height: 24px;
-  margin: 2px 3px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .HomeNode {
-  background-color: #eaedf6;
-  line-height: 30px; font-weight: bold;
   padding: 0px 10px;
+  line-height: 30px;
+  background-color: #eaedf6;
   margin-bottom: 1px;
+  font-weight: bold;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Node {
+  height: 30px;
   line-height: 30px;
   background-color: #eaedf6;
   margin-bottom: 1px;
@@ -49,43 +62,47 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeEven {
   line-height: 30px;
-  background-color: #f1f1f1;
+  background-color: #e4e7f3;
   margin-bottom: 1px;
 }
 .UIJCRExplorerPortlet .UIVersionInfo .NoneIcon {
+  margin: 7px 0px;
   float: left;
   width: 16px; height: 16px;  
-  margin: 7px 0px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ExpandIcon {
+  margin: 7px 0px;
   float: left;
   width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
   cursor: pointer;
-  margin: 7px 0px;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
-  float: left;
+  margin: 7px 5px 0px 5px;
   width: 16px; height: 16px;
+  float: left;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
-  margin: 7px 0px 0px 10px;
 }
-		
+
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
   float: right;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm {  
-  padding-top: 10px;
-  border: none;
+.UIJCRExplorerPortlet .UIVersionInfo .UIAction {
+	width: 400px;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm {  
-  padding-top: 10px;
-  border: none;
+.UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
+	width: 180px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
+	border: none;
+	padding: 10px 0px;
+	margin: 0px auto;
 }
 
 /*############################## -- Begin UIDiff -- ##############################*/
@@ -432,6 +449,10 @@
 
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
 	float: left;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput input.radio {
+	margin-left: 0px;
 }
 
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {

@@ -417,12 +417,8 @@
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileName {
-	width: 230px;	
-	overflow: hidden;
-}
-
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
+	width: auto;
 	padding: 0px;
 }
 
@@ -903,12 +899,8 @@
 
 /*================================UINodeTypeInfo=================================*/
 
-.UIJCRExplorerPortlet .UIGrid tr {
-}
-
 .UIJCRExplorerPortlet .UIGrid td {
   border: solid 1px #cfcfcf;
-  background: #efefef;
 }
 
 .UIJCRExplorerPortlet .UITree .TreeContainer .Node {

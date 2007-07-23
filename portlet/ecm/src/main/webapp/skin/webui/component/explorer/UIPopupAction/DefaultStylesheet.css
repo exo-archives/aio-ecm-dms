@@ -357,11 +357,9 @@
 }
 /*############################## -- End UIVoteForm   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput .radio {
-  width: 20px;
-  margin-left: 0px;
-  float: none;
-  border: none;
+.UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput{
+	float: left;
+	border: solid 1px red;
 }
 
 /*############################## -- UISearch   -- ##############################*/
@@ -420,6 +418,14 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput input.radio {
+	margin-left: 0px;
+}
 
 .UIJCRExplorerPortlet .UIUploadManager {
   padding: 10px;

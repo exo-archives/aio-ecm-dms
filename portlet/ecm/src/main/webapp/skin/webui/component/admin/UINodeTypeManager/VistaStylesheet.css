@@ -67,7 +67,7 @@
 
 .UIECMAdminPortlet .UINodeTypeUpload .FieldContainer .SelectFileFrame .FileNameLabel {
   padding: 0px 0px 0px 5px;
-  width: 230px;
+  width: auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeImport .UIFormWithTitle {
@@ -77,7 +77,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeExport {
-  width: 440px;
+  width: 95%;
   margin: auto;
 }
 
@@ -97,6 +97,27 @@
   width: 270px;
   margin: auto;
   padding: 5px 0px; 
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .FormContainer {
+  width: 500px ;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .propertyDefinition .FormContainer {
+  width: 500px ;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .childNodeDefinition .FormContainer {
+  width: 500px ;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .AddIcon16x16{
+  float: none;
+  margin: -17px 5px 0px 240px;
+  border: solid 1px red;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {

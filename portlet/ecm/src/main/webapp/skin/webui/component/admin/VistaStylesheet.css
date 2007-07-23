@@ -36,7 +36,7 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
-	 width: 200px;
+	 width: 190px;
 	 margin: 0px;
 	 float: left;	 
 }
@@ -108,13 +108,22 @@
 	width: auto;
 }
 
+.UIWorkspaceWizard .HorizontalLayout .UITabContent .step1 .UIFormInputSet .AddPermissionIcon  {
+	margin: 0px;
+}
+
 .UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
 	margin: -17px 5px 0px 240px;
 	float: none;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIPageIterator {
-	border: solid 1px red;
+	width: 90%;
+	margin: auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIRepositoryValueSelect .UIAction {
+	width: 90px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
@@ -122,8 +131,27 @@
 	margin: 10px auto;
 }
 
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .OverflowContainer {
+	width: auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
+	background: url('VistaSkin/background/SelectIcon.gif') no-repeat;
+	width: 16px; 
+	height: 16px;
+}
+
 .UIECMAdminPortlet .childNodeDefinition .UIFormInputSet .UIFormInputSetWithAction .UIAction {
 	padding-left: 110px;
+}
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
+	padding: 10px 0px;
+}
+
+.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
+	width: 500px;
+	margin: auto;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -156,7 +184,6 @@
 .UIWorkspaceWizard .HorizontalLayout .UITabContent .UIFormInputSet .AddIcon16x16   {
 	float: none;
 	margin: -18px 5px 0px 240px;
-	border: solid 1px red;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -215,11 +242,6 @@
 	padding: 0px;
 	margin: 0px;
 	border: none;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
-	padding: 0px;
-	margin: 0px;
 }
 
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
@@ -316,10 +338,6 @@
 
 .UIResizableBlock .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIForm .UITabContentContainer .UITabContent {
 	border: none;
-}
-
-.UIResizableBlock .UIFormTabPane .UITabPane .TabPaneContent .UITabContentContainer {
-	border: 1px solid #8D919D;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
@@ -482,6 +500,21 @@
 	float: left;
 }
 
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIconIcon {
+  float: none;
+  margin: -17px 5px 0px 240px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddPermissionIcon {
+  float: none;
+  margin: -17px 5px 0px 240px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddPathIcon {
+  float: none;
+  margin: -18px 5px 0px 240px;
+}
+
 /*############################## -- UIViewManager -- ########################*/
 
 .UIECMAdminPortlet .UIViewManager {
@@ -495,6 +528,11 @@
 
 .UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
   width: 100px;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
+  width: 500px ;
+  margin: auto;
 }
 
 .UIECMAdminPortlet .UIFormInputSetWithActions {
@@ -532,6 +570,11 @@
   margin: auto;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIFormInputSet .AddPermissionIcon{
+  float: none;
+  margin: -14px 5px 0px 240px;
+}
+
 .UIECMAdminPortlet .UICBTemplateList {
   margin-top: 5px;
 }
@@ -560,6 +603,11 @@
   padding: 8px 0px 5px 0px;
 }
 
+.UIECMAdminPortlet .ECMTemplate .ECMTempForm {
+  width: 95%;
+  margin: 10px auto;
+}
+
 .ECMTempForm .UIForm .textarea {
   width: 95%;
   height: 300px;
@@ -569,6 +617,11 @@
 .ECMTempForm .UIAction {
 	width: 310px;
 	padding-left: 90px;
+}
+
+.UIECMAdminPortlet .CBTemplate .CBTempForm {
+  width: 95%;
+  margin: 10px auto;
 }
 
 .CBTempForm .UIForm textarea {
@@ -752,6 +805,16 @@
 	padding-top: 15px;
 }
 
+.UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
+.UIECMAdminPortlet .UITemplatesManager .UITabContentContainer .UIFormInputSet .AddPermissionIcon {
+  float: none;
+  margin: -18px 5px 0px 240px;
+}
+
 .UITemplatesManager .UIFormTabPane .HorizontalLayout .UIFormInputSet .UIForm .HorizontalLayout .textarea{ 
 	width: 95%;
 	height: 350px;
@@ -823,6 +886,10 @@
 
 .UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout .UIFormGrid td {
 	padding: 4px 2px;
+}
+.UIQueriesManager .UIQueriesForm .UIFormInputSet .AddPermissionIcon {
+	float: none;
+	margin: -18px 5px 0px 240px;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/

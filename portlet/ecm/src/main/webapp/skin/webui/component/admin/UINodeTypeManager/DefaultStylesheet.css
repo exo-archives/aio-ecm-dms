@@ -79,9 +79,8 @@
 	margin: 0px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileName {
-	width: 190px;	
-	overflow: hidden;
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .FileNameLabel {
+	width: auto;	
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {

@@ -66,10 +66,6 @@
   margin: 0px 5px;
 }
 
-.UIJCRExplorerPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-}
-
 .UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
 }
@@ -81,6 +77,10 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout{
 	padding-top: 10px;
+	background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .UITabContentContainer .UITabContent {
 	background: #efefef;
 }
 
@@ -805,10 +805,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm {
-  background: #efefef;
-}
-
 .UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
   border: none;
 }
@@ -825,9 +821,8 @@
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileName {
-	width: 230px;	
-	overflow: hidden;
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
+	width: auto;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {

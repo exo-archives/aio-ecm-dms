@@ -105,6 +105,15 @@
 }
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput input.radio {
+	margin-left: 0px;
+}
+
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   width: 95%;
   margin: 10px auto;
@@ -407,13 +416,6 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput .radio {
-  width: 20px;
-  margin-left: 0px;
-  float: none;
-  border: none;
-}
 
 .UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
   width: 150px ;

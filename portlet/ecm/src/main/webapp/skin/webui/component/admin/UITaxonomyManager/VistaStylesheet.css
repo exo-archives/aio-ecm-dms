@@ -86,6 +86,11 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .HorizontalLayout {
+	width: 500px;
+	margin: auto;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {
   width: 120px;
   padding-right: 3px;

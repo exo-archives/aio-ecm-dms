@@ -228,8 +228,13 @@
 }
 
 .nt_unstructured16x16Icon {
-  width: 21px; height: 24px;
-  background: url('VistaSkin/nt-unstructured.png') no-repeat;  
+  width: 24px; height: 24px;
+  background: url('VistaSkin/nt-unstructured.gif') no-repeat;  
+}
+
+.Collapsent_unstructured16x16Icon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/open-nt-unstructured.gif') no-repeat;  
 }
 
 .nt_version16x16Icon {

@@ -39,7 +39,7 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
-	 width: 200px;
+	 width: 190px;
 	 float: left;	
 	 height: 34px; 
 }
@@ -219,6 +219,7 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;
+  margin: 0px 3px 0px 0px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIAction {
@@ -264,6 +265,12 @@
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
 	width: 95%;
 	margin: 10px auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
+	background: url('MacSkin/background/SelectPage.png') no-repeat;
+	width: 16px; 
+	height: 16px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIRepositoryValueSelect .UIAction{
@@ -623,6 +630,11 @@
 
 .UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
   width: 95%;
+  margin: auto;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
+  width: 500px ;
   margin: auto;
 }
 

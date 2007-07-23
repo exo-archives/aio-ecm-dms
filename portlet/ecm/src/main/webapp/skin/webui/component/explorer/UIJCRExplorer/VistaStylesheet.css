@@ -411,8 +411,7 @@
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .FileNameLabel {
-  overflow: hidden ;
-  line-height: 20px;
+  width: auto;
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
@@ -458,10 +457,6 @@
 .UIJCRExplorerPortlet .SelectFileFrame {
 	margin: 0px;
 	width: 320px;
-}
-
-.UIJCRExplorerPortlet .FileNameLabel {
-	overflow: hidden;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
