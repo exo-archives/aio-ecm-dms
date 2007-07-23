@@ -247,13 +247,8 @@
 	margin: 0px;
 }
 
-.WorkflowPortletContent .UIUploadProcess .FileName {
-	width: 230px;	
-	overflow: hidden;
-}
-
 .WorkflowPortletContent .UIUploadProcess .FileNameLabel {
-	width: 128px;	
+	width: auto;	
 }
 
 .WorkflowPortletContent .UIUploadProcess .UIFormUploadInput .ProgressBar {

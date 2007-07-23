@@ -690,6 +690,14 @@
 	padding: 30px;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet input {
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
+  margin-left: 5px;
+}
+
 .UIJCRExplorerPortlet .UIPermissionForm .UIForm .UIAction{
 	width: 255px;
 	padding-left: 30px;
@@ -737,9 +745,10 @@
 	margin: 4px 3px 0px 3px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .permission input {
-	float: left;
+.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
+	width: 60px;
 }
+
 /*================================DecoratorBoxNested=================================*/
 
 .UIJCRExplorerPortlet .UINodeTypeInfo {

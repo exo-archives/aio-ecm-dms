@@ -166,6 +166,7 @@
   width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  margin-top: 3px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
@@ -173,6 +174,12 @@
   width: 16px; height: 16px;
   cursor: pointer;
   background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  margin-top: 3px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
+  color: black;
+  line-height: 22px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a {

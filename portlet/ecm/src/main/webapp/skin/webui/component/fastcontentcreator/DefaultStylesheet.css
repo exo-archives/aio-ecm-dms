@@ -167,9 +167,8 @@
 	margin: 0px;
 }
 
-.UIFastContentCreatorPortlet .UIFormUploadInput  .FileName {
-	width: 230px;	
-	overflow: hidden;
+.UIFastContentCreatorPortlet .UIFormUploadInput  .FileNameLabel {
+	width: auto;	
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {

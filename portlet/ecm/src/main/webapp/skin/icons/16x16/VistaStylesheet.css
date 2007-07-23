@@ -61,7 +61,7 @@
 }
  
 .SelectMemberIcon {
-  width: 24px; height: 20px;
+  width: 16px; height: 16px;
   background: url('VistaSkin/SmallMemberIcon.png') no-repeat;
   cursor: pointer;  
 }

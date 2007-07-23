@@ -657,19 +657,12 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .SelectUserIcon {
-  float: none;
-  margin: -18px 5px 0px 240px;
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .UIFormGrid input {
+  float: left;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .SelectMemberIcon {
-  float: none;
-  margin: -16px 5px 0px 264px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddAnyIcon {
- float: none;
-  margin: -15px 5px 0px 288px;
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
+  margin-left: 5px;
 }
 
 /*================================UIMetadataSelectForm=================================*/

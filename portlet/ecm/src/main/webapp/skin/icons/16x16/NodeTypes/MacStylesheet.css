@@ -237,11 +237,15 @@
 }
 
 .nt_unstructured16x16Icon {
-  background: url('DefaultSkin/nt-unstructured.gif') no-repeat;  
+  background: url('MacSkin/nt-unstructured.gif') no-repeat;  
+  width: 24px;
+  height: 24px;
 }
 
 .Collapsent_unstructured16x16Icon {
-  background: url('DefaultSkin/open-nt-unstructured.gif') no-repeat; 
+  background: url('MacSkin/open-nt-unstructured.gif') no-repeat; 
+  width: 24px;
+  height: 24px;
 }
 
 .nt_version16x16Icon {

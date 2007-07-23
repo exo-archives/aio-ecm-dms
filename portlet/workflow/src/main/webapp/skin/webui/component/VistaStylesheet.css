@@ -260,7 +260,7 @@
 }
 
 .WorkflowPortletContent .UIUploadProcess .FileNameLabel {
-	width: 128px;	
+	width: auto;	
 }
 
 .WorkflowPortletContent .UIFormGrid td.FieldLabel {
