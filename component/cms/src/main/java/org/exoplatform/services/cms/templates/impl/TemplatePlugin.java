@@ -11,37 +11,41 @@ import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
+import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 
 public class TemplatePlugin extends BaseComponentPlugin {
-  
+
   static final public String DIALOGS = "dialogs".intern();
   static final public String VIEWS = "views".intern();
-  
+
   static final public String DEFAULT_DIALOG = "dialog1".intern();
   static final public String DEFAULT_VIEW = "view1".intern();
-  
+
   static final String[] UNDELETABLE_TEMPLATES = {DEFAULT_DIALOG, DEFAULT_VIEW};  
-  
+
   static final public String DEFAULT_DIALOGS_PATH = "/" + DIALOGS + "/" + DEFAULT_DIALOG;
   static final public String DEFAULT_VIEWS_PATH = "/" + VIEWS + "/" + DEFAULT_VIEW;
-    
+
   static final public String NT_UNSTRUCTURED = "nt:unstructured".intern() ;
   static final public String EXO_TEMPLATE = "exo:template".intern() ;
   static final public String EXO_ROLES_PROP = "exo:roles".intern() ;
   static final public String EXO_TEMPLATE_FILE_PROP = "exo:templateFile".intern() ;  
   static final public String DOCUMENT_TEMPLATE_PROP = "isDocumentTemplate".intern() ;  
   static final public String TEMPLATE_LABEL = "label".intern() ;
-  
+
   private RepositoryService repositoryService_;
   private ConfigurationManager  configManager_;
   private CmsConfigurationService cmsConfigService_;
   private String cmsTemplatesBasePath_ ; 
   private InitParams params_ ;
+  private String storedLocation_ ;
+  private boolean autoCreateInNewRepository_=false;
 
   public TemplatePlugin(InitParams params, RepositoryService jcrService, ConfigurationManager configManager,
       CmsConfigurationService cmsConfigService) throws Exception {
@@ -50,90 +54,124 @@ public class TemplatePlugin extends BaseComponentPlugin {
     configManager_ = configManager;
     cmsTemplatesBasePath_ = cmsConfigService_.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;
     params_ = params ;    
+    ValueParam locationParam = params_.getValueParam("storedLocation") ;
+    if(locationParam== null) {
+      storedLocation_ = 
+        cmsConfigService_.getContentLocation() + "/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ; 
+    }else {
+      storedLocation_ = locationParam.getValue();      
+    } 
+    ValueParam param = params_.getValueParam("autoCreateInNewRepository");
+    if(param!=null) {
+      autoCreateInNewRepository_ = Boolean.parseBoolean(param.getValue()) ;
+    }        
   }
-  
+
   public void init() throws Exception {
     Session session = null ;    
-    Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
-    TemplateConfig templateConfig = null ;
-    
-    while(it.hasNext()) {
-      Object obj = it.next().getObject() ;
-      if(obj instanceof TemplateConfig) {
-        templateConfig = (TemplateConfig)obj ;
-        if(templateConfig.getAutoCreatedInNewRepository()) {
-          List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
-          for(RepositoryEntry repo : repositories) {
-            session = repositoryService_.getRepository(repo.getName()).
-              getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));
-            addTemplate(templateConfig, session) ;
-          }        
-        }else {
-          session = repositoryService_.getRepository("repository").
-            getSystemSession(cmsConfigService_.getWorkspace("repository"));
-          addTemplate(templateConfig, session) ;
+    Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
+    TemplateConfig templateConfig = null ;           
+    if(autoCreateInNewRepository_) {
+      List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;      
+      for(RepositoryEntry repo:repositories) {        
+        session = getSessionOnSystemWorkspace(repo.getName()) ;
+        Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
+        if(templatesHome.hasNodes()) {
+          session.logout();
+          continue ;
         }
+        while(iter.hasNext()) {
+          Object object = iter.next().getObject() ;
+          if(!(object instanceof TemplateConfig)) {          
+            break ;
+          }
+          templateConfig = (TemplateConfig)object ;
+          addTemplate(templateConfig,templatesHome,storedLocation_) ;
+        }
+        session.save();
+        session.logout();
       }
-    }    
+    }else {
+      session = repositoryService_.getDefaultRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;
+      Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
+      if(templatesHome.hasNodes()) {
+        session.logout();
+        return ;
+      }
+      while(iter.hasNext()) {
+        Object object = iter.next().getObject() ;
+        if(!(object instanceof TemplateConfig)) {          
+          break ;
+        }
+        templateConfig = (TemplateConfig)object ;
+        addTemplate(templateConfig,templatesHome,storedLocation_) ;
+      }
+      session.save();
+      session.logout();
+    }        
   }
-  
+
   public void init(String repository) throws Exception{
     Session session = null ;    
-    Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     TemplateConfig templateConfig = null ;
-    while(it.hasNext()) {
-      templateConfig = (TemplateConfig)it.next().getObject() ;
-      if(templateConfig.getAutoCreatedInNewRepository() || repository.equals(templateConfig.getRepository())) {
-        session = repositoryService_.getRepository(repository).
-          getSystemSession(cmsConfigService_.getWorkspace(repository));
-        addTemplate(templateConfig, session) ;
+    Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
+    ValueParam  param = params_.getValueParam("repository") ;
+    String repoName = null ;
+    if(param !=null) {
+      repoName = param.getName() ;
+    }
+    if(autoCreateInNewRepository_ ||(repoName !=null && repoName.equalsIgnoreCase(repository))) {
+      session = getSessionOnSystemWorkspace(repository) ;
+      Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
+      //be carefull. Maybe lost data here
+      if(templatesHome.hasNodes()) {
+        session.logout();
+        return ;
       }
-    }   
+      while(iter.hasNext()) {
+        Object object = iter.next().getObject() ;
+        if(!(object instanceof TemplateConfig)) {          
+          break ;
+        }
+        templateConfig = (TemplateConfig)object ;
+        addTemplate(templateConfig,templatesHome,storedLocation_) ;
+      }
+      session.save();
+      session.logout();
+    }          
   }
-  private void addTemplate(TemplateConfig templateConfig, Session session) throws Exception{
+  private void addTemplate(TemplateConfig templateConfig, Node templatesHome,String storedLocation) throws Exception{
     List nodetypes = templateConfig.getNodeTypes();
-    TemplateConfig.NodeType nodeType = null ;
-    String location = templateConfig.getLocation();  
-    Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
-    String sourcePath = cmsConfigService_.getContentLocation() + "/system" 
-    + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ;
-    if (location.equals("jar")) 
-      sourcePath = "jar:/conf/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ;
+    TemplateConfig.NodeType nodeType = null ;       
     Iterator iter = nodetypes.iterator() ;
     while(iter.hasNext()) {
       nodeType = (TemplateConfig.NodeType) iter.next();
-      Node nodeTypeHome = null;
-      if (!templatesHome.hasNode(nodeType.getNodetypeName())){
-        nodeTypeHome = Utils.makePath(templatesHome, nodeType.getNodetypeName(),NT_UNSTRUCTURED);
-        if(nodeType.getDocumentTemplate())
-          nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true) ;
-        else
-          nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false) ;
-        
-        nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
-        
-        List dialogs = nodeType.getReferencedDialog();
-        Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
-        addNode(sourcePath, dialogsHome, dialogs);
-        
-        List views = nodeType.getReferencedView();
-        Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-        addNode(sourcePath, viewsHome, views);
-      }/* else{
-        nodeTypeHome = templatesHome.getNode(nodeType.getNodetypeName());
-      }
-      */
-    }
-    session.save() ;
+      Node nodeTypeHome = null;      
+      nodeTypeHome = Utils.makePath(templatesHome, nodeType.getNodetypeName(),NT_UNSTRUCTURED);
+      if(nodeType.getDocumentTemplate())
+        nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true) ;
+      else
+        nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false) ;
+
+      nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
+
+      List dialogs = nodeType.getReferencedDialog();
+      Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
+      addNode(storedLocation, dialogsHome, dialogs);
+      
+      List views = nodeType.getReferencedView();
+      Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
+      addNode(storedLocation, viewsHome, views);      
+    }    
   }
-  
+
   public void setBasePath(String basePath) { cmsTemplatesBasePath_ = basePath ; }
-  
+
   private void addNode(String basePath, Node nodeTypeHome, List templates)  throws Exception {
     for (Iterator iterator = templates.iterator(); iterator.hasNext();) {
       TemplateConfig.Template template = (TemplateConfig.Template) iterator.next();
       String templateFileName = template.getTemplateFile();
-      String path = basePath + templateFileName;
+      String path = basePath + templateFileName;            
       InputStream in = configManager_.getInputStream(path);
       String nodeName = 
         templateFileName.substring(templateFileName.lastIndexOf("/") + 1, templateFileName.indexOf("."));
@@ -146,5 +184,11 @@ public class TemplatePlugin extends BaseComponentPlugin {
       contentNode.setProperty(EXO_ROLES_PROP, template.getParsedRoles());
       contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);
     }
-  }  
+  }
+
+  private Session  getSessionOnSystemWorkspace(String repository) throws Exception {
+    ManageableRepository repo= repositoryService_.getRepository(repository) ;
+    String systemWorkspace = repo.getConfiguration().getSystemWorkspaceName();
+    return repo.getSystemSession(systemWorkspace) ;
+  }
 }
