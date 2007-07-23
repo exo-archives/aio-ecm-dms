@@ -75,7 +75,7 @@ public class UIConstraintsForm extends UIForm {
   private String virtualDateQuery_ ;
   
   public UIConstraintsForm() throws Exception {
-    setActions(new String[] {"Save", "Cancel"}) ;
+    setActions(new String[] {"Add", "Cancel"}) ;
     List<SelectItemOption<String>> typeOperation = new ArrayList<SelectItemOption<String>>() ;
     typeOperation.add(new SelectItemOption<String>(AND_OPERATION, AND_OPERATION));
     typeOperation.add(new SelectItemOption<String>(OR_OPERATION, OR_OPERATION));
