@@ -43,7 +43,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template =  "app:/groovy/webui/component/explorer/search/UIConstraintsForm.gtmpl",
     events = {
       @EventConfig(phase=Phase.DECODE, listeners = UIConstraintsForm.CancelActionListener.class),
-      @EventConfig(listeners = UIConstraintsForm.SaveActionListener.class),
+      @EventConfig(listeners = UIConstraintsForm.AddActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.CompareExactlyActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.AddMetadataTypeActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.AddNodeTypeActionListener.class)
@@ -244,7 +244,7 @@ public class UIConstraintsForm extends UIForm {
     getUIFormCheckBoxInput(NODETYPE_PROPERTY).setChecked(false) ;
   }
   
-  static public class SaveActionListener extends EventListener<UIConstraintsForm> {
+  static public class AddActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UIConstraintsForm uiForm = event.getSource();
       boolean isExactly = uiForm.getUIFormCheckBoxInput(EXACTLY_PROPERTY).isChecked() ;
