@@ -75,7 +75,9 @@
             <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
           </div>
         <%}else {%> 
-					<div style="text-align:center; font-style:italic">This content is not viewable. Please download it or use WebDAV to access the content</div>        
+					<div style="text-align:center; font-style:italic">
+					  <%=_ctx.appRes("File.view.label.not-viewable")%>
+					</div>        
         <%}%>
         <div class="UIAction">                                          
           <div class="ActionContainer">            
@@ -85,7 +87,7 @@
                   <div class="ButtonRight">
                     <div class="ButtonMiddle">
                       <a href="/<%=uicomponent.getPortalName()%>/lnkgenerator/openit.lnk?path=/<%=uicomponent.getRepository()%>/<%=uicomponent.getWorkspaceName()%><%=originalNode.getPath()%>" target ="_blank">
-                        WebDAV View(Windows only)
+                        <%=_ctx.appRes("File.view.label.webDAV")%>
                       </a>
                     </div>
                   </div>
@@ -98,8 +100,8 @@
                 <div class="ButtonLeft">
                   <div class="ButtonRight">
                     <div class="ButtonMiddle">
-                      <a href="<%=uicomponent.event("Download")%>" title="Download this File">
-                        Download this File
+                      <a href="<%=uicomponent.event("Download")%>" title="<%=_ctx.appRes("File.view.label.download")%>">
+                        <%=_ctx.appRes("File.view.label.download")%>
                       </a>
                     </div>
                   </div>

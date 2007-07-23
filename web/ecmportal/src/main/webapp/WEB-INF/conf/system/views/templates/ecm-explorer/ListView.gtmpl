@@ -62,13 +62,13 @@
           </a>
         </th>
         <th class="$nameClass">
-          <div class="HeaderLabel"><%=_ctx.appRes("UIWorkingArea.title.Name")%></div>
+          <div class="HeaderLabel"><%=_ctx.appRes("ListView.view.label.name")%></div>
           <a href="$nameActionLink">
             <div class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
           </a>
         </th>
-        <th><%=_ctx.appRes("UIWorkingArea.title.Owner")%></th>
-        <th><%=_ctx.appRes("UIWorkingArea.title.Versionable")%></th>
+        <th><%=_ctx.appRes("ListView.view.label.owner")%></th>
+        <th><%=_ctx.appRes("ListView.view.label.versionable")%></th>
       </tr>
     </thead>
     <tbody>

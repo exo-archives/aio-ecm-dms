@@ -130,18 +130,18 @@
 			  <div class="RightCommentBar">
 			    <div class="MiddleCommentBar">
 			    	<div class="LabelPostedComment">
-		  			  Posted by <span style="color:#f7941e">
+		  			  <%=_ctx.appRes("Comment.view.label.postedBy")%><span style="color:#f7941e">
 		  			  <%if(lastComment.hasProperty("exo:commentor")){%>
 		  			  	<%=lastComment.getProperty("exo:commentor").getString()%></span> 
 		  			  <%}%>
-		  			  at 
+		  			  <%=_ctx.appRes("Comment.view.label.at")%> 
 		  			  <%if(lastComment.hasProperty("exo:commentDate")){%>
 			  			  <%=dateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
 			  			<%}%>  
 		  			</div>
 		  			<div class="ShowComment">
-			  			<div style="float: left;"><%=commentsList.size()%> Comments</div>
-			  			<div style="float: right;" onclick="eXo.ecm.ECMUtils.showHideComponent(this, 'CommentsList')"><a>Show comments</a><span style="display: none"><a>Hide comments</a></span></div>
+			  			<div style="float: left;"><%=commentsList.size()%> <%=_ctx.appRes("Comment.view.label.comments")%></div>
+			  			<div style="float: right;" onclick="eXo.ecm.ECMUtils.showHideComponent(this, 'CommentsList')"><a><%=_ctx.appRes("Comment.view.label.show-comments")%></a><span style="display: none"><a><%=_ctx.appRes("Comment.view.label.hide-comments")%></a></span></div>
 			  			<div style="clear: both;"><span></span></div>
 			  	  </div>
 			 		</div>
@@ -151,7 +151,7 @@
 		<div id="CommentsList" style="display: none;">
 		  <%for(comment in commentsList) {%>
 		  	<div class="CommentInfo">
-		  		Comment by 
+		  		<%=_ctx.appRes("Comment.view.label.comment-by")%> 
 		  		<span style="color: orange; font-weight: bold;">
 			  		<%if(comment.hasProperty("exo:commentor")){%>
 			  			<%=comment.getProperty("exo:commentor").getString()%>
@@ -161,13 +161,13 @@
 		  		  if(comment.hasProperty("exo:commentorEmail")) {
 		  		    String email = comment.getProperty("exo:commentorEmail").getString() ;
 		  		%>
-    		  		- Email: <a href="mailto:$email">$email</a> -
+    		  		- <%=_ctx.appRes("Comment.view.label.email")%>: <a href="mailto:$email">$email</a> -
     		  <%
     		    } 
 			  		if(comment.hasProperty("exo:commentorSite")) {
 			  		  String site = comment.getProperty("exo:commentorSite").getString() ;
 		  		%>
-		  			  (Site: <a href="$site" target="_blank">$site</a>) - at
+		  			  (<%=_ctx.appRes("Comment.view.label.site")%>: <a href="$site" target="_blank">$site</a>) - <%=_ctx.appRes("Comment.view.label.at")%>
 		  		<%}%>
 		  		<%if(comment.hasProperty("exo:commentDate")){%>
 		  			<%=dateFormat.format(comment.getProperty("exo:commentDate").getDate().getTime())%>

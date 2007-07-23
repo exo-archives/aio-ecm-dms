@@ -98,8 +98,8 @@
 						</div>
 					</div>
 					<div class="VoteRatingInfo">
-				    <span class="VoteRatingLabel">Avg. Rating: <span class="VotedInfo">$voteRating</span></span>
-				    <span class="VoteRatingLabel">Subscriptions: <span class="VotedInfo">$voteTotal</span></span>
+				    <span class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.avg-rating")%>: <span class="VotedInfo">$voteRating</span></span>
+				    <span class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.subscription")%>: <span class="VotedInfo">$voteTotal</span></span>
 					</div>
 					<div style="clear: left;"><span></span></div>
 				</div>

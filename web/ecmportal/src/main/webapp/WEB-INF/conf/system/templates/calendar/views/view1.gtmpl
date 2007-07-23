@@ -53,12 +53,12 @@
 </head>
 <div class="WorkCalendar">
 	<div class="ContainerCalendar">
-		<label class="text">Calendar: <label>
+		<label class="text"><%=_ctx.appRes("Calendar.view.label.calendar")%> : <label>
 		<span class="text"><%=originalNode.getName()%></span>
 		<div style="clear: left;"><span></span></div>
 	</div>
 	<div class="ContainerCalendar">
-		<label class="text">Shared: </label>
+		<label class="text"><%=_ctx.appRes("Calendar.view.label.shared")%>: </label>
 		<span class="text">
 			<%if(node.hasProperty("exo:shared")) {%>
 				<%=node.getProperty("exo:shared").getString()%>

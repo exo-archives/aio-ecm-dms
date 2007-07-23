@@ -61,11 +61,11 @@
 <div style="text-align: left; margin: 5px;" id="$uicomponent.id">
 	<div class="WorkSample">
 		<div class="SampleBG">
-				<label class="text">Node name: </label>
+				<label class="text"><%=_ctx.appRes("Sample.view.label.node-name")%>: </label>
 				<span class="text"><%=originalNode.getName()%></span>
 		</div>
 		<div class="SampleBG">
-			<label class="text">Title: </label>
+			<label class="text"><%=_ctx.appRes("Sample.view.label.title")%>: </label>
 			<span class="text">
 				<%if(node.hasProperty("exo:title")) {%>
 					<%=node.getProperty("exo:title").getString()%>
@@ -73,7 +73,7 @@
 			</span>
 		</div>
 		<div class="SampleBG">
-			<label class="text">Date: </label>
+			<label class="text"><%=_ctx.appRes("Sample.view.label.date")%>: </label>
 			<span class="text">
 				<%if(node.hasProperty("exo:date")) {
 				  dateFormat.applyPattern("MMMMM dd yyyy") ;						
@@ -83,7 +83,7 @@
 			</span>
 		</div>
 		<div class="SampleBG">
-			<label class="text">Date Time: </label>
+			<label class="text"><%=_ctx.appRes("Sample.view.label.date-time")%>: </label>
 			<span class="text">
 				<%if(node.hasProperty("exo:datetime")) {
 					 dateFormat.applyPattern("MMMMM dd yyyy hh:mm:ss") ;		
@@ -95,7 +95,7 @@
 		<div style="overflow: hidden">
 			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
 				<div class="TitleBG">
-					<label class="text" style="padding-left: 5px">Description:</label>
+					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.description")%>:</label>
 				</div>
 				<div class="summary" >
 					<%if(node.hasProperty("exo:description")) {%>
@@ -106,7 +106,7 @@
 			<% if(node.hasNode("exo:image")) {%>
 					<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
 						<div class="TitleBG" >
-							<label class="text" style="padding-left: 5px">Image: </label>
+							<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.image")%>: </label>
 						</div>
 						<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px">
 							<%
@@ -124,7 +124,7 @@
 		<div style="overflow: hidden">
 			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
 				<div class="TitleBG">
-					<label class="text" style="padding-left: 5px">Summary:</label>
+					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.summary")%>:</label>
 				</div>
 				<div class="summary" >
 					<%if(node.hasProperty("exo:summary")) {%>
@@ -134,7 +134,7 @@
 			</div>
 			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
 				<div class="TitleBG" >
-					<label class="text" style= "padding: 5px">Content:</label>
+					<label class="text" style= "padding: 5px"><%=_ctx.appRes("Sample.view.label.content")%>:</label>
 				</div>
 				<div class="content">
 					<%if(node.hasProperty("exo:content")) {%>
@@ -148,7 +148,7 @@
 		<div style="overflow: hidden">
 			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: left; margin-top: 5px">
 				<div class="TitleBG" >
-					<label class="text" style="padding-left: 5px">Relations: </label>
+					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.relation")%>: </label>
 				</div>
 				<%
 				  def relations = uicomponent.getRelations() ;
@@ -172,7 +172,7 @@
 			</div>
 			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: right; margin-top: 5px">
 				<div class="TitleBG" >
-					<label class="text" style="padding-left: 5px">Attachments: </label>
+					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.attachment")%>: </label>
 				</div>
 				<%
 				  def attachments = uicomponent.getAttachments() ;

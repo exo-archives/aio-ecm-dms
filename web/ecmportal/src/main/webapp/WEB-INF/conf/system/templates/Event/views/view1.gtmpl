@@ -121,20 +121,21 @@
 </head>
 <%
 	public String getMonth(def month) {
-		if(month == 1) return "January" ;
-		if(month == 2) return "February" ;
-		if(month == 3) return "March" ;
-		if(month == 4) return "April" ;
-		if(month == 5) return "May" ;
-		if(month == 6) return "June" ;
-		if(month == 7) return "July" ;
-		if(month == 8) return "August" ;
-		if(month == 9) return "September" ;
-		if(month == 10) return "October" ;
-		if(month == 11) return "November" ;
-		if(month == 12) return "December" ;
+	  String strMonth = null ;
+		if(month == 1) strMonth = _ctx.appRes("Event.view.label.january") ;
+		else if(month == 2) strMonth = _ctx.appRes("Event.view.label.february") ;
+		else if(month == 3) strMonth = _ctx.appRes("Event.view.label.march") ;
+		else if(month == 4) strMonth = _ctx.appRes("Event.view.label.april") ;
+		else if(month == 5) strMonth = _ctx.appRes("Event.view.label.may") ;
+		else if(month == 6) strMonth = _ctx.appRes("Event.view.label.june") ;
+		else if(month == 7) strMonth = _ctx.appRes("Event.view.label.july") ;
+		else if(month == 8) strMonth = _ctx.appRes("Event.view.label.august") ;
+		else if(month == 9) strMonth = _ctx.appRes("Event.view.label.september") ;
+		else if(month == 10) strMonth =_ctx.appRes("Event.view.label.october") ;
+		else if(month == 11) strMonth =_ctx.appRes("Event.view.label.november") ;
+		else if(month == 12) strMonth =_ctx.appRes("Event.view.label.december") ;
+		return strMonth ;
 	}
-	
 	def node = uicomponent.getNode() ;
 %>
 
@@ -148,7 +149,7 @@
 		<div class="MiddleRightSideDecorator">
 			<div class="MiddleCenterDecorator">
 				<div class="CalendarContainer">
-					<div class="EventLabel">Event</div>
+					<div class="EventLabel"><%=_ctx.appRes("Event.view.label.event")%></div>
 					<div class="Calendar">
 						<div class="CalendarIcon" style="float: left;">
 							<div class="DateLabel">
@@ -184,7 +185,7 @@
 					<%} else { %>
 							<div class="EventFrame" style="float: left; width: 99.8%">
 					<%} %>					
-								<div class="TitleLabel">Subject</div>
+								<div class="TitleLabel"><%=_ctx.appRes("Event.view.label.subject")%></div>
 								<div class="FrameContent">
 									<%=node.getProperty("exo:summary").getString()%>
 								</div>
@@ -197,7 +198,7 @@
 					<%} else {%>
 							<div class="EventFrame" style="float: right; width: 99.8%">
 					<%} %>					
-								<div class="TitleLabel">Location</div>
+								<div class="TitleLabel"><%=_ctx.appRes("Event.view.label.location")%></div>
 								<div class="FrameContent">
 									<%=node.getProperty("exo:location").getString()%>
 								</div>
@@ -206,7 +207,7 @@
 				<div style="clear: both;"><span></span></div>
 				<%if(node.hasProperty("exo:comment")) { %>
 						<div class="EventFrame">
-							<div class="TitleLabel">Comment</div>
+							<div class="TitleLabel"><%=_ctx.appRes("Event.view.label.comment")%></div>
 							<div class="FrameContent">
 								<%=node.getProperty("exo:comment").getString()%>
 							</div>
@@ -214,7 +215,7 @@
 				<%} %>
 				<%if(node.hasProperty("exo:description")) {%>					
 						<div class="EventFrame">
-							<div class="TitleLabel">Description</div>
+							<div class="TitleLabel"><%=_ctx.appRes("Event.view.label.description")%></div>
 							<div class="FrameContent">
 								<%=node.getProperty("exo:description").getString()%>
 							</div>

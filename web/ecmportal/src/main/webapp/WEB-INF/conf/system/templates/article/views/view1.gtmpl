@@ -246,7 +246,9 @@
 							def locals = uicomponent.getSupportedLocalise() ;
 							if(locals.size() > 0) {
 								println "<div class=\"Language\">" ;
-								println "Languages: &nbsp;" ;
+					%>
+								<%=_ctx.appRes("Article.view.label.languages")%>&nbsp;
+					<%
 								def actionChangeLang ;
 								for(local in locals) {
 								  actionChangeLang = uicomponent.event("ChangeLanguage", local) ;
@@ -267,7 +269,7 @@
 					      <div class="TopCenterArticleFrame">
 					        <div class="ArticleField">
 			              <div class="FieldIcon SummaryIcon"><span></span></div>
-			              <div class="FieldLabel">Summary :</div>
+			              <div class="FieldLabel"><%=_ctx.appRes("Article.view.label.summary")%> :</div>
 			              <div style="clear: left;"><span></span></div>
 	                </div>
 					      </div>
@@ -283,9 +285,9 @@
 				                  if(node.hasProperty("exo:summary")) {
 				                    print node.getProperty("exo:summary").getString() ;
 				                  } else {
-				                    print "None Summary" ;
-				                  }
 				                %>
+				                  <%=_ctx.appRes("Article.view.label.none-summary")%>
+				                <%}%>
 				              </div>
 										</div>	
 		              </div>
@@ -300,7 +302,7 @@
 					      <div class="TopCenterArticleFrame">
 					        <div class="ArticleField">
 			              <div class="FieldIcon ContentIcon"><span></span></div>
-			              <div class="FieldLabel">Content :</div>
+			              <div class="FieldLabel"><%=_ctx.appRes("Article.view.label.content")%> :</div>
 			              <div style="clear: left;"><span></span></div>
 			            </div>
 			          </div>
@@ -316,15 +318,15 @@
 				                  if(node.hasProperty("exo:text")) {
 				                    print node.getProperty("exo:text").getString() ;
 				                  } else {
-				                    print "None Content" ;
-				                  }
 				                %>
+				                  <%=_ctx.appRes("Article.view.label.none-content")%>
+				                <%}%>
 			                </div>
 										</div>			                
 		                <div class="ContainerLinks">
 		                	<div class="ContentLinks">
 			                  <div class="FieldIcon LinksIcon"><span></span></div>
-						            <div class="FieldLabel">Links :</div>
+						            <div class="FieldLabel"><%=_ctx.appRes("Article.view.label.link")%> :</div>
 						            <div style="clear: left;"><span></span></div>
 						          </div>
 						          <div class="WorkContentLinks">
@@ -359,7 +361,7 @@
 					      <div class="TopCenterArticleFrame">
 				          <div class="ArticleField">
 			              <div class="FieldIcon AttachmentsIcon"><span></span></div>
-			              <div class="FieldLabel">Attachments :</div>
+			              <div class="FieldLabel"><%=_ctx.appRes("Article.view.label.attachment")%> :</div>
 					          <div style="clear: left;"><span></span></div>
 					        </div>
 		            </div>
