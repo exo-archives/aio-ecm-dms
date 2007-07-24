@@ -66,10 +66,10 @@ public class MetadataServiceImpl implements MetadataService, Startable{
 
   private void init() throws Exception{    
     for(TemplatePlugin plugin : plugins_) {
-      try{
+      try {
         plugin.setBasePath(baseMetadataPath_) ;
         plugin.init() ;
-      }catch(Exception e) {
+      } catch(Exception e) {
         e.printStackTrace() ;
       }
     }
@@ -77,10 +77,10 @@ public class MetadataServiceImpl implements MetadataService, Startable{
 
   public void init(String repository) throws Exception {    
     for(TemplatePlugin plugin : plugins_) {
-      try{
+      try {
         plugin.setBasePath(baseMetadataPath_) ;
         plugin.init(repository) ;
-      }catch(Exception e) {
+      } catch(Exception e) {
         e.printStackTrace() ;
       }
     }
@@ -127,7 +127,8 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       else template = templateHome.addNode(VIEW1, EXO_TEMPLATE) ;
     }    
     String[] arrRoles = {} ;
-    if(role != null && role.indexOf(";") > -1) arrRoles = role.split(";") ;
+    if(role != null) arrRoles = role.split(";") ;
+    
     template.setProperty(EXO_ROLES_PROP, arrRoles) ;
     template.setProperty(EXO_TEMPLATE_FILE_PROP, content) ;
   }
@@ -212,7 +213,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     Value[] values = template.getProperty(EXO_ROLES_PROP).getValues() ;
     StringBuffer roles = new StringBuffer() ;
     for(int i = 0 ; i < values.length ; i ++ ){
-      if(roles.length() > 0 )roles.append("; ") ;
+      if(roles.length() > 0 ) roles.append(";") ;
       roles.append(values[i].getString()) ;
     }
     session.logout();

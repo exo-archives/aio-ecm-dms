@@ -54,6 +54,7 @@ public class DialogFormFields extends UIForm {
 
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
+  public Map<String, String> fieldNames_ = new HashMap<String, String>() ;
   protected Node node_ = null;
   protected Node dialogPortletHomeNode_ = null ;
   private Node propertyNode_ = null ;
@@ -227,6 +228,7 @@ public class DialogFormFields extends UIForm {
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
         uiInput.setValue(node_.getName()) ;
@@ -280,6 +282,7 @@ public class DialogFormFields extends UIForm {
     if(mixintype != null) inputProperty.setMixintype(mixintype) ;
     properties.put(name, inputProperty) ;
     propertiesName_.put(name, propertyName) ;
+    fieldNames_.put(propertyName, name) ;
     if(multiValues != null && multiValues.equals("true")) {
       UIFormMultiValueInputSet uiMulti ;
       if(node_ == null && propertyNode_ == null) {
@@ -419,6 +422,7 @@ public class DialogFormFields extends UIForm {
     if(editable.equals("false")) uiTextArea.setEditable(false) ;
     else uiTextArea.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     
     if(node_ != null) {
       String value = "";
@@ -486,6 +490,7 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(wysiwyg) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null && (node_.isNodeType("nt:file") || isNTFile_)) {
       Node jcrContentNode = node_.getNode("jcr:content") ;
       wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
@@ -570,6 +575,7 @@ public class DialogFormFields extends UIForm {
       }      
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
       if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
         uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
@@ -632,6 +638,7 @@ public class DialogFormFields extends UIForm {
     if(editable.equals("false")) uiInputUpload.setEditable(false) ;
     else uiInputUpload.setEditable(false) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     renderField(name) ;
   }
 
@@ -738,6 +745,7 @@ public class DialogFormFields extends UIForm {
       }
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
       uiDateTime.setCalendar(node_.getProperty(getPropertyName(jcrPath)).getDate()) ;
     } 

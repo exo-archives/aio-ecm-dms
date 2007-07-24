@@ -85,7 +85,7 @@ public class UIAddMetadataForm extends DialogFormFields {
       List<Value> valueList = new ArrayList<Value>();
       for (PropertyDefinition prop : props) {
         String name = prop.getName();
-        String inputName = name.substring(name.indexOf(":") + 1);
+        String inputName = uiForm.fieldNames_.get(name) ;
         if (!prop.isProtected()) {
           int requiredType = prop.getRequiredType();
           if (prop.isMultiple()) {
@@ -106,7 +106,7 @@ public class UIAddMetadataForm extends DialogFormFields {
             } else if (requiredType == 5) { // date
               UIFormDateTimeInput cal = (UIFormDateTimeInput) uiForm.getUIInput(inputName);
               node.setProperty(name, cal.getCalendar());
-            } else if(requiredType == 1){
+            } else if(requiredType == 1) {
               String value = ((UIFormStringInput)uiForm.getUIInput(inputName)).getValue() ;
               if(value == null) value = "" ;
               node.setProperty(name, value);

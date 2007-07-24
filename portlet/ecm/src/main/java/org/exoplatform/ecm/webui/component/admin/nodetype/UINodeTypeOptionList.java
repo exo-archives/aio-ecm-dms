@@ -5,12 +5,14 @@
 package org.exoplatform.ecm.webui.component.admin.nodetype;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -64,17 +66,23 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
     return false ;
   }
   
+  @SuppressWarnings("unchecked")
   public void update(String values) throws Exception {
     UIFormTableInputSet uiTableInputSet = createUIComponent(UIFormTableInputSet.class, null, null) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     NodeTypeManager ntManager = getApplicationComponent(RepositoryService.class)
                                 .getRepository(repository).getNodeTypeManager() ;
     NodeTypeIterator nodeTypeIter = ntManager.getAllNodeTypes() ;
+    List<NodeType> nodeTypeList = new ArrayList<NodeType>() ;
+    while(nodeTypeIter.hasNext()) {
+      NodeType nt = nodeTypeIter.nextNodeType() ;
+      nodeTypeList.add(nt) ;
+    }
+    Collections.sort(nodeTypeList, new Utils.NodeTypeNameComparator()) ;
     UIFormInputSet uiInputSet ;
     uiTableInputSet.setName(TABLE_NAME);
     uiTableInputSet.setColumns(TABLE_COLUMNS);
-    while(nodeTypeIter.hasNext()){
-      NodeType nt = nodeTypeIter.nextNodeType() ;
+    for(NodeType nt : nodeTypeList) {
       String ntName = nt.getName() ;
       uiInputSet = new UIFormInputSet(ntName) ;
       UIFormInputInfo uiInfo = new UIFormInputInfo("label", null, ntName);
@@ -91,6 +99,8 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
     }
     addUIFormInput(uiTableInputSet) ;
   }
+  
+  
   
   private void setFieldValues(String fieldName, List<String> selectedNodes) throws Exception {
     String strNodeList = null ;
