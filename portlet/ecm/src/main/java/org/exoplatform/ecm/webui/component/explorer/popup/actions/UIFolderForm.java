@@ -62,13 +62,15 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   public void activate() throws Exception { 
     getUIStringInput(FIELD_NAME).setValue(null) ;
-    if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
-      List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-      options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
-      getUIFormSelectBox(FIELD_TYPE).setOptions(options) ;
+    if(getUIFormSelectBox(FIELD_TYPE) != null) {
+      if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
+        List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+        options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+        getUIFormSelectBox(FIELD_TYPE).setOptions(options) ;
+      }
     }
   }
-  
+
   public void deActivate() throws Exception {}
 
   static  public class SaveActionListener extends EventListener<UIFolderForm> {
@@ -96,7 +98,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         }catch(ConstraintViolationException cve) {  
           Object[] arg = { uiFolderForm.allowCreateFolder_ } ;
           uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.constraint-violation", arg, 
-                                                  ApplicationMessage.WARNING)) ;
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }catch(RepositoryException re) {
