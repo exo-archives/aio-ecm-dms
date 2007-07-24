@@ -170,7 +170,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     step3.addChild(new UIFormStringInput(FIELD_MAXSIZE, FIELD_MAXSIZE, null).addValidator(NumberFormatValidator.class)) ;
     step3.addChild(new UIFormStringInput(FIELD_LIVETIME, FIELD_LIVETIME, null).addValidator(NumberFormatValidator.class)) ;
 
-    //addUIComponentInput(step1) ;
+    addUIComponentInput(step1) ;
     addUIComponentInput(step2) ;
     addUIComponentInput(step3) ;
     setRenderedChild(getCurrentChild()) ;
