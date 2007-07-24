@@ -63,7 +63,7 @@
 	
 </style>		
 
-<div class="UIDivInfo">
+<div class="UIDivInfo" id="UIFilePlanView">
 	<div style="width:99.5%">
 		<div style="padding: 5px 5px 5px 2px;">
 			<div class="$iconName" style="float:left; margin: 0px 5px 0px 0px;"><span></span></div>

@@ -3,17 +3,34 @@ function UIJCRExplorer() {
 	this.scrollMgr = null;
 };
 
+UIJCRExplorer.prototype.addCallBackToLink = function(elementId) {
+	if (elementId) {
+		var rootElement = document.getElementById(elementId);
+		var links = rootElement.getElementsByTagName("a");
+		for (var i=0; i<links.length; i++) {
+			var link = links[i];
+			var url = link.href;
+			if (url && url.indexOf('op=View') != -1 && url.indexOf('loadScroll') == -1) {
+				url = url.substr(0, url.length-1).concat(", eXo.ecm.UIJCRExplorer.loadScroll)");
+	  		link.href = url;
+			}
+		}
+	}
+};
+
 UIJCRExplorer.prototype.loadScroll = function(e) {
 //	console.log("load scroll jcr");
 	var jcr = eXo.ecm.UIJCRExplorer;
-	var uiDocumentWorkspace = document.getElementById("UIDocumentWorkspace");
-	if (uiDocumentWorkspace) {
+	//var uiDocumentWorkspace = document.getElementById("UIDocumentWorkspace");
+	var uiFilePlanView = document.getElementById("UIFilePlanView");
+	//var rootNode = (uiDocumentWorkspace != null) ? uiDocumentWorkspace : ((uiFilePlanView != null) ? uiFilePlanView : null);
+	if (uiFilePlanView) {
 		jcr.scrollMgr = eXo.portal.UIPortalControl.newScrollManager();
 		jcr.scrollMgr.initFunction = jcr.initScroll;
-		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiDocumentWorkspace, "div", "UIHorizontalTabs");
+		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiFilePlanView, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
 		var arrows = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "NavigationButtonContainer");
-		
+		console.log("container length %s, arrows length %s", mainCont.offsetWidth, arrows.offsetWidth);
 		jcr.scrollMgr.mainContainer = mainCont;
 		jcr.scrollMgr.arrowsContainer = arrows;
 		jcr.scrollMgr.loadElements("UITab");

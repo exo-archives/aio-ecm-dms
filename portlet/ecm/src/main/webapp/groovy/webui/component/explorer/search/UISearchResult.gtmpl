@@ -12,6 +12,10 @@
 <% 
   def resultList = uicomponent.getCurrentList() ; 
   if(resultList == null) return ;
+  
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.addCallBackToLink("'+uicomponent.id+'")');
 %>
 <div class="UISearchResult" id="$uicomponent.id">
   <table class="UIGrid">
