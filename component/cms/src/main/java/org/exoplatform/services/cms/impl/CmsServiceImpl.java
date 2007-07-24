@@ -19,6 +19,7 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+//import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
 import javax.jcr.nodetype.NodeDefinition;
@@ -204,9 +205,8 @@ public class CmsServiceImpl implements CmsService {
         if (inputVariable!=null) {
           nodetypeName = inputVariable.getNodetype();
           mixintypeName = inputVariable.getMixintype();
-        }
-        Session session = currentNode.getSession();
-        NodeTypeManager nodetypeManager = session.getWorkspace().getNodeTypeManager();
+        }        
+        NodeTypeManager nodetypeManager = currentNode.getSession().getWorkspace().getNodeTypeManager();
         NodeType nodeType = null;
         if (o instanceof Node){
           nodeType = ((Node) o).getPrimaryNodeType();
@@ -303,8 +303,7 @@ public class CmsServiceImpl implements CmsService {
         node.setProperty(propertyName, new GregorianCalendar());
       } else {
         if(isMultiple) {
-          Session session = jcrService.getRepository(repository_)
-                            .getSystemSession(cmsConfigurationService.getWorkspace(repository_));
+          Session session = node.getSession();
           if (value instanceof String) {
             Value value2add = session.getValueFactory().createValue(ISO8601.parse((String) value));
             node.setProperty(propertyName, new Value[] {value2add});
@@ -336,7 +335,7 @@ public class CmsServiceImpl implements CmsService {
       if (value instanceof Value[]) 
       node.setProperty(propertyName, (Value[]) value);
       else if (value instanceof String){
-        Session session = jcrService.getRepository(repository_).getSystemSession(cmsConfigurationService.getWorkspace(repository_));
+        Session session = node.getSession();
         if(session.getRootNode().hasNode((String)value)) {
           Node catNode = session.getRootNode().getNode((String)value);
           Value value2add = session.getValueFactory().createValue(catNode);
@@ -361,7 +360,7 @@ public class CmsServiceImpl implements CmsService {
   }
   
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace,
-      String destPath, String repository) {        
+      String destPath, String repository) {    
     if(!srcWorkspace.equals(destWorkspace)){
       try {
         Session srcSession = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
@@ -392,7 +391,8 @@ public class CmsServiceImpl implements CmsService {
           session.refresh(false) ;
         }        
         workspace.move(nodePath, destPath);
-      }catch(Exception e){
+        session.logout();
+      }catch(Exception e){        
         e.printStackTrace() ;
       }
     }
@@ -412,9 +412,5 @@ public class CmsServiceImpl implements CmsService {
     }
     session.save() ;    
   }
-
-  public void storeMixin(Node node, String mixinNodeType) throws Exception {
-    if(node.canAddMixin(mixinNodeType)) 
-      node.addMixin(mixinNodeType) ;    
-  }
+  
 }
