@@ -280,7 +280,8 @@ ExoEditor.prototype.save = function(instId) {
 	inst = this.instances[instId] ;
 	if(inst.getDoc() == null || !inst.isWYSIWYG) return;
 	var txtArea = document.getElementById(inst.instId) ;
-	txtArea.value = inst.getContent() ;
+	if(inst.getContent() == "<br>") txtArea.value = "" ; 
+	else txtArea.value = inst.getContent() ;
 };
 
 ExoEditor.prototype.switchMode = function(instId) {

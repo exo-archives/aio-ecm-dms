@@ -97,8 +97,6 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
-  height: 300px;
-  overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {

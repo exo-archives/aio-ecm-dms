@@ -15,7 +15,8 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
   
-  public UIJCRExplorerPortlet() throws Exception {    
+  public UIJCRExplorerPortlet() throws Exception {
+    setMinWidth(585) ;
     addChild(UIDrivesBrowser.class, null, null);
     addChild(UIJCRExplorer.class, null, null).setRendered(false) ;
     addChild(UIPreferencesForm.class, null, null).setRendered(false) ;

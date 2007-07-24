@@ -67,9 +67,9 @@ public class UIJCRExplorer extends UIContainer {
   private String language_ ;
 
   public UIJCRExplorer() throws Exception {
-    addChild(UIPopupAction.class, null, null);
     addChild(UIControl.class, null, null) ;
     addChild(UIWorkingArea.class, null, null) ;
+    addChild(UIPopupAction.class, null, null);
   }
 
   private String filterPath(String currentPath) throws RepositoryException {
