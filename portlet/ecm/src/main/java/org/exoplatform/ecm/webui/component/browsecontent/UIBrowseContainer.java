@@ -361,7 +361,7 @@ public class UIBrowseContainer extends UIContainer{
     DataTransfer data = new DataTransfer() ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     data.setWorkspace(getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "")) ;
-    data.setSession(getSession()) ;
+    data.setRepository(repository) ;
     Node scripts = scriptService.getCBScriptHome(repository) ;
     CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository) ;
     try {
