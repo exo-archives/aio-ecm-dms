@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
@@ -180,9 +181,10 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public boolean hasEditPermissions(Node editNode){
+    UIJCRExplorer uiExplorer = getParent() ;
     try {
-      editNode.getSession().checkPermission(editNode.getPath(), PermissionType.ADD_NODE);
-      editNode.getSession().checkPermission(editNode.getPath(), PermissionType.SET_PROPERTY);
+      uiExplorer.getSession().checkPermission(editNode.getPath(), PermissionType.ADD_NODE);
+      uiExplorer.getSession().checkPermission(editNode.getPath(), PermissionType.SET_PROPERTY);
     } catch(Exception e) {
       return false ;
     } 
@@ -190,8 +192,19 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public boolean hasRemovePermissions(Node curNode){
+    UIJCRExplorer uiExplorer = getParent() ;
     try {
-      curNode.getSession().checkPermission(curNode.getPath(), PermissionType.REMOVE);
+      uiExplorer.getSession().checkPermission(curNode.getPath(), PermissionType.REMOVE);
+    } catch(Exception e) {
+      return false ;
+    } 
+    return true;
+  }
+  
+  public boolean hasReadPermissions(Node curNode){
+    UIJCRExplorer uiExplorer = getParent() ;
+    try {
+      uiExplorer.getSession().checkPermission(curNode.getPath(), PermissionType.READ);
     } catch(Exception e) {
       return false ;
     } 
@@ -207,12 +220,12 @@ public class UIWorkingArea extends UIContainer {
   public String getActionsList(Node node) throws Exception {
     StringBuilder actionsList = new StringBuilder() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    if(Utils.isReadAuthorized(node)) {
+    if(hasReadPermissions(node)) {
       String path = node.getPath() ;
       if(isVersionableOrAncestor(node)) {
         if(node.isCheckedOut()) {
           if(Utils.isVersionable(node)) actionsList.append("CheckIn") ;
-          if(isEditable(path, node.getSession()) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
+          if(isEditable(path, uiExplorer.getSession()) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node)) {
@@ -717,6 +730,11 @@ public class UIWorkingArea extends UIContainer {
           return ;
         }
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-paste-nodetype", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.access-remove-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
