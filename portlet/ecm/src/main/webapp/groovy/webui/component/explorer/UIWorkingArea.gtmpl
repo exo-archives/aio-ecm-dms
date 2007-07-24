@@ -28,6 +28,6 @@
     <div class="UIResizableBlock" style="float: right; overflow: auto; width: 100%; height: 320px;">
     	<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
 	  </div>
-    <div style="clear: right;"><span></span></div>
+    <div style="clear: right; height: 0px;"><span></span></div>
 	</div>
 </div>
