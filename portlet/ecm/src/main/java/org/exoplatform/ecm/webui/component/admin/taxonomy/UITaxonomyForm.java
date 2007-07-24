@@ -71,6 +71,13 @@ public class UITaxonomyForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      
+      if(name.length() > 30) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.name-too-long", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       String parentPath = ROOT_PATH + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
       try {
         uiManager.addTaxonomy(parentPath, name)  ;

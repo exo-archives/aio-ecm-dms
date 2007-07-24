@@ -134,6 +134,14 @@
                 <collection type="java.util.ArrayList">
                   <value>
                     <object type="org.exoplatform.services.cms.views.impl.ViewDataImpl$Tab">
+                      <field  name="tabName"><string>Info</string></field>
+                      <field  name="buttons">
+                      	<string>viewReferences</string>
+                      </field>
+                    </object>
+                  </value>
+                  <value>
+                    <object type="org.exoplatform.services.cms.views.impl.ViewDataImpl$Tab">
                       <field  name="tabName"><string>Actions</string></field>
                       <field  name="buttons">
                       	<string>editDocument</string>                    	
