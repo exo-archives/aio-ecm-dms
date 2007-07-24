@@ -116,8 +116,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .AddIcon16x16{
   float: none;
-  margin: -17px 5px 0px 240px;
-  border: solid 1px red;
+  margin: -20px 5px 0px 240px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTabPane label {

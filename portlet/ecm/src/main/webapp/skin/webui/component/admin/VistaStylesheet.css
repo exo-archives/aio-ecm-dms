@@ -502,17 +502,17 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIconIcon {
   float: none;
-  margin: -17px 5px 0px 240px;
+  margin: -20px 5px 0px 240px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddPermissionIcon {
   float: none;
-  margin: -17px 5px 0px 240px;
+  margin: -20px 5px 0px 240px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddPathIcon {
   float: none;
-  margin: -18px 5px 0px 240px;
+  margin: -20px 5px 0px 240px;
 }
 
 /*############################## -- UIViewManager -- ########################*/
@@ -572,7 +572,7 @@
 
 .UIECMAdminPortlet .UIViewContainer .UIFormInputSet .AddPermissionIcon{
   float: none;
-  margin: -14px 5px 0px 240px;
+  margin: -20px 5px 0px 240px;
 }
 
 .UIECMAdminPortlet .UICBTemplateList {
@@ -812,7 +812,7 @@
 
 .UIECMAdminPortlet .UITemplatesManager .UITabContentContainer .UIFormInputSet .AddPermissionIcon {
   float: none;
-  margin: -18px 5px 0px 240px;
+  margin: -20px 5px 0px 240px;
 }
 
 .UITemplatesManager .UIFormTabPane .HorizontalLayout .UIFormInputSet .UIForm .HorizontalLayout .textarea{ 
@@ -888,7 +888,7 @@
 }
 .UIQueriesManager .UIQueriesForm .UIFormInputSet .AddPermissionIcon {
 	float: none;
-	margin: -18px 5px 0px 240px;
+	margin: -20px 5px 0px 240px;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/

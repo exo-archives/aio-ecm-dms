@@ -193,8 +193,10 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
-  margin: 15px;
+  width: 100px;
   float: left;
+  margin: 10px 0px 0px 0px;
+  height: 110px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
@@ -217,6 +219,7 @@
   line-height: 20px; vertical-align: middle;
   font-size: 11px;
   height: 30px;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {

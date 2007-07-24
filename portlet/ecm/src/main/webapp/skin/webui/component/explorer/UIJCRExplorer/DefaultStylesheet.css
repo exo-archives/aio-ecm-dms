@@ -225,14 +225,11 @@
 .UIJCRExplorerPortlet .UIThumbnailsView {
 }
 
-.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
-  width: auto;
-  margin: auto;
-}
-
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
-  margin: 15px;
+  width: 100px;
   float: left;
+  margin: 10px 0px 0px 0px;
+  height: 110px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
@@ -240,6 +237,7 @@
   height: 70px;
   border: solid 1px #eeeeee;
   background: #f8f8f8;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIcon {
@@ -260,6 +258,7 @@
   width: 80px;
   line-height: 18px;
   font-size: 11px;
+  margin: auto;
   height: 30px;
 }
 
@@ -287,6 +286,13 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
 	width: 97%;
 	margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .UIPageIterator{
+	border: solid 1px red;
+	width: 100%;
+	margin: 5px 0px 0px 0px;
+	overflow:hidden;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPopupWindow .UITabContent .UIArticle {

@@ -173,15 +173,16 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
+  width: 110px;
   float: left;
-  margin: 15px 30px 15px 30px;
+  height: 170px;
   background: url('VistaSkin/background/FolderLeft12x96.png') no-repeat top left;
+  padding-left: 12px;
+  margin: 10px 5px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
   background: url('VistaSkin/background/FolderRight12x96.png') no-repeat top right;
-  width: 100px; height: 96px;
-  margin-left: 12px;
   padding: 0px 12px 0px 0px ;
 }
 
