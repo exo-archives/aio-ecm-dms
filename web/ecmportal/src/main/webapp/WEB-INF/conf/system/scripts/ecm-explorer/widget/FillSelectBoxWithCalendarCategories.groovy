@@ -34,10 +34,11 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
   }
   
   public void execute(Object context) {
+    Session session = null ;
 		try {
       UIFormSelectBox selectBox = (UIFormSelectBox) context;
       ManageableRepository jcrRepository = repositoryService_.getRepository(repository_);
-      Session session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace(repository_));
+      session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace(repository_));
       String path = cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH) ;
       Node calendar = (Node) session.getItem(path) ;
       List options = new ArrayList();
@@ -49,7 +50,11 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
         }            
       }
       selectBox.setOptions(options);
+      session.logout();
     } catch(Exception e) {
+      if(session !=null) {
+        session.logout() ;
+      }
       selectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
     }
   }

@@ -55,8 +55,11 @@ public class FillSelectBoxWithNodeChildren implements CmsScript {
         Node n = nodeIterator.nextNode();
         options.add(new SelectItemOption(n.getName(), n.getName()));
       }
-      
+      session.logout();
     } catch (Exception e) {
+      if(session !=null) {
+        session.logout();
+      }
 	    print ("script error")
     } 
     

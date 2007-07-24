@@ -33,8 +33,9 @@ public class TransformBinaryChildrenToTextScript implements CmsScript {
     String srcWorkspace = (String)context.get("srcWorkspace") ;
     String srcPath = (String)variables.get("srcPath") ;
     Node folderNode = null ;
+    Session session = null ;
     try {
-      Session session = repositoryService_.getRepository().getSystemSession(srcWorkspace);
+      session = repositoryService_.getRepository().getSystemSession(srcWorkspace);
       folderNode = (Node) session.getItem(srcPath);
     } catch(Exception e) {}
     try {
@@ -62,7 +63,11 @@ public class TransformBinaryChildrenToTextScript implements CmsScript {
         }        
       }
       folderNode.save();
-    } catch (Exception e) {      
+      session.save();
+    } catch (Exception e) {
+      if(session !=null) {
+        session.logout();
+      }
       e.printStackTrace();
     }  
   }

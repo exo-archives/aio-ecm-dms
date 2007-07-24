@@ -5,6 +5,8 @@
 
 import org.exoplatform.services.cms.scripts.CmsScript ;
 import org.exoplatform.services.cms.scripts.DataTransfer ;
+import org.exoplatform.services.jcr.RepositoryService;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator ;
 import javax.jcr.Session;
@@ -17,12 +19,19 @@ import java.util.List;
 
 public class GetDocuments implements CmsScript {
   
-  public GetDocuments() {}
+  private RepositoryService repositoryService_ ;
+  
+  public GetDocuments(RepositoryService repositoryService) {
+    repositoryService_ = repositoryService ;
+  }
   
   public void execute(Object context){    
     DataTransfer data = (DataTransfer) context ;
-    try{
-      Session session = data.getSession() ; 
+    Session session = null ;
+    try{      
+      String repository = data.getRepository();
+      String worksapce = data.getWorkspace() ;
+      session = repositoryService_.getRepository(repository).login(workspace) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();     
       Query query = queryManager.createQuery("/jcr:root//element(*, exo:article)", Query.XPATH); 
       QueryResult queryResult = query.execute();      
@@ -32,7 +41,8 @@ public class GetDocuments implements CmsScript {
         Node node = iter.nextNode() ;
         nodeList.add(node) ;
       }
-      data.setContentList(nodeList) ;
+      data.setContentList(nodeList) ;      
+      session.logout();
     } catch (Exception e) {
       //e.printStackTrace() ;
     }

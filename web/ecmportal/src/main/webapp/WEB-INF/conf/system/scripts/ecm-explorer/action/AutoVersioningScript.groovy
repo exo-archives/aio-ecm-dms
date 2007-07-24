@@ -32,8 +32,9 @@ public class AutoVersioningScript implements CmsScript{
     String workspace = (String)variables.get("srcWorkspace") ;
     String srcPath = (String)variables.get("srcPath") ;
     String actionName = (String)variables.get("actionName") ;
+    Session session = null ;
     try{
-      Session session = repositoryService_.getRepository().getSystemSession(workspace) ;
+      session = repositoryService_.getRepository().getSystemSession(workspace) ;
       Node srcNode = (Node)session.getItem(srcPath) ;
       Node actionNode = srcNode.getNode(actionName) ;
       String lifecycle = actionNode.getProperty("exo:lifecyclePhase").getString() ;
@@ -47,7 +48,8 @@ public class AutoVersioningScript implements CmsScript{
           modifiedNode.checkin() ;
           modifiedNode.checkout() ;
           session.save();
-          session.refresh(true) ;        
+          session.refresh(true) ;
+          session.logout();
         }
       } else if("add".equals(lifecycle)||"remove".equals(lifecycle)|| "schedule".equals(lifecycle)) {
         Node currentNode = (Node)session.getItem(nodePath) ;
@@ -57,16 +59,22 @@ public class AutoVersioningScript implements CmsScript{
             session.save() ;
             currentNode.checkin() ;
             currentNode.checkout() ;
+            session.logout();
             return;
-          }             
+          }
+          session.logout();
           return ;
         }
         if(!currentNode.isCheckedOut()) currentNode.checkout() ;
         currentNode.checkin() ;
         currentNode.checkout() ;
         session.save() ;
+        session.logout();
       }
-    } catch (Exception e) {    
+    } catch (Exception e) {
+      if(session !=null) {
+        session.logout();
+      }
       e.printStackTrace() ;
     }       
   }

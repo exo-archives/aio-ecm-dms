@@ -30,17 +30,23 @@ public class AddMetadataScript implements CmsScript {
     String metadataName = (String)context.get("exo:mixinMetadata") ;
     String srcWorkspace = (String)context.get("srcWorkspace") ;
     String nodePath = (String)context.get("nodePath") ;
+    Session session = null ;
     try {
-      Session session = repositoryService_.getRepository().login(srcWorkspace);
+      session = repositoryService_.getRepository().login(srcWorkspace);
       Node node = (Node) session.getItem(nodePath);
       if(node.canAddMixin(metadataName)) {
         node.addMixin(metadataName) ;
         node.save() ;
         session.save() ;
+        session.logout();
       } else {
         System.out.println("\n\nCan not add mixin\n\n");
+        session.logout();
       }
     } catch(Exception e) {
+      if(session != null) {
+        session.logout();        
+      }
       e.printStackTrace() ;
     }
   }

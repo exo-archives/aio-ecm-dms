@@ -29,17 +29,22 @@ public class EnableVersioningScript implements CmsScript {
     Map variables = (Map) context;
     String nodePath = (String)variables.get("nodePath") ;
     String workspace = (String)variables.get("srcWorkspace") ;
+    Session session = null ;
     try {
-      Session session = repositoryService_.getRepository().getSystemSession(workspace) ;
+      session = repositoryService_.getRepository().getSystemSession(workspace) ;
       Node addedNode = (Node) session.getItem(nodePath);
       if(addedNode.canAddMixin("mix:versionable")) {
         addedNode.addMixin("mix:versionable") ;
         addedNode.save() ;
         session.save() ;
+        session.logout();
       } 
-    } catch (Exception e) {     
+    } catch (Exception e) {
+      if(session !=null) {
+        session.logout();
+      }
       e.printStackTrace() ;
-    }    
+    }  
   }
 
   public void setParams(String[] params) {}
