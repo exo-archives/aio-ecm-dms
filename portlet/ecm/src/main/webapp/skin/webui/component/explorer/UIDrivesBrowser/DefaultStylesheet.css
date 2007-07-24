@@ -61,6 +61,15 @@
   padding: 1px;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {
+  float: left;
+  width: 60%;
+  text-align: right;
+  vertical-align: middle;
+  padding: 8px 0px;
+  color: #ef5604;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
   background: #b0cfea url('DefaultSkin/background/DrivesTitle338x23.gif') no-repeat left;
   height: 23px;

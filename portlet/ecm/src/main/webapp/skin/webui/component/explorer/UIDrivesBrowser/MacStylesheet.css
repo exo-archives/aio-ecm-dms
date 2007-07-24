@@ -65,6 +65,15 @@
   border: solid 1px #dfdfdf;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {
+  float: left;
+  width: 60%;
+  text-align: right;
+  vertical-align: middle;
+  padding: 8px 0px;
+  color: #ef5604;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
   background: #c8e0f2 url('MacSkin/background/DrivesListTitle195x28.gif') no-repeat left center;
   height: 28px;

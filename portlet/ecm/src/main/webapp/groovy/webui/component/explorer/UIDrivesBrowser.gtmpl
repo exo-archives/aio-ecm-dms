@@ -88,7 +88,11 @@
 		              }
 		            } else {
 		          %>
-		            <div class="EmptyDrives"><%=_ctx.appRes("UIDrivesBrowser.msg.empty-drives")%></div>
+		            <div class="EmptyDrives">
+		            	<div class="ContainerEmptyDrives">
+		            		<%=_ctx.appRes("UIDrivesBrowser.msg.empty-drives")%>
+		            	</div>
+		            </div>
 		          <%}%>
 							<div style="clear: left;"><span></span></div>
 		        </div>
