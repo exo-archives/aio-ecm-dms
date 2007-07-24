@@ -23,6 +23,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -139,6 +140,15 @@ public class UIActionList extends UIContainer {
       UIJCRExplorer uiExplorer = uiActionList.getAncestorOfType(UIJCRExplorer.class) ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class) ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIActionListContainer uiActionListContainer = uiActionList.getParent() ;
+      UIPopupWindow uiPopup = uiActionListContainer.getChildById("editActionPopup") ;
+      if(uiPopup != null) {
+        UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionList.msg.remove-popup-first", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletPreferences preferences = context.getRequest().getPreferences() ;
       actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 

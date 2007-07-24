@@ -508,12 +508,12 @@ public class UIWorkingArea extends UIContainer {
         parentNode = uiExplorer.getCurrentNode() ;
         node = parentNode.getNode(name);
       }
-      if (node.isNodeType(Utils.MIX_VERSIONABLE)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete-version", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
+//      if (node.isNodeType(Utils.MIX_VERSIONABLE)) {
+//        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete-version", null, 
+//            ApplicationMessage.WARNING)) ;
+//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//        return ;
+//      }
       try {
         node.remove() ;
         parentNode.save() ;
