@@ -76,7 +76,8 @@ public class UIUploadProcess extends UIForm {
       String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UIUploadProcess.msg.fileName-invalid", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIUploadProcess.msg.fileName-invalid", null, 
+                                                   ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -87,7 +88,10 @@ public class UIUploadProcess extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIUploadProcess.msg.process-successful", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       } catch(Exception e) {
-        e.printStackTrace() ;
+        uiApp.addMessage(new ApplicationMessage("UIUploadProcess.msg.data-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
       UIAdministrationManager uiAdminstrationManager = 
         uiWorkflowAdministrationPortlet.getChild(UIAdministrationManager.class) ;

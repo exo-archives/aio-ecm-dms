@@ -213,11 +213,11 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
         getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(views_)).setRendered(true) ;
         getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(false) ;
+        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(true) ;
       } else if (!isVersioned(views_)) {
         getUIFormSelectBox(FIELD_VERSION).setRendered(false) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(!isView_) ;   
+        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(true) ;   
       } 
     }
     if (selectedVersion != null) {      
@@ -308,6 +308,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
       }
       vservice_.addView(viewName, permissions, template, tabList, repository) ;
       try {
+        views_.save() ;
         views_.checkin();
       } catch (Exception e) {
         UIApplication uiApp = getAncestorOfType(UIApplication.class) ;

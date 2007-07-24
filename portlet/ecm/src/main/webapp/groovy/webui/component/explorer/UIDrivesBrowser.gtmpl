@@ -63,7 +63,8 @@
 		          <%
 		            def drives = uicomponent.getDrives(uicomponent.getRepository()) ;
 		            String style = "Right" ;
-		            for(drive in drives) {
+		            if(drives.size() > 0) {
+		              for(drive in drives) {
 		          %>
 		              <div class="Drive">
 		              	<div class="DriveContainer">
@@ -83,7 +84,11 @@
 			                </div>
 			            	</div>    
 		              </div>
-		    
+		          <%  
+		              }
+		            } else {
+		          %>
+		            <div class="EmptyDrives"><%=_ctx.appRes("UIDrivesBrowser.msg.empty-drives")%></div>
 		          <%}%>
 							<div style="clear: left;"><span></span></div>
 		        </div>

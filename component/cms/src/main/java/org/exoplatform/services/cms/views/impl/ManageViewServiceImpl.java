@@ -72,6 +72,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     plugins_.add(viewPlugin) ;
   }
 
+  @SuppressWarnings("unchecked")
   public List getButtons(){
     if (buttons_ == null || buttons_.length() < 1) return null ;
     List buttonList = new ArrayList() ;
@@ -93,7 +94,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   }
 
   public List getAllViews(String repository) throws Exception {
-    List viewList = new ArrayList() ;
+    List<ViewDataImpl> viewList = new ArrayList<ViewDataImpl>() ;
     ViewDataImpl view ;
     Node viewNode ;
     String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
@@ -139,6 +140,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     Node view ;
     if(viewHome.hasNode(name)) {
       view = viewHome.getNode(name) ;
+      if(!view.isCheckedOut()) view.checkout() ;
       view.setProperty(EXO_PERMISSIONS, permissions) ;
       view.setProperty(EXO_TEMPLATE, template) ;
     }else {

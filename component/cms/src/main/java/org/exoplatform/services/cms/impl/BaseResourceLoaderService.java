@@ -99,6 +99,7 @@ public abstract class BaseResourceLoaderService implements Startable{
     }        
     try {
       contentNode = resourcesHome.getNode(resourceName);
+      if(!contentNode.isCheckedOut()) contentNode.checkout() ;
     } catch (PathNotFoundException e) {
       contentNode = resourcesHome.addNode(resourceName, "nt:resource");
       contentNode.setProperty("jcr:encoding", "UTF-8");
