@@ -8,7 +8,8 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.actions.activation.BPActionActivationJob;
@@ -42,29 +43,26 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
     }
     return businessProcesses;
   }
-
-  public String getActionExecutableLabel() {
-    return "Business Processes:";
-  }
-  
+    
   protected ECMEventListener createEventListener(String actionName, String moveExecutable, 
       String repository, String srcWorkspace, String srcPath, Map variables) throws Exception {
     return new BPActionLauncherListener(actionName, moveExecutable, repository, 
                                         srcWorkspace, srcPath, variables);
   }  
 
-  public String getExecutableDefinitionName() {
-    return "exo:businessProcess";
-  }
-  
+  public String getActionExecutableLabel() { return "Business Processes:"; }
+  public String getExecutableDefinitionName() { return "exo:businessProcess"; }
+    
   protected String getRepositoryName() { return config_.getRepository() ; }
   protected String getWorkspaceName() { return config_.getWorkspace() ; }
+  
   protected List<RepositoryEntry> getRepositories() {
     return repositoryService_.getConfig().getRepositoryConfigurations() ;
   }
   protected ManageableRepository getRepository(String repository) throws Exception {
     return repositoryService_.getRepository(repository);
   }
+  
   protected String getActionType() { return ACTION_TYPE ; }
   protected List getActions() { return config_.getActions() ; }
   public String getName() { return "exo:businessProcessAction" ; }
@@ -78,8 +76,8 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   }
   
   public void executeAction(String userId, String executable, Map variables, String repository) {
-    PortalContainer pContainer = PortalContainer.getInstance();    
-    WorkflowServiceContainer workflowSContainer = (WorkflowServiceContainer) pContainer
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
+    WorkflowServiceContainer workflowSContainer = (WorkflowServiceContainer) container
     .getComponentInstanceOfType(WorkflowServiceContainer.class);     
     workflowSContainer.startProcessFromName(userId, executable, variables);    
   }    

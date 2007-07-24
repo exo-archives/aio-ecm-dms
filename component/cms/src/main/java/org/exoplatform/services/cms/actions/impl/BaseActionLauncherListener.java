@@ -38,13 +38,8 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     actionVariables_ = actionVariables;
   }
   
-  public String getSrcWorkspace() {
-    return srcWorkspace_;
-  }
-  
-  public String getRepository() {
-    return repository_;
-  }
+  public String getSrcWorkspace() { return srcWorkspace_; }  
+  public String getRepository() { return repository_; }
   
   public void onEvent(EventIterator events) {
     ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;

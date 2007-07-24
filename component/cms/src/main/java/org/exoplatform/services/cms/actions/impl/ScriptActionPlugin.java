@@ -8,7 +8,8 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.actions.activation.ScriptActionActivationJob;
@@ -76,8 +77,9 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
     executeAction(userId, script, variables, repository);
   }      
   
-  public void executeAction(String userId, String executable, Map variables, String repository) throws Exception {    
-    ScriptService scriptService =  (ScriptService) PortalContainer.getComponent(ScriptService.class);
+  public void executeAction(String userId, String executable, Map variables, String repository) throws Exception {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    ScriptService scriptService =  (ScriptService)container.getComponentInstanceOfType(ScriptService.class);
     CmsScript cmsScript = scriptService.getScript(executable, repository);
     cmsScript.execute(variables);
   }

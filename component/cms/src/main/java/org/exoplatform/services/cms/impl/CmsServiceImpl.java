@@ -28,7 +28,6 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -59,6 +58,8 @@ public class CmsServiceImpl implements CmsService {
     Node storeHomeNode = (Node) session.getItem(storePath);
     String path = storeNode(nodeTypeName, storeHomeNode, mappings, true,repository);
     storeHomeNode.save();
+    session.save();
+    session.logout();
     return path;
   }
 
@@ -360,15 +361,11 @@ public class CmsServiceImpl implements CmsService {
   }
   
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace,
-      String destPath, String repository) {
-    PortalContainer container = PortalContainer.getInstance();
-    RepositoryService repService = (RepositoryService) container
-        .getComponentInstanceOfType(RepositoryService.class);
-    
+      String destPath, String repository) {        
     if(!srcWorkspace.equals(destWorkspace)){
       try {
-        Session srcSession = repService.getRepository(repository).getSystemSession(srcWorkspace);
-        Session destSession = repService.getRepository(repository).getSystemSession(destWorkspace);
+        Session srcSession = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
+        Session destSession = jcrService.getRepository(repository).getSystemSession(destWorkspace);
         Workspace workspace = destSession.getWorkspace();
         Node srcNode = (Node) srcSession.getItem(nodePath);
         try {
@@ -386,7 +383,7 @@ public class CmsServiceImpl implements CmsService {
       }
     }else {
       try{
-        Session session = repService.getRepository(repository).getSystemSession(srcWorkspace);
+        Session session = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
         Workspace workspace = session.getWorkspace();
         try {
           session.getItem(destPath);        

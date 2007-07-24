@@ -12,7 +12,8 @@ import javax.jcr.Value;
 import javax.jcr.observation.EventIterator;
 import javax.jcr.observation.EventListener;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.mail.MailService;
 import org.exoplatform.services.mail.Message;
@@ -36,10 +37,11 @@ public class EmailNotifyListener implements EventListener {
   }
   
   public void onEvent(EventIterator arg0) {
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
     MailService mailService = 
-      (MailService)PortalContainer.getComponent(MailService.class) ;
+      (MailService)container.getComponentInstanceOfType(MailService.class) ;
     WatchDocumentServiceImpl watchService= 
-      (WatchDocumentServiceImpl)PortalContainer.getComponent(WatchDocumentService.class) ;
+      (WatchDocumentServiceImpl)container.getComponentInstanceOfType(WatchDocumentService.class) ;
     MessageConfig messageConfig = watchService.getMessageConfig() ;
     List<String> emailList = getEmailList(observedNode_) ;
     for(String receiver: emailList) {      
@@ -66,8 +68,9 @@ public class EmailNotifyListener implements EventListener {
   
   private List<String> getEmailList(Node observedNode) {
     List<String> emailList = new ArrayList<String>() ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
     OrganizationService orgService = 
-      (OrganizationService)PortalContainer.getComponent(OrganizationService.class) ;
+      (OrganizationService)container.getComponentInstanceOfType(OrganizationService.class) ;
     
     try{
       if(observedNode.hasProperty(EMAIL_WATCHERS_PROP)) {

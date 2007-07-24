@@ -14,7 +14,6 @@ import java.util.Set;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
@@ -23,7 +22,8 @@ import javax.jcr.observation.Event;
 import javax.jcr.observation.ObservationManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
@@ -173,10 +173,10 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String initiator = storedActionNode.getProperty(SCHEDULED_INITIATOR).getString() ;    
     String srcPath = storedActionNode.getParent().getPath() ;       
     String jobName = storedActionNode.getProperty(JOB_NAME_PROP).getString() ;
-    String jobGroup = storedActionNode.getProperty(JOB_GROUP_PROP).getString() ;    
+    String jobGroup = storedActionNode.getProperty(JOB_GROUP_PROP).getString() ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
     JobSchedulerService schedulerService = 
-      (JobSchedulerService)PortalContainer.getComponent(JobSchedulerService.class) ;
-
+      (JobSchedulerService)container.getComponentInstanceOfType(JobSchedulerService.class) ;    
     Map<String,Object> variables = new HashMap<String,Object>() ;
     NodeType nodeType = storedActionNode.getPrimaryNodeType() ;
     PropertyDefinition[] defs = nodeType.getPropertyDefinitions() ;
@@ -266,8 +266,9 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   }
 
   public void removeActivationJob(String jobName,String jobGroup,String jobClass) throws Exception {
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
     JobSchedulerService schedulerService = 
-      (JobSchedulerService)PortalContainer.getComponent(JobSchedulerService.class) ;
+      (JobSchedulerService)container.getComponentInstanceOfType(JobSchedulerService.class) ;
     Class activationJob = null ;
     try {
       activationJob = Class.forName(jobClass) ;
@@ -392,23 +393,16 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }
     if (firstImport)
       srcNode.save();
-
-//  if (action.getLifecyclePhase() != null) {
-//  if (ActionServiceContainer.ADD_PHASE.equals(action.getLifecyclePhase())
-//  || ActionServiceContainer.REMOVE_PHASE.equals(action.getLifecyclePhase())){
-//  launchListener(action, actionNode, variablesMap);
-//  }            
-//  }
   }
   private void scheduleActionActivationJob(String repository, String srcWorkspace,String srcPath,
       String actionName,String actionType,String actionExecutable, Map mappings) throws Exception {
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
     JobSchedulerService schedulerService =
-      (JobSchedulerService)PortalContainer.getComponent(JobSchedulerService.class) ;
+      (JobSchedulerService)container.getComponentInstanceOfType(JobSchedulerService.class) ;
     ActionServiceContainer actionContainer = 
-      (ActionServiceContainer) PortalContainer.getComponent(ActionServiceContainer.class) ;
-
+      (ActionServiceContainer) container.getComponentInstanceOfType(ActionServiceContainer.class) ;
+    
     Session session = getSystemSession(repository, srcWorkspace) ;
-
     Node srcNode = (Node)session.getItem(srcPath) ;
     Node actionNode = actionContainer.getAction(srcNode,actionName) ;
     if(!actionNode.isNodeType(SCHEDULABLE_INFO_MIXIN)) {

@@ -21,7 +21,6 @@ import javax.jcr.observation.ObservationManager;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.ObjectParameter;
@@ -229,16 +228,16 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   public CmsScript getScript(String scriptName, String repository) throws Exception {
     CmsScript scriptObject = (CmsScript) resourceCache_.get(scriptName);
     if (scriptObject != null) return scriptObject;
-    PortalContainer pC = PortalContainer.getInstance();
-    scriptObject = (CmsScript) pC.getComponentInstance(scriptName);
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
+    scriptObject = (CmsScript) container.getComponentInstance(scriptName);
     if(scriptObject !=null ) {
       resourceCache_.put(scriptName,scriptObject) ;
       return scriptObject;
     }
     groovyClassLoader_ = createGroovyClassLoader();
     Class scriptClass = groovyClassLoader_.loadClass(scriptName) ;        
-    pC.registerComponentImplementation(scriptName, scriptClass); 
-    scriptObject = (CmsScript) pC.getComponentInstance(scriptName);
+    container.registerComponentImplementation(scriptName, scriptClass); 
+    scriptObject = (CmsScript) container.getComponentInstance(scriptName);
     resourceCache_.put(scriptName, scriptObject) ;
 
     return scriptObject;
