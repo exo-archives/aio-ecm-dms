@@ -26,17 +26,14 @@
 
 .UIJCRExplorerPortlet .UIFormGrid input {
   padding-left: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid textarea {
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid select {
   padding-left: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
@@ -740,10 +737,6 @@
 
 .UIJCRExplorerPortlet .UIActionContainer .UIJCRBrowser{
   padding: 10px 0px 10px 10px;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
-  float: left;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {

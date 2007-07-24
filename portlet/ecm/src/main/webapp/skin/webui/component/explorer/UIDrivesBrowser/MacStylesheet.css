@@ -73,6 +73,7 @@
   font-weight: bold;
   padding-left: 10px;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {

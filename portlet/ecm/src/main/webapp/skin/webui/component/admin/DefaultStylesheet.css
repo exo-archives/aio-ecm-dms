@@ -284,16 +284,6 @@
 
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
-  border: solid 1px #b7b7b7;
-}
-
-.UIECMAdminPortlet .UIFormGrid input.radio {
-  float: none;
-  border: none;
-}
-
-.UIECMAdminPortlet .UIFormGrid input.checkbox{
-  border: none;
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -630,7 +620,6 @@ UIECMAdminPortlet .UIViewManager {
 .ECMTempForm .HorizontalLayout .textarea {
   width: 95%;
   height: 350px;
-  border: solid 1px #b7b7b7;
   padding: 3px;
 }
 
@@ -664,7 +653,6 @@ UIECMAdminPortlet .UIViewManager {
   width: 380px;
   height: 350px;
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 /*############################## -- UIActionManager -- ########################*/
@@ -741,7 +729,6 @@ UIECMAdminPortlet .UIViewManager {
   height: 350px;
   width: 90%;
   padding: 3px;
-  border: solid 1px #b7b7b7;
   float: left;
 }
 
@@ -777,7 +764,6 @@ UIECMAdminPortlet .UIViewManager {
 .UICBScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
   width: 90%;
   height: 350px;
-  border: solid 1px #b7b7b7;
   padding: 3px;
   float: left;
 }
@@ -819,7 +805,6 @@ UIECMAdminPortlet .UIViewManager {
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 350px ;
 	width: 95%;
-	border: solid 1px #b7b7b7	;
 	padding: 3px;
 }
 
@@ -852,7 +837,6 @@ UIECMAdminPortlet .UIViewManager {
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 350px ;
 	width: 95%;
-	border: solid 1px #b7b7b7;
 	padding: 3px;
 }
 
@@ -988,7 +972,6 @@ UIECMAdminPortlet .UIViewManager {
 	width: 90%;
 	height: 350px;
 	padding: 3px;
-	border: solid 1px #b7b7b7;
 }
 
 /*----------------------------UIDialogTab-------------------------------*/
@@ -1002,7 +985,6 @@ UIECMAdminPortlet .UIViewManager {
   width: 90%;
   height: 350px;
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 /*----------------------------UIViewTab-------------------------------*/
@@ -1016,7 +998,6 @@ UIECMAdminPortlet .UIViewManager {
   width: 90%;
   height: 350px;
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 /*############################## -- End UITemplatesManager -- ########################*/

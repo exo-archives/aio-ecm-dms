@@ -168,16 +168,6 @@
 
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
-  border: solid 1px #b7b7b7;
-}
-
-.UIECMAdminPortlet .UIFormGrid input.radio {
-  float: none;
-  border: none;
-}
-
-.UIECMAdminPortlet .UIFormGrid input.checkbox {
-  border: none;
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -706,7 +696,6 @@
   width: 95%;
   height: 300px;
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 /*############################## -- CBTemplate -- ########################*/
@@ -792,7 +781,6 @@
   width: 360px;
   height: 350px;
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 .UICBScripts .CBScriptList .UIAction {
@@ -849,7 +837,6 @@
   height: 350px;
   width: 90%;
   padding: 3px;
-  border: solid 1px #b7b7b7;
   float: left;
 }
 
@@ -872,7 +859,6 @@
   height: 350px;
   width: 90%;
   padding: 3px;
-  border: solid 1px #b7b7b7;
   float: left;
 }
 
@@ -900,7 +886,6 @@
   width: 95%;
   height: 350px;
   padding: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIFormTabPane .UIAction {
@@ -1005,7 +990,6 @@
 	height: 300px ;
 	width: 95%;
 	padding: 3px;
-	border: solid 1px #b7b7b7;
 }
 
 .UIQueriesManager .UIQueriesForm .UIFormInputSet .AddPermissionIcon {

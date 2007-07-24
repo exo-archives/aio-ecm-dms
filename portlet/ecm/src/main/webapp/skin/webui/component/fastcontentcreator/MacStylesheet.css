@@ -46,7 +46,6 @@
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
-  border: solid 1px #b7b7b7;
   padding-left: 3px;
 }
 
@@ -56,13 +55,11 @@
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer textarea {
-  border: solid 1px #b7b7b7;
   padding: 3px;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer input {
   padding-left: 3px;
-  border: solid 1px #b7b7b7;
 }
 
 .UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {

@@ -57,6 +57,7 @@
   height: 26px;
   line-height: 26px;
 	width: auto;
+	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBGRight {

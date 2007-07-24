@@ -139,19 +139,18 @@
 		
 		.UIArticle .FieldContent {
 		  padding: 1px 8px 5px 0px;
-		  overflow: hidden;
+		  width: 90%;
 		}
 		
 		.UIArticle .FieldContent .FieldContainerContent {
 			font: normal 11px Verdana;
 		  background: white;
-		  margin: 5px 2px 3px 18px;
+		  margin: 5px 2px 3px 5px;
 		}
 		
 		.UIArticle .FieldContent .LabelContent{
 		 	padding: 5px 0px 0px 5px;
 		 	overflow: auto;
-		 	width: 100%;
 		}
 		
     .UIArticle .DocumentRating {
