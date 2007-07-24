@@ -444,9 +444,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         }
       }
       if(!Utils.isNameValid(repoName, Utils.SPECIALCHARACTER)) {      
-        Object[] args = new Object[]{repoName}  ;    
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.repoName-not-alow", args)) ;
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.repoName-not-alow", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ;
 
