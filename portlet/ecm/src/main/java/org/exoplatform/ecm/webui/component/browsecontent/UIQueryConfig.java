@@ -185,8 +185,7 @@ public class UIQueryConfig extends UIForm {
     queryLangField.setEnable(isEdit_) ;
     queryTypeField.setEnable(isEdit_) ;
     queryStoreField.setEnable(isEdit_) ;
-    //queryField.setEditable(isEdit_) ;
-    //queryField.setEnable(isEdit_) ;
+    queryField.setEditable(isEdit_) ;
     numbPerPageField.setEditable(isEdit_) ;
     templateField.setEnable(isEdit_) ;
     detailtemField.setEnable(isEdit_) ;
@@ -200,14 +199,14 @@ public class UIQueryConfig extends UIForm {
     boolean isNewquery = queryStatus.equals(NEW_QUERY) ;
     UIFormSelectBox queryStore = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
     UIFormSelectBox queryTypeField = getChildById(UINewConfigForm.FIELD_QUERYTYPE) ;
-    UIFormTextAreaInput query = getChildById(UINewConfigForm.FIELD_QUERY) ;
+    UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
     if(isNewquery) {
       if(queryLanguage.equals(Query.XPATH)) {
         if(queryStatement == null) queryStatement = xpathDefault_ ;
-        query.setValue(queryStatement) ;
+        queryField.setValue(queryStatement) ;
       } else if(queryLanguage.equals(Query.SQL)) {
         if(queryStatement == null) queryStatement = sqlDefault_ ;
-        query.setValue(queryStatement) ;
+        queryField.setValue(queryStatement) ;
       }
     } else {
       queryStore.setOptions(getQueryStore(queryType, queryLanguage)) ;
@@ -215,7 +214,7 @@ public class UIQueryConfig extends UIForm {
     }
     queryStore.setRendered(!isNewquery);
     queryTypeField.setRendered(!isNewquery);
-    query.setRendered(isNewquery) ;
+    queryField.setRendered(isNewquery) ;
   }
 
   private List<SelectItemOption<String>> getQueryTemplate(String repository) throws Exception {

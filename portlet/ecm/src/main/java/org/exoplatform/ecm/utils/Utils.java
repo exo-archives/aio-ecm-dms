@@ -68,8 +68,8 @@ public class Utils {
   final public static String COLON = ":".intern() ;
   final public static String SLASH = "/".intern() ;
   final public static String BACKSLASH = "\\".intern() ;
-  
-   
+
+
   final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<","\"", "?", "!", "@", "#", "$", "%","^","&","*"} ;
   final public static String REPOSITORY = "repository".intern() ;
   final public static String VIEWS = "views".intern() ;
@@ -148,7 +148,10 @@ public class Utils {
       return false;
     }    
   }
- 
+
+  public static boolean hasChangePermissionRight(Node node) throws RepositoryException {
+    return isAddNodeAuthorized(node) && isSetPropertyNodeAuthorized(node) && isRemoveNodeAuthorized(node) ;
+  }
   public static boolean isAnyPermissionAuthorized(Node node)throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(SystemIdentity.ANY);
@@ -157,14 +160,14 @@ public class Utils {
       return false;
     }    
   }
-  
+
   public static boolean isSetPropertyNodeAuthorized(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.SET_PROPERTY);
-      return true;
     } catch(AccessControlException e) {
       return false;
-    }    
+    }
+    return true ;
   }
 
   public static boolean isRemoveNodeAuthorized(Node node) throws RepositoryException {
@@ -175,11 +178,11 @@ public class Utils {
       return false;
     }    
   }
- 
+
   public static boolean isNodeAuthorized(Node node, String owner) throws Exception {
-   return ((ExtendedNode)node).getACL().getOwner().equals(owner) ;
+    return ((ExtendedNode)node).getACL().getOwner().equals(owner) ;
   }
-  
+
   static public class NodeTypeNameComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
       String name1 = ((NodeType) o1).getName() ;
@@ -187,16 +190,16 @@ public class Utils {
       return name1.compareToIgnoreCase(name2) ;
     }
   }
- 
+
   public static boolean isNameValid(String name, String[] regexpression) {
     for(String c : regexpression){ if(name.contains(c)) return false ;}
     return true ;
   }
-  
+
   public static boolean isNameEmpty(String name) {
     return (name == null || name.trim().length() == 0) ;
   }
-  
+
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
     StringBuilder str = new StringBuilder() ;
     if(isReadAuthorized(node)) {
@@ -236,7 +239,7 @@ public class Utils {
     }  
     return children ;
   }
-  
+
   public static String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
@@ -298,7 +301,7 @@ public class Utils {
     }
     return userMemberships ;
   }
-  
+
   public static String  getNodeOwner(Node node) throws Exception {
     if(node.hasProperty("exo:owner")) {
       return node.getProperty("exo:owner").getString();

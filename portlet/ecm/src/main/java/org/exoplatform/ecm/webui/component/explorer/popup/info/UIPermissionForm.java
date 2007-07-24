@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
@@ -99,7 +99,6 @@ import org.exoplatform.webui.form.UIForm;
       setActions(new String[] { "Save", "Reset", "Cancel" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, new String[] {"SelectUser", "SelectMember", "AddAny"}) ;
     }
-    //uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).setEditable(!isLock) ;
     for (String perm : PermissionType.ALL) { 
       uiInputSet.getUIFormCheckBoxInput(perm).setEnable(!isLock) ;
     }
@@ -140,7 +139,7 @@ import org.exoplatform.webui.form.UIForm;
           permsList.add(PermissionType.READ) ;
       }
 
-      if (userOrGroup == null || userOrGroup.length() < 0) {
+      if (Utils.isNameEmpty(userOrGroup)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -153,33 +152,27 @@ import org.exoplatform.webui.form.UIForm;
       String[] permsArray = permsList.toArray(new String[permsList.size()]);
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       ExtendedNode node = (ExtendedNode) uiJCRExplorer.getCurrentNode();
-      if (!Utils.isChangePermissionAuthorized(node)) {
+      if (Utils.hasChangePermissionRight(node)) {
+        if (node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+        for (String perm : permsRemoveList) {
+          try {
+          node.removePermission(userOrGroup, perm);
+          } catch (AccessDeniedException ade) {
+            continue ;
+          }
+        } 
+       if(Utils.hasChangePermissionRight(node)) node.setPermission(userOrGroup, permsArray);
+        uiParent.getChild(UIPermissionInfo.class).updateGrid();
+        node.save();
+      } else {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.not-change-permission", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
-      try {
-        for (String perm : permsRemoveList) {
-          node.removePermission(userOrGroup, perm);
-        } 
-      } catch (Exception e) {
-        JCRExceptionManager.process(uiApp, e);
-      }
-      try {
-        node.setPermission(userOrGroup, permsArray);
-        uiParent.getChild(UIPermissionInfo.class).updateGrid();
-        node.save();
-        if (!uiJCRExplorer.getPreference().isJcrEnable()) {
-          uiJCRExplorer.getSession().save();
-        }
-        uiForm.refresh();
-        uiJCRExplorer.setIsHidePopup(true);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
-        uiJCRExplorer.updateAjax(event);
-      } catch (Exception e) {
-        JCRExceptionManager.process(uiApp, e);
-      }
+      uiForm.refresh();
+      uiJCRExplorer.setIsHidePopup(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
+      uiJCRExplorer.updateAjax(event);
     }
   }
 
@@ -200,7 +193,8 @@ import org.exoplatform.webui.form.UIForm;
       UIPermissionInputSet uiInputSet = uiForm.getChildById(UIPermissionForm.PERMISSION);
       uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).setValue(
           SystemIdentity.ANY);
-      uiForm.checkAll(true);
+      uiForm.checkAll(false);
+      uiInputSet.getUIFormCheckBoxInput(PermissionType.READ).setChecked(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }

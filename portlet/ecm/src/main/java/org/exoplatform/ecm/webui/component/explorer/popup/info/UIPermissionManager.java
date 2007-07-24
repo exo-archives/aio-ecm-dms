@@ -4,10 +4,14 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
+import javax.jcr.Node;
+
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -28,7 +32,7 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     addChild(UIPermissionInfo.class, null, null);    
     addChild(UIPermissionForm.class, null, null);    
   }
-  
+
   public void initPopupPermission(UIComponent uiSelector) throws Exception {
     UIPopupWindow uiPopup = getChildById(UIPermissionForm.POPUP_SELECT) ;
     if(uiPopup == null) {
@@ -45,5 +49,11 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     getChild(UIPermissionInfo.class).updateGrid() ;
   }
 
+  public void checkPermissonInfo(Node node) throws Exception {
+    if(!Utils.hasChangePermissionRight(node)) {
+      getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
+      getChild(UIPermissionForm.class).setRendered(false) ;
+    }
+  }
   public void deActivate() throws Exception {} 
 }

@@ -83,7 +83,7 @@ public class UITreeExplorer extends UIComponent {
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      uiExplorer.setSelectNode(path, uiExplorer.getSessionByWorkspace(wsName)) ;
+      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
       uiExplorer.updateAjax(event) ;
     }
   }
@@ -94,7 +94,7 @@ public class UITreeExplorer extends UIComponent {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
       path = path.substring(0, path.lastIndexOf("/")) ;
-      uiExplorer.setSelectNode(path, uiExplorer.getSessionByWorkspace(wsName)) ;
+      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
       uiExplorer.updateAjax(event) ;
     }
   }

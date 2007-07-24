@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer.control ;
 
 import java.util.Set;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
@@ -63,7 +64,13 @@ public class UIAddressBar extends UIForm {
         String previousNode = uiExplorer.rewind() ;
         uiExplorer.setBackNode(previousNode) ;
         uiExplorer.updateAjax(event) ;
-      } catch (Exception e) {
+      } catch (AccessDeniedException ade) {
+        UIApplication uiApp = uiAddressBar.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null)) ;
+        return ;
+      }
+      catch (Exception e) {
+        e.printStackTrace() ;
         UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIJCRExplorer.msg.no-node-history",
                                                 null, ApplicationMessage.WARNING)) ;
@@ -93,8 +100,14 @@ public class UIAddressBar extends UIForm {
       UIAddressBar uiAddressBar = event.getSource() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
-      uiExplorer.refreshExplorer() ;
+      try{
+        uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+        uiExplorer.refreshExplorer() ;
+      } catch (AccessDeniedException ade) {
+        UIApplication uiApp = uiAddressBar.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null)) ;
+        return ;
+      }
     }
   }
 }
