@@ -376,7 +376,7 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       if(uiExplorer.nodeIsLocked(srcPath, uiExplorer.getSessionByWorkspace(wsName))) {
@@ -624,7 +624,7 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
-      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
@@ -723,6 +723,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (LoginException e){
+        e.printStackTrace();
         if(ClipboardCommand.CUT.equals(type)) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-paste-nodeversion", null, 
                                                   ApplicationMessage.WARNING)) ;
@@ -739,6 +740,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
+        e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

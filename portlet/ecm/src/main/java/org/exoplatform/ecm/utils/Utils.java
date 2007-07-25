@@ -241,7 +241,7 @@ public class Utils {
   }
 
   public static String getRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;   
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }

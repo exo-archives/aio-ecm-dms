@@ -21,7 +21,6 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -30,13 +29,14 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -54,14 +54,19 @@ import org.exoplatform.webui.event.Event;
 
 @ComponentConfig( lifecycle = UIContainerLifecycle.class )
 public class UIJCRExplorer extends UIContainer {
+  
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
-  private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;  
+  private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;
+  
+  private SessionProvider sessionProvider_ ;
   private Session session_ = null ;
+  private PortletPreferences pref_ ;
   private Preference preferences_ = new Preference() ;
   private Set<String> addressPath_ = new HashSet<String>() ;
-  private JCRResourceResolver jcrTemplateResourceResolver_ ;
+  private JCRResourceResolver jcrTemplateResourceResolver_ ;  
   private Node rootNode_ ;
   private Node currentNode_ ;
+  
   private String documentInfoTemplate_ ;
   public boolean isHidePopup_ = false ;
   private String language_ ;
@@ -70,6 +75,8 @@ public class UIJCRExplorer extends UIContainer {
     addChild(UIControl.class, null, null) ;
     addChild(UIWorkingArea.class, null, null) ;
     addChild(UIPopupAction.class, null, null);
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    pref_ = pcontext.getRequest().getPreferences() ;
   }
 
   private String filterPath(String currentPath) throws RepositoryException {
@@ -99,8 +106,11 @@ public class UIJCRExplorer extends UIContainer {
   public Set<String> getAddressPath() { return addressPath_ ; }
   public void setAddressPath(Set<String> s) {addressPath_ = s;} ;
   
+  public SessionProvider getSessionProvider() { return this.sessionProvider_ ; }
+  public void setSessionProvider(SessionProvider provider) { this.sessionProvider_ = provider ; }
+  
   public Session getSession() { return session_ ; }
-  public void setSession(Session session) { this.session_ = session ; }
+  public void setSession(Session session) { this.session_ = session ; }  
 
   public String getDocumentInfoTemplate() { return documentInfoTemplate_ ; }
   public void setRenderTemplate(String template) { 
@@ -110,23 +120,29 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
-  public void newJCRTemplateResourceResolver() {
-    try{
-      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-      CmsConfigurationService cmsConfig  = getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = repositoryService.getRepository(repository).getSystemSession(cmsConfig.getWorkspace(repository)) ;
+  public void newJCRTemplateResourceResolver() {    
+    try{      
+      String repositoryName = getPortletPreferences().getValue(Utils.REPOSITORY,"") ;      
+      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
+      ManageableRepository repository = repositoryService.getRepository(repositoryName);
+      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
+      Session session = getSessionProvider().getSession(workspace,repository) ;        
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     }catch(Exception e) {
       e.printStackTrace() ;
-    }     
+    }         
   }
-
-  public Session getSessionByWorkspace(String wsName) throws Exception{
-    if(wsName == null ) return getSession() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-    return repositoryService.getRepository(repository).getSystemSession(wsName) ;    
+  
+  public String getRepositoryName() { return pref_.getValue(Utils.REPOSITORY,"") ; }
+  
+  private ManageableRepository getRepository() throws Exception{         
+    RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
+     return repositoryService.getRepository(getRepositoryName());
+  }
+  
+  public Session getSessionByWorkspace(String wsName) throws Exception{    
+    if(wsName == null ) return getSession() ;                      
+    return getSessionProvider().getSession(wsName,getRepository()) ;
   }
 
   public void refreshExplorer() throws Exception { 
@@ -322,16 +338,11 @@ public class UIJCRExplorer extends UIContainer {
   public Node getNodeByPath(String nodePath, Session session) throws Exception {
     return (Node)session.getItem(nodePath) ;    
   }
-
+  
   public LinkedList<ClipboardCommand> getAllClipBoard() { return clipboards_ ;}
-
-  public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest prequest = pcontext.getRequest() ;
-    PortletPreferences portletPref = prequest.getPreferences() ;
-    return portletPref ;
-  }
-
+  
+  public PortletPreferences getPortletPreferences() { return pref_ ; }
+  
   public boolean isReadAuthorized(ExtendedNode node) throws RepositoryException {
     try {
       node.checkPermission(PermissionType.READ);

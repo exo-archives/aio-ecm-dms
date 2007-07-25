@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Credentials;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
@@ -22,12 +23,18 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.AccessControlPolicy;
+import org.exoplatform.services.jcr.access.AuthenticationPolicy;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.organization.auth.AuthenticationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -153,7 +160,7 @@ public class UIDrivesBrowser extends UIContainer {
       preferences.setValue(Utils.DRIVE_FOLDER, drive.getAllowCreateFolder()) ;
       preferences.setValue(Utils.REPOSITORY, uiDrive.repoName_) ;
       preferences.store() ;
-      UIJCRExplorerPortlet uiParent = uiDrive.getParent() ;
+      UIJCRExplorerPortlet uiParent = uiDrive.getParent() ;      
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class) ;
 
       Preference pref = uiJCRExplorer.getPreference() ;
@@ -161,14 +168,23 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
       pref.setEmpty(false) ;
-
+      
+      String sessionId = Util.getPortalRequestContext().getSessionId() ;                 
+      SessionProviderService sessionProviderService = uiDrive.getApplicationComponent(SessionProviderService.class) ;
+      SessionProvider provider = null ;
+      try{
+        provider = sessionProviderService.getSessionProvider(sessionId) ;
+      }catch (NullPointerException e) {
+        provider = new SessionProvider(null) ;
+        sessionProviderService.setSessionProvider(sessionId,provider) ;
+      }            
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
-      Session session = repository.login(drive.getWorkspace())  ;
-
+      Session session = provider.getSession(drive.getWorkspace(),repository) ;
+      uiJCRExplorer.setSessionProvider(provider) ;
       uiJCRExplorer.setSession(session) ;
       Node node = null ;
       try {
-        node = (Node) session.getItem(drive.getHomePath()) ;
+        node = (Node) session.getItem(drive.getHomePath()) ;        
       } catch(Exception e) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 

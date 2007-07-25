@@ -83,7 +83,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = uiExplorer.getRepositoryName();
     try {
       String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
       if(uiExplorer.getPreference().isJcrEnable()) {
@@ -485,7 +485,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       String prefPath = uiExplorer.getPreferencesPath() ;
       String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
