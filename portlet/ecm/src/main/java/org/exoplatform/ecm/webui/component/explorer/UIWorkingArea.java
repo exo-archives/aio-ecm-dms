@@ -480,14 +480,15 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       String currentNodePath = uiExplorer.getCurrentNode().getPath() ;
       if(currentNodePath.equals(nodePath)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -497,17 +498,16 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       }
-
-      Node node ;
-      Node parentNode ;
-      if(wsName != null) {
-        node = uiExplorer.getNodeByPath(nodePath, session) ;
-        parentNode = node.getParent() ;
-      } else {
-        String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
-        parentNode = uiExplorer.getCurrentNode() ;
-        node = parentNode.getNode(name);
-      }
+      Node node = uiExplorer.getNodeByPath(nodePath, session) ;
+      Node parentNode = node.getParent() ;
+//      if(wsName != null) {
+//        node = uiExplorer.getNodeByPath(nodePath, session) ;
+//        parentNode = node.getParent() ;
+//      } else {
+//        String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
+//        parentNode = uiExplorer.getCurrentNode() ;
+//        node = parentNode.getNode(name);
+//      }
 //      if (node.isNodeType(Utils.MIX_VERSIONABLE)) {
 //        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete-version", null, 
 //            ApplicationMessage.WARNING)) ;

@@ -58,6 +58,7 @@ public class UIAddressBar extends UIForm {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiAddressBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       try {        
         uiAddressBar.getAncestorOfType(UIJCRExplorer.class).
           getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).setRenderedChild(UIDocumentInfo.class) ;
@@ -65,15 +66,15 @@ public class UIAddressBar extends UIForm {
         uiExplorer.setBackNode(previousNode) ;
         uiExplorer.updateAjax(event) ;
       } catch (AccessDeniedException ade) {
-        UIApplication uiApp = uiAddressBar.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      catch (Exception e) {
-        e.printStackTrace() ;
-        UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
+      } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIJCRExplorer.msg.no-node-history",
                                                 null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
     }
   }
@@ -89,7 +90,9 @@ public class UIAddressBar extends UIForm {
         uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
     }
@@ -105,7 +108,9 @@ public class UIAddressBar extends UIForm {
         uiExplorer.refreshExplorer() ;
       } catch (AccessDeniedException ade) {
         UIApplication uiApp = uiAddressBar.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
     }
