@@ -18,10 +18,12 @@
   <!-- ================================================================== -->
   <!--           LISTENER                                                 -->
   <!-- ================================================================== -->
-  <listener>
-    <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>
-  </listener>
-
+	  <listener>
+	    <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>        
+	  </listener>  
+	  <listener>
+	    <listener-class>org.exoplatform.ecm.application.JcrSessionListener</listener-class>        
+	  </listener>      
   <!-- ================================================================== -->
   <!--           SERVLET                                                  -->
   <!-- ================================================================== -->
@@ -104,7 +106,7 @@
   </servlet-mapping>
 
   <session-config>
-    <session-timeout>30</session-timeout>
+    <session-timeout>3</session-timeout>
   </session-config>
 
   <security-constraint>
