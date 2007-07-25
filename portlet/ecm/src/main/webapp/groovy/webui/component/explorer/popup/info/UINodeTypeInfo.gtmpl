@@ -26,6 +26,13 @@
 	    <span>$name</span>
     """;
   }
+ %>
+ <%
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.loadNodeTypeScroll()');
+  rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.UIJCRExplorer.initNodeTypeScroll()');
+  
 %>
 
 	    

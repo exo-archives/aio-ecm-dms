@@ -15,7 +15,6 @@
   
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
-  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.addCallBackToLink("'+uicomponent.id+'")');
 %>
 <div class="UISearchResult" id="$uicomponent.id">
   <table class="UIGrid">
@@ -46,7 +45,12 @@
             <td><div class="Text"><%=node.getName()%></div></td>
 	          <%
 	            String nodePath = node.getPath() ;
+	            
 	            if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
+	            
+	            //String nodeType = node.getPrimaryNodeType().getName().toLowerCase();
+	            //def onClickCall = "";
+	            //if (nodeType.contains("fileplan")) onClickCall = "eXo.ecm.UIJCRExplorer.loadViewNodeScroll();";
 	          %>
 	          <td><div class="Text"><%=nodePath%></div></td>
 	          <td style="width:80px;">
