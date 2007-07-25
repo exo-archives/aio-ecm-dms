@@ -460,7 +460,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
               return ;
             }          
-          } 
+          } else if(uiFormWizard.isNewRepo_ ) {
+            UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
+            UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+            if(uiRepoForm.getWorkspaceMap().containsKey(wsName)){
+              Object[] args = new Object[]{wsName}  ;        
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+              return ;
+            }  
+          }
           if(isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
@@ -516,11 +525,31 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
+          if(uiFormWizard.isNewWizard_) {
+            UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
+            UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+            if(uiRepoForm.isExistWorkspace(wsName)){
+              Object[] args = new Object[]{wsName}  ;        
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+              return ;
+            }          
+          } else if(uiFormWizard.isNewRepo_ ) {
+            UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
+            UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+            if(uiRepoForm.getWorkspaceMap().containsKey(wsName)){
+              Object[] args = new Object[]{wsName}  ;        
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+              return ;
+            }  
+          }
           if(uiFormWizard.isNewWizard_ && uiFormWizard.permissions_.isEmpty()) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
+         
         }
         if(uiWSFormStep2.isRendered()) {
 
@@ -797,6 +826,15 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
             UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
             if(uiRepoForm.isExistWorkspace(wsName)){
+              Object[] args = new Object[]{wsName}  ;        
+              uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+              return ;
+            }  
+          } else if(uiFormWizard.isNewRepo_ ) {
+            UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
+            UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
+            if(uiRepoForm.getWorkspaceMap().containsKey(wsName)){
               Object[] args = new Object[]{wsName}  ;        
               uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
