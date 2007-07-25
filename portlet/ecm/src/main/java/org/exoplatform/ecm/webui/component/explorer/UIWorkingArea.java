@@ -575,7 +575,15 @@ public class UIWorkingArea extends UIContainer {
         return ;
       } */
       try {
-        if(node.holdsLock()) node.unlock();
+        if(node.holdsLock())
+          if(uiExplorer.nodeIsLocked(node.getPath(), uiExplorer.getSession())) {
+            node.unlock();
+          } else {
+            uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.other-node-locked", null, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         /*} else {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.this-node-locked-by-parent", null,
               ApplicationMessage.WARNING)) ;

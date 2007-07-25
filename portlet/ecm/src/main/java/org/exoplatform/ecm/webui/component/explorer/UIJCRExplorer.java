@@ -37,6 +37,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.web.command.handler.GetWidgetContainerHandler;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -111,7 +112,13 @@ public class UIJCRExplorer extends UIContainer {
   
   public Session getSession() { return session_ ; }
   public void setSession(Session session) { this.session_ = session ; }  
-
+  
+  public Session getSystemSession() throws Exception {
+    PortletPreferences prefs_ = getPortletPreferences() ;
+    String workspaceName = prefs_.getValue(Utils.WORKSPACE_NAME, "") ;
+    return SessionProvider.createSystemProvider().getSession(workspaceName, getRepository()) ;
+  }
+  
   public String getDocumentInfoTemplate() { return documentInfoTemplate_ ; }
   public void setRenderTemplate(String template) { 
     newJCRTemplateResourceResolver() ;
@@ -125,8 +132,8 @@ public class UIJCRExplorer extends UIContainer {
       String repositoryName = getPortletPreferences().getValue(Utils.REPOSITORY,"") ;      
       RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
       ManageableRepository repository = repositoryService.getRepository(repositoryName);
-      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
-      Session session = getSessionProvider().getSession(workspace,repository) ;        
+      String workspace =  getPortletPreferences().getValue(Utils.WORKSPACE_NAME,"") ; // repository.getConfiguration().get .getDefaultWorkspaceName() ;
+      Session session = repository.getSystemSession(workspace) ; //getSessionProvider().getSession(workspace,repository) ;        
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     }catch(Exception e) {
       e.printStackTrace() ;

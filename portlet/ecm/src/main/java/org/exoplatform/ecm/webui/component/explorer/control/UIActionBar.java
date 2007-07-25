@@ -255,12 +255,12 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      /*if(currentNode.isLocked()) {
+      if(uiExplorer.nodeIsLocked(currentNode.getPath(), uiExplorer.getSession())) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }*/
+      } 
       if(!uiExplorer.getCurrentNode().isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -317,7 +317,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(selectedNode.isLocked()){
+      if(uiExplorer.nodeIsLocked(selectedNode.getPath(), uiExplorer.getSession()) ){
         Object[] arg = { selectedNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -377,7 +377,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.getCurrentNode().isLocked()){
+      if( uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode().getPath(), uiExplorer.getSession())) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
