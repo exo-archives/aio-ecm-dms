@@ -1089,6 +1089,11 @@
 	margin: 10px;
 }
 
+.UIJCRExplorer .UIActivateVersion .HorizontalLayout {
+	background: url('MacSkin/background/Background1x4.png') repeat;
+	padding-top: 10px;
+} 
+
 /*====================================UISavedQuery==================================*/
 
 .UIJCRExplorer .UISavedQuery {

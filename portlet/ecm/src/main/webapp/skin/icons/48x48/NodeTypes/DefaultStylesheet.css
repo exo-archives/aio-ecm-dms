@@ -327,3 +327,43 @@
   width: 48px; height: 48px;
   background: url('DefaultSkin/png.gif') no-repeat;  
 }
+
+.audio_mp348x48Icon {
+	width: 48px; height: 48px;
+  background: url('DefaultSkin/mp3.gif') no-repeat;
+}
+
+.image_gif48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/gif.gif') no-repeat;
+}
+
+.application_octet-stream48x48Icon {
+	width: 48px; height: 48px;
+  background: url('DefaultSkin/exe.gif') no-repeat;
+}
+
+.text_html48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/html.gif') no-repeat;
+ }
+ 
+.text_css48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/css.gif') no-repeat;
+ }
+ 
+.application_x-javascript48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/js.gif') no-repeat;
+ }
+ 
+.application_postscript48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/ai.gif') no-repeat;
+ }
+ 
+.application_octet-stream48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/psd.gif') no-repeat;
+ }
