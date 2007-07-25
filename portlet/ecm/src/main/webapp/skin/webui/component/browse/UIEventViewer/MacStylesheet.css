@@ -62,10 +62,11 @@
 }
 
 .UIEventViewer .EventContent .EventAuthorNameLabel {
-	text-align: left;
+	text-align: right;
 	width: 45%;
 	color: gray;
-  line-height: 16px; vertical-align: middle;
+  line-height: 16px;
+  padding-right: 10px;
 }
 
 .UIEventViewer .EventContent .DateAndTimeLabel {
@@ -83,10 +84,7 @@
 
 .UIEventViewer .EventContent .EventContentDetail {
 	border-bottom: dotted 1px #e1e1e1;
-	margin-bottom: 5px;
-}
-.UIEventViewer .EventContent .TopEventContentDetail {
-	
+	padding: 5px 0px;
 }
 
 .UIEventViewer .EventContent .MainEventContent {

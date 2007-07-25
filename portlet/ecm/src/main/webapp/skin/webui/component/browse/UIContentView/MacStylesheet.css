@@ -13,13 +13,13 @@
 }
 
 .UIContentView .TiteContentView {
-  margin: 8px 0px 1px 0px;
-  height: 18px; line-height: 18px; vertical-align: middle;
+  margin: 8px 0px 3px 0px;
+  vertical-align: middle;
 }
 
 .UIContentView .TiteContentIcon {
 	float: left;
-	margin-left: 5px;
+	margin: 0px 5px;
 }
 
 .UIContentView .TiteContentView a {
@@ -83,14 +83,11 @@
 }
 
 .UIContentView .SubFormContent .ContentLabel {
-	height: 34px;
 	margin-left: 30px;
 }
 
 .UIContentView .SubFormContent .UserName {
-	margin: 0px 8px;
-	height: 16px;
-	line-height: 16px;
+	margin: 0px 8px 3px 8px;
 	font-weight: bold;
 	font-size: 11px;
 }

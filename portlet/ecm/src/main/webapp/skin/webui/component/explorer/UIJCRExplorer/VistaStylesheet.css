@@ -172,7 +172,7 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
-  width: 110px;
+  width: 130px;
   float: left;
   height: 170px;
   background: url('VistaSkin/background/FolderLeft12x96.png') no-repeat top left;
@@ -205,7 +205,7 @@
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
   width: 100px; 
-  height:30px; 
+  height: 30px; 
   line-height: 24px; vertical-align: middle;
   text-align:center;
 }
@@ -879,4 +879,8 @@
 .UIJCRExplorerPortlet  .UIPopupWindow .UIPropertyForm .UIFormGrid {
 	width: 500px;
 	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
+	width: auto;	
 }

@@ -229,7 +229,7 @@
   width: 100px;
   float: left;
   margin: 10px 0px 0px 0px;
-  height: 110px;
+  height: 130px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
@@ -255,7 +255,7 @@
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
   text-align:center;
-  width: 80px;
+  width: 100px;
   line-height: 18px;
   font-size: 11px;
   margin: auto;
@@ -373,9 +373,8 @@
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileName {
-	width: 230px;	
-	overflow: hidden;
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
+	width: auto;	
 }
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
