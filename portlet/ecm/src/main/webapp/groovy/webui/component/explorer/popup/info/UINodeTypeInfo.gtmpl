@@ -29,7 +29,7 @@
 %>
 
 	    
-<div class="UINodeTypeInfo">
+<div class="UINodeTypeInfo" id="UINodeTypeInfoPopup">
   <div class="UIHorizontalTabs">
   	<div class="LeftHorizontalTabs">
   		<div class="RightHorizontalTabs">
@@ -53,6 +53,11 @@
 				  }
 				  %>              
 				  </div>
+				  <div class="NavigationButtonContainer">
+	          <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
+	            <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
+	          </div>
+	        </div>
 				</div>
 			</div>
 		</div>

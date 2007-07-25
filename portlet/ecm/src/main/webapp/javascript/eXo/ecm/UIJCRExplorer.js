@@ -1,6 +1,7 @@
 
 function UIJCRExplorer() {
 	this.scrollMgr = null;
+	this.ntScrollMgr = null;
 };
 
 UIJCRExplorer.prototype.addCallBackToLink = function(elementId) {
@@ -11,6 +12,21 @@ UIJCRExplorer.prototype.addCallBackToLink = function(elementId) {
 			var link = links[i];
 			var url = link.href;
 			if (url && url.indexOf('op=View') != -1 && url.indexOf('loadScroll') == -1) {
+				url = url.substr(0, url.length-1).concat(", eXo.ecm.UIJCRExplorer.loadScroll)");
+	  		link.href = url;
+			}
+		}
+	}
+};
+
+UIJCRExplorer.prototype.addCallBackToNodeTypeLink = function() {
+	var rootElement = document.getElementById("UIActionBar");
+	if (rootElement) {
+		var links = rootElement.getElementsByTagName("a");
+		for (var i=0; i<links.length; i++) {
+			var link = links[i];
+			var url = link.href;
+			if (url && url.indexOf('ViewNodeType') != -1 && url.indexOf('loadScroll') == -1) {
 				url = url.substr(0, url.length-1).concat(", eXo.ecm.UIJCRExplorer.loadScroll)");
 	  		link.href = url;
 			}
@@ -30,7 +46,6 @@ UIJCRExplorer.prototype.loadScroll = function(e) {
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiFilePlanView, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
 		var arrows = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "NavigationButtonContainer");
-		console.log("container length %s, arrows length %s", mainCont.offsetWidth, arrows.offsetWidth);
 		jcr.scrollMgr.mainContainer = mainCont;
 		jcr.scrollMgr.arrowsContainer = arrows;
 		jcr.scrollMgr.loadElements("UITab");
@@ -59,6 +74,37 @@ UIJCRExplorer.prototype.scrollCallback = function() {
 		scrollMgr.cleanElements();
 		scrollMgr.getElementsSpace();
 	}
+};
+
+UIJCRExplorer.prototype.loadNodeTypeScroll = function() {
+	var jcr = eXo.ecm.UIJCRExplorer;
+	var uiPopup = document.getElementById("UINodeTypeInfoPopup");
+	if (uiPopup) {
+		console.log("load nt scroll");
+		jcr.ntScrollMgr = eXo.portal.UIPortalControl.newScrollManager();
+		jcr.ntScrollMgr.initFunction = jcr.initNodeTypeScroll;
+		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiPopup, "div", "UIHorizontalTabs");
+		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
+		var arrows = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "NavigationButtonContainer");
+		jcr.ntScrollMgr.mainContainer = mainCont;
+		jcr.ntScrollMgr.arrowsContainer = arrows;
+		jcr.ntScrollMgr.loadElements("UITab");
+		var arrowButtons = eXo.core.DOMUtil.findDescendantsByTagName(arrows, "div");
+		if (arrowButtons.length == 2) {
+			jcr.ntScrollMgr.initArrowButton(arrowButtons[0], "left", "NavigationIcon ScrollBackArrow16x16Icon", "NavigationIcon DisableBackArrow16x16Icon", "NavigationIcon DisableBackArrow16x16Icon");
+			jcr.ntScrollMgr.initArrowButton(arrowButtons[1], "right", "NavigationIcon ScrollNextArrow16x16Icon", "NavigationIcon DisableNextArrow16x16Icon", "NavigationIcon DisableNextArrow16x16Icon");
+		}
+		//jcr.ntScrollMgr.callback = jcr.scrollCallback;
+		jcr.initNodeTypeScroll();
+	}
+};
+
+UIJCRExplorer.prototype.initNodeTypeScroll = function() {
+	var ntScrollMgr = eXo.ecm.UIJCRExplorer.ntScrollMgr;
+	ntScrollMgr.init();
+	// Gets the maximum width available for the tabs
+	ntScrollMgr.checkAvailableSpace();
+	ntScrollMgr.renderElements();
 };
 
 eXo.ecm.UIJCRExplorer = new UIJCRExplorer();

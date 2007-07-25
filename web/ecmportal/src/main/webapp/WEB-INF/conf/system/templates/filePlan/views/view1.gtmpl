@@ -50,7 +50,7 @@
  		padding: 0px;
   }
   
-  .UIDocumentWorkspace .NavigationButtonContainer {
+  .UIDivInfo .NavigationButtonContainer {
     display: none;
     float: right;
     cursor: pointer;
