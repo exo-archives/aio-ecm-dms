@@ -289,7 +289,6 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .UIPageIterator{
-	border: solid 1px red;
 	width: 100%;
 	margin: 5px 0px 0px 0px;
 	overflow:hidden;

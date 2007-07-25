@@ -48,7 +48,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {
-   float: left;
+  float: left;
   width: 60%;
   text-align: right;
   vertical-align: middle;

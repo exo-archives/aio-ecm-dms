@@ -151,10 +151,6 @@
   margin-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .Icon16x16 {
-  margin: 2px 0px 0px 10px;
-}
-
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
   clear: both; margin-bottom: 5px;
   line-height: 16px;

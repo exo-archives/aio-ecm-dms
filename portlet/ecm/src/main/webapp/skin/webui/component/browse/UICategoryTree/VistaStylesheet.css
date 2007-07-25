@@ -33,6 +33,7 @@
 .UICategoryTree .TiteLabel {
 	float: left;	
 	font-weight: bold;
+	padding-left: 10px;
 }
 
 .UICategoryTree .MiddleCategoryTree {

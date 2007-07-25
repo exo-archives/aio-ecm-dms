@@ -69,13 +69,10 @@
  	float: left;
 }
 
-
-
 .UICBTemplateV1 .SubDecorator .NodeIcon {
   width: 50%;
   margin: auto;
   line-height: 16px;
-  border: solid 1px red;
 }
 
 .UICBTemplateV1 .SubDecorator .CategoryIcon {

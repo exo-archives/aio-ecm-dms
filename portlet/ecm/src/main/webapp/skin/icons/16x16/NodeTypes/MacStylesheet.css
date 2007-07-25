@@ -197,8 +197,8 @@
 }
 
 .nt_folder16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/nt-folder.gif') no-repeat;  
+  width: 24px; height: 24px;
+  background: url('MacSkin/nt-folder.gif') no-repeat;  
 }
 
 .nt_frozenNode16x16Icon {
