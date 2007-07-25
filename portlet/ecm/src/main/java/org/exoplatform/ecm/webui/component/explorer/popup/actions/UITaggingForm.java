@@ -93,7 +93,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
         return ;
       }
       String[] tagNames = null ;
-      if(tagName.indexOf(";") > -1) tagNames = tagName.split(";") ;
+      if(tagName.indexOf(",") > -1) tagNames = tagName.split(",") ;
       else tagNames = new String[] {tagName} ;
       for(String t : tagNames) {
         if(t.trim().length() == 0) {
