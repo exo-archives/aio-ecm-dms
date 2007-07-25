@@ -183,8 +183,17 @@ public class UIWorkingArea extends UIContainer {
   public boolean hasEditPermissions(Node editNode){
     UIJCRExplorer uiExplorer = getParent() ;
     try {
-      uiExplorer.getSession().checkPermission(editNode.getPath(), PermissionType.ADD_NODE);
       uiExplorer.getSession().checkPermission(editNode.getPath(), PermissionType.SET_PROPERTY);
+    } catch(Exception e) {
+      return false ;
+    } 
+    return true;
+  }
+  
+  public boolean hasAddPermissions(Node editNode){
+    UIJCRExplorer uiExplorer = getParent() ;
+    try {
+      uiExplorer.getSession().checkPermission(editNode.getPath(), PermissionType.ADD_NODE);
     } catch(Exception e) {
       return false ;
     } 
@@ -260,7 +269,7 @@ public class UIWorkingArea extends UIContainer {
         if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
         actionsList.append(",WebDAV") ;
       }   
-      if(uiExplorer.getAllClipBoard().size() > 0 && hasEditPermissions(node)) actionsList.append(",Paste") ;
+      if(uiExplorer.getAllClipBoard().size() > 0 && hasAddPermissions(node)) actionsList.append(",Paste") ;
     }
     return actionsList.toString() ;
 

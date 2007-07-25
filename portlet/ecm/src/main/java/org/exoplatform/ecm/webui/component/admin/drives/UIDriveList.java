@@ -59,7 +59,6 @@ public class UIDriveList extends UIGrid {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    System.out.println("\n\n repository name :" + repository);
     List drives = driveService.getAllDrives(repository) ;
     for(int i = 0; i < drives.size(); i++) {
       DriveData drive = (DriveData)drives.get(i) ;
