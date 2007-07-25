@@ -536,18 +536,19 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
-      if(node.equals(uiExplorer.getCurrentNode())){
+      /*if(node.equals(uiExplorer.getCurrentNode())){
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      }*/
+      if(node.canAddMixin(Utils.MIX_LOCKABLE)){
+        node.addMixin(Utils.MIX_LOCKABLE);
+        node.save();
       }
       try {
-        if(!node.isNodeType(Utils.MIX_LOCKABLE)) {
-          node.addMixin(Utils.MIX_LOCKABLE);
-          node.save();
-        }
-        node.lock(true, false);        
+        node.lock(true, true);        
       } catch(LockException le) {
+        le.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -568,21 +569,21 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
-      if(node.equals(uiExplorer.getCurrentNode())){
+     /* if(node.equals(uiExplorer.getCurrentNode())){
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      } 
+      } */
       try {
-        if(node.holdsLock()){
-          node.unlock();
-        } else {
+        if(node.holdsLock()) node.unlock();
+        /*} else {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.this-node-locked-by-parent", null,
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        }
+        }*/
       } catch(LockException le) {
+        le.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -677,7 +678,7 @@ public class UIWorkingArea extends UIContainer {
       String destPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String realDestPath = destPath ;
       String destWorkspace = event.getRequestContext().getRequestParameter(WS_NAME) ;
-      Session session = uiExplorer.getSessionByWorkspace(destWorkspace) ;
+      Session session = uiExplorer.getSession() ; //uiExplorer.getSessionByWorkspace(destWorkspace) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       ClipboardCommand currentClipboard = uiExplorer.getAllClipBoard().getLast() ;
       String srcPath = currentClipboard.getSrcPath() ;
@@ -685,6 +686,7 @@ public class UIWorkingArea extends UIContainer {
       String srcWorkspace = currentClipboard.getWorkspace() ;
       if(srcWorkspace == null) srcWorkspace = uiExplorer.getCurrentWorkspace() ;
       if(uiExplorer.nodeIsLocked(destPath, session)) {
+        System.out.println("\n\n session" + session.getUserID());
         Object[] arg = { destPath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

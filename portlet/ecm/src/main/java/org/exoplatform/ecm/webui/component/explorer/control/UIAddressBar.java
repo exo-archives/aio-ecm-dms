@@ -87,7 +87,6 @@ public class UIAddressBar extends UIForm {
       try {
         Node node = uiExplorer.getRootNode().getNode(path.substring(1)) ;
         uiExplorer.setSelectNode(node) ;
-        uiExplorer.updateAjax(event) ;
       } catch(Exception e) {
         UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null, 
@@ -95,6 +94,7 @@ public class UIAddressBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      uiExplorer.updateAjax(event) ;
     }
   }
   

@@ -425,7 +425,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     UIFormStringInput permissionField = uiFormAction.getUIStringInput(FIELD_PERMISSION) ;
     permissionField.setValue(value) ;
   }
-
   public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;

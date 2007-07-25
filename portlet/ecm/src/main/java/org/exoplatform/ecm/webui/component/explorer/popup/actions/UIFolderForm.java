@@ -80,7 +80,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiFolderForm.getAncestorOfType(UIApplication.class);
       String name = uiFolderForm.getUIStringInput(FIELD_NAME).getValue() ;
       Node node = uiExplorer.getCurrentNode() ;
-      if(node.isLocked()) {
+      if(node.isLocked() && !Utils.isLockOwner(node, node.getSession().getUserID())) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

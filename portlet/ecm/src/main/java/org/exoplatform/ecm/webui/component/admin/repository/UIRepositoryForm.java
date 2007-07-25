@@ -203,7 +203,13 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     return workspaceName.equals(defaulWorkspace_) ;
   }
   protected boolean isExistWorkspace(String workspaceName){
-    return workspaceMap_.containsKey(workspaceName) ;
+    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
+    for(RepositoryEntry repo : rservice.getConfig().getRepositoryConfigurations() ) {
+     for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
+      if( ws.getName().equals(workspaceName)) return true ;
+     }
+    }
+    return false ;//workspaceMap_.containsKey(workspaceName) ;
   }
 
   protected WorkspaceEntry getWorkspace(String workspaceName) {
@@ -448,7 +454,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.repoName-not-alow", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ;
-
       }
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupAction.class) ;

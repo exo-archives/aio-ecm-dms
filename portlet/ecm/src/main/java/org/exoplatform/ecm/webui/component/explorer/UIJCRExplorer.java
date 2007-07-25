@@ -155,10 +155,10 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public boolean nodeIsLocked(String path, Session session) throws Exception {
-    if(getNodeByPath(path, session).isLocked()) return true;
-    return false ;
+    Node node = getNodeByPath(path, session) ;
+    return (node.isLocked() && !Utils.isLockOwner(node, session.getUserID())) ; 
   }
-
+  
   public boolean hasAddPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
