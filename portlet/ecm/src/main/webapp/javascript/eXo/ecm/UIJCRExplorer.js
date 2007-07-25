@@ -76,11 +76,9 @@ UIJCRExplorer.prototype.viewNodeScrollCallback = function() {
 };
 
 UIJCRExplorer.prototype.loadNodeTypeScroll = function() {
-	console.log("load nt scroll");
 	var jcr = eXo.ecm.UIJCRExplorer;
 	var uiPopup = document.getElementById("UINodeTypeInfoPopup");
 	if (uiPopup) {
-		console.log("found UINodeTypeInfoPopup");
 		jcr.ntScrollMgr = eXo.portal.UIPortalControl.newScrollManager();
 		jcr.ntScrollMgr.initFunction = jcr.initNodeTypeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiPopup, "div", "UIHorizontalTabs");
