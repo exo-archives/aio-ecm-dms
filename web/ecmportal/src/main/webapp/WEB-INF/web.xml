@@ -106,7 +106,7 @@
   </servlet-mapping>
 
   <session-config>
-    <session-timeout>3</session-timeout>
+    <session-timeout>15</session-timeout>
   </session-config>
 
   <security-constraint>
