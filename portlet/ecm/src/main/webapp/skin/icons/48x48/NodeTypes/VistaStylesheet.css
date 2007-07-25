@@ -113,6 +113,16 @@
   background: url('DefaultSkin/exo-template.gif') no-repeat;  
 }
 
+.exo_tag48x48Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/exo-tag.gif') no-repeat;  
+}
+
+.exo_tagStyle48x48Icon{
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/exo-tagStyle.gif') no-repeat;  
+}
+
 .exo_versionStorage48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/exo-versionStorage.gif') no-repeat;  
@@ -170,7 +180,7 @@
 
 .nt_folder48x48Icon {
   width: 48px; height: 48px;
-  background: url('VistaSkin/nt-folder.png') no-repeat;  
+  background: url('DefaultSkin/nt-folder.gif') no-repeat;  
 }
 
 .nt_frozenNode48x48Icon {
@@ -210,7 +220,7 @@
 
 .nt_unstructured48x48Icon {
   width: 48px; height: 48px;
-  background: url('VistaSkin/nt-unstructured.png') no-repeat;  
+  background: url('DefaultSkin/nt-unstructured.gif') no-repeat;  
 }
 
 .nt_version48x48Icon {
@@ -253,7 +263,107 @@
   background: url('DefaultSkin/doc.gif') no-repeat;  
 }
 
+.application_xls48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/xls.gif') no-repeat;  
+}
+
+.application_ppt48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/ppt.gif') no-repeat;  
+}
+
 .application_pdf48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/pdf.gif') no-repeat;  
 }
+
+.application_vnd_oasis_opendocument_text48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/odt.gif') no-repeat;  
+}
+
+.application_vnd_oasis_opendocument_spreadsheet48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/ods.gif') no-repeat;  
+}
+
+.application_vnd_oasis_opendocument_presentation48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/odp.gif') no-repeat;  
+}
+
+.application_zip48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/zip.gif') no-repeat;  
+}
+
+.application_rar48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/rar.gif') no-repeat;  
+}
+
+.text_rtf48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/rtf.gif') no-repeat;  
+}
+
+.text_xml48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/xml.gif') no-repeat;  
+}
+
+.text_plain48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/txt.gif') no-repeat;  
+}
+
+.image_jpeg48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/jpg.gif') no-repeat;  
+}
+
+.image_png48x48Icon {
+  width: 48px; height: 48px;
+  background: url('DefaultSkin/png.gif') no-repeat;  
+}
+
+.audio_mp348x48Icon {
+	width: 48px; height: 48px;
+  background: url('DefaultSkin/mp3.gif') no-repeat;
+}
+
+.image_gif48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/gif.gif') no-repeat;
+}
+
+.application_octet-stream48x48Icon {
+	width: 48px; height: 48px;
+  background: url('DefaultSkin/exe.gif') no-repeat;
+}
+
+.text_html48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/html.gif') no-repeat;
+ }
+ 
+.text_css48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/css.gif') no-repeat;
+ }
+ 
+.application_x-javascript48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/js.gif') no-repeat;
+ }
+ 
+.application_postscript48x48Icon {
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/ai.gif') no-repeat;
+ }
+ 
+ .image_bmp48x48Icon{
+ 	width: 48px; height: 48px;
+  background: url('DefaultSkin/bmp.gif') no-repeat;
+ }

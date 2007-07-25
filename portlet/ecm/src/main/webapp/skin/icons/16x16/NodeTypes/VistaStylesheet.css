@@ -131,6 +131,16 @@
   background: url('DefaultSkin/exo-template.gif') no-repeat;  
 }
 
+.exo_tag16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/exo-tag.gif') no-repeat;  
+}
+
+.exo_tagStyle16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/exo-tagStyle.gif') no-repeat;  
+}
+
 .exo_versionStorage16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/exo-versionStorage.gif') no-repeat;  
@@ -189,7 +199,11 @@
 .nt_folder16x16Icon {
   width: 21px; height: 24px;
   background: url('VistaSkin/nt-folder.png') no-repeat;  
-  border: 1px soild red;
+}
+
+.Collapsent_folder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/open-nt-folder.gif') no-repeat;  
 }
 
 .nt_frozenNode16x16Icon {
@@ -259,19 +273,18 @@
 
 .nt_versionLabels16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/nt-versionLabels.gif') no-repeat; 
+  background: url('DefaultSkin/nt-versionLabels.gif') no-repeat;  
 }
 
 .rma_filePlan16x16Icon {
   width: 16px;	height: 16px;
-  background: url('DefaultSkin/rma-filePlan.gif') no-repeat; 
+  background: url('DefaultSkin/rma-filePlan.gif') no-repeat;  
 }
 
 .kfx_document16x16Icon {
   width: 16px;	height: 16px;
   background: url('DefaultSkin/kfx-document.gif') no-repeat;  
 }
-
 /*############################## -- End NodeType Icon -- ########################*/
 .application_msword16x16Icon {
   width: 16px;	height: 16px;
@@ -328,9 +341,29 @@
   background: url('DefaultSkin/txt.gif') no-repeat;  
 }
 
+.audio_mp316x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/mp3.gif') no-repeat;  
+}
+
+.audio_mp416x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/mp4.gif') no-repeat;  
+}
+
 .text_xml16x16Icon {
   width: 16px;	height: 16px;
   background: url('DefaultSkin/xml.gif') no-repeat;  
+}
+
+.image_gif16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/gif.gif') no-repeat;  
+}
+
+.image_bmp16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/bmp.gif') no-repeat;  
 }
 
 .image_jpeg16x16Icon {
@@ -342,3 +375,29 @@
   width: 16px;	height: 16px;
   background: url('DefaultSkin/png.gif') no-repeat;  
 }
+
+.application_octet-stream16x16Icon {
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/exe.gif') no-repeat;
+}
+
+.text_html16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/html.gif') no-repeat;
+}
+ 
+.text_css16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/css.gif') no-repeat;
+}
+ 
+.application_x-javascript16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/js.gif') no-repeat;
+}
+
+.application_postscript16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/ai.gif') no-repeat;
+}
+

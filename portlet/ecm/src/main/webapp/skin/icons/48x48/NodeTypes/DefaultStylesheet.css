@@ -363,7 +363,7 @@
   background: url('DefaultSkin/ai.gif') no-repeat;
  }
  
-.application_octet-stream48x48Icon {
+ .image_bmp48x48Icon{
  	width: 48px; height: 48px;
-  background: url('DefaultSkin/psd.gif') no-repeat;
+  background: url('DefaultSkin/bmp.gif') no-repeat;
  }

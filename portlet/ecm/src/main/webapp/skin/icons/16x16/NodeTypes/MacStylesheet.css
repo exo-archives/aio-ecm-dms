@@ -11,11 +11,6 @@
   background: url('DefaultSkin/DefaultFolderIcon.gif') no-repeat;
 }
 
-.CBDefaultDocument16x16Icon {
-	width: 16px; height:16px;
-  background: url('DefaultSkin/DefaultDocumentIcon.gif') no-repeat;
-}
-
 .SelectFolder16x16Icon  {
 	width: 16px; height:16px;
   background: url('DefaultSkin/SmallSelectFolderIcon.gif') no-repeat;
@@ -24,6 +19,11 @@
 .NormalFolder16x16Icon  {
 	width: 16px; height:16px;
   background: url('DefaultSkin/SmallNormalFolderIcon.gif') no-repeat;
+}
+
+.CBDefaultDocument16x16Icon {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/DefaultDocumentIcon.gif') no-repeat;
 }
 
 .default16x16Icon {
@@ -201,6 +201,24 @@
   background: url('MacSkin/nt-folder.gif') no-repeat;  
 }
 
+.Collapsent_folder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/open-nt-folder.gif') no-repeat;  
+}
+
+
+.nt_unstructured16x16Icon {
+  background: url('MacSkin/nt-unstructured.gif') no-repeat;  
+  width: 24px;
+  height: 24px;
+}
+
+.Collapsent_unstructured16x16Icon {
+  background: url('MacSkin/open-nt-unstructured.gif') no-repeat; 
+  width: 24px;
+  height: 24px;
+}
+
 .nt_frozenNode16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/nt-frozenNode.gif') no-repeat;  
@@ -234,18 +252,6 @@
 .nt_resource16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/nt-resource.gif') no-repeat;  
-}
-
-.nt_unstructured16x16Icon {
-  background: url('MacSkin/nt-unstructured.gif') no-repeat;  
-  width: 24px;
-  height: 24px;
-}
-
-.Collapsent_unstructured16x16Icon {
-  background: url('MacSkin/open-nt-unstructured.gif') no-repeat; 
-  width: 24px;
-  height: 24px;
 }
 
 .nt_version16x16Icon {
@@ -282,7 +288,6 @@
   width: 16px;	height: 16px;
   background: url('DefaultSkin/kfx-document.gif') no-repeat;  
 }
-
 /*############################## -- End NodeType Icon -- ########################*/
 .application_msword16x16Icon {
   width: 16px;	height: 16px;
@@ -339,9 +344,29 @@
   background: url('DefaultSkin/txt.gif') no-repeat;  
 }
 
+.audio_mp316x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/mp3.gif') no-repeat;  
+}
+
+.audio_mp416x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/mp4.gif') no-repeat;  
+}
+
 .text_xml16x16Icon {
   width: 16px;	height: 16px;
   background: url('DefaultSkin/xml.gif') no-repeat;  
+}
+
+.image_gif16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/gif.gif') no-repeat;  
+}
+
+.image_bmp16x16Icon {
+  width: 16px;	height: 16px;
+  background: url('DefaultSkin/bmp.gif') no-repeat;  
 }
 
 .image_jpeg16x16Icon {
@@ -353,3 +378,29 @@
   width: 16px;	height: 16px;
   background: url('DefaultSkin/png.gif') no-repeat;  
 }
+
+.application_octet-stream16x16Icon {
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/exe.gif') no-repeat;
+}
+
+.text_html16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/html.gif') no-repeat;
+}
+ 
+.text_css16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/css.gif') no-repeat;
+}
+ 
+.application_x-javascript16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/js.gif') no-repeat;
+}
+
+.application_postscript16x16Icon {
+ 	width: 16px; height: 16px;
+  background: url('DefaultSkin/ai.gif') no-repeat;
+}
+
