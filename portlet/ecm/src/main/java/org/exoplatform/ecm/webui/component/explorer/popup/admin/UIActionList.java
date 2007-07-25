@@ -142,7 +142,7 @@ public class UIActionList extends UIContainer {
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIActionListContainer uiActionListContainer = uiActionList.getParent() ;
       UIPopupWindow uiPopup = uiActionListContainer.getChildById("editActionPopup") ;
-      if(uiPopup != null) {
+      if(uiPopup != null && uiPopup.isShow()) {
         UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.remove-popup-first", null, 
                                                 ApplicationMessage.WARNING)) ;
