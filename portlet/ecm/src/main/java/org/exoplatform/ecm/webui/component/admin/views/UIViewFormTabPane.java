@@ -31,7 +31,7 @@ import org.exoplatform.webui.form.UIFormTabPane;
       @EventConfig(listeners = UIViewFormTabPane.ResetActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.EditTabActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.DeleteTabActionListener.class),
-      @EventConfig(listeners = UIViewFormTabPane.ChangeVersionActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.RestoreActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewFormTabPane.CloseActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE)
@@ -137,14 +137,19 @@ public class UIViewFormTabPane extends UIFormTabPane {
     }
   }
 
-  static  public class ChangeVersionActionListener extends EventListener<UIViewFormTabPane> {
+  static  public class RestoreActionListener extends EventListener<UIViewFormTabPane> {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       uiViewTabPane.uiViewForm.changeVersion() ;
       UIViewContainer uiContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
       UIViewList uiViewList = uiContainer.findFirstComponentOfType(UIViewList.class) ;
       uiViewList.updateViewListGrid() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
+      uiViewTabPane.uiTabForm.refresh(true) ;
+      uiViewTabPane.uiViewForm.refresh(true) ;
+      uiViewTabPane.removeChildById(POPUP_PERMISSION) ;
+      UIViewContainer uiViewContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
+      uiViewContainer.removeChild(UIPopupWindow.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
     }
   }
 }

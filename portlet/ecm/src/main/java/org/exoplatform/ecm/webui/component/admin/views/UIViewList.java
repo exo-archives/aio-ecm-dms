@@ -151,7 +151,11 @@ public class UIViewList extends UIGrid {
       UIViewForm viewForm = viewTabPane.getChild(UIViewForm.class) ;
       viewForm.refresh(true) ;
       viewForm.update(viewNode, false, null) ;
-      viewForm.setActions(new String[]{"Save", "Cancel"}, null) ;
+      if(viewForm.getUIFormCheckBoxInput(UIViewForm.FIELD_ENABLEVERSION).isChecked()) {
+        viewForm.setActions(new String[]{"Save", "Restore", "Cancel"}, null) ;
+      } else {
+        viewForm.setActions(new String[]{"Save", "Cancel"}, null) ;
+      }
       viewForm.setActionInfo(UIViewForm.FIELD_PERMISSION, new String[] {"AddPermission"}) ;
       viewTabPane.getChild(UITabForm.class).setActions(new String[]{"Save"}, null) ;
       viewTabPane.setRenderedChild(UIViewForm.class) ;
