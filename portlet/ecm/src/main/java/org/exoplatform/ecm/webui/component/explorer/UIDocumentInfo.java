@@ -490,10 +490,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       String prefPath = uiExplorer.getPreferencesPath() ;
       String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
       if((prefPath.length() > 0) && (uiExplorer.getCurrentWorkspace().equals(prefWorkspace))) {
-        if(!uri.contains(prefPath)) {
-          JCRExceptionManager.process(uiApp,new PathNotFoundException());
-          return ;
-        }
         try {
           if ((".." + prefPath).equals(uri)) {
             if (prefPath.equals(uiExplorer.getCurrentNode().getPath())) {
@@ -505,7 +501,6 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
-          //e.printStackTrace() ;
           JCRExceptionManager.process(uiApp, e);
         }
       } else {
