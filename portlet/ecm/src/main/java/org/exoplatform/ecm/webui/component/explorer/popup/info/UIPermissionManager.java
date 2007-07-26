@@ -32,7 +32,6 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     addChild(UIPermissionInfo.class, null, null);    
     addChild(UIPermissionForm.class, null, null);    
   }
-
   public void initPopupPermission(UIComponent uiSelector) throws Exception {
     UIPopupWindow uiPopup = getChildById(UIPermissionForm.POPUP_SELECT) ;
     if(uiPopup == null) {
@@ -48,11 +47,17 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
   public void activate() throws Exception {
     getChild(UIPermissionInfo.class).updateGrid() ;
   }
-
   public void checkPermissonInfo(Node node) throws Exception {
-    if(!Utils.hasChangePermissionRight(node)) {
-      getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
-      getChild(UIPermissionForm.class).setRendered(false) ;
+    if(node.isLocked()){
+      if(!Utils.isLockTokenHolder(node)) {
+        getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
+        getChild(UIPermissionForm.class).setRendered(false) ;
+      }
+    } else {
+      if(!Utils.hasChangePermissionRight(node)) {
+        getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
+        getChild(UIPermissionForm.class).setRendered(false) ;
+      }
     }
   }
   public void deActivate() throws Exception {} 

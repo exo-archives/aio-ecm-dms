@@ -239,8 +239,10 @@ public class Utils {
     }  
     return children ;
   }
-  public static boolean isLockOwner(Node node, String userId) throws Exception {
-    if(node.isLocked()) return node.getLock().getLockOwner().equals(userId) ;    
+  public static boolean isLockTokenHolder(Node node) throws Exception {
+    for(String tk : node.getSession().getLockTokens()){
+      if(tk.equals(node.getLock().getLockToken())) return true ;
+    }
     return false ;
   }
   public static String getRepository() {

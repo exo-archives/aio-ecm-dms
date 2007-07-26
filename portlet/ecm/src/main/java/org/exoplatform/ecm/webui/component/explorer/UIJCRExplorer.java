@@ -58,7 +58,7 @@ public class UIJCRExplorer extends UIContainer {
 
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
   private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;
-  
+
   private Session session_ = null ;
   private PortletPreferences pref_ ;
   private Preference preferences_ = new Preference() ;
@@ -108,9 +108,8 @@ public class UIJCRExplorer extends UIContainer {
 
   public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }  
   
-  //TODO will be remove in future
   public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }  
-  
+
   public Session getSession() { return session_ ; }
   public void setSession(Session session) { this.session_ = session ; }  
 
@@ -155,9 +154,18 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean nodeIsLocked(String path, Session session) throws Exception {
     Node node = getNodeByPath(path, session) ;
-    return (node.isLocked() && !Utils.isLockOwner(node, session.getUserID())) ; 
+    if(node.isLocked()) {
+      return !Utils.isLockTokenHolder(node) ; 
+    }
+    return false ;
   }
-
+  
+  public boolean nodeIsLocked(Node node) throws Exception {
+    if(node.isLocked()) {
+      return !Utils.isLockTokenHolder(node) ; 
+    }
+    return false ;
+  }
   public boolean hasAddPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
