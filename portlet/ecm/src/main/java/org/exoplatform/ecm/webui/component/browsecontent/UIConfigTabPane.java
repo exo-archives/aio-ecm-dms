@@ -10,12 +10,15 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -41,12 +44,12 @@ public class UIConfigTabPane extends UIContainer {
     addChild(UINewConfigForm.class, null, null).setRendered(false) ;
     addChild(UIConfigContainer.class, null, null) ;
   }
-  
+
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     String[] workspaceNames = getApplicationComponent(RepositoryService.class)
-                             .getRepository(repository).getWorkspaceNames() ;
+    .getRepository(repository).getWorkspaceNames() ;
     for(String workspace:workspaceNames) {
       Options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
@@ -56,7 +59,7 @@ public class UIConfigTabPane extends UIContainer {
   public List<SelectItemOption<String>> getBoxTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> docTemplates = getApplicationComponent(ManageViewService.class)
-                             .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository) ;
+    .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository) ;
     for(Node template: docTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(), template.getName())) ;
     }
@@ -86,25 +89,25 @@ public class UIConfigTabPane extends UIContainer {
       uiQueryConfig.initForm(preference, repository, workspace, false) ;
       uiConfigContainer.setRenderedChild(UIQueryConfig.class) ;
     } else if(usecase.equals(Utils.CB_USE_SCRIPT)) { 
-       UIScriptConfig uiScriptConfig = uiConfigContainer.getChild(UIScriptConfig.class);
-       if(uiScriptConfig == null) { 
-         uiScriptConfig = uiConfigContainer.addChild(UIScriptConfig.class, null, null) ;
-         
-       }
+      UIScriptConfig uiScriptConfig = uiConfigContainer.getChild(UIScriptConfig.class);
+      if(uiScriptConfig == null) { 
+        uiScriptConfig = uiConfigContainer.addChild(UIScriptConfig.class, null, null) ;
+
+      }
       uiScriptConfig.initForm(preference, repository, workspace, false);
       uiConfigContainer.setRenderedChild(UIScriptConfig.class) ;
     } else if(usecase.equals(Utils.CB_USE_DOCUMENT)) {
       UIDocumentConfig uiDocumentConfig = uiConfigContainer.getChild(UIDocumentConfig.class) ;
-        if(uiDocumentConfig == null) {
-          uiDocumentConfig = uiConfigContainer.addChild(UIDocumentConfig.class, null, null) ;
-        }
+      if(uiDocumentConfig == null) {
+        uiDocumentConfig = uiConfigContainer.addChild(UIDocumentConfig.class, null, null) ;
+      }
       uiDocumentConfig.initForm(preference, repository, workspace, false);
       uiConfigContainer.setRenderedChild(UIDocumentConfig.class) ;
     }
     uiConfigContainer.setRendered(true) ;
   }
-  
-  
+
+
   public void showNewConfigForm(boolean isAddNew) throws Exception {
     UINewConfigForm uiConfigForm = getChild(UINewConfigForm.class) ;
     UIConfigContainer uiConfigContainer = getChild(UIConfigContainer.class) ;
@@ -126,9 +129,13 @@ public class UIConfigTabPane extends UIContainer {
     removeChildById(DOCUMENT_SELECTOR) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PATH_SELECTOR);
     uiPopup.setWindowSize(610, 300);
-    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
+    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;
+    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;   
     uiJCRBrowser.setRepository(repo) ;
     uiJCRBrowser.setIsDisable(workSpace, true) ;
+    if(SessionsUtils.isAnonim()) {
+      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider(providerService)) ;
+    }
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED} ;
     uiJCRBrowser.setFilterType(filterType) ;
     uiPopup.setUIComponent(uiJCRBrowser) ;
@@ -147,6 +154,10 @@ public class UIConfigTabPane extends UIContainer {
     uiJCRBrowser.setWorkspace(workSpace) ;
     uiJCRBrowser.setIsDisable(workSpace, true) ;
     uiJCRBrowser.setRootPath(path) ;
+    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;
+    if(SessionsUtils.isAnonim()) {
+      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider(providerService)) ;
+    }
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documents = templateService.getDocumentTemplates(repo) ;
     String [] filterType = new String[documents.size()];

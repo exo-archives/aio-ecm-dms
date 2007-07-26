@@ -5,7 +5,10 @@
 package org.exoplatform.ecm.webui.component;
 
 import org.exoplatform.ecm.jcr.ComponentSelector;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -26,12 +29,18 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   private String repository_ = null;
   private String wsName_ = null ;
   private boolean isDisable_ = false ;
+  private SessionProvider sessionProvider_ ; 
   
   public UIJCRBrowser() throws Exception {
     addChild(UIWorkspaceList.class, null, null) ;
     addChild(UITreeJCRExplorer.class, null, null) ;
-    addChild(UIDefaultListItem.class, null, null) ;
+    addChild(UIDefaultListItem.class, null, null) ;    
+    this.sessionProvider_ = 
+      SessionsUtils.getSessionProvider(getApplicationComponent(SessionProviderService.class)) ;
   }
+  
+  public void setSessionProvider(SessionProvider provider) { this.sessionProvider_ = provider ; }
+  public SessionProvider getSessionProvider() { return this.sessionProvider_ ; }
   
   public void setRootPath(String path) throws Exception{
     getChild(UITreeJCRExplorer.class).setRootPath(path) ;
@@ -58,6 +67,7 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   public boolean isDisable() { return isDisable_ ; }
   
   public void setWorkspace(String wsName) { wsName_ = wsName ; }
+  
   public String getWorkspace() throws Exception { 
     if(wsName_ == null || wsName_.trim().length() ==0) {
       String[] wsNames = 

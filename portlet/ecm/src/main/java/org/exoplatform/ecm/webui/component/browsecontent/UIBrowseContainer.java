@@ -28,10 +28,11 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
@@ -42,6 +43,9 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -90,7 +94,8 @@ public class UIBrowseContainer extends UIContainer{
   private String templatePath_ ;
   private String templateDetail_ ;
   private String categoryPath_ ;
-  private String usecase_ ;
+  private String usecase_ ;      
+
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
   @SuppressWarnings("unused")
@@ -99,14 +104,12 @@ public class UIBrowseContainer extends UIContainer{
     addChild(UIPageIterator.class, null, null) ;
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
-    addChild(UIDocumentDetail.class, null, null).setRendered(false) ;
-    //loadPortletConfig(getPortletPreferences()) ;
+    addChild(UIDocumentDetail.class, null, null).setRendered(false) ;    
   }
 
   public void  processRender(WebuiRequestContext context) throws Exception {
     try {
-      getApplicationComponent(RepositoryService.class).getRepository(getPortletPreferences().
-          getValue(Utils.REPOSITORY, "")) ;
+      getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
       super.processRender(context) ;
     } catch (Exception e) {
       context.getWriter().write("Can not load repository " + getPortletPreferences().
@@ -114,22 +117,71 @@ public class UIBrowseContainer extends UIContainer{
       return ;
     }
   }
+
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
+
+  public SessionProvider getSystemProvider() {            
+    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
+    return SessionsUtils.getSystemProvider(providerService) ;
+  }
+
+  public SessionProvider getAnonimProvider() {
+    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
+    return SessionsUtils.getAnonimProvider(providerService) ;
+  }
+
+  public SessionProvider getSessionProvider() {
+    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
+    return SessionsUtils.getSessionProvider(providerService) ;
+  }    
+
+  //TODO maybe need change name of this method
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
     usecase_ = preferences.getValue(Utils.CB_USECASE, "") ;
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
-    String repoName = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+    String repoName = getRepository() ;
+    String workspace = getWorkSpace() ;
+    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
+    if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName).getNode(tempName).getPath() ;
+      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+      Session querySession = null ;
+      if(SessionsUtils.isAnonim()) {
+        querySession = getAnonimProvider().getSession(workspace,manageableRepository) ;
+      }else {
+        querySession = getSessionProvider().getSession(workspace,manageableRepository) ;
+      }
+      if(!isShowDocumentByTag_) setPageIterator(getNodeByQuery(-1,querySession)) ;
+      return ;
+    } 
+    if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName).getNode(tempName).getPath() ;
+      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+      String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
+      if(!isShowDocumentByTag_) setPageIterator(getNodeByScript(repoName, scriptName)) ;
+      return ;
+    }    
+    Session session = null ;
+    String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
+    if(categoryPath.startsWith("/jcr:system")) {         
+      session = getSystemProvider().getSession(workspace,manageableRepository) ;
+    }else {
+      if(SessionsUtils.isAnonim()) {
+        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+      }else {
+        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
+      }
+    }
     if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName).getNode(tempName).getPath() ; 
-      String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-      if(rootNode_ == null || !rootNode_.getPath().equals(categoryPath)) {
-        rootNode_ = (Node) getSession().getItem(categoryPath) ;
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName).getNode(tempName).getPath() ;            
+      if(rootNode_ == null || !rootNode_.getPath().equals(categoryPath)) {        
+        rootNode_ = (Node)session.getItem(categoryPath) ;
         currentNode_ = rootNode_ ;
         selectedTab_ = rootNode_ ;
       }
@@ -141,25 +193,19 @@ public class UIBrowseContainer extends UIContainer{
         buildTree(getCurrentNode().getPath()) ;
       }
       if(!isShowDocumentByTag_) setPageIterator(getSubDocumentList(getSelectedTab())) ;
+      return ;
     } 
     if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
-      templateDetail_ = viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName).getNode(tempName).getPath() ;
-      String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-      Node documentNode = getNodeByPath(categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "")) ;
+      templateDetail_ = viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName).getNode(tempName).getPath() ;      
+      String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "") ;
+      Node documentNode = null;      
+      try{
+        documentNode = (Node)session.getItem(documentPath) ;
+      }catch (Exception e) { }      
       viewDocument(documentNode, false) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
-    } 
-    if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName).getNode(tempName).getPath() ;
-      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      if(!isShowDocumentByTag_) setPageIterator(getNodeByQuery(-1)) ;
-    } 
-    if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName).getNode(tempName).getPath() ;
-      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
-      if(!isShowDocumentByTag_) setPageIterator(getNodeByScript(repoName, scriptName)) ;
-    }
+      return ;
+    }     
   }
 
   public String getTemplate() {
@@ -174,11 +220,11 @@ public class UIBrowseContainer extends UIContainer{
   }
 
   public void newJCRTemplateResourceResolver() {
-    try{
-      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
-      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-      CmsConfigurationService cmsConfig  = getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = repositoryService.getRepository(repository).getSystemSession(cmsConfig.getWorkspace(repository)) ;
+    try{      
+      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
+      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
+      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
+      Session session = getSystemProvider().getSession(workspace,repository) ;         
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
     }catch(Exception e) {
       e.printStackTrace() ;
@@ -240,25 +286,38 @@ public class UIBrowseContainer extends UIContainer{
   public int getRowPerBlock() {return rowPerBlock_ ;}
   public TreeNode getTreeRoot() { return treeRoot_ ;}
   public void setTreeRoot(Node node) throws Exception { treeRoot_ = new TreeNode(node) ;}
-  public String[] getActions() { return new String[] {"back"} ;}
-  public Node getNodeByUUID(String uuid) throws Exception{ return getSession().getNodeByUUID(uuid);}
+  public String[] getActions() { return new String[] {"back"} ;}    
 
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
   public void record(String str) {nodesHistory_.add(str); } 
-
+  
   public Node getNodeByPath(String nodePath) throws Exception{
-    getSession().refresh(true) ;
+    Session session = null ;
+    ManageableRepository repository = 
+      getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
+    String workspace = getWorkSpace() ;
+    if(nodePath.indexOf("/jcr:system")>0) {
+      session = getSystemProvider().getSession(workspace,repository) ;
+    }else {
+      if(SessionsUtils.isAnonim()) {
+        session = getAnonimProvider().getSession(getWorkSpace(),repository) ;
+      }else {
+        session = getSessionProvider().getSession(workspace,repository) ;
+      } 
+    }    
     try{
-      return (Node)getSession().getItem(nodePath) ;
+      return (Node)session.getItem(nodePath) ;
     } catch(Exception e){
       return null  ;
     }
   }
+  
   public Node getRootNode() {return rootNode_ ;}
   public Node getCurrentNode() {
     if (currentNode_ == null) currentNode_ = getRootNode() ;
     return currentNode_ ;
   }
+  
   public Node getSelectedTab() throws Exception {
     if (selectedTab_ == null) selectedTab_ = getCurrentNode() ;
     return selectedTab_ ;
@@ -279,11 +338,6 @@ public class UIBrowseContainer extends UIContainer{
     return false ;
   }
 
-  public Session getSession() throws Exception {
-    Session session = getApplicationComponent(RepositoryService.class)
-    .getRepository(getRepository()).getSystemSession(getWorkSpace()) ;
-    return session ;
-  }
   public void setCurrentNode(Node node) throws Exception {currentNode_ = node ;}
   public void setSelectedTab (Node node) { selectedTab_ = node ;}
   public boolean isShowDocumentList() {return isShowDocumentList_ ;}
@@ -327,20 +381,29 @@ public class UIBrowseContainer extends UIContainer{
   public List getCurrentList() throws Exception {
     return getChild(UIPageIterator.class).getCurrentPageData() ;
   }
+  
   public int getNumberOfPage() {
     return getChild(UIPageIterator.class).getAvailablePage();
   }
+  
   public UIPageIterator getUIPageIterator() throws Exception {
     return getChild(UIPageIterator.class) ;
   }
+  
   public void setPageIterator(List<Node> data) throws Exception {
     ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
     getChild(UIPageIterator.class).setPageList(objPageList) ;
   }
 
-  public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
+  public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
-    QueryManager queryManager = getSession().getWorkspace().getQueryManager();
+    QueryManager queryManager = null ;
+    try{
+      queryManager = session.getWorkspace().getQueryManager();
+    }catch (Exception e) {
+      e.printStackTrace();
+      return queryDocuments ;
+    }           
     String queryStatiement = getQueryStatement() ;
     if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
       String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
@@ -578,18 +641,20 @@ public class UIBrowseContainer extends UIContainer{
   private RepositoryService getRepositoryService() { 
     return getApplicationComponent(RepositoryService.class) ;
   }
+
   private List<Node> getReferences(RepositoryService repositoryService, Node node, boolean isShowAll,
       int size, List templates) throws Exception {
-    List<Node> refDocuments = new ArrayList<Node>() ;
-
+    List<Node> refDocuments = new ArrayList<Node>() ;    
     String repository = getRepository() ;
+    ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+    SessionProvider provider = getSystemProvider() ;
     if(isEnableRefDocument() && isReferenceableNode(node)) {
       String uuid = node.getUUID() ;
-      String[] workspaces = repositoryService.getRepository(repository).getWorkspaceNames() ;
+      String[] workspaces = manageableRepository.getWorkspaceNames() ;
       int itemCounter = getRowPerBlock() - size ;
       if(isShowAll) itemCounter = getItemPerPage() - size ;
       for(String workspace : workspaces) {
-        Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+        Session session = provider.getSession(workspace,manageableRepository) ;
         try {
           Node taxonomyNode = session.getNodeByUUID(uuid) ;
           PropertyIterator iter = taxonomyNode.getReferences() ;
@@ -667,7 +732,7 @@ public class UIBrowseContainer extends UIContainer{
     history_.put(KEY_CURRENT, getCurrentNode());
     history_.put(KEY_SELECTED, getSelectedTab());
   }
-
+  
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
@@ -686,8 +751,8 @@ public class UIBrowseContainer extends UIContainer{
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-  }
-
+  }   
+  
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
@@ -711,7 +776,7 @@ public class UIBrowseContainer extends UIContainer{
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
       }*/
-      Node selectNode = uiContainer.getNodeByPath(objectId) ;
+      Node selectNode = uiContainer.getNodeByPath(objectId) ;      
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
@@ -767,7 +832,7 @@ public class UIBrowseContainer extends UIContainer{
         }
         uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ;
       }
-     
+
       if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }

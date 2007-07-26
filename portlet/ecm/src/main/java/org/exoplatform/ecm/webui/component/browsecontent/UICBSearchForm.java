@@ -82,8 +82,12 @@ public class UICBSearchForm extends UIForm {
     List<ResultData> resultList = new ArrayList<ResultData>() ;
     ResultData result ;
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
-    Session session = uiContainer.getSession() ;
-    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    QueryManager queryManager = null ;
+    try{
+      queryManager = currentNode.getSession().getWorkspace().getQueryManager() ;
+    }catch (Exception e) {
+      return resultList ;
+    }            
     duration_ = 0 ;
     String statement = StringUtils.replace(CATEGORY_QUERY, "$1", keyword);
     for(String type : Utils.CATEGORY_NODE_TYPES) {            
@@ -118,17 +122,23 @@ public class UICBSearchForm extends UIForm {
     String nodePath = currentNode.getPath() ;
     if(nodePath.equals("/")) nodePath = "" ;
     List<ResultData> resultList = new ArrayList<ResultData>() ;
+    QueryManager queryManager = null ;
+    try{
+      queryManager = currentNode.getSession().getWorkspace().getQueryManager() ;
+    }catch (Exception e) {
+      e.printStackTrace();
+      return resultList ;
+    }
     ResultData result ;
     String statement = StringUtils.replace(DOCUMENT_QUERY, "$1", keyword) ;
     statement = StringUtils.replace(statement, "$2", nodePath) ;    
-    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
-    Session session = uiContainer.getSession() ;
-    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;           
     duration_ = 0 ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    String repository = uiContainer.getRepository() ;
     List<String> documentNodeTypes = templateService.getDocumentTemplates(repository) ;
     documentNodeTypes.add("nt:resource") ;
+    //TODO need review this code to improve performance
     for(String ntDocument : documentNodeTypes) {            
       String queryStatement = StringUtils.replace(statement, "$0", ntDocument) ;      
       long beforeTime = System.currentTimeMillis();

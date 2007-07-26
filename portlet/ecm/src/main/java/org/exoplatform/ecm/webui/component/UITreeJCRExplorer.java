@@ -14,6 +14,7 @@ import javax.jcr.Session;
 
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -51,8 +52,9 @@ public class UITreeJCRExplorer extends UIContainer {
   
   public void buildTree() throws Exception {
     UIJCRBrowser uiJCRBrowser = getParent() ;
-    Session session = getApplicationComponent(RepositoryService.class)
-        .getRepository(uiJCRBrowser.getRepository()).getSystemSession(uiJCRBrowser.getWorkspace()) ;
+    String workspace = uiJCRBrowser.getWorkspace() ;
+    String repositoryName = uiJCRBrowser.getRepository() ;    
+    Session session = uiJCRBrowser.getSessionProvider().getSession(workspace,getRepository(repositoryName)) ;    
     Iterator sibbling = null ;
     Iterator children = null ;
     if(rootNode_ == null ) {
@@ -99,26 +101,25 @@ public class UITreeJCRExplorer extends UIContainer {
     super.renderChildren() ;
   } 
   
-  public void setRootPath(String path) throws Exception {
-    CmsConfigurationService cmsService = getApplicationComponent(CmsConfigurationService.class) ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    UIJCRBrowser uiJCRBrowser = getParent() ;
-    Session session = repositoryService.getRepository(uiJCRBrowser.getRepository()).getSystemSession(
-        cmsService.getWorkspace(uiJCRBrowser.getRepository())) ;
-    if(uiJCRBrowser.getWorkspace() != null) {
-      session = repositoryService.getRepository(uiJCRBrowser.getRepository())
-                                 .getSystemSession(uiJCRBrowser.getWorkspace()) ;
+  public void setRootPath(String path) throws Exception {         
+    UIJCRBrowser uiJCRBrowser = getParent() ;        
+    String workspace = uiJCRBrowser.getWorkspace() ;    
+    String repositoryName = uiJCRBrowser.getRepository() ;
+    ManageableRepository repository = getRepository(repositoryName) ;
+    if(workspace == null) {
+      workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
     }
+    Session session = uiJCRBrowser.getSessionProvider().getSession(workspace,repository) ;        
     rootNode_ = (Node) session.getItem(path) ;
     currentNode_ = rootNode_ ;
     changeNode(rootNode_) ;
   }
   
   public void setNodeSelect(String path) throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIJCRBrowser uiJCRBrowser = getParent() ;
-    Session session = repositoryService.getRepository(uiJCRBrowser.getRepository())
-    .getSystemSession(uiJCRBrowser.getWorkspace()) ;
+    String workspace = uiJCRBrowser.getWorkspace() ;
+    String repositoryName = uiJCRBrowser.getRepository() ;    
+    Session session = uiJCRBrowser.getSessionProvider().getSession(workspace,getRepository(repositoryName)) ;
     currentNode_ = (Node) session.getItem(path);
     if(!rootNode_.getPath().equals("/")) {
       if(currentNode_.getPath().equals(rootNode_.getParent().getPath())) currentNode_ = rootNode_ ;
@@ -128,7 +129,7 @@ public class UITreeJCRExplorer extends UIContainer {
     }
     changeNode(currentNode_) ;
   }
-  
+   
   public void setIsTab(boolean isTab) { isTab_ = isTab ; }
   
   public void changeNode(Node nodeSelected) throws Exception {
@@ -147,7 +148,12 @@ public class UITreeJCRExplorer extends UIContainer {
   }
   
   public Node getSelectedNode() { return currentNode_ ; }
-
+  
+  private ManageableRepository getRepository(String repositoryName) throws Exception{
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    return repositoryService.getRepository(repositoryName) ;
+  } 
+  
   static public class ChangeNodeActionListener extends EventListener<UITree> {
     public void execute(Event<UITree> event) throws Exception {
       UITreeJCRExplorer uiTreeJCR = event.getSource().getParent() ;

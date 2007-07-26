@@ -22,6 +22,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -212,6 +213,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       } else {
         uiContainer = uiForm.getParent() ;
       }
+      //TO DO why need load class here?
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
@@ -219,8 +221,11 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
       if(uiComp instanceof UIJCRBrowser) {
-        String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-        ((UIJCRBrowser)uiComp).setRepository(repository) ;
+        UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+        String repositoryName = explorer.getRepositoryName() ;
+        SessionProvider provider = explorer.getSessionProvider() ;                
+        ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
+        ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
         if(wsFieldName != null && wsFieldName.length() > 0) {
           String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;

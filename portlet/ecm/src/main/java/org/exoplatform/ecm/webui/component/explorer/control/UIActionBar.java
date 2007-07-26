@@ -705,6 +705,7 @@ public class UIActionBar extends UIForm {
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class) ;
       uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository)) ;
       UIJCRBrowser uiJCRBrowser = uiManager.getChild(UIJCRBrowser.class) ;
+      uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;
       uiJCRBrowser.setFilterType(null) ;
       uiJCRBrowser.setRepository(repository) ;
       uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), true) ;
@@ -759,6 +760,7 @@ public class UIActionBar extends UIForm {
       uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode(), session)) ;
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
+      uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;
       TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class) ;
       List<String> documentNodeType = tservice.getDocumentTemplates(repository) ;
       StringBuilder filters = new StringBuilder() ;

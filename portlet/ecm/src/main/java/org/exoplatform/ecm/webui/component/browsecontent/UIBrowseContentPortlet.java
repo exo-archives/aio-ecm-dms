@@ -47,12 +47,10 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     uiTabPane.setRendered(false) ;
   }
 
-  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
-    PortletPreferences portletPref = getPortletPreferences() ;
-    
+  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {    
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet') ;");
-    PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
+    PortletRequestContext portletReqContext = (PortletRequestContext)  context ;    
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
@@ -61,7 +59,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
         //uiContainer.loadPortletConfig(portletPref) ;
         uiTabPane.setRendered(false) ;
         uiContainer.setRendered(true) ;
-        getChild(UIBrowseContainer.class).getSession().refresh(true) ;
+        //getChild(UIBrowseContainer.class).getSession().refresh(true) ;
       } else {
         uiContainer.setRendered(false) ;
       }
@@ -85,6 +83,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       return false ;
     }
   }
+  
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;

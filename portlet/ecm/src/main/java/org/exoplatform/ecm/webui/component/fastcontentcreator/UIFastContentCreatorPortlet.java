@@ -9,8 +9,13 @@ import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -30,15 +35,19 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
     template =  "app:/groovy/webui/component/fastcontentcreator/UIFastContentCreatorPortlet.gtmpl"
 )
 public class UIFastContentCreatorPortlet extends UIPortletApplication {
-  
+
   public UIFastContentCreatorPortlet() throws Exception {
   }
-  
+
   public void initPopupJCRBrowser(String repositoryName, String workspaceName) throws Exception {
     removeChild(UIPopupWindow.class) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, null);
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
+    if(SessionsUtils.isAnonim()) {
+      SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;
+      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider(providerService)) ;
+    }
     uiJCRBrowser.setRepository(repositoryName) ;
     uiJCRBrowser.setIsDisable(workspaceName, true) ;
     uiPopup.setUIComponent(uiJCRBrowser);
@@ -47,8 +56,8 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
-  
-  public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
+
+  public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {    
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIFastContentCreatorPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
@@ -66,8 +75,8 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         String wsName = preferences.getValue("workspace", "") ;
         String nodePath = preferences.getValue("path", "") ;
         uiDialogForm.setTemplateNode(prefType) ;
-        RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-        Session session = repositoryService.getRepository(repo).getSystemSession(wsName) ; 
+        ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository(repo) ;
+        Session session = getSessionProvider().getSession(wsName,repository) ;
         Node node = (Node) session.getItem(nodePath) ;
         uiDialogForm.setDialogHomeNode(node) ;
         uiDialogForm.setRepository(repo) ;
@@ -85,5 +94,14 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
     super.processRender(app, context) ;
+  }
+
+  private SessionProvider getSessionProvider() {    
+    String userId = Util.getPortalRequestContext().getRemoteUser() ;    
+    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;        
+    if(userId == null) {
+      return SessionsUtils.getSessionProvider(providerService) ;
+    }
+    return SessionsUtils.getSessionProvider(providerService) ;
   }
 }

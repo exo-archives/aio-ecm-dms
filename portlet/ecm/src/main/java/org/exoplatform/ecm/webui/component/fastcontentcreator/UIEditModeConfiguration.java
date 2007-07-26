@@ -121,7 +121,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     PortletPreferences preferences = request.getPreferences() ;
     String defaultValue = preferences.getValue("type", "") ;
     try {
-      currentNode = (Node)session.getItem(nodePath) ;
+      currentNode = (Node)session.getItem(nodePath) ;      
     } catch(Exception ex) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.item-not-found", null, 

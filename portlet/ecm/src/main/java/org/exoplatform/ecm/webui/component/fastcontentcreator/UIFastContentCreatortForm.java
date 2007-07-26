@@ -77,13 +77,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     }
   }
   
-  public Node getCurrentNode() throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    PortletPreferences preferences = getPortletPreferences() ;
-    Session session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
-                                       .getSystemSession(preferences.getValue("workspace", "")) ;
-    return (Node) session.getItem(preferences.getValue("path", ""));
-  }
+  public Node getCurrentNode() throws Exception {  return dialogPortletHomeNode_ ; }
   
   public void setTemplateNode(String type) { documentType_ = type ; }
   

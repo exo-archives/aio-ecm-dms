@@ -240,7 +240,7 @@ public class Utils {
     return children ;
   }
   public static boolean isLockOwner(Node node, String userId) throws Exception {
-    if(node.isLocked()) return node.getLock().getLockOwner().equals(userId) ;
+    if(node.isLocked()) return node.getLock().getLockOwner().equals(userId) ;    
     return false ;
   }
   public static String getRepository() {

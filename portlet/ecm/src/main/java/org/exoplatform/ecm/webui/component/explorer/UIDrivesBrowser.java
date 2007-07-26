@@ -19,6 +19,7 @@ import javax.portlet.PortletPreferences;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
@@ -168,16 +169,9 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
       pref.setEmpty(false) ;
-      
-      String sessionId = Util.getPortalRequestContext().getSessionId() ;                 
+                            
       SessionProviderService sessionProviderService = uiDrive.getApplicationComponent(SessionProviderService.class) ;
-      SessionProvider provider = null ;
-      try{
-        provider = sessionProviderService.getSessionProvider(sessionId) ;
-      }catch (NullPointerException e) {
-        provider = new SessionProvider(null) ;
-        sessionProviderService.setSessionProvider(sessionId,provider) ;
-      }            
+      SessionProvider provider = SessionsUtils.getSessionProvider(sessionProviderService) ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Session session = provider.getSession(drive.getWorkspace(),repository) ;
       uiJCRExplorer.setSessionProvider(provider) ;
