@@ -17,7 +17,7 @@
   else {
 		jsmanager.importJavascript('eXo.portal.UIBrowseContent');
 		jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
-		jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
+		//jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
 		
     Node rootNode = uicomponent.getRootNode() ;
     Node currentNode = uicomponent.getCurrentNode() ;

@@ -8,8 +8,8 @@
   def rcontext = _ctx.getRequestContext() ;
 	JavascriptManager jsmanager = rcontext.getJavascriptManager();
 	jsmanager.importJavascript('eXo.portal.UIBrowseContent');
-	jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
-	jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
+	jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete()');
+	//jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.initScroll()');
 	
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">

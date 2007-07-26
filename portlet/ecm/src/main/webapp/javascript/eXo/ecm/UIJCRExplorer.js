@@ -1,46 +1,14 @@
 
 function UIJCRExplorer() {
-	this.vnScrollMgr = null;
-	this.ntScrollMgr = null;
+	this.vnScrollMgr = null; // View FilePlan Node
+	this.ntScrollMgr = null; // Node Type Popup
 };
-
-//UIJCRExplorer.prototype.addCallBackToViewNodeLink = function() {
-//	var rootElement = document.getElementById("UIJCRExplorer");
-//	var searchResult = eXo.core.DOMUtil.findFirstDescendantByClass(rootElement, "div", "UISearchResult");
-//	if (searchResult) {
-//		var links = searchResult.getElementsByTagName("a");
-//		for (var i=0; i<links.length; i++) {
-//			var link = links[i];
-//			var url = link.href;
-//			if (url && url.indexOf('op=View') != -1 && url.indexOf('loadViewNodeScroll') == -1) {
-//				url = url.substr(0, url.length-1).concat(", eXo.ecm.UIJCRExplorer.loadViewNodeScroll)");
-//	  		link.href = url;
-//			}
-//		}
-//	}
-//};
-
-//UIJCRExplorer.prototype.addCallBackToNodeTypeLink = function() {
-//	var rootElement = document.getElementById("UIJCRExplorer");
-//	var actionBar = eXo.core.DOMUtil.findFirstDescendantByClass(rootElement, "div", "UIActionBar");
-//	if (actionBar) {
-//		var links = actionBar.getElementsByTagName("a");
-//		for (var i=0; i<links.length; i++) {
-//			var link = links[i];
-//			var url = link.href;
-//			if (url && url.indexOf('ViewNodeType') != -1 && url.indexOf('loadNodeTypeScroll') == -1) {
-//				url = url.substr(0, url.length-1).concat(", eXo.ecm.UIJCRExplorer.loadNodeTypeScroll)");
-//	  		link.href = url;
-//			}
-//		}
-//	}
-//};
 
 UIJCRExplorer.prototype.loadViewNodeScroll = function(e) {
 	var jcr = eXo.ecm.UIJCRExplorer;
 	var uiFilePlanView = document.getElementById("UIFilePlanView");
 	if (uiFilePlanView) {
-		jcr.vnScrollMgr = eXo.portal.UIPortalControl.newScrollManager();
+		jcr.vnScrollMgr = eXo.portal.UIPortalControl.newScrollManager("UIFilePlanView");
 		jcr.vnScrollMgr.initFunction = jcr.initViewNodeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiFilePlanView, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
@@ -79,7 +47,7 @@ UIJCRExplorer.prototype.loadNodeTypeScroll = function() {
 	var jcr = eXo.ecm.UIJCRExplorer;
 	var uiPopup = document.getElementById("UINodeTypeInfoPopup");
 	if (uiPopup) {
-		jcr.ntScrollMgr = eXo.portal.UIPortalControl.newScrollManager();
+		jcr.ntScrollMgr = eXo.portal.UIPortalControl.newScrollManager("UINodeTypeInfoPopup");
 		jcr.ntScrollMgr.initFunction = jcr.initNodeTypeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiPopup, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
