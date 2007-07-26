@@ -384,6 +384,11 @@
   background: url('MacSkin/Cut.gif') no-repeat ;   
 }
 
+.Custom16x16Icon {
+  width: 16px; height: 16px;
+  background: url('MacSkin/AquaBlueAddSign.gif') no-repeat ;   
+}
+
 .Rename16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Rename.gif') no-repeat ;   

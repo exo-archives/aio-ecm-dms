@@ -8,6 +8,42 @@
 
 @import url("NodeTypes/DefaultStylesheet.css");
 
+.AddAnyIcon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
+  cursor: pointer;
+}
+
+.AddIcon16x16 {
+  float:left;
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  cursor: pointer;
+}
+
+.AddIconIcon {
+  float: left ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.AddPathIcon {
+  float: left ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/AddPath.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.AddPermissionIcon {
+  float:left;
+	width: 16px; height: 16px;
+  margin: 2px 4px 0px 4px;
+  background: url('DefaultSkin/SelectPermission.gif') no-repeat; 
+  cursor: pointer;
+}
+
+
 .Icon16x16 {
 	float: left;
 }
@@ -25,35 +61,6 @@
 .UIGrid .EditInfoIcon {
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/Edit.gif') no-repeat ;
-}
-
-.AddIcon16x16 {
-  float:left;
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
-  cursor: pointer;
-}
-
-.AddPathIcon {
-  float: left ;
-	width: 16px;	height: 16px;
-  background: url('DefaultSkin/AddPath.gif') no-repeat ;
-  cursor: pointer;
-}
-
-.AddIconIcon {
-  float: left ;
-	width: 16px;	height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;
-  cursor: pointer;
-} 
-
-.AddPermissionIcon {
-  float:left;
-	width: 16px; height: 16px;
-  margin: 2px 4px 0px 4px;
-  background: url('DefaultSkin/SelectPermission.gif') no-repeat; 
-  cursor: pointer;
 }
  
 .PermissionIcon16x16 {
@@ -84,11 +91,7 @@
   cursor: pointer;
 }
 
-.AddAnyIcon {
-	width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
-  cursor: pointer;
-}
+
 
 .SelectUserIcon {
 	width: 16px; height: 16px;
@@ -349,11 +352,11 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }
+/*   float: left; */
 
 .Delete16x16Icon {
-  float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/DustBin.gif') no-repeat ;   
+  background: url('DefaultSkin/DustBin.gif') no-repeat ;  
 }
 
 .Locked16x16Icon {
@@ -448,6 +451,12 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
 }
+
+.Custom16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;
+}
+
 
 .AddView16x16Icon {
   width: 16px; height: 16px;

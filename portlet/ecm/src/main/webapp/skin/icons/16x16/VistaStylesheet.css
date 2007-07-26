@@ -355,97 +355,103 @@
 
 .WebDAV16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Webdav.png') no-repeat center ; 
+  background: url('VistaSkin/Webdav.png') no-repeat left center ; 
 }
 
 .Copy16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Copy.png') no-repeat ;   
+  background: url('VistaSkin/Copy.png') no-repeat left center ; 
 }
 
 .Cut16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Cut.png') no-repeat ;   
+  background: url('VistaSkin/Cut.png') no-repeat left center ; 
 }
 
 .Rename16x16Icon {
   width: 16px; height: 16px;
-  background: url('VistaSkin/Rename.gif') no-repeat ;   
+  background: url('VistaSkin/Rename.gif') no-repeat left center ; 
 }
 
 .Edit16x16Icon {
   float: left;
   width: 24px; height: 24px;
-  background: url('VistaSkin/Edit.png') no-repeat ;
+  background: url('VistaSkin/Edit.png') no-repeat left center ; 
   cursor: pointer;   
 }
 
 .EditDocument16x16Icon {
   width:24px; height:20px;
-  background: url('VistaSkin/Edit.png') no-repeat ;
+  background: url('VistaSkin/Edit.png') no-repeat left center ; 
   cursor: pointer;   
 }
 
 .Save16x16Icon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/Save.png') no-repeat ;   
+  background: url('VistaSkin/Save.png') no-repeat left center ; 
 }
 
 .Search16x16Icon { 
   width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/SearchPage.gif') no-repeat;  
+  background: url('DefaultSkin/SearchPage.gif') no-repeat left center ; 
 }
 
 .AddRule16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
 }
 
 .AddAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
 }
 
 .AddNameSpace16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
 }
 
 .AddNew16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
 }
 
 .AddDrive16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
 }
 
 .AddView16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+}
+
+.Custom16x16Icon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/AddNodeIcon.png') no-repeat left center ; 
 }
 
 .Paste16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Paste.png') no-repeat ;
+  background: url('VistaSkin/Paste.png') no-repeat left center ; 
 }
+
 .Select16x16Icon {
   width: 16px; height: 16px;
-  background-image: url('VistaSkin/SelectIcon.gif');  
+  background-image: url('VistaSkin/SelectIcon.gif') no-repeat left center ;   
 }
 
 .Export16x16Icon {
-  background-image: url('DefaultSkin/Export.gif');  
+  background-image: url('DefaultSkin/Export.gif') no-repeat left center ; 
 }
 
 .Import16x16Icon {
-  background-image: url('DefaultSkin/Import.gif');  
+  background-image: url('DefaultSkin/Import.gif') no-repeat left center ; 
 }
 
 .Active16x16Icon {
   width: 16px; height: 16px;
-  background-image: url('DefaultSkin/SelectPage.gif');  
+  background-image: url('DefaultSkin/SelectPage.gif') no-repeat left center ; 
 }
 /*############################## -- End Action Icon  -- ##############################*/
 
