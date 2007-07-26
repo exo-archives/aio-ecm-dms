@@ -60,7 +60,7 @@
 }
 
 .UIEventViewer .EventContent .EventAuthorNameLabel {
-	text-align: left;
+	text-align: right;
 	width: 45%;
 	color: gray;
   line-height: 16px; 

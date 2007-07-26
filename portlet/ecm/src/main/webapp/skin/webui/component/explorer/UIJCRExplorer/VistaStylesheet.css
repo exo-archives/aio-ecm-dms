@@ -649,6 +649,10 @@
 	border: none;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
+  width: auto;
+}
+
 .UIJCRExplorerPortlet .UIImportNode .SelectFileFrame  {
 	margin: 0px;
 }
@@ -690,12 +694,9 @@
 	padding: 30px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet input {
-  float: left;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
   margin-left: 5px;
+  float: none;
 }
 
 .UIJCRExplorerPortlet .UIPermissionForm .UIForm .UIAction{

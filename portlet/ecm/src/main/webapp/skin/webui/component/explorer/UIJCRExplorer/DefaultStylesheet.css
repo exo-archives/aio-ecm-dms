@@ -668,15 +668,6 @@
   padding-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIFormGrid input {
-  float: left;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormGrid .FieldComponent .ActionIcon {
-  margin: 0px 5px 0px 238px;
-  float: none;
-}
-
 /*================================UIActionList=================================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
@@ -733,6 +724,10 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
+  width: auto;
+}
+
 /*================================UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {
@@ -777,12 +772,9 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet input {
-  float: left;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
   margin-left: 5px;
+  float: none;
 }
 
 /*================================DecoratorBoxNested=================================*/

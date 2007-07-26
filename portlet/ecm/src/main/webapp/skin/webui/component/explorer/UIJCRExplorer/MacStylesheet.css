@@ -656,12 +656,9 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .UIFormGrid input {
-  float: left;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
   margin-left: 5px;
+  float: none;
 }
 
 /*================================UIMetadataSelectForm=================================*/
@@ -857,6 +854,10 @@
 
 .UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle {
   border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
+  width: auto;
 }
 
 /*================================.UIReferencesList=================================*/

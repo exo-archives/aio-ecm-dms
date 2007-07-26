@@ -16,7 +16,6 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar {
   height: 30px;
-  background: url('VistaSkin/background/LineDecorator1x30.gif') repeat-x center center;
   border-bottom: solid 1px #c5c9d2;
   line-height: 30px;
   font-size:11px;
@@ -180,16 +179,6 @@
 
 /*############################## -- End UIAddressBar -- ##############################*/
 /*############################## -- Begin UIActionBar -- ##############################*/
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input {
-  padding-left: 3px;
-  border: solid 1px gray;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.radio {
-  float: none;
-  border: none;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid input.checkbox {
   border: none;

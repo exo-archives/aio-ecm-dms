@@ -19,7 +19,7 @@
 }
 
 .UISubContent .TopSubContent {
-  margin-top: 5px;
+  margin: 5px 0px;
   font-weight: bold; font-size: 11px;
   height: 19px;
 }
