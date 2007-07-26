@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 
 /**
@@ -30,8 +31,13 @@ public class JcrSessionListener implements HttpSessionListener {
     PortalContainer pcontainer = 
       RootContainer.getInstance().getPortalContainer(context.getServletContextName()) ;
     PortalContainer.setInstance(pcontainer) ;       
-    SessionProviderService providerService = (SessionProviderService)pcontainer.getComponentAdapterOfType(SessionProviderService.class) ;    
+    SessionProviderService providerService = (SessionProviderService)pcontainer.getComponentAdapterOfType(SessionProviderService.class) ;
+//  remove all SystemSessionProvider & AnonimSessionProvider
+    String systemKey = session.getId() + ":/" + SystemIdentity.SYSTEM ;
+    String anonimKey = session.getId() + ":/" + SystemIdentity.ANONIM ;
     providerService.removeSessionProvider(session.getId()) ;
+    providerService.removeSessionProvider(systemKey) ;
+    providerService.removeSessionProvider(anonimKey) ;       
     PortalContainer.setInstance(null) ;           
   }
 
