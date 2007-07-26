@@ -17,9 +17,12 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.Task;
@@ -44,6 +47,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
 import org.exoplatform.workflow.webui.component.UIFormWYSIWYGInput;
@@ -149,6 +153,8 @@ public class UITask extends UIForm {
     }
     String workspaceName = (String) variablesForService.get(WORKSPACE_VARIABLE);
     String repository = (String) variablesForService.get(REPOSITORY_VARIABLE);
+    ManageableRepository mRepository = jcrService.getRepository(repository) ;
+    SessionProvider sessionProvider = Utils.getSessionProvider() ;
     List variables = form.getVariables();
     UIFormInput input = null;
     int i = 0;
@@ -169,8 +175,8 @@ public class UITask extends UIForm {
       Object value = variablesForService.get(name);
       if (NODE_EDIT.equals(component)) {
         UIDocumentForm uiDocForm = createUIComponent(UIDocumentForm.class, null, null) ;
-        String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
-        Node dialogNode = (Node) jcrService.getRepository(repository).getSystemSession(workspaceName).getItem(nodePath);
+        String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);          
+        Node dialogNode = (Node) sessionProvider.getSession(workspaceName,mRepository).getItem(nodePath);
         String nodetype = dialogNode.getPrimaryNodeType().getName();
         uiDocForm.setNode(dialogNode);
         uiDocForm.setTemplateNode(nodetype) ;
@@ -181,7 +187,7 @@ public class UITask extends UIForm {
         uiDocForm.setRendered(false) ;
       } else if (NODE_VIEW.equals(component)) {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);
-        Node viewNode = (Node) jcrService.getRepository(repository).getSystemSession(workspaceName).getItem(nodePath);
+        Node viewNode = (Node) sessionProvider.getSession(workspaceName,mRepository).getItem(nodePath);
         UIDocumentContent uiDocContent = createUIComponent(UIDocumentContent.class, null, null) ;
         uiDocContent.setNode(viewNode);
         uiTaskManager.addChild(uiDocContent) ;

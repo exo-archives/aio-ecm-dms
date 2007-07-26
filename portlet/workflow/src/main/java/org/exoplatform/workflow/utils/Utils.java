@@ -4,24 +4,19 @@
  **************************************************************************/
 package org.exoplatform.workflow.utils;
 
-import java.security.AccessControlException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
-import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.core.ExtendedNode;
-import org.exoplatform.services.organization.Membership;
-import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
@@ -34,42 +29,9 @@ import org.exoplatform.webui.form.UIFormUploadInput;
  * Jun 13, 2007 9:00:45 AM
  */
 public class Utils {
-  final public static String WORKSPACE_NAME = "workspace".intern() ;   
-  final public static String JCR_PATH = "path".intern() ; 
-  final public static String DRIVE_FOLDER = "allowCreateFolder".intern() ; 
   
-  final public static String CB_DOCUMENT_NAME = "documentName".intern() ;
-  final public static String CB_SCRIPT_NAME = "scriptName".intern() ;
-  final public static String CB_REF_DOCUMENT = "reference".intern() ;  
-  final public static String CB_CHILD_DOCUMENT = "child".intern();
-  final public static String CB_NB_PER_PAGE = "nbPerPage".intern() ;
-  final public static String CB_QUERY_STATEMENT = "queryStatement".intern() ;
-  final public static String CB_QUERY_ISNEW = "isAddNew".intern() ;
-  final public static String CB_QUERY_TYPE = "queryType".intern() ;
-  final public static String CB_QUERY_STORE = "queryStore".intern() ;
-  final public static String CB_QUERY_LANGUAGE = "queryLanguage".intern() ;
-  final public static String CB_VIEW_TOOLBAR = "viewToolbar".intern();
-  final public static String CB_VIEW_TAGMAP = "viewTagMap".intern();
-  final public static String CB_VIEW_COMMENT = "viewComment".intern();
-  final public static String CB_VIEW_VOTE= "viewVote".intern();
-  
-  final public static String CB_BOX_TEMPLATE = "boxTemplate".intern();   
-  final public static String CB_TEMPLATE = "template" ;
-  final public static String CB_USECASE = "usecase".intern() ;
-  
-  final public static String FROM_PATH = "From Path".intern() ;
-  final public static String USE_DOCUMENT = "Document".intern() ;
-  final public static String USE_JCR_QUERY = "Using a JCR query".intern() ;
-  final public static String USE_SCRIPT = "Using a script".intern() ;
-  
-  final public static String CB_USE_FROM_PATH = "path".intern() ;
-  final public static String CB_USE_DOCUMENT = "detail-document".intern() ;
-  final public static String CB_USE_JCR_QUERY = "query".intern() ;
-  final public static String CB_USE_SCRIPT = "script".intern() ;  
-  
-  final public static String SEMI_COLON = ";".intern() ;
-  final public static String COLON = ":".intern() ;
-  final public static String SLASH = "/".intern() ;
+  public static String SYSTEM_SUFFIX = ":/" + SystemIdentity.SYSTEM ;
+  public static String ANONIM_SUFFIX = ":/" + SystemIdentity.ANONIM ;
   
   final public static String REPOSITORY = "repository".intern() ;
   final public static String VIEWS = "views".intern() ;
@@ -103,52 +65,7 @@ public class Utils {
   final static public String MIX_LOCKABLE = "mix:lockable" ;
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;
-  final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
-  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;
-  public Map<String, Object> maps_ = new HashMap<String, Object>() ;
 
-  public static String encodeHTML(String text) {
-    return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
-               .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
-  }
-  
-  public static boolean isVersionable(Node node) throws RepositoryException {
-    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType(JCR_FROZEN);
-  }
-  
-  public static boolean isReadAuthorized(Node node) throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(PermissionType.READ);
-      return true;
-    } catch(AccessControlException e) {
-      return false;
-    }    
-  }
-  
-  public static boolean isNameValid(String name, String[] regexpression) {
-    for(String c : regexpression){ if(name.contains(c)) return false ;}
-    return true ;
-  }
-  
-  public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
-    String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
-    StringBuilder str = new StringBuilder(nodeType) ;
-    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
-    if(node.isNodeType(NT_FILE)) {
-      Node jcrContentNode = node.getNode(JCR_CONTENT) ;
-      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceAll("/|\\.","_")).append(appended);
-    }
-    return str.toString() ;
-  }
-  
-  public static String getNodeTypeIcon(Node node, String appended) throws RepositoryException {
-    return getNodeTypeIcon(node, appended, null) ;
-  }
-  
-  public String getPropertyName(String jcrPath) { 
-    return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
-  }
-  
   @SuppressWarnings({"unchecked", "unused"})
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
@@ -185,19 +102,43 @@ public class Utils {
     return rawinputs;
   }
   
- public static List<String> getMemberships() throws Exception {
-   String userId = Util.getPortalRequestContext().getRemoteUser() ;
-   OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
-   List<String> userMemberships = new ArrayList<String> () ;
-   userMemberships.add(userId) ;
-   Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId) ;
-   if(memberships == null || memberships.size() < 0) return userMemberships ;
-   Object[] objects = memberships.toArray() ;
-   for(int i = 0 ; i < objects.length ; i ++ ){
-     Membership membership = (Membership)objects[i] ;
-     String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
-     userMemberships.add(role) ;     
-   }
-   return userMemberships ;
- }
+  public static SessionProvider getSystemProvider() {   
+    String key = Util.getPortalRequestContext().getSessionId() + SYSTEM_SUFFIX;
+    return getJcrSessionProvider(key) ;
+  }    
+
+  public static SessionProvider getSessionProvider() {    
+    String key = Util.getPortalRequestContext().getSessionId();
+    return getJcrSessionProvider(key) ;
+  }
+  
+  public static SessionProvider getAnonimProvider() {
+    String key = Util.getPortalRequestContext().getSessionId() + ANONIM_SUFFIX ;
+    return getJcrSessionProvider(key) ;
+  } 
+
+  private static SessionProvider getJcrSessionProvider(String key) {    
+    SessionProviderService service = 
+      (SessionProviderService)PortalContainer.getComponent(SessionProviderService.class) ;    
+    SessionProvider sessionProvider = null ;    
+    try{
+      sessionProvider = service.getSessionProvider(key) ;
+      return sessionProvider ;
+    }catch (NullPointerException e) {
+      if(key.indexOf(SYSTEM_SUFFIX)>0) {
+        sessionProvider = SessionProvider.createSystemProvider() ;
+        service.setSessionProvider(key,sessionProvider) ;
+        return sessionProvider ;
+      }else if(key.indexOf(ANONIM_SUFFIX)>0) {
+        sessionProvider = SessionProvider.createAnonimProvider() ;
+        service.setSessionProvider(key,sessionProvider) ;
+        return sessionProvider ;
+      }else {
+        sessionProvider = new SessionProvider(null) ;
+        service.setSessionProvider(key,sessionProvider) ;
+        return sessionProvider ;
+      }
+    }   
+  }
+  
 }

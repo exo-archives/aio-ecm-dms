@@ -21,6 +21,7 @@ import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -116,11 +117,11 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   
   private Node getNodeByUUID(String uuid, String repository) throws Exception{ 
     ManageableRepository manageRepo = 
-      getApplicationComponent(RepositoryService.class).getRepository(repository) ;
-    String[] workspaces = manageRepo.getWorkspaceNames() ;
-    for(String ws : workspaces) {
+      getApplicationComponent(RepositoryService.class).getRepository(repository) ;    
+    SessionProvider sessionProvider = Utils.getSessionProvider();
+    for(String ws : manageRepo.getWorkspaceNames()) {
       try{
-        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+        return sessionProvider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
       }catch(Exception e) {        
       }      
     }
