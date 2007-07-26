@@ -106,7 +106,7 @@ public class UIBrowseContainer extends UIContainer{
     addChild(UIDocumentDetail.class, null, null).setRendered(false) ;    
   }
 
-  public void  processRender(WebuiRequestContext context) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     try {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
       super.processRender(context) ;

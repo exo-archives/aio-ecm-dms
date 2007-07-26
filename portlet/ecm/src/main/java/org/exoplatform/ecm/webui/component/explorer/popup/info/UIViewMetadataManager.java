@@ -41,6 +41,8 @@ public class UIViewMetadataManager extends UIContainer implements UIPopupCompone
     uiForm.getChildren().clear() ;
     uiForm.setNodeType(nodeType) ;
     uiForm.setIsNotEditNode(true) ;
+    uiForm.setWorkspace(getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace()) ;
+    uiForm.setStoredPath(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getPath()) ;
     uiForm.setPropertyNode(getViewNode(nodeType)) ;
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setRendered(true);

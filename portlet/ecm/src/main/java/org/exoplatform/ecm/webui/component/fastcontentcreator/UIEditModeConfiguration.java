@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
@@ -122,7 +123,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     String defaultValue = preferences.getValue("type", "") ;
     try {
       currentNode = (Node)session.getItem(nodePath) ;      
-    } catch(Exception ex) {
+    } catch(PathNotFoundException ex) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.item-not-found", null, 
                                               ApplicationMessage.WARNING)) ;

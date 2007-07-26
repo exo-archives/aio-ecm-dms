@@ -113,6 +113,8 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
       e.printStackTrace() ;
     }
     getChild(UIDocumentForm.class).setTemplateNode(defaultDocument_) ;
+    getChild(UIDocumentForm.class).setWorkspace(uiExplorer.getCurrentWorkspace()) ;
+    getChild(UIDocumentForm.class).setStoredPath(currentNode.getPath()) ;
     getChild(UIDocumentForm.class).resetProperties();
   }
 

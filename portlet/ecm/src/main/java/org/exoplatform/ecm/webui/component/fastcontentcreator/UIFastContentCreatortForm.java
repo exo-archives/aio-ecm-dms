@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.version.VersionException;
@@ -79,7 +80,13 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     }
   }
   
-  public Node getCurrentNode() throws Exception {  return dialogPortletHomeNode_ ; }
+  public Node getCurrentNode() throws Exception {  
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    PortletPreferences preferences = getPortletPreferences() ;
+    Session session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
+                                       .getSystemSession(preferences.getValue("workspace", "")) ;
+    return (Node) session.getItem(preferences.getValue("path", ""));
+  }
   
   public void setTemplateNode(String type) { documentType_ = type ; }
   
@@ -127,13 +134,14 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     Node homeNode = null;
     try {
       homeNode = (Node) session.getItem(prefLocate);
-    } catch(Exception e) {
+    } catch(PathNotFoundException pnfe) {
       Object[] args = { prefLocate } ;
-      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.access-denied", args, 
+      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.path-not-found", args, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
+      return null ;
     }
+    
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;
@@ -155,9 +163,10 @@ public class UIFastContentCreatortForm extends DialogFormFields {
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
-    } catch(Exception e) {
-      String key = "UIFastContentCreatortForm.msg.cannot-save" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+    } catch(AccessDeniedException e) {
+      Object[] args = { prefLocate } ;
+      String key = "UIFastContentCreatortForm.msg.access-denied" ;
+      uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } finally {

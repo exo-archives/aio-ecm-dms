@@ -17,10 +17,8 @@ import javax.jcr.Node;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -56,11 +54,12 @@ public class DialogFormFields extends UIForm {
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
   public Map<String, String> fieldNames_ = new HashMap<String, String>() ;
   protected Node node_ = null;
-  protected Node dialogPortletHomeNode_ = null ;
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
   private boolean isResetMultiField_ = false ;
+  private String workspace_ = null ;
+  private String storedPath_ = null ;
   private boolean isOnchange_ = false ;
   protected boolean isUpdateSelect_ = false ;
   protected String repository_ = null ;
@@ -116,7 +115,9 @@ public class DialogFormFields extends UIForm {
   public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
   public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
   
-  public void setDialogHomeNode(Node node) { dialogPortletHomeNode_ = node ; }
+  public void setWorkspace(String workspace) { workspace_ = workspace ; }
+  public void setStoredPath(String storedPath) { storedPath_ = storedPath ; }
+  
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
@@ -865,16 +866,7 @@ public class DialogFormFields extends UIForm {
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
-      String workspace ;
-      String storePath ;
-      if(dialogForm.dialogPortletHomeNode_ != null) {
-        storePath = dialogForm.dialogPortletHomeNode_.getPath() ;
-        workspace = dialogForm.dialogPortletHomeNode_.getSession().getWorkspace().getName() ;
-      } else {
-        storePath = dialogForm.getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getPath() ;
-        workspace = dialogForm.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
-      }
-      String path = storePath+ "&workspaceName=" + workspace + 
+      String path = dialogForm.storedPath_ + "&workspaceName=" + dialogForm.workspace_ + 
                     "&repository=" + dialogForm.repository_;
       for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;

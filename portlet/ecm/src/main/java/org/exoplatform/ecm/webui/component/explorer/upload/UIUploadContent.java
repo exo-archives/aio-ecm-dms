@@ -95,6 +95,8 @@ public class UIUploadContent extends UIContainer {
       uiAddMetadataForm.getChildren().clear() ;
       uiAddMetadataForm.setNodeType(nodeType) ;
       uiAddMetadataForm.setIsNotEditNode(true) ;
+      uiAddMetadataForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
+      uiAddMetadataForm.setStoredPath(uiExplorer.getCurrentNode().getPath()) ;
       uiAddMetadataForm.setPropertyNode(uiUploadContainer.getEditNode(nodeType)) ;
       uiUploadContainer.addChild(uiAddMetadataForm) ;
       uiUploadContainer.setRenderedChild(UIAddMetadataForm.class) ;

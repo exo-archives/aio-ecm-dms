@@ -4,18 +4,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
-import javax.jcr.Node;
-import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
-import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
-import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -63,6 +56,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     if (portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
       if(getChild(UIEditModeConfiguration.class) != null) {
         removeChild(UIEditModeConfiguration.class) ;
+        removeChild(UIPopupWindow.class) ;
       }
       if(getChild(UIFastContentCreatortForm.class) == null) {
         UIFastContentCreatortForm uiDialogForm = createUIComponent(UIFastContentCreatortForm.class, null, null) ;
@@ -71,18 +65,9 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         PortletPreferences preferences = request.getPreferences() ;
         String prefType = preferences.getValue("type", "") ;
         String repo = preferences.getValue("repository", "") ;
-        String wsName = preferences.getValue("workspace", "") ;
-        String nodePath = preferences.getValue("path", "") ;
         uiDialogForm.setTemplateNode(prefType) ;
-        ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository(repo) ;
-        Session session = null;
-        if(SessionsUtils.isAnonim()) {
-          session = SessionsUtils.getAnonimProvider().getSession(wsName,repository) ;
-        }else {
-          session = SessionsUtils.getSessionProvider().getSession(wsName,repository) ;
-        }        
-        Node node = (Node) session.getItem(nodePath) ;
-        uiDialogForm.setDialogHomeNode(node) ;
+        uiDialogForm.setWorkspace(preferences.getValue("workspace", "")) ;
+        uiDialogForm.setStoredPath(preferences.getValue("path", "")) ;
         uiDialogForm.setRepository(repo) ;
         addChild(uiDialogForm) ; 
       }
