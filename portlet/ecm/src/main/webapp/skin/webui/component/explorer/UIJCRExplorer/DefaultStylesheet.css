@@ -61,6 +61,7 @@
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
+  float: none;
 }
 
 .UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {

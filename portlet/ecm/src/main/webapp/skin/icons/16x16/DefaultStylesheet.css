@@ -8,16 +8,16 @@
 
 @import url("NodeTypes/DefaultStylesheet.css");
 
-.AddAnyIcon {
-	width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
-  cursor: pointer;
-}
-
 .AddIcon16x16 {
   float:left;
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
+  cursor: pointer;
+}
+
+.AddAnyIcon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
   cursor: pointer;
 }
 
@@ -90,8 +90,6 @@
   background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
   cursor: pointer;
 }
-
-
 
 .SelectUserIcon {
 	width: 16px; height: 16px;

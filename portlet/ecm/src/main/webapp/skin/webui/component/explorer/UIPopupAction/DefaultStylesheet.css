@@ -373,6 +373,14 @@
   margin: 10px 0px 10px 5px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .Label {
+  line-height: 18px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption input.checkbox {
+ 	margin: 5px 3px 0px 0px;
+}
+
 .UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
   width: 500px;
   vertical-align: baseline;

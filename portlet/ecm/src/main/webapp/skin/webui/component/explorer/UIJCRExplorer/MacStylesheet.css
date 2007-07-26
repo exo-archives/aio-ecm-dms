@@ -182,7 +182,6 @@
 .UIJCRExplorerPortlet .UIMenuPopup .MenuItemContainer {
   padding-left: 10px ;
 }
-
 /*############################## -- End UIMenuPopup   -- ##############################*/
 .UIJCRExplorerPortlet .UIThumbnailsView {
 }
@@ -260,6 +259,7 @@
   border-bottom: none;
 }
 
+
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*===========================Folder Form=====================*/
@@ -335,20 +335,23 @@
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .FileNameLabel {
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
 	width: auto;	
-	padding: 0px;
 }
 
-.UIJCRExplorerPortlet .ProgressBar {
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBar {
 	margin-left: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentForm .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
 }
 
@@ -358,20 +361,20 @@
   background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .HorizontalLayout .UITabContentContainer {
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .HorizontalLayout .UITabContentContainer {
   border: none;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer td.FieldLabel {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer td.FieldLabel {
   width: 160px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .UIAction {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UIAction {
   width: 160px;
 	padding: 12px 0px 10px 20px;
 }
 
-.UIJCRExplorerPortlet .UITabPane .UITabContentContainer .UITabContent {
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
 	border: none;
 	background: url('MacSkin/background/Background1x4.png') repeat;
 }
@@ -403,6 +406,21 @@
   border: none;
 }
 
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame .ProgressBar{ 
+	margin-left: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
+	width: auto;
+	padding: 0px;
+}
+
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
   width: 200px;
 }
@@ -415,7 +433,7 @@
   width: 100%;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIUploadManager .UITabPane {
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UIUploadManager .UITabPane {
   width: 100%;
   padding: 0px;
 }
@@ -555,7 +573,6 @@
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIFormWithTitle {
 	border: none;
 }
-
 /*=============================UICommentForm=======================*/
 
 .UIJCRExplorerPortlet .UICommentForm  {
@@ -632,7 +649,7 @@
   padding-left: 40px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .HorizontalLayout .FormContainer {
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;
   width: 500px;
@@ -721,10 +738,6 @@
   padding: 10px 0px 10px 10px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle input {
-  float: left;
-}
-
 .UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
 }
@@ -741,11 +754,11 @@
 	border: solid 1px #B1B0B0;
 }
 
-.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .HorizontalLayout {
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: white;
 }
 
-.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel{
 	width: 100px;
 }
 
@@ -764,6 +777,11 @@
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
   width: 170px;
   padding-left: 15px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .ActionIcon {
+  margin-left: 5px;
+  float: none;
 }
 
 /*================================UIActionList=================================*/
@@ -806,10 +824,29 @@
   width: 170px;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame .ProgressBar{ 
+	margin-left: 0px;
+}
+
 .UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .SelectFileFrame { 
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileName {
+	width: 190px;	
+	overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileNameLabel {
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
@@ -820,6 +857,9 @@
   border: solid 1px #b7b7b7;
 }
 
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
+  width: auto;
+}
 /*================================.UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {
@@ -877,12 +917,10 @@
   float: left;
 }
 
-.UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent .Add16x16Icon {
+.UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent .ActionIcon {
+  margin: 0px 5px 0px 238px;
   float: none;
-  margin-left: 5px;
-  border: solid 1px red;
 }
-
 /*================================UIPermissionManager=================================*/
 .UIJCRExplorerPortlet .UIPermissionManager {
   padding: 10px;

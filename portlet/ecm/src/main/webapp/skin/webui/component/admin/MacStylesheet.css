@@ -190,9 +190,9 @@
 	margin-left: 5px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet {
+.UIECMAdminPortlet .HorizontalLayout .UIFormInputSet {
 	width: 95%;
-	margin: 0px;
+	margin: 0px auto;
 	padding: 0px;
 }
 
@@ -234,14 +234,18 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer {
-	width: 530px;
+	width: 510px;
 	margin: auto;
-	padding: 0px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
 	width: 95%;
 	margin: 10px auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
