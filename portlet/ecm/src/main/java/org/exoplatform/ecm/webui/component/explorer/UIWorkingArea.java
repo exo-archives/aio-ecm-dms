@@ -578,27 +578,17 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
-      /* if(node.equals(uiExplorer.getCurrentNode())){
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } */
       try {
-        if(node.holdsLock())
-          if(uiExplorer.nodeIsLocked(node.getPath(), uiExplorer.getSession())) {
+        if(node.holdsLock()) {
+          if(node.getLock().getLockOwner().equals(event.getRequestContext().getRemoteUser())) {
             node.unlock();
-          } else {
-            uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.other-node-locked", null, 
-                ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-        /*} else {
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.this-node-locked-by-parent", null,
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-lock-owner", null, 
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        }*/
+        }
       } catch(LockException le) {
         le.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.parent-node-locked", null, 

@@ -43,7 +43,7 @@
 	      <td class="FieldLabel">Validator</td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty"] ;
+		        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
 		        uicomponent.addActionField("validator", fieldValidator) ;
 		      %>
 		    </td>
@@ -61,7 +61,7 @@
 	      <td class="FieldLabel">With path</td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "workspaceField=destWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty"] ;
+		        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "workspaceField=destWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
 		        uicomponent.addActionField("destPath", fieldPath)  ;
 		      %>
 		    </td>
