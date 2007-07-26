@@ -311,16 +311,15 @@ public class UIQueryConfig extends UIForm {
           UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
           app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
           return ;
-        } else {
-          try {
-            QueryManager queryManager =uiForm.getSession().getWorkspace().getQueryManager();
-            Query queryObj = queryManager.createQuery(query, queryLang);
-            queryObj.execute();
-          } catch(InvalidQueryException iqe) {
-            UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-            app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
-            return ;
-          }
+        } 
+        try {
+          QueryManager queryManager =uiForm.getSession().getWorkspace().getQueryManager();
+          Query queryObj = queryManager.createQuery(query, queryLang);
+          queryObj.execute();
+        } catch(InvalidQueryException iqe) {
+          UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
+          return ;
         }
       }
       try{
@@ -428,4 +427,3 @@ public class UIQueryConfig extends UIForm {
     }
   }
 }
-

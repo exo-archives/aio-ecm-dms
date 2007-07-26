@@ -12,7 +12,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

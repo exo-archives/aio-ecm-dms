@@ -684,8 +684,7 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String destPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String realDestPath = destPath ;
-      String destWorkspace = event.getRequestContext().getRequestParameter(WS_NAME) ;
-      Session session = uiExplorer.getSession() ; //uiExplorer.getSessionByWorkspace(destWorkspace) ;
+      Session session = uiExplorer.getSession() ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       ClipboardCommand currentClipboard = uiExplorer.getAllClipBoard().getLast() ;
       String srcPath = currentClipboard.getSrcPath() ;

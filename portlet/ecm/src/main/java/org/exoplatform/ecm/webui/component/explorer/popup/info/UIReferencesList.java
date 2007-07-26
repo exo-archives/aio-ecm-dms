@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 

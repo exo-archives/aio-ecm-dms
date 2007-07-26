@@ -138,13 +138,15 @@ public class UINodeTypeImport extends UIForm {
       if(counter > 0) {
         String[] count = {String.valueOf(counter)} ;
         uiApp.addMessage(new ApplicationMessage("UINodeTypeImport.msg.nodetype-registered", count)) ;
-      } else {
-        uiApp.addMessage(new ApplicationMessage("UINodeTypeImport.msg.no-nodetype-registered", null)) ;
-      }
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } 
       UINodeTypeList uiNodeTypeList = uiManager.getChild(UINodeTypeList.class) ;
       uiNodeTypeList.refresh(null) ;
       UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.IMPORT_POPUP) ;
       uiPopup.setRendered(false) ;
+      uiApp.addMessage(new ApplicationMessage("UINodeTypeImport.msg.no-nodetype-registered", null)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
   }
 }

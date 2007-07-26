@@ -30,7 +30,6 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
