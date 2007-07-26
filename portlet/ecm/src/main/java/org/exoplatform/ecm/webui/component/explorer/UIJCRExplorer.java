@@ -37,7 +37,6 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.web.command.handler.GetWidgetContainerHandler;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -301,12 +300,16 @@ public class UIJCRExplorer extends UIContainer {
       String[] workspaces = repositoryService.getRepository(repository).getWorkspaceNames() ;
       for(String workspace:workspaces) {
         Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
-        Node taxonomyNode = session.getNodeByUUID(getCurrentNode().getUUID()) ;
-        PropertyIterator categoriesIter = taxonomyNode.getReferences() ;
-        while(categoriesIter.hasNext()) {
-          Property exoCategoryProp = categoriesIter.nextProperty();
-          Node refNode = exoCategoryProp.getParent() ;
-          childrenList.add(refNode) ;            
+        try {
+          Node taxonomyNode = session.getNodeByUUID(getCurrentNode().getUUID()) ;
+          PropertyIterator categoriesIter = taxonomyNode.getReferences() ;
+          while(categoriesIter.hasNext()) {
+            Property exoCategoryProp = categoriesIter.nextProperty();
+            Node refNode = exoCategoryProp.getParent() ;
+            childrenList.add(refNode) ;            
+          }
+        } catch(Exception e) {
+          continue ;
         }
       }
     }
