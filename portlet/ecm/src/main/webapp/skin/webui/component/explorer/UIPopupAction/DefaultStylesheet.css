@@ -73,6 +73,7 @@
   background-color: #e4e7f3;
   margin-bottom: 1px;
 }
+
 .UIJCRExplorerPortlet .UIVersionInfo .NoneIcon {
   margin: 7px 0px;
   float: left;
@@ -174,8 +175,8 @@
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
   width: 45%;
   border: 1px solid #e1e1e1; 	  
- 	float:right;
-  margin:0px 10px;
+ 	float: right;
+  margin: 0px 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {

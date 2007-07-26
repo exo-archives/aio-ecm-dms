@@ -22,7 +22,7 @@
   padding: 10px 0px 20px 0px;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
+.UIFastContentCreatorPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer  {
   border: none;
 }
 
@@ -127,7 +127,7 @@
   margin: 5px;
 }
 
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
+.UIFastContentCreatorPortlet .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
   margin: 3px 5px 0px 5px;
 }
@@ -242,6 +242,6 @@
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
-	margin: -18px 5px 0px 240px;
+	margin-left: 5px;
 	float: none;
 }

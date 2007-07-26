@@ -51,12 +51,6 @@
 	margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .AddPermissionIcon {
-	float: none;
-	margin: -18px 5px 0px 240px;
-}
-
-
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {
   width: 220px;
   padding-top: 10px ;

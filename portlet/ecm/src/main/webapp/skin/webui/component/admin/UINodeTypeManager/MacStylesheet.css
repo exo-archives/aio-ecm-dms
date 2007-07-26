@@ -41,11 +41,6 @@
   margin: 10px auto;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .AddIcon16x16{
-  float: none;
-  margin: -18px 5px 0px 240px;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
 	padding: 2px;
 }

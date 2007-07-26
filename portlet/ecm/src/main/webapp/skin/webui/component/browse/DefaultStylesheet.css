@@ -93,17 +93,17 @@
 	width: 138px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer .UIFormGrid {
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
 	width: 500px;
 	margin: auto;
 }
 
-.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .FormContainer .UIFormGrid {
+.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .UIFormGrid {
 	width: 500px;
 	margin: auto;
 }
 
-.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+.UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
   padding: 4px 0px;
 }
 
@@ -112,17 +112,17 @@
 	padding: 0px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddPathIcon{
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16{
 	float:none;
-	margin: -18px 5px 0px 240px;
+	margin-left: 5px;
 }
 
-.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .UIFormWithTitle .HorizontalLayout .FormContainer {
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
 	padding: 3px 0px;
 	border: none;
 }
@@ -489,10 +489,10 @@ UIBrowseContentPortlet .Explorer {
 	margin: 0px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout .FieldLabel{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
 	width: 100px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select{
 	width: 100px;
 }

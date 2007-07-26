@@ -103,7 +103,7 @@
   border-top: none;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContent {
 	border: none;
 }
 
@@ -150,7 +150,7 @@
 	white-space: nowrap;
 }
 
-.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormGrid td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
 }
@@ -178,7 +178,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
-	margin: -18px 5px 0px 240px;
+	margin-left: 5px;
 	float: none;
 }
 
