@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.jcr.Session;
+
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
@@ -134,10 +136,15 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
       String path = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).getValue() ;
       if((path == null)||(path.trim().length() == 0)) path = "/" ;
-      
+      Session session = null ;
       try {        
-        rservice.getRepository(repository).getSystemSession(workspace).getItem(path) ;
+        session = rservice.getRepository(repository).getSystemSession(workspace);
+        session.getItem(path) ;
+        session.logout() ;
       } catch(Exception e) {
+        if(session!=null) {
+          session.logout();
+        }
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.workspace-path-invalid", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -167,13 +174,19 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         return ;
       }
       String iconPath = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_WORKSPACEICON).getValue() ;
-      if(iconPath != null && iconPath.trim().length() > 0) {
+      if(iconPath != null && iconPath.trim().length() > 0) {        
+        Session jcrSession = null ;
         try {
           if(iconPath.indexOf(":/") > -1) {
             String[] paths = iconPath.split(":/") ;
-            rservice.getRepository(repository).getSystemSession(paths[0]).getItem("/" + paths[1]) ;
+            jcrSession = rservice.getRepository(repository).getSystemSession(paths[0]);
+            jcrSession.getItem("/" + paths[1]) ;
+            jcrSession.logout() ;
           }
         } catch(Exception e) {
+          if(jcrSession != null) {
+            jcrSession.logout() ;
+          }
           uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.icon-not-found", null, 
                                                   ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

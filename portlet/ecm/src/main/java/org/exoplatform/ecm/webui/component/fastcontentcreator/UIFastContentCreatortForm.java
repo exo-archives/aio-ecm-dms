@@ -16,6 +16,7 @@ import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.portal.webui.util.Util;
@@ -23,6 +24,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -94,12 +96,13 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     return portletContext.getRequest().getPreferences() ;
   }
   public void newJCRTemplateResourceResolver() {
-    PortletPreferences preferences = getPortletPreferences();
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    Session session = null ;
+    PortletPreferences preferences = getPortletPreferences();       
     try {
-      session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
-                                 .getSystemSession(preferences.getValue("workspace", ""));
+      String repositoryName = preferences.getValue(Utils.REPOSITORY, "") ;
+      String workspaceName = preferences.getValue("workspace", "") ;    
+      ManageableRepository manageableRepository = 
+        getApplicationComponent(RepositoryService.class).getRepository(repositoryName) ;
+      Session session = SessionsUtils.getSystemProvider().getSession(workspaceName,manageableRepository) ;
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     } catch(Exception e) { }
   }

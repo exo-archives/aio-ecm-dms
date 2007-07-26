@@ -21,6 +21,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.core.nodetype.NodeDefinitionValue;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
@@ -605,12 +606,11 @@ public class UINodeTypeForm extends UIFormTabPane {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
       String repository = uiForm.getRepository() ;
-      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      CmsConfigurationService cmsConfigService = 
-        uiForm.getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = 
-        uiForm.getApplicationComponent(RepositoryService.class).getRepository(repository)
-         .getSystemSession(cmsConfigService.getWorkspace(repository)) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;      
+      ManageableRepository mRepository = 
+        uiForm.getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+      String systemWorkspace = mRepository.getConfiguration().getDefaultWorkspaceName() ;
+      Session session = mRepository.getSystemSession(systemWorkspace) ;        
       String prefix = uiForm.getUIFormSelectBox(NAMESPACE).getValue() ;
       String nodeTypeName = uiForm.getUIStringInput(NODETYPE_NAME).getValue() ;
       if(nodeTypeName == null || nodeTypeName.trim().length() == 0) {
@@ -618,6 +618,7 @@ public class UINodeTypeForm extends UIFormTabPane {
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
+        session.logout();
         return ;
       }
       String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
@@ -626,6 +627,7 @@ public class UINodeTypeForm extends UIFormTabPane {
           uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
                                                   ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          session.logout();
           return ;
         }
       }
@@ -735,6 +737,7 @@ public class UINodeTypeForm extends UIFormTabPane {
         }
       }
       session.save() ;
+      session.logout();
       UINodeTypeManager uiManager = uiForm.getAncestorOfType(UINodeTypeManager.class) ;
       UINodeTypeList nodeTypeList = uiManager.getChild(UINodeTypeList.class) ;
       nodeTypeList.refresh(null);

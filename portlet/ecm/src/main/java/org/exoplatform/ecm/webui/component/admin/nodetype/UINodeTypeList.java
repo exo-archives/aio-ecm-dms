@@ -22,6 +22,7 @@ import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -66,18 +67,16 @@ public class UINodeTypeList extends UIComponentDecorator {
   
   @SuppressWarnings("unchecked")
   public List getAllNodeTypes() throws Exception{
-    List nodeList = new ArrayList<NodeType>(); 
-    CmsConfigurationService cmsConfigService = 
-      getApplicationComponent(CmsConfigurationService.class) ;
+    List nodeList = new ArrayList<NodeType>();     
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Session session = getApplicationComponent(RepositoryService.class)
-                      .getRepository(repository).getSystemSession(cmsConfigService.getWorkspace(repository)) ;
-    NodeTypeManager ntManager = session.getWorkspace().getNodeTypeManager() ;
+    ManageableRepository mRepository = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    NodeTypeManager ntManager = mRepository.getNodeTypeManager() ;
     NodeTypeIterator nodeTypeIter = ntManager.getAllNodeTypes() ;
     while(nodeTypeIter.hasNext()) {
       nodeList.add(nodeTypeIter.nextNodeType()) ;
     }    
     Collections.sort(nodeList, new Utils.NodeTypeNameComparator()) ;
+    Session session = mRepository.getSystemSession(mRepository.getConfiguration().getDefaultWorkspaceName()) ;
     if(session.getRootNode().hasNode(DRAFTNODETYPE)) {
       Node draftNode = session.getRootNode().getNode(DRAFTNODETYPE) ;
       NodeIterator nodeIter = draftNode.getNodes() ;
@@ -85,6 +84,7 @@ public class UINodeTypeList extends UIComponentDecorator {
         nodeList.add(nodeIter.nextNode()) ;
       }
     }
+    session.logout() ;
     return nodeList ;
   }
   

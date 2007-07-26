@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -29,14 +28,12 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   private String repository_ = null;
   private String wsName_ = null ;
   private boolean isDisable_ = false ;
-  private SessionProvider sessionProvider_ ; 
+  private SessionProvider sessionProvider_  = SessionsUtils.getSessionProvider(); 
   
   public UIJCRBrowser() throws Exception {
     addChild(UIWorkspaceList.class, null, null) ;
     addChild(UITreeJCRExplorer.class, null, null) ;
-    addChild(UIDefaultListItem.class, null, null) ;    
-    this.sessionProvider_ = 
-      SessionsUtils.getSessionProvider(getApplicationComponent(SessionProviderService.class)) ;
+    addChild(UIDefaultListItem.class, null, null) ;        
   }
   
   public void setSessionProvider(SessionProvider provider) { this.sessionProvider_ = provider ; }

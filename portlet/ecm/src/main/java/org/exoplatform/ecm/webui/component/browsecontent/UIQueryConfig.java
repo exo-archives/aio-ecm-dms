@@ -14,12 +14,14 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -276,12 +278,18 @@ public class UIQueryConfig extends UIForm {
     }
     return options ;
   }
-  private Session getSession() throws Exception{
-    Session session = getApplicationComponent(RepositoryService.class)
-    .getRepository(getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue()).getSystemSession(
-        getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue());
-    return session ;
+
+  public Session getSession() throws Exception {
+    String repositoryName = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
+    String workspace = getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+    ManageableRepository repository = 
+      getApplicationComponent(RepositoryService.class).getRepository(repositoryName) ;
+    if(SessionsUtils.isAnonim()) {
+      return SessionsUtils.getAnonimProvider().getSession(workspace,repository) ;
+    }
+    return SessionsUtils.getSessionProvider().getSession(workspace,repository) ;
   }
+
   public static class SaveActionListener extends EventListener<UIQueryConfig>{
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;

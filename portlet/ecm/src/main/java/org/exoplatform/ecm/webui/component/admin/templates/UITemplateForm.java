@@ -125,11 +125,9 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
   @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    String repository = getRepository() ;
-    CmsConfigurationService configService = getApplicationComponent(CmsConfigurationService.class) ;
-    Session session = getApplicationComponent(RepositoryService.class)
-                     .getRepository(repository).getSystemSession(configService.getWorkspace(repository)) ;
-    NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager() ; 
+    String repository = getRepository() ;       
+    NodeTypeManager nodeTypeManager = 
+      getApplicationComponent(RepositoryService.class).getRepository(repository).getNodeTypeManager() ; 
     NodeIterator templateIter = getApplicationComponent(TemplateService.class).getTemplatesHome(repository).getNodes() ;
     List<String> templates = new ArrayList<String>() ;
     while (templateIter.hasNext()) {

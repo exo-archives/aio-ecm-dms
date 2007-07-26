@@ -127,13 +127,12 @@ public class UIConfigTabPane extends UIContainer {
     removeChildById(PATH_SELECTOR) ;
     removeChildById(DOCUMENT_SELECTOR) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PATH_SELECTOR);
-    uiPopup.setWindowSize(610, 300);
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;
+    uiPopup.setWindowSize(610, 300);    
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;   
     uiJCRBrowser.setRepository(repo) ;
     uiJCRBrowser.setIsDisable(workSpace, true) ;
     if(SessionsUtils.isAnonim()) {
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider(providerService)) ;
+      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
     }
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED} ;
     uiJCRBrowser.setFilterType(filterType) ;
@@ -152,10 +151,9 @@ public class UIConfigTabPane extends UIContainer {
     uiJCRBrowser.setRepository(repo) ;
     uiJCRBrowser.setWorkspace(workSpace) ;
     uiJCRBrowser.setIsDisable(workSpace, true) ;
-    uiJCRBrowser.setRootPath(path) ;
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;
+    uiJCRBrowser.setRootPath(path) ;    
     if(SessionsUtils.isAnonim()) {
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider(providerService)) ;
+      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
     }
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documents = templateService.getDocumentTemplates(repo) ;

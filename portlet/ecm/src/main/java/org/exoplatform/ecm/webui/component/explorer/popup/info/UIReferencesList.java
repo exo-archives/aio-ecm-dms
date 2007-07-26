@@ -15,6 +15,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -59,9 +60,12 @@ public class UIReferencesList extends UIGrid implements UIPopupComponent{
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node currentNode = uiJCRExplorer.getCurrentNode() ;
-    String uuid = currentNode.getUUID() ;
-    for(String workspace : repositoryService.getDefaultRepository().getWorkspaceNames()) {
-      Session session = repositoryService.getDefaultRepository().getSystemSession(workspace) ;
+    String uuid = currentNode.getUUID() ;        
+    String repositoryName = uiJCRExplorer.getRepositoryName() ;
+    ManageableRepository repository = repositoryService.getRepository(repositoryName) ;
+    Session session = null ;
+    for(String workspace : repository.getWorkspaceNames()) {
+      session = repository.getSystemSession(workspace) ;
       try{
         Node lookupNode = session.getNodeByUUID(uuid) ;
         PropertyIterator iter = lookupNode.getReferences() ;
@@ -71,9 +75,8 @@ public class UIReferencesList extends UIGrid implements UIPopupComponent{
             referBeans.add(new ReferenceBean(workspace, refNode.getPath())) ;
           }
         }
-      } catch(Exception e) {        
-      }
-      
+      } catch(Exception e) { }
+     session.logout() ; 
     }
     return referBeans ;
   }

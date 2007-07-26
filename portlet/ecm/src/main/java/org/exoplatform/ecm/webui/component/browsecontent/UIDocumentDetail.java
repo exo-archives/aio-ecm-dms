@@ -21,6 +21,7 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -29,6 +30,8 @@ import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -85,10 +88,11 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   public void newJCRTemplateResourceResolver() {
     try{
-      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
-      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
-      CmsConfigurationService cmsConfig  = getApplicationComponent(CmsConfigurationService.class) ;
-      Session session = repositoryService.getRepository(repository).getSystemSession(cmsConfig.getWorkspace(repository)) ;
+      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;            
+      ManageableRepository mRepository = 
+        getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+      String systemWorkspace = mRepository.getConfiguration().getSystemWorkspaceName() ;
+      Session session = SessionsUtils.getSystemProvider().getSession(systemWorkspace,mRepository) ;
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
     }catch(Exception e) {
       e.printStackTrace() ;
@@ -211,12 +215,11 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
+    SessionProvider provider = SessionsUtils.getSessionProvider() ;
     for(String ws : workspaces) {
       try{
-        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
-
-      }      
+        return provider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
+      }catch(Exception e) { }      
     }
     return null;
   }
@@ -263,7 +266,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public void activate() throws Exception {}
 
   public void deActivate() throws Exception {}
-  
+
   public String getPortalName() {
     PortalContainer pcontainer =  PortalContainer.getInstance() ;
     return pcontainer.getPortalContainerInfo().getContainerName() ; 
@@ -295,11 +298,21 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       UIDocumentDetail uiDocument = event.getSource() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      UIBrowseContainer uiContainer = uiDocument.getAncestorOfType(UIBrowseContainer.class) ;
+      UIBrowseContainer uiContainer = uiDocument.getAncestorOfType(UIBrowseContainer.class) ;     
       if(wsName != null) {
-        String repository = uiDocument.getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
-        Session session = uiDocument.getApplicationComponent(RepositoryService.class)
-        .getRepository(repository).getSystemSession(wsName) ;
+        String repository = uiDocument.getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;        
+        ManageableRepository manageableRepository = 
+          uiDocument.getApplicationComponent(RepositoryService.class).getRepository(repository) ;        
+        Session session = null ;
+        if(path.indexOf("/jcr:system")>0) {
+          session = SessionsUtils.getSystemProvider().getSession(wsName,manageableRepository) ;
+        }else {
+          if(SessionsUtils.isAnonim()) {
+            session = SessionsUtils.getAnonimProvider().getSession(wsName,manageableRepository) ;
+          }else {
+            session = SessionsUtils.getSessionProvider().getSession(wsName,manageableRepository) ;
+          }
+        }        
         uiDocument.setNode((Node)session.getItem(path)) ;
       }else {
         uiDocument.setNode(uiContainer.getNodeByPath(path)) ;
@@ -307,7 +320,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
     }
   }
-  
+
   static  public class DownloadActionListener extends EventListener<UIDocumentDetail> {
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiComp = event.getSource() ;

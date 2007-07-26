@@ -29,7 +29,6 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -57,9 +56,9 @@ import org.exoplatform.webui.event.EventListener;
 
 )
 public class UIDrivesBrowser extends UIContainer {
-  
+
   private String repoName_ ;
-  
+
   public UIDrivesBrowser() throws Exception {
     RepositoryService rService = getApplicationComponent(RepositoryService.class) ;
     repoName_ = rService.getDefaultRepository().getConfiguration().getName() ;
@@ -85,19 +84,22 @@ public class UIDrivesBrowser extends UIContainer {
 
     ManageableRepository repository = rservice.getRepository(repoName) ;  
     List<DriveData> driveList = new ArrayList<DriveData>() ;
+    Session session = null ;
     List<String> userRoles = Utils.getMemberships() ;
     for(String role : userRoles ){
       List<DriveData> drives = driveService.getAllDriveByPermission(role, repoName) ;
       if(drives != null && drives.size() > 0) {
         for(DriveData drive : drives) {
           if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-            String[] iconPath = drive.getIcon().split(":/") ;
-            Node node = (Node) repository.getSystemSession(iconPath[0]).getItem("/" + iconPath[1]) ;
+            String[] iconPath = drive.getIcon().split(":/") ;   
+            session = repository.getSystemSession(iconPath[0]) ;
+            Node node = (Node) session.getItem("/" + iconPath[1]) ;
             Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
             InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
             InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
             dresource.setDownloadName(node.getName()) ;
             drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+            session.logout() ;
           }
           driveList.add(drive) ;
         }
@@ -106,7 +108,7 @@ public class UIDrivesBrowser extends UIContainer {
     Collections.sort(driveList) ;
     return driveList ; 
   }
-  
+
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -114,7 +116,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiDrivesBrowser.setRepository(repoName) ;      
     }
   }
-  
+
   static  public class SelectDriveActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       UIDrivesBrowser uiDrive = event.getSource() ;
@@ -163,13 +165,10 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setShowSideBar(drive.getViewSideBar()) ;
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
-      pref.setEmpty(false) ;
-                            
-      SessionProviderService sessionProviderService = uiDrive.getApplicationComponent(SessionProviderService.class) ;
-      SessionProvider provider = SessionsUtils.getSessionProvider(sessionProviderService) ;                  
+      pref.setEmpty(false) ;                                  
+      SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
-      Session session = provider.getSession(drive.getWorkspace(),repository) ;
-      uiJCRExplorer.setSessionProvider(provider) ;
+      Session session = provider.getSession(drive.getWorkspace(),repository) ;      
       uiJCRExplorer.setSession(session) ;
       Node node = null ;
       try {
@@ -177,7 +176,7 @@ public class UIDrivesBrowser extends UIContainer {
       } catch(Exception e) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 

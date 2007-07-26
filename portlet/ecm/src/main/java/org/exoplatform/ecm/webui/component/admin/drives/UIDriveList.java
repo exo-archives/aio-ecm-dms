@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.download.DownloadService;
@@ -60,17 +61,19 @@ public class UIDriveList extends UIGrid {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List drives = driveService.getAllDrives(repository) ;
+    Session session = null ;
     for(int i = 0; i < drives.size(); i++) {
       DriveData drive = (DriveData)drives.get(i) ;
       if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-        String[] iconPath = drive.getIcon().split(":/") ;
-        Node node = (Node) rservice.getRepository(repository)
-        .getSystemSession(iconPath[0]).getItem("/" + iconPath[1]) ;
+        String[] iconPath = drive.getIcon().split(":/") ;    
+        session = rservice.getRepository(repository).getSystemSession(iconPath[0]) ;
+        Node node = (Node)session.getItem("/" + iconPath[1]) ;
         Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
         InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
         InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
         dresource.setDownloadName(node.getName()) ;
         drive.setIcon("<img src=\"" + dservice.getDownloadLink(dservice.addDownloadResource(dresource)) + "\" width=\"16\" height=\"16\" />") ;
+        session.logout();
       }
     }
     Collections.sort(drives, new DriveComparator()) ;

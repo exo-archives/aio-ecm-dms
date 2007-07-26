@@ -124,20 +124,9 @@ public class UIBrowseContainer extends UIContainer{
     return portletPref ;
   }
 
-  public SessionProvider getSystemProvider() {            
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
-    return SessionsUtils.getSystemProvider(providerService) ;
-  }
-
-  public SessionProvider getAnonimProvider() {
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
-    return SessionsUtils.getAnonimProvider(providerService) ;
-  }
-
-  public SessionProvider getSessionProvider() {
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
-    return SessionsUtils.getSessionProvider(providerService) ;
-  }    
+  public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }
+  public SessionProvider getAnonimProvider() { return SessionsUtils.getAnonimProvider() ; }
+  public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }    
 
   //TODO maybe need change name of this method
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {

@@ -20,6 +20,7 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
@@ -29,6 +30,7 @@ import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -161,9 +163,10 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
+    SessionProvider sessionProvider = SessionsUtils.getSessionProvider() ;
     for(String ws : workspaces) {
       try{
-        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+        return sessionProvider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
       }catch(Exception e) {
         
       }      

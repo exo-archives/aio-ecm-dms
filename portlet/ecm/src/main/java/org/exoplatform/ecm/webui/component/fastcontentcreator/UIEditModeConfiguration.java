@@ -126,6 +126,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.item-not-found", null, 
                                               ApplicationMessage.WARNING)) ;
+      session.logout();
       return ;
     }
     NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
@@ -184,6 +185,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     } catch(Exception e) {
       e.printStackTrace() ;
     }
+    session.logout();
   }
   
   public void updateSelect(String selectField, String value) {

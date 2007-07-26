@@ -47,8 +47,9 @@ public class RssServlet extends HttpServlet {
       (RepositoryService)pcontainer.getComponentInstanceOfType(RepositoryService.class) ;
     TemplateService tservice = 
       (TemplateService)pcontainer.getComponentInstanceOfType(TemplateService.class) ;
+    Session session = null ;
     try{
-      Session session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
+      session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
       Node rootNode = session.getRootNode() ;
       Node file = null ;
       if(rootNode.hasNode(path))
@@ -89,6 +90,10 @@ public class RssServlet extends HttpServlet {
     }catch(Exception e) {
       e.printStackTrace() ;
       throw new ServletException(e) ;
+    }finally{
+      if(session != null) {
+        session.logout() ;
+      }
     }    		
 	}  
   

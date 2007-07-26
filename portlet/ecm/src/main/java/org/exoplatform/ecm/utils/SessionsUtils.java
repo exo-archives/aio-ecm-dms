@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.utils;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
@@ -25,22 +26,24 @@ public class SessionsUtils {
     return false ;
   }
   
-  public static SessionProvider getSystemProvider(SessionProviderService service) {        
+  public static SessionProvider getSystemProvider() {   
     String key = Util.getPortalRequestContext().getSessionId() + SYSTEM_SUFFIX;
-    return getJcrSessionProvider(key,service) ;
+    return getJcrSessionProvider(key) ;
   }    
 
-  public static SessionProvider getSessionProvider(SessionProviderService service) {    
+  public static SessionProvider getSessionProvider() {    
     String key = Util.getPortalRequestContext().getSessionId();
-    return getJcrSessionProvider(key,service) ;
+    return getJcrSessionProvider(key) ;
   }
   
-  public static SessionProvider getAnonimProvider(SessionProviderService service) {
+  public static SessionProvider getAnonimProvider() {
     String key = Util.getPortalRequestContext().getSessionId() + ANONIM_SUFFIX ;
-    return getJcrSessionProvider(key,service) ;
+    return getJcrSessionProvider(key) ;
   } 
 
-  private static SessionProvider getJcrSessionProvider(String key,SessionProviderService service) {
+  private static SessionProvider getJcrSessionProvider(String key) {    
+    SessionProviderService service = 
+      (SessionProviderService)PortalContainer.getComponent(SessionProviderService.class) ;    
     SessionProvider sessionProvider = null ;    
     try{
       sessionProvider = service.getSessionProvider(key) ;

@@ -37,7 +37,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -59,8 +58,7 @@ public class UIJCRExplorer extends UIContainer {
 
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
   private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;
-
-  private SessionProvider sessionProvider_ ;
+  
   private Session session_ = null ;
   private PortletPreferences pref_ ;
   private Preference preferences_ = new Preference() ;
@@ -108,14 +106,10 @@ public class UIJCRExplorer extends UIContainer {
   public Set<String> getAddressPath() { return addressPath_ ; }
   public void setAddressPath(Set<String> s) {addressPath_ = s;} ;
 
-  public SessionProvider getSessionProvider() { return this.sessionProvider_ ; }
-  public void setSessionProvider(SessionProvider provider) { this.sessionProvider_ = provider ; }
+  public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }  
   
   //TODO will be remove in future
-  public SessionProvider getSystemProvider() {    
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;    
-    return SessionsUtils.getSystemProvider(providerService) ;
-  }  
+  public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }  
   
   public Session getSession() { return session_ ; }
   public void setSession(Session session) { this.session_ = session ; }  
@@ -296,9 +290,11 @@ public class UIJCRExplorer extends UIContainer {
       return childrenList ;
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
-      String[] workspaces = repositoryService.getRepository(repository).getWorkspaceNames() ;
-      for(String workspace:workspaces) {
-        Session session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+      ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+      //TODO use normal SessionProvider
+      SessionProvider sessionProvider = SessionsUtils.getSystemProvider();
+      for(String workspace:manageableRepository.getWorkspaceNames()) {
+        Session session = sessionProvider.getSession(workspace,manageableRepository) ;
         try {
           Node taxonomyNode = session.getNodeByUUID(getCurrentNode().getUUID()) ;
           PropertyIterator categoriesIter = taxonomyNode.getReferences() ;

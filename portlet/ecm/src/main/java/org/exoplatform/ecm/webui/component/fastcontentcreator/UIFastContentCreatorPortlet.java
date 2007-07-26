@@ -44,9 +44,8 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, null);
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    if(SessionsUtils.isAnonim()) {
-      SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider(providerService)) ;
+    if(SessionsUtils.isAnonim()) {      
+      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
     }
     uiJCRBrowser.setRepository(repositoryName) ;
     uiJCRBrowser.setIsDisable(workspaceName, true) ;
@@ -76,7 +75,12 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         String nodePath = preferences.getValue("path", "") ;
         uiDialogForm.setTemplateNode(prefType) ;
         ManageableRepository repository = getApplicationComponent(RepositoryService.class).getRepository(repo) ;
-        Session session = getSessionProvider().getSession(wsName,repository) ;
+        Session session = null;
+        if(SessionsUtils.isAnonim()) {
+          session = SessionsUtils.getAnonimProvider().getSession(wsName,repository) ;
+        }else {
+          session = SessionsUtils.getSessionProvider().getSession(wsName,repository) ;
+        }        
         Node node = (Node) session.getItem(nodePath) ;
         uiDialogForm.setDialogHomeNode(node) ;
         uiDialogForm.setRepository(repo) ;
@@ -94,14 +98,5 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
     super.processRender(app, context) ;
-  }
-
-  private SessionProvider getSessionProvider() {    
-    String userId = Util.getPortalRequestContext().getRemoteUser() ;    
-    SessionProviderService providerService = getApplicationComponent(SessionProviderService.class) ;        
-    if(userId == null) {
-      return SessionsUtils.getSessionProvider(providerService) ;
-    }
-    return SessionsUtils.getSessionProvider(providerService) ;
-  }
+  }  
 }
