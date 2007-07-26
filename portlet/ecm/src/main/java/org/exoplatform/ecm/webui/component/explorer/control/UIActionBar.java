@@ -492,7 +492,7 @@ public class UIActionBar extends UIForm {
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
       NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasEditPermission()) {
+      if(!uiExplorer.hasAddPermission() && !uiExplorer.hasEditPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
                              ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
