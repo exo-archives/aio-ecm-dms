@@ -61,7 +61,6 @@
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
-  float: none;
 }
 
 .UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
@@ -78,7 +77,7 @@
 	background: #efefef;
 }
 
-.UIJCRExplorerPortlet .UITabPane .UITabContentContainer .UITabContent {
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .UITabContentContainer .UITabContent {
 	background: #efefef;
 }
 
@@ -144,6 +143,10 @@
   margin: 10px auto;
   width: 95%;
   border: none;
+}
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
+  float: left;
 }
 
 .UIJCRExplorerPortlet .UIMenuPopup {
@@ -218,9 +221,7 @@
 .UIJCRExplorerPortlet .UIMenuPopup .MenuItemContainer {
   padding-left: 10px ;
 }
-
 /*############################## -- End UIMenuPopup   -- ##############################*/
-
 .UIJCRExplorerPortlet .UIThumbnailsView {
 }
 
@@ -298,10 +299,6 @@
 	padding: 5px;
 }
 
-.UIJCRExplorerPortlet .UIFormUploadInput .FileNameLabel {
-	width: auto;	
-}
-
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
@@ -364,6 +361,18 @@
   margin: 5px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
 	width: auto;	
 }
@@ -373,23 +382,27 @@
   border-top: none;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane.WorkingAreaWithHelp .UITabContentContainer {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
   background: #efefef;
 }
 
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .HorizontalLayout .UITabContentContainer {
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .HorizontalLayout .UITabContentContainer {
   border: none;
   background: #efefef;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer td.FieldLabel {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer td.FieldLabel {
   width: 160px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabContentContainer .UIAction {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UIAction {
   width: 150px;
 	padding: 12px 0px 10px 20px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .UITabContentContainer .UITabContent {
+  border: none;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
@@ -486,7 +499,7 @@
   padding-left: 20px;
 }
 
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UITabPane .UITabContentContainer {
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
   background: #efefef;
 }
@@ -497,7 +510,7 @@
   border-top: none;
 }
 
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UITabContentContainer {
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: solid 1px #939393;
   border-top: none;
 }
@@ -659,6 +672,11 @@
   padding-left: 15px;
 }
 
+.UIJCRExplorerPortlet .UIActionContainer .UIFormGrid .FieldComponent .ActionIcon {
+  margin-left: 5px;
+  float: none;
+}
+
 /*================================UIActionList=================================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
@@ -666,10 +684,6 @@
 }
 
 /*================================UIPropertyForm=================================*/
-
-.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent	.MultiValueContainer {
-  overflow: hidden;
-}
 
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIFormGrid {
   width: 500px;	
@@ -790,6 +804,22 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
   border: none;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
+	width: auto;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIAction {
