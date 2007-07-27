@@ -153,6 +153,9 @@ public class UITask extends UIForm {
     }
     String workspaceName = (String) variablesForService.get(WORKSPACE_VARIABLE);
     String repository = (String) variablesForService.get(REPOSITORY_VARIABLE);
+    if(repository == null) {
+      repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
+    }
     ManageableRepository mRepository = jcrService.getRepository(repository) ;
     SessionProvider sessionProvider = Utils.getSessionProvider() ;
     List variables = form.getVariables();
