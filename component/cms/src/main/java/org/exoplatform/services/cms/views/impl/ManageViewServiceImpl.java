@@ -20,6 +20,7 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL
@@ -39,12 +40,14 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   private List<ManageViewPlugin> plugins_ = new ArrayList<ManageViewPlugin> ();
   private String buttons_ ;
   private RepositoryService repositoryService_ ;
+  private String baseViewPath_ ;
   private CmsConfigurationService cmsConfigurationService_ ;
 
   public ManageViewServiceImpl(InitParams params, RepositoryService jcrService,
       CmsConfigurationService cmsConfigurationService) throws Exception{
     repositoryService_ = jcrService ;
     cmsConfigurationService_ = cmsConfigurationService ;
+    baseViewPath_ = cmsConfigurationService.getJcrPath(BasePath.CMS_VIEWS_PATH) ;
     ValueParam buttonParam = params.getValueParam("buttons") ;
     buttons_ = buttonParam.getValue() ;
   }
@@ -87,18 +90,13 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return buttonList ;
   }
 
-  public Node getViewHome(String repository) throws Exception {    
-    String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
-    return (Node) getSession(repository).getItem(viewsPath);
-  }
-
   public List<ViewConfig> getAllViews(String repository) throws Exception {
     List<ViewConfig> viewList = new ArrayList<ViewConfig>() ;
-    ViewConfig view ;
-    Node viewNode ;
+    ViewConfig view = null;
+    Node viewNode  = null ;
     String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
-    Node viewHome = (Node)getSession(repository).getItem(viewsPath) ;
-
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(viewsPath) ;
     for(NodeIterator iter = viewHome.getNodes(); iter.hasNext();) {
       view = new ViewConfig() ;
       viewNode = iter.nextNode() ;
@@ -114,30 +112,40 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
       view.setTabList(tabList) ;
       viewList.add(view) ;
     }
+    session.logout();
     return viewList ;    
   }
 
   public boolean hasView(String name, String repository) throws Exception {
-    Node viewHome = getViewHome(repository) ;
-    return viewHome.hasNode(name) ;
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
+    boolean b = viewHome.hasNode(name) ;
+    session.logout();
+    return b;
   }
 
   public Node getViewByName(String name, String repository) throws Exception{          
-    Node selectedView = getViewHome(repository).getNode(name) ;
-    return  selectedView;    
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
+    return  viewHome.getNode(name);    
   }
 
-  public Node getDefaultView(String repository) throws Exception {    
-    return getViewHome(repository).getNode(DEFAULT_VIEW) ;    
+  public Node getDefaultView(String repository) throws Exception {
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
+    return viewHome.getNode(DEFAULT_VIEW) ;    
   }
 
-  public Node getAdminView(String repository) throws Exception{    
-    return getViewHome(repository).getNode(ADMIN_VIEW) ;    
+  public Node getAdminView(String repository) throws Exception {
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
+    return viewHome.getNode(ADMIN_VIEW) ;    
   }
 
   public void addView(String name, String permissions, String template, List tabs, 
       String repository) throws Exception{
-    Node viewHome = getViewHome(repository) ;
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
     Node view ;
     if(viewHome.hasNode(name)) {
       view = viewHome.getNode(name) ;
@@ -162,11 +170,15 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
       addTab(view, tabName, buttons) ;
     }
     viewHome.save() ;
+    session.save();
+    session.logout();
   }
 
   public List<Node> getAllViewByPermission(String permission, String repository) throws Exception {
     List<Node> viewsByPermission = new ArrayList<Node>() ;
-    for(NodeIterator iter = getViewHome(repository).getNodes() ;iter.hasNext();) {
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
+    for(NodeIterator iter = viewHome.getNodes() ;iter.hasNext();) {
       Node view = iter.nextNode() ;
       String permissions = view.getProperty(EXO_PERMISSIONS).getString() ;
       if(permissions.indexOf(permission) > -1 ) 
@@ -176,14 +188,15 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   }
 
   public void removeView(String viewName, String repository) throws Exception {
-    Node viewHome = getViewHome(repository) ;
+    Session session = getSession(repository) ;
+    Node viewHome = (Node)session.getItem(baseViewPath_) ;
     if(viewHome.hasNode(viewName)){
       Node view = viewHome.getNode(viewName) ;
       view.remove() ;
       viewHome.save() ;
-      //session_.save() ;
-      //session_.refresh(true) ;
+      session.save();
     }              
+    session.logout();
   }
 
   public void addTab(Node view, String name, String buttons) throws Exception {
@@ -199,7 +212,8 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
 
   public Node getTemplateHome(String homeAlias, String repository) throws Exception{
     String homePath = getJCRPath(homeAlias) ;
-    return (Node)getSession(repository).getItem(homePath) ;
+    Session session = getSession(repository) ;
+    return (Node)session.getItem(homePath) ;
   }
 
   private String getJCRPath(String jcrAlias) throws Exception{
@@ -207,9 +221,10 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   }
 
 
-  private Session getSession(String repository) throws Exception{
-    return repositoryService_.getRepository(repository).getSystemSession(
-        cmsConfigurationService_.getWorkspace(repository)) ;
+  private Session getSession(String repository) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String worksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+    return manageableRepository.getSystemSession(worksapce) ;    
   }
 
   public List<Node> getAllTemplates(String homeAlias, String repository) throws Exception {

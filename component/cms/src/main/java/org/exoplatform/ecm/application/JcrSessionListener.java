@@ -25,20 +25,28 @@ public class JcrSessionListener implements HttpSessionListener {
   public void sessionCreated(HttpSessionEvent event) {
   }
 
-  public void sessionDestroyed(HttpSessionEvent event) {
-    HttpSession session = event.getSession() ;    
-    ServletContext context = session.getServletContext() ;    
-    PortalContainer pcontainer = 
-      RootContainer.getInstance().getPortalContainer(context.getServletContextName()) ;
-    PortalContainer.setInstance(pcontainer) ;       
-    SessionProviderService providerService = (SessionProviderService)pcontainer.getComponentAdapterOfType(SessionProviderService.class) ;
-//  remove all SystemSessionProvider & AnonimSessionProvider
-    String systemKey = session.getId() + ":/" + SystemIdentity.SYSTEM ;
-    String anonimKey = session.getId() + ":/" + SystemIdentity.ANONIM ;
-    providerService.removeSessionProvider(session.getId()) ;
-    providerService.removeSessionProvider(systemKey) ;
-    providerService.removeSessionProvider(anonimKey) ;       
-    PortalContainer.setInstance(null) ;           
+  public void sessionDestroyed(HttpSessionEvent event) {   
+    try{
+      HttpSession session = event.getSession() ;      
+      ServletContext context = session.getServletContext() ;    
+      PortalContainer pcontainer = 
+        RootContainer.getInstance().getPortalContainer(context.getServletContextName()) ;
+      PortalContainer.setInstance(pcontainer) ;       
+      SessionProviderService providerService = 
+        (SessionProviderService)pcontainer.getComponentInstanceOfType(SessionProviderService.class) ;
+//    remove all SystemSessionProvider & AnonimSessionProvider
+      String systemKey = session.getId() + ":/" + SystemIdentity.SYSTEM ;
+      String anonimKey = session.getId() + ":/" + SystemIdentity.ANONIM ;     
+      providerService.removeSessionProvider(session.getId()) ;      
+      providerService.removeSessionProvider(systemKey) ;      
+      providerService.removeSessionProvider(anonimKey) ;       
+      PortalContainer.setInstance(null) ;           
+
+    }catch (Exception e) {
+      e.printStackTrace();
+    }finally {
+      PortalContainer.setInstance(null) ;
+    }    
   }
 
 }

@@ -38,8 +38,7 @@ public interface TemplateService {
   
   public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception ;
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
-  
-  //public String getTemplate(boolean isDialog, String nodeTypeName) throws Exception ;
+    
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
   public String addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
