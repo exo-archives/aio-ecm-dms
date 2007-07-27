@@ -67,77 +67,27 @@ public class TemplatePlugin extends BaseComponentPlugin {
     }        
   }
 
-  public void init() throws Exception {
-    Session session = null ;    
-    Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
-    TemplateConfig templateConfig = null ;           
+  public void init() throws Exception {               
     if(autoCreateInNewRepository_) {
       List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;      
       for(RepositoryEntry repo:repositories) {        
-        session = getSessionOnSystemWorkspace(repo.getName()) ;
-        Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
-        if(templatesHome.hasNodes()) {
-          session.logout();
-          continue ;
-        }
-        while(iter.hasNext()) {
-          Object object = iter.next().getObject() ;
-          if(!(object instanceof TemplateConfig)) {          
-            break ;
-          }
-          templateConfig = (TemplateConfig)object ;
-          addTemplate(templateConfig,templatesHome,storedLocation_) ;
-        }
-        session.save();
-        session.logout();
+        importPredefineTemplates(repo.getName()) ;
       }
     }else {
-      session = repositoryService_.getDefaultRepository().getSystemSession(cmsConfigService_.getWorkspace()) ;
-      Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
-      if(templatesHome.hasNodes()) {
-        session.logout();
-        return ;
-      }
-      while(iter.hasNext()) {
-        Object object = iter.next().getObject() ;
-        if(!(object instanceof TemplateConfig)) {          
-          break ;
-        }
-        templateConfig = (TemplateConfig)object ;
-        addTemplate(templateConfig,templatesHome,storedLocation_) ;
-      }
-      session.save();
-      session.logout();
+      ValueParam valueParam = params_.getValueParam("repository") ;
+      String repository = null ;
+      if(valueParam != null) {
+        repository = valueParam.getValue() ;
+      }else {
+        repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
+      }      
+      importPredefineTemplates(repository) ;
     }        
   }
 
-  public void init(String repository) throws Exception{
-    Session session = null ;    
-    TemplateConfig templateConfig = null ;
-    Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
-    ValueParam  param = params_.getValueParam("repository") ;
-    String repoName = null ;
-    if(param !=null) {
-      repoName = param.getName() ;
-    }
-    if(autoCreateInNewRepository_ ||(repoName !=null && repoName.equalsIgnoreCase(repository))) {
-      session = getSessionOnSystemWorkspace(repository) ;
-      Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
-      //be carefull. Maybe lost data here
-      if(templatesHome.hasNodes()) {
-        session.logout();
-        return ;
-      }
-      while(iter.hasNext()) {
-        Object object = iter.next().getObject() ;
-        if(!(object instanceof TemplateConfig)) {          
-          break ;
-        }
-        templateConfig = (TemplateConfig)object ;
-        addTemplate(templateConfig,templatesHome,storedLocation_) ;
-      }
-      session.save();
-      session.logout();
+  public void init(String repository) throws Exception {        
+    if(autoCreateInNewRepository_) {
+      importPredefineTemplates(repository) ;
     }          
   }
   private void addTemplate(TemplateConfig templateConfig, Node templatesHome,String storedLocation) throws Exception{
@@ -158,7 +108,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
       List dialogs = nodeType.getReferencedDialog();
       Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
       addNode(storedLocation, dialogsHome, dialogs);
-      
+
       List views = nodeType.getReferencedView();
       Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
       addNode(storedLocation, viewsHome, views);      
@@ -166,6 +116,30 @@ public class TemplatePlugin extends BaseComponentPlugin {
   }
 
   public void setBasePath(String basePath) { cmsTemplatesBasePath_ = basePath ; }
+
+  private void importPredefineTemplates(String repositoryName) throws Exception {
+    ManageableRepository repository = repositoryService_.getRepository(repositoryName) ;
+    String workspace = repository.getConfiguration().getDefaultWorkspaceName();
+    Session session = repository.getSystemSession(workspace) ;
+    Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
+    TemplateConfig templateConfig = null ;
+    Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
+    //be carefull. Maybe lost data here
+    if(templatesHome.hasNodes()) {
+      session.logout();
+      return ;
+    }
+    while(iter.hasNext()) {
+      Object object = iter.next().getObject() ;
+      if(!(object instanceof TemplateConfig)) {          
+        break ;
+      }
+      templateConfig = (TemplateConfig)object ;
+      addTemplate(templateConfig,templatesHome,storedLocation_) ;
+    }
+    session.save();
+    session.logout();
+  }
 
   private void addNode(String basePath, Node nodeTypeHome, List templates)  throws Exception {
     for (Iterator iterator = templates.iterator(); iterator.hasNext();) {
@@ -184,11 +158,5 @@ public class TemplatePlugin extends BaseComponentPlugin {
       contentNode.setProperty(EXO_ROLES_PROP, template.getParsedRoles());
       contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);
     }
-  }
-
-  private Session  getSessionOnSystemWorkspace(String repository) throws Exception {
-    ManageableRepository repo= repositoryService_.getRepository(repository) ;
-    String systemWorkspace = repo.getConfiguration().getSystemWorkspaceName();
-    return repo.getSystemSession(systemWorkspace) ;
-  }
+  }    
 }

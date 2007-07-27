@@ -31,8 +31,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   private RepositoryService repositoryService_ ;
   private CmsConfigurationService cmsConfigService_ ; 
   private ConfigurationManager cservice_ ;
-  private boolean autoCreateInNewRepository_ = false ;
-  private String repository_ ;
+  private boolean autoCreateInNewRepository_ = false ;  
 
   public ManageViewPlugin(RepositoryService repositoryService, InitParams params, ConfigurationManager cservice, 
       CmsConfigurationService cmsConfigService) throws Exception {
@@ -43,76 +42,40 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     ValueParam autoInitParam = params.getValueParam("autoCreateInNewRepository") ;    
     if(autoInitParam !=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(autoInitParam.getValue()) ;
-    }
-    ValueParam param = params.getValueParam("repository") ;
-    if(param !=null) {
-      repository_ = param.getValue();
-    }
+    }    
   }
 
-  public void init() throws Exception {
-    Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
-    String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
-    String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);    
-    String warViewPath = cmsConfigService_.getContentLocation() 
-    + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
-    ViewConfig viewObject = null ;
-    TemplateConfig templateObject = null ;
-    Session session = null ;
+  public void init() throws Exception {    
     if(autoCreateInNewRepository_) {
       for(RepositoryEntry entry:repositoryService_.getConfig().getRepositoryConfigurations()) {
-        session = getSession(entry.getName()) ;
-        Node viewHomeNode = (Node)session.getItem(viewsPath) ;        
-        while(it.hasNext()) {
-          Object object = it.next().getObject();
-          if(object instanceof ViewConfig) {
-            viewObject = (ViewConfig)object ;
-            String viewNodeName = viewObject.getName();
-            if(viewHomeNode.hasNode(viewNodeName)) continue ;
-            Node viewNode = addView(viewHomeNode,viewNodeName,viewObject.getPermissions(),viewObject.getTemplate()) ;
-            for(Tab tab:viewObject.getTabList()) {
-              addTab(viewNode,tab.getTabName(),tab.getButtons()) ;
-            }
-          }else if(object instanceof TemplateConfig) {
-            templateObject = (TemplateConfig) object;
-            addTemplate(templateObject,session,warViewPath) ;
-          }          
-        }        
-        session.save();
-        session.logout();
+        importPredefineViews(entry.getName()) ;
       }
       return ;
     }
-    if(repository_ == null || repository_.length() == 0) return ;
-    session = getSession(repository_) ;
-    Node viewHomeNode = (Node)session.getItem(viewsPath) ;
-    while(it.hasNext()) {
-      Object object = it.next().getObject();
-      if(object instanceof ViewConfig) {
-        viewObject = (ViewConfig)object ;
-        String viewNodeName = viewObject.getName();
-        if(viewHomeNode.hasNode(viewNodeName)) continue ;
-        Node viewNode = addView(viewHomeNode,viewNodeName,viewObject.getPermissions(),viewObject.getTemplate()) ;
-        for(Tab tab:viewObject.getTabList()) {
-          addTab(viewNode,tab.getTabName(),tab.getButtons()) ;
-        }
-      }else if(object instanceof TemplateConfig) {
-        templateObject = (TemplateConfig) object;
-        addTemplate(templateObject,session,warViewPath) ;
-      }          
-    }        
-    session.save();
-    session.logout();      
+    ValueParam param = params_.getValueParam("repository") ;
+    String repository = null ;
+    if(param !=null) {
+      repository = param.getValue();
+    }else {
+      repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
+    }    
+    importPredefineViews(repository) ;
   }
 
   public void init(String repository) throws Exception {
     if(!autoCreateInNewRepository_) return ;
+    importPredefineViews(repository) ;
+  }
+  
+  private void importPredefineViews(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
     String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);    
     String warViewPath = cmsConfigService_.getContentLocation() 
     + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
-    Session session = getSession(repository) ;
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;    
+    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    Session session = manageableRepository.getSystemSession(workspace) ;
     ViewConfig viewObject = null ;
     TemplateConfig templateObject = null ;
     Node viewHomeNode = (Node)session.getItem(viewsPath) ;
@@ -134,13 +97,8 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     session.save();
     session.logout();
   }
-
-  private Session getSession(String repository) throws Exception {
-    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;    
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    return manageableRepository.getSystemSession(workspace) ;
-  }
-
+  
+  
   private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
     Node contentNode = viewManager.addNode(name, "exo:view");
     contentNode.setProperty("exo:permissions", permissions);
@@ -148,7 +106,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     viewManager.save() ;
     return contentNode ;
   }
-
+  
   private void addTab(Node view, String name, String buttons) throws Exception {
     Node tab ;
     if(view.hasNode(name)){

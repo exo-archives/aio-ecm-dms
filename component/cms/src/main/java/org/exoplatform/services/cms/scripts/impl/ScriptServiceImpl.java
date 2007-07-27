@@ -101,8 +101,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }
 
   protected String getBasePath() { return cmsConfigService_.getJcrPath(BasePath.CMS_SCRIPTS_PATH); }    
-  
-  public void initRepo(String repository) throws Exception {    
+
+  public void initRepo(String repository) throws Exception {
     ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
     String scriptsPath = getBasePath();
     Session session = mRepository.getSystemSession(mRepository.getConfiguration().getDefaultWorkspaceName()) ;
@@ -119,7 +119,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     session.save();
     session.logout();
   }
- 
+  
   public Node getECMScriptHome(String repository) throws Exception {
     Node ecmScriptHome = null ;
     try {     
