@@ -9,12 +9,18 @@
 		    <set-method>addTaxonomyPlugin</set-method>
 		    <type>org.exoplatform.services.cms.categories.impl.TaxonomyPlugin</type>
 		    <init-params>
+		    	<value-param>
+	        	<name>autoCreateInNewRepository</name>
+	        	<value>true</value>
+	        </value-param>	        
+	        <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>	        
 		    	<object-param>
 		    		<name>taxonomy.configuration</name>
 	          <description>configuration predefined taxonomies to inject in jcr</description>
-	          <object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig">
-	          	<field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
-	            <field  name="repository"><string>repository</string></field>
+	          <object type="org.exoplatform.services.cms.categories.impl.TaxonomyConfig">	          	
 	          	<field  name="taxonomies">
 	          		<collection type="java.util.ArrayList">
 	          		  <!-- cms taxonomy -->
