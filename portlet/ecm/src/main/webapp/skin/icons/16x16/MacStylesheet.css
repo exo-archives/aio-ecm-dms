@@ -62,6 +62,12 @@
   cursor: pointer;
 }
  
+ .Remove16x16Icon {
+	width: 16px; height: 16px;
+  background: url('MacSkin/DustBin.gif') no-repeat; 
+  cursor: pointer;
+}
+
 .PermissionIcon16x16 {
   float:left;
   width: 16px; height: 16px;

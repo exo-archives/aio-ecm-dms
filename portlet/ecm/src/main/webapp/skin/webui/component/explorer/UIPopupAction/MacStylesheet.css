@@ -205,12 +205,14 @@
   background: white;
   width: 100%;
 }
-.UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
+  border: solid 1px red;
 }
 
-.UIJCRExplorerPortlet .UITreeList {
-  width: 315px;
+.UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
+  line-height: 30px;
 }
 
 .UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {

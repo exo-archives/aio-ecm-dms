@@ -247,7 +247,11 @@
 .UIJCRExplorerPortlet .Explorer {
   float: left ;
   width: 230px ;
-  margin-right: 10px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
+  border: solid 1px red;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
@@ -277,10 +281,6 @@
 	float: none;
 	line-height: 24px;
 	height: 24px;
-}
-
-.UIJCRExplorerPortlet .UITreeList {
-  width: 315px;
 }
 
 .UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {

@@ -60,6 +60,12 @@
   margin: 4px;
 }
  
+.Remove16x16Icon {
+	width: 24px; height: 24px;
+  background: url('VistaSkin/Delete.png') no-repeat; 
+  cursor: pointer;
+}
+
 .SelectMemberIcon {
   width: 16px; height: 16px;
   background: url('VistaSkin/SmallMemberIcon.png') no-repeat;
@@ -101,20 +107,20 @@
 }
 
 .RestoreVersion16x16Icon {
-  width: 16px; height: 16px;
-  background: url('VistaSkin/RestoreVersion.png') no-repeat;
+  width: 24px; height: 24px;
+  background: url('VistaSkin/RestoreVersion.png') no-repeat center;
   cursor: pointer;
 }
 
 .BlueRoundedPlusPage16x16Icon {
-  width: 19px; height: 18px;
-  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat;
+  width: 24px; height: 24px;
+  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat center;
   cursor: pointer;
 }
 
 .RedRoundedPlusPage16x16Icon {
-  width: 16px; height: 16px;
-  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat;
+  width: 24px; height: 24px;
+  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat center;
   cursor: pointer;
 }
 
