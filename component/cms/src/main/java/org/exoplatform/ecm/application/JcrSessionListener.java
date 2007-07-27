@@ -13,6 +13,7 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.impl.core.SessionImpl;
 
 /**
  * Created by The eXo Platform SAS
@@ -22,7 +23,10 @@ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
  */
 public class JcrSessionListener implements HttpSessionListener {
 
-  public void sessionCreated(HttpSessionEvent event) {    
+  public void sessionCreated(HttpSessionEvent event) {
+    for(String createdLocation:SessionImpl.createdLocationMap.values()) {
+      System.out.println("====================\n\n\n"+createdLocation);
+    }
   }
 
   public void sessionDestroyed(HttpSessionEvent event) {

@@ -18,7 +18,6 @@ import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.picocontainer.Startable;
 
 public abstract class BaseResourceLoaderService implements Startable{
@@ -35,34 +34,17 @@ public abstract class BaseResourceLoaderService implements Startable{
     cservice_ = cservice;        
     resourceCache_ = cacheService.getCacheInstance(this.getClass().getName()) ;
   }  
-  
+
   abstract protected String getBasePath(); 
   abstract protected void removeFromCache(String resourceName);
 
   public void start(){};  
   public void stop(){};  
-  
-  protected void init(ResourceConfig resourceConfig) throws Exception {    
-    Session session = null;    
-    if(resourceConfig.getAutoCreatedInNewRepository()) {
-      List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
-      for(RepositoryEntry repo : repositories) {
-        try {
-          session = repositoryService_.getRepository(repo.getName())
-            .getSystemSession(cmsConfigService_.getWorkspace(repo.getName())) ;
-        } catch (RepositoryException re) {
-          System.out.println("[WARNING] ==> Can not init scripts in repository '" + repo.getName() + "'") ;
-          continue ;
-        }
-        addScripts(session, resourceConfig.getRessources()) ;
-      }
-    } else {
-      session = repositoryService_.getRepository(resourceConfig.getRepositoty())
-      .getSystemSession(cmsConfigService_.getWorkspace(resourceConfig.getRepositoty())) ;
-      addScripts(session, resourceConfig.getRessources()) ;
-    }
+
+  protected void init(Session session, ResourceConfig resourceConfig) throws Exception {                   
+    addScripts(session, resourceConfig.getRessources()) ;       
   }
-  
+
   protected void addScripts(Session session, List resources) throws Exception{
     String resourcesPath = getBasePath();
     if (resources.size() == 0) return;
@@ -76,7 +58,7 @@ public abstract class BaseResourceLoaderService implements Startable{
     Node root = session.getRootNode();
     Node resourcesHome = (Node) session.getItem(resourcesPath);
     String warPath = cmsConfigService_.getContentLocation() 
-        + "/system" + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
+    + "/system" + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
     for (Iterator iter = resources.iterator(); iter.hasNext();) {
       ResourceConfig.Resource resource = (ResourceConfig.Resource) iter.next();
       String name = resource.getName();
@@ -84,12 +66,11 @@ public abstract class BaseResourceLoaderService implements Startable{
       InputStream in = cservice_.getInputStream(path);
       addResource(resourcesHome, name, in);
     }
-    root.save();
-    session.save() ;
+    root.save();    
   }
-  
+
   public void addResource(Node resourcesHome, String resourceName, InputStream in)
-      throws Exception {
+  throws Exception {
     Node contentNode = null;
     if(resourceName.lastIndexOf("/")>-1) {
       String realParenPath = StringUtils.substringBeforeLast(resourceName,"/") ;
@@ -109,7 +90,7 @@ public abstract class BaseResourceLoaderService implements Startable{
     contentNode.setProperty("jcr:lastModified", new GregorianCalendar());
     resourcesHome.save() ;
   }
-  
+
   protected Node getResourcesHome(String repository) throws Exception {
     Session session = null;
     try {
@@ -121,20 +102,20 @@ public abstract class BaseResourceLoaderService implements Startable{
         session = repositoryService_.getDefaultRepository()
         .getSystemSession(cmsConfigService_.getWorkspace(repoName));
       }
-      
+
     } catch (RepositoryException re) {
       return null;
     }
     String resourcesPath = getBasePath();
     return (Node) session.getItem(resourcesPath);
   }  
-  
+
   public String getResourceAsText(String resourceName, String repository) throws Exception {
     Node resourcesHome = getResourcesHome(repository);
     Node resourceNode = resourcesHome.getNode(resourceName);
     return resourceNode.getProperty("jcr:data").getString();
   }  
-  
+
   public NodeIterator getResources(String repository) throws Exception {
     Node resourcesHome = getResourcesHome(repository);
     return resourcesHome.getNodes();

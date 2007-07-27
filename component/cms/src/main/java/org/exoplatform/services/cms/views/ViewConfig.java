@@ -2,7 +2,7 @@
  * Copyright 2001-2003 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.services.cms.views.impl;
+package org.exoplatform.services.cms.views;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,24 +14,13 @@ import org.apache.commons.lang.StringUtils;
  *          nguyenkequanghung@yahoo.com
  * Feb 27, 2006 
  */
-public class ViewDataImpl{
-  
-  private boolean autoCreatedInNewRepository ; 
-  private String repository ;
+public class ViewConfig {    
   private String name ;
   private String permissions ;
   private String template ;
-  private List tabList ;
+  private List<Tab> tabList = new ArrayList<Tab>(5) ;
 
-  public  ViewDataImpl(){
-    tabList = new ArrayList() ;
-  }
-
-  public boolean getAutoCreatedInNewRepository() { return this.autoCreatedInNewRepository ; }
-  public void setAutoCreatedInNewRepository(boolean isAuto) { this.autoCreatedInNewRepository = isAuto ; }
-  
-  public String getRepository() { return this.repository ; }
-  public void setRepository(String repo) { this.repository = repo ; }
+  public  ViewConfig() { }
   
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }  
@@ -42,8 +31,8 @@ public class ViewDataImpl{
   public String getTemplate() { return this.template ; }
   public void setTemplate(String templ) { this.template = templ ; }
 
-  public List getTabList() { return this.tabList ; }
-  public void setTabList(List tab) { this.tabList = tab ; }
+  public List<Tab> getTabList() { return this.tabList ; }
+  public void setTabList(List<Tab> tabs) { this.tabList = tabs ; }
 
   public List getAllPermissions() {
     String[] allPermissions = StringUtils.split(permissions, ";");

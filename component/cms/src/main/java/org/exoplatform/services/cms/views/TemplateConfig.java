@@ -2,7 +2,7 @@
  * Copyright 2001-2003 The eXo Platform SARL         All rights reserved.  *
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
-package org.exoplatform.services.cms.views.impl;
+package org.exoplatform.services.cms.views;
 
 /**
  * Created by The eXo Platform SARL
@@ -11,20 +11,12 @@ package org.exoplatform.services.cms.views.impl;
  * Feb 27, 2006
  * 
  */
-public class TemplateDataImpl{
-  private boolean autoCreatedInNewRepository ;
-  private String repository ;
+public class TemplateConfig {  
   private String name ;
   private String warPath ;
   private String type ;   
 
-  public TemplateDataImpl(){} 
-  
-  public boolean getAutoCreatedInNewRepository() { return this.autoCreatedInNewRepository ; }
-  public void setAutoCreatedInNewRepository(boolean isAuto) { this.autoCreatedInNewRepository = isAuto ; }
-  
-  public String getRepository() { return this.repository ; }
-  public void setRepository(String repo) { this.repository = repo ; }  
+  public TemplateConfig(){} 
   
   public String getName() { return this.name ; }
   public void setName(String name) { this.name = name ; }

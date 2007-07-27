@@ -25,7 +25,7 @@ public interface ManageViewService {
 
   public void removeView(String viewName, String repository) throws Exception;  
   public Node getViewHome(String repository) throws Exception ;  
-  public List getAllViews(String repository) throws Exception;
+  public List<ViewConfig> getAllViews(String repository) throws Exception;
   
   public boolean hasView(String name, String repository) throws Exception ;
   public Node getTemplateHome(String homeAlias, String repository) throws Exception;

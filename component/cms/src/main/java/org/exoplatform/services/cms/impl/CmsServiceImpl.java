@@ -41,16 +41,12 @@ import org.exoplatform.services.jcr.RepositoryService;
  */
 public class CmsServiceImpl implements CmsService {
   
-  private RepositoryService jcrService;
-  private CmsConfigurationService cmsConfigurationService ;
-  private IDGeneratorService idGeneratorService;
-  private String repository_ ;
+  private RepositoryService jcrService;  
+  private IDGeneratorService idGeneratorService;  
   
-  public CmsServiceImpl(RepositoryService jcrService,
-      IDGeneratorService idGeneratorService, CmsConfigurationService cmsConfigurationService) {
+  public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService) {
     this.idGeneratorService = idGeneratorService;
-    this.jcrService = jcrService;  
-    this.cmsConfigurationService = cmsConfigurationService ;
+    this.jcrService = jcrService;      
   }
 
   public String storeNode(String workspace, String nodeTypeName,
@@ -65,8 +61,7 @@ public class CmsServiceImpl implements CmsService {
   }
 
   public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
-                           boolean isAddNew,String repository) throws Exception {
-    repository_ = repository ;
+                           boolean isAddNew,String repository) throws Exception {    
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 

@@ -33,8 +33,7 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
-
-import com.sun.codemodel.JCase;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
@@ -53,8 +52,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
 
   public void start() {    
     try {
-      initPlugins();
-      initObserver();
+      initPlugins();      
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -67,56 +65,61 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }
 
   private void initPlugins() throws Exception{
+    Session session = null ;
+    String scriptsPath = getBasePath();
     for(ScriptPlugin plugin : plugins_) {
+      if(plugin.getAutoCreateInNewRepository()) {
+        List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;                
+        for(RepositoryEntry repo : repositories) {
+          session = repositoryService_.getRepository(repo.getName()).getSystemSession(repo.getDefaultWorkspaceName());          
+          Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
+          while(iter.hasNext()) {
+            init(session,(ResourceConfig) iter.next().getObject()) ;            
+          }
+          ObservationManager obsManager = session.getWorkspace().getObservationManager();
+          obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+          session.save();
+          session.logout();
+        }
+        return ;        
+      }
+      String repository = plugin.getInitRepository() ;
+      if(repository == null) {
+        repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
+      }
+      ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
+      session = mRepository.getSystemSession(mRepository.getConfiguration().getDefaultWorkspaceName()) ;          
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
       while(iter.hasNext()) {
-        init((ResourceConfig) iter.next().getObject()) ;
-      }      
-    }
-  }
-
-  protected String getBasePath() {  
-    return cmsConfigService_.getJcrPath(BasePath.CMS_SCRIPTS_PATH);
-  }  
-
-  private void initObserver() throws Exception {
-    String scriptsPath = getBasePath();
-    List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
-    Session session = null ;
-    for(RepositoryEntry repo : repositories) {
-      session = repositoryService_.getRepository(repo.getName()).getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));    
+        init(session,(ResourceConfig) iter.next().getObject()) ;            
+      }
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+      session.save();
       session.logout();
     }
   }
 
-  public void initRepo(String repository) throws Exception {
-    for(ScriptPlugin plugin : plugins_) {
-      Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
-      while(iter.hasNext()) {
-        initPlugins((ResourceConfig) iter.next().getObject(), repository) ;
-        initObserver(repository) ;
-      }      
-    }      
-  }
-
-  private void initObserver(String repository) throws Exception {
+  protected String getBasePath() { return cmsConfigService_.getJcrPath(BasePath.CMS_SCRIPTS_PATH); }    
+  
+  public void initRepo(String repository) throws Exception {    
+    ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
     String scriptsPath = getBasePath();
-    Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository));
-    ObservationManager obsManager = session.getWorkspace().getObservationManager();
-    obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+    Session session = mRepository.getSystemSession(mRepository.getConfiguration().getDefaultWorkspaceName()) ;
+    for(ScriptPlugin plugin : plugins_) {
+      if(!plugin.getAutoCreateInNewRepository()) continue ;
+      Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;                           
+      while(iter.hasNext()) {
+        init(session,(ResourceConfig) iter.next().getObject()) ;            
+      }      
+      ObservationManager obsManager = session.getWorkspace().getObservationManager();
+      obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
+
+    }
+    session.save();
     session.logout();
   }
-
-  private void initPlugins(ResourceConfig config, String repository) throws Exception {
-    if(config.getAutoCreatedInNewRepository() || repository.equals(config.getRepositoty())) {
-      Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      addScripts(session, config.getRessources()) ;
-      session.logout();
-    }    
-  }
-
+ 
   public Node getECMScriptHome(String repository) throws Exception {
     Node ecmScriptHome = null ;
     try {     
@@ -293,7 +296,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         for(RepositoryEntry repo : repositories) {
           try {
             jcrSession = repositoryService_.getRepository(repo.getName())
-              .getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));
+            .getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));
             Property property = (Property) jcrSession.getItem(path);
             if ("jcr:data".equals(property.getName())) {
               Node node = property.getParent();

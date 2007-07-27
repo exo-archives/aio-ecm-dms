@@ -6,7 +6,6 @@
 package org.exoplatform.services.cms.queries.impl;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +61,10 @@ public class NewUserListener extends UserEventListener {
       try {
         session = jcrService_.getRepository(repo.getName()).getSystemSession(cmsConfigurationService_
             .getWorkspace(repo.getName()));
-        initSystemData(session, userName) ;
+        Node usersHome = (Node) session.getItem(
+            cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
+        initSystemData(usersHome, userName) ;
+        session.save();
         session.logout();
       } catch (RepositoryException re){
         session.logout();
@@ -71,26 +73,19 @@ public class NewUserListener extends UserEventListener {
     }   
   }
   
-  private void initSystemData(Session session, String userName) throws Exception{
-    Node usersHome = (Node) session.getItem(
-        cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));   
-    
+  private void initSystemData(Node usersHome, String userName) throws Exception{           
     Node userHome = Utils.makePath(usersHome, userName, "nt:unstructured", getPermissions(userName));
-    if(userHome.hasNode(relativePath_)) {
-      session.refresh(false);
+    if(userHome.hasNode(relativePath_)) {    
       return;
     }     
-    Node queriesHome =  Utils.makePath(userHome, relativePath_, "nt:unstructured", getQueryPermissions(userName)); 
-      
-    List users = config_.getUsers();
+    Node queriesHome =  Utils.makePath(userHome, relativePath_, "nt:unstructured", getQueryPermissions(userName));           
     boolean userFound = false;
     NewUserConfig.User templateConfig = null;
-    for (Iterator iter = users.iterator(); iter.hasNext();) {
-      NewUserConfig.User userConfig = (NewUserConfig.User) iter.next();
+    for (NewUserConfig.User userConfig : config_.getUsers()) {      
       String currentName = userConfig.getUserName();            
       if (config_.getTemplate().equals(currentName))  templateConfig = userConfig;
       if (currentName.equals(userName)) {
-        List queries = userConfig.getQueries();
+        List<NewUserConfig.Query> queries = userConfig.getQueries();
         importQueries(queriesHome, queries);
         userFound = true;
         break;
@@ -98,7 +93,7 @@ public class NewUserListener extends UserEventListener {
     }
     if (!userFound) {
       //use template conf
-      List queries = templateConfig.getQueries();
+      List<NewUserConfig.Query> queries = templateConfig.getQueries();
       importQueries(queriesHome, queries);
     }
     usersHome.save();   
@@ -117,10 +112,9 @@ public class NewUserListener extends UserEventListener {
     return permissions;
   }  
   
-  public void importQueries(Node queriesHome, List queries) throws Exception {
+  public void importQueries(Node queriesHome, List<NewUserConfig.Query> queries) throws Exception {
     QueryManager manager = queriesHome.getSession().getWorkspace().getQueryManager();
-    for (Iterator iter = queries.iterator(); iter.hasNext();) {
-      NewUserConfig.Query query = (NewUserConfig.Query) iter.next();
+    for (NewUserConfig.Query query:queries) {      
       String queryName = query.getQueryName();
       String language = query.getLanguage();
       String statement = query.getQuery();

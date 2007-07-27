@@ -15,7 +15,7 @@ import java.util.List;
 public class NewUserConfig {    
   private String repository ;
   private String template;  
-  private List users = new ArrayList(5);
+  private List<User> users = new ArrayList<User>(5);
   
   public String getRepository() { return repository ; }
   public void setRepository(String rp) { this.repository = rp; }
@@ -23,27 +23,21 @@ public class NewUserConfig {
   public String getTemplate() { return template; }
   public void setTemplate(String template) { this.template = template; }
     
-  public List getUsers() {   return users; }
-  public void setUsers(List s) {  this.users = s; }  
+  public List<User> getUsers() {   return users; }
+  public void setUsers(List<User> s) {  this.users = s; }  
     
   static public class User {
     private String userName ;
-    private List  queries ;
+    private List<Query>  queries = new ArrayList<Query>(5) ;
     
-    public User() {
-      queries = new ArrayList(5) ;
-    }
+    public User() { }
         
     public String getUserName() {   return userName;  }
     public void setUserName(String userName) {  this.userName = userName;   }
 
-    public List getQueries() {
-      return queries;
-    }
-
-    public void setQueries(List queries) {
-      this.queries = queries;
-    }
+    public List<Query> getQueries() { return queries; }
+    public void setQueries(List<Query> queries) { this.queries = queries;  }
+    
   }
   
   static public class Query {
@@ -51,23 +45,13 @@ public class NewUserConfig {
     private String language;
     private String query;
     
-    public String getQuery() {
-      return query;
-    }
-    public void setQuery(String query) {
-      this.query = query;
-    }    
-    public String getLanguage() {
-      return language;
-    }
-    public void setLanguage(String language) {
-      this.language = language;
-    }
-    public String getQueryName() {
-      return queryName;
-    }
-    public void setQueryName(String queryName) {
-      this.queryName = queryName;
-    }
+    public String getQuery() { return query; }
+    public void setQuery(String query) { this.query = query; }
+    
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
+     
+    public String getQueryName() { return queryName; }
+    public void setQueryName(String queryName) { this.queryName = queryName; }
   }
 }

@@ -48,12 +48,13 @@ public class QueryServiceImpl implements QueryService, Startable{
     containerInfo_ = containerInfo ;
     cacheService_ = cacheService ;
     baseUserPath_ = cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH);
+    baseQueriesPath_ = cmsConf.getJcrPath(BasePath.QUERIES_PATH) ;
   }
 
   public void start() {
     for(QueryPlugin queryPlugin : queryPlugins_){
       try{
-        queryPlugin.init() ;
+        queryPlugin.init(baseQueriesPath_) ;
       }catch (Exception e) {
         System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
         //e.printStackTrace() ;
@@ -68,7 +69,7 @@ public class QueryServiceImpl implements QueryService, Startable{
   public void init(String repository) throws Exception {
     for(QueryPlugin queryPlugin : queryPlugins_){
       try{
-        queryPlugin.init(repository) ;
+        queryPlugin.init(repository,baseQueriesPath_) ;
       }catch (Exception e) { 
         System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
         //e.printStackTrace() ;
@@ -127,11 +128,10 @@ public class QueryServiceImpl implements QueryService, Startable{
     if(userName == null) return;
     Session session = getSession(repository) ;
     QueryManager manager = session.getWorkspace().getQueryManager();    
-    Query query = manager.createQuery(statement, language);
-    String usersHome = cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH);
-    String absPath = usersHome + "/" + userName + "/" + relativePath_ + "/" + queryName;
+    Query query = manager.createQuery(statement, language);    
+    String absPath = baseUserPath_ + "/" + userName + "/" + relativePath_ + "/" + queryName;
     query.storeAsNode(absPath);
-    session.getItem(usersHome).save();
+    session.getItem(baseUserPath_).save();
     session.save();
     session.logout();
   }
@@ -161,7 +161,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     Value[] vls = perm.toArray(new Value[] {}) ;
 
     String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
-    Node queryHome = (Node)session.getItem(queriesPath) ;
+    Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
     if(queryHome.hasNode(queryName)) {
       Node query = queryHome.getNode(queryName) ;
       query.setProperty("jcr:language", language) ;
@@ -174,7 +174,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     }else {
       QueryManager manager = session.getWorkspace().getQueryManager();    
       Query query = manager.createQuery(statement, language);      
-      Node newQuery = query.storeAsNode(queriesPath + "/" + queryName);
+      Node newQuery = query.storeAsNode(baseQueriesPath_ + "/" + queryName);
       newQuery.addMixin("mix:sharedQuery") ;
       newQuery.setProperty("exo:permissions", vls) ;
       newQuery.setProperty("exo:cachedResult", cachedResult) ;
@@ -193,9 +193,8 @@ public class QueryServiceImpl implements QueryService, Startable{
 
   public List<Node> getSharedQueries(String queryType, List permissions, String repository) throws Exception {
     Session session = getSession(repository);
-    List<Node> queries = new ArrayList<Node>() ;    
-    String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
-    Node queriesHome = (Node)session.getItem(queriesPath) ;
+    List<Node> queries = new ArrayList<Node>() ;        
+    Node queriesHome = (Node)session.getItem(baseQueriesPath_) ;
     NodeIterator iter = queriesHome.getNodes() ;
     while (iter.hasNext()) {
       Node query = iter.nextNode() ;
