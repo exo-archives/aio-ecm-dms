@@ -9,12 +9,18 @@
         <type>org.exoplatform.services.cms.queries.impl.QueryPlugin</type>
         <description>Nothing</description>
         <init-params>
+        	<value-param>
+	        	<name>autoCreateInNewRepository</name>
+	        	<value>true</value>
+	        </value-param>	        
+	        <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>	        		        		    		    
           <object-param>        
             <name>News</name>
             <description>Nothing</description>
-            <object type="org.exoplatform.services.cms.queries.impl.QueryData">
-              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
-              <field  name="repository"><string>repository</string></field>
+            <object type="org.exoplatform.services.cms.queries.impl.QueryData">              
               <field  name="name"><string>news</string></field>
               <field  name="language"><string>xpath</string></field>
               <field  name="statement"><string>/jcr:root/site/news//element(*,exo:article) order by @exo:startPublication descending</string></field>
@@ -25,9 +31,7 @@
           <object-param>        
             <name>Events</name>
             <description>Nothing</description>
-            <object type="org.exoplatform.services.cms.queries.impl.QueryData">
-              <field  name="autoCreatedInNewRepository"><boolean>true</boolean></field>
-              <field  name="repository"><string>repository</string></field>
+            <object type="org.exoplatform.services.cms.queries.impl.QueryData">              
               <field  name="name"><string>events</string></field>
               <field  name="language"><string>xpath</string></field>
               <field  name="statement"><string>/jcr:root/site/events//element(*,exo:event) order by @exo:dtstart descending</string></field>
