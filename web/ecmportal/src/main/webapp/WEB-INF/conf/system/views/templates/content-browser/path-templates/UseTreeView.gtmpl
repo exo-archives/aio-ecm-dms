@@ -1,9 +1,11 @@
 <%
-  import org.exoplatform.ecm.webui.component.browsecontent.TreeNode ;
+  import org.exoplatform.ecm.webui.component.browsecontent.BCTreeNode ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar;	
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
+	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
+	import org.exoplatform.ecm.webui.component.browsecontent.UICategoryTree ;
   import javax.jcr.Node;
-  TreeNode treeNode = uicomponent.getTreeRoot() ;  
+  BCTreeNode treeNode = uicomponent.getTreeRoot() ;  
 	public void writeNodes(List nodes, int level) {	  
 	  for(node in nodes) {
 	    String actionTreeLink = "" ;
@@ -36,40 +38,14 @@
 	<%
 	 if(uicomponent.isShowSearchForm()) {uicomponent.renderChild(UISearchController.class); 
 	 }else {	 
-	 %>
-	 <%   /*Begin TagMap*/   
+	  /*Begin TagMap*/   
 			 	String styleWithTag = "margin-right: 0px" ;
 			 	if(isShowTagmap) {	
-			 		styleWithTag = "margin-right: 210px;"	 ;  		
-			 		def taglist = uicomponent.getTagLink() ;
-		      def tagStyle = uicomponent.getTagStyle() ;  
-		%>
-		      <div class="TagmapHolder">
-		        <div class="TagmapTitle">
-		        	<div class="Icon"><span></span></div>
-		          <div class="TagLabel">Tag map</div>
-		          <div style="clear:left;"><span></span></div>
-		        </div>
-		        <div class ="TagmapContent"> 
-		          <%
-		            for(String tag : taglist){
-		              String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
-		              String tagStatus = "" ;
-		              String styleT = "" ;
-		              String tagkey = "" ; 
-		              if(tag.hasProperty("exo:tagStatus")) {
-		                tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-		                styleT = "Style = '" + tagStyle.get(tagStatus) +"'" ;
-		              }
-		              tagkey = tag.getName() ;                  
-		              println "<a href=\"$tagLink\" $styleT>$tagkey</a>" ;
-		            }
-		          %>
-		        </div>  
-		      </div> 
-		<%	} /*End TagMap*/%>
+			 		styleWithTag = "margin-right: 210px;"	 ;  
+			 	 	uicomponent.renderChild(UITagList.class);
+		 		} 
+		 	/*End TagMap*/%>
 		<div style="$styleWithTag">
-		
 		<% /*Begin CategoryTree*/
 			String style = "margin-left: 0px;" ;
 	 		if(uicomponent.isShowCategoryTree()){
@@ -77,29 +53,9 @@
 	   		String rootNode = uicomponent.getRootNode().getPath() ;
 	   		if (rootNode.equals("/"))  rootNode = "Root" ;
 	   		else  rootNode =  uicomponent.getRootNode().getName() ;
-    %>
-		  <div class="UICategoryTree">					
-					<div class="TitleCategoryTree">
-						<div class="CategoryTreeIcon CategoryListIcon"><span></span></div>
-						<div class="TiteLabel">Categories</div>
-						<div style="clear:left"><span></span></div>
-					</div>
-					<div class="MiddleCategoryTree">
-						<div class="TreeRootIcon NormalFolder16x16Icon"><span></span></div>
-						<a class="RootTreeNode" href="<%=uicomponent.event('Select',uicomponent.getRootNode().getPath());%>">
-						    <%=rootNode%>
-						</a>
-						<div style="clear:left"><span></span></div>
-						
-						<div class="ListMenu">
-							<div class="SupMenu">
-								<%writeNodes(treeNode.getChildren(), 1)%>					
-							</div>
-						</div>
-					</div>					
-			</div>
-		 	<%}/*End CategoryTree*/ %>
-		 	
+				uicomponent.renderChild(UICategoryTree.class);	
+   		}
+   		/*End CategoryTree*/ %>
 	  	<div style="$style">
 			<%/*Begin UIEventViewer*/%>
 					<div class="UIEventViewer">
@@ -162,7 +118,9 @@
 					    </div>
 					    <div style="clear:left"><span></span></div>
 	    		<%}%>
-			    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+			    <div class="DocumentsPageIterator">
+			    	<%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%>
+			    </div>
 	   			<%}%>
 				  <%/*End UIEventViewer*/%>
 				  <%if(!isShowAllDoc) {%>			        
@@ -228,7 +186,7 @@
 				                %>
 				                     <div class="ViewMoreDocument">
 				                    	<div class="NextIcon"><span></span></div>
-				                    	<a href="<%=uicomponent.event('ChangeNode','ViewMoreSub;'+subCat);%>">
+				                    	<a href="<%=actionLinkSub%>">
 				                    		<%=_ctx.appRes(label)%>
 															</a>
 				                    	<div style="clear: left;"><span></span></div>                               

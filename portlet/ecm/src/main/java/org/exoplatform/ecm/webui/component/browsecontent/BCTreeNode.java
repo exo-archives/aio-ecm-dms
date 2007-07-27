@@ -16,21 +16,19 @@ import javax.jcr.RepositoryException;
  *          phamtuanchip@yahoo.de
  * Jan 3, 2007 3:24:37 PM 
  */
-public class TreeNode {
-  final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
-  final static public String NT_FOLDER = "nt:folder" ;
+public class BCTreeNode {
   
   private boolean isExpanded_ ;
   private Node node_ ;
-  private List<TreeNode> children_ = new ArrayList<TreeNode>() ; 
+  private List<BCTreeNode> children_ = new ArrayList<BCTreeNode>() ; 
   
-  public TreeNode(Node node, List<Node> children) {
+  public BCTreeNode(Node node, List<Node> children) {
     node_ = node ;
     isExpanded_ = true;
     setChildren(children) ;
   }
   
-  public TreeNode(Node node) {
+  public BCTreeNode(Node node) {
     node_ = node ;
     isExpanded_ = false ;
   }
@@ -46,11 +44,11 @@ public class TreeNode {
   public Node getNode() { return node_ ; }  
   public void setNode(Node node) { node_ = node ; }
   
-  public List<TreeNode> getChildren() { return children_ ; }
+  public List<BCTreeNode> getChildren() { return children_ ; }
   public int getChildrenSize() { return children_.size() ; }
   
-  public TreeNode getChild(String relPath) throws RepositoryException {
-    for(TreeNode child : children_) {
+  public BCTreeNode getChild(String relPath) throws RepositoryException {
+    for(BCTreeNode child : children_) {
       if(child.getNode().getName().equals(relPath)) return child ;
     }
     return null;
@@ -59,7 +57,7 @@ public class TreeNode {
   public void setChildren(List<Node> children) {
     setExpanded(true) ;
     for(Node child : children) {
-      children_.add(new TreeNode(child)) ;
+      children_.add(new BCTreeNode(child)) ;
     } 
   }
 }

@@ -1,11 +1,13 @@
 <%
 	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ;
+	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
 	String componentName = uicomponent.getName() ;
 	def subDocumentList = uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
 	boolean isShowTagmap = uicomponent.isShowTagmap() ;
 	boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
+	
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
 	<%
@@ -14,40 +16,13 @@
 		}
 	%>
    <div class="ContentHolder">
- <%   
-        
-	 	String styleWithTag = "margin-right: 0px;" ;
-	 	if(isShowTagmap) {	
-	 		styleWithTag = "margin-right: 210px;"	 ;  		
-	 		def taglist = uicomponent.getTagLink() ;
-      def tagStyle = uicomponent.getTagStyle() ;  
-  %>
-  <%/*Begin TagMap*/%>
-      <div class="TagmapHolder">
-        <div class="TagmapTitle">
-        	<div class="Icon"><span></span></div>
-          <div class="TagLabel">Tag map</div>
-          <div style="clear:left;"><span></span></div>
-        </div>
-        <div class ="TagmapContent"> 
-          <%
-            for(String tag : taglist){
-              String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
-              String tagStatus = "" ;
-              String style = "" ;
-              String tagkey = "" ; 
-              if(tag.hasProperty("exo:tagStatus")) {
-                tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-                style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
-              }
-              tagkey = tag.getName() ;                  
-              println "<a href=\"$tagLink\" $style>$tagkey</a>" ;
-            }
-          %>
-        </div>  
-      </div> 
-  <%/*End TagMap*/%>  
-  <%}%>
+ 	<%/*Begin TagMap*/   
+		 	String styleWithTag = "margin-right: 0px" ;
+		 	if(isShowTagmap) {	
+		 		styleWithTag = "margin-right: 210px;"	 ;  
+		 	 	uicomponent.renderChild(UITagList.class);
+	 		} 
+	/*End TagMap*/%>
   <div style="$styleWithTag">
   <%/*Begin UIEventViewer*/%>
   <div class="UIEventViewer">

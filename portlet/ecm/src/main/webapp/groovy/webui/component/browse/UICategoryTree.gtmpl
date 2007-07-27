@@ -1,0 +1,47 @@
+<%
+  import org.exoplatform.ecm.webui.component.browsecontent.BCTreeNode ;
+  import javax.jcr.Node;
+  BCTreeNode treeNode = uicomponent.getTreeRoot() ;  
+	public void writeNodes(List nodes, int level) {	  
+	  for(node in nodes) {
+	    String actionTreeLink = "" ;
+	    actionTreeLink = uicomponent.event("Select",node.getPath()) ;
+	    String styleTree =  "CategoryTreeLabel" ;
+	    String icon = uicomponent.getIcons(node.getNode(),"16x16Icon") ;
+	    if(node.isExpanded()) styleTree = "CategorySelectLabel" ;
+	    println "<div class=\"ParentSupMenu\" style=\"margin-left: ${level * 15}px;\">" ;
+	    println "<div class=\"SelectIcon SelectFolder16x16Icon \"><span></span></div>" ;
+      println "<div class=\""+styleTree+"\"> <a href=\"" + actionTreeLink + "\">"+ node.getName()+ " </a></div>" ;
+      println "</div>" ;
+      if(node.getChildrenSize() > 0) writeNodes(node.getChildren(), level + 1) ;
+    }
+  }
+  String componentName = uicomponent.getName() ;
+%>
+<div class="UICategoryTree">
+	<% 
+   		String rootNode = uicomponent.getRootNode().getPath() ;
+   		if (rootNode.equals("/"))  rootNode = "Root" ;
+   		else  rootNode =  uicomponent.getRootNode().getName() ;
+  %>
+	  <div class="UICategoryTree">					
+				<div class="TitleCategoryTree">
+					<div class="CategoryTreeIcon CategoryListIcon"><span></span></div>
+					<div class="TiteLabel"><%=_ctx.appRes(uicomponent.id  + ".label.title")%></div>
+					<div style="clear:left"><span></span></div>
+				</div>
+				<div class="MiddleCategoryTree">
+					<div class="TreeRootIcon NormalFolder16x16Icon"><span></span></div>
+					<a class="RootTreeNode" href="<%=uicomponent.event('Select',uicomponent.getRootNode().getPath());%>">
+					    <%=rootNode%>
+					</a>
+					<div style="clear:left"><span></span></div>
+					
+					<div class="ListMenu">
+						<div class="SupMenu">
+							<%writeNodes(treeNode.getChildren(), 1)%>					
+						</div>
+					</div>
+				</div>					
+		</div>
+</div>

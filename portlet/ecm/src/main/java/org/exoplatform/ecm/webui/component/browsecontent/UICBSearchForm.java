@@ -74,7 +74,7 @@ public class UICBSearchForm extends UIForm {
     options.add(new SelectItemOption<String>(CATEGORY_SEARCH,CATEGORY_SEARCH)) ;
     return options ;
   } 
-  public Node getNode() {return getAncestorOfType(UIBrowseContainer.class).getCurrentNode();}
+  public Node getNode()throws Exception{return getAncestorOfType(UIBrowseContainer.class).getCurrentNode();}
   public long searchTime() { return duration_; }
 
   public List<ResultData> searchByCategory(String keyword, Node currentNode) throws Exception{

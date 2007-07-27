@@ -58,6 +58,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       if(isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
         //uiContainer.loadPortletConfig(portletPref) ;
         uiTabPane.setRendered(false) ;
+        uiContainer.refreshContent() ;
         uiContainer.setRendered(true) ;
         //getChild(UIBrowseContainer.class).getSession().refresh(true) ;
       } else {

@@ -55,6 +55,7 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.mozilla.javascript.EcmaError;
 
 /**
  * Created by The eXo Platform SARL
@@ -63,6 +64,7 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 14, 2006 5:15:47 PM
  */
 @ComponentConfig(
+    //template = "app:/groovy/webui/component/browse/View2.gtmpl",
     events = {
         @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
         @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
@@ -73,13 +75,13 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIBrowseContainer extends UIContainer{
   private boolean isShowCategoryTree_ = true ;
-  private boolean isShowDocumentDetail_ = false ;
+  protected boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
   private boolean isShowDocumentList_ = false ;
-  private boolean isShowAllDocument_ = false ;
-  private boolean isShowDocumentByTag_ = false ;
+  protected boolean isShowAllDocument_ = false ;
+  protected boolean isShowDocumentByTag_ = false ;
   private String tagPath_ = "" ;
-  private TreeNode treeRoot_ ;
+  private BCTreeNode treeRoot_ ;
   private Node rootNode_  = null ;
   private Node currentNode_  = null ;
   private Node selectedTab_  = null ;
@@ -101,6 +103,10 @@ public class UIBrowseContainer extends UIContainer{
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
     addChild(UIPageIterator.class, null, null) ;
+    addChild(UITagList.class, null, null);
+    UICategoryTree uiTree = createUIComponent(UICategoryTree.class, null, null) ;
+    uiTree.setTreeRoot(getRootNode()) ;
+    addChild(uiTree) ;
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
     addChild(UIDocumentDetail.class, null, null).setRendered(false) ;    
@@ -177,8 +183,8 @@ public class UIBrowseContainer extends UIContainer{
       if(getTemplateName().equals(TREELIST)) {
         if(isEnableToolBar()) initToolBar(true, false, true) ;
         selectedTab_ = null ;
-        setTreeRoot(getRootNode()) ;
-        buildTree(getCurrentNode().getPath()) ;
+        getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
+        getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
       }
       if(!isShowDocumentByTag_) setPageIterator(getSubDocumentList(getSelectedTab())) ;
       return ;
@@ -195,13 +201,23 @@ public class UIBrowseContainer extends UIContainer{
       return ;
     }     
   }
+  public void refreshContent() throws Exception{
+    usecase_ = getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+    if( isShowDocumentByTag_) {
+      setPageIterator(getDocumentByTag()) ;
+    } else {
+      setPageIterator(getSubDocumentList(getSelectedTab())) ;
+    }
+    System.out.println("selected tab = "+ getSelectedTab());
+    if(getChild(UICategoryTree.class) != null) getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
+  }
 
-  public String getTemplate() {
+   public String getTemplate() {
     if(isShowDocumentDetail_) return templateDetail_ ;
     return templatePath_ ;
   }
 
-  @SuppressWarnings("unused")
+ @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
     return jcrTemplateResourceResolver_ ;
@@ -217,11 +233,11 @@ public class UIBrowseContainer extends UIContainer{
     }catch(Exception e) {
       e.printStackTrace() ;
     }     
-  }
+  }  
 
   protected String getTemplateName() {
     return getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
-  }
+  } 
   public boolean isEnableRefDocument() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_REF_DOCUMENT, "")) ;
   }
@@ -272,13 +288,13 @@ public class UIBrowseContainer extends UIContainer{
     return Integer.parseInt(getPortletPreferences().getValue(Utils.CB_NB_PER_PAGE, "")) ;
   }
   public int getRowPerBlock() {return rowPerBlock_ ;}
-  public TreeNode getTreeRoot() { return treeRoot_ ;}
-  public void setTreeRoot(Node node) throws Exception { treeRoot_ = new TreeNode(node) ;}
+  public BCTreeNode getTreeRoot() { return treeRoot_ ;}
+  public void setTreeRoot(Node node) throws Exception { treeRoot_ = new BCTreeNode(node) ;}
   public String[] getActions() { return new String[] {"back"} ;}    
 
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
   public void record(String str) {nodesHistory_.add(str); } 
-  
+
   public Node getNodeByPath(String nodePath) throws Exception{
     Session session = null ;
     ManageableRepository repository = 
@@ -299,13 +315,32 @@ public class UIBrowseContainer extends UIContainer{
       return null  ;
     }
   }
-  
-  public Node getRootNode() {return rootNode_ ;}
-  public Node getCurrentNode() {
+  public Session getSession() throws Exception{
+    Session session = null ;
+    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"") ;
+    String workspace = getWorkSpace() ;
+    ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository()) ;
+    if(categoryPath.startsWith("/jcr:system")) {         
+      session = getSystemProvider().getSession(workspace,manageableRepository) ;
+    }else {
+      if(SessionsUtils.isAnonim()) {
+        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+      }else {
+        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
+      }
+    }
+    return session ;
+  }
+  public Node getRootNode() throws Exception {
+    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH, "") ;
+    if(rootNode_ == null) rootNode_ = (Node)getSession().getItem(categoryPath) ;
+    return rootNode_ ;
+  }
+  public Node getCurrentNode() throws Exception{
     if (currentNode_ == null) currentNode_ = getRootNode() ;
     return currentNode_ ;
   }
-  
+
   public Node getSelectedTab() throws Exception {
     if (selectedTab_ == null) selectedTab_ = getCurrentNode() ;
     return selectedTab_ ;
@@ -369,15 +404,15 @@ public class UIBrowseContainer extends UIContainer{
   public List getCurrentList() throws Exception {
     return getChild(UIPageIterator.class).getCurrentPageData() ;
   }
-  
+
   public int getNumberOfPage() {
     return getChild(UIPageIterator.class).getAvailablePage();
   }
-  
+
   public UIPageIterator getUIPageIterator() throws Exception {
     return getChild(UIPageIterator.class) ;
   }
-  
+
   public void setPageIterator(List<Node> data) throws Exception {
     ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
     getChild(UIPageIterator.class).setPageList(objPageList) ;
@@ -469,7 +504,7 @@ public class UIBrowseContainer extends UIContainer{
   public void buildTree(String path) throws Exception {
     treeRoot_.getChildren().clear() ;
     String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
-    TreeNode temp = treeRoot_ ;
+    BCTreeNode temp = treeRoot_ ;
     for(String nodeName : arr) {
       if(nodeName.length() == 0) continue ;
       temp.setChildren(getCategoryList(temp.getNode())) ;
@@ -622,9 +657,7 @@ public class UIBrowseContainer extends UIContainer{
   }
 
   public String getRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    return portletPref.getValue(Utils.REPOSITORY, "") ;
+    return getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
   }
   private RepositoryService getRepositoryService() { 
     return getApplicationComponent(RepositoryService.class) ;
@@ -720,7 +753,7 @@ public class UIBrowseContainer extends UIContainer{
     history_.put(KEY_CURRENT, getCurrentNode());
     history_.put(KEY_SELECTED, getSelectedTab());
   }
-  
+
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
@@ -740,7 +773,7 @@ public class UIBrowseContainer extends UIContainer{
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }   
-  
+
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
@@ -754,6 +787,7 @@ public class UIBrowseContainer extends UIContainer{
       uiContainer.isShowAllDocument_ = false ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
+      System.out.println("\n\n CatPath " + catPath);
       /*if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
         uiContainer.storeHistory() ;
         String path = objectId.substring(objectId.lastIndexOf(Utils.SEMI_COLON)+1) ;
@@ -763,7 +797,7 @@ public class UIBrowseContainer extends UIContainer{
         uiContainer.setShowAllChildren(true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
-      }*/
+      } */
       Node selectNode = uiContainer.getNodeByPath(objectId) ;      
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
@@ -859,6 +893,7 @@ public class UIBrowseContainer extends UIContainer{
   static public class SelectActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
+      UICategoryTree cateTree = uiContainer.getChild(UICategoryTree.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = uiContainer.getNodeByPath(path) ;
       if(node == null) {
@@ -870,9 +905,10 @@ public class UIBrowseContainer extends UIContainer{
       uiContainer.isShowDocumentDetail_ = false ;
       uiContainer.isShowDocumentByTag_ = false ;
       uiContainer.isShowAllDocument_ = false ;
+      uiContainer.setSelectedTab(null) ;
       uiContainer.setCurrentNode(node) ;
-      uiContainer.buildTree(node.getPath()) ;
-      uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
+      cateTree.buildTree(node.getPath()) ;
+      //uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
