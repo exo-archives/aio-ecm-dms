@@ -7,7 +7,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   	<table class="UIFormGrid">
     	<tr>		          					
-	      <td class="FieldLabel">Lock Owner</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Lockable.dialog.label.lock-owner")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldLockOwner = ["jcrPath=/node/mix:lockable/jcr:lockOwner"] ;
@@ -16,7 +16,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Lock Is Deep</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Lockable.dialog.label.lock-is-deep")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldLockIsDeep= ["jcrPath=/node/mix:lockable/jcr:lockIsDeep"] ;
@@ -25,7 +25,7 @@
 		    </td>
 		  </tr>
 		</table>
-s		<%/* start render action*/%>
+		<%/* start render action*/%>
 		<div class="UIAction"> 
 	    <div class="ActionContainer" style="width:100%;">
 	      <% for(action in uicomponent.getActions()) { %>

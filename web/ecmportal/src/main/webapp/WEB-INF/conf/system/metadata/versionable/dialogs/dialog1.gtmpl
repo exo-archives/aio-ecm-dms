@@ -7,7 +7,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   	<table class="UIFormGrid">    
   		<tr>
-	      <td class="FieldLabel">Version History</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Versionable.dialog.label.version-history")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldVersionHistory = ["jcrPath=/node/mix:versionable/jcr:versionHistory"] ;
@@ -16,7 +16,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Base Version</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Versionable.dialog.label.base-version")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldBaseVersion = ["jcrPath=/node/mix:versionable/jcr:baseVersion"] ;
@@ -25,7 +25,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">is Checked Out</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Versionable.dialog.label.is-checked-out")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldIsCheckedOut = ["jcrPath=/node/mix:versionable/jcr:isCheckedOut"] ;
@@ -34,7 +34,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Predecessors</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Versionable.dialog.label.predecessors")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldPredecessors = ["jcrPath=/node/mix:versionable/jcr:predecessors"] ;
@@ -43,7 +43,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Merge Failed</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Versionable.dialog.label.merge-failed")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldMergeFailed = ["jcrPath=/node/mix:versionable/jcr:mergeFailed"] ;
@@ -52,7 +52,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">UUID</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Versionable.dialog.label.uuid")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldUuid = ["jcrPath=/node/mix:versionable/jcr:uuid"] ;

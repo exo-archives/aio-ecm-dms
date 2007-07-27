@@ -45,7 +45,7 @@
 		if(values.size() == 0) { %>
 	    <div style="overflow:hidden width:99.5%; margin-top:5px; margin-left:5px">
 	      <div style="float:left"><img style="height:4px; vertical-align:middle; margin-right:3px" src='/ecm/skin/images/metadata/rect.gif'/></div>     
-	      <div style="text-align: left">N/A</div>
+	      <div style="text-align: left"><%=_ctx.appRes("Holdable.view.label.not-available")%></div>
 	    </div>    		
 	<%} else {
 			for(value in values) { %>
@@ -61,7 +61,7 @@
 <div id="rma_holdable">     
   <div class="ContentBlock" style="width:45%">
     <div class="Title">
-      <div class="Label">Hold Executed</div>
+      <div class="Label"><%=_ctx.appRes("Holdable.view.label.hold-executed")%></div>
       <div class="Line"><span></span></div>
     </div>          
     <div><% renderDCValues("rma:holdExecuted") %></div>
@@ -71,7 +71,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Hold Until</div>
+          <div class="Label"><%=_ctx.appRes("Holdable.view.label.hold-until")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:holdUntil") %></div>
         </div>                        
@@ -80,7 +80,7 @@
     <div id="ContentRightNote" style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Holds Discretionary</div>
+          <div class="Label"><%=_ctx.appRes("Holdable.view.label.holds-discretionary")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("rma:holdsDiscretionary") %></div>
@@ -92,7 +92,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Hold Until Event</div>
+          <div class="Label"><%=_ctx.appRes("Holdable.view.label.hold-until-event")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:holdUntilEvent") %></div>
         </div>                        
@@ -101,7 +101,7 @@
     <div id="ContentRightNote" style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Freeze</div>
+          <div class="Label"><%=_ctx.appRes("Holdable.view.label.freeze")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("rma:freeze") %></div>
@@ -117,7 +117,7 @@
 				<div class="ButtonLeft">
 					 <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "rma:holdable")%>" title="Add/Edit properties">Add/Edit</a>
+					    <a href="<%=uicomponent.event("EditProperty", "rma:holdable")%>" title="<%=_ctx.appRes("Holdable.view.tooltip.add-edit")%>"><%=_ctx.appRes("Holdable.view.action.add-edit")%></a>
 				    </div>
 			    </div>
 			  </div>
@@ -128,7 +128,7 @@
 				<div class="ButtonLeft">
 				  <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
+					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("Holdable.view.tooltip.cancel")%>"><%=_ctx.appRes("Holdable.view.action.cancel")%></a>
 			      </div>
 			    </div>
 		    </div>

@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -52,8 +54,13 @@ public class UITreeJCRExplorer extends UIContainer {
   public void buildTree() throws Exception {
     UIJCRBrowser uiJCRBrowser = getParent() ;
     String workspace = uiJCRBrowser.getWorkspace() ;
-    String repositoryName = uiJCRBrowser.getRepository() ;    
-    Session session = uiJCRBrowser.getSessionProvider().getSession(workspace,getRepository(repositoryName)) ;    
+    String repositoryName = uiJCRBrowser.getRepository() ; 
+    Session session = null ;
+    try {
+      session = uiJCRBrowser.getSessionProvider().getSession(workspace,getRepository(repositoryName)) ;
+    } catch(LoginException e) {
+      session = SessionsUtils.getSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
+    }
     Iterator sibbling = null ;
     Iterator children = null ;
     if(rootNode_ == null ) {
@@ -108,7 +115,12 @@ public class UITreeJCRExplorer extends UIContainer {
     if(workspace == null) {
       workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
     }
-    Session session = uiJCRBrowser.getSessionProvider().getSession(workspace,repository) ;        
+    Session session = null ;
+    try {
+      session = uiJCRBrowser.getSessionProvider().getSession(workspace,repository) ;
+    } catch(LoginException e) {
+      session = SessionsUtils.getSystemProvider().getSession(workspace, repository) ;
+    }
     rootNode_ = (Node) session.getItem(path) ;
     currentNode_ = rootNode_ ;
     changeNode(rootNode_) ;
@@ -118,7 +130,12 @@ public class UITreeJCRExplorer extends UIContainer {
     UIJCRBrowser uiJCRBrowser = getParent() ;
     String workspace = uiJCRBrowser.getWorkspace() ;
     String repositoryName = uiJCRBrowser.getRepository() ;    
-    Session session = uiJCRBrowser.getSessionProvider().getSession(workspace,getRepository(repositoryName)) ;
+    Session session = null ;
+    try {
+      session = uiJCRBrowser.getSessionProvider().getSession(workspace,getRepository(repositoryName)) ;  
+    } catch(LoginException e) {
+      session = SessionsUtils.getSystemProvider().getSession(workspace, getRepository(repositoryName)) ; 
+    }
     currentNode_ = (Node) session.getItem(path);
     if(!rootNode_.getPath().equals("/")) {
       if(currentNode_.getPath().equals(rootNode_.getParent().getPath())) currentNode_ = rootNode_ ;

@@ -3,7 +3,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   <table class="UIFormGrid">
 			<tr>
-			  <td class="FieldLabel">Name</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.name")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
@@ -12,7 +12,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Subject</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.subject")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldSummary = ["jcrPath=/node/exo:summary"] ;
@@ -21,7 +21,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Description</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.description")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
@@ -30,7 +30,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Location</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.location")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldLocation = ["jcrPath=/node/exo:location"] ;
@@ -39,7 +39,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Start date/time</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.start-date-time")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldDtstart = ["jcrPath=/node/exo:dtstart", "options=displaytime", "validate=datetime"] ; 
@@ -48,7 +48,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">End date/time</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.end-date-time")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldDtend = ["jcrPath=/node/exo:dtend", "options=displaytime", "validate=datetime"] ;
@@ -57,7 +57,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Comment</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.comment")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldComment = ["jcrPath=/node/exo:comment"] ;
@@ -66,7 +66,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Category</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.category")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldCategories = ["jcrPath=/node/exo:category", "script=ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy", "scriptParams=repository"] ;
@@ -75,7 +75,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Availability</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.availability")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldFbtype= ["jcrPath=/node/exo:fbtype", "options=busy,free"] ;
@@ -84,7 +84,7 @@
 			  </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Share type</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Event.dialog.label.share-type")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldSharetype = ["jcrPath=/node/exo:sharetype", "options=private,detail,freebusy"] ;

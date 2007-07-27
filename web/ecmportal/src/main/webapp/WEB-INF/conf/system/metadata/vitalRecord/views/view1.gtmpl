@@ -46,7 +46,7 @@
 		if(values.size() == 0) { %>
 	    <div style="overflow:hidden width:99.5%; margin-top:5px; margin-left:5px">
 	      <div style="float:left"><img style="height:4px; vertical-align:middle; margin-right:3px" src='/ecm/skin/images/metadata/rect.gif'/></div>     
-	      <div style="text-align: left">N/A</div>
+	      <div style="text-align: left"><%=_ctx.appRes("VitalRecord.view.label.not-available")%></div>
 	    </div>    		
 	<%} else {
 			for(value in values) { %>
@@ -62,7 +62,7 @@
 <div id="rma_vitalRecord">
   <div class="ContentBlock" style="width:45%">
     <div class="Title">
-      <div class="Label">Is Vital Record</div>
+      <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.is-vital-record")%></div>
       <div class="Line"><span></span></div>
     </div>          
     <div><% renderDCValues("rma:isVitalRecord") %></div>
@@ -72,7 +72,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Prev Review Date</div>
+          <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.prev-review-date")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:prevReviewDate") %></div>
         </div>                        
@@ -81,7 +81,7 @@
     <div id="ContentRightNote" style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Next Review Date</div>
+          <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.next-review-date")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("rma:nextReviewDate") %></div>
@@ -97,7 +97,7 @@
 				<div class="ButtonLeft">
 					 <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "rma:vitalRecord")%>" title="Add/Edit properties">Add/Edit</a>
+					    <a href="<%=uicomponent.event("EditProperty", "rma:vitalRecord")%>" title="<%=_ctx.appRes("VitalRecord.view.tooltip.add-edit")%>"><%=_ctx.appRes("VitalRecord.view.action.add-edit")%></a>
 				    </div>
 			    </div>
 			  </div>
@@ -108,7 +108,7 @@
 				<div class="ButtonLeft">
 				  <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
+					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("VitalRecord.view.tooltip.cancel")%>"><%=_ctx.appRes("VitalRecord.view.action.cancel")%></a>
 			      </div>
 			    </div>
 		    </div>

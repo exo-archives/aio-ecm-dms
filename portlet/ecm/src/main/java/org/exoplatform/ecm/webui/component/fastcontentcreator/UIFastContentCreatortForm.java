@@ -13,6 +13,7 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
@@ -102,6 +103,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
     return portletContext.getRequest().getPreferences() ;
   }
+  
   public void newJCRTemplateResourceResolver() {
     PortletPreferences preferences = getPortletPreferences();       
     try {
@@ -166,6 +168,12 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     } catch(AccessDeniedException e) {
       Object[] args = { prefLocate } ;
       String key = "UIFastContentCreatortForm.msg.access-denied" ;
+      uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    } catch(LockException lock) {
+      Object[] args = { prefLocate } ;
+      String key = "UIFastContentCreatortForm.msg.node-locked" ;
       uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;

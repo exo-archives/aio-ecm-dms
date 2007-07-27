@@ -3,7 +3,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   	<table class="UIFormGrid">    
   		<tr>
-	      <td class="FieldLabel">Is Vital Record</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("VitalRecord.dialog.label.is-vital-record")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldIsVitalRecord = ["jcrPath=/node/rma:isVitalRecord", "true", "options=false,true"] ;
@@ -12,7 +12,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Prev Review Date</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("VitalRecord.dialog.label.prev-review-date")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldPrevReviewDate = ["jcrPath=/node/rma:prevReviewDate"] ;
@@ -21,7 +21,7 @@
 		    </td>
 		  </tr>
     	<tr>
-	      <td class="FieldLabel">Next Review Date</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("VitalRecord.dialog.label.next-review-date")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldNextReviewDate = ["jcrPath=/node/rma:nextReviewDate"] ;
@@ -56,5 +56,3 @@
   </div>
   <%uiform.end()%>
 </div>
-
-

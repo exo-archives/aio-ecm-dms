@@ -4,7 +4,7 @@
   <div class="HorizontalLayout" style="border: 0px;">	  
    <table class="UIFormGrid">
 			<tr>
-			  <td class="FieldLabel">Name</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Article.dialog.label.name")%></td>
 			  <td class="FieldComponent">
 			  <%
 	        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
@@ -14,7 +14,7 @@
 			</tr>
 			
 			<tr>
-			  <td class="FieldLabel">Title</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Article.dialog.label.title")%></td>
 			  <td class="FieldComponent">
 				<%
 	        String[] fieldTitle = ["jcrPath=/node/exo:title", "validate=empty"] ;
@@ -24,7 +24,7 @@
 			</tr>  
 			
 			<tr>
-			  <td class="FieldLabel">Summary</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Article.dialog.label.summary")%></td>
 			  <td class="FieldComponent">
 				<%
 	        String[] fieldSummary = ["jcrPath=/node/exo:summary", "options=basic", ""] ;
@@ -34,7 +34,7 @@
 			</tr>  
 			
 			<tr>
-			  <td class="FieldLabel">Content</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Article.dialog.label.content")%></td>
 			  <td class="FieldComponent">
 				<%
 	        String[] fieldContent = ["jcrPath=/node/exo:text", "options=default", ""] ;

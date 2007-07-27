@@ -3,7 +3,7 @@
   <div class="HorizontalLayout" style="border:0px;">
     <table class="UIFormGrid">
     	<tr>	
-	      <td class="FieldLabel">Hold Executed</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Holdable.dialog.label.hold-executed")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldHoldExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
@@ -12,7 +12,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Hold Until</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Holdable.dialog.label.hold-until")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldHoldUntil = ["jcrPath=/node/rma:holdUntil"] ;
@@ -21,7 +21,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Holds Discretionary</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Holdable.dialog.label.holds-discretionary")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldHoldDiscretionary = ["jcrPath=/node/rma:holdsDiscretionary", "false", "options=false,true"] ;
@@ -30,7 +30,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Hold Until Event</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Holdable.dialog.label.hold-until-event")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldHoldUntilEvent = ["jcrPath=/node/rma:holdUntilEvent"] ;
@@ -39,7 +39,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Freeze</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Holdable.dialog.label.freeze")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldFreeze = ["jcrPath=/node/rma:freeze", "false", "options=false,true"] ;

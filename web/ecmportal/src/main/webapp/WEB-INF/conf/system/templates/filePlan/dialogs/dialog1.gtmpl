@@ -21,7 +21,7 @@
 			              <div class="SelectedTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Name</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);"><%=_ctx.appRes("FilePlan.dialog.label.name")%></div>
 			                  </div>
 			                </div>
 			              </div>
@@ -31,7 +31,7 @@
 			              <div class="NormalTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Record properties</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);"><%=_ctx.appRes("FilePlan.dialog.label.record-properties")%></div>
 			                  </div>
 			                </div>
 			              </div>
@@ -41,7 +41,7 @@
 			              <div class="NormalTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">Process properties</div>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);"><%=_ctx.appRes("FilePlan.dialog.label.process-properties")%></div>
 			                  </div>
 			                </div>
 			              </div>
@@ -63,7 +63,7 @@
 		      	<div class="UITabContent" style="display: block;">
 						    <table class="UIFormGrid">
 									<tr>
-									  <td class="FieldLabel">Name</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.name")%></td>
 									  <td class="FieldComponent">
 							      <%
 							        String[] fieldName = ["jcrPath=/node", "editable=if-null", "mixintype=mix:i18n", "validate=name"] ;
@@ -72,7 +72,7 @@
 									  </td>
 									</tr>									
 									<tr>
-									  <td class="FieldLabel">File Plan Note</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.note")%></td>
 									  <td class="FieldComponent">							      							  							      
 										<%
 							        String[] fieldPlanNode = ["jcrPath=/node/rma:filePlanNote"] ;
@@ -86,7 +86,7 @@
 		      	<div class="UITabContent" style="display: none;">
 		      		  <table class="UIFormGrid">
 									<tr>
-									  <td class="FieldLabel">Record Category Identifier</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.record-category-identifier")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldCateIdentifier = ["jcrPath=/node/rma:recordCategoryIdentifier"] ;
@@ -95,7 +95,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Disposition Authority</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.disposition-author")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldDispotionAuthor = ["jcrPath=/node/rma:dispositionAuthority"] ;
@@ -104,7 +104,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Permanent Record Indicator</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.permanent-record-indicator")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldPermanentRecord = ["jcrPath=/node/rma:permanentRecordIndicator", "options=true,false"] ;
@@ -113,7 +113,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Disposition Instructions</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.disposition-instruction")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldDispositionInstruction = ["jcrPath=/node/rma:dispositionInstructions"] ;
@@ -122,7 +122,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Contains Record Folders</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.contain-record-folder")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldContainsRecord = ["jcrPath=/node/rma:containsRecordFolders", "options=true,false"] ;
@@ -131,7 +131,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Default Media Type</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-media-type")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldDefaultMedia = ["jcrPath=/node/rma:defaultMediaType", "options=Electronic,Paper"] ;
@@ -140,7 +140,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Default Marking List</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-marking-list")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldDefaultMarking = ["jcrPath=/node/rma:defaultMarkingList", "options=NONE,CLASSIFIED,UNCLASSIFIED,NOCONTRACT"] ;
@@ -149,7 +149,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Default Originating Organization</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-originating-organization")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldDefaultOriginating = ["jcrPath=/node/rma:defaultOriginatingOrganization"] ;
@@ -158,7 +158,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Vital Record Indicator</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.vital-record-indicator")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldVitalRecord = ["jcrPath=/node/rma:vitalRecordIndicator", "options=true,false"] ;
@@ -167,7 +167,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Vital Record Review Period</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.vital-record-review-period")%></td>
 									  <td class="FieldComponent">
 										<%
 							        String[] fieldVitalRecordReview = ["jcrPath=/node/rma:vitalRecordReviewPeriod", "options=one minute,hourly,daily,quarterly,yearly,ten years"] ;
@@ -181,7 +181,7 @@
 		        <div class="UITabContent" style="display: none;">
 		        	<table class="UIFormGrid">
 									<tr>
-									  <td class="FieldLabel">Process Cutoffs</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-cutoff")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldProcessCutoff = ["jcrPath=/node/rma:processCutoff", "options=true,false"] ;
@@ -190,7 +190,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Event Trigger</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.event-trigger")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldEventTrigger = ["jcrPath=/node/rma:eventTrigger"] ;
@@ -199,7 +199,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Cutoff Period</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.cutoff-period")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldCutoffPeriod = ["jcrPath=/node/rma:cutoffPeriod", "options=one minute,hourly,daily,quarterly,yearly,ten years"] ;
@@ -208,7 +208,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Cutoff on obsolete</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.cutoff-on-obsolete")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldCutoffObsolete = ["jcrPath=/node/rma:cutoffOnObsolete", "options=true,false"] ;
@@ -217,7 +217,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Cutoff on superseded</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.cutoff-on-superseded")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldCutoffSupereseded = ["jcrPath=/node/rma:cutoffOnSuperseded", "options=true,false"] ;
@@ -226,7 +226,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Process Hold</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-hold")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldProcessHold = ["jcrPath=/node/rma:processHold", "options=true,false"] ;
@@ -235,7 +235,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Hold Period</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.hold-period")%></td>
 									  <td class="FieldComponent">							     							  							      
 										<%
 							        String[] fieldHoldPeriod = ["jcrPath=/node/rma:holdPeriod", "options=one minute,hourly,daily,quarterly,yearly,ten years"] ;
@@ -244,7 +244,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Discretionary Hold</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.discretionary-hold")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldDiscretionaryHold = ["jcrPath=/node/rma:discretionaryHold", "options=true,false"] ;
@@ -253,7 +253,7 @@
 									  </td>
 									</tr>
 									<tr>
-									  <td class="FieldLabel">Process Transfer</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-transfer")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldProcessTransfer = ["jcrPath=/node/rma:processTransfer", "options=true,false"] ;
@@ -262,7 +262,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Default Transfer Location</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.default-transfer-location")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldDefaultTransfer = ["jcrPath=/node/rma:defaultTransferLocation"] ;
@@ -271,7 +271,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Transfer Block Size</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.transfer-block-size")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldTransferBlock = ["jcrPath=/node/rma:transferBlockSize","validate=number"] ;
@@ -280,7 +280,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Process Accession</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-accession")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldProcessAccession = ["jcrPath=/node/rma:processAccession", "options=true,false"] ;
@@ -289,7 +289,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Accession Location</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.accession-location")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldAccessionLocation = ["jcrPath=/node/rma:accessionLocation"] ;
@@ -298,7 +298,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Accession Block Size</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.accession-block-size")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldAccessionBlockSize = ["jcrPath=/node/rma:accessionBlockSize","validate=number"] ;
@@ -307,7 +307,7 @@
 									  </td>
 									</tr>	
 									<tr>
-									  <td class="FieldLabel">Process Destruction</td>
+									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.process-destruction")%></td>
 									  <td class="FieldComponent">							     							  							      										
 										<%
 							        String[] fieldProcessDestruction = ["jcrPath=/node/rma:processDestruction", "options=true,false"] ;

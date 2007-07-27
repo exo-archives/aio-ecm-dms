@@ -4,7 +4,7 @@
   <div class="HorizontalLayout">	  
 		<table class="UIFormGrid">	
 			<tr>	          					
-			  <td class="FieldLabel">Id</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.id")%></td>
 			  <td class="FieldComponent">
 				  <%
 					 String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
@@ -13,7 +13,7 @@
 				</td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Name</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.name")%></td>
 			  <td class="FieldComponent">
 				  <% 
 					String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
@@ -22,7 +22,7 @@
 				</td>
 			</tr>		          					
 			<tr>
-			  <td class="FieldLabel">Life cycle</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.lifecycle")%></td>
 			  <td class="FieldComponent">
 				  <% 
 					String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=add"] ;
@@ -31,7 +31,7 @@
 				</td>
 			</tr>	
 			<tr>		          					
-			  <td class="FieldLabel">Metadata</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.metadata")%></td>
 			  <td class="FieldComponent">
 				  <% 
 					String[] fieldMetadata = ["jcrPath=/node/exo:mixinMetadata", "script=ecm-explorer/widget/FillSelectBoxWithMetadatas.groovy", "scriptParams=repository"] ;         
@@ -40,7 +40,7 @@
 				</td>
 			</tr>
 			<tr>		          					
-			  <td class="FieldLabel">Description</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AddMetadata.dialog.label.description")%></td>
 			  <td class="FieldComponent">
 				  <% 
 					String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         

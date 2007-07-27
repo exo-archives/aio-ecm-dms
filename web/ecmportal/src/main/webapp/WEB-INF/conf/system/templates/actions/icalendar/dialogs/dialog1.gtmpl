@@ -4,7 +4,7 @@
   <div class="HorizontalLayout">	
   	<table class="UIFormGrid">  
   		<tr>
-	      <td class="FieldLabel">Id</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.id")%></td>
 	      <td class="FieldComponent">
 		      <%
 		         String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
@@ -13,7 +13,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Action name</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.action-name")%></td>
 	      <td class="FieldComponent">
 		      <% 
 		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
@@ -22,7 +22,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-      <td class="FieldLabel">Life cycle</td>
+      <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.lifecycle")%></td>
 	      <td class="FieldComponent">
 		      <% 
 		        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,modify,remove"] ;
@@ -31,7 +31,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-      <td class="FieldLabel">Description</td>
+      <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.description")%></td>
 	      <td class="FieldComponent">
 		      <% 
 		        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;         
@@ -40,7 +40,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-      <td class="FieldLabel">Calendar file name</td>
+      <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.calendar-file-name")%></td>
 	      <td class="FiedlComponent">
 		      <%
 		        String[] fieldCalendarPath = ["jcrPath=/node/exo:calendarPath", "/cms/calendar/exocalendar.ics"] ; 
@@ -49,7 +49,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Query items</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.query-items")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldQuery = ["jcrPath=/node/exo:query", "/jcr:root/cms/publications//element(*, exo:event)"] ; 

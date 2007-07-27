@@ -7,7 +7,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   	<table class="UIFormGrid"> 
   		<tr>   
-	      <td class="FieldLabel">Relation</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Relationable.dialog.label.relation")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldRelation = ["jcrPath=/node/exo:relationable/exo:relation"] ;

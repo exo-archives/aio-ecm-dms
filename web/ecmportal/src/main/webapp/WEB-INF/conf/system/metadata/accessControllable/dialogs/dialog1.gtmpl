@@ -7,7 +7,7 @@
   <div class="HorizontalLayout" style="border:0px;">
     <table class="UIFormGrid">
 			<tr>
-			  <td class="FieldLabel">Owner</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AccessControllable.dialog.label.owner")%></td>
 			  <td class="FieldComponent">
 		      <%
 		        String[] fieldOwner = ["jcrPath=/node/exo:accessControllable/exo:owner"] ;
@@ -16,7 +16,7 @@
         </td>
 			</tr>
 			<tr>
-			  <td class="FieldLabel">Permissions</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("AccessControllable.dialog.label.permissions")%></td>
 			  <td class="FieldComponent">
 					<%
 						String[] fieldPermissions = ["jcrPath=/node/exo:accessControllable/exo:permissions"] ;

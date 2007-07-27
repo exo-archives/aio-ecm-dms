@@ -7,7 +7,7 @@
   <div class="HorizontalLayout" style="border:0px;">
     <table class="UIFormGrid">
     	<tr>
-	      <td class="FieldLabel">UUID</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Referenceable.dialog.label.uuid")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldUuid = ["jcrPath=/node/mix:referenceable/jcr:uuid"] ;

@@ -11,7 +11,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   	<table class="UIFormGrid">	  
 	    <tr>		          					
-	      <td class="FieldLabel">Name</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.name")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
@@ -20,7 +20,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Title</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.title")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldTitle = ["jcrPath=/node/exo:title", "validate=empty"] ;
@@ -29,7 +29,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Description</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.description")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
@@ -38,7 +38,7 @@
 	      </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Date</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.date")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldDate = ["jcrPath=/node/exo:date", "validate=datetime"] ; 
@@ -47,7 +47,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Date Time</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.date-time")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldDateTime = ["jcrPath=/node/exo:datetime", "options=displaytime", "validate=datetime"] ;
@@ -56,7 +56,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Upload image</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.upload-image")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldImage = ["jcrPath=/node/exo:image/jcr:data"] ;
@@ -65,7 +65,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Mime type</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.mime-type")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldMimeType = ["jcrPath=/node/exo:image/jcr:mimeType",  "image/gif", "options=image/gif,image/jpeg,image/png"] ;
@@ -74,7 +74,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Summary</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.summary")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldSummary = ["jcrPath=/node/exo:summary", "options=basic", ""] ;
@@ -83,7 +83,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Content</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.content")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldContent = ["jcrPath=/node/exo:content", "options=default", ""] ;

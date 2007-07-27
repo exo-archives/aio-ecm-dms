@@ -46,7 +46,7 @@
 		if(values.size() == 0) { %>
 	    <div style="overflow:hidden width:99.5%; margin-top:5px; margin-left:5px">
 	      <div style="float:left"><img style="height:4px; vertical-align:middle; margin-right:3px" src='/ecm/skin/images/metadata/rect.gif'/></div>     
-	      <div style="text-align: left">N/A</div>
+	      <div style="text-align: left"><%=_ctx.appRes("Cutoffable.view.label.not-available")%></div>
 	    </div>    		
 	<%} else {
 			for(value in values) { %>
@@ -62,7 +62,7 @@
 <div id="rma_cutoffable">     
   <div class="ContentBlock" style="width:45%">
     <div class="Title">
-      <div class="Label">Cutoff Executed</div>
+      <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-executed")%></div>
       <div class="Line"><span></span></div>
     </div>          
     <div><% renderDCValues("rma:cutoffExecuted") %></div>
@@ -72,7 +72,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Cutoff Now</div>
+          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-now")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:cutoffNow") %></div>
         </div>                        
@@ -81,7 +81,7 @@
     <div id="ContentRightNote" style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Cutoff DateTime</div>
+          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-date-time")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("rma:cutoffDateTime") %></div>
@@ -93,7 +93,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Cutoff Event</div>
+          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-event")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:cutoffEvent") %></div>
         </div>                        
@@ -102,7 +102,7 @@
     <div id="ContentRightNote" style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Cutoff Obsolete</div>
+          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-obsolete")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("rma:cutoffObsolete") %></div>
@@ -114,7 +114,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Cutoff Superseded</div>
+          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-superseded")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:cutoffSuperseded") %></div>
         </div>                        
@@ -130,7 +130,7 @@
 				<div class="ButtonLeft">
 					 <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "rma:cutoffable")%>" title="Add/Edit properties">Add/Edit</a>
+					    <a href="<%=uicomponent.event("EditProperty", "rma:cutoffable")%>" title="<%=_ctx.appRes("Cutoffable.view.tooltip.add-edit")%>"><%=_ctx.appRes("Cutoffable.view.action.add-edit")%></a>
 				    </div>
 			    </div>
 			  </div>
@@ -141,7 +141,7 @@
 				<div class="ButtonLeft">
 				  <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
+					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("Cutoffable.view.tooltip.cancel")%>"><%=_ctx.appRes("Cutoffable.view.action.cancel")%></a>
 			      </div>
 			    </div>
 		    </div>
@@ -150,4 +150,3 @@
   </div
 </div>
 <%/* end render action*/%>
-  

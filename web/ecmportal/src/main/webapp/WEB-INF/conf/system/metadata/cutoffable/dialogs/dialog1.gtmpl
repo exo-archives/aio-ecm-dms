@@ -3,7 +3,7 @@
   <div class="HorizontalLayout" style="border:0px;">
   	<table class="UIFormGrid">
   		<tr>
-      	<td class="FieldLabel">Cutoff Executed</td>
+      	<td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-executed")%></td>
       	<td class="FieldComponent">
 		      <%
 		        String[] fieldCutoffExecuted = ["jcrPath=/node/rma:cutoffExecuted", "false", "options=false,true"] ;
@@ -12,7 +12,7 @@
 		    </td>
 		  </tr>
     	<tr>		          					
-	      <td class="FieldLabel">Cutoff Now</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-now")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCutoffNow = ["jcrPath=/node/rma:cutoffNow", "false", "options=false,true"] ;
@@ -21,7 +21,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Cutoff Date Time</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-date-time")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCutoffDateTime = ["jcrPath=/node/rma:cutoffDateTime", "options=displaytime"] ;
@@ -30,7 +30,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Cutoff Event</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-event")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCutoffEvent = ["jcrPath=/node/rma:cutoffEvent"] ;
@@ -39,7 +39,7 @@
 	      </td>
 	    </tr>
 	    <tr>
-	      <td class="FieldLabel">Cutoff Obsolete</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-obsolete")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCutoffObsolete = ["jcrPath=/node/rma:cutoffObsolete", "false", "options=false,true"] ;
@@ -48,7 +48,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Cutoff Superseded </td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-superseded")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCutoffSupereded = ["jcrPath=/node/rma:cutoffSuperseded", "false", "options=false,true"] ;

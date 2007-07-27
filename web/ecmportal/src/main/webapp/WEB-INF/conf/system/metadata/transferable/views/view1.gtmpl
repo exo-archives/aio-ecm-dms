@@ -46,7 +46,7 @@
 		if(values.size() == 0) { %>
 	    <div style="overflow:hidden width:99.5%; margin-top:5px; margin-left:5px">
 	      <div style="float:left"><img style="height:4px; vertical-align:middle; margin-right:3px" src='/ecm/skin/images/metadata/rect.gif'/></div>     
-	      <div style="text-align: left">N/A</div>
+	      <div style="text-align: left"><%=_ctx.appRes("Transferable.view.label.not-available")%></div>
 	    </div>    		
 	<%} else {
 			for(value in values) { %>
@@ -59,11 +59,11 @@
 	}
 %>
 
-<div class="Header">RMA_TRANSFERABLE</div>
+<div class="Header">RMA:TRANSFERABLE</div>
 <div id="rma_transferable">     
   <div class="ContentBlock" style="width:45%">
     <div class="Title">
-      <div class="Label">Transfer Executed</div>
+      <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-executed")%></div>
       <div class="Line"><span></span></div>
     </div>          
     <div><% renderDCValues("rma:transferExecuted") %></div>
@@ -73,7 +73,7 @@
     <div id="ContentLeftNote"  style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Transfer Date</div>
+          <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-date")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("rma:transferDate") %></div>
         </div>                        
@@ -82,7 +82,7 @@
     <div id="ContentRightNote" style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Transfer Location</div>
+          <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-location")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("rma:transferLocation") %></div>
@@ -98,7 +98,7 @@
 				<div class="ButtonLeft">
 					 <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "rma:transferable")%>" title="Add/Edit properties">Add/Edit</a>
+					    <a href="<%=uicomponent.event("EditProperty", "rma:transferable")%>" title="<%=_ctx.appRes("Transferable.view.tooltip.add-edit")%>"><%=_ctx.appRes("Transferable.view.action.add-edit")%></a>
 				    </div>
 			    </div>
 			  </div>
@@ -109,7 +109,7 @@
 				<div class="ButtonLeft">
 				  <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
+					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("Transferable.view.tooltip.cancel")%>"><%=_ctx.appRes("Transferable.view.action.cancel")%></a>
 			      </div>
 			    </div>
 		    </div>

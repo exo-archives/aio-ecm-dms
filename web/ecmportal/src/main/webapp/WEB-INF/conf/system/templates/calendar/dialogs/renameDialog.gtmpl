@@ -3,7 +3,7 @@
   <div class="HorizontalLayout" style="border: 0px;">	  
     <table class="UIFormGrid">
 			<tr>
-			  <td class="FieldLabel">Name</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Calendar.dialog.label.name")%></td>
 			  <td class="FieldComponent">
 				<%
 	        String[] fieldName = ["jcrPath=/node", "editable=if-null"] ;
@@ -11,7 +11,7 @@
 	      %>
 			  </td>
 			</tr>
-			<td class="FieldLabel">Shared</td>
+			<td class="FieldLabel"><%=_ctx.appRes("Calendar.dialog.label.shared")%></td>
 			  <td class="FieldComponent">
 				<%
 	        String[] fieldShared = ["jcrPath=/node/exo:shared", "false", "options=true,false"] ;

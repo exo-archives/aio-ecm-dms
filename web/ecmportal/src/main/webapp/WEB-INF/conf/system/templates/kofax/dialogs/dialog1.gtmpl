@@ -7,7 +7,7 @@
   <div class="HorizontalLayout" style="border:0px;">
 		<table class="UIFormGrid">			
 			<tr>
-			  <td class="FieldLabel">Name</td>
+			  <td class="FieldLabel"><%=_ctx.appRes("Kofax.dialog.label.name")%></td>
 			  <td class="FieldComponent">
 	      <%
 	        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;

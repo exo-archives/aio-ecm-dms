@@ -44,7 +44,7 @@
 		if(values.size() == 0) { %>
 	    <div style="overflow:hidden width:99.5%; margin-top:5px; margin-left:5px">
 	      <div style="float:left"><img style="height:4px; vertical-align:middle; margin-right:3px" src='/ecm/skin/images/metadata/rect.gif'/></div>     
-	      <div style="text-align: left">N/A</div>
+	      <div style="text-align: left"><%=_ctx.appRes("ElementSet.view.label.not-avaliable")%></div>
 	    </div>    		
 	<%} else {
 			for(value in values) { %>
@@ -71,7 +71,7 @@
     <div style="float: left; width:45%;">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Date</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.date")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:date") %></div>
         </div>                        
@@ -80,7 +80,7 @@
     <div style="float:right; width:45%;">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Subject</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.subject")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:subject") %></div>
@@ -93,7 +93,7 @@
     <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Description</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.description")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:description") %></div>
         </div>                        
@@ -102,7 +102,7 @@
     <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Languages</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.languages")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:language") %></div>
@@ -115,7 +115,7 @@
     <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Creator</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.creator")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:creator") %></div>
         </div>                        
@@ -124,7 +124,7 @@
     <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Publisher</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.publisher")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:publisher") %></div>
@@ -137,7 +137,7 @@
     <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Contributor</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.contributor")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:contributor") %></div>
         </div>                        
@@ -146,7 +146,7 @@
     <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Identifier</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.identifier")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:identifier") %></div>
@@ -159,7 +159,7 @@
     <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Resource Type</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.resource-type")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:resourceType") %></div>
         </div>                        
@@ -168,7 +168,7 @@
     <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Format</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.format")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:format") %></div>
@@ -181,7 +181,7 @@
     <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Relation</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.relation")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:relation") %></div>
         </div>                        
@@ -190,7 +190,7 @@
     <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Rights</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.rights")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:rights") %></div>
@@ -203,7 +203,7 @@
     <div style="float: left; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Source</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.source")%></div>
           <div class="Line"><span></span></div>
           <div><% renderDCValues("dc:source") %></div>
         </div>                        
@@ -212,7 +212,7 @@
     <div style="float:right; width:45%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label">Coverage</div>
+          <div class="Label"><%=_ctx.appRes("ElementSet.view.label.coverage")%></div>
           <div class="Line"><span></span></div>
         </div>
         <div><% renderDCValues("dc:coverage") %></div>
@@ -229,7 +229,7 @@
 				<div class="ButtonLeft">
 					 <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "dc:elementSet")%>" title="Add/Edit properties">Add/Edit</a>
+					    <a href="<%=uicomponent.event("EditProperty", "dc:elementSet")%>" title="<%=_ctx.appRes("ElementSet.view.tooltip.add-edit")%>"><%=_ctx.appRes("ElementSet.view.action.add-edit")%></a>
 				    </div>
 			    </div>
 			  </div>
@@ -240,7 +240,7 @@
 				<div class="ButtonLeft">
 				  <div class="ButtonRight">
 					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="Cancel">Cancel</a>
+					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("ElementSet.view.tooltip.cancel")%>"><%=_ctx.appRes("ElementSet.view.action.cancel")%></a>
 			      </div>
 			    </div>
 		    </div>

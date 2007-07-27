@@ -4,7 +4,7 @@
   <div class="HorizontalLayout">  
   	<table class="UIFormGrid">
   		<tr>
-	      <td class="FieldLabel">Id</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.id")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldId = ["jcrPath=/node", "editable=false", "visible=if-not-null"] ;
@@ -13,7 +13,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Create feed action name</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-action-name")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
@@ -22,7 +22,7 @@
 		    </td>
 		  </tr>
 		  <tr>
-	      <td class="FieldLabel">Life cycle</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.lifecycle")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=read,add,remove,modify,schedule", "onchange=true"] ;
@@ -36,7 +36,7 @@
 					if(selectValue.equals("schedule")) {
 			%>
 		  <tr>
-	      <td class="FieldLabel">Schedule type</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.schedule-type")%></td>
 	      <td class="FieldComponent">
 				  <% 
 						String[] fieldScheduleType = ["jcrPath=/node/exo:scheduleType", "options=cron,period", "onchange=true"] ;
@@ -48,7 +48,7 @@
 				String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
 				if(ScheduleType.equals("period") ) {%>
 					<tr>		          					
-					  <td class="FieldLabel">Start time</td>
+					  <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.start-time")%></td>
 					  <td class="FieldComponent">
 						  <% 
 							String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime"] ;
@@ -57,7 +57,7 @@
 						</td>
 					</tr>
 					<tr>		          					
-					  <td class="FieldLabel">End time</td>
+					  <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.end-time")%></td>
 					  <td class="FieldComponent">
 						  <% 
 						   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime"] ;
@@ -66,7 +66,7 @@
 						</td>
 					</tr>
 					<tr>		          					
-					  <td class="FieldLabel">Repeat Count</td>
+					  <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.repeat-count")%></td>
 					  <td class="FieldComponent">
 						  <% 
 							String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number" ] ;
@@ -75,7 +75,7 @@
 						</td>
 					</tr>
 					<tr>		          					
-					  <td class="FieldLabel">Time inteval</td>
+					  <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.time-inteval")%></td>
 					  <td class="FieldComponent">
 						  <% 
 							String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
@@ -85,7 +85,7 @@
 					</tr>
 				<%} else {%>
 					<tr>		          					
-					  <td class="FieldLabel">Cron expression</td>
+					  <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.cron-expression")%></td>
 					  <td class="FieldComponent">
 						  <% 
 							String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
@@ -98,7 +98,7 @@
 				  }
 				%>	
 	    <tr>                        
-	      <td class="FieldLabel">Feed node name</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-node-name")%></td>
 	      <td class="FieldComponent">
 		      <%
 		         String[] fieldFeedName = ["jcrPath=/node/exo:feedName"] ;
@@ -107,7 +107,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Feed store path</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-store-path")%></td>
 	      <td class="FieldComponent">
 		      <% 
 		         String[] fieldFeedStorePath = ["jcrPath=/node/exo:storePath", "/cms/feed"] ;
@@ -116,7 +116,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Query items</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.query-items")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldQueryPath = ["jcrPath=/node/exo:queryPath", "/jcr:root/cms/publications//element(*, exo:podcast)"] ;
@@ -125,7 +125,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Rss URL</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.rss-url")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldURL = ["jcrPath=/node/exo:url", "http://localhost:8080/ecm/rss"] ;
@@ -134,7 +134,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Feed Title</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-title")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldTitle = ["jcrPath=/node/exo:feedTitle"] ;
@@ -143,7 +143,7 @@
 		    </td>
 	    </td>
 	    <tr>                        
-	      <td class="FieldLabel">Feed type</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-type")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldFeedType = ["jcrPath=/node/exo:feedType", "rss", "options=rss,podcast,video podcast"] ;
@@ -152,7 +152,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Rss version</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.rss-version")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldRSSVersion = ["jcrPath=/node/exo:rssVersion", "rss_2.0", "options=rss_2.0,rss_1.0,rss_0.94,rss_0.93,rss_0.92,rss_0.91,rss_0.90"] ;
@@ -161,7 +161,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Link</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.link")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldLink = ["jcrPath=/node/exo:link", "validate=empty"] ;
@@ -170,7 +170,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Description</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.description")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldDescription = ["jcrPath=/node/exo:description", "This podcast provided by eXo Platform opensource company"] ; 
@@ -179,7 +179,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Language</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.language")%></td>
 	     	<td class="FieldComponent">
 		      <%
 		        String[] fieldLanguage = ["jcrPath=/node/exo:language", "English", "options=English,French"] ; 
@@ -188,7 +188,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Copyright</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.copyright")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCopyright = ["jcrPath=/node/exo:copyright", "Copyright ? 2000-2005 eXo Platform SARL"] ; 
@@ -197,7 +197,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Publish date</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.publish-date")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldPubDate = ["jcrPath=/node/exo:pubDate"] ; 
@@ -206,7 +206,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Owner name</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.owner-name")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldOwnerName = ["jcrPath=/node/exo:ownerName", "Exoplatform"] ; 
@@ -215,7 +215,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Owner email</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.owner-email")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldOwnerEmail = ["jcrPath=/node/exo:ownerEmail", "support@exoplatform.com"] ; 
@@ -224,7 +224,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Image URL</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.image-url")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldImageURL = ["jcrPath=/node/exo:imageURL"] ; 
@@ -233,7 +233,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Category</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.category")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCategory = ["jcrPath=/node/exo:category"] ; 
@@ -242,7 +242,7 @@
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel">Keywords</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.keywords")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldKeyword = ["jcrPath=/node/exo:keywords"] ; 
