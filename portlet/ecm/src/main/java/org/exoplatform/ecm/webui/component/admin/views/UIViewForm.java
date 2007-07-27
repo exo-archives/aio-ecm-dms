@@ -22,8 +22,8 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.services.cms.views.impl.ViewDataImpl;
-import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
+import org.exoplatform.services.cms.views.ViewConfig;
+import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -267,10 +267,10 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     }
     boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
     String repository = getRepository() ;
-    List<ViewDataImpl> viewList = vservice_.getAllViews(getRepository()) ;
+    List<ViewConfig> viewList = vservice_.getAllViews(getRepository()) ;
     UIPopupWindow uiPopup = getAncestorOfType(UIPopupWindow.class) ;
     if(uiPopup.getId().equals(UIViewList.ST_ADD)) {
-      for(ViewDataImpl view : viewList) {
+      for(ViewConfig view : viewList) {
         if(view.getName().equals(viewName) && !isEnableVersioning) {
           message = new ApplicationMessage("UIViewForm.msg.view-exist", null, 
                                            ApplicationMessage.WARNING) ;

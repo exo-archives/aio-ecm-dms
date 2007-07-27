@@ -17,7 +17,7 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.services.cms.views.impl.ViewDataImpl;
+import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -68,11 +68,14 @@ public class UIViewList extends UIGrid {
   @SuppressWarnings("unchecked")
   public void updateViewListGrid() throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    List views = getApplicationComponent(ManageViewService.class).getAllViews(repository) ;
+    List<ViewConfig> views = getApplicationComponent(ManageViewService.class).getAllViews(repository) ;
     List<ViewBean> viewBeans = new ArrayList<ViewBean>() ;
-    for( int i = 0; i < views.size(); i++ ) {
-      ViewDataImpl view = (ViewDataImpl)views.get(i);
-      ViewBean bean = new ViewBean(view.getName(),view.getPermissions(),view.getTabList()) ;
+    for(ViewConfig view:views) {      
+      List<String>tabsName = new ArrayList<String>() ;
+      for(ViewConfig.Tab tab:view.getTabList()) {
+        tabsName.add(tab.getTabName()) ;
+      }
+      ViewBean bean = new ViewBean(view.getName(),view.getPermissions(),tabsName) ;
       bean.setBaseVersion(getBaseVersion(view.getName())) ;
       viewBeans.add(bean) ;
     }      

@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.services.cms.views.impl.ViewDataImpl.Tab;
+import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
