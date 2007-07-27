@@ -82,14 +82,18 @@
   cursor: pointer;  
 }
 
- 
 .ExecuteIcon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Execute.gif') no-repeat;  
   cursor: pointer;
 }
  
- 
+.AddNewNodeIcon {
+	width: 16px; height: 16px;
+  background: url('MacSkin/BlueCirclePlus.gif') no-repeat;  
+  cursor: pointer;
+}
+
 .SelectGroupIcon {
 	width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  

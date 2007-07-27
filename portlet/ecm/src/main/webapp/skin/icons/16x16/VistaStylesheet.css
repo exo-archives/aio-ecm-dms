@@ -61,8 +61,8 @@
 }
  
 .Remove16x16Icon {
-	width: 24px; height: 24px;
-  background: url('VistaSkin/Delete.png') no-repeat; 
+	width: 19px; height: 18px;
+  background: url('VistaSkin/DustBin.png') no-repeat center; 
   cursor: pointer;
 }
 
@@ -107,20 +107,20 @@
 }
 
 .RestoreVersion16x16Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/RestoreVersion.png') no-repeat center;
+  width: 19px; height: 18px;
+  background: url('VistaSkin/RestoreVersion.png') no-repeat ;
   cursor: pointer;
 }
 
 .BlueRoundedPlusPage16x16Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat center;
+  width: 19px; height: 18px;
+  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat ;
   cursor: pointer;
 }
 
 .RedRoundedPlusPage16x16Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat center;
+  width: 19px; height: 18px;
+  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat ;
   cursor: pointer;
 }
 
@@ -264,8 +264,8 @@
 }
 
 .View16x16Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/YellowLight.png') no-repeat;  
+  width: 19px; height: 18px;
+  background: url('VistaSkin/YellowLight.png') no-repeat center;  
 }
 
 .OpenFolder16x16Icon {

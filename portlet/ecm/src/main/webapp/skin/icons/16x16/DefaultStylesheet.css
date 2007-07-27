@@ -27,6 +27,12 @@
   cursor: pointer;
 }
 
+.AddNewNodeIcon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
+  cursor: pointer;
+}
+
 .AddIconIcon {
   float: left ;
 	width: 16px;	height: 16px;

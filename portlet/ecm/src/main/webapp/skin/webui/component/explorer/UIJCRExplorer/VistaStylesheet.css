@@ -28,11 +28,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIFormWithTitle {
 	border: none;	
-	padding: 10px 0px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIFormWithTitle {
-	border: 1px solid #BEC1C7;	
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -592,6 +588,7 @@
 
 .UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm {
   padding-bottom: 8px;
+  border: solid 1px #bec1c7;
 }
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
@@ -839,7 +836,8 @@
 /*=================================UIRelationManager==============================*/
 
 .UIJCRExplorer .UIRelationManager {
-	overflow: auto;
+	width: 95%;
+	margin: auto;
 }
 
 /*=================================UILabelForm==============================*/
@@ -882,4 +880,10 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
 	width: auto;	
+}
+
+/*====================================MultiValueContainer==================================*/
+
+.UIJCRExplorer .MultiValueContainer .MultiFieldAction {
+	margin-left: 5px;
 }
