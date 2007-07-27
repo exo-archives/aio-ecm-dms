@@ -9,6 +9,7 @@ UIJCRExplorer.prototype.loadViewNodeScroll = function(e) {
 	var uiFilePlanView = document.getElementById("UIFilePlanView");
 	if (uiFilePlanView) {
 		jcr.vnScrollMgr = eXo.portal.UIPortalControl.newScrollManager("UIFilePlanView");
+		jcr.vnScrollMgr.margin = 12;
 		jcr.vnScrollMgr.initFunction = jcr.initViewNodeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiFilePlanView, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
@@ -48,6 +49,7 @@ UIJCRExplorer.prototype.loadNodeTypeScroll = function() {
 	var uiPopup = document.getElementById("UINodeTypeInfoPopup");
 	if (uiPopup) {
 		jcr.ntScrollMgr = eXo.portal.UIPortalControl.newScrollManager("UINodeTypeInfoPopup");
+		jcr.ntScrollMgr.margin = 5;
 		jcr.ntScrollMgr.initFunction = jcr.initNodeTypeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiPopup, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
