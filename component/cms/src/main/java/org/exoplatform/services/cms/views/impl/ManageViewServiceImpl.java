@@ -90,6 +90,11 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return buttonList ;
   }
 
+  public Node getViewHome(String repository) throws Exception {    
+    String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    return (Node) getSession(repository).getItem(viewsPath);
+  }
+
   public List<ViewConfig> getAllViews(String repository) throws Exception {
     List<ViewConfig> viewList = new ArrayList<ViewConfig>() ;
     ViewConfig view = null;
