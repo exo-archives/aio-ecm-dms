@@ -43,19 +43,18 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.mozilla.javascript.EcmaError;
 
 /**
  * Created by The eXo Platform SARL
@@ -63,17 +62,27 @@ import org.mozilla.javascript.EcmaError;
  *          phamtuanchip@yahoo.de
  * Dec 14, 2006 5:15:47 PM
  */
-@ComponentConfig(
-    //template = "app:/groovy/webui/component/browse/View2.gtmpl",
-    events = {
-        @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
-        @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
-        @EventConfig(listeners = UIBrowseContainer.ViewByTagActionListener.class),
-        @EventConfig(listeners = UIBrowseContainer.BackViewActionListener.class),
-        @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
+@ComponentConfigs(
+    {
+      @ComponentConfig(
+          //template = "app:/groovy/webui/component/browse/View2.gtmpl",
+          events = {
+              @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
+              @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
+              @EventConfig(listeners = UIBrowseContainer.ViewByTagActionListener.class),
+              @EventConfig(listeners = UIBrowseContainer.BackViewActionListener.class),
+              @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
+          }
+      ),
+      @ComponentConfig(
+          type = UIPageIterator.class, id = "UICBPageIterator",
+          template = "system:/groovy/webui/core/UIPageIterator.gtmpl",
+          events = @EventConfig(listeners = UIBrowseContainer.ShowPageActionListener.class) 
+      )
     }
 )
 public class UIBrowseContainer extends UIContainer{
+  private boolean isShowPageActon_ = false ;
   private boolean isShowCategoryTree_ = true ;
   protected boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
@@ -102,7 +111,7 @@ public class UIBrowseContainer extends UIContainer{
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
-    addChild(UIPageIterator.class, null, null) ;
+    addChild(UIPageIterator.class, "UICBPageIterator", "UICBPageIterator") ;
     addChild(UITagList.class, null, null);
     UICategoryTree uiTree = createUIComponent(UICategoryTree.class, null, null) ;
     uiTree.setTreeRoot(getRootNode()) ;
@@ -202,22 +211,37 @@ public class UIBrowseContainer extends UIContainer{
     }     
   }
   public void refreshContent() throws Exception{
-    usecase_ = getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
-    if( isShowDocumentByTag_) {
-      setPageIterator(getDocumentByTag()) ;
-    } else {
-      setPageIterator(getSubDocumentList(getSelectedTab())) ;
-    }
-    System.out.println("selected tab = "+ getSelectedTab());
-    if(getChild(UICategoryTree.class) != null) getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
+    if(!isShowPageActon_) { 
+      usecase_ = getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+      if( isShowDocumentByTag_) {
+        setPageIterator(getDocumentByTag()) ;
+      } else {
+        if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
+          setPageIterator(getSubDocumentList(getSelectedTab())) ;
+          getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
+        } else if(usecase_.equals(Utils.CB_USE_SCRIPT)) {
+          String scriptName = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, ""); 
+          setPageIterator(getNodeByScript(getRepository(), scriptName)) ;
+        }
+        else if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
+          setPageIterator(getNodeByQuery(-1, getSession())) ;
+        }
+        else if(usecase_.equals(Utils.USE_DOCUMENT)) {
+          if(getChild(UIDocumentDetail.class).getNode() == null) {
+            return ;            
+          }
+        } 
+      }
+    } 
+    isShowPageActon_ = false ;
   }
 
-   public String getTemplate() {
+  public String getTemplate() {
     if(isShowDocumentDetail_) return templateDetail_ ;
     return templatePath_ ;
   }
 
- @SuppressWarnings("unused")
+  @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
     return jcrTemplateResourceResolver_ ;
@@ -787,17 +811,7 @@ public class UIBrowseContainer extends UIContainer{
       uiContainer.isShowAllDocument_ = false ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
-      System.out.println("\n\n CatPath " + catPath);
-      /*if(objectId.lastIndexOf(Utils.SEMI_COLON) > 0) {
-        uiContainer.storeHistory() ;
-        String path = objectId.substring(objectId.lastIndexOf(Utils.SEMI_COLON)+1) ;
-        Node selected = uiContainer.getNodeByPath(path) ;
-        System.out.println("objectId" + objectId);
-        uiContainer.changeNode(selected) ;
-        uiContainer.setShowAllChildren(true) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-        return ;
-      } */
+      
       Node selectNode = uiContainer.getNodeByPath(objectId) ;      
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
@@ -908,8 +922,19 @@ public class UIBrowseContainer extends UIContainer{
       uiContainer.setSelectedTab(null) ;
       uiContainer.setCurrentNode(node) ;
       cateTree.buildTree(node.getPath()) ;
-      //uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }
+
+  static  public class ShowPageActionListener extends EventListener<UIPageIterator> {
+    public void execute(Event<UIPageIterator> event) throws Exception {
+      UIPageIterator uiPageIterator = event.getSource() ;
+      int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
+      uiPageIterator.setCurrentPage(page) ;
+      if(uiPageIterator.getParent() == null) return ;
+      UIBrowseContainer uiBCContainer = uiPageIterator.getAncestorOfType(UIBrowseContainer.class) ;
+      uiBCContainer.isShowPageActon_ = true ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
     }
   }
 }

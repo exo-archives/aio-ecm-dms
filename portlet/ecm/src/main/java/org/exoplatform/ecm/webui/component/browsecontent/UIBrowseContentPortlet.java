@@ -56,11 +56,9 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN VIEW  MODE \n");  
       if(isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
-        //uiContainer.loadPortletConfig(portletPref) ;
         uiTabPane.setRendered(false) ;
         uiContainer.refreshContent() ;
         uiContainer.setRendered(true) ;
-        //getChild(UIBrowseContainer.class).getSession().refresh(true) ;
       } else {
         uiContainer.setRendered(false) ;
       }
