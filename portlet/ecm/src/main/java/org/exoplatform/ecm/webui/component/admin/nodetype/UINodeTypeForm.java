@@ -19,7 +19,6 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;

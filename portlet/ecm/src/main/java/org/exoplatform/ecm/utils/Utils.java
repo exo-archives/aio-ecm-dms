@@ -239,6 +239,7 @@ public class Utils {
     }  
     return children ;
   }
+  
   public static boolean isLockTokenHolder(Node node) throws Exception {
     if(node.getLock().getLockToken() != null) { 
       return true ; 

@@ -295,11 +295,13 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
     if(views_ == null || !isEnableVersioning) {
       vservice_.addView(viewName, permissions, template, tabList, repository) ;
-      for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
-        Node tab = iter.nextNode() ;
-        if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+      if(views_ != null) {
+        for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
+          Node tab = iter.nextNode() ;
+          if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+        }
+        views_.save() ;
       }
-      if(views_ != null) views_.save() ;
     } else {
       if (!isVersioned(views_)) {
         views_.addMixin(Utils.MIX_VERSIONABLE);

@@ -166,6 +166,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     return false ;
   }
+  
   public boolean hasAddPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
