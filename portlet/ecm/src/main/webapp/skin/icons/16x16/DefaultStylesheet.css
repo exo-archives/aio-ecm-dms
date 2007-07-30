@@ -55,7 +55,6 @@
   cursor: pointer;
 }
 
-
 .Icon16x16 {
 	float: left;
 }
@@ -89,7 +88,6 @@
   cursor: pointer;  
 }
 
- 
 .ExecuteIcon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Execute.gif') no-repeat;  
@@ -118,6 +116,12 @@
 .ExpandIcon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.CollapseIcon  {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGrayMinus.gif') no-repeat ;
   cursor: pointer;
 }
 
@@ -391,7 +395,7 @@
 }
 
 .WebDAV16x16Icon {
-  width: 16px; height: 16px;
+  height: 16px;
   background: url('DefaultSkin/Webdav.gif') no-repeat ;   
 }
 

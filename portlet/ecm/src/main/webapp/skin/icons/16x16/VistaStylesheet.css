@@ -100,6 +100,12 @@
   cursor: pointer;
 }
 
+.CollapseIcon  {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  cursor: pointer;
+}
+
 .CompareVersion16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CompareVersion.gif') no-repeat;
@@ -360,7 +366,7 @@
 }
 
 .WebDAV16x16Icon {
-  width: 24px; height: 24px;
+  height: 24px;
   background: url('VistaSkin/Webdav.png') no-repeat left center ; 
 }
 

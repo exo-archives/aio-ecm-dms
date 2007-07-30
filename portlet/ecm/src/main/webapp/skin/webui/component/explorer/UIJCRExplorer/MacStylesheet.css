@@ -786,8 +786,12 @@
   padding-left: 15px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .ActionIcon {
-  margin-left: 5px;
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon{
+  width: 16px;
+  height: 16px;
+  border: solid 1px red;
+  cursor: pointer;
   float: none;
 }
 

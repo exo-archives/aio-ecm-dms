@@ -119,6 +119,12 @@
   cursor: pointer;
 }
 
+.CollapseIcon  {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  cursor: pointer;
+}
+
 .CompareVersion16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CompareVersion.gif') no-repeat;
@@ -361,9 +367,9 @@
   background: url('MacSkin/DustBin.gif') no-repeat ;   
 }
 
-.Locked16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/Lock.gif') no-repeat ;   
+.Lock16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Lock.gif') no-repeat ; 
 }
 
 .Unlock16x16Icon {
@@ -377,7 +383,7 @@
 }
 
 .WebDAV16x16Icon {
-  width: 16px; height: 16px;
+  height: 16px;
   background: url('MacSkin/Webdav.gif') no-repeat ;   
 }
 

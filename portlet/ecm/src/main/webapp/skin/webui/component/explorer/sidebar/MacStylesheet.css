@@ -160,8 +160,6 @@
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
   float: left;
   width: 16px; height: 16px;
-  cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
   margin-top: 3px;
 }
 
@@ -169,7 +167,6 @@
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
   margin-top: 3px;
 }
 

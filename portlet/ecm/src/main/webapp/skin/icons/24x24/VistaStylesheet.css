@@ -202,8 +202,8 @@
 
 .Permission24x24Icon {
   float: left ;
-	width: 24px;	height: 24px;
-  background: url('VistaSkin/PermissionIcon.png') no-repeat ;
+	width: 16px;	height: 16px;
+  background: url('VistaSkin/PermissionSetting.png') no-repeat ;
 }
 
 .SelectPath24x24Icon {

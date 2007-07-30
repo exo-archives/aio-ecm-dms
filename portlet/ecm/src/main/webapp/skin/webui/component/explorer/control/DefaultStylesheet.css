@@ -228,17 +228,17 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SwitchSearch {
   float: left;
-  width: 24px; height: 24px;
-  background: url('/eXoResources/icons/24x24/DefaultSkin/AdvancedSearch.gif') no-repeat ;
-  cursor: pointer;
   margin: 2px 0px 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SearchIcon {
   float: left;
   margin-left: 5px;
-  width: 24px ;  height: 24px ;
-  background: url('/eXoResources/icons/24x24/DefaultSkin/QuickSearch.gif') no-repeat ;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SavedQueries {
+  float: left;
+  margin-left: 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch {
