@@ -22,6 +22,7 @@ import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.ext.action.SessionActionInterceptor;
 import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL

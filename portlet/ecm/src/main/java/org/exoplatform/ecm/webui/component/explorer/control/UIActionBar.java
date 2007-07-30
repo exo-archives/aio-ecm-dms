@@ -168,7 +168,7 @@ public class UIActionBar extends UIForm {
     tabs_.clear() ;
     tabs_ = new ArrayList<String[]>() ;
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository,SessionsUtils.getSessionProvider()); 
+    view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository,SessionsUtils.getSystemProvider()); 
     NodeIterator tabs = view_.getNodes() ;
     int i = 0;
     while (tabs.hasNext()) {
