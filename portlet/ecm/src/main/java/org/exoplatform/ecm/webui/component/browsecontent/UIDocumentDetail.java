@@ -315,7 +315,8 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       }else {
         uiDocument.setNode(uiContainer.getNodeByPath(path)) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+      //uiContainer.isShowAttachment_ = true ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
 

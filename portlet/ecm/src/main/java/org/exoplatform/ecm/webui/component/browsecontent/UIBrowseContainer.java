@@ -84,6 +84,7 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIBrowseContainer extends UIContainer{
   private boolean isShowPageActon_ = false ;
+  //protected boolean isShowAttachment_ = false ;
   private boolean isShowCategoryTree_ = true ;
   protected boolean isShowDocumentDetail_ = false ;
   private boolean isShowSearchForm_ = false ;
