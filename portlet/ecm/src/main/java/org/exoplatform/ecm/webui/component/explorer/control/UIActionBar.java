@@ -23,6 +23,7 @@ import javax.portlet.PortletPreferences;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
@@ -167,7 +168,7 @@ public class UIActionBar extends UIForm {
     tabs_.clear() ;
     tabs_ = new ArrayList<String[]>() ;
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    view_ = getApplicationComponent(ManageViewService.class).getViewHome(repository).getNode(viewName) ;
+    view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository,SessionsUtils.getSessionProvider()); 
     NodeIterator tabs = view_.getNodes() ;
     int i = 0;
     while (tabs.hasNext()) {

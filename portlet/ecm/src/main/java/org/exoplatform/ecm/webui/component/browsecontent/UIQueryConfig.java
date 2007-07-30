@@ -222,7 +222,7 @@ public class UIQueryConfig extends UIForm {
   private List<SelectItemOption<String>> getQueryTemplate(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> querylTemplates = getApplicationComponent(ManageViewService.class)
-    .getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository) ;
+    .getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
     for(Node node: querylTemplates){
       options.add(new SelectItemOption<String>(node.getName(),node.getName())) ;
     }

@@ -12,10 +12,12 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -58,10 +60,11 @@ public class UICBTemplateList extends UIGrid {
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     List<Node> templateList = new ArrayList<Node>() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository)) ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository)) ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository)) ;
-    templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES,repository)) ;
+    SessionProvider provider = SessionsUtils.getSessionProvider() ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository,provider)) ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository,provider)) ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository,provider)) ;
+    templateList.addAll(viewService.getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES,repository,provider)) ;
     return templateList ;
   }
   

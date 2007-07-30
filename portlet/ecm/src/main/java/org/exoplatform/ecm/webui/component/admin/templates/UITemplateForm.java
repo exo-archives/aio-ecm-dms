@@ -17,6 +17,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.CmsConfigurationService;
@@ -128,7 +129,8 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     String repository = getRepository() ;       
     NodeTypeManager nodeTypeManager = 
       getApplicationComponent(RepositoryService.class).getRepository(repository).getNodeTypeManager() ; 
-    NodeIterator templateIter = getApplicationComponent(TemplateService.class).getTemplatesHome(repository).getNodes() ;
+    NodeIterator templateIter = 
+      getApplicationComponent(TemplateService.class).getTemplatesHome(repository,SessionsUtils.getSessionProvider()).getNodes() ;
     List<String> templates = new ArrayList<String>() ;
     while (templateIter.hasNext()) {
       templates.add(templateIter.nextNode().getName()) ;

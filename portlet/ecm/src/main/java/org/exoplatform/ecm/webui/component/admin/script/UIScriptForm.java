@@ -12,6 +12,7 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
@@ -208,12 +209,12 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning) { 
-        scriptService.addScript(namePrefix + "/" + name, content, repository) ;
+        scriptService.addScript(namePrefix + "/" + name, content, repository,SessionsUtils.getSessionProvider()) ;
       } else {
         Node node = curentList.getScriptNode(name) ; 
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;  
-        scriptService.addScript(namePrefix + "/" + name, content, repository) ;
+        scriptService.addScript(namePrefix + "/" + name, content, repository,SessionsUtils.getSessionProvider()) ;
         node.save() ;
         node.checkin() ;
       }

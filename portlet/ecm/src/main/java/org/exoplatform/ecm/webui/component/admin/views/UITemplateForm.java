@@ -16,10 +16,12 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.groovyscript.text.TemplateService;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -94,13 +96,14 @@ public class UITemplateForm extends UIForm {
   public void updateOptionList() throws Exception {
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>() ;
     String repository = getRepository() ;
+    SessionProvider provider = SessionsUtils.getSessionProvider() ;
     if(getId().equalsIgnoreCase("ECMTempForm")) {              
       Node ecmTemplateHome = getApplicationComponent(ManageViewService.class)
-      .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository) ; 
+      .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,provider) ; 
       typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(),ecmTemplateHome.getPath())) ;
     } else {        
       Node cbTemplateHome = getApplicationComponent(ManageViewService.class)
-      .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, repository) ;
+      .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, repository,provider) ;
       NodeIterator iter = cbTemplateHome.getNodes() ;
       while(iter.hasNext()) {
         Node template = iter.nextNode() ;
@@ -171,7 +174,8 @@ public class UITemplateForm extends UIForm {
   public void update(String templatePath, VersionNode selectedVersion) throws Exception {
     if(templatePath != null) {
       String repository = getRepository() ; 
-      template_ = getApplicationComponent(ManageViewService.class).getTemplate(templatePath, repository) ;
+      template_ = getApplicationComponent(ManageViewService.class).
+                   getTemplate(templatePath, repository,SessionsUtils.getSessionProvider()) ;
       getUIStringInput(FIELD_NAME).setValue(template_.getName()) ;
       getUIStringInput(FIELD_NAME).setEditable(false) ;
       String value = templatePath.substring(0, templatePath.lastIndexOf("/")) ;
@@ -219,7 +223,7 @@ public class UITemplateForm extends UIForm {
       boolean isEnableVersioning = uiForm.getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
       String path = null ;
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
-        List<Node> ecmTemps = manageViewService.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
+        List<Node> ecmTemps = manageViewService.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
         for(Node temp : ecmTemps) {
           if(temp.getName().equals(templateName) && uiForm.isAddNew_) {
             Object[] args = {templateName} ;

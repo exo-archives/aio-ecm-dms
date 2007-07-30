@@ -12,12 +12,14 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -58,7 +60,7 @@ public class UIViewList extends UIGrid {
   
   private String getBaseVersion(String name) throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Node node = getApplicationComponent(ManageViewService.class).getViewByName(name, repository);
+    Node node = getApplicationComponent(ManageViewService.class).getViewByName(name, repository,SessionsUtils.getSessionProvider());
     if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
   }
@@ -143,9 +145,9 @@ public class UIViewList extends UIGrid {
       String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class)
       .getPreferenceRepository() ;
       uiViewList.setRenderSibbling(UIViewList.class) ;
-      String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;      
       Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class)
-                                .getViewByName(viewName, repository) ;
+                                .getViewByName(viewName, repository,SessionsUtils.getSessionProvider()) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_VIEW) ;
       uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      
@@ -176,7 +178,7 @@ public class UIViewList extends UIGrid {
       uiViewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class)
-                                .getViewByName(viewName, repository) ;
+                                .getViewByName(viewName, repository,SessionsUtils.getSessionProvider()) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_EDIT) ;
       uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      

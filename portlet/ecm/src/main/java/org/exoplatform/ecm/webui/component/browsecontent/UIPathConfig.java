@@ -12,6 +12,7 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.BasePath;
@@ -167,7 +168,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     ManageViewService viewService = 
       (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
-    List<Node> scriptTemplates = viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository) ;
+    List<Node> scriptTemplates = 
+      viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository, SessionsUtils.getSystemProvider()) ;
     for(Node template:scriptTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }

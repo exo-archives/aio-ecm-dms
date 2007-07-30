@@ -18,6 +18,7 @@ import javax.portlet.PortletPreferences;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.BasePath;
@@ -81,7 +82,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     vservice_ = getApplicationComponent(ManageViewService.class) ;
     String repository = getRepository() ;
-    Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
+    Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
     List<SelectItemOption<String>> temp = new ArrayList<SelectItemOption<String>>() ; 
     NodeIterator iter = ecmTemplateHome.getNodes() ;
     while(iter.hasNext()) {

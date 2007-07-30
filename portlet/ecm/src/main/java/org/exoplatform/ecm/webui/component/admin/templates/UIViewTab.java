@@ -13,6 +13,7 @@ import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -64,7 +65,7 @@ public class UIViewTab extends UIContainer {
   
   public void updateGrid(String nodeName) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository()) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository(),SessionsUtils.getSessionProvider()) ;
     List<ViewData> data = new ArrayList<ViewData>() ;
     ViewData item  ;
     while(iter.hasNext()) {

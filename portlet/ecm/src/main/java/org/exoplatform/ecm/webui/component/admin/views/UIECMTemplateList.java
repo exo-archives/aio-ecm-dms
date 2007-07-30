@@ -12,6 +12,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.BasePath;
@@ -62,7 +63,7 @@ public class UIECMTemplateList extends UIGrid {
   public void updateTempListGrid() throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List<Node> nodes = getApplicationComponent(ManageViewService.class)
-                      .getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository) ;
+                      .getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
     List<TemplateBean> tempBeans = new ArrayList<TemplateBean>() ;
     for(Node node : nodes) {
       tempBeans.add(new TemplateBean(node.getName(), node.getPath(), getBaseVersion(node))) ;

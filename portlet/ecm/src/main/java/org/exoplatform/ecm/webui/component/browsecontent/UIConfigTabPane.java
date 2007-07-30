@@ -58,7 +58,7 @@ public class UIConfigTabPane extends UIContainer {
   public List<SelectItemOption<String>> getBoxTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> docTemplates = getApplicationComponent(ManageViewService.class)
-    .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository) ;
+    .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
     for(Node template: docTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(), template.getName())) ;
     }

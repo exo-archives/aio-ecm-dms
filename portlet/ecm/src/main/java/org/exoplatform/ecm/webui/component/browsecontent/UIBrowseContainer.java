@@ -152,7 +152,7 @@ public class UIBrowseContainer extends UIContainer{
     ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName).getNode(tempName).getPath() ;
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       Session querySession = null ;
       if(SessionsUtils.isAnonim()) {
@@ -164,7 +164,7 @@ public class UIBrowseContainer extends UIContainer{
       return ;
     } 
     if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName).getNode(tempName).getPath() ;
+      templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
       if(!isShowDocumentByTag_) setPageIterator(getNodeByScript(repoName, scriptName)) ;
@@ -182,7 +182,8 @@ public class UIBrowseContainer extends UIContainer{
       }
     }
     if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName).getNode(tempName).getPath() ;            
+      templatePath_ = 
+        viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;            
       if(rootNode_ == null || !rootNode_.getPath().equals(categoryPath)) {        
         rootNode_ = (Node)session.getItem(categoryPath) ;
         currentNode_ = rootNode_ ;
@@ -199,7 +200,8 @@ public class UIBrowseContainer extends UIContainer{
       return ;
     } 
     if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
-      templateDetail_ = viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName).getNode(tempName).getPath() ;      
+      templateDetail_ = 
+        viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;      
       String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "") ;
       Node documentNode = null;      
       try{
@@ -832,7 +834,7 @@ public class UIBrowseContainer extends UIContainer{
         ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
         String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
-        uiContainer.templateDetail_ = vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName)
+        uiContainer.templateDetail_ = vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
         .getNode(detailTemplateName).getPath()  ;
         uiContainer.viewDocument(selectNode, true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;

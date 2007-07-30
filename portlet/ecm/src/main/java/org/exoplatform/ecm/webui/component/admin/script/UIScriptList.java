@@ -11,6 +11,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -160,7 +161,7 @@ public class UIScriptList extends UIGrid {
       ScriptService scriptService =  uiScriptList.getApplicationComponent(ScriptService.class) ;
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String namePrefix = uiScriptList.getScriptCategory() ;       
-      scriptService.removeScript(namePrefix + "/" + scriptName, repository) ;
+      scriptService.removeScript(namePrefix + "/" + scriptName, repository,SessionsUtils.getSessionProvider()) ;
       uiScriptList.refresh() ;
       UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
       if((UIComponent)uiScriptList.getParent() instanceof UIECMScripts) {

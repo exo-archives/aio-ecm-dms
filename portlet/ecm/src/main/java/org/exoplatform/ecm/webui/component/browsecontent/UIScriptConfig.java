@@ -10,6 +10,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -123,7 +124,7 @@ public class UIScriptConfig extends UIForm {
   private List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> scriptTemplates = getApplicationComponent(ManageViewService.class).
-                                 getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository) ;
+                getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
     for(Node template:scriptTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
