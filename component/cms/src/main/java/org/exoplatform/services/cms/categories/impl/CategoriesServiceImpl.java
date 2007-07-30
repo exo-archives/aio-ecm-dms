@@ -15,6 +15,8 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.picocontainer.Startable;
 
 public class CategoriesServiceImpl implements CategoriesService, Startable {		
@@ -23,15 +25,13 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
   private static final String COPY = "copy";
   private static final String CUT = "cut"; 
 
-  private RepositoryService repositoryService_;
-  private CmsConfigurationService cmsConfigService_ ;
+  private RepositoryService repositoryService_;  
   private String baseTaxonomyPath_ ;  
   List<TaxonomyPlugin> plugins_ = new ArrayList<TaxonomyPlugin>() ;
 
   public CategoriesServiceImpl(RepositoryService repositoryService,
       CmsConfigurationService cmsConfigService) throws Exception{  
-    repositoryService_ = repositoryService;
-    cmsConfigService_ = cmsConfigService;
+    repositoryService_ = repositoryService;    
     baseTaxonomyPath_ = cmsConfigService.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
   }
 
@@ -59,17 +59,12 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
     }
   }
 
-  public Node getTaxonomyHomeNode (String repository) throws Exception {    
-    Session session = getSession(repository) ;    
+  public Node getTaxonomyHomeNode (String repository,SessionProvider provider) throws Exception {    
+    Session session = getSession(repository,provider) ;    
     Node homeTaxonomy = (Node)session.getItem(baseTaxonomyPath_) ;
     return homeTaxonomy ;
   }	
-
-  public Node getTaxonomyNode(String realPath, String repository) throws Exception {
-    Session adminSession = getSession(repository) ;
-    return (Node)adminSession.getItem(realPath) ;
-  }	
-
+  
   public void addTaxonomy(String parentPath,String childName, String repository) throws Exception  {
     Session adminSession = getSession(repository) ;
     Node parent = (Node)adminSession.getItem(parentPath) ;
@@ -122,17 +117,16 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
-    Session systemSession = getSession(repository) ;
+    Session session = node.getSession();
     try {			
       javax.jcr.Property categories = node.getProperty("exo:category");
       Value[] values = categories.getValues();
       for (int i = 0; i < values.length; i++) {				
-        cats.add(systemSession.getNodeByUUID(values[i].getString()));
+        cats.add(session.getNodeByUUID(values[i].getString()));
       }
     } catch (Exception e) {
       //e.printStackTrace();
-    }
-    systemSession.logout();
+    }    
     return cats;
   }
 
@@ -198,7 +192,15 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
     addCategory(node, categoryPath, repository) ;
   }    
 
-  protected Session getSession(String repository) throws Exception {    
-    return repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+  private Session getSession(String repository) throws Exception {    
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    return manageableRepository.getSystemSession(workspace) ;
+  }
+  
+  private Session getSession(String repository,SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    return provider.getSession(workspace,manageableRepository) ;
   }
 }

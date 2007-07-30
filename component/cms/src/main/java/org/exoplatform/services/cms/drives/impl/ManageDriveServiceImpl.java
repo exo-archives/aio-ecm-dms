@@ -67,13 +67,8 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
 
   public void setManageDrivePlugin(ManageDrivePlugin drivePlugin) {
     drivePlugins_.add(drivePlugin) ;
-  }  
-
-  public Node getDriveHome(String repository) throws Exception {        
-    Session session = getSession(repository) ;
-    return (Node) session.getItem(baseDrivePath_);
-  }
-
+  }    
+  
   public List<DriveData> getAllDrives(String repository) throws Exception {
     Session session = getSession(repository) ;    
     Node driveHome = (Node)session.getItem(baseDrivePath_);
