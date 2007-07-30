@@ -26,6 +26,7 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
@@ -109,11 +110,11 @@ public class UIWorkingArea extends UIContainer {
     jcrExplorer.getPreference().setShowSideBar(b) ;
   }
 
-  public Node getNodeByUUID(String uuid) throws Exception{
-    CmsConfigurationService cmsConfService = getApplicationComponent(CmsConfigurationService.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    Session session = getApplicationComponent(RepositoryService.class).getRepository(repository)
-    .getSystemSession(cmsConfService.getWorkspace(repository));
+  public Node getNodeByUUID(String uuid) throws Exception{    
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;    
+    ManageableRepository repo = getApplicationComponent(RepositoryService.class).getRepository(repository);
+    String workspace = repo.getConfiguration().getDefaultWorkspaceName() ;
+    Session session = SessionsUtils.getSystemProvider().getSession(workspace,repo) ;    
     return session.getNodeByUUID(uuid);
   }
 
@@ -697,7 +698,7 @@ public class UIWorkingArea extends UIContainer {
         if(ClipboardCommand.COPY.equals(type)) {
           pasteByCopy(session, srcWorkspace, srcPath, destPath) ;
         } else {
-          pasteByCut(uiExplorer, session, srcWorkspace, srcPath, destPath) ;
+          pasteByCut(uiExplorer, session, srcPath, destPath) ;
         }
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
@@ -749,67 +750,56 @@ public class UIWorkingArea extends UIContainer {
 
     private void pasteByCopy(Session session, String srcWorkspace, 
         String srcPath, String destPath) throws Exception {
-      Workspace workspace = session.getWorkspace();
-      if(srcWorkspace != null) workspace.copy(srcWorkspace, srcPath, destPath);
-      else workspace.copy(srcPath, destPath);
+      Workspace workspace = session.getWorkspace();           
+      workspace.copy(srcPath, destPath);
       Node destNode = (Node) session.getItem(destPath) ;
-      removeReferences(destNode, session) ;
+      removeReferences(destNode) ;
     }
 
-    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcWorkspace, 
-        String srcPath, String destPath) throws Exception {
-      Workspace workspace = session.getWorkspace();
-      if(srcWorkspace != null) {
-        workspace.copy(srcWorkspace, srcPath, destPath);
-        Node destNode = (Node) session.getItem(destPath) ;
-        removeReferences(destNode, session) ;
-        RepositoryService repositoryService = uiExplorer.getApplicationComponent(RepositoryService.class) ;
-        String repository = ((ManageableRepository)session.getRepository()).getConfiguration().getName() ;
-        Session srcSession = repositoryService.getRepository(repository).login(srcWorkspace) ;
-        srcSession.getItem(srcPath).remove() ;
-        srcSession.save() ;
-      } else {
-        RelationsService relationsService = 
-          uiExplorer.getApplicationComponent(RelationsService.class) ;
-        List<Node> refList = new ArrayList<Node>() ;
-        boolean isReference = false ;
-        PropertyIterator references = null;
-        Node srcNode = (Node)uiExplorer.getSession().getItem(srcPath) ;
-        try {
-          references = srcNode.getReferences() ;
-          isReference = true ;
-        } catch(Exception e) {
-          isReference = false ;
-        }  
-        if(isReference && references != null) {
-          if(references.getSize() > 0 ) {
-            while(references.hasNext()) {
-              Property pro = references.nextProperty() ;
-              Node refNode = pro.getParent() ;
-              relationsService.removeRelation(refNode, srcPath, uiExplorer.getSession()) ;
-              refNode.save() ;
-              refList.add(refNode) ;
-            }
+    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcPath, String destPath) throws Exception {     
+      RelationsService relationsService = 
+        uiExplorer.getApplicationComponent(RelationsService.class) ;
+      List<Node> refList = new ArrayList<Node>() ;
+      boolean isReference = false ;
+      PropertyIterator references = null;
+      Node srcNode = (Node)uiExplorer.getSession().getItem(srcPath) ;
+      try {
+        references = srcNode.getReferences() ;
+        isReference = true ;
+      } catch(Exception e) {
+        isReference = false ;
+      }  
+      if(isReference && references != null) {
+        if(references.getSize() > 0 ) {
+          while(references.hasNext()) {
+            Property pro = references.nextProperty() ;
+            Node refNode = pro.getParent() ;
+            relationsService.removeRelation(refNode, srcPath, uiExplorer.getSession()) ;
+            refNode.save() ;
+            refList.add(refNode) ;
           }
-        }            
-        session.move(srcPath, destPath);
-        session.save() ;
-        for(int i = 0; i < refList.size(); i ++) {
-          Node addRef = refList.get(i) ;
-          relationsService.addRelation(addRef, destPath, session) ;
-          addRef.save() ;
         }
       }
+      Workspace workspace = session.getWorkspace();
+      workspace.move(srcPath, destPath);
+      session.save() ;
+      for(int i = 0; i < refList.size(); i ++) {
+        Node addRef = refList.get(i) ;
+        relationsService.addRelation(addRef, destPath, session) ;
+        addRef.save() ;
+      }      
       for(ClipboardCommand currClip : uiExplorer.getAllClipBoard()) {
         if(currClip.getSrcPath().equals(srcPath)) {
           uiExplorer.getAllClipBoard().remove(currClip) ;
           break ;
         }
       }
+
     }
 
-    private void removeReferences(Node destNode, Session session) throws Exception {
+    private void removeReferences(Node destNode) throws Exception {
       NodeType[] mixinTypes = destNode.getMixinNodeTypes() ;
+      Session session = destNode.getSession();
       for(int i = 0; i < mixinTypes.length; i ++) {
         if(mixinTypes[i].getName().equals(Utils.EXO_CATEGORIZED) && destNode.hasProperty(Utils.EXO_CATEGORIZED)) {
           Node valueNode = null ;
@@ -817,7 +807,7 @@ public class UIWorkingArea extends UIContainer {
           destNode.setProperty(Utils.EXO_CATEGORIZED, new Value[] {valueAdd}) ;            
         }            
       }
-      destNode.save() ;
+      destNode.save() ;      
     }
   }
 

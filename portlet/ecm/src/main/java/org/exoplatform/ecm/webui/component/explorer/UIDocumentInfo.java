@@ -29,6 +29,7 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.PropertiesComparator;
 import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -39,6 +40,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -471,7 +473,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       } else {
         String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
         RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
-        session = repositoryService.getRepository(repository).login(workspaceName) ;
+        ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+        SessionProvider provider = SessionsUtils.getSessionProvider() ;
+        session = provider.getSession(workspaceName,manageableRepository) ;
       }
       uiExplorer.setSelectNode(uri, session) ;
       uiExplorer.updateAjax(event) ;

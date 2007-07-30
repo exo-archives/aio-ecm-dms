@@ -240,11 +240,12 @@ public class Utils {
     return children ;
   }
   public static boolean isLockTokenHolder(Node node) throws Exception {
-    for(String tk : node.getSession().getLockTokens()){
-      if(tk.equals(node.getLock().getLockToken())) return true ;
-    }
-    return false ;
+    if(node.getLock().getLockToken() != null) { 
+      return true ; 
+    } 
+    return false ;    
   }
+
   public static String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;   
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;

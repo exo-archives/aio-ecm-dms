@@ -164,4 +164,13 @@ ECMUtils.prototype.onEnterPress = function(e) {
 	}
 };
 
+ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath) {
+ if(eXo.core.Browser.getBrowserType == "ie") {
+  window.location = serverInfo+ "/webdav/lnkgenerator/openit.lnk?path" +"/"+repository +"/" +workspace + nodePath;  
+ } else {
+  window.location = serverInfo+ "/" + portalName + "/"+repository +"/" +workspace + nodePath;
+ }
+ 
+}
+
 eXo.ecm.ECMUtils = new ECMUtils(); 

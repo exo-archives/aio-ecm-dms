@@ -123,7 +123,7 @@ public class UIDrivesBrowser extends UIContainer {
       String driveName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       RepositoryService rservice = uiDrive.getApplicationComponent(RepositoryService.class) ;
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
-      DriveData drive = (DriveData) dservice.getDriveByName(driveName, uiDrive.repoName_) ;
+      DriveData drive = dservice.getDriveByName(driveName, uiDrive.repoName_) ;
       UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class) ;
       List<String> userRoles = Utils.getMemberships() ;
       Map<String, String> viewMap = new HashMap<String, String>() ;
@@ -132,7 +132,8 @@ public class UIDrivesBrowser extends UIContainer {
         String[] views = drive.getViews().split(",") ;
         for(String viewName : views) {
           viewName = viewName.trim() ;
-          Node viewNode = uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSessionProvider()) ;
+          Node viewNode = 
+            uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
           String permiss = viewNode.getProperty("exo:permissions").getString();
           String[] viewPermissions = permiss.split(",") ;
           if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
