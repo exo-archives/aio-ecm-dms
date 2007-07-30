@@ -29,6 +29,7 @@ import org.exoplatform.services.cms.i18n.MultiLanguageService;
 public class MultiLanguageServiceImpl implements MultiLanguageService{
   final static public String  JCRCONTENT = "jcr:content";
   final static public String  JCRDATA = "jcr:data";
+  final static public String  JCR_MIMETYPE = "jcr:mimeType";
   final static public String  NTUNSTRUCTURED = "nt:unstructured";
   final static String VOTER_PROP = "exo:voter".intern() ;  
   final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;
@@ -179,7 +180,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     node.getSession().save() ;    
   }
   
-  public void addFileLanguage(Node node, Value value, String language, boolean isDefault) throws Exception {
+  public void addFileLanguage(Node node, Value value, String mimeType, String language, boolean isDefault) throws Exception {
     Node newLanguageNode = null ;
     Node languagesNode = null ;
     Workspace ws = node.getSession().getWorkspace() ;
@@ -193,6 +194,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         Node jcrContent = node.getNode(JCRCONTENT) ;
         node.save() ;
         ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
+        jcrContent.setProperty(JCR_MIMETYPE, mimeType) ;
         jcrContent.setProperty(JCRDATA, value) ;
       } else {
         if(languagesNode.hasNode(language)) newLanguageNode = languagesNode.getNode(language) ;
@@ -200,22 +202,25 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         Node jcrContent = node.getNode(JCRCONTENT) ;
         node.save() ;
         ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
+        newLanguageNode.getNode(JCRCONTENT).setProperty(JCR_MIMETYPE, mimeType) ;
         newLanguageNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;        
       }
     }    
     // add mixin type for node
     NodeType[] mixins = node.getMixinNodeTypes() ;
     for(NodeType mixin:mixins) {
-      newLanguageNode.addMixin(mixin.getName()) ;
-      for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-        String propName = def.getName() ;
-        if(def.isMandatory() && !def.isAutoCreated()) {
-          if(def.isMultiple()) {
-            newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-          } else {
-            newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-          }
-        }        
+      if(newLanguageNode.canAddMixin(mixin.getName())) {
+        newLanguageNode.addMixin(mixin.getName()) ;
+        for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
+          String propName = def.getName() ;
+          if(def.isMandatory() && !def.isAutoCreated()) {
+            if(def.isMultiple()) {
+              newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
+            } else {
+              newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
+            }
+          }        
+        }
       }
     }
     
@@ -241,7 +246,9 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       }
       Node jcrContent = node.getNode(JCRCONTENT) ;
       node.save() ;
-      ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
+      if(!newLanguageNode.hasNode(JCRCONTENT)) {
+        ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
+      }
       Node newContentNode = newLanguageNode.getNode(JCRCONTENT) ;
       PropertyIterator props = newContentNode.getProperties() ;
       while(props.hasNext()) {
@@ -263,16 +270,18 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     // add mixin type for node
     NodeType[] mixins = node.getMixinNodeTypes() ;
     for(NodeType mixin:mixins) {
-      newLanguageNode.addMixin(mixin.getName()) ;
-      for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-        String propName = def.getName() ;
-        if(def.isMandatory() && !def.isAutoCreated()) {
-          if(def.isMultiple()) {
-            newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-          } else {
-            newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-          }
-        }        
+      if(newLanguageNode.canAddMixin(mixin.getName())) {
+        newLanguageNode.addMixin(mixin.getName()) ;
+        for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
+          String propName = def.getName() ;
+          if(def.isMandatory() && !def.isAutoCreated()) {
+            if(def.isMultiple()) {
+              newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
+            } else {
+              newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
+            }
+          }        
+        }
       }
     }
     

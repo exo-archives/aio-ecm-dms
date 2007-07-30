@@ -889,6 +889,7 @@ public class UIActionBar extends UIForm {
       } catch(Exception e) {
         pathQueryResult = null ;
       }
+      uiExplorer.removeChildById("ViewSearch") ;
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
       getChild(UIDocumentWorkspace.class) ;
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;

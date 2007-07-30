@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.PathNotFoundException;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -88,7 +89,9 @@ public class UIActionTypeForm extends UIForm {
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
       String repository = uiActionType.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      if(templateService.getTemplatePathByUser(true, actionType, userName, repository) == null) {
+      try {
+        templateService.getTemplatePathByUser(true, actionType, userName, repository) ;
+      } catch(PathNotFoundException e) {
         UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
         Object[] arg = { actionType } ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg)) ;

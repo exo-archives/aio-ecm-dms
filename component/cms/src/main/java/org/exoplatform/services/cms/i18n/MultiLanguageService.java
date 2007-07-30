@@ -22,7 +22,7 @@ public interface MultiLanguageService {
   public List<String> getSupportedLanguages(Node node) throws Exception ;
   public void setDefault(Node node, String language) throws Exception ;
   public void addLanguage(Node node, Map inputs, String language, boolean isDefault) throws Exception ;
-  public void addFileLanguage(Node node, Value value, String language, boolean isDefault) throws Exception ;
+  public void addFileLanguage(Node node, Value value, String mimeType, String language, boolean isDefault) throws Exception ;
   public void addFileLanguage(Node node, String language, Map mappings, boolean isDefault) throws Exception ;
   public String getDefault(Node node) throws Exception ;
   public Node getLanguage(Node node, String language) throws Exception ;

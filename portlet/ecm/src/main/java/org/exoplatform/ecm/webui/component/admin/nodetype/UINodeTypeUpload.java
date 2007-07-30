@@ -11,6 +11,7 @@ import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValuesList;
+import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -87,6 +88,9 @@ public class UINodeTypeUpload extends UIForm {
         Class[] childrenToRender = {UINodeTypeImport.class, UIPopupWindow.class} ;
         uiImportPopup.setRenderedChildrenOfTypes(childrenToRender) ;
         uiPopup.setShow(true) ;
+        UploadService uploadService = uiUploadForm.getApplicationComponent(UploadService.class) ;
+        UIFormUploadInput uiUploadInput = uiUploadForm.getChild(UIFormUploadInput.class) ;
+        uploadService.removeUpload(uiUploadInput.getUploadId()) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

@@ -140,9 +140,14 @@ public class UILanguageTypeForm extends UIForm {
     public void execute(Event<UILanguageTypeForm> event) throws Exception {
       UILanguageTypeForm uiForm = event.getSource() ;
       UIAddLanguageContainer uiLanguageContainer = uiForm.getParent() ;
-      UILanguageDialogForm uiDialogForm = uiLanguageContainer.getChild(UILanguageDialogForm.class) ;
       boolean isDefault = uiForm.getUIFormCheckBoxInput(DEFAULT_TYPE).isChecked() ;
-      uiDialogForm.setIsDefaultLanguage(isDefault) ;
+      if(uiLanguageContainer.nodeTypeName_ != null) {
+        UILanguageDialogForm uiDialogForm = uiLanguageContainer.getChild(UILanguageDialogForm.class) ;
+        uiDialogForm.setIsDefaultLanguage(isDefault) ;
+      } else {
+        UIUploadForm uiUploadForm = uiLanguageContainer.findFirstComponentOfType(UIUploadForm.class) ;
+        uiUploadForm.setIsDefaultLanguage(isDefault) ;
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
   }

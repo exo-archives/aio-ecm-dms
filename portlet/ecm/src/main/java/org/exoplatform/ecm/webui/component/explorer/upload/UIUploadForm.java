@@ -61,6 +61,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
   
   private boolean isMultiLanguage_ = false ;
   private String language_ = null ;
+  private boolean isDefault_ = false ;
   
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
@@ -76,7 +77,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
   }
   
   public boolean isMultiLanguage() { return isMultiLanguage_ ; }
-  
+
+  public void setIsDefaultLanguage(boolean isDefault) { isDefault_ = isDefault ; }
+    
   private String getLanguageSelected() { return language_ ; }
   
   public void activate() throws Exception {}
@@ -123,7 +126,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
-          multiLangService.addFileLanguage(selectedNode, contentValue, uiForm.getLanguageSelected(), false) ;
+          multiLangService.addFileLanguage(selectedNode, contentValue, mimeType, uiForm.getLanguageSelected(), uiForm.isDefault_) ;
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
@@ -199,6 +202,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiUploadContent.setUploadValues(arrValues) ;
         uiManager.setRenderedChild(UIUploadContainer.class) ;
       } catch(Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         return ;
       }
