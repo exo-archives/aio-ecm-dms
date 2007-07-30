@@ -4,10 +4,10 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
-import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -56,7 +56,7 @@ public class UITaxonomyManager extends UIContainer {
   
   public void resetTaxonomyRootNode() throws Exception {
     rootNode_ = new TaxonomyNode(getApplicationComponent(CategoriesService.class)
-        .getTaxonomyHomeNode(getRepository()), 0) ;
+        .getTaxonomyHomeNode(getRepository(),SessionsUtils.getSystemProvider()), 0) ;
   }
   private TaxonomyNode getRootTaxonomyNode() throws Exception { return rootNode_ ; }
   
@@ -120,10 +120,8 @@ public class UITaxonomyManager extends UIContainer {
       UITaxonomyManager uiManager = event.getSource() ;
       String realPath = event.getRequestContext().getRequestParameter(OBJECTID);            
       uiManager.clipboard_ = new ClipboardCommand() ;
-      Node node = uiManager.getApplicationComponent(CategoriesService.class)
-      .getTaxonomyNode(realPath, uiManager.getRepository()) ;
       uiManager.clipboard_.setType(ClipboardCommand.COPY) ;
-      uiManager.clipboard_.setSrcPath(node.getPath());
+      uiManager.clipboard_.setSrcPath(realPath);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
@@ -142,18 +140,17 @@ public class UITaxonomyManager extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      try {       
-        CategoriesService categoriesService = 
-          uiManager.getApplicationComponent(CategoriesService.class) ;
-        Node destNode = categoriesService.getTaxonomyNode(realPath, uiManager.getRepository()) ;
-        String destPath = destNode.getPath() + srcPath.substring(srcPath.lastIndexOf("/"));       
-        if(destNode.hasNode(srcPath.substring(srcPath.lastIndexOf("/") + 1))) {
-          Object[] args = {srcPath.substring(srcPath.lastIndexOf("/") + 1)} ;
-          uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", args,
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
+      String destPath = realPath + srcPath.substring(srcPath.lastIndexOf("/"));       
+      if(uiManager.rootNode_.getNode().getSession().itemExists(destPath)) {
+        Object[] args = {srcPath.substring(srcPath.lastIndexOf("/") + 1)} ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", args,
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      CategoriesService categoriesService = 
+        uiManager.getApplicationComponent(CategoriesService.class) ;
+      try {                              
         categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
         uiManager.resetTaxonomyRootNode() ;
       } catch(Exception e) {
@@ -170,11 +167,9 @@ public class UITaxonomyManager extends UIContainer {
   static public class CutActionListener extends EventListener<UITaxonomyManager> {
     public void execute(Event<UITaxonomyManager> event) throws Exception {
       UITaxonomyManager uiManager = event.getSource() ;
-      String realPath = event.getRequestContext().getRequestParameter(OBJECTID);            
-      Node node = uiManager.getApplicationComponent(CategoriesService.class)
-      .getTaxonomyNode(realPath, uiManager.getRepository()) ;
+      String realPath = event.getRequestContext().getRequestParameter(OBJECTID);       
       uiManager.clipboard_.setType(ClipboardCommand.CUT) ;
-      uiManager.clipboard_.setSrcPath(node.getPath());
+      uiManager.clipboard_.setSrcPath(realPath);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
