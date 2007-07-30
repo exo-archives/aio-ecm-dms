@@ -335,7 +335,6 @@
 }
 
 .Delete16x16Icon {
-  float: left;
   width: 24px; height: 24px;
   background: url('VistaSkin/Delete.png') no-repeat ;   
 }
@@ -343,6 +342,11 @@
 .Locked16x16Icon {
   width: 16px; height: 16px;
   background: url('VistaSkin/Lock.gif') no-repeat ;
+}
+
+.Lock16x16Icon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/Lock.png') no-repeat center left;
 }
 
 .Unlock16x16Icon {
@@ -381,7 +385,7 @@
 }
 
 .Rename16x16Icon {
-  width: 16px; height: 16px;
+  width: 24px; height: 24px;
   background: url('VistaSkin/Rename.gif') no-repeat left center ; 
 }
 
