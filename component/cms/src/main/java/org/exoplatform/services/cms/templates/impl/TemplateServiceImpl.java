@@ -122,7 +122,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
         } 
       }
     }
-
+    session.logout();
     return null ;    
   }
 
