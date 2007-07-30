@@ -23,6 +23,7 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -34,7 +35,9 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -294,9 +297,13 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   static public class ChangeNodeActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiDocument = event.getSource() ;
+      UIBrowseContentPortlet cbPortlet = uiDocument.getAncestorOfType(UIBrowseContentPortlet.class) ;
+      UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+      uiPopupAction.deActivate() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      UIBrowseContainer uiContainer = uiDocument.getAncestorOfType(UIBrowseContainer.class) ;     
+      Node node = null ;
+      UIBrowseContainer uiContainer = cbPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;     
       if(wsName != null) {
         String repository = uiDocument.getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;        
         ManageableRepository manageableRepository = 
@@ -310,13 +317,14 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
           }else {
             session = SessionsUtils.getSessionProvider().getSession(wsName,manageableRepository) ;
           }
-        }        
-        uiDocument.setNode((Node)session.getItem(path)) ;
+        } 
+        node = (Node)session.getItem(path) ;
       }else {
-        uiDocument.setNode(uiContainer.getNodeByPath(path)) ;
+        node = uiContainer.getNodeByPath(path) ;
       }
-      //uiContainer.isShowAttachment_ = true ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+      UIDocumentDetail uiDocumentView =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;
+      uiDocumentView.setNode(node) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 

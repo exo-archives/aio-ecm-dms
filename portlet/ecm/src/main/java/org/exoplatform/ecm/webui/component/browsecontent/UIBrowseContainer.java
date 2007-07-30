@@ -189,16 +189,9 @@ public class UIBrowseContainer extends UIContainer{
       rootNode_ = (Node)session.getItem(categoryPath) ;
       currentNode_ = null ;
       selectedTab_ = null ;
-      /*if(rootNode_ == null) {        
-        rootNode_ = (Node)session.getItem(categoryPath) ;
-        currentNode_ = rootNode_ ;
-        selectedTab_ = rootNode_ ;
-      }*/
       initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
       if(getTemplateName().equals(TREELIST)) {
         if(isEnableToolBar()) initToolBar(true, false, true) ;
-        //currentNode_ = null ;
-        //selectedTab_ = null ;
         getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
         getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
       }
@@ -226,9 +219,6 @@ public class UIBrowseContainer extends UIContainer{
       } else {
         if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
           setPageIterator(getSubDocumentList(getSelectedTab())) ;
-         System.out.println("\n \n selected node=="+ getCurrentNode());
-         System.out.println("\n \n selected tab=="+ getSelectedTab());
-          // setSelectedTab(getSelectedTab()) ;
           getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
         } else if(usecase_.equals(Utils.CB_USE_SCRIPT)) {
           String scriptName = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, ""); 
