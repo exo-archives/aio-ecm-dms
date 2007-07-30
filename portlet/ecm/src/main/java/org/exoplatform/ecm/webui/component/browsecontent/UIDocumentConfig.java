@@ -105,8 +105,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         categoryPathField.setValue(path) ;
         documentNameField.setValue(docName) ;
       }else {
-        categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
-        documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
+        //categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
+        //documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
         setActions(UINewConfigForm.NORMAL_ACTION) ;
       }
     } else {
