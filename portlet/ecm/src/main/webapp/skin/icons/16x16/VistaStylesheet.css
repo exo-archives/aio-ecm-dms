@@ -444,7 +444,7 @@
 
 .Select16x16Icon {
   width: 16px; height: 16px;
-  background-image: url('VistaSkin/SelectIcon.gif') no-repeat left center ;   
+  background: url('VistaSkin/SelectIcon.gif') no-repeat ; 
 }
 
 .Export16x16Icon {
@@ -458,6 +458,13 @@
 .Active16x16Icon {
   width: 16px; height: 16px;
   background-image: url('DefaultSkin/SelectPage.gif') no-repeat left center ; 
+}
+
+.RemoveFile {
+	width: 19px;
+	height: 18px;
+	background: url('VistaSkin/DustBin.png') no-repeat;
+	margin-left: 10px;
 }
 /*############################## -- End Action Icon  -- ##############################*/
 

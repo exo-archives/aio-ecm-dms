@@ -96,7 +96,13 @@
   cursor: pointer;
 }
  
- 
+.RemoveFile {
+	width: 16px;
+	height: 16px;
+	background: url('DefaultSkin/DustBin.gif') no-repeat;
+	margin-left: 10px;
+}
+
 .SelectGroupIcon {
 	width: 16px; height: 16px;
   background: url('DefaultSkin/SmallGroupIcon.gif') no-repeat;  
@@ -419,6 +425,11 @@
   width: 16px; height: 16px;
   background: url('DefaultSkin/Edit.gif') no-repeat ;
   cursor: pointer;   
+}
+
+.Lock16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/Lock.gif') no-repeat ; 
 }
 
 .EditDocument16x16Icon {

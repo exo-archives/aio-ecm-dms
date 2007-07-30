@@ -83,11 +83,20 @@
 	margin: 10px auto;	
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
-	width: 260px;	
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIForm .HorizontalLayout {
+	border: none;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
 	width: 260px;	
 }
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIGrid .text {
+	width: 100%;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIGrid th {
+	padding: 0px 5px;
+}
+
 /*############################## -- End UINodeTypeManager-- ########################*/

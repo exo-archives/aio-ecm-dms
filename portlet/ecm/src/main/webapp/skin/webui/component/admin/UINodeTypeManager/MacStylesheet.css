@@ -69,11 +69,6 @@
 	width: auto;	
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
-	width: 95%;
-	margin: 10px auto;	
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup {
 	width: 460px;	
 	margin:  10px auto;
@@ -84,8 +79,25 @@
 	padding-top: 10px;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
+	width: 95%;
+	margin: 10px auto;	
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIForm .HorizontalLayout {
+	border: none;
+}
+
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
 	width: 290px;	
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIGrid .text {
+	width: 100%;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIGrid th {
+	padding: 0px 5px;
 }
 
 /*############################## -- End UINodeTypeManager-- ########################*/

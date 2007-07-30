@@ -85,7 +85,7 @@
 }
 
 .UIECMAdminPortlet .FileNameLabel {
-	overflow: hidden;
+	width: auto;
 }
 
 /*############################## --Begin UIRepositoryManager -- ########################*/
@@ -114,7 +114,7 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
-	margin: -17px 5px 0px 240px;
+	margin-left: 5px;
 	float: none;
 }
 

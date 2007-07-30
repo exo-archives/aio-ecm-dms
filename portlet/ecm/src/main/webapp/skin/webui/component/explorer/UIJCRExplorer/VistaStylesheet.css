@@ -887,3 +887,41 @@
 .UIJCRExplorer .MultiValueContainer .MultiFieldAction {
 	margin-left: 5px;
 }
+
+.UIJCRExplorer .UIJCRBrowser {
+	width: 95%;
+	margin: auto;
+	padding: 10px 0px;
+}
+
+.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+	width: 98.5%;
+}
+
+.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	border: solid 1px white;
+}
+
+.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+	padding: 5px 0px;
+}
+
+.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIJCRExplorer .UIPopupWindow .UITabPane .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .FieldLabel{
+	width: 100px;
+}
+
+.UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
+	width: 100px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList .UIGrid {
+	width: 97%;
+	margin: 0px;
+}

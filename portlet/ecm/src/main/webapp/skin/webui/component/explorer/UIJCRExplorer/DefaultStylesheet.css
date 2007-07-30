@@ -79,6 +79,7 @@
 
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .UITabContentContainer .UITabContent {
 	background: #efefef;
+	border: none;
 }
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
@@ -658,7 +659,7 @@
 	padding: 5px 0px;
 }
 
-.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIJCRExplorer .UIPopupWindow .UITabPane .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .FieldLabel{
 	width: 100px;
 }
 
@@ -800,6 +801,16 @@
   margin: auto;
 }
 /*===========================UIUploadForm====================*/
+
+.UIJCRExplorerPortlet .UIUploadManager {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadContainer .UITabPane {
+	width: 95%;
+	margin: 10px auto;
+	padding: 0px;
+}
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
   padding: 10px;
