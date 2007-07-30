@@ -34,6 +34,7 @@ import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
@@ -246,13 +247,13 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     return scriptObject;
   }
 
-  public void addScript(String name, String text, String repository) throws Exception {
-    addResource(name, text, repository);
+  public void addScript(String name, String text, String repository,SessionProvider provider) throws Exception {
+    addResource(name, text, repository,provider);
     removeFromCache(name) ;
   }
 
-  public void removeScript(String scriptName, String repository) throws Exception {
-    removeResource(scriptName, repository);
+  public void removeScript(String scriptName, String repository,SessionProvider provider) throws Exception {
+    removeResource(scriptName, repository,provider);
     removeFromCache(scriptName) ;
   }    
 
@@ -332,11 +333,14 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
           filename = className.replace('.', File.separatorChar) + ".groovy";
         }
         InputStream in = null;
+        SessionProvider provider = SessionProvider.createSystemProvider() ;
         try {
-          Node scriptsHome = getResourcesHome(repository);
+          Node scriptsHome = getResourcesHome(repository,provider);
           Node scriptNode = scriptsHome.getNode(nodeName);
           in = scriptNode.getProperty("jcr:data").getStream();
+          provider.close();
         } catch (Exception e) {
+          provider.close();
           throw new ClassNotFoundException("Could not read " + nodeName + ": " + e);
         }
         try {
@@ -349,9 +353,9 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     };
   }
 
-  public Node getScriptNode(String scriptName, String repository) throws Exception {
+  public Node getScriptNode(String scriptName, String repository,SessionProvider provider) throws Exception {
     try {
-      Node scriptHome = getResourcesHome(repository) ;
+      Node scriptHome = getResourcesHome(repository,provider) ;
       return scriptHome.getNode(scriptName) ;      
     }catch (Exception e) {
       e.printStackTrace() ;

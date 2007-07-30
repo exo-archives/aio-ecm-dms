@@ -21,6 +21,7 @@ import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL
@@ -129,24 +130,12 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return b;
   }
 
-  public Node getViewByName(String name, String repository) throws Exception{          
-    Session session = getSession(repository) ;
+  public Node getViewByName(String name, String repository,SessionProvider provider) throws Exception{          
+    Session session = getSession(repository,provider) ;
     Node viewHome = (Node)session.getItem(baseViewPath_) ;
     return  viewHome.getNode(name);    
   }
-
-  public Node getDefaultView(String repository) throws Exception {
-    Session session = getSession(repository) ;
-    Node viewHome = (Node)session.getItem(baseViewPath_) ;
-    return viewHome.getNode(DEFAULT_VIEW) ;    
-  }
-
-  public Node getAdminView(String repository) throws Exception {
-    Session session = getSession(repository) ;
-    Node viewHome = (Node)session.getItem(baseViewPath_) ;
-    return viewHome.getNode(ADMIN_VIEW) ;    
-  }
-
+  
   public void addView(String name, String permissions, String template, List tabs, 
       String repository) throws Exception{
     Session session = getSession(repository) ;
@@ -178,20 +167,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     session.save();
     session.logout();
   }
-
-  public List<Node> getAllViewByPermission(String permission, String repository) throws Exception {
-    List<Node> viewsByPermission = new ArrayList<Node>() ;
-    Session session = getSession(repository) ;
-    Node viewHome = (Node)session.getItem(baseViewPath_) ;
-    for(NodeIterator iter = viewHome.getNodes() ;iter.hasNext();) {
-      Node view = iter.nextNode() ;
-      String permissions = view.getProperty(EXO_PERMISSIONS).getString() ;
-      if(permissions.indexOf(permission) > -1 ) 
-        viewsByPermission.add(view) ;
-    }
-    return viewsByPermission ;
-  }
-
+  
   public void removeView(String viewName, String repository) throws Exception {
     Session session = getSession(repository) ;
     Node viewHome = (Node)session.getItem(baseViewPath_) ;
@@ -215,9 +191,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     view.save() ;
   }
 
-  public Node getTemplateHome(String homeAlias, String repository) throws Exception{
+  public Node getTemplateHome(String homeAlias, String repository,SessionProvider provider) throws Exception{
     String homePath = getJCRPath(homeAlias) ;
-    Session session = getSession(repository) ;
+    Session session = getSession(repository,provider) ;
     return (Node)session.getItem(homePath) ;
   }
 
@@ -231,9 +207,15 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     String worksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
     return manageableRepository.getSystemSession(worksapce) ;    
   }
+  
+  private Session getSession(String repository,SessionProvider sessionProvider) throws Exception{
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String worksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+    return sessionProvider.getSession(worksapce,manageableRepository) ;
+  }
 
-  public List<Node> getAllTemplates(String homeAlias, String repository) throws Exception {
-    Node templateHomNode = getTemplateHome(homeAlias, repository) ;
+  public List<Node> getAllTemplates(String homeAlias, String repository,SessionProvider provider) throws Exception {
+    Node templateHomNode = getTemplateHome(homeAlias, repository,provider) ;
     List<Node> list = new ArrayList<Node>() ;
     for(NodeIterator iter = templateHomNode.getNodes() ; iter.hasNext() ;) {
       list.add(iter.nextNode()) ;
@@ -241,8 +223,8 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return list;
   }
 
-  public Node getTemplate(String path, String repository) throws Exception{    
-    return (Node)getSession(repository).getItem(path) ;
+  public Node getTemplate(String path, String repository,SessionProvider provider) throws Exception{    
+    return (Node)getSession(repository,provider).getItem(path) ;
   }
 
   public String addTemplate(String name, String content, String homeTemplate, String repository) throws Exception {
@@ -255,8 +237,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
     newTemp.setProperty(TEMPLATE_PROP,content) ;
     templateHome.save() ;
-    return newTemp.getPath() ;
-    //removeFromCache(newTemp.getPath()) ;
+    return newTemp.getPath() ;    
   }
 
   public void removeTemplate(String templatePath, String repository) throws Exception {
@@ -264,8 +245,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     Node parent = selectedTemplate.getParent() ;
     selectedTemplate.remove() ;
     parent.save() ;
-    parent.getSession().save() ;
-    //removeFromCache(path) ;
+    parent.getSession().save() ;    
   }
 
   private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
@@ -276,17 +256,5 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
 
     return contentNode ;
   }
-
-  /*protected void removeFromCache(String templateName) {
-    try{
-      ExoCache jcrcache_ = cacheService_.getCacheInstance(JCRResourceLoaderImpl.class.getName()) ;
-      String portalName = containerInfo_.getContainerName() ;
-      String key = portalName + "jcr:" +templateName ; 
-      Object cachedobject = jcrcache_.get(key);
-      if (cachedobject != null) {
-        jcrcache_.remove(key);      
-      }
-    }catch(Exception e) {      
-    }
-  }  */
+  
 }

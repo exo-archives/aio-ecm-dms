@@ -18,6 +18,7 @@ import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.security.SecurityService;
 import org.picocontainer.Startable;
 
@@ -60,29 +61,25 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     }
   }
 
-  public Node getTemplatesHome(String repository) throws Exception {
-    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String systemWorkspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    try {      
-      return (Node) manageableRepository.login(systemWorkspace).getItem(cmsTemplatesBasePath_) ;       
-    }catch(Exception e) {
-      return (Node) manageableRepository.getSystemSession(systemWorkspace).getItem(cmsTemplatesBasePath_);
-    }
+  public Node getTemplatesHome(String repository, SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider) ;
+    return (Node)session.getItem(cmsTemplatesBasePath_) ;
   }  
 
   public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception {
-    Session session = getSession(repository) ;
+    SessionProvider provider = SessionProvider.createSystemProvider() ;
+    Session session = getSession(repository,provider) ;
     Node systemTemplatesHome = (Node)session.getItem(cmsTemplatesBasePath_) ;
-    if(systemTemplatesHome.hasNode(nodeTypeName)) {
-      session.logout();
-      return true ;
+    boolean b = false ;
+    if(systemTemplatesHome.hasNode(nodeTypeName)) {      
+      b = true ;
     }
-    session.logout();
-    return false ;
+    provider.close() ;
+    return b ;
   }
 
-  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName, String repository) throws Exception {
-    Node nodeTypeHome = getTemplatesHome(repository).getNode(nodeTypeName);
+  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName, String repository,SessionProvider provider) throws Exception {
+    Node nodeTypeHome = getTemplatesHome(repository,provider).getNode(nodeTypeName);
     if (isDialog)
       return nodeTypeHome.getNode(DIALOGS).getNodes();    
     return nodeTypeHome.getNode(VIEWS).getNodes();
@@ -94,14 +91,14 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return cmsTemplatesBasePath_   + "/" + nodeTypeName + DEFAULT_VIEWS_PATH;
   }
 
-  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception {
+  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository,SessionProvider provider) throws Exception {
     String type = DIALOGS;
     if (!isDialog) type = VIEWS;
-    Node nodeTypeNode = getTemplatesHome(repository).getNode(nodeTypeName);
+    Node nodeTypeNode = getTemplatesHome(repository,provider).getNode(nodeTypeName);
     return nodeTypeNode.getNode(type).getNode(templateName);
   }
   
-  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception {
+  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception {    
     Session session = getSession(repository) ;
     Node templateHomeNode = (Node)session.getItem(cmsTemplatesBasePath_) ;
     String type = DIALOGS;
@@ -114,13 +111,13 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       for (int i = 0; i < roles.length; i++) {
         String templateRole = roles[i].getString();
         if ("*".equals(templateRole)) {
-          session.logout() ;
+          session.logout();
           return node.getPath();
         }else if(userName != null && userName.equals(templateRole)) {
           session.logout();
           return node.getPath();  
         }else if (userName != null && securityService_.hasMembershipInGroup(userName, templateRole)){
-          session.logout() ;
+          session.logout();
           return node.getPath();
         } 
       }
@@ -129,21 +126,25 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return null ;    
   }
 
-  public String getTemplatePath(boolean isDialog, String nodeTypeName,
-      String templateName, String repository) throws Exception {
+  public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception {    
     Session session = getSession(repository) ;
     Node templateNode = getTemplateNode(session,isDialog, nodeTypeName, templateName, repository);
     String path = templateNode.getPath() ;
-    session.logout() ;
+    session.logout();
     return path;
   }
 
 
   public String getTemplateLabel(String nodeTypeName, String repository)  throws Exception {
-    Node templateHome = getTemplatesHome(repository);
+    SessionProvider provider = SessionProvider.createSystemProvider() ;
+    Node templateHome = getTemplatesHome(repository,provider);
     Node nodeType = templateHome.getNode(nodeTypeName) ;
-    if(nodeType.hasProperty("label")) return nodeType.getProperty("label").getString() ;
-    return "" ;
+    String label = "" ;
+    if(nodeType.hasProperty("label")) {
+      label = nodeType.getProperty("label").getString() ;
+    }
+    provider.close() ;
+    return label ;
   }
 
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception {
@@ -190,7 +191,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     nodeTypeHome.save() ;
     session.save();
     session.logout();
-//  removeFromCache(path) ;
   }
 
   public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception {
@@ -267,5 +267,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
     return manageableRepository.getSystemSession(systemWorksapce) ;
+  }
+  
+  private Session getSession(String repository,SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    return provider.getSession(systemWorksapce,manageableRepository) ;
   }
 }

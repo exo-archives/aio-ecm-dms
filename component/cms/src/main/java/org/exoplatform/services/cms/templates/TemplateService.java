@@ -8,6 +8,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+
 
 /**
  * @author benjaminmestrallet
@@ -34,7 +36,7 @@ public interface TemplateService {
   
   public String getDefaultTemplatePath(boolean isDialog, String nodeTypeName) ;  
   
-  public Node getTemplatesHome(String repository) throws Exception ;
+  public Node getTemplatesHome(String repository,SessionProvider provider) throws Exception ;
   
   public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception ;
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
@@ -47,9 +49,9 @@ public interface TemplateService {
   
   public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception ; 
   
-  public List getDocumentTemplates(String repository) throws Exception ;
+  public List<String> getDocumentTemplates(String repository) throws Exception ;
   
-  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName, String repository) throws Exception;  
+  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName, String repository,SessionProvider provider) throws Exception;  
   
   public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception ;
   
@@ -57,7 +59,7 @@ public interface TemplateService {
   
   public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
-  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
+  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository, SessionProvider provider) throws Exception ;
   
   public void init(String repository) throws Exception ;
 }
