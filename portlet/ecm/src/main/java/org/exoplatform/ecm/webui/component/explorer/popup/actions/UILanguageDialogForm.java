@@ -93,13 +93,21 @@ public class UILanguageDialogForm extends DialogFormFields {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node node = uiExplorer.getCurrentNode() ;
     MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
+    UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     if(selectedLanguage_ == null) {
-      UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.select-lang", null, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
+    
+    if(!uiExplorer.hasAddPermission()) {
+      uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                              ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    }
+    
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
       Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
       multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;

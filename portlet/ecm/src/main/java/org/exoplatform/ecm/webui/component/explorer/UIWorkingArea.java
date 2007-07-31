@@ -522,6 +522,7 @@ public class UIWorkingArea extends UIContainer {
         node.remove() ;
         parentNode.save() ;
       } catch(Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.getSession().refresh(false) ;
