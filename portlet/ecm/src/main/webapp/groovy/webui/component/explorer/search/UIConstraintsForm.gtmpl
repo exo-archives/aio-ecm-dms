@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="ConstraintOption">
-        <%uiform.renderField(uicomponent.getChildById("nodetypePro"))%><label class="Label">Document Type</label> : <%uiform.renderField(uicomponent.getChildById("docType"))%> <a href="<%=uicomponent.event("AddNodeType")%>"><img class="AddNodeTypeIcon" src="/eXoResources/background/DefaultSkin/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>"></a>
+        <%uiform.renderField(uicomponent.getChildById("nodetypePro"))%><label class="Label">Document Type</label> : <%uiform.renderField(uicomponent.getChildById("docType"))%> <a href="<%=uicomponent.event("AddNodeType")%>"><img class="AddNodeTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>"></a>
       </div>
       <div class="UIAction"> 
         <div class="ActionContainer">
