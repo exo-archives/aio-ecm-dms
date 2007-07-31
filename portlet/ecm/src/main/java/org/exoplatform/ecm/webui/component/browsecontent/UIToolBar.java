@@ -109,8 +109,14 @@ public class UIToolBar extends UIContainer {
      
   static public class SearchActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
-      UIToolBar uiComp = event.getSource() ;
-      UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      UIToolBar uiToolBar = event.getSource() ;
+      UIBrowseContainer uiContainer = uiToolBar.getAncestorOfType(UIBrowseContainer.class) ;
+      if(uiContainer.isShowDocumentDetail_) {
+        UIApplication uiApp = uiToolBar.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.back-view-search", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UISearchController uiSearchController = uiContainer.getChild(UISearchController.class) ;
       uiSearchController.setShowHiddenSearch() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;

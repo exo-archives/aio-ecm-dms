@@ -101,12 +101,12 @@ public class UIBrowseContainer extends UIContainer{
   final public static String KEY_CURRENT = "currentNode" ;
   final public static String KEY_SELECTED = "selectedNode" ;
   final public static String TREELIST = "TreeList" ;
-  private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;  
-  private Map<String, Node> history_  ;
+  protected LinkedList<String> nodesHistory_ = new LinkedList<String>() ;  
+  protected Map<String, Node> history_  ;
   private String templatePath_ ;
   private String templateDetail_ ;
   private String categoryPath_ ;
-  private String usecase_ ;      
+  protected String usecase_ ;      
 
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
@@ -417,7 +417,7 @@ public class UIBrowseContainer extends UIContainer{
   public void viewDocument(Node docNode ,boolean hasDocList) throws Exception {
     setShowDocumentDetail(true) ;
     setShowDocumentList(hasDocList) ;
-    initToolBar(false, false, false) ;
+    //initToolBar(false, false, false) ;
     UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
     uiDocumetDetail.setNode(docNode) ;
     uiDocumetDetail.setRendered(true) ;
@@ -727,7 +727,7 @@ public class UIBrowseContainer extends UIContainer{
       setCurrentNode(selectNode.getParent()) ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
-   // loadPortletConfig(getPortletPreferences()) ;
+    // loadPortletConfig(getPortletPreferences()) ;
   }
 
   @SuppressWarnings("unchecked")
@@ -789,7 +789,7 @@ public class UIBrowseContainer extends UIContainer{
       uiContainer.isShowAllDocument_ = false ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
-      
+
       Node selectNode = uiContainer.getNodeByPath(objectId) ;      
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
@@ -831,7 +831,7 @@ public class UIBrowseContainer extends UIContainer{
   static public class BackActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
-     
+
       if(uiContainer.isShowDocumentByTag_ && uiContainer.isShowDocumentDetail_) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
@@ -848,7 +848,7 @@ public class UIBrowseContainer extends UIContainer{
         }
         //uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ; 
       }
-     /* if(uiContainer.isShowDocumentByTag()) uiContainer.setShowDocumentByTag(false) ;
+      /* if(uiContainer.isShowDocumentByTag()) uiContainer.setShowDocumentByTag(false) ;
       if(uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
@@ -857,7 +857,7 @@ public class UIBrowseContainer extends UIContainer{
       if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
       if(!uiContainer.isShowDocumentByTag_){
       }
-*/
+       */
       //if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }

@@ -369,7 +369,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       if(isNewWizard_) {
         lockForm(false) ;
         uiWSFormStep1.getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
-      } else {lockForm(true) ;}
+      } else {
+        lockForm(true) ;
+      }
     } 
     if( isNewWizard_)  isCheckValid_ = true ;
     else {
@@ -463,7 +465,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           } else if(uiFormWizard.isNewRepo_ ) {
             UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
             UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
-            if(uiRepoForm.getWorkspaceMap().containsKey(wsName)){
+            if(uiFormWizard.selectedWsName_ == null && uiRepoForm.getWorkspaceMap().containsKey(wsName)){
               Object[] args = new Object[]{wsName}  ;        
               uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
@@ -549,7 +551,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-         
+
         }
         if(uiWSFormStep2.isRendered()) {
 
@@ -834,7 +836,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           } else if(uiFormWizard.isNewRepo_ ) {
             UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
             UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
-            if(uiRepoForm.getWorkspaceMap().containsKey(wsName)){
+            if(uiFormWizard.selectedWsName_ == null && uiRepoForm.getWorkspaceMap().containsKey(wsName)){
               Object[] args = new Object[]{wsName}  ;        
               uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  

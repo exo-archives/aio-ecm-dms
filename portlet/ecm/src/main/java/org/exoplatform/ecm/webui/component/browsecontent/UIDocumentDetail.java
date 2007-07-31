@@ -35,9 +35,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -63,6 +61,39 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   public UIDocumentDetail() {} 
 
+  @Override
+  public void processRender(WebuiRequestContext arg0) throws Exception {
+    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
+    if(isValidNode()) {
+      super.processRender(arg0);
+    } else {
+      if(uiContainer.usecase_.equals(Utils.CB_USE_DOCUMENT)) {
+        uiContainer.setRendered(false) ;
+      }
+      if(uiContainer.isShowDocumentByTag_ && uiContainer.isShowDocumentDetail_) {
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+      } else {
+        uiContainer.isShowDocumentByTag_ = false ;
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+        if(uiContainer.usecase_.equals(Utils.CB_USE_FROM_PATH) && uiContainer.history_ != null) {
+          uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
+          uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
+          uiContainer.history_.clear() ;
+        }
+      }
+
+    }
+    arg0.addUIComponentToUpdateByAjax(uiContainer) ;
+  }
+  private boolean isValidNode() throws Exception  {
+    if(node_ == null) return false ;
+    if(getAncestorOfType(UIBrowseContainer.class).getNodeByPath(node_.getPath()) == null) return false ;
+    return true ;
+  }
   public String getTemplatePath(){
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
