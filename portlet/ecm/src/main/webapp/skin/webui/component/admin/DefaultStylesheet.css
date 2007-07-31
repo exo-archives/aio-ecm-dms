@@ -95,14 +95,12 @@
 }
 
 .UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
-	float: none;
 	margin-left: 5px;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer .UIFormGrid .FieldLabel {
 	width: 128px;
 }
-
 
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
 	width: 350px;
