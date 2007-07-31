@@ -4,9 +4,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -45,6 +47,15 @@ public class UITreeExplorer extends UIComponent {
       return getContextMenu().getJSOnclickShowPopup(jcrExplorer.getRootNode().getPath(), "Paste").toString() ;
     }
     return "" ;
+  }
+  
+  public List<Node> getChildrenNode(NodeIterator iter) {
+    List<Node> listNodes = new ArrayList<Node>() ;
+    while(iter.hasNext()) {
+      Node node = iter.nextNode() ;
+      listNodes.add(node) ;
+    }
+    return listNodes ;
   }
   
   public String getActionsList(Node node) throws Exception {

@@ -14,8 +14,6 @@ import javax.jcr.RepositoryException;
  * 5:37:31 PM 
  */
 public class TreeNode {
-  final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
-  final static public String NT_FOLDER = "nt:folder" ;
   
 	private boolean isExpanded_ ;
 	private Node node_ ;
@@ -37,7 +35,11 @@ public class TreeNode {
 	public boolean isExpanded() { return isExpanded_; }	
 	public void setExpanded(boolean isExpanded) { isExpanded_ = isExpanded; }
   
-	public String getName() throws RepositoryException { return node_.getName(); }
+	public String getName() throws RepositoryException { 
+    String path = node_.getPath() ;
+    return path.substring(path.lastIndexOf("/") + 1, path.length()); 
+  }
+  
 	public String getPath() throws RepositoryException { return node_.getPath(); }
   
   public Node getNode() { return node_ ; }  
@@ -47,8 +49,12 @@ public class TreeNode {
   public int getChildrenSize() { return children_.size() ; }
   
   public TreeNode getChild(String relPath) throws RepositoryException {
+    String path = null ;
+    String name = null ;
     for(TreeNode child : children_) {
-      if(child.getNode().getName().equals(relPath)) return child ;
+      path = child.getNode().getPath() ;
+      name = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
+      if(name.equals(relPath)) return child ;
     }
     return null;
   }

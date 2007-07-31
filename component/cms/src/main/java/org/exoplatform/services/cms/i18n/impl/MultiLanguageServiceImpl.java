@@ -11,6 +11,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
@@ -107,7 +108,23 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }
       }
       break ;
+    case PropertyType.REFERENCE :
+      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
+      if(value instanceof Value[]) 
+        node.setProperty(propertyName, (Value[]) value);
+        else if (value instanceof String) {
+          Session session = node.getSession();
+          if(session.getRootNode().hasNode((String)value)) {
+            Node catNode = session.getRootNode().getNode((String)value);
+            Value value2add = session.getValueFactory().createValue(catNode);
+            node.setProperty(propertyName, new Value[] {value2add});          
+          } else {
+            node.setProperty(propertyName, (String) value);
+          }
+        }       
+      break ;
     }
+    
   }
   
   public void addLanguage(Node node, Map inputs, String language, boolean isDefault) throws Exception {
@@ -154,12 +171,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       if(!pro.isProtected()) {
         String propertyName = pro.getName() ;
         JcrInputProperty property = (JcrInputProperty)inputs.get(NODE + propertyName) ;
-        if(defaultLanguage.equals(language)) {
-          node.setProperty(propertyName, property.getValue().toString()) ;
+        if(defaultLanguage.equals(language) && property != null) {
+          setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
         } else {          
           if(isDefault) {            
             if(node.hasProperty(propertyName)) {
-              newLanguageNode.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
+              int valueType = node.getProperty(propertyName).getDefinition().getRequiredType() ;
+              Object value = null ;
+              if(pro.isMultiple()) value = node.getProperty(propertyName).getValues() ;
+              else value = node.getProperty(propertyName).getValue() ;
+              setPropertyValue(propertyName, newLanguageNode, valueType, value, pro.isMultiple()) ;
             }
             if(node.hasProperty(propertyName) && property != null) {
               boolean isMultiple = node.getProperty(propertyName).getDefinition().isMultiple() ;
