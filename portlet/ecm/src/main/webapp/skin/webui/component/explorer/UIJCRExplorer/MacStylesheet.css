@@ -899,6 +899,14 @@
 
 /*================================UINodeTypeInfo=================================*/
 
+.UINodeTypeInfo .NavigationButtonContainer {
+	display: none;
+	float: right;
+	cursor: pointer;
+}
+
+/*================================UIGrid=================================*/
+
 .UIJCRExplorerPortlet .UIGrid td {
   border: solid 1px #cfcfcf;
 }

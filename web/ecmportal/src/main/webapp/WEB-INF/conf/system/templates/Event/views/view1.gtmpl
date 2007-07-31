@@ -53,7 +53,6 @@
 		  padding-right: 15px ;  
 		}
 		
-		
 		.UIEvent .CalendarContainer {
 		  height: 125px;
 		  background: url('/ecm/skin/images/event/BannerBG.gif') repeat-x bottom;

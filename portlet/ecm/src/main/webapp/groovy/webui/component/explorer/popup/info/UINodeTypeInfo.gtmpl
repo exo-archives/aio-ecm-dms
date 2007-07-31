@@ -46,15 +46,15 @@
 				  String style="SelectedTab" ;              
 				  for(nodeType in collect) {
 				  %>
-				      <div class="UITab NormalTabStyle">
-				        <div class="$style">
-				          <div class="LeftTab">
-				            <div class="RightTab">
-		                  <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">$nodeType.name</div>
-		                </div>
-				          </div>
-				        </div>
-				      </div>
+			      <div class="UITab NormalTabStyle">
+			        <div class="$style">
+			          <div class="LeftTab">
+			            <div class="RightTab">
+	                  <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)">$nodeType.name</div>
+	                </div>
+			          </div>
+			        </div>
+			      </div>
 				  <%
 				    style = "NormalTab" ;
 				  }

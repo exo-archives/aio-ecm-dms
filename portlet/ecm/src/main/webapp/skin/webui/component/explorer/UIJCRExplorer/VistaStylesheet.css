@@ -245,6 +245,25 @@
 	padding-top: 12px;
 }
 
+.UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
+	margin: 10px auto;
+	border: solid 1px #b7b7b7;
+	padding: 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
+	height: 20px; 
+	background: url('VistaSkin/background/TitleBG1x20.png') repeat-x ; 
+	border-bottom: 1px solid #a3abb6; 
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
+  background: url('VistaSkin/background/HeaderBG.gif') ;   
+  margin-bottom: 1px;
+  padding: 0px 5px; 
+  border: solid 1px #a3abb6 ;
+}
+
 /*############################## -- BEGIN UIDocumentInfo -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormWithTitle label {
@@ -291,6 +310,8 @@
 	margin: auto;
 }
 
+/*############################## -- BEGIN UISimpleSearch -- ##############################*/
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UISimpleSearch .FormContainer {
 	width: 450px;
 	margin: auto;
@@ -306,23 +327,13 @@
 	padding-left: 30px;
 }
 
-.UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
-	margin: 10px auto;
-	border: solid 1px #b7b7b7;
-	padding: 5px;
+.UIJCRExplorerPortlet .EditQueryForm .FormContainer {
+  width: 450px;
+  margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
-	height: 20px; 
-	background: url('VistaSkin/background/TitleBG1x20.png') repeat-x ; 
-	border-bottom: 1px solid #a3abb6; 
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
-  background: url('VistaSkin/background/HeaderBG.gif') ;   
-  margin-bottom: 1px;
-  padding: 0px 5px; 
-  border: solid 1px #a3abb6 ;
+.UIJCRExplorerPortlet .EditQueryForm .UIAction {
+  width: 180px;
 }
 
 /*############################## -- END UIDocumentInfo -- ##############################*/
@@ -745,12 +756,17 @@
 	width: 60px;
 }
 
-/*================================DecoratorBoxNested=================================*/
+/*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UINodeTypeInfo {
   padding: 8px;
 }
 
+.UINodeTypeInfo .NavigationButtonContainer {
+	display: none;
+	float: right;
+	cursor: pointer;
+}
 /*================================UIPropertyTab=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
@@ -767,7 +783,7 @@
   margin: auto;
 }
 
-/*================================UINodeTypeInfo=================================*/
+/*================================UIGrid=================================*/
 
 .UIJCRExplorerPortlet .UIGrid .OddRow {
   background: #fbfbfb;

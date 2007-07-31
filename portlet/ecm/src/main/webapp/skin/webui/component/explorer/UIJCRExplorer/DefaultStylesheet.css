@@ -851,6 +851,14 @@
 
 /*================================UINodeTypeInfo=================================*/
 
+.UINodeTypeInfo .NavigationButtonContainer {
+    display: none;
+    float: right;
+    cursor: pointer;
+}
+
+/*================================UIGrid=================================*/
+
 .UIJCRExplorerPortlet .UIGrid .OddRow {
   background: #fbfbfb;
 }
@@ -858,12 +866,6 @@
 .UIJCRExplorerPortlet .UIGrid tr {
   background: #f3f3f3;
 }
-
-.UINodeTypeInfo .NavigationButtonContainer {
-    display: none;
-    float: right;
-    cursor: pointer;
-  }
 
 /*=================================UITabContentContainer==============================*/
 

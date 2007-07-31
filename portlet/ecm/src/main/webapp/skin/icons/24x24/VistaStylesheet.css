@@ -134,6 +134,12 @@
   background: url('VistaSkin/BlackMagnifier.png') no-repeat ;
 }
 
+.SwitchSearch  {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/AdvancedSearch.png') no-repeat ;
+  cursor: pointer;
+}
+
 .AddDocumentIcon {
 	width:24px; height:22px;
   background: url('VistaSkin/AddDocument.png') no-repeat top;

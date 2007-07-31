@@ -231,17 +231,13 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SwitchSearch {
   float: left;
-  width: 24px; height: 24px;
-  background: url('/eXoResources/icons/24x24/VistaSkin/AdvancedSearch.png') no-repeat ;
   cursor: pointer;
   margin: 2px 0px 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SearchIcon {
   float: left;
-  width: 24px ;  height: 24px ;
   margin-left: 5px;
-  background: url('/eXoResources/icons/24x24/VistaSkin/QuickSearch.png') no-repeat ;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch {
