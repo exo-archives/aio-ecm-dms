@@ -92,7 +92,6 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     String dialogTemplate = metadataService.getMetadataTemplate(metadata, true, repository_) ;
     String viewTemplate = metadataService.getMetadataTemplate(metadata, false, repository_) ;
     String role = metadataService.getMetadataRoles(metadata, true, repository_) ;
-    System.out.println("\n\nrole=====>" +role+ "\n\n");
     getUIStringInput(METADATA_NAME).setEditable(false) ;
     getUIStringInput(VIEW_PERMISSION).setValue(role) ;
     getUIFormTextAreaInput(DIALOG_TEMPLATE).setValue(dialogTemplate) ;

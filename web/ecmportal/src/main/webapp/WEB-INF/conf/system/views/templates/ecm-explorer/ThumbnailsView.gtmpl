@@ -10,11 +10,11 @@
     <%for(data in uicomponent.getChildrenList()) { %>
       <div class="ActionIconBox">
         <%
-          String name = data.getName() ;
           def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
           def preferenceWS = data.getSession().getWorkspace().getName() ;
           String nodePath = data.getPath() ;
           String actionLink  ;
+          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;
           if(isPreferenceNode) {
             actionLink = uicomponent.event("ViewNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
             nodePath = nodePath + "&workspaceName=" + preferenceWS ;

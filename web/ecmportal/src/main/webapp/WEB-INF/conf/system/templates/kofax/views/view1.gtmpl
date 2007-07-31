@@ -27,12 +27,10 @@
 		<%
 		    }
 		  }
-		%>
-		<%
 		  int i = 1;
 		  for(child in uicomponent.getAttachments()) { %>
 			  <tr>
-			    <td style="width:25%"><%=_ctx.appRes("Kofax.view.label.downloadable"%> #<%=i%></td>
+			    <td style="width:25%"><%=_ctx.appRes("Kofax.view.label.downloadable")%> #<%=i%></td>
 			    <td>
 			      <a href="<%=uicomponent.getDownloadLink(child)%>">
 			        <%=child.getName()%>

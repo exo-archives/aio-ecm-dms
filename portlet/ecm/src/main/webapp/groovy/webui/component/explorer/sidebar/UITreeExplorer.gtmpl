@@ -14,6 +14,7 @@
 	      Node node = treeNode.getNode() ;
 	      if( Utils.isReadAuthorized(node)) {
 	        String path = node.getPath() ;
+	        String treeNodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
 	        def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
 	        def preferenceWS = node.getSession().getWorkspace().getName() ;
 	        String mode = "Expand" ;
@@ -48,7 +49,7 @@
 	        println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
 	        println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" + strActs + "<span></span></div>" ;
 	        println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" ;
-	        println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNode.name\">$treeNode.name</a>" ;
+	        println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
 	        println "  </div>" ; 
 	        if(treeNode.getChildrenSize() > 0) {
 	          println "<div class=\"NodeGroup\">" ;

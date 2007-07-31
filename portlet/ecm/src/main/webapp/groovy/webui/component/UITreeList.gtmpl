@@ -30,7 +30,11 @@
 	      %>
 		      <tr class="$rowClass">
 		        <td>
-		          <div class="Text">$node.name</div>
+		          <%
+		            String path = node.getPath() ;
+		            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
+		           %>
+		          <div class="Text">$nodeName</div>
 		        </td>
 		        <td>
 		          <%
