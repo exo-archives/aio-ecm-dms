@@ -20,24 +20,23 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 public class TaxonomyPlugin extends BaseComponentPlugin{	
 
   private RepositoryService repositoryService_ ;  
-  private String baseTaxonomiesPath_ ;
-  private String baseCalendarTaxonomiesPath_ ; 
-  private InitParams params_ ;
+  private String baseTaxonomiesPath_ ;  
+  private InitParams params_ ;  
   private boolean autoCreateInNewRepository_ = true;  
 
 
   public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, CmsConfigurationService cmsConfig) throws Exception {
     repositoryService_ = repositoryService ;
-    baseTaxonomiesPath_ = cmsConfig.getJcrPath(BasePath.EXO_TAXONOMIES_PATH) ;
-    baseCalendarTaxonomiesPath_ = cmsConfig.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH) ;
+    baseTaxonomiesPath_ = cmsConfig.getJcrPath(BasePath.EXO_TAXONOMIES_PATH) ;    
     params_ = params ;
     ValueParam valueParam = params_.getValueParam("autoCreateInNewRepository") ;
     if(valueParam !=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(valueParam.getValue()) ;
     }
+    init();
   }
 
-  public void init() throws Exception{    
+  public void init() throws Exception {    
     if(autoCreateInNewRepository_) {
       for(RepositoryEntry repositoryEntry:repositoryService_.getConfig().getRepositoryConfigurations()) {
         importPredefineTaxonomies(repositoryEntry.getName()) ;        
@@ -62,11 +61,14 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
   private void importPredefineTaxonomies(String repository) throws Exception {    
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;    
-    Session session = manageableRepository.getSystemSession(workspace) ;
-    Node baseCalendarNode = (Node)session.getItem(baseCalendarTaxonomiesPath_) ;
-    //TODO because base calendar node is share for this service & ICalendarService.
-    if(baseCalendarNode.hasNodes()) return ;
+    Session session = manageableRepository.getSystemSession(workspace) ;    
     Node taxonomyHomeNode = (Node)session.getItem(baseTaxonomiesPath_) ;
+    //TODO Need remove this code
+    if(taxonomyHomeNode.hasProperty("exo:isImportedChildren"))  { 
+      session.logout();
+      return ; 
+    }
+    taxonomyHomeNode.setProperty("exo:isImportedChildren",true) ;
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     while(it.hasNext()) {
       TaxonomyConfig config = (TaxonomyConfig)it.next().getObject() ;

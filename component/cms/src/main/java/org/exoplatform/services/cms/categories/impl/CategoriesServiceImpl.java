@@ -17,9 +17,8 @@ import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.picocontainer.Startable;
 
-public class CategoriesServiceImpl implements CategoriesService, Startable {		
+public class CategoriesServiceImpl implements CategoriesService {		
   private static final String CATEGORY_MIXIN = "exo:categorized";
   private static final String CATEGORY_PROP = "exo:category";
   private static final String COPY = "copy";
@@ -34,19 +33,7 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
     repositoryService_ = repositoryService;    
     baseTaxonomyPath_ = cmsConfigService.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
   }
-
-  public void start() {    
-    try {
-      for(TaxonomyPlugin plugin : plugins_) {
-        plugin.init() ;
-      }
-    } catch (Exception e) {
-      e.printStackTrace() ;
-    }
-  } 
-
-  public void stop() { }
-
+  
   public void init(String repository) throws Exception {
     for(TaxonomyPlugin plugin : plugins_) {
       plugin.init(repository) ;
@@ -55,7 +42,7 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
 
   public void addTaxonomyPlugin(ComponentPlugin plugin) {    
     if(plugin instanceof TaxonomyPlugin) {			
-      plugins_.add((TaxonomyPlugin)plugin) ;
+      plugins_.add((TaxonomyPlugin)plugin) ;           
     }
   }
 
@@ -83,8 +70,8 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
     Session adminSession = getSession(repository) ;    
     Node selectedNode = (Node)adminSession.getItem(realPath) ;
     selectedNode.remove() ;
-    adminSession.save();	
-    adminSession.refresh(false) ;
+    adminSession.getRootNode().save();
+    adminSession.save();    
     adminSession.logout();
   }						
 
@@ -92,15 +79,13 @@ public class CategoriesServiceImpl implements CategoriesService, Startable {
     Session session = getSession(repository) ;    		   
     if(CUT.equals(type)) {			
       session.move(srcPath,destPath) ;
-      session.save() ;
-      session.refresh(true) ;
+      session.save() ;      
       session.logout();
     }
     else if(COPY.equals(type)) {		
       Workspace workspace = session.getWorkspace() ;       
       workspace.copy(srcPath,destPath) ;
-      session.save() ;
-      session.refresh(true) ;
+      session.save() ;      
       session.logout();
     }
     else {

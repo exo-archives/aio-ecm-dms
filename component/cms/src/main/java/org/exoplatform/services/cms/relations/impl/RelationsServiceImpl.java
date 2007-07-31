@@ -124,9 +124,10 @@ public class RelationsServiceImpl implements RelationsService, Startable {
           rel.addMixin("mix:referenceable");
         }
         relationsHome.save();
-      }
-      session.logout();
-    } catch (Exception e) {
+        session.save();
+        session.logout();
+      }      
+    } catch (Exception e) {      
       // e.printStackTrace() ;
     }
   }
