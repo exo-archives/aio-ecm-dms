@@ -848,7 +848,7 @@ public class DialogFormFields extends UIForm {
       if(name.equals(fieldName)) {
         w.write("<a style=\"cursor:pointer;\" "
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
-            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/background/DefaultSkin/Blank.gif\" </div>") ;
+            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" </div>") ;
       } 
     }
   }

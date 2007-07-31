@@ -96,6 +96,7 @@
 
 .UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
 	margin-left: 5px;
+	float: none;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer .UIFormGrid .FieldLabel {
@@ -504,6 +505,7 @@
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16{
+  float: none;
   margin-left: 5px;
 }
 

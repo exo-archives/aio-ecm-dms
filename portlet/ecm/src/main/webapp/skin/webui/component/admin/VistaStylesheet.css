@@ -502,6 +502,7 @@
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16 {
+  float: none;
   margin-left: 5px;
 }
 
