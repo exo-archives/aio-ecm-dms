@@ -123,7 +123,7 @@
 							          for(i in 0..actionField.length -1) {
 							      %>      
 						              <a href="javascript:eXo.webui.UIForm.submitForm('<%=formName%>', '<%=actionField[i]%>', true)" title='<%=actionField[i]%>'>
-						                <img class="AddIcon16x16 <%=actionField[i]%>Icon" src="/eXoResources/background/DefaultSkin/Blank.gif" >
+						                <img class="AddIcon16x16 <%=actionField[i]%>Icon" src="../DefaultSkin/background/Blank.gif" >
 						              </a>
 							      <%
 						            }
