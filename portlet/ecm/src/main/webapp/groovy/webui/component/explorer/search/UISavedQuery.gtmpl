@@ -55,13 +55,13 @@
 	            <td><%=uicomponent.getCurrentUserId()%></td>
 		          <td style="width:100px;">
 		            <a href="<%=uicomponent.event("Execute", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
-		              <div class="Execute16x16Icon" style="margin-left:5px;float:left"><span></span></div>
+		              <div class="Execute16x16Icon" style="margin-left:10px;float:left"><span></span></div>
 		            </a>
 		            <a href="<%=uicomponent.event("Edit", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Edit")%>">
 		              <div class="Edit16x16Icon" style="margin-left:5px;float:left"><span></span></div>
 		            </a>
 		            <a href="<%=uicomponent.event("Delete", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Delete")%>">
-		              <div class="Delete16x16Icon" style="margin-left:10px;"><span></span></div>
+		              <div class="Delete16x16Icon" style="margin-left:5px;float:left;"><span></span></div>
 		            </a>
 		          </td>	                    
 	          </tr>
@@ -96,7 +96,7 @@
             </td>
 	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("Execute", sharedQueries.getPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
-	              <div class="Execute16x16Icon" style="margin-left:5px;"><span></span></div>
+	              <div class="Execute16x16Icon" style="margin-left:10px;float:left"><span></span></div>
 	            </a>
 	          </td>	                    
           </tr>

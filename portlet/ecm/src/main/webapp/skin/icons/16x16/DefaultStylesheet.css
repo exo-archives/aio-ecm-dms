@@ -115,13 +115,13 @@
  
 .ExpandIcon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('DefaultSkin/SmallGrayMinus.gif') no-repeat ;
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat ;
   cursor: pointer;
 }
 
