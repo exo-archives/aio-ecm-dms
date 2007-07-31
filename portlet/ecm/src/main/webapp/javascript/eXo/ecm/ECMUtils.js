@@ -164,13 +164,16 @@ ECMUtils.prototype.onEnterPress = function(e) {
 	}
 };
 
-ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath) {
- if(eXo.core.Browser.getBrowserType == "ie") {
-  window.location = serverInfo+ "/webdav/lnkgenerator/openit.lnk?path" +"/"+repository +"/" +workspace + nodePath;  
+ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath,mimetype) {		
+ if(eXo.core.Browser.getBrowserType() == "ie") {
+ 	if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		
+ 		window.location = serverInfo + "/" + portalName +"/lnkgenerator/openit.lnk?path=" +"/"+repository +"/" +workspace + nodePath;  
+ 	} else {
+ 		window.location = serverInfo+ "/" + portalName + "/"+repository +"/" +workspace + nodePath; 		 		
+ 	} 	  
  } else {
   window.location = serverInfo+ "/" + portalName + "/"+repository +"/" +workspace + nodePath;
- }
- 
-}
+ } 
+} ;
 
 eXo.ecm.ECMUtils = new ECMUtils(); 
