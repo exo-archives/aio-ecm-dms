@@ -41,7 +41,7 @@
 		  </tr>
 		  <tr>
       <td class="FieldLabel"><%=_ctx.appRes("Icalendar.dialog.label.calendar-file-name")%></td>
-	      <td class="FiedlComponent">
+	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCalendarPath = ["jcrPath=/node/exo:calendarPath", "/cms/calendar/exocalendar.ics"] ; 
 		        uicomponent.addTextField("calendarPath", fieldCalendarPath) ; 
