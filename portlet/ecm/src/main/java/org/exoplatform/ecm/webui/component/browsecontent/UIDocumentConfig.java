@@ -105,8 +105,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         categoryPathField.setValue(path) ;
         documentNameField.setValue(docName) ;
       }else {
-        //categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
-        //documentSelect.setActionInfo(UINewConfigForm.FIELD_DOCNAME, null) ;
         setActions(UINewConfigForm.NORMAL_ACTION) ;
       }
     } else {
@@ -126,8 +124,6 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
       enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
     }
-    //categoryPathField.setEditable(isEdit_) ;
-    //documentNameField.setEditable(isEdit_) ;
     detailtempField.setEnable(isEdit_) ;
     enableCommentField.setEnable(isEdit_) ;
     enableVoteField.setEnable(isEdit_) ;
@@ -169,31 +165,33 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPatth = categoryPathField.getValue() ;
-      if((jcrPatth == null) ||(jcrPatth.trim().length() == 0)) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(Utils.isNameEmpty(jcrPatth)) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
       } 
-      /*if(container.getNodeByPath(jcrPatth) == null) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(container.getNodeByPath(jcrPatth) == null) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
-      }*/
+      } 
       UIFormInputSetWithAction documentSelect = uiForm.getChildById(FIELD_DOCSELECT) ;
       UIFormStringInput documentField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
       String docName = documentField.getValue() ;
-      if((docName == null) ||(docName.trim().length() == 0)) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(Utils.isNameEmpty(docName)) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-doc", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
       } 
-      /*try{
-        container.getNodeByPath(jcrPatth + Utils.SLASH + docName) ;
-      } catch (Exception e) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      String fullPath = null ;
+      if(jcrPatth.endsWith("/") || docName.startsWith("/")) fullPath = jcrPatth + docName ;
+      else  fullPath = jcrPatth + Utils.SLASH + docName ;
+      if(container.getNodeByPath(fullPath) == null){
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
-      }*/
+      } 
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;
@@ -211,6 +209,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       container.loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }  
 
@@ -226,6 +225,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfigTabPane.isNewConfig_ = true ;
       uiConfigTabPane.showNewConfigForm(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
 
@@ -234,6 +234,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIDocumentConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      UIBrowseContentPortlet uiBCPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiBCPortlet) ;
     }
   }
   public static class BackActionListener extends EventListener<UIDocumentConfig>{
@@ -243,6 +245,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       uiForm.isEdit_ = false ;
       uiConfigTabPane.isNewConfig_ = true;
       uiConfigTabPane.showNewConfigForm(false) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
   public static class EditActionListener extends EventListener<UIDocumentConfig>{
@@ -250,6 +253,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIDocumentConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = true ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
   public static class AddPathActionListener extends EventListener<UIDocumentConfig> {
@@ -261,6 +265,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
       uiForm.isEdit_ = true ;
       uiConfig.isNewConfig_ = true ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
 
@@ -272,24 +277,24 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       String workspace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       String jcrPatth = categoryPathField.getValue() ;
-      if((jcrPatth == null)||(jcrPatth.trim().length() == 0)) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(Utils.isNameEmpty(jcrPatth)) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIBrowseContainer container = uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
-      try{
-        container.getNodeByPath(jcrPatth) ;
-      } catch (Exception e) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(container.getNodeByPath(jcrPatth) == null){
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfig.initPopupDocumentSelect(uiForm, repo, workspace, jcrPatth) ;
       uiForm.isEdit_ = true ;
       uiConfig.isNewConfig_ = true ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
 

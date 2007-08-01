@@ -124,6 +124,7 @@ public class UINewConfigForm extends UIForm {
       UINewConfigForm uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfigTabPane.isNewConfig_ = false ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }  
 
@@ -136,6 +137,7 @@ public class UINewConfigForm extends UIForm {
       String workSpace = uiForm.getUIFormSelectBox(FIELD_WORKSPACE).getValue() ;
       String repository = uiForm.getUIFormSelectBox(FIELD_REPOSITORY).getValue() ;
       uiConfigTabPane.initNewConfig(browseType, repository, workSpace) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }  
 }

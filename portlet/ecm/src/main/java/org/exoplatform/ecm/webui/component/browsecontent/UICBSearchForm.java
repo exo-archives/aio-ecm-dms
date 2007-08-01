@@ -18,6 +18,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -185,6 +186,7 @@ public class UICBSearchForm extends UIForm {
       uiForm.isDocumentType = searchType.equals(DOCUMENT_SEARCH) ; 
       uiForm.getUIFormCheckBoxInput(FIELD_CB_REF).setRendered(uiForm.isDocumentType) ;
       uiForm.getUIFormCheckBoxInput(FIELD_CB_CHILD).setRendered(uiForm.isDocumentType) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UISearchController.class)) ;
     }   
   }
 
@@ -198,12 +200,11 @@ public class UICBSearchForm extends UIForm {
       List<ResultData> queryResult = null;
       UICBSearchResults searchResults = container.findFirstComponentOfType(UICBSearchResults.class) ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(keyword == null || keyword.trim().length() == 0) {          
+      if(Utils.isNameEmpty(keyword)) {          
         app.addMessage(new ApplicationMessage("UICBSearchForm.msg.not-empty", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(container.findFirstComponentOfType(UISearchController.class)) ;
       if(type.equals(CATEGORY_SEARCH)) {
         queryResult = uiForm.searchByCategory(keyword, currentNode) ;
       } else {
@@ -217,6 +218,7 @@ public class UICBSearchForm extends UIForm {
         app.addMessage(new ApplicationMessage("UICBSearchForm.msg.suggestion-keyword", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
       }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UISearchController.class)) ;
     }
   }
 }

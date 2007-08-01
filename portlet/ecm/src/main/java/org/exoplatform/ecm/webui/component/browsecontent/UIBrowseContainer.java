@@ -128,8 +128,6 @@ public class UIBrowseContainer extends UIContainer{
       getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
       super.processRender(context) ;
     } catch (Exception e) {
-      context.getWriter().write("Can not load repository " + getPortletPreferences().
-          getValue(Utils.REPOSITORY, "")) ;
       return ;
     }
   }
@@ -212,6 +210,7 @@ public class UIBrowseContainer extends UIContainer{
     }     
   }
   public void refreshContent() throws Exception{
+    try {
     if(!isShowPageActon_) { 
       usecase_ = getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
       if( isShowDocumentByTag_) {
@@ -235,6 +234,10 @@ public class UIBrowseContainer extends UIContainer{
       }
     } 
     isShowPageActon_ = false ;
+    } catch (Exception e) {
+      e.printStackTrace() ;
+      return ;
+    }
   }
 
   public String getTemplate() {

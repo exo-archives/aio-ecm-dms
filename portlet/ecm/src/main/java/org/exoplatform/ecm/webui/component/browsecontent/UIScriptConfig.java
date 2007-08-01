@@ -168,7 +168,9 @@ public class UIScriptConfig extends UIForm {
       uiBrowseContentPortlet.getChild(UIBrowseContainer.class).setShowDocumentDetail(false) ;
       uiBrowseContentPortlet.getChild(UIBrowseContainer.class).loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
-      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabpane.isNewConfig_ = false ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }  
 
@@ -178,6 +180,7 @@ public class UIScriptConfig extends UIForm {
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfigTabPane.isNewConfig_ = true ;
       uiConfigTabPane.showNewConfigForm(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }
   public static class CancelActionListener extends EventListener<UIScriptConfig>{
@@ -185,6 +188,8 @@ public class UIScriptConfig extends UIForm {
       UIScriptConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
       uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }
   public static class BackActionListener extends EventListener<UIScriptConfig>{
@@ -194,6 +199,7 @@ public class UIScriptConfig extends UIForm {
       uiForm.isEdit_ =  false ;
       uiConfigTabPane.isNewConfig_ = true;
       uiConfigTabPane.showNewConfigForm(false) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }
   public static class EditActionListener extends EventListener<UIScriptConfig>{
@@ -202,7 +208,7 @@ public class UIScriptConfig extends UIForm {
       uiForm.isEdit_ = true ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfigTabPane.isNewConfig_ = false ;
-      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }
 }
