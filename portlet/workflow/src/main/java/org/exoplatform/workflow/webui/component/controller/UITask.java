@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -303,9 +303,7 @@ public class UITask extends UIForm {
         value = ((UIFormStringInput) input).getValue();
       } else if (input instanceof UIFormDateTimeInput) {
         Calendar calendar = ((UIFormDateTimeInput) input).getCalendar();
-        value = calendar.getTime();
-      } else if (input instanceof UIFormDateTimeInput) {
-        Calendar calendar = ((UIFormDateTimeInput) input).getCalendar();
+        if(calendar == null) calendar = new GregorianCalendar() ; 
         value = calendar.getTime();
       } else if (input instanceof UIFormWYSIWYGInput) {
         value = ((UIFormWYSIWYGInput)input).getValue();
@@ -320,7 +318,6 @@ public class UITask extends UIForm {
       } else if (input instanceof UIFormUploadInput) {
         value = ((UIFormUploadInput) input).getUploadData() ;
       }
-
       if (value == null) value = "";
       workflowVariables.put(name, value);
 

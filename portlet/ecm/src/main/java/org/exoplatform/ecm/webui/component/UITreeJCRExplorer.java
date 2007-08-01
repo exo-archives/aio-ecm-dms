@@ -115,12 +115,12 @@ public class UITreeJCRExplorer extends UIContainer {
     if(workspace == null) {
       workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
     }
-    Session session = null ;
-    try {
-      session = uiJCRBrowser.getSessionProvider().getSession(workspace,repository) ;
-    } catch(LoginException e) {
-      session = SessionsUtils.getSystemProvider().getSession(workspace, repository) ;
-    }
+    Session session = SessionsUtils.getSystemProvider().getSession(workspace, repository) ;
+//    try {
+//      session = uiJCRBrowser.getSessionProvider().getSession(workspace,repository) ;
+//    } catch(LoginException e) {
+//      session = SessionsUtils.getSystemProvider().getSession(workspace, repository) ;
+//    }
     rootNode_ = (Node) session.getItem(path) ;
     currentNode_ = rootNode_ ;
     changeNode(rootNode_) ;

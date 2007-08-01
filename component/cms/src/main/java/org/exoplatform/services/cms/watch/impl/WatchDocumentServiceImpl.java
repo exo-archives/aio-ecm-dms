@@ -144,7 +144,6 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
       }
       documentNode.setProperty(RSS_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
     }
-    documentNode.removeMixin(EXO_WATCHABLE_MIXIN) ;
     documentNode.save() ;  
     session.save() ;
   }  

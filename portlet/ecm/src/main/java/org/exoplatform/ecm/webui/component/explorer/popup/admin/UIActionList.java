@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
@@ -82,10 +84,30 @@ public class UIActionList extends UIContainer {
   
   static public class ViewActionListener extends EventListener<UIActionList> {
     public void execute(Event<UIActionList> event) throws Exception {
+      UIActionList uiActionList = event.getSource() ;
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
       Node node = uiExplorer.getCurrentNode().getNode(actionName) ;
+      String nodeTypeName = node.getPrimaryNodeType().getName() ;
+      String userName = event.getRequestContext().getRemoteUser() ;
+      TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
+      UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
+      String repository = 
+        uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      try {
+        templateService.getTemplatePathByUser(false, nodeTypeName, userName, repository);
+      } catch(PathNotFoundException path) {
+        Object[] args = {actionName} ;
+        uiApp.addMessage(new ApplicationMessage("UIActionList.msg.template-empty", args, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(Exception e) {
+        JCRExceptionManager.process(uiApp, e) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(uiActionManager.getChild(UIActionViewContainer.class) != null) {
         uiActionManager.removeChild(UIActionViewContainer.class) ;
       }
@@ -113,12 +135,18 @@ public class UIActionList extends UIContainer {
       Node currentNode = uiExplorer.getCurrentNode() ;
       Node selectedNode = currentNode.getNode(actionName) ;
       String nodeTypeName = selectedNode.getPrimaryNodeType().getName() ;
-      String dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName, userName, repository);
-      if(dialogPath == null || dialogPath.trim().length() == 0) {
-        UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
+      UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
+      try {
+        templateService.getTemplatePathByUser(true, nodeTypeName, userName, repository);
+      } catch(PathNotFoundException path) {
         Object[] args = {actionName} ;
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.template-empty", args, 
-                         ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(Exception e) {
+        JCRExceptionManager.process(uiApp, e) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       uiActionListContainer.initEditPopup(actionName) ;

@@ -301,7 +301,8 @@ public class UIWorkingArea extends UIContainer {
       boolean isReferenced = false ;
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -330,7 +331,8 @@ public class UIWorkingArea extends UIContainer {
           uiPopupAction.activate(uiDocumentForm, 600, 550) ;
         } else {
           Object[] arg = { nodePath } ;
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-support", arg)) ;
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-support", arg, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -348,14 +350,16 @@ public class UIWorkingArea extends UIContainer {
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       if(uiExplorer.nodeIsLocked(renameNodePath, session)) {
         Object[] arg = { renameNodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       Node renameNode = uiExplorer.getNodeByPath(renameNodePath, session) ;;
       if(renameNode.isNodeType("mix:versionable")) {
         if(!renameNode.isCheckedOut()) {
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.is-checked-in", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.is-checked-in", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -416,7 +420,8 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
@@ -454,7 +459,8 @@ public class UIWorkingArea extends UIContainer {
         Node node = uiExplorer.getNodeByPath(nodePath, session) ;
         Object[] args = { nodePath };
         if(node.isNew()) {
-          uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.unable-save-node",args));
+          uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.unable-save-node",args, 
+                                                  ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -480,7 +486,7 @@ public class UIWorkingArea extends UIContainer {
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -495,7 +501,6 @@ public class UIWorkingArea extends UIContainer {
         }
         parentNode.save() ;
       } catch(Exception e) {
-        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.getSession().refresh(false) ;
@@ -513,11 +518,12 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Node node = uiExplorer.getNodeByPath(name, uiExplorer.getSessionByWorkspace(wsName)) ;
-      /*if(node.equals(uiExplorer.getCurrentNode())){
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-open", null)) ;
+      if(!node.isCheckedOut()){
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.is-checked-in-lock", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }*/
+      }
       if(node.canAddMixin(Utils.MIX_LOCKABLE)){
         node.addMixin(Utils.MIX_LOCKABLE);
         node.save();
@@ -525,8 +531,8 @@ public class UIWorkingArea extends UIContainer {
       try {
         node.lock(true, true);        
       } catch(LockException le) {
-        le.printStackTrace() ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (Exception e) {
@@ -549,8 +555,9 @@ public class UIWorkingArea extends UIContainer {
       try {
         if(node.holdsLock())  node.unlock() ;
       } catch(LockException le) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-login-node", new Object[]{node.getName()}, 
-            ApplicationMessage.WARNING)) ;
+        Object[] args = {node.getName()} ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-login-node", args, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (Exception e) {
@@ -570,7 +577,8 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
@@ -594,7 +602,8 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       if(uiExplorer.nodeIsLocked(nodePath, session)) {
         Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
@@ -629,6 +638,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
       } catch (Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
@@ -651,14 +661,15 @@ public class UIWorkingArea extends UIContainer {
       if(srcWorkspace == null) srcWorkspace = uiExplorer.getCurrentWorkspace() ;
       if( ClipboardCommand.CUT.equals(type) && srcPath.equals(realDestPath)) { 
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
         return; 
       }
       if(uiExplorer.nodeIsLocked(destPath, session)) {
         Object[] arg = { destPath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -675,38 +686,37 @@ public class UIWorkingArea extends UIContainer {
         }
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(VersionException ve) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.copied-node-in-versioning", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (ItemExistsException iee){
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.paste-node-same-name", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (LoginException e){
         e.printStackTrace();
         if(ClipboardCommand.CUT.equals(type)) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-login-node", null, 
-              ApplicationMessage.WARNING)) ;
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-paste-nodetype", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.access-remove-denied", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
-        e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

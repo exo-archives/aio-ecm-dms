@@ -693,18 +693,20 @@ public class UIActionBar extends UIForm {
       }         
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(!uiExplorer.hasEditPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -794,7 +796,7 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasEditPermission() || !uiExplorer.hasAddPermission()) {
+      if(!uiExplorer.hasEditPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
