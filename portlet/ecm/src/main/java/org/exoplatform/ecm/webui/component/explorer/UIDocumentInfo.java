@@ -140,7 +140,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;    
     InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
     dresource.setDownloadName(node.getName()) ;
@@ -265,8 +265,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   }
   
   public String getRepository() throws Exception {
-    return ((ManageableRepository)currentNode_.getSession().getRepository()).getConfiguration().getName() ;
+    return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
   }
+  
   public String getWorkspaceName() throws Exception {
     return currentNode_.getSession().getWorkspace().getName();
   }

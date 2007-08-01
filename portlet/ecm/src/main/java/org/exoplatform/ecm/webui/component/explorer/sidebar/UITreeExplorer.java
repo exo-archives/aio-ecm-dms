@@ -11,8 +11,10 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -69,6 +71,24 @@ public class UITreeExplorer extends UIComponent {
   public boolean isPreferenceNode(Node node) throws RepositoryException {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
   }
+  
+  public String getPortalName() {
+    PortalContainer pcontainer =  PortalContainer.getInstance() ;
+    return pcontainer.getPortalContainerInfo().getContainerName() ;  
+  }
+  
+  public String getServerPath() {
+    PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
+    String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
+                          portletRequestContext.getRequest().getServerName() + ":" +
+                          String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
+    return prefixWebDAV ;
+  }
+  
+  public String getRepository() {
+    return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+  }
+  
   public String getNodePath(Node node) throws Exception {
     return node.getPath() ;
   }

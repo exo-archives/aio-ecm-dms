@@ -83,8 +83,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIWorkingArea.CheckOutActionListener.class),
         @EventConfig(listeners = UIWorkingArea.RenameActionListener.class),
         @EventConfig(listeners = UIWorkingArea.CustomActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.PasteActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.WebDAVActionListener.class)
+        @EventConfig(listeners = UIWorkingArea.PasteActionListener.class)        
       }
   )
 })
@@ -243,15 +242,13 @@ public class UIWorkingArea extends UIContainer {
           }
           if(hasEditPermissions(node)) actionsList.append(",Rename") ;
           if(isJcrViewEnable()) actionsList.append(",Save") ;
-          if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
-          actionsList.append(",WebDAV") ;
+          if(hasRemovePermissions(node)) actionsList.append(",Delete") ;          
         } else {
           if(Utils.isVersionable(node)) actionsList.append(",CheckOut") ;
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node) && hasEditPermissions(node)) actionsList.append(",Copy") ;
-          if(hasEditPermissions(node)) actionsList.append(",Rename") ;
-          actionsList.append(",WebDAV") ;
+          if(hasEditPermissions(node)) actionsList.append(",Rename") ;          
         }
       } else {
         if(isEditable(path, node.getSession()) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
@@ -266,8 +263,7 @@ public class UIWorkingArea extends UIContainer {
         }
         if(hasEditPermissions(node)) actionsList.append(",Rename") ;
         if(isJcrViewEnable()) actionsList.append(",Save") ;
-        if(hasRemovePermissions(node)) actionsList.append(",Delete") ;
-        actionsList.append(",WebDAV") ;
+        if(hasRemovePermissions(node)) actionsList.append(",Delete") ;        
       }   
       if(uiExplorer.getAllClipBoard().size() > 0 && hasAddPermissions(node)) actionsList.append(",Paste") ;
     }
@@ -785,18 +781,5 @@ public class UIWorkingArea extends UIContainer {
       destNode.save() ;      
     }
   }
-
-  static  public class WebDAVActionListener extends EventListener<UIRightClickPopupMenu> {
-    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
-      UIWorkingArea uiWorkingArea = event.getSource().getParent() ;
-      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class) ;
-      UIDocumentInfo uicomp = uiWorkingArea.findFirstComponentOfType(UIDocumentInfo.class) ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
-      if(wsName == null) wsName = uiExplorer.getCurrentWorkspace() ;
-      String link = uicomp.getWebDAVServerPrefix() + "/" + uicomp.getPortalName() + "/repository/" 
-      + wsName + nodePath ;
-      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + link + "');") ;
-    }
-  }
+  
 }
