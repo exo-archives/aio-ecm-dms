@@ -190,13 +190,11 @@
 }
 
 .Permission24x24Icon {
-  float: left;
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/PermissionSetting.gif') no-repeat ;
 }
 
 .SelectPath24x24Icon {
-  float: left;
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
 }

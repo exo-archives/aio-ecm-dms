@@ -47,10 +47,10 @@
             </td>
 	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("Edit", node.getName())%>" title="<%=_ctx.appRes("UIQueriesList.tooltip.Edit")%>">
-	              <div class="Edit16x16Icon" style="margin-left:10px;"><span></span></div>
+	              <div class="Edit16x16Icon" style="margin-left:10px; float: left;"><span></span></div>
 	            </a>
 	            <a href="<%=uicomponent.event("Delete", node.getPath())%>" title="<%=_ctx.appRes("UIQueriesList.tooltip.Delete")%>">
-	              <div class="Delete16x16Icon" style="margin-left:10px;"><span></span></div>
+	              <div class="Delete16x16Icon" style="margin-left:5px;float: left;"><span></span></div>
 	            </a>
 	          </td>	                    
           </tr>

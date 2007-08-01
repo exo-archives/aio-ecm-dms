@@ -788,11 +788,9 @@
 
 
 .UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon{
-  width: 16px;
-  height: 16px;
-  border: solid 1px red;
   cursor: pointer;
   float: none;
+  margin-left: 5px;
 }
 
 /*================================UIActionList=================================*/

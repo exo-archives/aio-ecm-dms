@@ -28,21 +28,18 @@
 }
 
 .AddIcon16x16 {
-  float:left;
   width: 16px; height: 16px;
   background: url('MacSkin/BlueCirclePlus.gif') no-repeat; 
   cursor: pointer;
 }
 
 .AddPathIcon {
-  float: left ;
 	width: 16px;	height: 16px;
   background: url('MacSkin/AddPath.gif') no-repeat ;
   cursor: pointer;
 }
 
 .AddIconIcon {
-  float: left ;
 	width: 16px;	height: 16px;
   background: url('MacSkin/BlueCirclePlus.gif') no-repeat ;
   cursor: pointer;
@@ -55,7 +52,6 @@
 }
 
 .AddPermissionIcon {
-  float:left;
 	width: 16px; height: 16px;
   margin: 0px 4px 0px 4px;
   background: url('MacSkin/SelectPermission.png') no-repeat; 
@@ -76,7 +72,6 @@
 }
 
 .PermissionIcon16x16 {
-  float:left;
   width: 16px; height: 16px;
   margin: 4px;
   background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
@@ -305,14 +300,12 @@
 }
 
 .MetaView16x16Icon {
-	float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/YellowLight.gif') no-repeat;  
   cursor: pointer;
 }
 
 .DeleteIconInfo {
-  float: left;
   width: 17px; height: 18px;
   background: url('/eXoResources/icons/16x16/MacSkin/DeleteIcon.png') no-repeat ; 
   cursor: pointer;
@@ -332,19 +325,16 @@
 }
 
 .False16x16Icon {
-	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/False.gif') no-repeat;  
 }
 
 .True16x16Icon {
-	float: left;
   width: 16px ;  height: 16px ;
   background: url('MacSkin/True.gif') no-repeat;  
 }
 
 .SelectPath16x16Icon {
-  float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
@@ -355,8 +345,8 @@
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
 /*############################## -- Action Icon  -- ##############################*/
+
 .Add16x16Icon {
-  float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/AquaBlueAddSign.gif') no-repeat; 
 }
@@ -417,7 +407,6 @@
 }
 
 .Edit16x16Icon {
-  float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/EditIcon.png') no-repeat ;
   cursor: pointer; 
