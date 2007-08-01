@@ -58,6 +58,10 @@
 		  background: url('/ecm/skin/images/event/BannerBG.gif') repeat-x bottom;
 		}
 		
+		.Calendar {
+		  background: none;
+		}
+		
 		.UIEvent .CalendarContainer .EventLabel {
 		  float: left;
 		  padding: 5px 0px 0px 40px;
