@@ -208,11 +208,11 @@
 
 .UIWorkflowPortlet .UITabPane .UITabContent .UIFormWithTitle  {
   margin: 0px;
+  width: auto;
 }
 
 .UIWorkflowPortlet .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UIFormWithTitle  .UIForm {
   margin: auto;
-  width: 535px;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
@@ -231,8 +231,18 @@
 	width: auto ;
 }
 
+.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail {
+	width: 95%;
+	margin: 10px auto;
+}
+
 .UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail .ActionContainer {
 	width: 60px;
+}
+
+.UIWorkflowPortlet .UIWorkflowPopup .UITabPane  {
+	width: 95%;
+	margin: 10px auto;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
@@ -279,7 +289,8 @@
 }
 
 .UIWorkflowPortlet .UITask .UIForm .UIAction {
-  width: 240px;
+  width: 400px;
+  padding-left: 80px;
 }
 
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
@@ -289,10 +300,6 @@
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
-}
-
-.UIWorkflowPortlet .UIAdministrationManager .UIAction {
-  width: 140px;
 }
 
 .UIWorkflowPortlet .UIAdministrationManager .UIAction {
