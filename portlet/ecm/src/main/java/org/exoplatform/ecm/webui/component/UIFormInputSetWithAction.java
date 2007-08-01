@@ -116,4 +116,8 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   
   public void setIntroduction(String fieldName, String msgKey) { msgKey_.put(fieldName, msgKey) ; }
   public String getMsgKey(String fieldName) { return msgKey_.get(fieldName) ; }
+  
+  public String getLabel() {
+    return null;
+  }
 }
