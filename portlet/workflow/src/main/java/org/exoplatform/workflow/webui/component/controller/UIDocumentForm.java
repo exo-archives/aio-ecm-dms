@@ -11,12 +11,14 @@ import java.util.Map;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -27,6 +29,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.workflow.utils.SessionsUtils;
 import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.workflow.webui.component.DialogFormFields;
 import org.exoplatform.workflow.webui.component.JCRResourceResolver;
@@ -74,8 +77,12 @@ public class UIDocumentForm extends DialogFormFields {
   }
 
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     try {
-      return new JCRResourceResolver(node_.getSession(), Utils.EXO_TEMPLATEFILE) ;
+      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
+      String workspaceName = node_.getSession().getWorkspace().getName() ;
+      Session session = SessionsUtils.getSystemProvider().getSession(workspaceName, repository) ;
+      return new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {
       e.printStackTrace();
     }

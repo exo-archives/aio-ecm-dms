@@ -27,7 +27,7 @@ public class ProcessRecordsScript implements CmsScript {
       Node filePlan = (Node) session.getItem((String)((Map) context).get("srcPath")); 
       Node record = (Node) session.getItem((String)((Map) context).get("nodePath"));
       recordsService.addRecord(filePlan, record);
-      sesion.save();
+      session.save();
       session.logout();
     }
     catch (Exception e) {

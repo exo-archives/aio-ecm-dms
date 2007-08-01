@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.exoplatform.container.PortalContainer;
@@ -29,6 +30,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.workflow.utils.SessionsUtils;
 import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.workflow.webui.component.ECMViewComponent;
 import org.exoplatform.workflow.webui.component.JCRResourceResolver;
@@ -81,8 +83,11 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   }
   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     try {
-      return new JCRResourceResolver(node_.getSession(), Utils.EXO_TEMPLATEFILE) ;
+      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
+      Session session = SessionsUtils.getSystemProvider().getSession(getWorkspaceName(), repository) ;
+      return new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {
       e.printStackTrace();
     }
