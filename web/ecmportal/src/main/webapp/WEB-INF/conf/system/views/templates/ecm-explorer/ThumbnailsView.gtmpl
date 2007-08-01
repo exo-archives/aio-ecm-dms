@@ -48,11 +48,17 @@
           strActs += "</div>" ;
         %>   
         <div class="ActionIconContainer">
-          <div class="NodeLabel">
-            <div class="ActionIcon">
-              <div onclick="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>$strActs<span></span></div>
-            </div>
-          </div>
+        	<div class="LeftActionIconContainer">
+        		<div class="RightActionIconContainer">
+        			<div class="MiddleActionIconContainer">
+			          <div class="NodeLabel">
+			            <div class="ActionIcon">
+			              <div onclick="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>$strActs<span></span></div>
+			            </div>
+			          </div>
+			        </div>
+			      </div>
+			    </div>
         </div>
         <%
           if(name.length() < 20) subName = name ;

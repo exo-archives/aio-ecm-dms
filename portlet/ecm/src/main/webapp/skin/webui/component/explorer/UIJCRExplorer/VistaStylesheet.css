@@ -166,25 +166,31 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox{
   width: 130px;
   float: left;
-  height: 170px;
-  background: url('VistaSkin/background/FolderLeft12x96.png') no-repeat top left;
-  padding-left: 12px;
+  height: 140px;
   margin: 10px 5px;
 }
 
-.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox .LeftActionIconContainer{
+  background: url('VistaSkin/background/FolderLeft12x96.png') no-repeat top left;
+  padding-left: 12px;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer .RightActionIconContainer{
   background: url('VistaSkin/background/FolderRight12x96.png') no-repeat top right;
   padding: 0px 12px 0px 0px ;
 }
 
-.UIJCRExplorerPortlet .UIThumbnailsView .NodeLabel {
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer .MiddleActionIconContainer {
   background: url('VistaSkin/background/FolderMiddle1x96.png') repeat-x top;
   height: 96px;
-  margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .NodeLabel {
   padding-top: 20px;
+  margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIcon {
@@ -193,7 +199,7 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .Icon48x48 {
-  width: 48px; height: 64px;
+  width: 48px; height: 48px;
   margin: auto;
   cursor: pointer;
 }
@@ -203,6 +209,7 @@
   height: 30px; 
   line-height: 24px; vertical-align: middle;
   text-align:center;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionLabel {
