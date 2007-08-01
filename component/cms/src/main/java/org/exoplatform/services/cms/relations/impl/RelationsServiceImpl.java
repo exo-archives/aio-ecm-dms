@@ -127,7 +127,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         session.save();
         session.logout();
       }      
-    } catch (Exception e) {      
+    } catch (Exception e) {
+      if(session !=null && session.isLive()) session.logout();
       // e.printStackTrace() ;
     }
   }
