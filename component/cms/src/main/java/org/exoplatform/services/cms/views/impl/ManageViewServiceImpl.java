@@ -22,7 +22,6 @@ import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.impl.ext.action.SessionActionInterceptor;
 import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL
@@ -229,7 +228,8 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   }
 
   public String addTemplate(String name, String content, String homeTemplate, String repository) throws Exception {
-    Node templateHome = (Node)getSession(repository).getItem(homeTemplate) ;
+    Session session = getSession(repository) ;
+    Node templateHome = (Node)session.getItem(homeTemplate) ;
     Node newTemp = null ;
     if(templateHome.hasNode(name)) {
       newTemp = templateHome.getNode(name) ;      
@@ -238,6 +238,8 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
     newTemp.setProperty(TEMPLATE_PROP,content) ;
     templateHome.save() ;
+    session.save();
+    session.logout();
     return newTemp.getPath() ;    
   }
 
