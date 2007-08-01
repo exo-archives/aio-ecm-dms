@@ -17,8 +17,9 @@ import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.picocontainer.Startable;
 
-public class CategoriesServiceImpl implements CategoriesService {		
+public class CategoriesServiceImpl implements CategoriesService,Startable {		
   private static final String CATEGORY_MIXIN = "exo:categorized";
   private static final String CATEGORY_PROP = "exo:category";
   private static final String COPY = "copy";
@@ -100,6 +101,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     return false;
   }
 
+  @SuppressWarnings("unused")
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
     Session session = node.getSession();
@@ -187,5 +189,21 @@ public class CategoriesServiceImpl implements CategoriesService {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
     return provider.getSession(workspace,manageableRepository) ;
+  }
+
+  public void start() {
+    try{
+      for(TaxonomyPlugin plugin : plugins_) {
+        plugin.init() ;
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
+
+  public void stop() {
+    // TODO Auto-generated method stub
+    
   }
 }

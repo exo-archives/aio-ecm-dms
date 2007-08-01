@@ -37,7 +37,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -490,36 +489,14 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }
       String currentNodePath = uiExplorer.getCurrentNode().getPath() ;
-      if(currentNodePath.equals(nodePath)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      if ("/".equals(nodePath)) {
-        Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.remove-root", arg));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return;
-      }
       Node node = uiExplorer.getNodeByPath(nodePath, session) ;
       Node parentNode = node.getParent() ;
-//    if(wsName != null) {
-//    node = uiExplorer.getNodeByPath(nodePath, session) ;
-//    parentNode = node.getParent() ;
-//    } else {
-//    String name = nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
-//    parentNode = uiExplorer.getCurrentNode() ;
-//    node = parentNode.getNode(name);
-//    }
-//    if (node.isNodeType(Utils.MIX_VERSIONABLE)) {
-//    uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-delete-version", null, 
-//    ApplicationMessage.WARNING)) ;
-//    event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//    return ;
-//    }
       try {
         node.remove() ;
+        if(currentNodePath.equals(nodePath)) {
+          uiExplorer.setSelectNode(parentNode) ;
+          uiExplorer.updateAjax(event) ;
+        }
         parentNode.save() ;
       } catch(Exception e) {
         e.printStackTrace() ;
@@ -529,7 +506,6 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.refreshExplorer() ;
       }
       if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;        
-      uiExplorer.updateAjax(event) ;
     }
   }
 
@@ -697,7 +673,7 @@ public class UIWorkingArea extends UIContainer {
       }
       try {
         if(ClipboardCommand.COPY.equals(type)) {
-          pasteByCopy(session, srcWorkspace, srcPath, destPath) ;
+          pasteByCopy(session, srcPath, destPath) ;
         } else {
           pasteByCut(uiExplorer, session, srcPath, destPath) ;
         }
@@ -749,8 +725,7 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event) ;
     }
 
-    private void pasteByCopy(Session session, String srcWorkspace, 
-        String srcPath, String destPath) throws Exception {
+    private void pasteByCopy(Session session, String srcPath, String destPath) throws Exception {
       Workspace workspace = session.getWorkspace();           
       workspace.copy(srcPath, destPath);
       Node destNode = (Node) session.getItem(destPath) ;
@@ -795,7 +770,6 @@ public class UIWorkingArea extends UIContainer {
           break ;
         }
       }
-
     }
 
     private void removeReferences(Node destNode) throws Exception {

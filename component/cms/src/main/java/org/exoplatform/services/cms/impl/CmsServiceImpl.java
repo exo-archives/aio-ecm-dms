@@ -19,7 +19,6 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-//import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
 import javax.jcr.nodetype.NodeDefinition;
@@ -29,7 +28,6 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
@@ -66,7 +64,7 @@ public class CmsServiceImpl implements CmsService {
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 
     String nodeName = (String)relRootProp.getValue();    
-    if (nodeName == null || nodeName.length() == 0) {
+    if (nodeName == null || nodeName.length() == 0) {      
       nodeName = idGeneratorService.generateStringID(nodeTypeName);
     }
     Session session = storeHomeNode.getSession();

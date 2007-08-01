@@ -21,6 +21,8 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.jcr.impl.core.value.DateValue;
+import org.exoplatform.services.jcr.impl.core.value.StringValue;
 
 /**
  * @author Hung Nguyen Quang
@@ -53,7 +55,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           if (value instanceof String) node.setProperty(propertyName, new String[] { value.toString()});
           else if(value instanceof String[]) node.setProperty(propertyName, (String[]) value);
         } else {
-          node.setProperty(propertyName, value.toString());
+          if(value instanceof StringValue) {
+            StringValue strValue = (StringValue) value ;
+            node.setProperty(propertyName, strValue.getString());
+          } else {
+            node.setProperty(propertyName, value.toString());
+          }
         }
       }
       break;
@@ -100,11 +107,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
             session.logout();
           }
         } else {
-          if (value instanceof String) {
+          if(value instanceof String) {
             node.setProperty(propertyName, ISO8601.parse(value.toString()));
-          } else if (value instanceof GregorianCalendar) {
+          } else if(value instanceof GregorianCalendar) {
             node.setProperty(propertyName, (GregorianCalendar) value);
-          } 
+          } else if(value instanceof DateValue) {
+            DateValue dateValue = (DateValue) value ;
+            node.setProperty(propertyName, dateValue.getDate());
+          }
         }
       }
       break ;
@@ -124,7 +134,6 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }       
       break ;
     }
-    
   }
   
   public void addLanguage(Node node, Map inputs, String language, boolean isDefault) throws Exception {
@@ -153,14 +162,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           for(NodeType mixin:mixins) {
             if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;
             for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-              String propName = def.getName() ;
-              if(def.isMandatory() && !def.isAutoCreated()) {
-                if(def.isMultiple()) {
-                  newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-                } else {
-                  newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-                }
-              }        
+              if(!def.isProtected()) {
+                String propName = def.getName() ;
+                if(def.isMandatory() && !def.isAutoCreated()) {
+                  if(def.isMultiple()) {
+                    newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
+                  } else {
+                    newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
+                  }
+                }        
+              }
             }
           }
         }
@@ -176,20 +187,19 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         } else {          
           if(isDefault) {            
             if(node.hasProperty(propertyName)) {
-              int valueType = node.getProperty(propertyName).getDefinition().getRequiredType() ;
               Object value = null ;
-              if(pro.isMultiple()) value = node.getProperty(propertyName).getValues() ;
-              else value = node.getProperty(propertyName).getValue() ;
-              setPropertyValue(propertyName, newLanguageNode, valueType, value, pro.isMultiple()) ;
-            }
-            if(node.hasProperty(propertyName) && property != null) {
+              int requiredType = node.getProperty(propertyName).getDefinition().getRequiredType() ;
               boolean isMultiple = node.getProperty(propertyName).getDefinition().isMultiple() ;
-              setPropertyValue(propertyName, node, node.getProperty(propertyName).getType(), property.getValue(), isMultiple) ;
+              if(isMultiple) value = node.getProperty(propertyName).getValues() ;
+              else value = node.getProperty(propertyName).getValue() ;
+              setPropertyValue(propertyName, newLanguageNode, requiredType, value, isMultiple) ;
+            }
+            if(property != null) {
+              setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
             }
           } else {
-            if(node.hasProperty(propertyName) && property != null) {
-              boolean isMultiple = node.getProperty(propertyName).getDefinition().isMultiple() ;
-              setPropertyValue(propertyName, newLanguageNode, node.getProperty(propertyName).getType(), property.getValue(), isMultiple) ;
+            if(property != null) {
+              setPropertyValue(propertyName, newLanguageNode, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
             }
           }
         }               
@@ -294,14 +304,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       if(newLanguageNode.canAddMixin(mixin.getName())) {
         newLanguageNode.addMixin(mixin.getName()) ;
         for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-          String propName = def.getName() ;
-          if(def.isMandatory() && !def.isAutoCreated()) {
-            if(def.isMultiple()) {
-              newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-            } else {
-              newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-            }
-          }        
+          if(!def.isProtected()) {
+            String propName = def.getName() ;
+            if(def.isMandatory() && !def.isAutoCreated()) {
+              if(def.isMultiple()) {
+                newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
+              } else {
+                newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
+              }
+            }        
+          }
         }
       }
     }

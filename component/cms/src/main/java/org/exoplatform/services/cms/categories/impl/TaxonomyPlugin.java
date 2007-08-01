@@ -32,8 +32,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     ValueParam valueParam = params_.getValueParam("autoCreateInNewRepository") ;
     if(valueParam !=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(valueParam.getValue()) ;
-    }
-    init();
+    }   
   }
 
   public void init() throws Exception {    
