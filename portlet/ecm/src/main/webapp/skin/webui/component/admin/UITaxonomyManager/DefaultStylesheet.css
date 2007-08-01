@@ -80,7 +80,7 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url(/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayMinus.gif) no-repeat ;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
@@ -89,7 +89,7 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url(/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayPlus.gif) no-repeat ;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NodeActionsContainer {

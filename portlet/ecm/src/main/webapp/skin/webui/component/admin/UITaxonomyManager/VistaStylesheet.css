@@ -56,17 +56,17 @@
 .UIECMAdminPortlet .UITaxonomyManager .ExpandIcon {
   float: left;
   width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
   margin: 7px 0px;
   cursor: pointer;
+  background: url(/eXoVistaSkin/skin/VistaSkin/skinIcons/16x16/icons/SmallGrayMinus.gif) no-repeat ;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
   float: left;
   width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
   margin: 7px 0px;
   cursor: pointer;
+  background: url(/eXoVistaSkin/skin/VistaSkin/skinIcons/16x16/icons/SmallGrayPlus.gif) no-repeat ;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NodeActionsContainer {
