@@ -8,7 +8,10 @@
 	 */
 %>
 <div class="UIActionBar UISelectBoxOnChange">
-  <% uiform.begin() %>
+  <% 
+  uiform.setSubmitAction(uicomponent.event("SimpleSearch")+";return false;");
+  uiform.begin() 
+  %>
   <div class="Separator ActionBarSeparator"><span></span></div>
   <div class="ActionLabel">$uicomponent.templateName</div>
   <div class="Separator ActionBarSeparator"><span></span></div>
