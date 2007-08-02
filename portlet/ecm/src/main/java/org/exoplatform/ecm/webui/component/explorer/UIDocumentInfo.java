@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -41,6 +42,7 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -50,6 +52,7 @@ import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -92,7 +95,14 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       } else if(isNodeTypeSupported(nodeType)) {
         return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ; 
       }
-      
+    } catch(AccessDeniedException ace) {
+      try {
+        uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
+        Object[] args = { uiExplorer.getCurrentNode().getName() } ;
+        throw new MessageException(new ApplicationMessage("UIDocumentInfo.msg.access-denied", args, ApplicationMessage.WARNING)) ;
+      } catch(Exception exc) {
+        exc.printStackTrace() ;
+      }
     } catch(Exception e) {
       e.printStackTrace() ;
     }
@@ -273,7 +283,10 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   }
 
   public Node getNode() throws Exception { 
-    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;  
+    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    if(!Utils.isReadAuthorized(currentNode_)) {
+      System.out.println("\n\nGo here\n\n");
+    }
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       String defaultLang = currentNode_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(getLanguage() == null) setLanguage(defaultLang) ;

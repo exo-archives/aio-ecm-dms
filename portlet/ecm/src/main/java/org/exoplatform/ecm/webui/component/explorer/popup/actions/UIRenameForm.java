@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -17,6 +18,7 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.relations.RelationsService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -114,9 +116,12 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           addRef.save() ;
         }  
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
-//        Object[] args = {uiRenameForm.renameNode_.getName(), newName} ;
-//        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.rename-successfull", args)) ;
         uiJCRExplorer.updateAjax(event) ;
+      } catch(AccessDeniedException ace) {
+        Object[] args = {uiRenameForm.renameNode_.getName()} ;
+        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.rename-denied", args, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp,e) ;
       }    

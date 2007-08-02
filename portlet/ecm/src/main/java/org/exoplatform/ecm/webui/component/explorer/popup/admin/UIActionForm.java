@@ -153,6 +153,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         uiManager.setDefaultConfig() ;
         isEditInList_ = false ;
         isAddNew_ = true ;
+        setIsOnchange(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } else {
         uiExplorer.setIsHidePopup(false) ;

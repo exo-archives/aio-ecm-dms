@@ -300,7 +300,6 @@ public class UIJCRExplorer extends UIContainer {
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
       ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
-      //TODO use normal SessionProvider
       SessionProvider sessionProvider = SessionsUtils.getSystemProvider();
       for(String workspace:manageableRepository.getWorkspaceNames()) {
         Session session = sessionProvider.getSession(workspace,manageableRepository) ;
@@ -373,7 +372,7 @@ public class UIJCRExplorer extends UIContainer {
       String driveName = portletPref.getValue(Utils.DRIVE, "") ;
       try{
         String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-        DriveData drive = (DriveData)dservice.getDriveByName(driveName, repository) ;
+        DriveData drive = dservice.getDriveByName(driveName, repository) ;
         preferences_.setShowSideBar(drive.getViewSideBar()) ;
         preferences_.setShowNonDocumentType(drive.getViewNonDocument()) ;
         preferences_.setShowPreferenceDocuments(drive.getViewPreferences()) ;

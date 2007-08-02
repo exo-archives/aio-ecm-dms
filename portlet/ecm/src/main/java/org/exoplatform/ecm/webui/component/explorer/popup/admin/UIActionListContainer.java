@@ -27,10 +27,8 @@ public class UIActionListContainer extends UIContainer {
   }
   
   public void initEditPopup(String actionName) throws Exception {
-    UIPopupWindow uiPopup = getChildById("editActionPopup") ;
-    if(uiPopup == null) {
-      uiPopup = addChild(UIPopupWindow.class, null, "editActionPopup") ;
-    }
+    removeChildById("editActionPopup") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "editActionPopup") ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node currentNode = uiExplorer.getCurrentNode() ;
     Node selectedNode = currentNode.getNode(actionName) ;

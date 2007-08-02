@@ -240,7 +240,7 @@ public class UIWorkingArea extends UIContainer {
             if(hasEditPermissions(node)) actionsList.append(",Copy") ;
             if(hasRemovePermissions(node)) actionsList.append(",Cut") ;
           }
-          if(hasEditPermissions(node)) actionsList.append(",Rename") ;
+          actionsList.append(",Rename") ;
           if(isJcrViewEnable()) actionsList.append(",Save") ;
           if(hasRemovePermissions(node)) actionsList.append(",Delete") ;          
         } else {
@@ -248,7 +248,7 @@ public class UIWorkingArea extends UIContainer {
           if(node.holdsLock() && hasEditPermissions(node)) actionsList.append(",Unlock") ;
           else if(!node.isLocked() && hasEditPermissions(node)) actionsList.append(",Lock") ;
           if(!isSameNameSibling(node) && hasEditPermissions(node)) actionsList.append(",Copy") ;
-          if(hasEditPermissions(node)) actionsList.append(",Rename") ;          
+          actionsList.append(",Rename") ;          
         }
       } else {
         if(isEditable(path, node.getSession()) && hasEditPermissions(node)) actionsList.append(",EditDocument") ;
@@ -261,7 +261,7 @@ public class UIWorkingArea extends UIContainer {
           actionsList.append(",Copy") ;
           if(hasRemovePermissions(node)) actionsList.append(",Cut") ;
         }
-        if(hasEditPermissions(node)) actionsList.append(",Rename") ;
+        actionsList.append(",Rename") ;
         if(isJcrViewEnable()) actionsList.append(",Save") ;
         if(hasRemovePermissions(node)) actionsList.append(",Delete") ;        
       }   
