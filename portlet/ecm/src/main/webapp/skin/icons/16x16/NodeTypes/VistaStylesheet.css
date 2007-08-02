@@ -7,8 +7,8 @@
  */
 
 .CBDefaultFolder16x16Icon {
-	width: 20px; height:20px;
-  background: url('VistaSkin/DefaultFolderIcon.png') no-repeat;
+	width: 16px; height:16px;
+  background: url('DefaultSkin/DefaultFolderIcon.gif') no-repeat;
 }
 
 .CBDefaultDocument16x16Icon {

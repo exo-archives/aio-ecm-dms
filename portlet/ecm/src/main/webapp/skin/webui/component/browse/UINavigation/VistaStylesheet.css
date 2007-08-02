@@ -72,23 +72,24 @@
 
 /*###########################-- End UIContextMenu --############################*/
 .UICBNavigation {
+	margin-bottom: 2px;
 }
 
 .UICBNavigation .CBLeftNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left bottom;
-  padding-left: 4px;
+	height: 50px;
+  background: url('VistaSkin/background/LeftHorizontalTabBG3x25.jpg') no-repeat left bottom;
+  padding-left: 3px;
 }
 
 .UICBNavigation .CBRightNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right bottom;
-  padding-right: 4px;
+	height: 50px;
+  background: url('VistaSkin/background/RightHorizontalTabBG3x25.jpg') no-repeat right bottom;
+  padding-right: 3px;
 }
 
 .UICBNavigation .CBMiddleNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x bottom;
+	height: 50px;
+  background: url('VistaSkin/background/CenterHorizontalTabBG1x25.jpg') repeat-x bottom;
 }
 
 .UICBNavigation .UICBMainNavigation {
@@ -145,6 +146,7 @@
 
 .UICBNavigation .UIHorizontalTabs {
 	float: left;
+	height: 22px;
 }
 
 .UICBNavigation .UIHorizontalTabs .TabsContainer {
@@ -168,19 +170,20 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LeftTab {
   padding-left: 4px;
-  line-height: 22px;
-  background: url('DefaultSkin/background/LeftCBTab4x22.gif') no-repeat left;
+  line-height: 25px;
+  background: url('VistaSkin/background/LeftCBTab4x25.gif') no-repeat left;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .RightTab {
   padding-right: 4px;
-  line-height: 22px;
-  background: url('DefaultSkin/background/RightCBTab4x22.gif') no-repeat right;
+  line-height: 25px;
+  background: url('VistaSkin/background/RightCBTab4x25.gif') no-repeat right;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .MiddleTab {
-  background: url('DefaultSkin/background/CenterCBTab1x22.gif') repeat-x;
-  line-height: 22px;
+  background: url('VistaSkin/background/CenterCBTab1x25.gif') repeat-x;
+  line-height: 25px;
+  height: 25px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .Icon {
@@ -214,18 +217,19 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LeftTab {
   padding-left: 4px ;
-  background: url('DefaultSkin/background/LeftSelectedCBTab4x23.gif') no-repeat left;
+  background: url('VistaSkin/background/LeftSelectedCBTab4x25.gif') no-repeat left;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .RightTab {
-	line-height: 23px;
+	line-height: 25px;
   padding-right: 4px ;
-  background: url('DefaultSkin/background/RightSelectedCBTab4x23.gif') no-repeat right ;
+  background: url('VistaSkin/background/RightSelectedCBTab4x25.gif') no-repeat right ;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .MiddleTab {
-	line-height: 23px;
-  background: url('DefaultSkin/background/CenterSelectedCBTab1x23.gif') repeat-x ;
+	line-height: 25px;
+  background: url('VistaSkin/background/CenterSelectedCBTab1x25.gif') repeat-x ;
+  height: 25px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .Icon {
