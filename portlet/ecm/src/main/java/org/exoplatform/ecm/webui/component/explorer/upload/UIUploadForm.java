@@ -55,14 +55,14 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 
 public class UIUploadForm extends UIForm implements UIPopupComponent {
-  
+
   final static public String FIELD_NAME =  "name" ;
   final static public String FIELD_UPLOAD = "upload" ;  
-  
+
   private boolean isMultiLanguage_ = false ;
   private String language_ = null ;
   private boolean isDefault_ = false ;
-  
+
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
@@ -70,21 +70,21 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     uiInput.setEditable(false);
     addUIFormInput(uiInput) ;
   }
-  
+
   public void setIsMultiLanguage(boolean isMultiLanguage, String language) { 
     isMultiLanguage_ = isMultiLanguage ;
     language_ = language ;
   }
-  
+
   public boolean isMultiLanguage() { return isMultiLanguage_ ; }
 
   public void setIsDefaultLanguage(boolean isDefault) { isDefault_ = isDefault ; }
-    
+
   private String getLanguageSelected() { return language_ ; }
-  
+
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
-  
+
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
       UIUploadForm uiForm = event.getSource();
@@ -103,7 +103,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      
+
       byte[] content = input.getUploadData() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null) name = fileName;
@@ -141,7 +141,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             nodeInput.setMixintype("mix:i18n,mix:votable,mix:commentable") ;
             nodeInput.setType(JcrInputProperty.NODE) ;
             inputProperties.put("/node",nodeInput) ;
-            
+
             JcrInputProperty jcrContent = new JcrInputProperty() ;
             jcrContent.setJcrPath("/node/jcr:content") ;
             jcrContent.setValue("") ;
@@ -149,22 +149,22 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrContent.setNodetype(Utils.NT_RESOURCE) ;
             jcrContent.setType(JcrInputProperty.NODE) ;
             inputProperties.put("/node/jcr:content",jcrContent) ;
-            
+
             JcrInputProperty jcrData = new JcrInputProperty() ;
             jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
             jcrData.setValue(content) ;          
             inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
-            
+
             JcrInputProperty jcrMimeType = new JcrInputProperty() ;
             jcrMimeType.setJcrPath("/node/jcr:content/jcr:mimeType") ;
             jcrMimeType.setValue(mimeType) ;          
             inputProperties.put("/node/jcr:content/jcr:mimeType",jcrMimeType) ;
-            
+
             JcrInputProperty jcrLastModified = new JcrInputProperty() ;
             jcrLastModified.setJcrPath("/node/jcr:content/jcr:lastModified") ;
             jcrLastModified.setValue(new GregorianCalendar()) ;
             inputProperties.put("/node/jcr:content/jcr:lastModified",jcrLastModified) ;
-            
+
             JcrInputProperty jcrEncoding = new JcrInputProperty() ;
             jcrEncoding.setJcrPath("/node/jcr:content/jcr:encoding") ;
             jcrEncoding.setValue("UTF-8") ;
@@ -176,19 +176,22 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             selectedNode.getSession().save() ;                        
           } else {
             Node node = selectedNode.getNode(name) ;
-            if(!node.isNodeType(Utils.MIX_VERSIONABLE)) {
-              node.addMixin(Utils.MIX_VERSIONABLE) ;            
-              node.save() ;            
+            Node contentNode = node.getNode(Utils.JCR_CONTENT);
+            if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
+              if(node.isCheckedOut()) { 
+                node.checkin() ; 
+              }
+              node.checkout() ;
+              contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
+              contentNode.setProperty(Utils.JCR_MIMETY, mimeType);
+              contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
+              node.save() ;       
               node.checkin() ;
               node.checkout() ;
-            }
-            Node contentNode = node.getNode(Utils.JCR_CONTENT);
-            contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
-            contentNode.setProperty(Utils.JCR_MIMETY, mimeType);
-            contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
-            node.save() ;       
-            node.checkin() ;
-            node.checkout() ;
+            }else {
+              contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
+              node.save();
+            }                        
           }
         }
         uiExplorer.getSession().save() ;
@@ -208,7 +211,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       }
     }
   }
-  
+
   static  public class CancelActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
