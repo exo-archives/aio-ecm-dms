@@ -17,6 +17,7 @@
 }
 
 .SavedQueries {
+  float: left;
   width: 24px; height: 24px;
   background: url('VistaSkin/SavedQueries.gif') no-repeat ;
   cursor: pointer;
@@ -34,8 +35,8 @@
 }
 
 .CollapseFolder24x24Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/LightBlueOpenFolder.gif') no-repeat;
+  width: 30px; height: 30px;
+  background: url('VistaSkin/BlueOpenFolder.png') no-repeat;
 }
 
 .AddNodeTypeIcon {
@@ -44,8 +45,8 @@
 }
 
 .ExpandFolder24x24Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/LightBlueFolder.gif') no-repeat;
+  width: 28px; height: 28px;
+  background: url('VistaSkin/BlueClosedFolder.png') no-repeat;
 }
 
 .Style1NextArrow24x24Icon  {
@@ -200,31 +201,37 @@
 }
 
 .PermissionIcon {
+  float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/PermissionIcon.gif') no-repeat ;
 }
 
 .Permission24x24Icon {
+  float: left ;
 	width: 21px;	height: 23px;
   background: url('VistaSkin/PermissionSetting.png') no-repeat ;
 }
 
 .SelectPath24x24Icon {
+  float: left ;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
+  background: url('DefaultSkin/BlackMagnifier.png') no-repeat ;
 }
 
 .ManageOntologiesIcon {
+  float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/ManageOntologiesIcon.gif') no-repeat ;
 }
 
 .UITemplatesManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/TemplatesManager.png') no-repeat ;
 }
 
 .UIViewManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ViewManager.png') no-repeat ;
 }
@@ -241,31 +248,37 @@
 }
 
 .UIActionManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ActionManager.png') no-repeat ;
 }
 
 .UIScriptManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ScriptManager.png') no-repeat ;
 }
 
 .UIRuleManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/RuleManager.png') no-repeat ;
 }
 
 .UIFolksonomyManagerIcon {
+	float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ManageFolksonomyIcon.png') no-repeat ;
 }
 
 .UITaxonomyManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ManageTaxonomyIcon.png') no-repeat ;
 }
 
 .UIMetadataManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ManageMetadataIcon.png') no-repeat ;
 }
@@ -276,26 +289,31 @@
 }
 
 .UINamespaceManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/NamespaceManager.png') no-repeat ;
 }
 
 .UINodeTypeManagerIcon {
+  float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/NodeTypeManager.png') no-repeat ;
 }
 
 .CreateDocumentTypesIcon {
+  float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/CreateDocumentTypes.gif') no-repeat ;
 }
 
 .DisplayDocumentsIcon {
+  float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/DisplayDocuments.gif') no-repeat ;
 }
 
 .ManageDynamicContentIcon {
+  float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/ManageDynamicContent.gif') no-repeat ;
 }

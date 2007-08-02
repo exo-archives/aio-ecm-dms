@@ -33,18 +33,21 @@
 }
 
 .AddIconIcon {
+  float: left ;
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;
   cursor: pointer;
 }
 
 .AddPathIcon {
+  float: left ;
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/AddPath.gif') no-repeat ;
   cursor: pointer;
 }
 
 .AddPermissionIcon {
+  float:left;
 	width: 16px; height: 16px;
   margin: 2px 4px 0px 4px;
   background: url('DefaultSkin/SelectPermission.gif') no-repeat; 
@@ -71,6 +74,7 @@
 }
  
 .PermissionIcon16x16 {
+  float:left;
   width: 16px; height: 16px;
   margin: 4px;
   background: url('DefaultSkin/GreenAddIcon.gif') no-repeat; 
@@ -312,8 +316,9 @@
 }
 
 .DeleteIconInfo {
+  float: left;
   width: 16px; height: 16px;
-  background: url('DefaultSkin/RedCrossCircle.gif') no-repeat ; 
+  background: url('DefaultSkin/DustBin.gif') no-repeat ; 
   cursor: pointer;
   margin-left: 3px;
 }
@@ -331,32 +336,38 @@
 }
 
 .False16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/False.gif') no-repeat;  
 }
 
 .True16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/True.gif') no-repeat;  
 }
 
 .SelectPath16x16Icon {
+  float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
 
 .SelectPermission16x16Icon {
+  float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
 
 .Repository16x16Icon{
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/RepositoryIcon.gif') no-repeat;
 }
 
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
+  float: left;
   width: 16px; height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;  
 }

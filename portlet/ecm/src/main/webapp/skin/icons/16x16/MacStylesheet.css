@@ -325,16 +325,19 @@
 }
 
 .False16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/False.gif') no-repeat;  
 }
 
 .True16x16Icon {
+	float: left;
   width: 16px ;  height: 16px ;
   background: url('MacSkin/True.gif') no-repeat;  
 }
 
 .SelectPath16x16Icon {
+  float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
@@ -345,8 +348,8 @@
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
 /*############################## -- Action Icon  -- ##############################*/
-
 .Add16x16Icon {
+  float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/AquaBlueAddSign.gif') no-repeat; 
 }
@@ -407,6 +410,7 @@
 }
 
 .Edit16x16Icon {
+  float: left;
   width: 16px; height: 16px;
   background: url('MacSkin/EditIcon.png') no-repeat ;
   cursor: pointer; 

@@ -37,28 +37,31 @@
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
-	height: 26px; line-height: 26px;
+	height: 29px; line-height: 27px;
 	overflow: hidden;
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
-	line-height: 26px; height: 26px;
-	background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left;
-  padding-left: 4px;
+	line-height: 27px; height: 27px;
+	background: url('VistaSkin/background/LeftHorizontalTab2x27.gif') no-repeat left;
+  padding-left: 2px;
 }
+
 .UISubContent .SubContentTitle .RightBar{ 
-	line-height: 26px; height: 26px;
-	background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right;
-  padding-right: 4px;
+	line-height: 26px; height: 27px;
+	background: url('VistaSkin/background/RightHorizontalTab2x27.gif') no-repeat right;
+  padding-right: 2px;
 }
+
 .UISubContent .SubContentTitle .MiddleBar { 
-	line-height: 26px; height: 26px;
-	background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x;
+	line-height: 27px; height: 27px;
+	background: url('VistaSkin/background/CenterHorizontalTab1x27.gif') repeat-x;
 }
 
 .UISubContent .SubContentTitle .ChildContainer{
 	float: left;
 }
+
 .UISubContent .SubContentTitle .LeftIcon {
 	float: left; 
 	height: 20px;
@@ -79,7 +82,7 @@
 
 .UISubContent .SubContentTitle .ChildNode { 
 	float: left;
-	height: 18px;
+	height: 27px;
 	padding: 1px 5px 0px 5px;
 }
 
@@ -97,7 +100,7 @@
 .UISubContent .SubContentTitle .NodeLabel { 
 	float: left;
 	padding: 0px 8px;
-	line-height: 19px;
+	line-height: 25px;
 }
 
 .UISubContent .SubContentTitle .RightIcon { 

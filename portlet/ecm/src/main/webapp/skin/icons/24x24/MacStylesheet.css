@@ -17,9 +17,11 @@
 }
 
 .SavedQueries {
+  float: left;
   width: 24px; height: 24px;
   background: url('MacSkin/SavedQueries.gif') no-repeat ;
   cursor: pointer;
+  margin: 2px 0px 0px 5px;
 }
 
 .CloseSidebar24x24Icon {
@@ -118,15 +120,8 @@
 }
 
 .SearchIcon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/Magnifier.gif') no-repeat ;
-  cursor: pointer;
-}
-
-.SwitchSearch  {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/AdvancedSearch.gif') no-repeat ;
-  cursor: pointer;
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/Search.gif') no-repeat ;
 }
 
 .AddDocumentIcon {
@@ -195,11 +190,13 @@
 }
 
 .Permission24x24Icon {
+  float: left;
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/PermissionSetting.gif') no-repeat ;
 }
 
 .SelectPath24x24Icon {
+  float: left;
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
 }
