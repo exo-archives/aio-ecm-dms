@@ -15,12 +15,10 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -37,7 +35,7 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/admin/UIRepositoryControl.gtmpl",
     events = {
         @EventConfig(listeners = UIRepositoryControl.EditRepositoryActionListener.class),
-        @EventConfig(listeners = UIRepositoryControl.RemoveRepositoryActionListener.class, confirm="UIRepositoryControl.msg.confirm-delete"),
+        @EventConfig(listeners = UIRepositoryControl.RemoveRepositoryActionListener.class),
         @EventConfig(listeners = UIRepositoryControl.AddRepositoryActionListener.class)
     }
 )
@@ -80,7 +78,6 @@ public class UIRepositoryControl extends UIContainer {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     return rservice.getConfig().getDefaultRepositoryName().equals(repoName);
   }
-
   protected void reloadValue(boolean isExists, RepositoryService rservice){
     getChild(UIRepositorySelectForm.class).setOptionValue(getRepoItem(isExists, rservice)) ;
     if(isExists) {
@@ -110,26 +107,11 @@ public class UIRepositoryControl extends UIContainer {
   public static class RemoveRepositoryActionListener extends EventListener<UIRepositoryControl> {
     public void execute(Event<UIRepositoryControl> event) throws Exception {     
       UIRepositoryControl uiControl = event.getSource() ;
-      String repoName = uiControl.getChild(UIRepositorySelectForm.class).getSelectedValue() ;
-      RepositoryService rservice = uiControl.getApplicationComponent(RepositoryService.class) ;
-      UIApplication uiApp = uiControl.getAncestorOfType(UIApplication.class) ;
-      if(rservice.canRemoveRepository(repoName)) {
-        try {
-          rservice.removeRepository(repoName) ;
-          PortletPreferences portletPref = uiControl.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
-          portletPref.setValue(Utils.REPOSITORY, uiControl.getSelectedRepo()) ;
-          portletPref.store() ;
-        } catch (Exception e) {
-          e.printStackTrace() ;
-        }
-      } else {
-        Object[] args = new Object[]{repoName}  ;        
-        uiApp.addMessage(new ApplicationMessage("UIRepositoryControl.msg.cannot-delete", args)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-        return ; 
-      }
-      uiControl.reloadValue(false, rservice) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
+      UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
+      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
+      UIRepositoryList uiList = uiPopupAction.activate(UIRepositoryList.class, 600) ;
+      uiList.updateGrid() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 
