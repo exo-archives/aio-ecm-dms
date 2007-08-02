@@ -24,6 +24,12 @@
   margin: 2px 0px 0px 5px;
 }
 
+.SwitchSearch  {
+  width: 24px; height: 24px;
+  background: url('MacSkin/AdvancedSearch.gif') no-repeat ;
+  cursor: pointer;
+}
+
 .CloseSidebar24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
@@ -121,7 +127,7 @@
 
 .SearchIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/Search.gif') no-repeat ;
+  background: url('MacSkin/IconSearch.gif') no-repeat ;
 }
 
 .AddDocumentIcon {

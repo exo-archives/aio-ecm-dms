@@ -84,6 +84,11 @@
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
+.UIJCRExplorerPortlet .UIListView  {
+	border: solid 1px white;
+	border-top: none;
+}
+
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
   float: left;      
   font-size: 11px ;

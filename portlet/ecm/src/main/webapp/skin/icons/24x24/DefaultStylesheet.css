@@ -19,6 +19,12 @@
   margin: 0px 0px 0px 5px;
 }
 
+.SwitchSearch  {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/AdvancedSearch.gif') no-repeat ;
+  cursor: pointer;
+}
+
 .JCRExplorer24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;

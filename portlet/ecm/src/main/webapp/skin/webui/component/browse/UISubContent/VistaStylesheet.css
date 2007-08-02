@@ -19,7 +19,7 @@
 }
 
 .UISubContent .TopSubContent {
-  margin: 5px 0px;
+  margin: 5px 0px 0px 0px;
   font-weight: bold; font-size: 11px;
   height: 19px;
 }
@@ -71,7 +71,7 @@
 .UISubContent .NavigationButtonContainer {
 	float: right;
 	height: 16px;
-	margin-top: 4px;
+	margin-top: 6px;
 }
 
 .UISubContent .NavigationButtonContainer .NavigationIcon {
@@ -193,14 +193,14 @@
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Info16x16Icon {
 	float: left;
-	width: 16px; height: 16px;
+	width: 24px; height: 24px;
 	margin: 3px 5px 0px 0px;
-	background: url('MacSkin/background/InfoIcon.gif') no-repeat; 
+	background: url('VistaSkin/background/InfoIcon.png') no-repeat; 
 }
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
 	float: left;
 	color: #b7b7b7;
 	font-size: 11px;
-  line-height: 20px;
+  line-height: 24px;
 }

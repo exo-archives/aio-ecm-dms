@@ -112,8 +112,8 @@
 }
 
 .exo_sendMailAction16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/exo-sendMailAction.gif') no-repeat;  
+  height: 24px;
+  background: url('VistaSkin/exo-sendMailAction.png') no-repeat;  
 }
 
 .exo_tab16x16Icon {

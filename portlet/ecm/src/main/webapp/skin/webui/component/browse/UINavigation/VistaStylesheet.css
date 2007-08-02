@@ -30,7 +30,7 @@
 	width: 24px;
 	float: left ;	
 	margin: 4px ;
-	background: url('../DefaultSkin/background/GreenLeftArrowFolder.gif') no-repeat;
+	background: url('../VistaSkin/background/NodeNavigationIcon.png') no-repeat;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeItemIcon {	
@@ -43,7 +43,7 @@
 .UIContextMenu .NodeHistoryContainer .BackButtonLabel {  
   cursor: pointer;
   line-height: 24px;
-  margin-top: 4px;
+  margin-top: 7px;
   font: normal bold 11px Verdana;  
 }
 
@@ -104,26 +104,26 @@
 }
 
 .UICBNavigation .HomeTab .LeftHomeTab {
-	height: 21px; line-height: 21px;
-	padding-left: 10px;
-  background: url('DefaultSkin/background/LeftCBHomeTab10x21.gif') no-repeat left;
+	height: 25px; line-height: 25px;
+	padding-left: 16px;
+  background: url('VistaSkin/background/LeftCBHomeTab16x25.png') no-repeat left;
 }
 
 .UICBNavigation .HomeTab .RightHomeTab{
-	height: 21px; line-height: 21px;
-  padding-right: 10px;
-  background: url('DefaultSkin/background/RightCBHomeTab10x21.gif') no-repeat right;
+	height: 25px; line-height: 25px;
+  padding-right: 15px;
+  background: url('VistaSkin/background/RightCBHomeTab15x25.png') no-repeat right;
 }
 
 .UICBNavigation .HomeTab .MiddleHomeTab {
-	height: 21px; line-height: 21px;
-  background: url('DefaultSkin/background/CenterCBHomeTab1x21.gif') repeat-x;
+	height: 25px; line-height: 25px;
+  background: url('VistaSkin/background/CenterCBHomeTab1x25.png') repeat-x;
 }
 
 .UICBNavigation .HomeTab a {
-	line-height: 21px; vertical-align: middle;
+	line-height: 24px; vertical-align: middle;
 	float: left;
-	margin-left: 5px;
+	margin-left: 4px;
 	font-weight: bold;
 	color: #333333;
 }
@@ -134,19 +134,19 @@
 
 .UICBNavigation .HomeTab .LeftIcon {
 	float: left;
-	margin: 2px 0px 0px 0px;
+	margin: 3px 0px 0px 0px;
 	cursor: pointer;
 }
 
 .UICBNavigation .HomeTab .RightIcon {
   float: right;
-  margin: 2px 0px 0px 0px;
+  margin: 4px 0px 0px 0px;
   cursor: pointer;
 }
 
 .UICBNavigation .UIHorizontalTabs {
 	float: left;
-	height: 22px;
+	height: 25px;
 }
 
 .UICBNavigation .UIHorizontalTabs .TabsContainer {
@@ -260,7 +260,7 @@
 .UICBNavigation .NavigationButtonContainer {
 	float: right;
 	height: 16px;
-	margin-top: 3px;
+	margin-top: 6px;
 }
 
 .UICBNavigation .NavigationButtonContainer .NavigationIcon {
