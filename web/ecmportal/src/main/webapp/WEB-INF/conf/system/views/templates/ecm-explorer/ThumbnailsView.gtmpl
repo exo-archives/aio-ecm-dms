@@ -23,7 +23,7 @@
           }
           //Begin WebDav Action
           String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
-	        strActs +=		"<zz class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;	        
+	        strActs +=		"<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;	        
 	        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
 				  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
 				  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+uicomponent.getWebDAVServerPrefix()+"','"+uicomponent.getPortalName()+"','"+uicomponent.getRepository()+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
