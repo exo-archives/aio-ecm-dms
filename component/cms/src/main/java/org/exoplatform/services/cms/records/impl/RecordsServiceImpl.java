@@ -61,7 +61,7 @@ public class RecordsServiceImpl implements RecordsService {
     JcrInputProperty descriptionInputProperty = new JcrInputProperty();
     descriptionInputProperty.setJcrPath("/node/exo:description");
     descriptionInputProperty
-        .setValue("compute info such as holding dates on a new record aded to that file plan");
+        .setValue("compute info such as holding dates on a new record added to that file plan");
     mappings.put("/node/exo:description", descriptionInputProperty);
 
     actionsService_.addAction(filePlan, repository, "exo:processRecordAction", mappings);
