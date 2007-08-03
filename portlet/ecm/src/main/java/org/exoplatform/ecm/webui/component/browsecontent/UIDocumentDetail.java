@@ -62,32 +62,15 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public UIDocumentDetail() {} 
 
   @Override
-  public void processRender(WebuiRequestContext arg0) throws Exception {
+  public void processRender(WebuiRequestContext context) throws Exception {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     if(isValidNode()) {
-      super.processRender(arg0);
+      super.processRender(context);
     } else {
-      if(uiContainer.usecase_.equals(Utils.CB_USE_DOCUMENT)) {
-        uiContainer.setRendered(false) ;
+      if(uiContainer.isShowDocumentDetail_) {
+        setRendered(false) ;
       }
-      if(uiContainer.isShowDocumentByTag_ && uiContainer.isShowDocumentDetail_) {
-        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
-        uiContainer.setShowDocumentDetail(false) ;
-        uiDocumentDetail.setRendered(false) ;
-      } else {
-        uiContainer.isShowDocumentByTag_ = false ;
-        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
-        uiContainer.setShowDocumentDetail(false) ;
-        uiDocumentDetail.setRendered(false) ;
-        if(uiContainer.usecase_.equals(Utils.CB_USE_FROM_PATH) && uiContainer.history_ != null) {
-          uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
-          uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
-          uiContainer.history_.clear() ;
-        }
-      }
-
     }
-    arg0.addUIComponentToUpdateByAjax(uiContainer) ;
   }
   private boolean isValidNode() throws Exception  {
     if(node_ == null) return false ;
