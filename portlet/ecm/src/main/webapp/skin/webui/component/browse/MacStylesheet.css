@@ -12,12 +12,12 @@
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px;
+  padding: 5px 0px;
+  width: 98.5%;
 }
 
 .UIBrowseContentPortlet {
   overflow: auto;
-  border: solid 1px #b7b7b7;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .UIAction {
@@ -47,7 +47,6 @@
 .UIBrowseContentPortlet .TagmapHolder {
 	float: right ;  
   width: 200px;
-  border: solid 1px #c4c4c4 ;	
 	background: #ffffff;
 	padding: 1px;
 }
@@ -56,6 +55,8 @@
 	height: 19px; line-height: 19px;
 	margin: 0px;
 	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
+	border: solid 1px #e1e1e1;
+	border-bottom: none;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .TagLabel {
@@ -66,10 +67,21 @@
 	
 .UIBrowseContentPortlet .TagmapHolder .TagmapContent {
    border: solid 1px #e1e1e1 ;	
+   border-top: solid 1px #cdcdcd;
    background: #ffffff;
    padding: 5px;
-   text-align: justify ;
+   text-align: left ;
    line-height: 22px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a{
+   color: red;
+   padding: 3px 7px 3px 0px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a:hover {
+   color: yellow;
+   padding: 3px 7px 3px 0px;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .Icon{
@@ -83,17 +95,17 @@
 	width: 138px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer .UIFormGrid {
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
 	width: 500px;
 	margin: auto;
 }
 
-.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .FormContainer .UIFormGrid {
+.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .UIFormGrid {
 	width: 500px;
 	margin: auto;
 }
 
-.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+.UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
   padding: 4px 0px;
 }
 
@@ -107,12 +119,12 @@
 	margin-left: 5px;
 }
 
-.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .UIFormWithTitle .FormContainer {
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
 	padding: 3px 0px;
 	border: none;
 }
@@ -231,12 +243,13 @@
 }
 
 .UIBrowseContainer .UIDocumentList {
-	margin: 5px;
+	width: 97%;
+	margin: auto;
 }
 
 .UIBrowseContainer .DocNodeIcon{
 	float: left;
-	margin:2px 3px 0px 10px;
+	margin: 2px 3px 0px 10px;
 }
 
 .UIBrowseContainer .UIDocumentList .DocumentLabel{
@@ -263,7 +276,13 @@
 }
 
 .UIBrowseContentPortlet .UIBrowseContainer .UIArticle{
-  width: 99.5%;
+  width: 97%;
+}
+
+.UIBrowseContentPortlet .UIBrowseContainer .UIDivInfo {
+	width: 97%;
+	margin: 10px 0px;
+	padding: 0px;
 }
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
@@ -298,12 +317,6 @@ UIBrowseContentPortlet .Explorer {
   overflow: hidden;
 }
 
-.UIBrowseContentPortlet .Explorer .ExplorerTree {
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
@@ -320,6 +333,7 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
   overflow: auto;
   background: white;
+ 	border: 1px solid #ABBCCA;
   width: 100%;
 }
 
@@ -357,7 +371,7 @@ UIBrowseContentPortlet .Explorer {
 }
 
 .UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 50px; 
+	width: 50px;
 }
 
 .UIBrowseContentPortlet .UISearchController .UIAction{
@@ -442,7 +456,7 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
   padding-top: 10px;
-  background: url('MacSkin/background/Background1x4.png') repeat;
+  background: #efefef;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
@@ -478,7 +492,7 @@ UIBrowseContentPortlet .Explorer {
 	border: solid 1px #B1B0B0;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .HorizontalLayout {
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: white;
 	padding: 0px;
 	margin: 0px;

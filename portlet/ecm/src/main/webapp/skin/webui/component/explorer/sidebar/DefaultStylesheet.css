@@ -156,6 +156,12 @@
   font-size: 11px;
 }
 
+.UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
+  color: black;
+  line-height: 18px;
+  padding-bottom: 5px;
+}
+
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
   float: left;
   cursor: pointer;

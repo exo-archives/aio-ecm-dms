@@ -1007,6 +1007,10 @@
   background: url('MacSkin/Cut.gif') no-repeat left center;
 }
 
+.UIRightClickPopupMenu .EditDocument16x16Icon {
+  background: url('DefaultSkin/EditDocument.gif') no-repeat left center;
+}
+
 .UIRightClickPopupMenu .Delete16x16Icon {
   background: url('MacSkin/DustBin.gif') no-repeat left center;
 }

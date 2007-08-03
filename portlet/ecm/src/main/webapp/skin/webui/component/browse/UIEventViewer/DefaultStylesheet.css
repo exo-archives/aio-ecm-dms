@@ -1,7 +1,7 @@
 .UIEventViewer {  
-  margin: 0px 1px;
+  margin: 0px;
   border: solid 1px #c0c0c0 ;
-  padding: 10px;
+  padding: 8px 0px;
 }
 
 .UIEventViewer .DocumentsPageIterator {
@@ -15,10 +15,12 @@
   border: solid 1px #e1e1e1;
   font-size: 11px;
   padding: 10px 0px;
+  width: 97%;
+  margin: auto;
 }
 
 .UIEventViewer .ViewPreviousDocument {
-  margin: 4px 0px 5px 0px;
+  margin: 4px 0px 5px 8px;
   height: 19px; vertical-align: middle;
   border: 1px #e1e1e1 solid; background: #f3f3f3;
   width: 100px;

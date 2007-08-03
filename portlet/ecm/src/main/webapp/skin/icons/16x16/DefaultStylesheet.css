@@ -1027,6 +1027,10 @@
   background: url('DefaultSkin/Copy.gif') no-repeat left center;
 }
 
+.UIRightClickPopupMenu .EditDocument16x16Icon {
+  background: url('DefaultSkin/EditDocument.gif') no-repeat left center;
+}
+
 .UIRightClickPopupMenu .Cut16x16Icon {
   background: url('DefaultSkin/Cut.gif') no-repeat left center;
 }

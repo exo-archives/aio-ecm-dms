@@ -64,14 +64,14 @@
 .UIContentView .SubFormContent .ChildrenContentHolderLeft{
 	float: left;
 	width: 46%;
-	margin: 5px;
+	margin: 5px 0px;
 	padding: 1px;
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
 	float: right;
 	width: 46%;
-	margin: 5px;
+	margin: 5px 0px;
 	padding: 1px;
 } 
 

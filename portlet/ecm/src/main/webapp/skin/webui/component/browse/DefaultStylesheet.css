@@ -12,12 +12,12 @@
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px;
+  padding: 5px 0px;
+  width: 98.5%;
 }
 
 .UIBrowseContentPortlet {
   overflow: auto;
-  border: solid 1px #b7b7b7;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .UIAction {
@@ -47,7 +47,6 @@
 .UIBrowseContentPortlet .TagmapHolder {
 	float: right ;  
   width: 200px;
-  border: solid 1px #c4c4c4 ;	
 	background: #ffffff;
 	padding: 1px;
 }
@@ -56,6 +55,8 @@
 	height: 19px; line-height: 19px;
 	margin: 0px;
 	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
+	border: solid 1px #e1e1e1;
+	border-bottom: none;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .TagLabel {
@@ -66,6 +67,7 @@
 	
 .UIBrowseContentPortlet .TagmapHolder .TagmapContent {
    border: solid 1px #e1e1e1 ;	
+   border-top: solid 1px #cdcdcd;
    background: #ffffff;
    padding: 5px;
    text-align: left ;
@@ -273,9 +275,14 @@
 }
 
 .UIBrowseContentPortlet .UIBrowseContainer .UIArticle{
-  width: 99.5%;
+  width: 97%;
 }
 
+.UIBrowseContentPortlet .UIBrowseContainer .UIDivInfo {
+	width: 97%;
+	margin: 10px 0px;
+	padding: 0px;
+}
 /*############################## -- FIX BUG POPUP  -- ##############################*/
 .UIBrowseContentPortlet .UIPopupWindow .UITree{
   width: 190px;

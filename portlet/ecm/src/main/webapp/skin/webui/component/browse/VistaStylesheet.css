@@ -12,7 +12,8 @@
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px;
+  padding: 5px 0px;
+  width: 98.5%;
 }
 
 .UIBrowseContentPortlet {
@@ -265,7 +266,13 @@
 }
 
 .UIBrowseContentPortlet .UIBrowseContainer .UIArticle{
-  width: 99.5%;
+  width: 97%;
+}
+
+.UIBrowseContentPortlet .UIBrowseContainer .UIDivInfo {
+	width: 97%;
+	margin: 10px 0px;
+	padding: 0px;
 }
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/

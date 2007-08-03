@@ -6,7 +6,6 @@
  */
 
 .UISubContent {
-	padding-left: 5px; padding-right: 5px;
 }
 
 .UISubContent .SeparatorLine{
@@ -14,7 +13,6 @@
 }
 
 .UISubContent .SubContentHolder {
-	width: 98.5%;
 	padding: 5px;
 }
 
@@ -30,10 +28,12 @@
 	padding: 1px 5px 0px 7px;
 	color: #058ee6;
 }
+
 .UISubContent .TopSubContent  a:hover{
 	text-decoration: none;
 	color: #ff9314;
 }
+
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
@@ -105,13 +105,18 @@
 	height: 20px;
 	margin-right: 3px;
 }
+
 /*###########################-- End Title --############################*/
 
 .UISubContent .UIDocumentContentInfo {
 	border: solid 1px #e1e1e1 ;
 	padding: 5px 0px;
-	width: 98.5%;
-	margin: auto;
+	margin: 0px 7px;
+}
+
+.UISubContent .TopSubContent  a:hover{
+	text-decoration: none;
+	color: #ff9314;
 }
 
 .UISubContent .UIHorizontalTabs {
@@ -123,6 +128,7 @@
  	margin-top: 0px;
  	margin-left: 4px;
 }
+
 .UISubContent .UIDocumentContentInfo .DocumentInfo {
 	height: 20px;
 	line-height: 20px;
@@ -200,3 +206,10 @@
 	font-size: 11px;
   line-height: 20px;
 }
+
+.UISubContent .UIDocumentContentInfo .ErrorMessage {
+	color: #ef5604;
+	border: solid 1px red;
+
+}
+

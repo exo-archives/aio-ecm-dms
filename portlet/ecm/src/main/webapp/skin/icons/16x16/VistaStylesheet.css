@@ -1139,6 +1139,10 @@
   background: url('VistaSkin/Cut.png') no-repeat left center;
 }
 
+.UIRightClickPopupMenu .EditDocument16x16Icon {
+  background: url('VistaSkin/Edit.png') no-repeat left center;
+}
+
 .UIRightClickPopupMenu .Delete16x16Icon {
   background: url('VistaSkin/DustBin.png') no-repeat left center;
 }

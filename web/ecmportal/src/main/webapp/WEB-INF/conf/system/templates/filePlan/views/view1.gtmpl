@@ -22,6 +22,10 @@
 		margin: auto; padding: 10px;
 	}
 	
+	.UIDivInfo .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent{
+		border: none;
+	}
+	
 	.UIDivInfo .Title {
 		font-size:13px; font-weight: bold;
 		padding-bottom: 3px;

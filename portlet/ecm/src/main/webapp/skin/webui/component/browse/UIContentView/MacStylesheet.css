@@ -6,15 +6,14 @@
  * version: $Id$
  */
 
-
 .UIContentView {
-  width: 98.5%;
-  margin: auto;
+	margin: 10px;
 }
 
 .UIContentView .TiteContentView {
   margin: 8px 0px 3px 0px;
   vertical-align: middle;
+  height: 18px;
 }
 
 .UIContentView .TiteContentIcon {
@@ -64,14 +63,14 @@
 .UIContentView .SubFormContent .ChildrenContentHolderLeft{
 	float: left;
 	width: 46%;
-	margin: 5px;
+	margin: 5px 0px;
 	padding: 1px;
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
 	float: right;
 	width: 46%;
-	margin: 5px;
+	margin: 5px 0px;
 	padding: 1px;
 } 
 
