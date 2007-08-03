@@ -209,7 +209,7 @@ public class UIActionBar extends UIForm {
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    return getApplicationComponent(QueryService.class).getQueries(userName, repository) ;
+    return getApplicationComponent(QueryService.class).getQueries(userName, repository,SessionsUtils.getSystemProvider()) ;
   }
 
   public List<String> getMetadataTemplates() throws Exception {

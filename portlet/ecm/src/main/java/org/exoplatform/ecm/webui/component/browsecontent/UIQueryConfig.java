@@ -22,6 +22,7 @@ import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -258,17 +259,18 @@ public class UIQueryConfig extends UIForm {
   private List<SelectItemOption<String>> getQueryStore(String queryType, String queryLanguage) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ; 
-    QueryService qservice = getApplicationComponent(QueryService.class) ;  
+    QueryService qservice = getApplicationComponent(QueryService.class) ;
+    SessionProvider provider = SessionsUtils.getSystemProvider();
     if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
       String username = Util.getPortalRequestContext().getRemoteUser() ;
-      List<Query> queries = qservice.getQueries(username, repository);
+      List<Query> queries = qservice.getQueries(username, repository,provider);
       for(Query queryNode : queries) {
         String path = queryNode.getStoredQueryPath() ;
         if(queryNode.getLanguage().equals(queryLanguage))
           options.add(new SelectItemOption<String>(path.substring(path.lastIndexOf("/")+ 1), path)) ;
       }
     } else {
-      List<Node> queries = qservice.getSharedQueries(queryLanguage, roles_, repository);
+      List<Node> queries = qservice.getSharedQueries(queryLanguage, roles_, repository,provider);
       for(Node queryNode : queries) {
         options.add(new SelectItemOption<String>(queryNode.getName(), queryNode.getPath())) ;
       }

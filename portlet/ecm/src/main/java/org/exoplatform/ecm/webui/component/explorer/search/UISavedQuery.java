@@ -16,6 +16,7 @@ import javax.portlet.PortletPreferences;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
@@ -23,6 +24,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -95,7 +97,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    List<Query> queries = queryService.getQueries(userName, repository);
+    List<Query> queries = queryService.getQueries(userName, repository,SessionsUtils.getSystemProvider());
     if (queries == null || queries.isEmpty()) return false;
     return true;
   }
@@ -105,7 +107,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-    return getApplicationComponent(QueryService.class).getQueries(userName, repository);
+    return getApplicationComponent(QueryService.class).getQueries(userName, repository,SessionsUtils.getSystemProvider());
   }
   
   public String getCurrentUserId() { return Util.getPortalRequestContext().getRemoteUser() ;}
@@ -128,9 +130,10 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
         roles.add(role) ;
       } 
     }
+    SessionProvider provider = SessionsUtils.getSystemProvider() ;
     if(roles.size() < 0) return false ;
-    sharedQueries_ = queryService.getSharedQueriesByPermissions(roles, repository) ;
-    if(queryService.getSharedQueriesByPermissions(roles, repository).size() > 0) return true ;      
+    sharedQueries_ = queryService.getSharedQueriesByPermissions(roles, repository,provider) ;
+    if(queryService.getSharedQueriesByPermissions(roles, repository,provider).size() > 0) return true ;      
     return false ;                
   }
   
@@ -166,7 +169,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       }
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath, wsName, repository) ;
+        queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSystemProvider()) ;
         if(queryResult == null || queryResult.getNodes().getSize() ==0) {
           uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)) ; 
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -198,7 +201,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
       String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Query query = queryService.getQueryByPath(queryPath, userName, repository) ;
+      Query query = queryService.getQueryByPath(queryPath, userName, repository,SessionsUtils.getSystemProvider()) ;
       uiQuery.initPopupEditForm(query) ;
       if(!uiQuery.isQuickSearch_) {
         UIECMSearch uiECSearch = uiQuery.getParent() ;

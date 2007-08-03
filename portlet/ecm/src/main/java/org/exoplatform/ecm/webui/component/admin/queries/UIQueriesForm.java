@@ -13,6 +13,7 @@ import javax.jcr.query.Query;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
@@ -97,7 +98,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
       return ;
     }
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Node query = queryService.getSharedQuery(queryName, repository) ;
+    Node query = queryService.getSharedQuery(queryName, repository,SessionsUtils.getSystemProvider()) ;
     getUIStringInput(QUERY_NAME).setValue(queryName) ;
     getUIStringInput(QUERY_NAME).setEditable(false) ;
     getUIFormCheckBoxInput(CACHE_RESULT).setChecked(query.getProperty("exo:cachedResult").getBoolean()) ;
@@ -129,7 +130,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
-      for(Node queryNode : queryService.getSharedQueries(repository)) {
+      for(Node queryNode : queryService.getSharedQueries(repository,SessionsUtils.getSystemProvider())) {
         if(queryNode.getName().equals(queryName)) {
           uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-existing", null, 
                                                   ApplicationMessage.WARNING)) ;
