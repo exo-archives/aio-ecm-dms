@@ -9,7 +9,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager {
   padding: 2px 0px 0px 0px;
-  width: 98%;
+  width: 97%;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIAction {
@@ -92,12 +92,18 @@
 	width: 290px;	
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIGrid .text {
-	width: 100%;
+.UIECMAdminPortlet .UINodeTypeManager .HorizontalLayout .UIFormInputSet{
+  width: auto;
+  padding-left: 10px;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIGrid th {
-	padding: 0px 5px;
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid .text{
+  width: 100% ;
 }
+
+.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {	
+	padding: 4px;
+}
+
 
 /*############################## -- End UINodeTypeManager-- ########################*/

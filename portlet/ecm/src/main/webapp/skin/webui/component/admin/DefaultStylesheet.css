@@ -331,7 +331,8 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
-  margin: 0px 10px;
+  margin: 10px;
+  padding: 0px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab {
@@ -344,17 +345,17 @@
   margin: 1px 5px 0px 5px;
 }
 
+.UIECMAdminPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
+  border: solid 1px #939393;
+  border-top: none;
+}
+
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent {
-  margin: 1px 2px 0px 2px;
+  margin: 1px 2px;
   border: solid 1px #b2b1b1;
   background: #ffffff;
   padding: 5px ;
   overflow: hidden;
-}
-
-.UIECMAdminPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #939393;
-  border-top: none;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent a {
@@ -368,7 +369,7 @@
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem {
   clear: both;
   height: 25px;
-  margin: 4px 2px 0px 2px;
+  margin: 4px 2px;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemIcon {
@@ -381,6 +382,7 @@
   cursor: pointer;
 }
 
+
 /*############################## -- ECMLayoutSeparator -- ########################*/
 
 .UIECMAdminPortlet .ECMLayoutSeparator {
@@ -389,7 +391,7 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminWorkingArea {
-  margin: 0px 10px 10px 10px;
+	margin: 10px;
 }
 
 /*############################## --UIFormWithTitle -- ########################*/
@@ -424,7 +426,7 @@
 
 .UIECMAdminPortlet .UINamespaceManager {
 	padding: 2px 0px 0px 0px;
-	width: 98%;
+	width: 97%;
 }
 
 .UIECMAdminPortlet .UINamespaceForm {
@@ -626,7 +628,7 @@
 /*############################## -- UIActionManager -- ########################*/
 
 .UIECMAdminPortlet .UIActionManager {
-  width: 98%;
+  width: 97%;
 }
 
 .UIActionManager .UIActionTypeForm  {
@@ -867,7 +869,7 @@
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: white;
-	padding: 0px;
+	padding: 5px 0px;
 	margin: 0px;
 }
 
@@ -891,7 +893,7 @@
 
 .UIECMAdminPortlet .UITemplatesManager   {
  	padding: 2px 0px 0px 0px;
- 	width: 98%;
+ 	width: 97%;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {

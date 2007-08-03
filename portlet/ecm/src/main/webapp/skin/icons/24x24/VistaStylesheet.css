@@ -213,9 +213,9 @@
 }
 
 .SelectPath24x24Icon {
-  float: left ;
+  float: left;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/BlackMagnifier.png') no-repeat ;
+  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
 }
 
 .ManageOntologiesIcon {

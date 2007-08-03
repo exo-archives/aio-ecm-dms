@@ -77,7 +77,8 @@
     </tr>
   <%}%>
   </tbody>
-</table> <!--End UIGrid-->
+</table> 
+<!--End UIGrid-->
 <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
 <% if(uicomponent.getActions() != null) { %>
   <div class="$uicomponent.id">

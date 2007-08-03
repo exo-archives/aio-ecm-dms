@@ -401,3 +401,32 @@
   background: url('DefaultSkin/ai.gif') no-repeat;
 }
 
+.UIRightClickPopupMenu .exo_createRSSFeedAction16x16Icon {
+  background: url('DefaultSkin/exo-createRSSFeedAction.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .exo_createRSSFeedAction16x16Icon {
+  background: url('DefaultSkin/exo-createRSSFeedAction.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .exo_transformBinaryToTextAction16x16Icon {
+  background: url('DefaultSkin/exo-transformBinaryToTextAction.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .exo_ReloadBPAction16x16Icon {
+  background: url('DefaultSkin/DefaultDocumentIcon.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .exo_workflowAction16x16Icon {
+  background: url('DefaultSkin/exo-workflowAction.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .exo_iCalendarGenerateAction16x16Icon {
+  background: url('DefaultSkin/DefaultDocumentIcon.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .exo_getMailAction16x16Icon {
+  background: url('DefaultSkin/exo-sendMailAction.gif') no-repeat left center;
+}
+
+

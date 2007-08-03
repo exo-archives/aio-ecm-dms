@@ -193,13 +193,13 @@
 .Permission24x24Icon {
   float: left;
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
+  background: url('DefaultSkin/PermissionSetting.gif') no-repeat ;
 }
 
 .SelectPath24x24Icon {
   float: left;
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/Magnifier.gif') no-repeat ;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
 }
 
 .ManageOntologiesIcon {

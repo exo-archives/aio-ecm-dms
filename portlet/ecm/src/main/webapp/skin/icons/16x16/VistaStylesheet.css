@@ -1178,3 +1178,7 @@
 .UIRightClickPopupMenu .CheckOut16x16Icon {
   background: url('VistaSkin/CheckOut.png') no-repeat left center;
 }
+
+.UIRightClickPopupMenu .Save16x16Icon {
+  background: url('VistaSkin/Save.png') no-repeat left center;
+}

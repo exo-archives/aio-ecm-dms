@@ -51,7 +51,8 @@
 	 padding-top: 0px;
 }
 
-.UIECMAdminPortlet .UIRepositoryControl .UISelect .SelectedItemLabel {
+.UIECMAdminPortlet .UIRepositoryList .UIAction {	
+	width: 90px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
@@ -96,8 +97,9 @@
   padding-bottom: 30px;
 }
 
-.UIECMAdminPortlet .UIRepositoryList .UIAction {
-	width: 90px;
+.UIECMAdminPortlet .UIRepositoryForm  {
+	width: 95%;
+	margin: 10px auto;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .UIAction {
@@ -105,12 +107,13 @@
 	padding-left: 120px;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout .FormContainer {
-	width: auto;
+.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
+	padding-top: 10px;
 }
 
-.UIWorkspaceWizard .HorizontalLayout .UITabContent .step1 .UIFormInputSet .AddPermissionIcon  {
-	margin: 0px;
+.UIECMAdminPortlet .UIRepositoryForm .FormContainer {
+	width: 510px;
+	margin: auto;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
@@ -654,6 +657,10 @@
   width: 100px;
 }
 
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
+  margin: 10px 0px 0px 0px;
+}
+
 .UIECMScripts .UIBarStyle {
 }
 
@@ -887,7 +894,6 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
- 	line-height: 20px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {

@@ -1070,4 +1070,12 @@
 .UIRightClickPopupMenu .CheckOut16x16Icon {
   background: url('DefaultSkin/CheckOut.gif') no-repeat left center;
 }
+
+.UIRightClickPopupMenu .CheckOut16x16Icon {
+  background: url('DefaultSkin/CheckOut.gif') no-repeat left center;
+}
+
+.UIRightClickPopupMenu .Save16x16Icon {
+  background: url('DefaultSkin/Save.gif') no-repeat left center;
+}
 /*############################## -- End BC Portlet Icon -- ########################*/
