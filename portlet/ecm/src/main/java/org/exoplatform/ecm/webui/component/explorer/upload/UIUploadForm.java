@@ -189,9 +189,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
               node.checkin() ;
               node.checkout() ;
             }else {
-              contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
-              node.save();
-            }                        
+              contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));              
+            }
+            if(node.isNodeType("exo:datetime")) {
+              node.setProperty("exo:dateModified",new GregorianCalendar()) ;
+            }
+            node.save();
           }
         }
         uiExplorer.getSession().save() ;
