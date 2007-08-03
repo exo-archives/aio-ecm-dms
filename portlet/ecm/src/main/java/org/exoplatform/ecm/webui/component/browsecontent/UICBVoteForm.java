@@ -11,8 +11,10 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.voting.VotingService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -36,7 +38,8 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
 
   public Node getDocument() throws Exception { 
     UIBrowseContentPortlet portlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-    UIDocumentDetail uiDocumentDetail = portlet.findFirstComponentOfType(UIDocumentDetail.class) ;
+    UIBrowseContainer uiBCContainer =  portlet.findFirstComponentOfType(UIBrowseContainer.class) ;
+    UIDocumentDetail uiDocumentDetail = uiBCContainer.findFirstComponentOfType(UIDocumentDetail.class) ;
     return uiDocumentDetail.node_;
   }
  
@@ -52,7 +55,8 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
     public void execute(Event<UICBVoteForm> event) throws Exception {
       UICBVoteForm uiForm = event.getSource() ;
       UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      UIDocumentDetail uiDocumentDetail = uiPortlet.findFirstComponentOfType(UIDocumentDetail.class) ;
+      UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
+      UIDocumentDetail uiDocumentDetail = uiBCContainer.getChild(UIDocumentDetail.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       long objId = Long.parseLong(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiForm.getApplicationComponent(VotingService.class) ;

@@ -63,20 +63,23 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   @Override
   public void processRender(WebuiRequestContext context) throws Exception {
-    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     if(isValidNode()) {
+      setRendered(true) ;
       super.processRender(context);
     } else {
-      if(uiContainer.isShowDocumentDetail_) {
-        setRendered(false) ;
-      }
+      setRendered(false) ;
     }
   }
-  private boolean isValidNode() throws Exception  {
+  protected boolean isValidNode() throws Exception  {
     if(node_ == null) return false ;
-    if(getAncestorOfType(UIBrowseContainer.class).getNodeByPath(node_.getPath()) == null) return false ;
+    if(getUIBrowseContainer().getNodeByPath(node_.getPath()) == null) return false ;
     return true ;
   }
+
+  private UIBrowseContainer getUIBrowseContainer() {
+    return  getAncestorOfType(UIBrowseContentPortlet.class).findFirstComponentOfType(UIBrowseContainer.class) ;
+  }
+
   public String getTemplatePath(){
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;

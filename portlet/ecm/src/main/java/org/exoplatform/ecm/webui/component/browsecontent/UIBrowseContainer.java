@@ -30,6 +30,7 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
@@ -227,10 +228,23 @@ public class UIBrowseContainer extends UIContainer{
           setPageIterator(getNodeByQuery(-1, getSession())) ;
         }
         else if(usecase_.equals(Utils.USE_DOCUMENT)) {
-          if(getChild(UIDocumentDetail.class).getNode() == null) {
-            return ;            
-          }
-        } 
+         if(getChild(UIDocumentDetail.class).isValidNode()) {
+            getChild(UIDocumentDetail.class).setRendered(true) ;         
+          } else {
+            getChild(UIDocumentDetail.class).setRendered(false) ;
+            UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+            uiPortlet.getChild(UIPopupAction.class).deActivate() ;
+          } 
+        }
+        if(isShowDocumentDetail_) {
+          if(getChild(UIDocumentDetail.class).isValidNode()) {
+            getChild(UIDocumentDetail.class).setRendered(true) ;         
+          } else {
+            getChild(UIDocumentDetail.class).setRendered(false) ;
+            UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+            uiPortlet.getChild(UIPopupAction.class).deActivate() ;
+          } 
+        }
       }
     } 
     isShowPageActon_ = false ;

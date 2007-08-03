@@ -10,9 +10,11 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -75,13 +77,15 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UICBCommentForm> event) throws Exception {
       UICBCommentForm uiForm = event.getSource() ;
       String name = event.getRequestContext().getRemoteUser() ;
-      if(name == null || name.trim().length() == 0) name = "anonymous" ;
+      if(Utils.isNameEmpty(name)) name = "anonymous" ;
       String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
       String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
       String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue() ;
+      UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
+      UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
+      UIDocumentDetail uiDocumentDetail = uiBCContainer.getChild(UIDocumentDetail.class) ;
       try {
-        String language = uiForm.getAncestorOfType(UIBrowseContentPortlet.class).
-                                 findFirstComponentOfType(UIDocumentDetail.class).getLanguage() ;
+        String language = uiDocumentDetail.getLanguage() ;
         if(DEFAULT_LANGUAGE.equals(language)) { 
           if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
             uiForm.getDocument().addMixin("mix:i18n") ;

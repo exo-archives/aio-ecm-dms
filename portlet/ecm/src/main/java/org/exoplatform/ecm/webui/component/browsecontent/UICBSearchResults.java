@@ -16,8 +16,10 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
@@ -70,6 +72,12 @@ public class UICBSearchResults extends UIGrid {
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
       Node node = container.getNodeByPath(itemPath) ;
+      UIApplication app = uiResults.getAncestorOfType(UIApplication.class) ;
+      if(node == null) {
+        app.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        return ;
+      }
       NodeType nodeType = node.getPrimaryNodeType() ;
       UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
       if(uiResults.isDocumentTemplate(nodeType.getName())) {
@@ -98,7 +106,13 @@ public class UICBSearchResults extends UIGrid {
       UICBSearchResults uiResults = event.getSource() ;
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
-      Node node = container.getNodeByPath(itemPath) ;      
+      Node node = container.getNodeByPath(itemPath) ;  
+      UIApplication app = uiResults.getAncestorOfType(UIApplication.class) ;
+      if(node == null) {
+        app.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        return ;
+      }
       Node parentNode = node.getParent() ;
       NodeType nodeType = parentNode.getPrimaryNodeType() ;
       UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
