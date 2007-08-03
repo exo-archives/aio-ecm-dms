@@ -62,8 +62,8 @@ public class UIConstraintsForm extends UIForm {
   final static public String START_TIME = "startTime" ;
   final static public String END_TIME = "endTime" ;
   final static public String DOC_TYPE = "docType" ;
-  final static public String AND_OPERATION = "AND" ;
-  final static public String OR_OPERATION = "OR" ;
+  final static public String AND_OPERATION = "and" ;
+  final static public String OR_OPERATION = "or" ;
   final static public String CREATED_DATE = "CREATED" ;
   final static public String MODIFIED_DATE = "MODIFIED" ;
   final static public String EXACTLY_PROPERTY = "exactlyPro" ;
@@ -115,8 +115,8 @@ public class UIConstraintsForm extends UIForm {
     String value = getUIStringInput(type).getValue() ;
     if(value == null) return "" ;
     if(value.trim().length() > 0) {
-      if(isContain) return " contains(" + property.trim() + ", '"+ value.trim() + "')" ;
-      return " not(contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
+      if(isContain) return " jcr:contains(" + property.trim() + ", '"+ value.trim() + "')" ;
+      return " fn:not(jcr:contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
     }
     return "" ;
   }
@@ -126,19 +126,19 @@ public class UIConstraintsForm extends UIForm {
     if(afterDate != null && afterDate.trim().length() > 0) {
       Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
       if(type.equals(CREATED_DATE)) {
-        virtualDateQuery_ = "(documents created from '"+beforeDate+"') AND (documents created to '"+afterDate+"')" ;
-        return "(exo:dateCreated > '"+ISO8601.format(bfDate)+"') AND (exo:dateCreated < '"+ISO8601.format(afDate)+"')" ;
+        virtualDateQuery_ = "(documents created from '"+beforeDate+"') and (documents created to '"+afterDate+"')" ;
+        return "@exo:dateCreated >= xs:dateTime('"+ISO8601.format(bfDate)+"') and @exo:dateCreated < xs:dateTime('"+ISO8601.format(afDate)+"')" ;
       } else if(type.equals(MODIFIED_DATE)) {
-        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') AND (documents modified to '"+afterDate+"')" ;
-        return "(exo:dateModified > '"+ISO8601.format(bfDate)+"') AND (exo:dateModified < '"+ISO8601.format(afDate)+"')" ;
+        virtualDateQuery_ = "(documents modified from '"+beforeDate+"') and (documents modified to '"+afterDate+"')" ;
+        return "@exo:dateModified >= xs:dateTime('"+ISO8601.format(bfDate)+"') and @exo:dateModified < xs:dateTime('"+ISO8601.format(afDate)+"')" ;
       }
     } else {
       if(type.equals(CREATED_DATE)) {
         virtualDateQuery_ = "(documents created from '"+beforeDate+"')" ;
-        return "(exo:dateCreated > '"+ISO8601.format(bfDate)+"')" ;
+        return "@exo:dateCreated >= xs:dateTime('"+ISO8601.format(bfDate)+"')" ;
       } else if(type.equals(MODIFIED_DATE)) {
         virtualDateQuery_ = "(documents modified from '"+beforeDate+"')" ;
-        return "(exo:dateModified > '"+ISO8601.format(bfDate)+"')" ;
+        return "@exo:dateModified >= xs:dateTime('"+ISO8601.format(bfDate)+"')" ;
       }
     }
     return "" ;
@@ -150,11 +150,11 @@ public class UIConstraintsForm extends UIForm {
     if(nodeTypes.indexOf(",") > -1) arrNodeTypes = nodeTypes.split(",") ;
     if(arrNodeTypes.length > 0) {
       for(String nodeType : arrNodeTypes) {
-        if(advanceQuery.length() == 0) advanceQuery = "(jcr:primaryType = '" + nodeType + "')" ;
-        else advanceQuery = advanceQuery + " " + OR_OPERATION + " " + "(jcr:primaryType = '" + nodeType + "')" ;
+        if(advanceQuery.length() == 0) advanceQuery = "@jcr:primaryType = '" + nodeType + "'" ;
+        else advanceQuery = advanceQuery + " " + OR_OPERATION + " " + "@jcr:primaryType = '" + nodeType + "'" ;
       }
     } else {
-      advanceQuery = "(jcr:primaryType = '" + nodeTypes + "')" ;
+      advanceQuery = "@jcr:primaryType = '" + nodeTypes + "'" ;
     }
     return advanceQuery;
   }
@@ -180,7 +180,7 @@ public class UIConstraintsForm extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        advanceQuery = "" + property + " = '" + value.trim() + "'" ;
+        advanceQuery = "@" + property + " = '" + value.trim() + "'" ;
         break;
       case 1:
         property = getUIStringInput(PROPERTY2).getValue() ; 

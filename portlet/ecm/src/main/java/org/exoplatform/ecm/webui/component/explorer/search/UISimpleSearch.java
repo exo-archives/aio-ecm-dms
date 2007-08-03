@@ -55,10 +55,8 @@ public class UISimpleSearch extends UIForm {
   private String firstOperator_ ;
   private List<String> virtualConstraints_ = new ArrayList<String>() ;
   
-  private static final String SQL_QUERY = "select * from nt:base where contains(*, '$1')";
-  private static final String OTHER_SQL_QUERY = "select * from nt:base where ";
-  private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
-  private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
+  private static final String ROOT_XPATH_QUERY = "//*" ;
+  private static final String XPATH_QUERY = "/jcr:root$0//*" ;
   
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
@@ -74,14 +72,14 @@ public class UISimpleSearch extends UIForm {
   public void updateAdvanceConstraint(String constraint, String operator, String virtualDateQuery) { 
     if(constraint.length() > 0) {
       if(constraints_.size() == 0) {
-        firstOperator_ = operator.toUpperCase() ;
+        firstOperator_ = operator.toLowerCase() ;
         constraints_.add("(" + constraint + " )") ;
         if(virtualDateQuery != null) virtualConstraints_.add("(" + virtualDateQuery + " )") ;
         else virtualConstraints_.add("(" + constraint + " )") ;
       } else {
-        constraints_.add(" "+operator.toUpperCase()+" (" + constraint + " ) ") ;
-        if(virtualDateQuery != null) virtualConstraints_.add(" "+operator.toUpperCase()+" (" + virtualDateQuery + " ) ") ;
-        else virtualConstraints_.add(" "+operator.toUpperCase()+" (" + constraint + " ) ") ;
+        constraints_.add(" "+operator.toLowerCase()+" (" + constraint + " ) ") ;
+        if(virtualDateQuery != null) virtualConstraints_.add(" "+operator.toLowerCase()+" (" + virtualDateQuery + " ) ") ;
+        else virtualConstraints_.add(" "+operator.toLowerCase()+" (" + constraint + " ) ") ;
       }
     }
     UIFormInputSetWithAction inputInfor = getChildById("moreConstraints") ;
@@ -96,33 +94,31 @@ public class UISimpleSearch extends UIForm {
     String statement = "" ;
     String text = getUIStringInput(INPUT_SEARCH).getValue() ;
     if(text != null && constraints_.size() == 0) {
-      statement = StringUtils.replace(SQL_QUERY, "$1", text);
       if ("/".equals(currentNode.getPath())) {
-        statement = StringUtils.replace(SQL_QUERY, "$1", text);
+        statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))" ;
       } else {
-        statement = statement + " and jcr:path like '"+currentNode.getPath()+"/%'" ;
+        statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))" ;
       }
+      statement = statement + "]" ;
     } else if(constraints_.size() > 0) {
       if(text == null) {
-        statement = StringUtils.replace(OTHER_SQL_QUERY, "$1", text) ;
         if ("/".equals(currentNode.getPath())) {
-          statement = StringUtils.replace(OTHER_SQL_QUERY, "$1", text) ;
+          statement = ROOT_XPATH_QUERY + "[" ;
         } else {
-          statement = statement + "jcr:path like '" + currentNode.getPath() + "/%'" ;
-          statement = statement + " " + firstOperator_ + " ";
+          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[";
         } 
       } else {
-        statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
         if ("/".equals(currentNode.getPath())) {
-          statement = StringUtils.replace(SQL_QUERY, "$1", text) ;
+          statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))" + "[";
         } else {
-          statement = statement + "or jcr:path like '"+currentNode.getPath()+"/%/" + text + "'" ;
+          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))" ;
         } 
         statement = statement + " " + firstOperator_ + " ";
       }
       for(String constraint : constraints_) {
         statement = statement + constraint ;
       }
+      statement = statement + "]" ;
     }
     return statement ;
   }
@@ -138,7 +134,7 @@ public class UISimpleSearch extends UIForm {
         return ;
       }
       UISearchContainer uiSearchContainer = uiSimpleSearch.getParent() ;
-      uiSearchContainer.initSaveQueryPopup(uiSimpleSearch.getQueryStatement(), true, Query.SQL) ;
+      uiSearchContainer.initSaveQueryPopup(uiSimpleSearch.getQueryStatement(), true, Query.XPATH) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
   }
@@ -175,23 +171,8 @@ public class UISimpleSearch extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(text != null) {
-        String statementPath ;
-        if ("/".equals(currentNode.getPath())) {
-          statementPath = StringUtils.replace(ROOT_PATH_SQL_QUERY, "$1", text) ;
-        } else if(currentNode.getParent().getPath().equals("/")) {
-          statementPath = "select * from nt:base where jcr:path like '"+currentNode.getPath()+"/"+text+"' " 
-          + "or jcr:path like '"+currentNode.getPath()+"/%/"+text+"' ";
-        } else {
-          String queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", uiExplorer.getCurrentNode().getParent().getPath());
-          statementPath = StringUtils.replace(queryPath, "$1", text) ;
-        }
-        Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
-        QueryResult pathQueryResult = pathQuery.execute() ;
-        uiSearchResult.setQueryResults(pathQueryResult) ;
-      }
       String statement = uiSimpleSearch.getQueryStatement() ;
-      Query query = queryManager.createQuery(statement, Query.SQL);      
+      Query query = queryManager.createQuery(statement, Query.XPATH);      
       QueryResult queryResult = query.execute();
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;

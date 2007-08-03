@@ -149,7 +149,7 @@ public class UIActionBar extends UIForm {
   final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
   private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
   private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
-
+  
   public UIActionBar() throws Exception{
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
@@ -871,7 +871,7 @@ public class UIActionBar extends UIForm {
         statementPath = StringUtils.replace(ROOT_PATH_SQL_QUERY, "$1", text) ;
       } else if(currentNode.getParent().getPath().equals("/")) {
         statementPath = "select * from nt:base where jcr:path like '"+currentNode.getPath()+"/"+text+"' " 
-        + "or jcr:path like '"+currentNode.getPath()+"/%/"+text+"' ";
+        + " or jcr:path like '"+currentNode.getPath()+"/%/"+text+"' ";
       } else {
         String queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", currentNode.getParent().getPath());
         statementPath = StringUtils.replace(queryPath, "$1", text) ;
