@@ -38,10 +38,10 @@ import org.exoplatform.services.jcr.RepositoryService;
  * @author benjaminmestrallet
  */
 public class CmsServiceImpl implements CmsService {
-  
+
   private RepositoryService jcrService;  
   private IDGeneratorService idGeneratorService;  
-  
+
   public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService) {
     this.idGeneratorService = idGeneratorService;
     this.jcrService = jcrService;      
@@ -59,7 +59,7 @@ public class CmsServiceImpl implements CmsService {
   }
 
   public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
-                           boolean isAddNew,String repository) throws Exception {    
+      boolean isAddNew,String repository) throws Exception {    
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 
@@ -131,10 +131,10 @@ public class CmsServiceImpl implements CmsService {
       }
     }
   }
-  
+
   private void processNodeRecursively(boolean create, String path,
       Node currentNode, NodeType currentNodeType, Map jcrVariables)
-      throws Exception {
+  throws Exception {
     if(create) {
       processAddEditProperty(true, currentNode, path, currentNodeType, jcrVariables) ;
     } else {
@@ -153,7 +153,7 @@ public class CmsServiceImpl implements CmsService {
       }
       processAddEditProperty(false, currentNode, path, currentNodeType, jcrVariables) ;
     }
-    
+
     /*
      * We wish to allow update of Nodes that have a "*" as child Node definition
      * name. Hence we need to work on the Node themselves to retrieve the actual
@@ -190,7 +190,7 @@ public class CmsServiceImpl implements CmsService {
       if (!nodeDef.isAutoCreated()
           && !nodeDef.isProtected()
           && !("*".equals(nodeDef.getName())
-          && (o instanceof NodeDefinition))) {
+              && (o instanceof NodeDefinition))) {
         String currentPath = path + "/" + nodeName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath);
         String nodetypeName = null;
@@ -235,10 +235,10 @@ public class CmsServiceImpl implements CmsService {
       }
     }    
   }
-     
+
   private void processProperty(String propertyName, Node node, int requiredtype,
       Object value, boolean isMultiple) throws Exception {
-    
+
     switch (requiredtype) {
     case PropertyType.STRING:
       if (value == null)
@@ -317,16 +317,16 @@ public class CmsServiceImpl implements CmsService {
           } else if (value instanceof GregorianCalendar) {
             node.setProperty(propertyName, (GregorianCalendar) value);
           }
-          
+
         }
       }      
-      
+
       break;
     case PropertyType.REFERENCE:      
       if (value == null)
-      throw new RepositoryException("null value for a reference " + requiredtype);
+        throw new RepositoryException("null value for a reference " + requiredtype);
       if (value instanceof Value[]) 
-      node.setProperty(propertyName, (Value[]) value);
+        node.setProperty(propertyName, (Value[]) value);
       else if (value instanceof String){
         Session session = node.getSession();
         if(session.getRootNode().hasNode((String)value)) {
@@ -351,13 +351,15 @@ public class CmsServiceImpl implements CmsService {
     }
     return null;
   }
-  
+
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace,
-      String destPath, String repository) {    
-    if(!srcWorkspace.equals(destWorkspace)){
-      try {
-        Session srcSession = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
-        Session destSession = jcrService.getRepository(repository).getSystemSession(destWorkspace);
+      String destPath, String repository) {
+    Session srcSession = null ;
+    Session destSession = null ;
+    if(!srcWorkspace.equals(destWorkspace)){      
+      try {        
+        srcSession = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
+        destSession = jcrService.getRepository(repository).getSystemSession(destWorkspace);
         Workspace workspace = destSession.getWorkspace();
         Node srcNode = (Node) srcSession.getItem(nodePath);
         try {
@@ -370,12 +372,17 @@ public class CmsServiceImpl implements CmsService {
         srcNode.remove();
         srcSession.save();
         destSession.save() ;
+        srcSession.logout();
+        destSession.logout();
       } catch (Exception e) {
+        if(srcSession != null) srcSession.logout();
+        if(destSession !=null) destSession.logout();
         e.printStackTrace();
       }
     }else {
+      Session session = null ;
       try{
-        Session session = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
+        session = jcrService.getRepository(repository).getSystemSession(srcWorkspace);
         Workspace workspace = session.getWorkspace();
         try {
           session.getItem(destPath);        
@@ -385,7 +392,8 @@ public class CmsServiceImpl implements CmsService {
         }        
         workspace.move(nodePath, destPath);
         session.logout();
-      }catch(Exception e){        
+      }catch(Exception e){
+        if(session !=null && session.isLive()) session.logout(); 
         e.printStackTrace() ;
       }
     }
@@ -405,5 +413,5 @@ public class CmsServiceImpl implements CmsService {
     }
     session.save() ;    
   }
-  
+
 }
