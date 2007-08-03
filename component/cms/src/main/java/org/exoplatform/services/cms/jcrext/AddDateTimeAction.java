@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.services.cms.jcrext;
 
+import java.util.GregorianCalendar;
+
 import javax.jcr.Node;
 
 import org.apache.commons.chain.Context;
@@ -21,7 +23,9 @@ public class AddDateTimeAction implements Action{
     Node node = (Node)context.get("currentItem") ; ;
     if(node.canAddMixin("exo:datetime")) {
       node.addMixin("exo:datetime") ;            
-    }    
+    }
+    node.setProperty("exo:dateCreated",new GregorianCalendar()) ;
+    node.setProperty("exo:dateModified",new GregorianCalendar()) ;    
     return false;
   }
 
