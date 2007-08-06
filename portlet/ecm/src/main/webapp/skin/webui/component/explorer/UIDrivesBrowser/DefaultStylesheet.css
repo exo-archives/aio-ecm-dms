@@ -128,10 +128,6 @@
   text-decoration: none;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
-  background: url('DefaultSkin/background/DefaultDrive.gif') no-repeat;
-}
-
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
   background: url('DefaultSkin/background/AdminProduction.gif') no-repeat;
 }
@@ -167,4 +163,9 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .UsertaxonomyIcon {
   background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
 }
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
+  background: url('DefaultSkin/background/DefaultDrive.gif') no-repeat;
+}
+
 /*############################## -- End UIDrivesBrowser -- ##############################*/

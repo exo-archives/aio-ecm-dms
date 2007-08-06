@@ -831,33 +831,25 @@
 }
 /*================================.UIImportNode=================================*/
 
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
-  width: 170px;
-}
-
 .UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame { 
-	width: 330px;
-	overflow: hidden;
 	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame .ProgressBar{ 
-	margin-left: 0px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .SelectFileFrame { 
-	width: 330px;
-	overflow: hidden;
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileName {
-	width: 190px;	
-	overflow: hidden;
+.UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
+  border: none;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .FileNameLabel {
-	padding: 0px;
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
+  width: auto;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
+  width: 170px;
+  padding-right: 110px;
 }
 
 .UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
@@ -868,9 +860,6 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
-  width: auto;
-}
 /*================================.UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {
