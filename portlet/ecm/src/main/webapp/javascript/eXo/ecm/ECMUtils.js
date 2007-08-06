@@ -20,8 +20,10 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 	var portlet =document.getElementById(portletId) ;
 	var delta = portlet.parentNode.offsetHeight - portlet.offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
-	for(var i = 0, ln = resizeObj.length; i < ln; i++) {
-		resizeObj[i].style.height = (parseInt(resizeObj[i].offsetHeight) + delta) + 'px' ;
+	for(var i = 0; i < resizeObj.length; i++) {
+		var nHeight = parseInt(resizeObj[i].offsetHeight) + delta;
+		if (nHeight < 0 ) nHeight = "0px" ;
+		resizeObj[i].style.height = nHeight + 'px' ;
 	}
 };
 
