@@ -12,6 +12,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputSet;
+import org.exoplatform.webui.form.validator.Validator;
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
@@ -100,13 +101,12 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   public void setIsView(boolean isView) { isView_ = isView; }
   public boolean isView() { return isView_ ; }
 
-  @SuppressWarnings("unused")
-  public UIFormInput addValidator(Class clazz) throws Exception { return null; }
-
   public String getBindingField() { return null; }
 
   public List getValidators() { return null; }
-
+  
+  public UIFormInput addValidator(Class clazz, Object...params) throws Exception { return this; }
+  
   public Object getValue() throws Exception { return null; }
 
   @SuppressWarnings("unused")
