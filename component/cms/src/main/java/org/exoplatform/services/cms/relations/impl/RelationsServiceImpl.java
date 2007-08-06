@@ -51,7 +51,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
           rels.add(session.getNodeByUUID(values[i].getString()));
         }
       }
-    }catch(Exception e) {      
+    } catch(Exception e) {
+      e.printStackTrace() ;
     }
     return rels ;    
   }
@@ -72,10 +73,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
             vals.add(values[i]);
           }
         }
-        if (uuid2Remove == null)
-          return;
+        if (uuid2Remove == null) return;
       }
-
     }
     node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
   }

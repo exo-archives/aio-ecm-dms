@@ -32,7 +32,7 @@ import org.exoplatform.webui.form.validator.EmptyFieldValidator;
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
  *          minh.dang@exoplatform.com
- * Dec 27, 2006  
+ * May 6, 2007  
  * 10:18:56 AM
  */
 @ComponentConfig(

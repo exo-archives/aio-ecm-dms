@@ -55,6 +55,7 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -346,6 +347,7 @@ public class UIWorkingArea extends UIContainer {
       String renameNodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.setIsHidePopup(false) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       if(uiExplorer.nodeIsLocked(renameNodePath, session)) {
@@ -763,7 +765,12 @@ public class UIWorkingArea extends UIContainer {
         }
       }
       Workspace workspace = session.getWorkspace();
-      workspace.move(srcPath, destPath);
+      try {
+        workspace.move(srcPath, destPath);
+      } catch(ArrayIndexOutOfBoundsException e) {
+        throw new MessageException(new ApplicationMessage("UIPopupMenu.msg.bound-exception", null, 
+                                                          ApplicationMessage.WARNING)) ;
+      }
       session.save() ;
       for(int i = 0; i < refList.size(); i ++) {
         Node addRef = refList.get(i) ;

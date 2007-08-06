@@ -332,11 +332,12 @@
 					    					<%if(relations.size() > 0) {%>
 							              <div class="Links">
 															<%
-											          for (rel in relations) {
+											          for(rel in relations) {
 															    String wsName = rel.getSession().getWorkspace().getName() ;
 														      String actionLink ;
 															    if(!uicomponent.isRssLink()) { 
-															      actionLink = uicomponent.event("ChangeNode", rel.getPath()) ;
+															      String path = rel.getPath() + "&workspaceName=" + wsName ;
+															      actionLink = uicomponent.event("ViewNode", path) ;
 														      } else { 
 															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
 														      }

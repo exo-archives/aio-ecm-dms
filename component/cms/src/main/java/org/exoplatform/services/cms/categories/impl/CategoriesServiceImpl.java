@@ -104,7 +104,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   @SuppressWarnings("unused")
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
-    Session session = node.getSession();
+    Session session = getSession(repository) ;
     try {			
       javax.jcr.Property categories = node.getProperty("exo:category");
       Value[] values = categories.getValues();
@@ -112,7 +112,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
         cats.add(session.getNodeByUUID(values[i].getString()));
       }
     } catch (Exception e) {
-      //e.printStackTrace();
+      e.printStackTrace();
     }    
     return cats;
   }

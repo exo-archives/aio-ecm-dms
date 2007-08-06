@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
@@ -25,6 +26,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
+import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -176,6 +178,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             selectedNode.getSession().save() ;                        
           } else {
             Node node = selectedNode.getNode(name) ;
+            if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
+              Object[] args = { name } ;
+              uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.name-is-exist", args, 
+                                                      ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+              return ;
+            }
             Node contentNode = node.getNode(Utils.JCR_CONTENT);
             if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
               if(node.isCheckedOut()) { 
@@ -206,6 +215,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         String fileSize = String.valueOf((((float)(content.length/100))/10));     
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
         uiUploadContent.setUploadValues(arrValues) ;
+        UploadService uploadService = uiForm.getApplicationComponent(UploadService.class) ;
+        UIFormUploadInput uiChild = uiForm.getChild(UIFormUploadInput.class) ;
+        uploadService.removeUpload(uiChild.getUploadId()) ;
         uiManager.setRenderedChild(UIUploadContainer.class) ;
       } catch(Exception e) {
         e.printStackTrace() ;

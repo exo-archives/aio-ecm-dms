@@ -231,23 +231,25 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource() ;
       String name = uiForm.getUIStringInput(FIELD_SCRIPT_NAME).getValue() ;
-      UIScriptList curentList = null ;
+      UIScriptList uiScriptList = null ;
       UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
       if(uiForm.getId().equals(UIECMScripts.SCRIPTFORM_NAME)) {
-        curentList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
+        uiScriptList = uiManager.findComponentById(UIECMScripts.SCRIPTLIST_NAME);
       } else if(uiForm.getId().equals(UICBScripts.SCRIPTFORM_NAME)){
-        curentList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
+        uiScriptList = uiManager.findComponentById(UICBScripts.SCRIPTLIST_NAME);
       }
-      Node node = curentList.getScriptNode(name) ; 
+      Node node = uiScriptList.getScriptNode(name) ; 
       String vesion = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ;
       String baseVesion = node.getBaseVersion().getName() ;
       if(!vesion.equals(baseVesion)) { 
         node.checkout() ;
         node.restore(vesion, true) ;
-        curentList.refresh() ;
+        uiScriptList.refresh() ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(curentList) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList) ;
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 

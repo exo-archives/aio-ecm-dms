@@ -35,6 +35,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -244,16 +245,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public String getNodeType() throws Exception { return null; }
 
   public List<String> getSupportedLocalise() throws Exception {
-    List<String> local = new ArrayList<String>() ;
-    if(currentNode_.hasNode(Utils.LANGUAGES)){
-      Node languages = currentNode_.getNode(Utils.LANGUAGES) ;
-      NodeIterator iter = languages.getNodes() ;
-      while(iter.hasNext()) {
-        local.add(iter.nextNode().getName()) ;
-      }
-      local.add(currentNode_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
-    } 
-    return local ;
+    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
+    return multiLanguageService.getSupportedLanguages(currentNode_) ;
   }
 
   public String getTemplatePath() throws Exception { return null; }

@@ -33,9 +33,9 @@ import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
- * Author : Tran The Trong
- *          trong.tran@exoplatform.com
- * Dec 26, 2006  
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * May 6, 2007  
  * 4:29:08 PM
  */
 @ComponentConfig(

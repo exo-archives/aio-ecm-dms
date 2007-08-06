@@ -32,6 +32,7 @@ public class UIQueriesManager extends UIContainer {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, id) ;
     uiPopup.setWindowSize(600, 500) ;
     UIQueriesForm uiForm = createUIComponent(UIQueriesForm.class, null, null) ;
+    uiForm.setIsAddNew(true) ;
     uiPopup.setUIComponent(uiForm) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;

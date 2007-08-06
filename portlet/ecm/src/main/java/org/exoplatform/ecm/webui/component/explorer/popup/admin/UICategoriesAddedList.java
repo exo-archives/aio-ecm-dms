@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
@@ -16,6 +17,7 @@ import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -26,6 +28,7 @@ import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -90,6 +93,9 @@ public class UICategoriesAddedList extends UIContainer implements UISelector{
       try {
         categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, repository) ;
         uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository)) ;
+      } catch(AccessDeniedException ace) {
+        throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
+                                   null, ApplicationMessage.WARNING)) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }

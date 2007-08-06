@@ -205,6 +205,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }               
       }
     }
+    if(!defaultLanguage.equals(language) && isDefault){
+      Node selectedLangNode = null ;
+      if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
+      setVoteProperty(newLanguageNode, node, selectedLangNode) ;
+      setCommentNode(node, newLanguageNode, selectedLangNode) ;
+    }
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
     if(isDefault && languagesNode.hasNode(language)) languagesNode.getNode(language).remove() ;
     node.save() ;
@@ -254,7 +260,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }
       }
     }
-    
+    if(!defaultLanguage.equals(language) && isDefault){
+      Node selectedLangNode = null ;
+      if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
+      setVoteProperty(newLanguageNode, node, selectedLangNode) ;
+      setCommentNode(node, newLanguageNode, selectedLangNode) ;
+    }
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
     node.save() ;
     node.getSession().save() ;    
@@ -317,7 +328,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }
       }
     }
-    
+    if(!defaultLanguage.equals(language) && isDefault){
+      Node selectedLangNode = null ;
+      if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
+      setVoteProperty(newLanguageNode, node, selectedLangNode) ;
+      setCommentNode(node, newLanguageNode, selectedLangNode) ;
+    }
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
     node.save() ;
     node.getSession().save() ;    
@@ -342,6 +358,34 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return languages;
   }
 
+  private void setVoteProperty(Node newLang, Node node, Node selectedLangNode) throws Exception {
+    if(hasMixin(newLang, "mix:votable")) {
+      newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
+      newLang.setProperty(VOTE_TOTAL_LANG_PROP, node.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+      newLang.setProperty(VOTING_RATE_PROP, node.getProperty(VOTING_RATE_PROP).getLong()) ;
+      newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
+      if(selectedLangNode != null) {
+        node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
+        node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+        node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
+        node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
+      } else {
+        node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ;
+        node.setProperty(VOTE_TOTAL_LANG_PROP, 0) ;
+        node.setProperty(VOTING_RATE_PROP, 0) ;
+      }
+    }
+  }
+  
+  private void setCommentNode(Node node, Node newLang, Node selectedLangNode) throws Exception {
+    if(node.hasNode(COMMENTS)) {
+      node.getSession().move(node.getPath() + "/" + COMMENTS, newLang.getPath() + "/" + COMMENTS) ;
+    }
+    if(selectedLangNode != null && selectedLangNode.hasNode(COMMENTS)) {
+      node.getSession().move(selectedLangNode.getPath() + "/" + COMMENTS, node.getPath() + "/" + COMMENTS) ;
+    }
+  }
+  
   public long getVoteTotal(Node node) throws Exception {
     long voteTotal = 0;
     if(!node.hasNode(LANGUAGES) && node.hasProperty(VOTE_TOTAL_PROP)) {
@@ -396,24 +440,9 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         tempNode.remove() ;
         node.setProperty(EXO_LANGUAGE, language) ;
       } 
-      if(hasMixin(newLang, "mix:votable")) {
-        newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
-        newLang.setProperty(VOTE_TOTAL_LANG_PROP, node.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
-        newLang.setProperty(VOTING_RATE_PROP, node.getProperty(VOTING_RATE_PROP).getLong()) ;
-        newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
-        
-        node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
-        node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
-        node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
-        node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
-      }
+      setVoteProperty(newLang, node, selectedLangNode) ;
       node.setProperty(EXO_LANGUAGE, language) ;
-      if(node.hasNode(COMMENTS)) {
-        node.getSession().move(node.getPath() + "/" + COMMENTS, newLang.getPath() + "/" + COMMENTS) ;
-      }
-      if(selectedLangNode.hasNode(COMMENTS)) {
-        node.getSession().move(selectedLangNode.getPath() + "/" + COMMENTS, node.getPath() + "/" + COMMENTS) ;
-      }
+      setCommentNode(node, newLang, selectedLangNode) ;
       selectedLangNode.remove() ;
       node.save() ;
       node.getSession().save() ;

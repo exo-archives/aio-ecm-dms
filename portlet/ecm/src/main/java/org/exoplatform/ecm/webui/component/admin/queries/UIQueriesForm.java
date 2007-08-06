@@ -63,6 +63,9 @@ public class UIQueriesForm extends UIForm implements UISelector {
   final static public String SQL_QUERY = "select * from exo:article where jcr:path like '/cms/publications/%'" ;
   final static public String XPATH_QUERY = "/jcr:root/cms/publications//element(*, exo:article)" ;
   final static public String[] REG_EXPRESSION = {"[", "]", ":", "&"} ;
+  
+  private boolean isAddNew_ = false ;
+  
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
         addValidator(ECMNameValidator.class)) ;
@@ -90,10 +93,14 @@ public class UIQueriesForm extends UIForm implements UISelector {
     uiPopup.setRendered(false) ;
     uiPopup.setShow(false) ;
   }
-
+  
+  public void setIsAddNew(boolean isAddNew) { isAddNew_ = isAddNew ; }
+  
   public void update(String queryName)throws Exception{
+    isAddNew_ = false ;
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     if(queryName == null) {
+      isAddNew_ = true ; 
       reset() ;
       return ;
     }
@@ -130,12 +137,14 @@ public class UIQueriesForm extends UIForm implements UISelector {
       QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String queryName = uiForm.getUIStringInput(QUERY_NAME).getValue() ;
-      for(Node queryNode : queryService.getSharedQueries(repository,SessionsUtils.getSystemProvider())) {
-        if(queryNode.getName().equals(queryName)) {
-          uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-existing", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+      if(uiForm.isAddNew_) {
+        for(Node queryNode : queryService.getSharedQueries(repository,SessionsUtils.getSystemProvider())) {
+          if(queryNode.getName().equals(queryName)) {
+            uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.name-existing", null, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         }
       }
       if(!Utils.isNameValid(queryName, REG_EXPRESSION)) {
