@@ -151,7 +151,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     }
     uiConfig.getChild(UIPopupWindow.class).setShow(false) ;
     isEdit_ = true ;
-    uiConfig.isNewConfig_ = true ;
+    uiConfig.setNewConfig(true) ;
   }
 
   public static class SaveActionListener extends EventListener<UIDocumentConfig>{
@@ -208,7 +208,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.store() ; 
       container.loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
-      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }  
@@ -223,7 +223,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = true ;
+      uiConfigTabPane.setNewConfig(true)  ;
       uiConfigTabPane.showNewConfigForm(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
@@ -233,7 +233,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
-      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).setNewConfig(false) ;
       UIBrowseContentPortlet uiBCPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCPortlet) ;
     }
@@ -243,7 +243,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIDocumentConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiForm.isEdit_ = false ;
-      uiConfigTabPane.isNewConfig_ = true;
+      uiConfigTabPane.setNewConfig(true);
       uiConfigTabPane.showNewConfigForm(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
@@ -252,7 +252,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
     public void execute(Event<UIDocumentConfig> event) throws Exception {
       UIDocumentConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = true ;
-      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
@@ -264,7 +264,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
       uiForm.isEdit_ = true ;
-      uiConfig.isNewConfig_ = true ;
+      uiConfig.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }
@@ -293,7 +293,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiConfig.initPopupDocumentSelect(uiForm, repo, workspace, jcrPatth) ;
       uiForm.isEdit_ = true ;
-      uiConfig.isNewConfig_ = true ;
+      uiConfig.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
     }
   }

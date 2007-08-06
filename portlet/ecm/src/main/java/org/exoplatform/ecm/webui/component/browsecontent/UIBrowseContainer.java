@@ -54,7 +54,6 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
-import org.exoplatform.webui.core.UIToolbar;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -67,7 +66,6 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfigs(
     {
       @ComponentConfig(
-          //template = "app:/groovy/webui/component/browse/View2.gtmpl",
           events = {
               @EventConfig(listeners = UIBrowseContainer.ChangeNodeActionListener.class),
               @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
@@ -83,31 +81,32 @@ import org.exoplatform.webui.event.EventListener;
       )
     }
 )
-public class UIBrowseContainer extends UIContainer{
-  private boolean isShowPageActon_ = false ;
-  //protected boolean isShowAttachment_ = false ;
-  private boolean isShowCategoryTree_ = true ;
-  protected boolean isShowDocumentDetail_ = false ;
-  private boolean isShowSearchForm_ = false ;
-  private boolean isShowDocumentList_ = false ;
-  protected boolean isShowAllDocument_ = false ;
-  protected boolean isShowDocumentByTag_ = false ;
-  private String tagPath_ = "" ;
-  private BCTreeNode treeRoot_ ;
-  private Node rootNode_  = null ;
-  private Node currentNode_  = null ;
-  private Node selectedTab_  = null ;
-  private String oldTemplate_  ;
-  private int rowPerBlock_ = 6 ;
+public class UIBrowseContainer extends UIContainer {
+  final public static String ROOTNODE = "rootNode" ;
+  final public static String CURRENTNODE = "currentNode" ;
+  final public static String SELECTEDTAB = "selectedTab" ;
+  final public static String ISSHOWCATEGORYTREE = "isShowCategoryTree" ;
+  final public static String ISSHOWSEARCHFORM= "isShowSearchForm" ;
+  final public static String ISSHOWDOCUMENTDETAIL = "isShowDocumentDetail" ;
+  final public static String ISSHOWALLDOCUMENT = "isShowAllDocument" ;
+  final public static String ISSHOWDOCUMENTBYTAG = "isShowDocumentByTag" ;
+  final public static String ISSHOWDOCUMENTLIST = "isShowDocumentList" ;
+  final public static String ISSHOWPAGEACTION = "isShowPageAction" ;
+  final public static String TAGPATH = "tagPath" ;
+  final public static String TREEROOT = "treeRoot" ;
+  final public static String OLDTEMPLATE = "oldTemplate" ;
+  final public static String NODESHISTORY = "nodesHistory" ;
+  final public static String HISTORY = "history" ;
+  final public static String TEMPLATEPATH = "templatePath" ;
+  final public static String TEMPLATEDETAIL = "templateDetail" ;
+  final public static String CATEGORYPATH = "categoryPath" ;
+  final public static String USECASE = "usecase" ;
+  final public static String ROWPERBLOCK = "rowPerBlock" ;
   final public static String KEY_CURRENT = "currentNode" ;
   final public static String KEY_SELECTED = "selectedNode" ;
   final public static String TREELIST = "TreeList" ;
-  protected LinkedList<String> nodesHistory_ = new LinkedList<String>() ;  
-  protected Map<String, Node> history_  ;
-  private String templatePath_ ;
-  private String templateDetail_ ;
-  private String categoryPath_ ;
-  protected String usecase_ ;      
+
+  private Map<String,Object> dataPerWindowIdMap = new HashMap<String, Object>() ;
 
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
@@ -117,11 +116,10 @@ public class UIBrowseContainer extends UIContainer{
     addChild(UIPageIterator.class, "UICBPageIterator", "UICBPageIterator") ;
     addChild(UITagList.class, null, null);
     UICategoryTree uiTree = createUIComponent(UICategoryTree.class, null, null) ;
-    uiTree.setTreeRoot(getRootNode()) ;
     addChild(uiTree) ;
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
-    addChild(UIDocumentDetail.class, null, null).setRendered(false) ;    
+    addChild(UIDocumentDetail.class, null, null).setRendered(false) ;
   }
 
   public void processRender(WebuiRequestContext context) throws Exception {
@@ -146,14 +144,13 @@ public class UIBrowseContainer extends UIContainer{
 
   //TODO maybe need change name of this method
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
-    usecase_ = preferences.getValue(Utils.CB_USECASE, "") ;
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     String repoName = getRepository() ;
     String workspace = getWorkSpace() ;
     ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
-    if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;
+    if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+      setTemplate(viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       Session querySession = null ;
       if(SessionsUtils.isAnonim()) {
@@ -161,14 +158,14 @@ public class UIBrowseContainer extends UIContainer{
       }else {
         querySession = getSessionProvider().getSession(workspace,manageableRepository) ;
       }
-      if(!isShowDocumentByTag_) setPageIterator(getNodeByQuery(-1,querySession)) ;
+      if(!isShowDocumentByTag()) setPageIterator(getNodeByQuery(-1,querySession)) ;
       return ;
     } 
-    if(usecase_.equals(Utils.CB_USE_SCRIPT)) { 
-      templatePath_ = viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;
+    if(getUseCase().equals(Utils.CB_USE_SCRIPT)) { 
+      setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
       String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
-      if(!isShowDocumentByTag_) setPageIterator(getNodeByScript(repoName, scriptName)) ;
+      if(!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName)) ;
       return ;
     }    
     Session session = null ;
@@ -182,24 +179,22 @@ public class UIBrowseContainer extends UIContainer{
         session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
     }
-    if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
-      templatePath_ = 
-        viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;            
-      rootNode_ = (Node)session.getItem(categoryPath) ;
-      currentNode_ = null ;
-      selectedTab_ = null ;
+    if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+      setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;            
+      setRootNode((Node)session.getItem(categoryPath)) ;
+      setCurrentNode(null) ;
+      setSelectedTab(null) ;
       initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
       if(getTemplateName().equals(TREELIST)) {
         if(isEnableToolBar()) initToolBar(true, false, true) ;
         getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
         getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
       }
-      if(!isShowDocumentByTag_) setPageIterator(getSubDocumentList(getSelectedTab())) ;
+      if(!isShowDocumentByTag()) setPageIterator(getSubDocumentList(getSelectedTab())) ;
       return ;
     } 
-    if(usecase_.equals(Utils.CB_USE_DOCUMENT)) {
-      templateDetail_ = 
-        viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath() ;      
+    if(getUseCase().equals(Utils.CB_USE_DOCUMENT)) {
+      setTemplateDetail(viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;      
       String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "") ;
       Node documentNode = null;      
       try{
@@ -212,53 +207,101 @@ public class UIBrowseContainer extends UIContainer{
   }
   public void refreshContent() throws Exception{
     try {
-    if(!isShowPageActon_) { 
-      usecase_ = getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
-      if( isShowDocumentByTag_) {
-        setPageIterator(getDocumentByTag()) ;
-      } else {
-        if(usecase_.equals(Utils.CB_USE_FROM_PATH)) {
-          setPageIterator(getSubDocumentList(getSelectedTab())) ;
-          getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
-        } else if(usecase_.equals(Utils.CB_USE_SCRIPT)) {
-          String scriptName = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, ""); 
-          setPageIterator(getNodeByScript(getRepository(), scriptName)) ;
+      if(!showPageAction()) { 
+        String tempName = getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
+        String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH, "") ;
+        String repoName = getRepository() ;
+        String workspace = getWorkSpace() ;
+        ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
+        if(isShowDocumentByTag()) {
+          setPageIterator(getDocumentByTag()) ;
+        } else {
+          if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+            setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;            
+            setRootNode((Node)getSession().getItem(categoryPath)) ;
+            initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
+            setPageIterator(getSubDocumentList(getSelectedTab())) ;
+            if(getTemplateName().equals(TREELIST)) {
+              if(isEnableToolBar()) initToolBar(true, false, true) ;
+              getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
+              getChild(UICategoryTree.class).buildTree(getSelectedTab().getPath()) ;
+            }
+          } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
+            setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+            if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+            String scriptName = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, ""); 
+            setPageIterator(getNodeByScript(getRepository(), scriptName)) ;
+          }
+          else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+            ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ; 
+            setTemplate(viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+            if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+            Session querySession = null ;
+            if(SessionsUtils.isAnonim()) {
+              querySession = getAnonimProvider().getSession(workspace,manageableRepository) ;
+            }else {
+              querySession = getSessionProvider().getSession(workspace,manageableRepository) ;
+            }
+            setPageIterator(getNodeByQuery(-1, querySession)) ;
+          }
+          else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
+            if(getChild(UIDocumentDetail.class).isValidNode()) {
+              getChild(UIDocumentDetail.class).setRendered(true) ;         
+            } else {
+              getChild(UIDocumentDetail.class).setRendered(false) ;
+              UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+              uiPortlet.getChild(UIPopupAction.class).deActivate() ;
+            } 
+          }
+          if(isShowDocumentDetail()) {
+            if(getChild(UIDocumentDetail.class).isValidNode()) {
+              getChild(UIDocumentDetail.class).setRendered(true) ;         
+            } else {
+              getChild(UIDocumentDetail.class).setRendered(false) ;
+              UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+              uiPortlet.getChild(UIPopupAction.class).deActivate() ;
+            } 
+          }
         }
-        else if(usecase_.equals(Utils.CB_USE_JCR_QUERY)) {
-          setPageIterator(getNodeByQuery(-1, getSession())) ;
-        }
-        else if(usecase_.equals(Utils.USE_DOCUMENT)) {
-         if(getChild(UIDocumentDetail.class).isValidNode()) {
-            getChild(UIDocumentDetail.class).setRendered(true) ;         
-          } else {
-            getChild(UIDocumentDetail.class).setRendered(false) ;
-            UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPortlet.getChild(UIPopupAction.class).deActivate() ;
-          } 
-        }
-        if(isShowDocumentDetail_) {
-          if(getChild(UIDocumentDetail.class).isValidNode()) {
-            getChild(UIDocumentDetail.class).setRendered(true) ;         
-          } else {
-            getChild(UIDocumentDetail.class).setRendered(false) ;
-            UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPortlet.getChild(UIPopupAction.class).deActivate() ;
-          } 
-        }
-      }
-    } 
-    isShowPageActon_ = false ;
+      } 
+      setShowPageAction(false) ;
     } catch (Exception e) {
       e.printStackTrace() ;
       return ;
     }
   }
-
-  public String getTemplate() {
-    if(isShowDocumentDetail_) return templateDetail_ ;
-    return templatePath_ ;
+  public String getUseCase() {
+    return getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+  }
+  protected void setShowPageAction(boolean isShowPage) {
+    dataPerWindowIdMap.put(getWindowId()+ ISSHOWPAGEACTION, isShowPage) ;
+  }
+  protected boolean showPageAction() {
+    if(dataPerWindowIdMap.get(getWindowId()+ ISSHOWPAGEACTION) == null) {
+      setShowPageAction(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId()+ ISSHOWPAGEACTION).toString()) ;
   }
 
+  public String getWindowId() {
+    return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId() ;
+  }
+  public void setTemplate(String temp) { 
+    dataPerWindowIdMap.put(getWindowId()+TEMPLATEPATH, temp);
+  }
+  public String getTemplate() {
+    if(isShowDocumentDetail()) {
+      return getTemlateDetail() ;
+    }
+    return (String)dataPerWindowIdMap.get(getWindowId() + TEMPLATEPATH);
+  }
+
+  protected void setTemplateDetail(String template) {
+    dataPerWindowIdMap.put(getWindowId() + TEMPLATEDETAIL, template) ;
+  }
+  protected String getTemlateDetail() {
+    return (String)dataPerWindowIdMap.get(getWindowId() + TEMPLATEDETAIL) ;
+  }
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
@@ -296,29 +339,65 @@ public class UIBrowseContainer extends UIContainer{
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_COMMENT, "")) ;
   }
   public boolean isCommentAndVote() { return (isShowVoteForm() || isShowCommentForm()) ;}
+
   public boolean isShowVoteForm() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_VOTE, "")) ;
   }
-  public boolean isShowDocumentByTag() {return isShowDocumentByTag_ ;}
-  public void setShowDocumentByTag(boolean isShowByTag) {isShowDocumentByTag_ = isShowByTag;}
-
-  public boolean isShowDocumentDetail() { return isShowDocumentDetail_ ;}
-  public void setShowDocumentDetail(boolean isShowDocument) {isShowDocumentDetail_ = isShowDocument ;}
-  public boolean isShowSearchForm() { return isShowSearchForm_ ;}
-  public void setShowSearchForm(boolean isShowSearch) {isShowSearchForm_ = isShowSearch ;}
-  public boolean isShowCategoryTree() {return isShowCategoryTree_ ;}
-  public void setShowCategoryTree(boolean  isShowCategoryTree) {
-    isShowCategoryTree_ = isShowCategoryTree ;
+  public boolean isShowDocumentByTag() {
+    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTBYTAG) == null) {
+      setShowDocumentByTag(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTBYTAG).toString()) ;
   }
-  public boolean isShowAllDocument() {return isShowAllDocument_ ;}
-  public void setShowAllChildren(boolean isShowAll) { isShowAllDocument_ = isShowAll ;}
-  public void saveOldTemplateType(String templatePath) {oldTemplate_ = templatePath ;}
-  public String getOldTemplate() {return oldTemplate_ ;}
+  public void setShowDocumentByTag(boolean isShowByTag) {
+    dataPerWindowIdMap.put(getWindowId()+ ISSHOWDOCUMENTBYTAG, isShowByTag) ;
+  }
+
+  public boolean isShowDocumentDetail() { 
+    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTDETAIL) == null) {
+      setShowDocumentDetail(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTDETAIL).toString()) ;
+
+  }
+  public void setShowDocumentDetail(boolean isShowDocument) {
+    dataPerWindowIdMap.put(getWindowId()+ ISSHOWDOCUMENTDETAIL, isShowDocument) ;
+  }
+  public boolean isShowSearchForm() { 
+    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWSEARCHFORM) == null) {
+      setShowSearchForm(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWSEARCHFORM).toString()) ;
+  }
+  public void setShowSearchForm(boolean isShowSearch) {
+    dataPerWindowIdMap.put(getWindowId() + ISSHOWSEARCHFORM, isShowSearch) ;
+  }
+  public boolean isShowCategoryTree() {
+    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWCATEGORYTREE) == null) {
+      setShowCategoryTree(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWCATEGORYTREE).toString()) ;
+
+  }
+  public void setShowCategoryTree(boolean  isShowCategoryTree) {
+    dataPerWindowIdMap.put(getWindowId() + ISSHOWCATEGORYTREE, isShowCategoryTree) ;
+  }
+  public boolean isShowAllDocument() {
+    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWALLDOCUMENT) == null) {
+      setShowAllChildren(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWALLDOCUMENT).toString()) ;
+  }
+  public void setShowAllChildren(boolean isShowAll) { 
+    dataPerWindowIdMap.put(getWindowId() + ISSHOWALLDOCUMENT, isShowAll) ;
+  }
   public String getWorkSpace() {
     return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
   }
-  public String getCategoryPath() {return categoryPath_ ;}
-  public void setCategoryPath(String path) {categoryPath_ = path ;}
+  public String getCategoryPath() {return (String)dataPerWindowIdMap.get(getWindowId() + CATEGORYPATH);}
+  public void setCategoryPath(String path) {
+    dataPerWindowIdMap.put(getWindowId() + CATEGORYPATH, path) ;
+  }
 
   public String getQueryStatement() {
     return getPortletPreferences().getValue(Utils.CB_QUERY_STATEMENT, "") ;
@@ -329,14 +408,33 @@ public class UIBrowseContainer extends UIContainer{
   public int getItemPerPage() {
     return Integer.parseInt(getPortletPreferences().getValue(Utils.CB_NB_PER_PAGE, "")) ;
   }
-  public int getRowPerBlock() {return rowPerBlock_ ;}
-  public BCTreeNode getTreeRoot() { return treeRoot_ ;}
-  public void setTreeRoot(Node node) throws Exception { treeRoot_ = new BCTreeNode(node) ;}
+  public int getRowPerBlock() {
+    if(dataPerWindowIdMap.get(getWindowId()+ ROWPERBLOCK) == null) {
+      setRowPerBlock(6) ;
+    }
+    return Integer.parseInt(dataPerWindowIdMap.get(getWindowId()+ ROWPERBLOCK).toString()) ;}
+  public void setRowPerBlock(int number) {
+    dataPerWindowIdMap.put(getWindowId()+ ROWPERBLOCK, number) ;
+  }
+  public BCTreeNode getTreeRoot() { 
+    return (BCTreeNode)dataPerWindowIdMap.get(getWindowId()+ TREEROOT) ;
+  }
+  public void setTreeRoot(Node node) throws Exception { 
+    dataPerWindowIdMap.put(getWindowId()+ TREEROOT, new BCTreeNode(node)) ;
+  }
   public String[] getActions() { return new String[] {"back"} ;}    
 
-  public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
-  public void record(String str) {nodesHistory_.add(str); } 
-
+  @SuppressWarnings("unchecked")
+  public LinkedList<String> getNodesHistory() { 
+    if( dataPerWindowIdMap.get(getWindowId() + NODESHISTORY) == null) {
+      dataPerWindowIdMap.put(getWindowId() + NODESHISTORY, new LinkedList<String>()) ;
+    }
+    return (LinkedList<String>)dataPerWindowIdMap.get(getWindowId() + NODESHISTORY) ;
+  }
+  public void record(String str) {
+    getNodesHistory().add(str) ;
+    dataPerWindowIdMap.put(getWindowId() + NODESHISTORY, getNodesHistory()) ;
+  }
   public Node getNodeByPath(String nodePath) throws Exception{
     Session session = null ;
     ManageableRepository repository = 
@@ -374,19 +472,34 @@ public class UIBrowseContainer extends UIContainer{
     return session ;
   }
   public Node getRootNode() throws Exception {
-    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH, "") ;
-    if(rootNode_ == null) rootNode_ = (Node)getSession().getItem(categoryPath) ;
-    return rootNode_ ;
+    if((Node)dataPerWindowIdMap.get(getWindowId() + ROOTNODE) == null) {
+      String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH, "") ;
+      setRootNode((Node)getSession().getItem(categoryPath)) ;
+    } 
+    return (Node)dataPerWindowIdMap.get(getWindowId() + ROOTNODE) ;
+  }
+  protected void setRootNode(Node node) {
+    dataPerWindowIdMap.put(getWindowId() + ROOTNODE, node) ;
   }
   public Node getCurrentNode() throws Exception{
-    if (currentNode_ == null) currentNode_ = getRootNode() ;
-    return currentNode_ ;
+    if ((Node)dataPerWindowIdMap.get(getWindowId() + CURRENTNODE) == null) {
+      setCurrentNode(getRootNode())  ;
+    }
+    return (Node)dataPerWindowIdMap.get(getWindowId() + CURRENTNODE) ;
+  }
+  public void setCurrentNode(Node node) throws Exception {
+    dataPerWindowIdMap.put(getWindowId() + CURRENTNODE, node) ;
+  }
+  public void setSelectedTab (Node node) { 
+    dataPerWindowIdMap.put(getWindowId() + SELECTEDTAB, node) ;
+  }
+  public Node getSelectedTab() throws Exception {
+    if ((Node)dataPerWindowIdMap.get(getWindowId() + SELECTEDTAB) == null){
+      setSelectedTab(getCurrentNode()) ;
+    }  
+    return (Node)dataPerWindowIdMap.get(getWindowId() + SELECTEDTAB) ;
   }
 
-  public Node getSelectedTab() throws Exception {
-    if (selectedTab_ == null) selectedTab_ = getCurrentNode() ;
-    return selectedTab_ ;
-  }
   protected boolean isCategories(NodeType nodeType) {
     for(String type : Utils.CATEGORY_NODE_TYPES) {
       if(nodeType.getName().equals(type)) return true ;
@@ -403,10 +516,16 @@ public class UIBrowseContainer extends UIContainer{
     return false ;
   }
 
-  public void setCurrentNode(Node node) throws Exception {currentNode_ = node ;}
-  public void setSelectedTab (Node node) { selectedTab_ = node ;}
-  public boolean isShowDocumentList() {return isShowDocumentList_ ;}
-  public void setShowDocumentList(boolean isShowDocumentList){isShowDocumentList_ = isShowDocumentList ;}
+  public boolean isShowDocumentList() {
+    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTLIST) == null) {
+      setShowDocumentList(false) ;
+    }
+    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTLIST).toString()) ;
+  }
+  public void setShowDocumentList(boolean isShowDocumentList){
+    dataPerWindowIdMap.put(getWindowId() + ISSHOWDOCUMENTLIST, isShowDocumentList) ;
+  }
+
   public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
 
   public String getOwner(Node node) throws Exception{
@@ -434,7 +553,6 @@ public class UIBrowseContainer extends UIContainer{
   public void viewDocument(Node docNode ,boolean hasDocList) throws Exception {
     setShowDocumentDetail(true) ;
     setShowDocumentList(hasDocList) ;
-    //initToolBar(false, false, false) ;
     UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
     uiDocumetDetail.setNode(docNode) ;
     uiDocumetDetail.setRendered(true) ;
@@ -620,7 +738,7 @@ public class UIBrowseContainer extends UIContainer{
     List<String> history = new ArrayList<String>() ;
     if(!isRootNode()) {
       Node parent = getCurrentNode().getParent() ;
-      if(!parent.getPath().equals(rootNode_.getPath())) content.put("previous", parent.getPath()) ;
+      if(!parent.getPath().equals(getRootNode().getPath())) content.put("previous", parent.getPath()) ;
       history = getHistory(templates, parent) ;
     }
     content.put("history", history) ;
@@ -642,10 +760,10 @@ public class UIBrowseContainer extends UIContainer{
 
   protected void historyBack() throws Exception {
     if(getTemplateName().equals(TREELIST)) {
-      selectedTab_ = null ;
-      currentNode_ = getNodeByPath(nodesHistory_.removeLast());
+      setSelectedTab(null) ;
+      setCurrentNode(getNodeByPath(getNodesHistory().removeLast())) ;
     } else {
-      selectedTab_  = getNodeByPath(nodesHistory_.removeLast());
+      setSelectedTab(getNodeByPath(getNodesHistory().removeLast()))  ;
     }
   }
 
@@ -714,9 +832,11 @@ public class UIBrowseContainer extends UIContainer{
     return folksonomyService.getAllTags(repository) ;
   }
 
-  public String getTagPath() {return tagPath_ ;}
+  public String getTagPath() {return (String)dataPerWindowIdMap.get(getWindowId() + TAGPATH) ;}
 
-  public void setTagPath(String tagName) {tagPath_ = tagName ;}
+  public void setTagPath(String tagName) {
+    dataPerWindowIdMap.put(getWindowId() + TAGPATH, tagName) ;
+  }
 
   public List<Node> getDocumentByTag()throws Exception {
     String repository = getRepository() ;
@@ -744,7 +864,6 @@ public class UIBrowseContainer extends UIContainer{
       setCurrentNode(selectNode.getParent()) ;
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
-    // loadPortletConfig(getPortletPreferences()) ;
   }
 
   @SuppressWarnings("unchecked")
@@ -766,11 +885,17 @@ public class UIBrowseContainer extends UIContainer{
     return subDocumentList ;
   }
 
+  @SuppressWarnings("unchecked")
+  protected Map<String, Node>  getHistory() {
+    if(dataPerWindowIdMap.get(getWindowId() + HISTORY) == null)
+      dataPerWindowIdMap.put(getWindowId() + HISTORY, new HashMap<String, Node>()) ;
+    return (Map<String, Node>) dataPerWindowIdMap.get(getWindowId() + HISTORY) ;
+  }
   public void storeHistory() throws Exception {
-    if(history_ == null) history_ = new HashMap<String, Node>() ;
-    history_.clear() ;
-    history_.put(KEY_CURRENT, getCurrentNode());
-    history_.put(KEY_SELECTED, getSelectedTab());
+    getHistory().clear() ;
+    getHistory().put(KEY_CURRENT, getCurrentNode());
+    getHistory().put(KEY_SELECTED, getSelectedTab());
+    dataPerWindowIdMap.put(getWindowId() + HISTORY,getHistory()) ;
   }
 
   public String getImage(Node node) throws Exception {
@@ -801,9 +926,8 @@ public class UIBrowseContainer extends UIContainer{
         response.setWindowState(WindowState.MAXIMIZED);
       }
       UIBrowseContainer uiContainer = event.getSource() ;
-      uiContainer.isShowDocumentDetail_ = false ;
-      //uiContainer.isShowDocumentByTag_ = false ;
-      uiContainer.isShowAllDocument_ = false ;
+      uiContainer.setShowDocumentDetail(false) ;
+      uiContainer.setShowAllChildren(false) ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
 
@@ -827,8 +951,8 @@ public class UIBrowseContainer extends UIContainer{
         ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
         String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
-        uiContainer.templateDetail_ = vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
-        .getNode(detailTemplateName).getPath()  ;
+        uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
+            .getNode(detailTemplateName).getPath())  ;
         uiContainer.viewDocument(selectNode, true) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
         return ;
@@ -849,33 +973,21 @@ public class UIBrowseContainer extends UIContainer{
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
 
-      if(uiContainer.isShowDocumentByTag_ && uiContainer.isShowDocumentDetail_) {
+      if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
       } else {
-        uiContainer.isShowDocumentByTag_ = false ;
+        uiContainer.setShowDocumentByTag(false) ;
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
-        if(uiContainer.usecase_.equals(Utils.CB_USE_FROM_PATH) && uiContainer.history_ != null) {
-          uiContainer.setCurrentNode(uiContainer.history_.get(UIBrowseContainer.KEY_CURRENT)) ;
-          uiContainer.setSelectedTab(uiContainer.history_.get(UIBrowseContainer.KEY_SELECTED)) ;
-          uiContainer.history_.clear() ;
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH) && uiContainer.getHistory() != null) {
+          uiContainer.setCurrentNode(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT)) ;
+          uiContainer.setSelectedTab(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED)) ;
+          uiContainer.getHistory().clear() ;
         }
-        //uiContainer.loadPortletConfig(uiContainer.getPortletPreferences()) ; 
       }
-      /* if(uiContainer.isShowDocumentByTag()) uiContainer.setShowDocumentByTag(false) ;
-      if(uiContainer.isShowDocumentDetail()) {
-        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
-        uiContainer.setShowDocumentDetail(false) ;
-        uiDocumentDetail.setRendered(false) ;
-      }
-      if(uiContainer.isShowAllDocument()) uiContainer.setShowAllChildren(false) ;
-      if(!uiContainer.isShowDocumentByTag_){
-      }
-       */
-      //if(uiContainer.treeRoot_ != null) uiContainer.buildTree(uiContainer.getCurrentNode().getPath()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
@@ -922,9 +1034,9 @@ public class UIBrowseContainer extends UIContainer{
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
-      uiContainer.isShowDocumentDetail_ = false ;
-      uiContainer.isShowDocumentByTag_ = false ;
-      uiContainer.isShowAllDocument_ = false ;
+      uiContainer.setShowDocumentDetail(false) ;
+      uiContainer.setShowDocumentByTag(false) ;
+      uiContainer.setShowAllChildren(false) ;
       uiContainer.setSelectedTab(null) ;
       uiContainer.setCurrentNode(node) ;
       cateTree.buildTree(node.getPath()) ;
@@ -939,7 +1051,7 @@ public class UIBrowseContainer extends UIContainer{
       uiPageIterator.setCurrentPage(page) ;
       if(uiPageIterator.getParent() == null) return ;
       UIBrowseContainer uiBCContainer = uiPageIterator.getAncestorOfType(UIBrowseContainer.class) ;
-      uiBCContainer.isShowPageActon_ = true ;
+      uiBCContainer.setShowPageAction(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
     }
   }

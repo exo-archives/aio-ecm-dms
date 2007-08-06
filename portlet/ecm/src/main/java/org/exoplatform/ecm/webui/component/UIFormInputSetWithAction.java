@@ -120,4 +120,8 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   public String getLabel() {
     return getId();
   }
+  public UIFormInput addValidator(Class arg0) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

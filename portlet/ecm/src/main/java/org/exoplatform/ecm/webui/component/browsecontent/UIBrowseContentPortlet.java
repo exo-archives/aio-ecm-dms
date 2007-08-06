@@ -10,6 +10,7 @@ import javax.portlet.PortletRequest;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.portletcontainer.ExoPortletRequest;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -32,17 +33,15 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
 
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
+    PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     UIPopupAction popup = addChild(UIPopupAction.class, null, "UICBPopupAction");
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
-    UIBrowseContainer uiContainer = createUIComponent(UIBrowseContainer.class, null, null) ;
-    addChild(uiContainer) ;
+    addChild(UIBrowseContainer.class, null , null) ;
     UIConfigTabPane uiTabPane = createUIComponent(UIConfigTabPane.class, null, null) ;
     if(!isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
-      uiTabPane.isNewConfig_ = true ;
+      uiTabPane.setNewConfig(true) ;
       uiTabPane.showNewConfigForm(true);
-    } else {
-      uiContainer.loadPortletConfig(getPortletPreferences()) ;
-    }
+    } 
     addChild(uiTabPane) ;
     uiTabPane.setRendered(false) ;
   }
@@ -50,7 +49,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {    
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet') ;");
-    PortletRequestContext portletReqContext = (PortletRequestContext)  context ;    
+    PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
@@ -64,7 +63,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       }
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN EDIT  MODE \n");  
-      if(! uiTabPane.isNewConfig_) uiTabPane.getCurrentConfig() ;
+      if(! uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
       uiTabPane.setRendered(true) ;
       uiContainer.setRendered(false) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
@@ -72,7 +71,10 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     }
     super.processRender(app, context) ;
   }
-
+  protected String getWindowId() {
+    PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    return ((ExoPortletRequest)context.getRequest()).getWindowID().getUniqueID() ;
+  }
   protected boolean isExitsRepo(String repoName) {
     RepositoryService rService = getApplicationComponent(RepositoryService.class) ;
     try {
@@ -82,7 +84,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       return false ;
     }
   }
-  
+
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletRequest prequest = pcontext.getRequest() ;

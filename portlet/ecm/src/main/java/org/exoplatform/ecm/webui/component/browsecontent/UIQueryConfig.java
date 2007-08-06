@@ -363,7 +363,7 @@ public class UIQueryConfig extends UIForm {
       uiBrowseContentPortlet.getChild(UIBrowseContainer.class).loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabpane.isNewConfig_ = false ;
+      uiConfigTabpane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }  
@@ -378,7 +378,7 @@ public class UIQueryConfig extends UIForm {
       uiForm.onchangeAction(queryStatuField.getValue(), queryTypeField.getValue(), queryLangField.getValue(), null, null) ;
       uiForm.isEdit_ = true ;
       UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabpane.isNewConfig_ = true ;
+      uiConfigTabpane.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }
@@ -392,7 +392,7 @@ public class UIQueryConfig extends UIForm {
       uiForm.onchangeAction(queryStatuField.getValue(), queryTypeField.getValue(), queryLangField.getValue(), null, null) ;
       uiForm.isEdit_ = true ;
       UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabpane.isNewConfig_ = true ;
+      uiConfigTabpane.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }
@@ -406,7 +406,7 @@ public class UIQueryConfig extends UIForm {
       uiForm.onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), queryLangField.getValue(), null, null) ;
       uiForm.isEdit_ = true ;
       UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabpane.isNewConfig_ = true ;
+      uiConfigTabpane.setNewConfig(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }
@@ -415,7 +415,7 @@ public class UIQueryConfig extends UIForm {
     public void execute(Event<UIQueryConfig> event) throws Exception {
       UIQueryConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = true ;
+      uiConfigTabPane.setNewConfig(true) ;
       uiConfigTabPane.showNewConfigForm(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
@@ -426,7 +426,7 @@ public class UIQueryConfig extends UIForm {
       UIQueryConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiConfigTabPane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }
@@ -435,7 +435,7 @@ public class UIQueryConfig extends UIForm {
       UIQueryConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiForm.isEdit_ =  false ;
-      uiConfigTabPane.isNewConfig_ = true;
+      uiConfigTabPane.setNewConfig(true);
       uiConfigTabPane.showNewConfigForm(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
@@ -445,7 +445,7 @@ public class UIQueryConfig extends UIForm {
       UIQueryConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = true ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiConfigTabPane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }

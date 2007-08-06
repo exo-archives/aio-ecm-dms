@@ -5,7 +5,9 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -29,21 +31,28 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/browse/UICategoryTree.gtmpl",
     events = {
-      @EventConfig(listeners = UICategoryTree.SelectActionListener.class)
+        @EventConfig(listeners = UICategoryTree.SelectActionListener.class)
     }
 )
 public class UICategoryTree extends UIComponent {
-  private BCTreeNode treeRoot_;
+  final public static String TREEROOT = "treeRoot" ;
+  Map<String, Object> dataPerWindowId = new HashMap<String, Object>() ;
+
   public UICategoryTree() { }
-  
-  public BCTreeNode getTreeRoot() { return treeRoot_ ;}
-  public void setTreeRoot(Node node) throws Exception { treeRoot_ = new BCTreeNode(node) ;}
+  protected String getWindowId() {return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId();}
+
+  public BCTreeNode getTreeRoot() { 
+    return (BCTreeNode)dataPerWindowId.get(getWindowId() + TREEROOT);
+  }
+  public void setTreeRoot(Node node) throws Exception { 
+    dataPerWindowId.put(getWindowId()+ TREEROOT, new BCTreeNode(node)) ;
+  }
   public Node getRootNode() throws Exception {return getAncestorOfType(UIBrowseContainer.class).getRootNode() ;}
 
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
   }
-  
+
   protected boolean isCategories(NodeType nodeType) {
     for(String type : Utils.CATEGORY_NODE_TYPES) {
       if(nodeType.getName().equals(type)) return true ;
@@ -60,9 +69,9 @@ public class UICategoryTree extends UIComponent {
     return nodes ;
   }
   public void buildTree(String path) throws Exception {
-    treeRoot_.getChildren().clear() ;
-    String[] arr = path.replaceFirst(treeRoot_.getPath(), "").split("/") ;
-    BCTreeNode temp = treeRoot_ ;
+    getTreeRoot().getChildren().clear() ;
+    String[] arr = path.replaceFirst(getTreeRoot().getPath(), "").split("/") ;
+    BCTreeNode temp = getTreeRoot() ;
     for(String nodeName : arr) {
       if(nodeName.length() == 0) continue ;
       temp.setChildren(getCategoryList(temp.getNode())) ;
@@ -83,9 +92,9 @@ public class UICategoryTree extends UIComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
-      uiContainer.isShowDocumentDetail_ = false ;
-      uiContainer.isShowDocumentByTag_ = false ;
-      uiContainer.isShowAllDocument_ = false ;
+      uiContainer.setShowDocumentDetail(false)  ;
+      uiContainer.setShowDocumentByTag(false)  ;
+      uiContainer.setShowAllChildren(false) ;
       uiContainer.setSelectedTab(null) ;
       uiContainer.setCurrentNode(node) ;
       cateTree.buildTree(node.getPath()) ;

@@ -169,7 +169,7 @@ public class UIScriptConfig extends UIForm {
       uiBrowseContentPortlet.getChild(UIBrowseContainer.class).loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabpane.isNewConfig_ = false ;
+      uiConfigTabpane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
   }  
@@ -178,7 +178,7 @@ public class UIScriptConfig extends UIForm {
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = true ;
+      uiConfigTabPane.setNewConfig(true) ;
       uiConfigTabPane.showNewConfigForm(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
@@ -187,7 +187,7 @@ public class UIScriptConfig extends UIForm {
     public void execute(Event<UIScriptConfig> event) throws Exception {
       UIScriptConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
-      uiForm.getAncestorOfType(UIConfigTabPane.class).isNewConfig_ = false ;
+      uiForm.getAncestorOfType(UIConfigTabPane.class).setNewConfig(false) ;
       UIConfigTabPane uiConfigTabpane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabpane) ;
     }
@@ -197,7 +197,7 @@ public class UIScriptConfig extends UIForm {
       UIScriptConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiForm.isEdit_ =  false ;
-      uiConfigTabPane.isNewConfig_ = true;
+      uiConfigTabPane.setNewConfig(true);
       uiConfigTabPane.showNewConfigForm(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
@@ -207,7 +207,7 @@ public class UIScriptConfig extends UIForm {
       UIScriptConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = true ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfigTabPane.isNewConfig_ = false ;
+      uiConfigTabPane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane) ;
     }
   }

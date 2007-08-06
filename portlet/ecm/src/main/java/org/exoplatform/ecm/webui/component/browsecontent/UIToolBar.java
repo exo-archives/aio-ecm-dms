@@ -111,7 +111,7 @@ public class UIToolBar extends UIContainer {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiToolBar = event.getSource() ;
       UIBrowseContainer uiContainer = uiToolBar.getAncestorOfType(UIBrowseContainer.class) ;
-      if(uiContainer.isShowDocumentDetail_) {
+      if(uiContainer.isShowDocumentDetail()) {
         UIApplication uiApp = uiToolBar.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.back-view-search", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
