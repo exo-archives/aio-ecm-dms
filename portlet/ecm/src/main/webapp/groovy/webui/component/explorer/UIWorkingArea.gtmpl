@@ -15,20 +15,22 @@
 
 <div class="UIWorkingArea" id="UIWorkingArea">
   <%
-  	  uicomponent.renderChild(UIRightClickPopupMenu.class) ;
-		  String style = "" ;
-		  
-		  if( uicomponent.isShowSideBar() ) {
-		    style = "margin-left: 224px;"
-		    println "<div style=\"float: left; width: 224px;\">" ;
-		  	uicomponent.renderChild(UISideBar.class) ; 
-		  	println "</div>" ;
-		  }
-	  %>
+	  uicomponent.renderChild(UIRightClickPopupMenu.class) ;
+	  String style = "" ;
+
+	  if( uicomponent.isShowSideBar() ) {
+	    style = "margin-left: 224px;"
+	    println "<div style=\"float: left; width: 224px;\">" ;
+	  	uicomponent.renderChild(UISideBar.class) ; 
+	  	println "</div>" ;
+	  }
+	%>
   <div style="$style">
-    <div class="UIResizableBlock" style="float: right; overflow: auto; width: 100%; height: 320px;">
-    	<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
-	  </div>
-    <div style="clear: right; height: 0px;"><span></span></div>
+    <div style="float: right; width: 100%;">
+			<div class="UIResizableBlock" style="overflow: auto; width: 100%; height: 320px;">
+				<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
+			</div>
+    </div>
 	</div>
+	<div style="clear: right; height: 0px;"><span></span></div>
 </div>
