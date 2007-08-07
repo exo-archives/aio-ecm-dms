@@ -10,8 +10,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import javax.jcr.nodetype.NodeType;
-
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
