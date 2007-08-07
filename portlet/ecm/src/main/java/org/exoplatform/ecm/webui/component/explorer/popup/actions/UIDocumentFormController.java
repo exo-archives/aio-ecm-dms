@@ -13,8 +13,6 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -55,6 +53,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
   
   public List<SelectItemOption<String>> getListFileType() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
+    List<String> nodeTypes = new ArrayList<String>() ;
     UISelectDocumentForm uiSelectForm = getChild(UISelectDocumentForm.class) ;
     UIFormSelectBox uiSelectBox = uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT) ;
     boolean hasDefaultDoc = false ;
@@ -83,7 +82,10 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
               hasDefaultDoc = true ;
             }
             String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
-            options.add(new SelectItemOption<String>(label, nodeTypeName));          
+            if(!nodeTypes.contains(nodeTypeName)) {
+              options.add(new SelectItemOption<String>(label, nodeTypeName));
+              nodeTypes.add(nodeTypeName) ;
+            }
             isCanCreateDocument = true ;          
           }
         }      
@@ -97,7 +99,10 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
                     hasDefaultDoc = true ;
                   }
                   String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
-                  options.add(new SelectItemOption<String>(label, nodeTypeName));                
+                  if(!nodeTypes.contains(nodeTypeName)) {
+                    options.add(new SelectItemOption<String>(label, nodeTypeName));
+                    nodeTypes.add(nodeTypeName) ;
+                  }
                   isCanCreateDocument = true ;
                   break;
                 }

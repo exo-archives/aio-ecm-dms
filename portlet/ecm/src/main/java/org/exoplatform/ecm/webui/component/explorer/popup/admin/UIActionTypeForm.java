@@ -89,18 +89,36 @@ public class UIActionTypeForm extends UIForm {
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
       String repository = uiActionType.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
+      UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
       try {
-        templateService.getTemplatePathByUser(true, actionType, userName, repository) ;
-      } catch(PathNotFoundException e) {
-        UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
+        String templatePath = templateService.getTemplatePathByUser(true, actionType, userName, repository) ;
+        if(templatePath == null) {
+          Object[] arg = { actionType } ;
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.access-denied", arg, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          actionType = "exo:sendMailAction" ;
+          uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
+          UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
+          UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
+          uiActionForm.createNewAction(uiExplorer.getCurrentNode(), actionType, true) ;
+          uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
+          return ;
+        }
+      } catch(PathNotFoundException path) {
         Object[] arg = { actionType } ;
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         actionType = "exo:sendMailAction" ;
         uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
         UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
+        UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
+        uiActionForm.createNewAction(uiExplorer.getCurrentNode(), actionType, true) ;
         uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
-      }
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
+      } 
       UIActionContainer uiActionContainer = uiActionType.getParent() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
       uiActionForm.createNewAction(uiExplorer.getCurrentNode(), actionType, true) ;

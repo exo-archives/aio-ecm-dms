@@ -100,7 +100,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     if (nodeTypeName_ != null) {
       try {
         dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repository_);
-      } catch (Exception e){}      
+      } catch (Exception e){
+        e.printStackTrace() ;
+      }      
     }
     return dialogPath ;    
   }
