@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import javax.jcr.Node;
+import javax.jcr.lock.LockException;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -42,13 +44,13 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
     UIDocumentDetail uiDocumentDetail = uiBCContainer.findFirstComponentOfType(UIDocumentDetail.class) ;
     return uiDocumentDetail.node_;
   }
- 
+
   public double getRating() throws Exception {
     return  getDocument().getProperty("exo:votingRate").getDouble();
   }
 
   public void activate() throws Exception { }
-  
+
   public void deActivate() throws Exception { }
 
   static  public class VoteActionListener extends EventListener<UICBVoteForm> {
@@ -61,15 +63,34 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
       long objId = Long.parseLong(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiForm.getApplicationComponent(VotingService.class) ;
       String language = uiDocumentDetail.getLanguage() ;
-      if(language == null && uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)) {
-        language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getValue().getString() ;
+      Node currentDoc = uiForm.getDocument() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      if(language == null && currentDoc.hasProperty(Utils.EXO_LANGUAGE)) {
+        language = currentDoc.getProperty(Utils.EXO_LANGUAGE).getValue().getString() ;
       }
-      votingService.vote(uiForm.getDocument(), objId, userName, language) ;
+      try {
+        votingService.vote(currentDoc, objId, userName, language) ;
+      } catch (LockException le) {
+        uiApp.addMessage(new ApplicationMessage("UICBVoteForm.msg.locked-doc", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UICBVoteForm.msg.versioning-doc", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (Exception e) {
+        uiApp.addMessage(new ApplicationMessage("UICBVoteForm.msg.error-vote", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
     }
   }
- 
+
   static  public class CancelActionListener extends EventListener<UICBVoteForm> {
     public void execute(Event<UICBVoteForm> event) throws Exception {
       event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;

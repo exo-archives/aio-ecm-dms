@@ -147,9 +147,10 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
-      if(!container.isShowDocumentDetail()) {
+      if(!container.isShowDocumentDetail() || !uiDocument.isValidNode() ) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
         return ;
       }
       if(!uiDocument.node_.isNodeType("mix:votable")) {
@@ -170,6 +171,7 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
     }
   }  
   static public class CommentActionListener extends EventListener<UIToolBar> {
@@ -178,10 +180,11 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
-      if(!container.isShowDocumentDetail()) {
+      if(!container.isShowDocumentDetail() || !uiDocument.isValidNode()) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
         return ;
       } 
       if(!uiDocument.node_.isNodeType("mix:commentable")) {
@@ -204,6 +207,7 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
     }
   }  
 }

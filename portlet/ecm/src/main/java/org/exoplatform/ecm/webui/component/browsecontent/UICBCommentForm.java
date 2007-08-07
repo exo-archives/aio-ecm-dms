@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 import javax.jcr.Node;
+import javax.jcr.lock.LockException;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -69,7 +71,7 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       uiPopupAction.deActivate() ;
     }
   }  
-  
+
   public void activate() throws Exception { }
   public void deActivate() throws Exception { }
 
@@ -84,21 +86,36 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocumentDetail = uiBCContainer.getChild(UIDocumentDetail.class) ;
-      try {
-        String language = uiDocumentDetail.getLanguage() ;
-        if(DEFAULT_LANGUAGE.equals(language)) { 
-          if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
-            uiForm.getDocument().addMixin("mix:i18n") ;
-            uiForm.getDocument().save() ;
-            language = DEFAULT_LANGUAGE ;
-          } else {
-            language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString() ;
-          }
+      Node currentDoc = uiForm.getDocument() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      String language = uiDocumentDetail.getLanguage() ;
+      if(DEFAULT_LANGUAGE.equals(language)) { 
+        if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
+          currentDoc.addMixin("mix:i18n") ;
+          currentDoc.save() ;
+          language = DEFAULT_LANGUAGE ;
+        } else {
+          language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString() ;
         }
-        CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
+      }
+      CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
+      try {
         commentsService.addComment(uiForm.getDocument(), name, email, website, comment, language) ;
-      } catch (Exception e) {        
-        e.printStackTrace() ;
+      } catch (LockException le) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.versioning-doc", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (Exception e) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.error-vote", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
