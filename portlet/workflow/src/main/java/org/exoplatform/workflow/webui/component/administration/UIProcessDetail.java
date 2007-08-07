@@ -4,7 +4,16 @@
  **************************************************************************/
 package org.exoplatform.workflow.webui.component.administration ;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import javax.jcr.nodetype.NodeType;
+
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
@@ -64,13 +73,27 @@ public class UIProcessDetail extends UIContainer {
     uiMonitorGrid.getUIPageIterator().setPageList(new ObjectPageList(workflowServiceContainer.getProcessInstances(processInstanceId), 10)) ;
   }
 
+  @SuppressWarnings("unchecked")
   public void updateTasksGrid(String id) throws Exception {
     WorkflowServiceContainer workflowServiceContainer = 
       getApplicationComponent(WorkflowServiceContainer.class);
     UIGrid uiGrid = getChildById("UITasksGrid") ;
-    uiGrid.getUIPageIterator().setPageList(new ObjectPageList(workflowServiceContainer.getTasks(id), 10)) ;
+    List<Task> haveEndDateList = new ArrayList<Task>() ;
+    for(Task task : workflowServiceContainer.getTasks(id)) {
+      if(task.getEnd() != null) haveEndDateList.add(task) ;
+    }
+    Collections.sort(haveEndDateList, new DateComparator()) ;
+    uiGrid.getUIPageIterator().setPageList(new ObjectPageList(haveEndDateList, 10)) ;
   }
 
+  static public class DateComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      Date date1 = ((Task) o1).getEnd() ;
+      Date date2 = ((Task) o2).getEnd() ;
+      return date1.compareTo(date2) ;
+    }
+  }
+  
   static  public class ViewActionListener extends EventListener<UIProcessDetail> {
     public void execute(Event<UIProcessDetail> event) throws Exception {
       UIProcessDetail uicomp = event.getSource() ;

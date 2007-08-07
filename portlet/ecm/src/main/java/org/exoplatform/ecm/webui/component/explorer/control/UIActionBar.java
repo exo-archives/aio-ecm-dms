@@ -655,7 +655,7 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-
+      uiExplorer.setIsHidePopup(false) ;
       if(currentNode.equals(uiExplorer.getRootNode())) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version-rootnode", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

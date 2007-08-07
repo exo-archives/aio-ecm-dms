@@ -38,8 +38,8 @@ public class UICategoryManager extends UIContainer implements UIPopupComponent {
   static public class CloseActionListener extends EventListener<UICategoryManager> {
     public void execute(Event<UICategoryManager> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction() ;
       uiExplorer.setIsHidePopup(false) ;
+      uiExplorer.cancelAction() ;
     }
   }
 
