@@ -49,7 +49,9 @@ public class BCTreeNode {
   
   public BCTreeNode getChild(String relPath) throws RepositoryException {
     for(BCTreeNode child : children_) {
-      if(child.getNode().getName().equals(relPath)) return child ;
+      String path = child.getPath() ;
+      String nodeName = path.substring(path.lastIndexOf("/") + 1) ;
+      if(nodeName.equals(relPath)) return child ;
     }
     return null;
   }
