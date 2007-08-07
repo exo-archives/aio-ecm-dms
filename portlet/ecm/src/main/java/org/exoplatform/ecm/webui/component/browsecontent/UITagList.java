@@ -26,14 +26,15 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/browse/UITagList.gtmpl",
     events = {
-      @EventConfig(listeners = UITagList.ViewByTagActionListener.class)
+        @EventConfig(listeners = UITagList.ViewByTagActionListener.class)
     }
 )
 public class UITagList extends UIComponent {
-  private String tagPath_;
 
+  final public static String TAGPATH = "tagPath" ;
+  protected Map<String, Object> dataPerWindowId = new HashMap<String, Object>() ;
   public UITagList() {}
-   
+
   public List<Node> getTagLink() throws Exception {
     String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
@@ -49,9 +50,13 @@ public class UITagList extends UIComponent {
     return tagStyle ;
   }
   public String getRepository() { return getAncestorOfType(UIBrowseContainer.class).getRepository();} 
-  public String getTagPath() {return tagPath_ ;}
-
-  public void setTagPath(String tagName) {tagPath_ = tagName ;}
+  public String getTagPath() {
+    return  (String)dataPerWindowId.get(getWindowId() + TAGPATH);
+  }
+  protected String getWindowId() {return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId();} 
+  public void setTagPath(String tagName) {
+    dataPerWindowId.put(getWindowId() + TAGPATH, tagName) ;
+  }
 
   static public class ViewByTagActionListener extends EventListener<UITagList> {
     public void execute(Event<UITagList> event) throws Exception {

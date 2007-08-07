@@ -1,6 +1,5 @@
 <%
   import org.exoplatform.webui.core.UIComponent ;
-
   String[] beanFields =  uicomponent.getBeanFields() ;
   String[] beanActions =  uicomponent.getBeanActions() ;
   UIComponent uiParent = uicomponent.getParent() ;
@@ -80,9 +79,8 @@
 	  </tbody>
 	</table> 
 	<!--End UIGrid-->
+	<%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
 </div>
-
-<%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
 <% if(uicomponent.getActions() != null) { %>
   <div class="$uicomponent.id">
     <div class="UIAction"> 

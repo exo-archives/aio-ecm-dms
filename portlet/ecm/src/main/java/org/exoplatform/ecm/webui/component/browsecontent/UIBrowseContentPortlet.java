@@ -41,7 +41,9 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     if(!isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
       uiTabPane.setNewConfig(true) ;
       uiTabPane.showNewConfigForm(true);
-    } 
+    } else {
+      getChild(UIBrowseContainer.class).loadPortletConfig(getPortletPreferences()) ;
+    }
     addChild(uiTabPane) ;
     uiTabPane.setRendered(false) ;
   }

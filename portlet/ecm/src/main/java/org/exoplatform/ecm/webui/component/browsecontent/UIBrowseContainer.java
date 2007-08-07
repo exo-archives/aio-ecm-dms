@@ -208,43 +208,14 @@ public class UIBrowseContainer extends UIContainer {
   public void refreshContent() throws Exception{
     try {
       if(!showPageAction()) { 
-        String tempName = getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
-        String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH, "") ;
-        String repoName = getRepository() ;
-        String workspace = getWorkSpace() ;
-        ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
         if(isShowDocumentByTag()) {
           setPageIterator(getDocumentByTag()) ;
         } else {
           if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
-            setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;            
-            setRootNode((Node)getSession().getItem(categoryPath)) ;
-            initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
             setPageIterator(getSubDocumentList(getSelectedTab())) ;
-            if(getTemplateName().equals(TREELIST)) {
-              if(isEnableToolBar()) initToolBar(true, false, true) ;
-              getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
-              getChild(UICategoryTree.class).buildTree(getSelectedTab().getPath()) ;
-            }
           } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
-            setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-            if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-            String scriptName = getPortletPreferences().getValue(Utils.CB_SCRIPT_NAME, ""); 
-            setPageIterator(getNodeByScript(getRepository(), scriptName)) ;
-          }
-          else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
-            ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ; 
-            setTemplate(viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-            if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-            Session querySession = null ;
-            if(SessionsUtils.isAnonim()) {
-              querySession = getAnonimProvider().getSession(workspace,manageableRepository) ;
-            }else {
-              querySession = getSessionProvider().getSession(workspace,manageableRepository) ;
-            }
-            setPageIterator(getNodeByQuery(-1, querySession)) ;
-          }
-          else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
+          } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+          } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
             if(getChild(UIDocumentDetail.class).isValidNode()) {
               getChild(UIDocumentDetail.class).setRendered(true) ;         
             } else {

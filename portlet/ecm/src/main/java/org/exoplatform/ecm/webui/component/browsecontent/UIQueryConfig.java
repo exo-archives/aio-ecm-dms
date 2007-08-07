@@ -69,7 +69,7 @@ public class UIQueryConfig extends UIForm {
   final private static String PERSONAL_QUERY = "Personal Query".intern() ;
   final private static String SHARED_QUERY = "Shared Query".intern() ;
   final private static String EMPTYQUERY = "Query not found".intern() ;
-  private List<String> roles_ = new ArrayList<String>();
+  //private List<String> roles_ = new ArrayList<String>();
   protected boolean isEdit_ = false ;
 
   public UIQueryConfig() throws Exception {
@@ -88,17 +88,6 @@ public class UIQueryConfig extends UIForm {
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
-    OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
-    String username = Util.getPortalRequestContext().getRemoteUser() ;
-    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(username) ;
-    if(memberships != null && memberships.size() > 0){
-      Object[] objects = memberships.toArray() ;      
-      for(int i = 0 ; i < objects.length ; i ++ ){
-        Membership membership = (Membership)objects[i] ;
-        String roles = membership.getMembershipType()+ ":" + membership.getGroupId() ;
-        roles_.add(roles) ;      
-      } 
-    }
   }
 
   public PortletPreferences getPortletPreferences() {    
@@ -261,8 +250,8 @@ public class UIQueryConfig extends UIForm {
     String repository = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ; 
     QueryService qservice = getApplicationComponent(QueryService.class) ;
     SessionProvider provider = SessionsUtils.getSystemProvider();
+    String username = Util.getPortalRequestContext().getRemoteUser() ;
     if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
-      String username = Util.getPortalRequestContext().getRemoteUser() ;
       List<Query> queries = qservice.getQueries(username, repository,provider);
       for(Query queryNode : queries) {
         String path = queryNode.getStoredQueryPath() ;
@@ -270,7 +259,18 @@ public class UIQueryConfig extends UIForm {
           options.add(new SelectItemOption<String>(path.substring(path.lastIndexOf("/")+ 1), path)) ;
       }
     } else {
-      List<Node> queries = qservice.getSharedQueries(queryLanguage, roles_, repository,provider);
+      OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
+      Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(username) ;
+      List<String> roles = new ArrayList<String>() ;
+      if(memberships != null && memberships.size() > 0){
+        Object[] objects = memberships.toArray() ;      
+        for(int i = 0 ; i < objects.length ; i ++ ){
+          Membership membership = (Membership)objects[i] ;
+          String role = membership.getMembershipType()+ ":" + membership.getGroupId() ;
+          roles.add(role) ;    
+        } 
+      }
+      List<Node> queries = qservice.getSharedQueries(queryLanguage, roles, repository,provider);
       for(Node queryNode : queries) {
         options.add(new SelectItemOption<String>(queryNode.getName(), queryNode.getPath())) ;
       }
