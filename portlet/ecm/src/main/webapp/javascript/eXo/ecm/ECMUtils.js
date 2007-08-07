@@ -92,8 +92,15 @@ ECMUtils.prototype.overVote = function(event) {
 	}
 };
 
-ECMUtils.prototype.showHideComponent = function(elemtClicked, elemtId) {
-	var elemt = document.getElementById(elemtId) ;
+/*
+ * minh.js.exo
+ */
+ 
+ECMUtils.prototype.showHideComponent = function(elemtClicked) {
+	var DOMUtil = eXo.core.DOMUtil;
+	var nodeReference = DOMUtil.findAncestorByClass(elemtClicked,  "ShowHideContainer");
+	var elemt = DOMUtil.findFirstDescendantByClass(nodeReference, "div", "ShowHideComponent") ;
+
 	if(elemt.style.display == 'none') {
 		elemtClicked.childNodes[0].style.display = 'none' ;
 		elemtClicked.childNodes[1].style.display = 'block' ;
