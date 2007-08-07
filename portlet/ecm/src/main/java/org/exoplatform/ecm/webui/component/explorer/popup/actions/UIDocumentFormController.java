@@ -35,6 +35,9 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
 
   private String defaultDocument_ ;
   private static String DEFAULT_VALUE = "exo:article" ;
+  private Node currentNode_ ;
+  private String repository_ ;
+  private String workspace_ ;
 
   public UIDocumentFormController() throws Exception {
     addChild(UISelectDocumentForm.class, null, null) ;
@@ -44,19 +47,22 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     addChild(uiDocumentForm) ;    
   }
 
-  public void activate() throws Exception {
+  public void setCurrentNode(Node node) { currentNode_ = node ; }
+  
+  public void setRepository(String repository) { repository_ = repository ; }
+  
+  public void setWorkspace(String workspace) { workspace_ = workspace ; }
+  
+  public List<SelectItemOption<String>> getListFileType() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
     UISelectDocumentForm uiSelectForm = getChild(UISelectDocumentForm.class) ;
     UIFormSelectBox uiSelectBox = uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT) ;
     boolean hasDefaultDoc = false ;
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    Node currentNode = uiExplorer.getCurrentNode() ;
-    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
-    NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
+    NodeTypeManager ntManager = currentNode_.getSession().getWorkspace().getNodeTypeManager() ; 
+    NodeType currentNodeType = currentNode_.getPrimaryNodeType() ; 
     NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List templates = templateService.getDocumentTemplates(repository) ;
+    List templates = templateService.getDocumentTemplates(repository_) ;
     try {
       for(int i = 0; i < templates.size(); i ++){
         String nodeTypeName = templates.get(i).toString() ; 
@@ -76,7 +82,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
               defaultDocument_ = DEFAULT_VALUE ;
               hasDefaultDoc = true ;
             }
-            String label = templateService.getTemplateLabel(nodeTypeName, repository) ;
+            String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
             options.add(new SelectItemOption<String>(label, nodeTypeName));          
             isCanCreateDocument = true ;          
           }
@@ -90,7 +96,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
                     defaultDocument_ = DEFAULT_VALUE ;
                     hasDefaultDoc = true ;
                   }
-                  String label = templateService.getTemplateLabel(nodeTypeName, repository) ;
+                  String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
                   options.add(new SelectItemOption<String>(label, nodeTypeName));                
                   isCanCreateDocument = true ;
                   break;
@@ -110,13 +116,19 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
         uiSelectBox.setValue(defaultDocument_);
       } 
     } catch(Exception e) {
-      e.printStackTrace() ;
+//      e.printStackTrace() ;
     }
+    return options ;
+  }
+  
+  public void init() throws Exception {
     getChild(UIDocumentForm.class).setTemplateNode(defaultDocument_) ;
-    getChild(UIDocumentForm.class).setWorkspace(uiExplorer.getCurrentWorkspace()) ;
-    getChild(UIDocumentForm.class).setStoredPath(currentNode.getPath()) ;
+    getChild(UIDocumentForm.class).setWorkspace(workspace_) ;
+    getChild(UIDocumentForm.class).setStoredPath(currentNode_.getPath()) ;
     getChild(UIDocumentForm.class).resetProperties();
   }
+  
+  public void activate() throws Exception {}
 
   public void deActivate() throws Exception {}
 

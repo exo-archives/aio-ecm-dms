@@ -20,6 +20,6 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UIDocumentWorkspace extends UIContainer {
   public UIDocumentWorkspace() throws Exception {
     addChild(UIDocumentInfo.class, null, null) ;
-    addChild(UISearchResult.class, null, null).setRendered(false) ;
+    addChild(UISearchResult.class, null, "SimpleSearchResult").setRendered(false) ;
   }
 }

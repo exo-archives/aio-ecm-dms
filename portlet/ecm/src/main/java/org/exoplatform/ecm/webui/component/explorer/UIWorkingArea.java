@@ -492,15 +492,12 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String currentNodePath = uiExplorer.getCurrentNode().getPath() ;
       Node node = uiExplorer.getNodeByPath(nodePath, session) ;
       Node parentNode = node.getParent() ;
       try {
         node.remove() ;
-        if(currentNodePath.equals(nodePath)) {
-          uiExplorer.setSelectNode(parentNode) ;
-          uiExplorer.updateAjax(event) ;
-        }
+        uiExplorer.setSelectNode(parentNode) ;
+        uiExplorer.updateAjax(event) ;
         parentNode.save() ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;

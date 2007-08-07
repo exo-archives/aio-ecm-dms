@@ -301,7 +301,18 @@ public class UIActionBar extends UIForm {
         return ;
       }
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UIDocumentFormController.class, null, 700, 550) ;
+      UIDocumentFormController uiController = 
+        event.getSource().createUIComponent(UIDocumentFormController.class, null, null) ;
+      uiController.setCurrentNode(uiExplorer.getCurrentNode()) ;
+      uiController.setRepository(uiExplorer.getRepositoryName()) ;
+      if(uiController.getListFileType().size() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.empty-file-type", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      uiController.init() ;
+      uiPopupAction.activate(uiController, 700, 550) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }

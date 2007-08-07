@@ -363,12 +363,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
       newLang.setProperty(VOTE_TOTAL_LANG_PROP, node.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
       newLang.setProperty(VOTING_RATE_PROP, node.getProperty(VOTING_RATE_PROP).getLong()) ;
-      newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
+      if(node.hasProperty(VOTER_PROP)) {
+        newLang.setProperty(VOTER_PROP, node.getProperty(VOTER_PROP).getValues()) ;
+      }
       if(selectedLangNode != null) {
         node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
         node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
         node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
-        node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
+        if(selectedLangNode.hasNode(VOTER_PROP)) {
+          node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
+        }
       } else {
         node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ;
         node.setProperty(VOTE_TOTAL_LANG_PROP, 0) ;

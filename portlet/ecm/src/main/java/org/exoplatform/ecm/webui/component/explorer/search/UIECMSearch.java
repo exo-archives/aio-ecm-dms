@@ -23,7 +23,7 @@ public class UIECMSearch extends UIContainer implements UIPopupComponent {
     addChild(UISearchContainer.class, null, null) ;
     addChild(UIJCRAdvancedSearch.class, null, null).setRendered(false);
     addChild(UISavedQuery.class, null, null).setRendered(false) ;
-    addChild(UISearchResult.class, null, null).setRendered(false) ;
+    addChild(UISearchResult.class, null, "AdvancedSearchResult").setRendered(false) ;
   }
 
   public void activate() throws Exception {

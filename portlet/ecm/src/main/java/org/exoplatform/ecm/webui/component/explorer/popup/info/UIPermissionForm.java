@@ -34,13 +34,18 @@ import org.exoplatform.webui.form.UIForm;
  * nguyenkequanghung@yahoo.com July 3, 2006 10:07:15 AM Editor : tuanp
  * phamtuanchip@yahoo.de Oct 13, 2006
  */
-@ComponentConfig(lifecycle = UIFormLifecycle.class, template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", events = {
-  @EventConfig(listeners = UIPermissionForm.SaveActionListener.class),
-  @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.ResetActionListener.class),
-  @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.CancelActionListener.class),
-  @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectUserActionListener.class),
-  @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectMemberActionListener.class),
-  @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.AddAnyActionListener.class) })
+@ComponentConfig(
+    lifecycle = UIFormLifecycle.class, 
+    template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", 
+    events = {
+      @EventConfig(listeners = UIPermissionForm.SaveActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.ResetActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.CancelActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectUserActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectMemberActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.AddAnyActionListener.class)
+    }
+)
 
   public class UIPermissionForm extends UIForm implements UISelector {
   final static public String PERMISSION   = "permission";
@@ -121,15 +126,20 @@ import org.exoplatform.webui.form.UIForm;
       UIPermissionForm uiForm = event.getSource();
       UIPermissionManager uiParent = uiForm.getParent();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).getUIStringInput(
           UIPermissionInputSet.FIELD_USERORGROUP).getValue();
       List<String> permsList = new ArrayList<String>();
       List<String> permsRemoveList = new ArrayList<String>();
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       for (String perm : PermissionType.ALL) {
-        if (uiForm.getUIFormCheckBoxInput(perm).isChecked())
-          permsList.add(perm);
-        else
-          permsRemoveList.add(perm);
+        if (uiForm.getUIFormCheckBoxInput(perm).isChecked()) permsList.add(perm);
+        else permsRemoveList.add(perm);
       }
       if(uiForm.getUIFormCheckBoxInput(PermissionType.ADD_NODE).isChecked() ||
           uiForm.getUIFormCheckBoxInput(PermissionType.REMOVE).isChecked() || 

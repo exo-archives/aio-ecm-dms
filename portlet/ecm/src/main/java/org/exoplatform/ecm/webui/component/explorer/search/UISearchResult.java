@@ -26,6 +26,7 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -141,6 +142,8 @@ public class UISearchResult extends UIContainer {
         uiPopup.setShow(true) ;
         return ;
       }      
+      UIComponent uicomp = uiSearchResult.getParent() ;
+      System.out.println("\n\nparent id=====>" + uicomp.getId() + "\n\n");
       UIECMSearch uiECMSearch = uiSearchResult.getParent() ;
       UIViewSearchResult uiView = uiECMSearch.getChild(UIViewSearchResult.class) ;
       if(uiView == null) uiView = uiECMSearch.addChild(UIViewSearchResult.class, null, null) ;

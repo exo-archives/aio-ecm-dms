@@ -39,9 +39,10 @@
           Parameter[] params  ;
           if(customActs.size() > 0) {            
             for(act in customActs) {
+              String actName = act.getProperty("exo:name").getValue().getString() ;
               params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
               strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
-              strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom",nodePath,params) + "\">${act.name}</a></div>" ;
+              strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom",nodePath,params) + "\">$actName</a></div>" ;
               strActs += "</div>" ;
             }            
           }
