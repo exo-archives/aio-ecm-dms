@@ -8,36 +8,60 @@
 			<div class="Content">
 				<%
 					def arr = uicomponent.getDeltas() ;					
+					if(!uicomponent.isCompareable()) {											
+				%>
+				<div class="ContentDetail">						
+					<label><%=_ctx.appRes("UIDiff.label.can-not-compare")%></label>						
+				</div>	
+				<%
+					} else {										
 					if(arr.isEmpty()) {
 				%>
 					<div class="ContentDetail">						
-						<label>
-							<%=_ctx.appRes("UIDiff.label.noChange")%>
-						</label>						
+						<label> <%=_ctx.appRes("UIDiff.label.noChange")%> </label>						
 					</div>	
 					<%
-					} else {
-		    	for(Delta delta in uicomponent.getDeltas()){		    		
-	    	%>
-	    		<div class="ContentDetailLeft">
-		    		<label>
-		    			<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
-		    			<%=uicomponent.getBaseVersionNum()%>
-		    		</label>
-		    		<div class="VersionInfo">
-		    			<%=delta.getRevised()%>
-		    		</div>
-		    	</div>
-		    	<div class="ContentDetailRight">
-		    		<label>
-		    			<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
-		    			<%=uicomponent.getCurrentVersionNum()%>
-		    		</label>		
-		    		<div class="VersionInfo">
-		    			<%=delta.getOriginal()%>
-		    		</div>		
-					</div>		    
-				<%}}%>			      
+						} else {
+					%>
+						<table class="UIGrid">
+							<thead>
+						    <tr>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
+						      	<%=uicomponent.getBaseVersionNum()%>,
+						      	<%=uicomponent.getBaseVersionDate()%>
+						      </th>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
+						      	<%=uicomponent.getCurrentVersionNum()%>,
+						      	<%=uicomponent.getCurrentVersionDate()%>
+						      </th>
+						    </tr>
+						  </thead>
+						  <%  
+						  	for(Delta delta in uicomponent.getDeltas()){		    		
+			    		%>		    		
+		    			<tr> 
+		    				<% 
+		    					if (uicomponent.isDeleteDelta(delta)) {
+		    				%>	    				
+		    				<td class ="DiffDelete" style="background:#FFAAAA"><%=delta.getOriginal()%></td>
+		    				<td class = "DiffEmpty" style="background:#CCCCCC"><%=delta.getRevised()%></td>		    					    					    						    			
+		    				<% 
+		    					} else if(uicomponent.isAddDelta(delta)) { 
+		    				%>
+		    				<td class = "DiffEmpty" style="background:#CCCCCC"><%=delta.getOriginal()%></td>
+		    				<td class = "DiffAdd" style="background:#AAFFAA"><%=delta.getRevised()%></td>		    					    					    						    			
+		    				<% 
+		    					} else {	    					
+		    				%>
+		    				<td class = "DiffModify" style="background:#FFFF77"><%=delta.getOriginal()%></td>
+		    				<td class = "DiffModify" style="background:#FFFF77"><%=delta.getRevised()%></td>		    					    					    						    			
+		    				<% } %>	    				
+		    			</tr>
+		    			<% } %>					  					  
+						</table>
+					<% } } %>			    	
 			</div>
 		</div>
 	</div>

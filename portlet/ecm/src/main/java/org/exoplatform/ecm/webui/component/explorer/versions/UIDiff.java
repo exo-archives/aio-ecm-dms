@@ -3,13 +3,17 @@
  * Please look at license.txt in info directory for more license detail.   *
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.versions;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.services.document.DocumentReaderService;
 import org.exoplatform.services.document.diff.AddDelta;
 import org.exoplatform.services.document.diff.ChangeDelta;
@@ -33,6 +37,7 @@ public class UIDiff extends UIComponent {
 
   private Version baseVersion_ ;
   private Version version_ ;
+  private boolean versionCompareable_ = true ;
 
   public void setVersions(Version baseVersion, Version version)
   throws Exception {
@@ -52,28 +57,45 @@ public class UIDiff extends UIComponent {
           DocumentReaderService readerService = getApplicationComponent(DocumentReaderService.class) ;
           try{
             return readerService.getDocumentReader(mimeType).
-                    getContentAsText(content.getProperty("jcr:data").getStream()) ;
+            getContentAsText(content.getProperty("jcr:data").getStream()) ;
           }catch (Exception e) {
+            versionCompareable_ = false ;
           }         
         }
       }
     }
     return null ;
   }
+
   public String getBaseVersionNum() throws Exception {return  baseVersion_.getName() ;}
   public String getCurrentVersionNum() throws Exception {return version_.getName() ;}
 
+  public String getBaseVersionDate() throws Exception {    
+    return formatDate(baseVersion_.getCreated()) ; 
+  }
+
+  public String getCurrentVersionDate() throws Exception {
+    return formatDate(version_.getCreated()) ;
+  }
+
+  private String formatDate(Calendar calendar) {
+    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    return dateFormat.format(calendar.getTime()) ;
+  }
+
+  public boolean isCompareable() { return versionCompareable_ ; }
+
   public List<Delta> getDeltas() throws Exception {
-    List<Delta> deltas = new ArrayList<Delta>();
+    List<Delta> deltas = new ArrayList<Delta>();    
     String previousText = getText(version_.getNode("jcr:frozenNode"));
     String currentText = getText(baseVersion_.getNode("jcr:frozenNode"));
     if((previousText != null)&&(currentText != null)) {
       String lineSeparator = DiffService.NL;
       Object[] orig = StringUtils.split(previousText, lineSeparator);
       Object[] rev = StringUtils.split(currentText, lineSeparator);
-      DiffService diffService = getApplicationComponent(DiffService.class) ;
-      Revision revision = diffService.diff(orig, rev);
-      for (int i = 0; i < revision.size(); i++) {
+      DiffService diffService = getApplicationComponent(DiffService.class) ;      
+      Revision revision = diffService.diff(orig, rev);      
+      for (int i = 0; i < revision.size(); i++) {        
         deltas.add(revision.getDelta(i));        
       }
     }
