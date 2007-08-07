@@ -608,8 +608,10 @@ public class UIBrowseContainer extends UIContainer {
         } else {
           if(isCategories(child.getPrimaryNodeType())) {
             Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates) ;
-            content.put(child.getName(), childOfSubCategory) ;
-            subCategoryList.add(child.getPath()) ;
+            String path = child.getPath() ;
+            String keyPath = path.substring(path.lastIndexOf("/") + 1) ;
+            content.put(keyPath, childOfSubCategory) ;
+            subCategoryList.add(path) ;
           }
         }
       }
@@ -666,8 +668,10 @@ public class UIBrowseContainer extends UIContainer {
                 false, subCategoryDoc.size(), templates)) ;
             childOfSubCategory.put("doc", subCategoryDoc) ;
             childOfSubCategory.put("sub", subCategoryCat) ;
-            content.put(childNode.getName(), childOfSubCategory) ;
-            subCategoryList.add(childNode.getPath()) ;
+            String path = childNode.getPath() ;
+            String keyPath = path.substring(path.lastIndexOf("/") + 1) ;
+            content.put(keyPath, childOfSubCategory) ;
+            subCategoryList.add(path) ;
           } 
         }
       }
@@ -901,8 +905,7 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.setShowAllChildren(false) ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
-
-      Node selectNode = uiContainer.getNodeByPath(objectId) ;      
+      Node selectNode = uiContainer.getNodeByPath(objectId) ;   
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;
@@ -935,6 +938,7 @@ public class UIBrowseContainer extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
+      System.out.println("\n\n selectNode" + selectNode.getPath());
       uiContainer.changeNode(selectNode) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }

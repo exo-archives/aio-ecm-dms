@@ -109,7 +109,9 @@
                 for(String tab in tabList) {
                   String className = "CBNormalTab" ;
                   String tabName = tab.substring(tab.lastIndexOf("/") + 1) ;
-                  if(tabName.equals(selectedTab.getName())) className = "CBSelectedTab" ;
+                  String path = selectedTab.getPath() ;
+                  String name = path.substring(path.lastIndexOf("/") + 1) ;
+                  if(tabName.equals(name)) className = "CBSelectedTab" ;
               %>
                   <div class="UITab">
                     <div class="$className"> 

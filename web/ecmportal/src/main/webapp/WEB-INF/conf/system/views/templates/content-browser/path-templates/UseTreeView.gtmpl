@@ -6,20 +6,6 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UICategoryTree ;
   import javax.jcr.Node;
   BCTreeNode treeNode = uicomponent.getTreeRoot() ;  
-	public void writeNodes(List nodes, int level) {	  
-	  for(node in nodes) {
-	    String actionTreeLink = "" ;
-	    actionTreeLink = uicomponent.event("Select",node.getPath()) ;
-	    String styleTree =  "CategoryTreeLabel" ;
-	    String icon = uicomponent.getIcons(node.getNode(),"16x16Icon") ;
-	    if(node.isExpanded()) styleTree = "CategorySelectLabel" ;
-	    println "<div class=\"ParentSupMenu\" style=\"margin-left: ${level * 15}px;\">" ;
-	    println "<div class=\"SelectIcon SelectFolder16x16Icon \"><span></span></div>" ;
-      println "<div class=\""+styleTree+"\"> <a href=\"" + actionTreeLink + "\">"+ node.getName()+ " </a></div>" ;
-      println "</div>" ;
-      if(node.getChildrenSize() > 0) writeNodes(node.getChildren(), level + 1) ;
-    }
-  }
   String componentName = uicomponent.getName() ;
   def content = uicomponent.getTreeContent() ;                  
   def subCategoryList = content.get("subCategoryList") ;
