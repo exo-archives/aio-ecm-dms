@@ -362,6 +362,11 @@
   width: 180px;
 }
 
+.UIJCRExplorerPortlet .UISaveQueryForm .UIAction {
+  width: 180px;
+  padding-left: 100px;
+}
+
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*############################## -- BEGIN UIFolderForm -- ##############################*/

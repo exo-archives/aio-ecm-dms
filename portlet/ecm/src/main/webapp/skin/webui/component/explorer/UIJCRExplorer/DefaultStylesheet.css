@@ -576,6 +576,15 @@
   width: 170px;
 }
 
+.UIJCRExplorerPortlet .UISaveQueryForm  {
+ 	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UISaveQueryForm .UIAction {
+  width: 170px;
+  padding-left: 100px;
+}
+
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {
@@ -702,6 +711,10 @@
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
   width: 160px;	
   padding-right: 15px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
+	overflow: hidden;
 }
 
 /*================================.UIExportNode=================================*/

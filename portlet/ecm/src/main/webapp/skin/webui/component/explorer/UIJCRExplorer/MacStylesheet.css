@@ -535,8 +535,8 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout a {
-  margin: 2px 5px 0px 5px;
+.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
+	overflow: hidden;
 }
 
 /*==================================UIVoteForm==============================*/
@@ -634,6 +634,15 @@
 
 .UIJCRExplorerPortlet .EditQueryForm .UIAction {
   width: 170px;
+}
+
+.UIJCRExplorerPortlet .UISaveQueryForm  {
+ 	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UISaveQueryForm .UIAction {
+  width: 170px;
+  padding-left: 100px;
 }
 
 /*================================UIJCRAdvancedSearch=================================*/
