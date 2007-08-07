@@ -18,12 +18,13 @@ public interface QueryService {
   public void removeQuery(String queryPath, String userName, String repository) throws Exception;  
   public void addSharedQuery(String queryName, String statement, String language, String[] permissions, boolean cachedResult, String repository) throws Exception;
   
-  public Node getSharedQuery(String queryName, String repository,SessionProvider provider) throws Exception ;  
-  public List<Node> getSharedQueries(String queryType, List permissions, String repository,SessionProvider provider) throws Exception ;  
-  public List<Node> getSharedQueriesByPermissions(List permissions, String repository,SessionProvider provider) throws Exception ;  
+  public Node getSharedQuery(String queryName, String repository, SessionProvider provider) throws Exception ;     
   public void removeSharedQuery(String queryName, String repository) throws Exception;  
   public List<Node> getSharedQueries( String repository,SessionProvider provider) throws Exception ;  
   public Query getQueryByPath(String queryPath, String userName, String repository, SessionProvider provider) throws Exception ;
+  
+  public List<Node> getSharedQueries(String userId,String repository,SessionProvider provider) throws Exception ;  
+  public List<Node> getSharedQueries(String queryType, String userId,String repository,SessionProvider provider) throws Exception ;
   
   public void init(String repository) throws Exception ;
 }

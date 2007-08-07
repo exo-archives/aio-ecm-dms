@@ -27,28 +27,32 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.organization.MembershipHandler;
+import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
+
+import com.sun.mail.util.QEncoderStream;
 
 public class QueryServiceImpl implements QueryService, Startable{
   private static final String[] perms = {PermissionType.READ, PermissionType.ADD_NODE, 
     PermissionType.SET_PROPERTY, PermissionType.REMOVE };
-  private String relativePath_;
-  private CmsConfigurationService cmsConfig_;
+  private String relativePath_;  
   private List<QueryPlugin> queryPlugins_ = new ArrayList<QueryPlugin> ();
   private RepositoryService repositoryService_;
   private CacheService cacheService_ ;  
   private PortalContainerInfo containerInfo_ ;
+  private OrganizationService organizationService_ ;
   private String baseUserPath_ ;
   private String baseQueriesPath_ ;
 
   public QueryServiceImpl(RepositoryService repositoryService, CmsConfigurationService cmsConf, 
-      InitParams params, PortalContainerInfo containerInfo, CacheService cacheService) throws Exception {
-    relativePath_ = params.getValueParam("relativePath").getValue();
-    cmsConfig_ = cmsConf;
+      InitParams params, PortalContainerInfo containerInfo, CacheService cacheService,OrganizationService organizationService) throws Exception {
+    relativePath_ = params.getValueParam("relativePath").getValue();    
     repositoryService_ = repositoryService;
     containerInfo_ = containerInfo ;
     cacheService_ = cacheService ;
-    baseUserPath_ = cmsConfig_.getJcrPath(BasePath.CMS_USERS_PATH);
+    organizationService_ = organizationService ;
+    baseUserPath_ = cmsConf.getJcrPath(BasePath.CMS_USERS_PATH);
     baseQueriesPath_ = cmsConf.getJcrPath(BasePath.QUERIES_PATH) ;
   }
 
@@ -116,7 +120,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     return queries;
   }
 
-  private Map getPermissions(String owner) {
+  private Map<String,String[]> getPermissions(String owner) {
     Map<String, String[]> permissions = new HashMap<String, String[]>();
     permissions.put(owner, perms);         
     permissions.put("*:/admin", perms);
@@ -160,7 +164,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
     Value[] vls = perm.toArray(new Value[] {}) ;
 
-    String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
+    String queriesPath = baseQueriesPath_ ;
     Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
     if(queryHome.hasNode(queryName)) {
       Node query = queryHome.getNode(queryName) ;
@@ -186,35 +190,14 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
 
   public Node getSharedQuery(String queryName, String repository,SessionProvider provider) throws Exception {
-    Session session = getSession(repository,provider) ;
-    String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
-    return (Node)session.getItem(queriesPath + "/" + queryName);
+    Session session = getSession(repository,provider) ;    
+    return (Node)session.getItem(baseQueriesPath_ + "/" + queryName);
   }
-
-  public List<Node> getSharedQueries(String queryType, List permissions, String repository,SessionProvider provider) throws Exception {
-    Session session = getSession(repository,provider);
-    List<Node> queries = new ArrayList<Node>() ;        
-    Node queriesHome = (Node)session.getItem(baseQueriesPath_) ;
-    NodeIterator iter = queriesHome.getNodes() ;
-    while (iter.hasNext()) {
-      Node query = iter.nextNode() ;
-      if(query.getProperty("jcr:language").getString().equals(queryType)){
-        List applyPermissions = getPermissions(query) ;
-        for(int i = 0; i < permissions.size(); i++) {
-          if(hasPermission(permissions.get(i).toString(), applyPermissions)) {
-            queries.add(query) ;
-            break ;
-          }          
-        }
-      }
-    }
-    return queries;
-  }
-
+  
   public List<Node> getSharedQueries(String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);
     List<Node> queries = new ArrayList<Node>() ;
-    Node sharedQueryHome = (Node) session.getItem(cmsConfig_.getJcrPath(BasePath.QUERIES_PATH));
+    Node sharedQueryHome = (Node) session.getItem(baseQueriesPath_);
     NodeIterator iter = sharedQueryHome.getNodes();
     while (iter.hasNext()) {
       Node node = iter.nextNode();
@@ -223,6 +206,29 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
     return queries ;
   }
+  
+  public List<Node> getSharedQueries(String userId, String repository, SessionProvider provider) throws Exception {
+    List<Node> sharedQueries = new ArrayList<Node>();
+    for(Node query:getSharedQueries(repository,provider)) {
+      if(canUseQuery(userId,query)) {
+        sharedQueries.add(query) ;
+      }
+    }
+    return sharedQueries;
+  }  
+  public List<Node> getSharedQueries(String queryType, String userId, String repository, SessionProvider provider) throws Exception {
+    List<Node> resultList = new ArrayList<Node>() ;
+    String language = null ;    
+    for(Node queryNode: getSharedQueries(repository,provider)) {
+      language = queryNode.getProperty("jcr:language").getString() ;
+      if(!queryType.equalsIgnoreCase(language)) continue ;
+      if(canUseQuery(userId,queryNode)) {
+        resultList.add(queryNode) ;
+      }
+    }
+    return resultList;
+  }
+
 
   public Query getQueryByPath(String queryPath, String userName, String repository,SessionProvider provider) throws Exception {
     List<Query> queries = getQueries(userName, repository,provider) ;
@@ -233,48 +239,12 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
 
   public void removeSharedQuery(String queryName, String repository) throws Exception {
-    Session session = getSession(repository) ;
-    String queriesPath = cmsConfig_.getJcrPath(BasePath.QUERIES_PATH);
-    session.getItem(queriesPath + "/" + queryName).remove();
+    Session session = getSession(repository) ;    
+    session.getItem(baseQueriesPath_ + "/" + queryName).remove();
     session.save() ;
     session.logout();
   }
-
-  public List<Node> getSharedQueriesByPermissions(List permissions, String repository,SessionProvider provider) throws Exception {
-    List<Node> queries = getSharedQueries(repository,provider) ;
-    List<Node> result = new ArrayList<Node>() ;
-    for(Node query : queries) {
-      List applyPermissions = getPermissions(query) ;
-      for(int i = 0; i < permissions.size(); i++) {
-        if(hasPermission(permissions.get(i).toString(), applyPermissions)) {
-          result.add(query) ;
-          break ;
-        }          
-      }
-    }
-    return result ;
-  }
-
-  private List getPermissions(Node query) throws Exception {
-    List permissions = new ArrayList() ;
-    Value[] values = query.getProperty("exo:permissions").getValues() ;
-    for(Value value : values) {
-      permissions.add(value.getString()) ;
-    }
-    return permissions ;
-  }
-
-  private boolean hasPermission(String permission, List permissions) {
-    if(permission == null) return false ;
-    if(permission.indexOf(":/") > -1) {
-      String[] array = StringUtils.split(permission , ":/") ;
-      if(array == null || array.length < 2) return false ;
-      if( permissions.indexOf("*:/"+array[1]) > -1) return true ;	
-    }    
-    return permissions.contains(permission) ;
-  }
-
-
+  
   public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);    
     Node queryNode = (Node)session.getItem(queryPath) ;    
@@ -297,7 +267,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     QueryResult result = query.execute();    
     return result;
   }
-  
+
   private void removeFromCache(String queryPath) throws Exception {
     ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
     String portalName = containerInfo_.getContainerName() ;
@@ -306,8 +276,11 @@ public class QueryServiceImpl implements QueryService, Startable{
     if (result != null) queryCache.remove(key) ;
   }
 
-  private Session getSession(String repository) throws Exception {   
-    return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository));    
+  //TODO need to use SystemProvider
+  private Session getSession(String repository) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    return manageableRepository.getSystemSession(workspace);    
   }
 
   private Session getSession(String repository,SessionProvider provider) throws Exception {
@@ -320,4 +293,35 @@ public class QueryServiceImpl implements QueryService, Startable{
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     return provider.getSession(workspace,manageableRepository) ;
   }
+  
+  private boolean canUseQuery(String userId,Node queryNode) throws Exception{    
+    Value[] values = queryNode.getProperty("exo:permissions").getValues() ;
+    for(Value value : values) {
+      String accessPermission = value.getString() ;
+      if(hasMembership(userId,accessPermission)) {
+        return true ;
+      }
+    }
+    return false ;
+  }
+
+  //TODO :this method will be removed when MembershipHandler support
+  private boolean hasMembership(String userId, String roleExpression) {
+    if("*".equals(roleExpression))
+      return true;
+    String membershipType = roleExpression.substring(0, roleExpression.indexOf(":"));
+    String groupName = roleExpression.substring(roleExpression.indexOf(":") + 1);
+    try {
+      MembershipHandler membershipHandler = organizationService_.getMembershipHandler() ;
+      if ("*".equals(membershipType)) {
+        // Determine if there exists at least one membership
+        return !membershipHandler.findMembershipsByUserAndGroup( userId,groupName).isEmpty();
+      } 
+      // Determine if there exists the membership of specified type
+      return membershipHandler.findMembershipByUserGroupAndType(userId,groupName,membershipType) != null;      
+    }
+    catch(Exception e) {            
+    }  
+    return false ;
+  }   
 }
