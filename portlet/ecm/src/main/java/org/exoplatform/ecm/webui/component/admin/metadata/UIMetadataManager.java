@@ -25,7 +25,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 public class UIMetadataManager extends UIContainer {
   
-  public String METADATA_POPUP = "MetadataPopupEdit" ;
+  final static public String METADATA_POPUP = "MetadataPopupEdit" ;
   final static public String VIEW_METADATA_POPUP = "ViewMetadataPopup" ;
   final static public String PERMISSION_POPUP = "PermissionPopup" ;
   

@@ -10,7 +10,6 @@ import org.exoplatform.services.jcr.core.ExtendedPropertyType;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -42,10 +41,7 @@ public class UIMetadataView extends UIContainer{
       UIMetadataView uiView = event.getSource() ;
       UIMetadataManager uiManager = uiView.getAncestorOfType(UIMetadataManager.class) ;
       uiManager.removeChildById(UIMetadataManager.VIEW_METADATA_POPUP) ;
-      Class[] childrenToRender = {UIMetadataList.class, UIPopupWindow.class} ;
-      uiManager.setRenderedChildrenOfTypes(childrenToRender) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
-
 }

@@ -337,7 +337,7 @@
 														      String actionLink ;
 															    if(!uicomponent.isRssLink()) { 
 															      String path = rel.getPath() + "&workspaceName=" + wsName ;
-															      actionLink = uicomponent.event("ViewNode", path) ;
+															      actionLink = uicomponent.event("ChangeNode", path) ;
 														      } else { 
 															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
 														      }

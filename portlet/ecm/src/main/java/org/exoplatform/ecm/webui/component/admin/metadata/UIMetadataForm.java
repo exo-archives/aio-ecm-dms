@@ -118,8 +118,8 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
       path = metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, repository) ;
       if(path != null) templateService.invalidateTemplate(path, resourceResolver) ;
       uiForm.reset() ;
-      uiMetaManager.removeChild(UIPopupWindow.class) ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;
+      uiMetaManager.removeChildById(UIMetadataManager.METADATA_POPUP) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;
     }
   }
@@ -138,7 +138,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     public void execute(Event<UIMetadataForm> event) throws Exception {
       UIMetadataForm uiView = event.getSource() ;
       UIMetadataManager uiMetaManager = uiView.getAncestorOfType(UIMetadataManager.class) ;
-      uiMetaManager.removeChild(UIPopupWindow.class) ;
+      uiMetaManager.removeChildById(UIMetadataManager.METADATA_POPUP) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiMetaManager) ;
     }
   }
