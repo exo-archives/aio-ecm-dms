@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
@@ -223,7 +224,10 @@ public class DialogFormFields extends UIForm {
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
         }
-      }    
+      }
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+      ResourceBundle res = context.getApplicationResourceBundle() ;
+      uiInput.setLabel(res.getString(getId() + ".validator." + name)) ;
       addUIFormInput(uiInput) ;
     }
     if(editable.equals("false")) uiInput.setEditable(false) ;

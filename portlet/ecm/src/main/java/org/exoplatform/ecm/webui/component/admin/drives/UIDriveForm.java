@@ -102,8 +102,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     } else {
       isAddNew_ = false ;
       setActions(new String[] {"Save", "Cancel"}) ;
-      drive = (DriveData)getApplicationComponent(ManageDriveService.class)
-      .getDriveByName(driveName, repository) ;
+      drive = getApplicationComponent(ManageDriveService.class).getDriveByName(driveName, repository) ;
     }
     getChild(UIDriveInputSet.class).update(drive) ;
     getChild(UIViewsInputSet.class).update(drive) ;
