@@ -4,7 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -23,8 +22,6 @@ import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.organization.Membership;
-import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -68,8 +65,7 @@ public class UIQueryConfig extends UIForm {
   final private static String EXISTING_QUERY = "Existing Query".intern() ;
   final private static String PERSONAL_QUERY = "Personal Query".intern() ;
   final private static String SHARED_QUERY = "Shared Query".intern() ;
-  final private static String EMPTYQUERY = "Query not found".intern() ;
-  //private List<String> roles_ = new ArrayList<String>();
+  final private static String EMPTYQUERY = "Query not found".intern() ;  
   protected boolean isEdit_ = false ;
 
   public UIQueryConfig() throws Exception {
@@ -250,27 +246,16 @@ public class UIQueryConfig extends UIForm {
     String repository = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ; 
     QueryService qservice = getApplicationComponent(QueryService.class) ;
     SessionProvider provider = SessionsUtils.getSystemProvider();
-    String username = Util.getPortalRequestContext().getRemoteUser() ;
+    String userId = Util.getPortalRequestContext().getRemoteUser() ;
     if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
-      List<Query> queries = qservice.getQueries(username, repository,provider);
+      List<Query> queries = qservice.getQueries(userId, repository,provider);
       for(Query queryNode : queries) {
         String path = queryNode.getStoredQueryPath() ;
         if(queryNode.getLanguage().equals(queryLanguage))
           options.add(new SelectItemOption<String>(path.substring(path.lastIndexOf("/")+ 1), path)) ;
       }
-    } else {
-      OrganizationService oservice = getApplicationComponent(OrganizationService.class) ;
-      Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(username) ;
-      List<String> roles = new ArrayList<String>() ;
-      if(memberships != null && memberships.size() > 0){
-        Object[] objects = memberships.toArray() ;      
-        for(int i = 0 ; i < objects.length ; i ++ ){
-          Membership membership = (Membership)objects[i] ;
-          String role = membership.getMembershipType()+ ":" + membership.getGroupId() ;
-          roles.add(role) ;    
-        } 
-      }
-      List<Node> queries = qservice.getSharedQueries(queryLanguage, roles, repository,provider);
+    } else {      
+      List<Node> queries = qservice.getSharedQueries(queryLanguage,userId, repository,provider);
       for(Node queryNode : queries) {
         options.add(new SelectItemOption<String>(queryNode.getName(), queryNode.getPath())) ;
       }

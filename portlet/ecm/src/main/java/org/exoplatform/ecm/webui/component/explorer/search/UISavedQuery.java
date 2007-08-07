@@ -5,7 +5,6 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -25,8 +24,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.organization.Membership;
-import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -59,7 +56,9 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
 
   final static public String EDIT_FORM = "EditSavedQueryForm" ;
   
-  private List<Node> sharedQueries_ = new ArrayList<Node>() ;
+  private List<Node> sharedQueries_ = new ArrayList<Node>() ;  
+  private List<Query> privateQueries = new ArrayList<Query>() ;
+  
   private boolean isQuickSearch_ = false ;
 
   public UISavedQuery() throws Exception {        
@@ -95,46 +94,24 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-    String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    List<Query> queries = queryService.getQueries(userName, repository,SessionsUtils.getSystemProvider());
-    if (queries == null || queries.isEmpty()) return false;
-    return true;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;    
+    privateQueries = queryService.getQueries(getCurrentUserId(), repository,SessionsUtils.getSystemProvider());
+    return privateQueries.isEmpty() ;    
   }
-
-  public List<Query> getQueries() throws Exception {
-    String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-    return getApplicationComponent(QueryService.class).getQueries(userName, repository,SessionsUtils.getSystemProvider());
-  }
+  
+  public List<Query> getQueries() throws Exception { return privateQueries ; }
   
   public String getCurrentUserId() { return Util.getPortalRequestContext().getRemoteUser() ;}
   
-  public boolean hasSharedQueries() throws Exception {
-    OrganizationService organizationService = getApplicationComponent(OrganizationService.class) ;
+  public boolean hasSharedQueries() throws Exception {    
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     QueryService queryService = getApplicationComponent(QueryService.class) ;
-    String userName = pcontext.getRemoteUser() ;
-    List<String> roles = new ArrayList<String>() ;
-    Collection memberships = 
-      organizationService.getMembershipHandler().findMembershipsByUser(userName) ;
-    if(memberships != null && memberships.size() > 0){
-      Object[] objects = memberships.toArray() ;      
-      for(int i = 0 ; i < objects.length ; i ++ ){
-        Membership membership = (Membership)objects[i] ;
-        String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
-        roles.add(role) ;
-      } 
-    }
-    SessionProvider provider = SessionsUtils.getSystemProvider() ;
-    if(roles.size() < 0) return false ;
-    sharedQueries_ = queryService.getSharedQueriesByPermissions(roles, repository,provider) ;
-    if(queryService.getSharedQueriesByPermissions(roles, repository,provider).size() > 0) return true ;      
-    return false ;                
+    String userId = pcontext.getRemoteUser() ;    
+    SessionProvider provider = SessionsUtils.getSystemProvider() ;    
+    sharedQueries_ = queryService.getSharedQueries(userId, repository,provider) ;
+    return sharedQueries_.isEmpty();
   }
   
   public List<Node> getSharedQueries() { return sharedQueries_ ; }
