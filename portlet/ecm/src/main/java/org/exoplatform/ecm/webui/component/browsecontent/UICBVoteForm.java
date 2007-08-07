@@ -88,6 +88,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
       }
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer) ;
     }
   }
 
