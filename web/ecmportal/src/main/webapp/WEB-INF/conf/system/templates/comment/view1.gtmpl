@@ -124,7 +124,7 @@
       background: url('/ecm/skin/images/article/CommentBoxBC1x3.gif') repeat-x top;
     }
 	</style>
-  <div class="Comments">
+  <div class="Comments ShowHideContainer">
 		<div class="CommentBar" style="width: 400px;">
 			<div class="LeftCommentBar">
 			  <div class="RightCommentBar">
@@ -141,14 +141,14 @@
 		  			</div>
 		  			<div class="ShowComment">
 			  			<div style="float: left;"><%=commentsList.size()%> <%=_ctx.appRes("Comment.view.label.comments")%></div>
-			  			<div style="float: right;" onclick="eXo.ecm.ECMUtils.showHideComponent(this, 'CommentsList')"><a><%=_ctx.appRes("Comment.view.label.show-comments")%></a><span style="display: none"><a><%=_ctx.appRes("Comment.view.label.hide-comments")%></a></span></div>
+			  			<div style="float: right;" onclick="eXo.ecm.ECMUtils.showHideComponent(this)"><a><%=_ctx.appRes("Comment.view.label.show-comments")%></a><span style="display: none"><a><%=_ctx.appRes("Comment.view.label.hide-comments")%></a></span></div>
 			  			<div style="clear: both;"><span></span></div>
 			  	  </div>
 			 		</div>
 				</div>
 			</div>
 		</div>
-		<div id="CommentsList" style="display: none;">
+		<div class="ShowHideComponent" style="display: none;">
 		  <%for(comment in commentsList) {%>
 		  	<div class="CommentInfo">
 		  		<%=_ctx.appRes("Comment.view.label.comment-by")%> 
