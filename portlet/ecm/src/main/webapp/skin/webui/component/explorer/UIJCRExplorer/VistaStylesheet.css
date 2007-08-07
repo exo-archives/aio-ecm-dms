@@ -930,6 +930,19 @@
 	margin-left: 5px;
 }
 
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput {
+	margin-bottom: 5px;
+	float: left;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .MultiFieldAction {
+	margin: 4px 3px 0px 3px;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .FileNameLabel {
+	width: auto;
+}
+
 .UIJCRExplorer .UIJCRBrowser {
 	width: 95%;
 	margin: auto;

@@ -429,3 +429,6 @@
   background: url('DefaultSkin/exo-sendMailAction.gif') no-repeat left center;
 }
 
+.UIRightClickPopupMenu .exo_autoVersioning16x16Icon {
+  background: url('DefaultSkin/exo-versionStorage.gif') no-repeat left center;
+}

@@ -1100,7 +1100,21 @@
 
 /*====================================MultiValueContainer==================================*/
 
-.UIJCRExplorer .HorizontalLayout .MultiValueContainer .MultiFieldAction {
-	margin: 0px 0px 0px 5px;
+.UIJCRExplorer .MultiValueContainer .MultiFieldAction {
+	margin-left: 5px;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput {
+	margin-bottom: 5px;
+	float: left;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .MultiFieldAction {
+	margin: 4px 3px 0px 3px;
+	float: left;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .FileNameLabel {
+	width: auto;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

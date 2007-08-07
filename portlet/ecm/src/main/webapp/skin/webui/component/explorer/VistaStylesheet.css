@@ -24,11 +24,6 @@
   font-weight: bold; 
 }
 
-.UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  float: left;
-  margin: 3px 5px 0px 5px;
-}
-
 .UIJCRExplorerPortlet .UIPreferencesForm  {
   width: 500px;
   padding: 15px;
