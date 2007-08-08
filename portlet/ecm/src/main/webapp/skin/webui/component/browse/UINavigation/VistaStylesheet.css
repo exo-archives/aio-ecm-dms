@@ -146,7 +146,7 @@
 
 .UICBNavigation .UIHorizontalTabs {
 	float: left;
-	height: 25px;
+	height: 26px;
 }
 
 .UICBNavigation .UIHorizontalTabs .TabsContainer {
@@ -155,8 +155,8 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab {
 	float: left;
-	height: 23px;
-	padding-left: 5px;
+	height: 26px;
+	padding-left: 3px;
 }
 
 .UICBNavigation .UIHorizontalTabs .TabIcon {
@@ -170,17 +170,17 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LeftTab {
   padding-left: 4px;
-  background: url('VistaSkin/background/LeftNormalTab5x26.png') no-repeat left;
+  background: url('VistaSkin/background/LeftNormalTab5x25.png') no-repeat left ;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .RightTab {
   padding-right: 4px;
-  background: url('VistaSkin/background/RightNormalTab5x26.png') no-repeat right;
+  background: url('VistaSkin/background/RightNormalTab5x25.png') no-repeat right ;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .MiddleTab {
-  background: url('VistaSkin/background/CenterNormalTab1x26.png') repeat-x;
-  line-height: 26px;
+  background: url('VistaSkin/background/CenterNormalTab1x25.png') repeat-x center;
+  line-height: 25px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .Icon {
@@ -190,7 +190,7 @@
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LabelButton {
-  line-height: 26px;
+  line-height: 25px;
   font-weight: bold;
   vertical-align: middle;
   padding: 0px 5px ;
@@ -214,7 +214,7 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LeftTab {
   padding-left: 4px ;
-  background: url('VistaSkin/background/LeftSelectedTab4x26.png') no-repeat left;
+  background: url('VistaSkin/background/LeftSelectedTab4x26.png') no-repeat left ;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .RightTab {
@@ -224,17 +224,16 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .MiddleTab {
 	line-height: 26px;
-  background: url('VistaSkin/background/CenterSelectedTab1x26.png') repeat-x ;
+  background: url('VistaSkin/background/CenterSelectedTab1x26.png') repeat-x top;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .Icon {
   float: left;
   width: 16px; height: 16px;
-  margin: 3px 0px 0px 2px;
+  margin: 3px 5px 0px 2px;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBSelectedTab .LabelButton {
-	float: left;
   line-height: 26px;
   font-weight: bold;
   vertical-align: middle;
@@ -276,7 +275,7 @@
 .UICBNavigation .UICBSubNavigation .ChildNodeItem { 
 	float: left;
 	height: 18px;
-	padding: 1px 5px 0px 5px;
+	padding: 1px 4px 0px 4px;
 }
 
 .UICBNavigation .UICBSubNavigation .ChildNodeItem .ItemIcon {

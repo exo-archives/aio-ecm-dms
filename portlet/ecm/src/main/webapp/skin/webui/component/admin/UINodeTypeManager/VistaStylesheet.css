@@ -37,12 +37,14 @@
 
 .UIECMAdminPortlet .UINodeTypeExport .HorizontalLayout .FieldContainer {
 	margin-top: 5px;
-	overflow: visible;
 	width: 99.7%;
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .HorizontalLayout {
-	border: none;
+	border: 1px solid #afaeae;
+	width: 95%;
+	margin: 10px auto;
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UINodeTypeExport .UIGrid .text {
@@ -53,6 +55,10 @@
   width: 450px ;
   border: 1px solid #afaeae;
   margin-left: auto;
+}
+
+.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup {
+	
 }
 
 .UIECMAdminPortlet .UINodeTypeUpload .UIAction {
@@ -155,7 +161,7 @@
 
 .UIECMAdminPortlet .UINodeTypeImportPopup .HorizontalLayout .FormContainer {
 	width: 440px;
-	margin: 40px auto;
+	margin: 15px auto;
 }
 
 .UIECMAdminPortlet .UINodeTypeImportPopup .UINodeTypeImport .UIAction {
