@@ -12,6 +12,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.portlet.PortletRequest;
@@ -48,7 +49,8 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     events = {
         @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class),
-        @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class)
+        @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class),
+        @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class)
     }
 )
 public class UIViewSearchResult extends UIContainer implements ECMViewComponent {
@@ -74,10 +76,13 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
     NodeIterator childrenIterator = node_.getNodes();;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     while(childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if(Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
+      List<String> listCanCreateNodeType = 
+        Utils.getListAllowedFileType(node_, getRepository(), templateService) ;      
+      if(listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }
@@ -265,6 +270,20 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
       UIViewSearchResult uiComp = event.getSource() ;
       String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
+    }
+  }
+  
+  static  public class ChangeNodeActionListener extends EventListener<UIViewSearchResult> {
+    public void execute(Event<UIViewSearchResult> event) throws Exception {
+      UIViewSearchResult uicomp =  event.getSource() ;
+      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName) ;
+      Node selectedNode = (Node) session.getItem(uri) ;
+      uicomp.setNode(selectedNode) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
     }
   }
 }

@@ -220,14 +220,17 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     }
     return relations;
   }
-
+  
   public List<Node> getAttachments() throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<Node> attachments = new ArrayList<Node>() ;
     NodeIterator childrenIterator = currentNode_.getNodes();;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
+      List<String> listCanCreateNodeType = 
+        Utils.getListAllowedFileType(currentNode_, getRepository(), templateService) ; 
+      if(listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }
@@ -593,6 +596,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       UIDocumentInfo uiComp = event.getSource() ;
       String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+      uiComp.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
     }
   }
 }

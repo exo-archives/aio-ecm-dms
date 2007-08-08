@@ -90,18 +90,12 @@ public class UIMultiLanguageForm extends UIForm {
   static public class ViewActionListener extends EventListener<UIMultiLanguageForm> {
     public void execute(Event<UIMultiLanguageForm> event) throws Exception {
       UIMultiLanguageForm uiForm = event.getSource() ;
-      MultiLanguageService multiLanguageService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currNode = uiExplorer.getCurrentNode() ;
       UIDocumentInfo uiDocumentInfo = uiJCRExplorer.findFirstComponentOfType(UIDocumentInfo.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;
-      if(selectedLanguage.equals(multiLanguageService.getDefault(currNode))) {
-        uiJCRExplorer.cancelAction() ;
-      } else {
-        uiDocumentInfo.setLanguage(uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue()) ;
-        uiExplorer.updateAjax(event) ;
-      }
+      uiDocumentInfo.setLanguage(selectedLanguage) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 }

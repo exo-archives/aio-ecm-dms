@@ -679,7 +679,7 @@ public class UIActionBar extends UIForm {
         return ;
       }
       if (currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIVersionInfo.class, 700) ;
+        uiPopupAction.activate(UIVersionInfo.class, null, 700, 500) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }

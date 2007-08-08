@@ -142,8 +142,6 @@ public class UISearchResult extends UIContainer {
         uiPopup.setShow(true) ;
         return ;
       }      
-      UIComponent uicomp = uiSearchResult.getParent() ;
-      System.out.println("\n\nparent id=====>" + uicomp.getId() + "\n\n");
       UIECMSearch uiECMSearch = uiSearchResult.getParent() ;
       UIViewSearchResult uiView = uiECMSearch.getChild(UIViewSearchResult.class) ;
       if(uiView == null) uiView = uiECMSearch.addChild(UIViewSearchResult.class, null, null) ;

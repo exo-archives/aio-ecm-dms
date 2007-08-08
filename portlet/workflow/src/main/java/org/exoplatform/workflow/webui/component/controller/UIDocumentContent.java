@@ -12,6 +12,9 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.nodetype.NodeDefinition;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
@@ -46,7 +49,8 @@ import org.exoplatform.workflow.webui.component.JCRResourceResolver;
     template = "app:/groovy/webui/component/UIDocumentContent.gtmpl",
     events = {
         @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class),
-        @EventConfig(listeners = UIDocumentContent.DownloadActionListener.class)
+        @EventConfig(listeners = UIDocumentContent.DownloadActionListener.class),
+        @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class)
     }
 )
 public class UIDocumentContent extends UIContainer implements ECMViewComponent {
@@ -133,6 +137,54 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     return null;
   }
   
+  private List<String> getListAllowedFileType(Node currentNode, String repository) throws Exception {
+    List<String> nodeTypes = new ArrayList<String>() ;
+    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
+    NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
+    NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    List templates = templateService.getDocumentTemplates(repository) ;
+    try {
+      for(int i = 0; i < templates.size(); i ++){
+        String nodeTypeName = templates.get(i).toString() ; 
+        NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
+        NodeType[] superTypes = nodeType.getSupertypes() ;
+        boolean isCanCreateDocument = false ;
+        for(NodeDefinition childDef : childDefs){
+          NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes() ;
+          for(NodeType requiredChild : requiredChilds) {          
+            if(nodeTypeName.equals(requiredChild.getName())){            
+              isCanCreateDocument = true ;
+              break ;
+            }            
+          }
+          if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
+            if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName) ;
+            isCanCreateDocument = true ;          
+          }
+        }      
+        if(!isCanCreateDocument){
+          for(NodeType superType:superTypes) {
+            for(NodeDefinition childDef : childDefs){          
+              for(NodeType requiredType : childDef.getRequiredPrimaryTypes()) {              
+                if (superType.getName().equals(requiredType.getName())) {
+                  if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName) ;
+                  isCanCreateDocument = true ;
+                  break;
+                }
+              }
+              if(isCanCreateDocument) break ;
+            }
+            if(isCanCreateDocument) break ;
+          }
+        }            
+      }
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+    return nodeTypes ;
+  }
+  
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>();
     String nodeType = "";
@@ -142,7 +194,8 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
       Node childNode = childrenIterator.nextNode();
       try {
         nodeType = childNode.getPrimaryNodeType().getName();
-        if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
+        List<String> listCanCreateNodeType = getListAllowedFileType(node_, getRepository()) ;
+        if(listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
       } catch (Exception e) {}
     }
     return attachments;
@@ -259,6 +312,11 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     }   
   }
   
+  public String encodeHTML(String text) throws Exception {
+    return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
+    .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+  }
+  
   static  public class DownloadActionListener extends EventListener<UIDocumentContent> {
     public void execute(Event<UIDocumentContent> event) throws Exception {
       UIDocumentContent uiComp = event.getSource() ;
@@ -267,8 +325,17 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     }
   }
 
-  public String encodeHTML(String text) throws Exception {
-    return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
-    .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+  static  public class ChangeNodeActionListener extends EventListener<UIDocumentContent> {
+    public void execute(Event<UIDocumentContent> event) throws Exception {
+      UIDocumentContent uiComp = event.getSource() ;
+      RepositoryService repositoryService  = uiComp.getApplicationComponent(RepositoryService.class) ;
+      ManageableRepository repository = repositoryService.getRepository(uiComp.getRepository()) ;
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      Session session = SessionsUtils.getSessionProvider().getSession(workspaceName, repository) ;
+      Node selectedNode = (Node) session.getItem(uri) ;
+      uiComp.setNode(selectedNode) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
+    }
   }
 }

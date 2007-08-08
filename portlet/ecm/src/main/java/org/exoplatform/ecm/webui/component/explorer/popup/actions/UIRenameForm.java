@@ -96,6 +96,15 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           }
         }
         String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue();
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+        for(String filterChar : arrFilterChar) {
+          if(newName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
         String srcPath = uiRenameForm.renameNode_.getPath() ;
         String destPath ;
         if(uiRenameForm.isReferencedNode_) {        

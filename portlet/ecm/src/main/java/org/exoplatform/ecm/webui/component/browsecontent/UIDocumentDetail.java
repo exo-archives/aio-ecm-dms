@@ -188,10 +188,13 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
     NodeIterator childrenIterator = node_.getNodes();;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      if (Utils.NT_FILE.equals(nodeType)) attachments.add(childNode);
+      List<String> listCanCreateNodeType = 
+        Utils.getListAllowedFileType(node_, getRepository(), templateService) ;
+      if (listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
     }
     return attachments;
   }

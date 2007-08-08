@@ -17,11 +17,14 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -202,6 +205,53 @@ public class Utils {
 
   public static boolean isNameEmpty(String name) {
     return (name == null || name.trim().length() == 0) ;
+  }
+  
+  public static List<String> getListAllowedFileType(Node currentNode, String repository, TemplateService templateService) throws Exception {
+    List<String> nodeTypes = new ArrayList<String>() ;
+    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
+    NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
+    NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
+    List templates = templateService.getDocumentTemplates(repository) ;
+    try {
+      for(int i = 0; i < templates.size(); i ++){
+        String nodeTypeName = templates.get(i).toString() ; 
+        NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
+        NodeType[] superTypes = nodeType.getSupertypes() ;
+        boolean isCanCreateDocument = false ;
+        for(NodeDefinition childDef : childDefs){
+          NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes() ;
+          for(NodeType requiredChild : requiredChilds) {          
+            if(nodeTypeName.equals(requiredChild.getName())){            
+              isCanCreateDocument = true ;
+              break ;
+            }            
+          }
+          if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
+            if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName) ;
+            isCanCreateDocument = true ;          
+          }
+        }      
+        if(!isCanCreateDocument){
+          for(NodeType superType:superTypes) {
+            for(NodeDefinition childDef : childDefs){          
+              for(NodeType requiredType : childDef.getRequiredPrimaryTypes()) {              
+                if (superType.getName().equals(requiredType.getName())) {
+                  if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName) ;
+                  isCanCreateDocument = true ;
+                  break;
+                }
+              }
+              if(isCanCreateDocument) break ;
+            }
+            if(isCanCreateDocument) break ;
+          }
+        }            
+      }
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+    return nodeTypes ;
   }
 
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {

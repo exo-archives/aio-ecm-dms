@@ -8,12 +8,14 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
@@ -53,7 +55,14 @@ public class UILabelForm extends UIForm {
       UIVersionInfo uiVersionInfo = uiLabelForm.getParent();
       VersionNode currentVersion = uiVersionInfo.getCurrentVersionNode();
       UIJCRExplorer uiExplorer = uiLabelForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node  currentNode = uiExplorer.getCurrentNode() ;   
+      Node currentNode = uiExplorer.getCurrentNode() ;   
+      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(label.indexOf(filterChar) > -1) {
+          throw new MessageException(new ApplicationMessage("UILabelForm.msg.fileName-invalid", 
+                                                            null, ApplicationMessage.WARNING)) ;
+        }
+      }
       currentNode.getVersionHistory().addVersionLabel(currentVersion.getName(), label, true) ;  
       uiLabelForm.reset() ;
       uiLabelForm.setRendered(false);
