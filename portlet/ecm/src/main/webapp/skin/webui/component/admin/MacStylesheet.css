@@ -241,13 +241,6 @@
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
 	width: 95%;
 	margin: 10px auto;
-	border: solid 1px red;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm .UIGrid {
-	width: 95%;
-	margin: 10px auto;
-	border: solid 1px red;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .HorizontalLayout .UIFormInputSet {
@@ -792,6 +785,11 @@
 
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
 
+.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 60px;
+}
+
 .UIECMScripts .UIBarStyle {
 	margin-bottom: 2px;
 }
@@ -809,10 +807,14 @@
   height: 350px;
   width: 90%;
   padding: 3px;
-  border: solid 1px red;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
+
+.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer {
+  margin: auto;
+  width: 60px;
+}
 
 .UICBScripts .CBScriptList .UIAction {
 	width: 95px ;

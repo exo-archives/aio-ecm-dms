@@ -168,13 +168,11 @@
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .LeftTab {
   padding-left: 4px;
-  line-height: 22px;
   background: url('DefaultSkin/background/LeftCBTab4x22.gif') no-repeat left;
 }
 
 .UICBNavigation .UIHorizontalTabs .UITab .CBNormalTab .RightTab {
   padding-right: 4px;
-  line-height: 22px;
   background: url('DefaultSkin/background/RightCBTab4x22.gif') no-repeat right;
 }
 

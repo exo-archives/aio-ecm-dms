@@ -47,9 +47,8 @@
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
   border: 1px solid #e1e1e1;
-  width: 550px;
-  margin: 15px auto;
-  padding: 20px;
+  width: 650px;
+  margin: 10px auto ;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .HorizontalLayout {
@@ -79,23 +78,22 @@
   padding: 4px 0px;
 }
 
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout {
-	width: 600px;
-	margin: 20px auto;
-	border: 1px solid #b7b7b7;
+.UIFastContentCreatorPortlet .UIEditModeConfiguration {
+  margin: 10px auto;
+  width: 600px;
+  border: solid 1px #e1e1e1;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
+  border: none;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
-	width: 500px;
+	width: 550px;
 	margin: auto;
 }
 
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIForm .HorizontalLayout .UIFormInputSet {
-	padding-bottom: 0px;
-	width: 100%;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout .UIAction {
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout {
   padding-top: 10px;
 }
 

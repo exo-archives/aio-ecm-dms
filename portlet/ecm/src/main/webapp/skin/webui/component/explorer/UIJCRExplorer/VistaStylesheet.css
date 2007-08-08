@@ -95,7 +95,6 @@
 .UIJCRExplorerPortlet .UIListView .UIGridControl .Icon16x16 {
   float: left;
   margin: 3px 5px 0px 2px;
-  width: 16px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel {
@@ -715,7 +714,8 @@
 
 /*================================UIPermissionManager=================================*/
 .UIJCRExplorerPortlet .UIPermissionManager {
-  padding: 10px;
+  width: 95%;
+  margin: 10px auto;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPageIterator {

@@ -494,6 +494,7 @@
 .Select16x16Icon {
   width: 16px; height: 16px;
   background-image: url('DefaultSkin/SelectPage.gif');  
+  cursor: pointer;
 }
 
 .Export16x16Icon {

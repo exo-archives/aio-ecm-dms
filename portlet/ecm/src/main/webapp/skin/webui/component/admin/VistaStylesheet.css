@@ -473,15 +473,6 @@
   padding-left: 80px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
-  margin: auto ; 
-  padding: 10px 7px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .UITreeList .UIGrid{
-  width: 330px;
-}
-
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer{
   margin-right: 5px;
 }
@@ -688,9 +679,9 @@
   padding: 3px;
 }
 
-.UIECMScripts .ECMScriptForm .UIAction {
-  width: 270px;
-  padding-right: 10px;
+.UIECMScripts .HorizontalLayout .FormContainer .UIAction {
+	width: 350px;
+	padding-left: 90px;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/

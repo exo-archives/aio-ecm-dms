@@ -37,18 +37,17 @@
 /*###########################-- Begin Title --############################*/
 
 .UISubContent .SubContentTitle { 	
-	height: 29px; line-height: 27px;
+	height: 27px;
 	overflow: hidden;
+	margin-bottom: 2px;
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
-	line-height: 27px; height: 27px;
 	background: url('VistaSkin/background/LeftHorizontalTab2x27.gif') no-repeat left;
   padding-left: 2px;
 }
 
 .UISubContent .SubContentTitle .RightBar{ 
-	line-height: 26px; height: 27px;
 	background: url('VistaSkin/background/RightHorizontalTab2x27.gif') no-repeat right;
   padding-right: 2px;
 }
@@ -83,7 +82,7 @@
 .UISubContent .SubContentTitle .ChildNode { 
 	float: left;
 	height: 27px;
-	padding: 1px 5px 0px 5px;
+	padding: 0px 5px 0px 5px;
 }
 
 .UISubContent .SubContentTitle .ChildNode a { 

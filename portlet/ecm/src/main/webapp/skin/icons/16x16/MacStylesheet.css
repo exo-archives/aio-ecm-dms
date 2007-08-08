@@ -469,6 +469,7 @@
 .Select16x16Icon {
   width: 16px; height: 16px;
   background-image: url('MacSkin/SelectPage.png');  
+  cursor: pointer;
 }
 
 .Export16x16Icon {
