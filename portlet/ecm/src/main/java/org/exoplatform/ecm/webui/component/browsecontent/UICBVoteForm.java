@@ -81,6 +81,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (Exception e) {
+        e.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UICBVoteForm.msg.error-vote", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -88,6 +89,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
       }
       UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
       uiPopupAction.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer) ;
     }
   }
