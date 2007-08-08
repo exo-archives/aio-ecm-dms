@@ -755,7 +755,7 @@ public class UIWorkingArea extends UIContainer {
           while(references.hasNext()) {
             Property pro = references.nextProperty() ;
             Node refNode = pro.getParent() ;
-            relationsService.removeRelation(refNode, srcPath, uiExplorer.getSession()) ;
+            relationsService.removeRelation(refNode, srcPath, uiExplorer.getRepositoryName()) ;
             refNode.save() ;
             refList.add(refNode) ;
           }

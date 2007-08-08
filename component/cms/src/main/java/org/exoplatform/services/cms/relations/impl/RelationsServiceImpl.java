@@ -14,6 +14,7 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.picocontainer.Startable;
 
 /**
@@ -42,13 +43,26 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 
   }
 
-  public List<Node> getRelations(Node node, Session session) {
+  private Node getNodeByUUID(String uuid, String repository) throws Exception{
+    ManageableRepository manageRepo = repositoryService_.getRepository(repository) ;
+    String[] workspaces = manageRepo.getWorkspaceNames() ;
+    for(String ws : workspaces) {
+      try{
+        return manageRepo.login(ws).getNodeByUUID(uuid) ;
+      }catch(Exception e) {
+        
+      }      
+    }
+    return null;
+  }
+  
+  public List<Node> getRelations(Node node, String repository) {
     List<Node> rels = new ArrayList<Node>();
     try {
       if(node.hasProperty(RELATION_PROP)) {
         Value[] values = node.getProperty(RELATION_PROP).getValues();
         for (int i = 0; i < values.length; i++) {
-          rels.add(session.getNodeByUUID(values[i].getString()));
+          rels.add(getNodeByUUID(values[i].getString(), repository));
         }
       }
     } catch(Exception e) {
@@ -57,7 +71,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     return rels ;    
   }
 
-  public void removeRelation(Node node, String relationPath, Session session) throws Exception {
+  public void removeRelation(Node node, String relationPath, String repository) throws Exception {
     List<Value> vals = new ArrayList<Value>();
     if (!"*".equals(relationPath)) {
       Property relations = node.getProperty(RELATION_PROP);
@@ -66,7 +80,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         String uuid2Remove = null;
         for (int i = 0; i < values.length; i++) {
           String uuid = values[i].getString();
-          Node refNode = session.getNodeByUUID(uuid);
+          Node refNode = getNodeByUUID(uuid, repository);
           if (refNode.getPath().equals(relationPath)) {
             uuid2Remove = uuid;
           } else {

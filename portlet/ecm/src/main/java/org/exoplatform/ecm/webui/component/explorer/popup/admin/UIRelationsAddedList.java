@@ -37,7 +37,9 @@ import org.exoplatform.webui.event.EventListener;
  */
 @ComponentConfig(
     lifecycle = UIContainerLifecycle.class,
-    events = @EventConfig(listeners = UIRelationsAddedList.DeleteActionListener.class)
+    events = {
+      @EventConfig(listeners = UIRelationsAddedList.DeleteActionListener.class, confirm="UIRelationsAddedList.msg.confirm-delete")
+    }
 )
 public class UIRelationsAddedList extends UIContainer implements UISelector {
 
@@ -69,7 +71,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
       //TODO maybe lost data here
       Session session = SessionsUtils.getSessionProvider().getSession(wsName,manageableRepository) ;
       relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, session) ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), session)) ;      
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName())) ;      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
@@ -86,8 +88,8 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
         uiAddedList.getApplicationComponent(RelationsService.class) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getSession()) ;
-        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),uiExplorer.getSession())) ;
+        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
+        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),uiExplorer.getRepositoryName())) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }

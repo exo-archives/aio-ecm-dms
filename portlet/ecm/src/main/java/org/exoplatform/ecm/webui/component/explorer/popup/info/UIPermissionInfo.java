@@ -134,8 +134,15 @@ public class UIPermissionInfo extends UIContainer {
       ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      if(!uiJCRExplorer.getCurrentNode().isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(name.equals(uicomp.getExoOwner(node))) {
-        uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -148,7 +155,8 @@ public class UIPermissionInfo extends UIContainer {
           uiJCRExplorer.getSession().refresh(false) ;
         }
       } else {
-        uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }

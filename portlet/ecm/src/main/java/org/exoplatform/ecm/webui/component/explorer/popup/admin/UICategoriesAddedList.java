@@ -39,7 +39,9 @@ import org.exoplatform.webui.exception.MessageException;
  */
 @ComponentConfig(
     lifecycle = UIContainerLifecycle.class,
-    events = @EventConfig(listeners = UICategoriesAddedList.DeleteActionListener.class)
+    events = {
+      @EventConfig(listeners = UICategoriesAddedList.DeleteActionListener.class, confirm="UICategoriesAddedList.msg.confirm-delete")
+    }
 )
 public class UICategoriesAddedList extends UIContainer implements UISelector{
 

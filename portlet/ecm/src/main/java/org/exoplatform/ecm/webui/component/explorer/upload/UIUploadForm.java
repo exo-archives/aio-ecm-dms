@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Value;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -35,6 +36,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
@@ -94,14 +96,16 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
       if(input.getUploadResource() == null) {
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       String fileName = input.getUploadResource().getFileName() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -219,6 +223,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         UIFormUploadInput uiChild = uiForm.getChild(UIFormUploadInput.class) ;
         uploadService.removeUpload(uiChild.getUploadId()) ;
         uiManager.setRenderedChild(UIUploadContainer.class) ;
+      } catch(ConstraintViolationException con) {
+        Object[] args = {name, } ;
+        throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
+                                                           args, ApplicationMessage.WARNING)) ;
       } catch(Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);

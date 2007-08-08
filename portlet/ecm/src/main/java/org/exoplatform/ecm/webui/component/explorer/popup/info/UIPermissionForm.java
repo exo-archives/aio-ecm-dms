@@ -133,7 +133,8 @@ import org.exoplatform.webui.form.UIForm;
       List<String> permsRemoveList = new ArrayList<String>();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -150,12 +151,14 @@ import org.exoplatform.webui.form.UIForm;
       }
 
       if (Utils.isNameEmpty(userOrGroup)) {
-        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null));
+        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null, 
+                                                ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       if (permsList.size() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.checkbox-require", null));
+        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.checkbox-require", null, 
+                                                ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
@@ -175,7 +178,8 @@ import org.exoplatform.webui.form.UIForm;
         uiParent.getChild(UIPermissionInfo.class).updateGrid();
         node.save();
       } else {
-        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.not-change-permission", null));
+        uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.not-change-permission", null, 
+                                                ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
