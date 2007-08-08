@@ -257,44 +257,48 @@
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
+.UIJCRExplorerPortlet .UIVoteForm {
+	padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
   width: 100px ;
 }
 
-/*############################## -- Begin UIDiff -- ##############################*/
-
-.UIJCRExplorerPortlet .UIDiff .UIVoteForm .UIRatingInfoContainer {
+.UIVoteForm .UIRatingInfoContainer {
 	width: 150px; padding: 5px 12px;
 	margin: auto;
 	background: white;
 	border: solid 1px #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer {
+.UIVoteForm .OptionsContainer {
 	margin: auto;
 	width: 120px; height: 20px;
 }
 
-.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer .NormalVote {
+.UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
 	margin: 0px 2px;
 	width: 19px; height: 18px;
   background: url('/ecm/skin/images/vote/GrayStar.gif');
 }
 
-.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer .RatedVote {
+.UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
 	margin: 0px 2px;
 	width: 19px; height: 18px;
   background: url('/ecm/skin/images/vote/YellowStar.gif');
 }
 
-.UIJCRExplorerPortlet .UIDiff .UIVoteForm .OptionsContainer .OverVote {
+.UIVoteForm .OptionsContainer .OverVote {
 	float: left;
 	margin: 0px 2px;
 	width: 19px; height: 18px;
   background: url('/ecm/skin/images/vote/OverStar.gif');
 }
+
+/*############################## -- Begin UIDiff -- ##############################*/
 
 .UIJCRExplorerPortlet .FileContent {  	  
 }

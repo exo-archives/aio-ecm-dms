@@ -17,8 +17,10 @@
 					} else {										
 					if(arr.isEmpty()) {
 				%>
-					<div class="ContentDetail">						
-						<label> <%=_ctx.appRes("UIDiff.label.noChange")%> </label>						
+					<div class="ContentDetail">	
+						<div  class="ContentEmpty">					
+							<label> <%=_ctx.appRes("UIDiff.label.noChange")%> </label>	
+						</div>					
 					</div>	
 					<%
 						} else {
@@ -27,14 +29,14 @@
 							<thead>
 						    <tr>
 						      <th>
-						      	<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
-						      	<%=uicomponent.getBaseVersionNum()%>,
-						      	<%=uicomponent.getBaseVersionDate()%>
-						      </th>
-						      <th>
 						      	<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
 						      	<%=uicomponent.getCurrentVersionNum()%>,
 						      	<%=uicomponent.getCurrentVersionDate()%>
+						      </th>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
+						      	<%=uicomponent.getBaseVersionNum()%>,
+						      	<%=uicomponent.getBaseVersionDate()%>
 						      </th>
 						    </tr>
 						  </thead>
@@ -44,19 +46,19 @@
 		    			<tr> 
 		    				<% 
 		    					if (uicomponent.isDeleteDelta(delta)) {
-		    				%>	    				
-		    				<td class ="DiffDelete" style="background:#FFAAAA"><%=delta.getOriginal()%></td>
-		    				<td class = "DiffEmpty" style="background:#CCCCCC"><%=delta.getRevised()%></td>		    					    					    						    			
+		    				%>	   
+		    				<td class ="DiffDelete" style="background:#fce8d4; width: 50%"><div class="WorkContainerDiff"><%=delta.getOriginal()%></div></td>	 				
+		    				<td class = "DiffEmpty" style="background:#f1f1f1; width: 50%"><div class="WorkContainerDiffEmpty"><%=delta.getRevised()%></div></td>	
 		    				<% 
 		    					} else if(uicomponent.isAddDelta(delta)) { 
 		    				%>
-		    				<td class = "DiffEmpty" style="background:#CCCCCC"><%=delta.getOriginal()%></td>
-		    				<td class = "DiffAdd" style="background:#AAFFAA"><%=delta.getRevised()%></td>		    					    					    						    			
+		    				<td class = "DiffEmpty" style="background:#f1f1f1; width: 50%"><div class="WorkContainerDiffEmpty"><%=delta.getOriginal()%></div></td>
+		    				<td class = "DiffAdd" style="background:#e7f9c8; width: 50%"><div class="WorkContainerDiff"><%=delta.getRevised()%></div></td>	
 		    				<% 
 		    					} else {	    					
 		    				%>
-		    				<td class = "DiffModify" style="background:#FFFF77"><%=delta.getOriginal()%></td>
-		    				<td class = "DiffModify" style="background:#FFFF77"><%=delta.getRevised()%></td>		    					    					    						    			
+		    				<td class = "DiffModify" style="background:#fffdd3; width: 50%"><div class="WorkContainerDiff"><%=delta.getOriginal()%></div></td>	
+		    				<td class = "DiffModify" style="background:#fffdd3; width: 50%"><div class="WorkContainerDiff"><%=delta.getRevised()%></div></td>    					    					    						    			
 		    				<% } %>	    				
 		    			</tr>
 		    			<% } %>					  					  

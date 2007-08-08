@@ -115,13 +115,30 @@
 	margin: 0px auto;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .UITabPane {
+	padding: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UITabPane {
+	padding: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UITabPane .UIGrid tr td .UIGrid {
+	border: none;
+	border-top: solid 1px #cccccc;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UITabPane .UIGrid tr td .UIGrid tr {
+  border-top:1px solid white;
+} 
+
 /*############################## -- Begin UIDiff -- ##############################*/
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  
   font-family: Verdana;
   color: #0e396c; font-size: 11px;
   text-align: left;
-  padding: 10px;
+  padding: 10px 0px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
@@ -129,23 +146,22 @@
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
-  padding-left: 10px;
   height: 21px; line-height: 21px;
   font-family: Verdana;
-  color: #058ee6; font-weight: bold; 
-  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
-  border: 1px solid #cbcbcb;
+  color: #1e1e1e; font-weight: bold; 
+  background: none;
+  border: none;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
   padding: 10px;
-  border: 1px solid #cbcbcb; 
-  border-top: none;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
 	text-align: center;
 	border:none ;
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
@@ -166,6 +182,22 @@
   margin: 2px;
   padding: 3px 2px;
 }	
+
+.UIJCRExplorerPortlet .UIDiff .NavigationContainer .WorkContainerDiff{
+	border: solid 2px white;
+	padding: 4px 0px 0px 7px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .NavigationContainer .ContentEmpty{
+	border: solid 1px #cdcdcd;
+	color: #ef5604;
+	text-align: center;
+	padding: 20px 0px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIGrid td{		
+	padding: 0px;
+} 
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
 	font-family: Verdana;
@@ -316,45 +348,67 @@
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/
+
 .UIJCRExplorerPortlet .UIVoteForm {
-	padding: 10px;
+  padding: 8px;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer {
+	padding-top: 8px;
+  background: #efefef;
+  border: solid 1px #aeaeae;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white;
+  width: 145px;
+  padding: 2px 15px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
+  cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 100px ;
+  width: 80px;
+  padding-left: 13px;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+  width: 60px ;
+  padding: 12px 0px 10px 0px;
 }
 
 .UIVoteForm .UIRatingInfoContainer {
 	width: 150px; padding: 5px 12px;
 	margin: auto;
-	background: white;
-	border: solid 1px #b7b7b7;
 }
 
 .UIVoteForm .OptionsContainer {
 	margin: auto;
-	width: 120px; height: 20px;
+	width: 100px; height: 20px;
 }
 
 .UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/GrayStar.gif');
+	margin: 2px 2px 0px 2px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStarIcon.gif');
 }
 
 .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/YellowStar.gif');
+	margin: 2px 2px 0px 2px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStarIcon.gif');
 }
 
 .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/OverStar.gif');
+	margin: 2px 2px 0px 2px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallYellowStarIcon.gif');
 }
 /*############################## -- End UIVoteForm   -- ##############################*/
 

@@ -557,10 +557,14 @@
   padding: 2px 15px;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 85px;
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
+  cursor: pointer;
 }
 
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+  width: 85px;
+  padding-left: 13px;
+}
 /*===============================UILanguageTypeForm===================================*/
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer {
