@@ -24,30 +24,28 @@ public class ScheduleBackupTimerActionHandler implements ActionHandler {
   private static final long serialVersionUID = 1L;
 
   public void execute(ExecutionContext context) {
+    Session session = null ;
     try {
       String nodePath = (String) context.getVariable("nodePath");
       String srcWorkspace = (String) context.getVariable("srcWorkspace");
       String repository = (String) context.getVariable("repository");
       PortalContainer container = PortalContainer.getInstance();
-      RepositoryService repositoryService = (RepositoryService) container
-          .getComponentInstanceOfType(RepositoryService.class);
-      Session session = repositoryService.getRepository(repository).getSystemSession(
-          srcWorkspace);
-      Node srcNode = (Node) session.getItem(nodePath);
-      
+      RepositoryService repositoryService = 
+        (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
+      session = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);
+      Node srcNode = (Node) session.getItem(nodePath);      
       if(!srcNode.isNodeType("exo:published")) {
         context.getToken().signal("backup-done");
+        session.logout();
         return;
       }
 
       Date endDate = srcNode.getProperty("exo:endPublication").getDate().getTime();
       Date currentDate = new Date();
-
       if (endDate.after(currentDate)) {
         // Create and save the Action object
         Delegation delegation = new Delegation();
-        delegation
-            .setClassName("org.exoplatform.processes.contentbackup.BackupNodeActionHandler");
+        delegation.setClassName("org.exoplatform.processes.contentbackup.BackupNodeActionHandler");
         delegation.setProcessDefinition(context.getProcessDefinition());
 
         Action moveAction = new Action();
@@ -67,7 +65,11 @@ public class ScheduleBackupTimerActionHandler implements ActionHandler {
       } else {
         context.getToken().signal("backup-done");
       }
+      session.logout() ;
     } catch (Exception ex) {
+      if(session != null && !session.isLive()) {
+        session.logout();
+      }
       ex.printStackTrace();
     }
   }
