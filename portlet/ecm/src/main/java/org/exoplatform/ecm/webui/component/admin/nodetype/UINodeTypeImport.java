@@ -124,7 +124,7 @@ public class UINodeTypeImport extends UIForm {
       UINodeTypeImportPopup uiImportPopup = uiImport.getParent() ;
       uiImportPopup.setRenderedChild(UINodeTypeUpload.class) ;
       UIApplication uiApp = uiImport.getAncestorOfType(UIApplication.class) ;
-      ExtendedNodeTypeManager extManager = (ExtendedNodeTypeManager) ntManager ;
+      ExtendedNodeTypeManager extManager = (ExtendedNodeTypeManager) ntManager ;      
       int counter = 0 ;
       List<UIFormCheckBoxInput> listCheckbox =  new ArrayList<UIFormCheckBoxInput>();
       uiImport.findComponentOfType(listCheckbox, UIFormCheckBoxInput.class);

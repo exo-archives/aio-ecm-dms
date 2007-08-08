@@ -5,11 +5,15 @@
 package org.exoplatform.ecm.webui.component.admin.nodetype;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValuesList;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -49,7 +53,7 @@ public class UINodeTypeUpload extends UIForm {
     this.setMultiPart(true) ;
     addUIFormInput(new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD)) ;
   }
-  
+
   @SuppressWarnings("unchecked")
   static public class UploadActionListener extends EventListener<UINodeTypeUpload> {
     public void execute(Event<UINodeTypeUpload> event) throws Exception {
@@ -72,12 +76,17 @@ public class UINodeTypeUpload extends UIForm {
       }
       MimeTypeResolver resolver = new MimeTypeResolver();
       String mimeType = resolver.getMimeType(fileName) ;
-      if(!mimeType.trim().equals("text/xml")){        
+      ByteArrayInputStream is = null;
+      if(mimeType.trim().equals("text/xml")) {
+        is = new ByteArrayInputStream(input.getUploadData()) ;
+      }else if(mimeType.trim().equals("application/zip")) {
+        ZipInputStream zipInputStream = new ZipInputStream(input.getUploadDataAsStream()) ;
+        is = Utils.extractFromZipFile(zipInputStream) ;
+      }else {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-file-error", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return;      
-      }
-      ByteArrayInputStream is = new ByteArrayInputStream(input.getUploadData()) ;
+        return;
+      }                                   
       try {
         IBindingFactory factory = BindingDirectory.getFactory(NodeTypeValuesList.class);
         IUnmarshallingContext uctx = factory.createUnmarshallingContext();
@@ -97,9 +106,9 @@ public class UINodeTypeUpload extends UIForm {
         return ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
-    }
+    }    
   }
-  
+
   static public class CancelActionListener extends EventListener<UINodeTypeUpload> {
     public void execute(Event<UINodeTypeUpload> event) throws Exception {
       UINodeTypeUpload uiUpload = event.getSource() ;

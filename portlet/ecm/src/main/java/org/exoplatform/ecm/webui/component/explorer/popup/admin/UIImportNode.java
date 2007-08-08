@@ -7,11 +7,14 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 import javax.jcr.ImportUUIDBehavior;
 import javax.jcr.Session;
 
+import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -74,12 +77,25 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      byte[] content = input.getUploadData() ;
+      String fileName = input.getUploadResource().getFileName();
+      MimeTypeResolver resolver = new MimeTypeResolver();
+      String mimeType = resolver.getMimeType(fileName) ;            
+      ByteArrayInputStream xmlInputStream = null ;
+      if("text/xml".equals(mimeType)) {
+        xmlInputStream = new ByteArrayInputStream(input.getUploadData()) ; 
+      }else if("application/zip".equals(mimeType)) {
+        ZipInputStream zipInputStream = new ZipInputStream(input.getUploadDataAsStream());
+        xmlInputStream = Utils.extractFromZipFile(zipInputStream) ;
+      }else {
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.mimetype-invalid",null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       try {
-        session.importXML(uiExplorer.getCurrentNode().getPath(), new ByteArrayInputStream(content),
+        session.importXML(uiExplorer.getCurrentNode().getPath(),xmlInputStream,
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
-      } catch(Exception ise) {
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null)) ;
+      } catch(Exception ise) {        
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null,ApplicationMessage.ERROR)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 

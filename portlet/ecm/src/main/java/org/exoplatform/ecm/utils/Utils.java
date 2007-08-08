@@ -1,5 +1,7 @@
 package org.exoplatform.ecm.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -315,4 +319,23 @@ public class Utils {
     }
     return null ;
   }
+  
+  public static ByteArrayInputStream extractFromZipFile(ZipInputStream zipStream) throws Exception {
+    ByteArrayOutputStream out= new ByteArrayOutputStream();
+    byte[] data  = new byte[1024];   
+    ZipEntry entry = zipStream.getNextEntry() ;
+    while(entry != null) {
+      int available = -1 ;
+      while ((available = zipStream.read(data, 0, 1024)) > -1) {
+        out.write(data, 0, available); 
+      }                         
+      zipStream.closeEntry();
+      entry = zipStream.getNextEntry();
+    }
+    out.close();
+    zipStream.close();
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray()) ;
+    return inputStream ;
+  }
+
 }

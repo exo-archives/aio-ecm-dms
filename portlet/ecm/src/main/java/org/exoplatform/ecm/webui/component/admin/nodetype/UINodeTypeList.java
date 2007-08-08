@@ -70,7 +70,7 @@ public class UINodeTypeList extends UIComponentDecorator {
     List nodeList = new ArrayList<NodeType>();     
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     ManageableRepository mRepository = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
-    NodeTypeManager ntManager = mRepository.getNodeTypeManager() ;
+    NodeTypeManager ntManager = mRepository.getNodeTypeManager() ;    
     NodeTypeIterator nodeTypeIter = ntManager.getAllNodeTypes() ;
     while(nodeTypeIter.hasNext()) {
       nodeList.add(nodeTypeIter.nextNodeType()) ;
@@ -114,6 +114,7 @@ public class UINodeTypeList extends UIComponentDecorator {
     } else {
       session.refresh(true) ;
     }
+    session.logout();
     PageList pageList = new ObjectPageList(getAllNodeTypes(), 10) ;
     uiPageIterator_.setPageList(pageList);        
   }
