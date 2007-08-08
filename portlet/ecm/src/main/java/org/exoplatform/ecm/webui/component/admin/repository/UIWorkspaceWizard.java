@@ -520,6 +520,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).getValue() ;
+
       if(uiFormWizard.isCheckValid_) {
         if(uiWSFormStep1.isRendered()) {
           if(uiFormWizard.isEmpty(wsName)) {
@@ -572,6 +573,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           } 
           if(uiFormWizard.isEmpty(maxBuffer)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          try {
+            Integer.parseInt(maxBuffer) ;
+          } catch (Exception e) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
@@ -656,8 +664,15 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
-          if(Integer.parseInt(maxBuffer) <= 0) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
+          try {
+            maxSizeValue = Integer.parseInt(maxSize) ;
+          } catch (NumberFormatException nfe) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(maxSizeValue < 0) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-rezo", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
@@ -666,8 +681,18 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
-          maxSizeValue = Integer.parseInt(maxSize) ;
-          liveTimeValue = Integer.parseInt(liveTime) ;
+          try {
+            liveTimeValue = Integer.parseInt(liveTime) ;
+          } catch (NumberFormatException nfe) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(liveTimeValue < 0) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-rezo", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
         }
         lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
         bufferValue = Integer.parseInt(maxBuffer) ;
@@ -812,9 +837,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String storePath = uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_SWAPPATH).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWorkspaceWizard.FIELD_MAXBUFFER).getValue() ;
-
       UIFormInputSet uiWSFormStep3 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP3) ;
       String indexPath = uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_INDEXPATH).getValue() ;
+      String maxCacheSize =  uiWSFormStep3.getUIStringInput(UIWorkspaceWizard.FIELD_MAXSIZE).getValue() ;
 
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       if(uiFormWizard.isCheckValid_) {
@@ -888,8 +913,27 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
+          try {
+            Integer.parseInt(maxBuffer) ;
+          } catch (Exception e) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
           if(Integer.parseInt(maxBuffer) <= 0) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          try {
+            Integer.parseInt(maxCacheSize) ;
+          } catch (Exception e) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxCacheSize-invalid", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(Integer.parseInt(maxCacheSize) <= 0) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxCacheSize-zero", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
@@ -905,7 +949,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           }  
         }
         if(uiWSFormStep3.isRendered()) {
-          if((indexPath == null) || (indexPath.trim().length() == 0)) {
+          if(Utils.isNameEmpty(indexPath)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.indexPath-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
