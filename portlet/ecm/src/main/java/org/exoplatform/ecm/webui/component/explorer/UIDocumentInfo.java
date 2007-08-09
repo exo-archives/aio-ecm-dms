@@ -595,8 +595,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
       String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
-      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      uiComp.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
+      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
     }
   }
 }

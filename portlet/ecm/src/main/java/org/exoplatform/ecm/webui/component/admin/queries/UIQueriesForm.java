@@ -75,8 +75,10 @@ public class UIQueriesForm extends UIForm implements UISelector {
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(QUERY_TYPE, QUERY_TYPE, ls) ;
     uiSelectBox.setOnChange("ChangeQueryType") ;
     addUIFormInput(uiSelectBox) ;
-    addUIFormInput(new UIFormTextAreaInput(STATEMENT, STATEMENT, null).setValue(XPATH_QUERY).
-        addValidator(EmptyFieldValidator.class)) ;
+    UIFormTextAreaInput uiStatement = new UIFormTextAreaInput(STATEMENT, STATEMENT, null) ;
+    uiStatement.setValue(XPATH_QUERY) ;
+    uiStatement.addValidator(EmptyFieldValidator.class) ;
+    addUIFormInput(uiStatement) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(CACHE_RESULT, CACHE_RESULT, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("PermissionButton") ;
     uiInputAct.addUIFormInput( new UIFormStringInput(PERMISSIONS, PERMISSIONS, null).setEditable(false));

@@ -12,7 +12,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputSet;
-import org.exoplatform.webui.form.validator.Validator;
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
@@ -105,6 +104,7 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
 
   public List getValidators() { return null; }
   
+  @SuppressWarnings("unused")
   public UIFormInput addValidator(Class clazz, Object...params) throws Exception { return this; }
   
   public Object getValue() throws Exception { return null; }
@@ -120,8 +120,9 @@ public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormIn
   public String getLabel() {
     return getId();
   }
+  
+  @SuppressWarnings("unused")
   public UIFormInput addValidator(Class arg0) throws Exception {
-    // TODO Auto-generated method stub
     return null;
   }
 }

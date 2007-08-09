@@ -14,6 +14,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -21,6 +22,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 
@@ -77,6 +79,10 @@ public class UIMultiLanguageForm extends UIForm {
     public void execute(Event<UIMultiLanguageForm> event) throws Exception {
       UIMultiLanguageForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      if(!Utils.isAddNodeAuthorized(uiExplorer.getCurrentNode())) { 
+        throw new MessageException(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", 
+                                                          null, ApplicationMessage.WARNING)) ;
+      }
       MultiLanguageService multiLanguageService = 
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;

@@ -27,7 +27,6 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
 
 /**
  * Created by The eXo Platform SARL

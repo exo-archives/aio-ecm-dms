@@ -19,7 +19,6 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
-import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
@@ -216,7 +215,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   public String getLanguage() { return language_ ; }
 
   public String getNodeType() throws Exception {
-    return node_.getPrimaryNodeType().getName() ;
+    return selectedNode_.getPrimaryNodeType().getName() ;
   }
 
   public String getPortalName() {
@@ -226,12 +225,12 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
 
   public List getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
-    if(node_.hasNode(Utils.LANGUAGES)){
-      NodeIterator iter = node_.getNode(Utils.LANGUAGES).getNodes() ;
+    if(selectedNode_.hasNode(Utils.LANGUAGES)){
+      NodeIterator iter = selectedNode_.getNode(Utils.LANGUAGES).getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
       }
-      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
+      local.add(selectedNode_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
     } 
     return local ;
   }
@@ -279,14 +278,10 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   
   static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
     public void execute(Event<UIViewVersion> event) throws Exception {
-      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIViewVersion uiViewVersion = event.getSource() ;
-      UIApplication uiApp = uiViewVersion.getAncestorOfType(UIApplication.class) ;
-      uiApp.addMessage(new ApplicationMessage("UIViewVersion.msg.not-supported", null)) ; 
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiViewVersion.setLanguage(selectedLanguage) ;
-      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-      context.addUIComponentToUpdateByAjax(uiViewVersion) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewVersion) ;
     }
   }
   
@@ -307,6 +302,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       Session session = uiExplorer.getSessionByWorkspace(workspaceName) ;
       Node selectedNode = (Node) session.getItem(uri) ;
       uicomp.setSelectedNode(selectedNode) ;
+      uicomp.originalNode_ = selectedNode ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
     }
   }

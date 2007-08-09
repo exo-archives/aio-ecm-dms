@@ -719,6 +719,7 @@ public class DialogFormFields extends UIForm {
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
     Date date = new Date() ;
+    if(options == null) formatter = new SimpleDateFormat("MM/dd/yyyy") ;
     if(defaultValue.length() > 0) {
       try {
         date = formatter.parse(defaultValue) ;
@@ -740,10 +741,15 @@ public class DialogFormFields extends UIForm {
     } 
     UIFormDateTimeInput uiDateTime = findComponentById(name) ;
     if(uiDateTime == null) {
-      uiDateTime = new UIFormDateTimeInput(name, name, date) ;
+      if(options != null && options.equals("displaytime")) {
+        uiDateTime = new UIFormDateTimeInput(name, name, date) ;
+      } else {
+        uiDateTime = new UIFormDateTimeInput(name, name, date, false) ;
+      }
       addUIFormInput(uiDateTime) ;
     }
     if(options != null && options.equals("displaytime")) uiDateTime.setDisplayTime(true) ;
+    else uiDateTime.setDisplayTime(false) ;
     if(validateType != null) {
       if(validateType.equals("datetime")) {
         uiDateTime.addValidator(DateTimeValidator.class) ;

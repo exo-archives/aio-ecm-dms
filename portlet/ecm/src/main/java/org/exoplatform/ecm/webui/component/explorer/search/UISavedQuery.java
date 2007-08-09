@@ -95,8 +95,8 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;    
-    privateQueries = queryService.getQueries(getCurrentUserId(), repository,SessionsUtils.getSystemProvider());
-    return privateQueries.isEmpty() ;    
+    privateQueries = queryService.getQueries(getCurrentUserId(), repository,SessionsUtils.getSessionProvider());
+    return !privateQueries.isEmpty() ;    
   }
   
   public List<Query> getQueries() throws Exception { return privateQueries ; }
@@ -111,7 +111,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     String userId = pcontext.getRemoteUser() ;    
     SessionProvider provider = SessionsUtils.getSystemProvider() ;    
     sharedQueries_ = queryService.getSharedQueries(userId, repository,provider) ;
-    return sharedQueries_.isEmpty();
+    return !sharedQueries_.isEmpty();
   }
   
   public List<Node> getSharedQueries() { return sharedQueries_ ; }

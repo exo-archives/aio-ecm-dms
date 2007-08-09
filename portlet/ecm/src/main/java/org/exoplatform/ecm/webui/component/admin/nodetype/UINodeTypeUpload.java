@@ -5,9 +5,7 @@
 package org.exoplatform.ecm.webui.component.admin.nodetype;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.jcr.nodetype.NodeType;

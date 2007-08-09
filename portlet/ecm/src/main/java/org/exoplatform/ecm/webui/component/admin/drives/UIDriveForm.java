@@ -288,7 +288,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       }
       uiInput.setOptions(folderOptions) ;
       if(!uiDriveForm.isAddNew_) {
-        DriveData drive = (DriveData)manageDriveService.getDriveByName(driverName, repository) ;
+        DriveData drive = manageDriveService.getDriveByName(driverName, repository) ;
         String defaultPath = drive.getHomePath() ;
         if(!drive.getWorkspace().equals(selectedWorkspace)) defaultPath = "/" ;
         uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_HOMEPATH).setValue(defaultPath) ;

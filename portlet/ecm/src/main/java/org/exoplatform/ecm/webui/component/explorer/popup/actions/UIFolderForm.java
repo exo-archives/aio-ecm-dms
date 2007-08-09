@@ -28,6 +28,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -79,6 +80,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiFolderForm.getAncestorOfType(UIApplication.class);
       String name = uiFolderForm.getUIStringInput(FIELD_NAME).getValue() ;
       Node node = uiExplorer.getCurrentNode() ;
+      String type = null ;
       if(uiExplorer.nodeIsLocked(node.getPath(), uiExplorer.getSession() )) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -86,26 +88,25 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       }
       if(name != null) {
         if(uiFolderForm.allowCreateFolder_.equals("both")) {
-          uiFolderForm.allowCreateFolder_ = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
-        } 
+          type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
+        } else {
+          type = uiFolderForm.allowCreateFolder_ ;
+        }
         try {
-          node.addNode(name, uiFolderForm.allowCreateFolder_) ;
+          node.addNode(name, type) ;
           node.save() ;
           node.getSession().refresh(false) ;
-          if(!uiExplorer.getPreference().isJcrEnable())uiExplorer.getSession().save() ;
+          if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
           uiExplorer.updateAjax(event) ;
-        }catch(ConstraintViolationException cve) {  
-          Object[] arg = { uiFolderForm.allowCreateFolder_ } ;
-          uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.constraint-violation", arg, 
-              ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }catch(RepositoryException re) {
+        } catch(ConstraintViolationException cve) {  
+          Object[] arg = { type } ;
+          throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
+                                                            arg, ApplicationMessage.WARNING)) ;
+        } catch(RepositoryException re) {
           uiApp.addMessage(new ApplicationMessage(re.getMessage(), null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
           JCRExceptionManager.process(uiApp, e);
         }
       } else {
@@ -123,4 +124,3 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     }
   }
 }
-

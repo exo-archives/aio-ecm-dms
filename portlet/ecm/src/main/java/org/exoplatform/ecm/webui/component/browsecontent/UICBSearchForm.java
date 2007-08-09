@@ -18,7 +18,6 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;

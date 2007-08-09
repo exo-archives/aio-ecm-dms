@@ -14,7 +14,6 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
-import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.cache.CacheService;
@@ -30,8 +29,6 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
-
-import com.sun.mail.util.QEncoderStream;
 
 public class QueryServiceImpl implements QueryService, Startable{
   private static final String[] perms = {PermissionType.READ, PermissionType.ADD_NODE, 

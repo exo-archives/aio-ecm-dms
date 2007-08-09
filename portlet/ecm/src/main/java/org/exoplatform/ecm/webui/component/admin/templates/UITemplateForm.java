@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.NodeIterator;
-import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
@@ -20,7 +19,6 @@ import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;

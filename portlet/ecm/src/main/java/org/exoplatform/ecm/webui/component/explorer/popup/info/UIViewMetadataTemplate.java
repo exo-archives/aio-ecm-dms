@@ -8,16 +8,22 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -74,6 +80,12 @@ public class UIViewMetadataTemplate extends UIContainer {
       UIViewMetadataTemplate uiViewTemplate = event.getSource() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIViewMetadataManager uiMetaManager = uiViewTemplate.getAncestorOfType(UIViewMetadataManager.class) ;
+      UIJCRExplorer uiExplorer = uiViewTemplate.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode() ;
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+        throw new MessageException(new ApplicationMessage("UIViewMetadataTemplate.msg.access-denied",
+                                                          null, ApplicationMessage.WARNING)) ;
+      }
       uiMetaManager.initMetadataFormPopup(nodeType) ;
       UIViewMetadataContainer uiContainer = uiViewTemplate.getParent() ;
       uiContainer.setRenderedChild(nodeType) ;

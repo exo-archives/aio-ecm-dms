@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
+import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.Value;
@@ -105,15 +106,17 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
     Session session = getSession(repository) ;
-    try {			
-      javax.jcr.Property categories = node.getProperty("exo:category");
-      Value[] values = categories.getValues();
-      for (int i = 0; i < values.length; i++) {				
-        cats.add(session.getNodeByUUID(values[i].getString()));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }    
+    if(node.hasProperty("exo:category")) {
+      try {			
+        Property categories = node.getProperty("exo:category");
+        Value[] values = categories.getValues();
+        for (int i = 0; i < values.length; i++) {				
+          cats.add(session.getNodeByUUID(values[i].getString()));
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }    
+    }
     return cats;
   }
 
@@ -121,7 +124,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     Session systemSession = getSession(repository) ;
     List<Value> vals = new ArrayList<Value>();
     if (!"*".equals(categoryPath)) {						
-      javax.jcr.Property categories = node.getProperty("exo:category");
+      Property categories = node.getProperty("exo:category");
       Value[] values = categories.getValues();
       String uuid2Remove = null;
       for (int i = 0; i < values.length; i++) {

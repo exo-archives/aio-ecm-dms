@@ -13,7 +13,6 @@ import javax.jcr.Node;
 import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.services.document.DocumentReaderService;
 import org.exoplatform.services.document.diff.AddDelta;
 import org.exoplatform.services.document.diff.ChangeDelta;
