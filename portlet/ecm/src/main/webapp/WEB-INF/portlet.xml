@@ -5,9 +5,9 @@
   
   
   <portlet>
-    <description xml:lang="EN">Portlet Cms content</description>
-    <portlet-name>JCRExplorerPortlet</portlet-name>
-    <display-name xml:lang="EN">JCRExplorer Portlet</display-name>
+    <description xml:lang="EN">Portlet ECM File Explorer</description>
+    <portlet-name>FileExplorerPortlet</portlet-name>
+    <display-name xml:lang="EN">File Explorer</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -24,8 +24,8 @@
     <resource-bundle>locale.portlet.ecm.JCRExplorerPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>JCRExplorer Portlet</title>
-      <short-title>jcr explorer</short-title>
+      <title>File Explorer</title>
+      <short-title>file explorer</short-title>
       <keywords>portlet, explorer</keywords>
     </portlet-info>
     <portlet-preferences>
@@ -65,7 +65,7 @@
   <portlet>
     <description xml:lang="EN">Portlet ECM Admin</description>
     <portlet-name>ECMAdminPortlet</portlet-name>
-    <display-name xml:lang="EN">ECMAdmin Portlet</display-name>
+    <display-name xml:lang="EN">ECMAdmin</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -82,7 +82,7 @@
     <resource-bundle>locale.portlet.ecm.ECMAdminPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>ECMAdmin Portlet</title>
+      <title>ECMAdmin</title>
       <short-title>ECM Admin</short-title>
       <keywords>ecm, admin</keywords>
     </portlet-info>
@@ -96,9 +96,9 @@
   </portlet> 
   
   <portlet>
-    <description xml:lang="EN">Fast Content Creator Portlet</description>
+    <description xml:lang="EN">Fast Content Creator</description>
     <portlet-name>FastContentCreatorPortlet</portlet-name>
-    <display-name xml:lang="EN">Fast Content Creator Portlet</display-name>
+    <display-name xml:lang="EN">Fast Content Creator</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -116,7 +116,7 @@
     <resource-bundle>locale.portlet.ecm.FastContentCreatorPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>Fast Content Creator Portlet</title>
+      <title>Fast Content Creator</title>
       <short-title>ECM Fast Content Creator</short-title>
       <keywords>ecm, fastcontentcreator</keywords>
     </portlet-info>
@@ -145,9 +145,9 @@
   </portlet> 
   
   <portlet>
-    <description xml:lang="EN">Portlet browse content</description>
-    <portlet-name>BrowseContentPortlet</portlet-name>
-    <display-name xml:lang="EN">Browse Content Portlet</display-name>
+    <description xml:lang="EN">Portlet content browser</description>
+    <portlet-name>ContentBrowserPortlet</portlet-name>
+    <display-name xml:lang="EN">Content Browser</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>   
                    
     
@@ -166,8 +166,8 @@
     <resource-bundle>locale.portlet.ecm.BrowseContentPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>Browse Content Portlet</title>
-      <short-title>Browse content</short-title>
+      <title>Content Browser</title>
+      <short-title>Browser</short-title>
       <keywords>portlet, content</keywords>
     </portlet-info>
     

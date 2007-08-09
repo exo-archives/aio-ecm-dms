@@ -1,18 +1,18 @@
 
 SkinService.addSkin(
-    "ecm/BrowseContentPortlet",
+    "ecm/ContentBrowserPortlet",
     "Default",
     "/ecm/skin/webui/component/browse/DefaultStylesheet.css"
 ) ;
 
 SkinService.addSkin(
-    "ecm/BrowseContentPortlet",
+    "ecm/ContentBrowserPortlet",
     "Vista",
     "/ecm/skin/webui/component/browse/VistaStylesheet.css"
 ) ;
  
 SkinService.addSkin(
-    "ecm/BrowseContentPortlet",
+    "ecm/ContentBrowserPortlet",
     "Mac",
     "/ecm/skin/webui/component/browse/MacStylesheet.css"
 ) ;
@@ -36,19 +36,19 @@ SkinService.addSkin(
 ) ;
 
 SkinService.addSkin(
-    "ecm/JCRExplorerPortlet",
+    "ecm/FileExplorerPortlet",
     "Default",
     "/ecm/skin/webui/component/explorer/DefaultStylesheet.css"
 ) ;
 
 SkinService.addSkin(
-    "ecm/JCRExplorerPortlet",
+    "ecm/FileExplorerPortlet",
     "Vista",
     "/ecm/skin/webui/component/explorer/VistaStylesheet.css"
 ) ;
  
 SkinService.addSkin(
-    "ecm/JCRExplorerPortlet",
+    "ecm/FileExplorerPortlet",
     "Mac",
     "/ecm/skin/webui/component/explorer/MacStylesheet.css"
 ) ;
