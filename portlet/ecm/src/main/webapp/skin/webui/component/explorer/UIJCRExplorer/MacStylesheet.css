@@ -1105,8 +1105,13 @@
 	float: left;
 }
 
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .SelectFileFrame {
+	margin: 0px;
+}
+
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput .FileNameLabel {
 	width: auto;
+	padding: 0px;
 }
 
 /*====================================UIDivInfo==================================*/

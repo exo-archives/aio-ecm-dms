@@ -487,15 +487,6 @@
   margin: 0px;
 }
 
-.UIJCRExplorerPortlet .ProgressBarFrame {
-	margin: 0px;
-	width: 320px;
-}
-
-.UIJCRExplorerPortlet .SelectFileFrame {
-	margin: 0px;
-	width: 320px;
-}
 
 /*=============================UIWatchDocumentForm=======================*/
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FieldContainer {
@@ -924,11 +915,19 @@
 
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput .MultiFieldAction {
 	margin: 4px 3px 0px 3px;
+	float: left;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .SelectFileFrame {
+	margin: 0px;
 }
 
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput .FileNameLabel {
 	width: auto;
+	padding: 0px;
 }
+
+/*====================================UIJCRBrowser==================================*/
 
 .UIJCRExplorer .UIJCRBrowser {
 	width: 95%;

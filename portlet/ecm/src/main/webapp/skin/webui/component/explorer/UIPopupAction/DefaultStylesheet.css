@@ -19,6 +19,10 @@
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIVersionInfo .FileContent {  
+  padding: 10px 0px;
+}
+
 .UIJCRExplorerPortlet .UIVersionInfo .FormContainer .UIFormGrid {
   width: 500px;
   margin: auto;
@@ -86,7 +90,7 @@
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayMinus.gif') no-repeat ;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
@@ -94,7 +98,7 @@
   width: 16px; height: 16px;
   float: left;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayPlus.gif') no-repeat ;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
@@ -185,7 +189,7 @@
 
 .UIJCRExplorerPortlet .UIDiff .NavigationContainer .WorkContainerDiff{
 	border: solid 2px white;
-	padding: 4px 0px 0px 7px;
+	padding: 4px 0px 10px 7px;
 }	
 
 .UIJCRExplorerPortlet .UIDiff .NavigationContainer .ContentEmpty{
@@ -196,8 +200,14 @@
 }	
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIGrid td{		
-	padding: 0px;
+	padding: 1px 1px 1px 1px;
+	background: white;
 } 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIGrid th{		
+	vertical-align: middle;
+	text-align: center;
+}
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
 	font-family: Verdana;

@@ -316,14 +316,11 @@
 
 /*############################## -- Begin UIDiff -- ##############################*/
 
-.UIJCRExplorerPortlet .FileContent {  	  
-}
-
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  
   font-family: Verdana;
   color: #0e396c; font-size: 11px;
   text-align: left;
-  padding: 10px;
+  padding: 10px 0px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
@@ -331,23 +328,22 @@
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
-  padding-left: 10px;
   height: 21px; line-height: 21px;
   font-family: Verdana;
-  color: #058ee6; font-weight: bold; 
-  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
-  border: 1px solid #cbcbcb;
+  color: #1e1e1e; font-weight: bold; 
+  background: none;
+  border: none;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
   padding: 10px;
-  border: 1px solid #cbcbcb; 
-  border-top: none;
+  border: none;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
 	text-align: center;
 	border:none ;
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
@@ -369,6 +365,28 @@
   padding: 3px 2px;
 }	
 
+.UIJCRExplorerPortlet .UIDiff .NavigationContainer .WorkContainerDiff{
+	border: solid 2px white;
+	padding: 4px 0px 10px 7px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .NavigationContainer .ContentEmpty{
+	border: solid 1px #cdcdcd;
+	color: #ef5604;
+	text-align: center;
+	padding: 20px 0px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIGrid td{		
+	padding: 1px 1px 1px 1px;
+	background: white;
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .UIGrid th{		
+	vertical-align: middle;
+	text-align: center;
+}
+
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
 	font-family: Verdana;
   color: #058ee6; font-weight: bold; 
@@ -378,8 +396,8 @@
 .UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
   width: 45%;
   border: 1px solid #e1e1e1; 	  
- 	float:right;
-  margin:0px 10px;
+ 	float: right;
+  margin: 0px 10px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
@@ -388,11 +406,11 @@
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
-	padding: 0px;
+		padding: 0px;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIRatingInfoContainer {
-	margin:0px 0px 0px auto;
+		margin:0px 0px 0px auto;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/
