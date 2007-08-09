@@ -258,18 +258,34 @@
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
-	padding: 10px;
+  border: solid 1px #b7b7b7;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer {
+	padding-top: 8px;
+  background: url('MacSkin/background/Background1x4.png') repeat;
+  border: solid 1px #aeaeae;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white;
+  width: 145px;
+  padding: 2px 15px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
+  cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 100px ;
+  width: 80px ;
 }
 
 .UIVoteForm .UIRatingInfoContainer {
 	width: 150px; padding: 5px 12px;
 	margin: auto;
-	background: white;
-	border: solid 1px #b7b7b7;
 }
 
 .UIVoteForm .OptionsContainer {
@@ -279,23 +295,23 @@
 
 .UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/GrayStar.gif');
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/YellowStar.gif');
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/OverStar.gif');
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
 }
 
 /*############################## -- Begin UIDiff -- ##############################*/

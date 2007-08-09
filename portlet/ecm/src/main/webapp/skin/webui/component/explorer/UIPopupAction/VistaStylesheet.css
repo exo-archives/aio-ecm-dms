@@ -177,14 +177,62 @@
 	margin-top: 10px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
-		padding: 0px;
-}
-	
-.UIJCRExplorerPortlet .UIDiff .FileContent .UIRatingInfoContainer {
-		margin:0px 0px 0px auto;
+/*############################## -- Begin UIVoteForm   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIVoteForm {
+  padding: 10px;
 }
 
+.UIJCRExplorerPortlet .VoteFormContainer {
+	padding-top: 8px;
+  border: solid 1px #aeaeae;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white;
+  width: 145px;
+  padding: 2px 15px;
+  border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+  width: 90px ;
+}
+
+.UIVoteForm .UIRatingInfoContainer {
+	width: 150px; padding: 5px 12px;
+	margin: auto;
+}
+
+.UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIVoteForm .OptionsContainer .NormalVote {
+	float: left;
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
+}
+
+.UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
+}
 
 /*############################## -- Begin UINodeTypeInfo -- ##############################*/
 .UIJCRExplorerPortlet .UINodeTypeInfo {
@@ -246,49 +294,6 @@
   padding: 0px 10px;
 }
 /*############################## -- End UINodeTypeInfo -- ##############################*/
-
-/*############################## -- Begin UIVoteForm   -- ##############################*/
-.UIJCRExplorerPortlet .UIVoteForm {
-	padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 100px ;
-}
-
-.UIVoteForm .UIRatingInfoContainer {
-	width: 150px; padding: 5px 12px;
-	margin: auto;
-	background: white;
-	border: solid 1px #b7b7b7;
-}
-
-.UIVoteForm .OptionsContainer {
-	margin: auto;
-	width: 120px; height: 20px;
-}
-
-.UIVoteForm .OptionsContainer .NormalVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/GrayStar.gif');
-}
-
-.UIVoteForm .OptionsContainer .RatedVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/YellowStar.gif');
-}
-
-.UIVoteForm .OptionsContainer .OverVote {
-	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/OverStar.gif');
-}
-/*############################## -- End UIVoteForm   -- ##############################*/
 
 /*############################## -- UIExport    -- ##############################*/
 .UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode {
@@ -490,11 +495,6 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- UIActionManager   -- ##############################*/
-
-.UIJCRExplorerPortlet .ActionContainer {
-  width: auto;
-  margin: auto;
-}
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
   margin: auto;

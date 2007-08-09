@@ -526,33 +526,6 @@
   padding-left: 100px;
 }
 
-/*==================================UIVoteForm==============================*/
-
-.UIJCRExplorerPortlet .UIVoteForm {
-  padding: 8px;
-}
-
-.UIJCRExplorerPortlet .VoteFormContainer {
-	padding-top: 8px;
-  background: #f4f4f4 ;
-  border: 1px solid #e1e1e1 ;
-}
-
-.UIJCRExplorerPortlet .VoteFormContainer .UIRatingInfoContainer {
-  background: white ;
-  width: 145px;
-  padding: 2px 15px;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
-  cursor: pointer;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 95px;
-  padding-left: 6px;
-}
-
 /*===============================UILanguageTypeForm===================================*/
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIAction {

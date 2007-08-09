@@ -391,36 +391,34 @@ UIBrowseContentPortlet .Explorer {
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 .UIBrowseContentPortlet .UIVoteForm {
-  padding: 8px;
+  border: solid 1px #b7b7b7;
+  padding: 10px;
 }
 
 .UIBrowseContentPortlet .VoteFormContainer {
 	padding-top: 8px;
-  background: #f4f4f4 ;
-  border: 1px solid #e1e1e1 ;
-  padding: 15px 0px 0px 0px;
+  background: url('MacSkin/background/Background1x4.png') repeat;
+  border: solid 1px #aeaeae;
 }
 
 .UIBrowseContentPortlet .VoteFormContainer .UIRatingInfoContainer {
-  background: white ;
+  background: white;
   width: 145px;
   padding: 2px 15px;
+  border: solid 1px #b7b7b7;
 }
 
 .UIBrowseContentPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
 }
 
-.UIBrowseContentPortlet .UIVoteForm .VoteFormContainer .UIAction {
-  width: 80px;
-  padding-left: 13px;
+.UIJCRExplorerPortlet .UIVoteForm .UIAction {
+  width: 80px ;
 }
 
 .UIVoteForm .UIRatingInfoContainer {
 	width: 150px; padding: 5px 12px;
 	margin: auto;
-	background: white;
-	border: solid 1px #b7b7b7;
 }
 
 .UIVoteForm .OptionsContainer {
@@ -430,24 +428,25 @@ UIBrowseContentPortlet .Explorer {
 
 .UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/GrayStar.gif');
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/YellowStar.gif');
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
-	margin: 0px 2px;
-	width: 19px; height: 18px;
-  background: url('/ecm/skin/images/vote/OverStar.gif');
+	margin: 2px 4px 0px 4px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
 }
+
 /*############################## -- End UIVoteForm   -- ##############################*/
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {

@@ -350,7 +350,7 @@
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
-  padding: 8px;
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .VoteFormContainer {
@@ -371,11 +371,6 @@
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 80px;
-  padding-left: 13px;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
   width: 60px ;
   padding: 12px 0px 10px 0px;
 }
@@ -387,29 +382,30 @@
 
 .UIVoteForm .OptionsContainer {
 	margin: auto;
-	width: 100px; height: 20px;
+	width: 120px; height: 20px;
 }
 
 .UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
-	margin: 2px 2px 0px 2px;
+	margin: 2px 4px 0px 4px;
 	width: 16px; height: 16px;
-  background: url('/ecm/skin/images/vote/SmallGreyStarIcon.gif');
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
-	margin: 2px 2px 0px 2px;
+	margin: 2px 4px 0px 4px;
 	width: 16px; height: 16px;
-  background: url('/ecm/skin/images/vote/SmallGreyStarIcon.gif');
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
-	margin: 2px 2px 0px 2px;
+	margin: 2px 4px 0px 4px;
 	width: 16px; height: 16px;
-  background: url('/ecm/skin/images/vote/SmallYellowStarIcon.gif');
+  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
 }
+
 /*############################## -- End UIVoteForm   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput{
