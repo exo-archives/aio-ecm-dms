@@ -9,7 +9,7 @@ UIJCRExplorer.prototype.loadViewNodeScroll = function(e) {
 	var uiFilePlanView = document.getElementById("UIFilePlanView");
 	if (uiFilePlanView) {
 		jcr.vnScrollMgr = eXo.portal.UIPortalControl.newScrollManager("UIFilePlanView");
-		jcr.vnScrollMgr.margin = 13;
+		jcr.vnScrollMgr.margin = 6;
 		jcr.vnScrollMgr.initFunction = jcr.initViewNodeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiFilePlanView, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
@@ -17,7 +17,8 @@ UIJCRExplorer.prototype.loadViewNodeScroll = function(e) {
 		jcr.vnScrollMgr.mainContainer = mainCont;
 		jcr.vnScrollMgr.arrowsContainer = arrows;
 		jcr.vnScrollMgr.loadElements("UITab");
-		var arrowButtons = eXo.core.DOMUtil.findDescendantsByTagName(arrows, "div");
+		//var arrowButtons = eXo.core.DOMUtil.findDescendantsByTagName(arrows, "div");
+		var arrowButtons = eXo.core.DOMUtil.findDescendantsByClass(arrows, "div", "NavigationIcon");
 		if (arrowButtons.length == 2) {
 			jcr.vnScrollMgr.initArrowButton(arrowButtons[0], "left", "NavigationIcon ScrollBackArrow16x16Icon", "NavigationIcon DisableBackArrow16x16Icon", "NavigationIcon DisableBackArrow16x16Icon");
 			jcr.vnScrollMgr.initArrowButton(arrowButtons[1], "right", "NavigationIcon ScrollNextArrow16x16Icon", "NavigationIcon DisableNextArrow16x16Icon", "NavigationIcon DisableNextArrow16x16Icon");
@@ -57,7 +58,8 @@ UIJCRExplorer.prototype.loadNodeTypeScroll = function() {
 		jcr.ntScrollMgr.mainContainer = mainCont;
 		jcr.ntScrollMgr.arrowsContainer = arrows;
 		jcr.ntScrollMgr.loadElements("UITab");
-		var arrowButtons = eXo.core.DOMUtil.findDescendantsByTagName(arrows, "div");
+		//var arrowButtons = eXo.core.DOMUtil.findDescendantsByTagName(arrows, "div");
+		var arrowButtons = eXo.core.DOMUtil.findDescendantsByClass(arrows, "div", "NavigationIcon");
 		if (arrowButtons.length == 2) {
 			jcr.ntScrollMgr.initArrowButton(arrowButtons[0], "left", "NavigationIcon ScrollBackArrow16x16Icon", "NavigationIcon DisableBackArrow16x16Icon", "NavigationIcon DisableBackArrow16x16Icon");
 			jcr.ntScrollMgr.initArrowButton(arrowButtons[1], "right", "NavigationIcon ScrollNextArrow16x16Icon", "NavigationIcon DisableNextArrow16x16Icon", "NavigationIcon DisableNextArrow16x16Icon");
