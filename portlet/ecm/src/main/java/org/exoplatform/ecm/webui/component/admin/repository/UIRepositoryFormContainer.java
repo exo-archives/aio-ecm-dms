@@ -31,7 +31,7 @@ public UIRepositoryFormContainer() throws Exception {
 protected void refresh(boolean isAddnew, RepositoryEntry re) throws Exception {
   getChild(UIRepositoryForm.class).isAddnew_ = isAddnew ;
   getChild(UIRepositoryForm.class).refresh(re) ;
-  getChild(UIRepositoryForm.class).lockRepoForm(isAddnew) ;
+  getChild(UIRepositoryForm.class).lockForm(!isAddnew) ;
 }
 
 public void activate() throws Exception {

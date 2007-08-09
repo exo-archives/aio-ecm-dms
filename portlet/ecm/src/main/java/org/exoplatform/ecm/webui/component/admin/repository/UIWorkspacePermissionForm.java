@@ -104,8 +104,9 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
         if(!sb.toString().contains(readperm))
           sb.append(readperm) ;
       }
-      uiWizardForm.permissions_.put(user, sb.toString()) ;
-      uiWizardForm.refreshPermissionList() ;
+      UIWizardStep1 ws1 = uiWizardForm.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
+      ws1.addPermissions(user, sb.toString()) ;
+      ws1.refreshPermissionList() ;
       UIPopupAction uiPopup = uiForm.getAncestorOfType(UIPopupAction.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
