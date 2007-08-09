@@ -69,10 +69,17 @@
     </description>
     <servlet-class>org.exoplatform.frameworks.jcr.webdav.LnkGeneratorServlet</servlet-class>
     <load-on-startup>4</load-on-startup>
-  </servlet>
+  </servlet>   
   
-  
-
+  <servlet>
+    <servlet-name>DisplayJCRContent</servlet-name>
+    <description>
+      eXo - Platform DisplayJCRContent Servlet.
+    </description>
+    <servlet-class>org.exoplatform.frameworks.jcr.web.DisplayJCRContentServlet</servlet-class>
+    <load-on-startup>4</load-on-startup>
+  </servlet>   
+       
   <!-- ================================================================= -->
   
   <servlet-mapping>
@@ -103,6 +110,11 @@
   <servlet-mapping>
     <servlet-name>LinkServlet</servlet-name>
     <url-pattern>/lnkgenerator/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>DisplayJCRContent</servlet-name>
+    <url-pattern>/jcr/*</url-pattern>
   </servlet-mapping>
 
   <session-config>

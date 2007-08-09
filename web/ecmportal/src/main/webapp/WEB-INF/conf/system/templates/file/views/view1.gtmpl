@@ -69,10 +69,11 @@
           }
           
         } else {
-        	if(mimeType.startsWith("image")){
+        	if(mimeType.startsWith("image")) {
+        	def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
         %> 	
 	    		<div class="ContentDetail">
-            <image src="<%=uicomponent.getDownloadLink(originalNode)%>"/>
+            <image src="<%=imageLink%>"/>
           </div>
         <%}else {%> 
 					<div style="text-align:center; font-style:italic">
