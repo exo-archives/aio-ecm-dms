@@ -122,7 +122,8 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
-  padding: 0px 0px 15px 10px;
+  width: 95%;
+  margin: 10px auto;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
@@ -166,14 +167,13 @@
 	border: none;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #B1B0B0;
-}
+/*############################## -- UITreeJCRExplorer   -- ##############################*/
 
 .UIFastContentCreatorPortlet .Explorer {
   margin-right: 10px;
   float: left ;
   width: 220px ;
+  background: white;
 }
 
 .UIFastContentCreatorPortlet .Explorer .ExplorerTree {
@@ -182,26 +182,39 @@
   padding: 1px;
 }
 
+.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
+	white-space: nowrap;
+}
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	height: 24px;
+	line-height: 24px;
+}
+
 .UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
-}
-
 .UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
   overflow: auto;
   background: white;
+  width: 100%;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
 }
 
-.UIFastContentCreatorPortlet .UITreeList .UIGrid {
-  width: 315px;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList .UIGrid {
+  width: 97%;
+  margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
+  line-height: 30px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList {
@@ -211,7 +224,7 @@
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
 	border: solid 1px #E1E1E1;
-	width: 555px;
+	width: 98%;
 	margin: 0px;
 }
 
@@ -222,7 +235,7 @@
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: white;
-	padding: 0px;
+	padding: 5px 0px;
 	margin: 0px;
 }
 

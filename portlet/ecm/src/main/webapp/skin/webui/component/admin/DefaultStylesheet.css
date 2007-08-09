@@ -659,7 +659,8 @@
 /*------------------------------UICBScripts------------------------*/
 
 .UIECMAdminPortlet .UIECMScripts  {
-  width: 98%;
+  width: 97%;
+  margin: auto;
 }
 
 .UIECMScripts .ECMScriptForm {
@@ -870,10 +871,6 @@
 	background: white;
 	padding: 5px 0px;
 	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
-	width: 100px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {

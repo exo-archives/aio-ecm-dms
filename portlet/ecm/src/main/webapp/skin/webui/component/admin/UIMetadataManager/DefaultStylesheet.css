@@ -9,7 +9,7 @@
 /*############################## -- UIMetadataManager-- ########################*/
 
 .UIECMAdminPortlet .UIMetadataManager  {
-  padding: 2px 0px 0px 8px;
+  padding: 2px 0px 0px 0px;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UITabPane {

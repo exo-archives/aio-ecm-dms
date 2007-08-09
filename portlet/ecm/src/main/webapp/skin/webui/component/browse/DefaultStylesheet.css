@@ -491,7 +491,7 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: white;
-	padding: 0px;
+	padding: 5px 0px;
 	margin: 0px;
 }
 

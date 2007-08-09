@@ -97,11 +97,6 @@
   padding-top: 10px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser {
-  width: 560px;
-	margin: 10px auto 0px auto;
-}
-
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIFormWithTitle {
 	padding: 0px;
 	width: auto;
@@ -151,92 +146,79 @@
 	margin: 0px;
 }
 
-.UIFastContentCreatorPortlet  .UIJCRBrowser {
-	width: 560px;
-	margin: 10px auto 0px auto;
+.UIFastContentCreatorPortlet .UIJCRBrowser {
+	width: 95%;
+	margin: 10px auto;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
-	padding-top: 2px;
-	margin-left: 240px;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+	margin: 10px 0px 0px 0px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
-	padding-top: 2px;
-	margin-left: 240px;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	width: 98%;
+	margin: 0px;
+	border: 1px solid #E1E1E1;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #c9c9c9;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+	padding: 5px 0px;
+	margin: 0px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer {
-  margin-bottom: 10px;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout .FieldLabel{
+	width: 100px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
+	width: 100px;
+}
+
+/*############################## -- UITreeJCRExplorer   -- ##############################*/
+
+.UIFastContentCreatorPortlet .Explorer {
   float: left ;
   width: 230px ;
 }
 
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree {
-  background: #f3f3f3;
-  border: solid 1px #c6c6c9;
-  padding: 1px;
-  margin-top: 1px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .InnerExplorerTree {
-  padding: 10px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .Node {
-  line-height: 32px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLevel1 {
-  height: 30px; line-height: 30px;
-  padding-left: 15px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLevel2 {
-  height: 30px; line-height: 30px;
-  padding-left: 30px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .ExpandIcon {
-  float: left;
-  width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
-  cursor: pointer;
-  margin: 1px 0px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .ColapseIcon {
-  float: left;
-  width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
-  cursor: pointer;
-  margin: 3px 0px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeIcon {
-  float: left;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLabel {
-  float: left;
-  color: #01060d;
-  padding: 0px 10px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .Explorer .ExplorerTree .NodeLabelSelected {
-  float: left;
-  color: #0848c1;
-  padding: 0px 10px;
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList .UIGrid {
-  width: 310px;
-  margin-left: 5px ;
+  width: 97%;
+  margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+  overflow: auto;
+  background: white;
+  width: 100%;
+}
+
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
+  margin-top: 1px;
+  border: solid 1px #c6c6c9;
+  background: #f3f3f3;
+  padding: 1px;
+}
+
+.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
+  white-space: nowrap;
+}
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	line-height: 24px;
+	height: 24px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{

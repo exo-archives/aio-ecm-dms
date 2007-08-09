@@ -87,7 +87,8 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser {
-  padding: 0px 0px 15px 10px;
+  width: 95%; 
+  margin: 10px auto;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
@@ -115,13 +116,31 @@
   border: solid 1px #ABBCCA;
 }
 
+/*############################## -- UITreeJCRExplorer   -- ##############################*/
+
 .UIFastContentCreatorPortlet .Explorer {
-  margin-right: 10px;
   float: left ;
   width: 230px ;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList .UIGrid {
+  width: 97%;
+  margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
+  border: solid 1px #ABBCCA;
+  overflow: auto;
+  background: white;
+  width: 100%;
+}
+
 .UIFastContentCreatorPortlet .Explorer .ExplorerTree {
+  margin-top: 1px;
   border: solid 1px #c6c6c9;
   background: #f3f3f3;
   padding: 1px;
@@ -132,22 +151,14 @@
   padding: 10px;
 }
 
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
-}
-
-.UIFastContentCreatorPortlet .UITreeList .UIGrid {
-  width: 315px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-}
-
 .UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
+  white-space: nowrap;
+}
+
+.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeLabel a {
+	float: none;
+	line-height: 24px;
+	height: 24px;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormGrid td.FieldLabel {
@@ -193,7 +204,7 @@
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: 550px;
+	width: 98%;
 	margin: 0px;
 	border: 1px solid #E1E1E1;
 }
@@ -205,7 +216,7 @@
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
 	background: white;
-	padding: 0px;
+	padding: 5px 0px;
 	margin: 0px;
 }
 

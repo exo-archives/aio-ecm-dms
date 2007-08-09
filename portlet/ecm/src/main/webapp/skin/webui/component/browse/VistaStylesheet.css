@@ -481,14 +481,9 @@ UIBrowseContentPortlet .Explorer {
 	border: 1px solid #E1E1E1;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
 .UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .HorizontalLayout {
 	background: white;
-	padding: 0px;
+	padding: 5px 0px;
 	margin: 0px;
 }
 

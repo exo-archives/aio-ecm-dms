@@ -785,9 +785,31 @@
 
 /*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
 
+.UIECMAdminPortlet .UIECMScripts  {
+  width: 97%;
+  margin: auto;
+}
+
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
   margin: auto;
   width: 60px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm  {
+  margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
+  width: 90px;
+  padding-left: 10px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
+  margin: 10px 0px 0px 0px;
+}
+
+.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer .OverflowContainer {
+  width: 75px;
 }
 
 .UIECMScripts .UIBarStyle {

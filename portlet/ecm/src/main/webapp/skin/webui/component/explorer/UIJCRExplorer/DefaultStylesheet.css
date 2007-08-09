@@ -553,6 +553,10 @@
  	padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UISaveQueryForm .UIFormGrid .FieldLabel {
+  width: 80px;
+}
+
 .UIJCRExplorerPortlet .UISaveQueryForm .UIAction {
   width: 170px;
   padding-left: 100px;
@@ -1030,4 +1034,11 @@
 	width: auto;
 }
 
+/*====================================UIDivInfo==================================*/
+
+.UIJCRExplorer .UIDivInfo .UITabPane {
+	width: 97%;
+	padding: 0px; 
+	margin: auto;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
