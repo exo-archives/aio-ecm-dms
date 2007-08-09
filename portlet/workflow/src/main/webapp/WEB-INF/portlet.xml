@@ -3,9 +3,9 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"> 
   <portlet>
-    <description xml:lang="EN">Workflow Controller Portlet</description>
+    <description xml:lang="EN">Workflow Controller</description>
     <portlet-name>WorkflowControllerPortlet</portlet-name>
-    <display-name xml:lang="EN">Workflow Controller Portlet</display-name>
+    <display-name xml:lang="EN">Workflow Controller</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -22,7 +22,7 @@
     <resource-bundle>locale.portlet.workflow.WorkflowControllerPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>Workflow Controller Portlet</title>
+      <title>Workflow Controller</title>
       <short-title>Workflow Controller</short-title>
       <keywords>workflow, Controller</keywords>
     </portlet-info>
@@ -30,9 +30,9 @@
   
   
   <portlet>
-    <description xml:lang="EN">Workflow Administration Portlet</description>
+    <description xml:lang="EN">Workflow Administration</description>
     <portlet-name>WorkflowAdministrationPortlet</portlet-name>
-    <display-name xml:lang="EN">Workflow Administration Portlet</display-name>
+    <display-name xml:lang="EN">Workflow Administration</display-name>
     <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
     
     <init-param>
@@ -49,7 +49,7 @@
     <resource-bundle>locale.portlet.workflow.WorkflowAdministrationPortlet</resource-bundle>    																														
     
     <portlet-info>
-      <title>Workflow Administration Portlet</title>
+      <title>Workflow Administration</title>
       <short-title>Wofkflow Administration</short-title>
       <keywords>workflow, Administration</keywords>
     </portlet-info>
