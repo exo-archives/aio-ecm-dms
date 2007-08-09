@@ -5,17 +5,19 @@
 package org.exoplatform.ecm.webui.component.explorer.versions;
 
 import javax.jcr.Node;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
@@ -31,22 +33,22 @@ import org.exoplatform.webui.form.validator.EmptyFieldValidator;
  */
 
 @ComponentConfig(
-  lifecycle = UIFormLifecycle.class,
-  template =  "system:/groovy/webui/form/UIFormWithTitle.gtmpl",
-  events = {
-    @EventConfig(listeners = UILabelForm.SaveActionListener.class),
-    @EventConfig(listeners = UILabelForm.CancelActionListener.class, phase = Phase.DECODE)    
-  }
+    lifecycle = UIFormLifecycle.class,
+    template =  "system:/groovy/webui/form/UIFormWithTitle.gtmpl",
+    events = {
+      @EventConfig(listeners = UILabelForm.SaveActionListener.class),
+      @EventConfig(listeners = UILabelForm.CancelActionListener.class, phase = Phase.DECODE)    
+    }
 )
 
 public class UILabelForm extends UIForm {
-  
+
   private static  String FIELD_LABEL = "label" ;
-  
+
   public UILabelForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_LABEL , FIELD_LABEL , null).addValidator(EmptyFieldValidator.class));   
   }
-  
+
   @SuppressWarnings("unused")
   static  public class SaveActionListener extends EventListener<UILabelForm> {
     public void execute(Event<UILabelForm> event) throws Exception {
@@ -55,21 +57,27 @@ public class UILabelForm extends UIForm {
       UIVersionInfo uiVersionInfo = uiLabelForm.getParent();
       VersionNode currentVersion = uiVersionInfo.getCurrentVersionNode();
       UIJCRExplorer uiExplorer = uiLabelForm.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiLabelForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;   
-      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
-      for(String filterChar : arrFilterChar) {
-        if(label.indexOf(filterChar) > -1) {
-          throw new MessageException(new ApplicationMessage("UILabelForm.msg.fileName-invalid", 
-                                                            null, ApplicationMessage.WARNING)) ;
-        }
+      if(!Utils.isNameValid(label, Utils.SPECIALCHARACTER)) {
+        uiApp.addMessage(new ApplicationMessage("UILabelForm.msg.label-invalid", 
+            null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        return ;
       }
-      currentNode.getVersionHistory().addVersionLabel(currentVersion.getName(), label, true) ;  
+      try{
+        currentNode.getVersionHistory().addVersionLabel(currentVersion.getName(), label, false) ;
+      } catch (VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UILabelForm.msg.label-exist", new Object[]{label})) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+        return ;
+      }
       uiLabelForm.reset() ;
       uiLabelForm.setRendered(false);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
     }
   }  
- 
+
   @SuppressWarnings("unused")
   static  public class CancelActionListener extends EventListener<UILabelForm> {
     public void execute(Event<UILabelForm> event) throws Exception {
