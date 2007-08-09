@@ -195,7 +195,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
               }
               node.checkout() ;
               contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
-              contentNode.setProperty(Utils.JCR_MIMETY, mimeType);
+              contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
               contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
               node.save() ;       
               node.checkin() ;

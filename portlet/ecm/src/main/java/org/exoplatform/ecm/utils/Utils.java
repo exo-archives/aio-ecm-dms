@@ -100,7 +100,7 @@ public class Utils {
   final static public String NT_RESOURCE = "nt:resource" ;
   final static public String DEFAULT = "default" ;
   final static public String JCR_CONTENT = "jcr:content" ;
-  final static public String JCR_MIMETY = "jcr:mimeType" ;
+  final static public String JCR_MIMETYPE = "jcr:mimeType" ;
   final static public String JCR_FROZEN = "jcr:frozenNode" ;
   final public static String JCR_LASTMODIFIED = "jcr:lastModified" ;
   final static public String JCR_DATA = "jcr:data" ;
@@ -262,7 +262,7 @@ public class Utils {
       if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
       if(node.isNodeType(NT_FILE)) {
         Node jcrContentNode = node.getNode(JCR_CONTENT) ;
-        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETY).getString().replaceAll("/|\\.","_")).append(appended);
+        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
       }
     }
     return str.toString() ;

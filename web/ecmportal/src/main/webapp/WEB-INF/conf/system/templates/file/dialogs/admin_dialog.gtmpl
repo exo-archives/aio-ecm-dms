@@ -21,6 +21,17 @@
 			      %>
 				  </td>
 				</tr>
+				<%if(uicomponent.isAddNew()){%>
+						<tr>		          					
+				      <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.mimeType")%></td>
+				      <td class="FieldComponent">
+					      <%
+					        String[] fieldMediamimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "text/html", "options=text/html,text/plain"] ;
+					        uicomponent.addSelectBoxField("mediamimetype", fieldMediamimetype) ;
+					      %>
+					    </td>
+			    	</tr>
+	    	<%}%>
 				<tr>
 				  <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.content")%></td>
 				  <td class="FieldComponent">

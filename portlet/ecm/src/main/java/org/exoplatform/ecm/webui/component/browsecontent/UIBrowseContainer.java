@@ -934,7 +934,7 @@ public class UIBrowseContainer extends UIContainer {
     } else if(node.hasNode(Utils.JCR_CONTENT)) {
       if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
       contentNode = node.getNode(Utils.JCR_CONTENT) ;
-      String mimeType = contentNode.getProperty(Utils.JCR_MIMETY).getString() ;
+      String mimeType = contentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
       if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
     }
     if(contentNode == null) return null;

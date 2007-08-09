@@ -21,6 +21,7 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
@@ -143,8 +144,15 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
+    String mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
+    dresource = new InputStreamDownloadResource(input, mimeType) ;
+    MimeTypeResolver mimeTypeResolver = new MimeTypeResolver() ;
+    String ext = mimeTypeResolver.getExtension(mimeType) ;
+    String fileName = node.getName() ;    
+    if(fileName.lastIndexOf("."+ext)<0){
+      fileName = fileName + "." +ext ;
+    } 
+    dresource.setDownloadName(fileName) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
@@ -348,8 +356,8 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       if (Utils.NT_UNSTRUCTURED.equals(nodeType) || Utils.EXO_TAXANOMY.equals(nodeType)) nodeType = Utils.NT_FOLDER ;          
       if (Utils.NT_FILE.equals(nodeType)) jcrContentNode = childNode.getNode(Utils.JCR_CONTENT);
       else if (Utils.NT_RESOURCE.equals(nodeType)) jcrContentNode = childNode;
-      if (jcrContentNode != null && jcrContentNode.hasProperty(Utils.JCR_MIMETY)) {
-        mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETY).getString();
+      if (jcrContentNode != null && jcrContentNode.hasProperty(Utils.JCR_MIMETYPE)) {
+        mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString();
       }
       // 2 node types for sorting : folder or file
       if (Utils.NT_FOLDER.equals(nodeType)) nodeType = "folder";
