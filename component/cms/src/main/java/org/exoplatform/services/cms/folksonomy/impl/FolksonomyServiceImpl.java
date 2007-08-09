@@ -173,6 +173,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       }
       sessionOnWS.logout();
     }
+    systemSession.logout();
     cache_.put(tagPath,documentList) ;
     return documentList;
   } 
