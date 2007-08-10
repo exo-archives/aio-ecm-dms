@@ -25,7 +25,6 @@
     padding: 10px;
     border: 1px solid #cbcbcb; 
     border-top: none;
-    overflow: auto;
   }
   
   .FileContent .ContentDetail {  
@@ -132,12 +131,7 @@
 	    <div class="Content">
 	      <%        
 	        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-	          if(mimeType.substring(mimeType.lastIndexOf("/")+ 1).equals("xml")){
-	            println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
-	          } else {
-	            println contentNode.getProperty("jcr:data").getString().replaceAll("\n", "<br/>") ;
-	          }
-	          
+	          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
 	        } else {
 	        	if(mimeType.startsWith("image")) {
 	        	def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
