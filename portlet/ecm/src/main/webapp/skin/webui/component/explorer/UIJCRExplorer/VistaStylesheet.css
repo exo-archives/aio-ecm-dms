@@ -179,15 +179,13 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
-  float: left;
-  width: auto;
-  margin: auto;
+  padding-left: 10px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox{
   width: 130px;
   float: left;
-  height: 140px;
+  height: 130px;
   margin: 10px 5px;
 }
 

@@ -189,15 +189,14 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
-  width: auto;
-  margin: auto;
+  padding-left: 10px;;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
   width: 100px;
   float: left;
-  margin: 10px 0px 0px 0px;
-  height: 130px;
+  margin: 10px 3px 5px 3px;
+  height: 110px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
@@ -218,7 +217,7 @@
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
   text-align:center;
   width: 100px;
-  line-height: 20px; vertical-align: middle;
+  line-height: 24px; vertical-align: middle;
   font-size: 11px;
   height: 30px;
   margin: auto;
