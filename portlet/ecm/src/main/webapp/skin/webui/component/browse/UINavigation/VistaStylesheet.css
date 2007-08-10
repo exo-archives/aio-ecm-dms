@@ -93,7 +93,7 @@
 }
 
 .UICBNavigation .UICBMainNavigation {
-	height: 25px;
+	height: 26px;
   font-size: 11px;
 }
 
@@ -274,7 +274,7 @@
 
 .UICBNavigation .UICBSubNavigation .ChildNodeItem { 
 	float: left;
-	height: 18px;
+	height: 25px;
 	padding: 1px 4px 0px 4px;
 }
 
