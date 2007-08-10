@@ -89,7 +89,6 @@
 				              </div>
 				            </div>   
 				                         
-				         
 				        </div>
 				      </div>
 				    </div>
@@ -100,13 +99,12 @@
 	        <div class="UITabContent" style="display: block;"> 
 		        <div class="NavigationContainer">       
 	    				<div class="TopTitle">$originalNode.name</div>
-			        <div class="Content">
 			        <%
-			        	if(contentNode.hasProperty("jcr:data")) {
-			        		println contentNode.getProperty("jcr:data").getString();
-			        	}
+			        	if(contentNode.hasProperty("jcr:data")){
+			        	String iframeId = uicomponent.getId() + "ifame" ;
 			        %>
-			        </div>				     
+			        		<iframe id="<%=iframeId%>" class="Content"></iframe>
+			        <%}%>
 				    </div>   
 	        </div>
 	        <div class="UITabContent" style="display: none;"> 

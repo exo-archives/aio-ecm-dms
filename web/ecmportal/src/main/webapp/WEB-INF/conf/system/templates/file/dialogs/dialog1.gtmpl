@@ -26,8 +26,8 @@
 				      <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.mimeType")%></td>
 				      <td class="FieldComponent">
 					      <%
-					        String[] fieldMediamimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "text/html", "options=text/html,text/plain"] ;
-					        uicomponent.addSelectBoxField("mediamimetype", fieldMediamimetype) ;
+					        String[] mimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "text/html", "options=text/html,text/plain", "onchange=true"] ;
+					        uicomponent.addSelectBoxField("mimetype", mimetype) ;
 					      %>
 					    </td>
 			    	</tr>
@@ -40,9 +40,15 @@
 								def curNode = uicomponent.getNode() ;
 								if(curNode.hasNode("jcr:content")) {
 									def content = curNode.getNode("jcr:content") ;
-									if(content.getProperty("jcr:mimeType").getString().startsWith("text")){
-										String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=name"] ;
-			              uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
+									String mimeType = content.getProperty("jcr:mimeType").getString() ;
+									if(mimeType.startsWith("text")){
+										if(mimeType.equals("text/html")) {
+											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=name"] ;
+				              uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
+										} else {
+											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+			          			uicomponent.addTextAreaField("content", fieldSummary) ;
+										}
 									} else {
 									%>
 										<span style="font-size:12px; font-weight: bold; padding-top:5px;">
@@ -54,11 +60,15 @@
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			            uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
 								}
-							} else {				
-								String[] hiddenField3 = ["jcrPath=/node/jcr:content/jcr:mimeType", "visible=false", "text/html"] ;  
-							  uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
-								String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-			          uicomponent.addWYSIWYGField("summary", fieldSummary) ;
+							} else {	
+								String selectValue = uicomponent.getSelectBoxFieldValue("mimetype") ;					
+								if(selectValue != null && selectValue.equals("text/html")) {	
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
+								} else {
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+			          	uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
+								}
 							}
 						%>			
 				  </td>
