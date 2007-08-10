@@ -66,12 +66,10 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
     try {
       String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       String wsName = value.substring(0, value.indexOf(":")) ;
-      String path = value.substring(value.indexOf(":") + 1) ;
-      ManageableRepository manageableRepository = getApplicationComponent(RepositoryService.class).getRepository(repository) ;      
-      //TODO maybe lost data here
-      Session session = SessionsUtils.getSessionProvider().getSession(wsName,manageableRepository) ;
-      relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, session) ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName())) ;      
+      String path = value.substring(value.indexOf(":") + 1) ;           
+      //TODO maybe lost data here      
+      relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName,repository) ;
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
@@ -89,7 +87,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
         relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
-        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),uiExplorer.getRepositoryName())) ;
+        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }

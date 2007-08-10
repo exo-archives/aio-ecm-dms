@@ -772,7 +772,7 @@ public class UIWorkingArea extends UIContainer {
       session.save() ;
       for(int i = 0; i < refList.size(); i ++) {
         Node addRef = refList.get(i) ;
-        relationsService.addRelation(addRef, destPath, session) ;
+        relationsService.addRelation(addRef, destPath,session.getWorkspace().getName(),uiExplorer.getRepositoryName()) ;
         addRef.save() ;
       }      
       for(ClipboardCommand currClip : uiExplorer.getAllClipBoard()) {

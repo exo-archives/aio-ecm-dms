@@ -121,7 +121,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         nodeSession.refresh(false) ;
         for(int i = 0; i < refList.size(); i ++) {
           Node addRef = refList.get(i) ;
-          relationsService.addRelation(addRef, destPath, nodeSession) ;
+          relationsService.addRelation(addRef, destPath, nodeSession.getWorkspace().getName(),uiJCRExplorer.getRepositoryName()) ;
           addRef.save() ;
         }  
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
