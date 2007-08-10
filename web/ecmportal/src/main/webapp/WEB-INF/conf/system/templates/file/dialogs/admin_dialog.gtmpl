@@ -21,7 +21,7 @@
 			      %>
 				  </td>
 				</tr>
-				<%if(uicomponent.isAddNew()){%>
+				<%if(!uicomponent.isEditing()){%>
 						<tr>		          					
 				      <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.mimeType")%></td>
 				      <td class="FieldComponent">
