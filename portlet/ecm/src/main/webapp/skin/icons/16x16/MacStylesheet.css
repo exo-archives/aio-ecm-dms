@@ -307,7 +307,7 @@
 
 .DeleteIconInfo {
   width: 17px; height: 18px;
-  background: url('/eXoResources/icons/16x16/MacSkin/DeleteIcon.png') no-repeat ; 
+  background: url('MacSkin/DustBin.gif') no-repeat ; 
   cursor: pointer;
   margin-left: 3px;
 }

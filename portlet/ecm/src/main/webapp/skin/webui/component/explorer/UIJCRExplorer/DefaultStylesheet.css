@@ -610,6 +610,11 @@
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
 	padding: 10px;
 }
+
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm .UIAction{
+	width: 160px;
+}
+
 /*================================UIActivateVersion=================================*/
 
 .UIJCRExplorerPortlet .UIActivateVersion .UIAction {

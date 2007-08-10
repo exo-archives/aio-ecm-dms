@@ -680,8 +680,8 @@
 }
 
 .UIECMScripts .HorizontalLayout .FormContainer .UIAction {
-	width: 350px;
-	padding-left: 90px;
+	width: 400px;
+	padding-left: 110px;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
@@ -692,8 +692,8 @@
 }
 
 .UICBScripts .CBScriptForm .UIAction {
-	width: 270px;
-	padding-right: 10px;
+	width: 350px;
+	padding-left: 60px;
 }
 
 .UICBScripts .HorizontalLayout {

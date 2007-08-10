@@ -93,23 +93,15 @@
   background: url('MacSkin/background/BGRepositoryList1x3.gif') repeat;
 }
 
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
-  border: 1px solid #d9d9d9; 
-  background: #f3f3f3;
-  margin: 3px 1px 1px 1px;
-  padding:7px 0px 5px 10px;
-}
-
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
   float: left;
   border: solid 1px #ffffff;
-  margin: 6px;
+  margin: 5px;
+  width: 95px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
-  float: left;
-  width: 95px; height: 85px;
+  height: 85px;
   border: solid 1px #d1d1d1;
   background: white;
   padding: 8px 0px 5px 0px;
