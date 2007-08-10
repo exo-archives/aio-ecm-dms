@@ -15,6 +15,7 @@ import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.picocontainer.Startable;
 
 /**
@@ -43,12 +44,12 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 
   }
 
-  private Node getNodeByUUID(String uuid, String repository) throws Exception{
+  private Node getNodeByUUID(String uuid, String repository,SessionProvider provider) throws Exception {   
     ManageableRepository manageRepo = repositoryService_.getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{
-        return manageRepo.login(ws).getNodeByUUID(uuid) ;
+        return provider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;        
       }catch(Exception e) {
         
       }      
@@ -56,17 +57,16 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     return null;
   }
   
-  public List<Node> getRelations(Node node, String repository) {
+  public List<Node> getRelations(Node node, String repository, SessionProvider provider) {
     List<Node> rels = new ArrayList<Node>();
     try {
       if(node.hasProperty(RELATION_PROP)) {
         Value[] values = node.getProperty(RELATION_PROP).getValues();
         for (int i = 0; i < values.length; i++) {
-          rels.add(getNodeByUUID(values[i].getString(), repository));
+          rels.add(getNodeByUUID(values[i].getString(), repository, provider));
         }
       }
-    } catch(Exception e) {
-      e.printStackTrace() ;
+    } catch(Exception e) {      
     }
     return rels ;    
   }
@@ -74,13 +74,14 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   public void removeRelation(Node node, String relationPath, String repository) throws Exception {
     List<Value> vals = new ArrayList<Value>();
     if (!"*".equals(relationPath)) {
+      SessionProvider provider = SessionProvider.createSystemProvider() ;
       Property relations = node.getProperty(RELATION_PROP);
       if (relations != null) {
         Value[] values = relations.getValues();
         String uuid2Remove = null;
         for (int i = 0; i < values.length; i++) {
           String uuid = values[i].getString();
-          Node refNode = getNodeByUUID(uuid, repository);
+          Node refNode = getNodeByUUID(uuid, repository,provider);
           if (refNode.getPath().equals(relationPath)) {
             uuid2Remove = uuid;
           } else {
@@ -89,11 +90,14 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         }
         if (uuid2Remove == null) return;
       }
+      provider.close();
     }
     node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
   }
 
-  public void addRelation(Node node, String relationPath, Session session) throws Exception {
+  public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
+    SessionProvider provider = SessionProvider.createSystemProvider() ;
+    Session session = getSession(repository,workpace,provider) ;
     Node catNode = (Node) session.getItem(relationPath);    
     if(!catNode.isNodeType("mix:referenceable")) {
       catNode.addMixin("mix:referenceable") ;
@@ -119,7 +123,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       vals.add(value2add);
       node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
       session.save() ;
-      session.refresh(true) ;
+      provider.close();
     }
   }
 
@@ -166,7 +170,12 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   }
 
   protected Session getSession(String repository) throws Exception {	
-    return repositoryService_.getRepository(repository)
-    .getSystemSession(cmsConfig_.getWorkspace(repository));    	
+    return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository));    	
   }
+  
+  private Session getSession(String repository,String workspace,SessionProvider provider) throws Exception{
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    return provider.getSession(workspace,manageableRepository) ;
+  }
+  
 }
