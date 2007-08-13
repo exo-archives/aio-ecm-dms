@@ -71,7 +71,9 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   public void setDescription(String desc) {}  
   
   public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
-    String businessProcess = actionNode.getProperty("exo:businessProcess").getString();    
+    String businessProcess = actionNode.getProperty("exo:businessProcess").getString();
+    //TODO check maybe don't need put repository here
+    variables.put("repository",repository) ;
     executeAction(userId, businessProcess, variables, repository);
   }
   

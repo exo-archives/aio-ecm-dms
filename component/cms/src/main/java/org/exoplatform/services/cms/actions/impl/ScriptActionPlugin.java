@@ -73,7 +73,8 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   
   public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
     String script = actionNode.getProperty("exo:script").getString();    
-    variables.put("actionNode", actionNode);        
+    variables.put("actionNode", actionNode);
+    variables.put("repository",repository) ;
     executeAction(userId, script, variables, repository);
   }      
   
@@ -96,7 +97,8 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
     }
   }
 
-  public void activateAction(String userId, String executable, Map variables, String repository) throws Exception {   
+  public void activateAction(String userId, String executable, Map variables, String repository) throws Exception {
+    variables.put("repository",repository) ;
     executeAction(userId,executable,variables, repository) ;
   }
 
