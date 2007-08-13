@@ -89,7 +89,7 @@
 								  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.cron-expression")%></td>
 								  <td class="FieldComponent">	
 								  <% 
-										String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress"] ;
+										String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress","validate=cronExpressionValidator"] ;
 										uicomponent.addTextField("cronExpression", fieldCronExpression) ;
 								  %>
 								  </td>
