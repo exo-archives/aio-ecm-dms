@@ -151,28 +151,7 @@
                 </collection>
               </field>
 		        </object>		        
-		      </object-param>
-		      <object-param>	      
-		        <name>Taxonomy-mac</name>
-		        <description>View configuration for Taxonomy</description>
-		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
-		          <field  name="name"><string>taxonomy-mac</string></field>
-		          <field  name="permissions"><string>member:/user</string></field>
-		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/MacView</string></field>
-		          <field  name="tabList">
-                <collection type="java.util.ArrayList">
-                  <value>
-                    <object type="org.exoplatform.services.cms.views.ViewConfig$Tab">
-                      <field  name="tabName"><string>Actions</string></field>
-                      <field  name="buttons">
-                      	<string>editDocument</string>                    	
-                      </field>
-                    </object>
-                  </value>
-                </collection>
-              </field>
-		        </object>		        
-		      </object-param>
+		      </object-param>		      
 		      <object-param>	      
 		        <name>Taxonomy-thumbnails</name>
 		        <description>View configuration for Taxonomy</description>
@@ -202,16 +181,7 @@
 		          <field  name="name"><string>ListView</string></field>
 		          <field  name="warPath"><string>/ecm-explorer/ListView.gtmpl</string></field>              
 		        </object>
-		      </object-param>
-		      <object-param>	      
-		        <name>Mac Template</name>
-		        <description>Template for display documents in mac style</description>
-		        <object type="org.exoplatform.services.cms.views.TemplateConfig">		        	
-              <field  name="type"><string>ecmExplorerTemplate</string></field>
-		          <field  name="name"><string>MacView</string></field>
-              <field  name="warPath"><string>/ecm-explorer/MacView.gtmpl</string></field>
-		        </object>
-		      </object-param>
+		      </object-param>		      
 		      <object-param>	      
 		        <name>Thumbnails Template</name>
 		        <description>Template for display documents in thumbnails style</description>

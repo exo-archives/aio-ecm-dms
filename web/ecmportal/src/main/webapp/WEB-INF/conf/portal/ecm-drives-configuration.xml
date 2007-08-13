@@ -136,7 +136,7 @@
               <field  name="homePath"><string>/jcr:system/exo:ecm/exo:taxonomies</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
-                <string>taxonomy-list, taxonomy-mac, taxonomy-thumbnails</string>
+                <string>taxonomy-list,taxonomy-thumbnails</string>
               </field>
               <field  name="viewPreferences"><boolean>true</boolean></field>
               <field  name="viewNonDocument"><boolean>true</boolean></field>
