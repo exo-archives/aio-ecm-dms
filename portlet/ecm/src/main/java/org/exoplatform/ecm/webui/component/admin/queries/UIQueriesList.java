@@ -18,7 +18,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -38,14 +38,16 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIQueriesList.DeleteActionListener.class, confirm = "UIQueriesList.msg.confirm-delete")
     }
 )
-public class UIQueriesList extends UIContainer {
+public class UIQueriesList extends UIComponentDecorator {
 
   final static public String[] ACTIONS = {"AddQuery"} ;
   final static public String ST_ADD = "AddQueryForm" ;
   final static public String ST_EDIT = "EditQueryForm" ;
+  private UIPageIterator uiPageIterator_ ;
   
   public UIQueriesList() throws Exception {
-    addChild(UIPageIterator.class, null, "QueriesListIterator");
+    uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "QueriesListIterator");
+    setUIComponent(uiPageIterator_) ;
   }
 
   public String[] getActions() { return ACTIONS ; }
@@ -53,11 +55,12 @@ public class UIQueriesList extends UIContainer {
   @SuppressWarnings("unchecked")
   public void updateQueriesGrid() throws Exception {
     PageList pageList = new ObjectPageList(getAllSharedQueries(), 10) ;
-    UIPageIterator uiPateIterator = getChild(UIPageIterator.class) ;
-    uiPateIterator.setPageList(pageList) ;    
+    uiPageIterator_.setPageList(pageList) ;    
   }
   
-  public UIPageIterator getUIPageIterator() { return getChild(UIPageIterator.class) ; }
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  
+  public List getQueryList() throws Exception { return uiPageIterator_.getCurrentPageData() ; } 
   
   @SuppressWarnings("unchecked")
   public List<Node> getAllSharedQueries() throws Exception {

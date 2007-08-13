@@ -12,6 +12,6 @@ package org.exoplatform.ecm.jcr;
  */
 public interface UISelector {
   
-  public void updateSelect(String selectField, String value) ;
+  public void updateSelect(String selectField, String value) throws Exception ;
   
 }

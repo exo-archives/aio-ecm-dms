@@ -3,6 +3,7 @@ package org.exoplatform.services.cms.i18n.impl;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ; 
   final static String VOTE_TOTAL_LANG_PROP = "exo:voteTotalOfLang".intern() ;
   final static String NODE = "/node/" ;
+  final static String NODE_LANGUAGE = "/node/languages/" ;
   final static String CONTENT_PATH = "/node/jcr:content/" ;
   final static String TEMP_NODE = "temp" ;
   
@@ -142,14 +144,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       if(newLang.canAddMixin(mixin.getName())) {
         newLang.addMixin(mixin.getName()) ;
         for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-          String propName = def.getName() ;
-          if(def.isMandatory() && !def.isAutoCreated()) {
-            if(def.isMultiple()) {
-              newLang.setProperty(propName,node.getProperty(propName).getValues()) ;
-            } else {
-              newLang.setProperty(propName,node.getProperty(propName).getValue()) ; 
-            }
-          }        
+          if(!def.isProtected()) {
+            String propName = def.getName() ;
+            if(def.isMandatory() && !def.isAutoCreated()) {
+              if(def.isMultiple()) {
+                newLang.setProperty(propName,node.getProperty(propName).getValues()) ;
+              } else {
+                newLang.setProperty(propName,node.getProperty(propName).getValue()) ; 
+              }
+            }        
+          }
         }
       }
     }
@@ -223,6 +227,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           }
         }               
       }
+    }
+    Iterator iter = inputs.values().iterator() ;
+    JcrInputProperty property ;
+    while (iter.hasNext()) {
+      property = (JcrInputProperty) iter.next() ;
+      System.out.println("\n\nproperty name====>" +property.getJcrPath()+ "\n\n");
     }
     if(!defaultLanguage.equals(language) && isDefault){
       Node selectedLangNode = null ;

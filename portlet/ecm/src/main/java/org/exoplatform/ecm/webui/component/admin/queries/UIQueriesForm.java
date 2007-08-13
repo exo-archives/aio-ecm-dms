@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
+import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -166,13 +167,20 @@ public class UIQueriesForm extends UIForm implements UISelector {
       }
       String queryType = uiForm.getUIFormSelectBox(QUERY_TYPE).getValue() ;
       boolean cacheResult = uiForm.getUIFormCheckBoxInput(CACHE_RESULT).isChecked() ;
-      if(permissions.indexOf(",") > -1) {
-        queryService.addSharedQuery(queryName, statement, queryType, permissions.split(","), 
-                                   cacheResult, repository) ;  
-      } else {
-        queryService.addSharedQuery(queryName, statement, queryType, new String[] {permissions}, 
-                                   cacheResult, repository) ;
-      }   
+      try {
+        if(permissions.indexOf(",") > -1) {
+          queryService.addSharedQuery(queryName, statement, queryType, permissions.split(","), 
+              cacheResult, repository) ;  
+        } else {
+          queryService.addSharedQuery(queryName, statement, queryType, new String[] {permissions}, 
+              cacheResult, repository) ;
+        }   
+      } catch(InvalidQueryException qe) {
+        uiApp.addMessage(new ApplicationMessage("UIQueriesForm.msg.invalid-query", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
       uiManager.getChild(UIQueriesList.class).updateQueriesGrid() ;
       uiManager.removeChildById(UIQueriesList.ST_ADD) ;

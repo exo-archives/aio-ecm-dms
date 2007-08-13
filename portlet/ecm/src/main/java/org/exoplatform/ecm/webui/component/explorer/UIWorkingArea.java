@@ -495,6 +495,7 @@ public class UIWorkingArea extends UIContainer {
       Node node = uiExplorer.getNodeByPath(nodePath, session) ;
       Node parentNode = node.getParent() ;
       try {
+        node.removeMixin("rma:record") ;
         node.remove() ;
         uiExplorer.setSelectNode(parentNode) ;
         uiExplorer.updateAjax(event) ;
@@ -540,7 +541,6 @@ public class UIWorkingArea extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
-
     }
   }
 
@@ -642,7 +642,6 @@ public class UIWorkingArea extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       }
-
     }
   }
 
@@ -796,5 +795,4 @@ public class UIWorkingArea extends UIContainer {
       destNode.save() ;      
     }
   }
-  
 }

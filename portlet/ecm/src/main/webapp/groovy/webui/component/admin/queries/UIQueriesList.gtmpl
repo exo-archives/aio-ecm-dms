@@ -8,7 +8,7 @@
  */
 %>
 <% 
-  def sharedQueries = uicomponent.getAllSharedQueries() ; 
+  def sharedQueries = uicomponent.getQueryList() ; 
   if(sharedQueries == null) return ;
 %>
 <div class="UIQueriesList" id="$uicomponent.id">

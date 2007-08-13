@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -17,8 +16,7 @@ import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.relations.RelationsService;
-import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -27,6 +25,7 @@ import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -60,9 +59,14 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
   }
   
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
+  public void updateSelect(String selectField, String value) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     RelationsService relateService = getApplicationComponent(RelationsService.class) ;
+    String currentFullPath = uiJCRExplorer.getCurrentWorkspace() + ":" + uiJCRExplorer.getCurrentNode().getPath() ;
+    if(value.equals(currentFullPath)) {
+      throw new MessageException(new ApplicationMessage("UIRelationsAddedList.msg.can-not-add-itself",
+                                                        null, ApplicationMessage.WARNING)) ;
+    }
     try {
       String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       String wsName = value.substring(0, value.indexOf(":")) ;

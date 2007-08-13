@@ -112,12 +112,6 @@ public class UILanguageDialogForm extends DialogFormFields {
       Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
       multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
     } else {
-      for(UIComponent uiChild : getChildren()) {
-        if(uiChild instanceof UIFormWYSIWYGInput) {
-          System.out.println("\n\nname =====>" +uiChild.getId()+ "\n\n");
-          System.out.println("\n\nvalue====>" +((UIFormWYSIWYGInput)uiChild).getValue()+ "\n\n");
-        }
-      }
       Map map = Utils.prepareMap(getChildren(), properties, uiExplorer.getSession()) ;
       multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
     }
