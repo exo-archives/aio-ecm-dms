@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.portlet.PortletPreferences;
@@ -96,11 +97,23 @@ public class UIActionList extends UIContainer {
       String repository = 
         uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       try {
-        templateService.getTemplatePathByUser(false, nodeTypeName, userName, repository);
+        String path = templateService.getTemplatePathByUser(false, nodeTypeName, userName, repository);
+        if(path == null) {
+          Object[] args = {actionName} ;
+          uiApp.addMessage(new ApplicationMessage("UIActionList.msg.template-null", args, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
       } catch(PathNotFoundException path) {
         Object[] args = {actionName} ;
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.template-empty", args, 
                                                 ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIActionList.msg.access-denied", null, 
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {

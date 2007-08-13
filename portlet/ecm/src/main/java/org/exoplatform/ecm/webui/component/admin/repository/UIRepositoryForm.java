@@ -66,7 +66,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.CloseActionListener.class),
       @EventConfig(listeners = UIRepositoryForm.AddWorkspaceActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.ShowHiddenActionListener.class),
-      @EventConfig(listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class, confirm = "UIRepositoryForm.msg.confirm-workspace-delete"),
+      @EventConfig(listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.EditWorkspaceActionListener.class)
     }  
 )

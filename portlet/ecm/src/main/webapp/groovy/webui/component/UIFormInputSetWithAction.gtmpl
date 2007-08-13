@@ -18,6 +18,7 @@
 		    def actions = uicomponent.getInputSetActions() ;
 		    def actionValues = uicomponent.getActionValues() ;
 		    def isShowAction = uicomponent.isShowActionInfo()
+        String confirm = _ctx.appRes("UIFormInputSetWithAction.msg.confirm-delete") ;
 		    for(inputEntry in uicomponent.getChildren()) {
 		      if(inputEntry.isRendered()) {
 		  %>
@@ -50,9 +51,9 @@
 					  	          if(uicomponent.isDeleteOnly()) { %>
 						  	          <div class="InforField">
 						  	            <div class="ActionField"><%=listInfor[j]%></div>      	          
-						                <div style="cursor: pointer;" class="DeleteIconInfo" onclick="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');">
-						                  <span></span>
-						                </div>
+                            <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');" onclick="return confirm('<%=confirm%>');">
+						                  <div class="DeleteIconInfo"><span></span></div>
+						                </a>
 						              </div>	
 						        <%
 					              }
@@ -71,18 +72,18 @@
 								                <div class="ActionField">
 								                  <%=arrInfor[i]%>
 								                </div>      	          
-									              <div style="cursor: pointer;" class="DeleteIconInfo" onclick="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
-									                <span></span>
-									              </div>		                  
+									              <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
+									                <div class="DeleteIconInfo"><span></span></div>		                  
+									              </a>
 							              <%} else { %>
 						                    <div class="ActionField" style="float:left;">
 								                  [ <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
 								                      <%=arrInfor[i]%>
 								                  </a> ]
-								                </div>      	          
-									              <div style="cursor: pointer;" class="DeleteIconInfo" onclick="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[1]%>', '&objectId=<%=arrInfor[i]%>');">
-									                <span></span>
-									              </div>		                
+								                </div>
+									              <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[1]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
+  									              <div class="DeleteIconInfo"><span></span></div>		                
+									              </a>
 									              <div style="clear:left"><span></span></div>
 							              <%
 							                }
