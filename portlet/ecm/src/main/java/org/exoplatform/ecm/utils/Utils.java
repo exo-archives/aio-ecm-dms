@@ -206,7 +206,7 @@ public class Utils {
   public static boolean isNameEmpty(String name) {
     return (name == null || name.trim().length() == 0) ;
   }
-  
+
   public static List<String> getListAllowedFileType(Node currentNode, String repository, TemplateService templateService) throws Exception {
     List<String> nodeTypes = new ArrayList<String>() ;
     NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
@@ -293,7 +293,7 @@ public class Utils {
     }  
     return children ;
   }
-  
+
   public static boolean isLockTokenHolder(Node node) throws Exception {
     if(node.getLock().getLockToken() != null) { 
       return true ; 
@@ -364,12 +364,16 @@ public class Utils {
   }
 
   public static String getNodeOwner(Node node) throws Exception {
-    if(node.hasProperty("exo:owner")) {
-      return node.getProperty("exo:owner").getString();
-    }
+    try {
+      if(node.hasProperty("exo:owner")) {
+        return node.getProperty("exo:owner").getString();
+      }
+    } catch (Exception e) {
+      //e.printStackTrace() ;
+    } 
     return null ;
   }
-  
+
   public static ByteArrayInputStream extractFromZipFile(ZipInputStream zipStream) throws Exception {
     ByteArrayOutputStream out= new ByteArrayOutputStream();
     byte[] data  = new byte[1024];   

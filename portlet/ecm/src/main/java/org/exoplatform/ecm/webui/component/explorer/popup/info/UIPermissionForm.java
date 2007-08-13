@@ -10,10 +10,12 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -47,7 +49,7 @@ import org.exoplatform.webui.form.UIForm;
     }
 )
 
-  public class UIPermissionForm extends UIForm implements UISelector {
+public class UIPermissionForm extends UIForm implements UISelector {
   final static public String PERMISSION   = "permission";
   final static public String POPUP_SELECT = "SelectUserOrGroup";
   public UIPermissionForm() throws Exception {
@@ -126,7 +128,6 @@ import org.exoplatform.webui.form.UIForm;
       UIPermissionForm uiForm = event.getSource();
       UIPermissionManager uiParent = uiForm.getParent();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).getUIStringInput(
           UIPermissionInputSet.FIELD_USERORGROUP).getValue();
       List<String> permsList = new ArrayList<String>();
@@ -134,7 +135,7 @@ import org.exoplatform.webui.form.UIForm;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       if(!uiExplorer.getCurrentNode().isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -152,13 +153,13 @@ import org.exoplatform.webui.form.UIForm;
 
       if (Utils.isNameEmpty(userOrGroup)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.userOrGroup-required", null, 
-                                                ApplicationMessage.WARNING));
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       if (permsList.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.checkbox-require", null, 
-                                                ApplicationMessage.WARNING));
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
@@ -169,17 +170,29 @@ import org.exoplatform.webui.form.UIForm;
         if (node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
         for (String perm : permsRemoveList) {
           try {
-          node.removePermission(userOrGroup, perm);
+            node.removePermission(userOrGroup, perm);
           } catch (AccessDeniedException ade) {
             continue ;
           }
         } 
-       if(Utils.hasChangePermissionRight(node)) node.setPermission(userOrGroup, permsArray);
+        if(Utils.hasChangePermissionRight(node)) node.setPermission(userOrGroup, permsArray);
         uiParent.getChild(UIPermissionInfo.class).updateGrid();
         node.save();
+        if(uiJCRExplorer.getRootNode().equals(node)) {
+          if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
+            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
+            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
+            prefs_.setValue(Utils.VIEWS,"") ;
+            prefs_.setValue(Utils.JCR_PATH,"") ;
+            prefs_.setValue(Utils.DRIVE,"") ;
+            prefs_.store() ;
+            uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
+            return ;
+          }
+        }
       } else {
         uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.not-change-permission", null, 
-                                                ApplicationMessage.WARNING));
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }

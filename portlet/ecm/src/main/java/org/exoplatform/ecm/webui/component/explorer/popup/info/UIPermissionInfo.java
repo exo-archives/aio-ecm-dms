@@ -12,13 +12,16 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -89,16 +92,17 @@ public class UIPermissionInfo extends UIContainer {
     }
     Set keys = permsMap.keySet(); 
     Iterator keysIter = keys.iterator() ;
-    if(getExoOwner(node) != null) {
-      String owner = getExoOwner(node) ;
-      PermissionBean permOwnerBean = new PermissionBean();
-      permOwnerBean.setUsersOrGroups(owner);
-      permOwnerBean.setRead(true) ;
-      permOwnerBean.setAddNode(true) ;
-      permOwnerBean.setSetProperty(true) ;
-      permOwnerBean.setRemove(true) ;
-      permBeans.add(permOwnerBean);
-    }
+    //TODO Utils.getExoOwner(node) has exception return SystemIdentity.SYSTEM
+    String owner = SystemIdentity.SYSTEM ;
+    if(getExoOwner(node) != null) owner = getExoOwner(node) ;
+    PermissionBean permOwnerBean = new PermissionBean();
+    permOwnerBean.setUsersOrGroups(owner);
+    permOwnerBean.setRead(true) ;
+    permOwnerBean.setAddNode(true) ;
+    permOwnerBean.setSetProperty(true) ;
+    permOwnerBean.setRemove(true) ;
+    permBeans.add(permOwnerBean);
+
     while(keysIter.hasNext()) {
       String userOrGroup = (String) keysIter.next();            
       List<String> permissions = permsMap.get(userOrGroup);      
@@ -136,13 +140,13 @@ public class UIPermissionInfo extends UIContainer {
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       if(!uiJCRExplorer.getCurrentNode().isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(name.equals(uicomp.getExoOwner(node))) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -150,13 +154,25 @@ public class UIPermissionInfo extends UIContainer {
         if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
         node.removePermission(name) ;        
         node.save() ;
+        if(uiJCRExplorer.getRootNode().equals(node)) {
+          if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
+            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
+            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
+            prefs_.setValue(Utils.VIEWS,"") ;
+            prefs_.setValue(Utils.JCR_PATH,"") ;
+            prefs_.setValue(Utils.DRIVE,"") ;
+            prefs_.store() ;
+            uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
+            return ;
+          }
+        }
         if(!uiJCRExplorer.getPreference().isJcrEnable()) {
           uiJCRExplorer.getSession().save() ;
           uiJCRExplorer.getSession().refresh(false) ;
         }
       } else {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
