@@ -91,8 +91,6 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       Version version_ = uiVersionInfo.curentVersion_.getVersion() ;
       Node frozenNode = version_.getNode("jcr:frozenNode") ;
       uiViewVersion.setNode(frozenNode) ;
-      uiViewVersion.setSelectedNode(uiVersionInfo.node_) ;
-      uiViewVersion.originalNode_ = uiVersionInfo.node_ ;
       uiViewVersion.setRendered(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
     }

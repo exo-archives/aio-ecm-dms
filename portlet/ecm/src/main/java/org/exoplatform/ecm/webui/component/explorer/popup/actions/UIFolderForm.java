@@ -103,7 +103,13 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
           throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
                                                             arg, ApplicationMessage.WARNING)) ;
         } catch(RepositoryException re) {
-          uiApp.addMessage(new ApplicationMessage(re.getMessage(), null, ApplicationMessage.WARNING)) ;
+          String key = "UIFolderForm.msg.repository-exception" ;
+          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } catch(NumberFormatException nume) {
+          String key = "UIFolderForm.msg.numberformat-exception" ;
+          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         } catch (Exception e) {

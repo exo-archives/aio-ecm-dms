@@ -10,6 +10,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
+import org.exoplatform.ecm.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
@@ -21,6 +22,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -100,18 +102,22 @@ public class UILanguageDialogForm extends DialogFormFields {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
-    
     if(!uiExplorer.hasAddPermission()) {
       uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
-    
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
       Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
       multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
     } else {
+      for(UIComponent uiChild : getChildren()) {
+        if(uiChild instanceof UIFormWYSIWYGInput) {
+          System.out.println("\n\nname =====>" +uiChild.getId()+ "\n\n");
+          System.out.println("\n\nvalue====>" +((UIFormWYSIWYGInput)uiChild).getValue()+ "\n\n");
+        }
+      }
       Map map = Utils.prepareMap(getChildren(), properties, uiExplorer.getSession()) ;
       multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
     }

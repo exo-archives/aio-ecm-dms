@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
@@ -199,6 +200,16 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
       isEditInList_ = false ;
+    } catch(RepositoryException repo) {
+      String key = "UIActionForm.msg.repository-exception" ;
+      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    } catch(NumberFormatException nume) {
+      String key = "UIActionForm.msg.numberformat-exception" ;
+      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
     } catch (Exception e) {
       e.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
@@ -109,6 +110,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     Node newNode = null ;
     String nodeType ;
     Node homeNode ;
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
     if(isAddNew()) {
       UIDocumentFormController uiDFController = getParent() ;
       homeNode = uiExplorer.getCurrentNode() ;
@@ -130,14 +132,22 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
       ve.printStackTrace() ;
-      UIApplication uiApp = getAncestorOfType(UIApplication.class);
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
+    } catch(RepositoryException repo) {
+      String key = "UIDocumentForm.msg.repository-exception" ;
+      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
+    } catch(NumberFormatException nume) {
+      String key = "UIDocumentForm.msg.numberformat-exception" ;
+      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
     } catch(Exception e) {
       e.printStackTrace() ;
-      UIApplication uiApp = getAncestorOfType(UIApplication.class);
       String key = "UIDocumentForm.msg.cannot-save" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

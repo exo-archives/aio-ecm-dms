@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
@@ -95,8 +96,12 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;    
-    privateQueries = queryService.getQueries(getCurrentUserId(), repository,SessionsUtils.getSessionProvider());
-    return !privateQueries.isEmpty() ;    
+    try {
+      privateQueries = queryService.getQueries(getCurrentUserId(), repository,SessionsUtils.getSessionProvider());
+      return !privateQueries.isEmpty() ;    
+    } catch(AccessDeniedException ace) {
+      return privateQueries.isEmpty() ;
+    }
   }
   
   public List<Query> getQueries() throws Exception { return privateQueries ; }

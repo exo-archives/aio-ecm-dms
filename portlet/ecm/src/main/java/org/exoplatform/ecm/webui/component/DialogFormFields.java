@@ -510,10 +510,12 @@ public class DialogFormFields extends UIForm {
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
+        System.out.println("\n\nchay vao day set value====>" +getPropertyValue(jcrPath)+ "\n\n");
         wysiwyg.setValue(getPropertyValue(jcrPath)) ;
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         wysiwyg.setValue(node_.getName()) ;
       } else {
+        System.out.println("\n\nset value null\n\n");
         wysiwyg.setValue(null) ;
       }
     }

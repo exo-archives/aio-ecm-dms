@@ -4,6 +4,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.search;
 
+import javax.jcr.AccessDeniedException;
+
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
@@ -72,6 +74,11 @@ public class UISaveQueryForm extends UIForm implements UIPopupComponent {
       }
       try {
         queryService.addQuery(queryName, uiSaveQueryForm.statement_, uiSaveQueryForm.queryType_, userName, repository) ;        
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UISaveQueryForm.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e){
         uiApp.addMessage(new ApplicationMessage("UISaveQueryForm.msg.save-failed", null, 
                                                 ApplicationMessage.WARNING)) ;
