@@ -18,13 +18,13 @@
     color: #058ee6; font-weight: bold; 
     background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
     border: 1px solid #cbcbcb;
-    overflow: auto;
   }
   
   .FileContent .Content {  
     padding: 10px;
     border: 1px solid #cbcbcb; 
     border-top: none;
+    overflow: auto;
   }
   
   .FileContent .ContentDetail {  

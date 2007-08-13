@@ -910,7 +910,7 @@
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {
   width: 500px;
-  margin: auto;
+  margin: 10px auto;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .template .FormContainer {
@@ -937,6 +937,10 @@
 	padding-right: 30px;
 }
 
+.UITemplatesManager .UITabPane .UIDialogTab .DialogForm .FormContainer {
+	padding-top: 10px;
+}
+
 .UIECMAdminPortlet .UITabPane .UIDialogTab .UIFormGrid  td.FieldComponent .textarea {
   width: 90%;
   height: 350px;
@@ -948,6 +952,10 @@
 .UITemplatesManager .UITabPane .UIViewTab .UIAction {
 	width: 300px;
 	padding-right: 30px;
+}
+
+.UITemplatesManager .UITabPane .UIViewTab .ViewForm .FormContainer {
+	padding-top: 10px;
 }
 
 .UIECMAdminPortlet .UITabPane .UIViewTab .UIFormGrid  td.FieldComponent .textarea {
