@@ -86,6 +86,7 @@ public class UIDrivesBrowser extends UIContainer {
     List<DriveData> driveList = new ArrayList<DriveData>() ;
     Session session = null ;
     List<String> userRoles = Utils.getMemberships() ;
+
     for(String role : userRoles ){
       List<DriveData> drives = driveService.getAllDriveByPermission(role, repoName) ;
       if(drives != null && drives.size() > 0) {
@@ -101,19 +102,27 @@ public class UIDrivesBrowser extends UIContainer {
             drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
             session.logout() ;
           }
-          driveList.add(drive) ;
+          if(isExistWorspace(repository, drive)) driveList.add(drive) ;
         }
       }
     }
     Collections.sort(driveList) ;
     return driveList ; 
   }
+  
+  private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
+    for(String ws:  repository.getWorkspaceNames()) {
+      if(ws.equals(drive.getWorkspace())) return true ;
+    }
+    return false ;
+  }
 
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIDrivesBrowser uiDrivesBrowser = event.getSource() ;
-      uiDrivesBrowser.setRepository(repoName) ;      
+      uiDrivesBrowser.setRepository(repoName) ;  
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDrivesBrowser) ;
     }
   }
 

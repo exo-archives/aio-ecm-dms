@@ -66,7 +66,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.CloseActionListener.class),
       @EventConfig(listeners = UIRepositoryForm.AddWorkspaceActionListener.class),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.ShowHiddenActionListener.class),
-      @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class, confirm = "UIRepositoryForm.msg.confirm-workspace-delete"),
+      @EventConfig(listeners = UIRepositoryForm.RemoveWorkspaceActionListener.class, confirm = "UIRepositoryForm.msg.confirm-workspace-delete"),
       @EventConfig(phase=Phase.DECODE, listeners = UIRepositoryForm.EditWorkspaceActionListener.class)
     }  
 )
@@ -187,7 +187,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     boolean editable = !isLock ;
     UIFormInputSetWithAction autField = getChildById(FIELD_AUTHINPUTSET) ;
     UIFormInputSetWithAction workspaceField = getChildById(FIELD_WSINPUTSET) ;
-    workspaceField.setIsView(isLock);
+   // workspaceField.setIsView(isLock);
     if(isLock) {
       autField.setActionInfo(FIELD_AUTHENTICATION, null) ;
     } else {
@@ -529,6 +529,12 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         ManageableRepository manaRepo = rService.getRepository(uiForm.repoName_) ;
         if(manaRepo.canRemoveWorkspace(workspaceName)) {
           manaRepo.removeWorkspace(workspaceName) ;
+          InitialContextInitializer ic = (InitialContextInitializer)uiForm.getApplicationComponent(ExoContainer.class).
+          getComponentInstanceOfType(InitialContextInitializer.class) ;
+          if(ic != null) ic.recall() ;
+          if(rService.getConfig().isRetainable()) {
+            rService.getConfig().retain() ;
+          }
           uiForm.workspaceMap_.clear() ;
           for(WorkspaceEntry ws : manaRepo.getConfiguration().getWorkspaceEntries()) {
             uiForm.workspaceMap_.put(ws.getName(), ws) ;

@@ -212,7 +212,14 @@ public class UIBrowseContainer extends UIContainer {
     }     
   }
   public void refreshContent() throws Exception{
-    if(!showPageAction()) { 
+    
+    if(getNodeByPath(getSelectedTab().getPath()) == null || 
+        getNodeByPath(getCurrentNode().getPath()) == null || 
+        getNodeByPath(getRootNode().getPath())  == null) {
+      System.out.println("\n\n maybe exception here");
+      loadPortletConfig(getPortletPreferences()) ;
+    }
+      if(!showPageAction()) { 
       if(isShowDocumentByTag()) {
         setPageIterator(getDocumentByTag()) ;
       } else {

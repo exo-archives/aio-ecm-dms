@@ -7,7 +7,7 @@
   jsmanager.importJavascript('eXo.webui.UIVerticalSlideTabs');
 %>
 
-<div class="UIDrivesBrowser">
+<div class="UIDrivesBrowser" id="<%=uicomponent.getId()%>">
 	<div class="UIRepository">
 		<div class="RepositoryContainer">
 			<div class="RepositoryTitle">	<%=_ctx.appRes("UIDrivesBrowser.title.repositoryList" )%></div>

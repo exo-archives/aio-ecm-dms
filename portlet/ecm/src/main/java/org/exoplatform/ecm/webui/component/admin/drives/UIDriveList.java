@@ -5,6 +5,7 @@
 package org.exoplatform.ecm.webui.component.admin.drives;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -36,13 +38,13 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
-      @EventConfig(listeners = UIDriveList.DeleteActionListener.class, confirm = "UIDriveList.msg.confirm-delete"),
-      @EventConfig(listeners = UIDriveList.EditInfoActionListener.class),
-      @EventConfig(listeners = UIDriveList.AddDriveActionListener.class)
+        @EventConfig(listeners = UIDriveList.DeleteActionListener.class, confirm = "UIDriveList.msg.confirm-delete"),
+        @EventConfig(listeners = UIDriveList.EditInfoActionListener.class),
+        @EventConfig(listeners = UIDriveList.AddDriveActionListener.class)
     }
 )
 public class UIDriveList extends UIGrid {
-  
+
   final static public String[] ACTIONS = {"AddDrive"} ;
   final  static public String ST_ADD = "AddDriveManagerPopup" ;
   final  static public String ST_EDIT = "EditDriveManagerPopup" ;
@@ -51,36 +53,51 @@ public class UIDriveList extends UIGrid {
   public UIDriveList() throws Exception {
     configure("name", DRIVE_BEAN_FIELD, DRIVE_ACTION) ;
   }
-  
+
   public String[] getActions() { return ACTIONS ; }
-  
+
   @SuppressWarnings("unchecked")
   public void updateDriveListGrid() throws Exception {
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    ObjectPageList objPageList = new ObjectPageList(getDrives(repository), 10) ;
+    getUIPageIterator().setPageList(objPageList) ;    
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<DriveData> getDrives(String repoName) throws Exception {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
-    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    List drives = driveService.getAllDrives(repository) ;
+    ManageableRepository repository = rservice.getRepository(repoName) ;  
+    List<DriveData> driveList = new ArrayList<DriveData>() ;
     Session session = null ;
-    for(int i = 0; i < drives.size(); i++) {
-      DriveData drive = (DriveData)drives.get(i) ;
-      if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-        String[] iconPath = drive.getIcon().split(":/") ;    
-        session = rservice.getRepository(repository).getSystemSession(iconPath[0]) ;
-        Node node = (Node)session.getItem("/" + iconPath[1]) ;
-        Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-        InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-        InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
-        dresource.setDownloadName(node.getName()) ;
-        drive.setIcon("<img src=\"" + dservice.getDownloadLink(dservice.addDownloadResource(dresource)) + "\" width=\"16\" height=\"16\" />") ;
-        session.logout();
+    List<DriveData> drives = driveService.getAllDrives(repoName) ;
+    if(drives != null && drives.size() > 0) {
+      for(DriveData drive : drives) {
+        if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+          String[] iconPath = drive.getIcon().split(":/") ;   
+          session = repository.getSystemSession(iconPath[0]) ;
+          Node node = (Node) session.getItem("/" + iconPath[1]) ;
+          Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+          InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
+          InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+          dresource.setDownloadName(node.getName()) ;
+          drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+          session.logout() ;
+        }
+        if(isExistWorspace(repository, drive)) driveList.add(drive) ;
       }
     }
-    Collections.sort(drives, new DriveComparator()) ;
-    ObjectPageList objPageList = new ObjectPageList(drives, 10) ;
-    getUIPageIterator().setPageList(objPageList) ;    
+    Collections.sort(driveList) ;
+    return driveList ; 
   }
-  
+
+  private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
+    for(String ws:  repository.getWorkspaceNames()) {
+      if(ws.equals(drive.getWorkspace())) return true ;
+    }
+    return false ;
+  }
   static public class DriveComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
       String name1 = ((DriveData) o1).getName() ;
@@ -88,7 +105,7 @@ public class UIDriveList extends UIGrid {
       return name1.compareToIgnoreCase(name2) ;
     }
   }
-  
+
   static  public class AddDriveActionListener extends EventListener<UIDriveList> {
     public void execute(Event<UIDriveList> event) throws Exception {
       UIDriveManager uiDriveManager = event.getSource().getParent() ;
@@ -99,7 +116,7 @@ public class UIDriveList extends UIGrid {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveManager) ;
     }
   }
-  
+
   static  public class DeleteActionListener extends EventListener<UIDriveList> {
     public void execute(Event<UIDriveList> event) throws Exception {
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
