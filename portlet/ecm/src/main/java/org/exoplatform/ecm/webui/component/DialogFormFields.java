@@ -19,6 +19,7 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.jcr.CronExpressionValidator;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
@@ -336,6 +337,7 @@ public class DialogFormFields extends UIForm {
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
+      //TODO need use full class name for validate type. 
       if(validateType != null) {
         if(validateType.equals("name")) {
           uiInput.addValidator(ECMNameValidator.class) ;
@@ -345,6 +347,8 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
+        }else if(validateType.equals("cronExpressionValidator")) {
+          uiInput.addValidator(CronExpressionValidator.class) ;
         }
       }     
       addUIFormInput(uiInput) ;
