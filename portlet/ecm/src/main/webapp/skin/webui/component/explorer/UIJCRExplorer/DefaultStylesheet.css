@@ -371,19 +371,19 @@
   margin: 5px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBarFrame { 
+.UIJCRExplorerPortlet .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .SelectFileFrame { 
+.UIJCRExplorerPortlet .SelectFileFrame { 
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
+.UIJCRExplorerPortlet .FileNameLabel {
 	width: auto;	
 }
 

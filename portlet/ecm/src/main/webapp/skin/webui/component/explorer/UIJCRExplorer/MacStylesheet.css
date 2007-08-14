@@ -324,28 +324,25 @@
   width: auto;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBarFrame { 
+.UIJCRExplorerPortlet .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .SelectFileFrame { 
+.UIJCRExplorerPortlet .SelectFileFrame { 
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
-	width: auto;	
+.UIJCRExplorerPortlet  .FileNameLabel {
+	width: auto;
+	padding: 0px;	
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .ProgressBar {
+.UIJCRExplorerPortlet .ProgressBar {
 	margin-left: 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormUploadInput .FileNameLabel {
-	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentForm .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
