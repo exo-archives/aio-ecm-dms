@@ -98,7 +98,7 @@ public class UISearchResult extends UIContainer {
     return realList ;
   }
 
-  public UIPageIterator  getUIPageIterator() {  return getChild(UIPageIterator.class) ; }
+  public UIPageIterator getUIPageIterator() {  return getChild(UIPageIterator.class) ; }
 
   public void updateGrid() throws Exception {
     PageList pageList = new ObjectPageList(getResultList(), 10) ;
