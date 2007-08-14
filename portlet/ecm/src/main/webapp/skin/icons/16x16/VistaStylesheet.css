@@ -96,13 +96,13 @@
  
 .ExpandIcon {
   width: 16px; height: 16px;
-  background: url('VistaSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat ;
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px; height: 16px;
-  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('VistaSkin/SmallGrayPlus.gif') no-repeat ;
   cursor: pointer;
 }
 
