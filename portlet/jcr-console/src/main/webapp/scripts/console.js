@@ -1492,10 +1492,11 @@ var term ;
 function termHandler() {
     var line = this.lineBuffer;
     this.newLine();
-    var action = "/jcr-console/jcrconsoleservlet";
-    var params = "myaction="+line+"&containerName="+containerName;
+
+    var params = "myaction="+line; //  +"&containerName="+containerName;
+    //alert(action);
   	var response = request(action,params);
-  	//Terminal.write( <text> [,<usemore>] )
+
     var re = /\n/g;
     var rowsCount = response.match(re).length;
     if (rowsCount > 20) {
@@ -1534,23 +1535,12 @@ function termOpen() {
 
 function request(url,params) {
   var req;
-	if (window.XMLHttpRequest){
-        req = new XMLHttpRequest();
+        req = new XMLPortletRequest();
         req.onreadystatechange = function () {};
         req.open("POST", url, false);
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         req.send(params);
 
-    }else if (window.ActiveXObject){
-    
-        req = new ActiveXObject("Microsoft.XMLHTTP");
-        if(req){
-        req.onreadystatechange = function () {};
-        req.open("POST", url, false);
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-        req.send(params);
-        
-        }
+	return req.responseText;        
     }
-	return req.responseText;    
-}
+

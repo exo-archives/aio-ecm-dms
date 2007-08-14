@@ -3,6 +3,7 @@
  * Please look at license.txt in info directory for more license detail. 
  */
 
+/*
 package org.exoplatform.portlets.jcrconsole;
 
 import java.io.IOException;
@@ -111,3 +112,4 @@ public class JcrConsoleServlet extends HttpServlet {
   }
 
 }
+*/

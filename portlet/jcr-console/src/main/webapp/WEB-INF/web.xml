@@ -10,10 +10,12 @@
         <servlet-name>PortletWrapper</servlet-name>
         <servlet-class>org.exoplatform.services.portletcontainer.impl.servlet.ServletWrapper</servlet-class>
     </servlet>
+    <!--  
     <servlet>
         <servlet-name>JcrConsoleServlet</servlet-name>
         <servlet-class>org.exoplatform.portlets.jcrconsole.JcrConsoleServlet</servlet-class>
     </servlet>
+    -->
     <servlet-mapping>
         <servlet-name>PortletWrapper</servlet-name>
         <url-pattern>/PortletWrapper</url-pattern>
@@ -22,10 +24,12 @@
         <servlet-name>PortletWrapper</servlet-name>
         <url-pattern>/PortletWrapper/*</url-pattern>
     </servlet-mapping>
+        <!--  
     <servlet-mapping>
         <servlet-name>JcrConsoleServlet</servlet-name>
         <url-pattern>/jcrconsoleservlet</url-pattern>
     </servlet-mapping>
+    -->
     <security-role>
         <role-name>auth-user</role-name>
     </security-role>
