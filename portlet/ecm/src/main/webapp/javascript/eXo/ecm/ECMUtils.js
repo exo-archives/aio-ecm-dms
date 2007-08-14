@@ -173,6 +173,24 @@ ECMUtils.prototype.onEnterPress = function(e) {
 	}
 };
 
+ECMUtils.prototype.replaceToIframe = function(txtAreaId) {
+	var txtArea = document.getElementById(txtAreaId) ;
+	var ifrm = document.createElement("IFRAME") ;
+	with(ifrm) {
+		className = 'ECMIframe'
+		src = 'javascript:void(0)' ;
+		frameBorder = 0 ;
+		scrolling = "auto" ;
+	}
+	txtArea.parentNode.replaceChild(ifrm, txtArea) ;
+	try {
+		var doc = ifrm.contentWindow.document ;
+		doc.open() ;
+		doc.write(txtArea.value) ;
+		doc.close() ;
+	} catch (ex) {}
+};
+
 ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath,mimetype) {		
  if(eXo.core.Browser.getBrowserType() == "ie") {
  	if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		
