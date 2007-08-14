@@ -22,9 +22,10 @@
 		    String actionLink ;
     		for(node in list)	{	    				    				    		
 	    	  preferenceWS = node.getSession().getWorkspace().getName() ;
-	    		name = node.getName() ;
-	    		parth = node.getPath() ;
-	    		actionLink = uicomponent.event("ViewNode", preferenceWS + ";" + path) ;
+	    		path = node.getPath() ;
+	    		name = path.substring(path.lastIndexOf("/") + 1, path.length()) ;   
+	    		String fullPath = path + "&workspaceName=" + preferenceWS ;
+	    		actionLink = uicomponent.event("ChangeNode", fullPath) ;
 	    		if(name.length() > 20) subname = name.substring(0,15) + "..." ;				    
 	        else subname = name ;
 	        %>

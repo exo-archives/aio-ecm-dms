@@ -347,12 +347,13 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
-        }else if(validateType.equals("cronExpressionValidator")) {
+        } else if(validateType.equals("cronExpressionValidator")) {
           uiInput.addValidator(CronExpressionValidator.class) ;
         }
       }     
       addUIFormInput(uiInput) ;
     }
+    if(uiInput.getValue() == null) uiInput.setValue(defaultValue) ;
     if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
@@ -376,7 +377,7 @@ public class DialogFormFields extends UIForm {
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         uiInput.setValue(node_.getName()) ;
       } else {
-        uiInput.setValue(null) ;
+        uiInput.setValue(defaultValue) ;
       }
     }
     renderField(name) ;
@@ -510,12 +511,10 @@ public class DialogFormFields extends UIForm {
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
-        System.out.println("\n\nchay vao day set value====>" +getPropertyValue(jcrPath)+ "\n\n");
         wysiwyg.setValue(getPropertyValue(jcrPath)) ;
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         wysiwyg.setValue(node_.getName()) ;
       } else {
-        System.out.println("\n\nset value null\n\n");
         wysiwyg.setValue(null) ;
       }
     }

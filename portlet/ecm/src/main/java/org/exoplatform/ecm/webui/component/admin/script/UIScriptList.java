@@ -138,14 +138,14 @@ public class UIScriptList extends UIGrid {
       UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;      
       if(uiScriptList.getId().equals(UIECMScripts.SCRIPTLIST_NAME)) {
         UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupAction.class) ;
-        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
+        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 680) ;
         uiForm.setId(UIECMScripts.SCRIPTFORM_NAME ) ;
         uiForm.update(uiScriptList.getScriptNode(scriptName), false) ;
         uiManager.setRenderedChild(UIECMScripts.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       } else if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)) {
         UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupAction.class) ;
-        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
+        UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 680) ;
         uiForm.setId(UICBScripts.SCRIPTFORM_NAME ) ;
         uiForm.update(uiScriptList.getScriptNode(scriptName), false) ;
         uiManager.setRenderedChild(UICBScripts.class) ;

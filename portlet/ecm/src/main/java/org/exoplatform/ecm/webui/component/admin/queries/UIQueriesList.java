@@ -52,7 +52,6 @@ public class UIQueriesList extends UIComponentDecorator {
 
   public String[] getActions() { return ACTIONS ; }
   
-  @SuppressWarnings("unchecked")
   public void updateQueriesGrid() throws Exception {
     PageList pageList = new ObjectPageList(getAllSharedQueries(), 10) ;
     uiPageIterator_.setPageList(pageList) ;    

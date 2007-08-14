@@ -26,7 +26,7 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
@@ -50,12 +50,15 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISearchResult.OpenFolderActionListener.class)
     }
 )
-public class UISearchResult extends UIContainer {
+public class UISearchResult extends UIComponentDecorator {
+  
   public Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
   private boolean isQuickSearch_ = false ;
+  private UIPageIterator uiPageIterator_ ;
 
   public UISearchResult() throws Exception {
-    addChild(UIPageIterator.class, null, null) ;
+    uiPageIterator_ = createUIComponent(UIPageIterator.class, null, null) ;
+    setUIComponent(uiPageIterator_) ;
   }
 
   public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
@@ -73,13 +76,9 @@ public class UISearchResult extends UIContainer {
   public Node[] getNodeIterator() throws Exception { 
     return resultMap_.values().toArray(new Node[]{}) ; 
   }
-  public List<Node> getCurrentList() throws Exception {
-    List<Node> dataList = new ArrayList<Node>() ;
-    for(Object data : getUIPageIterator().getCurrentPageData()) {
-      dataList.add((Node)data) ;
-    }
-    return dataList ;
-  }
+  
+  public List getCurrentList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
+  
   public List<Node> getResultList() throws Exception {
     List<Node> lists = new ArrayList<Node>() ;
     for(Node node : getNodeIterator()) {
@@ -98,11 +97,11 @@ public class UISearchResult extends UIContainer {
     return realList ;
   }
 
-  public UIPageIterator getUIPageIterator() {  return getChild(UIPageIterator.class) ; }
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
 
   public void updateGrid() throws Exception {
     PageList pageList = new ObjectPageList(getResultList(), 10) ;
-    getUIPageIterator().setPageList(pageList) ;
+    uiPageIterator_.setPageList(pageList) ;
   }
 
   public PortletPreferences getPortletPreferences() {

@@ -11,7 +11,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 
@@ -95,17 +94,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
   }
   
-  public Node getNode() throws RepositoryException {
-    if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
-      String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
-      if(language_ == null) language_ = defaultLang ;
-      if(!language_.equals(defaultLang)) {
-        Node curNode = node_.getNode(Utils.LANGUAGES + Utils.SLASH + language_) ;
-        return curNode ;
-      } 
-    }    
-    return node_;
-  }
+  public Node getNode() throws RepositoryException { return node_; }
   
   public Node getOriginalNode() throws Exception {return  originalNode_ ;}
   
