@@ -14,11 +14,13 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Session;
 
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 
 /**
  * Created by The eXo Platform SAS
@@ -49,7 +51,12 @@ public class CommentsServiceImpl implements CommentsService {
     multiLangService_ = multiLangService ;    
   }
   
-  public void addComment(Node document, String commentor,String email, String site, String comment,String language) throws Exception {
+  public void addComment(Node node, String commentor,String email, String site, String comment,String language) throws Exception {
+    Session session = node.getSession();
+    ManageableRepository  repository = (ManageableRepository)session.getRepository();
+    //TODO check if really need delegate to system session
+    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
+    Node document = (Node)systemSession.getItem(node.getPath()) ;
     if(!document.isNodeType(COMMENTABLE)) {
       if(document.canAddMixin(COMMENTABLE)) document.addMixin(COMMENTABLE) ;
       else throw new Exception("This node does not support comments.") ;  
@@ -90,7 +97,8 @@ public class CommentsServiceImpl implements CommentsService {
       newComment.setProperty(COMMENTOR_SITE,site) ;
     }          
     document.save();
-    document.getSession().save() ;    
+    systemSession.save();
+    systemSession.logout();
     commentsCache_.remove(commentNode.getPath()) ;
   }
 

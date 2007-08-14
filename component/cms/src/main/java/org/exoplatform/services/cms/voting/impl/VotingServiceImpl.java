@@ -17,6 +17,7 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.voting.VotingService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 
 /**
  * Created by The eXo Platform SAS
@@ -54,13 +55,17 @@ public class VotingServiceImpl implements VotingService {
     return voteTotal ;
   }
   
-  public void vote(Node document, double rate, String userName, String language) throws Exception {       
+  public void vote(Node node, double rate, String userName, String language) throws Exception {
+    Session session = node.getSession() ;
+    ManageableRepository repository = (ManageableRepository)session.getRepository() ;
+    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
+    //TODO check if need delegate to system session
+    Node document = (Node)systemSession.getItem(node.getPath()) ; 
     if(!document.isNodeType(VOTABLE)) {
       if(document.canAddMixin(VOTABLE)) document.addMixin(VOTABLE) ;
       else throw new NoSuchNodeTypeException() ;
     }        
-    String defaultLang = multiLangService_.getDefault(document) ;
-    Session session = document.getSession() ;
+    String defaultLang = multiLangService_.getDefault(document) ;           
     Node multiLanguages =null, languageNode= null ;
     if(language.equals(defaultLang)) {
       languageNode = document ;
@@ -81,7 +86,7 @@ public class VotingServiceImpl implements VotingService {
     if(languageNode.hasProperty(VOTER_PROP)) {
       voters = languageNode.getProperty(VOTER_PROP).getValues() ;        
     }
-    Value newVoter = session.getValueFactory().createValue(userName) ;    
+    Value newVoter = systemSession.getValueFactory().createValue(userName) ;    
     List<Value> newVoterList = new ArrayList<Value>() ;
     newVoterList.addAll(Arrays.<Value>asList(voters)) ;    
     newVoterList.add(newVoter) ;        
@@ -91,6 +96,7 @@ public class VotingServiceImpl implements VotingService {
     languageNode.setProperty(VOTING_RATE_PROP,fomatedRating) ;
     languageNode.setProperty(VOTER_PROP,newVoterList.toArray(new Value[newVoterList.size()])) ;
     document.save() ;
-    session.save() ;
+    systemSession.save();
+    systemSession.logout();
   }       
 }
