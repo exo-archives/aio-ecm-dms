@@ -17,7 +17,7 @@ import javax.jcr.RepositoryException;
  */
 public class TaxonomyNode {
   
-	private boolean isExpanded = true;
+	private boolean isExpanded = false;
 	private Node node_ ;
 	private int level_ ;
   private List<TaxonomyNode> children_ = new ArrayList<TaxonomyNode>();

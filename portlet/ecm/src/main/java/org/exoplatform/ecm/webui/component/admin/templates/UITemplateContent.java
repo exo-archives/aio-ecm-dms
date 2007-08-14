@@ -119,7 +119,8 @@ public class UITemplateContent extends UIForm implements UISelector {
         getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setChecked(false) ;
         setActions( new String[]{"Save", "Refresh", "Cancel"}) ;
       }
-      getUIStringInput(FIELD_CONTENT).setValue(templateContent) ;
+      String content = Utils.encodeHTML(templateContent)  ;
+      getUIStringInput(FIELD_CONTENT).setValue(content) ;
       getUIStringInput(FIELD_NAME).setValue(template.getName()) ;
       getUIStringInput(FIELD_NAME).setEditable(false) ;
       getUIStringInput(FIELD_VIEWPERMISSION).setValue(templateRole) ;

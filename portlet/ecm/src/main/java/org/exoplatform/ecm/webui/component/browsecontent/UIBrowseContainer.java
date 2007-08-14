@@ -357,7 +357,7 @@ public class UIBrowseContainer extends UIContainer {
   }
   public boolean isShowCategoryTree() {
     if(dataPerWindowIdMap.get(getWindowId() + ISSHOWCATEGORYTREE) == null) {
-      setShowCategoryTree(false) ;
+      setShowCategoryTree(true) ;
     }
     return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWCATEGORYTREE).toString()) ;
 

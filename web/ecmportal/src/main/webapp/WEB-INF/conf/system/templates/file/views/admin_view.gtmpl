@@ -20,7 +20,12 @@
     border: 1px solid #cbcbcb;
     overflow: auto;
   }
-  
+  .FileContent .ECMIframe {
+   	border: 1px solid #cbcbcb; 
+    border-top: none;
+  	width : 100% ;
+  	height: 100% ;
+  }
   .FileContent .Content {  
     padding: 10px;
     border: 1px solid #cbcbcb; 
@@ -102,8 +107,9 @@
 			        <%
 			        	if(contentNode.hasProperty("jcr:data")){
 			        	String iframeId = uicomponent.getId() + "ifame" ;
+			        	rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId')");
 			        %>
-			        		<iframe id="<%=iframeId%>" class="Content"></iframe>
+			        	<textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
 			        <%}%>
 				    </div>   
 	        </div>
