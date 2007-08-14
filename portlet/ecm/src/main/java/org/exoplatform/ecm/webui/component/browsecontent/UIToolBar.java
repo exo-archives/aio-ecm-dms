@@ -12,6 +12,7 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -43,7 +44,7 @@ public class UIToolBar extends UIContainer {
   private boolean isEnableTree_ = true ;
   private boolean isEnablePath_ = true ;
   private boolean isEnableSeach_ = false ;
-  
+
   public UIToolBar()throws Exception {}
   public void setEnablePath(boolean enablePath) {isEnablePath_ = enablePath ;}
   public boolean enablePath() {return isEnablePath_ ;}
@@ -88,14 +89,29 @@ public class UIToolBar extends UIContainer {
   public boolean isClearHistory() {
     return getAncestorOfType(UIBrowseContainer.class).getNodesHistory().isEmpty() ;
   }
-  
+
   static  public class SelectPathActionListener extends EventListener<UIToolBar> {    
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
       String nodePath =  event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      UIBrowseContentPortlet uiBCPortlet =  uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
       Node selectNode = uiContainer.getNodeByPath(nodePath) ;
-      uiContainer.changeNode(selectNode) ;
+      if(selectNode == null) {
+        if(uiContainer.getNodeByPath(uiContainer.getCategoryPath()) == null) {
+          uiBCPortlet.setPorletMode(PortletRequestContext.HELP_MODE);
+          uiBCPortlet.reload() ;
+        } else {
+          UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
+          uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-removed", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          selectNode = uiComp.getRootNode() ;
+          uiContainer.changeNode(selectNode) ;
+        }
+      } else {
+        uiContainer.changeNode(selectNode) ;
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiBCPortlet) ;
     }
   }
 
@@ -106,7 +122,7 @@ public class UIToolBar extends UIContainer {
       uiBrowseContainer.setShowCategoryTree(!uiBrowseContainer.isShowCategoryTree()) ;
     }
   } 
-     
+
   static public class SearchActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiToolBar = event.getSource() ;
@@ -122,7 +138,7 @@ public class UIToolBar extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  
-  
+
   static public class NextActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
@@ -131,7 +147,7 @@ public class UIToolBar extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  
-  
+
   static public class BackActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
@@ -140,7 +156,7 @@ public class UIToolBar extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  
-  
+
   static public class VoteActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
       UIToolBar uiComp = event.getSource() ;
@@ -155,7 +171,7 @@ public class UIToolBar extends UIContainer {
       }
       if(!uiDocument.node_.isNodeType("mix:votable")) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-vote", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;  
       }
@@ -167,7 +183,7 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -182,14 +198,14 @@ public class UIToolBar extends UIContainer {
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
       if(!container.isShowDocumentDetail() || !uiDocument.isValidNode()) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
         return ;
       } 
       if(!uiDocument.node_.isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-comment", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
@@ -203,7 +219,7 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }

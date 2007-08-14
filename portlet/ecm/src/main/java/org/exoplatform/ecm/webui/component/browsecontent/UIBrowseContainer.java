@@ -57,8 +57,6 @@ import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
-import sun.misc.Perf.GetPerfAction;
-
 /**
  * Created by The eXo Platform SARL
  * Author : Pham Tuan
@@ -129,6 +127,7 @@ public class UIBrowseContainer extends UIContainer {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
       super.processRender(context) ;
     } catch (Exception e) {
+      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletRequestContext.HELP_MODE) ;
       return ;
     }
   }
@@ -174,20 +173,10 @@ public class UIBrowseContainer extends UIContainer {
       if(!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName)) ;
       return ;
     }    
-    Session session = null ;
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-    if(categoryPath.startsWith("/jcr:system")) {         
-      session = getSystemProvider().getSession(workspace,manageableRepository) ;
-    }else {
-      if(SessionsUtils.isAnonim()) {
-        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
-      }else {
-        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
-      }
-    }
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;            
-      setRootNode((Node)session.getItem(categoryPath)) ;
+      setRootNode((Node)getSession().getItem(categoryPath)) ;
       setCurrentNode(null) ;
       setSelectedTab(null) ;
       initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
@@ -204,7 +193,7 @@ public class UIBrowseContainer extends UIContainer {
       String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "") ;
       Node documentNode = null;      
       try{
-        documentNode = (Node)session.getItem(documentPath) ;
+        documentNode = (Node)getSession().getItem(documentPath) ;
       }catch (Exception e) { }      
       viewDocument(documentNode, false) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
@@ -212,14 +201,16 @@ public class UIBrowseContainer extends UIContainer {
     }     
   }
   public void refreshContent() throws Exception{
-    
-    if(getNodeByPath(getSelectedTab().getPath()) == null || 
-        getNodeByPath(getCurrentNode().getPath()) == null || 
-        getNodeByPath(getRootNode().getPath())  == null) {
-      System.out.println("\n\n maybe exception here");
-      loadPortletConfig(getPortletPreferences()) ;
+    if(getNodeByPath(getRootNode().getPath()) == null) {
+      UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+      uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
+      uiPorlet.reload() ;
+    } else if(getNodeByPath(getSelectedTab().getPath()) == null || getNodeByPath(getCurrentNode().getPath()) == null)
+    {
+      setSelectedTab(null) ;
+      setCurrentNode(null) ;
     }
-      if(!showPageAction()) { 
+    if(!showPageAction()) { 
       if(isShowDocumentByTag()) {
         setPageIterator(getDocumentByTag()) ;
       } else {
@@ -386,7 +377,11 @@ public class UIBrowseContainer extends UIContainer {
   public String getWorkSpace() {
     return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
   }
-  public String getCategoryPath() {return (String)dataPerWindowIdMap.get(getWindowId() + CATEGORYPATH);}
+  public String getCategoryPath() {
+    if(dataPerWindowIdMap.get(getWindowId() + CATEGORYPATH) == null)
+      setCategoryPath(getPortletPreferences().getValue(Utils.JCR_PATH, "")) ;
+    return (String)dataPerWindowIdMap.get(getWindowId() + CATEGORYPATH);
+  }
   public void setCategoryPath(String path) {
     dataPerWindowIdMap.put(getWindowId() + CATEGORYPATH, path) ;
   }
@@ -431,6 +426,7 @@ public class UIBrowseContainer extends UIContainer {
     try{
       return (Node)getSession().getItem(nodePath) ;
     } catch(Exception e){
+      // e.printStackTrace() ;
       return null  ;
     }
   }
@@ -575,7 +571,6 @@ public class UIBrowseContainer extends UIContainer {
       }
     }
     catch(Exception e) {
-      System.out.println("\n\n error getNodeByQuery()");
       e.printStackTrace() ;
     }
     return queryDocuments ;

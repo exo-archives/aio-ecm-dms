@@ -1,0 +1,3 @@
+<div class="<%=uicomponent.getId()%>" id="<%=uicomponent.getId()%>">
+	<%=_ctx.appRes(uicomponent.getName() + ".label.info")%>
+</div>
