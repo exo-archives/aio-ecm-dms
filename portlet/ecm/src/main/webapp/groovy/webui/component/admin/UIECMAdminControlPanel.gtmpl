@@ -1,10 +1,10 @@
 <%
-	String[] typeManage = ["ManageOntologies", "CreateDocumentTypes", "DisplayDocuments", "ManageDynamicContent"] ;
-  String manageOntologies = "UIFolksonomyManager;UITaxonomyManager;UIMetadataManager" ;
-  String createDocumentTypes = "UINamespaceManager;UINodeTypeManager;UITemplatesManager" ;
-  String displayDocuments = "UIViewManager;UIDriveManager;UIQueriesManager;" ;
-  String manageDynamicContent = "UIActionManager;UIScriptManager" ;
-  String[] managersGroup = [manageOntologies, createDocumentTypes, displayDocuments, manageDynamicContent] ;
+	String[] typeManage = ["Ontologies","ContentPresentation", "TypesOfContent", "AdvanceConfiguaration"] ;
+  String manageOntologies = "UIFolksonomyManager;UITaxonomyManager" ;
+  String typeOfContent = "UINamespaceManager;UINodeTypeManager" ;
+  String contentPresentation = "UITemplatesManager;UIViewManager;UIDriveManager;UIMetadataManager" ;
+  String advanceConfiguaration = "UIQueriesManager;UIScriptManager;UIActionManager" ;
+  String[] managersGroup = [manageOntologies,contentPresentation,typeOfContent,advanceConfiguaration] ;
 %>
 <div class="UIECMAdminControlPanel">
 	<div class="UIVerticalSlideTabs">
