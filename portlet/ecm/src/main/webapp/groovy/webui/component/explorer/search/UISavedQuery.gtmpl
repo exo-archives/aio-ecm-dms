@@ -9,6 +9,8 @@
 %>
 <%
   import org.exoplatform.webui.core.UIPopupWindow;
+  import javax.jcr.query.Query;
+  import javax.jcr.Node;
 %>
 <div class="UISavedQuery" id="UISavedQuery">
   <table class="UIGrid">
@@ -33,77 +35,74 @@
       <%} else {   
 	        def rowClass = null ;
 	  	    boolean even = true ;
-	  	    for(query in uicomponent.getQueries()) {
+	  	    for(object in uicomponent.getQueryList()) {
 	  	      if(even) rowClass = "EvenRow" ;  
 	  	      else rowClass =  "OddRow" ; 
 	  	      even = !even ;
       %>
-	          <tr class="$rowClass">
-	            <%
-	              String storedQueryPath = query.getStoredQueryPath() ;
-	              storedQueryPath =  storedQueryPath.substring(storedQueryPath.lastIndexOf("/") + 1, storedQueryPath.length()) ;
-	            %>
-	            <td><div class="Text" title="<%=query.getStoredQueryPath()%>"><%=storedQueryPath%></div></td>
-	            <td><div class="Text"><%=query.getLanguage()%></div></td>
-	            <td>
-	            	<%
-	            		String statement = query.getStatement() ;
-	            		if(statement.length() > 30) statement = "..." + statement.substring(10) ;
-	            	%>
-	            	<div class="Text" title="<%=query.getStatement()%>"><%=statement%></div>
-	            </td>
-	            <td><%=uicomponent.getCurrentUserId()%></td>
-		          <td style="width:100px;">
-		            <a href="<%=uicomponent.event("Execute", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
-		              <div class="Execute16x16Icon" style="margin-left:10px;float:left"><span></span></div>
-		            </a>
-		            <a href="<%=uicomponent.event("Edit", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Edit")%>">
-		              <div class="Edit16x16Icon" style="margin-left:5px;float:left"><span></span></div>
-		            </a>
-		            <a href="<%=uicomponent.event("Delete", query.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Delete")%>">
-		              <div class="Delete16x16Icon" style="margin-left:5px;float:left;"><span></span></div>
-		            </a>
-		          </td>	                    
-	          </tr>
-      	<%}%>
-      	<%
-      		for(sharedQueries in uicomponent.getSharedQueries()) {
-      			if(even) rowClass = "EvenRow" ;  
-	  	      else rowClass =  "OddRow" ; 
-	  	      even = !even ;
-	  	   %>
-		  	   <tr class="$rowClass">
-            <td><div class="Text"><%=sharedQueries.getName()%></div></td>
-            <td><div class="Text"><%=sharedQueries.getProperty("jcr:language").getString()%></div></td>
-            <td>
-            	<div class="Text" title="<%=sharedQueries.getProperty("jcr:statement").getString()%>">
-	            	<%
-		            		String sharedStatement = sharedQueries.getProperty("jcr:statement").getString() ;
-		            		if(sharedStatement.length() > 40) sharedStatement = "..." + sharedStatement.substring(20) ;
+	          <%if(object instanceof Query) { %>
+		          <tr class="$rowClass">
+		            <%
+		              String storedQueryPath = object.getStoredQueryPath() ;
+		              storedQueryPath =  storedQueryPath.substring(storedQueryPath.lastIndexOf("/") + 1, storedQueryPath.length()) ;
 		            %>
-            		<%=sharedStatement%>
-            	</div>
-            </td>
-            <td>
-            <%
-            	String sharedPermissions = null ;
-            	for(per in sharedQueries.getProperty("exo:permissions").getValues()) {
-            		if(sharedPermissions == null) sharedPermissions = per.getString() ;
-            		else sharedPermissions = sharedPermissions + "," + per.getString() ;
-            	}
-            %>
-            	<div class="Text"><%=sharedPermissions%></div>
-            </td>
-	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("Execute", sharedQueries.getPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
-	              <div class="Execute16x16Icon" style="margin-left:10px;float:left"><span></span></div>
-	            </a>
-	          </td>	                    
-          </tr>
-      	<%
-      		}  
-      	}
-      %>
+		            <td><div class="Text" title="<%=object.getStoredQueryPath()%>"><%=storedQueryPath%></div></td>
+		            <td><div class="Text"><%=object.getLanguage()%></div></td>
+		            <td>
+		            	<%
+		            		String statement = object.getStatement() ;
+		            		if(statement.length() > 30) statement = "..." + statement.substring(10) ;
+		            	%>
+		            	<div class="Text" title="<%=object.getStatement()%>"><%=statement%></div>
+		            </td>
+		            <td><%=uicomponent.getCurrentUserId()%></td>
+			          <td style="width:100px;">
+			            <a href="<%=uicomponent.event("Execute", object.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
+			              <div class="Execute16x16Icon" style="margin-left:10px;float:left"><span></span></div>
+			            </a>
+			            <a href="<%=uicomponent.event("Edit", object.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Edit")%>">
+			              <div class="Edit16x16Icon" style="margin-left:5px;float:left"><span></span></div>
+			            </a>
+			            <a href="<%=uicomponent.event("Delete", object.getStoredQueryPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Delete")%>">
+			              <div class="Delete16x16Icon" style="margin-left:5px;float:left;"><span></span></div>
+			            </a>
+			          </td>	                    
+		          </tr>
+		        <%}%>
+		        <%if(object instanceof Node) { %>
+				  	   <tr class="$rowClass">
+		            <td><div class="Text"><%=object.getName()%></div></td>
+		            <td><div class="Text"><%=object.getProperty("jcr:language").getString()%></div></td>
+		            <td>
+		            	<div class="Text" title="<%=object.getProperty("jcr:statement").getString()%>">
+			            	<%
+				            		String sharedStatement = object.getProperty("jcr:statement").getString() ;
+				            		if(sharedStatement.length() > 40) sharedStatement = "..." + sharedStatement.substring(20) ;
+				            %>
+		            		<%=sharedStatement%>
+		            	</div>
+		            </td>
+		            <td>
+		            <%
+		            	String sharedPermissions = null ;
+		            	for(per in object.getProperty("exo:permissions").getValues()) {
+		            		if(sharedPermissions == null) sharedPermissions = per.getString() ;
+		            		else sharedPermissions = sharedPermissions + "," + per.getString() ;
+		            	}
+		            %>
+		            	<div class="Text"><%=sharedPermissions%></div>
+		            </td>
+			          <td style="width:80px;">
+			            <a href="<%=uicomponent.event("Execute", object.getPath())%>" title="<%=_ctx.appRes("UISavedQuery.tooltip.Execute")%>">
+			              <div class="Execute16x16Icon" style="margin-left:10px;float:left"><span></span></div>
+			            </a>
+			          </td>	                    
+		          </tr>
+	      	 <%
+	      		}  
+	      	}
+	      }
+	    %>
     </tbody>
   </table>
   <div style="margin:1px 0px 5px 0px;">

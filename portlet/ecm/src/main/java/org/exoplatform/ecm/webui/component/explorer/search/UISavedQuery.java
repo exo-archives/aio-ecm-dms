@@ -56,24 +56,41 @@ import org.exoplatform.webui.event.EventListener;
 public class UISavedQuery extends UIContainer implements UIPopupComponent {
 
   final static public String EDIT_FORM = "EditSavedQueryForm" ;
-  
+ 
+  private UIPageIterator uiPageIterator_ ;
   private List<Node> sharedQueries_ = new ArrayList<Node>() ;  
   private List<Query> privateQueries = new ArrayList<Query>() ;
   
   private boolean isQuickSearch_ = false ;
 
   public UISavedQuery() throws Exception {        
-    addChild(UIPageIterator.class, null, "SavedQueryIterator");
+    uiPageIterator_ = addChild(UIPageIterator.class, null, "SavedQueryIterator");
     updateGrid() ;  
   }  
 
   public void updateGrid() throws Exception {
-    PageList pageList = new ObjectPageList(getQueries(), 10) ;
-    UIPageIterator uiPateIterator = getChild(UIPageIterator.class) ;
-    uiPateIterator.setPageList(pageList) ;  
+    PageList pageList = new ObjectPageList(queryList(), 10) ;
+    uiPageIterator_.setPageList(pageList) ;  
+  }
+  
+  public List<Object> queryList() throws Exception {
+    List<Object> objectList = new ArrayList<Object>() ;
+    if(hasSharedQueries()) {
+      for(Node node : getSharedQueries()) {
+        objectList.add(node) ;
+      }
+    }
+    if(hasQueries()) {
+      for(Query query : getQueries()) {
+        objectList.add(query) ;
+      }
+    }
+    return objectList ;
   }
 
-  public UIPageIterator getUIPageIterator() { return getChild(UIPageIterator.class) ; }
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  
+  public List getQueryList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
   
   public void initPopupEditForm(Query query) throws Exception {
     removeChildById(EDIT_FORM) ;

@@ -3,7 +3,6 @@ package org.exoplatform.services.cms.i18n.impl;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -228,12 +227,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }               
       }
     }
-    Iterator iter = inputs.values().iterator() ;
-    JcrInputProperty property ;
-    while (iter.hasNext()) {
-      property = (JcrInputProperty) iter.next() ;
-      System.out.println("\n\nproperty name====>" +property.getJcrPath()+ "\n\n");
-    }
+//    Iterator iter = inputs.values().iterator() ;
+//    JcrInputProperty property ;
+//    while (iter.hasNext()) {
+//      property = (JcrInputProperty) iter.next() ;
+//      System.out.println("\n\nproperty name====>" +property.getJcrPath()+ "\n\n");
+//    }
     if(!defaultLanguage.equals(language) && isDefault){
       Node selectedLangNode = null ;
       if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
@@ -271,9 +270,11 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         newLanguageNode.getNode(JCRCONTENT).setProperty(JCR_MIMETYPE, mimeType) ;
         newLanguageNode.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;        
       }
-    }    
-    // add mixin type for node
-    setMixin(node, newLanguageNode) ;
+      // add mixin type for node
+      setMixin(node, newLanguageNode) ;
+    } else {
+      node.getNode(JCRCONTENT).setProperty(JCRDATA, value) ;   
+    }
     if(!defaultLanguage.equals(language) && isDefault){
       Node selectedLangNode = null ;
       if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
@@ -322,10 +323,13 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         node.getSession().move(tempNode.getNode(JCRCONTENT).getPath(), languagesNode.getPath() + "/" + defaultLanguage + "/" + JCRCONTENT) ;
         tempNode.remove() ;
       }
-    }    
-    // add mixin type for node
-    setMixin(node, newLanguageNode) ;
-    if(!defaultLanguage.equals(language) && isDefault){
+      // add mixin type for node
+      setMixin(node, newLanguageNode) ;
+    } else {
+      JcrInputProperty inputVariable = (JcrInputProperty) mappings.get(CONTENT_PATH + JCRDATA) ;
+      setPropertyValue(JCRDATA, node.getNode(JCRCONTENT), inputVariable.getType(), inputVariable.getValue(), false) ;
+    }
+    if(!defaultLanguage.equals(language) && isDefault) {
       Node selectedLangNode = null ;
       if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
       setVoteProperty(newLanguageNode, node, selectedLangNode) ;
