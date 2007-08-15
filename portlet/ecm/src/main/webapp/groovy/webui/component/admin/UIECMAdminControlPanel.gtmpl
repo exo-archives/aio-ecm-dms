@@ -1,10 +1,10 @@
 <%
 	String[] typeManage = ["Ontologies","ContentPresentation", "TypesOfContent", "AdvanceConfiguaration"] ;
-  String manageOntologies = "UIFolksonomyManager;UITaxonomyManager" ;
-  String typeOfContent = "UINamespaceManager;UINodeTypeManager" ;
-  String contentPresentation = "UITemplatesManager;UIViewManager;UIDriveManager;UIMetadataManager" ;
-  String advanceConfiguaration = "UIQueriesManager;UIScriptManager;UIActionManager" ;
-  String[] managersGroup = [manageOntologies,contentPresentation,typeOfContent,advanceConfiguaration] ;
+  String Ontologies = "UIFolksonomyManager;UITaxonomyManager" ;
+  String TypesOfContent = "UINamespaceManager;UINodeTypeManager" ;
+  String ContentPresentation = "UITemplatesManager;UIViewManager;UIDriveManager;UIMetadataManager" ;
+  String AdvanceConfiguaration = "UIQueriesManager;UIScriptManager;UIActionManager" ;
+  String[] managersGroup = [Ontologies,ContentPresentation,TypesOfContent,AdvanceConfiguaration] ;
 %>
 <div class="UIECMAdminControlPanel">
 	<div class="UIVerticalSlideTabs">

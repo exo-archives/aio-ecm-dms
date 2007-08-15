@@ -218,7 +218,7 @@
   background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
 }
 
-.ManageOntologiesIcon {
+.OntologiesIcon {
   float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/ManageOntologiesIcon.gif') no-repeat ;
@@ -300,19 +300,19 @@
   background: url('VistaSkin/NodeTypeManager.png') no-repeat ;
 }
 
-.CreateDocumentTypesIcon {
+.TypesOfContentIcon {
   float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/CreateDocumentTypes.gif') no-repeat ;
 }
 
-.DisplayDocumentsIcon {
+.ContentPresentationIcon {
   float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/DisplayDocuments.gif') no-repeat ;
 }
 
-.ManageDynamicContentIcon {
+.AdvanceConfiguarationIcon {
   float: left ;
 	width: 24px;	height: 24px;
   background: url('VistaSkin/ManageDynamicContent.gif') no-repeat ;

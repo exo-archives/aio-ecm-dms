@@ -202,7 +202,7 @@
   background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
 }
 
-.ManageOntologiesIcon {
+.OntologiesIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageOntologies.gif') no-repeat ;
 }
@@ -277,17 +277,17 @@
   background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
-.CreateDocumentTypesIcon {
+.TypesOfContentIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat ;
 }
 
-.DisplayDocumentsIcon {
+.ContentPresentationIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
 }
 
-.ManageDynamicContentIcon {
+.AdvanceConfiguarationIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat ;
 }

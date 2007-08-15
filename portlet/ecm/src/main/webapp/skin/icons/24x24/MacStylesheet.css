@@ -252,24 +252,24 @@
   background: url('MacSkin/ManageScriptIcon.gif') no-repeat ;
 }
 
-.ManageOntologiesIcon {
+.OntologiesIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageOntologies.gif') no-repeat ;
+  background: url('MacSkin/ManageOntologies.png') no-repeat ;
 }
 
-.DisplayDocumentsIcon {
+.ContentPresentationIcon {
 	width: 24px;	height:24px;
-  background: url('MacSkin/DisplayDocuments.gif') no-repeat ;
+  background: url('MacSkin/DisplayDocuments.png') no-repeat ;
 }
 
-.ManageDynamicContentIcon {
+.AdvanceConfiguarationIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageDynamicContent.gif') no-repeat ;
+  background: url('MacSkin/ManageDynamicContent.png') no-repeat ;
 }
 
-.CreateDocumentTypesIcon {
+.TypesOfContentIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/CreateDocumentTypes.gif') no-repeat ;
+  background: url('MacSkin/CreateDocumentTypes.png') no-repeat ;
 }
 
 .UIRuleManagerIcon {
