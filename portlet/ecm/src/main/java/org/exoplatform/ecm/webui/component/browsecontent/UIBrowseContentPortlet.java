@@ -35,7 +35,8 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
   public UIBrowseContentPortlet() throws Exception {
     addChild(UIBrowseContentHelp.class, null, null) ;
     PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    UIPopupAction popup = addChild(UIPopupAction.class, null, "UICBPopupAction");
+    UIPopupAction popup = addChild(UIPopupAction.class, null, null);
+    popup.setId("UICBPopupAction") ;
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiBrowseContainer = addChild(UIBrowseContainer.class, null , null) ;
     addChild(UIConfigTabPane.class, null, null) ;
@@ -56,22 +57,29 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
+    UIBrowseContentHelp uiBCHelp = getChild(UIBrowseContentHelp.class) ;
     if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN VIEW  MODE \n");  
-      setRenderedChild(UIBrowseContainer.class) ;
+      uiTabPane.setRendered(false) ;
+      uiBCHelp.setRendered(false) ;
+      uiContainer.setRendered(true) ;
       uiContainer.refreshContent() ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN EDIT  MODE \n");  
       if(! uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
-      setRenderedChild(UIConfigTabPane.class) ;
+      uiTabPane.setRendered(true) ;
+      uiBCHelp.setRendered(false) ;
+      uiContainer.setRendered(false) ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
-      setRenderedChild(UIBrowseContentHelp.class) ;
+      uiTabPane.setRendered(false) ;
+      uiBCHelp.setRendered(true) ;
+      uiContainer.setRendered(false) ;
     }
     try {
       super.processRender(app, context) ;
     } catch (Exception e) {
-      //e.printStackTrace() ;
+
     }
   }
   protected void reload() throws Exception {
