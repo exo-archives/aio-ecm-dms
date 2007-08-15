@@ -20,16 +20,26 @@
     border: 1px solid #cbcbcb;
     overflow: auto;
   }
+  
   .FileContent .ECMIframe {
    	border: 1px solid #cbcbcb; 
     border-top: none;
   	width : 100% ;
   	height: 100% ;
   }
+  
   .FileContent .Content {  
-    padding: 10px;
     border: 1px solid #cbcbcb; 
     border-top: none;
+   	white-space: normal;
+   	width: 99.8%;
+   	overflow: auto;
+   	height: 300px;
+  }
+  
+   .FileContent .Content .TextContent{  
+    width: 99%;
+    margin: auto;
   }
   
   .FileContent .ContentDetail {  
@@ -118,11 +128,13 @@
 	        	<div class="NavigationContainer">       
     					<div class="TopTitle">$originalNode.name</div>
 		        	<div class="Content">
-			        <%
-			        	if(contentNode.hasProperty("jcr:data")) {
-			        		println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
-			        	}
-			        %>
+		        		<div class="TextContent">
+					        <%
+					        	if(contentNode.hasProperty("jcr:data")) {
+					        		println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
+					        	}
+					        %>
+			        	</div>
 		        	</div>				     
 				  	</div>   
 	        </div>
@@ -134,22 +146,24 @@
 	  <div class="NavigationContainer">       
 	    <div class="TopTitle">$originalNode.name</div>
 	    <div class="Content">
-	      <%        
-	        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-	          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
-	        } else {
-	        	if(mimeType.startsWith("image")) {
-	        	def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
-	        %> 	
-		    		<div class="ContentDetail">
-	            <image src="<%=imageLink%>"/>
-	          </div>
-	        <%}else {%> 
-						<div style="text-align:center; font-style:italic">
-						  <%=_ctx.appRes("File.view.label.not-viewable")%>
-						</div>        
-	        <%}%>
-	      <%}%>     
+	    	<div class="TextContent">
+		      <%        
+		        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
+		          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
+		        } else {
+		        	if(mimeType.startsWith("image")) {
+		        	def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
+		        %> 	
+			    		<div class="ContentDetail">
+		            <image src="<%=imageLink%>"/>
+		          </div>
+		        <%}else {%> 
+							<div style="text-align:center; font-style:italic">
+							  <%=_ctx.appRes("File.view.label.not-viewable")%>
+							</div>        
+		        <%}%>
+		      <%}%>     
+		     </div>
 	    </div>  
 	  </div> 
   <%}%>
