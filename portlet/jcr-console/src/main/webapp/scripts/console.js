@@ -1491,20 +1491,31 @@ var term ;
 
 function termHandler() {
     var line = this.lineBuffer;
-    this.newLine();
+    //this.newLine();
 
+    if (line != "")
+   {
     var params = "myaction="+line; //  +"&containerName="+containerName;
-    //alert(action);
-  	var response = request(action,params);
+    var response = request(action,params);
 
     var re = /\n/g;
-    var rowsCount = response.match(re).length;
+    var result = response.match(re);
+    if (result)
+    var rowsCount = result.length;
+    else
+    var rowsCount = 0;
     if (rowsCount > 20) {
+          this.newLine();
       this.write(response,true);
+
       return;
     }else {
+     	    this.newLine();
  	    this.write(response,false);
     }
+  } else {
+  this.newLine();
+  }  
     this.prompt();
 }
 
