@@ -31,12 +31,16 @@ import org.exoplatform.frameworks.jcr.cli.CliAppContext;
 import org.exoplatform.services.command.impl.CommandService;
 import org.exoplatform.services.jcr.RepositoryService;
 
+
+/**
+ * Created by The eXo Platform SARL .
+ * 
+ * @author <a href="mailto:uy7c@yahoo.com">Max Shaposhnik</a>
+ * @version $Id$
+ */
+
 public class JcrConsole extends GenericPortlet {
 
-  //public static final String SESSION_CONTAINER = "exoplatform.exocontainer";
-  
-  //private static final String JSP_CODE = "/WEB-INF/console.jsp";
-  
  
   protected void doView(RenderRequest renderRequest,
       RenderResponse renderResponse) throws PortletException, IOException {
@@ -55,8 +59,6 @@ public class JcrConsole extends GenericPortlet {
       resourceString = resourceString.replace("&amp;", "&");
     }
     
-    System.out.println("resourceString:" + resourceString);
-    
     PrintWriter w = renderResponse.getWriter();
     w.println("<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"/jcr-console/scripts/console.js\"></SCRIPT>");
     w.println("<LINK REL=\"stylesheet\"  HREF=\"/jcr-console/styles/styles.css\" TYPE=\"text/css\">");
@@ -65,8 +67,6 @@ public class JcrConsole extends GenericPortlet {
     w.println("var action =\"" + resourceString + "\";");
     w.println("termOpen();");
     w.println("</SCRIPT>");
-
-
     
   }
   
@@ -132,8 +132,6 @@ public class JcrConsole extends GenericPortlet {
     PrintWriter printWriter = resourceResponse.getWriter();
     try {
       ExoContainer container = ExoContainerContext.getCurrentContainer();
-
-      
       
       String commandLine = resourceRequest.getParameter("myaction").trim();
       String commandFromCommandLine = commandLine.substring(0,
@@ -174,8 +172,6 @@ public class JcrConsole extends GenericPortlet {
     finally {
       resourceRequest.setAttribute("context", context);
     }
-
-    
 
   }
   
