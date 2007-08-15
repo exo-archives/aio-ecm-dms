@@ -540,9 +540,8 @@
   padding-left: 60px;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .FormContainer {
-  width: 500px;
-  margin: auto;
+.UIJCRExplorerPortlet .UISimpleSearch .FormContainer .InforField {	
+	margin: 5px 0px;
 }
 
 .UIJCRExplorerPortlet .EditQueryForm {

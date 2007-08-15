@@ -515,4 +515,8 @@
   background: #ffffff;
 }
 
+.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
+  float: none;
+}
+
 /*############################## -- End UIActionManager   -- ##############################*/
