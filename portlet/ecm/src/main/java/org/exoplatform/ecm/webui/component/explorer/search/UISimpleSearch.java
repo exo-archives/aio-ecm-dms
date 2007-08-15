@@ -20,11 +20,13 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
+import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
+import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
@@ -50,9 +52,11 @@ public class UISimpleSearch extends UIForm {
   final static public String INPUT_SEARCH = "input" ;
   final static public String CONSTRAINTS = "constraints" ;
   final static public String NODE_PATH = "nodePath" ;
+  final static public String FIRST_OPERATOR = "firstOperator" ;
+  final static public String OR = "or" ;
+  final static public String AND = "and" ;
   
   private List<String> constraints_ = new ArrayList<String>() ;
-  private String firstOperator_ ;
   private List<String> virtualConstraints_ = new ArrayList<String>() ;
   
   private static final String ROOT_XPATH_QUERY = "//*" ;
@@ -61,6 +65,10 @@ public class UISimpleSearch extends UIForm {
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
     addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
+    List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>() ;
+    operators.add(new SelectItemOption<String>(AND, AND)) ;
+    operators.add(new SelectItemOption<String>(OR, OR)) ;
+    addUIFormInput(new UIFormSelectBox(FIRST_OPERATOR, FIRST_OPERATOR, operators)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints") ;
     uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null)) ;
     addUIComponentInput(uiInputAct) ;
@@ -72,7 +80,6 @@ public class UISimpleSearch extends UIForm {
   public void updateAdvanceConstraint(String constraint, String operator, String virtualDateQuery) { 
     if(constraint.length() > 0) {
       if(constraints_.size() == 0) {
-        firstOperator_ = operator.toLowerCase() ;
         constraints_.add("(" + constraint + " )") ;
         if(virtualDateQuery != null) virtualConstraints_.add("(" + virtualDateQuery + " )") ;
         else virtualConstraints_.add("(" + constraint + " )") ;
@@ -103,22 +110,23 @@ public class UISimpleSearch extends UIForm {
     } else if(constraints_.size() > 0) {
       if(text == null) {
         if ("/".equals(currentNode.getPath())) {
-          statement = ROOT_XPATH_QUERY + "[" ;
+          statement = ROOT_XPATH_QUERY + "[(" ;
         } else {
-          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[";
+          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(";
         } 
       } else {
+        String operator = getUIFormSelectBox(FIRST_OPERATOR).getValue() ;
         if ("/".equals(currentNode.getPath())) {
-          statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))" + "[";
+          statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))" ;
         } else {
           statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))" ;
         } 
-        statement = statement + " " + firstOperator_ + " ";
+        statement = statement + " " + operator + " (";
       }
       for(String constraint : constraints_) {
         statement = statement + constraint ;
       }
-      statement = statement + "]" ;
+      statement = statement + ")]" ;
     }
     return statement ;
   }
@@ -151,6 +159,21 @@ public class UISimpleSearch extends UIForm {
       int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       uiSimpleSearch.constraints_.remove(intIndex) ;
       uiSimpleSearch.virtualConstraints_.remove(intIndex) ;
+      if(uiSimpleSearch.constraints_.size() > 0) {
+        String newFirstConstraint = null;
+        String newFirstVirtaulConstraint = null;
+        if(uiSimpleSearch.constraints_.get(0).contains(OR)) {
+          newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length()) ;
+          newFirstVirtaulConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length()) ;
+          uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
+          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtaulConstraint) ;
+        } else if(uiSimpleSearch.constraints_.get(0).contains(AND)) {
+          newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length()) ;
+          newFirstVirtaulConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length()) ;
+          uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
+          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtaulConstraint) ;
+        }
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSimpleSearch.getParent()) ;
     }
   }
@@ -172,6 +195,7 @@ public class UISimpleSearch extends UIForm {
         return ;
       }
       String statement = uiSimpleSearch.getQueryStatement() ;
+      System.out.println("\n\nstatement=====>" + statement + "\n\n");
       Query query = queryManager.createQuery(statement, Query.XPATH);      
       QueryResult queryResult = query.execute();
       uiSearchResult.setQueryResults(queryResult) ;
