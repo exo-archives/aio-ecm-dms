@@ -69,7 +69,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
     int notifyType = watchService.getNotificationType(getWatchNode(),getUserName()) ;    
     if(notifyType == WatchDocumentService.FULL_NOTIFICATION) {
       options.add(new SelectItemOption<String>(NOTIFICATION_BY_EMAIL,NOTIFICATION_BY_EMAIL)) ;
-      options.add(new SelectItemOption<String>(NOTIFICATION_BY_RSS,NOTIFICATION_BY_RSS)) ;
+      //options.add(new SelectItemOption<String>(NOTIFICATION_BY_RSS,NOTIFICATION_BY_RSS)) ;
       getUIFormSelectBox(NOTIFICATION_TYPE).setOptions(options) ;
       return true ;
     } else if(notifyType == WatchDocumentService.NOTIFICATION_BY_EMAIL ) {
@@ -77,12 +77,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       getUIFormSelectBox(NOTIFICATION_TYPE).setOptions(options) ;
       return true ;
     } else if(notifyType == WatchDocumentService.NOTIFICATION_BY_RSS) {
-      options.add(new SelectItemOption<String>(NOTIFICATION_BY_RSS,NOTIFICATION_BY_RSS)) ;
+      //options.add(new SelectItemOption<String>(NOTIFICATION_BY_RSS,NOTIFICATION_BY_RSS)) ;
       getUIFormSelectBox(NOTIFICATION_TYPE).setOptions(options) ;
       return true ; 
     } else {
       options.add(new SelectItemOption<String>(NOTIFICATION_BY_EMAIL,NOTIFICATION_BY_EMAIL)) ;
-      options.add(new SelectItemOption<String>(NOTIFICATION_BY_RSS,NOTIFICATION_BY_RSS)) ;
+      //options.add(new SelectItemOption<String>(NOTIFICATION_BY_RSS,NOTIFICATION_BY_RSS)) ;
       getUIFormSelectBox(NOTIFICATION_TYPE).setOptions(options) ;
       return false ;
     }          
@@ -121,11 +121,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
         watchService.watchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_RSS) ;
       } else {
         uiApp.addMessage(new ApplicationMessage("UIWatchDocumentForm.msg.not-support", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       uiApp.addMessage(new ApplicationMessage("UIWatchDocumentForm.msg.watching-successfully", null)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp) ;
       uiForm.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
   }
   
@@ -141,11 +142,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
         watchService.unwatchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_RSS) ;
       } else {
         uiApp.addMessage(new ApplicationMessage("UIWatchDocumentForm.msg.not-support", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       uiApp.addMessage(new ApplicationMessage("UIWatchDocumentForm.msg.unwatching-successfully", null)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp) ;
       uiForm.getAncestorOfType(UIJCRExplorer.class).updateAjax(event) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
   }
 }
