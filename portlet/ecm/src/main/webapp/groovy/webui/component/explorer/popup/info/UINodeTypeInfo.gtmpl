@@ -5,7 +5,7 @@
 	 *          trongtt@gmail.com
 	 * July 25, 2006
 	 * 8:16:23 AM
-	 */
+	 **/
 %>
 <%
   import java.util.Collection;
@@ -31,7 +31,6 @@
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.loadNodeTypeScroll()');
-  //rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.UIJCRExplorer.initNodeTypeScroll()');
   
 %>
 
@@ -62,7 +61,7 @@
 				  </div>
 				  <div class="NavigationButtonContainer">
 	          <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
-	            <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
+	            <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span></span></div>
 	          </div>
 	        </div>
 				</div>
