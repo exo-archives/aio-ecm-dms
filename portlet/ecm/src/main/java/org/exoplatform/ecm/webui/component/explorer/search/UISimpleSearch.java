@@ -195,7 +195,6 @@ public class UISimpleSearch extends UIForm {
         return ;
       }
       String statement = uiSimpleSearch.getQueryStatement() ;
-      System.out.println("\n\nstatement=====>" + statement + "\n\n");
       Query query = queryManager.createQuery(statement, Query.XPATH);      
       QueryResult queryResult = query.execute();
       uiSearchResult.setQueryResults(queryResult) ;
