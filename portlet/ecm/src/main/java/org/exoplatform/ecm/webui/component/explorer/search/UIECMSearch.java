@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPageIterator;
 
 /**
  * Created by The eXo Platform SARL
@@ -19,11 +20,16 @@ import org.exoplatform.webui.core.UIContainer;
 
 @ComponentConfig( template = "system:groovy/webui/core/UITabPane.gtmpl" )
 public class UIECMSearch extends UIContainer implements UIPopupComponent {
+  
+  static public String ADVANCED_RESULT = "AdvancedSearchResult" ;
+  
   public UIECMSearch() throws Exception {
     addChild(UISearchContainer.class, null, null) ;
     addChild(UIJCRAdvancedSearch.class, null, null).setRendered(false);
     addChild(UISavedQuery.class, null, null).setRendered(false) ;
-    addChild(UISearchResult.class, null, "AdvancedSearchResult").setRendered(false) ;
+    UISearchResult uiSearchResult = addChild(UISearchResult.class, null, ADVANCED_RESULT).setRendered(false) ;
+    UIPageIterator uiPageIterator = uiSearchResult.getChild(UIPageIterator.class) ;
+    uiPageIterator.setId("AdvanceSearchIterator") ;
   }
 
   public void activate() throws Exception {

@@ -903,7 +903,7 @@ public class UIActionBar extends UIForm {
       uiExplorer.removeChildById("ViewSearch") ;
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
       getChild(UIDocumentWorkspace.class) ;
-      UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT) ;
       uiSearchResult.resultMap_.clear() ;
       uiSearchResult.setIsQuickSearch(true) ;
       uiSearchResult.setQueryResults(queryResult) ;

@@ -35,10 +35,10 @@
 	        strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;	        
 	        if(node.getPrimaryNodeType().getName().equals("nt:file")) {
 				  	String mimeType=node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-				  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+uicomponent.getServerPath()+"','"+uicomponent.getPortalName()+"','"+uicomponent.getRepository()+"','"+ preferenceWS+ "','" +node.getPath()+"','"+mimeType+"')";				  					  					  	
+				  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+uicomponent.getServerPath()+"','"+uicomponent.getPortalName()+"','"+uicomponent.getRepository()+"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
 				  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" href=\"" + link + "\">WebDav View</a></div>" ;
-				  }else {
-				  	String link = uicomponent.getServerPath() + "/" + uicomponent.getPortalName() + "/" + uicomponent.getRepository() + "/" + preferenceWS + node.getPath(); 
+				  } else {
+				  	String link = uicomponent.getServerPath() + "/" + uicomponent.getPortalName() + "/" + uicomponent.getRepository() + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
 				  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">WebDav View</a></div>" ;
 				  }
 				  strActs += "</div>" ;				  	
@@ -48,14 +48,13 @@
 			    if(customActs.size() > 0) {				    
 					  for(act in customActs) {
 					    String actName = act.getProperty("exo:name").getValue().getString() ;
-					    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
+					    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
 					    strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
-				      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom",path,params) + "\">$actName</a></div>" ;
+				      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">$actName</a></div>" ;
 					    strActs += "</div>" ;
 					  }				    
 	        }
 	        strActs += "</div>" ;
-	        	      
 	        println "<div class=\"Node\">" ;
 	        println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
 	        println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" + strActs + "<span></span></div>" ;

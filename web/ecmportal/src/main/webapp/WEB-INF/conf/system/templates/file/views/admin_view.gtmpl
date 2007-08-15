@@ -53,6 +53,7 @@
     margin:0px 0px 0px auto;
   }
 </style>
+<% import org.exoplatform.ecm.utils.Utils ; %>
 <%
   def originalNode = uicomponent.getOriginalNode();
   def currentNode = uicomponent.getNode() ;	
@@ -159,7 +160,7 @@
 	        <div class="ButtonLeft">
 	          <div class="ButtonRight">
 	            <div class="ButtonMiddle">
-	                <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=originalNode.getPath()%>','<%=mimeType%>')">
+	                <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=Utils.formatNodeName(originalNode.getPath())%>','<%=mimeType%>')">
 	                <%=_ctx.appRes("File.view.label.webDAV")%>
 	              </a>                      
 	            </div>

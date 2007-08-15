@@ -522,6 +522,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
+          e.printStackTrace() ;
           JCRExceptionManager.process(uiApp, e);
         }
       } else {
@@ -536,7 +537,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
-          //e.printStackTrace() ;
+          e.printStackTrace() ;
           JCRExceptionManager.process(uiApp, e);
         }
       }

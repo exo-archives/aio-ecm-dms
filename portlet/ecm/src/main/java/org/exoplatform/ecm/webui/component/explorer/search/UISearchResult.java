@@ -27,6 +27,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponentDecorator;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
@@ -50,15 +51,14 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISearchResult.OpenFolderActionListener.class)
     }
 )
-public class UISearchResult extends UIComponentDecorator {
+public class UISearchResult extends UIContainer {
   
   public Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
   private boolean isQuickSearch_ = false ;
   private UIPageIterator uiPageIterator_ ;
 
   public UISearchResult() throws Exception {
-    uiPageIterator_ = createUIComponent(UIPageIterator.class, null, null) ;
-    setUIComponent(uiPageIterator_) ;
+    uiPageIterator_ = addChild(UIPageIterator.class, null, null) ;
   }
 
   public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }

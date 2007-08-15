@@ -18,8 +18,11 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 public class UIDocumentWorkspace extends UIContainer {
+  
+  static public String SIMPLE_SEARCH_RESULT = "SimpleSearchResult" ;
+  
   public UIDocumentWorkspace() throws Exception {
     addChild(UIDocumentInfo.class, null, null) ;
-    addChild(UISearchResult.class, null, "SimpleSearchResult").setRendered(false) ;
+    addChild(UISearchResult.class, null, SIMPLE_SEARCH_RESULT).setRendered(false) ;
   }
 }
