@@ -61,8 +61,6 @@ public class JcrConsole extends GenericPortlet {
     w.println("<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"/jcr-console/scripts/console.js\"></SCRIPT>");
     w.println("<LINK REL=\"stylesheet\"  HREF=\"/jcr-console/styles/styles.css\" TYPE=\"text/css\">");
     w.println("<DIV ID=\"termDiv\" STYLE=\"position:relative; top:20px; left:100px;\"></DIV>");
-
-    
     w.println("<SCRIPT LANGUAGE=\"JavaScript\">");
     w.println("var action =\"" + resourceString + "\";");
     w.println("termOpen();");
@@ -146,9 +144,6 @@ public class JcrConsole extends GenericPortlet {
       commandLine = commandLine.trim();
       CommandService cservice = (CommandService) container
           .getComponentInstanceOfType(CommandService.class);
-      
-      System.out.println("CommandService: " + cservice.toString());
-      
       Catalog catalog = cservice.getCatalog("CLI");
 
       parseQuery(commandLine, params);
@@ -156,15 +151,21 @@ public class JcrConsole extends GenericPortlet {
       if (context == null) {
         RepositoryService repService = (RepositoryService) container
             .getComponentInstanceOfType(RepositoryService.class);
+
         String workspace = repService.getRepository().getConfiguration().getDefaultWorkspaceName();
+        
         context = new CliAppContext(repService.getRepository(), PARAMETERS_KEY);
         context.setCurrentWorkspace(workspace);
         context.setCurrentItem(context.getSession().getRootNode());
       }
       Command commandToExecute = catalog.getCommand(commandFromCommandLine);
       context.put(PARAMETERS_KEY, params);
-      commandToExecute.execute(context);
-      printWriter.print(context.getOutput());
+      if (commandToExecute != null) {
+          commandToExecute.execute(context);
+          printWriter.print(context.getOutput());
+      } else {
+        printWriter.print("Command not found \n");
+      }
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("[ERROR] [jcr-concole] Can't execute command - " + e.getMessage());
