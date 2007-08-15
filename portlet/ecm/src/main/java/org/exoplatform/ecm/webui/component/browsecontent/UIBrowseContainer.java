@@ -201,20 +201,20 @@ public class UIBrowseContainer extends UIContainer {
     }     
   }
   public void refreshContent() throws Exception{
-    if(getNodeByPath(getRootNode().getPath()) == null) {
-      UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-      uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
-      uiPorlet.reload() ;
-    } else if(getNodeByPath(getSelectedTab().getPath()) == null || getNodeByPath(getCurrentNode().getPath()) == null)
-    {
-      setSelectedTab(null) ;
-      setCurrentNode(null) ;
-    }
     if(!showPageAction()) { 
       if(isShowDocumentByTag()) {
         setPageIterator(getDocumentByTag()) ;
       } else {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+          if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
+            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+            uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
+            uiPorlet.reload() ;
+          } else if(getNodeByPath(getSelectedTab().getPath()) == null || getNodeByPath(getCurrentNode().getPath()) == null)
+          {
+            setSelectedTab(null) ;
+            setCurrentNode(null) ;
+          }
           setPageIterator(getSubDocumentList(getSelectedTab())) ;
         } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
         } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
