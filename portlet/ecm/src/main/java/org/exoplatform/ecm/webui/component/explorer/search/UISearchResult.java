@@ -5,6 +5,8 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,6 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -79,6 +80,7 @@ public class UISearchResult extends UIContainer {
   
   public List getCurrentList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
   
+  @SuppressWarnings("unchecked")
   public List<Node> getResultList() throws Exception {
     List<Node> lists = new ArrayList<Node>() ;
     for(Node node : getNodeIterator()) {
@@ -94,6 +96,8 @@ public class UISearchResult extends UIContainer {
         realList.add(node) ;
       }
     }
+    Collections.sort(realList, new NodeNameComparator()) ;
+    Collections.sort(realList, new NodeTypeNameComparator()) ;
     return realList ;
   }
 
@@ -111,6 +115,30 @@ public class UISearchResult extends UIContainer {
     return portletPref ;
   }
 
+  static public class NodeNameComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((Node) o1).getName() ;
+        String name2 = ((Node) o2).getName() ;
+        return name1.compareToIgnoreCase(name2) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }
+  
+  static public class NodeTypeNameComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((Node) o1).getPrimaryNodeType().getName() ;
+        String name2 = ((Node) o2).getPrimaryNodeType().getName() ;
+        return name1.compareToIgnoreCase(name2) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }
+  
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource() ;
