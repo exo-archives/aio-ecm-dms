@@ -17,12 +17,14 @@
 	    if(uicomponent.isShowSideBar()) {
 	      style += 250;
 	  %>
-		      <div style="height: 100%; width: 250px; overflow: auto; float: left;">
-		        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
-		        <% 
-		        if(uicomponent.getChild(UIECMAdminControlPanel.class) != null) uicomponent.renderChild(UIECMAdminControlPanel.class);
-		         %>
-		      </div>
+	      <div style="height: 100%; width: 250px; overflow: auto; float: left;">
+	        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
+	        <% 
+	          if(uicomponent.getChild(UIECMAdminControlPanel.class) != null) {
+	            uicomponent.renderChild(UIECMAdminControlPanel.class);
+	          }
+	        %>
+	      </div>
 	  <%}%>
 	  <div class="ECMLayoutSeparator" style="float: left; height: 100%;">
 	    <div class="<%=(uicomponent.isShowSideBar() ? "CollapseSideBar" : "ExpandSideBar")%>" onclick="<%=uicomponent.event('ShowHide')%>"><span></span></div>

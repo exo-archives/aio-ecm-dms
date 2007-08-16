@@ -137,6 +137,13 @@ public class UITaxonomyManager extends UIContainer {
       UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class) ;
       String type = uiManager.clipboard_.getType();
       String srcPath = uiManager.clipboard_.getSrcPath();
+      if(realPath.equals(srcPath)) {
+        Object[] arg = { realPath } ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.node-is-cutting", arg, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       if(srcPath == null){
         Object[] arg = { realPath } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.no-taxonomy-selected", arg, 

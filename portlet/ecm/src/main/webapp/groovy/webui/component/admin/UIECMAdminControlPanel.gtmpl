@@ -26,7 +26,7 @@
 		        </div>
 		      </div>
 				</div>
-				<div class="UIVTabContent" style="display: none; height: 0px;"><div>
+				<div class="UIVTabContent" style="display:none; height: 0px;"><div>
 			    <%
 			    	String[] groups = managersGroup[i].split(";") ;
 			    	for(group in groups) {
