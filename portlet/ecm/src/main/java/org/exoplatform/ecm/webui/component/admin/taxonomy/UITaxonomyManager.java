@@ -44,7 +44,7 @@ public class UITaxonomyManager extends UIContainer {
   private TaxonomyNode rootNode_ ;
   
   public UITaxonomyManager() throws Exception {
-    resetTaxonomyRootNode() ;
+    rootNode_ = new TaxonomyNode(getApplicationComponent(CategoriesService.class).getTaxonomyHomeNode(getRepository(),SessionsUtils.getSystemProvider()), 0) ;
   }
   
   private String getRepository() throws Exception {
@@ -54,11 +54,7 @@ public class UITaxonomyManager extends UIContainer {
     return repository ;
   }
   
-  public void resetTaxonomyRootNode() throws Exception {
-    rootNode_ = new TaxonomyNode(getApplicationComponent(CategoriesService.class)
-        .getTaxonomyHomeNode(getRepository(),SessionsUtils.getSystemProvider()), 0) ;
-  }
-  private TaxonomyNode getRootTaxonomyNode() throws Exception { return rootNode_ ; }
+  public TaxonomyNode getRootTaxonomyNode() throws Exception { return rootNode_ ; }
   
   public void initPopup(String path) throws Exception {
     removeChildById("TaxonomyPopup") ;
@@ -72,6 +68,7 @@ public class UITaxonomyManager extends UIContainer {
   
   public void addTaxonomy(String parentPath, String name) throws Exception {
     getApplicationComponent(CategoriesService.class).addTaxonomy(parentPath, name, getRepository()) ;
+    rootNode_.update(parentPath,true) ;
   }
   
   static public class SelectActionListener extends EventListener<UITaxonomyManager> {
@@ -98,11 +95,18 @@ public class UITaxonomyManager extends UIContainer {
     public void execute(Event<UITaxonomyManager> event) throws Exception {
       UITaxonomyManager uiManager = event.getSource();     
       UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class) ;
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;            
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;  
+      TaxonomyNode root = uiManager.getRootTaxonomyNode();
+      TaxonomyNode taxonomyNode = root.findTaxonomyNode(path) ;
       try {
-        uiManager.getApplicationComponent(CategoriesService.class)
-        .removeTaxonomyNode(path, uiManager.getRepository()) ;
-        uiManager.resetTaxonomyRootNode() ;
+        String parentPath = null ;
+        if(taxonomyNode !=null) {
+          parentPath = taxonomyNode.getNode().getParent().getPath();
+        }                  
+        uiManager.getApplicationComponent(CategoriesService.class).removeTaxonomyNode(path, uiManager.getRepository()) ;        
+        if(parentPath != null) {
+          root.update(parentPath,null) ;
+        }
       } catch(Exception e) {
         Object[] arg = { path } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg)) ;
@@ -150,9 +154,11 @@ public class UITaxonomyManager extends UIContainer {
       }
       CategoriesService categoriesService = 
         uiManager.getApplicationComponent(CategoriesService.class) ;
-      try {                              
-        categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;
-        uiManager.resetTaxonomyRootNode() ;
+      try {
+        String parentSrc = uiManager.rootNode_.getNode().getSession().getItem(srcPath).getParent().getPath();        
+        categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiManager.getRepository()) ;        
+        uiManager.rootNode_.update(parentSrc,null) ;
+        uiManager.rootNode_.update(realPath,true) ;
       } catch(Exception e) {
         e.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.referential-integrity", null, 

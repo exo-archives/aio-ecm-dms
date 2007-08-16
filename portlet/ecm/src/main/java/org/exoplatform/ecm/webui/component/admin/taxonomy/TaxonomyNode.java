@@ -29,7 +29,7 @@ public class TaxonomyNode {
 			NodeIterator iter = node_.getNodes() ;
 			if(iter.getSize() == 0) isExpanded = false;
 			while(iter.hasNext()) {
-				Node child = iter.nextNode() ;
+				Node child = iter.nextNode() ;				
 				children_.add(new TaxonomyNode(child, level_)) ;
 			}						     
 		} catch (PathNotFoundException e) {
@@ -49,7 +49,8 @@ public class TaxonomyNode {
 	public String getPath() throws RepositoryException { return node_.getPath(); }
 	
   public int getChildrenSize() { return children_.size(); }
-  public List<TaxonomyNode> getChildren() { return children_; }	
+  public List<TaxonomyNode> getChildren() { return children_; }
+  public void setChildren(List<TaxonomyNode> list) { this.children_ = list ; }
 	
 	public TaxonomyNode findTaxonomyNode(String path) throws RepositoryException {
 		if(node_.getPath().equals(path)) return this;
@@ -59,5 +60,24 @@ public class TaxonomyNode {
 			if(tnode != null) return tnode;
 		}
 		return null;
+	}
+		
+	public void update(String path,Boolean expand) throws Exception {
+	  TaxonomyNode taxonomyNode = findTaxonomyNode(path) ;	  
+	  if(taxonomyNode == null) return ;	  
+	  int level = taxonomyNode.getLevel() ;
+	  Node selectedNode = taxonomyNode.getNode() ;	  
+	  List<TaxonomyNode> newChildren = new ArrayList<TaxonomyNode>() ;
+	  for(NodeIterator iterator = selectedNode.getNodes();iterator.hasNext();) {
+	    Node node = iterator.nextNode();
+	    TaxonomyNode child = taxonomyNode.findTaxonomyNode(node.getPath());
+	    if(child != null) {
+	      newChildren.add(child) ;
+	    }else {
+	      newChildren.add(new TaxonomyNode(node,level)) ;
+	    }
+	  }
+	  if(expand != null) taxonomyNode.setExpanded(expand) ;
+	  taxonomyNode.setChildren(newChildren) ;
 	}
 }

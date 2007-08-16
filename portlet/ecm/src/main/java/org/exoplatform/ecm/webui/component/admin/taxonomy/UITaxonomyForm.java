@@ -80,8 +80,7 @@ public class UITaxonomyForm extends UIForm {
       }
       String parentPath = ROOT_PATH + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
       try {
-        uiManager.addTaxonomy(parentPath, name)  ;
-        uiManager.resetTaxonomyRootNode() ;
+        uiManager.addTaxonomy(parentPath, name)  ;        
       } catch(Exception e) {
         Object[] arg = {name} ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", arg, 
