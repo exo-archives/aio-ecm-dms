@@ -200,9 +200,6 @@ public class UISimpleSearch extends UIForm {
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;
       uiECMSearch.setRenderedChild(UISearchResult.class) ;
-      uiSimpleSearch.constraints_.clear() ;
-      uiSimpleSearch.virtualConstraints_.clear() ;
-      uiSimpleSearch.reset() ;
       uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNode.getPath()) ;
     }
   }

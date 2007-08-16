@@ -2,7 +2,7 @@
 	String[] typeManage = ["Ontologies","ContentPresentation", "TypesOfContent", "AdvanceConfiguaration"] ;
   String Ontologies = "UIFolksonomyManager;UITaxonomyManager" ;
   String TypesOfContent = "UINamespaceManager;UINodeTypeManager" ;
-  String ContentPresentation = "UITemplatesManager;UIViewManager;UIDriveManager;UIMetadataManager" ;
+  String ContentPresentation = "UITemplatesManager;UIMetadataManager;UIViewManager;UIDriveManager" ;
   String AdvanceConfiguaration = "UIQueriesManager;UIScriptManager;UIActionManager" ;
   String[] managersGroup = [Ontologies,ContentPresentation,TypesOfContent,AdvanceConfiguaration] ;
 %>

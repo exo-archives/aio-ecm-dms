@@ -115,8 +115,8 @@ public class UIConstraintsForm extends UIForm {
     String value = getUIStringInput(type).getValue() ;
     if(value == null) return "" ;
     if(value.trim().length() > 0) {
-      if(isContain) return " jcr:contains(" + property.trim() + ", '"+ value.trim() + "')" ;
-      return " fn:not(jcr:contains(" + property.trim() + ", '"+ value.trim() + "'))" ;
+      if(isContain) return " jcr:contains(@" + property.trim() + ", '"+ value.trim() + "')" ;
+      return " fn:not(jcr:contains(@" + property.trim() + ", '"+ value.trim() + "'))" ;
     }
     return "" ;
   }
