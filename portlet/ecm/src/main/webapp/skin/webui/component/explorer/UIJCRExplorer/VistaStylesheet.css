@@ -307,7 +307,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIUploadManager .FormContainer {
-	width: 400px;
+	width: 500px;
 	margin: auto;
 }
 
@@ -387,6 +387,10 @@
 	margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {	
+	width: 130px;
+}
+
 /*############################## -- END UIFolderForm -- ##############################*/
 
 /*===========================DocumentFormController=====================*/
@@ -396,7 +400,6 @@
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
-	width: 611px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .UIFormWithTitle {
@@ -408,10 +411,6 @@
 	padding-left: 20px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .HorizontalLayout {
-  padding: 10px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 3px; 
 }
@@ -421,12 +420,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid {
-	width: 550px;
 	margin: 10px auto;	
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid .FieldLabel{
-	width: 140px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
@@ -457,7 +451,7 @@
 }
 
 .UIJCRExplorerPortlet .SelectFileFrame {
-  width: 480px;
+  width: auto;
   margin: auto;
   padding-bottom: 10px;
   padding-top: 0px;
@@ -476,7 +470,7 @@
 }
 
 .UIJCRExplorerPortlet .ProgressBarFrame {
-  width: 480px;
+  width: auto;
   margin: auto;
   padding-bottom: 10px;
   padding-top: 0px;
