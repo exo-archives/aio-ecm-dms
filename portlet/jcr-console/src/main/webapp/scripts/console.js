@@ -1547,8 +1547,27 @@ function termOpen() {
 
 function request(url,params) {
         var request_;
-        request_ = new XMLPortletRequest();
-        //request_.onreadystatechange = function () {};
+
+	try {
+        // Firefox, Opera 8.0+, Safari
+       request_ = new XMLHttpRequest();
+       //alert("FF");
+        } catch (e) {
+        // Internet Explorer
+          try {
+           //alert("IE");
+           request_ = new ActiveXObject("Msxml2.XMLHTTP");
+         } catch (e) {
+             try {
+               request_ = new ActiveXObject("Microsoft.XMLHTTP");
+               } catch (e) {
+            alert("Your browser does not support AJAX!");
+         return false;
+      }
+    }
+  }
+
+        request_.onreadystatechange = function () {};
         request_.open("POST", url, false);
         request_.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         request_.send(params);
