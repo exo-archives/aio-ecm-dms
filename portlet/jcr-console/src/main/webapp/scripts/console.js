@@ -1546,25 +1546,25 @@ function termOpen() {
 }
 
 function request(url,params) {
-        var request_;
 
+        var request_;
 	try {
         // Firefox, Opera 8.0+, Safari
-       request_ = new XMLHttpRequest();
-       //alert("FF");
+        request_ = new XMLHttpRequest();
+        //alert("FF");
         } catch (e) {
-        // Internet Explorer
+          // Internet Explorer
           try {
-           //alert("IE");
-           request_ = new ActiveXObject("Msxml2.XMLHTTP");
-         } catch (e) {
+            //alert("IE");
+            request_ = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
              try {
                request_ = new ActiveXObject("Microsoft.XMLHTTP");
                } catch (e) {
-            alert("Your browser does not support AJAX!");
-         return false;
-      }
-    }
+                   alert("Your browser does not support AJAX!");
+                   return false;
+      		}
+	 }
   }
 
         request_.onreadystatechange = function () {};
