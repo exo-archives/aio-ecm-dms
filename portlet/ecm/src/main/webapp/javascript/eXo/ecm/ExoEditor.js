@@ -143,6 +143,7 @@ ExoEditor.prototype.createInstance = function(instId, settings) {
 	txtAreaObj.style.display = 'none' ;
 	txtAreaObj.parentNode.appendChild(editorObj) ;
 	editorObj.appendChild(txtAreaObj) ;
+	txtAreaObj.style.width = "100%" ;
 
 	var inst = new Instance(ifrm) ;
 	inst.instId = instId ;
