@@ -1497,6 +1497,7 @@ function termHandler() {
    {
     var params = "myaction="+line; //  +"&containerName="+containerName;
     var response = request(action,params);
+    //alert(response);	
 
     var re = /\n/g;
     var result = response.match(re);
@@ -1545,13 +1546,12 @@ function termOpen() {
 }
 
 function request(url,params) {
-  var req;
-        req = new XMLPortletRequest();
-        req.onreadystatechange = function () {};
-        req.open("POST", url, false);
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-        req.send(params);
-
-	return req.responseText;        
+        var request_;
+        request_ = new XMLPortletRequest();
+        //request_.onreadystatechange = function () {};
+        request_.open("POST", url, false);
+        request_.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request_.send(params);
+	return request_.responseText;        
     }
 
