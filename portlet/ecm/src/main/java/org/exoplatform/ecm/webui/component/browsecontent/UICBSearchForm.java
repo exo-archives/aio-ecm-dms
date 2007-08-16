@@ -5,7 +5,9 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -121,6 +123,7 @@ public class UICBSearchForm extends UIForm {
     String nodePath = currentNode.getPath() ;
     if(nodePath.equals("/")) nodePath = "" ;
     List<ResultData> resultList = new ArrayList<ResultData>() ;
+    Map<String, ResultData> temp = new HashMap<String, ResultData>() ;
     QueryManager queryManager = null ;
     try{
       queryManager = currentNode.getSession().getWorkspace().getQueryManager() ;
@@ -152,22 +155,30 @@ public class UICBSearchForm extends UIForm {
           if(ntDocument.equals("nt:resource")) {
             Node paNode = node.getParent() ;
             if(documentNodeTypes.contains(paNode.getPrimaryNodeType().getName())) {
-              result = new ResultData(paNode.getName(), paNode.getPath()) ;
-              resultList.add(result) ;
+              String path = paNode.getPath() ;
+              String name = path.substring(path.lastIndexOf("/") + 1); 
+              result = new ResultData(name, path) ;
+              temp.put(path, result) ;
+              //resultList.add(result) ;
             }
           } else {
-            result = new ResultData(node.getName(), node.getPath()) ;
-            resultList.add(result) ;
+            String path = node.getPath() ;
+            String name = path.substring(path.lastIndexOf("/") + 1);
+            result = new ResultData(name, path) ;
+            temp.put(path, result) ;
+            //resultList.add(result) ;
           }
         }
       } catch(Exception e) {
-        return null ;
+        return resultList ;
       }
     }
-
     UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
     uiController.setSearchTime(duration_) ;
     uiController.setResultRecord(resultList.size()) ;
+    for(String s: temp.keySet()) {
+      resultList.add(temp.get(s)) ;
+    }
     return resultList ;
   }
 

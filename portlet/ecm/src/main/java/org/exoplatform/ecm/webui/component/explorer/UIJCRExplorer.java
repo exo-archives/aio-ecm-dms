@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.Property;
@@ -107,7 +108,7 @@ public class UIJCRExplorer extends UIContainer {
   public void setAddressPath(Set<String> s) {addressPath_ = s;} ;
 
   public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }  
-  
+
   public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }  
 
   public Session getSession() { return session_ ; }
@@ -159,14 +160,14 @@ public class UIJCRExplorer extends UIContainer {
     }
     return false ;
   }
-  
+
   public boolean nodeIsLocked(Node node) throws Exception {
     if(node.isLocked()) {
       return !Utils.isLockTokenHolder(node) ; 
     }
     return false ;
   }
-  
+
   public boolean hasAddPermission() {
     try {
       session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
@@ -280,8 +281,12 @@ public class UIJCRExplorer extends UIContainer {
   public void setSelectNode(String uri, Session session) throws Exception {  
     Node previousNode = null ;
     if(uri == null || uri.length() == 0) uri = "/" ;
-    previousNode = currentNode_ ;        
-    currentNode_ = (Node) session.getItem(uri);
+    previousNode = currentNode_ ;   
+    try {
+      currentNode_ = (Node) session.getItem(uri);
+    } catch (Exception e) {
+      currentNode_ = currentNode_.getParent() ;
+    }
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }
