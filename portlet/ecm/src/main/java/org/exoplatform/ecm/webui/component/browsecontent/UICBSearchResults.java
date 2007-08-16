@@ -137,7 +137,6 @@ public class UICBSearchResults extends UIGrid {
   public static class ResultData {
     private String name ;
     private String path ;
-
     public ResultData(String rName, String rpath) {
       name = rName ;
       path = rpath ;
