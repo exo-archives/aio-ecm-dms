@@ -9,7 +9,7 @@ UIJCRExplorer.prototype.loadViewNodeScroll = function(e) {
 	var uiFilePlanView = document.getElementById("UIFilePlanView");
 	if (uiFilePlanView) {
 		jcr.vnScrollMgr = eXo.portal.UIPortalControl.newScrollManager("UIFilePlanView");
-		jcr.vnScrollMgr.margin = 6;
+		jcr.vnScrollMgr.margin = 8;
 		jcr.vnScrollMgr.initFunction = jcr.initViewNodeScroll;
 		var mainCont = eXo.core.DOMUtil.findFirstDescendantByClass(uiFilePlanView, "div", "UIHorizontalTabs");
 		var tabs = eXo.core.DOMUtil.findFirstDescendantByClass(mainCont, "div", "TabsContainer");
