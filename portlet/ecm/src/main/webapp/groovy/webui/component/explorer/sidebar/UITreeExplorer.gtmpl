@@ -12,7 +12,7 @@
     for(treeNode in treeNodes) {
 	    try {
 	      Node node = treeNode.getNode() ;
-	      if( Utils.isReadAuthorized(node)) {
+	      if(Utils.isReadAuthorized(node)) {
 	        String path = node.getPath() ;
 	        String treeNodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
 	        def isPreferenceNode = uicomponent.isPreferenceNode(node) ;

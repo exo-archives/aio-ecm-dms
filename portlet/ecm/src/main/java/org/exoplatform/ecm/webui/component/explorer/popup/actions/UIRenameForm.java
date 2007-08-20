@@ -62,7 +62,9 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public void update(Node renameNode, boolean isReferencedNode) throws Exception {
     isReferencedNode_ = isReferencedNode ;
     renameNode_ = renameNode ;
-    getUIStringInput(FIELD_OLDNAME).setValue(renameNode.getName()) ;
+    String renamePath = renameNode.getPath() ;
+    String oldName = renamePath.substring(renamePath.lastIndexOf("/") + 1, renamePath.length()) ;   
+    getUIStringInput(FIELD_OLDNAME).setValue(oldName) ;
     getUIStringInput(FIELD_OLDNAME).setEditable(false) ;
     getUIStringInput(FIELD_NEWNAME).setValue("") ;    
   }

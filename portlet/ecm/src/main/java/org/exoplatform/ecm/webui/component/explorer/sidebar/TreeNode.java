@@ -6,6 +6,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.ecm.utils.Utils;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong
@@ -49,12 +51,14 @@ public class TreeNode {
   public int getChildrenSize() { return children_.size() ; }
   
   public TreeNode getChild(String relPath) throws RepositoryException {
-    String path = null ;
-    String name = null ;
+//    String path = null ;
+//    String name = null ;
     for(TreeNode child : children_) {
-      path = child.getNode().getPath() ;
-      name = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
-      if(name.equals(relPath)) return child ;
+      if(Utils.isReadAuthorized(child.getNode())) {
+//        path = child.getNode().getPath() ;
+//        name = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
+        if(child.getNode().getPath().equals(relPath)) return child ;
+      }
     }
     return null;
   }

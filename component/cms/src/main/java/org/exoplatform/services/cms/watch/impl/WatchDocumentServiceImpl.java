@@ -97,12 +97,13 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }else {      
       List<Value>  watcherList = new ArrayList<Value>() ;
       if(notifyType == NOTIFICATION_BY_EMAIL) {
-        if(documentNode.hasProperty(RSS_WATCHERS_PROP)) {
+        if(documentNode.hasProperty(EMAIL_WATCHERS_PROP)) {
           for(Value watcher : documentNode.getProperty(EMAIL_WATCHERS_PROP).getValues()) {
             watcherList.add(watcher) ;
           }
           watcherList.add(newWatcher) ;
         }
+        
         documentNode.setProperty(EMAIL_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
         documentNode.save() ;
       }

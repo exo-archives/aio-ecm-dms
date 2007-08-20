@@ -657,7 +657,7 @@ public class UIWorkingArea extends UIContainer {
       String type = currentClipboard.getType();
       String srcWorkspace = currentClipboard.getWorkspace() ;
       if(srcWorkspace == null) srcWorkspace = uiExplorer.getCurrentWorkspace() ;
-      if( ClipboardCommand.CUT.equals(type) && srcPath.equals(realDestPath)) { 
+      if(ClipboardCommand.CUT.equals(type) && srcPath.equals(realDestPath)) { 
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

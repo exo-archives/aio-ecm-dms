@@ -70,7 +70,7 @@
 								  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.repeat-count")%></td>
 								  <td class="FieldComponent">	
 								  <% 
-										String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "validate=number"] ;
+										String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number"] ;
 										uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
 								  %>
 								  </td>
@@ -84,6 +84,7 @@
 								  %>
 								  </td>
 								</tr>
+								<% uicomponent.removeChildById("cronExpression") ; %>
 						<%} else {%>
 								<tr>		          					
 								  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.cron-expression")%></td>
@@ -94,6 +95,12 @@
 								  %>
 								  </td>
 								</tr>
+								<% 
+								  uicomponent.removeChildById("startTime") ; 
+								  uicomponent.removeChildById("endTime") ; 
+								  uicomponent.removeChildById("repeatCount") ; 
+								  uicomponent.removeChildById("timeInterval") ; 
+								%>
 			 <%			}	
 					  }
 				  }

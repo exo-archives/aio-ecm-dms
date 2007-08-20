@@ -69,7 +69,7 @@
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.repeat-count")%></td>
 						  <td class="FieldComponent">
 							  <% 
-								String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount"] ;
+								String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number"] ;
 								uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
 						 	 %>
 						 </td>
@@ -78,11 +78,12 @@
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.time-inteval")%></td>
 						  <td class="FieldComponent">
 							  <% 
-								String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
+								String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "1", "validate=number"] ;
 								uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
 							  %>
 							</td>
 						</tr>
+						<% uicomponent.removeChildById("cronExpression") ; %>						
 				<%} else {%>
 						<tr>		          					
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.cron-expression")%></td>
@@ -93,6 +94,12 @@
 							  %>
 							</td>
 						</tr>
+						<% 
+						  uicomponent.removeChildById("startTime") ; 
+						  uicomponent.removeChildById("endTime") ; 
+						  uicomponent.removeChildById("repeatCount") ; 
+						  uicomponent.removeChildById("timeInterval") ; 
+						%>							
 		 <%			}	
 				  }
 			  }

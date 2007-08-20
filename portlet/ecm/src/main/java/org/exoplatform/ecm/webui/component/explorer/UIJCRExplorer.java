@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.jcr.AccessDeniedException;
 import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.Property;

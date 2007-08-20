@@ -28,6 +28,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -126,16 +127,8 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String getRssLink() { return null ; }
 
   public List getSupportedLocalise() throws Exception {
-    List<String> local = new ArrayList<String>() ;
-    if(node_.hasNode(Utils.LANGUAGES)){
-      Node languages = node_.getNode(Utils.LANGUAGES) ;
-      NodeIterator iter = languages.getNodes() ;
-      while(iter.hasNext()) {
-        local.add(iter.nextNode().getName()) ;
-      }
-      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
-    } 
-    return local ;
+    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
+    return multiLanguageService.getSupportedLanguages(node_) ;
   }
 
   public String getTemplatePath() throws Exception { return null; }

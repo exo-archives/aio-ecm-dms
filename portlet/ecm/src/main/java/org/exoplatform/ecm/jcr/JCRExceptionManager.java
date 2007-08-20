@@ -62,7 +62,7 @@ public class JCRExceptionManager {
     } else {
       throw e;
     }
-    uiApp.addMessage(new ApplicationMessage(messageKey,null,ApplicationMessage.ERROR)) ;
+    uiApp.addMessage(new ApplicationMessage(messageKey,null,ApplicationMessage.WARNING)) ;
   }
 
   public static void process(UIApplication uiApp, Exception e) throws Exception {

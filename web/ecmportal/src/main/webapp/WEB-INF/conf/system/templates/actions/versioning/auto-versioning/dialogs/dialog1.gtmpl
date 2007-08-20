@@ -78,11 +78,12 @@
 							  <td class="FieldLabel"><%=_ctx.appRes("AutoVersioning.dialog.label.time-inteval")%></td>
 							  <td class="FieldComponent">
 								  <% 
-									String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval"] ;
+									String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "1", "validate=number"] ;
 									uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
 								  %>
 								</td>
 							</tr>
+						  <% uicomponent.removeChildById("cronExpression") ; %>													
 						<%} else {%>
 							<tr>		          					
 							  <td class="FieldLabel"><%=_ctx.appRes("AutoVersioning.dialog.label.cron-expression")%></td>
@@ -91,8 +92,14 @@
 									String[] fieldCronExpression = ["jcrPath=/node/exo:cronExpress", "validate=cronExpressionValidator"] ;
 									uicomponent.addTextField("cronExpression", fieldCronExpression) ;
 							  	%>
-							 </td>
+							  </td>
 							</tr>
+							<% 
+							  uicomponent.removeChildById("startTime") ; 
+							  uicomponent.removeChildById("endTime") ; 
+							  uicomponent.removeChildById("repeatCount") ; 
+							  uicomponent.removeChildById("timeInterval") ; 
+							%>									
 		 <%			}	
 				  }
 			  }

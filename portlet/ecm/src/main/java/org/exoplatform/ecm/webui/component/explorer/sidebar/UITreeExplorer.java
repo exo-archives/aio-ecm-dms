@@ -12,6 +12,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -99,10 +100,13 @@ public class UITreeExplorer extends UIComponent {
     String path = jcrExplorer.getCurrentNode().getPath() ;
     String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
     TreeNode temp = treeRoot ;
+    String subPath = null ;
     for(String nodeName : arr) {
       if(nodeName.length() == 0) continue ;
+      if(subPath == null) subPath = "/" + nodeName;
+      else subPath = subPath + "/" + nodeName ;
       temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-      temp = temp.getChild(nodeName) ;
+      temp = temp.getChild(subPath) ;
       if(temp == null) return treeRoot ;
     }
     temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
