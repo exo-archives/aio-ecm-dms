@@ -31,7 +31,8 @@ public class RecordsJob extends BaseJob {
   public void execute(JobContext context) throws Exception {
     Session session = null ;
     try {
-      log_.info("File plan job started");
+      if(log_.isDebugEnabled())
+        log_.debug("File plan job started");
       ExoContainer container = ExoContainerContext.getCurrentContainer();
       repositoryService_ = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
       recordsService_ = (RecordsService) container.getComponentInstanceOfType(RecordsService.class);
@@ -39,13 +40,15 @@ public class RecordsJob extends BaseJob {
       String[] workspaces = repository.getWorkspaceNames();      
       for (int i = 0; i < workspaces.length; i++) {
         String workspaceName = workspaces[i];
-        log_.info("Search File plans in workspace : " + workspaceName);
+        if(log_.isDebugEnabled())
+          log_.debug("Search File plans in workspace : " + workspaceName);
         session = repository.getSystemSession(workspaceName);
         QueryManager queryManager = session.getWorkspace().getQueryManager();
         Query query = queryManager.createQuery(QUERY, Query.SQL);
         QueryResult results = query.execute();
         NodeIterator iter = results.getNodes();
-        log_.info("File plan nodes : " + iter.getSize());
+        if(log_.isDebugEnabled())
+          log_.debug("File plan nodes : " + iter.getSize());
         while (iter.hasNext()) {
           Node filePlan = iter.nextNode();
           try {
@@ -56,7 +59,6 @@ public class RecordsJob extends BaseJob {
             recordsService_.computeDestructions(filePlan);
           } catch (RepositoryException ex) {
             log_.error(ex.getMessage(), ex);
-
           }
         }
         session.logout();
@@ -65,8 +67,8 @@ public class RecordsJob extends BaseJob {
       if(session != null) {
         session.logout(); 
       }      
-      //log_.error(e.getMessage());
     } 
-    log_.info("File plan job done");
+    if(log_.isDebugEnabled())
+      log_.debug("File plan job done");
   }
 }
