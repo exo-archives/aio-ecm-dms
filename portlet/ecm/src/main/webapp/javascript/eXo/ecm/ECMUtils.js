@@ -177,7 +177,7 @@ ECMUtils.prototype.replaceToIframe = function(txtAreaId) {
 	var txtArea = document.getElementById(txtAreaId) ;
 	var ifrm = document.createElement("IFRAME") ;
 	with(ifrm) {
-		className = 'ECMIframe'
+		className = 'ECMIframe' ;
 		src = 'javascript:void(0)' ;
 		frameBorder = 0 ;
 		scrolling = "auto" ;

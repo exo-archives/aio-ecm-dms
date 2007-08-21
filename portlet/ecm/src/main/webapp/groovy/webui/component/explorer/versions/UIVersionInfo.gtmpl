@@ -7,8 +7,8 @@
  * 11:57:24 AM 
  */
 %>
+<% import org.exoplatform.ecm.jcr.model.VersionNode; %>
 <%
-  import org.exoplatform.ecm.jcr.model.VersionNode;
   VersionNode rootNode = uicomponent.getRootVersionNode() ;  
   public void writeNodes(List nodes, String clazz, int level) {
     int padding ;

@@ -21,7 +21,7 @@ public class TreeNode {
 	private Node node_ ;
   private List<TreeNode> children_ = new ArrayList<TreeNode>() ; 
   
-  public TreeNode(Node node, List<Node> children) {
+  public TreeNode(Node node, List<Node> children) throws Exception {
     node_ = node ;
     isExpanded_ = true;
     setChildren(children) ;
@@ -54,19 +54,17 @@ public class TreeNode {
 //    String path = null ;
 //    String name = null ;
     for(TreeNode child : children_) {
-      if(Utils.isReadAuthorized(child.getNode())) {
 //        path = child.getNode().getPath() ;
 //        name = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
         if(child.getNode().getPath().equals(relPath)) return child ;
-      }
     }
     return null;
   }
   
-  public void setChildren(List<Node> children) {
+  public void setChildren(List<Node> children) throws Exception {
     setExpanded(true) ;
     for(Node child : children) {
-      children_.add(new TreeNode(child)) ;
+      if(Utils.isReadAuthorized(child)) children_.add(new TreeNode(child)) ;
     } 
   }
 }

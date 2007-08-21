@@ -35,7 +35,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIVersionInfo.ViewVersionActionListener.class),
         @EventConfig(listeners = UIVersionInfo.AddLabelActionListener.class),
         @EventConfig(listeners = UIVersionInfo.CompareVersionActionListener.class),
-        @EventConfig(listeners = UIVersionInfo.DeleteVersionActionListener.class),
+        @EventConfig(listeners = UIVersionInfo.DeleteVersionActionListener.class, confirm = "UIVersionInfo.msg.confirm-delete"),
         @EventConfig(listeners = UIVersionInfo.RemoveLabelActionListener.class),
         @EventConfig(listeners = UIVersionInfo.CloseActionListener.class)        
     }
@@ -152,11 +152,11 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
       } catch (ReferentialIntegrityException rie) {
-        //rie.printStackTrace() ;
+//        rie.printStackTrace() ;
         /*UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;*/
       } catch (Exception e) {
-        //e.printStackTrace() ;
+        e.printStackTrace() ;
         //UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
         //app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
       }
