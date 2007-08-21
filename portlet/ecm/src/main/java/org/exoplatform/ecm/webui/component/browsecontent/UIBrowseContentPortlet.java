@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.security.auth.Refreshable;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
@@ -40,14 +41,10 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiBrowseContainer = addChild(UIBrowseContainer.class, null , null) ;
     addChild(UIConfigTabPane.class, null, null) ;
-    if(!isExitsRepo(getPortletPreferences().getValue(Utils.REPOSITORY, ""))) {
+    try {
+      uiBrowseContainer.loadPortletConfig(getPortletPreferences()) ;
+    } catch (Exception e) {
       setPorletMode(PortletRequestContext.HELP_MODE) ;
-    } else {
-      if(uiBrowseContainer.getNodeByPath(uiBrowseContainer.getCategoryPath()) == null) {
-        setPorletMode(PortletRequestContext.HELP_MODE) ;
-      } else {
-        getChild(UIBrowseContainer.class).loadPortletConfig(getPortletPreferences()) ;
-      }
     }
   }
 
@@ -79,7 +76,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     try {
       super.processRender(app, context) ;
     } catch (Exception e) {
-
+      e.printStackTrace() ;
     }
   }
   protected void reload() throws Exception {
@@ -101,6 +98,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       rService.getRepository(repoName) ;
       return true ;
     } catch (Exception e) {
+      e.printStackTrace() ;
       return false ;
     }
   }

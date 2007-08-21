@@ -155,15 +155,7 @@ public class UIBrowseContainer extends UIContainer {
     if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
       if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      Session querySession = null ;
-      if(SessionsUtils.isAnonim()) {
-        //TODO  Anonim Session
-        //querySession = getAnonimProvider().getSession(workspace,manageableRepository) ;
-        querySession = getSystemProvider().getSession(workspace,manageableRepository) ;
-      }else {
-        querySession = getSessionProvider().getSession(workspace,manageableRepository) ;
-      }
-      if(!isShowDocumentByTag()) setPageIterator(getNodeByQuery(-1,querySession)) ;
+      if(!isShowDocumentByTag()) setPageIterator(getNodeByQuery(-1)) ;
       return ;
     } 
     if(getUseCase().equals(Utils.CB_USE_SCRIPT)) { 
@@ -194,7 +186,9 @@ public class UIBrowseContainer extends UIContainer {
       Node documentNode = null;      
       try{
         documentNode = (Node)getSession().getItem(documentPath) ;
-      }catch (Exception e) { }      
+      }catch (Exception e) { 
+        e.printStackTrace() ;
+      }      
       viewDocument(documentNode, false) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
       return ;
@@ -218,6 +212,7 @@ public class UIBrowseContainer extends UIContainer {
           setPageIterator(getSubDocumentList(getSelectedTab())) ;
         } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
         } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+          setPageIterator(getNodeByQuery(-1)) ;
         } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
           if(getChild(UIDocumentDetail.class).isValidNode()) {
             getChild(UIDocumentDetail.class).setRendered(true) ;         
