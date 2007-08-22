@@ -255,13 +255,11 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     try {
       actionService.addAction(actionType, repository, srcWorkspace, srcPath, mappings);
     } catch (Exception e) {
-      String workspace = StringUtils.substringBefore(newActionPath, ":");
-      String nodePath = StringUtils.substringAfter(newActionPath, ":");
-      Session session = getSystemSession(repository, workspace);
-      Node actionNode = (Node) session.getItem(nodePath);
+      Session session = getSystemSession(repository, storeActionNode.getSession().getWorkspace().getName());
+      Node actionNode = (Node) session.getItem(newActionPath);
       actionNode.remove();
       session.save();
-      session.logout();      
+      session.logout(); 
     }
   }
 

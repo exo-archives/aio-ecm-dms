@@ -335,14 +335,16 @@
 											          for(rel in relations) {
 															    String wsName = rel.getSession().getWorkspace().getName() ;
 														      String actionLink ;
+															    String relPath = rel.getPath() ;
+															    String relName = relPath.substring(relPath.lastIndexOf("/") + 1, relPath.length()) ; 
 															    if(!uicomponent.isRssLink()) { 
-															      String path = rel.getPath() + "&workspaceName=" + wsName ;
+															      String path = relPath + "&workspaceName=" + wsName ;
 															      actionLink = uicomponent.event("ChangeNode", path) ;
 														      } else { 
-															 	    actionLink = uicomponent.getRssLink() + wsName + rel.getPath() ;
+															 	    actionLink = uicomponent.getRssLink() + wsName + relPath ;
 														      }
 													    %>
-				  								    <div> - <a href="$actionLink">$rel.name</a></div>
+				  								    <div> - <a href="$actionLink">$relName</a></div>
 				  							    <%}%>
 						              </div>
 							          <%}%>

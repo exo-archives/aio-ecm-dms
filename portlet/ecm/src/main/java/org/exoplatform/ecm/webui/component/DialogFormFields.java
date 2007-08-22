@@ -21,6 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.CronExpressionValidator;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.jcr.RepeatCountValidator;
+import org.exoplatform.ecm.jcr.RepeatIntervalValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -349,6 +351,10 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(EmptyFieldValidator.class) ;
         } else if(validateType.equals("cronExpressionValidator")) {
           uiInput.addValidator(CronExpressionValidator.class) ;
+        } else if(validateType.equals("repeatCountValidator")) {
+          uiInput.addValidator(RepeatCountValidator.class) ;
+        } else if(validateType.equals("repeatIntervalValidator")) {
+          uiInput.addValidator(RepeatIntervalValidator.class) ;
         }
       }     
       addUIFormInput(uiInput) ;

@@ -201,6 +201,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       reset() ;
       isEditInList_ = false ;
     } catch(RepositoryException repo) {
+      repo.printStackTrace() ;
       String key = "UIActionForm.msg.repository-exception" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

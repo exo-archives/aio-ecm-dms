@@ -13,9 +13,11 @@
 			String actionLink ;
 			for (rel in relations) {
 			  String preferenceWS = rel.getSession().getWorkspace().getName() ;
-			  actionLink = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", preferenceWS)) ;
+			  String path = rel.getPath() ;
+			  actionLink = uicomponent.event("ChangeNode", path, new Parameter("workspaceName", preferenceWS)) ;
+			  String relName = path.substring(path.lastIndexOf("/") + 1, path.length()) ; 
 		%>
-		 	  <div> - <a href="$actionLink">$rel.name</a></div>
+		 	  <div> - <a href="$actionLink">$relName</a></div>
 		<% 
 		  }
 		}

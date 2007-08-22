@@ -69,7 +69,7 @@
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.repeat-count")%></td>
 						  <td class="FieldComponent">
 							  <% 
-								String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=number"] ;
+								String[] fieldRepeatCount= ["jcrPath=/node/exo:repeatCount", "-1", "validate=repeatCountValidator"] ;
 								uicomponent.addTextField("repeatCount", fieldRepeatCount) ;
 						 	 %>
 						 </td>
@@ -78,7 +78,7 @@
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.time-inteval")%></td>
 						  <td class="FieldComponent">
 							  <% 
-								String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "1", "validate=number"] ;
+								String[] fieldTimeInterval = ["jcrPath=/node/exo:timeInterval", "1", "validate=repeatIntervalValidator"] ;
 								uicomponent.addTextField("timeInterval", fieldTimeInterval) ;
 							  %>
 							</td>
