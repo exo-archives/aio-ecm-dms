@@ -14,6 +14,10 @@
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
   padding: 5px 0px;
   width: 98.5%;
+  /*
+  minh.js.exo
+  */
+  min-width: 400px;
 }
 
 .UIBrowseContentPortlet {
