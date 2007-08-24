@@ -885,6 +885,10 @@
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
   float: left;
 }
+
+.UIJCRExplorer .EditQueryForm .UIAction {
+	width: 190px;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet  .UIPopupWindow .UIPropertyForm .UIFormGrid {

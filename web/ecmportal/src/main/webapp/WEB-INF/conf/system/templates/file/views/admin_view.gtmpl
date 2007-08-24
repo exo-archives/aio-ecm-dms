@@ -47,7 +47,7 @@
     width: 99.5%;
     border: 1px solid #e1e1e1; 
     text-align: center;
-    overflow: auto;
+    overflow: visible;
     padding: 15px 0px;
   }
   

@@ -47,7 +47,7 @@
     width: 99.5%;
     border: 1px solid #e1e1e1; 
     text-align: center;
-    overflow: auto;
+    overflow: visible;
     padding: 15px 0px;
   }
   
@@ -118,10 +118,10 @@
 	    				<div class="TopTitle">$originalNode.name</div>
 			        <%
 			        	if(contentNode.hasProperty("jcr:data")){
-			        	String iframeId = uicomponent.getId() + "ifame" ;
-			        	rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
+			        	  String iframeId = uicomponent.getId() + "ifame" ;
+			        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
 			        %>
-			        	<textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
+			        	  <textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
 			        <%}%>
 				    </div>   
 	        </div>
