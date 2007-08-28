@@ -81,35 +81,61 @@ import org.exoplatform.webui.event.EventListener;
       )
     }
 )
+
 public class UIBrowseContainer extends UIContainer {
-  final public static String ROOTNODE = "rootNode" ;
+  final public static String CATEGORYPATH = "categoryPath" ;
   final public static String CURRENTNODE = "currentNode" ;
-  final public static String SELECTEDTAB = "selectedTab" ;
-  final public static String ISSHOWCATEGORYTREE = "isShowCategoryTree" ;
-  final public static String ISSHOWSEARCHFORM= "isShowSearchForm" ;
-  final public static String ISSHOWDOCUMENTDETAIL = "isShowDocumentDetail" ;
+  final public static String HISTORY = "history" ;
   final public static String ISSHOWALLDOCUMENT = "isShowAllDocument" ;
+  final public static String ISSHOWCATEGORYTREE = "isShowCategoryTree" ;
   final public static String ISSHOWDOCUMENTBYTAG = "isShowDocumentByTag" ;
+  final public static String ISSHOWDOCUMENTDETAIL = "isShowDocumentDetail" ;
   final public static String ISSHOWDOCUMENTLIST = "isShowDocumentList" ;
   final public static String ISSHOWPAGEACTION = "isShowPageAction" ;
-  final public static String TAGPATH = "tagPath" ;
-  final public static String TREEROOT = "treeRoot" ;
-  final public static String OLDTEMPLATE = "oldTemplate" ;
-  final public static String NODESHISTORY = "nodesHistory" ;
-  final public static String HISTORY = "history" ;
-  final public static String TEMPLATEPATH = "templatePath" ;
-  final public static String TEMPLATEDETAIL = "templateDetail" ;
-  final public static String CATEGORYPATH = "categoryPath" ;
-  final public static String USECASE = "usecase" ;
-  final public static String ROWPERBLOCK = "rowPerBlock" ;
+  final public static String ISSHOWSEARCHFORM= "isShowSearchForm" ;
   final public static String KEY_CURRENT = "currentNode" ;
   final public static String KEY_SELECTED = "selectedNode" ;
+  final public static String NODESHISTORY = "nodesHistory" ;
+  final public static String OLDTEMPLATE = "oldTemplate" ;
+  final public static String ROOTNODE = "rootNode" ;
+  final public static String ROWPERBLOCK = "rowPerBlock" ;
+  final public static String SELECTEDTAB = "selectedTab" ;
+  final public static String TAGPATH = "tagPath" ;
+  final public static String TEMPLATEDETAIL = "templateDetail" ;
+  final public static String TEMPLATEPATH = "templatePath" ;
   final public static String TREELIST = "TreeList" ;
+  final public static String TREEROOT = "treeRoot" ;
+  final public static String USECASE = "usecase" ;
 
-  private Map<String,Object> dataPerWindowIdMap = new HashMap<String, Object>() ;
+  private String categoryPath_ ;
+  private Node currentNode_ ; 
 
+  private String detailTemplate_ ;
+
+  private boolean isShowAllDocument_ ;
+
+  private boolean isShowCategoriesTree_ ;
+
+  private boolean isShowDetailDocument_ = true;
+  private boolean isShowDocumentByTag_ ;
+  private boolean isShowDocumentList_ ;    
+
+  private boolean isShowPageAction_ ;
+  private boolean isShowSearchForm_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
+  @SuppressWarnings("unchecked")
+  private LinkedList<String> nodesHistory_ = new LinkedList<String>();
+  @SuppressWarnings("unchecked")
+  private Map<String,Node> nodesHistoryMap_ = new HashMap<String,Node>() ;
+  private Node rootNode_ ;
+
+  private int rowPerBlock_ = 6;
+  private Node selectedTab_ ;
+  private String tagPath_ ;  
+
+  private String templatePath_ ;  
+  private BCTreeNode treeRoot_ ;  
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
@@ -120,457 +146,70 @@ public class UIBrowseContainer extends UIContainer {
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
     addChild(UIDocumentDetail.class, null, null).setRendered(false) ;
-  }
-
-  public void processRender(WebuiRequestContext context) throws Exception {
-    try {
-      getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
-      super.processRender(context) ;
-    } catch (Exception e) {
-      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletRequestContext.HELP_MODE) ;
-      return ;
-    }
-  }
-
-  public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest prequest = pcontext.getRequest() ;
-    PortletPreferences portletPref = prequest.getPreferences() ;
-    return portletPref ;
-  }
-
-  public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }
-  public SessionProvider getAnonimProvider() { return SessionsUtils.getAnonimProvider() ; }
-  public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }    
-
-  //TODO maybe need change name of this method
-  public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
-    String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
-    String repoName = getRepository() ;
-    String workspace = getWorkSpace() ;
-    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
-    ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
-    setShowDocumentByTag(false) ;
-    setShowDocumentDetail(false) ;
-    if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
-      setTemplate(viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      if(!isShowDocumentByTag()) setPageIterator(getNodeByQuery(-1)) ;
-      return ;
-    } 
-    if(getUseCase().equals(Utils.CB_USE_SCRIPT)) { 
-      setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
-      String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
-      if(!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName)) ;
-      return ;
-    }    
-    String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
-    if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
-      setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;            
-      setRootNode((Node)getSession().getItem(categoryPath)) ;
-      setCurrentNode(null) ;
-      setSelectedTab(null) ;
-      initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
-      if(getTemplateName().equals(TREELIST)) {
-        if(isEnableToolBar()) initToolBar(true, false, true) ;
-        getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
-        getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
-      }
-      if(!isShowDocumentByTag()) setPageIterator(getSubDocumentList(getSelectedTab())) ;
-      return ;
-    } 
-    if(getUseCase().equals(Utils.CB_USE_DOCUMENT)) {
-      setTemplateDetail(viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;      
-      String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "") ;
-      Node documentNode = null;      
-      try{
-        documentNode = (Node)getSession().getItem(documentPath) ;
-      }catch (Exception e) { 
-        e.printStackTrace() ;
-      }      
-      viewDocument(documentNode, false) ;
-      if(isEnableToolBar()) initToolBar(false, false, false) ;
-      return ;
-    }     
-  }
-  public void refreshContent() throws Exception{
-    if(!showPageAction()) { 
-      if(isShowDocumentByTag()) {
-        setPageIterator(getDocumentByTag()) ;
-      } else {
-        if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
-          if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
-            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
-            uiPorlet.reload() ;
-          } else if(getNodeByPath(getSelectedTab().getPath()) == null || getNodeByPath(getCurrentNode().getPath()) == null)
-          {
-            setSelectedTab(null) ;
-            setCurrentNode(null) ;
-          }
-          setPageIterator(getSubDocumentList(getSelectedTab())) ;
-        } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
-        } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
-          setPageIterator(getNodeByQuery(-1)) ;
-        } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
-          if(getChild(UIDocumentDetail.class).isValidNode()) {
-            getChild(UIDocumentDetail.class).setRendered(true) ;         
-          } else {
-            getChild(UIDocumentDetail.class).setRendered(false) ;
-            UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPortlet.getChild(UIPopupAction.class).deActivate() ;
-          } 
-        }
-        if(isShowDocumentDetail()) {
-          UIDocumentDetail uiDocumentDetail = getChild(UIDocumentDetail.class) ;      
-          if(getChild(UIDocumentDetail.class).isValidNode()) {
-            getChild(UIDocumentDetail.class).setRendered(true) ;         
-          } else {
-            if(isShowDocumentByTag() && isShowDocumentDetail()) {
-              setShowDocumentDetail(false) ;
-              uiDocumentDetail.setRendered(false) ;
-            } else {
-              setShowDocumentByTag(false) ;
-              setShowDocumentDetail(false) ;
-              uiDocumentDetail.setRendered(false) ;
-              if(getUseCase().equals(Utils.CB_USE_FROM_PATH) && getHistory() != null) {
-                setCurrentNode(getHistory().get(UIBrowseContainer.KEY_CURRENT)) ;
-                setSelectedTab(getHistory().get(UIBrowseContainer.KEY_SELECTED)) ;
-                getHistory().clear() ;
-              }
-              UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-              uiPortlet.getChild(UIPopupAction.class).deActivate() ;
-            } 
-          }
-        }
-      } 
-      setShowPageAction(false) ;
-    }
-  }
-  public String getUseCase() {
-    return getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
-  }
-  protected void setShowPageAction(boolean isShowPage) {
-    dataPerWindowIdMap.put(getWindowId()+ ISSHOWPAGEACTION, isShowPage) ;
-  }
-  protected boolean showPageAction() {
-    if(dataPerWindowIdMap.get(getWindowId()+ ISSHOWPAGEACTION) == null) {
-      setShowPageAction(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId()+ ISSHOWPAGEACTION).toString()) ;
-  }
-
-  public String getWindowId() {
-    return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId() ;
-  }
-  public void setTemplate(String temp) { 
-    dataPerWindowIdMap.put(getWindowId()+TEMPLATEPATH, temp);
-  }
-  public String getTemplate() {
-    if(isShowDocumentDetail()) {
-      return getTemlateDetail() ;
-    }
-    return (String)dataPerWindowIdMap.get(getWindowId() + TEMPLATEPATH);
-  }
-
-  protected void setTemplateDetail(String template) {
-    dataPerWindowIdMap.put(getWindowId() + TEMPLATEDETAIL, template) ;
-  }
-  protected String getTemlateDetail() {
-    return (String)dataPerWindowIdMap.get(getWindowId() + TEMPLATEDETAIL) ;
-  }
-  @SuppressWarnings("unused")
-  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
-    return jcrTemplateResourceResolver_ ;
-  }
-
-  public void newJCRTemplateResourceResolver() {
-    try{      
-      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
-      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
-      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
-      Session session = getSystemProvider().getSession(workspace,repository) ;         
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
-    }catch(Exception e) {
-      e.printStackTrace() ;
-    }     
   }  
 
-  protected String getTemplateName() {
-    return getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
-  } 
-  public boolean isEnableRefDocument() {
-    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_REF_DOCUMENT, "")) ;
-  }
-  public boolean isEnableChildDocument() {
-    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_CHILD_DOCUMENT, "")) ;
-  }
-  public boolean isEnableToolBar() {
-    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_TOOLBAR, "")) ;
-  }
-  public boolean isShowTagmap() {
-    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_TAGMAP, "")) ;
-  }
-  public boolean isShowCommentForm() {
-    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_COMMENT, "")) ;
-  }
-  public boolean isCommentAndVote() { return (isShowVoteForm() || isShowCommentForm()) ;}
-
-  public boolean isShowVoteForm() {
-    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_VOTE, "")) ;
-  }
-  public boolean isShowDocumentByTag() {
-    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTBYTAG) == null) {
-      setShowDocumentByTag(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTBYTAG).toString()) ;
-  }
-  public void setShowDocumentByTag(boolean isShowByTag) {
-    dataPerWindowIdMap.put(getWindowId()+ ISSHOWDOCUMENTBYTAG, isShowByTag) ;
-  }
-
-  public boolean isShowDocumentDetail() { 
-    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTDETAIL) == null) {
-      setShowDocumentDetail(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTDETAIL).toString()) ;
-
-  }
-  public void setShowDocumentDetail(boolean isShowDocument) {
-    dataPerWindowIdMap.put(getWindowId()+ ISSHOWDOCUMENTDETAIL, isShowDocument) ;
-  }
-  public boolean isShowSearchForm() { 
-    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWSEARCHFORM) == null) {
-      setShowSearchForm(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWSEARCHFORM).toString()) ;
-  }
-  public void setShowSearchForm(boolean isShowSearch) {
-    dataPerWindowIdMap.put(getWindowId() + ISSHOWSEARCHFORM, isShowSearch) ;
-  }
-  public boolean isShowCategoryTree() {
-    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWCATEGORYTREE) == null) {
-      setShowCategoryTree(true) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWCATEGORYTREE).toString()) ;
-
-  }
-  public void setShowCategoryTree(boolean  isShowCategoryTree) {
-    dataPerWindowIdMap.put(getWindowId() + ISSHOWCATEGORYTREE, isShowCategoryTree) ;
-  }
-  public boolean isShowAllDocument() {
-    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWALLDOCUMENT) == null) {
-      setShowAllChildren(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWALLDOCUMENT).toString()) ;
-  }
-  public void setShowAllChildren(boolean isShowAll) { 
-    dataPerWindowIdMap.put(getWindowId() + ISSHOWALLDOCUMENT, isShowAll) ;
-  }
-  public String getWorkSpace() {
-    return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
-  }
-  public String getCategoryPath() {
-    if(dataPerWindowIdMap.get(getWindowId() + CATEGORYPATH) == null)
-      setCategoryPath(getPortletPreferences().getValue(Utils.JCR_PATH, "")) ;
-    return (String)dataPerWindowIdMap.get(getWindowId() + CATEGORYPATH);
-  }
-  public void setCategoryPath(String path) {
-    dataPerWindowIdMap.put(getWindowId() + CATEGORYPATH, path) ;
-  }
-
-  public String getQueryStatement() {
-    return getPortletPreferences().getValue(Utils.CB_QUERY_STATEMENT, "") ;
-  }
-  public String getQueryLanguage() {
-    return getPortletPreferences().getValue(Utils.CB_QUERY_LANGUAGE, "") ;
-  }
-  public int getItemPerPage() {
-    return Integer.parseInt(getPortletPreferences().getValue(Utils.CB_NB_PER_PAGE, "")) ;
-  }
-  public int getRowPerBlock() {
-    if(dataPerWindowIdMap.get(getWindowId()+ ROWPERBLOCK) == null) {
-      setRowPerBlock(6) ;
-    }
-    return Integer.parseInt(dataPerWindowIdMap.get(getWindowId()+ ROWPERBLOCK).toString()) ;}
-  public void setRowPerBlock(int number) {
-    dataPerWindowIdMap.put(getWindowId()+ ROWPERBLOCK, number) ;
-  }
-  public BCTreeNode getTreeRoot() { 
-    return (BCTreeNode)dataPerWindowIdMap.get(getWindowId()+ TREEROOT) ;
-  }
-  public void setTreeRoot(Node node) throws Exception { 
-    dataPerWindowIdMap.put(getWindowId()+ TREEROOT, new BCTreeNode(node)) ;
-  }
-  public String[] getActions() { return new String[] {"back"} ;}    
-
-  @SuppressWarnings("unchecked")
-  public LinkedList<String> getNodesHistory() { 
-    if( dataPerWindowIdMap.get(getWindowId() + NODESHISTORY) == null) {
-      dataPerWindowIdMap.put(getWindowId() + NODESHISTORY, new LinkedList<String>()) ;
-    }
-    return (LinkedList<String>)dataPerWindowIdMap.get(getWindowId() + NODESHISTORY) ;
-  }
-  public void record(String str) {
-    getNodesHistory().add(str) ;
-    dataPerWindowIdMap.put(getWindowId() + NODESHISTORY, getNodesHistory()) ;
-  }
-  public Node getNodeByPath(String nodePath) throws Exception{
-    try{
-      return (Node)getSession().getItem(nodePath) ;
-    } catch(Exception e){
-      // e.printStackTrace() ;
-      return null  ;
+  public void changeNode(Node selectNode) throws Exception {
+    setShowAllChildren(false) ;
+    setShowDocumentByTag(false) ;
+    setShowDocumentDetail(false) ;
+    if(selectNode.equals(getRootNode())) {
+      setCurrentNode(null) ;
+      setSelectedTab(null) ;
+    } else {
+      setSelectedTab(selectNode) ;
+      setCurrentNode(selectNode.getParent()) ;
+      setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
   }
-  public Session getSession() throws Exception{
-    Session session = null ;
-    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"") ;
-    String workspace = getWorkSpace() ;
-    ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository()) ;
-    if(categoryPath.startsWith("/jcr:system")) {         
-      session = getSystemProvider().getSession(workspace,manageableRepository) ;
-    }else {
-      if(SessionsUtils.isAnonim()) {
-        //TODO Anonim Session
-        //session = getAnonimProvider().getSession(workspace,manageableRepository) ;
-        session = getSystemProvider().getSession(workspace,manageableRepository) ;
-      }else {
-        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
-      }
-    }
-    return session ;
-  }
 
-  public Node getRootNode() throws Exception {
-    if((Node)dataPerWindowIdMap.get(getWindowId() + ROOTNODE) == null) {
-      String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH, "") ;
-      setRootNode((Node)getSession().getItem(categoryPath)) ;
-    } 
-    return (Node)dataPerWindowIdMap.get(getWindowId() + ROOTNODE) ;
-  }
-  protected void setRootNode(Node node) {
-    dataPerWindowIdMap.put(getWindowId() + ROOTNODE, node) ;
-  }
-  public Node getCurrentNode() throws Exception{
-    if ((Node)dataPerWindowIdMap.get(getWindowId() + CURRENTNODE) == null) {
-      setCurrentNode(getRootNode())  ;
-    }
-    return (Node)dataPerWindowIdMap.get(getWindowId() + CURRENTNODE) ;
-  }
-  public void setCurrentNode(Node node) throws Exception {
-    dataPerWindowIdMap.put(getWindowId() + CURRENTNODE, node) ;
-  }
-  public void setSelectedTab (Node node) { 
-    dataPerWindowIdMap.put(getWindowId() + SELECTEDTAB, node) ;
-  }
-  public Node getSelectedTab() throws Exception {
-    if ((Node)dataPerWindowIdMap.get(getWindowId() + SELECTEDTAB) == null){
-      setSelectedTab(getCurrentNode()) ;
-    }  
-    return (Node)dataPerWindowIdMap.get(getWindowId() + SELECTEDTAB) ;
-  }
+  public String[] getActions() { return new String[] {"back"} ;}  
 
-  protected boolean isCategories(NodeType nodeType) {
-    for(String type : Utils.CATEGORY_NODE_TYPES) {
-      if(nodeType.getName().equals(type)) return true ;
-    }
-    return false ;
+  public SessionProvider getAnonimProvider() { return SessionsUtils.getAnonimProvider() ; } 
+  public String getCategoryPath() { return categoryPath_ ; }
+  public List getCurrentList() throws Exception {
+    return getChild(UIPageIterator.class).getCurrentPageData() ;
   }
-
-  private boolean canRead(Node node) {
-    ExtendedNode eNode = (ExtendedNode)node ;
-    try{
-      eNode.checkPermission(PermissionType.READ) ;
-      return true ;
-    } catch(Exception ac){}
-    return false ;
-  }
-
-  public boolean isShowDocumentList() {
-    if(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTLIST) == null) {
-      setShowDocumentList(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowIdMap.get(getWindowId() + ISSHOWDOCUMENTLIST).toString()) ;
-  }
-  public void setShowDocumentList(boolean isShowDocumentList){
-    dataPerWindowIdMap.put(getWindowId() + ISSHOWDOCUMENTLIST, isShowDocumentList) ;
-  }
-
-  public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
-
-  public String getOwner(Node node) throws Exception{
-    if(node.hasProperty("exo:owner")) {
-      return node.getProperty("exo:owner").getString();
-    }
-    return SystemIdentity.ANONIM ;
-  }
-
-  private boolean isReferenceableNode(Node node) throws Exception {
-    NodeType[] nodeTypes = node.getMixinNodeTypes() ;
-    for(NodeType type : nodeTypes) {
-      if(type.getName().equals(Utils.MIX_REFERENCEABLE)) return true ;
-    }
-    return false ;
-  }
-
-  public void initToolBar(boolean showTree, boolean showPath,boolean showSearch) throws Exception {
-    UIToolBar toolBar = getChild(UIToolBar.class) ;
-    toolBar.setEnableTree(showTree) ;
-    toolBar.setEnablePath(showPath) ;
-    toolBar.setEnableSearch(showSearch) ;
-    toolBar.setRendered(true) ;
-  }
-  public void viewDocument(Node docNode ,boolean hasDocList) throws Exception {
-    setShowDocumentDetail(true) ;
-    setShowDocumentList(hasDocList) ;
-    UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
-    uiDocumetDetail.setNode(docNode) ;
-    uiDocumetDetail.setRendered(true) ;
+  public Node getCurrentNode() throws Exception { return currentNode_ ; }
+  public List<Node> getDocumentByTag()throws Exception {
+    String repository = getRepository() ;
+    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    return folksonomyService.getDocumentsOnTag(getTagPath(), repository) ;
   }
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
   }
-
-  public List getCurrentList() throws Exception {
-    return getChild(UIPageIterator.class).getCurrentPageData() ;
-  }
-
-  public int getNumberOfPage() {
-    return getChild(UIPageIterator.class).getAvailablePage();
-  }
-
-  public UIPageIterator getUIPageIterator() throws Exception {
-    return getChild(UIPageIterator.class) ;
-  }
-
-  public void setPageIterator(List<Node> data) throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
-    getChild(UIPageIterator.class).setPageList(objPageList) ;
-  }
-  public  List<Node> getNodeByQuery(String queryType, String queryString) throws Exception{
-    List<Node> queryDocuments = new ArrayList<Node>() ;
-    try {
-      ManageableRepository repository = getRepositoryService().getRepository(getRepository()) ;
-      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
-      QueryManager queryManager = null ;
-      Session session = getSystemProvider().getSession(workspace, repository) ;
-      queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(queryString, queryType);
-      QueryResult queryResult = query.execute();
-      NodeIterator iter = queryResult.getNodes();
-      while (iter.hasNext()) {
-        queryDocuments.add(iter.nextNode()) ;
-      }
+  public String getImage(Node node) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node contentNode = null;
+    if(node.hasNode(Utils.EXO_IMAGE)) {
+      contentNode = node.getNode(Utils.EXO_IMAGE) ;
+    } else if(node.hasNode(Utils.JCR_CONTENT)) {
+      if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
+      contentNode = node.getNode(Utils.JCR_CONTENT) ;
+      String mimeType = contentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
+      if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
     }
-    catch(Exception e) {
+    if(contentNode == null) return null;
+    InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    if(input.available() == 0) return null ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+
+  public int getItemPerPage() {
+    return Integer.parseInt(getPortletPreferences().getValue(Utils.CB_NB_PER_PAGE, "")) ;
+  }
+
+  public Node getNodeByPath(String nodePath) throws Exception{
+    try{
+      return (Node)getSession().getItem(nodePath) ;
+    } catch(Exception e){
       e.printStackTrace() ;
+      return null  ;
     }
-    return queryDocuments ;
   }
-
   public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
     QueryManager queryManager = null ;
@@ -620,57 +259,37 @@ public class UIBrowseContainer extends UIContainer {
     }
     return queryDocuments ;
   }
-
-  protected List<Node> getNodeByScript(String repository,String scriptName) throws Exception {
-    DataTransfer data = new DataTransfer() ;
-    ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    data.setWorkspace(getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "")) ;
-    data.setRepository(repository) ;
-    Node scripts = scriptService.getCBScriptHome(repository) ;
-    CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository) ;
+  public  List<Node> getNodeByQuery(String queryType, String queryString) throws Exception{
+    List<Node> queryDocuments = new ArrayList<Node>() ;
     try {
-      cmsScript.execute(data);
-    } catch (Exception e) {
-      e.printStackTrace() ;
-    }
-    return data.getContentList() ;
-  }
-
-  @SuppressWarnings("unchecked")
-  public Map getTreeContent() throws Exception {
-    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    List templates = templateService.getDocumentTemplates(getRepository()) ;
-    List<String> subCategoryList = new ArrayList<String>() ;
-    List<Node> subDocumentList = new ArrayList<Node>() ;
-    Map content = new HashMap() ;
-    NodeIterator childIter = getCurrentNode().getNodes() ;
-    boolean isShowDocument = isEnableChildDocument() ;
-    boolean isShowReferenced = isEnableRefDocument() ;
-    while(childIter.hasNext()) {
-      Node child = childIter.nextNode() ;
-      if(canRead(child)) {
-        if(templates.contains(child.getPrimaryNodeType().getName())&&(isShowDocument)) {       
-          if(canRead(child)) subDocumentList.add(child) ;
-        } else {
-          if(isCategories(child.getPrimaryNodeType())) {
-            Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates) ;
-            String path = child.getPath() ;
-            String keyPath = path.substring(path.lastIndexOf("/") + 1) ;
-            content.put(keyPath, childOfSubCategory) ;
-            subCategoryList.add(path) ;
-          }
-        }
+      ManageableRepository repository = getRepositoryService().getRepository(getRepository()) ;
+      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
+      QueryManager queryManager = null ;
+      Session session = getSystemProvider().getSession(workspace, repository) ;
+      queryManager = session.getWorkspace().getQueryManager();
+      Query query = queryManager.createQuery(queryString, queryType);
+      QueryResult queryResult = query.execute();
+      NodeIterator iter = queryResult.getNodes();
+      while (iter.hasNext()) {
+        queryDocuments.add(iter.nextNode()) ;
       }
     }
+    catch(Exception e) {
+      e.printStackTrace() ;
+    }
+    return queryDocuments ;
+  }    
+  public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
 
-    if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
-        getCurrentNode(), isShowAllDocument(), subDocumentList.size(), templates)) ;
-    content.put("subCategoryList", subCategoryList) ;
-    content.put("subDocumentList", subDocumentList) ;
-    return content ;
+  public int getNumberOfPage() {
+    return getChild(UIPageIterator.class).getAvailablePage();
   }
-
+  public String getOwner(Node node) throws Exception{
+    if(node.hasProperty("exo:owner")) {
+      return node.getProperty("exo:owner").getString();
+    }
+    return SystemIdentity.ANONIM ;
+  }
   @SuppressWarnings("unchecked")
   public Map getPathContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
@@ -767,18 +386,388 @@ public class UIBrowseContainer extends UIContainer {
     return content ;
   }
 
-  private List<String> getHistory(List documentTemplates, Node parentNode) throws Exception {
-    List<String> historyList = new ArrayList<String>() ;
-    NodeIterator iter = parentNode.getNodes() ;
-    while(iter.hasNext()) {
-      Node node = iter.nextNode() ;
-      String nt = node.getPrimaryNodeType().getName() ;
-      if(!documentTemplates.contains(nt)) historyList.add(node.getPath()) ;
-    }
-    return historyList ;
+  public PortletPreferences getPortletPreferences() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletRequest prequest = pcontext.getRequest() ;
+    PortletPreferences portletPref = prequest.getPreferences() ;
+    return portletPref ;
   }
 
-  protected void historyNext() {}
+  public String getQueryLanguage() {
+    return getPortletPreferences().getValue(Utils.CB_QUERY_LANGUAGE, "") ;
+  }
+  public String getQueryStatement() {
+    return getPortletPreferences().getValue(Utils.CB_QUERY_STATEMENT, "") ;
+  }
+
+  public String getRepository() {
+    return getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+  }
+  public Node getRootNode() throws Exception { return rootNode_ ; }
+  public int getRowPerBlock() { return rowPerBlock_ ; }
+  public Node getSelectedTab() throws Exception { return this.selectedTab_ ;  }
+
+  public Session getSession() throws Exception{
+    Session session = null ;
+    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"") ;
+    String workspace = getWorkSpace() ;
+    ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository()) ;
+    if(categoryPath.startsWith("/jcr:system")) {         
+      session = getSystemProvider().getSession(workspace,manageableRepository) ;
+    }else {
+      if(SessionsUtils.isAnonim()) {
+        //TODO Anonim Session
+        //session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+        session = getSystemProvider().getSession(workspace,manageableRepository) ;
+      }else {
+        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
+      }
+    }
+    return session ;
+  }
+  public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }
+  @SuppressWarnings("unchecked")
+  public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
+    List<Node> subDocumentList = new ArrayList<Node>() ;
+    if(selectedNode == null) return subDocumentList ;
+    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
+    List<String> templates = templateService.getDocumentTemplates(getRepository()) ;
+    NodeIterator item = selectedNode.getNodes() ;
+    if(isEnableChildDocument())
+      while (item.hasNext()) {
+        Node node = item.nextNode() ;
+        if(templates.contains(node.getPrimaryNodeType().getName())) {
+          if(canRead(node)) subDocumentList.add(node) ; 
+        }
+      }
+    if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
+        selectedNode, isShowAllDocument(), subDocumentList.size(), templates)) ;
+    return subDocumentList ;
+  }
+
+  public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }
+  public List<Node> getTagLink() throws Exception {
+    String repository = getRepository() ;
+    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    return folksonomyService.getAllTags(repository) ;
+  }
+  public String getTagPath() { return this.tagPath_ ; }
+
+  public Map<String ,String> getTagStyle() throws Exception {
+    String repository = getRepository() ;
+    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    Map<String , String> tagStyle = new HashMap<String ,String>() ;
+    for(Node tag : folksonomyService.getAllTagStyle(repository)) {
+      tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString()) ;
+    }
+    return tagStyle ;
+  }
+  
+  public String getTemplate() {
+    if(isShowDetailDocument_) return detailTemplate_ ;
+    return templatePath_ ; 
+  }
+
+  @SuppressWarnings("unused")
+  public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
+    if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
+    return jcrTemplateResourceResolver_ ;
+  } 
+
+  @SuppressWarnings("unchecked")
+  public Map getTreeContent() throws Exception {
+    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    List templates = templateService.getDocumentTemplates(getRepository()) ;
+    List<String> subCategoryList = new ArrayList<String>() ;
+    List<Node> subDocumentList = new ArrayList<Node>() ;
+    Map content = new HashMap() ;
+    NodeIterator childIter = getCurrentNode().getNodes() ;
+    boolean isShowDocument = isEnableChildDocument() ;
+    boolean isShowReferenced = isEnableRefDocument() ;
+    while(childIter.hasNext()) {
+      Node child = childIter.nextNode() ;
+      if(canRead(child)) {
+        if(templates.contains(child.getPrimaryNodeType().getName())&&(isShowDocument)) {       
+          if(canRead(child)) subDocumentList.add(child) ;
+        } else {
+          if(isCategories(child.getPrimaryNodeType())) {
+            Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates) ;
+            String path = child.getPath() ;
+            String keyPath = path.substring(path.lastIndexOf("/") + 1) ;
+            content.put(keyPath, childOfSubCategory) ;
+            subCategoryList.add(path) ;
+          }
+        }
+      }
+    }
+
+    if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
+        getCurrentNode(), isShowAllDocument(), subDocumentList.size(), templates)) ;
+    content.put("subCategoryList", subCategoryList) ;
+    content.put("subDocumentList", subDocumentList) ;
+    return content ;
+  } 
+  public BCTreeNode getTreeRoot() { return treeRoot_ ;  }
+  public UIPageIterator getUIPageIterator() throws Exception {
+    return getChild(UIPageIterator.class) ;
+  }
+
+  public String getUseCase() {
+    return getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+  }    
+
+  public String getWorkSpace() {
+    return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
+  }
+  public void initToolBar(boolean showTree, boolean showPath,boolean showSearch) throws Exception {
+    UIToolBar toolBar = getChild(UIToolBar.class) ;
+    toolBar.setEnableTree(showTree) ;
+    toolBar.setEnablePath(showPath) ;
+    toolBar.setEnableSearch(showSearch) ;
+    toolBar.setRendered(true) ;
+  }
+
+  public boolean isCommentAndVote() { return (isShowVoteForm() || isShowCommentForm()) ;}
+
+  public boolean isEnableChildDocument() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_CHILD_DOCUMENT, "")) ;
+  }
+  public boolean isEnableRefDocument() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_REF_DOCUMENT, "")) ;
+  }
+
+  public boolean isEnableToolBar() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_TOOLBAR, "")) ;
+  }
+  public boolean isRootNode() throws Exception {return getCurrentNode().equals(getRootNode()) ;}
+  public boolean isShowAllDocument() { return this.isShowAllDocument_ ; }
+
+  public boolean isShowCategoryTree() { return isShowCategoriesTree_ ; }  
+  public boolean isShowCommentForm() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_COMMENT, "")) ;
+  }
+  public boolean isShowDocumentByTag() { return isShowDocumentByTag_ ; }
+
+  public boolean isShowDocumentDetail() { return isShowDetailDocument_ ; }
+  public boolean isShowDocumentList() { return this.isShowDocumentList_ ; }
+  public boolean isShowSearchForm() { return isShowSearchForm_ ;  }  
+
+  public boolean isShowTagmap() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_TAGMAP, "")) ;
+  }
+
+  public boolean isShowVoteForm() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_VOTE, "")) ;
+  }
+
+  //TODO maybe need change name of this method
+  public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
+    String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
+    String repoName = getRepository() ;
+    String workspace = getWorkSpace() ;
+    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
+    ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
+    setShowDocumentByTag(false) ;
+    setShowDocumentDetail(false) ;
+    if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+      setTemplate(viewService.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+      if(!isShowDocumentByTag()) setPageIterator(getNodeByQuery(-1)) ;
+      return ;
+    } 
+    if(getUseCase().equals(Utils.CB_USE_SCRIPT)) { 
+      setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false) ;
+      String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "") ;
+      if(!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName)) ;
+      return ;
+    }    
+    String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
+    if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+      setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+      Node node = (Node)getSession().getItem(categoryPath) ;
+      setRootNode(node) ;
+      setCategoryPath(categoryPath) ;
+      setSelectedTab(node) ;
+      setCurrentNode(node) ;      
+      initToolBar(false, isEnableToolBar(), isEnableToolBar()) ;
+      if(getTemplateName().equals(TREELIST)) {
+        if(isEnableToolBar()) initToolBar(true, false, true) ;
+        getChild(UICategoryTree.class).setTreeRoot(getRootNode()) ;
+        getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath()) ;
+      }
+      if(!isShowDocumentByTag()) setPageIterator(getSubDocumentList(getSelectedTab())) ;
+      return ;
+    } 
+    if(getUseCase().equals(Utils.CB_USE_DOCUMENT)) {
+      setTemplateDetail(viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;      
+      String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "") ;
+      Node documentNode = null;      
+      try{
+        documentNode = (Node)getSession().getItem(documentPath) ;
+      }catch (Exception e) { 
+        e.printStackTrace() ;
+      }      
+      viewDocument(documentNode, false) ;
+      if(isEnableToolBar()) initToolBar(false, false, false) ;
+      return ;
+    }     
+  }
+  public void newJCRTemplateResourceResolver() {
+    try{      
+      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
+      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
+      String workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
+      Session session = getSystemProvider().getSession(workspace,repository) ;         
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
+    }catch(Exception e) {
+      e.printStackTrace() ;
+    }     
+  }
+  public void processRender(WebuiRequestContext context) throws Exception {
+    try {
+      getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
+      super.processRender(context) ;
+    } catch (Exception e) {
+      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletRequestContext.HELP_MODE) ;
+      return ;
+    }
+  }
+
+  public void record(String str) { getNodesHistory().add(str) ;  }
+
+  public void refreshContent() throws Exception{
+    if(!showPageAction()) { 
+      if(isShowDocumentByTag()) {
+        setPageIterator(getDocumentByTag()) ;
+      } else {
+        if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+          if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
+            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+            uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
+            uiPorlet.reload() ;
+          } else if(getNodeByPath(getSelectedTab().getPath()) == null || getNodeByPath(getCurrentNode().getPath()) == null) {
+            setSelectedTab(null) ;
+            setCurrentNode(null) ;
+          }
+          setPageIterator(getSubDocumentList(getSelectedTab())) ;
+        } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
+        } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+          setPageIterator(getNodeByQuery(-1)) ;
+        } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
+          if(getChild(UIDocumentDetail.class).isValidNode()) {
+            getChild(UIDocumentDetail.class).setRendered(true) ;         
+          } else {
+            getChild(UIDocumentDetail.class).setRendered(false) ;
+            UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+            uiPortlet.getChild(UIPopupAction.class).deActivate() ;
+          } 
+        }
+        if(isShowDocumentDetail()) {
+          UIDocumentDetail uiDocumentDetail = getChild(UIDocumentDetail.class) ;      
+          if(getChild(UIDocumentDetail.class).isValidNode()) {
+            getChild(UIDocumentDetail.class).setRendered(true) ;         
+          } else {
+            if(isShowDocumentByTag() && isShowDocumentDetail()) {
+              setShowDocumentDetail(false) ;
+              uiDocumentDetail.setRendered(false) ;
+            } else {
+              setShowDocumentByTag(false) ;
+              setShowDocumentDetail(false) ;
+              uiDocumentDetail.setRendered(false) ;
+              if(getUseCase().equals(Utils.CB_USE_FROM_PATH) && getHistory() != null) {
+                setCurrentNode(getHistory().get(UIBrowseContainer.KEY_CURRENT)) ;
+                setSelectedTab(getHistory().get(UIBrowseContainer.KEY_SELECTED)) ;
+                getHistory().clear() ;
+              }
+              UIBrowseContentPortlet uiPortlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+              uiPortlet.getChild(UIPopupAction.class).deActivate() ;
+            } 
+          }
+        }
+      } 
+      setShowPageAction(false) ;
+    }
+  }
+
+  public void setCategoryPath(String path) {
+    this.categoryPath_ = path ;
+  }
+
+  public void setCurrentNode(Node node) throws Exception { this.currentNode_ = node ; }
+  public void setPageIterator(List<Node> data) throws Exception {
+    ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
+    getChild(UIPageIterator.class).setPageList(objPageList) ;
+  }
+  public void setRowPerBlock(int number) { this.rowPerBlock_ = number ; }
+
+  public void setSelectedTab (Node node) { this.selectedTab_ = node ; }
+
+  public void setShowAllChildren(boolean isShowAll) { 
+    this.isShowAllDocument_ = isShowAll ;
+  }
+
+  public void setShowCategoryTree(boolean  isShowCategoryTree) {
+    this.isShowCategoriesTree_ = isShowCategoryTree ;
+  }
+
+  public void setShowDocumentByTag(boolean isShowByTag) {
+    this.isShowDocumentByTag_ = isShowByTag ;
+  }
+  public void setShowDocumentDetail(boolean isShowDocument) {
+    this.isShowDetailDocument_ = isShowDocument ;
+  }
+
+  public void setShowDocumentList(boolean isShowDocumentList){
+    this.isShowDocumentList_ = isShowDocumentList ; 
+  }
+
+  public void setShowSearchForm(boolean isShowSearch) {
+    this.isShowSearchForm_ = isShowSearch ;
+  }
+
+  public void setTagPath(String tagPath) { this.tagPath_ = tagPath ; }
+
+  public void setTemplate(String temp) { this.templatePath_ = temp ; }
+
+  public void setTreeRoot(Node node) throws Exception { this.treeRoot_ = new BCTreeNode(node) ; }
+
+  public void storeHistory() throws Exception {
+    getHistory().clear() ;
+    getHistory().put(KEY_CURRENT, getCurrentNode());
+    getHistory().put(KEY_SELECTED, getSelectedTab());    
+  }
+
+  public void viewDocument(Node docNode ,boolean hasDocList) throws Exception {
+    setShowDocumentDetail(true) ;
+    setShowDocumentList(hasDocList) ;
+    UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
+    uiDocumetDetail.setNode(docNode) ;
+    uiDocumetDetail.setRendered(true) ;
+  }
+
+  protected Map<String, Node>  getHistory() { return nodesHistoryMap_ ; }
+
+  protected List<Node> getNodeByScript(String repository,String scriptName) throws Exception {
+    DataTransfer data = new DataTransfer() ;
+    ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
+    data.setWorkspace(getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "")) ;
+    data.setRepository(repository) ;
+    Node scripts = scriptService.getCBScriptHome(repository) ;
+    CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository) ;
+    try {
+      cmsScript.execute(data);
+    } catch (Exception e) {
+      e.printStackTrace() ;
+    }
+    return data.getContentList() ;
+  }
+
+  protected String getTemlateDetail() { return detailTemplate_ ; }
+  protected String getTemplateName() {
+    return getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
+  }
 
   protected void historyBack() throws Exception {
     if(getTemplateName().equals(TREELIST)) {
@@ -787,6 +776,30 @@ public class UIBrowseContainer extends UIContainer {
     } else {
       setSelectedTab(getNodeByPath(getNodesHistory().removeLast()))  ;
     }
+  }
+
+  protected void historyNext() {}
+
+  protected boolean isCategories(NodeType nodeType) {
+    for(String type : Utils.CATEGORY_NODE_TYPES) {
+      if(nodeType.getName().equals(type)) return true ;
+    }
+    return false ;
+  }  
+  protected void setRootNode(Node node) { this.rootNode_ = node ; }
+  protected void setShowPageAction(boolean isShowPage) { this.isShowPageAction_ = isShowPage ; }
+
+  protected void setTemplateDetail(String template) { this.detailTemplate_ = template ; }
+
+  protected boolean showPageAction() { return isShowPageAction_ ; }
+
+  private boolean canRead(Node node) {
+    ExtendedNode eNode = (ExtendedNode)node ;
+    try{
+      eNode.checkPermission(PermissionType.READ) ;
+      return true ;
+    } catch(Exception ac){}
+    return false ;
   }
 
   private Map getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
@@ -815,13 +828,16 @@ public class UIBrowseContainer extends UIContainer {
     return childMap ;
   }
 
-  public String getRepository() {
-    return getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
-  }
-  private RepositoryService getRepositoryService() { 
-    return getApplicationComponent(RepositoryService.class) ;
-  }
-
+  private List<String> getHistory(List documentTemplates, Node parentNode) throws Exception {
+    List<String> historyList = new ArrayList<String>() ;
+    NodeIterator iter = parentNode.getNodes() ;
+    while(iter.hasNext()) {
+      Node node = iter.nextNode() ;
+      String nt = node.getPrimaryNodeType().getName() ;
+      if(!documentTemplates.contains(nt)) historyList.add(node.getPath()) ;
+    }
+    return historyList ;
+  } 
   private List<Node> getReferences(RepositoryService repositoryService, Node node, boolean isShowAll,
       int size, List templates) throws Exception {
     List<Node> refDocuments = new ArrayList<Node>() ;    
@@ -848,99 +864,57 @@ public class UIBrowseContainer extends UIContainer {
     return refDocuments ;
   }
 
-  public List<Node> getTagLink() throws Exception {
-    String repository = getRepository() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getAllTags(repository) ;
+  private RepositoryService getRepositoryService() { 
+    return getApplicationComponent(RepositoryService.class) ;
   }
 
-  public String getTagPath() {return (String)dataPerWindowIdMap.get(getWindowId() + TAGPATH) ;}
-
-  public void setTagPath(String tagName) {
-    dataPerWindowIdMap.put(getWindowId() + TAGPATH, tagName) ;
-  }
-
-  public List<Node> getDocumentByTag()throws Exception {
-    String repository = getRepository() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getDocumentsOnTag(getTagPath(), repository) ;
-  }
-
-  public Map<String ,String> getTagStyle() throws Exception {
-    String repository = getRepository() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    Map<String , String> tagStyle = new HashMap<String ,String>() ;
-    for(Node tag : folksonomyService.getAllTagStyle(repository)) {
-      tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString()) ;
+  private boolean isReferenceableNode(Node node) throws Exception {
+    NodeType[] nodeTypes = node.getMixinNodeTypes() ;
+    for(NodeType type : nodeTypes) {
+      if(type.getName().equals(Utils.MIX_REFERENCEABLE)) return true ;
     }
-    return tagStyle ;
-  }
+    return false ;
+  }   
 
-  public void changeNode(Node selectNode) throws Exception {
-    setShowAllChildren(false) ;
-    setShowDocumentByTag(false) ;
-    setShowDocumentDetail(false) ;
-    if(selectNode.equals(getRootNode())) {
-      setCurrentNode(null) ;
-      setSelectedTab(null) ;
-    } else {
-      setSelectedTab(selectNode) ;
-      setCurrentNode(selectNode.getParent()) ;
-      setPageIterator(getSubDocumentList(getSelectedTab())) ;
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
-    List<Node> subDocumentList = new ArrayList<Node>() ;
-    if(selectedNode == null) return subDocumentList ;
-    TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
-    List<String> templates = templateService.getDocumentTemplates(getRepository()) ;
-    NodeIterator item = selectedNode.getNodes() ;
-    if(isEnableChildDocument())
-      while (item.hasNext()) {
-        Node node = item.nextNode() ;
-        if(templates.contains(node.getPrimaryNodeType().getName())) {
-          if(canRead(node)) subDocumentList.add(node) ; 
+  static public class BackActionListener extends EventListener<UIBrowseContainer> {
+    public void execute(Event<UIBrowseContainer> event) throws Exception {
+      UIBrowseContainer uiContainer = event.getSource() ;
+      if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+      } else {
+        uiContainer.setShowDocumentByTag(false) ;
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH) && uiContainer.getHistory() != null) {
+          uiContainer.setCurrentNode(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT)) ;
+          uiContainer.setSelectedTab(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED)) ;
+          uiContainer.getHistory().clear() ;
         }
       }
-    if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
-        selectedNode, isShowAllDocument(), subDocumentList.size(), templates)) ;
-    return subDocumentList ;
-  }
-
-  @SuppressWarnings("unchecked")
-  protected Map<String, Node>  getHistory() {
-    if(dataPerWindowIdMap.get(getWindowId() + HISTORY) == null)
-      dataPerWindowIdMap.put(getWindowId() + HISTORY, new HashMap<String, Node>()) ;
-    return (Map<String, Node>) dataPerWindowIdMap.get(getWindowId() + HISTORY) ;
-  }
-  public void storeHistory() throws Exception {
-    getHistory().clear() ;
-    getHistory().put(KEY_CURRENT, getCurrentNode());
-    getHistory().put(KEY_SELECTED, getSelectedTab());
-    dataPerWindowIdMap.put(getWindowId() + HISTORY,getHistory()) ;
-  }
-
-  public String getImage(Node node) throws Exception {
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource dresource ;
-    Node contentNode = null;
-    if(node.hasNode(Utils.EXO_IMAGE)) {
-      contentNode = node.getNode(Utils.EXO_IMAGE) ;
-    } else if(node.hasNode(Utils.JCR_CONTENT)) {
-      if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
-      contentNode = node.getNode(Utils.JCR_CONTENT) ;
-      String mimeType = contentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
-      if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
-    if(contentNode == null) return null;
-    InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    if(input.available() == 0) return null ;
-    dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
-    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-  }   
+  }
+
+  static public class BackViewActionListener extends EventListener<UIBrowseContainer> {
+    public void execute(Event<UIBrowseContainer> event) throws Exception {
+      String normalState = event.getRequestContext().getRequestParameter("normalState") ;
+      if(normalState != null) {
+        ActionResponse response = event.getRequestContext().getResponse() ;
+        response.setWindowState(WindowState.NORMAL);
+      }
+      UIBrowseContainer uiContainer = event.getSource() ;
+      if(uiContainer.isShowDocumentDetail()) {
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+      }
+      uiContainer.refreshContent();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }
 
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
@@ -992,58 +966,6 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
 
-  static public class BackActionListener extends EventListener<UIBrowseContainer> {
-    public void execute(Event<UIBrowseContainer> event) throws Exception {
-      UIBrowseContainer uiContainer = event.getSource() ;
-      if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
-        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
-        uiContainer.setShowDocumentDetail(false) ;
-        uiDocumentDetail.setRendered(false) ;
-      } else {
-        uiContainer.setShowDocumentByTag(false) ;
-        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
-        uiContainer.setShowDocumentDetail(false) ;
-        uiDocumentDetail.setRendered(false) ;
-        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH) && uiContainer.getHistory() != null) {
-          uiContainer.setCurrentNode(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT)) ;
-          uiContainer.setSelectedTab(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED)) ;
-          uiContainer.getHistory().clear() ;
-        }
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-    }
-  }
-
-  static public class BackViewActionListener extends EventListener<UIBrowseContainer> {
-    public void execute(Event<UIBrowseContainer> event) throws Exception {
-      String normalState = event.getRequestContext().getRequestParameter("normalState") ;
-      if(normalState != null) {
-        ActionResponse response = event.getRequestContext().getResponse() ;
-        response.setWindowState(WindowState.NORMAL);
-      }
-      UIBrowseContainer uiContainer = event.getSource() ;
-      if(uiContainer.isShowDocumentDetail()) {
-        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
-        uiContainer.setShowDocumentDetail(false) ;
-        uiDocumentDetail.setRendered(false) ;
-      }
-      uiContainer.refreshContent();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-    }
-  }
-
-  static public class ViewByTagActionListener extends EventListener<UIBrowseContainer> {
-    public void execute(Event<UIBrowseContainer> event) throws Exception {
-      UIBrowseContainer uiContainer = event.getSource() ;
-      String tagPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      uiContainer.setShowDocumentByTag(true) ;
-      uiContainer.setTagPath(tagPath) ;
-      uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
-      uiContainer.storeHistory() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-    }
-  }
-
   static public class SelectActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
@@ -1075,6 +997,18 @@ public class UIBrowseContainer extends UIContainer {
       UIBrowseContainer uiBCContainer = uiPageIterator.getAncestorOfType(UIBrowseContainer.class) ;
       uiBCContainer.setShowPageAction(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
+    }
+  }
+
+  static public class ViewByTagActionListener extends EventListener<UIBrowseContainer> {
+    public void execute(Event<UIBrowseContainer> event) throws Exception {
+      UIBrowseContainer uiContainer = event.getSource() ;
+      String tagPath = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiContainer.setShowDocumentByTag(true) ;
+      uiContainer.setTagPath(tagPath) ;
+      uiContainer.setPageIterator(uiContainer.getDocumentByTag()) ;
+      uiContainer.storeHistory() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
 }

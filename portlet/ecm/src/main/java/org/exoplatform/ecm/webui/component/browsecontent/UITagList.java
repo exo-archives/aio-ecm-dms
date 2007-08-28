@@ -31,8 +31,7 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UITagList extends UIComponent {
 
-  final public static String TAGPATH = "tagPath" ;
-  protected Map<String, Object> dataPerWindowId = new HashMap<String, Object>() ;
+  private String tagPath_ ;   
   public UITagList() {}
 
   public List<Node> getTagLink() throws Exception {
@@ -49,14 +48,10 @@ public class UITagList extends UIComponent {
     }
     return tagStyle ;
   }
-  public String getRepository() { return getAncestorOfType(UIBrowseContainer.class).getRepository();} 
-  public String getTagPath() {
-    return  (String)dataPerWindowId.get(getWindowId() + TAGPATH);
-  }
-  protected String getWindowId() {return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId();} 
-  public void setTagPath(String tagName) {
-    dataPerWindowId.put(getWindowId() + TAGPATH, tagName) ;
-  }
+  public String getRepository() { return getAncestorOfType(UIBrowseContainer.class).getRepository();}
+  
+  public String getTagPath() { return this.tagPath_ ; }  
+  public void setTagPath(String tagName) { this.tagPath_ = tagName ; }
 
   static public class ViewByTagActionListener extends EventListener<UITagList> {
     public void execute(Event<UITagList> event) throws Exception {

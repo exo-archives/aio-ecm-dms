@@ -5,9 +5,7 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
@@ -38,26 +36,18 @@ public class UIConfigTabPane extends UIContainer {
 
   final public static String PATH_SELECTOR = "pathSelector" ;
   final public static String DOCUMENT_SELECTOR = "documentSelector" ;
-  final public static String CONFIGTYPE = "configType" ;
-  final public static String ISNEWCONFIG = "isNewConfig" ;
-  private Map<String, Object> dataPerWindowId = new HashMap<String, Object>() ;
+  final public static String CONFIGTYPE = "configType" ;  
+  
+  private boolean isNewConfig_ = false; 
+  
   public UIConfigTabPane() throws Exception {
     addChild(UINewConfigForm.class, null, null).setRendered(false) ;
     addChild(UIConfigContainer.class, null, null) ;
   }
-  protected boolean isNewConfig() {
-    if(dataPerWindowId.get(getWindowId() + ISNEWCONFIG) == null) {
-      setNewConfig(false) ;
-    }
-    return Boolean.parseBoolean(dataPerWindowId.get(getWindowId()  + ISNEWCONFIG).toString()) ;
-  }
-  protected void setNewConfig(boolean isNew) {
-     dataPerWindowId.put(getWindowId()  + ISNEWCONFIG, isNew) ;
-  }
   
-  protected String getWindowId() {
-    return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId() ;
-  }
+  protected boolean isNewConfig() { return isNewConfig_ ; }
+  protected void setNewConfig(boolean isNew) { this.isNewConfig_ = isNew ; }
+  
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;

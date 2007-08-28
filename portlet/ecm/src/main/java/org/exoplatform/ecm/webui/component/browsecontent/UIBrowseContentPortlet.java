@@ -6,12 +6,10 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
-import javax.security.auth.Refreshable;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.portletcontainer.ExoPortletRequest;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -40,10 +38,10 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     popup.setId("UICBPopupAction") ;
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
     UIBrowseContainer uiBrowseContainer = addChild(UIBrowseContainer.class, null , null) ;
-    addChild(UIConfigTabPane.class, null, null) ;
+    addChild(UIConfigTabPane.class, null, null) ;    
     try {
       uiBrowseContainer.loadPortletConfig(getPortletPreferences()) ;
-    } catch (Exception e) {
+    } catch (Throwable e) {      
       setPorletMode(PortletRequestContext.HELP_MODE) ;
     }
   }
@@ -55,20 +53,17 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     UIBrowseContentHelp uiBCHelp = getChild(UIBrowseContentHelp.class) ;
-    if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN VIEW  MODE \n");  
+    if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {       
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(false) ;
       uiContainer.setRendered(true) ;
       uiContainer.refreshContent() ;
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN EDIT  MODE \n");  
-      if(! uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
+    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {      
+      if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
       uiTabPane.setRendered(true) ;
       uiBCHelp.setRendered(false) ;
       uiContainer.setRendered(false) ;
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
+    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {      
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(true) ;
       uiContainer.setRendered(false) ;
@@ -84,10 +79,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     WebuiApplication app =  (WebuiApplication)context.getApplication() ;
     processRender(app, context) ;
   }
-  protected String getWindowId() {
-    PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    return ((ExoPortletRequest)context.getRequest()).getWindowID().getUniqueID() ;
-  }
+  
   protected void setPorletMode(int mode) {
     PortletRequestContext portletReqContext =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     portletReqContext.setApplicationMode(mode) ;

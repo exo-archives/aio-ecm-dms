@@ -5,9 +5,7 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -34,19 +32,16 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UICategoryTree.SelectActionListener.class)
     }
 )
-public class UICategoryTree extends UIComponent {
-  final public static String TREEROOT = "treeRoot" ;
-  Map<String, Object> dataPerWindowId = new HashMap<String, Object>() ;
-
-  public UICategoryTree() { }
-  protected String getWindowId() {return getAncestorOfType(UIBrowseContentPortlet.class).getWindowId();}
-
-  public BCTreeNode getTreeRoot() { 
-    return (BCTreeNode)dataPerWindowId.get(getWindowId() + TREEROOT);
-  }
+public class UICategoryTree extends UIComponent {  
+  
+  private BCTreeNode treeRoot_ ; 
+  public UICategoryTree() { }  
+  
+  public BCTreeNode getTreeRoot() { return this.treeRoot_ ;}
   public void setTreeRoot(Node node) throws Exception { 
-    dataPerWindowId.put(getWindowId()+ TREEROOT, new BCTreeNode(node)) ;
+    treeRoot_ = new BCTreeNode(node) ;    
   }
+  
   public Node getRootNode() throws Exception {return getAncestorOfType(UIBrowseContainer.class).getRootNode() ;}
 
   public String getIcons(Node node, String type) throws Exception {
