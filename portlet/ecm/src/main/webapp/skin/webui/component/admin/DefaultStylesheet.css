@@ -127,6 +127,14 @@
 	padding: 10px;
 }
 
+.UIECMAdminPortlet .UIGroupMembershipSelector .GroupSelector {
+	width: 250px;
+}
+
+.UIECMAdminPortlet .UIGroupMembershipSelector .MembershipSelector {
+	margin-left: 255px;
+}
+
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIForm .HorizontalLayout .UIFormInputSet {
 	padding-bottom: 0px;
 }
@@ -590,7 +598,6 @@
 .ECMTempForm .HorizontalLayout .textarea {
   width: 95%;
   height: 350px;
-  padding: 3px;
 }
 
 /*############################## -- CBTemplate -- ########################*/
@@ -622,7 +629,6 @@
 .CBTempForm .HorizontalLayout .textarea {
   width: 380px;
   height: 350px;
-  padding: 3px;
 }
 
 /*############################## -- UIActionManager -- ########################*/
@@ -698,7 +704,6 @@
 .UIECMScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
   height: 350px;
   width: 90%;
-  padding: 3px;
   float: left;
 }
 
@@ -734,7 +739,6 @@
 .UICBScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
   width: 90%;
   height: 350px;
-  padding: 3px;
   float: left;
 }
 
@@ -775,7 +779,6 @@
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 350px ;
 	width: 95%;
-	padding: 3px;
 }
 
 /*############################## -- UIFolksonomyManager  -- ########################*/
@@ -802,7 +805,6 @@
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
 	height: 350px ;
 	width: 95%;
-	padding: 3px;
 }
 
 /*############################## -- MultiField  -- ########################*/
@@ -927,7 +929,6 @@
 .UITemplatesManager .UIFormTabPane .UIFormInputSet .UIFormGrid .textarea { 
 	width: 90%;
 	height: 350px;
-	padding: 3px;
 }
 
 /*----------------------------UIDialogTab-------------------------------*/
@@ -944,7 +945,6 @@
 .UIECMAdminPortlet .UITabPane .UIDialogTab .UIFormGrid  td.FieldComponent .textarea {
   width: 90%;
   height: 350px;
-  padding: 3px;
 }
 
 /*----------------------------UIViewTab-------------------------------*/
@@ -961,7 +961,6 @@
 .UIECMAdminPortlet .UITabPane .UIViewTab .UIFormGrid  td.FieldComponent .textarea {
   width: 90%;
   height: 350px;
-  padding: 3px;
 }
 
 /*############################## -- End UITemplatesManager -- ########################*/

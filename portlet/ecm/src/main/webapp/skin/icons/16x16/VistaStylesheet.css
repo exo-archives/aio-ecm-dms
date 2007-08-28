@@ -83,6 +83,7 @@
   background: url('VistaSkin/SmallGroup.png') no-repeat;  
   cursor: pointer;
 }
+
 .AddAnyIcon {
 	width: 20px; height: 16px;
   background: url('VistaSkin/SmallGroup.png') no-repeat;  
@@ -286,7 +287,6 @@
 }
 
 .DeleteIconInfo {
-  float: left;
   width: 24px; height: 24px;
   background: url('VistaSkin/Delete.png') no-repeat ; 
   cursor: pointer;
