@@ -19,6 +19,7 @@
     background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
     border: 1px solid #cbcbcb;
     overflow: auto;
+    width: 98%;
   }
   
   .FileContent .ECMIframe {
@@ -33,7 +34,7 @@
     border: 1px solid #cbcbcb; 
     border-top: none;
    	white-space: normal;
-   	width: 99.8%;
+   	width: 99.5%;
    	overflow: auto;
    	height: 300px;
   }
