@@ -24,7 +24,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIComponentDecorator;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -36,22 +37,23 @@ import org.exoplatform.webui.event.EventListener;
  * 11:39:49 AM 
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
+    template = "app:/groovy/webui/component/admin/drives/UIDriveList.gtmpl",
     events = {
         @EventConfig(listeners = UIDriveList.DeleteActionListener.class, confirm = "UIDriveList.msg.confirm-delete"),
         @EventConfig(listeners = UIDriveList.EditInfoActionListener.class),
         @EventConfig(listeners = UIDriveList.AddDriveActionListener.class)
     }
 )
-public class UIDriveList extends UIGrid {
+public class UIDriveList extends UIComponentDecorator {
 
   final static public String[] ACTIONS = {"AddDrive"} ;
   final  static public String ST_ADD = "AddDriveManagerPopup" ;
   final  static public String ST_EDIT = "EditDriveManagerPopup" ;
-  private static String[] DRIVE_BEAN_FIELD = {"icon", "name", "workspace", "homePath", "permissions", "views"} ;
-  private static String[] DRIVE_ACTION = {"EditInfo", "Delete"} ;
+  private UIPageIterator uiPageIterator_ ;
+  
   public UIDriveList() throws Exception {
-    configure("name", DRIVE_BEAN_FIELD, DRIVE_ACTION) ;
+    uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "UIDriveListIterator");
+    setUIComponent(uiPageIterator_) ;
   }
 
   public String[] getActions() { return ACTIONS ; }
@@ -60,8 +62,12 @@ public class UIDriveList extends UIGrid {
   public void updateDriveListGrid() throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     ObjectPageList objPageList = new ObjectPageList(getDrives(repository), 10) ;
-    getUIPageIterator().setPageList(objPageList) ;    
+    uiPageIterator_.setPageList(objPageList) ;    
   }
+  
+  public UIPageIterator  getUIPageIterator() {  return uiPageIterator_ ; }
+  
+  public List getDriveList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
 
   @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(String repoName) throws Exception {

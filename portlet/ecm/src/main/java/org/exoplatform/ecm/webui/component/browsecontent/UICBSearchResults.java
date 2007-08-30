@@ -72,10 +72,10 @@ public class UICBSearchResults extends UIGrid {
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
       Node node = container.getNodeByPath(itemPath) ;
-      UIApplication app = uiResults.getAncestorOfType(UIApplication.class) ;
+      UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class) ;
       if(node == null) {
-        app.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       }
       NodeType nodeType = node.getPrimaryNodeType() ;
@@ -101,6 +101,7 @@ public class UICBSearchResults extends UIGrid {
       }
     }
   }
+  
   static public class GotoActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
       UICBSearchResults uiResults = event.getSource() ;
@@ -113,7 +114,9 @@ public class UICBSearchResults extends UIGrid {
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
       }
-      Node parentNode = node.getParent() ;
+      Node parentNode = null ;
+      if(node.getPath().equals(container.getRootNode().getPath())) parentNode = node ;
+      else parentNode = node.getParent() ;
       NodeType nodeType = parentNode.getPrimaryNodeType() ;
       UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
       if(container.isCategories(nodeType)) {

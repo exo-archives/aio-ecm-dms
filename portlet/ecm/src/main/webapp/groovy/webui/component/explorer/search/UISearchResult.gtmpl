@@ -46,13 +46,14 @@
 	          <%
 	            String nodePath = node.getPath() ;
 	            
-	            if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
+	            if(nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
+	            else if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
 	            
 	            //String nodeType = node.getPrimaryNodeType().getName().toLowerCase();
 	            //def onClickCall = "";
 	            //if (nodeType.contains("fileplan")) onClickCall = "eXo.ecm.UIJCRExplorer.loadViewNodeScroll();";
 	          %>
-	          <td><div class="Text"><%=nodePath%></div></td>
+	          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
 	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("View", node.getPath())%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
 	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>

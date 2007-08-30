@@ -169,7 +169,10 @@ public class UIBrowseContainer extends UIContainer {
   public List getCurrentList() throws Exception {
     return getChild(UIPageIterator.class).getCurrentPageData() ;
   }
-  public Node getCurrentNode() throws Exception { return currentNode_ ; }
+  public Node getCurrentNode() throws Exception { 
+    if(currentNode_ == null) return rootNode_ ;
+    return currentNode_ ; 
+  }
   public List<Node> getDocumentByTag()throws Exception {
     String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
@@ -205,6 +208,8 @@ public class UIBrowseContainer extends UIContainer {
   public Node getNodeByPath(String nodePath) throws Exception{
     try{
       return (Node)getSession().getItem(nodePath) ;
+    } catch(NullPointerException en) {
+      return rootNode_ ;
     } catch(Exception e){
       e.printStackTrace() ;
       return null  ;
@@ -405,7 +410,10 @@ public class UIBrowseContainer extends UIContainer {
   }
   public Node getRootNode() throws Exception { return rootNode_ ; }
   public int getRowPerBlock() { return rowPerBlock_ ; }
-  public Node getSelectedTab() throws Exception { return this.selectedTab_ ;  }
+  public Node getSelectedTab() throws Exception { 
+    if(this.selectedTab_ == null) return rootNode_ ;
+    return this.selectedTab_ ;  
+  }
 
   public Session getSession() throws Exception{
     Session session = null ;
