@@ -187,12 +187,21 @@ public class UISimpleSearch extends UIForm {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
       uiSearchResult.resultMap_.clear() ;
       if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
-        UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      }
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      if(text != null)
+      for(String filterChar : arrFilterChar) {
+        if(text.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
       }
       String statement = uiSimpleSearch.getQueryStatement() ;
       Query query = queryManager.createQuery(statement, Query.XPATH);      

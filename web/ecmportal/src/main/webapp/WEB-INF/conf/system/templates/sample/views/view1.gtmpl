@@ -113,8 +113,10 @@
 							  def imageNode = node.getNode("exo:image") ;
 							  def inputStream = imageNode.getProperty("jcr:data").getStream() ;
 							  if(inputStream.available() > 0) {
+							    def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
 							%>
-			      			<image src="<%=uicomponent.getImage(node)%>" width="250" height="150"/> 
+			      			
+			      			<image src="<%=imageLink%>" width="250" height="150"/> 
 			      	<%}%>
 						</div>
 					</div>

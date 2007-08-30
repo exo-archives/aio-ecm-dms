@@ -126,6 +126,4 @@ public class UIRepositoryControl extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
-
-
 }
