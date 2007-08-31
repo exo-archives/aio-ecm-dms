@@ -137,7 +137,7 @@ public class UITaxonomyManager extends UIContainer {
       UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class) ;
       String type = uiManager.clipboard_.getType();
       String srcPath = uiManager.clipboard_.getSrcPath();
-      if(realPath.equals(srcPath)) {
+      if(type.equals(ClipboardCommand.CUT) && realPath.equals(srcPath)) {
         Object[] arg = { realPath } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.node-is-cutting", arg, 
                                                 ApplicationMessage.WARNING)) ;

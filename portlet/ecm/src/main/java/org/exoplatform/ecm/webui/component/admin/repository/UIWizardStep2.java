@@ -33,7 +33,7 @@ public class UIWizardStep2 extends UIFormInputSetWithAction {
   final static public String FIELD_SWAPPATH = "swapPath" ;
   final static public String FIELD_STOREPATH = "storePath" ;  
   final static public String FIELD_FILTER = "filterType" ;  
-
+  final static public String FIELD_EXTERNAL_STORE = "externalStore" ;
 
   public UIWizardStep2(String name) throws Exception {
     super(name);
@@ -42,12 +42,15 @@ public class UIWizardStep2 extends UIFormInputSetWithAction {
     addChild(new UIFormStringInput(FIELD_SOURCENAME, FIELD_SOURCENAME, null)) ;
     addChild(new UIFormSelectBox(FIELD_DBTYPE, FIELD_DBTYPE, getDbType())) ;
     addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISMULTI, FIELD_ISMULTI, null)) ;
-    addChild(new UIFormStringInput(FIELD_STORETYPE, FIELD_STORETYPE, null)) ;
-    setActionInfo(FIELD_STORETYPE, new String[]{"SelectStore"}) ;
-    addChild(new UIFormSelectBox(FIELD_FILTER, FIELD_FILTER, getFilterType())) ;
     addChild(new UIFormStringInput(FIELD_MAXBUFFER, FIELD_MAXBUFFER, null).addValidator(NumberFormatValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_SWAPPATH, FIELD_SWAPPATH, null)) ;
-    addChild(new UIFormStringInput(FIELD_STOREPATH, FIELD_STOREPATH, null)) ;
+    UIFormCheckBoxInput<Boolean> externalStore = new UIFormCheckBoxInput<Boolean>(FIELD_EXTERNAL_STORE,FIELD_EXTERNAL_STORE, null) ;
+    externalStore.setOnChange("ChangeTypeStore") ;
+    addChild(externalStore) ;
+    addChild(new UIFormStringInput(FIELD_STORETYPE, FIELD_STORETYPE, null).setRendered(false)) ;
+    setActionInfo(FIELD_STORETYPE, new String[]{"SelectStore"}) ;
+    addChild(new UIFormSelectBox(FIELD_FILTER, FIELD_FILTER, getFilterType()).setRendered(false)) ;
+    addChild(new UIFormStringInput(FIELD_STOREPATH, FIELD_STOREPATH, null).setRendered(false)) ;
   }
   public List<SelectItemOption<String>> getFilterType() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;

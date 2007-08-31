@@ -15,6 +15,7 @@ import javax.jcr.ValueFactory;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -232,7 +233,17 @@ public class UIPropertyForm extends UIForm {
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
         } 
-        Value[] values = uiForm.createValues(valueList, type, valueFactory) ;
+        Value[] values = {} ;
+        try {
+          values = uiForm.createValues(valueList, type, valueFactory) ;
+        } catch(NullPointerException ne) {
+          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyValu-null", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } catch(Exception e) {
+          JCRExceptionManager.process(uiApp, e) ;
+        }
         if(nodetype.canSetProperty(name, values)) {
           uiExplorer.getCurrentNode().setProperty(name, values) ;
           uiExplorer.getCurrentNode().save() ;

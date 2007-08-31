@@ -207,6 +207,12 @@
 	    font-weight: normal;
 	  }
 	  
+	  .UIArticle  .Language a:hover.DefaultLanguageTitle {
+	    text-align: left;
+	    color: #ffa21d;
+	    font-weight: bold;
+	  }	  
+	  
 		.UIVoteForm .RatingInfo {
 			color: #0489d5;
 		}
@@ -249,9 +255,13 @@
 								<%=_ctx.appRes("Article.view.label.languages")%>&nbsp;
 					<%
 								def actionChangeLang ;
+								def i = 0;
 								for(local in locals) {
+								  def title = "LanguageTitle" ;
+								  i = i + 1 ;
 								  actionChangeLang = uicomponent.event("ChangeLanguage", local) ;
-									println "<a href=\"$actionChangeLang\" class=\"LanguageTitle\">$local &nbsp;&nbsp;</a>" ;
+									if(i == 1) title = "DefaultLanguageTitle" ;
+									println "<a href=\"$actionChangeLang\" class=\"$title\">$local &nbsp;&nbsp;</a>" ;
 								}
 								println "</div>" ;
 							}	

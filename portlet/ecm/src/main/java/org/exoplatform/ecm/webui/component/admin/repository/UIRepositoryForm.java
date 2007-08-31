@@ -285,14 +285,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       e.printStackTrace() ;
     }
   }
+  
   protected void ShowHidden() {
     getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered()) ;
     getUIStringInput(FIELD_REPMODE).setRendered(!getUIStringInput(FIELD_REPMODE).isRendered()) ;
     getUIFormCheckBoxInput(FIELD_REPTESTMODE).setRendered(!getUIFormCheckBoxInput(FIELD_REPTESTMODE).isRendered()) ;
     getUIStringInput(FIELD_BSEPATH).setRendered(!getUIStringInput(FIELD_BSEPATH).isRendered()) ;
     getUIStringInput(FIELD_BSEMAXBUFFER).setRendered(!getUIStringInput(FIELD_BSEMAXBUFFER).isRendered()) ;
-
   }
+  
   public void activate() throws Exception {}
 
   public void deActivate() throws Exception { repoName_ = null ;}

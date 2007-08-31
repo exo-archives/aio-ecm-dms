@@ -63,7 +63,8 @@ import org.exoplatform.webui.form.UIFormTabPane;
       @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
       @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIWorkspaceWizard.EditPermissionActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.RemovePermissionActionListener.class)
+      @EventConfig(listeners = UIWorkspaceWizard.RemovePermissionActionListener.class),
+      @EventConfig(listeners = UIWorkspaceWizard.ChangeTypeStoreActionListener.class)
     }
 
 )
@@ -94,6 +95,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   final static public String KEY_UPDATESTORE = "update-storage";
   final static public String KEY_CONTAINERTYPE = "org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer" ;
   final static public String KEY_STORETYPE = "org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage" ;
+  final static public String KEY_TREE_STORETYPE = "org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage" ;
   final static public String KEY_QUERYHANDLER = "org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex" ;
 
   public UIWorkspaceWizard() throws Exception {
@@ -181,7 +183,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         maxBuffer = container.getParameterValue(KEY_MAXBUFFER) ;
       }
       ArrayList<ValueStorageEntry> valueStore = container.getValueStorages() ;
-      if(valueStore != null) {
+      if(valueStore != null && valueStore.size() > 0) {
         storeType = valueStore.get(0).getType() ;    
         storePath = valueStore.get(0).getParameterValue(KEY_PATH) ;
         filterType = valueStore.get(0).getFilters().get(0).getPropertyType() ;
@@ -230,8 +232,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         lockForm(true) ;
       }
     } 
-    if( isNewWizard_)  isCheckValid_ = true ;
-    else {
+    if( isNewWizard_) {
+      isCheckValid_ = true ;
+    } else {
       if( isNewRepo_) {
         isCheckValid_ = true ;
         if(workSpace != null) selectedWsName_ = workSpace.getName() ;
@@ -284,6 +287,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     UIFormStringInput permissionField = uiFormAction.getUIStringInput(UIWizardStep1.FIELD_PERMISSION) ;
     permissionField.setValue(value) ;
   }
+  
+  protected void showHidden(boolean isChecked) {
+    getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setRendered(isChecked) ;
+    getUIStringInput(UIWizardStep2.FIELD_FILTER).setRendered(isChecked) ;
+    getUIStringInput(UIWizardStep2.FIELD_STORETYPE).setRendered(isChecked) ;
+    if(isChecked) {
+      
+    }
+  }
+  
   public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
@@ -301,7 +314,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
-      String storePath = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).getValue() ;
+      boolean isExternalStoreage = uiWSFormStep2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
+      String storePath = null;
+      if(isExternalStoreage) storePath = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).getValue() ;
       UIApplication uiApp = uiFormWizard.getAncestorOfType(UIApplication.class) ;
       if(uiFormWizard.isCheckValid_) {
@@ -355,20 +370,22 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           if(!Utils.isNameEmpty(swapPath)) {
             if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
           }
-          if(!Utils.isNameEmpty(storePath)) {
+          if(isExternalStoreage && !Utils.isNameEmpty(storePath)) {
             if(!storePath.contains(wsName))  storePath = storePath + wsName ;
+            uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePath) ;
           }
           uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(swapPath) ;
-          uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePath) ;
         }
       }
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
-        String storePathAuto = storePath ;
         swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
-        storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(swapPathAuto) ;
-        uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePathAuto) ;
+        if(isExternalStoreage) {
+          String storePathAuto = storePath ;
+          storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+          uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePathAuto) ;
+        }
       }
       uiFormWizard.viewStep(2) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
@@ -441,6 +458,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           }
         }
         if(uiWSFormStep2.isRendered()) {
+          boolean isExternalStoreage = uiWSFormStep2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
           if(uiFormWizard.isEmpty(containerType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -451,11 +469,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }  
-          if(uiFormWizard.isEmpty(storeType)) {
+          if(isExternalStoreage && uiFormWizard.isEmpty(storeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storeType-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
-          } 
+          }
           if(uiFormWizard.isEmpty(maxBuffer)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
@@ -478,7 +496,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           } 
-          if(uiFormWizard.isEmpty(storePath)) {
+          if(isExternalStoreage && uiFormWizard.isEmpty(storePath)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
@@ -486,17 +504,21 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         }
       }
       if(uiFormWizard.isNewWizard_){
+        boolean isExternalStoreage = uiWSFormStep2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
         String swapPathAuto = swapPath ;
-        String storePathAuto = storePath ;
         swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
-        storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+        if(isExternalStoreage) {
+          String storePathAuto = storePath ;
+          storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+          uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePathAuto) ;
+        }
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(swapPathAuto) ;
-        uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePathAuto) ;
       }
       uiFormWizard.viewStep(3) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
     }
   }
+  
   public static class FinishActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
@@ -657,22 +679,26 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       containerParams.add(new SimpleParameterEntry(KEY_SWAPDIRECTORY, swapPath)) ;
       ContainerEntry containerEntry = new ContainerEntry(containerType, (ArrayList) containerParams) ;      
       containerEntry.setParameters(containerParams);
-
-      ArrayList<ValueStorageFilterEntry> vsparams = new ArrayList<ValueStorageFilterEntry>();
-      ValueStorageFilterEntry filterEntry = new ValueStorageFilterEntry();
-      filterEntry.setPropertyType(filterType);
-      vsparams.add(filterEntry);
-
-      ValueStorageEntry valueStorageEntry = new ValueStorageEntry(storeType,
-          vsparams);
-      ArrayList<SimpleParameterEntry> spe = new ArrayList<SimpleParameterEntry>();
-      spe.add(new SimpleParameterEntry(KEY_PATH, storePath));
-
-      valueStorageEntry.setParameters(spe);
-      valueStorageEntry.setFilters(vsparams);
-      ArrayList list = new ArrayList(1);
-      list.add(valueStorageEntry);
-      containerEntry.setValueStorages(list);
+      
+      if(storeType != null) {
+        ArrayList<ValueStorageFilterEntry> vsparams = new ArrayList<ValueStorageFilterEntry>();
+        ValueStorageFilterEntry filterEntry = new ValueStorageFilterEntry();
+        filterEntry.setPropertyType(filterType);
+        vsparams.add(filterEntry);
+        
+        ValueStorageEntry valueStorageEntry = new ValueStorageEntry(storeType,
+            vsparams);
+        ArrayList<SimpleParameterEntry> spe = new ArrayList<SimpleParameterEntry>();
+        spe.add(new SimpleParameterEntry(KEY_PATH, storePath));
+        
+        valueStorageEntry.setParameters(spe);
+        valueStorageEntry.setFilters(vsparams);
+        ArrayList list = new ArrayList(1);
+        list.add(valueStorageEntry);
+        containerEntry.setValueStorages(list);
+      } else {
+        containerEntry.setValueStorages(new ArrayList());
+      }
       return containerEntry ;
     }
 
@@ -712,9 +738,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
       UIWizardStep2 uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
       String containerName = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_CONTAINER).getValue() ;
-      String storeType = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STORETYPE).getValue() ;
+      boolean isExternalStoreage = uiWSFormStep2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
+      String storeType = null ; 
+      String storePath = null ;
+      if(isExternalStoreage) {
+        storeType = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STORETYPE).getValue() ;
+        storePath = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).getValue() ;
+      }
       String sourceName = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SOURCENAME).getValue() ;
-      String storePath = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).getValue() ;
       String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_MAXBUFFER).getValue() ;
       UIWizardStep3 uiWSFormStep3 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP3) ;
@@ -781,7 +812,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }  
-          if(uiFormWizard.isEmpty(storeType)) {
+          if(isExternalStoreage && uiFormWizard.isEmpty(storeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storeType-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
@@ -820,7 +851,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           } 
-          if(uiFormWizard.isEmpty(storePath)) {
+          if(isExternalStoreage && uiFormWizard.isEmpty(storePath)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.storePath-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
@@ -836,11 +867,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       }
       if(uiFormWizard.isNewWizard_){
         String swapPathAuto = swapPath ;
-        String storePathAuto = storePath ;
         swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
-        storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(swapPathAuto) ;
-        uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePathAuto) ;
+        if(isExternalStoreage) {
+          String storePathAuto = storePath ;
+          storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
+          uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(storePathAuto) ;
+        }
       }
 
       int step = uiFormWizard.getCurrentStep() ;
@@ -955,6 +988,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     } 
   }
+  
   public static class SelectStoreActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiWizard = event.getSource() ;
@@ -964,6 +998,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       uiSelect.isSetStoreType_ = true ;
       List<ClassData> datas = new ArrayList<ClassData>() ;
       datas.add(new ClassData(UIWorkspaceWizard.KEY_STORETYPE)) ;
+      datas.add(new ClassData(UIWorkspaceWizard.KEY_TREE_STORETYPE)) ;
       uiSelect.updateGrid(datas) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     } 
@@ -981,5 +1016,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     } 
   }
-
+  
+  public static class ChangeTypeStoreActionListener extends EventListener<UIWorkspaceWizard> {
+    public void execute(Event<UIWorkspaceWizard> event) throws Exception {
+      UIWorkspaceWizard uiWizard = event.getSource() ;
+      UIWizardStep2 ws2 = uiWizard.getChildById(FIELD_STEP2) ;
+      boolean isChecked = ws2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
+      uiWizard.showHidden(isChecked) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWizard) ;
+    } 
+  }
 }
