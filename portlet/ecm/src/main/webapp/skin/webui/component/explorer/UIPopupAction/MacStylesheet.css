@@ -90,14 +90,6 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 360px;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
-	width: 180px;
-}
-
 .UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
 	border: none;
 	padding: 10px 0px;
@@ -139,10 +131,6 @@
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UIGrid {
   background: #efefef;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .UIAction{
-  width: 70px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
@@ -280,10 +268,6 @@
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 80px ;
-}
-
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer {
 	margin: auto;
 	width: 120px; height: 20px;
@@ -396,11 +380,6 @@
   margin: 0px 10px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
-	width: 300px;
-	margin-top: 10px;
-}
-	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
 		padding: 0px;
 }
@@ -416,14 +395,6 @@
 .UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
 	width: 99%;
 	margin: auto;
-}
-
-.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .UIAction {
-	width: 280px ;
-}
-
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .UIFormWithTitle .UIAction {
-	width: 250px ;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
@@ -456,14 +427,6 @@
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
-  width: 150px ;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
-  width: 100px ;
-}
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
   margin: 10px 0px;

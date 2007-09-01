@@ -32,15 +32,6 @@
   background: #8eeaaf ;
 }
 
-.UIPopupMessages .UIAction {
-  width: 100px;
-}
-
-.UIFastContentCreatorPortlet .UIAction {
-	width: 165px;
-	padding-left: 20px;
-}
-
 .UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
   border: none;
 }
@@ -104,10 +95,6 @@
 
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
-  padding: 12px 0px 0px 65px;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent .UIFormWithTitle {

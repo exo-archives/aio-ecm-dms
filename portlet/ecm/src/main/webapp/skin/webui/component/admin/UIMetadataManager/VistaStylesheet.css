@@ -59,10 +59,6 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
-  width: 135px ;
-}
-
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {
   width: 220px;
   padding-top: 10px ;

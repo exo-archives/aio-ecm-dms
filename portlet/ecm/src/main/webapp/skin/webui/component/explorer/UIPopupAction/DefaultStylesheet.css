@@ -105,14 +105,6 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 360px;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
-	width: 160px;
-}
-
 .UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
 	border: none;
 	padding: 10px 0px;
@@ -222,11 +214,6 @@
   margin: 0px 10px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
-	width: 300px;
-	margin-top: 10px;
-}
-	
 .UIJCRExplorerPortlet .UIDiff .FileContent .UIVoteForm {
 		padding: 0px;
 }
@@ -255,10 +242,6 @@
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UITabContentContainer {
   width: 97%;
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
-  width: 105px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
@@ -345,11 +328,6 @@
   width: 160px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle .UIAction {
-  width: 160px;
-  padding-left: 30px;
-}
-
 /*############################## -- End UIActionManager   -- ##############################*/
 
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
@@ -379,11 +357,6 @@
 
 .UIJCRExplorerPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 60px ;
-  padding: 12px 0px 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer {

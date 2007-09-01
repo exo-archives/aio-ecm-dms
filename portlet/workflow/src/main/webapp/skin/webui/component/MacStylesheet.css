@@ -217,18 +217,10 @@
 	color: orange;
 }
 
-.WorkflowPortletContent .UIAdminstrationManager .UIAction {
-  width: 140px;
-}
-
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 	padding-bottom: 15px;
 	background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
-.WorkflowPortletContent .UIUploadProcess .UIAction {
-	width: 170px;
 }
 
 .WorkflowPortletContent .UIFormGrid td.FieldLabel {
@@ -259,11 +251,6 @@
 	padding: 0px;
 }
 
-.WorkflowPortletContent .UITask .UIAction {
-	width: 470px;	
-	padding: 15px 0px;
-}
-
 .WorkflowPortletContent .UITabPane .UIFormWithTitle {
 	width: auto;
 	margin: 0px auto;
@@ -290,10 +277,6 @@
   margin: auto;
 }
 
-.UIWorkflowPortlet .UITask .UIForm .UIAction {
-  width: 380px;
-}
-
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
 	border-top: none;
 }
@@ -305,10 +288,6 @@
 
 .UIWorkflowPortlet .UIAdministrationManager .UIGrid {
   background: #efefef;
-}
-
-.UIWorkflowPortlet .UIAdministrationManager .UIAction {
-  width: 130px;
 }
 
 .UIWorkflowPortlet .UIWorkflowPopup .UITabPane {

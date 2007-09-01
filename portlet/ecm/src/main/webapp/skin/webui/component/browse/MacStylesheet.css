@@ -24,17 +24,6 @@
   overflow: auto;
 }
 
-.UIBrowseContentPortlet .UINewConfigForm .UIAction {
-	padding-top: 10px;
-	width: 200px;
-	margin: auto;
-	
-}
-.UIBrowseContentPortlet .UIConfigContainer .UIAction {
-	padding: 10px 0px 10px 80px;
-	width: 300px;
-}
-
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 600px;
@@ -374,19 +363,6 @@ UIBrowseContentPortlet .Explorer {
 	font-size: 11px;	
 }
 
-.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 50px;
-}
-
-.UIBrowseContentPortlet .UISearchController .UIAction{
-	width: 70px; margin: auto;
-	padding-bottom:8px;
-}
-
-.UIBrowseContentPortlet .UISearchController .ActionButton{
-	width: 70px; margin: auto;
-}
-
 .UIBrowseContentPortlet .UISearchController .GotoIcon{
 	width: 16px ;  height: 16px ;
   background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
@@ -414,10 +390,6 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
-}
-
-.UIBrowseContentPortlet .UIVoteForm .UIAction {
-  width: 80px ;
 }
 
 .UIBrowseContentPortlet .UIVoteForm .OptionsContainer {
@@ -455,14 +427,6 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
   padding-top: 10px;
   background: #efefef;
-}
-
-.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
-  width: 170px;
-}
-
-.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
-  width: 160px;
 }
 
 .UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid {

@@ -13,11 +13,6 @@
 	padding: 15px;
 }
 
-.UIWorkflowPortlet .UIForm .UIAction {
-	width: 210px;
-	padding-left: 30px;
-}
-
 .UIWorkflowPortlet .UIGrid .ActionContainer a {
 	width: 24px; height: 24px;
 	margin: 3px 0px 0px 0px;
@@ -220,10 +215,6 @@
 	float: none;
 }
 
-.WorkflowPortletContent .UITask .UIAction {
-	width: 500px;	
-	padding: 15px 0px;
-}
 /*##############################- Begin UIProcessDetail -################################*/
 
 .UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {
@@ -277,20 +268,11 @@
 	width: 128px;
 }
 
-.WorkflowPortletContent .UIAdminstrationManager .UIAction {
-	width: 150px;
-}
-
 .EmptyGrid {
   width: 150px ;
   padding-top: 10px;
   font-style: italic;
   margin: auto;
-}
-
-.UIWorkflowPortlet .UITask .UIForm .UIAction {
-  width: 400px;
-  padding-left: 80px;
 }
 
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
@@ -300,8 +282,4 @@
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
-}
-
-.UIWorkflowPortlet .UIAdministrationManager .UIAction {
-  width: 140px;
 }

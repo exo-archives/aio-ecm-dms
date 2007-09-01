@@ -92,11 +92,6 @@
 	margin: 0px;
 }
 
-.UIFastContentCreatorPortlet .UIAction {
-	width: 165px;
-	padding-left: 20px;
-}
-
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
   width: 600px;
   margin: auto;
@@ -132,10 +127,6 @@
 
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .UIAction {
-  padding: 12px 0px 12px 0px;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent {

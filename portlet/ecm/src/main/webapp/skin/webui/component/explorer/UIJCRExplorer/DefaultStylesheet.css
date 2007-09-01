@@ -335,19 +335,10 @@
 	background: #efefef;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .UIAction{
-	width: 160px;
-}
-
 /*===========================DocumentFormController=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
 	padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIAction {
-	width: 150px;
-	padding: 12px 70px 10px 0px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer {
@@ -406,11 +397,6 @@
   width: 160px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UIAction {
-  width: 150px;
-	padding: 12px 0px 10px 20px;
-}
-
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .UITabContentContainer .UITabContent {
   border: none;
 }
@@ -426,11 +412,6 @@
 .UIJCRExplorerPortlet .UIWatchDocumentForm .FormContainer {
   width: 450px;
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIWatchDocumentForm .UIAction {
-  width: 160px;
-  padding-left: 30px;
 }
 
 /*=============================UITaggingForm=======================*/
@@ -455,11 +436,6 @@
 	margin-bottom: 3px;
 }
 
-.UIJCRExplorerPortlet .UITaggingForm .UIAction {
-  width: 170px;
-  padding: 0px 100px 8px 0px;
-}
-
 /*==================================UIMultiLanguageForm==============================*/
 
 .UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .HorizontalLayout  {
@@ -471,16 +447,7 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIAction {
-  width: 240px;
-  padding-left: 30px;
-}
-
 /*===============================UILanguageTypeForm===================================*/
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIAction {
-  padding-left: 20px;
-}
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
@@ -528,17 +495,7 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UICommentForm .UIAction {
-  width: 160px;
-  padding-right: 50px;
-}
-
 /*================================UISimpleSearch=================================*/
-
-.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIAction {
-  width: 400px;
-  padding-left: 60px;
-}
 
 .UIJCRExplorerPortlet .UISimpleSearch .FormContainer .InforField {	
 	margin: 5px 0px;
@@ -546,10 +503,6 @@
 
 .UIJCRExplorerPortlet .EditQueryForm {
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .EditQueryForm .UIAction {
-  width: 170px;
 }
 
 .UIJCRExplorerPortlet .UISaveQueryForm  {
@@ -560,20 +513,11 @@
   width: 80px;
 }
 
-.UIJCRExplorerPortlet .UISaveQueryForm .UIAction {
-  width: 170px;
-  padding-left: 100px;
-}
-
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {
   width: 550px;
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout .UIAction {
-  width: 220px;
 }
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch .HorizontalLayout textarea {
@@ -582,21 +526,11 @@
 
 /*================================UIConstraintsForm=================================*/
 
-.UIJCRExplorerPortlet .UIConstraintsForm .HorizontalLayout .UIAction {
-  width: 160px;
-  padding-left: 15px;
-}
-
 /*================================UIMetadataSelectForm=================================*/
 
 .UIJCRExplorerPortlet .UIMetadataSelectForm {
 	width: 95%;
 	margin: 10px auto;
-}
-
-.UIJCRExplorerPortlet .UIMetadataSelectForm  .UIAction {
-	width: 150px;
-	padding-right: 100px;
 }
 
 /*================================UINodeTypeSelectForm=================================*/
@@ -606,24 +540,11 @@
 	margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm  .UIAction {
-	width: 150px;
-}
-
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
 	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm .UIAction{
-	width: 160px;
-}
-
 /*================================UIActivateVersion=================================*/
-
-.UIJCRExplorerPortlet .UIActivateVersion .UIAction {
-  width: 120px;
-  padding-left: 30px;
-}
 
 /*================================UIActionContainer=================================*/
 
@@ -670,11 +591,6 @@
 	border: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .UIAction {
-  width: 140px;
-  padding-left: 15px;
-}
-
 .UIJCRExplorerPortlet .UIActionContainer .UIFormGrid .FieldComponent .ActionIcon {
   margin-left: 5px;
   float: none;
@@ -682,20 +598,11 @@
 
 /*================================UIActionList=================================*/
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIActionList .UIAction {
-  padding-left: 20px;
-}
-
 /*================================UIPropertyForm=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIFormGrid {
   width: 500px;	
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIAction {
-  width: 160px;	
-  padding-right: 15px;
 }
 
 .UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
@@ -709,10 +616,6 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .HorizontalLayout .UIAction {
-  width: 160px;
-}
-
 .UIJCRExplorerPortlet .UIExportNode .UIForm .HorizontalLayout {
   border: none;
 }
@@ -722,11 +625,6 @@
 }
 
 /*================================.UIImportNode=================================*/
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout .UIAction {
-  width: 160px;
-  padding-right: 110px;
-}
 
 .UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
   border: none;
@@ -795,10 +693,6 @@
   margin-right: 3px;
 }
 
-.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
-  width: 160px ;
-}
-
 .UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
   width: 70px;
   margin: auto;
@@ -837,10 +731,6 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
 	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIAction {
-  width: 170px;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp {
@@ -932,14 +822,6 @@
 	margin: 0px;
 }
 
-.UIJCRExplorer .UICategoryManager .UIAction{
-	width: 70px;
-}
-
-.UIJCRExplorer .UIRelationManager .UIAction{
-	width: 70px;
-}
-
 .UIJCRExplorerPortlet .UIRelationManager .UITabPane {
 	width: 95%;
 	margin: 10px auto;
@@ -958,10 +840,6 @@
 .UIJCRExplorer .UIRenameForm .FormContainer {
 	width: 500px;
 	margin: auto;
-}
-
-.UIJCRExplorer .UIRenameForm .UIAction{
-	width: 160px;
 }
 
 .UIJCRExplorer  .WorkKofax .UIGrid {
@@ -987,10 +865,6 @@
   width: 95%;
   margin: 10px auto;
   padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
-  width: 150px ;
 }
 
 /*=============================== UIConstraintsForm =======================================*/

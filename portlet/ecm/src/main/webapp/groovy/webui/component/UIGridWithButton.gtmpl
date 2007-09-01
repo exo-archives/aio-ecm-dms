@@ -84,23 +84,23 @@
 <% if(uicomponent.getActions() != null) { %>
   <div class="$uicomponent.id">
     <div class="UIAction"> 
-      <div class="ActionContainer">
-        <% for(action in uicomponent.getActions()) { %>
-          <div class="ActionButton">
-            <div class="LightBlueStyle" >
+      <table class="ActionContainer" align="center">
+      	<tr>
+      		<td align="center">
+	        <% for(action in uicomponent.getActions()) { %>
+            <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
               <div class="ButtonLeft">
                 <div class="ButtonRight">
                   <div class="ButtonMiddle">
-                    <a href="<%=uicomponent.event(action)%>">
                       <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
-                    </a>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        <% } %>
-      </div>
+            </a>
+	        <% } %>
+					</td>
+				</tr>	       
+      </table>
     </div>
   </div>
 <% }%>

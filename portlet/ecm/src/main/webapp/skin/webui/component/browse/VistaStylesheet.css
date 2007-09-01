@@ -25,17 +25,6 @@
   border: solid 1px #b7b7b7;
 }
 
-.UIBrowseContentPortlet .UINewConfigForm .UIAction {
-	padding-top: 10px;
-	width: 200px;
-	margin: auto;
-	
-}
-.UIBrowseContentPortlet .UIConfigContainer .UIAction {
-	padding: 10px 0px 10px 80px;
-	width: 300px;
-}
-
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 600px;
@@ -373,11 +362,6 @@ UIBrowseContentPortlet .Explorer {
 	width: 50px; 
 }
 
-.UIBrowseContentPortlet .UISearchController .UIAction{
-	width: 70px; margin: auto;
-	padding-bottom:8px;
-}
-
 .UIBrowseContentPortlet .UISearchController .ActionButton{
 	width: 70px; margin: auto;
 }
@@ -409,10 +393,6 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 90px ;
 }
 
 .UIBrowseContentPortlet .UIVoteForm .OptionsContainer {
@@ -450,14 +430,6 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
   padding-top: 10px;
   background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
-.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
-  width: 170px;
-}
-
-.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .UIAction {
-  width: 160px;
 }
 
 .UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid {

@@ -7,6 +7,7 @@
       border: solid 1px #a3abb6;
       font-size: 12px;font-weight: bold;
     }
+    
     .tabSelected {
       float: left;
       background: url('/ecm/skin/images/metadata/tab-selected.gif')repeat-x top;
@@ -14,10 +15,12 @@
       border: solid 1px #a3abb6;
       font-size: 12px;  font-weight: bold;
     }
+    
     .ContentBlock{
       width: 99.5%;     
       margin:20px 20px 20px 20px;
     }
+    
     .Label {
       height:14px;
       font-weight: bold;
@@ -33,6 +36,7 @@
       font-style: Verdana;
       text-align: left ;      
     }
+    
     .Line {
       background: url('/ecm/skin/images/metadata/dot.gif')repeat-x center;
       height: 10px;
@@ -91,29 +95,29 @@
 </div>
 <%/* start render action*/%>
 <div class="UIAction"> 
-  <div class="ActionContainer" style="width:200px; margin:auto;">
-		<div class="ActionButton">
-	  	<div class="LightBlueStyle">
-				<div class="ButtonLeft">
-					 <div class="ButtonRight">
-					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "rma:vitalRecord")%>" title="<%=_ctx.appRes("VitalRecord.view.tooltip.add-edit")%>"><%=_ctx.appRes("VitalRecord.view.action.add-edit")%></a>
+  <table align="center" class="ActionContainer">
+  	<tr>
+  		<td align="center">
+		  	<a href="<%=uicomponent.event("EditProperty", "rma:vitalRecord")%>" class="ActionButton LightBlueStyle">
+					<div class="ButtonLeft">
+						 <div class="ButtonRight">
+						  <div class="ButtonMiddle" title="<%=_ctx.appRes("VitalRecord.view.tooltip.add-edit")%>">
+						    <%=_ctx.appRes("VitalRecord.view.action.add-edit")%>
+					    </div>
+				    </div>
+				  </div>
+				</a>
+		  	<a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
+					<div class="ButtonLeft">
+					  <div class="ButtonRight">
+						  <div class="ButtonMiddle" title="<%=_ctx.appRes("VitalRecord.view.tooltip.cancel")%>">
+						    <%=_ctx.appRes("VitalRecord.view.action.cancel")%>
+				      </div>
 				    </div>
 			    </div>
-			  </div>
-			</div>
-		</div>
-		<div class="ActionButton">
-	  	<div class="LightBlueStyle">
-				<div class="ButtonLeft">
-				  <div class="ButtonRight">
-					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("VitalRecord.view.tooltip.cancel")%>"><%=_ctx.appRes("VitalRecord.view.action.cancel")%></a>
-			      </div>
-			    </div>
-		    </div>
-			</div>
-		</div>
-  </div
+				</a>
+  		</td>
+  	</tr>
+  </table>
 </div>
 <%/* end render action*/%>

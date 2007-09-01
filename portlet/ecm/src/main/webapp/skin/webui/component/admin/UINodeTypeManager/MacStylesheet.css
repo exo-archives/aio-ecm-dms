@@ -12,18 +12,9 @@
   width: 97%;
 }
 
-.UIECMAdminPortlet .UINodeTypeManager .UIAction {
-  width: 240px ;
-}
-
 .UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .FormContainer {
   width: 500px ;
   margin: auto;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithAction .UIAction {
-  width: 280px ;
-  padding-left: 50px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .childNodeDefinition .FormContainer {
@@ -43,14 +34,6 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormTableInputSet {
 	padding: 2px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeImportPopup .UIAction {
-	width: 280px;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .UIAction {
-	width: 170px;
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeUpload .ProgressBarFrame { 
@@ -86,10 +69,6 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIForm .HorizontalLayout {
 	border: none;
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIAction {
-	width: 290px;	
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .HorizontalLayout .UIFormInputSet{

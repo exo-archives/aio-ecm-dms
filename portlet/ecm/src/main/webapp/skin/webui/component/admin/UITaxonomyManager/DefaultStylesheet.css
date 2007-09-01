@@ -40,14 +40,6 @@
 	margin: auto;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .UIAction {
-	width: 160px;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
-	border: solid 1px #ffffff;
-}
-
 .UIECMAdminPortlet .UITaxonomyManager .HomeNode {
   padding: 0px 7px;
   line-height: 30px;

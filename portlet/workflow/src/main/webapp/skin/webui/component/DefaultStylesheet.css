@@ -14,10 +14,6 @@
 	padding: 10px;
 }
 
-.UIWorkflowPortlet .UIForm .UIAction {
-	width: auto;
-}
-
 .UIWorkflowPortlet .Toolbar {
 	height: 29px;
 	padding: 0px 8px;
@@ -227,11 +223,6 @@
   width: 160px; 
 }
 
-.UIWorkflowPortlet .UITask .UIForm .HorizontalLayout .UIAction {
-  width: 420px;
-  padding: 15px 0px;
-}
-
 /*##############################- Begin UIProcessDetail -################################*/
 
 .UIWorkflowPortlet .UIProcessDetail {
@@ -255,14 +246,6 @@
 	color: orange;
 }
 
-.UIAdminstrationManager .UIAction {
-  width: 100px;
-}
-
-.UIUploadProcess .UIForm .UIAction {
-  width: 160px;
-}
-
 .WorkflowPortletContent .UIFormGrid td.FieldLabel {
 	width: 128px;
 }
@@ -281,14 +264,6 @@
 	width: 330px;
 	overflow: hidden;
 	margin: 0px;
-}
-
-.UIWorkflowPortlet .UITabPane .UIForm .UIAction {
-  width: 160px;
-}
-
-.UIWorkflowPortlet .UITask .UIForm .UIAction {
-  width: 380px;
 }
 
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
@@ -314,10 +289,6 @@
   padding-top: 10px;
   font-style: italic;
   margin: auto;
-}
-
-.UIWorkflowPortlet .UIAdministrationManager .UIAction {
-  width: 120px;
 }
 
 .UIWorkflowPopup .UITabPane {

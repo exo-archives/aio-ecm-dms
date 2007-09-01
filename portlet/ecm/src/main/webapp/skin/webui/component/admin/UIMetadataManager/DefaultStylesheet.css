@@ -17,10 +17,6 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UITabPane .UIAction {
-  width: 160px;
-}
-
 .UIECMAdminPortlet .UIMetadataManager .UIForm .FieldLabel {
   width: 128px;
 }
@@ -39,10 +35,6 @@
 .UIECMAdminPortlet .UIMetadataList .UIPageIterator {
   float: right;
   width: 95%;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIMetadataList .UIAction {
-  width: 110px ;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .FormContainer {

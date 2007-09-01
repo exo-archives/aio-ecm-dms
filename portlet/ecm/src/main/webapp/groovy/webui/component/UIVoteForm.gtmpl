@@ -25,19 +25,21 @@
 		</div>
 	    
 	  <div class="UIAction"> 								
-	    <div class="ActionContainer">								       
-		    <div class="ActionButton">
-		      <div class="LightBlueStyle">
-		      	<div class="ButtonLeft">
-		      		<div class="ButtonRight">
-		      			<div class="ButtonMiddle">
-		      				<a href="<%=uicomponent.event("Cancel")%>">Cancel</a>
-		      			</div>
-		      		</div>
-		      	</div>	              
-		      </div>
-		    </div>
-		  </div>
+	    <table align="center" class="ActionContainer">								       
+	    	<tr>
+	    		<td align="center">
+			      <a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
+			      	<div class="ButtonLeft">
+			      		<div class="ButtonRight">
+			      			<div class="ButtonMiddle">
+			      				Cancel
+			      			</div>
+			      		</div>
+			      	</div>	              
+			      </a>
+		  		</td>
+		  	</tr>
+		  </table>
 		</div>
 	</div>
 </div>

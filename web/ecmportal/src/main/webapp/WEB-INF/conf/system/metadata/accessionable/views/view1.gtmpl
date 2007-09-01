@@ -84,29 +84,29 @@
 </div>
 <%/* start render action*/%>
 <div class="UIAction"> 
-  <div class="ActionContainer" style="width:200px; margin:auto;">
-		<div class="ActionButton">
-	  	<div class="LightBlueStyle">
-				<div class="ButtonLeft">
-					 <div class="ButtonRight">
-					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("EditProperty", "rma:accessionable")%>" title="<%=_ctx.appRes("Accessionable.view.tooltip.add-edit")%>"><%=_ctx.appRes("Accessionable.view.action.add-edit")%></a>
+  <table align="center" class="ActionContainer">
+  	<tr>
+  		<td align="center">
+		  	<a href="<%=uicomponent.event("EditProperty", "rma:accessionable")%>" class="LightBlueStyle">
+					<div class="ButtonLeft">
+						 <div class="ButtonRight">
+						  <div class="ButtonMiddle" title="<%=_ctx.appRes("Accessionable.view.tooltip.add-edit")%>">
+						    <%=_ctx.appRes("Accessionable.view.action.add-edit")%>
+					    </div>
+				    </div>
+				  </div>
+				</a>
+		  	<a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
+					<div class="ButtonLeft">
+					  <div class="ButtonRight">
+						  <div class="ButtonMiddle" title="<%=_ctx.appRes("Accessionable.view.tooltip.cancel")%>">
+						    <%=_ctx.appRes("Accessionable.view.action.cancel")%>
+				      </div>
 				    </div>
 			    </div>
-			  </div>
-			</div>
-		</div>
-		<div class="ActionButton">
-	  	<div class="LightBlueStyle">
-				<div class="ButtonLeft">
-				  <div class="ButtonRight">
-					  <div class="ButtonMiddle">
-					    <a href="<%=uicomponent.event("Cancel")%>" title="<%=_ctx.appRes("Accessionable.view.tooltip.cancel")%>"><%=_ctx.appRes("Accessionable.view.action.cancel")%></a>
-			      </div>
-			    </div>
-		    </div>
-			</div>
-		</div>
-  </div
+				</a>
+  		</td>
+  	</tr>
+  </table>
 </div>
 <%/* end render action*/%>

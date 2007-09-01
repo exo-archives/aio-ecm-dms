@@ -79,10 +79,6 @@
   float: right;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIFormWithTitle .UIAction {
-  width: 170px;
-}
-
 .UIECMAdminPortlet .TrueFalseContainer{
   width: 65px;
   margin: auto;
@@ -105,12 +101,3 @@
 .UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FieldContainer .parentPath {
 	margin-left: 7px;
 }
-
-.UIECMAdminPortlet .UITaxonomyManager .UIAction {
-  width: 100px;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .UIAction {
-  width: 170px;
-}
-

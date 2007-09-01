@@ -90,14 +90,6 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UIAction {
-	width: 400px;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .HorizontalLayout .FormContainer .UIAction {
-	width: 180px;
-}
-
 .UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
 	border: none;
 	padding: 10px 0px;
@@ -172,11 +164,6 @@
   margin:0px 10px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .UIAction {
-	width: 300px;
-	margin-top: 10px;
-}
-	
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
@@ -198,10 +185,6 @@
 
 .UIJCRExplorerPortlet .UIVoteForm .NormalVote {
   cursor: pointer;
-}
-
-.UIJCRExplorerPortlet .UIVoteForm .UIAction {
-  width: 90px ;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer {
@@ -250,10 +233,6 @@
   border: solid 1px #8D919D;
   background-color: #f2f2f2;
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .UIAction {
-  width: 105px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
@@ -463,10 +442,6 @@
 	margin-left: 0px;
 }
 
-.UIJCRExplorerPortlet .UIViewMetadataManager .UIAction {
-  width: 170px ;
-}
-
 .UIJCRExplorerPortlet .UIUploadManager {
   padding: 10px;
   border: 1px solid #b7b7b7;
@@ -478,15 +453,7 @@
 	margin: 10px;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm .UIAction {
-	width: 180px;
-}
-
 /*############################## -- End Others   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIUploadManager .UIAction {
-  width: 210px;
-}
 
 /*############################## -- End UISearch   -- ##############################*/
 
@@ -504,11 +471,6 @@
 
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
 	float: left;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .UIAction {
-  width: 100px; 
-  margin: 20px auto 0px auto;
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{

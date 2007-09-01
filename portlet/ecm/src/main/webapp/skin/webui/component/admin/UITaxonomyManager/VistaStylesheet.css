@@ -73,10 +73,6 @@
   float: right;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UIAction {
-  width: 190px;
-}
-
 .UIECMAdminPortlet .TrueFalseContainer{
   width: 65px;
   margin: auto;
@@ -94,8 +90,4 @@
 .UIECMAdminPortlet .UITaxonomyManager .HorizontalLayout label {
   width: 120px;
   padding-right: 3px;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .UIAction  .ActionContainer {
-  margin: 10px;
 }

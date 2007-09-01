@@ -13,25 +13,26 @@
       <div class="ConstraintOption">Filter : <%uiform.renderField(uicomponent.getChild(0))%><a href="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif"></a></div>
       <div class="ConstraintOption">Results : <%uiform.renderField(uicomponent.getChild(1))%><span style="display: none;"><%uiform.renderField(uicomponent.getChild(2))%></span></div>
       <div class="UIAction"> 
-        <div class="ActionContainer">
-          <% for(action in uicomponent.getActions()) { %>
-            <div class="ActionButton">
-              <div class="LightBlueStyle" >
-                <div class="ButtonLeft">
-                  <div class="ButtonRight">
-                    <div class="ButtonMiddle">
-                      <% 
-                        String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
-                        String link = uicomponent.event(action) ;
-                      %>
-                      <a href="$link">$actionLabel</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <%}%>          
-        </div>
+        <table class="ActionContainer">
+        	<tr>
+        		<td align="center">
+		          <% for(action in uicomponent.getActions()) {
+		          		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+		               String link = uicomponent.event(action) ;
+		          %>
+		              <a href="$link" class="ActionButton LightBlueStyle" >
+		                <div class="ButtonLeft">
+		                  <div class="ButtonRight">
+		                    <div class="ButtonMiddle">
+		                      $actionLabel
+		                    </div>
+		                  </div>
+		                </div>
+		              </a>
+		          <%}%>   
+          	</td>
+          </tr>       
+        </table>
       </div>
       <%/* end render action */%>
     <%uiform.end()%>

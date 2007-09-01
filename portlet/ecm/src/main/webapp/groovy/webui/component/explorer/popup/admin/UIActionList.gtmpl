@@ -63,21 +63,21 @@
     </tbody>
   </table>
   <% uicomponent.renderChild(UIPageIterator.class) %>
-  <div class="UIAction" style="width: 90px; margin: auto;padding-top:5px;"> 
-    <div class="ActionContainer">
-	    <div class="ActionButton">
-	      <div class="LightBlueStyle" >
-					<div class="ButtonLeft">
-					  <div class="ButtonRight">
-						  <div class="ButtonMiddle">
-								<a href="<%=uicomponent.event("Close")%>">
-								  <%=_ctx.appRes("UIActionList.action.Close")%>
-								</a>
-				      </div>
+  <div class="UIAction"> 
+    <table class="ActionContainer">
+    	<tr>
+    		<td align="center">
+		      <a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle" >
+						<div class="ButtonLeft">
+						  <div class="ButtonRight">
+							  <div class="ButtonMiddle">
+									<%=_ctx.appRes("UIActionList.action.Close")%>
+					      </div>
+					    </div>
 				    </div>
-			    </div>
-				</div>
-			</div>
-    </div>
+					</a>
+    		</td>
+    	</tr>
+    </table>
   </div>
 </div>

@@ -36,15 +36,6 @@
   font-weight: bold; font-size: 11px;
 }
 
-.UIPopupMessages .UIAction {
-  width: 100px;
-}
-
-.UIFastContentCreatorPortlet .UIAction {
-	width: 165px;
-	padding-left: 20px;
-}
-
 .UIFastContentCreatorPortlet .UITabPane {
   padding: 10px 0px 20px 0px;
 }

@@ -74,26 +74,27 @@
 							        }
 								  	%>    	        
 				    	</div>
-					    <div class="UIAction">
-					      <div class="ActionContainer">
-				          <%for(action in uicomponent.getActions()) { %>
-				            <div class="ActionButton">
-				              <div class="LightBlueStyle">
-											  <div class="ButtonLeft">
-												  <div class="ButtonRight">
-												    <div class="ButtonMiddle">
-													    <% 
-													      String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action);
-													      String link = uicomponent.event(action) ;
-											        %>
-											        <a href="$link">$actionLabel</a>
+							<div class="UIAction">
+					      <table align="right" class="ActionContainer">
+					      	<tr>
+					      		<td align="right">
+						          <%for(action in uicomponent.getActions()) { 
+						          		String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action);
+													String link = uicomponent.event(action) ;
+						          %>
+					              <a href="$link" class="ActionButton LightBlueStyle">
+												  <div class="ButtonLeft">
+													  <div class="ButtonRight">
+													    <div class="ButtonMiddle">
+												        $actionLabel
+													    </div>
 												    </div>
-											    </div>
-												</div>
-											</div>
-										</div>
-			            <%}%>
-			          </div>
+													</div>
+												</a>
+					            <%}%>
+			            	</td>
+			            </tr>
+			          </table>
 		 	        </div>
 		 	        <div style="clear:right;"><span></span></div>
 	 	        </div>
