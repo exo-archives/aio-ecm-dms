@@ -1,24 +1,18 @@
 <%
   public void writeAction(String label, String action, String param) {
+				if(param != null)
+				  println " <a href=\"" + uicomponent.event(action, param) + "\" class=\"ActionButton LightBlueStyle\">" ;
+				else
+		  		println " <a href=\"" + uicomponent.event(action) + "\" class=\"ActionButton LightBlueStyle\">" ;
     println """
-	    <div class="ActionButton">
-	      <div class="LightBlueStyle" >
 					<div class="ButtonLeft">
 					  <div class="ButtonRight">
 						  <div class="ButtonMiddle">
-	  """;
-		if(param != null)
-		  println " <a href=\"" + uicomponent.event(action, param) + "\">" ;
-		else
-  		println " <a href=\"" + uicomponent.event(action) + "\">" ;
-    println """
 							    $label
-							  </a>
 				      </div>
 				    </div>
 			    </div>
-				</div>
-			</div>
+				</a>
 		""" ;
   }
 %>
@@ -39,25 +33,29 @@
 			<%}%>
 		</table>
 	  <div class="UIAction"> 
-	    <div class="ActionContainer">
-			  <%
-			  def buttons = uicomponent.getSubmitButtons() ;
-	      if(buttons.isEmpty()) {
-	        label = resWorkflow.getString("submit") ;
-		      if(uicomponent.isStart()) writeAction(label, "StartProcess", null) ;
-	        else writeAction(label, "EndOfState", null) ;
-	      } else {
-		      for(button in buttons) {
-		        name = button.get("name") ;
-		        submit = ".submit" ;
-		        label = name + submit ;
-		        label = resWorkflow.getString(label) ;
-		        writeAction(label, "Transition", name) ;
-		      }
-		    }
-		    writeAction("Cancel", "Cancel", null) ;
-		    %>
-	    </div>
+	    <table align="center" class="ActionContainer">
+	    	<tr>
+	    		<td align="center">
+					  <%
+					  def buttons = uicomponent.getSubmitButtons() ;
+			      if(buttons.isEmpty()) {
+			        label = resWorkflow.getString("submit") ;
+				      if(uicomponent.isStart()) writeAction(label, "StartProcess", null) ;
+			        else writeAction(label, "EndOfState", null) ;
+			      } else {
+				      for(button in buttons) {
+				        name = button.get("name") ;
+				        submit = ".submit" ;
+				        label = name + submit ;
+				        label = resWorkflow.getString(label) ;
+				        writeAction(label, "Transition", name) ;
+				      }
+				    }
+				    writeAction("Cancel", "Cancel", null) ;
+				    %>
+					</td>
+				</tr>
+			</table>
 	  </div>
 		<%if(uicomponent.getStateImageURL() != "") {%>
       <div align="center">					  		

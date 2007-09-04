@@ -877,11 +877,6 @@
   padding: 2px 0px 0px 0px;
 }
 
-.UIECMAdminPortlet .UIQueriesManager .UIPageIterator  {
-  float: right;
-  width: 95%;
-}
-
 .UIQueriesManager .UIQueriesForm {
 	width: 95%;
 	margin: 10px auto;

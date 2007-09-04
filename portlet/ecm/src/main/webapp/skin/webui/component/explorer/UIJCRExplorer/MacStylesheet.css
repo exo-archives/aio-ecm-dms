@@ -823,6 +823,7 @@
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeContainer {
 	height: 173px;
+	width: 228px;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeLevelContainer {

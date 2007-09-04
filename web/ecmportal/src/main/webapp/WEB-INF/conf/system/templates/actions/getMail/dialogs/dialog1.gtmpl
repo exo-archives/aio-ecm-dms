@@ -125,7 +125,7 @@
 			      <%}%>  
 	      	</td>
 	      </tr>        
-	    </div>
+	    </table>
 	  </div>
 	  <%/* end render action*/%>
   </div>

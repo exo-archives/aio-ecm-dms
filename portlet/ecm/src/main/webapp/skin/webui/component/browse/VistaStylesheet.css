@@ -362,10 +362,6 @@ UIBrowseContentPortlet .Explorer {
 	width: 50px; 
 }
 
-.UIBrowseContentPortlet .UISearchController .ActionButton{
-	width: 70px; margin: auto;
-}
-
 .UIBrowseContentPortlet .UISearchController .GotoIcon{
 	width: 16px ;  height: 16px ;
   background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
