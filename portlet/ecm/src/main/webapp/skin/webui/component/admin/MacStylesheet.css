@@ -273,8 +273,12 @@
 	padding-right: 15px;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer {
 	padding: 10px;
+}
+
+.UIECMAdminPortlet .UIGroupMembershipSelector .UITree .TreeContainer {
+	width: auto;	
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {

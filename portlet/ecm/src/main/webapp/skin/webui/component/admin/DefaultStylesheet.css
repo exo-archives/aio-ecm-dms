@@ -110,8 +110,14 @@
 	height: 16px;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer{
+/*=====================================UIWorkspaceWizardContainer==========================*/
+
+.UIRepositoryFormContainer .UIWorkspaceWizardContainer { 
 	padding: 10px;
+}
+
+.UIECMAdminPortlet .UIGroupMembershipSelector .UITree .TreeContainer {
+	width: auto;	
 }
 
 .UIECMAdminPortlet .UIGroupMembershipSelector .GroupSelector {
