@@ -57,6 +57,7 @@ public class UIRepositorySelectForm extends UIForm {
   public static class OnchangeActionListener extends EventListener<UIRepositorySelectForm>{
     public void execute(Event<UIRepositorySelectForm> event) throws Exception {
       UIRepositorySelectForm uiForm = event.getSource() ;
+      RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIRepositoryControl.class) ;
       PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
       String selectRepo = uiForm.getSelectedValue() ;
@@ -64,6 +65,7 @@ public class UIRepositorySelectForm extends UIForm {
       portletPref.store() ;
       uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
       uiForm.setSelectedValue(selectRepo) ;
+      rservice.setCurrentRepositoryName(selectRepo) ;
       uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }

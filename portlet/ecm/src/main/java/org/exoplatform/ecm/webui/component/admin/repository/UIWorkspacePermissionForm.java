@@ -72,7 +72,7 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
     boolean editable = !lock ;
     UIPermissionContainer uiContainer = getAncestorOfType(UIPermissionContainer.class) ;
     uiContainer.getChild(UIECMPermissionBrowser.class).setRendered(editable) ;
-    getUIStringInput(FIELD_PERMISSION).setEditable(editable) ;
+    getUIStringInput(FIELD_PERMISSION).setEditable(false) ;
     for(String perm : PermissionType.ALL) {
       getUIFormCheckBoxInput(perm).setEnable(editable) ;
     }

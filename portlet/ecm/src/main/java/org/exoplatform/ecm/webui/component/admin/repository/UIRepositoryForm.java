@@ -186,7 +186,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected void lockForm(boolean isLock) throws Exception {
     boolean editable = !isLock ;
     UIFormInputSetWithAction autField = getChildById(FIELD_AUTHINPUTSET) ;
-    UIFormInputSetWithAction workspaceField = getChildById(FIELD_WSINPUTSET) ;
+//    UIFormInputSetWithAction workspaceField = getChildById(FIELD_WSINPUTSET) ;
    // workspaceField.setIsView(isLock);
     if(isLock) {
       autField.setActionInfo(FIELD_AUTHENTICATION, null) ;
@@ -419,14 +419,12 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       re.setSystemWorkspaceName(uiForm.defaulWorkspace_) ;
       re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
       re.addWorkspace(uiForm.getWorkspace(uiForm.defaulWorkspace_)) ;
+      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
+      uiPopupAction.deActivate() ;
       uiForm.saveRepo(re) ;
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
       uiRepoControl.reloadValue(true, rService) ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
-      uiPopupAction.deActivate() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiRepoControl) ;
     }
   }
   public static class ResetActionListener extends EventListener<UIRepositoryForm>{
