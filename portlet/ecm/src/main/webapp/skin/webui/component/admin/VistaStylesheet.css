@@ -433,8 +433,12 @@
   width: 140px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer{
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer {
   margin-right: 5px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer .UITree{
+	overflow: auto;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {

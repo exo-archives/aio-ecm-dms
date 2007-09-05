@@ -23,7 +23,7 @@
   margin: 4px 0px 5px 8px;
   height: 19px; vertical-align: middle;
   border: 1px #e1e1e1 solid; background: #f3f3f3;
-  width: 100px;
+  width: 110px;
 }
 
 .UIEventViewer .ViewPreviousDocument .BackIcon {
@@ -34,11 +34,10 @@
 }
 
 .UIEventViewer .ViewPreviousDocument a{
-	float: left;
 	color: #333333;
 	line-height: 19px; 
-	font-size: 11px;
-	padding: 0px 10px 0px 4px;
+	font-weight: normal;
+	padding: 0px 3px;
 }
 
 .UIEventViewer .ViewPreviousDocument a:hover{
