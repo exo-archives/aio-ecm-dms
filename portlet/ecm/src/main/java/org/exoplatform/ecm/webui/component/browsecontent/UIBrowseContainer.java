@@ -31,6 +31,8 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.portal.webui.portal.UIPortal;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
@@ -396,6 +398,11 @@ public class UIBrowseContainer extends UIContainer {
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
+  }
+  
+  public String getPageUri() {
+    UIPortal uiPortal = Util.getUIPortal() ;
+    return uiPortal.getSelectedNode().getUri() ;
   }
 
   public String getQueryLanguage() {
