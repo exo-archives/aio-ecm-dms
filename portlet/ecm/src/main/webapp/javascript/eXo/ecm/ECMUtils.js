@@ -183,7 +183,7 @@ ECMUtils.prototype.replaceToIframe = function(txtAreaId) {
 		 */
 		return ;
 	}
-var txtArea = document.getElementById(txtAreaId) ;
+	var txtArea = document.getElementById(txtAreaId) ;
 	var ifrm = document.createElement("IFRAME") ;
 	with(ifrm) {
 		className = 'ECMIframe' ;
@@ -191,7 +191,7 @@ var txtArea = document.getElementById(txtAreaId) ;
 		frameBorder = 0 ;
 		scrolling = "auto" ;
 	}
-	var strValue = txtArea.value;
+	var strValue = txtArea.value ;
 	txtArea.parentNode.replaceChild(ifrm, txtArea) ;
 	try {
 		var doc = ifrm.contentWindow.document ;
@@ -199,7 +199,7 @@ var txtArea = document.getElementById(txtAreaId) ;
 		doc.write(strValue) ;
 		doc.close() ;
 	} catch (ex) {}
-};
+} ;
 
 
 ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath,mimetype) {		
