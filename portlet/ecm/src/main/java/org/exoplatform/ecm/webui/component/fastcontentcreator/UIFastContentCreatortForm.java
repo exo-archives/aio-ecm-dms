@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
@@ -177,6 +178,11 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
+    } catch(ItemExistsException item) {
+      Object[] args = { prefLocate } ;
+      String key = "UIFastContentCreatortForm.msg.node-isExist" ;
+      uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     } finally {
       if(session != null) {
         session.logout();

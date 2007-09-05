@@ -161,17 +161,17 @@ public class UISimpleSearch extends UIForm {
       uiSimpleSearch.virtualConstraints_.remove(intIndex) ;
       if(uiSimpleSearch.constraints_.size() > 0) {
         String newFirstConstraint = null;
-        String newFirstVirtaulConstraint = null;
+        String newFirstVirtualConstraint = null;
         if(uiSimpleSearch.constraints_.get(0).contains(OR)) {
           newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length()) ;
-          newFirstVirtaulConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length()) ;
+          newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(3, uiSimpleSearch.virtualConstraints_.get(0).length()) ;
           uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
-          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtaulConstraint) ;
+          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint) ;
         } else if(uiSimpleSearch.constraints_.get(0).contains(AND)) {
           newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length()) ;
-          newFirstVirtaulConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length()) ;
+          newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(4, uiSimpleSearch.virtualConstraints_.get(0).length()) ;
           uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
-          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtaulConstraint) ;
+          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint) ;
         }
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSimpleSearch.getParent()) ;

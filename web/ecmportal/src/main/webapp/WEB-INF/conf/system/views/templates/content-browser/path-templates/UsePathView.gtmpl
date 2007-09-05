@@ -186,6 +186,7 @@
         	String objectId = doc.getPath() + "&category=" + selectedTab.getPath() ;
           String viewAction = uicomponent.event("ChangeNode", objectId);
           String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
+          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
       %>
           <div class="EventContentDetail">
             <div class="TopEventContentDetail">
@@ -194,7 +195,7 @@
                   <td>
                     <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
                     <div class="EventDocumentLabel">
-                      <a href="$viewAction"><%=doc.getName()%></a>
+                      <a href="$viewAction"><%=docName%></a>
                     </div>  
                   </td>
                   <td class="EventAuthorNameLabel">
@@ -258,7 +259,7 @@
 	                   					<% 
 						                    for(String subChild in subChilds) {
 						                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
-						                       String subChildLink = uicomponent.event("ChangeNode", subChild);
+						                      String subChildLink = uicomponent.event("ChangeNode", subChild);
 						                  %>
 						                      <div class="ChildNode">						                      	
 						                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
@@ -299,13 +300,14 @@
                            	String docId = doc.getPath()+ "&category=" + subCat ;
                             String docActionLink = uicomponent.event("ChangeNode", docId) ;
                             String icon = uicomponent.getIcons(doc,"16x16Icon") ;
+                            String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
                       %>
                             <tr>
                               <td>
                                  <div class="DocumentInfo">
                                   <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon"><span></span></div>
                                   <div class="DocumentLabel">
-                                    <a href="$docActionLink"><%=doc.getName()%></a>
+                                    <a href="$docActionLink"><%=docName%></a>
                                   </div>
                                   <div style="clear:both"><span></span></div>  
                                 </div>

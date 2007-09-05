@@ -22,6 +22,7 @@
 	        	String objectId = doc.getPath() + "&category=" + uicomponent.getCategoryPath() ;
 	          String viewAction = uicomponent.event("ChangeNode",objectId);
 	          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
+	          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
 	      %>
 	          <div class="EventContentDetail">
 	            <div class="TopEventContentDetail">
@@ -30,7 +31,7 @@
 	                  <td>
 	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
 	                    <div class="EventDocumentLabel">
-	                      <a href="$viewAction"><%=doc.getName()%></a>
+	                      <a href="$viewAction"><%=docName%></a>
 	                    </div>  
 	                  </td>
 	                  <td class="EventAuthorNameLabel">
