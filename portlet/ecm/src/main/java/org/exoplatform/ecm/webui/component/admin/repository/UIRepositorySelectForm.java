@@ -6,13 +6,16 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -41,11 +44,11 @@ public class UIRepositorySelectForm extends UIForm {
   protected void setOptionValue(List<SelectItemOption<String>> list){
     getUIFormSelectBox(FIELD_SELECTREPO).setOptions(list) ; 
   }
-  
+
   protected void setActionEvent(){
     getUIFormSelectBox(FIELD_SELECTREPO).setOnChange("Onchange") ;
   }
-  
+
   protected String getSelectedValue() {    
     return getUIFormSelectBox(FIELD_SELECTREPO).getValue() ;
   }
@@ -60,13 +63,34 @@ public class UIRepositorySelectForm extends UIForm {
       RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIRepositoryControl.class) ;
       PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
+      String oldRepository = portletPref.getValue(Utils.REPOSITORY, "") ; 
       String selectRepo = uiForm.getSelectedValue() ;
       portletPref.setValue(Utils.REPOSITORY, selectRepo) ;
       portletPref.store() ;
       uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
       uiForm.setSelectedValue(selectRepo) ;
       rservice.setCurrentRepositoryName(selectRepo) ;
-      uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      try {
+        uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
+      }catch (AccessDeniedException ade) {
+        uiApp.addMessage(new ApplicationMessage("UIRepositorySelectForm.msg-accessdenied", null))  ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        portletPref.setValue(Utils.REPOSITORY, oldRepository) ;
+        portletPref.store() ;
+        uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
+        uiForm.setSelectedValue(oldRepository) ;
+        rservice.setCurrentRepositoryName(oldRepository) ;
+      } catch (Exception e) {
+        uiApp.addMessage(new ApplicationMessage("UIRepositorySelectForm.msg-editError", null))  ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        portletPref.setValue(Utils.REPOSITORY, oldRepository) ;
+        portletPref.store() ;
+        uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
+        uiForm.setSelectedValue(oldRepository) ;
+        rservice.setCurrentRepositoryName(oldRepository) ;
+        e.printStackTrace() ;
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }
   }
