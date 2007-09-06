@@ -159,7 +159,7 @@ public class UISimpleSearch extends UIForm {
       int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       uiSimpleSearch.constraints_.remove(intIndex) ;
       uiSimpleSearch.virtualConstraints_.remove(intIndex) ;
-      if(uiSimpleSearch.constraints_.size() > 0) {
+      if(uiSimpleSearch.constraints_.size() > 0 && intIndex == 0) {
         String newFirstConstraint = null;
         String newFirstVirtualConstraint = null;
         if(uiSimpleSearch.constraints_.get(0).contains(OR)) {
