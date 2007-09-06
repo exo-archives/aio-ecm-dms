@@ -232,7 +232,7 @@
 					    </div>
 				    </div>
 				  </div>
-				</div>
+				</a>
 		  	<a href="<%=uicomponent.event("Cancel")%>" class="LightBlueStyle">
 					<div class="ButtonLeft">
 					  <div class="ButtonRight">
