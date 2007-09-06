@@ -82,7 +82,7 @@
 				    </div>
 				  </div>
 				</a>
-		  	<a href="<%=uicomponent.event("Cancel")%>" class="LightBlueStyle">
+		  	<a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
 					<div class="ButtonLeft">
 					  <div class="ButtonRight">
 						  <div class="ButtonMiddle" title="<%=_ctx.appRes("Destroyable.view.tooltip.cancel")%>">

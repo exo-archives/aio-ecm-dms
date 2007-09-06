@@ -127,7 +127,7 @@
   <table align="center" class="ActionContainer">
   	<tr>
   		<td align="center">
-		  	<a href="<%=uicomponent.event("EditProperty", "rma:cutoffable")%>" class="LightBlueStyle">
+		  	<a href="<%=uicomponent.event("EditProperty", "rma:cutoffable")%>" class="ActionButton LightBlueStyle">
 					<div class="ButtonLeft">
 						<div class="ButtonRight">
 						  <div class="ButtonMiddle" title="<%=_ctx.appRes("Cutoffable.view.tooltip.add-edit")%>">
@@ -136,7 +136,7 @@
 				    </div>
 				  </div>
 				</a>
-		  	<a href="<%=uicomponent.event("Cancel")%>" class="LightBlueStyle">
+		  	<a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
 					<div class="ButtonLeft">
 					  <div class="ButtonRight">
 						  <div class="ButtonMiddle" title="<%=_ctx.appRes("Cutoffable.view.tooltip.cancel")%>">

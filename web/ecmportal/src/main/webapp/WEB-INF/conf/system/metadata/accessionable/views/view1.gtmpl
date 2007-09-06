@@ -87,7 +87,7 @@
   <table align="center" class="ActionContainer">
   	<tr>
   		<td align="center">
-		  	<a href="<%=uicomponent.event("EditProperty", "rma:accessionable")%>" class="LightBlueStyle">
+		  	<a href="<%=uicomponent.event("EditProperty", "rma:accessionable")%>" class="ActionButton LightBlueStyle">
 					<div class="ButtonLeft">
 						 <div class="ButtonRight">
 						  <div class="ButtonMiddle" title="<%=_ctx.appRes("Accessionable.view.tooltip.add-edit")%>">
