@@ -21,7 +21,7 @@ public class Preference {
   private boolean isShowNonDocumentType = false ;
   private boolean isShowPreferenceDocuments = false ;
   
-  private int nodesPerPage = 50;
+  private int nodesPerPage = 20;
     
   public boolean isJcrEnable() { return jcrEnable ; }
   public void setJcrEnable(boolean b) { jcrEnable = b ; }
