@@ -374,8 +374,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
-    public void execute(Event<UIDocumentInfo> event) throws Exception {
-      long before = System.currentTimeMillis();
+    public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);      
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -391,10 +390,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
         session = provider.getSession(workspaceName,manageableRepository) ;
       }
       uiExplorer.setSelectNode(uri, session) ;
-      uiExplorer.updateAjax(event) ;
-      long after = System.currentTimeMillis();      
-      event.broadcast();
-      System.out.println("======VIEW NODE======="+uri + " lost time:"+(after - before));
+      uiExplorer.updateAjax(event) ;           
+      event.broadcast();      
     }
   }
 
