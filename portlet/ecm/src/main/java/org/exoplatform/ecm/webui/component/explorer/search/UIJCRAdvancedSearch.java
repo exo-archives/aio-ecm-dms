@@ -142,8 +142,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;
-      uiSearchResult.resultMap_.clear() ;
+      UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;      
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;
       uiSearch.setRenderedChild(UIECMSearch.ADVANCED_RESULT) ;

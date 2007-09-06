@@ -144,11 +144,9 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_SQL = "SQL" ;
   final static private String FIELD_XPATH = "xPath" ;
 
-  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1')" ;
-  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1')" ;
-  private static final String ROOT_PATH_SQL_QUERY = "select * from nt:base where jcr:path like '%/$1' ";
-  private static final String PATH_SQL_QUERY = "select * from nt:base where jcr:path like '$0/%/$1' ";
-  
+  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC" ;
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC" ;  
+
   public UIActionBar() throws Exception{
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
@@ -306,7 +304,7 @@ public class UIActionBar extends UIForm {
       uiController.setRepository(uiExplorer.getRepositoryName()) ;
       if(uiController.getListFileType().size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.empty-file-type", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -628,7 +626,11 @@ public class UIActionBar extends UIForm {
       UISideBar uiSideBar = uiWorkingArea.getChild(UISideBar.class) ;
       UIViewRelationList uiViewRelationList = uiSideBar.getChild(UIViewRelationList.class) ;
       if(uiJCRExplorer.getPreference().isShowSideBar()) {
-        if(uiViewRelationList.isRendered()) uiSideBar.setRenderedChild(UITreeExplorer.class) ;
+        if(uiViewRelationList.isRendered())  {
+          UITreeExplorer treeExplorer = uiSideBar.getChild(UITreeExplorer.class);
+          treeExplorer.buildTree();
+          uiSideBar.setRenderedChild(UITreeExplorer.class) ;
+        }
         else uiSideBar.setRenderedChild(UIViewRelationList.class) ;
       } else {
         uiJCRExplorer.getPreference().setShowSideBar(true) ;
@@ -704,19 +706,19 @@ public class UIActionBar extends UIForm {
       if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(!uiExplorer.getCurrentNode().isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(!uiExplorer.hasEditPermission()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING)) ;
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
@@ -872,47 +874,32 @@ public class UIActionBar extends UIForm {
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
-      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
-      String queryText = StringUtils.replace(SQL_QUERY, "$0", currentNode.getPath()) ;      
-      if ("/".equals(currentNode.getPath())) queryText = ROOT_SQL_QUERY ;
-      String statementPath ;
-      if ("/".equals(currentNode.getPath())) {
-        statementPath = StringUtils.replace(ROOT_PATH_SQL_QUERY, "$1", text) ;
-      } else if(currentNode.getParent().getPath().equals("/")) {
-        statementPath = "select * from nt:base where jcr:path like '"+currentNode.getPath()+"/"+text+"' " 
-        + " or jcr:path like '"+currentNode.getPath()+"/%/"+text+"' ";
-      } else {
-        String queryPath = StringUtils.replace(PATH_SQL_QUERY, "$0", currentNode.getParent().getPath());
-        statementPath = StringUtils.replace(queryPath, "$1", text) ;
+      //TODO need search on node name
+      String queryStatement = null ;
+      if("/".equals(currentNode.getPath())) {
+        queryStatement = ROOT_SQL_QUERY ;        
+      }else {
+        queryStatement = SQL_QUERY.replaceAll("$0",currentNode.getPath()) ;
       }
-      String statement = StringUtils.replace(queryText, "$1", text) ;
-      QueryResult queryResult ;
+      queryStatement.replaceAll("$1",text) ;      
+      QueryResult queryResult = null;
       try {
-        Query query = queryManager.createQuery(statement, Query.SQL);    
+        QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+        Query query = queryManager.createQuery(queryStatement, Query.SQL);        
         queryResult = query.execute();
-      } catch(Exception e) {
-        queryResult = null ;
-      }
-      QueryResult pathQueryResult ;
-      try {
-        Query pathQuery = queryManager.createQuery(statementPath, Query.SQL);
-        pathQueryResult = pathQuery.execute();
-      } catch(Exception e) {
-        pathQueryResult = null ;
-      }
+      } catch(Exception e) {        
+      }      
       uiExplorer.removeChildById("ViewSearch") ;
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
       getChild(UIDocumentWorkspace.class) ;
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT) ;
-      uiSearchResult.resultMap_.clear() ;
-      uiSearchResult.setIsQuickSearch(true) ;
-      uiSearchResult.setQueryResults(queryResult) ;
-      uiSearchResult.setQueryResults(pathQueryResult) ;
-      if(uiSearchResult.resultMap_ == null || uiSearchResult.resultMap_.size() ==0) {
+      if(queryResult == null) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-found", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
+      }        
+      uiSearchResult.setIsQuickSearch(true) ;
+      uiSearchResult.setQueryResults(queryResult) ;            
       uiSearchResult.updateGrid() ;
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class) ;
     }

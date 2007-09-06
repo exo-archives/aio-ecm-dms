@@ -29,7 +29,7 @@ public class TreeNode {
   
 	public TreeNode(Node node) {
 	  node_ = node ;
-    isExpanded_ = false ;
+    isExpanded_ = false ;    
 	}
   
   public int getLevel() throws RepositoryException { return node_.getDepth(); }
@@ -59,6 +59,17 @@ public class TreeNode {
         if(child.getNode().getPath().equals(relPath)) return child ;
     }
     return null;
+  }
+  
+  public void update(String path, boolean expanded) throws Exception {
+    TreeNode treeNode = getChild(path) ;
+    if(treeNode == null) return;
+    Node selectedNode = treeNode.getNode();
+    
+  }    
+  
+  public void update(Node child, boolean expanded) throws Exception {
+    
   }
   
   public void setChildren(List<Node> children) throws Exception {

@@ -6,11 +6,10 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
@@ -18,21 +17,22 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
-import javax.jcr.nodetype.NodeType;
-import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.AlphaNodeComparator;
+import org.exoplatform.ecm.jcr.DateTimeComparator;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.jcr.PropertiesComparator;
 import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -50,7 +50,7 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -76,15 +76,21 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIDocumentInfo.DownloadActionListener.class)
     }
 )
-public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
+public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   
-  private String typeSort_ ;
-  private String typeSortOrder_ ;
-  private String nameSortOrder_ ;
+  private String typeSort_ = Preference.SORT_BY_NODETYPE;
+  private String typeSortOrder_ = Preference.ASCENDING_ORDER;
+  private String nameSortOrder_ = Preference.ASCENDING_ORDER;
   private Node currentNode_ ;
-
-  public UIDocumentInfo() throws Exception {}
-
+  
+  private UIPageIterator pageIterator_ ;  
+  
+  public UIDocumentInfo() throws Exception {
+    pageIterator_ = addChild(UIPageIterator.class, null, null) ;        
+  }
+  
+  public UIPageIterator getContentPageIterator() {return pageIterator_ ; }
+  
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -139,13 +145,12 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   }
   
   public String getDownloadLink(Node node) throws Exception {
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource dresource ;
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;    
     if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     String mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
-    dresource = new InputStreamDownloadResource(input, mimeType) ;
+    InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, mimeType) ;
     MimeTypeResolver mimeTypeResolver = new MimeTypeResolver() ;
     String ext = mimeTypeResolver.getExtension(mimeType) ;
     String fileName = node.getName() ;    
@@ -214,8 +219,20 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     return SystemIdentity.ANONIM ;
   }
   
-  public String getNodePath(Node node) throws Exception { return node.getPath() ; }
-
+  public Date getDateCreated(Node node) throws Exception{
+    if(node.hasProperty("exo:dateCreated")) {
+      return node.getProperty("exo:dateCreated").getDate().getTime();
+    }
+    return new GregorianCalendar().getTime();
+  }
+  
+  public Date getDateModified(Node node) throws Exception {
+    if(node.hasProperty("exo:dateModified")) {
+      return node.getProperty("exo:dateModified").getDate().getTime();
+    }
+    return new GregorianCalendar().getTime();
+  }
+  
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
     if (currentNode_.hasProperty(Utils.EXO_RELATION)) {
@@ -317,66 +334,7 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
-
-  //TODO:  Need to use Comparator,  You can call me  when when you are working on this
-  @SuppressWarnings("unchecked")
-  private Map<String, Node> sortByAlphaBeta(List<Node> childrenList) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Preference pref = uiExplorer.getPreference();
-    String order = pref.getOrder() ;
-    Map<String, Node> nodesMap = new TreeMap(new AlphaNodeComparator(order));
-    String nodeType = "" ;
-    int j = 0 ;
-    for(Node childNode : childrenList) {
-      nodeType = childNode.getPrimaryNodeType().getName();
-      // unstructured, taxonomy node considered as folder node for sorting
-      if (Utils.NT_UNSTRUCTURED.equals(nodeType) || Utils.EXO_TAXANOMY.equals(nodeType)) nodeType = Utils.NT_FOLDER;          
-      if (Utils.NT_FOLDER.equals(nodeType)) nodeType = "1";
-      else nodeType = "2";
-      String key = (nodeType + childNode.getName() + Integer.toString(j)).toLowerCase() ;
-      nodesMap.put(key, childNode);
-      j++;
-    }
-    return nodesMap ;
-  }
-
-  @SuppressWarnings("unchecked")
-  private Map<String, Node> sortByNodeType(List<Node> childrenList) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Preference pref = uiExplorer.getPreference();
-    String order = pref.getOrder() ;
-    Map<String, Node> nodesMap = new TreeMap(new TypeNodeComparator(order));
-    int j = 0 ;
-    for(Node childNode : childrenList) {
-      Node jcrContentNode = null;
-      String nodeType = Utils.DEFAULT;
-      String mimeType = Utils.DEFAULT;        
-      nodeType = childNode.getPrimaryNodeType().getName();
-      // unstructured, taxonomy node considered as folder node for sorting
-      if (Utils.NT_UNSTRUCTURED.equals(nodeType) || Utils.EXO_TAXANOMY.equals(nodeType)) nodeType = Utils.NT_FOLDER ;          
-      if (Utils.NT_FILE.equals(nodeType)) jcrContentNode = childNode.getNode(Utils.JCR_CONTENT);
-      else if (Utils.NT_RESOURCE.equals(nodeType)) jcrContentNode = childNode;
-      if (jcrContentNode != null && jcrContentNode.hasProperty(Utils.JCR_MIMETYPE)) {
-        mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString();
-      }
-      // 2 node types for sorting : folder or file
-      if (Utils.NT_FOLDER.equals(nodeType)) nodeType = "folder";
-      else nodeType = "file";
-      // mime type if available. Ex : pdf for application/pdf
-      if (!Utils.DEFAULT.equals(mimeType)) {
-        StringTokenizer strTk = new StringTokenizer(mimeType, "/");
-        if (strTk.countTokens() == 2) {
-          strTk.nextToken();
-          mimeType = strTk.nextToken();
-        }
-      }
-      String key = nodeType + "//" + mimeType + "//" + childNode.getName() + Integer.toString(j) ;
-      nodesMap.put(key.toLowerCase(), childNode);
-      j++;
-    }
-    return nodesMap ;
-  }
-
+  
   public String getLanguage() {
     return getAncestorOfType(UIJCRExplorer.class).getLanguage() ;
   }
@@ -384,107 +342,44 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
   public void setLanguage(String language) { 
     getAncestorOfType(UIJCRExplorer.class).setLanguage(language) ;
   }
-
-  @SuppressWarnings("unchecked")
-  private Map<String, Node> sortByProperty(List<Node> childrenList) throws Exception {
+  
+  public void updatePageListData() throws Exception {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
-    String property = pref.getProperty() ;
-    String order = pref.getOrder() ;
-    Map<String, Node> nodesMap = new TreeMap(new PropertiesComparator(order));
-    String indexList = "2" ;
-    String remainList = "1" ;
-    int j = 0 ;
-    if(order.equals("Ascending")) {
-      indexList = "1" ;
-      remainList = "2" ;
-    } 
-    List<Node> remainNodes = new ArrayList<Node>() ;
-    for(Node childNode : childrenList) {
-      if(childNode.hasProperty(property)) {
-        NodeType nt = childNode.getPrimaryNodeType() ;
-        PropertyDefinition[] propertiesDef = nt.getPropertyDefinitions() ;
-        try {
-          for(int i = 0; i < propertiesDef.length; i ++) {
-            if(propertiesDef[i].getName().equals(property)) {
-              int type = propertiesDef[i].getRequiredType() ;
-              if(type == 1) { //String
-                String strProperty = childNode.getProperty(property).getString() ;
-                String key = (indexList + strProperty + Integer.toString(j)).toLowerCase() ;
-                nodesMap.put(key, childNode);
-              } else if(type == 3 ) { //Long
-                String value = String.valueOf(childNode.getProperty(property).getLong()) ;
-                String key = (indexList + value + Integer.toString(j)).toLowerCase() ;
-                nodesMap.put(key, childNode);
-              } else if(type == 5) { //Date
-                String value = 
-                  String.valueOf(childNode.getProperty(property).getDate().getTimeInMillis()) ;
-                String key = (indexList + value + Integer.toString(j)).toLowerCase() ;
-                nodesMap.put(key, childNode);
-              } else if(type == 6) { //Boolean
-                String value = String.valueOf(childNode.getProperty(property).getBoolean()) ;
-                String key = (indexList + value + Integer.toString(j)).toLowerCase() ;
-                nodesMap.put(key, childNode);
-              } else {
-                remainNodes.add(childNode) ;
-                break ;
-              }
-            }
-          }
-        } catch(Exception ex) {
-          remainNodes.add(childNode) ;
-          break ;
-        }
-      } else {
-        remainNodes.add(childNode) ;
-      }
-      j++;
+    Node currentNode = uiExplorer.getCurrentNode();
+    List<Node> childrenList = uiExplorer.getChildrenList(currentNode,pref.isShowPreferenceDocuments());
+    int nodesPerPage = pref.getNodesPerPage();
+    if(Preference.SORT_BY_NODENAME.equals(pref.getSortType())) {
+      Collections.sort(childrenList,new AlphaNodeComparator(pref.getOrder())) ;
+    }else if(Preference.SORT_BY_NODETYPE.equals(pref.getSortType())) {
+      Collections.sort(childrenList,new TypeNodeComparator(pref.getOrder())) ;
+    }else if(Preference.SORT_BY_CREATED_DATE.equals(pref.getSortType()))  {
+      Collections.sort(childrenList,new DateTimeComparator("exo:dateCreated",pref.getOrder()));
+    }else if(Preference.SORT_BY_MODIFIED_DATE.equals(pref.getSortType())) {
+      Collections.sort(childrenList,new DateTimeComparator("exo:dateModified",pref.getOrder()));
     }
-    for(int i = 0; i < remainNodes.size(); i ++) {
-      Node node = remainNodes.get(i) ;
-      String key = (remainList + node.getName() + Integer.toString(j)).toLowerCase() ;
-      nodesMap.put(key, node);
-      j++ ;
-    }
-    return nodesMap ;
-  }
-
-  public Iterator getChildrenList() throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Preference pref = uiExplorer.getPreference();
-    List<Node> childrenList = 
-      uiExplorer.getChildrenList(uiExplorer.getCurrentNode(), pref.isShowPreferenceDocuments()) ;
-    Map<String,Node> nodesMap;
-    if (Preference.ALPHABETICAL_SORT.equals(pref.getSort())) { nodesMap = sortByAlphaBeta(childrenList) ; }
-    else if(Preference.PROPERTY_SORT.equals(pref.getSort())) { nodesMap = sortByProperty(childrenList) ; }
-    else { nodesMap = sortByNodeType(childrenList) ; }
-    return nodesMap.values().iterator();
-  }
-
-  public String getTypeSort() { 
-    if(typeSort_ == null) return Preference.TYPE_SORT ;
-    return typeSort_ ; 
-  }
-
-  public String getTypeSortOrder() { 
-    if(typeSortOrder_ == null) return Preference.ASCENDING_ORDER ;
-    return typeSortOrder_ ;  
-  }
-  public String getNameSortOrder() { 
-    if(nameSortOrder_ == null) return Preference.ASCENDING_ORDER ;
-    return nameSortOrder_ ;  
+    PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
+    pageIterator_.setPageList(pageList) ;
   }
   
-  public String encodeHTML(String text) throws Exception {
-    return Utils.encodeHTML(text) ;
+  public List<Node> getChildrenList() throws Exception {
+    List<Node> list = pageIterator_.getCurrentPageData();    
+    return list;    
   }
+  
+  public String getTypeSort() { return typeSort_ ; }
+  public String getTypeSortOrder() { return typeSortOrder_ ; }
+  public String getNameSortOrder() { return nameSortOrder_ ; }
+  
+  public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
+      long before = System.currentTimeMillis();
       UIDocumentInfo uicomp = event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);      
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;      
       Session session ;
       if(workspaceName == null ) {
         session = uiExplorer.getSession() ;
@@ -497,11 +392,15 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       }
       uiExplorer.setSelectNode(uri, session) ;
       uiExplorer.updateAjax(event) ;
+      long after = System.currentTimeMillis();      
+      event.broadcast();
+      System.out.println("======VIEW NODE======="+uri + " lost time:"+(after - before));
     }
   }
 
   static  public class ChangeNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
+      long before = System.currentTimeMillis();
       UIDocumentInfo uicomp =  event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -541,7 +440,9 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
           JCRExceptionManager.process(uiApp, e);
         }
       }
-    }
+      long after = System.currentTimeMillis();
+      System.out.println("\n\n\n\n\n\n==========>>>>>>>>>>>>>CHANGE NODE======="+uri + " lost time:"+(after - before));
+    }        
   }
 
   static  public class SortActionListener extends EventListener<UIDocumentInfo> {
@@ -551,27 +452,27 @@ public class UIDocumentInfo extends UIComponent implements ECMViewComponent {
       String sortParam = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String[] array = sortParam.split(";") ;
       Preference pref = uiExplorer.getPreference() ;
-      if(array[0].trim().equals(Preference.TYPE_SORT)) {
+      if(array[0].trim().equals(Preference.SORT_BY_NODETYPE)) {
         if(array[1].trim().equals(Preference.ASCENDING_ORDER)) {
           uicomp.typeSortOrder_ = Preference.ASCENDING_ORDER ;
         } else if(array[1].trim().equals(Preference.DESCENDING_ORDER)) {
           uicomp.typeSortOrder_ = Preference.DESCENDING_ORDER ;
         }
-        uicomp.typeSort_ = Preference.TYPE_SORT ;
-      } else if(array[0].trim().equals(Preference.ALPHABETICAL_SORT)) {
+        uicomp.typeSort_ = Preference.SORT_BY_NODETYPE ;
+      } else if(array[0].trim().equals(Preference.SORT_BY_NODENAME)) {
         if(array[1].trim().equals(Preference.ASCENDING_ORDER)) {
           uicomp.nameSortOrder_ = Preference.ASCENDING_ORDER ;
         } else if(array[1].trim().equals(Preference.DESCENDING_ORDER)) {
           uicomp.nameSortOrder_ = Preference.DESCENDING_ORDER ;
         }
-        uicomp.typeSort_ = Preference.ALPHABETICAL_SORT ;
+        uicomp.typeSort_ = Preference.SORT_BY_NODENAME ;
       }
       if(array.length == 2) {
-        pref.setSort(array[0].trim()) ;
+        pref.setSortType(array[0].trim()) ;
         pref.setOrder(array[1].trim()) ; 
       } else if(array.length == 3) {
-        pref.setSort(array[0].trim()) ;
-        pref.setProperty(array[1].trim()) ;
+        pref.setSortType(array[0].trim()) ;
+        //pref.setProperty(array[1].trim()) ;
         pref.setOrder(array[2].trim()) ;
       } else {
         return ;

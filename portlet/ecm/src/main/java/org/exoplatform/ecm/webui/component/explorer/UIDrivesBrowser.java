@@ -171,11 +171,13 @@ public class UIDrivesBrowser extends UIContainer {
       UIJCRExplorerPortlet uiParent = uiDrive.getParent() ;      
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class) ;
 
-      Preference pref = uiJCRExplorer.getPreference() ;
+      Preference pref = new Preference();
       pref.setShowSideBar(drive.getViewSideBar()) ;
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
-      pref.setEmpty(false) ;                                  
+      pref.setAllowCreateFoder(drive.getAllowCreateFolder());      
+      uiJCRExplorer.setPreferences(pref);
+      
       SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Session session = provider.getSession(drive.getWorkspace(),repository) ;      
@@ -192,6 +194,7 @@ public class UIDrivesBrowser extends UIContainer {
       } 
       uiJCRExplorer.getAllClipBoard().clear() ;
       uiJCRExplorer.setRootNode(node) ;
+      uiJCRExplorer.setSelectNode(node) ;
       uiJCRExplorer.refreshExplorer() ;
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>() ;
       String[] arrView = viewList.split(",") ;

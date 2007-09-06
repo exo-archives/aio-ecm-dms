@@ -9,10 +9,9 @@ import java.util.List;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
-import org.exoplatform.ecm.webui.component.explorer.UIPreferencesForm;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -48,7 +47,7 @@ public class UIViewBar extends UIForm {
   public UIViewBar() throws Exception {
     UIFormSelectBox selectView  = new UIFormSelectBox(FIELD_SELECT_VIEW, null, null) ;
     selectView.setOnChange("ChangeView") ;
-    addChild(selectView) ;
+    addChild(selectView) ;    
   }
 
   public void setViewOptions(List<SelectItemOption<String>> viewOptions) {
@@ -82,11 +81,12 @@ public class UIViewBar extends UIForm {
 
   static public class PreferencesActionListener extends EventListener<UIViewBar> {
     public void execute(Event<UIViewBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UIJCRExplorerPortlet uiJCRExplorerPortlet = uiJCRExplorer.getParent();
-      UIPreferencesForm uiPrefForm = uiJCRExplorerPortlet.getChild(UIPreferencesForm.class) ;
-      uiPrefForm.update(uiJCRExplorer.getPreference()) ;     
-      uiJCRExplorer.setRenderSibbling(UIPreferencesForm.class) ;
+      UIViewBar viewBar = event.getSource();
+      UIJCRExplorer uiJCRExplorer = viewBar.getAncestorOfType(UIJCRExplorer.class);                                         
+      UIPopupAction popupAction = uiJCRExplorer.getChild(UIPopupAction.class);
+      UIPreferencesForm uiPrefForm = popupAction.activate(UIPreferencesForm.class,600) ;
+      uiPrefForm.update(uiJCRExplorer.getPreference()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
     }
   }  
 

@@ -30,8 +30,6 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
-import org.exoplatform.services.cms.drives.DriveData;
-import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -61,7 +59,7 @@ public class UIJCRExplorer extends UIContainer {
 
   private Session session_ = null ;
   private PortletPreferences pref_ ;
-  private Preference preferences_ = new Preference() ;
+  private Preference preferences_;
   private Set<String> addressPath_ = new HashSet<String>() ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;  
   private Node rootNode_ ;
@@ -74,7 +72,7 @@ public class UIJCRExplorer extends UIContainer {
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
     addChild(UIWorkingArea.class, null, null) ;
-    addChild(UIPopupAction.class, null, null);
+    addChild(UIPopupAction.class, null, null);    
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     pref_ = pcontext.getRequest().getPreferences() ;
   }
@@ -87,13 +85,14 @@ public class UIJCRExplorer extends UIContainer {
 
   public void setRootNode(Node node) {
     rootNode_ = node ;
-    currentNode_ = node ;
+    currentNode_ = node ;    
   }
   public Node getRootNode() { return rootNode_ ; }
 
   public Node getCurrentNode() { return currentNode_ ; }
   public void setBackNode(String historyNode) throws Exception {
     currentNode_ = (Node)session_.getItem(historyNode) ;
+    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
     refreshExplorer() ;
   }
 
@@ -145,9 +144,8 @@ public class UIJCRExplorer extends UIContainer {
 
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
-    setValue(filterPath(currentNode_.getPath())) ;
-    UIWorkingArea workingArea = getChild(UIWorkingArea.class) ;
-    workingArea.getChild(UIDocumentWorkspace.class).setRenderedChild(UIDocumentInfo.class) ;
+    setValue(filterPath(currentNode_.getPath())) ;    
+    findFirstComponentOfType(UIDocumentInfo.class).setRendered(true);        
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
     popupAction.deActivate() ;
   }
@@ -169,7 +167,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasAddPermission() {
     try {
-      session_.checkPermission(currentNode_.getPath(), PermissionType.ADD_NODE) ;
+      ((ExtendedNode)currentNode_).checkPermission(PermissionType.ADD_NODE) ;      
     } catch(Exception e) {
       return false ;
     }
@@ -178,7 +176,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasEditPermission() {
     try {
-      session_.checkPermission(currentNode_.getPath(), PermissionType.SET_PROPERTY) ;
+      ((ExtendedNode)currentNode_).checkPermission(PermissionType.SET_PROPERTY) ;
     } catch(Exception e) {
       return false ;
     }
@@ -187,7 +185,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasRemovePermission() {
     try {
-      session_.checkPermission(currentNode_.getPath(), PermissionType.REMOVE) ;
+      ((ExtendedNode)currentNode_).checkPermission(PermissionType.REMOVE) ;
     } catch(Exception e) {
       return false ;
     }
@@ -196,7 +194,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasReadPermission() {
     try {
-      session_.checkPermission(currentNode_.getPath(), PermissionType.READ) ;
+      ((ExtendedNode)currentNode_).checkPermission(PermissionType.READ) ;
     } catch(Exception e) {
       return false ;
     }
@@ -241,6 +239,7 @@ public class UIJCRExplorer extends UIContainer {
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
+    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
     uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
     if(!isHidePopup_) {
@@ -275,6 +274,7 @@ public class UIJCRExplorer extends UIContainer {
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }
+    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
   }
 
   public void setSelectNode(String uri, Session session) throws Exception {  
@@ -286,10 +286,11 @@ public class UIJCRExplorer extends UIContainer {
     } catch (Exception e) {
       currentNode_ = currentNode_.getParent() ;
     }
+    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }
-    if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;
+    if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;    
   }
 
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {
@@ -368,28 +369,10 @@ public class UIJCRExplorer extends UIContainer {
       return false;
     }    
   }  
-
-  public Preference getPreference() throws Exception { 
-    if(preferences_.isEmpty()){
-      ManageDriveService dservice = getApplicationComponent(ManageDriveService.class) ;
-      PortletPreferences portletPref = getPortletPreferences() ; 
-      String driveName = portletPref.getValue(Utils.DRIVE, "") ;
-      try{
-        String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-        DriveData drive = dservice.getDriveByName(driveName, repository) ;
-        preferences_.setShowSideBar(drive.getViewSideBar()) ;
-        preferences_.setShowNonDocumentType(drive.getViewNonDocument()) ;
-        preferences_.setShowPreferenceDocuments(drive.getViewPreferences()) ;
-        preferences_.setAllowCreateFoder(drive.getAllowCreateFolder()) ;
-        preferences_.setEmpty(false) ;        
-      } catch(Exception e) {
-        preferences_.setEmpty(true) ;
-        return preferences_ ;
-      }
-    }
-    return preferences_; 
-  }
-
+    
+  public Preference getPreference() { return preferences_; }  
+  public void setPreferences(Preference preference) {this.preferences_ = preference; } 
+  
   public String getPreferencesPath() {
     PortletPreferences prefs_ = getPortletPreferences() ;
     String prefPath = prefs_.getValue(Utils.JCR_PATH, "") ;

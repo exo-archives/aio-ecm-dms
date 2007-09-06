@@ -22,6 +22,6 @@ public class UIControl extends UIContainer {
   public UIControl() throws Exception {
     addChild(UIViewBar.class, null, null) ;
     addChild(UIAddressBar.class, null, null) ;
-    addChild(UIActionBar.class, null, null) ;
+    addChild(UIActionBar.class, null, null) ;    
   }
 }

@@ -187,8 +187,7 @@ public class UISimpleSearch extends UIForm {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
-      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
-      uiSearchResult.resultMap_.clear() ;
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;      
       if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

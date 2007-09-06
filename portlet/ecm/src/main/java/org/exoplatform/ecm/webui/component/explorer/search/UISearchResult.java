@@ -5,17 +5,11 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.query.QueryResult;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
@@ -23,8 +17,6 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -53,8 +45,9 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UISearchResult extends UIContainer {
+
+  private QueryResult queryResult_;
   
-  public Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
   private boolean isQuickSearch_ = false ;
   private UIPageIterator uiPageIterator_ ;
 
@@ -65,40 +58,27 @@ public class UISearchResult extends UIContainer {
   public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
 
   public void setQueryResults(QueryResult queryResult) throws Exception {
-    if(queryResult != null){
-      NodeIterator iter = queryResult.getNodes() ;
-      while(iter.hasNext()){
-        Node node = iter.nextNode() ;
-        resultMap_.put(node.getPath(), node) ;
-      }
-    }
+    queryResult_ = queryResult ;         
+  }  
+  
+  public List getCurrentList() throws Exception { 
+    return uiPageIterator_.getCurrentPageData() ;    
   }
 
-  public Node[] getNodeIterator() throws Exception { 
-    return resultMap_.values().toArray(new Node[]{}) ; 
-  }
-  
-  public List getCurrentList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
-  
   @SuppressWarnings("unchecked")
   public List<Node> getResultList() throws Exception {
-    List<Node> lists = new ArrayList<Node>() ;
-    for(Node node : getNodeIterator()) {
-      lists.add(node) ;
-    }
-    List<Node> realList = new ArrayList<Node>() ;
-    for(Node node : lists) {
+    List<Node> lists = new ArrayList<Node>() ;    
+    for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+      Node node = iter.nextNode();
       if(node.getName().equals(Utils.JCR_CONTENT)) {
         if(!lists.contains(node.getParent())) {
-          realList.add(node.getParent()) ;
+          lists.add(node.getParent()) ;
         } 
       } else {
-        realList.add(node) ;
+        lists.add(node) ;
       }
-    }
-    Collections.sort(realList, new NodeNameComparator()) ;
-    Collections.sort(realList, new NodeTypeNameComparator()) ;
-    return realList ;
+    }    
+    return lists ;
   }
 
   public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
@@ -107,43 +87,12 @@ public class UISearchResult extends UIContainer {
     PageList pageList = new ObjectPageList(getResultList(), 10) ;
     uiPageIterator_.setPageList(pageList) ;
   }
-
-  public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest prequest = pcontext.getRequest() ;
-    PortletPreferences portletPref = prequest.getPreferences() ;
-    return portletPref ;
-  }
-
-  static public class NodeNameComparator implements Comparator {
-    public int compare(Object o1, Object o2) throws ClassCastException {
-      try {
-        String name1 = ((Node) o1).getName() ;
-        String name2 = ((Node) o2).getName() ;
-        return name1.compareToIgnoreCase(name2) ;
-      } catch(Exception e) {
-        return 0;
-      }
-    }
-  }
-  
-  static public class NodeTypeNameComparator implements Comparator {
-    public int compare(Object o1, Object o2) throws ClassCastException {
-      try {
-        String name1 = ((Node) o1).getPrimaryNodeType().getName() ;
-        String name2 = ((Node) o2).getPrimaryNodeType().getName() ;
-        return name1.compareToIgnoreCase(name2) ;
-      } catch(Exception e) {
-        return 0;
-      }
-    }
-  }
-  
+   
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
-      UISearchResult uiSearchResult = event.getSource() ;
-      String repository = uiSearchResult.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+      UISearchResult uiSearchResult = event.getSource() ;            
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
+      String repository = uiExplorer.getRepositoryName() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node node = (Node)uiExplorer.getSession().getItem(path) ;
       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class) ;

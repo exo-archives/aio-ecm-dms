@@ -2,28 +2,32 @@ package org.exoplatform.ecm.jcr.model;
 
 public class Preference {
       
-  public static final String ALPHABETICAL_SORT = "Alphabetic" ;
-  public static final String TYPE_SORT = "Type" ;
+  public static final String SORT_BY_NODENAME = "Alphabetic" ;
+  public static final String SORT_BY_NODETYPE= "Type" ;
+  public static final String SORT_BY_CREATED_DATE= "CreatedDate" ;
+  public static final String SORT_BY_MODIFIED_DATE= "ModifiedDate" ;
   public static final String PROPERTY_SORT = "Property" ;
+  
   public static final String SHOW_NON_DOCUMENTTYPE = "showNonDocumentType" ;
   public static final String ASCENDING_ORDER = "Ascending" ;
   public static final String DESCENDING_ORDER = "Descending" ;
     
-  private boolean jcrEnable = false;
-  private String sort = ALPHABETICAL_SORT ;
-  private String order = ASCENDING_ORDER ;
-  private String customOrderByProperty = "" ;
+  private String sortType = SORT_BY_NODENAME ;
+  private String order = ASCENDING_ORDER ;  
   private String allowCreateFoder = "" ;
+  
+  private boolean jcrEnable = false;  
   private boolean showSideBar = false ;
   private boolean isShowNonDocumentType = false ;
   private boolean isShowPreferenceDocuments = false ;
-  private boolean isEmpty = true ;
+  
+  private int nodesPerPage = 50;
     
   public boolean isJcrEnable() { return jcrEnable ; }
   public void setJcrEnable(boolean b) { jcrEnable = b ; }
 
-  public String getSort() { return sort ; }
-  public void setSort(String s) { sort = s ; }
+  public String getSortType() { return sortType ; }
+  public void setSortType(String s) { sortType = s ; }
   
   public String getOrder() { return order ; }
   public void setOrder(String s) { order = s ; }
@@ -35,15 +39,11 @@ public class Preference {
   public void setShowNonDocumentType( boolean b) { isShowNonDocumentType = b ; }
   
   public boolean isShowPreferenceDocuments() { return isShowPreferenceDocuments ; }
-  public void setShowPreferenceDocuments(boolean b) { isShowPreferenceDocuments = b ; }
-  
-  public boolean isEmpty() { return isEmpty ; }
-  public void setEmpty(boolean b) { isEmpty = b ; }
+  public void setShowPreferenceDocuments(boolean b) { isShowPreferenceDocuments = b ; }      
   
   public String getAllowCreateFoder() { return allowCreateFoder ; }
   public void setAllowCreateFoder(String s) { allowCreateFoder = s ; }
   
-  public String getProperty() { return customOrderByProperty ; }
-  public void setProperty(String s) { customOrderByProperty = s ; }
-  
+  public int getNodesPerPage(){return nodesPerPage ; }
+  public void setNodesPerPage(int number) { this.nodesPerPage = number ; }
 }
