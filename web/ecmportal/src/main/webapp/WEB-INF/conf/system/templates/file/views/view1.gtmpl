@@ -19,6 +19,7 @@
     background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
     border: 1px solid #cbcbcb;
     overflow: auto;
+    width: 98%;
   }
   
   .FileContent .ECMIframe {
@@ -33,7 +34,7 @@
     border: 1px solid #cbcbcb; 
     border-top: none;
    	white-space: normal;
-   	width: 99.8%;
+   	width: 99.5%;
    	overflow: auto;
    	height: 300px;
   }
@@ -50,7 +51,7 @@
     overflow: visible;
     padding: 15px 0px;
   }
-  
+    
   .FileContent .UIVoteForm {
     padding: 0px;
   }
@@ -148,10 +149,9 @@
 		          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
 		        } else {
 		        	if(mimeType.startsWith("image")) {
-		        	def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
 		        %> 	
 			    		<div class="ContentDetail">
-		            <image src="<%=imageLink%>"/>
+		            <image src="<%=uicomponent.getDownloadLink(currentNode)%>"/>
 		          </div>
 		        <%}else {%> 
 							<div style="text-align:center; font-style:italic">
@@ -176,7 +176,7 @@
 		          </div>
 		        </div>
 		      </a>
-		      <a href="<%=uicomponent.event("Download")%>" class="ActionButton LightBlueStyle">
+		      <a href="<%=uicomponent.getDownloadLink(currentNode)%>" class="ActionButton LightBlueStyle">
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">
@@ -188,7 +188,7 @@
 	  		</td>
 	  	</tr>          
 	  </table>
-	</div>               
+	</div>                  
   <div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
   <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
 </div>

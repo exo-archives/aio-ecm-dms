@@ -64,7 +64,7 @@ public class UIUploadContainer extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageManager) ;
         return ;
       }
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;     
       uiExplorer.cancelAction() ;
     }
   }
