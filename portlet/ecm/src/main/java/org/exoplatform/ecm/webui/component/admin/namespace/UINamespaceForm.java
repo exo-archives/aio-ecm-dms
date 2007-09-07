@@ -80,7 +80,7 @@ public class UINamespaceForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch (NamespaceException NE) {
-        Object[] args = { uri } ; 
+        Object[] args = { prefix } ; 
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-already-exists", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
