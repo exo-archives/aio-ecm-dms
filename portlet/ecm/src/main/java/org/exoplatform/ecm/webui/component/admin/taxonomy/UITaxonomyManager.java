@@ -137,6 +137,12 @@ public class UITaxonomyManager extends UIContainer {
       UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class) ;
       String type = uiManager.clipboard_.getType();
       String srcPath = uiManager.clipboard_.getSrcPath();
+      if(type == null || srcPath == null) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.can-not-paste", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       if(type.equals(ClipboardCommand.CUT) && realPath.equals(srcPath)) {
         Object[] arg = { realPath } ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.node-is-cutting", arg, 

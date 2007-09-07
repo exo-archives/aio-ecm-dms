@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.admin.script;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.version.VersionHistory;
 
@@ -209,7 +210,14 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       boolean isEnableVersioning = 
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning) { 
-        scriptService.addScript(namePrefix + "/" + name, content, repository,SessionsUtils.getSessionProvider()) ;
+        try {
+          scriptService.addScript(namePrefix + "/" + name, content, repository,SessionsUtils.getSessionProvider()) ;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;          
+        }
       } else {
         Node node = curentList.getScriptNode(name) ; 
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;

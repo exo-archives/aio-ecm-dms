@@ -102,7 +102,7 @@ public class UIDrivesBrowser extends UIContainer {
             drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
             session.logout() ;
           }
-          if(isExistWorspace(repository, drive)) driveList.add(drive) ;
+          if(isExistWorspace(repository, drive) && !driveList.contains(drive)) driveList.add(drive) ;
         }
       }
     }

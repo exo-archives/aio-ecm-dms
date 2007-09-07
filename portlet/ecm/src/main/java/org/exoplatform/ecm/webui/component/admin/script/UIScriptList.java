@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -15,12 +16,14 @@ import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -161,7 +164,12 @@ public class UIScriptList extends UIGrid {
       ScriptService scriptService =  uiScriptList.getApplicationComponent(ScriptService.class) ;
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String namePrefix = uiScriptList.getScriptCategory() ;       
-      scriptService.removeScript(namePrefix + "/" + scriptName, repository,SessionsUtils.getSessionProvider()) ;
+      try {
+        scriptService.removeScript(namePrefix + "/" + scriptName, repository,SessionsUtils.getSessionProvider()) ;
+      } catch(AccessDeniedException ace) {
+        throw new MessageException(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", 
+                                                          null, ApplicationMessage.WARNING)) ;
+      }
       uiScriptList.refresh() ;
       UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
       if((UIComponent)uiScriptList.getParent() instanceof UIECMScripts) {

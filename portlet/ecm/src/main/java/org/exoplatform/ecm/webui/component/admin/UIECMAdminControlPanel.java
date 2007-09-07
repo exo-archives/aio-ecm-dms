@@ -6,6 +6,8 @@ package org.exoplatform.ecm.webui.component.admin;
 
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
+
 import org.exoplatform.ecm.webui.component.admin.action.UIActionManager;
 import org.exoplatform.ecm.webui.component.admin.drives.UIDriveManager;
 import org.exoplatform.ecm.webui.component.admin.folksonomy.UIFolksonomyManager;
@@ -19,11 +21,13 @@ import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.exception.MessageException;
 
 /**
  * Created by The eXo Platform SARL
@@ -56,9 +60,14 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.getChild(UITemplatesManager.class).refresh() ;
-      uiWorkingArea.setChild(UITemplatesManager.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      try {
+        uiWorkingArea.getChild(UITemplatesManager.class).refresh() ;
+        uiWorkingArea.setChild(UITemplatesManager.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      } catch(AccessDeniedException ace) {
+        throw new MessageException(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", 
+                                                          null, ApplicationMessage.WARNING)) ;
+      }
     }
   }
 
@@ -96,9 +105,14 @@ public class UIECMAdminControlPanel extends UIComponent {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
       UIECMAdminPortlet portlet = event.getSource().getParent() ;
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.getChild(UIViewManager.class).update() ;
-      uiWorkingArea.setChild(UIViewManager.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      try {
+        uiWorkingArea.getChild(UIViewManager.class).update() ;
+        uiWorkingArea.setChild(UIViewManager.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      } catch(AccessDeniedException ace) {
+        throw new MessageException(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", 
+                                                          null, ApplicationMessage.WARNING)) ;        
+      }
     }
   }
 
