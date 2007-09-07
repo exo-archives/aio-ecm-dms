@@ -430,10 +430,20 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         if(!pro.isProtected()){
           String propertyName = pro.getName() ;
           if(node.hasProperty(propertyName)) {
-            newLang.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
+            if(node.getProperty(propertyName).getDefinition().isMultiple()) {
+              Value[] values = node.getProperty(propertyName).getValues() ;
+              newLang.setProperty(propertyName, values) ;
+            } else {
+              newLang.setProperty(propertyName, node.getProperty(propertyName).getValue()) ;
+            }
           }
           if(selectedLangNode.hasProperty(propertyName)) {
-            node.setProperty(propertyName, selectedLangNode.getProperty(propertyName).getValue()) ;
+            if(selectedLangNode.getProperty(propertyName).getDefinition().isMultiple()) {
+              Value[] values = selectedLangNode.getProperty(propertyName).getValues() ;
+              node.setProperty(propertyName, values) ;
+            } else {
+              node.setProperty(propertyName, selectedLangNode.getProperty(propertyName).getValue()) ;
+            }
           }
         }
       }

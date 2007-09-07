@@ -162,12 +162,12 @@ public class UISimpleSearch extends UIForm {
       if(uiSimpleSearch.constraints_.size() > 0 && intIndex == 0) {
         String newFirstConstraint = null;
         String newFirstVirtualConstraint = null;
-        if(uiSimpleSearch.constraints_.get(0).contains(OR)) {
+        if(uiSimpleSearch.constraints_.get(0).trim().startsWith(OR)) {
           newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length()) ;
           newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(3, uiSimpleSearch.virtualConstraints_.get(0).length()) ;
           uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
           uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint) ;
-        } else if(uiSimpleSearch.constraints_.get(0).contains(AND)) {
+        } else if(uiSimpleSearch.constraints_.get(0).trim().startsWith(AND)) {
           newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length()) ;
           newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(4, uiSimpleSearch.virtualConstraints_.get(0).length()) ;
           uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
