@@ -6,9 +6,8 @@
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
   String componentId = uicomponent.getId();    
 %>
-<div id = "$componentId">
-	<div class="UIResizableBlock" style="overflow: auto; width: 100%; height: 320px;">
-		<div class="UIThumbnailsView">
+<div id = "$componentId">	
+		<div class="UIThumbnailsView" style="overflow: auto; width: 100%; height: 290px;">
 		  <div class="ActionIconsContainer">
 		    <%for(data in uicomponent.getChildrenList()) { %>
 		      <div class="ActionIconBox">
@@ -74,8 +73,7 @@
 		      </div> 
 		    <%}%>
 		  </div>  
-		</div>
-	</div>
+		</div>	
 	<div style="margin:4px 0px 4px 0px;">
 		<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
 	</div>
