@@ -396,8 +396,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   static  public class ChangeNodeActionListener extends EventListener<UIDocumentInfo> {
-    public void execute(Event<UIDocumentInfo> event) throws Exception {
-      long before = System.currentTimeMillis();
+    public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp =  event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -433,12 +432,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
             uiExplorer.updateAjax(event) ;
           }
         } catch(Exception e) {
-          e.printStackTrace() ;
           JCRExceptionManager.process(uiApp, e);
         }
-      }
-      long after = System.currentTimeMillis();
-      System.out.println("\n\n\n\n\n\n==========>>>>>>>>>>>>>CHANGE NODE======="+uri + " lost time:"+(after - before));
+      }      
     }        
   }
 
