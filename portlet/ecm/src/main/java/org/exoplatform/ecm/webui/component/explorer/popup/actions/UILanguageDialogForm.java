@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import java.util.Map;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.utils.Utils;
@@ -108,10 +109,24 @@ public class UILanguageDialogForm extends DialogFormFields {
     }
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
       Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
-      multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
+      try {
+        multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return null;
+      }
     } else {
       Map map = Utils.prepareMap(getChildren(), properties, uiExplorer.getSession()) ;
-      multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
+      try {
+        multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return null;        
+      }
     }
     node.save() ;
     UIMultiLanguageManager uiManager = getAncestorOfType(UIMultiLanguageManager.class) ;
