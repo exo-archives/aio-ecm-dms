@@ -304,7 +304,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       UIDocumentDetail uiDocument = event.getSource() ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiDocument.setLanguage(selectedLanguage) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getAncestorOfType(UIBrowseContentPortlet.class)) ;
     }
   }
 

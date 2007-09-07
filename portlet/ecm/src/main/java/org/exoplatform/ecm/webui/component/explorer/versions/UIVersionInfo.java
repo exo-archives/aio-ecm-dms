@@ -11,6 +11,7 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -150,9 +151,9 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
         versionHistory.removeVersion(uiVersionInfo.curentVersion_ .getName());
         uiVersionInfo.rootVersion_ = new VersionNode(node.getVersionHistory().getRootVersion()) ;
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo.getAncestorOfType(UIPopupAction.class)) ;
       } catch (ReferentialIntegrityException rie) {
-//        rie.printStackTrace() ;
+        rie.printStackTrace() ;
         /*UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;*/
       } catch (Exception e) {
