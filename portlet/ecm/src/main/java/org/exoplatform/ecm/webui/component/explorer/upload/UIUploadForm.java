@@ -222,6 +222,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         UIFormUploadInput uiChild = uiForm.getChild(UIFormUploadInput.class) ;
         uploadService.removeUpload(uiChild.getUploadId()) ;
         uiManager.setRenderedChild(UIUploadContainer.class) ;
+        uiExplorer.setIsHidePopup(true) ;
+        uiExplorer.updateAjax(event) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } catch(ConstraintViolationException con) {
         Object[] args = {name, } ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
