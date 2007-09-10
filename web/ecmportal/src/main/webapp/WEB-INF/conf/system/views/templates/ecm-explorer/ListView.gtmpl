@@ -17,8 +17,8 @@
   java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm");  
 %>
 <div id = "$componentId">	
-	<div class="UIListView" style="overflow: auto; width: 100%; height: 280px;">
-	  <table class="UIGridControl">
+	<div class="UIListView" style="overflow: auto; width: 99.5%; height: 275px;">
+	  <table class="UIGridControl" style="width:99.5%">
 	    <%
 	      String typeSort = uicomponent.getTypeSort() ;
 	      String typeSortOrder = uicomponent.getTypeSortOrder() ;
