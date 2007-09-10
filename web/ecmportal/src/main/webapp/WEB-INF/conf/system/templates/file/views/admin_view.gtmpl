@@ -25,7 +25,7 @@
   .FileContent .ECMIframe {
    	border: 1px solid #cbcbcb; 
     border-top: none;
-  	width : 99.5% ;
+  	width : 99% ;
   	height: 100% ;
   	overflow: auto;
   }
@@ -34,7 +34,7 @@
     border: 1px solid #cbcbcb; 
     border-top: none;
    	white-space: normal;
-   	width: 99.5%;
+   	width: 99%;
    	overflow: auto;
    	height: 300px;
   }
@@ -149,9 +149,10 @@
 		          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
 		        } else {
 		        	if(mimeType.startsWith("image")) {
+		        	def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
 		        %> 	
 			    		<div class="ContentDetail">
-		            <image src="<%=uicomponent.getDownloadLink(currentNode)%>"/>
+		            <image src="<%=imageLink%>"/>
 		          </div>
 		        <%}else {%> 
 							<div style="text-align:center; font-style:italic">
@@ -176,7 +177,7 @@
 		          </div>
 		        </div>
 		      </a>
-		      <a href="<%=uicomponent.getDownloadLink(currentNode)%>" class="ActionButton LightBlueStyle">
+		      <a href="<%=uicomponent.event("Download")%>" class="ActionButton LightBlueStyle">
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">

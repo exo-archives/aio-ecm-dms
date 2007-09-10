@@ -121,7 +121,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel {
-  height: 20px;
+  line-height: 14px;
   margin: auto;
   text-align: center;
 }

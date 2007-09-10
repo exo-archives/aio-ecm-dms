@@ -8,7 +8,6 @@
 
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
-  border: solid 1px #aeaeae;
   background: white;
   width: 99.8%; /* Bug on IE */
 }

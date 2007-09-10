@@ -25,7 +25,7 @@
   .FileContent .ECMIframe {
    	border: 1px solid #cbcbcb; 
     border-top: none;
-  	width : 99.5% ;
+  	width : 99% ;
   	height: 100% ;
   	overflow: auto;
   }
@@ -34,7 +34,7 @@
     border: 1px solid #cbcbcb; 
     border-top: none;
    	white-space: normal;
-   	width: 99.5%;
+   	width: 99%;
    	overflow: auto;
    	height: 300px;
   }
