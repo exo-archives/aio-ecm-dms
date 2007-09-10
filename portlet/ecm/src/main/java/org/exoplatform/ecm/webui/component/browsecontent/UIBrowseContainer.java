@@ -114,13 +114,13 @@ public class UIBrowseContainer extends UIContainer {
 
   private String detailTemplate_ ;
 
-  private boolean isShowAllDocument_ ;
+  private boolean isShowAllDocument_  ;
 
-  private boolean isShowCategoriesTree_ ;
+  private boolean isShowCategoriesTree_ = true ;
 
-  private boolean isShowDetailDocument_ = true;
-  private boolean isShowDocumentByTag_ ;
-  private boolean isShowDocumentList_ ;    
+  private boolean isShowDetailDocument_ = false ;
+  private boolean isShowDocumentByTag_ = false ;
+  private boolean isShowDocumentList_  = false ;    
 
   private boolean isShowPageAction_ ;
   private boolean isShowSearchForm_ ;
@@ -147,7 +147,7 @@ public class UIBrowseContainer extends UIContainer {
     addChild(uiTree) ;
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
-    addChild(UIDocumentDetail.class, null, null).setRendered(false) ;
+    addChild(UIDocumentDetail.class, null, null) ;
   }  
 
   public void changeNode(Node selectNode) throws Exception {
@@ -399,7 +399,7 @@ public class UIBrowseContainer extends UIContainer {
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
   }
-  
+
   public String getPageUri() {
     UIPortal uiPortal = Util.getUIPortal() ;
     return uiPortal.getSelectedNode().getUri() ;
@@ -477,7 +477,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     return tagStyle ;
   }
-  
+
   public String getTemplate() {
     if(isShowDetailDocument_) return detailTemplate_ ;
     return templatePath_ ; 
@@ -966,18 +966,17 @@ public class UIBrowseContainer extends UIContainer {
         uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
             .getNode(detailTemplateName).getPath())  ;
         uiContainer.viewDocument(selectNode, true) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-        return ;
+      } else {
+        String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+        if((templateType.equals(Utils.CB_USE_JCR_QUERY)) || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
+          UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
+          app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.template-notsupported", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        } else {
+          uiContainer.changeNode(selectNode) ;
+        }
       }
-      String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
-      if((templateType.equals(Utils.CB_USE_JCR_QUERY)) || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
-        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.template-notsupported", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
-        return ;
-      }
-      uiContainer.changeNode(selectNode) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+      //event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer.getAncestorOfType(UIBrowseContentPortlet.class)) ;
     }
   }
 
