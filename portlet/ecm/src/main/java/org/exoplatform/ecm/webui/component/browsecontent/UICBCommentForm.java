@@ -56,7 +56,7 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
     context.getJavascriptManager().importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
     addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-    addChild(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(EmptyFieldValidator.class)) ;
+    addChild(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null)) ;
     setActions(new String[] {"Save", "Cancel"}) ;
   }
 
@@ -89,36 +89,46 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       Node currentDoc = uiForm.getDocument() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String language = uiDocumentDetail.getLanguage() ;
-      if(DEFAULT_LANGUAGE.equals(language)) { 
-        if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
-          currentDoc.addMixin("mix:i18n") ;
-          currentDoc.save() ;
-          language = DEFAULT_LANGUAGE ;
-        } else {
-          language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString() ;
+      System.out.println("\n\n comment " + comment);
+      if(comment == null || comment.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.comment-required", null, ApplicationMessage.WARNING)) ;
+        UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      } else {
+        if(DEFAULT_LANGUAGE.equals(language)) { 
+          if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
+            currentDoc.addMixin("mix:i18n") ;
+            currentDoc.save() ;
+            language = DEFAULT_LANGUAGE ;
+          } else {
+            language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString() ;
+          }
         }
+        CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
+        try {
+          commentsService.addComment(uiForm.getDocument(), name, email, website, comment, language) ;
+        } catch (LockException le) {
+          uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } catch (VersionException ve) {
+          uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.versioning-doc", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } catch (Exception e) {
+          uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.error-vote", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+        uiPopupAction.deActivate() ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer) ;
       }
-      CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
-      try {
-        commentsService.addComment(uiForm.getDocument(), name, email, website, comment, language) ;
-      } catch (LockException le) {
-        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } catch (VersionException ve) {
-        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.versioning-doc", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } catch (Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.error-vote", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
-      uiPopupAction.deActivate() ;
     }
   }
 }
