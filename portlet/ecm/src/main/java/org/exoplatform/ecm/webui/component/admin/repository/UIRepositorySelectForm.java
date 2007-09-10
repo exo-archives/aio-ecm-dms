@@ -20,6 +20,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 
@@ -32,7 +33,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/admin/UIRepositorySelectForm.gtmpl",
-    events = {@EventConfig(listeners = UIRepositorySelectForm.OnchangeActionListener.class)}
+    events = {@EventConfig(phase=Phase.DECODE, listeners = UIRepositorySelectForm.OnchangeActionListener.class)}
 )
 
 public class UIRepositorySelectForm extends UIForm {

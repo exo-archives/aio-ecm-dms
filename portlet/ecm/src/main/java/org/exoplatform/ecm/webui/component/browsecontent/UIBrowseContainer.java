@@ -996,7 +996,7 @@ public class UIBrowseContainer extends UIContainer {
           uiContainer.changeNode(selectNode) ;
         }
       }
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer.getAncestorOfType(UIBrowseContentPortlet.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer.getAncestorOfType(UIBrowseContentPortlet.class)) ;
     }
   }
 

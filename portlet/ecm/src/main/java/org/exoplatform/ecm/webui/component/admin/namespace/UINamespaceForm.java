@@ -4,8 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.namespace;
 
-import javax.jcr.ItemExistsException;
-import javax.jcr.NamespaceException;
 import javax.jcr.NamespaceRegistry;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -71,27 +69,17 @@ public class UINamespaceForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      UINamespaceManager uiManager = uiForm.getAncestorOfType(UINamespaceManager.class) ;
       try {
         namespaceRegistry.registerNamespace(prefix, uri) ;
-      } catch (ItemExistsException IEE) {
-        Object[] args = { prefix } ; 
-        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.prefix-already-exists", args, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } catch (NamespaceException NE) {
-        Object[] args = { prefix } ; 
-        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.uri-already-exists", args, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        uiManager.refresh() ;
+        uiManager.removeChild(UIPopupWindow.class) ;
       } catch (Exception e) {
-        e.printStackTrace() ;
-        return ;
+        uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.register-unsuccessfull", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        //e.printStackTrace() ;
       }
-      UINamespaceManager uiManager = uiForm.getAncestorOfType(UINamespaceManager.class) ;
-      uiManager.refresh() ;
-      uiManager.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
