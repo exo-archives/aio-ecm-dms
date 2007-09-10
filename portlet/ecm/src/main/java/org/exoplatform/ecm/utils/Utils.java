@@ -41,7 +41,7 @@ public class Utils {
   final public static String WORKSPACE_NAME = "workspace".intern() ;   
   final public static String JCR_PATH = "path".intern() ; 
   final public static String DRIVE_FOLDER = "allowCreateFolder".intern() ; 
-
+  final public static String MIN_WIDTH = "minwidth".intern() ;
   final public static String CB_DOCUMENT_NAME = "documentName".intern() ;
   final public static String CB_SCRIPT_NAME = "scriptName".intern() ;
   final public static String CB_REF_DOCUMENT = "reference".intern() ;  

@@ -32,6 +32,10 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
 
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String minWidth = portletPref.getValue(Utils.MIN_WIDTH, "") ;
+    if(minWidth != null && minWidth.length() > 0) setMinWidth(Integer.parseInt(minWidth)) ;
     addChild(UIBrowseContentHelp.class, null, null) ;
     PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     UIPopupAction popup = addChild(UIPopupAction.class, null, null);

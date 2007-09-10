@@ -202,6 +202,26 @@ public class UIBrowseContainer extends UIContainer {
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node contentNode = null;
+    if(node.hasNode(nodeTypeName)) {
+      contentNode = node.getNode(nodeTypeName) ;
+    } else if(node.hasNode(Utils.JCR_CONTENT)) {
+      if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return ""; 
+      contentNode = node.getNode(Utils.JCR_CONTENT) ;
+      String mimeType = contentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
+      if(mimeType.startsWith("text")) return contentNode.getProperty(Utils.JCR_DATA).getString() ;
+    }
+    if(contentNode == null) return null;
+    InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    if(input.available() == 0) return null ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }  
 
   public int getItemPerPage() {
     return Integer.parseInt(getPortletPreferences().getValue(Utils.CB_NB_PER_PAGE, "")) ;
