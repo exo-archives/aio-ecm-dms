@@ -713,7 +713,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(AccessDeniedException ace) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.access-remove-denied", null, 
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
