@@ -104,14 +104,15 @@ public class TemplatePlugin extends BaseComponentPlugin {
         nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false) ;
 
       nodeTypeHome.setProperty(TEMPLATE_LABEL, nodeType.getLabel()) ;
-
+      
       List dialogs = nodeType.getReferencedDialog();
       Node dialogsHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
       addNode(storedLocation, dialogsHome, dialogs);
-
+      
       List views = nodeType.getReferencedView();
       Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-      addNode(storedLocation, viewsHome, views);      
+      addNode(storedLocation, viewsHome, views);
+            
     }    
   }
 
@@ -125,10 +126,11 @@ public class TemplatePlugin extends BaseComponentPlugin {
     TemplateConfig templateConfig = null ;
     Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
     //be carefull. Maybe lost data here
-    if(templatesHome.hasNodes()) {
+    //recommented by Hung: this code over the init template in second plugin
+    /*if(templatesHome.hasNodes()) {
       session.logout();
       return ;
-    }
+    }*/
     while(iter.hasNext()) {
       Object object = iter.next().getObject() ;
       if(!(object instanceof TemplateConfig)) {          
@@ -156,7 +158,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
         contentNode = nodeTypeHome.addNode(nodeName, EXO_TEMPLATE);
       }
       contentNode.setProperty(EXO_ROLES_PROP, template.getParsedRoles());
-      contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);
+      contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);      
     }
   }    
 }
