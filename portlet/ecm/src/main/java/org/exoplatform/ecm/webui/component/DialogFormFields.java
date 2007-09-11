@@ -566,29 +566,29 @@ public class DialogFormFields extends UIForm {
       renderField(name) ;
       return ;
     }
-    List<SelectItemOption<String>> optionsList = null;
+    List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
     if(uiSelectBox == null) {
       uiSelectBox = new UIFormSelectBox(name, name, null);
       addUIFormInput(uiSelectBox) ;
-      uiSelectBox.setValue(defaultValue) ;
       if (script != null) {
         try {
           if(scriptParams[0].equals("repository")) scriptParams[0] = repository_ ;
           executeScript(script, uiSelectBox, scriptParams);
         } catch(Exception e) {
-          uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+          uiSelectBox.setOptions(optionsList) ;
         }      
       } else if (options != null && options.length() >0) {
         String[] array = options.split(",");
-        optionsList = new ArrayList<SelectItemOption<String>>(5);
+//        optionsList = new ArrayList<SelectItemOption<String>>(5);
         for(int i = 0; i < array.length; i++) {
           optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
         }
         uiSelectBox.setOptions(optionsList);      
       }else {
-        uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+        uiSelectBox.setOptions(optionsList) ;
       }      
+      uiSelectBox.setValue(defaultValue) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
