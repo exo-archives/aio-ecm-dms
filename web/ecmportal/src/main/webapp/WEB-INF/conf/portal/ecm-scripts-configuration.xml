@@ -62,11 +62,6 @@
 		              </value> 		              
 		              <value>
 										<object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
-											<field  name="name"><string>ecm-explorer/action/ICalendarScript.groovy</string></field>
-										</object>  
-		              </value> 		              
-		              <value>
-										<object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 											<field  name="name"><string>ecm-explorer/action/GetMailScript.groovy</string></field>
 										</object>  
 		              </value> 		              
