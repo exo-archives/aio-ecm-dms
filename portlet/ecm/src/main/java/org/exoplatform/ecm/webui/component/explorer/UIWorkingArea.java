@@ -181,12 +181,12 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public boolean hasEditPermissions(Node editNode){    
-    try {
+     try {
       ((ExtendedNode)editNode).checkPermission(PermissionType.SET_PROPERTY) ;      
     } catch(Exception e) {
       return false ;
     } 
-    return true;
+    return true; 
   }
 
   public boolean hasAddPermissions(Node editNode){    

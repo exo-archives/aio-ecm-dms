@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
+import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -46,7 +47,9 @@ public class UITaxonomyManager extends UIContainer {
   public UITaxonomyManager() throws Exception {
     rootNode_ = new TaxonomyNode(getApplicationComponent(CategoriesService.class).getTaxonomyHomeNode(getRepository(),SessionsUtils.getSystemProvider()), 0) ;
   }
-  
+  public void update() throws Exception {
+    rootNode_ = new TaxonomyNode(getApplicationComponent(CategoriesService.class).getTaxonomyHomeNode(getRepository(),SessionsUtils.getSystemProvider()), 0) ;
+  }
   private String getRepository() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences pref = pcontext.getRequest().getPreferences() ;

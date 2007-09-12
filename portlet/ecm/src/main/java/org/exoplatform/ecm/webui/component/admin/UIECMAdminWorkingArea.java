@@ -60,7 +60,8 @@ public class UIECMAdminWorkingArea extends UIContainer {
     addChild(UIFolksonomyManager.class, null, null).setRendered(false) ;
   }
   
-  public void init() throws Exception {    
+  public void init() throws Exception { 
+    getChild(UITaxonomyManager.class).update() ;
     getChild(UIViewManager.class).update() ;
     getChild(UIMetadataManager.class).update() ;
     getChild(UINodeTypeManager.class).update() ;
