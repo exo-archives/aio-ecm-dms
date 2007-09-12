@@ -343,19 +343,22 @@
 							              <div class="Links">
 															<%
 											          for(rel in relations) {
-															    String wsName = rel.getSession().getWorkspace().getName() ;
-														      String actionLink ;
-															    String relPath = rel.getPath() ;
-															    String relName = relPath.substring(relPath.lastIndexOf("/") + 1, relPath.length()) ; 
-															    if(!uicomponent.isRssLink()) { 
-															      String path = relPath + "&workspaceName=" + wsName ;
-															      actionLink = uicomponent.event("ChangeNode", path) ;
-														      } else { 
-															 	    actionLink = uicomponent.getRssLink() + wsName + relPath ;
-														      }
+												          if(rel != null) {
+																    String wsName = rel.getSession().getWorkspace().getName() ;
+															      String actionLink ;
+																    String relPath = rel.getPath() ;
+																    String relName = relPath.substring(relPath.lastIndexOf("/") + 1, relPath.length()) ; 
+																    if(!uicomponent.isRssLink()) { 
+																      String path = relPath + "&workspaceName=" + wsName ;
+																      actionLink = uicomponent.event("ChangeNode", path) ;
+															      } else { 
+																 	    actionLink = uicomponent.getRssLink() + wsName + relPath ;
+															      }
+															    
 													    %>
 				  								    <div> - <a href="$actionLink">$relName</a></div>
-				  							    <%}%>
+				  							    <%		}
+				  							    	}%>
 						              </div>
 							          <%}%>
 							        </div>
@@ -384,15 +387,18 @@
 		            <div class="ArticleFrameContainer">
 		              <div class="FieldContent">
 		              	<div class="FieldContainerContent">
-					            <%if(attachments.size() > 0) {%>
-												<%for (att in attachments) {%>
-												  <div class="AttachmentsContaienr">	
-					                  <div class="AttachmentsContentIcon"><span></span></div>
-					                  <div><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
-					                  <div style="clear: left; overflow: hidden;"><span></span></div>
-					                </div>
-					              <%}%>
-											<%}%>
+					            <%if(attachments.size() > 0) {
+													for (att in attachments) {
+														if(att != null) {
+													%>
+													  <div class="AttachmentsContaienr">	
+						                  <div class="AttachmentsContentIcon"><span></span></div>
+						                  <div><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
+						                  <div style="clear: left; overflow: hidden;"><span></span></div>
+						                </div>
+					              <%	}
+					              	} 
+											 	}%>
 											<div style="clear: left;"><span></span></div>
 										</div>
 									</div>
