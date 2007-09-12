@@ -35,25 +35,25 @@
 	    String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
 	    strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;	        
 	    if(node.getPrimaryNodeType().getName().equals("nt:file")) {
-			  	String mimeType=node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-			  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName+"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
-			  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" href=\"" + link + "\">WebDav View</a></div>" ;
-			  } else {
-			  	String link = serverPath + "/" + portalName + "/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
-			  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">WebDav View</a></div>" ;
-			  }
-			  strActs += "</div>" ;				  	
-			  //End WebDAV Action					        
-			  List customActs = uicomponent.getCustomActions(node) ;				  
-		    Parameter[] params ;
-		    if(customActs.size() > 0) {				    
-				  for(act in customActs) {
-				    String actName = act.getProperty("exo:name").getValue().getString() ;
-				    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
-				    strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
-			      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">$actName</a></div>" ;
-				    strActs += "</div>" ;
-				  }				    
+		  	String mimeType=node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName+"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
+		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" href=\"" + link + "\">WebDav View</a></div>" ;
+		  } else {
+		  	String link = serverPath + "/" + portalName + "/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
+		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">WebDav View</a></div>" ;
+		  }
+		  strActs += "</div>" ;				  	
+		  //End WebDAV Action					        
+		  List customActs = uicomponent.getCustomActions(node) ;				  
+	    Parameter[] params ;
+	    if(customActs.size() > 0) {				    
+			  for(act in customActs) {
+			    String actName = act.getProperty("exo:name").getValue().getString() ;
+			    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
+			    strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;
+		      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\"><a class=\"ItemLabel\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">$actName</a></div>" ;
+			    strActs += "</div>" ;
+			  }				    
 	    }
 	    strActs += "</div>" ;
 	    println "<div class=\"Node\">" ;
