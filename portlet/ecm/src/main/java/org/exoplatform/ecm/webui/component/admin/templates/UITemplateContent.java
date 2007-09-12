@@ -73,8 +73,9 @@ public class UITemplateContent extends UIForm implements UISelector {
   final static public String TEMPLATE_PERMISSION = "TemplatePermission" ;
 
   public UITemplateContent() throws Exception { 
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox versions = 
-      new UIFormSelectBox(FIELD_SELECT_VERSION, FIELD_SELECT_VERSION, null) ;
+      new UIFormSelectBox(FIELD_SELECT_VERSION, FIELD_SELECT_VERSION, options) ;
     versions.setOnChange("Change") ;
     versions.setRendered(false) ;    
     addUIFormInput(versions) ;
