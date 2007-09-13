@@ -15,7 +15,9 @@ import javax.jcr.nodetype.NodeTypeManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormSelectBox;
@@ -50,6 +52,15 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
   public void setRepository(String repository) { repository_ = repository ; }
   
   public void setWorkspace(String workspace) { workspace_ = workspace ; }
+  
+  public void initPopup(UIComponent uiComp) throws Exception {
+    removeChildById("PopupComponent") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent") ;
+    uiPopup.setUIComponent(uiComp) ;
+    uiPopup.setWindowSize(640, 300) ;
+    uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
+  }
   
   public List<SelectItemOption<String>> getListFileType() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();

@@ -14,20 +14,25 @@ import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
+import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -50,11 +55,12 @@ import org.exoplatform.webui.event.Event.Phase;
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
       @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE)
     }
 )
 
-public class UIDocumentForm extends DialogFormFields implements UIPopupComponent {
+public class UIDocumentForm extends DialogFormFields implements UIPopupComponent, UISelector {
 
   private String documentType_ ;
   private boolean isAddNew_ = false ; 
@@ -72,6 +78,13 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
+  }
+  
+  public void updateSelect(String selectField, String value) {
+    isUpdateSelect_ = true ;
+    getUIStringInput(selectField).setValue(value) ;
+    UIDocumentFormController uiContainer = getParent() ;
+    uiContainer.removeChildById("PopupComponent") ;
   }
   
   public String getTemplate() {
@@ -155,6 +168,41 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     }
     return newNode ;
   }
+  
+  @SuppressWarnings("unchecked")
+  static public class ShowComponentActionListener extends EventListener<UIDocumentForm> {
+    public void execute(Event<UIDocumentForm> event) throws Exception {
+      UIDocumentForm uiForm = event.getSource() ;
+      UIDocumentFormController uiContainer = uiForm.getParent() ;
+      String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
+      String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
+      ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
+      Class clazz = Class.forName(classPath, true, cl) ;
+      UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      if(uiComp instanceof UIJCRBrowser) {
+        UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+        String repositoryName = explorer.getRepositoryName() ;
+        SessionProvider provider = explorer.getSessionProvider() ;                
+        ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
+        ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
+        String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
+        if(selectorParams != null) {
+          String[] arrParams = selectorParams.split(",") ;
+          if(arrParams.length == 4) {
+            ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
+            ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
+            ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
+            ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+          }
+        }
+      }
+      uiContainer.initPopup(uiComp) ;
+      String param = "returnField=" + fieldName ;
+      ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }  
 
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {

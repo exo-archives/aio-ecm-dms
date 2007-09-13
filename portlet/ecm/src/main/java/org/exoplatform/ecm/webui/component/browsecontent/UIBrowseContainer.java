@@ -6,6 +6,10 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +35,7 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.portal.webui.portal.PageNodeEvent;
 import org.exoplatform.portal.webui.portal.UIPortal;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -73,7 +78,8 @@ import org.exoplatform.webui.event.EventListener;
               @EventConfig(listeners = UIBrowseContainer.BackActionListener.class),
               @EventConfig(listeners = UIBrowseContainer.ViewByTagActionListener.class),
               @EventConfig(listeners = UIBrowseContainer.BackViewActionListener.class),
-              @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class)
+              @EventConfig(listeners = UIBrowseContainer.SelectActionListener.class),
+              @EventConfig(listeners = UIBrowseContainer.ChangePageActionListener.class)
           }
       ),
       @ComponentConfig(
@@ -420,11 +426,6 @@ public class UIBrowseContainer extends UIContainer {
     return portletPref ;
   }
 
-  public String getPageUri() {
-    UIPortal uiPortal = Util.getUIPortal() ;
-    return uiPortal.getSelectedNode().getUri() ;
-  }
-
   public String getQueryLanguage() {
     return getPortletPreferences().getValue(Utils.CB_QUERY_LANGUAGE, "") ;
   }
@@ -509,6 +510,67 @@ public class UIBrowseContainer extends UIContainer {
     return jcrTemplateResourceResolver_ ;
   } 
 
+  @SuppressWarnings("unchecked")
+  public List<Node> getSortedListNode(Node node) throws Exception {
+    NodeIterator nodeIter = node.getNodes() ;
+    List<Node> nodes = new ArrayList<Node>() ;
+    while(nodeIter.hasNext()) {
+      Node childNode = nodeIter.nextNode() ;
+      nodes.add(childNode) ;
+    }
+    Collections.sort(nodes, new NodeNameComparator()) ;
+    return nodes ;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public List<Node> getSortedListNodeByDate(Node node, boolean isASC) throws Exception {
+    NodeIterator nodeIter = node.getNodes() ;
+    List<Node> nodes = new ArrayList<Node>() ;
+    while(nodeIter.hasNext()) {
+      Node childNode = nodeIter.nextNode() ;
+      nodes.add(childNode) ;
+    }
+    if(isASC) Collections.sort(nodes, new DateASCComparator()) ;
+    else Collections.sort(nodes, new DateDESCComparator()) ;
+    return nodes ;
+  }
+  
+  static public class NodeNameComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((Node)o1).getName() ;
+        String name2 = ((Node)o2).getName() ;
+        return name2.compareToIgnoreCase(name1) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }
+  
+  static public class DateASCComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        Date date1 = ((Node)o1).getProperty(Utils.EXO_CREATED_DATE).getDate().getTime() ;
+        Date date2 = ((Node)o2).getProperty(Utils.EXO_CREATED_DATE).getDate().getTime() ;
+        return date1.compareTo(date2) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }
+  
+  static public class DateDESCComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        Date date1 = ((Node)o1).getProperty(Utils.EXO_CREATED_DATE).getDate().getTime() ;
+        Date date2 = ((Node)o2).getProperty(Utils.EXO_CREATED_DATE).getDate().getTime() ;
+        return date2.compareTo(date1) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }
+  
   @SuppressWarnings("unchecked")
   public Map getTreeContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
@@ -910,6 +972,14 @@ public class UIBrowseContainer extends UIContainer {
     }
     return false ;
   }   
+  
+  public String getWebDAVServerPrefix() throws Exception {    
+    PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
+    String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
+                          portletRequestContext.getRequest().getServerName() + ":" +
+                          String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
+    return prefixWebDAV ;
+  }
 
   static public class BackActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
@@ -1022,6 +1092,19 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
 
+  static  public class ChangePageActionListener extends EventListener<UIBrowseContainer> {
+    public void execute(Event<UIBrowseContainer> event) throws Exception {
+      UIPortal uiPortal = Util.getUIPortal();
+      String uri  = event.getRequestContext().getRequestParameter(OBJECTID);
+      String[] arrUri = {uri} ;
+      if(uri.contains("/")) arrUri = uri.split("/") ;
+      PageNodeEvent<UIPortal> pnevent ;
+      pnevent = new PageNodeEvent<UIPortal>(uiPortal, PageNodeEvent.CHANGE_PAGE_NODE, null, arrUri[0]) ;      
+      uiPortal.broadcast(pnevent, Event.Phase.PROCESS) ;
+      uiPortal.getSelectedNode().setLabel(uri) ;
+    }
+  }
+  
   static  public class ShowPageActionListener extends EventListener<UIPageIterator> {
     public void execute(Event<UIPageIterator> event) throws Exception {
       UIPageIterator uiPageIterator = event.getSource() ;

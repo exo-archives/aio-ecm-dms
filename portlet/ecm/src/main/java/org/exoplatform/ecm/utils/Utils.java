@@ -75,6 +75,8 @@ public class Utils {
   final public static String COLON = ":".intern() ;
   final public static String SLASH = "/".intern() ;
   final public static String BACKSLASH = "\\".intern() ;
+  final public static String EXO_CREATED_DATE = "exo:dateCreated" ;
+  final public static String EXO_MODIFIED_DATE = "exo:dateModified" ;
 
 
   final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<","\"", "?", "!", "@", "#", "$", "%","^","&","*"} ;

@@ -169,6 +169,7 @@ public class DialogFormFields extends UIForm {
     String selectorIcon = null ;
     String multiValues = null ;
     String validateType = null ;
+    String params = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -184,7 +185,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(SELECTOR_ICON)) {
         selectorIcon = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(SELECTOR_PARAMS)) {
-        String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
+        params = argument.substring(argument.indexOf(SEPARATOR) + 1);
         selectorParams = StringUtils.split(params, ",");
       }else if (argument.startsWith(WORKSPACE_FIELD)) {
         workspaceField = argument.substring(argument.indexOf(SEPARATOR) + 1);
@@ -200,6 +201,7 @@ public class DialogFormFields extends UIForm {
       fieldPropertiesMap.put("returnField", name) ;
       fieldPropertiesMap.put("selectorIcon", selectorIcon) ;
       fieldPropertiesMap.put("workspaceField", workspaceField) ;
+      if(params != null) fieldPropertiesMap.put("selectorParams", params) ;
       components.put(name, fieldPropertiesMap) ;
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -869,7 +871,7 @@ public class DialogFormFields extends UIForm {
       if(name.equals(fieldName)) {
         w.write("<a style=\"cursor:pointer;\" "
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
-            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" </div>") ;
+            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>") ;
       } 
     }
   }
