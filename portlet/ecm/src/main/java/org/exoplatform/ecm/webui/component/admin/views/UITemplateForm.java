@@ -75,7 +75,8 @@ public class UITemplateForm extends UIForm {
   public boolean isAddNew_ = false ;
 
   public UITemplateForm() throws Exception {
-    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, null) ;
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, options) ;
     versions.setOnChange("Change") ;
     versions.setRendered(false) ;
     addUIFormInput(versions) ;

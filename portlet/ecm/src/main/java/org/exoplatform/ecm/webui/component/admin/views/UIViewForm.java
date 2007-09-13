@@ -73,7 +73,8 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   public UIViewForm(String name) throws Exception {
     super(name) ;
     setComponentConfig(getClass(), null) ;
-    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, null) ;
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, options) ;
     versions.setRendered(false) ;
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
