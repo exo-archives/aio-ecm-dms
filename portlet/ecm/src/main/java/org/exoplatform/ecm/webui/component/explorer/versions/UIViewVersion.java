@@ -60,12 +60,12 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   private Node node_ ;
   protected Node originalNode_ ;
   private String language_ ;
-  
+
   public UIViewVersion() throws Exception {    
     addChild(UINodeInfo.class, null, null) ;
     addChild(UINodeProperty.class, null, null).setRendered(false) ;
   } 
- 
+
   public String getTemplate() {
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     originalNode_ = node ;
@@ -75,11 +75,11 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       String nodeType = node.getPrimaryNodeType().getName();
       if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName, getRepository()) ;
     } catch (Exception e) {
-      e.printStackTrace();
+      // e.printStackTrace();
     }
-    return super.getTemplate() ;
+    return null ;
   }
-   
+
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
@@ -94,13 +94,13 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       return false;
     }
   }
-  
+
   public Node getNode() throws RepositoryException { return node_; }
-  
+
   public Node getOriginalNode() throws Exception {return  originalNode_ ;}
-  
+
   public void setNode(Node node) {node_ = node ;}
-  
+
   public Node getNodeByUUID(String uuid) throws Exception{
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
@@ -109,12 +109,12 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       try{
         return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
       }catch(Exception e) {
-        
+
       }      
     }
     return null;
   }
-  
+
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
     if (node_.hasProperty(Utils.EXO_RELATION)) {
@@ -127,7 +127,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
     return relations;
   }
-  
+
   public List<Node> getAttachments() throws Exception {
     List<Node> attachments = new ArrayList<Node>() ;
     NodeIterator childrenIterator = node_.getNodes();;
@@ -141,7 +141,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
     return attachments;
   }
-  
+
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
   }
@@ -154,10 +154,10 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     }
     return false ;
   }
-  
+
   public boolean isRssLink() { return false ; }
   public String getRssLink() { return null ; }
-  
+
   public void update() throws Exception {    
     getChild(UINodeInfo.class).update();
   }
@@ -252,11 +252,11 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
-  
+
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
   }
-  
+
   static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
     public void execute(Event<UIViewVersion> event) throws Exception {
       UIViewVersion uiViewVersion = event.getSource() ;
@@ -266,7 +266,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       return ;
     }
   }
-  
+
   static  public class DownloadActionListener extends EventListener<UIViewVersion> {
     public void execute(Event<UIViewVersion> event) throws Exception {
       UIViewVersion uiComp = event.getSource() ;
@@ -274,7 +274,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
     }
   }
-  
+
   static  public class ChangeNodeActionListener extends EventListener<UIViewVersion> {
     public void execute(Event<UIViewVersion> event) throws Exception {
       UIViewVersion uiViewVersion =  event.getSource() ;
