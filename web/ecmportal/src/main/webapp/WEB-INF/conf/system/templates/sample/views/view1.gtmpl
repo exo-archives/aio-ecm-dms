@@ -103,28 +103,22 @@
 					<%}%>
 				</div>
 			</div>
-			<% if(node.hasNode("exo:image")) {%>
-					<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
+			<% if(node.hasNode("exo:image")) {
+				 imgSrc = uicomponent.getImage(node) ;
+			%>
+					<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd;">
 						<div class="TitleBG" >
 							<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.image")%>: </label>
 						</div>
-						<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px">
-							<%
-							  def imageNode = node.getNode("exo:image") ;
-							  def inputStream = imageNode.getProperty("jcr:data").getStream() ;
-							  if(inputStream.available() > 0) {
-							    def imageLink = "/"+uicomponent.getPortalName() + "/jcr?workspace="+uicomponent.getWorkspaceName() + "&path=" + originalNode.getPath();
-							%>
-			      			
-			      			<image src="<%=imageLink%>" width="250" height="150"/> 
-			      	<%}%>
+						<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px;">
+			      	<image src="$imgSrc" width="250" height="150"/> 
 						</div>
 					</div>
 			<% } %>
 		</div>
 		<!-- div for  Summary and Image -->
-		<div style="overflow: hidden">
-			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
+		<div style="overflow: hidden;">
+			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd;">
 				<div class="TitleBG">
 					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.summary")%>:</label>
 				</div>
@@ -134,9 +128,9 @@
 					<%}%>
 				</div>
 			</div>
-			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd">
+			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd;">
 				<div class="TitleBG" >
-					<label class="text" style= "padding: 5px"><%=_ctx.appRes("Sample.view.label.content")%>:</label>
+					<label class="text" style="padding: 5px;"><%=_ctx.appRes("Sample.view.label.content")%>:</label>
 				</div>
 				<div class="content">
 					<%if(node.hasProperty("exo:content")) {%>
@@ -147,21 +141,21 @@
 		</div>
 		<!-- div for Content -->
 		<!-- div for  relation and attackments -->
-		<div style="overflow: hidden">
-			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: left; margin-top: 5px">
+		<div style="overflow: hidden;">
+			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: left; margin-top: 5px;">
 				<div class="TitleBG" >
-					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.relation")%>: </label>
+					<label class="text" style="padding-left: 5px;"><%=_ctx.appRes("Sample.view.label.relation")%>: </label>
 				</div>
 				<%
 				  def relations = uicomponent.getRelations() ;
 				  if(relations.size() > 0) {
 				%>
-					<div style="width: 100%" >
+					<div style="width: 100%;" >
 						<%
 						  for(rel in relations) {
 						  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath()) ;
 						%>
-							<div style="font-size: 12px; padding: 10px">
+							<div style="font-size: 12px; padding: 10px;">
 								-	<a href="$actionLink2">
 										<%=rel.getName()%>
 									</a>
@@ -169,12 +163,12 @@
 						<%}%>	  	
 					</div>		  
 				<%} else {%>
-					<div style="width: 100%; height: 20px"> </div>
+					<div style="width: 100%; height: 20px;"> </div>
 			  <%}%>
 			</div>
-			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: right; margin-top: 5px">
+			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: right; margin-top: 5px;">
 				<div class="TitleBG" >
-					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.attachment")%>: </label>
+					<label class="text" style="padding-left: 5px;"><%=_ctx.appRes("Sample.view.label.attachment")%>: </label>
 				</div>
 				<%
 				  def attachments = uicomponent.getAttachments() ;
@@ -185,7 +179,7 @@
 						  for(att in attachments) {
 						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath()) ;
 						%>
-							<div style="font-size: 12px; padding: 10px">
+							<div style="font-size: 12px; padding: 10px;">
 							 -<a href="$actionLink3">
 							 		<%=att.getName()%>
 							 	</a>
@@ -193,7 +187,7 @@
 						<%}%>	  	
 					</div>		  
 				<%} else { %>
-					<div style="width: 100%; height: 20px"> </div>
+					<div style="width: 100%; height: 20px;"> </div>
 				<%}%>
 			</div>	
 		</div>		
