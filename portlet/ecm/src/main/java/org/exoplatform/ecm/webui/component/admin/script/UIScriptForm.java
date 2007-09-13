@@ -63,8 +63,9 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
   private boolean isAddNew_ = true ; 
 
   public UIScriptForm() throws Exception { 
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox versions = 
-      new UIFormSelectBox(FIELD_SELECT_VERSION , FIELD_SELECT_VERSION, null) ;
+      new UIFormSelectBox(FIELD_SELECT_VERSION , FIELD_SELECT_VERSION, options) ;
     UIFormTextAreaInput contents = 
       new UIFormTextAreaInput(FIELD_SCRIPT_CONTENT , FIELD_SCRIPT_CONTENT, null) ;
     contents.addValidator(EmptyFieldValidator.class) ;
