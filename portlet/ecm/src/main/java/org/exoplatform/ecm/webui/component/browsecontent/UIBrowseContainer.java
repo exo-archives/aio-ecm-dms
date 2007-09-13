@@ -511,14 +511,15 @@ public class UIBrowseContainer extends UIContainer {
   } 
 
   @SuppressWarnings("unchecked")
-  public List<Node> getSortedListNode(Node node) throws Exception {
+  public List<Node> getSortedListNode(Node node, boolean isASC) throws Exception {
     NodeIterator nodeIter = node.getNodes() ;
     List<Node> nodes = new ArrayList<Node>() ;
     while(nodeIter.hasNext()) {
       Node childNode = nodeIter.nextNode() ;
       nodes.add(childNode) ;
     }
-    Collections.sort(nodes, new NodeNameComparator()) ;
+    if(isASC) Collections.sort(nodes, new NodeNameASCComparator()) ;
+    else Collections.sort(nodes, new NodeNameDESCComparator()) ;
     return nodes ;
   }
   
@@ -535,7 +536,7 @@ public class UIBrowseContainer extends UIContainer {
     return nodes ;
   }
   
-  static public class NodeNameComparator implements Comparator {
+  static public class NodeNameDESCComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
       try {
         String name1 = ((Node)o1).getName() ;
@@ -546,6 +547,18 @@ public class UIBrowseContainer extends UIContainer {
       }
     }
   }
+  
+  static public class NodeNameASCComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((Node)o1).getName() ;
+        String name2 = ((Node)o2).getName() ;
+        return name1.compareToIgnoreCase(name2) ;
+      } catch(Exception e) {
+        return 0;
+      }
+    }
+  }  
   
   static public class DateASCComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
