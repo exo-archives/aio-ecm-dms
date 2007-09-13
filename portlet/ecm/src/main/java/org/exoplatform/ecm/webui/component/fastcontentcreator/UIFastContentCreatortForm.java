@@ -61,11 +61,11 @@ public class UIFastContentCreatortForm extends DialogFormFields {
 
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
-  
+
   public UIFastContentCreatortForm() throws Exception {
     setActions(new String[]{"Save"}) ;
   }
-  
+
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
@@ -77,34 +77,34 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
       uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.not-support", arg, 
-                                              ApplicationMessage.ERROR)) ;
+          ApplicationMessage.ERROR)) ;
       return null ;
     }
   }
-  
+
   public Node getCurrentNode() throws Exception {  
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     PortletPreferences preferences = getPortletPreferences() ;
     Session session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
-                                       .getSystemSession(preferences.getValue("workspace", "")) ;
+    .getSystemSession(preferences.getValue("workspace", "")) ;
     return (Node) session.getItem(preferences.getValue("path", ""));
   }
-  
+
   public void setTemplateNode(String type) { documentType_ = type ; }
-  
+
   public boolean isEditing() { return false ; }
-  
+
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ; 
     return jcrTemplateResourceResolver_; 
   }
-  
+
   private PortletPreferences getPortletPreferences() {
     PortletRequestContext portletContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
     return portletContext.getRequest().getPreferences() ;
   }
-  
+
   public void newJCRTemplateResourceResolver() {
     PortletPreferences preferences = getPortletPreferences();       
     try {
@@ -116,7 +116,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     } catch(Exception e) { }
   }
-  
+
   @SuppressWarnings("unused")
   public Node storeValue(Event event) throws Exception {
     CmsService cmsService = getApplicationComponent(CmsService.class) ;
@@ -137,14 +137,20 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     Node homeNode = null;
     try {
       homeNode = (Node) session.getItem(prefLocate);
+    } catch (AccessDeniedException ade){
+      Object[] args = { prefLocate } ;
+      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.access-denied", args, 
+          ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null ;
     } catch(PathNotFoundException pnfe) {
       Object[] args = { prefLocate } ;
       uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.path-not-found", args, 
-                                              ApplicationMessage.WARNING)) ;
+          ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null ;
     }
-    
+
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;
@@ -163,7 +169,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
       uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.in-versioning", null, 
-                                              ApplicationMessage.WARNING)) ;
+          ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(AccessDeniedException e) {
@@ -190,7 +196,7 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     }
     return null ;
   }
-  
+
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
