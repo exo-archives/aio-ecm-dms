@@ -683,8 +683,15 @@ public class UIWorkingArea extends UIContainer {
         if(ClipboardCommand.COPY.equals(type)) {
           pasteByCopy(session, srcPath, destPath) ;
         } else {
-          pasteByCut(uiExplorer, session, srcPath, destPath) ;
+          if(!srcPath.equals(destPath)) pasteByCut(uiExplorer, session, srcPath, destPath) ;
         }
+        Node selectedNode = (Node)session.getItem(destPath) ;
+        ActionServiceContainer actionContainer = 
+          event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
+        PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+        PortletPreferences preferences = context.getRequest().getPreferences() ;
+        actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
+        
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
             ApplicationMessage.WARNING)) ;
@@ -723,12 +730,6 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      Node selectedNode = (Node)session.getItem(destPath) ;
-      ActionServiceContainer actionContainer = 
-        event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
-      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletPreferences preferences = context.getRequest().getPreferences() ;
-      actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
       uiExplorer.updateAjax(event) ;
     }
 
@@ -739,7 +740,7 @@ public class UIWorkingArea extends UIContainer {
       removeReferences(destNode) ;
     }
 
-    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcPath, String destPath) throws Exception {     
+    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcPath, String destPath) throws Exception {
       RelationsService relationsService = 
         uiExplorer.getApplicationComponent(RelationsService.class) ;
       List<Node> refList = new ArrayList<Node>() ;
