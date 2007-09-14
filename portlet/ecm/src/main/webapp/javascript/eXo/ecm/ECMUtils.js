@@ -17,7 +17,8 @@ ECMUtils.prototype.init = function(portletId) {
 };
 
 ECMUtils.prototype.fixHeight = function(portletId) {
-	var portlet =document.getElementById(portletId) ;
+
+	var portlet = document.getElementById(portletId) ;
 	var delta = portlet.parentNode.offsetHeight - portlet.offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	for(var i = 0; i < resizeObj.length; i++) {
@@ -25,6 +26,16 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 		if (nHeight < 0 ) nHeight = "0px" ;
 		resizeObj[i].style.height = nHeight + 'px' ;
 	}
+	//bug ECM-1415;
+	var uiResize = eXo.core.DOMUtil.findAncestorByClass(portlet, 'UIResizableBlock') ;
+	if (uiResize) {
+			var uiRepositoryControl = eXo.core.DOMUtil.findDescendantById(portlet, "UIRepositoryControl");
+			var uiResizableBlock = eXo.core.DOMUtil.findFirstDescendantByClass(portlet, 'div', 'UIResizableBlock') ;
+			if (uiResizableBlock && uiRepositoryControl) {
+				uiResizableBlock.style.height = uiResize.clientHeight - uiRepositoryControl.clientHeight + "px";
+			}
+	}
+	
 };
 
 ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
