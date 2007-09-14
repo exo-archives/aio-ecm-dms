@@ -75,7 +75,7 @@
 .UIJCRExplorerPortlet .UIListView .UIGridControl th {
   line-height: 19px;
   text-align: left;
-  padding: 0px 10px;
+  padding: 0px 5px;
   border: solid 1px #b7b7b7;
   font-weight: normal;
   background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x;
