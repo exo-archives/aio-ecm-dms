@@ -11,7 +11,7 @@
 <div class="UIECMAdminPortlet" id="UIECMAdminPortlet">
   <%uicomponent.renderChild(UIPopupAction.class);%>
 	<%uicomponent.renderChild(UIRepositoryControl.class);%>
-	<div class="UIResizableBlock">
+	<div class="UIResizableBlock" style="height: 400px">
 	  <%
 	    int style = 6;
 	    if(uicomponent.isShowSideBar()) {
