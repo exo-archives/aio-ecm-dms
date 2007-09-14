@@ -78,15 +78,17 @@ import org.exoplatform.webui.exception.MessageException;
 )
 public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   
+  final private static String CONTENT_PAGE_ITERATOR_ID = "UIContentPageIterator".intern();
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String typeSortOrder_ = Preference.ASCENDING_ORDER;
   private String nameSortOrder_ = Preference.ASCENDING_ORDER;
   private Node currentNode_ ;
   
+  
   private UIPageIterator pageIterator_ ;  
   
   public UIDocumentInfo() throws Exception {
-    pageIterator_ = addChild(UIPageIterator.class, null, null) ;        
+    pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID) ;        
   }
   
   public UIPageIterator getContentPageIterator() {return pageIterator_ ; }
