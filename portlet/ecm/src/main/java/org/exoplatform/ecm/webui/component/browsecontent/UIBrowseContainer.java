@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -243,6 +242,16 @@ public class UIBrowseContainer extends UIContainer {
       return null  ;
     }
   }
+  
+  public String getCapacityOfFile(Node file) throws Exception {
+    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
+    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    float capacity = in.available()/1024 ;
+    String strCapacity = Float.toString(capacity) ;
+    if(strCapacity.indexOf(".") > -1) return strCapacity.split(".")[0] ;
+    return strCapacity ;
+  }
+  
   public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
     QueryManager queryManager = null ;
