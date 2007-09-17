@@ -301,7 +301,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     return queryDocuments ;
   }
-  public  List<Node> getNodeByQuery(String queryType, String queryString) throws Exception{
+  public List<Node> getNodeByQuery(String queryType, String queryString) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
     try {
       ManageableRepository repository = getRepositoryService().getRepository(getRepository()) ;
@@ -531,6 +531,21 @@ public class UIBrowseContainer extends UIContainer {
     else Collections.sort(nodes, new NodeNameDESCComparator()) ;
     return nodes ;
   }
+  
+  @SuppressWarnings("unchecked")
+  public List<Node> getSortedListFolderNode(Node node, boolean isASC) throws Exception {
+    NodeIterator nodeIter = node.getNodes() ;
+    List<Node> nodes = new ArrayList<Node>() ;
+    while(nodeIter.hasNext()) {
+      Node childNode = nodeIter.nextNode() ;
+      if(childNode.isNodeType(Utils.NT_UNSTRUCTURED) || childNode.isNodeType(Utils.NT_FOLDER)) {
+        nodes.add(childNode) ;
+      }
+    }
+    if(isASC) Collections.sort(nodes, new NodeNameASCComparator()) ;
+    else Collections.sort(nodes, new NodeNameDESCComparator()) ;
+    return nodes ;
+  }  
   
   @SuppressWarnings("unchecked")
   public List<Node> getSortedListNodeByDate(Node node, boolean isASC) throws Exception {
