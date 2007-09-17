@@ -102,7 +102,7 @@
 					  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+ portalName +"','"+repository+"','"+ preferenceWS+ "','" +Utils.formatNodeName(data.getPath())+"','"+mimeType+"')";				  					  					  	
 					  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" href=\"" + link + "\">WebDav View</a></div>" ;
 					  }else {
-					  	String link = serverUrl + "/" + portalName + "/" + repository+ "/" + preferenceWS + Utils.formatNodeName(data.getPath()); 
+					  	String link = serverUrl + "/" + portalName + "/rest/jcr/" + repository+ "/" + preferenceWS + Utils.formatNodeName(data.getPath()); 
 					  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">WebDav View</a></div>" ;
 					  }
 					  strActs += "</div>" ;				  	

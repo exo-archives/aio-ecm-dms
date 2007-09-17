@@ -4,7 +4,10 @@
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
     
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
-  String componentId = uicomponent.getId();    
+  String componentId = uicomponent.getId();
+  String serverUrl= uicomponent.getWebDAVServerPrefix();
+  String portalName = uicomponent.getPortalName();
+  String repository = uicomponent.getRepository();  
 %>
 <div id = "$componentId">	
 		<div class="UIThumbnailsView" style="overflow: auto; width: 100%; height: 290px;">
@@ -28,10 +31,10 @@
 			        strActs +=		"<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;	        
 			        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
 						  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+uicomponent.getWebDAVServerPrefix()+"','"+uicomponent.getPortalName()+"','"+uicomponent.getRepository()+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
+						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+portalName+"','"+repository+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
 						  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" href=\"" + link + "\">WebDav View</a></div>" ;
 						  }else {
-						  	String link = uicomponent.getWebDAVServerPrefix() + "/" + uicomponent.getPortalName() + "/" + uicomponent.getRepository() + "/" + preferenceWS + data.getPath(); 
+						  	String link = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath(); 
 						  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">WebDav View</a></div>" ;
 						  }
 						  strActs += "</div>" ;				  	

@@ -4,8 +4,17 @@
           PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
                  "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
-  <display-name>portal</display-name>
+  <display-name>portal</display-name>    
+  <filter>
+    <filter-name>WebDavPortalSessionProviderFilter</filter-name>
+    <filter-class>org.exoplatform.services.webdav.WebDavPortalSessionProviderFilter</filter-class>
+  </filter>
   
+  <filter-mapping>
+		<filter-name>WebDavPortalSessionProviderFilter </filter-name>
+		<url-pattern>/rest/jcr/*</url-pattern>
+	</filter-mapping>
+	
   <!-- ================================================================== -->
   <!--           LISTENER                                                 -->
   <!-- ================================================================== -->
@@ -27,41 +36,7 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>  
-  
-  <servlet>
-    <servlet-name>Webdav</servlet-name>
-    <description>
-        The webdav servlet that connects HTTP request to the repository.
-    </description>
-    <servlet-class>org.exoplatform.frameworks.jcr.webdav.ExoJCRWebdavServlet</servlet-class>
-
-    <init-param>
-      <param-name>resource-path-prefix</param-name>
-      <param-value>/repository</param-value>
-      <description>
-          defines the prefix for spooling resources out of the repository. should be the same as this servlet-mapping
-      </description>
-    </init-param>
-
-    <init-param>
-      <param-name>resource-config</param-name>
-      <param-value>/WEB-INF/conf/webdav-config.xml</param-value>
-      <description>
-          Defines various dav-resource configuration parameters.
-      </description>
-    </init-param>
-    <load-on-startup>4</load-on-startup>
-  </servlet>
-
-  <servlet>
-    <servlet-name>LinkServlet</servlet-name>
-    <description>
-      eXo - Platform LnkGenerator Servlet.
-    </description>
-    <servlet-class>org.exoplatform.frameworks.jcr.webdav.LnkGeneratorServlet</servlet-class>
-    <load-on-startup>4</load-on-startup>
-  </servlet>   
-  
+             
   <servlet>
     <servlet-name>DisplayJCRContent</servlet-name>
     <description>
@@ -69,15 +44,17 @@
     </description>
     <servlet-class>org.exoplatform.frameworks.jcr.web.DisplayJCRContentServlet</servlet-class>
     <load-on-startup>4</load-on-startup>
-  </servlet>   
+  </servlet>
+  
+  <servlet>
+		<servlet-name>RestServer</servlet-name>
+		<description>eXo - Platform REST Server</description>
+		<servlet-class>org.exoplatform.services.rest.servlet.RestServlet</servlet-class>
+		<load-on-startup>4</load-on-startup>
+	</servlet>	  
        
   <!-- ================================================================= -->
-  
-  <servlet-mapping>
-    <servlet-name>Webdav</servlet-name>
-    <url-pattern>/repository/*</url-pattern>
-  </servlet-mapping>
-  
+    
   <servlet-mapping>
     <servlet-name>portal</servlet-name>
     <url-pattern>/private/*</url-pattern>
@@ -97,16 +74,16 @@
     <servlet-name>portal</servlet-name>
     <url-pattern>/command/*</url-pattern>
   </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>LinkServlet</servlet-name>
-    <url-pattern>/lnkgenerator/*</url-pattern>
-  </servlet-mapping>
-  
+    
   <servlet-mapping>
     <servlet-name>DisplayJCRContent</servlet-name>
     <url-pattern>/jcr/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+		<servlet-name>RestServer</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
 
   <session-config>
     <session-timeout>15</session-timeout>

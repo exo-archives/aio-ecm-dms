@@ -15,6 +15,10 @@
 	  <type>org.exoplatform.services.jcr.ext.app.MapStoredSessionProviderService</type>  
   </component>
   
+  <component>	   
+	  <type>org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService</type>  
+  </component>
+  
   <component>
       <type>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</type>
       <component-plugins>
