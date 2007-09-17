@@ -215,13 +215,13 @@ ECMUtils.prototype.replaceToIframe = function(txtAreaId) {
 
 ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath,mimetype) {		
  if(eXo.core.Browser.getBrowserType() == "ie") {
- 	if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		
- 		window.location = serverInfo + "/" + portalName +"/lnkgenerator/openit.lnk?path=" +"/"+repository +"/" +workspace + nodePath;  
+ 	if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		 		
+ 		window.location = serverInfo+ "/"+portalName + "/rest/lnkproducer/filename.lnk?path=/"+repository +"/" +workspace + nodePath;  
  	} else {
- 		window.location = serverInfo+ "/" + portalName + "/"+repository +"/" +workspace + nodePath; 		 		
+ 		window.location = serverInfo + "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
  	} 	  
  } else {
-  window.location = serverInfo+ "/" + portalName + "/"+repository +"/" +workspace + nodePath;
+  window.location = serverInfo+ "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath;
  } 
 } ;
 

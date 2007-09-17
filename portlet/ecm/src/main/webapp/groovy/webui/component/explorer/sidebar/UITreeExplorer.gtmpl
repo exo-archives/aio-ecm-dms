@@ -36,10 +36,10 @@
 	    strActs += "<div class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" onmouseover=\"this.className = 'SelectedMenuItem'\" onmouseout=\"this.className = 'MenuItem'\">" ;	        
 	    if(node.getPrimaryNodeType().getName().equals("nt:file")) {
 		  	String mimeType=node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName+"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
+		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
 		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" href=\"" + link + "\">WebDav View</a></div>" ;
 		  } else {
-		  	String link = serverPath + "/" + portalName + "/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
+		  	String link = serverPath + "/" + portalName +"/rest/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
 		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\"><a class=\"ItemLabel\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">WebDav View</a></div>" ;
 		  }
 		  strActs += "</div>" ;				  	
