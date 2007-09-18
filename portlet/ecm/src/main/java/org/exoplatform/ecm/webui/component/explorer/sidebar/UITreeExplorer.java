@@ -99,10 +99,15 @@ public class UITreeExplorer extends UIComponent {
     String path = jcrExplorer.getCurrentNode().getPath() ;
     String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
     TreeNode temp = treeRoot ;
+    String subPath = null ;
+    String prefix = "/" ;
+    if(!treeRoot.getNode().getPath().equals("/")) prefix = treeRoot.getNode().getPath() + prefix;
     for(String nodeName : arr) {
       if(nodeName.length() == 0) continue ;
+      if(subPath == null) subPath = prefix + nodeName;
+      else subPath = subPath + "/" + nodeName ;
       temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-      temp = temp.getChild(nodeName) ;
+      temp = temp.getChild(subPath) ;
       if(temp == null) return treeRoot ;
     }
     temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;

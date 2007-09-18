@@ -6,6 +6,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.ecm.utils.Utils;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong
@@ -15,14 +17,11 @@ import javax.jcr.RepositoryException;
  */
 public class TreeNode {
   
-  final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
-  final static public String NT_FOLDER = "nt:folder" ;
-  
   private boolean isExpanded_ ;
   private Node node_ ;
   private List<TreeNode> children_ = new ArrayList<TreeNode>() ; 
   
-  public TreeNode(Node node, List<Node> children) {
+  public TreeNode(Node node, List<Node> children) throws Exception {
     node_ = node ;
     isExpanded_ = true;
     setChildren(children) ;
@@ -42,6 +41,7 @@ public class TreeNode {
     String path = node_.getPath() ;
     return path.substring(path.lastIndexOf("/") + 1, path.length()); 
   }
+  
   public String getPath() throws RepositoryException { return node_.getPath(); }
   
   public Node getNode() { return node_ ; }  
@@ -52,15 +52,15 @@ public class TreeNode {
   
   public TreeNode getChild(String relPath) throws RepositoryException {
     for(TreeNode child : children_) {
-      if(child.getNode().getName().equals(relPath)) return child ;
+      if(child.getNode().getPath().equals(relPath)) return child ;
     }
     return null;
   }
   
-  public void setChildren(List<Node> children) {
+  public void setChildren(List<Node> children) throws Exception {
     setExpanded(true) ;
     for(Node child : children) {
-      children_.add(new TreeNode(child)) ;
+      if(Utils.isReadAuthorized(child)) children_.add(new TreeNode(child)) ;
     } 
   }
 }
