@@ -15,7 +15,6 @@
 		
 		label.text { 
 			font: normal bold 11px Verdana;
-			color: black; 
 			line-height: 18px; 
 		}
 		
@@ -24,28 +23,21 @@
 		}
 		
 		span.text  { 
-			font-size: 11px; 
 			vertical-align:bottom; 
-			color: black; 
 			text-align: left ;
 			font-weight: normal;
 		}
 		
 		div.summary { 
-			width: 98.3%; 
 			height: 160px ; 
-			font-size: 11px; 
 			padding: 5px 5px 5px 10px; 
-			color: black ; 
 			font-weight: normal;
 			overflow: auto;
 		} 
 		
 		div.content { 
-			width: 98.3%; 
 			font-size: 11px; 
 			padding: 5px; 
-			color: black; 
 			overflow: auto;
 		}
 	</style>

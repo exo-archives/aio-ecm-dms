@@ -2,14 +2,14 @@
   <style>
     .tabNormal {
       float: left;
-      background: url('/ecm/skin/images/metadata/tab-normal.gif')repeat-x top;
+      background: url('/ecm/skin/images/metadata/tab-normal.gif') repeat-x top;
       height: 20px;  width: 120px;line-height: 20px;text-align: center;
       border: solid 1px #a3abb6;
       font-size: 12px;font-weight: bold;
     }
     .tabSelected {
       float: left;
-      background: url('/ecm/skin/images/metadata/tab-selected.gif')repeat-x top;
+      background: url('/ecm/skin/images/metadata/tab-selected.gif') repeat-x top;
       height: 20px;  width: 120px;line-height: 20px;text-align: center;
       border: solid 1px #a3abb6;
       font-size: 12px;  font-weight: bold;
@@ -33,7 +33,7 @@
       text-align: left ;      
     }
     .Line {
-      background: url('/ecm/skin/images/metadata/dot.gif')repeat-x center;
+      background: url('/ecm/skin/images/metadata/dot.gif') repeat-x center;
       height: 8px;
     }       
   </style>  

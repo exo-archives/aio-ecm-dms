@@ -25,48 +25,48 @@
 	margin-right: 5px;
 }
 
+.UIContextMenu .NodeHistoryContainer a {
+	display: block;
+}
+
 .UIContextMenu .NodeHistoryContainer .NodeNavigationIcon {
 	height: 24px;
-	width: 24px;
-	float: left ;	
 	margin: 4px ;
 	background: url('../DefaultSkin/background/GreenLeftArrowFolder.gif') no-repeat;
+	padding-left: 30px;
+	float: none;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeItemIcon {	
-	background: url('DefaultSkin/background/SmallSelect.gif') no-repeat left;
-	line-height: 16px; width: 16px; height: 16px;
-	float: left ;	
+	background: url('DefaultSkin/background/SmallSelect.gif') no-repeat left center;
 	margin: 2px 2px 2px 10px;
+	padding-left: 20px;
 }
 
 .UIContextMenu .NodeHistoryContainer .BackButtonLabel {  
   cursor: pointer;
   line-height: 24px;
   margin-top: 6px;
-  font: normal bold 11px Verdana;  
+  font-weight: bold;  
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeLabel {
-	font-size: 11px;
   line-height: 16px;  
+  float: none;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeLabelSelected {
-  line-height: 16px;
-  margin-left: 3px;
-  margin-right: 3px ;
   color: #058ee6;
-  font: normal bold 11px Verdana;
+  font-weight: bold;
+  line-height: 20px;
+  float: none;
 }
 
 .UIContextMenu .NodeHistoryContainer a {
-	text-decoration: none;
 	color: #515151;	
 }
 
 .UIContextMenu .NodeHistoryContainer a:hover { 
-	text-decoration: none;
 	color: blue;
 }
 

@@ -14,10 +14,7 @@
 @import url("UIJCRExplorer/VistaStylesheet.css");
 @import url("../../../ExoEditor/MyEditor.css");
 
-.UIJCRExplorerPortlet {}
-
-.UIJCRExplorerPortlet .UIPreferencesForm .ActionButton {
-  width: 80px;
+.UIJCRExplorerPortlet {
 }
 
 .UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {

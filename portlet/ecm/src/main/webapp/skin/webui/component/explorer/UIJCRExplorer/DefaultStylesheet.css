@@ -367,7 +367,7 @@
 }
 
 .UIJCRExplorerPortlet .SelectFileFrame { 
-	width: 330px;
+	width: auto;
 	overflow: hidden;
 	margin: 0px;
 }

@@ -25,39 +25,45 @@
 	margin-right: 5px;
 }
 
+.UIContextMenu .NodeHistoryContainer a {
+	display: block;
+}
+
 .UIContextMenu .NodeHistoryContainer .NodeNavigationIcon {
 	height: 24px;
-	width: 24px;
-	float: left ;	
+	float: none ;	
 	margin: 4px ;
 	background: url('../VistaSkin/background/NodeNavigationIcon.png') no-repeat;
+	padding-left: 30px;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeItemIcon {	
 	background: url('DefaultSkin/background/SmallSelect.gif') no-repeat left;
-	line-height: 16px; width: 16px; height: 16px;
-	float: left ;	
+	line-height: 16px;
+	float: none ;	
 	margin: 2px 2px 2px 10px;
+	padding-left: 20px;
 }
 
 .UIContextMenu .NodeHistoryContainer .BackButtonLabel {  
   cursor: pointer;
   line-height: 24px;
   margin-top: 7px;
-  font: normal bold 11px Verdana;  
+  font-weight: bold;  
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeLabel {
-	font-size: 11px;
   line-height: 16px;  
+  float: none;
 }
 
 .UIContextMenu .NodeHistoryContainer .NodeLabelSelected {
   line-height: 16px;
-  margin-left: 3px;
+  margin-left: 10px;
   margin-right: 3px ;
   color: #058ee6;
-  font: normal bold 11px Verdana;
+  font-weight: bold;
+  float: none;
 }
 
 .UIContextMenu .NodeHistoryContainer a {
