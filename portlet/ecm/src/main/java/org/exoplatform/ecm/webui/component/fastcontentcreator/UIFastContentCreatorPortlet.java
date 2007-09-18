@@ -13,6 +13,7 @@ import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
@@ -45,6 +46,15 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     uiPopup.setUIComponent(uiJCRBrowser);
     UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;
     uiJCRBrowser.setComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;
+    uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
+  }
+  
+  public void initPopup(UIComponent uiComp) throws Exception {
+    removeChildById("PopupComponent") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent") ;
+    uiPopup.setUIComponent(uiComp) ;
+    uiPopup.setWindowSize(640, 300) ;
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }

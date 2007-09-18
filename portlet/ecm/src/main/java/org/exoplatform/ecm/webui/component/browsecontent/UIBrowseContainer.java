@@ -28,6 +28,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
@@ -1016,6 +1017,11 @@ public class UIBrowseContainer extends UIContainer {
                           portletRequestContext.getRequest().getServerName() + ":" +
                           String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
     return prefixWebDAV ;
+  }
+  
+  public String getPortalName() {
+    PortalContainer pcontainer =  PortalContainer.getInstance() ;
+    return pcontainer.getPortalContainerInfo().getContainerName() ;  
   }
 
   static public class BackActionListener extends EventListener<UIBrowseContainer> {

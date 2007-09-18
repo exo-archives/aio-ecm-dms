@@ -18,16 +18,20 @@ import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
+import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
+import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -54,10 +58,11 @@ import org.exoplatform.webui.form.UIFormUploadInput;
     events = {
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
       @EventConfig(listeners = UIFastContentCreatortForm.AddActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIFastContentCreatortForm.RemoveActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIFastContentCreatortForm.RemoveActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIFastContentCreatortForm.ShowComponentActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UIFastContentCreatortForm extends DialogFormFields {
+public class UIFastContentCreatortForm extends DialogFormFields implements UISelector {
 
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
@@ -80,6 +85,13 @@ public class UIFastContentCreatortForm extends DialogFormFields {
           ApplicationMessage.ERROR)) ;
       return null ;
     }
+  }
+  
+  public void updateSelect(String selectField, String value) {
+    isUpdateSelect_ = true ;
+    getUIStringInput(selectField).setValue(value) ;
+    UIFastContentCreatorPortlet uiContainer = getParent() ;
+    uiContainer.removeChildById("PopupComponent") ;
   }
 
   public Node getCurrentNode() throws Exception {  
@@ -196,6 +208,41 @@ public class UIFastContentCreatortForm extends DialogFormFields {
     }
     return null ;
   }
+  
+  @SuppressWarnings("unchecked")
+  static public class ShowComponentActionListener extends EventListener<UIFastContentCreatortForm> {
+    public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
+      UIFastContentCreatortForm uiForm = event.getSource() ;
+      UIFastContentCreatorPortlet uiContainer = uiForm.getParent() ;
+      String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
+      String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
+      ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
+      Class clazz = Class.forName(classPath, true, cl) ;
+      UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      if(uiComp instanceof UIJCRBrowser) {
+        PortletPreferences preferences = uiForm.getPortletPreferences() ;
+        String repositoryName = preferences.getValue("repository", "") ;
+        SessionProvider provider = SessionsUtils.getSystemProvider() ;                
+        ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
+        ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
+        String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
+        if(selectorParams != null) {
+          String[] arrParams = selectorParams.split(",") ;
+          if(arrParams.length == 4) {
+            ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
+            ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
+            ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
+            ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+          }
+        }
+      }
+      uiContainer.initPopup(uiComp) ;
+      String param = "returnField=" + fieldName ;
+      ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+    }
+  }  
 
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
