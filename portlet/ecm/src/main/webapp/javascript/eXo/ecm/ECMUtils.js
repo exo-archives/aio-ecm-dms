@@ -19,7 +19,8 @@ ECMUtils.prototype.init = function(portletId) {
 ECMUtils.prototype.fixHeight = function(portletId) {
 
 	var portlet = document.getElementById(portletId) ;
-	var delta = portlet.parentNode.offsetHeight - portlet.offsetHeight ;
+	var refElement = eXo.core.DOMUtil.findAncestorByClass(portlet, "UIApplication") ;
+	var delta = refElement.offsetHeight - portlet.offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	for(var i = 0; i < resizeObj.length; i++) {
 		var nHeight = parseInt(resizeObj[i].offsetHeight) + delta;
