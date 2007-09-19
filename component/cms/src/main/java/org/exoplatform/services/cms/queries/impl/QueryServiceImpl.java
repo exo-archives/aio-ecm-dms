@@ -130,8 +130,20 @@ public class QueryServiceImpl implements QueryService, Startable{
     Session session = getSession(repository) ;
     QueryManager manager = session.getWorkspace().getQueryManager();    
     Query query = manager.createQuery(statement, language);    
+    Node usersNode = (Node) session.getItem(baseUserPath_) ;
+    if(!usersNode.hasNode(userName)) {
+      usersNode.addNode(userName) ;
+      usersNode.save() ;
+    }
+    Node userNode = usersNode.getNode(userName) ;
+    if(!userNode.hasNode(relativePath_)) {
+      userNode.addNode(relativePath_) ;
+      userNode.save() ;
+      session.save() ;
+    }
     String absPath = baseUserPath_ + "/" + userName + "/" + relativePath_ + "/" + queryName;
     query.storeAsNode(absPath);
+    session.refresh(true) ;
     session.getItem(baseUserPath_).save();
     session.save();
     session.logout();
