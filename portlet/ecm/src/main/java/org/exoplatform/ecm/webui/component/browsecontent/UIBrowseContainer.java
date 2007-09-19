@@ -253,7 +253,7 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity ;
   }
   
-  public  List<Node> getNodeByQuery(int recoderNumber) throws Exception{
+  public List<Node> getNodeByQuery(int recoderNumber) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
     QueryManager queryManager = null ;
     try{
@@ -269,13 +269,17 @@ public class UIBrowseContainer extends UIContainer {
       queryStatiement = queryNode.getProperty("jcr:statement").getString() ;
     }
     Query query = queryManager.createQuery(queryStatiement, getQueryLanguage());
-    QueryResult queryResult = query.execute();
-    NodeIterator iter = queryResult.getNodes();
-    int count = 0 ; 
-    while (iter.hasNext() && (count++ != recoderNumber)) {
-      queryDocuments.add(iter.nextNode()) ;
+    try {
+      QueryResult queryResult = query.execute();
+      NodeIterator iter = queryResult.getNodes();
+      int count = 0 ; 
+      while (iter.hasNext() && (count++ != recoderNumber)) {
+        queryDocuments.add(iter.nextNode()) ;
+      }
+      return queryDocuments ;
+    } catch(Exception e) {
+      return queryDocuments ;
     }
-    return queryDocuments ;
   }
 
   public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
@@ -316,8 +320,7 @@ public class UIBrowseContainer extends UIContainer {
       while (iter.hasNext()) {
         queryDocuments.add(iter.nextNode()) ;
       }
-    }
-    catch(Exception e) {
+    } catch(Exception e) {
       e.printStackTrace() ;
     }
     return queryDocuments ;
@@ -890,11 +893,11 @@ public class UIBrowseContainer extends UIContainer {
     data.setWorkspace(getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "")) ;
     data.setRepository(repository) ;
     Node scripts = scriptService.getCBScriptHome(repository) ;
-    CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository) ;
     try {
+      CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository) ;
       cmsScript.execute(data);
     } catch (Exception e) {
-      e.printStackTrace() ;
+      return new ArrayList<Node>() ;
     }
     return data.getContentList() ;
   }

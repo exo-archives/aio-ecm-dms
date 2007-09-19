@@ -156,6 +156,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       VersionHistory versionHistory = node.getVersionHistory() ;
       try {
         //TODO for JCR Group check VersionHistory.removeVersion(String versionName)
+        System.out.println("\n\ncurrent version=====>" +uiVersionInfo.curentVersion_ .getName()+ "\n\n");
         versionHistory.removeVersion(uiVersionInfo.curentVersion_ .getName());
         uiVersionInfo.rootVersion_ = new VersionNode(node.getVersionHistory().getRootVersion()) ;
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
