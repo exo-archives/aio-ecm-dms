@@ -361,7 +361,7 @@
 }
 
 .UIJCRExplorerPortlet .ProgressBarFrame { 
-	width: 330px;
+	width: 310px;
 	overflow: hidden;
 	margin: 0px;
 }
@@ -900,6 +900,8 @@
 
 .UIJCRExplorer .MultiValueContainer .MultiFieldAction {
 	margin-left: 5px;
+	height: 18px;
+	background-position: center;
 }
 
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput {

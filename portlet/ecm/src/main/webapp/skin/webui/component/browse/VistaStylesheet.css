@@ -8,7 +8,11 @@
 @import url("UIEventViewer/VistaStylesheet.css");
 
 .UIWindow .UIBrowseContentPortlet {
-  overflow: auto;
+  overflow: visible;
+}
+
+.UIWindow .UIApplication {
+	overflow: visible;
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {

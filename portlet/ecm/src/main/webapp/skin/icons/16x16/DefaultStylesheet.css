@@ -95,8 +95,8 @@
  
 .RemoveFile {
 	width: 16px;
-	height: 16px;
-	background: url('DefaultSkin/DustBin.gif') no-repeat;
+	height: 18px;
+	background: url('DefaultSkin/DustBin.gif') no-repeat center;
 	margin-left: 10px;
 }
 

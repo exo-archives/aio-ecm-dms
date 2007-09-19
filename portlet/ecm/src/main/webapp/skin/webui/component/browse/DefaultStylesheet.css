@@ -8,7 +8,11 @@
 @import url("UIEventViewer/DefaultStylesheet.css");
 
 .UIWindow .UIBrowseContentPortlet {
-  overflow: auto;
+  overflow: visible;
+}
+
+.UIWindow .UIApplication {
+	overflow: visible;
 }
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
@@ -17,7 +21,7 @@
   /*
   minh.js.exo
   */
-  overflow: 400px;
+  min-width: 400px;
 }
 
 .UIBrowseContentPortlet {

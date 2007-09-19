@@ -316,15 +316,15 @@
 }
 
 .UIJCRExplorerPortlet .ProgressBarFrame { 
-	width: 330px;
+	width: 310px;
 	overflow: hidden;
 	margin: 0px;
 }
 
 .UIJCRExplorerPortlet .SelectFileFrame { 
-	width: 330px;
 	overflow: hidden;
 	margin: 0px;
+	width: auto;
 }
 
 .UIJCRExplorerPortlet  .FileNameLabel {
