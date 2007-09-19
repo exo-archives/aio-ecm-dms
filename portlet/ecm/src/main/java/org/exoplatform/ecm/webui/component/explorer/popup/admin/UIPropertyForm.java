@@ -220,8 +220,10 @@ public class UIPropertyForm extends UIForm {
         } else if(type == 2) {
           for(UIComponent child : multiValueInputSet.getChildren()) {
             UIFormUploadInput binaryInput = (UIFormUploadInput)child ;
-            byte[] content = binaryInput.getUploadData() ;    
-            valueList.add(content) ;
+            if(binaryInput.getUploadData() != null) {
+              byte[] content = binaryInput.getUploadData() ;    
+              valueList.add(content) ;
+            }
           }
         } else {
           valueList = multiValueInputSet.getValue() ;
@@ -237,6 +239,7 @@ public class UIPropertyForm extends UIForm {
         try {
           values = uiForm.createValues(valueList, type, valueFactory) ;
         } catch(NullPointerException ne) {
+          ne.printStackTrace() ;
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyValu-null", null, 
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

@@ -61,9 +61,11 @@ public class UIPropertyTab extends UIContainer {
         return sB.toString();
       }
       return prop.getString() ;
-    } catch(ValueFormatException e) {
+    } catch(ValueFormatException ve) {
       return PRO_KEY_CANNOTGET ;
-    } 
+    } catch(Exception e) {
+      return PRO_KEY_CANNOTGET ;
+    }
   }
   
   static public class CloseActionListener extends EventListener<UIPropertyTab> {

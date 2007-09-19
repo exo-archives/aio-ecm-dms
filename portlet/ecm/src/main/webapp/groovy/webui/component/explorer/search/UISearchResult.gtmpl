@@ -55,10 +55,10 @@
 	          %>
 	          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
 	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("View", node.getPath())%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
+	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
 	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
 	            </a>
-	            <a href="<%=uicomponent.event("OpenFolder", node.getPath())%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
+	            <a href="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
 	              <div class="OpenFolder16x16Icon" style="margin-left:10px ;float:left; "><span></span></div>
 	            </a>
 	          </td>	                    

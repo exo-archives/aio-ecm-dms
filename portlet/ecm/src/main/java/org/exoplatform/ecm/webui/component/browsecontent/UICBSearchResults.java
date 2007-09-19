@@ -63,7 +63,7 @@ public class UICBSearchResults extends UIGrid {
   protected void getResultData() throws Exception {
     List<ResultData> results = new ArrayList<ResultData>() ;
     for(String nodeName : resultMap_.keySet()) {
-      results.add(new ResultData(nodeName, resultMap_.get(nodeName).getPath())) ;
+      results.add(new ResultData(nodeName, Utils.formatNodeName(resultMap_.get(nodeName).getPath()))) ;
     }
   }
   static public class ViewActionListener extends EventListener<UICBSearchResults> {
