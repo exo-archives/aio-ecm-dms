@@ -28,17 +28,6 @@
               <field  name="cachedResult"><boolean>true</boolean></field>             
             </object>
           </object-param>
-          <object-param>        
-            <name>Events</name>
-            <description>Nothing</description>
-            <object type="org.exoplatform.services.cms.queries.impl.QueryData">              
-              <field  name="name"><string>events</string></field>
-              <field  name="language"><string>xpath</string></field>
-              <field  name="statement"><string>/jcr:root/site/events//element(*,exo:event) order by @exo:dtstart descending</string></field>
-              <field  name="permissions"><string>*:/user</string></field>
-              <field  name="cachedResult"><boolean>true</boolean></field>             
-            </object>
-          </object-param>          
         </init-params>  
       </component-plugin> 
   </external-component-plugins>

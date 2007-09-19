@@ -47,10 +47,10 @@ import org.exoplatform.webui.form.UIFormStringInput;
     }
 )
 public class UICBSearchForm extends UIForm {
-  final static  private String FIELD_SEARCHVALUE = "inputValue" ;
-  final static  private String FIELD_OPTION = "option" ;
-  final static  private String FIELD_CB_REF = "referencesDoc" ;
-  final static  private String FIELD_CB_CHILD = "childDoc" ;
+  final static public String FIELD_SEARCHVALUE = "inputValue" ;
+  final static public String FIELD_OPTION = "option" ;
+  final static public String FIELD_CB_REF = "referencesDoc" ;
+  final static public String FIELD_CB_CHILD = "childDoc" ;
 
   public static final String CATEGORY_SEARCH = "Category" ;
   public static final String DOCUMENT_SEARCH = "Content" ;  

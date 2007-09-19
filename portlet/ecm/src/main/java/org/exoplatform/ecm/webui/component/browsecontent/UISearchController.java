@@ -33,6 +33,8 @@ public class UISearchController extends UIContainer  {
   public void setShowHiddenSearch() throws Exception {
     UICBSearchForm uiSearch = getChild(UICBSearchForm.class) ;
     uiSearch.reset() ;
+    uiSearch.getUIFormCheckBoxInput(UICBSearchForm.FIELD_CB_REF).setRendered(true) ;
+    uiSearch.getUIFormCheckBoxInput(UICBSearchForm.FIELD_CB_CHILD).setRendered(true) ;
     UICBSearchResults uiSearchResults = getChild(UICBSearchResults.class) ;
     List<ResultData> queryResult = new ArrayList<ResultData>() ;
     uiSearchResults.updateGrid(queryResult) ;

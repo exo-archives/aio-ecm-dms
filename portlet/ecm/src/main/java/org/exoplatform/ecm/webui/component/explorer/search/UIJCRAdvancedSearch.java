@@ -199,6 +199,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         try {
           queryService.addQuery(name, statement, queryLang, userName, repository) ;        
         } catch(Exception e){
+          e.printStackTrace() ;
           uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
