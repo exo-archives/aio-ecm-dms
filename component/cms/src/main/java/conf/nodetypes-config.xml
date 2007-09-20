@@ -80,8 +80,12 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-	
-  <nodeType name="exo:actionable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">  
+  
+  <!-- This is temporary node type to store all actions for node -->
+  <nodeType name="exo:actionStorage" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+  	<supertypes>
+      <supertype>nt:unstructured</supertype>
+    </supertypes>    
     <childNodeDefinitions>
       <childNodeDefinition name="*" defaultPrimaryType="" autoCreated="false" mandatory="false"
         onParentVersion="VERSION" protected="false" sameNameSiblings="true">
@@ -91,6 +95,24 @@
       </childNodeDefinition>
     </childNodeDefinitions>
   </nodeType>
+  
+	<!-- exo:actions property will be used to store all actions that reference to this node -->
+  <nodeType name="exo:actionable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  	<propertyDefinitions>
+      <propertyDefinition name="exo:actions" requiredType="Reference" autoCreated="false" mandatory="true"
+        onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+    <childNodeDefinitions>
+      <childNodeDefinition name="*" defaultPrimaryType="" autoCreated="false" mandatory="false"
+        onParentVersion="VERSION" protected="false" sameNameSiblings="true">
+        <requiredPrimaryTypes>
+          <requiredPrimaryType>exo:actionStorage</requiredPrimaryType>
+        </requiredPrimaryTypes>
+      </childNodeDefinition>
+    </childNodeDefinitions>  	      
+  </nodeType>    
 
   <nodeType name="exo:move" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <propertyDefinitions>

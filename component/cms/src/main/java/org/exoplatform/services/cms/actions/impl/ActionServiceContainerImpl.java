@@ -21,7 +21,6 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.OnParentVersionAction;
 
-import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.CmsService;
@@ -38,14 +37,16 @@ import org.picocontainer.Startable;
 
 public class ActionServiceContainerImpl implements ActionServiceContainer, Startable {
 
-  private static final String         ACTIONABLE           = "exo:actionable";
-  private static final String         ACTION               = "exo:action";
-  private static final String         JOB_NAME_PROP        = "exo:jobName";
-  private static final String         JOB_GROUP_PROP       = "exo:jobGroup";
-  private static final String         JOB_CLASS_PROP       = "exo:jobClass";
-  private static final String         LIFECYCLE_PHASE_PROP = "exo:lifecyclePhase" ;
-  private static final String         ACTION_QUERY         = "//element(*, exo:action)" ;
-  private static final String         SCHEDULABLE_MIXIN    = "exo:schedulableInfo";
+  private static final String         ACTIONABLE           = "exo:actionable".intern();
+  private static final String         ACTION               = "exo:action".intern();
+  private static final String         JOB_NAME_PROP        = "exo:jobName".intern();
+  private static final String         JOB_GROUP_PROP       = "exo:jobGroup".intern();
+  private static final String         JOB_CLASS_PROP       = "exo:jobClass".intern();
+  private static final String         LIFECYCLE_PHASE_PROP = "exo:lifecyclePhase".intern() ;
+  private static final String         ACTION_QUERY         = "//element(*, exo:action)".intern() ;
+  private static final String         SCHEDULABLE_MIXIN    = "exo:schedulableInfo".intern();
+  private static final String         EXO_ACTIONS          = "exo:actions".intern();
+  private static final String         ACTION_STORAGE       = "exo:actionStorage".intern();
 
   private RepositoryService           repositoryService_;  
   private CmsService                  cmsService_;
@@ -186,7 +187,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public Node getAction(Node node, String actionName) throws Exception {
-    return node.getNode(actionName);
+    return node.getNode( EXO_ACTIONS + "/"+actionName);
   }
 
   public boolean hasActions(Node node) throws Exception {
@@ -199,7 +200,13 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   public List<Node> getActions(Node node, String lifecyclePhase) throws Exception {
     List<Node> actions = new ArrayList<Node>();
-    for (NodeIterator iter = node.getNodes(); iter.hasNext();) {
+    Node actionStorage = null;
+    try{
+      actionStorage = node.getNode(EXO_ACTIONS) ;
+    }catch (Exception e) {
+      return actions;
+    }        
+    for (NodeIterator iter = actionStorage.getNodes(); iter.hasNext();) {
       Node tmpNode = iter.nextNode();
       if (tmpNode.isNodeType(ACTION)
           && (lifecyclePhase == null || lifecyclePhase.equals(tmpNode.getProperty(
@@ -207,13 +214,12 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         actions.add(tmpNode);
       }
     }
-
     return actions;
   }
 
   public void removeAction(Node node, String actionName, String repository) throws Exception {
     if(!node.isNodeType(ACTIONABLE)) return  ;    
-    Node action2Remove = node.getNode(actionName);
+    Node action2Remove = node.getNode(EXO_ACTIONS+ "/" + actionName);
     String lifecyclePhase = action2Remove.getProperty(LIFECYCLE_PHASE_PROP).getString();
     String jobName = null, jobGroup = null, jobClassName = null;
     if (action2Remove.isNodeType(SCHEDULABLE_MIXIN)) {
@@ -244,7 +250,14 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       storeActionNode.addMixin(ACTIONABLE);
       storeActionNode.save();
     }
-    String newActionPath = cmsService_.storeNode(actionType, storeActionNode, mappings,true,repository);
+    Node actionsNode = null;
+    if(storeActionNode.hasNode(EXO_ACTIONS)) {
+      actionsNode = storeActionNode.getNode(EXO_ACTIONS) ;
+    }else {
+      actionsNode = storeActionNode.addNode(EXO_ACTIONS,ACTION_STORAGE) ;
+      storeActionNode.save();
+    }
+    String newActionPath = cmsService_.storeNode(actionType, actionsNode, mappings,true,repository);
     storeActionNode.save();
     String srcWorkspace = storeActionNode.getSession().getWorkspace().getName();
 
@@ -268,14 +281,14 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     variables.put("initiator", userId);
     variables.put("actionName", actionName);
     variables.put("nodePath", node.getPath());
-    variables.put("srcWorkspace", node.getSession().getWorkspace().getName());
+    variables.put("srcWorkspace", node.getSession().getWorkspace().getName());    
     variables.put("srcPath", node.getParent().getPath());
 
     NodeType nodeType = node.getPrimaryNodeType();
     String nodeTypeName = nodeType.getName();
     variables.put("document-type", nodeTypeName);
 
-    Node actionNode = node.getNode(actionName);
+    Node actionNode = node.getNode(EXO_ACTIONS + "/" + actionName);
     NodeType actionNodeType = actionNode.getPrimaryNodeType();
     fillVariables(actionNode, actionNodeType, variables);
 
@@ -301,7 +314,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   public void executeAction(String userId, Node node, String actionName, Map variables, String repository) throws Exception {
     if (!node.isNodeType(ACTIONABLE)) return ;
-    Node actionNode = node.getNode(actionName);
+    Node actionNode = node.getNode(EXO_ACTIONS + "/" +actionName);
     String actionTypeName = actionNode.getPrimaryNodeType().getName();
     for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
       ComponentPlugin plugin = (ComponentPlugin) iter.next();

@@ -35,7 +35,7 @@ import org.exoplatform.services.scheduler.PeriodInfo;
 import org.quartz.JobDataMap;
 
 abstract public class BaseActionPlugin implements ActionPlugin {
-
+    
   final static String JOB_NAME_PREFIX = "activate_".intern() ;
   final static String PERIOD_JOB = "period".intern() ;
   final static String CRON_JOB = "cron".intern() ;
@@ -56,7 +56,8 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   final static String LIFECYCLE_PHASE_PROP = "exo:lifecyclePhase".intern() ;
   final static String NODE_NAME_PROP = "exo:name".intern() ;
   final static String COUNTER_PROP = "exo:counter".intern() ;
-
+  final static String EXO_ACTIONS = "exo:actions".intern();
+  final static String ACTION_STORAGE= "exo:actionStorage".intern();
   final static long BUFFER_TIME = 500*1000 ; 
 
   final static String actionNameVar = "actionName".intern() ;
@@ -98,8 +99,10 @@ abstract public class BaseActionPlugin implements ActionPlugin {
           srcWorkspace, srcPath, variables);
       Session session = getSystemSession(repository, srcWorkspace);
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
-      if(listeners_.containsKey(repository + ":" + srcPath + "/" + actionName)){
-        listeners_.remove(repository + ":" +srcPath + "/" + actionName) ;      
+    //TODO all actions are stored at srcNode/exo:actions node
+      String listenerKey = repository + ":" + srcPath + "/exo:actions/" +actionName;
+      if(listeners_.containsKey(listenerKey)){
+        listeners_.remove(listenerKey) ;      
       }else{
         if (ActionServiceContainer.ADD_PHASE.equals(type)) {
           obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, true, null, null, false);      
@@ -110,7 +113,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         }
       }
       session.logout();
-      listeners_.put(repository + ":" + srcPath + "/" + actionName, listener);
+      listeners_.put(listenerKey, listener);
     }        
   }
 
@@ -119,7 +122,8 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String lifecyclePhase = storedActionNode.getProperty("exo:lifecyclePhase").getString() ;
     String actionType = storedActionNode.getPrimaryNodeType().getName() ;
     String srcWorkspace = storedActionNode.getSession().getWorkspace().getName() ;
-    String srcPath = storedActionNode.getParent().getPath() ;    
+    //TODO all actions are stored in srcNode/exo:actions
+    String srcPath = storedActionNode.getParent().getParent().getPath() ;    
     if (ActionServiceContainer.READ_PHASE.equals(lifecyclePhase)) {
       return;
     }    
@@ -141,9 +145,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     ECMEventListener listener = 
       createEventListener(actionName, actionExecutable, repository, srcWorkspace, srcPath, variables);
     Session session = getSystemSession(repository, srcWorkspace);
+    //TODO all actions are stored at srcNode/exo:actions node
+    String listenerKey = repository + ":" + srcPath + "/exo:actions/" +actionName;
     ObservationManager obsManager = session.getWorkspace().getObservationManager(); 
-    if(listeners_.containsKey(repository + ":" + srcPath + "/" + actionName)){
-      listeners_.remove(repository + ":" + srcPath + "/" + actionName) ;      
+    if(listeners_.containsKey(listenerKey)){
+      listeners_.remove(listenerKey) ;      
     }else{
       if (ActionServiceContainer.ADD_PHASE.equals(lifecyclePhase)) {
         obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, true, null, null, false);      
@@ -154,7 +160,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       }
     }
     session.logout();
-    listeners_.put(repository + ":" + srcPath + "/" + actionName, listener);
+    listeners_.put(listenerKey, listener);
   }
 
   public void reScheduleActivations(Node storedActionNode, String repository) throws Exception {    
@@ -170,8 +176,9 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String actionType = storedActionNode.getPrimaryNodeType().getName() ;
     String srcWorkspace = storedActionNode.getSession().getWorkspace().getName() ;
     String scheduleType = storedActionNode.getProperty(SCHEDULE_TYPE_PROP).getString() ;
-    String initiator = storedActionNode.getProperty(SCHEDULED_INITIATOR).getString() ;    
-    String srcPath = storedActionNode.getParent().getPath() ;       
+    String initiator = storedActionNode.getProperty(SCHEDULED_INITIATOR).getString() ;
+    //TODO all action node is stored in /exo:actions
+    String srcPath = storedActionNode.getParent().getParent().getPath() ;       
     String jobName = storedActionNode.getProperty(JOB_NAME_PROP).getString() ;
     String jobGroup = storedActionNode.getProperty(JOB_GROUP_PROP).getString() ;
     ExoContainer container = ExoContainerContext.getCurrentContainer() ;
@@ -252,9 +259,9 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     return false ;
   }
 
-  public void removeObservation(String repository, String actionName) throws Exception {
+  public void removeObservation(String repository, String actionPath) throws Exception {
 
-    ECMEventListener eventListener = listeners_.get(repository + ":" + actionName);
+    ECMEventListener eventListener = listeners_.get(repository + ":" + actionPath);
     if(eventListener != null){
       String srcWorkspace = eventListener.getSrcWorkspace();
       Session session = getSystemSession(repository, srcWorkspace);
@@ -262,7 +269,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       obsManager.removeEventListener(eventListener);
       session.logout();
     }
-    listeners_.remove(repository + ":" + actionName);
+    listeners_.remove(repository + ":" + actionPath);
   }
 
   public void removeActivationJob(String jobName,String jobGroup,String jobClass) throws Exception {
@@ -348,12 +355,21 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     Node srcNode = (Node) session.getItem(action.getSrcPath());
     Node actionNode = null;
     boolean firstImport = false;
-    if (!srcNode.hasNode(action.getName())) {
+    String actionsNodeName = EXO_ACTIONS + "/" + action.getName();
+    Node actionsNode = null;
+    if (!srcNode.hasNode(actionsNodeName)) {
       firstImport = true;
       if (!srcNode.isNodeType("exo:actionable")) {
-        srcNode.addMixin("exo:actionable");
+        srcNode.addMixin("exo:actionable");                  
       }
-      actionNode = srcNode.addNode(action.getName(), action.getType());
+      //TODO now, each node will have actions storage. It's better to store all actions in one storage like version storage
+      if(srcNode.hasNode(EXO_ACTIONS)) {
+        actionsNode = srcNode.getNode(EXO_ACTIONS);
+      }else {
+        actionsNode = srcNode.addNode(EXO_ACTIONS,ACTION_STORAGE);
+        srcNode.save();
+      }
+      actionNode = actionsNode.addNode(action.getName(), action.getType());
       actionNode.setProperty("exo:name", action.getName());
       actionNode.setProperty("exo:description", action.getDescription());
       if (action.getLifecyclePhase() != null)
@@ -374,7 +390,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         }
       }
     } else {
-      actionNode = srcNode.getNode(action.getName());
+      actionNode = srcNode.getNode(actionsNodeName);
     }
 
     String unparsedVariables = action.getVariables();
@@ -394,6 +410,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     if (firstImport)
       srcNode.save();
   }
+  
   private void scheduleActionActivationJob(String repository, String srcWorkspace,String srcPath,
       String actionName,String actionType,String actionExecutable, Map mappings) throws Exception {
     ExoContainer container = ExoContainerContext.getCurrentContainer() ;
@@ -401,7 +418,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       (JobSchedulerService)container.getComponentInstanceOfType(JobSchedulerService.class) ;
     ActionServiceContainer actionContainer = 
       (ActionServiceContainer) container.getComponentInstanceOfType(ActionServiceContainer.class) ;
-    
+
     Session session = getSystemSession(repository, srcWorkspace) ;
     Node srcNode = (Node)session.getItem(srcPath) ;
     Node actionNode = actionContainer.getAction(srcNode,actionName) ;
