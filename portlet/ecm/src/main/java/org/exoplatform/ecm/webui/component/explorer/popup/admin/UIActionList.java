@@ -89,7 +89,9 @@ public class UIActionList extends UIContainer {
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
-      Node node = uiExplorer.getCurrentNode().getNode(actionName) ;
+      ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);      
+      
+      Node node = actionService.getAction(uiExplorer.getCurrentNode(),actionName);
       String nodeTypeName = node.getPrimaryNodeType().getName() ;
       String userName = event.getRequestContext().getRemoteUser() ;
       TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
@@ -146,8 +148,9 @@ public class UIActionList extends UIContainer {
       String repository = 
         uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       Node currentNode = uiExplorer.getCurrentNode() ;
-      Node selectedNode = currentNode.getNode(actionName) ;
-      String nodeTypeName = selectedNode.getPrimaryNodeType().getName() ;
+      ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);
+      Node selectedAction = actionService.getAction(currentNode,actionName);
+      String nodeTypeName = selectedAction.getPrimaryNodeType().getName() ;
       UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
       try {
         templateService.getTemplatePathByUser(true, nodeTypeName, userName, repository);
@@ -162,7 +165,7 @@ public class UIActionList extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      uiActionListContainer.initEditPopup(actionName) ;
+      uiActionListContainer.initEditPopup(selectedAction) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionListContainer) ;
     }
   }

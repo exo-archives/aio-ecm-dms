@@ -26,16 +26,15 @@ public class UIActionListContainer extends UIContainer {
     addChild(UIActionList.class, null, null) ;
   }
   
-  public void initEditPopup(String actionName) throws Exception {
+  public void initEditPopup(Node actionNode) throws Exception {
     removeChildById("editActionPopup") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "editActionPopup") ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node currentNode = uiExplorer.getCurrentNode() ;
-    Node selectedNode = currentNode.getNode(actionName) ;
+    Node currentNode = uiExplorer.getCurrentNode() ;    
     UIActionForm uiActionForm = createUIComponent(UIActionForm.class, null, "EditFormAction") ;
-    uiActionForm.createNewAction(currentNode, selectedNode.getPrimaryNodeType().getName(), false) ;
+    uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false) ;
     uiActionForm.setIsUpdateSelect(false) ;
-    uiActionForm.setNode(selectedNode) ;
+    uiActionForm.setNode(actionNode) ;
     uiActionForm.setIsEditInList(true) ;
     uiPopup.setWindowSize(650, 450);
     uiPopup.setUIComponent(uiActionForm) ;
