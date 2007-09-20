@@ -879,9 +879,9 @@ public class UIActionBar extends UIForm {
       if("/".equals(currentNode.getPath())) {
         queryStatement = ROOT_SQL_QUERY ;        
       }else {
-        queryStatement = SQL_QUERY.replaceAll("$0",currentNode.getPath()) ;
+        queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath()) ;
       }
-      queryStatement.replaceAll("$1",text) ;      
+      queryStatement = StringUtils.replace(queryStatement,"$1",text);      
       QueryResult queryResult = null;
       try {
         QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
