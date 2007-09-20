@@ -196,6 +196,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      uiJCRExplorer.getSession().save() ;
       uiForm.refresh();
       uiJCRExplorer.setIsHidePopup(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);

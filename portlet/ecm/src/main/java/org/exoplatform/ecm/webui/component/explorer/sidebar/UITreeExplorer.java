@@ -7,11 +7,13 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -118,7 +120,13 @@ public class UITreeExplorer extends UIComponent {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+      Node selectedNode = null ;
+      try {
+        selectedNode = (Node) uiExplorer.getSession().getItem(path) ;
+      } catch(AccessDeniedException ace) {
+        selectedNode = uiExplorer.getSession().getRootNode() ;
+      }
+      uiExplorer.setSelectNode(selectedNode) ; 
       uiExplorer.updateAjax(event) ;
     }
   }

@@ -20,7 +20,8 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -32,22 +33,27 @@ import org.exoplatform.webui.event.EventListener;
  * Dec 26, 2006 11:39:54 AM 
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
+    template = "app:/groovy/webui/component/browse/UICBSearchResults.gtmpl",
     events = {
         @EventConfig(listeners = UICBSearchResults.CloseActionListener.class),
         @EventConfig(listeners = UICBSearchResults.ViewActionListener.class),
         @EventConfig(listeners = UICBSearchResults.GotoActionListener.class)
     }
 )
-public class UICBSearchResults extends UIGrid {
-  private static String[] GRID_FIELD = {"name", "path"} ;
-  private static String[] GRID_ACTIONS = {"View", "Goto"} ;
+public class UICBSearchResults extends UIContainer {
   protected Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
+  private UIPageIterator uiPageIterator_ ;
 
   public UICBSearchResults() throws Exception { 
-    getUIPageIterator().setId("ResultListIterator") ;
-    configure("path", GRID_FIELD, GRID_ACTIONS) ;
+    uiPageIterator_ = addChild(UIPageIterator.class, null, null) ;
   }
+  
+  public List getCurrentList() throws Exception { 
+    return uiPageIterator_.getCurrentPageData() ;    
+  }
+  
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  
   private boolean isDocumentTemplate(String nodeType)throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
@@ -63,7 +69,7 @@ public class UICBSearchResults extends UIGrid {
   protected void getResultData() throws Exception {
     List<ResultData> results = new ArrayList<ResultData>() ;
     for(String nodeName : resultMap_.keySet()) {
-      results.add(new ResultData(nodeName, Utils.formatNodeName(resultMap_.get(nodeName).getPath()))) ;
+      results.add(new ResultData(Utils.formatNodeName(nodeName), Utils.formatNodeName(resultMap_.get(nodeName).getPath()))) ;
     }
   }
   static public class ViewActionListener extends EventListener<UICBSearchResults> {
@@ -130,11 +136,12 @@ public class UICBSearchResults extends UIGrid {
       }
     }
   }
+  
   public String[] getActions() { return new String[] {"Close"} ;}
 
   public void updateGrid(List<ResultData> result) throws Exception {
     ObjectPageList objPageList = new ObjectPageList(result, 10) ;
-    getUIPageIterator().setPageList(objPageList) ;
+    uiPageIterator_.setPageList(objPageList) ;
   } 
 
   public static class ResultData {

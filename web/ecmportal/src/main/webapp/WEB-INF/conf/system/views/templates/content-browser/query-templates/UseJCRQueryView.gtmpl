@@ -2,6 +2,8 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
+	import org.exoplatform.ecm.utils.Utils ;
+	
 	String componentName = uicomponent.getName() ;
 	def subDocumentList = uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
@@ -41,7 +43,7 @@
     <div class="EventContent">
       <%
         for (Node doc in subDocumentList) {
-          String viewAction = uicomponent.event("ChangeNode",doc.getPath());
+          String viewAction = uicomponent.event("ChangeNode",Utils.formatNodeName(doc.getPath()));
           String icon = uicomponent.getIcons(doc,"16x16Icon") ;
       %>
           <div class="EventContentDetail">

@@ -364,9 +364,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     pageIterator_.setPageList(pageList) ;
   }
   
+  @SuppressWarnings("unchecked")
   public List<Node> getChildrenList() throws Exception {
-    List<Node> list = pageIterator_.getCurrentPageData();    
-    return list;    
+    return pageIterator_.getCurrentPageData();    
   }
   
   public String getTypeSort() { return typeSort_ ; }

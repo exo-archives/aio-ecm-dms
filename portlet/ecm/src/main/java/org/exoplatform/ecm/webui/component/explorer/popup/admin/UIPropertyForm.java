@@ -241,7 +241,12 @@ public class UIPropertyForm extends UIForm {
         } catch(NullPointerException ne) {
           ne.printStackTrace() ;
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyValu-null", null, 
-              ApplicationMessage.WARNING)) ;
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } catch(NumberFormatException nume) {
+          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.number-format-exception", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         } catch(Exception e) {

@@ -349,8 +349,12 @@ public class UIJCRExplorer extends UIContainer {
     return node.isNodeType(Utils.MIX_REFERENCEABLE) ;    
   }
 
-  public boolean isPreferenceNode(Node node) throws RepositoryException {
-    return (getCurrentNode().hasNode(node.getName())) ? false : true ;
+  public boolean isPreferenceNode(Node node) {
+    try {
+      return (getCurrentNode().hasNode(node.getName())) ? false : true ;
+    } catch(Exception e) {
+      return false ;
+    }
   }
 
   public Node getNodeByPath(String nodePath, Session session) throws Exception {

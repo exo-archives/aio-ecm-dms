@@ -4,6 +4,8 @@
   import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
   import javax.jcr.Node ;
   import org.exoplatform.web.application.JavascriptManager;
+  import org.exoplatform.ecm.utils.Utils ;
+  
   String componentName = uicomponent.getName() ;
   def rcontext = _ctx.getRequestContext() ;
 	JavascriptManager jsmanager = rcontext.getJavascriptManager();
@@ -68,7 +70,7 @@
 	                         previousActionLink = uicomponent.event('ChangeNode',previousNode);
 	                      } else {
 	                        previousNodeName = "Root" ;
-	                        previousActionLink = uicomponent.event('ChangeNode',rootNode.getPath());
+	                        previousActionLink = uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()));
 	                      }
 	                    %> 
 	                    <div class="NodeHistoryContainer">   
@@ -79,7 +81,7 @@
 	                    for(String nodePath : content.get("history")) {
 	                      String classStyleName = "NodeLabel" ;
 	                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);                  
-	                      String nodeLink = uicomponent.event('ChangeNode',nodePath) ;
+	                      String nodeLink = uicomponent.event('ChangeNode',Utils.formatNodeName(nodePath)) ;
 	                       if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
 	                  %>
 	                      <div class="NodeHistoryContainer">
@@ -93,7 +95,7 @@
                 <div class="RightHomeTab">
                   <div class="MiddleHomeTab">
                   	<div class="LeftIcon CBHome16x16Icon" title="Home"><span></span></div>
-                    <a href="<%=uicomponent.event('ChangeNode',rootNode.getPath())%>" >Home</a>
+                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" >Home</a>
                     <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
                     <div style="clear:both;"><span></span></div>
                   </div>
@@ -116,7 +118,7 @@
                           <div class="MiddleTab">
                           	<div class="Icon CBDefaultFolder16x16Icon"><span></span></div>
                             <div class="LabelButton">                            	
-                              <a href="<%=uicomponent.event('ChangeNode',tab);%>">$tabName</a>
+                              <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(tab));%>">$tabName</a>
                             </div>
                             <div style="clear:left;"><span></span></div>
                           </div>
@@ -138,7 +140,7 @@
               <%
                 for(String subCat in subCategoryList) {
                   String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
-                  String actionLinkSub = uicomponent.event("ChangeNode", subCat) ; 
+                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
               %>
                   <div class="ChildNodeItem">
                     <a class="NodeLabel" href="$actionLinkSub">$catName</a>  
@@ -179,7 +181,7 @@
     <div class="EventContent">
       <%
         for (Node doc in subDocumentList) {
-        	String objectId = doc.getPath() + "&category=" + selectedTab.getPath() ;
+        	String objectId = Utils.formatNodeName(doc.getPath()) + "&category=" + Utils.formatNodeName(selectedTab.getPath()) ;
           String viewAction = uicomponent.event("ChangeNode", objectId);
           String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
           String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
@@ -232,7 +234,7 @@
             isFloatRight = false ;
             for(String subCat in subCategoryList) {
               String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
-              String subCatLink = uicomponent.event("ChangeNode", subCat);
+              String subCatLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat));
           %>
               <div class="SubContentHolder">
                 <div class="TopSubContent">
@@ -255,7 +257,7 @@
 	                   					<% 
 						                    for(String subChild in subChilds) {
 						                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
-						                      String subChildLink = uicomponent.event("ChangeNode", subChild);
+						                      String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
 						                  %>
 						                      <div class="ChildNode">						                      	
 						                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
@@ -293,7 +295,7 @@
                           </tr> 
                       <%} else {   
                            for(Node doc in docChilds) {
-                           	String docId = doc.getPath()+ "&category=" + subCat ;
+                           	String docId = Utils.formatNodeName(doc.getPath())+ "&category=" + Utils.formatNodeName(subCat) ;
                             String docActionLink = uicomponent.event("ChangeNode", docId) ;
                             String icon = uicomponent.getIcons(doc,"16x16Icon") ;
                             String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;

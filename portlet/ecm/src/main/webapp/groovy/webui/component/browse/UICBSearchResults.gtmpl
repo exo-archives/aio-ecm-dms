@@ -1,0 +1,93 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Sep 20, 2007 1:47:43 PM
+ */
+%>
+<% 
+  import org.exoplatform.ecm.utils.Utils ;
+%>
+<% 
+  def resultList = uicomponent.getCurrentList() ; 
+  if(resultList == null) return ;
+  
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+%>
+<div class="UICBSearchResults" id="$uicomponent.id">
+  <table class="UIGrid">
+    <thead>
+      <tr>
+  	    <th><%=_ctx.appRes("UICBSearchResults.header.name")%></th>
+  	    <th><%=_ctx.appRes("UICBSearchResults.header.path")%></th>
+  	    <th><%=_ctx.appRes("UICBSearchResults.header.action")%></th>
+      </tr>
+    </thead>
+    <tbody>
+    <%
+      def rowClass = null ;
+ 	    boolean even = true ;
+ 	    boolean found = false ;
+ 	    if(resultList != null && resultList.size() > 0) {
+  	    for(node in resultList) {
+  	      found = true  ;
+  	      if(even) rowClass = "EvenRow" ;  
+  	      else rowClass =  "OddRow" ; 
+  	      even = !even ;
+      %>
+          <tr class="$rowClass">
+            <td><div class="Text"><%=node.getName()%></div></td>
+	          <%
+	            String nodePath = node.getPath() ;
+	            if(nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
+	            else if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
+	          %>
+	          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
+	          <td style="width:80px;">
+	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.View")%>">
+	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
+	            </a>
+	            <a href="<%=uicomponent.event("Goto", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.Goto")%>">
+	              <div class="OpenFolder16x16Icon" style="margin-left:10px ;float:left; "><span></span></div>
+	            </a>
+	          </td>	                    
+          </tr>
+    <%
+        }
+      } else {
+    %>
+      <tr class="EvenRow">
+        <td colspan="4" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UICBSearchResults.msg.empty")%></td>
+      </tr>
+    <%}%>
+    </tbody>
+  </table>
+  <div style="margin:1px 0px 20px 0px;">
+    <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+  </div>
+</div>
+<% if(uicomponent.getActions() != null) { %>
+  <div class="$uicomponent.id">
+    <div class="UIAction"> 
+      <table class="ActionContainer" align="center">
+      	<tr>
+      		<td align="center">
+	        <% for(action in uicomponent.getActions()) { %>
+            <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
+              <div class="ButtonLeft">
+                <div class="ButtonRight">
+                  <div class="ButtonMiddle">
+                      <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
+                  </div>
+                </div>
+              </div>
+            </a>
+	        <% } %>
+					</td>
+				</tr>	       
+      </table>
+    </div>
+  </div>
+<% }%>

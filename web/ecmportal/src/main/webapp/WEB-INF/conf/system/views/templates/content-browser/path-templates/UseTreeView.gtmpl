@@ -5,6 +5,8 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UICategoryTree ;
   import javax.jcr.Node;
+  import org.exoplatform.ecm.utils.Utils ;
+  
   BCTreeNode treeNode = uicomponent.getTreeRoot() ;  
   String componentName = uicomponent.getName() ;
   def content = uicomponent.getTreeContent() ;                  
@@ -61,7 +63,7 @@
 	  				<div class="EventContent">
 			      <%
 			        for (Node doc in subDocumentList) {
-			        	String objectId = doc.getPath() + "&category=" + uicomponent.getCurrentNode().getPath() ;
+			        	String objectId = Utils.formatNodeName(doc.getPath()) + "&category=" + Utils.formatNodeName(uicomponent.getCurrentNode().getPath()) ;
 			          String viewAction = uicomponent.event("ChangeNode", objectId);
 			          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 			          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
@@ -117,7 +119,7 @@
 						  if (!subCategoryList.isEmpty()) {
 							  for (String subCat : subCategoryList) { 
 							     String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
-	                 String actionLinkSub = uicomponent.event("Select", subCat) ; 
+	                 String actionLinkSub = uicomponent.event("Select", Utils.formatNodeName(subCat)) ; 
 	                  def child = content.get(catName) ;
 								   	def docChilds = child.get("doc") ;
 								   	int numbDocument = docChilds.size() ;
@@ -150,7 +152,7 @@
 			                      String cssStyle = "ChildrenContentHolderLeft" ;
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
-									          String docId = subChild.getPath() + "&category=" + subCat ;
+									          String docId = Utils.formatNodeName(subChild.getPath()) + "&category=" + Utils.formatNodeName(subCat) ;
 			                      String subChildLink = uicomponent.event("ChangeNode", docId);                       
 											 %>
 														<div class="$cssStyle">

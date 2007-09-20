@@ -205,7 +205,7 @@ public class UICBSearchForm extends UIForm {
       UICBSearchForm uiForm = event.getSource() ;
       UIBrowseContainer container = uiForm.getAncestorOfType(UIBrowseContainer.class) ;
       Node currentNode = container.getCurrentNode() ;
-      String keyword = uiForm.getUIStringInput(FIELD_SEARCHVALUE).getValue();
+      String keyword = Utils.formatNodeName(uiForm.getUIStringInput(FIELD_SEARCHVALUE).getValue());
       String type = uiForm.getUIFormSelectBox(FIELD_OPTION).getValue() ;            
       List<ResultData> queryResult = null;
       UICBSearchResults searchResults = container.findFirstComponentOfType(UICBSearchResults.class) ;

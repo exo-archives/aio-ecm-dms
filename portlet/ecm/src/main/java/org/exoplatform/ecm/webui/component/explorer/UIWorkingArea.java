@@ -131,7 +131,7 @@ public class UIWorkingArea extends UIContainer {
     return false ;
   }
 
-  public boolean isPreferenceNode(Node node) throws RepositoryException {
+  public boolean isPreferenceNode(Node node) {
     return getAncestorOfType(UIJCRExplorer.class).isPreferenceNode(node) ;
   }
 
@@ -211,7 +211,7 @@ public class UIWorkingArea extends UIContainer {
       if(isEditable) actionsList.append(",EditDocument") ;
       if(holdsLock) {
         actionsList.append(",Unlock") ;
-      } else if(isLocked) {
+      } else if(!isLocked) {
         actionsList.append(",Lock") ;
       }
       if(!isSameNameSibling) {

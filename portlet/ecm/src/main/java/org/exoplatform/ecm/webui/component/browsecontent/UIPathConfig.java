@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.container.PortalContainer;
@@ -201,14 +202,16 @@ public class UIPathConfig extends UIForm implements UISelector{
       String repository = repositoryField.getValue() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-      String jcrPatth = categoryPathField.getValue() ;
-      if((jcrPatth == null) || (jcrPatth.trim().length() == 0)) {
+      String jcrPath = categoryPathField.getValue() ;
+      if((jcrPath == null) || (jcrPath.trim().length() == 0)) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       } 
-      if(uiBCContainer.getNodeByPath(jcrPatth) == null) {
+      Session session = uiBCContainer.getSession(repository, workSpace) ;
+      Node node = (Node) session.getItem(jcrPath) ;
+      if(node == null) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
@@ -232,7 +235,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_FROM_PATH) ;
       prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
-      prefs.setValue(Utils.JCR_PATH, jcrPatth) ;
+      prefs.setValue(Utils.JCR_PATH, jcrPath) ;
       prefs.setValue(Utils.CB_NB_PER_PAGE, itemPerPage) ;
       prefs.setValue(Utils.CB_TEMPLATE, template) ;
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate) ;    

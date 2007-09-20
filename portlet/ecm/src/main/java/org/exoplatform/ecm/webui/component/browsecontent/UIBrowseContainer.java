@@ -474,6 +474,25 @@ public class UIBrowseContainer extends UIContainer {
     }
     return session ;
   }
+  
+  public Session getSession(String repository, String workspace) throws Exception{
+    Session session = null ;
+    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"") ;
+    ManageableRepository manageableRepository = getRepositoryService().getRepository(repository) ;
+    if(categoryPath.startsWith("/jcr:system")) {         
+      session = getSystemProvider().getSession(workspace,manageableRepository) ;
+    }else {
+      if(SessionsUtils.isAnonim()) {
+        //TODO Anonim Session
+        //session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+        session = getSystemProvider().getSession(workspace,manageableRepository) ;
+      }else {
+        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
+      }
+    }
+    return session ;
+  }
+  
   public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
@@ -1112,6 +1131,7 @@ public class UIBrowseContainer extends UIContainer {
           uiContainer.changeNode(selectNode) ;
         }
       }
+      event.getSource().setCurrentNode(selectNode) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer.getAncestorOfType(UIBrowseContentPortlet.class)) ;
     }
   }

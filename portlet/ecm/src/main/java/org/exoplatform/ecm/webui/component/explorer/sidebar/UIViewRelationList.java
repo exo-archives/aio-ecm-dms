@@ -53,7 +53,7 @@ public class UIViewRelationList extends UIContainer{
     return relations ;
   }
   
-  public boolean isPreferenceNode(Node node) throws RepositoryException {
+  public boolean isPreferenceNode(Node node) {
     return getAncestorOfType(UIJCRExplorer.class).isPreferenceNode(node) ;
   }
 
