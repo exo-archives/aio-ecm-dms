@@ -887,7 +887,8 @@ public class UIActionBar extends UIForm {
         QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
         Query query = queryManager.createQuery(queryStatement, Query.SQL);        
         queryResult = query.execute();
-      } catch(Exception e) {        
+      } catch(Exception e) {     
+        e.printStackTrace() ;
       }      
       uiExplorer.removeChildById("ViewSearch") ;
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).

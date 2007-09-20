@@ -20,7 +20,8 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIComponentDecorator;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.exception.MessageException;
@@ -33,7 +34,7 @@ import org.exoplatform.webui.exception.MessageException;
  * 10:37:15 AM
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
+    template = "app:/groovy/webui/component/admin/script/UIScriptList.gtmpl",
     events = {
         @EventConfig(listeners = UIScriptList.EditActionListener.class),
         @EventConfig(listeners = UIScriptList.DeleteActionListener.class, confirm="UIScriptList.msg.confirm-delete"),
@@ -41,21 +42,25 @@ import org.exoplatform.webui.exception.MessageException;
     }
 )
 
-public class UIScriptList extends UIGrid {
+public class UIScriptList extends UIComponentDecorator {
 
-  private static String[] BEAN_FIELD = {"name", "path", "baseVersion"} ;
-  private static String[] ACTIONS = {"Edit", "Delete"} ;
-
+  private UIPageIterator uiPageIterator_ ;
+  
   public UIScriptList() throws Exception { 
-    configure("name", BEAN_FIELD, ACTIONS) ;
+    uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "ScriptListIterator");
+    setUIComponent(uiPageIterator_) ;
   }
 
   @SuppressWarnings("unchecked")
   public void updateGrid(List<ScriptData> scriptData) throws Exception {
     Collections.sort(scriptData, new ScriptComparator()) ;
     ObjectPageList objPageList = new ObjectPageList(scriptData, 10) ;
-    getUIPageIterator().setPageList(objPageList) ;
+    uiPageIterator_.setPageList(objPageList) ;
   }
+  
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  
+  public List getScriptList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
 
   public String getScriptCategory() throws Exception {
     UIComponent parent = getParent() ;
@@ -187,16 +192,8 @@ public class UIScriptList extends UIGrid {
 
     public ScriptData(String scriptName, String scriptParth, String version) {
       name = scriptName ;
-      path = pathTitle(scriptParth, 30) ;   
+      path = scriptParth ;   
       baseVersion = version ;
-    }
-
-    private String pathTitle(String inputStr, int defauLength) {
-      String sortName = inputStr ;
-      if(inputStr.length() > defauLength) {
-        sortName = "..." + inputStr.substring(inputStr.length() - defauLength, inputStr.length()) ;
-      }
-      return sortName ;
     }
     public String getName() { return name ; }
     public String getPath() { return path ; }
