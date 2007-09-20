@@ -138,7 +138,7 @@ public class UIConfigTabPane extends UIContainer {
     if(SessionsUtils.isAnonim()) {
       uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
     }
-    String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED} ;
+    String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, "exo:taxonomy"} ;
     uiJCRBrowser.setFilterType(filterType) ;
     uiPopup.setUIComponent(uiJCRBrowser) ;
     uiJCRBrowser.setComponent(uiForm, new String[] {UINewConfigForm.FIELD_CATEGORYPATH}) ;
