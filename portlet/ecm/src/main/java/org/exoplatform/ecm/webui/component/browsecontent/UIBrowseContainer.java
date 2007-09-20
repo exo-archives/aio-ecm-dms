@@ -561,7 +561,7 @@ public class UIBrowseContainer extends UIContainer {
     List<Node> nodes = new ArrayList<Node>() ;
     while(nodeIter.hasNext()) {
       Node childNode = nodeIter.nextNode() ;
-      String primaryType = childNode.getDefinition().getDefaultPrimaryType().getName() ;
+      String primaryType = childNode.getPrimaryNodeType().getName() ;
       if(primaryType.equals(Utils.NT_UNSTRUCTURED) || primaryType.equals(Utils.NT_FOLDER)) {
         nodes.add(childNode) ;
       }
