@@ -59,7 +59,7 @@
 
 <div class="Header">DC:ELEMENTSET</div>
 <div>     
-  <div class="ContentBlock" style="width:45%">
+  <div class="ContentBlock" style="width:43%">
     <div class="Title">
       <div class="Label">Title</div>
       <div class="Line"><span></span></div>
@@ -68,7 +68,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%;">
+    <div style="float: left; width:43%;">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.date")%></div>
@@ -77,7 +77,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%;">
+    <div style="float:right; width:43%;">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.subject")%></div>
@@ -90,7 +90,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.description")%></div>
@@ -99,7 +99,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.languages")%></div>
@@ -112,7 +112,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.creator")%></div>
@@ -121,7 +121,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.publisher")%></div>
@@ -134,7 +134,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.contributor")%></div>
@@ -143,7 +143,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.identifier")%></div>
@@ -156,7 +156,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.resource-type")%></div>
@@ -165,7 +165,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.format")%></div>
@@ -178,7 +178,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.relation")%></div>
@@ -187,7 +187,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.rights")%></div>
@@ -200,7 +200,7 @@
   </div>
 
   <div style="overflow:hidden; width:99.5%;">
-    <div style="float: left; width:45%">
+    <div style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.source")%></div>
@@ -209,7 +209,7 @@
         </div>                        
       </div>
     </div>
-    <div style="float:right; width:45%">
+    <div style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("ElementSet.view.label.coverage")%></div>

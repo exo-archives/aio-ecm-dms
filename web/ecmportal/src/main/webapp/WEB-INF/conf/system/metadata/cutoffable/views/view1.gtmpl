@@ -60,7 +60,7 @@
 %>
 <div class="Header">RMA:CUTOFFABLE</div>
 <div id="rma_cutoffable">     
-  <div class="ContentBlock" style="width:45%">
+  <div class="ContentBlock" style="width:43%">
     <div class="Title">
       <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-executed")%></div>
       <div class="Line"><span></span></div>
@@ -69,7 +69,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-now")%></div>
@@ -78,7 +78,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-date-time")%></div>
@@ -90,7 +90,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-event")%></div>
@@ -99,7 +99,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-obsolete")%></div>
@@ -111,7 +111,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-superseded")%></div>

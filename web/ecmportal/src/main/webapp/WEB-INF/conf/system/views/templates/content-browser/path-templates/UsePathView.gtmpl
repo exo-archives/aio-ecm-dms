@@ -97,7 +97,6 @@
                   	<div class="LeftIcon CBHome16x16Icon" title="Home"><span></span></div>
                     <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" >Home</a>
                     <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
-                    <div style="clear:both;"><span></span></div>
                   </div>
                 </div>
               </div>
@@ -147,7 +146,6 @@
                   </div>
                   <div class="SeparatorLine"><span></span></div>
               <%}%>
-              <div style="clear:both"><span></span></div>
             </div>
             <div class="NavigationButtonContainer">
 							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
@@ -155,7 +153,6 @@
 							</div>
               <!--<div style="clear:both"><span></span></div>-->
             </div>
-            <div style="clear: both;"><span></span></div>
           </div>
         </div>
       </div>
@@ -241,7 +238,6 @@
                   <div class="ItemIcon CBDefaultFolder16x16Icon"><span></span></div>
                   <a class="NodeLabel" href="$subCatLink">$catName</a>
                 </div>
-                <div style="clear:both"><span></span></div>
                 
                   <%
                     def child = content.get(catName) ;
@@ -276,7 +272,6 @@
 	                  	</div>                   
                 		</div>
                 <%}%>
-                <div style="clear:both"><span></span></div>  
                 <div class="UIDocumentContentInfo">
                   <table>
                     <tbody>
@@ -342,7 +337,6 @@
                 </div>      
               </div>
           <%}%>
-          <div style="clear: both;"><span></span></div>
         </div> 
   <%  }/*End UISubContent*/%>
   </div>  

@@ -73,7 +73,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.subject")%></div>
@@ -82,7 +82,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.format")%></div>
@@ -94,7 +94,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.media-format")%></div>
@@ -103,7 +103,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.date-field")%></div>
@@ -115,7 +115,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.publication-date")%></div>
@@ -124,7 +124,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.date-received")%></div>
@@ -136,7 +136,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.originator")%></div>
@@ -145,7 +145,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.originating-organization")%></div>
@@ -157,7 +157,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.addresses")%></div>
@@ -166,7 +166,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.other-addresses")%></div>
@@ -178,7 +178,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.supplemental-marking-list")%></div>
@@ -187,7 +187,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.is-obsolete")%></div>
@@ -199,7 +199,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.superseded")%></div>
@@ -208,7 +208,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Record.view.label.record-note")%></div>

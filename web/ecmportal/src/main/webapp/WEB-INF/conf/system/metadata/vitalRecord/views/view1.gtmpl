@@ -64,7 +64,7 @@
 %>
 <div class="Header">RMA:VITALRECORD</div>
 <div id="rma_vitalRecord">
-  <div class="ContentBlock" style="width:45%">
+  <div class="ContentBlock" style="width:43%">
     <div class="Title">
       <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.is-vital-record")%></div>
       <div class="Line"><span></span></div>
@@ -73,7 +73,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.prev-review-date")%></div>
@@ -82,7 +82,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.next-review-date")%></div>

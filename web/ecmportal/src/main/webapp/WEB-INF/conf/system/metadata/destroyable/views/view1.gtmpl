@@ -60,7 +60,7 @@
 %>
 <div class="Header">RMA:DESTROYABLE</div>
 <div id="rma_destroyable">     
-  <div class="ContentBlock" style="width:45%">
+  <div class="ContentBlock" style="width:43%">
     <div class="Title">
       <div class="Label"><%=_ctx.appRes("Destroyable.view.label.destruction-date")%></div>
       <div class="Line"><span></span></div>

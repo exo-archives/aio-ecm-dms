@@ -7,13 +7,6 @@
 @import url("UICBSearchForm/DefaultStylesheet.css");
 @import url("UIEventViewer/DefaultStylesheet.css");
 
-.UIWindow .UIBrowseContentPortlet {
-  overflow: visible;
-}
-
-.UIWindow .UIApplication {
-	overflow: visible;
-}
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
   padding: 5px 0px;

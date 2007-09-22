@@ -62,7 +62,7 @@
 <div class="Header">RMA:ACCESSIONABLE</div>
 <div id="rma_accessionable">     
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Accessionable.view.label.accession-executed")%></div>
@@ -71,7 +71,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Accessionable.view.label.accession-date")%></div>

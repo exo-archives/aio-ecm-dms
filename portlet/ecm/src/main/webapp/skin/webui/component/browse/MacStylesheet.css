@@ -7,14 +7,6 @@
 @import url("UICBSearchForm/MacStylesheet.css");
 @import url("UIEventViewer/MacStylesheet.css");
 
-.UIWindow .UIBrowseContentPortlet {
-  overflow: visible;
-}
-
-.UIWindow .UIApplication {
-	overflow: visible;
-}
-
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
   padding: 5px 0px;
   width: 98.5%;

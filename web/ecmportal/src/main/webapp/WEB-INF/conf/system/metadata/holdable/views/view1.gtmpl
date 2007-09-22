@@ -59,7 +59,7 @@
 %>
 <div class="Header">RMA:HOLDABLE</div>
 <div id="rma_holdable">     
-  <div class="ContentBlock" style="width:45%">
+  <div class="ContentBlock" style="width:43%">
     <div class="Title">
       <div class="Label"><%=_ctx.appRes("Holdable.view.label.hold-executed")%></div>
       <div class="Line"><span></span></div>
@@ -68,7 +68,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Holdable.view.label.hold-until")%></div>
@@ -77,7 +77,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Holdable.view.label.holds-discretionary")%></div>
@@ -89,7 +89,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Holdable.view.label.hold-until-event")%></div>
@@ -98,7 +98,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Holdable.view.label.freeze")%></div>

@@ -61,7 +61,7 @@
 
 <div class="Header">RMA:TRANSFERABLE</div>
 <div id="rma_transferable">     
-  <div class="ContentBlock" style="width:45%">
+  <div class="ContentBlock" style="width:43%">
     <div class="Title">
       <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-executed")%></div>
       <div class="Line"><span></span></div>
@@ -70,7 +70,7 @@
   </div>
 
   <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:45%">
+    <div id="ContentLeftNote"  style="float: left; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-date")%></div>
@@ -79,7 +79,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:45%">
+    <div id="ContentRightNote" style="float:right; width:43%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-location")%></div>
