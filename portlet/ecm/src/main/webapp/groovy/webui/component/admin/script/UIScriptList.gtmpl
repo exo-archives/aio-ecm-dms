@@ -40,10 +40,10 @@
             <td><div class="Text" title="<%=node.getPath()%>"><%=pathTitle(node.getPath(), 30)%></div></td>
             <td><div class="Text"><%=node.getBaseVersion()%></div></td>
 	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("Edit", node.getPath())%>" title="<%=_ctx.appRes("UIScriptList.tooltip.Edit")%>">
+	            <a href="<%=uicomponent.event("Edit", node.getName())%>" title="<%=_ctx.appRes("UIScriptList.tooltip.Edit")%>">
 	              <div class="Edit16x16Icon" style="margin-left:10px; float: left;"><span></span></div>
 	            </a>
-	            <a href="<%=uicomponent.event("Delete", node.getPath())%>" title="<%=_ctx.appRes("UIScriptList.tooltip.Delete")%>">
+	            <a href="<%=uicomponent.event("Delete", node.getName())%>" title="<%=_ctx.appRes("UIScriptList.tooltip.Delete")%>">
 	              <div class="Delete16x16Icon" style="margin-left:5px;float: left;"><span></span></div>
 	            </a>
 	          </td>	                    

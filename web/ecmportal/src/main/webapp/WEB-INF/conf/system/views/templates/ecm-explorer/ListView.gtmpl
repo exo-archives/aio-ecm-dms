@@ -89,7 +89,7 @@
 	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
 	          String subName ;
 	          if(isPreferenceNode) {
-	            actionLink = uicomponent.event("ViewNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+	            actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
 	            nodePath = nodePath + "&workspaceName=" + preferenceWS ;
 	          } else if(uicomponent.isReadAuthorized(data)) {
 	            actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path)) ;

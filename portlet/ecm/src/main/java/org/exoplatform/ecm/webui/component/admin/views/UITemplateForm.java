@@ -73,6 +73,7 @@ public class UITemplateForm extends UIForm {
   private Version baseVersion_;
   private VersionNode selectedVersion_;
   public boolean isAddNew_ = false ;
+  private String templatePath_ ;
 
   public UITemplateForm() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -175,6 +176,7 @@ public class UITemplateForm extends UIForm {
   public void update(String templatePath, VersionNode selectedVersion) throws Exception {
     if(templatePath != null) {
       String repository = getRepository() ; 
+      templatePath_ = templatePath ;
       template_ = getApplicationComponent(ManageViewService.class).
                    getTemplate(templatePath, repository,SessionsUtils.getSessionProvider()) ;
       getUIStringInput(FIELD_NAME).setValue(template_.getName()) ;
@@ -249,8 +251,16 @@ public class UITemplateForm extends UIForm {
           }
         }
       }
-      if(uiForm.isAddNew_ || !isEnableVersioning){
+      if(uiForm.isAddNew_ || !isEnableVersioning) {
+        String oldHomeTemplate = uiForm.templatePath_.substring(0, uiForm.templatePath_.lastIndexOf("/")) ;
+        if(!oldHomeTemplate.equals(homeTemplate)) {
+          Node oldNode = 
+            manageViewService.getTemplate(uiForm.templatePath_, repository, SessionsUtils.getSessionProvider()) ;
+          oldNode.remove() ;
+          manageViewService.getTemplate(oldHomeTemplate, repository, SessionsUtils.getSessionProvider()).save() ;
+        }
         path = manageViewService.addTemplate(templateName, content, homeTemplate,repository) ;
+        uiForm.template_ = manageViewService.getTemplate(path, repository, SessionsUtils.getSessionProvider()) ;
       } else {
         if(isEnableVersioning) {
           if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);

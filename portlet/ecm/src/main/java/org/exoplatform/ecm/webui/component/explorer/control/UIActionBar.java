@@ -722,6 +722,14 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
+      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
+      if(!templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-supported", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       uiExplorer.setIsHidePopup(true) ;
       CategoriesService categoriesService = uiActionBar.getApplicationComponent(CategoriesService.class) ;
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null) ;
