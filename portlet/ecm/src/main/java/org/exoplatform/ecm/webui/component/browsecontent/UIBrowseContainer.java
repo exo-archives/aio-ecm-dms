@@ -131,6 +131,8 @@ public class UIBrowseContainer extends UIContainer {
   private boolean isShowPageAction_ ;
   private boolean isShowSearchForm_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
+  private boolean isSetted_ = false ;
+  private int totalRecord_ ;
 
   @SuppressWarnings("unchecked")
   private LinkedList<String> nodesHistory_ = new LinkedList<String>();
@@ -143,11 +145,13 @@ public class UIBrowseContainer extends UIContainer {
   private String tagPath_ ;  
 
   private String templatePath_ ;  
-  private BCTreeNode treeRoot_ ;  
+  private BCTreeNode treeRoot_ ; 
+  private UIPageIterator uiPageIterator_ ;
+  
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
-    addChild(UIPageIterator.class, "UICBPageIterator", "UICBPageIterator") ;
+    uiPageIterator_ = addChild(UIPageIterator.class, "UICBPageIterator", "UICBPageIterator") ;
     addChild(UITagList.class, null, null);
     UICategoryTree uiTree = createUIComponent(UICategoryTree.class, null, null) ;
     addChild(uiTree) ;
@@ -175,7 +179,7 @@ public class UIBrowseContainer extends UIContainer {
   public SessionProvider getAnonimProvider() { return SessionsUtils.getAnonimProvider() ; } 
   public String getCategoryPath() { return categoryPath_ ; }
   public List getCurrentList() throws Exception {
-    return getChild(UIPageIterator.class).getCurrentPageData() ;
+    return uiPageIterator_.getCurrentPageData() ;
   }
   public Node getCurrentNode() throws Exception { 
     if(currentNode_ == null) return rootNode_ ;
@@ -323,12 +327,15 @@ public class UIBrowseContainer extends UIContainer {
     } catch(Exception e) {
       e.printStackTrace() ;
     }
+    totalRecord_ = queryDocuments.size() ;
     return queryDocuments ;
   }    
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
 
+  public int getTotalNodeByQuery() { return totalRecord_ ;}
+  
   public int getNumberOfPage() {
-    return getChild(UIPageIterator.class).getAvailablePage();
+    return uiPageIterator_.getAvailablePage();
   }
   public String getOwner(Node node) throws Exception{
     if(node.hasProperty("exo:owner")) {
@@ -668,7 +675,7 @@ public class UIBrowseContainer extends UIContainer {
   } 
   public BCTreeNode getTreeRoot() { return treeRoot_ ;  }
   public UIPageIterator getUIPageIterator() throws Exception {
-    return getChild(UIPageIterator.class) ;
+    return uiPageIterator_ ;
   }
 
   public String getUseCase() {
@@ -855,9 +862,16 @@ public class UIBrowseContainer extends UIContainer {
 
   public void setCurrentNode(Node node) throws Exception { this.currentNode_ = node ; }
   public void setPageIterator(List<Node> data) throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
-    getChild(UIPageIterator.class).setPageList(objPageList) ;
+    if(!isSetted_) {
+      ObjectPageList objPageList = new ObjectPageList(data, getItemPerPage()) ;
+      uiPageIterator_.setPageList(objPageList) ;
+    }
   }
+  
+  public boolean isSetted() { return isSetted_ ; }
+  
+  public void setPageStatus(boolean isSetted) { isSetted_ = isSetted ; }
+  
   public void setRowPerBlock(int number) { this.rowPerBlock_ = number ; }
 
   public void setSelectedTab (Node node) { this.selectedTab_ = node ; }
