@@ -5,6 +5,7 @@
                  "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
   <display-name>portal</display-name>    
+<!--
   <filter>
     <filter-name>WebDavPortalSessionProviderFilter</filter-name>
     <filter-class>org.exoplatform.services.webdav.WebDavPortalSessionProviderFilter</filter-class>
@@ -14,7 +15,7 @@
 		<filter-name>WebDavPortalSessionProviderFilter </filter-name>
 		<url-pattern>/rest/jcr/*</url-pattern>
 	</filter-mapping>
-	
+-->	
   <!-- ================================================================== -->
   <!--           LISTENER                                                 -->
   <!-- ================================================================== -->
