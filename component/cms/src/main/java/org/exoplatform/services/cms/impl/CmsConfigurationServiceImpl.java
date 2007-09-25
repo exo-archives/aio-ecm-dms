@@ -4,16 +4,13 @@
 package org.exoplatform.services.cms.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
@@ -21,12 +18,8 @@ import org.exoplatform.container.xml.PropertiesParam;
 import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.CmsConfig.JcrPath;
 import org.exoplatform.services.cms.impl.CmsConfig.Permission;
-import org.exoplatform.services.cms.jcrext.ReDefineNodeTypePlugin;
-import org.exoplatform.services.cms.jcrext.SuperTypeConfig;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
-import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.picocontainer.Startable;
 
 /**
@@ -38,8 +31,7 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService, Sta
 
   private RepositoryService jcrService_;
 
-  List<AddPathPlugin> pathPlugins_ = new ArrayList<AddPathPlugin>();
-  private List<ReDefineNodeTypePlugin> nodeTypePlugins_ = new ArrayList<ReDefineNodeTypePlugin>();
+  List<AddPathPlugin> pathPlugins_ = new ArrayList<AddPathPlugin>();  
 
   private PropertiesParam propertiesParam_;
 
@@ -49,14 +41,7 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService, Sta
     propertiesParam_ = params.getPropertiesParam("cms.configuration");
   }
 
-  public void start() {
-    try {
-      String repository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
-      processNodeTypePlugin(repository) ;      
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
+  public void start() {    
     try {
       processAddPathPlugin() ;
     } catch (Exception e) {
@@ -67,29 +52,10 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService, Sta
   public void stop() {
   }
 
-  public void init(String repository) throws Exception {
-    processNodeTypePlugin(repository) ;
+  public void init(String repository) throws Exception {   
     initBasePath(repository) ;
-  }
-
-  private void processNodeTypePlugin(String repository) throws Exception {
-    ExtendedNodeTypeManager nodeTypeManager = jcrService_.getRepository(repository).getNodeTypeManager() ;
-    for(ReDefineNodeTypePlugin plugin:nodeTypePlugins_) {
-      SuperTypeConfig config = plugin.getAddSuperTypeConfig() ;
-      String sourceTypeName = config.getSourceNodeType() ;
-      NodeType sourceNodeType = nodeTypeManager.getNodeType(sourceTypeName) ;
-      List<String> targetedTypeNames = config.getTargetedNodeTypes() ;      
-      for(String name:targetedTypeNames) {
-        ExtendedNodeType extNodeType = (ExtendedNodeType)nodeTypeManager.getNodeType(name) ;
-        NodeType[] declaredSuperTypes = extNodeType.getDeclaredSupertypes() ;        
-        List<NodeType> temp = new ArrayList<NodeType>() ;
-        temp.add(sourceNodeType) ;
-        temp.addAll(Arrays.<NodeType>asList(declaredSuperTypes)) ;
-        extNodeType.setDeclaredSupertypes(temp.toArray(new NodeType[temp.size()])) ;
-      }
-    }    
-  }
-
+  }  
+  
   private void processAddPathPlugin()  throws Exception {           
     HashMap<String, String[]> permissions = new HashMap<String,String[]>();
     Session session = null ;
@@ -202,8 +168,7 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService, Sta
   }
 
   public void addPlugin(ComponentPlugin plugin) {
-    if (plugin instanceof AddPathPlugin) pathPlugins_.add((AddPathPlugin) plugin);
-    else if(plugin instanceof ReDefineNodeTypePlugin) nodeTypePlugins_.add((ReDefineNodeTypePlugin)plugin) ;
+    if (plugin instanceof AddPathPlugin) pathPlugins_.add((AddPathPlugin) plugin);    
   }
 
   @SuppressWarnings("unused")
