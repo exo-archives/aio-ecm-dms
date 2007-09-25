@@ -109,7 +109,7 @@
 		        <description>View configuration for anonymous user</description>
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field  name="name"><string>anonymous-view</string></field>
-		          <field  name="permissions"><string></string></field>
+		          <field  name="permissions"><string>*</string></field>
 		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
 		          <field  name="tabList">
                 <collection type="java.util.ArrayList">

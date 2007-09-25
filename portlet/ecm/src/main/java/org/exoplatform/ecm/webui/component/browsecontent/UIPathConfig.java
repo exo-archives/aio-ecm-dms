@@ -18,6 +18,8 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -50,7 +52,9 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.AddActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.AddPathActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.CancelActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.BackActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.BackActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.ChangeRepoActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.ChangeWorkspaceActionListener.class)
     }
 )
 public class UIPathConfig extends UIForm implements UISelector{
@@ -58,8 +62,14 @@ public class UIPathConfig extends UIForm implements UISelector{
   protected boolean isEdit_ = false ;
   public UIPathConfig()throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, null)) ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, null)) ;
+    List<SelectItemOption<String>> repositories = new ArrayList<SelectItemOption<String>>() ;
+    List<SelectItemOption<String>> workspaces = new ArrayList<SelectItemOption<String>>() ;
+    UIFormSelectBox repository = new UIFormSelectBox(UINewConfigForm.FIELD_REPOSITORY, UINewConfigForm.FIELD_REPOSITORY, repositories) ;
+    repository.setOnChange("ChangeRepo") ;
+    addChild(repository) ;
+    UIFormSelectBox workspace = new UIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE, UINewConfigForm.FIELD_WORKSPACE, workspaces) ;
+    workspace.setOnChange("ChangeWorkspace") ;
+    addChild(workspace) ;
     UIFormInputSetWithAction categoryPathSelect = new UIFormInputSetWithAction(FIELD_PATHSELECT) ;
     categoryPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_CATEGORYPATH, null, null)) ;
     addUIComponentInput(categoryPathSelect) ;
@@ -83,6 +93,27 @@ public class UIPathConfig extends UIForm implements UISelector{
   public PortletPreferences getPortletPreferences() {    
     return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
   }
+  
+  private List<SelectItemOption<String>> getRepoOption() throws Exception {
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    for(RepositoryEntry repo : repositoryService.getConfig().getRepositoryConfigurations()) {
+      options.add(new SelectItemOption<String>(repo.getName(), repo.getName())) ;
+    }
+    return options ;
+  }
+  
+  private List<SelectItemOption<String>> getWorkSpaceOption(String repository) throws Exception {
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    String[] workspaceNames = getApplicationComponent(RepositoryService.class)
+    .getRepository(repository).getWorkspaceNames() ;
+    for(String workspace:workspaceNames) {
+      System.out.println("\n\nworkspce====>" + workspace + "\n\n");
+      options.add(new SelectItemOption<String>(workspace,workspace)) ;
+    }   
+    return options ;
+  }
+  
   public void initForm(PortletPreferences preference, String repository, 
       String workSpace, boolean isAddNew) throws Exception {
     String path = preference.getValue(Utils.JCR_PATH, "") ;
@@ -94,12 +125,13 @@ public class UIPathConfig extends UIForm implements UISelector{
     String hasVote = "true" ;
     String itemPerPage = "20" ;
     String template = "" ;
-    UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
-    workSpaceField.setValue(workSpace) ;
-    workSpaceField.setEditable(false) ;
-    UIFormStringInput repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+    System.out.println("\n\nGo here to run linh tinh\n\n");
+    UIFormSelectBox repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+    repositoryField.setOptions(getRepoOption()) ;
     repositoryField.setValue(repository) ;
-    repositoryField.setEditable(false) ;
+    UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
+    workSpaceField.setOptions(getWorkSpaceOption(repository)) ;
+    workSpaceField.setValue(workSpace) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     categoryPathField.setEditable(false) ;
@@ -163,6 +195,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     enableTagMapField.setEnable(isEdit_) ;
     numbPerPageField.setEditable(isEdit_) ;
     enableChildDocField.setEnable(isEdit_) ;
+    repositoryField.setEnable(isEdit_) ;
+    workSpaceField.setEnable(isEdit_) ;
   }
 
   public List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
@@ -196,9 +230,9 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIBrowseContainer uiBCContainer = 
         uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
       PortletPreferences prefs = uiBCContainer.getPortletPreferences();
-      UIFormStringInput workSpaceField = uiForm.getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
+      UIFormSelectBox workSpaceField = uiForm.getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
       String workSpace = workSpaceField.getValue() ;
-      UIFormStringInput repositoryField = uiForm.getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
+      UIFormSelectBox repositoryField = uiForm.getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
       String repository = repositoryField.getValue() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
@@ -250,6 +284,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       uiBCContainer.loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.setIsChangeValue(false) ;
       uiConfigTabPane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane);
     }
@@ -259,6 +294,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.setIsChangeValue(false) ;
       uiConfigTabPane.setNewConfig(true) ;
       uiConfigTabPane.showNewConfigForm(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane);
@@ -269,6 +305,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIPathConfig uiForm = event.getSource() ;
       uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.setIsChangeValue(false) ;
       uiConfigTabPane.setNewConfig(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane);
     }
@@ -278,6 +315,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIPathConfig uiForm = event.getSource() ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       uiForm.isEdit_ =  false ;
+      uiConfigTabPane.setIsChangeValue(false) ;      
       uiConfigTabPane.setNewConfig(true);
       uiConfigTabPane.showNewConfigForm(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfigTabPane);
@@ -296,13 +334,39 @@ public class UIPathConfig extends UIForm implements UISelector{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm  = event.getSource() ;
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
-      String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
+      String repo = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
+      String workSpace = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
       uiForm.isEdit_ = true ;
       uiConfig.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConfig);
     }
   }
-}
+  
+  public static class ChangeRepoActionListener extends EventListener<UIPathConfig>{
+    public void execute(Event<UIPathConfig> event) throws Exception {
+      UIPathConfig uiForm = event.getSource() ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.setIsChangeValue(true) ;
+      String repoName = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
+      uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_WORKSPACE).setOptions(uiForm.getWorkSpaceOption(repoName)) ;
+      UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
+      UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
+      categoryPathField.setValue("/") ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+    }
 
+  }
+  
+  public static class ChangeWorkspaceActionListener extends EventListener<UIPathConfig>{
+    public void execute(Event<UIPathConfig> event) throws Exception {
+      UIPathConfig uiForm = event.getSource() ;
+      UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
+      uiConfigTabPane.setIsChangeValue(true) ;
+      UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
+      UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
+      categoryPathField.setValue("/") ;      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+    }
+  }
+}

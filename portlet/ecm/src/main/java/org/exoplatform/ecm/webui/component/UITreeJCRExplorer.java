@@ -39,6 +39,7 @@ public class UITreeJCRExplorer extends UIContainer {
   private Node currentNode_ ;
   private Node rootNode_ = null ;
   private boolean isTab_ = false;
+  private String rootPath_ ;
   
   public UITreeJCRExplorer() throws Exception {
     UITree tree = addChild(UITree.class, null, null) ;
@@ -102,6 +103,7 @@ public class UITreeJCRExplorer extends UIContainer {
   } 
   
   public void setRootPath(String path) throws Exception {         
+    rootPath_ = path ;
     UIJCRBrowser uiJCRBrowser = getParent() ;        
     String workspace = uiJCRBrowser.getWorkspace() ;    
     String repositoryName = uiJCRBrowser.getRepository() ;
@@ -114,6 +116,8 @@ public class UITreeJCRExplorer extends UIContainer {
     currentNode_ = rootNode_ ;
     changeNode(rootNode_) ;
   }
+  
+  public String getRootPath() { return rootPath_ ; }
   
   public void setNodeSelect(String path) throws Exception {
     UIJCRBrowser uiJCRBrowser = getParent() ;

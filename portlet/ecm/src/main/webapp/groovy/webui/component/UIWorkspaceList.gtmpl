@@ -1,0 +1,29 @@
+<%
+  /**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Sep 24, 2007
+ * 
+ */
+%>
+<div class="$uicomponent.id">
+  <div class="UIFormWithTitle">
+    <% uiform.begin() %>
+    <div class="HorizontalLayout" style="border: none;">
+      <table class="UIFormGrid">
+				<tr>
+				  <td class="FieldLabel">
+           <%=uicomponent.getLabel("workspaceName")%>
+          </td>
+				  <td class="FieldComponent"><% uiform.renderChild(0) %></td>
+				</tr>
+				<tr>
+				  <td class="FieldLabel"><%=_ctx.appRes("UIWorkspaceList.label.rootPath")%></td>
+				  <td class="FieldComponent"><%=uicomponent.getRootPath()%></td>          
+				</tr>
+      </table>
+    </div>
+    <%uiform.end()%>
+  </div>
+</div>

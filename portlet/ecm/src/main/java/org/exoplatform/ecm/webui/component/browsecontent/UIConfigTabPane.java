@@ -39,6 +39,7 @@ public class UIConfigTabPane extends UIContainer {
   final public static String CONFIGTYPE = "configType" ;  
   
   private boolean isNewConfig_ = false; 
+  private boolean isChanged_ = false ;
   
   public UIConfigTabPane() throws Exception {
     addChild(UINewConfigForm.class, null, null).setRendered(false) ;
@@ -68,6 +69,8 @@ public class UIConfigTabPane extends UIContainer {
     }
     return Options ;
   }
+  
+  public void setIsChangeValue(boolean isChanged) { isChanged_ = isChanged ; }
 
   public void getCurrentConfig() throws Exception {
     PortletPreferences preference = getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
@@ -82,7 +85,7 @@ public class UIConfigTabPane extends UIContainer {
       if(uiPathConfig == null) {
         uiPathConfig = uiConfigContainer.addChild(UIPathConfig.class, null, null) ;
       }      
-      uiPathConfig.initForm(preference, repository, workspace, false) ;
+      if(!isChanged_) uiPathConfig.initForm(preference, repository, workspace, false) ;
       uiConfigContainer.setRenderedChild(UIPathConfig.class) ;
     } else if(usecase.equals(Utils.CB_USE_JCR_QUERY)) {
       UIQueryConfig uiQueryConfig = uiConfigContainer.getChild(UIQueryConfig.class) ;

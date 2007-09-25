@@ -553,7 +553,7 @@ public class UIWorkingArea extends UIContainer {
         if(node.holdsLock())  node.unlock() ;
       } catch(LockException le) {
         Object[] args = {node.getName()} ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-login-node", args, 
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-unlock-node", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
