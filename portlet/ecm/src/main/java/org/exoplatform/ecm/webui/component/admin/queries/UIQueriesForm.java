@@ -111,16 +111,26 @@ public class UIQueriesForm extends UIForm implements UISelector {
     Node query = queryService.getSharedQuery(queryName, repository,SessionsUtils.getSystemProvider()) ;
     getUIStringInput(QUERY_NAME).setValue(queryName) ;
     getUIStringInput(QUERY_NAME).setEditable(false) ;
-    getUIFormCheckBoxInput(CACHE_RESULT).setChecked(query.getProperty("exo:cachedResult").getBoolean()) ;
-    getUIFormTextAreaInput(STATEMENT).setValue(query.getProperty("jcr:statement").getString()) ;
-    getUIFormSelectBox(QUERY_TYPE).setValue(query.getProperty("jcr:language").getString()) ;
-    Value[] values = query.getProperty("exo:permissions").getValues() ;
-    StringBuilder strValues = new StringBuilder() ;
-    for(int i = 0; i < values.length; i ++) {
-      if(strValues.length() > 0) strValues = strValues.append(",") ;
-      strValues = strValues.append(values[i].getString()) ;
+    if(query.hasProperty("exo:cachedResult")) {
+      getUIFormCheckBoxInput(CACHE_RESULT).setChecked(query.getProperty("exo:cachedResult").getBoolean()) ;
+    } else {
+      getUIFormCheckBoxInput(CACHE_RESULT).setChecked(false) ;
     }
-    getUIStringInput(PERMISSIONS).setValue(strValues.toString()) ;      
+    if(query.hasProperty("jcr:statement")) {
+      getUIFormTextAreaInput(STATEMENT).setValue(query.getProperty("jcr:statement").getString()) ;
+    }
+    if(query.hasProperty("jcr:language")) {
+      getUIFormSelectBox(QUERY_TYPE).setValue(query.getProperty("jcr:language").getString()) ;
+    }
+    if(query.hasProperty("exo:permissions")) {
+      Value[] values = query.getProperty("exo:permissions").getValues() ;
+      StringBuilder strValues = new StringBuilder() ;
+      for(int i = 0; i < values.length; i ++) {
+        if(strValues.length() > 0) strValues = strValues.append(",") ;
+        strValues = strValues.append(values[i].getString()) ;
+      }
+      getUIStringInput(PERMISSIONS).setValue(strValues.toString()) ;      
+    }
   }
 
   static public class CancelActionListener extends EventListener<UIQueriesForm> {

@@ -96,8 +96,9 @@ public class UIQueriesList extends UIComponentDecorator {
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
       uiQueriesMan.removeChildById(UIQueriesList.ST_ADD) ;
       uiQueriesMan.initFormPopup(UIQueriesList.ST_EDIT ) ;
-      String queryName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIQueriesForm uiForm = uiQueriesMan.findFirstComponentOfType(UIQueriesForm.class) ;
+      String queryName = queryPath.substring(queryPath.lastIndexOf("/") + 1) ;
       uiForm.update(queryName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }
