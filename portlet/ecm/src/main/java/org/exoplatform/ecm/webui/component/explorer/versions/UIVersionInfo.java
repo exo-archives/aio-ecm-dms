@@ -147,6 +147,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
   static  public class DeleteVersionActionListener extends EventListener<UIVersionInfo> {
     public void execute(Event<UIVersionInfo> event) throws Exception {
       UIVersionInfo uiVersionInfo = event.getSource();
+      UIJCRExplorer uiExplorer = uiVersionInfo.getAncestorOfType(UIJCRExplorer.class) ;
       for(UIComponent uiChild : uiVersionInfo.getChildren()) {
         uiChild.setRendered(false) ;
       }
@@ -156,10 +157,11 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       VersionHistory versionHistory = node.getVersionHistory() ;
       try {
         //TODO for JCR Group check VersionHistory.removeVersion(String versionName)
-        System.out.println("\n\ncurrent version=====>" +uiVersionInfo.curentVersion_ .getName()+ "\n\n");
         versionHistory.removeVersion(uiVersionInfo.curentVersion_ .getName());
         uiVersionInfo.rootVersion_ = new VersionNode(node.getVersionHistory().getRootVersion()) ;
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
+        if(!node.isCheckedOut()) node.checkout() ;
+        uiExplorer.getSession().save() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo.getAncestorOfType(UIPopupAction.class)) ;
       } catch (ReferentialIntegrityException rie) {
         rie.printStackTrace() ;

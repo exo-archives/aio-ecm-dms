@@ -74,7 +74,7 @@ public class UISearchResult extends UIContainer {
         if(!lists.contains(node.getParent())) {
           lists.add(node.getParent()) ;
         } 
-      } else {
+      } else if(!lists.contains(node)){
         lists.add(node) ;
       }
     }    

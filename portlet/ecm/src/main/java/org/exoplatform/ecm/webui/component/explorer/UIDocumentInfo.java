@@ -148,7 +148,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;    
-    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
+//    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     String mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
@@ -307,9 +307,6 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
 
   public Node getNode() throws Exception { 
     currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
-    if(!Utils.isReadAuthorized(currentNode_)) {
-      System.out.println("\n\nGo here\n\n");
-    }
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       String defaultLang = currentNode_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(getLanguage() == null) setLanguage(defaultLang) ;
