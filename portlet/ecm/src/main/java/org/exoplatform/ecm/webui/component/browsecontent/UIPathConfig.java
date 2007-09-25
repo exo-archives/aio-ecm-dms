@@ -108,7 +108,6 @@ public class UIPathConfig extends UIForm implements UISelector{
     String[] workspaceNames = getApplicationComponent(RepositoryService.class)
     .getRepository(repository).getWorkspaceNames() ;
     for(String workspace:workspaceNames) {
-      System.out.println("\n\nworkspce====>" + workspace + "\n\n");
       options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
     return options ;
@@ -125,7 +124,6 @@ public class UIPathConfig extends UIForm implements UISelector{
     String hasVote = "true" ;
     String itemPerPage = "20" ;
     String template = "" ;
-    System.out.println("\n\nGo here to run linh tinh\n\n");
     UIFormSelectBox repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setOptions(getRepoOption()) ;
     repositoryField.setValue(repository) ;
