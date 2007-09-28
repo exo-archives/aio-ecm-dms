@@ -150,8 +150,10 @@
 	      <%}%>
 	    </tbody>
 	  </table>	   
-	</div>	
-	<div style="margin:4px 0px 4px 0px;">
-		<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
 	</div>
+	<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
+		<div style="margin:4px 0px 4px 0px;">
+			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+		</div>
+	<% } %>
 </div>	
