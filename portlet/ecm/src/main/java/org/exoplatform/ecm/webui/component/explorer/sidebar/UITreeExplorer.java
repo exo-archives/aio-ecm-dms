@@ -4,22 +4,21 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -35,15 +34,20 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UITreeExplorer.ExpandActionListener.class),
         @EventConfig(listeners = UITreeExplorer.CollapseActionListener.class)
-    }
+    }    
 )
 
-public class UITreeExplorer extends UIComponent {
-  public UITreeExplorer() throws Exception {}
+public class UITreeExplorer extends UIContainer {
+  private TreeNode treeRoot_ ;
+  
+  public UITreeExplorer() throws Exception { 
+  }
   
   public UIRightClickPopupMenu getContextMenu() {
     return getAncestorOfType(UIWorkingArea.class).getChild(UIRightClickPopupMenu.class) ;
   }
+  
+  public TreeNode getRootTreeNode() { return treeRoot_ ; }
   
   public String getRootActionList() throws RepositoryException {
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class);
@@ -51,15 +55,6 @@ public class UITreeExplorer extends UIComponent {
       return getContextMenu().getJSOnclickShowPopup(jcrExplorer.getRootNode().getPath(), "Paste").toString() ;
     }
     return "" ;
-  }
-  
-  public List<Node> getChildrenNode(NodeIterator iter) {
-    List<Node> listNodes = new ArrayList<Node>() ;
-    while(iter.hasNext()) {
-      Node node = iter.nextNode() ;
-      listNodes.add(node) ;
-    }
-    return listNodes ;
   }
   
   public String getActionsList(Node node) throws Exception {
@@ -72,6 +67,24 @@ public class UITreeExplorer extends UIComponent {
   
   public boolean isPreferenceNode(Node node) throws RepositoryException {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
+  }
+  
+  public List<TreeNode> getRenderedChildren(TreeNode treeNode) throws Exception {    
+    if(isPaginated(treeNode)) {      
+      UITreeNodePageIterator pageIterator = findComponentById(treeNode.getPath());      
+      return pageIterator.getCurrentPageData();
+    }
+    return treeNode.getChildren();
+  }
+  
+  public UITreeNodePageIterator getUIPageIterator(String id) throws Exception {    
+    return findComponentById(id);
+  }
+  
+  public boolean isPaginated(TreeNode treeNode) {
+    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    int nodePerPages = jcrExplorer.getPreference().getNodesPerPage();
+    return (treeNode.getChildrenSize()>nodePerPages) ;   
   }
   
   public String getPortalName() {
@@ -87,18 +100,24 @@ public class UITreeExplorer extends UIComponent {
     return prefixWebDAV ;
   }
   
-  public String getRepository() {
+  public String getRepository() { 
     return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+  }    
+  
+  private void addTreeNodePageIteratorAsChild(String id,ObjectPageList pageList ) throws Exception {
+    if(findComponentById(id)== null) {
+      addChild(UITreeNodePageIterator.class,null,id).setPageList(pageList);
+    }else {
+      UIPageIterator existedComponent = findComponentById(id);
+      existedComponent.setPageList(pageList);
+    }
   }
   
-  public String getNodePath(Node node) throws Exception {
-    return node.getPath() ;
-  }
-  
-  public TreeNode buildTree() throws Exception {
+  public void buildTree() throws Exception {    
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    int nodePerPages = jcrExplorer.getPreference().getNodesPerPage();
     TreeNode treeRoot = new TreeNode(jcrExplorer.getRootNode()) ;
-    String path = jcrExplorer.getCurrentNode().getPath() ;
+    String path = jcrExplorer.getCurrentNode().getPath() ;     
     String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
     TreeNode temp = treeRoot ;
     String subPath = null ;
@@ -107,19 +126,31 @@ public class UITreeExplorer extends UIComponent {
     for(String nodeName : arr) {
       if(nodeName.length() == 0) continue ;
       if(subPath == null) subPath = prefix + nodeName;
-      else subPath = subPath + "/" + nodeName ;
+      else subPath = subPath + "/" + nodeName ;      
       temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-      temp = temp.getChild(subPath) ;
-      if(temp == null) return treeRoot ;
+      if(temp.getChildrenSize()> nodePerPages) {                
+        ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
+        addTreeNodePageIteratorAsChild(temp.getPath(),list);
+      }
+      temp = temp.getChild(subPath) ;            
+      if(temp == null)  {
+        treeRoot_ = treeRoot;
+        return ;
+      }
     }
-    temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-    return treeRoot ;
+    temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;        
+    if(temp.getChildrenSize()> nodePerPages) {             
+      ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
+      addTreeNodePageIteratorAsChild(temp.getPath(),list);
+    }    
+    treeRoot_ = treeRoot ;    
   }
   
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
+      UITreeExplorer treeExplorer = event.getSource();
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = treeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
       Node selectedNode = null ;
       try {
         selectedNode = (Node) uiExplorer.getSession().getItem(path) ;
@@ -127,17 +158,18 @@ public class UITreeExplorer extends UIComponent {
         selectedNode = uiExplorer.getSession().getRootNode() ;
       }
       uiExplorer.setSelectNode(selectedNode) ; 
-      uiExplorer.updateAjax(event) ;
+      uiExplorer.updateAjax(event) ;      
     }
   }
   
   static public class CollapseActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
+      UITreeExplorer treeExplorer = event.getSource();
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = treeExplorer.getAncestorOfType(UIJCRExplorer.class) ;
       path = path.substring(0, path.lastIndexOf("/")) ;
       uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
-      uiExplorer.updateAjax(event) ;
+      uiExplorer.updateAjax(event) ;      
     }
   }
 }

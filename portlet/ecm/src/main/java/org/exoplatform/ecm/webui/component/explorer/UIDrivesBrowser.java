@@ -23,6 +23,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -196,6 +197,9 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setRootNode(node) ;
       uiJCRExplorer.setSelectNode(node) ;
       uiJCRExplorer.refreshExplorer() ;
+      if(pref.isShowSideBar()) {
+        uiJCRExplorer.findFirstComponentOfType(UITreeExplorer.class).buildTree();
+      }
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>() ;
       String[] arrView = viewList.split(",") ;
       for(String view : arrView) {

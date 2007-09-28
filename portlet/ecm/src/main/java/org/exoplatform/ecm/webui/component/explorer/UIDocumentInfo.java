@@ -6,7 +6,6 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -24,14 +23,13 @@ import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.AlphaNodeComparator;
-import org.exoplatform.ecm.jcr.DateTimeComparator;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -73,7 +71,8 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIDocumentInfo.SortActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.VoteActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.DownloadActionListener.class)
+        @EventConfig(listeners = UIDocumentInfo.DownloadActionListener.class),
+        @EventConfig(listeners = UIDocumentInfo.ShowPageActionListener.class)
     }
 )
 public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
@@ -88,7 +87,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   private UIPageIterator pageIterator_ ;  
   
   public UIDocumentInfo() throws Exception {
-    pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID) ;        
+    pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID) ;    
   }
   
   public UIPageIterator getContentPageIterator() {return pageIterator_ ; }
@@ -346,19 +345,14 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
     Node currentNode = uiExplorer.getCurrentNode();
-    List<Node> childrenList = uiExplorer.getChildrenList(currentNode,pref.isShowPreferenceDocuments());
-    int nodesPerPage = pref.getNodesPerPage();
-    if(Preference.SORT_BY_NODENAME.equals(pref.getSortType())) {
-      Collections.sort(childrenList,new AlphaNodeComparator(pref.getOrder())) ;
-    }else if(Preference.SORT_BY_NODETYPE.equals(pref.getSortType())) {
-      Collections.sort(childrenList,new TypeNodeComparator(pref.getOrder())) ;
-    }else if(Preference.SORT_BY_CREATED_DATE.equals(pref.getSortType()))  {
-      Collections.sort(childrenList,new DateTimeComparator("exo:dateCreated",pref.getOrder()));
-    }else if(Preference.SORT_BY_MODIFIED_DATE.equals(pref.getSortType())) {
-      Collections.sort(childrenList,new DateTimeComparator("exo:dateModified",pref.getOrder()));
-    }
+    List<Node> childrenList = uiExplorer.getChildrenList(currentNode,pref.isShowPreferenceDocuments());    
+    int nodesPerPage = pref.getNodesPerPage();    
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
     pageIterator_.setPageList(pageList) ;
+    if(pageIterator_.getAvailablePage()== 1 ) {
+      pageIterator_.setRendered(false);
+    }
+    
   }
   
   @SuppressWarnings("unchecked")
@@ -497,7 +491,22 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
       String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
-      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
+      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");      
     }
   }
+  
+  static  public class ShowPageActionListener extends EventListener<UIPageIterator> {
+    public void execute(Event<UIPageIterator> event) throws Exception {      
+      UIPageIterator uiPageIterator = event.getSource() ;
+      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);
+      if(!explorer.getPreference().isShowSideBar()) return ;
+      UITreeExplorer treeExplorer = explorer.findFirstComponentOfType(UITreeExplorer.class);
+      String componenetId = explorer.getCurrentNode().getPath();
+      UITreeNodePageIterator extendedPageIterator = treeExplorer.getUIPageIterator(componenetId);
+      if(extendedPageIterator == null) return;      
+      int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;      
+      extendedPageIterator.setCurrentPage(page);
+      event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
+    }
+  }  
 }

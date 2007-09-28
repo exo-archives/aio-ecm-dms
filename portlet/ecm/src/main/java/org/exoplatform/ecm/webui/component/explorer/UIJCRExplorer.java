@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer ;
 
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,7 +23,10 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.jcr.AlphaNodeComparator;
+import org.exoplatform.ecm.jcr.DateTimeComparator;
 import org.exoplatform.ecm.jcr.JCRResourceResolver;
+import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
@@ -30,6 +34,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -144,8 +149,10 @@ public class UIJCRExplorer extends UIContainer {
 
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
-    setValue(filterPath(currentNode_.getPath())) ;    
-    findFirstComponentOfType(UIDocumentInfo.class).setRendered(true);        
+    setValue(filterPath(currentNode_.getPath())) ;
+    UIDocumentInfo documentInfo = findFirstComponentOfType(UIDocumentInfo.class) ;
+    documentInfo.updatePageListData();
+    documentInfo.setRendered(true);           
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
     popupAction.deActivate() ;
   }
@@ -240,16 +247,19 @@ public class UIJCRExplorer extends UIContainer {
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
     findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
+    if(preferences_.isShowSideBar()) {
+      findFirstComponentOfType(UITreeExplorer.class).buildTree();
+    }
     uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;    
     if(!isHidePopup_) {
       UIPopupAction popupAction = getChild(UIPopupAction.class) ;
       if(popupAction.isRendered()) {
         popupAction.deActivate() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
       }
-    }
-    isHidePopup_ = false ;
+    }    
+    isHidePopup_ = false ;    
   }
 
   public void cancelAction() throws Exception {
@@ -341,10 +351,23 @@ public class UIJCRExplorer extends UIContainer {
           childrenList.add(child) ;
         }
       }
-    }
+    }    
+    sort(childrenList);
     return childrenList ;
   }
-
+  
+  private void sort(List<Node> childrenList) {
+    if(Preference.SORT_BY_NODENAME.equals(preferences_.getSortType())) {
+      Collections.sort(childrenList,new AlphaNodeComparator(preferences_.getOrder())) ;
+    }else if(Preference.SORT_BY_NODETYPE.equals(preferences_.getSortType())) {
+      Collections.sort(childrenList,new TypeNodeComparator(preferences_.getOrder())) ;
+    }else if(Preference.SORT_BY_CREATED_DATE.equals(preferences_.getSortType()))  {
+      Collections.sort(childrenList,new DateTimeComparator("exo:dateCreated",preferences_.getOrder()));
+    }else if(Preference.SORT_BY_MODIFIED_DATE.equals(preferences_.getSortType())) {
+      Collections.sort(childrenList,new DateTimeComparator("exo:dateModified",preferences_.getOrder()));
+    }  
+  }
+  
   public boolean isReferenceableNode(Node node) throws Exception {
     return node.isNodeType(Utils.MIX_REFERENCEABLE) ;    
   }

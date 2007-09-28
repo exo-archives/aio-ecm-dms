@@ -6,8 +6,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
-import org.exoplatform.ecm.utils.Utils;
-
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong
@@ -19,6 +17,7 @@ public class TreeNode {
 
   private boolean isExpanded_ ;
   private Node node_ ;
+  private boolean isPaginated_ = false ; 
   private List<TreeNode> children_ = new ArrayList<TreeNode>() ; 
 
   public TreeNode(Node node, List<Node> children) throws Exception {
@@ -49,7 +48,10 @@ public class TreeNode {
 
   public List<TreeNode> getChildren() { return children_ ; }
   public int getChildrenSize() { return children_.size() ; }
-
+  
+  public boolean isPaginated() { return isPaginated_; }
+  public void setPaginated(boolean paginated) { this.isPaginated_ =paginated ; }
+  
   public TreeNode getChild(String relPath) throws RepositoryException {
     for(TreeNode child : children_) {
       if(child.getNode().getPath().equals(relPath)) return child ;
@@ -63,4 +65,5 @@ public class TreeNode {
       children_.add(new TreeNode(child)) ;
     } 
   }
+  
 }
