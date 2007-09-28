@@ -18,7 +18,6 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -104,12 +103,20 @@ public class UITreeExplorer extends UIContainer {
     return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
   }    
   
-  private void addTreeNodePageIteratorAsChild(String id,ObjectPageList pageList ) throws Exception {
+  private void addTreeNodePageIteratorAsChild(String id,ObjectPageList pageList, String selectedPath,String currentPath) throws Exception {
     if(findComponentById(id)== null) {
-      addChild(UITreeNodePageIterator.class,null,id).setPageList(pageList);
+      UITreeNodePageIterator nodePageIterator = addChild(UITreeNodePageIterator.class,null,id);
+      nodePageIterator.setPageList(pageList);
+      nodePageIterator.setSelectedPath(selectedPath);
     }else {
-      UIPageIterator existedComponent = findComponentById(id);
+      UITreeNodePageIterator existedComponent = findComponentById(id);      
+      int currentPage = existedComponent.getCurrentPage();
       existedComponent.setPageList(pageList);
+      if(!selectedPath.equalsIgnoreCase(currentPath)) {
+        if(currentPage <= existedComponent.getAvailablePage()) {
+          existedComponent.setCurrentPage(currentPage);
+        } 
+      }      
     }
   }
   
@@ -130,7 +137,7 @@ public class UITreeExplorer extends UIContainer {
       temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
       if(temp.getChildrenSize()> nodePerPages) {                
         ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
-        addTreeNodePageIteratorAsChild(temp.getPath(),list);
+        addTreeNodePageIteratorAsChild(temp.getPath(),list,temp.getPath(),path);
       }
       temp = temp.getChild(subPath) ;            
       if(temp == null)  {
@@ -141,7 +148,7 @@ public class UITreeExplorer extends UIContainer {
     temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;        
     if(temp.getChildrenSize()> nodePerPages) {             
       ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
-      addTreeNodePageIteratorAsChild(temp.getPath(),list);
+      addTreeNodePageIteratorAsChild(temp.getPath(),list,temp.getPath(),path);
     }    
     treeRoot_ = treeRoot ;    
   }

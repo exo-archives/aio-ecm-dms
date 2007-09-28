@@ -23,10 +23,13 @@ import org.exoplatform.webui.event.EventListener;
     events = @EventConfig(listeners = UITreeNodePageIterator.ShowPageActionListener.class )    
 )
 public class UITreeNodePageIterator extends UIPageIterator {
+  private String selectedPath_ ;
   
   public UITreeNodePageIterator() {    
   }
   
+  public String getSelectedPath() { return selectedPath_ ; }
+  public void setSelectedPath(String path) { this.selectedPath_ = path ; }
   @SuppressWarnings("unused")
   static  public class ShowPageActionListener extends EventListener<UITreeNodePageIterator> {
     public void execute(Event<UITreeNodePageIterator> event) throws Exception {      
@@ -34,6 +37,8 @@ public class UITreeNodePageIterator extends UIPageIterator {
       int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       uiPageIterator.setCurrentPage(page) ;      
       UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);
+      String currentPath = explorer.getCurrentNode().getPath();
+      if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;      
       UIDocumentInfo documentInfo = explorer.findFirstComponentOfType(UIDocumentInfo.class);
       UIPageIterator iterator = documentInfo.getContentPageIterator();
       iterator.setCurrentPage(page);

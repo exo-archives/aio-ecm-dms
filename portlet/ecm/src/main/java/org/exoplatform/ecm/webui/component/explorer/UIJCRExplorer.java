@@ -96,8 +96,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public Node getCurrentNode() { return currentNode_ ; }
   public void setBackNode(String historyNode) throws Exception {
-    currentNode_ = (Node)session_.getItem(historyNode) ;
-    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
+    currentNode_ = (Node)session_.getItem(historyNode) ;    
     refreshExplorer() ;
   }
 
@@ -152,7 +151,11 @@ public class UIJCRExplorer extends UIContainer {
     setValue(filterPath(currentNode_.getPath())) ;
     UIDocumentInfo documentInfo = findFirstComponentOfType(UIDocumentInfo.class) ;
     documentInfo.updatePageListData();
-    documentInfo.setRendered(true);           
+    documentInfo.setRendered(true);
+    if(preferences_.isShowSideBar()) {
+      UITreeExplorer treeExplorer = findFirstComponentOfType(UITreeExplorer.class);
+      treeExplorer.buildTree();
+    }
     UIPopupAction popupAction = getChild(UIPopupAction.class) ;
     popupAction.deActivate() ;
   }
@@ -283,8 +286,7 @@ public class UIJCRExplorer extends UIContainer {
     currentNode_ = node ;
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
-    }
-    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
+    }    
   }
 
   public void setSelectNode(String uri, Session session) throws Exception {  
@@ -295,8 +297,7 @@ public class UIJCRExplorer extends UIContainer {
       currentNode_ = (Node) session.getItem(uri);
     } catch (Exception e) {
       currentNode_ = currentNode_.getParent() ;
-    }
-    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
+    }    
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }

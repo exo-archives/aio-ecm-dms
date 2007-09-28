@@ -81,8 +81,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String typeSortOrder_ = Preference.ASCENDING_ORDER;
   private String nameSortOrder_ = Preference.ASCENDING_ORDER;
-  private Node currentNode_ ;
-  
+  private Node currentNode_ ;    
   
   private UIPageIterator pageIterator_ ;  
   
@@ -348,11 +347,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     List<Node> childrenList = uiExplorer.getChildrenList(currentNode,pref.isShowPreferenceDocuments());    
     int nodesPerPage = pref.getNodesPerPage();    
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
-    pageIterator_.setPageList(pageList) ;
-    if(pageIterator_.getAvailablePage()== 1 ) {
-      pageIterator_.setRendered(false);
-    }
-    
+    pageIterator_.setPageList(pageList) ;        
   }
   
   @SuppressWarnings("unchecked")
@@ -409,8 +404,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
             uiExplorer.setSelectNode(uri, session);
             uiExplorer.updateAjax(event) ;
           }
-        } catch(Exception e) {
-          e.printStackTrace() ;
+        } catch(Exception e) {          
           JCRExceptionManager.process(uiApp, e);
         }
       } else {
@@ -428,7 +422,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
           JCRExceptionManager.process(uiApp, e);
         }
       }      
-    }        
+    }
+    
   }
 
   static  public class SortActionListener extends EventListener<UIDocumentInfo> {

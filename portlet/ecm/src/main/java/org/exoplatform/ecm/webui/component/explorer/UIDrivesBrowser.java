@@ -196,10 +196,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.getAllClipBoard().clear() ;
       uiJCRExplorer.setRootNode(node) ;
       uiJCRExplorer.setSelectNode(node) ;
-      uiJCRExplorer.refreshExplorer() ;
-      if(pref.isShowSideBar()) {
-        uiJCRExplorer.findFirstComponentOfType(UITreeExplorer.class).buildTree();
-      }
+      uiJCRExplorer.refreshExplorer() ;      
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>() ;
       String[] arrView = viewList.split(",") ;
       for(String view : arrView) {

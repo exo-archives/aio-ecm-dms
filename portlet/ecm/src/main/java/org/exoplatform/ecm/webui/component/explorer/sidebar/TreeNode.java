@@ -16,8 +16,7 @@ import javax.jcr.RepositoryException;
 public class TreeNode {
 
   private boolean isExpanded_ ;
-  private Node node_ ;
-  private boolean isPaginated_ = false ; 
+  private Node node_ ; 
   private List<TreeNode> children_ = new ArrayList<TreeNode>() ; 
 
   public TreeNode(Node node, List<Node> children) throws Exception {
@@ -47,10 +46,7 @@ public class TreeNode {
   public void setNode(Node node) { node_ = node ; }
 
   public List<TreeNode> getChildren() { return children_ ; }
-  public int getChildrenSize() { return children_.size() ; }
-  
-  public boolean isPaginated() { return isPaginated_; }
-  public void setPaginated(boolean paginated) { this.isPaginated_ =paginated ; }
+  public int getChildrenSize() { return children_.size() ; }    
   
   public TreeNode getChild(String relPath) throws RepositoryException {
     for(TreeNode child : children_) {
