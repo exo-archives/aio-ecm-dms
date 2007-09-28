@@ -35,10 +35,10 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UITreeExplorer.CollapseActionListener.class)
     }    
 )
+  //TODO Maybe can reuse UITree from portal
 
 public class UITreeExplorer extends UIContainer {
   private TreeNode treeRoot_ ;
-  
   public UITreeExplorer() throws Exception { 
   }
   

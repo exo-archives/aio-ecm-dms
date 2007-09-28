@@ -14,7 +14,7 @@ import javax.jcr.RepositoryException;
  * 5:37:31 PM 
  */
 public class TreeNode {
-
+  //TODO Need use this class for BC TreeNode
   private boolean isExpanded_ ;
   private Node node_ ; 
   private List<TreeNode> children_ = new ArrayList<TreeNode>() ; 
