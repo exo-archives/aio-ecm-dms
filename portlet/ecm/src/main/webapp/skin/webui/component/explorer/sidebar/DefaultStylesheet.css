@@ -42,7 +42,6 @@
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .Label {
   float: left;
   font-weight: bold;
-  font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
@@ -84,10 +83,6 @@
   margin: 3px 3px 0px 3px;
 }
 
-.UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemLabel {
-  font-size:11px;
-}
-
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SeparatorLine {
   margin: 0px auto 0px 4px;
   background: url('DefaultSkin/background/SidebarSeparatorLine.gif') repeat-x;
@@ -97,6 +92,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
+  padding: 5px 0px 20px 0px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
@@ -113,6 +109,7 @@
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
  width:auto;
 }
+
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
   margin-top: 2px;
   border: solid 1px #bdbdbd;
@@ -137,29 +134,42 @@
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
   cursor: pointer;
+  margin: 0px 5px 0px 1px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
+  background: url('DefaultSkin/background/HardDiskDotted.gif') no-repeat center;
   margin: 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
-  line-height: 25px; vertical-align: middle;
+  line-height: 25px;
   font-weight: bold;
-  font-size: 11px;
+	padding-left: 8px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
-  margin-left: 15px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
-  clear: both; margin-bottom: 5px;
+  background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
+  clear: both; 
   line-height: 16px;
-  font-size: 11px;
+  margin-left: 15px;
+  padding-bottom: 4px;
 }
 
+.UIJCRExplorerPortlet .UITreeExplorer .LastNode {
+  background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ;
+}
+  
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
   color: black;
   line-height: 18px;
-  padding-bottom: 5px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
@@ -174,13 +184,9 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a {
-  color: black;
-	text-decoration: none;
-	margin-left: 2px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
-  font-size: 11px;
   color: blue;
 }
 /*############################## -- End UITreeExplorer   -- ##############################*/
@@ -188,7 +194,7 @@
 /*############################## -- UITreeNodePageIterator   -- ##############################*/
 
 .UITreeNodePageIterator {
-	padding: 0px 0px 0px 3px;
+	margin-left: 9px;
 }
 
 .UITreeNodePageIterator .NodePageIterator {
@@ -196,6 +202,7 @@
 	background: #ededed;
 	border-right: 1px solid #d7d7d7;
 	border-bottom: 1px solid #d7d7d7;
+	padding-left: 1px;
 }
 
 .UITreeNodePageIterator .Icon {
@@ -213,7 +220,8 @@
 
 .UITreeNodePageIterator .Number a {
 	color: #2f7bc9;
-	padding: 0px 4px;
+	padding: 0px 2px;
+	margin: 0px;
 }
 
 .UITreeNodePageIterator .Number a.PageSelected {
