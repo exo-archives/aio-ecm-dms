@@ -184,3 +184,40 @@
   color: blue;
 }
 /*############################## -- End UITreeExplorer   -- ##############################*/
+
+/*############################## -- UITreeNodePageIterator   -- ##############################*/
+
+.UITreeNodePageIterator {
+	padding: 0px 0px 0px 3px;
+}
+
+.UITreeNodePageIterator .NodePageIterator {
+	float: left;
+	background: #ededed;
+	border-right: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+}
+
+.UITreeNodePageIterator .Icon {
+	float: left;
+}
+
+.UITreeNodePageIterator .DisablePage {
+	filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40;
+	cursor: normal;
+}
+
+.UITreeNodePageIterator .Number {
+	float: left;
+}
+
+.UITreeNodePageIterator .Number a {
+	color: #2f7bc9;
+	padding: 0px 4px;
+}
+
+.UITreeNodePageIterator .Number a.PageSelected {
+	color: #fd2020;
+}
+
+

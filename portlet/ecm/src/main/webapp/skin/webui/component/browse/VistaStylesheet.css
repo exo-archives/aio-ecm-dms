@@ -23,7 +23,7 @@
 
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
-	width: 600px;
+	width: 650px;
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {
@@ -70,16 +70,14 @@
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 138px;
+	width: 200px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
-	width: 500px;
 	margin: auto;
 }
 
 .UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .UIFormGrid {
-	width: 500px;
 	margin: auto;
 }
 
@@ -88,7 +86,6 @@
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
-	width: 500px;
 	padding: 0px;
 }
 
@@ -246,9 +243,6 @@
 	border: none;
 }
 
-.UIBrowseContainer .CommentHolder {
-}
-
 .UIBrowseContainer .VoteHolder {
   width: 250px;
   float: right;
@@ -267,11 +261,6 @@
 /*############################## -- FIX BUG POPUP  -- ##############################*/
 .UIBrowseContentPortlet .UIPopupWindow .UITree{
   width: 190px;
-}
-
-.UIBrowseContentPortlet .UIPopupWindow .UIGrid{
-  width: 350px;
-  margin-left: 10px;
 }
 
 .UIBrowseContentPortlet .UIPopupWindow .NodeIcon{

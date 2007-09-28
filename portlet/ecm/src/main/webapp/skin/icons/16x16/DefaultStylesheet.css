@@ -1021,6 +1021,16 @@
 	width: 16px; height:16px;
   background: url('VistaSkin/CBHomeIcon.png') no-repeat;
 }
+
+.LastPage {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/BlueBackIcon.gif') no-repeat center;
+}
+
+.NextPage {
+	width: 16px; height:16px;
+  background: url('DefaultSkin/BlueNextIcon.gif') no-repeat center;
+}
 /*====================================UIRightClickPopupMenu==================================*/
 
 .UIRightClickPopupMenu .Copy16x16Icon {

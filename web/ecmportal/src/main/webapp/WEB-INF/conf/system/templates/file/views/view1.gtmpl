@@ -3,49 +3,41 @@
 
   .FileContent {  
     padding: 10px;
-    font-family: Verdana;
-    color: #0e396c; font-size: 11px;
+    color: #0e396c;
   }
   
   .FileContent .NavigationContainer{  
     padding-bottom: 5px;
+    border: 1px solid #cbcbcb;
   }
   
   .FileContent .TopTitle{  
     padding-left: 10px;
     height: 21px; line-height: 21px;
-    font-family: Verdana;
     color: #058ee6; font-weight: bold; 
     background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
-    border: 1px solid #cbcbcb;
-    overflow: auto;
-    width: 98%;
+    border-bottom: 1px solid #cbcbcb;
   }
   
   .FileContent .ECMIframe {
    	border: 1px solid #cbcbcb; 
-    border-top: none;
-  	width : 99% ;
   	height: 100% ;
   	overflow: auto;
+  	width: 98%;
+  	margin: 5px;
   }
   
   .FileContent .Content {  
-    border: 1px solid #cbcbcb; 
-    border-top: none;
    	white-space: normal;
-   	width: 99%;
    	overflow: auto;
    	height: 300px;
   }
   
    .FileContent .Content .TextContent{  
-    width: 99%;
     margin: auto;
   }
   
   .FileContent .ContentDetail {  
-    width: 99.5%;
     border: 1px solid #e1e1e1; 
     text-align: center;
     overflow: visible;
