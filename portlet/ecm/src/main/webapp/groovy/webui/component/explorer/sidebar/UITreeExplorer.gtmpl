@@ -5,6 +5,7 @@
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
+  import java.util.List;
 %>
 <%
   public void writeNodes(TreeNode rootTree) {
@@ -12,9 +13,11 @@
     String serverPath = uicomponent.getServerPath();
     String portalName = uicomponent.getPortalName();
     String repository = uicomponent.getRepository() ;   
-    int cnt = 0 ; 
-    int len = uicomponent.getRenderedChildren(rootTree).size() - 1 ;
-    for(treeNode in uicomponent.getRenderedChildren(rootTree)) {	    
+    int counter = 1 ;     
+    List childrenNodes=uicomponent.getRenderedChildren(rootTree);
+    boolean isPaginated=uicomponent.isPaginated(rootTree);
+    int childrenSize = childrenNodes.size() ;                 
+    for(treeNode in childrenNodes) {	    
     	Node node = treeNode.getNode() ;	      	    
 	    String path = node.getPath() ;
 	    String treeNodeName = treeNode.getName();
@@ -57,15 +60,12 @@
 			    strActs += "</div>" ;
 			  }				    
 	    }
-	    String inlineStyle = "" ;
-	    if (cnt >= len && !uicomponent.isPaginated(rootTree)) {
-	    	//inlineStyle = " style=\"background-image: none;\"" ;
-	    	// Class
-	    	inlineStyle = "LastNode " ;
+	    String lastNodeClass = "" ;
+	    if (counter >= childrenSize && !isPaginated) {
+	    	lastNodeClass = "LastNode " ;
 	    }
-	    strActs += "</div>" ;
-	    //println "<div class=\"Node\"${inlineStyle} id=\""+treeNode.getPath()+"\">" ;
-	    println "<div class=\"${inlineStyle}Node\" id=\""+treeNode.getPath()+"\">" ;
+	    strActs += "</div>" ;	    
+	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
 	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" + strActs + "<span></span></div>" ;
 	    println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" ;
@@ -82,7 +82,7 @@
 	      println "</div>" ;
 	    }	    
 	    println "</div>" ;	    	    	 			           	   
-			cnt ++ ;
+			counter ++ ;
 		}			
   }  
   TreeNode treeNodeRoot = uicomponent.getRootTreeNode() ;
