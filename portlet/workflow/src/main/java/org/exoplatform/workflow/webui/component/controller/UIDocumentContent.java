@@ -108,6 +108,31 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
       return false;
     }
   }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+  
+  public Node getNodeByPath(String nodePath, String workspace) throws Exception {
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
+    Session session = manageRepo.getSystemSession(workspace) ;
+    return (Node) session.getItem(nodePath) ;
+  }
+  
+  public String getCapacityOfFile(Node file) throws Exception {
+    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
+    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    float capacity = in.available()/1024 ;
+    String strCapacity = Float.toString(capacity) ;
+    if(strCapacity.indexOf(".") > -1) return strCapacity.split(".")[0] ;
+    return strCapacity ;
+  }
 
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>();
