@@ -234,14 +234,14 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
-  width: 100px;
+  width: 90px;
   float: left;
   margin: 10px 3px 5px 3px;
   height: 110px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
-  width: 80px;
+  width: 70px;
   height: 70px;
   border: solid 1px #eeeeee;
   background: #f8f8f8;
@@ -497,6 +497,13 @@
 
 .UIJCRExplorerPortlet .UISimpleSearch .FormContainer .InforField {	
 	margin: 5px 0px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .FieldComponent .UIFormGrid {
+	width: 510px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .FieldComponent .FieldLabel {
 }
 
 .UIJCRExplorerPortlet .EditQueryForm {

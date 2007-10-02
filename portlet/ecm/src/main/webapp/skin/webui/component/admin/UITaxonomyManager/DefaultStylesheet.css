@@ -22,7 +22,7 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .Icon24x24 {
-  margin: 2px 3px 0px 3px;
+  margin: 2px 3px 0px 0px;
   float: left;
 }
 
@@ -48,6 +48,14 @@
   font-weight: bold;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .NodeBorder {
+  background: url('DefaultSkin/Dotted.gif') repeat-y left;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .NodeGroup {
+  background: url('DefaultSkin/Dotted.gif') repeat-y left;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .Node {
   line-height: 30px;
   background-color: #eaedf6;
@@ -55,12 +63,14 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NodeEven {
+  background: #e4e7f3;
   line-height: 30px;
-  background-color: #e4e7f3;
   margin-bottom: 1px;
 }
+
 .UIECMAdminPortlet .UITaxonomyManager .NoneIcon {
-  margin: 7px 2px 0px 2px;
+  background: url('DefaultSkin/NoneIcon.gif') repeat-x center;
+  margin: 7px 0px;
   float: left;
   width: 16px;
   height: 16px;  
@@ -69,19 +79,13 @@
 .UIECMAdminPortlet .UITaxonomyManager .ExpandIcon {
   margin: 7px 0px;
   float: left;
-  width: 16px;
-  height: 16px;
   cursor: pointer;
-  background: url(/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayMinus.gif) no-repeat ;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
+.UIECMAdminPortlet .UITaxonomyManager .CollapseIcon {
   margin: 7px 0px;
   float: left;
-  width: 16px;
-  height: 16px;
   cursor: pointer;
-  background: url(/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayPlus.gif) no-repeat ;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NodeActionsContainer {

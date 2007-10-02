@@ -92,7 +92,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
-  padding: 5px 0px 20px 0px;
+  padding: 5px 0px 0px 0px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
@@ -148,9 +148,6 @@
 	padding-left: 8px;
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
-}
-
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
 	padding: 0px;
 }
@@ -158,9 +155,8 @@
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
   background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
   clear: both; 
-  line-height: 16px;
-  margin-left: 15px;
-  padding-bottom: 4px;
+  margin-left: 14px;
+  padding: 4px 0px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
@@ -169,7 +165,7 @@
   
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
   color: black;
-  line-height: 18px;
+  line-height: 16px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
