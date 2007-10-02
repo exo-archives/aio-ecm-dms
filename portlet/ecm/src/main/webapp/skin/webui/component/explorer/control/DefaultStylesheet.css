@@ -228,6 +228,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SwitchSearch {
   float: left;
+  margin: 2px 0px 0px 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SearchIcon {
@@ -237,7 +238,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SavedQueries {
   float: left;
-  margin-left: 5px;
+  margin-left: 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch {
@@ -245,14 +246,14 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch  .SeparatorLine {
-  height: 25px;
+  height: 22px;
   float: left;
   padding: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch input {
   float: left;
-  width: 243px;
+  width: 200px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch select {
