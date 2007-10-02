@@ -140,6 +140,15 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     return null;
   }
 
+  public String getCapacityOfFile(Node file) throws Exception {
+    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
+    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    float capacity = in.available()/1024 ;
+    String strCapacity = Float.toString(capacity) ;
+    if(strCapacity.indexOf(".") > -1) return strCapacity.split(".")[0] ;
+    return strCapacity ;
+  }
+  
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
   }
@@ -171,6 +180,16 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+  
   public String getWebDAVServerPrefix() throws Exception {    
     PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
     String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
@@ -181,6 +200,12 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   
   public Node getViewNode(String nodeType) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getNode(nodeType) ;
+  }
+  
+  public Node getNodeByPath(String nodePath, String workspace) throws Exception {
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
+    Session session = manageRepo.getSystemSession(workspace) ;
+    return getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session) ;
   }
   
   public String getActionsList(Node node) throws Exception {

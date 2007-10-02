@@ -136,8 +136,11 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       String repository = getRepository() ;
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(),repository);
-      homeNode.getSession().save() ;
-      newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
+      try {
+        homeNode.getSession().save() ;
+        newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
+      } catch(Exception e) {
+      }
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.updateAjax(event);        
     } catch (AccessControlException ace) {
@@ -150,6 +153,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(RepositoryException repo) {
+      repo.printStackTrace() ;
       String key = "UIDocumentForm.msg.repository-exception" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
