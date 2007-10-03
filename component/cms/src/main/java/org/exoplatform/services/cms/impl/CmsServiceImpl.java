@@ -377,7 +377,7 @@ public class CmsServiceImpl implements CmsService {
       } catch (Exception e) {
         if(srcSession != null) srcSession.logout();
         if(destSession !=null) destSession.logout();
-        e.printStackTrace();
+        //e.printStackTrace();
       }
     }else {
       Session session = null ;
@@ -394,7 +394,7 @@ public class CmsServiceImpl implements CmsService {
         session.logout();
       }catch(Exception e){
         if(session !=null && session.isLive()) session.logout(); 
-        e.printStackTrace() ;
+        //e.printStackTrace() ;
       }
     }
   }
