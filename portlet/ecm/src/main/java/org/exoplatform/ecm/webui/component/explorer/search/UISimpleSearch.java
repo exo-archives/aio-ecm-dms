@@ -188,12 +188,12 @@ public class UISimpleSearch extends UIForm {
       UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
       UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
-    //TODO need review this code. should use validator for text field
-      if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
+      if(text == null && uiSimpleSearch.constraints_.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      //TODO need review this code. should use validator for text field
       String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
       if(text != null)
       for(String filterChar : arrFilterChar) {

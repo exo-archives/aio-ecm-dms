@@ -112,10 +112,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       byte[] content = input.getUploadData() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null) name = fileName;
-      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!", "+"} ;
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }

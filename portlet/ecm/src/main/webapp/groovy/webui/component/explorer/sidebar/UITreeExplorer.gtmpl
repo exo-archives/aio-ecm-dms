@@ -26,7 +26,6 @@
 	    String mode = "Expand" ;
 	    String actionLink  ;
 	    String expandLink ;
-	
 	    if(treeNode.isExpanded()) mode = "Collapse" ;
 	    if(isPreferenceNode) {
 	      actionLink = uicomponent.event(mode, treeNode.getPath(), new Parameter("workspaceName", preferenceWS)) ;

@@ -12,6 +12,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
@@ -171,6 +172,13 @@ public class UIWorkingArea extends UIContainer {
       parent = (Node) node.getAncestor(depth);
     }
     return false;
+  }
+  
+  private void removeMixins(Node node) throws Exception {
+    NodeType[] mixins = node.getMixinNodeTypes() ;
+    for(NodeType nodeType : mixins) {
+      node.removeMixin(nodeType.getName()) ;
+    }
   }
 
   public boolean isJcrViewEnable() throws Exception {
@@ -478,11 +486,21 @@ public class UIWorkingArea extends UIContainer {
       }      
       Node parentNode = node.getParent() ;
       try {
+        //TODO: need to check again with reference properties
+        uicomp.removeMixins(node) ;
+        if(node.hasNodes()) {
+          NodeIterator nodeIter = node.getNodes() ;
+          while(nodeIter.hasNext()) {
+            Node child = nodeIter.nextNode() ;
+            uicomp.removeMixins(child) ;
+          }
+        }
         node.remove() ;
         uiExplorer.setSelectNode(parentNode) ;
         uiExplorer.updateAjax(event) ;
         parentNode.save() ;
-      } catch(Exception e) {        
+      } catch(Exception e) {  
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.getSession().refresh(false) ;
