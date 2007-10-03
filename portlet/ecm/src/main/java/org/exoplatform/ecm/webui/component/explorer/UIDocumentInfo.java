@@ -518,9 +518,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   static  public class ShowPageActionListener extends EventListener<UIPageIterator> {
     public void execute(Event<UIPageIterator> event) throws Exception {      
       UIPageIterator uiPageIterator = event.getSource() ;
-      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);
-      if(!explorer.getPreference().isShowSideBar()) return ;
+      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);      
       UITreeExplorer treeExplorer = explorer.findFirstComponentOfType(UITreeExplorer.class);
+      if(treeExplorer == null || !treeExplorer.isRendered()) return;
       String componenetId = explorer.getCurrentNode().getPath();
       UITreeNodePageIterator extendedPageIterator = treeExplorer.getUIPageIterator(componenetId);
       if(extendedPageIterator == null) return;      

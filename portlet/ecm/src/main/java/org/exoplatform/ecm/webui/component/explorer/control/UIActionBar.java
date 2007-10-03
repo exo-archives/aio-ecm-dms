@@ -56,6 +56,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIReferencesList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
+import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
@@ -144,7 +145,7 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_SQL = "SQL" ;
   final static private String FIELD_XPATH = "xPath" ;
 
-  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC" ;
+  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by exo:dateCreated DESC, jcr:primaryType DESC" ;
   final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC" ;  
 
   public UIActionBar() throws Exception{
@@ -889,27 +890,26 @@ public class UIActionBar extends UIForm {
       }else {
         queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath()) ;
       }
-      queryStatement = StringUtils.replace(queryStatement,"$1",text);      
-      QueryResult queryResult = null;
-      try {
-        QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
-        Query query = queryManager.createQuery(queryStatement, Query.SQL);        
-        queryResult = query.execute();
-      } catch(Exception e) {     
-        e.printStackTrace() ;
-      }      
+      queryStatement = StringUtils.replace(queryStatement,"$1",text);            
       uiExplorer.removeChildById("ViewSearch") ;
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
       getChild(UIDocumentWorkspace.class) ;
-      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT) ;
-      if(queryResult == null) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-found", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }        
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT) ;           
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      long startTime = System.currentTimeMillis();
+      Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+      QueryResult queryResult = query.execute();                  
+//      if(queryResult.getNodes().getSize() ) {
+//        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-found", null)) ;
+//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//        return ;
+//      }        
+      
       uiSearchResult.setIsQuickSearch(true) ;
       uiSearchResult.setQueryResults(queryResult) ;            
       uiSearchResult.updateGrid() ;
+      long time = System.currentTimeMillis() - startTime;
+      uiSearchResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class) ;
     }
   }
@@ -919,8 +919,11 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null) ;
+      UIContentNameSearch contentNameSearch = uiECMSearch.findFirstComponentOfType(UIContentNameSearch.class);
+      String currentNodePath = uiJCRExplorer.getCurrentNode().getPath();
+      contentNameSearch.setLocation(currentNodePath);
       UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class) ;
-      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(uiJCRExplorer.getCurrentNode().getPath()) ;
+      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNodePath) ;
       uiPopupAction.activate(uiECMSearch, 700, 500) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

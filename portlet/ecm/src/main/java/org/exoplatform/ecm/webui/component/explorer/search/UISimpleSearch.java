@@ -187,7 +187,8 @@ public class UISimpleSearch extends UIForm {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ; 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
-      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;      
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
+    //TODO need review this code. should use validator for text field
       if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -203,10 +204,13 @@ public class UISimpleSearch extends UIForm {
         }
       }
       String statement = uiSimpleSearch.getQueryStatement() ;
+      long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(statement, Query.XPATH);      
       QueryResult queryResult = query.execute();
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;
+      long time = System.currentTimeMillis() - startTime;
+      uiSearchResult.setSearchTime(time);
       uiECMSearch.setRenderedChild(UISearchResult.class) ;
       uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNode.getPath()) ;
     }

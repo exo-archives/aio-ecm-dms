@@ -12,7 +12,8 @@
 <% 
   def resultList = uicomponent.getCurrentList() ; 
   if(resultList == null) return ;
-  
+  long searchTime = uicomponent.getSearchTime()/1000;
+  int resultSize = uicomponent.getUIPageIterator().getAvailable();  
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
 %>

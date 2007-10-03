@@ -47,6 +47,7 @@ import org.exoplatform.webui.event.EventListener;
 public class UISearchResult extends UIContainer {
 
   private QueryResult queryResult_;
+  private long searchTime_ = 0; 
   
   private boolean isQuickSearch_ = false ;
   private UIPageIterator uiPageIterator_ ;
@@ -60,6 +61,9 @@ public class UISearchResult extends UIContainer {
   public void setQueryResults(QueryResult queryResult) throws Exception {
     queryResult_ = queryResult ;         
   }  
+  
+  public long getSearchTime() { return searchTime_ ; }
+  public void setSearchTime(long time) { this.searchTime_ = time; }  
   
   public List getCurrentList() throws Exception { 
     return uiPageIterator_.getCurrentPageData() ;    

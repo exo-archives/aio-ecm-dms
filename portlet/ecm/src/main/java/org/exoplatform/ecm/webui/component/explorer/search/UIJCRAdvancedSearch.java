@@ -132,6 +132,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       UIECMSearch uiSearch = uiForm.getParent() ;
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(queryS, searchType);
       QueryResult queryResult = null ;
       try {
@@ -145,6 +146,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;      
       uiSearchResult.setQueryResults(queryResult) ;
       uiSearchResult.updateGrid() ;
+      long time = System.currentTimeMillis() - startTime;
+      uiSearchResult.setSearchTime(time);
       uiSearch.setRenderedChild(UIECMSearch.ADVANCED_RESULT) ;
     }
   }

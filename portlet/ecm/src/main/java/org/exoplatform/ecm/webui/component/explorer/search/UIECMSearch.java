@@ -24,7 +24,8 @@ public class UIECMSearch extends UIContainer implements UIPopupComponent {
   static public String ADVANCED_RESULT = "AdvancedSearchResult" ;
   
   public UIECMSearch() throws Exception {
-    addChild(UISearchContainer.class, null, null) ;
+    addChild(UIContentNameSearch.class,null,null);
+    addChild(UISearchContainer.class, null, null).setRendered(false) ;
     addChild(UIJCRAdvancedSearch.class, null, null).setRendered(false);
     addChild(UISavedQuery.class, null, null).setRendered(false) ;
     UISearchResult uiSearchResult = addChild(UISearchResult.class, null, ADVANCED_RESULT).setRendered(false) ;

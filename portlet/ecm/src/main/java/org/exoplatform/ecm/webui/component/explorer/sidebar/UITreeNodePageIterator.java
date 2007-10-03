@@ -35,16 +35,17 @@ public class UITreeNodePageIterator extends UIPageIterator {
     public void execute(Event<UITreeNodePageIterator> event) throws Exception {      
       UITreeNodePageIterator uiPageIterator = event.getSource() ;      
       int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
-      uiPageIterator.setCurrentPage(page) ;      
-      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);
-      String currentPath = explorer.getCurrentNode().getPath();
-      if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;      
-      UIDocumentInfo documentInfo = explorer.findFirstComponentOfType(UIDocumentInfo.class);
-      UIPageIterator iterator = documentInfo.getContentPageIterator();
-      iterator.setCurrentPage(page);
-      event.getRequestContext().addUIComponentToUpdateByAjax(documentInfo);
+      uiPageIterator.setCurrentPage(page) ;
       if(uiPageIterator.getParent() == null) return ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPageIterator.getParent());
+      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);   
+      UIDocumentInfo documentInfo = explorer.findFirstComponentOfType(UIDocumentInfo.class);
+      if(documentInfo == null || !documentInfo.isRendered()) return ;
+      String currentPath = explorer.getCurrentNode().getPath();
+      if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;            
+      UIPageIterator iterator = documentInfo.getContentPageIterator();
+      iterator.setCurrentPage(page);
+      event.getRequestContext().addUIComponentToUpdateByAjax(documentInfo);      
     }
   }    
 }

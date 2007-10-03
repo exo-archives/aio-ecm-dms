@@ -10,8 +10,10 @@ import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -75,6 +77,8 @@ public class UIViewBar extends UIForm {
       prefs_.setValue(Utils.JCR_PATH,"") ;
       prefs_.setValue(Utils.DRIVE,"") ;
       prefs_.store() ;
+      UISearchResult simpleSearchResult = uiJCRExplorer.findComponentById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
+      if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
       uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
     }
   }  
