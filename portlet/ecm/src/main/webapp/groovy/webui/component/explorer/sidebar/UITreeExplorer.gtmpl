@@ -60,11 +60,11 @@
 			    strActs += "</div>" ;
 			  }				    
 	    }
+	    strActs += "</div>" ;	    
 	    String lastNodeClass = "" ;
 	    if (counter >= childrenSize && !isPaginated) {
 	    	lastNodeClass = "LastNode " ;
 	    }
-	    strActs += "</div>" ;	    
 	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
 	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" + strActs + "<span></span></div>" ;
@@ -75,9 +75,9 @@
 	      println "<div class=\"NodeGroup\">" ;
 	      writeNodes(treeNode) ;
 	      if(uicomponent.isPaginated(treeNode)) {
-		      println "<div class=\"PageIterator Node\">"	    	
-	    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNode.getPath())); 				
-	    		println "</div>" ;
+			      println "<div class=\"Node PageIterator\">"	    	
+		    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNode.getPath())); 				
+		    		println "</div>" ;
 		    }		    	
 	      println "</div>" ;
 	    }	    
@@ -98,7 +98,11 @@
       <%
       	writeNodes(treeNodeRoot);
        	if(uicomponent.isPaginated(treeNodeRoot)) {%>
-       		<div class="PageIterator Node"><% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %></div>       		  	 				    			  		
+       		<div class="Node">
+       			<div class="PageIterator">
+       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
+       			</div>       	
+       		</div>	  	 				    			  		
 				<%}
 			%>
     </div>

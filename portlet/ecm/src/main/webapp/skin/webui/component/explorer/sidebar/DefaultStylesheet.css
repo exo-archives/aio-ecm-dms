@@ -138,14 +138,16 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
-  background: url('DefaultSkin/background/HardDiskDotted.gif') no-repeat center;
-  margin: 0px 3px;
+  background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
+  height: 15px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
-  line-height: 25px;
+	padding-left: 10px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
   font-weight: bold;
-	padding-left: 8px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
@@ -156,7 +158,7 @@
   background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
   clear: both; 
   margin-left: 14px;
-  padding: 4px 0px;
+  padding: 8px 0px 0px 0px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
@@ -179,30 +181,24 @@
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer a {
-}
-
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
   color: blue;
 }
+
 /*############################## -- End UITreeExplorer   -- ##############################*/
 
 /*############################## -- UITreeNodePageIterator   -- ##############################*/
 
 .UITreeNodePageIterator {
-	margin-left: 9px;
+	margin: 5px 0px 0px 9px;
 }
 
 .UITreeNodePageIterator .NodePageIterator {
-	float: left;
 	background: #ededed;
 	border-right: 1px solid #d7d7d7;
 	border-bottom: 1px solid #d7d7d7;
 	padding-left: 1px;
-}
-
-.UITreeNodePageIterator .Icon {
-	float: left;
+	width: auto;
 }
 
 .UITreeNodePageIterator .DisablePage {
@@ -210,18 +206,15 @@
 	cursor: normal;
 }
 
-.UITreeNodePageIterator .Number {
-	float: left;
+.UITreeNodePageIterator .Icon {
+	padding: 0px 8px;
 }
 
-.UITreeNodePageIterator .Number a {
+.UITreeNodePageIterator a {
 	color: #2f7bc9;
-	padding: 0px 2px;
-	margin: 0px;
+	padding: 3px;
 }
 
-.UITreeNodePageIterator .Number a.PageSelected {
+.UITreeNodePageIterator a.PageSelected {
 	color: #fd2020;
 }
-
-
