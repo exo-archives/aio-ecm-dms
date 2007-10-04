@@ -13,7 +13,7 @@
   
   <filter-mapping>
     <filter-name>PortalContainerInitializedFilter</filter-name>
-    <url-pattern>/rest/jcr/*</url-pattern>
+    <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
 	
   <!-- ================================================================== -->
