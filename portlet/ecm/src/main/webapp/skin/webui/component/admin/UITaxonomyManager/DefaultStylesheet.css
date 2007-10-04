@@ -48,23 +48,13 @@
   font-weight: bold;
 }
 
-/*
-.UIECMAdminPortlet .UITaxonomyManager .NodeBorder {
-  background: url('DefaultSkin/Dotted.gif') repeat-y left;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .NodeGroup {
-  background: url('DefaultSkin/Dotted.gif') repeat-y left;
-}
-
 .UIECMAdminPortlet .UITaxonomyManager .NoneIcon {
-  background: url('DefaultSkin/NoneIcon.gif') repeat-x center;
   margin: 7px 0px;
   float: left;
   width: 16px;
   height: 16px;  
 }
-*/
+
 .UIECMAdminPortlet .UITaxonomyManager .Node {
   line-height: 30px;
   background-color: #eaedf6;
@@ -81,12 +71,15 @@
   margin: 7px 0px;
   float: left;
   cursor: pointer;
+  background: url('DefaultSkin/background/SmallGrayMinus.gif');
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .CollapseIcon {
+.UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
   margin: 7px 0px;
   float: left;
   cursor: pointer;
+  background: url('DefaultSkin/background/SmallGrayPlus.gif');
+	width: 16px; height: 16px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .NodeActionsContainer {
