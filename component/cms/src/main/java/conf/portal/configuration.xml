@@ -127,7 +127,7 @@
             	<field  name="repository"><string>repository</string></field>
             	<field name="workspaces">
               	<collection type="java.util.ArrayList">
-              		<value><string>production</string></value>              		
+              		<value><string>system</string></value>              		
               	</collection>              	
               </field>
               <field  name="jcrPaths">
@@ -639,7 +639,8 @@
       <properties-param>
         <name>cms.configuration</name>
         <property name="contentLocation" value="war:/conf"/>
-        <property name="workspace" value="production"/>
+        <property name="workspace" value="system"/>
+        <property name="production" value="production"/>
         <property name="draft" value="draft"/>
         <property name="backup" value="backup"/>                
       </properties-param>      
@@ -657,7 +658,7 @@
 	  <init-params>
       <value-param>
         <name>workspace</name>
-        <value>production</value>
+        <value>system</value>
       </value-param>
       <value-param>
         <name>repository</name>
@@ -754,7 +755,7 @@
 	  <init-params>
 	    <value-param>
 	      <name>workspace</name>
-	      <value>production</value>
+	      <value>system</value>
 	    </value-param>   
 	    <value-param>
 	      <name>relativePath</name>

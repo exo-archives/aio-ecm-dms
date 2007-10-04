@@ -43,7 +43,7 @@ public class FillSelectBoxWithNodeChildren implements CmsScript {
     List options = new ArrayList();
     Session session = null;
     try{
-      session = jcrRepository.login("production");
+      session = jcrRepository.login("system");
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       
       String xpath = folder_ + "/*";

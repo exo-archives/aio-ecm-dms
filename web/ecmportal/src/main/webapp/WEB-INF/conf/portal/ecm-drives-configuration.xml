@@ -12,6 +12,25 @@
         <description>Nothing</description>
         <init-params>
           <object-param>        
+            <name>System files</name>
+            <description>System workspace</description>
+            <object type="org.exoplatform.services.cms.drives.DriveData">
+              <field  name="name"><string>System files</string></field>
+              <field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>system</string></field>
+              <field  name="permissions"><string>member:/admin</string></field>
+              <field  name="homePath"><string>/</string></field>
+              <field  name="icon"><string></string></field>
+              <field  name="views">
+                <string>simple-view, admin-view</string>
+              </field>
+              <field  name="viewPreferences"><boolean>false</boolean></field>
+              <field  name="viewNonDocument"><boolean>false</boolean></field>
+              <field  name="viewSideBar"><boolean>true</boolean></field>
+              <field  name="allowCreateFolder"><string>both</string></field>       
+            </object>
+          </object-param>
+          <object-param>
             <name>User on production</name>
             <description>Production workspace set</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
