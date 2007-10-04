@@ -13,12 +13,18 @@
   
   public void writeNodes(List nodes, String clazz) {
     int padding ;
+    int size= nodes.size();
+    int count=1;
     for(node in nodes) {
       if(clazz == "Even") clazz = "" ;
       else clazz = "Even" ;
+      String inlineStyle = "" ;
+	    if (count >= size) {
+	    	inlineStyle = "LastNode " ;
+	    }
       padding = (node.level * 20) ;
 	    println """
-			  <div class="Node$clazz" style="padding-left: ${padding}px;">
+			  <div class="${inlineStyle}Node$clazz" style="padding-left: ${padding}px;">
 				    <div class="NodeActionsContainer">
 			""";
 			println "<div class=\"Icon16x16 Add16x16Icon\" onclick=\"" + uicomponent.event("Add",node.getPath()) + "\" title=\"Add\"></div>" ;
@@ -27,24 +33,29 @@
 			println "<div class=\"Icon16x16 Paste16x16Icon\" onclick=\"" + uicomponent.event("Paste",node.getPath()) + "\" title=\"Paste\"></div>" ;
 			println "<div class=\"Icon16x16 Delete16x16Icon\" onclick=\"" + uicomponent.event("Remove",node.getPath()) + "\" title=\"Delete\"></div>" ;
 			println "</div>" ;
-			if(node.getChildrenSize() > 0) {
-	      if(node.isExpanded()) {
-	  			println "<div class=\"ColapseIcon\" onclick=\"" + uicomponent.event("Select",node.getPath()) + "\"><span></span></div>" ;
-					println "<div class=\"Icon24x24 CollapseFolder24x24Icon\"><span></span></div>" ;
-	      } else {
-	  			println "<div class=\"ExpandIcon\" onclick=\"" + uicomponent.event("Select",node.getPath()) + "\"><span></span></div>" ;
+				if(node.getChildrenSize() > 0) {
+		      if(node.isExpanded()) {
+		  			println "<div class=\"CollapseIcon\" onclick=\"" + uicomponent.event("Select",node.getPath()) + "\"><span></span></div>" ;
+						println "<div class=\"Icon24x24 CollapseFolder24x24Icon\"><span></span></div>" ;
+		      } else {
+		  			println "<div class=\"ExpandIcon\" onclick=\"" + uicomponent.event("Select",node.getPath()) + "\"><span></span></div>" ;
+						println "<div class=\"Icon24x24 ExpandFolder24x24Icon\"><span></span></div>" ;
+		      }
+				} else {
+	  			println "<div class=\"NoneIcon\"><span></span></div>" ;
 					println "<div class=\"Icon24x24 ExpandFolder24x24Icon\"><span></span></div>" ;
-	      }
-			} else {
-  			println "<div class=\"NoneIcon\"><span></span></div>" ;
-				println "<div class=\"Icon24x24 ExpandFolder24x24Icon\"><span></span></div>" ;
-			}
-			println """
-				    <div class="NodeLabel">$node.name</div>
-			  </div>
-	    """;
-	    if(node.getChildrenSize() > 0 && node.isExpanded()) writeNodes(node.getChildren(), clazz) ;
-    }
+				}
+				println """
+					    <div class="NodeLabel">$node.name</div>
+				  </div>
+		    """;
+	    if(node.getChildrenSize() > 0 && node.isExpanded()) {
+	    	println "<div class=\"NodeGroup\">" ;
+		    writeNodes(node.getChildren(), clazz) ;
+		    println "</div>" ;
+	    }	    	    
+	    count++;
+    }    
   }
 	String clazz = "" ;
 %>
@@ -59,7 +70,9 @@
 		    <div class="Icon24x24 UITaxonomyManagerIcon"><span></span></div>
 		    <div class="NodeLabel">$rootNode.name</div>
 		  </div>
-		  <%writeNodes(rootNode.getChildren(), clazz)%>
+		  <div class="NodeGroup">
+		  	<%writeNodes(rootNode.getChildren(), clazz)%>
+		  </div>
 		</div>
 	</div>
 	<% uicomponent.renderChildren(); %>

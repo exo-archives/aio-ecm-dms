@@ -155,6 +155,15 @@
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
   clear: both;
   line-height: 22px;
+  background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .LastNode {
+  background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NoneIcon {
@@ -193,3 +202,38 @@
   color: #2e61b6;
 }
 /*############################## -- End UITreeExplorer   -- ##############################*/
+
+/*############################## -- UITreeNodePageIterator   -- ##############################*/
+
+.UITreeNodePageIterator {
+	margin: 0px 0px 0px 9px;
+	padding: 9px 0px 0px 0px;
+}
+
+.UITreeNodePageIterator .NodePageIterator {
+	background: #ededed;
+	border-right: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+	padding-left: 1px;
+	width: auto;
+}
+
+.UITreeNodePageIterator .DisablePage {
+	filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40;
+	cursor: normal;
+}
+
+.UITreeNodePageIterator .Icon {
+	margin: 0px 4px;
+	padding: 0px;
+	float: left;
+}
+
+.UITreeNodePageIterator a {
+	color: #2f7bc9;
+	padding: 0px 3px;
+}
+
+.UITreeNodePageIterator a.PageSelected {
+	color: #fd2020;
+}

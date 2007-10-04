@@ -138,13 +138,21 @@
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
   cursor: pointer;
-  margin: 0px 3px;
+  margin: 0px 5px 0px 0px ;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
+  background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
+  height: 15px;
+  margin-left: 10px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
-  line-height: 25px; vertical-align: middle;
   font-weight: bold;
-  font-size: 11px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
+	line-height: 16px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeGroup {
@@ -152,9 +160,17 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
-  clear: both; margin-bottom: 5px;
+	background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
+  clear: both; padding-bottom: 5px;
   line-height: 16px;
-  font-size: 11px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .LastNode {
+  background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
@@ -176,13 +192,45 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a {
-  color: black;
-	text-decoration: none;
 	margin-left: 2px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
-  font-size: 11px;
   color: blue;
 }
 /*############################## -- End UITreeExplorer   -- ##############################*/
+
+/*############################## -- UITreeNodePageIterator   -- ##############################*/
+
+.UITreeNodePageIterator {
+	margin: 0px 0px 0px 9px;
+	padding: 9px 0px 0px 0px;
+}
+
+.UITreeNodePageIterator .NodePageIterator {
+	background: #ededed;
+	border-right: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+	padding-left: 1px;
+	width: auto;
+}
+
+.UITreeNodePageIterator .DisablePage {
+	filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40;
+	cursor: normal;
+}
+
+.UITreeNodePageIterator .Icon {
+	margin: 0px 4px;
+	padding: 0px;
+	float: left;
+}
+
+.UITreeNodePageIterator a {
+	color: #2f7bc9;
+	padding: 0px 3px;
+}
+
+.UITreeNodePageIterator a.PageSelected {
+	color: #fd2020;
+}
