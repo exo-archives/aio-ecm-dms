@@ -97,11 +97,9 @@
       <%
       	writeNodes(treeNodeRoot);
        	if(uicomponent.isPaginated(treeNodeRoot)) {%>
-       		<div class="Node">
-       			<div class="PageIterator">
+       			<div class="Node PageIterator">
        				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
        			</div>       	
-       		</div>	  	 				    			  		
 				<%}
 			%>
     </div>

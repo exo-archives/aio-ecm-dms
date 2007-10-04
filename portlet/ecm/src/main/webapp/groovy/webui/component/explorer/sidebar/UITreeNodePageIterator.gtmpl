@@ -8,7 +8,7 @@
 		<tr>
 			<td>
 		    <%if( currentPage - 1 > 0 ){%>        
-		    	  <a href="<%=uicomponent.event("ShowPage","${currentPage - 1}")%>" class="Icon LastPage" title="<%=_ctx.appRes("UIPageIterator.label.previous")%>"></a>
+		    	  <a href="<%=uicomponent.event("ShowPage","${currentPage - 1}")%>" class="Icon LastPage" title="<%=_ctx.appRes("UIPageIterator.label.previous")%>"><span></span></a>
 		    <% } else {%>
 		    	  <a class="Icon LastPage DisablePage" title="<%=_ctx.appRes("UIPageIterator.label.previous")%>"><span></span></a>
 		    <%}%>
@@ -38,7 +38,7 @@
       <%}%>
 	    <td>
 		    <% if(currentPage +1 <= totalPage) { %>
-		    	   <a href="<%=uicomponent.event("ShowPage","${currentPage + 1}")%>" class="Icon NextPage" title="<%=_ctx.appRes("UIPageIterator.label.next")%>"></a>
+		    	   <a href="<%=uicomponent.event("ShowPage","${currentPage + 1}")%>" class="Icon NextPage" title="<%=_ctx.appRes("UIPageIterator.label.next")%>"><span></span></a>
 		    <% } else { %>
 		    	   <a class="Icon NextPage DisablePage" title="<%=_ctx.appRes("UIPageIterator.label.next")%>"><span></span></a>
 		    <%}%>
