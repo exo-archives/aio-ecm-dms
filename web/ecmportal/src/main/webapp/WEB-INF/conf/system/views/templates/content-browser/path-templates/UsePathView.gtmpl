@@ -161,7 +161,7 @@
   <%/*End UICBNavigation*/%>
   
   <%/*Begin UIEventViewer*/%>
-  <div class="UIEventViewer">
+  <div class="UIEventViewer" style="border: 1px solid red">
   	<%if(hasNoDocument){%>
     <div class="UISubContent">
       <div class ="UIDocumentContentInfo">

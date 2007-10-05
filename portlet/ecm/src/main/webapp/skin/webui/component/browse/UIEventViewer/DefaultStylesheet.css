@@ -23,7 +23,7 @@
   margin: 4px 0px 5px 8px;
   height: 19px; vertical-align: middle;
   border: 1px #e1e1e1 solid; background: #f3f3f3;
-  width: 110px;
+  width: 115px;
 }
 
 .UIEventViewer .ViewPreviousDocument .BackIcon {
@@ -47,7 +47,6 @@
 .UIEventViewer .EventContent .EventDocumentLabel {
 	margin-left: 5px;
   line-height: 18px; 
-  vertical-align: middle;
   float: left;
 }
 

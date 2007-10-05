@@ -25,7 +25,7 @@
 				        	<div class="WizardLabel">
 				        		<%=_ctx.appRes(compName+".label")%>:
 				        	</div>
-				        	<div style="font-weight:bold;">
+				        	<div>
 				        		$tabName
 				        	</div>
 				        	<div style="clear:left;"><span></span></div>

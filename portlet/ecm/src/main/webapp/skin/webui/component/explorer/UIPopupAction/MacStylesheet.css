@@ -134,8 +134,11 @@
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
-  width: 220px;
   margin-top: 15px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar table {
+	width: auto;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
@@ -152,7 +155,6 @@
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
   line-height: 21px;
-  vertical-align: middle;
   background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
   padding: 0px 10px;
 }

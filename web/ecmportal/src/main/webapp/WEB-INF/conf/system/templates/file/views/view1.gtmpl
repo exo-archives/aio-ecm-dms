@@ -6,12 +6,12 @@
     color: #0e396c;
   }
   
-  .FileContent .NavigationContainer{  
+  .FileContent .NavigationContainer {  
     padding-bottom: 5px;
     border: 1px solid #cbcbcb;
   }
   
-  .FileContent .TopTitle{  
+  .FileContent .TopTitle {  
     padding-left: 10px;
     height: 21px; line-height: 21px;
     color: #058ee6; font-weight: bold; 
@@ -23,7 +23,7 @@
    	border: 1px solid #cbcbcb; 
   	height: 100% ;
   	overflow: auto;
-  	width: 98%;
+  	width: 96%;
   	margin: 5px;
   }
   
@@ -33,7 +33,7 @@
    	height: 300px;
   }
   
-   .FileContent .Content .TextContent{  
+   .FileContent .Content .TextContent {  
     margin: auto;
   }
   
