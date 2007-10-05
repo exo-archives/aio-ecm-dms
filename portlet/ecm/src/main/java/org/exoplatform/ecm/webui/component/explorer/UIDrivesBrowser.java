@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
@@ -23,7 +24,6 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -95,13 +95,17 @@ public class UIDrivesBrowser extends UIContainer {
           if(drive.getIcon() != null && drive.getIcon().length() > 0) {
             String[] iconPath = drive.getIcon().split(":/") ;   
             session = repository.getSystemSession(iconPath[0]) ;
-            Node node = (Node) session.getItem("/" + iconPath[1]) ;
-            Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-            InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-            InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
-            dresource.setDownloadName(node.getName()) ;
-            drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
-            session.logout() ;
+            try {
+              Node node = (Node) session.getItem("/" + iconPath[1]) ;
+              Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+              InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
+              InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+              dresource.setDownloadName(node.getName()) ;
+              drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+              session.logout() ;
+            } catch(PathNotFoundException pnf) {
+              drive.setIcon("") ;
+            }
           }
           if(isExistWorspace(repository, drive) && !driveList.contains(drive)) driveList.add(drive) ;
         }

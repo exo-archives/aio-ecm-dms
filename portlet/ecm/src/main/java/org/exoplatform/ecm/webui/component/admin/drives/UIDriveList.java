@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -81,15 +82,19 @@ public class UIDriveList extends UIComponentDecorator {
     if(drives != null && drives.size() > 0) {
       for(DriveData drive : drives) {
         if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-          String[] iconPath = drive.getIcon().split(":/") ;   
-          session = repository.getSystemSession(iconPath[0]) ;
-          Node node = (Node) session.getItem("/" + iconPath[1]) ;
-          Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-          InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-          InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
-          dresource.setDownloadName(node.getName()) ;
-          drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
-          session.logout() ;
+          try {
+            String[] iconPath = drive.getIcon().split(":/") ;   
+            session = repository.getSystemSession(iconPath[0]) ;
+            Node node = (Node) session.getItem("/" + iconPath[1]) ;
+            Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+            InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
+            InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+            dresource.setDownloadName(node.getName()) ;
+            drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+            session.logout() ;
+          } catch(PathNotFoundException pnf) {
+            drive.setIcon("") ;
+          }
         }
         if(isExistWorspace(repository, drive)) driveList.add(drive) ;
       }

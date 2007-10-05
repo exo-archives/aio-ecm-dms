@@ -1,4 +1,5 @@
 <%
+  import org.exoplatform.ecm.utils.Utils ;
   def node = uicomponent.getNode() ;
   def originalNode = uicomponent.getOriginalNode();
   String namespace = "kfx:" ;
@@ -28,7 +29,9 @@
 		    }
 		  }
 		  int i = 1;
-		  for(child in uicomponent.getAttachments()) { %>
+		  for(child in uicomponent.getAttachments()) { 
+		    if(child.hasNode("jcr:content")) {
+		%>
 			  <tr>
 			    <td style="width:25%"><%=_ctx.appRes("Kofax.view.label.downloadable")%> #<%=i%></td>
 			    <td>
@@ -38,7 +41,19 @@
 			    </td>
 			  </tr>
 		<%
-		    i++ ;
+		      i++ ;
+		    } else {
+		%>
+		      <tr>
+				    <td style="width:25%"><%=_ctx.appRes("Kofax.view.label.downloadable")%> #<%=i%></td>
+				    <td>
+				      <a href="<%=uicomponent.event("ChangeNode", Utils.formatNodeName(child.getPath()))%>">
+				        <%=child.getName()%>
+				      </a>
+				    </td>
+				  </tr>
+		<%      
+		    }
 		  } 
 		%>
 	</table>
