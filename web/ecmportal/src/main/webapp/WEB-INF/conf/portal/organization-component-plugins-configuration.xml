@@ -115,22 +115,6 @@
 	                  </field>
 	                </object>
 	              </value>
-	              <value>
-	                <object type="org.exoplatform.services.cms.queries.impl.NewUserConfig$User">
-	                  <field  name="userName"><string>admin</string></field>
-	                  <field  name="queries">
-	                    <collection type="java.util.ArrayList">
-	                      <value>
-	                        <object type="org.exoplatform.services.cms.queries.impl.NewUserConfig$Query">
-	                          <field  name="queryName"><string>allFiles</string></field>
-	                          <field  name="language"><string>sql</string></field>
-	                          <field  name="query"><string>SELECT * FROM nt:file WHERE jcr:path LIKE '/home/users/admin/%'</string></field>
-	                        </object>
-	                      </value>
-	                    </collection>
-	                  </field>
-	                </object>
-	              </value>
 	            </collection>
 	          </field>
 	        </object>

@@ -59,8 +59,8 @@ public class NewUserListener extends UserEventListener {
     List<RepositoryEntry> repositories = jcrService_.getConfig().getRepositoryConfigurations() ;
     for(RepositoryEntry repo : repositories) {
       try {
-        session = jcrService_.getRepository(repo.getName()).getSystemSession(cmsConfigurationService_
-            .getWorkspace(repo.getName()));
+        String defaultWorkspaceName = jcrService_.getDefaultRepository().getConfiguration().getDefaultWorkspaceName() ;
+        session = jcrService_.getRepository(repo.getName()).getSystemSession(defaultWorkspaceName);
         Node usersHome = (Node) session.getItem(
             cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
         initSystemData(usersHome, userName) ;
