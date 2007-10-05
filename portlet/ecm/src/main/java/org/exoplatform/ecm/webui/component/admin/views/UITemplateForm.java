@@ -252,12 +252,14 @@ public class UITemplateForm extends UIForm {
         }
       }
       if(uiForm.isAddNew_ || !isEnableVersioning) {
-        String oldHomeTemplate = uiForm.templatePath_.substring(0, uiForm.templatePath_.lastIndexOf("/")) ;
-        if(!oldHomeTemplate.equals(homeTemplate)) {
-          Node oldNode = 
-            manageViewService.getTemplate(uiForm.templatePath_, repository, SessionsUtils.getSessionProvider()) ;
-          oldNode.remove() ;
-          manageViewService.getTemplate(oldHomeTemplate, repository, SessionsUtils.getSessionProvider()).save() ;
+        if(uiForm.templatePath_ != null) {
+          String oldHomeTemplate = uiForm.templatePath_.substring(0, uiForm.templatePath_.lastIndexOf("/")) ;
+          if(!oldHomeTemplate.equals(homeTemplate)) {
+            Node oldNode = 
+              manageViewService.getTemplate(uiForm.templatePath_, repository, SessionsUtils.getSessionProvider()) ;
+            oldNode.remove() ;
+            manageViewService.getTemplate(oldHomeTemplate, repository, SessionsUtils.getSessionProvider()).save() ;
+          }
         }
         path = manageViewService.addTemplate(templateName, content, homeTemplate,repository) ;
         uiForm.template_ = manageViewService.getTemplate(path, repository, SessionsUtils.getSessionProvider()) ;
