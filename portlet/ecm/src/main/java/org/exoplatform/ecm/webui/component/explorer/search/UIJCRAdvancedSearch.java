@@ -198,10 +198,10 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+        String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!", "#"} ;
         for(String filterChar : arrFilterChar) {
           if(name.indexOf(filterChar) > -1) {
-            uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.name-invalid", null)) ;
+            uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.name-invalid", null, ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
