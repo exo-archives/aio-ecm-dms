@@ -14,6 +14,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -74,6 +75,14 @@ public class UITreeExplorer extends UIContainer {
       return pageIterator.getCurrentPageData();
     }
     return treeNode.getChildren();
+  }
+  
+  public boolean isSystemWorkspace() throws Exception {
+    String wsName = getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String systemWS = repositoryService.getRepository(getRepository()).getConfiguration().getSystemWorkspaceName() ;
+    if(wsName.equals(systemWS)) return true ;
+    return false ;
   }
   
   public UITreeNodePageIterator getUIPageIterator(String id) throws Exception {    

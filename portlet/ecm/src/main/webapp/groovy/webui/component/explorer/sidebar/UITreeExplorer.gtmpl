@@ -64,10 +64,12 @@
 	    if (counter >= childrenSize && !isPaginated) {
 	    	lastNodeClass = "LastNode " ;
 	    }
+	    def ctMenu = "" ;
+	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
 	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
-	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" + strActs + "<span></span></div>" ;
-	    println "  <div class=\"NodeLabel\" " + contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) + ">" ;
+	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs + "<span></span></div>" ;
+	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" ;
 	    println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "  </div>" ; 
 	    if(treeNode.getChildrenSize() > 0) {

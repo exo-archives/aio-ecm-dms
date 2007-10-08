@@ -17,7 +17,30 @@
 	        <value-param>
 	        	<name>repository</name>
 	        	<value>repository</value>
-	        </value-param>	        		        		    		    
+	        </value-param>
+		      <object-param>	      
+		        <name>System-View</name>
+		        <description>View configuration for System workspace</description>
+		        <object type="org.exoplatform.services.cms.views.ViewConfig">		          
+		          <field  name="name"><string>system-view</string></field>
+		          <field  name="permissions"><string>member:/admin</string></field>
+		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/SystemView</string></field>	
+		          <field  name="tabList">
+                <collection type="java.util.ArrayList">               
+                  <value>
+                    <object type="org.exoplatform.services.cms.views.ViewConfig$Tab">
+                      <field  name="tabName"><string>Info</string></field>
+                      <field  name="buttons">
+                      	<string>
+                      		viewReferences; viewNodeType; viewPermissions; viewProperties; viewMetadatas; viewRelations; showJCRStructure
+                      	</string>
+                      </field>
+                    </object>
+                  </value>
+                </collection>
+              </field>	          
+		        </object>
+		      </object-param>	        	        		        		    		    
 		      <object-param>	      
 		        <name>Admin-View</name>
 		        <description>View configuration of Admin</description>
@@ -172,6 +195,15 @@
                 </collection>
               </field>
 		        </object>		        
+		      </object-param>
+		      <object-param>	      
+		        <name>System Template</name>
+		        <description>Template for display documents in list style</description>
+		        <object type="org.exoplatform.services.cms.views.TemplateConfig">		        	
+              <field  name="type"><string>ecmExplorerTemplate</string></field>
+		          <field  name="name"><string>SystemView</string></field>
+		          <field  name="warPath"><string>/ecm-explorer/SystemView.gtmpl</string></field>              
+		        </object>
 		      </object-param>
 		      <object-param>	      
 		        <name>List Template</name>

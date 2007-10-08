@@ -22,10 +22,10 @@
               <field  name="homePath"><string>/</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
-                <string>simple-view, admin-view</string>
+                <string>system-view</string>
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
-              <field  name="viewNonDocument"><boolean>false</boolean></field>
+              <field  name="viewNonDocument"><boolean>true</boolean></field>
               <field  name="viewSideBar"><boolean>true</boolean></field>
               <field  name="allowCreateFolder"><string>both</string></field>       
             </object>
