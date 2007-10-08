@@ -130,7 +130,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
     float capacity = in.available()/1024 ;
     String strCapacity = Float.toString(capacity) ;
-    if(strCapacity.indexOf(".") > -1) return strCapacity.split(".")[0] ;
+    if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
   }
 
