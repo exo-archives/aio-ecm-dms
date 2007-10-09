@@ -133,7 +133,7 @@ public class UIScriptConfig extends UIForm {
 
   private List<SelectItemOption<String>> getScriptOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository) ;
+    Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     while(nodeList.hasNext()) {
       Node node = nodeList.nextNode() ;

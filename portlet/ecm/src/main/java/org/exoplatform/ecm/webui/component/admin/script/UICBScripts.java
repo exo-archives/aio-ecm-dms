@@ -11,6 +11,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
@@ -55,7 +56,7 @@ public class UICBScripts extends UIContainer {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository =  portletPref.getValue(Utils.REPOSITORY, "") ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    Node cbScripts = scriptService.getCBScriptHome(repository) ;
+    Node cbScripts = scriptService.getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     ScriptData script ;
     while(nodeList.hasNext()) {

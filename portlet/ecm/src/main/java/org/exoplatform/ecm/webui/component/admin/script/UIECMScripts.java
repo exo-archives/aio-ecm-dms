@@ -10,11 +10,13 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -46,7 +48,7 @@ public class UIECMScripts extends UIContainer {
   private List<SelectItemOption<String>> getECMCategoryOptions() throws Exception {
     List<SelectItemOption<String>> ecmOptions = new ArrayList<SelectItemOption<String>>() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Node ecmScriptHome = getApplicationComponent(ScriptService.class).getECMScriptHome(repository) ;
+    Node ecmScriptHome = getApplicationComponent(ScriptService.class).getECMScriptHome(repository,SessionsUtils.getSystemProvider()) ;
     NodeIterator categories = ecmScriptHome.getNodes() ;
     while(categories.hasNext()) {
       Node script = categories.nextNode() ;
@@ -72,11 +74,11 @@ public class UIECMScripts extends UIContainer {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List<Node> scripts = new ArrayList<Node> () ;
     if(name.equals("action")) {
-      scripts = getApplicationComponent(ScriptService.class).getECMActionScripts(repository) ;
+      scripts = getApplicationComponent(ScriptService.class).getECMActionScripts(repository,SessionsUtils.getSystemProvider()) ;
     }else if(name.equals("widget")){
-      scripts = getApplicationComponent(ScriptService.class).getECMWidgetScripts(repository) ;
+      scripts = getApplicationComponent(ScriptService.class).getECMWidgetScripts(repository,SessionsUtils.getSessionProvider()) ;
     }else if(name.equals("interceptor")) {
-      scripts = getApplicationComponent(ScriptService.class).getECMInterceptorScripts(repository) ;
+      scripts = getApplicationComponent(ScriptService.class).getECMInterceptorScripts(repository,SessionsUtils.getSystemProvider()) ;
     }
     for(Node scriptNode : scripts) {
       String version = "" ;

@@ -16,6 +16,7 @@ import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -71,9 +72,9 @@ public class UIScriptList extends UIComponentDecorator {
       UIECMFilterForm filterForm = parent.findFirstComponentOfType(UIECMFilterForm.class) ;
       String categoryName = 
         filterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;
-      script = scriptService.getECMScriptHome(repository).getNode(categoryName) ;
+      script = scriptService.getECMScriptHome(repository,SessionsUtils.getSystemProvider()).getNode(categoryName) ;
     } else {
-      script = scriptService.getCBScriptHome(repository) ;
+      script = scriptService.getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
     }
     String basePath = scriptService.getBaseScriptPath() + "/" ;
     return script.getPath().substring(basePath.length()) ;
@@ -100,10 +101,10 @@ public class UIScriptList extends UIComponentDecorator {
       UIECMFilterForm filterForm = parent.findFirstComponentOfType(UIECMFilterForm.class) ;
       String categoryName = 
         filterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;
-      Node category = scriptService.getECMScriptHome(repository).getNode(categoryName) ;
+      Node category = scriptService.getECMScriptHome(repository,SessionsUtils.getSessionProvider()).getNode(categoryName) ;
       script = category.getNode(nodeName) ;  
     } else {
-      Node cbScript = scriptService.getCBScriptHome(repository) ;
+      Node cbScript = scriptService.getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
       script = cbScript.getNode(nodeName) ; 
     }
     return script ;
