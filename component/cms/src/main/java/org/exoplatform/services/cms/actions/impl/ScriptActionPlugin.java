@@ -18,6 +18,7 @@ import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlugin {
   
@@ -36,12 +37,14 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   
   public Collection<String> getActionExecutables(String repository) throws Exception {
     Collection<String> actionScriptNames = new ArrayList<String>();
-    List<Node> actionScriptList = scriptService_.getECMActionScripts(repository) ;
+    SessionProvider provider = SessionProvider.createSystemProvider();
+    List<Node> actionScriptList = scriptService_.getECMActionScripts(repository,provider) ;
     String baseScriptPath = scriptService_.getBaseScriptPath() ;
     for(Node script:actionScriptList) {
       String actionScriptName = StringUtils.substringAfter(script.getPath(),baseScriptPath + "/") ;
       actionScriptNames.add(actionScriptName) ;
     }
+    provider.close();
     return actionScriptNames;
   }
   

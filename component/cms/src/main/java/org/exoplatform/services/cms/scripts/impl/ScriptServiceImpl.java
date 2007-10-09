@@ -35,6 +35,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.hibernate.stat.SessionStatisticsImpl;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
@@ -121,91 +122,43 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     session.logout();
   }
   
-  public Node getECMScriptHome(String repository) throws Exception {
-    Node ecmScriptHome = null ;
-    try {     
-      ecmScriptHome = getScriptHome(BasePath.ECM_EXPLORER_SCRIPTS, repository) ;
-    }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      String cbScriptHomePath = cmsConfigService_.getJcrPath(BasePath.ECM_EXPLORER_SCRIPTS) ;
-      ecmScriptHome = (Node)session.getItem(cbScriptHomePath) ;      
-    }
-    if(ecmScriptHome == null) throw new ItemNotFoundException() ;
-    return ecmScriptHome ;    
+  public Node getECMScriptHome(String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);
+    return getNodeByAlias(BasePath.ECM_EXPLORER_SCRIPTS,session);        
   }        
 
-  public Node getCBScriptHome(String repository) throws Exception {
-    Node cbHomeNode = null ;
-    try {     
-      cbHomeNode = getScriptHome(BasePath.CONTENT_BROWSER_SCRIPTS, repository) ;
-    }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository)
-      .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      String cbScriptHomePath = cmsConfigService_.getJcrPath(BasePath.CONTENT_BROWSER_SCRIPTS) ;
-      cbHomeNode = (Node)session.getItem(cbScriptHomePath) ;      
-    }
-    if(cbHomeNode == null) throw new ItemNotFoundException() ;
-    return cbHomeNode ;
+  public Node getCBScriptHome(String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);
+    return getNodeByAlias(BasePath.CONTENT_BROWSER_SCRIPTS,session);    
   }
 
 
-  public boolean hasCBScript(String repository) throws Exception {    
-    return getCBScriptHome(repository).hasNodes();
-  }
+//  public boolean hasCBScript(String repository) throws Exception {    
+//    return getCBScriptHome(repository).hasNodes();
+//  }
 
-  public List<Node> getCBScripts(String repository) throws Exception {
+  public List<Node> getCBScripts(String repository,SessionProvider provider) throws Exception {
     List<Node> scriptList = new ArrayList<Node>() ;
-    Node cbScriptHome = getCBScriptHome(repository) ;
+    Node cbScriptHome = getCBScriptHome(repository,provider) ;
     for(NodeIterator iter = cbScriptHome.getNodes(); iter.hasNext() ;) {
       scriptList.add(iter.nextNode()) ;
     }      
     return scriptList;    
   }
-
-  public Node getECMActionScriptHome(String repository) throws Exception {
-    Node actionScriptHome = null ;
-    try {     
-      actionScriptHome = getScriptHome(BasePath.ECM_ACTION_SCRIPTS, repository) ;
-    }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository)
-      .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      String actionScriptHomePath = cmsConfigService_.getJcrPath(BasePath.ECM_ACTION_SCRIPTS) ;
-      actionScriptHome = (Node)session.getItem(actionScriptHomePath) ;      
-    }
-    if(actionScriptHome == null)
-      throw new ItemNotFoundException() ;
-    return actionScriptHome;
+  
+  public List<Node> getECMActionScripts(String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);
+    return getScriptList(BasePath.ECM_ACTION_SCRIPTS, session);
+  }
+  
+  public List<Node> getECMInterceptorScripts(String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);
+    return getScriptList(BasePath.ECM_INTERCEPTOR_SCRIPTS, session);
   }
 
-  public List<Node> getECMActionScripts(String repository) throws Exception {    
-    return getScriptList(BasePath.ECM_ACTION_SCRIPTS, repository);
-  }
-
-  public Node getECMInterceptorScriptHome(String repository) throws Exception {
-    Node interceptorScriptHome = null ;
-    try {     
-      interceptorScriptHome = getScriptHome(BasePath.ECM_INTERCEPTOR_SCRIPTS, repository) ;
-    }catch (Exception e) {
-      Session session = repositoryService_.getRepository(repository)
-      .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
-      String actionScriptHomePath = cmsConfigService_.getJcrPath(BasePath.ECM_INTERCEPTOR_SCRIPTS) ;
-      interceptorScriptHome = (Node)session.getItem(actionScriptHomePath) ;      
-    }
-    if(interceptorScriptHome == null)
-      throw new ItemNotFoundException() ;
-    return interceptorScriptHome;
-
-  }
-  public List<Node> getECMInterceptorScripts(String repository) throws Exception {    
-    return getScriptList(BasePath.ECM_INTERCEPTOR_SCRIPTS, repository);
-  }
-
-  public Node getECMWidgetScriptHome(String repository) throws Exception {  
-    return getScriptHome(BasePath.ECM_WIDGET_SCRIPTS, repository);
-  }    
-
-  public List<Node> getECMWidgetScripts(String repository) throws Exception {    
-    return getScriptList(BasePath.ECM_WIDGET_SCRIPTS, repository);
+  public List<Node> getECMWidgetScripts(String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);
+    return getScriptList(BasePath.ECM_WIDGET_SCRIPTS,session);
   } 
 
   public String getBaseScriptPath() throws Exception {   
@@ -257,15 +210,14 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     removeFromCache(scriptName) ;
   }    
 
-  private Node getScriptHome(String scriptAlias, String repository) throws Exception {
-    String path = cmsConfigService_.getJcrPath(scriptAlias) ;    
-    Session session = repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;            
+  private Node getScriptHome(String scriptAlias, Session session) throws Exception {
+    String path = cmsConfigService_.getJcrPath(scriptAlias) ;               
     return (Node)session.getItem(path);
   }
 
-  private List<Node> getScriptList(String scriptAlias, String repository) throws Exception {
+  private List<Node> getScriptList(String scriptAlias,Session session) throws Exception {
     List<Node> scriptList = new ArrayList<Node>() ;
-    Node scriptHome = getScriptHome(scriptAlias, repository) ;
+    Node scriptHome = getScriptHome(scriptAlias,session) ;
     for(NodeIterator iter = scriptHome.getNodes(); iter.hasNext() ;) {
       scriptList.add(iter.nextNode()) ;
     }      
@@ -362,4 +314,16 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       return null ;
     }
   }
+  
+  private Session getSession(String repository,SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    String systemWokspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    return provider.getSession(systemWokspace,manageableRepository);
+  }
+  
+  private Node getNodeByAlias(String alias,Session session) throws Exception {
+    String path = cmsConfigService_.getJcrPath(alias) ;
+    return (Node)session.getItem(path);
+  }
+  
 }

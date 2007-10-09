@@ -22,6 +22,7 @@ import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserEventListener;
 
@@ -58,7 +59,7 @@ public class NewUserListener extends UserEventListener {
     //Manage production workspace
     List<RepositoryEntry> repositories = jcrService_.getConfig().getRepositoryConfigurations() ;
     for(RepositoryEntry repo : repositories) {
-      try {
+      try {              
         String defaultWorkspaceName = jcrService_.getDefaultRepository().getConfiguration().getDefaultWorkspaceName() ;
         session = jcrService_.getRepository(repo.getName()).getSystemSession(defaultWorkspaceName);
         Node usersHome = (Node) session.getItem(

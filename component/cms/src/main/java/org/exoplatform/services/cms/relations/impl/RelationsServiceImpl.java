@@ -51,12 +51,12 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       try{
         return provider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;        
       }catch(Exception e) {
-        
+
       }      
     }
     return null;
   }
-  
+
   public List<Node> getRelations(Node node, String repository, SessionProvider provider) {
     List<Node> rels = new ArrayList<Node>();
     try {
@@ -154,28 +154,30 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   }
 
   public void init(String repository) throws Exception {
-    try {
-      Session session = getSession(repository);
-      String relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+    Session session = getSession(repository);
+    String relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+    try {            
       Node relationsHome = (Node) session.getItem(relationPath);
       for (NodeIterator iterator = relationsHome.getNodes(); iterator.hasNext();) {
         Node rel = iterator.nextNode();
         rel.addMixin("mix:referenceable");
       }
-      relationsHome.save();
-      session.logout();
+      relationsHome.save();      
     } catch (Exception e) {
       // e.printStackTrace() ;
     }
+    session.logout();
   }
 
-  protected Session getSession(String repository) throws Exception {	
-    return repositoryService_.getRepository(repository).getSystemSession(cmsConfig_.getWorkspace(repository));    	
+  protected Session getSession(String repository) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    String workspaceName = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    return manageableRepository.getSystemSession(workspaceName);
   }
-  
+
   private Session getSession(String repository,String workspace,SessionProvider provider) throws Exception{
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     return provider.getSession(workspace,manageableRepository) ;
   }
-  
+
 }
