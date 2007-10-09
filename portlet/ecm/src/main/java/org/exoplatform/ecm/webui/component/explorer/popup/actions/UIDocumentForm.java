@@ -137,9 +137,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
       String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(),repository);
       try {
-        homeNode.getSession().save() ;
+        homeNode.save() ;
         newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
       } catch(Exception e) {
+        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        uiExplorer.updateAjax(event);
+        return null ;
       }
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.updateAjax(event);        
