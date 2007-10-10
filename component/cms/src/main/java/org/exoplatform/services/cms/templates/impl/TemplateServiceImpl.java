@@ -6,6 +6,7 @@ package org.exoplatform.services.cms.templates.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
@@ -62,8 +63,12 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   }
 
   public Node getTemplatesHome(String repository, SessionProvider provider) throws Exception {
-    Session session = getSession(repository,provider) ;
-    return (Node)session.getItem(cmsTemplatesBasePath_) ;
+    try {
+      Session session = getSession(repository,provider) ;
+      return (Node)session.getItem(cmsTemplatesBasePath_) ;
+    } catch(AccessDeniedException ace) {
+      return null ;
+    }
   }  
 
   public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception {

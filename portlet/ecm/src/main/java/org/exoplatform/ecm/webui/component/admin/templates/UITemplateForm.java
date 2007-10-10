@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
@@ -122,24 +123,27 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
   }
   
   @SuppressWarnings("unchecked")
-  private List<SelectItemOption<String>> getOption() throws Exception {
+  public List<SelectItemOption<String>> getOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getRepository() ;       
     NodeTypeManager nodeTypeManager = 
       getApplicationComponent(RepositoryService.class).getRepository(repository).getNodeTypeManager() ; 
-    NodeIterator templateIter = 
-      getApplicationComponent(TemplateService.class).getTemplatesHome(repository,SessionsUtils.getSessionProvider()).getNodes() ;
-    List<String> templates = new ArrayList<String>() ;
-    while (templateIter.hasNext()) {
-      templates.add(templateIter.nextNode().getName()) ;
+    Node templatesHome = 
+      getApplicationComponent(TemplateService.class).getTemplatesHome(repository,SessionsUtils.getSessionProvider()) ;
+    if(templatesHome != null) {
+      NodeIterator templateIter = templatesHome.getNodes() ;
+      List<String> templates = new ArrayList<String>() ;
+      while (templateIter.hasNext()) {
+        templates.add(templateIter.nextNode().getName()) ;
+      }
+      NodeTypeIterator iter = nodeTypeManager.getAllNodeTypes() ;
+      while (iter.hasNext()) {
+        NodeType nodeType = iter.nextNodeType();
+        String nodeTypeName = nodeType.getName();
+        if(!templates.contains(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
+      }
+      Collections.sort(options, new TemplateNameComparator()) ;
     }
-    NodeTypeIterator iter = nodeTypeManager.getAllNodeTypes() ;
-    while (iter.hasNext()) {
-      NodeType nodeType = iter.nextNodeType();
-      String nodeTypeName = nodeType.getName();
-      if(!templates.contains(nodeTypeName)) options.add(new SelectItemOption<String>(nodeTypeName,nodeTypeName)) ;
-    }
-    Collections.sort(options, new TemplateNameComparator()) ;
     return options ;
   }
 

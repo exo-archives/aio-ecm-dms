@@ -7,6 +7,7 @@ package org.exoplatform.services.cms.views.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
@@ -102,24 +103,28 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     Node viewNode  = null ;
     String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     Session session = getSession(repository) ;
-    Node viewHome = (Node)session.getItem(viewsPath) ;
-    for(NodeIterator iter = viewHome.getNodes(); iter.hasNext();) {
-      view = new ViewConfig() ;
-      viewNode = iter.nextNode() ;
-      view.setName(viewNode.getName()) ;      
-      view.setPermissions(viewNode.getProperty(EXO_PERMISSIONS).getString()) ;
-      view.setTemplate(viewNode.getProperty(EXO_TEMPLATE).getString()) ;
-      List<Tab> tabList = new ArrayList<Tab>() ;
-      for(NodeIterator tabsIterator = viewNode.getNodes(); tabsIterator.hasNext(); ) {
-        Tab tab = new Tab();
-        tab.setTabName(tabsIterator.nextNode().getName());
-        tabList.add(tab) ;
+    try {
+      Node viewHome = (Node)session.getItem(viewsPath) ;
+      for(NodeIterator iter = viewHome.getNodes(); iter.hasNext();) {
+        view = new ViewConfig() ;
+        viewNode = iter.nextNode() ;
+        view.setName(viewNode.getName()) ;      
+        view.setPermissions(viewNode.getProperty(EXO_PERMISSIONS).getString()) ;
+        view.setTemplate(viewNode.getProperty(EXO_TEMPLATE).getString()) ;
+        List<Tab> tabList = new ArrayList<Tab>() ;
+        for(NodeIterator tabsIterator = viewNode.getNodes(); tabsIterator.hasNext(); ) {
+          Tab tab = new Tab();
+          tab.setTabName(tabsIterator.nextNode().getName());
+          tabList.add(tab) ;
+        }
+        view.setTabList(tabList) ;
+        viewList.add(view) ;
       }
-      view.setTabList(tabList) ;
-      viewList.add(view) ;
+      session.logout();
+      return viewList ;    
+    } catch(AccessDeniedException ace) {
+      return new ArrayList<ViewConfig>() ;
     }
-    session.logout();
-    return viewList ;    
   }
 
   public boolean hasView(String name, String repository) throws Exception {
@@ -132,8 +137,12 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
 
   public Node getViewByName(String name, String repository,SessionProvider provider) throws Exception{          
     Session session = getSession(repository,provider) ;
-    Node viewHome = (Node)session.getItem(baseViewPath_) ;
-    return  viewHome.getNode(name);    
+    try {
+      Node viewHome = (Node)session.getItem(baseViewPath_) ;
+      return viewHome.getNode(name);    
+    } catch(AccessDeniedException ace) {
+      return null ;
+    }
   }
   
   public void addView(String name, String permissions, String template, List tabs, 
@@ -193,8 +202,12 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
 
   public Node getTemplateHome(String homeAlias, String repository,SessionProvider provider) throws Exception{
     String homePath = getJCRPath(homeAlias) ;
-    Session session = getSession(repository,provider) ;
-    return (Node)session.getItem(homePath) ;
+    try {
+      Session session = getSession(repository,provider) ;
+      return (Node)session.getItem(homePath) ;
+    } catch(AccessDeniedException ace) {
+      return null ;
+    }
   }
 
   private String getJCRPath(String jcrAlias) throws Exception{
@@ -217,6 +230,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   public List<Node> getAllTemplates(String homeAlias, String repository,SessionProvider provider) throws Exception {
     Node templateHomNode = getTemplateHome(homeAlias, repository,provider) ;
     List<Node> list = new ArrayList<Node>() ;
+    if(templateHomNode == null) return list ;
     for(NodeIterator iter = templateHomNode.getNodes() ; iter.hasNext() ;) {
       list.add(iter.nextNode()) ;
     }

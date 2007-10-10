@@ -9,14 +9,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -55,13 +58,15 @@ public class UITemplateList extends UIGrid {
   public void updateGrid() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    NodeIterator nodes = 
-      templateService.getTemplatesHome(repository,SessionsUtils.getSessionProvider()).getNodes() ;
+    Node templatesHome = templateService.getTemplatesHome(repository,SessionsUtils.getSessionProvider()) ;
     List<TemplateData> templateData = new ArrayList<TemplateData>() ;
-    while (nodes.hasNext()) {
-      templateData.add(new TemplateData(nodes.nextNode().getName())) ;
-    }
-    Collections.sort(templateData, new TemplateComparator()) ;
+    if(templatesHome != null) {
+      NodeIterator nodes = templatesHome.getNodes() ;
+      while (nodes.hasNext()) {
+        templateData.add(new TemplateData(nodes.nextNode().getName())) ;
+      }
+      Collections.sort(templateData, new TemplateComparator()) ;
+    } 
     ObjectPageList objPageList = new ObjectPageList(templateData, 10) ;
     getUIPageIterator().setPageList(objPageList) ;
   }
@@ -116,6 +121,12 @@ public class UITemplateList extends UIGrid {
       UITemplatesManager uiTemplatesManager = event.getSource().getAncestorOfType(UITemplatesManager.class) ;
       UITemplateForm uiTemplateForm = uiTemplatesManager.createUIComponent(UITemplateForm.class, null, null) ;
       uiTemplatesManager.removeChildById(UITemplatesManager.EDIT_TEMPLATE) ;
+      if(uiTemplateForm.getOption().size() == 0) {
+        UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UITemplateList.msg.access-denied", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       uiTemplatesManager.initPopup(uiTemplateForm, UITemplatesManager.NEW_TEMPLATE) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTemplatesManager) ;
     }

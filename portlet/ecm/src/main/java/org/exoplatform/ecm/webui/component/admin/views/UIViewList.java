@@ -19,6 +19,7 @@ import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -58,8 +59,10 @@ public class UIViewList extends UIGrid {
   }
   
   private String getBaseVersion(String name) throws Exception {
-    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Node node = getApplicationComponent(ManageViewService.class).getViewByName(name, repository,SessionsUtils.getSessionProvider());
+    SessionProvider session = SessionsUtils.getSessionProvider() ;
+    Node node = 
+      getApplicationComponent(ManageViewService.class).getViewByName(name, getRepository(), session);
+    if(node == null) return null ;
     if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
   }
@@ -68,8 +71,13 @@ public class UIViewList extends UIGrid {
   
   @SuppressWarnings("unchecked")
   public void updateViewListGrid() throws Exception {
-    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    List<ViewConfig> views = getApplicationComponent(ManageViewService.class).getAllViews(repository) ;
+    Collections.sort(getViewsBean(), new ViewComparator()) ;
+    getUIPageIterator().setPageList(new ObjectPageList(getViewsBean(), 10)) ;    
+  }
+  
+  private List<ViewBean> getViewsBean() throws Exception {
+    List<ViewConfig> views = 
+      getApplicationComponent(ManageViewService.class).getAllViews(getRepository()) ;
     List<ViewBean> viewBeans = new ArrayList<ViewBean>() ;
     for(ViewConfig view:views) {      
       List<String>tabsName = new ArrayList<String>() ;
@@ -77,11 +85,11 @@ public class UIViewList extends UIGrid {
         tabsName.add(tab.getTabName()) ;
       }
       ViewBean bean = new ViewBean(view.getName(),view.getPermissions(),tabsName) ;
+      if(getBaseVersion(view.getName()) == null) continue ;
       bean.setBaseVersion(getBaseVersion(view.getName())) ;
       viewBeans.add(bean) ;
-    }      
-    Collections.sort(viewBeans, new ViewComparator()) ;
-    getUIPageIterator().setPageList(new ObjectPageList(viewBeans, 10)) ;    
+    }
+    return viewBeans ;
   }
   
   static public class ViewComparator implements Comparator {
@@ -102,9 +110,19 @@ public class UIViewList extends UIGrid {
     return true ;
   }
   
+  public String getRepository() {
+    return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+  }
+  
   static  public class AddViewActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
+      if(uiViewList.getViewsBean().size() == 0) {
+        UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIViewList.msg.access-denied", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_VIEW) ;
       uiViewContainer.removeChildById(UIViewList.ST_EDIT) ;      

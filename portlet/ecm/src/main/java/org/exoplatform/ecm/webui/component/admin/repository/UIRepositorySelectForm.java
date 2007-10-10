@@ -74,7 +74,8 @@ public class UIRepositorySelectForm extends UIForm {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       try {
         uiForm.getAncestorOfType(UIECMAdminPortlet.class).initChilds() ;
-      }catch (AccessDeniedException ade) {
+      } catch (AccessDeniedException ade) {
+        ade.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UIRepositorySelectForm.msg-accessdenied", new Object[]{selectRepo}))  ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         portletPref.setValue(Utils.REPOSITORY, oldRepository) ;
@@ -83,6 +84,7 @@ public class UIRepositorySelectForm extends UIForm {
         uiForm.setSelectedValue(oldRepository) ;
         rservice.setCurrentRepositoryName(oldRepository) ;
       } catch (Exception e) {
+        e.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UIRepositorySelectForm.msg-editError", new Object[]{selectRepo}))  ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         portletPref.setValue(Utils.REPOSITORY, oldRepository) ;
@@ -90,7 +92,6 @@ public class UIRepositorySelectForm extends UIForm {
         uiForm.setOptionValue(uiControl.getRepoItem(true, uiForm.getApplicationComponent(RepositoryService.class))) ;
         uiForm.setSelectedValue(oldRepository) ;
         rservice.setCurrentRepositoryName(oldRepository) ;
-        e.printStackTrace() ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl.getAncestorOfType(UIECMAdminPortlet.class)) ;
     }

@@ -95,24 +95,33 @@ public class UITemplateForm extends UIForm {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
+  
   public void updateOptionList() throws Exception {
+    getUIFormSelectBox(FIELD_HOMETEMPLATE).setOptions(getOptionList()) ;
+  }
+  
+  public List<SelectItemOption<String>> getOptionList() throws Exception {
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>() ;
     String repository = getRepository() ;
     SessionProvider provider = SessionsUtils.getSessionProvider() ;
     if(getId().equalsIgnoreCase("ECMTempForm")) {              
       Node ecmTemplateHome = getApplicationComponent(ManageViewService.class)
       .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,provider) ; 
-      typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(),ecmTemplateHome.getPath())) ;
+      if(ecmTemplateHome != null) {
+        typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(),ecmTemplateHome.getPath())) ;
+      }
     } else {        
       Node cbTemplateHome = getApplicationComponent(ManageViewService.class)
       .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, repository,provider) ;
-      NodeIterator iter = cbTemplateHome.getNodes() ;
-      while(iter.hasNext()) {
-        Node template = iter.nextNode() ;
-        typeList.add(new SelectItemOption<String>(template.getName(),template.getPath())) ;
+      if(cbTemplateHome != null) {
+        NodeIterator iter = cbTemplateHome.getNodes() ;
+        while(iter.hasNext()) {
+          Node template = iter.nextNode() ;
+          typeList.add(new SelectItemOption<String>(template.getName(),template.getPath())) ;
+        }
       }
     }
-    getUIFormSelectBox(FIELD_HOMETEMPLATE).setOptions(typeList) ;
+    return typeList ;
   }
 
   public boolean canEnableVersionning(Node node) throws Exception {

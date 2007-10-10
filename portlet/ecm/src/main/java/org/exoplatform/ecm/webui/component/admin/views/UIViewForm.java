@@ -85,10 +85,12 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     String repository = getRepository() ;
     Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
     List<SelectItemOption<String>> temp = new ArrayList<SelectItemOption<String>>() ; 
-    NodeIterator iter = ecmTemplateHome.getNodes() ;
-    while(iter.hasNext()) {
-      Node tempNode = iter.nextNode() ;
-      temp.add(new SelectItemOption<String>(tempNode.getName(),tempNode.getPath())) ;
+    if(ecmTemplateHome != null) {
+      NodeIterator iter = ecmTemplateHome.getNodes() ;
+      while(iter.hasNext()) {
+        Node tempNode = iter.nextNode() ;
+        temp.add(new SelectItemOption<String>(tempNode.getName(),tempNode.getPath())) ;
+      }
     }
     addUIFormInput(new UIFormSelectBox(FIELD_TEMPLATE,FIELD_TEMPLATE, temp)) ;
     UIFormCheckBoxInput enableVersion = 

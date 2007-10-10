@@ -18,8 +18,10 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -68,6 +70,10 @@ public class UICBTemplateList extends UIGrid {
     return templateList ;
   }
   
+  public String getRepository() {
+    return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+  }
+  
   @SuppressWarnings("unchecked")
   public void updateCBTempListGrid() throws Exception {
     List<Node> nodes = getAllTemplates() ;
@@ -90,6 +96,15 @@ public class UICBTemplateList extends UIGrid {
   static  public class AddActionListener extends EventListener<UICBTemplateList> {
     public void execute(Event<UICBTemplateList> event) throws Exception {
       UICBTemplateList uiCBTemp = event.getSource() ;
+      SessionProvider provider = SessionsUtils.getSessionProvider() ;
+      Node cbTemplateHome = uiCBTemp.getApplicationComponent(ManageViewService.class)
+      .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, uiCBTemp.getRepository(),provider) ;
+      if(cbTemplateHome == null) {
+        UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UICBTemplateList.msg.access-denied", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIViewManager uiViewManager = uiCBTemp.getAncestorOfType(UIViewManager.class) ;
       UITemplateContainer uiECMTempContainer = uiViewManager.getChildById(UICBTemplateList.ST_CBTemp) ;
       uiECMTempContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Edit") ;

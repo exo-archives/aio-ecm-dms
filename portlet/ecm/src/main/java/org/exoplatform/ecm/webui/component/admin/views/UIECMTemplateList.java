@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.SessionsUtils;
@@ -18,7 +19,10 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -80,9 +84,22 @@ public class UIECMTemplateList extends UIGrid {
     }
   }
   
+  public String getRepository() {
+    return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+  }
+  
   static  public class AddActionListener extends EventListener<UIECMTemplateList> {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTempList = event.getSource() ;
+      SessionProvider provider = SessionsUtils.getSessionProvider() ;
+      Node ecmTemplateHome = uiECMTempList.getApplicationComponent(ManageViewService.class)
+      .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, uiECMTempList.getRepository(),provider) ; 
+      if(ecmTemplateHome == null) {
+        UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIECMTemplateList.msg.access-denied", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIViewManager uiViewManager = uiECMTempList.getAncestorOfType(UIViewManager.class) ;
       UITemplateContainer uiECMTempContainer = uiViewManager.getChildById(UIECMTemplateList.ST_ECMTemp) ;
       uiECMTempContainer.removeChildById(UIECMTemplateList.ST_ECMTempForm + "Edit") ;
