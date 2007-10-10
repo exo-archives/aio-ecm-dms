@@ -217,6 +217,8 @@
 .UITreeNodePageIterator a {
 	color: #2f7bc9;
 	padding: 0px 3px;
+	display: block;
+	line-height: 18px;
 }
 
 .UITreeNodePageIterator a.PageSelected {

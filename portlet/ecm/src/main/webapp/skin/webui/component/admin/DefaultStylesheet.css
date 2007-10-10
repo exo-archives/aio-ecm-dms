@@ -113,7 +113,7 @@
 /*=====================================UIWorkspaceWizardContainer==========================*/
 
 .UIRepositoryFormContainer .UIWorkspaceWizardContainer { 
-	padding: 10px;
+	padding: 10px 5px;
 }
 
 .UIECMAdminPortlet .UIGroupMembershipSelector .UITree .TreeContainer {
@@ -128,6 +128,12 @@
 	margin-left: 255px;
 }
 
+.UIRepositoryFormContainer .UIWorkspaceWizard {
+	border: 1px solid #b7b7b7;
+	width: 98%;
+	margin: auto;
+}
+
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIForm .HorizontalLayout .UIFormInputSet {
 	padding-bottom: 0px;
 }
@@ -137,11 +143,10 @@
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .SelectedLabel {
-	display: block ;
-	background: #f9f9f9;
-	border: 1px solid #B7B7B7 ;
+	border-bottom: 1px solid #B7B7B7 ;
 	padding: 15px 0px;
 	line-height: 15px;
+	background: #f9f9f9;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .WizardLabel {
@@ -153,9 +158,7 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIWizardAction {
 	background: #f9f9f9;
-	border: none ;
-	border-top: 1px solid #939393 ;
-	border-bottom: 1px solid #b7b7b7 ;
+	border-top: 1px solid #b7b7b7 ;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -208,9 +211,7 @@
 	background: #f4f4f4;
 	padding: 0px;
 	margin: 0px;
-	border: solid 1px #b7b7b7;
-	border-top: none;
-	border-bottom: none;
+	border: none;
 }
 
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
