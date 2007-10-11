@@ -51,9 +51,12 @@
   }
   
   .UIDivInfo .NavigationButtonContainer {
+    cursor: pointer;  	
     display: none;
     float: right;
-    cursor: pointer;
+		height: 20px;
+		padding-top: 4px;
+		z-index: 1;
   }
   
   .LabelFielPlan {
