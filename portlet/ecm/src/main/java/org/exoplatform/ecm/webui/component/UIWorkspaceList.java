@@ -34,6 +34,7 @@ public class UIWorkspaceList extends UIForm {
 
   static private String WORKSPACE_NAME = "workspaceName" ;
   private List<String> wsList_ ;
+  private boolean isShowSystem_ = true ;
 
   public UIWorkspaceList() throws Exception {
     List<SelectItemOption<String>> wsList = new ArrayList<SelectItemOption<String>>() ;
@@ -42,14 +43,25 @@ public class UIWorkspaceList extends UIForm {
     addUIFormInput(uiWorkspaceList) ;
   }
   
+  public void setIsShowSystem(boolean isShowSystem) { isShowSystem_ = isShowSystem ; }
+  
   public void setWorkspaceList(String repository) throws Exception {
     wsList_ = new ArrayList<String>() ;
-    String[] wsNames = 
-      getApplicationComponent(RepositoryService.class).getRepository(repository).getWorkspaceNames();
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
+    String systemWsName = 
+      repositoryService.getRepository(repository).getConfiguration().getSystemWorkspaceName() ;
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
     for(String wsName : wsNames) {
-      workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
-      wsList_.add(wsName) ;
+      if(!isShowSystem_) {
+        if(!wsName.equals(systemWsName)) {
+          workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+          wsList_.add(wsName) ;
+        }
+      } else {
+        workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+        wsList_.add(wsName) ;
+      }
     }
     UIFormSelectBox uiWorkspaceList = getUIFormSelectBox(WORKSPACE_NAME) ;
     uiWorkspaceList.setOptions(workspace) ;

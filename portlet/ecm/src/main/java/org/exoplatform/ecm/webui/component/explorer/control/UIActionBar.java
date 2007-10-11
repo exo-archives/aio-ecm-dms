@@ -76,6 +76,7 @@ import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -779,8 +780,7 @@ public class UIActionBar extends UIForm {
         return ;
       }      
       uiExplorer.setIsHidePopup(true) ;
-      CmsConfigurationService cmsService = 
-        uiActionBar.getApplicationComponent(CmsConfigurationService.class) ;
+      RepositoryService repoService = uiActionBar.getApplicationComponent(RepositoryService.class) ;
       UIRelationManager uiRelationManager = 
         uiExplorer.createUIComponent(UIRelationManager.class, null, null) ;
       RelationsService relateService = 
@@ -799,11 +799,14 @@ public class UIActionBar extends UIForm {
         if(filters.length() > 0) filters.append(",") ;
         filters.append(document) ;
       }
+      String defaultWsName = 
+        repoService.getRepository(repository).getConfiguration().getDefaultWorkspaceName() ;
       uiJCRBrowser.setFilterType(filters.toString().split(",")) ;
       uiJCRBrowser.setRepository(repository) ;
-      uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), false) ;
+      uiJCRBrowser.setIsDisable(defaultWsName, false) ;
       uiJCRBrowser.setRootPath("/") ;
       uiJCRBrowser.setIsTab(true) ;
+      uiJCRBrowser.setIsShowSystem(false) ;
       uiJCRBrowser.setComponent(uiRelateAddedList, null) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiRelationManager, 630, 500) ;

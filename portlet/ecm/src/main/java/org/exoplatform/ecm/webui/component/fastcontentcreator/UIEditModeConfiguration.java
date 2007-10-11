@@ -22,6 +22,7 @@ import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -93,13 +94,18 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     UIFormSelectBox uiRepositoryList = getUIFormSelectBox(REPOSITORY_NAME) ;
     uiRepositoryList.setOptions(repositories) ;
     uiRepositoryList.setValue(repoName) ;
-    String[] wsNames = getApplicationComponent(RepositoryService.class).getRepository(repoName).getWorkspaceNames();
+    ManageableRepository manaRepoService = 
+      getApplicationComponent(RepositoryService.class).getRepository(repoName) ;
+    String[] wsNames = manaRepoService.getWorkspaceNames();
+    String systemWsName = manaRepoService.getConfiguration().getSystemWorkspaceName() ;
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
     String prefWs = preferences.getValue("workspace", "") ;
     setTemplateOptions(preferences.getValue("path", ""), repoName, prefWs) ;
     for(String wsName : wsNames) {
-      if(wsName.equals(prefWs)) isDefaultWs = true ;
-      workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+      if(!wsName.equals(systemWsName)) {
+        if(wsName.equals(prefWs)) isDefaultWs = true ;
+        workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+      }
     }
     UIFormSelectBox uiWorkspaceList = getUIFormSelectBox(WORKSPACE_NAME) ; 
     uiWorkspaceList.setOptions(workspace) ;
@@ -232,9 +238,10 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       uiTypeForm.getUIStringInput(FIELD_SAVEDPATH).setValue("/") ;
       String repoName = uiTypeForm.getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
       String[] wsNames = repositoryService.getRepository(repoName).getWorkspaceNames();
+      String systemWsName = repositoryService.getRepository(repoName).getConfiguration().getSystemWorkspaceName() ;
       List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
       for(String ws : wsNames) {
-        workspace.add(new SelectItemOption<String>(ws, ws)) ;
+        if(!ws.equals(systemWsName)) workspace.add(new SelectItemOption<String>(ws, ws)) ;
       }
       uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).setOptions(workspace) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;

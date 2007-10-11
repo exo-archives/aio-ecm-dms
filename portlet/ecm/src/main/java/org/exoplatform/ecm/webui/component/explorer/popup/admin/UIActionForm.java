@@ -229,7 +229,6 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       } else {
         uiContainer = uiForm.getParent() ;
       }
-      //TO DO why need load class here?
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;

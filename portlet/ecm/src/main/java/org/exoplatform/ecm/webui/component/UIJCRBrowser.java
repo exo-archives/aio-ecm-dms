@@ -51,6 +51,10 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
     getChild(UITreeList.class).setMimeTypes(arrMimeType) ;
   }
   
+  public void setIsShowSystem(boolean isShowSystem) {
+    getChild(UIWorkspaceList.class).setIsShowSystem(isShowSystem) ;
+  }
+  
   public void setIsTab(boolean isTab) { 
     getChild(UITreeJCRExplorer.class).setIsTab(isTab) ;
   }
@@ -67,9 +71,7 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   
   public String getWorkspace() throws Exception { 
     if(wsName_ == null || wsName_.trim().length() ==0) {
-      String[] wsNames = 
-        getApplicationComponent(RepositoryService.class).getRepository(repository_).getWorkspaceNames();
-      return wsNames[0] ;
+      return getApplicationComponent(RepositoryService.class).getRepository(repository_).getConfiguration().getDefaultWorkspaceName() ;
     }
     return wsName_ ; 
   }

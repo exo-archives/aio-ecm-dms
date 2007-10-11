@@ -194,7 +194,7 @@ public class UIWorkingArea extends UIContainer {
     boolean isSameNameSibling = isSameNameSibling(node) ;
     boolean isJcrEnable = isJcrViewEnable();
     boolean isVersionable = Utils.isVersionable(node) ;
-
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(isVersionableOrAncestor(node)) {
       if(node.isCheckedOut()) {
         if(isVersionable) actionsList.append("CheckIn") ;
@@ -229,8 +229,8 @@ public class UIWorkingArea extends UIContainer {
       actionsList.append(",Rename") ;
       if(isJcrViewEnable()) actionsList.append(",Save") ;
       actionsList.append(",Delete") ;        
-    }   
-    actionsList.append(",Paste") ;
+    }
+    if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste") ;
     return actionsList.toString() ;
 
   }
