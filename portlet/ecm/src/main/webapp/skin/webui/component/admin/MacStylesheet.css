@@ -161,6 +161,7 @@
 }
 
 /*--------------------------.UIFormWithTitle----------------------*/
+
 .UIECMAdminPortlet .UIFormWithTitle {
   width: 95%;
   margin: 0px auto;
@@ -271,6 +272,11 @@
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction {
 	float: right;
 	padding-right: 15px;
+	width: 50%;
+}
+
+.UIRepositoryFormContainer .UIWorkspaceWizard .UIAction .ActionContainer {
+	margin: 0px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer {
@@ -305,33 +311,31 @@
 	border: none ;
 	border-top: 1px solid #939393 ;
 	border-bottom: 1px solid #B7B7B7 ;
-	height: 34px;
+	height: 40px;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
   float: left;
-  height: 33px; line-height: 33px; vertical-align: middle;
-  font-size: 11px; font-weight: bold;
+  line-height: 43px; 
+  font-weight: bold;
   margin: 0px 10px 0px 15px;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
   float: left;
-  height: 34px; line-height: 34px; vertical-align: middle;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar a {
   float: left;
   width: 18px; height: 18px; 
-  line-height: 18px; vertical-align: middle;
-  font-size: 11px; font-weight: bold;
-  text-align: center; text-decoration: none; color: black;
-  margin: 7px 3px 0px 3px;
+  line-height: 18px; 
+  font-weight: bold;
+  text-align: center; 
+  margin: 12px 3px 0px 3px;
   border: solid 1px gray;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar a:hover {
-  height: 18px; line-height: 18px; vertical-align: middle;
   color: blue;
   background: #f8f8f8;
   border: solid 1px #cdb9a0 ;
