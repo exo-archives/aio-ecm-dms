@@ -93,9 +93,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_BSEPATH = "directoryPath" ;
   final static public String FIELD_BSEMAXBUFFER = "maxBufferSize" ;
   final static public String KEY_AUTHENTICATIONPOLICY = "org.exoplatform.services.jcr.impl.core.access.PortalAuthenticationPolicy" ;
+  final static public String SYSTEM_WORKSPACE = "system" ;
   protected boolean isAddnew_ = true ;  
   protected String defaulWorkspace_ = null ;
-  protected String systemWorkspace_ = null ;
   protected String repoName_ = null ;
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>() ; 
 
@@ -134,7 +134,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       if(isAddnew_) {      
         repoName_ = null ;
         defaulWorkspace_ = null ;
-        systemWorkspace_ = null ;
         refreshWorkspaceList() ;
         getUIStringInput(FIELD_NAME).setEditable(true) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
@@ -149,7 +148,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       } else {
         repoName_ = repo.getName() ;
         defaulWorkspace_ = repo.getDefaultWorkspaceName() ;
-        systemWorkspace_ = repo.getSystemWorkspaceName() ;
         for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
           workspaceMap_.put(ws.getName(), ws) ;
         }
@@ -419,7 +417,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         bse.setMaxBufferSize(buffer) ;
         re.setBinaryTemp(bse) ;        
       }
-      re.setSystemWorkspaceName(uiForm.systemWorkspace_) ;
+      re.setSystemWorkspaceName(SYSTEM_WORKSPACE) ;
       re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
       re.addWorkspace(uiForm.getWorkspace(uiForm.defaulWorkspace_)) ;
       uiForm.saveRepo(re) ;
