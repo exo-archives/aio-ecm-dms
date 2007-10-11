@@ -648,6 +648,7 @@ public class UIActionBar extends UIForm {
       Preference pref = uiJCRExplorer.getPreference() ;
       if(uiJCRExplorer.getPreference().isJcrEnable()) pref.setJcrEnable(false) ;
       else pref.setJcrEnable(true) ;
+      uiJCRExplorer.updateAjax(event) ;
     }
   }
 
