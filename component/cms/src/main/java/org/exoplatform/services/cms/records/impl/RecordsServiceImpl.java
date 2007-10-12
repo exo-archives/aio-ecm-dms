@@ -597,13 +597,14 @@ public class RecordsServiceImpl implements RecordsService {
       NodeIterator nodeIter = node.getNodes() ;
       while(nodeIter.hasNext()) {
         Node child = nodeIter.nextNode() ;
-        if(child.isNodeType("rma:record") && !recordNodes_.contains(child)) recordNodes_.add(child) ;
+        if(child.isNodeType("rma:record")) recordNodes_.add(child) ;
         if(child.hasNodes()) makeQueryList(child) ;
       }
     }
   }
   
   public List<Node> getRecords(Node filePlan) throws RepositoryException {
+    recordNodes_.clear() ;
     if(filePlan.hasNodes()) makeQueryList(filePlan) ;
     Collections.sort(recordNodes_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
     return recordNodes_;    
