@@ -604,6 +604,8 @@ public class RecordsServiceImpl implements RecordsService {
   }
   
   public List<Node> getRecords(Node filePlan) throws RepositoryException {
+//TODO: Need to use XPath query instead of this way.Now,we can not use query to get nodes from rma:filePlan(always return nothing). 
+//      Need to check with jcr team about this problem - minh.dang@exoplatform.com
     recordNodes_.clear() ;
     if(filePlan.hasNodes()) makeQueryList(filePlan) ;
     Collections.sort(recordNodes_,new DateComparator(ASCENDING,"rma:dateReceived")) ;

@@ -6,12 +6,16 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -24,6 +28,7 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -297,6 +302,22 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
 
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
+  }
+  
+  public boolean isShowPlanView(Node node) throws Exception {
+    return false;
+  }
+
+  public List<Node> getListNodes(Node node) throws Exception {
+    Iterator childrenIterator = node.getNodes() ;
+    List<Node> childrenList  = new ArrayList<Node>() ;
+    while(childrenIterator.hasNext()) {
+      Node child = (Node)childrenIterator.next() ;
+      if(Utils.isReadAuthorized(child)) {
+        childrenList.add(child) ;
+      }
+    }
+    return childrenList ;
   }
 
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{

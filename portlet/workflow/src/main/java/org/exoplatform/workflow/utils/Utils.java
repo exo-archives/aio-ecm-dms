@@ -4,17 +4,22 @@
  **************************************************************************/
 package org.exoplatform.workflow.utils;
 
+import java.security.AccessControlException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
@@ -65,6 +70,7 @@ public class Utils {
   final static public String MIX_LOCKABLE = "mix:lockable" ;
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;
+  final static public String JCR_MIMETYPE = "jcr:mimeType" ;
 
   @SuppressWarnings({"unchecked", "unused"})
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
@@ -141,4 +147,30 @@ public class Utils {
     }   
   }
   
+  public static boolean isReadAuthorized(Node node) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(PermissionType.READ);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }    
+  }
+  
+  public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
+    StringBuilder str = new StringBuilder() ;
+    if(isReadAuthorized(node)) {
+      String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
+      str.append(nodeType) ;
+      if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
+      if(node.isNodeType(NT_FILE)) {
+        Node jcrContentNode = node.getNode(JCR_CONTENT) ;
+        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
+      }
+    }
+    return str.toString() ;
+  }
+
+  public static String getNodeTypeIcon(Node node, String appended) throws RepositoryException {
+    return getNodeTypeIcon(node, appended, null) ;
+  }
 }

@@ -60,4 +60,10 @@ public interface ECMViewComponent {
   public String getDownloadLink(Node node) throws Exception;
   
   public String encodeHTML(String text) throws Exception;
+  
+  public boolean isShowPlanView(Node node) throws Exception ;
+  
+  public List<Node> getListNodes(Node node) throws Exception ;
+  
+  public String getIcons(Node node, String size) throws Exception ;
 }

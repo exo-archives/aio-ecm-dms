@@ -257,6 +257,14 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
   }
+
+  public boolean isShowPlanView(Node node) throws Exception {
+    return false;
+  }
+  
+  public List<Node> getListNodes(Node node) throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).getChildrenList(node, false) ;
+  }
   
   static  public class DownloadActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
@@ -279,4 +287,5 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
       event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
     }
   }
+
 }

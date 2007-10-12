@@ -16,6 +16,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -155,7 +156,6 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;    
-//    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     String mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
@@ -386,6 +386,26 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
   
+  public boolean isShowPlanView(Node node) throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    NodeType nodeType = node.getPrimaryNodeType() ;
+    NodeType[] superTypes = nodeType.getSupertypes() ;
+    boolean isFolder = false ;
+    for(NodeType superType : superTypes) {
+      if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
+        isFolder = true ;
+      }
+    }
+    if(isFolder && templateService.getDocumentTemplates(getRepository()).contains(nodeType.getName())) {
+      return true ;
+    }
+    return false;
+  }  
+  
+  public List<Node> getListNodes(Node node) throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).getChildrenList(node, false);
+  }
+  
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
@@ -528,5 +548,5 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       extendedPageIterator.setCurrentPage(page);
       event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
     }
-  }  
+  }
 }
