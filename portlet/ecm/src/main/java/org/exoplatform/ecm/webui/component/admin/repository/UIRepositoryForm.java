@@ -93,7 +93,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_BSEPATH = "directoryPath" ;
   final static public String FIELD_BSEMAXBUFFER = "maxBufferSize" ;
   final static public String KEY_AUTHENTICATIONPOLICY = "org.exoplatform.services.jcr.impl.core.access.PortalAuthenticationPolicy" ;
-  final static public String SYSTEM_WORKSPACE = "system" ;
   protected boolean isAddnew_ = true ;  
   protected String defaulWorkspace_ = null ;
   protected String repoName_ = null ;
@@ -417,7 +416,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         bse.setMaxBufferSize(buffer) ;
         re.setBinaryTemp(bse) ;        
       }
-      re.setSystemWorkspaceName(SYSTEM_WORKSPACE) ;
+      re.setSystemWorkspaceName(uiForm.defaulWorkspace_) ;
       re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
       re.addWorkspace(uiForm.getWorkspace(uiForm.defaulWorkspace_)) ;
       uiForm.saveRepo(re) ;
