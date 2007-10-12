@@ -70,7 +70,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     setMultiPart(true) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     UIFormUploadInput uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD) ;
-    uiInput.setEditable(false);
     addUIFormInput(uiInput) ;
   }
 
