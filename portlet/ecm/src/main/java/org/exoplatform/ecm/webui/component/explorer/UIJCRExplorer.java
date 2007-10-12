@@ -311,7 +311,14 @@ public class UIJCRExplorer extends UIContainer {
     Iterator childrenIterator = node.getNodes() ;
     List<Node> childrenList  = new ArrayList<Node>() ;
     NodeType nodeType = node.getPrimaryNodeType() ;
-    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName(), repository)) {
+    NodeType[] superTypes = nodeType.getSupertypes() ;
+    boolean isFolder = false ;
+    for(NodeType superType : superTypes) {
+      if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
+        isFolder = true ;
+      }
+    }
+    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName(), repository) && !isFolder) {
       return childrenList ;
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {

@@ -29,6 +29,7 @@ public class RecordsServiceImpl implements RecordsService {
 
   final static public String ASCENDING = "ASC" ;
   final static public String DESCENDING = "DES" ;
+  private List<Node> recordNodes_ = new ArrayList<Node>() ;
   
   private ActionServiceContainer actionsService_;
   private AuditService auditService_;  
@@ -591,16 +592,21 @@ public class RecordsServiceImpl implements RecordsService {
     return list;
   }
 
-  public List<Node> getRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;    
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:record")) {
-        list.add(child) ;
+  public void makeQueryList(Node node) throws RepositoryException {
+    if(node.hasNodes()) {
+      NodeIterator nodeIter = node.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node child = nodeIter.nextNode() ;
+        if(child.isNodeType("rma:record") && !recordNodes_.contains(child)) recordNodes_.add(child) ;
+        if(child.hasNodes()) makeQueryList(child) ;
       }
-    }    
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;    
+    }
+  }
+  
+  public List<Node> getRecords(Node filePlan) throws RepositoryException {
+    if(filePlan.hasNodes()) makeQueryList(filePlan) ;
+    Collections.sort(recordNodes_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return recordNodes_;    
   }
 
   private void calculateNextRevDate(Calendar currentDate, String period) {
