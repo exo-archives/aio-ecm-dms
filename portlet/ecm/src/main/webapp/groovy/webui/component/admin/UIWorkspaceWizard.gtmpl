@@ -22,12 +22,12 @@
               if(renderTab){
 	        %>	        
 				        <div class="$className">
-				        	<div class="WizardLabel">
+				        	<span class="WizardLabel">
 				        		<%=_ctx.appRes(compName+".label")%>:
-				        	</div>
-				        	<div>
+				        	</span>
+				        	<span>
 				        		$tabName
-				        	</div>
+				        	</span>
 				        	<div style="clear:left;"><span></span></div>
 				        </div>
 	        <%  }

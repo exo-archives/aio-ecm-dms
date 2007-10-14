@@ -347,6 +347,17 @@
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
+
+.LastPage {
+	width: 18px; height:16px;
+  background: url('DefaultSkin/BlueBackIcon.gif') no-repeat center;
+}
+
+.NextPage {
+	width: 18px; height:16px;
+  background: url('DefaultSkin/BlueNextIcon.gif') no-repeat center;
+}
+
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
   float: left;

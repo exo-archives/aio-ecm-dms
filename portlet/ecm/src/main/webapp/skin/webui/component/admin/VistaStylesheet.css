@@ -158,10 +158,8 @@
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .WizardLabel {
-	float: left;
   font-weight: bold; 
   padding-right: 10px;
-  width: 120px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction {

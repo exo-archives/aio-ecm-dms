@@ -134,11 +134,13 @@
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
   cursor: pointer;
-  margin: 3px 9px 0px 9px;
+  margin: 3px 4px 0px 0px;
+  height: 24px; width: 20px;
+  background-position: center;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
-  margin: 3px 5px;
+  margin: 3px 5px 0px 0px;
   float: left;
   cursor: pointer;
 }
@@ -147,14 +149,23 @@
   margin-left: 15px;
 }
 
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .HardDisk24x24Icon {
+	width: 27px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
+	line-height: 25px;
+}
+
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
-  line-height: 25px; vertical-align: middle;
+  line-height: 25px;
   font-weight: bold;
+  padding-left: 10px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
   clear: both;
-  line-height: 22px;
+  line-height: 30px;
   background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
 }
 
@@ -175,27 +186,17 @@
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
   float: left;
   margin: 7px 0px;
-  width: 16px;
-  height: 16px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
   float: left;
   margin: 7px 0px;
-  width: 16px;
-  height: 16px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
-  color: black;
-  line-height: 27px;
-}
-
-.UIJCRExplorerPortlet .UITreeExplorer a{
-  color: black;
-  text-decoration: none;
+  line-height: 30px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {

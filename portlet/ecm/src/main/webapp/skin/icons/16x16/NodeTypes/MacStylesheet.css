@@ -27,8 +27,8 @@
 }
 
 .default16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/default.gif') no-repeat;  
+  width: 20px; height: 16px;
+  background: url('DefaultSkin/default.gif') no-repeat center;  
 }
 
 .dc_elementSet16x16Icon {

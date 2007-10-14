@@ -138,7 +138,9 @@
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
   float: left;
   cursor: pointer;
+  height: 24px;
   margin: 0px 5px 0px 0px ;
+  background-position: center;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
@@ -161,8 +163,8 @@
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
 	background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
-  clear: both; padding-bottom: 5px;
-  line-height: 16px;
+  clear: both; 
+  line-height: 24px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
@@ -187,8 +189,7 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
-  color: black;
-  line-height: 22px;
+  line-height: 24px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a {

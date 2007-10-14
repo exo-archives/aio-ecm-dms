@@ -89,6 +89,7 @@
   background: url('VistaSkin/SmallGroup.png') no-repeat;  
   cursor: pointer;
 }
+
 .SelectUserIcon {
 	width: 16px; height: 16px;
   background: url('VistaSkin/SmallUserIcon.png') no-repeat;  
@@ -96,13 +97,13 @@
 }
  
 .ExpandIcon {
-  width: 16px; height: 16px;
+  width: 18px; height: 16px;
   background: url('VistaSkin/SmallGrayMinus.gif') no-repeat ;
   cursor: pointer;
 }
 
 .CollapseIcon  {
-  width: 16px; height: 16px;
+  width: 18px; height: 16px;
   background: url('VistaSkin/SmallGrayPlus.gif') no-repeat ;
   cursor: pointer;
 }
@@ -325,6 +326,16 @@
   float: left;
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
+}
+
+.LastPage {
+	width: 18px; height:16px;
+  background: url('DefaultSkin/BlueBackIcon.gif') no-repeat center;
+}
+
+.NextPage {
+	width: 18px; height:16px;
+  background: url('DefaultSkin/BlueNextIcon.gif') no-repeat center;
 }
 
 /*############################## -- Action Icon  -- ##############################*/

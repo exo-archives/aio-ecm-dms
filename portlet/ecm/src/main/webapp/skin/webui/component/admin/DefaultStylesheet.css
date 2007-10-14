@@ -152,8 +152,6 @@
 .UIRepositoryFormContainer .UIWorkspaceWizard .WizardLabel {
   font-weight: bold; 
   margin: 0px 7px;
-  width: 120px;
-	float: left;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIWizardAction {
