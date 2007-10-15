@@ -622,7 +622,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       LockManagerEntry lockEntry = new LockManagerEntry() ;
       lockEntry.setTimeout(lockTimeOutValue) ;
       workspaceEntry.setLockManager(lockEntry) ;
-      workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true));
+      workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true,name));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
       workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;
 
@@ -669,7 +669,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
 
     @SuppressWarnings("unchecked")
     private ContainerEntry newContainerEntry(String containerType, String sourceName, String dbType, boolean  isMulti,
-        String storeType, String filterType, long bufferValue, String swapPath, String storePath, boolean isUpdateStore) {
+        String storeType, String filterType, long bufferValue, String swapPath, String storePath, boolean isUpdateStore,String valueStorageId) {
       List containerParams = new ArrayList();
       containerParams.add(new SimpleParameterEntry(KEY_SOURCENAME, sourceName)) ;
       containerParams.add(new SimpleParameterEntry(KEY_DIALECT, dbType)) ;
@@ -690,7 +690,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
             vsparams);
         ArrayList<SimpleParameterEntry> spe = new ArrayList<SimpleParameterEntry>();
         spe.add(new SimpleParameterEntry(KEY_PATH, storePath));
-        
+        valueStorageEntry.setId(valueStorageId);
         valueStorageEntry.setParameters(spe);
         valueStorageEntry.setFilters(vsparams);
         ArrayList list = new ArrayList(1);
