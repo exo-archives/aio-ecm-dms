@@ -45,9 +45,9 @@
 	}
 	
   .UIDivInfo .UIHorizontalTabs .TabsContainer {
-  	float: left;
-  	overflow: hidden;
- 		padding: 0px;
+		padding: 0px;
+		height: 23px;
+		overflow-y: hidden;
   }
   
   .UIDivInfo .NavigationButtonContainer {
@@ -64,7 +64,7 @@
   	font-weight: normal;
   }
       	
-	.UIDivInfo a:hover {		 
+  .UIDivInfo a:hover {		 
 		color: blue;
 	}  
 		
@@ -164,6 +164,11 @@
 	        <div class="LeftHorizontalTabs">
 		     	  <div class="RightHorizontalTabs">
 		     	    <div class="CenterHorizontalTabs">
+					    <div class="NavigationButtonContainer">
+		                  <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
+		                    <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
+		                  </div>
+		                </div>
 				        <div class="TabsContainer">
 
 				          <div class="UITab NormalTabStyle">
@@ -256,12 +261,9 @@
 			              </div>
 			            </div> 
 
-				        </div>
-                <div class="NavigationButtonContainer">
-                  <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
-                    <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
-                  </div>
-                </div>
+				    </div>
+					<div style="clear: right"><span style="display: none"></span></div>
+
 				      </div>
 				    </div>
 				  </div>
