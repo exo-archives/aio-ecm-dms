@@ -23,12 +23,12 @@
 	}
 	
 	.UIDivInfo .Title {
-		font-size:13px; font-weight: bold;
+		font-size: 13px; font-weight: bold;
 		padding-bottom: 3px;
 	}	
 	
 	.UIDivInfo .FilePlanContentTable {
-		width: 99.5%;
+		width: 97.5%;
 		border-collapse: collapse;
 		border-top: 1px solid #dbdbdb;
     font-size:11px;
@@ -71,7 +71,7 @@
 </style>		
 
 <div class="UIDivInfo" id="UIFilePlanView">
-	<div style="width:99.5%">
+	<div>
 		<div style="padding: 5px 5px 5px 2px;">
 			<div class="$iconName" style="float:left; margin: 0px 5px 0px 0px;"><span></span></div>
 			<div class="Title"><%=_ctx.appRes("FilePlan.view.label.content")%>:<label class="LabelFielPlan"><%=originalNode.getName()%></label></div>
@@ -271,7 +271,7 @@
 	      <div style="clear:left;"><span></span></div>
 	      <div class="UITabContentContainer">
 	        <div class="UITabContent" style="display: block;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>		
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -313,7 +313,7 @@
 						</table>
 	        </div>
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>		
 								<th width="30px;"><span></span></th>			
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -356,7 +356,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>	
 								<th width="30px;"><span></span></th>				
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -399,7 +399,7 @@
 	        </div>
 	        
 	       	<div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -438,7 +438,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -469,7 +469,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -500,7 +500,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -537,7 +537,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>
@@ -574,7 +574,7 @@
 	        </div>
 	        
 	        <div class="UITabContent" style="display: none;"> 
-	        	<table class="UIGrid" style="padding:0px; border:solid 1px #7EAAD0;">
+	        	<table class="UIGrid" style="padding:0px; width: 97%; margin: auto; border:solid 1px #7EAAD0;">
 							<tr>
 								<th width="30px;"><span></span></th>	
 								<th><%=_ctx.appRes("FilePlan.view.label.record-id")%></th>

@@ -88,6 +88,11 @@
 	border-top: none;
 }
 
+.UIJCRExplorerPortlet #UIDocumentWithTree .UIListView  {
+	background: white;
+	border: 1px solid #b7b7b7;
+}
+
 .UIJCRExplorerPortlet .UIListView .UIGridControl {
   float: left;      
   font-size: 11px ;
@@ -227,6 +232,11 @@
 }
 /*############################## -- End UIMenuPopup   -- ##############################*/
 .UIJCRExplorerPortlet .UIThumbnailsView {
+}
+
+.UIJCRExplorerPortlet #UIDocumentWithTree .UIThumbnailsView {
+	background: white;
+	border: 1px solid #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {

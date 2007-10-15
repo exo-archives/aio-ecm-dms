@@ -10,7 +10,7 @@
   String repository = uicomponent.getRepository();  
 %>
 <div id = "$componentId">	
-	<div class="UIThumbnailsView" style="overflow: auto; width: 100%; height: 290px;">
+	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
 	  <div class="ActionIconsContainer">
 	    <%for(data in uicomponent.getChildrenList()) { %>
 	      <div class="ActionIconBox">
