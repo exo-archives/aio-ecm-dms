@@ -20,6 +20,7 @@ import org.exoplatform.services.cms.impl.CmsConfig.JcrPath;
 import org.exoplatform.services.cms.impl.CmsConfig.Permission;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.picocontainer.Startable;
 
 /**
@@ -96,15 +97,17 @@ public class CmsConfigurationServiceImpl implements CmsConfigurationService, Sta
   private void initBasePath(String repository) throws Exception {    
     HashMap<String, String[]> permissions = new HashMap<String,String[]>();
     Session session = null ;
-    String defaultRepository = jcrService_.getDefaultRepository().getConfiguration().getName() ;
-    String defaultSystemWorkspace = getWorkspace(defaultRepository);    
+    ManageableRepository manageableRepository = jcrService_.getRepository(repository);
+    String defaultWorkspace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+    String systemWorkspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    boolean isSameWorksapce = defaultWorkspace.equalsIgnoreCase(systemWorkspace);        
+    String[] workspaceNames = manageableRepository.getWorkspaceNames();
     for(AddPathPlugin pathPlugin:pathPlugins_) {
       CmsConfig cmsConfig = pathPlugin.getPaths() ;
       List<JcrPath> jcrPaths = cmsConfig.getJcrPaths() ;
-      for(String workspaceName:cmsConfig.getWorkspaces()) {
-        //only init data for system workspace as same with system workspace of default repository
-        if(!workspaceName.equals(defaultSystemWorkspace)) continue ;
-        session = jcrService_.getRepository(repository).getSystemSession(getWorkspace(repository)) ;
+      for(String workspaceName:workspaceNames) {
+        if(!isSameWorksapce && workspaceName.equalsIgnoreCase(systemWorkspace)) continue;
+        session = manageableRepository.getSystemSession(workspaceName);
         Node rootNode = session.getRootNode() ;
         for(JcrPath jcrPath:jcrPaths) {                    
           permissions.clear() ;
