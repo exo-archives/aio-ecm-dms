@@ -16,7 +16,6 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
-import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -29,8 +28,8 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -385,26 +384,6 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public String getNameSortOrder() { return nameSortOrder_ ; }
   
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
-  
-  public boolean isShowPlanView(Node node) throws Exception {
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    NodeType nodeType = node.getPrimaryNodeType() ;
-    NodeType[] superTypes = nodeType.getSupertypes() ;
-    boolean isFolder = false ;
-    for(NodeType superType : superTypes) {
-      if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
-        isFolder = true ;
-      }
-    }
-    if(isFolder && templateService.getDocumentTemplates(getRepository()).contains(nodeType.getName())) {
-      return true ;
-    }
-    return false;
-  }  
-  
-  public List<Node> getListNodes(Node node) throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getChildrenList(node, false);
-  }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      

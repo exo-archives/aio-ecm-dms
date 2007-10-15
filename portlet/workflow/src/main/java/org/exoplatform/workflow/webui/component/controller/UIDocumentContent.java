@@ -6,7 +6,6 @@ package org.exoplatform.workflow.webui.component.controller ;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -341,22 +340,6 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public String encodeHTML(String text) throws Exception {
     return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
     .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
-  }
-  
-  public boolean isShowPlanView(Node node) throws Exception {
-    return false;
-  }
-
-  public List<Node> getListNodes(Node node) throws Exception {
-    Iterator childrenIterator = node.getNodes() ;
-    List<Node> childrenList  = new ArrayList<Node>() ;
-    while(childrenIterator.hasNext()) {
-      Node child = (Node)childrenIterator.next() ;
-      if(Utils.isReadAuthorized(child)) {
-        childrenList.add(child) ;
-      }
-    }
-    return childrenList ;
   }
   
   static  public class DownloadActionListener extends EventListener<UIDocumentContent> {

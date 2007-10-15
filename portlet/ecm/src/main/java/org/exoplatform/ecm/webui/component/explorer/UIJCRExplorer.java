@@ -253,7 +253,21 @@ public class UIJCRExplorer extends UIContainer {
     if(preferences_.isShowSideBar()) {
       findFirstComponentOfType(UITreeExplorer.class).buildTree();
     }
-    uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    NodeType nodeType = getCurrentNode().getPrimaryNodeType() ;
+    NodeType[] superTypes = nodeType.getSupertypes() ;
+    boolean isFolder = false ;
+    for(NodeType superType : superTypes) {
+      if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
+        isFolder = true ;
+      }
+    }
+    if(templateService.getDocumentTemplates(getRepositoryName()).contains(nodeType.getName()) && isFolder) {
+      findFirstComponentOfType(UIDocumentWithTree.class).updatePageListData();
+      uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
+    } else {
+      uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
+    }
     event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;    
     if(!isHidePopup_) {
       UIPopupAction popupAction = getChild(UIPopupAction.class) ;

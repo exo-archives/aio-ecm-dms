@@ -257,14 +257,6 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     return Utils.encodeHTML(text) ;
   }
   
-  public boolean isShowPlanView(Node node) throws Exception {
-    return false;
-  }
-
-  public List<Node> getListNodes(Node node) throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getChildrenList(node, false) ;
-  }
-  
   static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
     public void execute(Event<UIViewVersion> event) throws Exception {
       UIViewVersion uiViewVersion = event.getSource() ;
