@@ -3,7 +3,7 @@
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
 %>
 <%
-  if(uicomponent.isShowViewFile()) {
+  if(uicomponent.isShowViewFile() && !uicomponent.isJcrEnable()) {
 %>
 	<div class="UITabPane" id="$uicomponent.id">
 	  <div class="TabPaneContent">

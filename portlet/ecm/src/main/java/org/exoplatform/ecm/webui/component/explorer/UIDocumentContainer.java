@@ -25,4 +25,8 @@ public class UIDocumentContainer extends UIContainer {
   public boolean isShowViewFile() throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).isShowViewFile() ;
   }
+  
+  public boolean isJcrEnable() {
+    return getAncestorOfType(UIJCRExplorer.class).getPreference().isJcrEnable() ;
+  }
 }
