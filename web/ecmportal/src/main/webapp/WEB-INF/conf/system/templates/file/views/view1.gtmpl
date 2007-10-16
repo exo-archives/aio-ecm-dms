@@ -23,7 +23,7 @@
    	border: 1px solid #cbcbcb; 
   	height: 100% ;
   	overflow: auto;
-  	width: 96%;
+  	width: 94%;
   	margin: 5px;
   }
   
