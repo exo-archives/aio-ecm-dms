@@ -258,6 +258,12 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       String fileType = uiEditModeConfiguration.getUIFormSelectBox(FIELD_SELECT).getValue() ;
       String location = uiEditModeConfiguration.getUIStringInput(FIELD_SAVEDPATH).getValue() ;
       String wsName = uiEditModeConfiguration.getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
+      if(wsName == null || wsName.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.ws-empty", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       String repoName = uiEditModeConfiguration.getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
       if(fileType == null || fileType.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.fileType-empty", null, 
