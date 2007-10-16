@@ -9,6 +9,7 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -91,7 +92,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       try {
         String language = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
-        getChild(UIDocumentInfo.class).getLanguage() ;
+        getChild(UIDocumentContainer.class).getChild(UIDocumentInfo.class).getLanguage() ;
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
         commentsService.addComment(uiForm.document_, name, email, website, comment, language) ;
       } catch (Exception e) {        

@@ -45,7 +45,7 @@ public class UITreeNodePageIterator extends UIPageIterator {
       if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;            
       UIPageIterator iterator = documentInfo.getContentPageIterator();
       iterator.setCurrentPage(page);
-      event.getRequestContext().addUIComponentToUpdateByAjax(documentInfo);      
+      event.getRequestContext().addUIComponentToUpdateByAjax(documentInfo.getParent());      
     }
   }    
 }
