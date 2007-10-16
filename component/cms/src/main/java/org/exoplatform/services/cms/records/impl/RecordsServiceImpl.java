@@ -30,6 +30,14 @@ public class RecordsServiceImpl implements RecordsService {
   final static public String ASCENDING = "ASC" ;
   final static public String DESCENDING = "DES" ;
   private List<Node> recordNodes_ = new ArrayList<Node>() ;
+  private List<Node> vitalRecordNodes_ = new ArrayList<Node>() ;
+  private List<Node> transferableRecords_ = new ArrayList<Node>() ;
+  private List<Node> supersededRecords_ = new ArrayList<Node>() ;
+  private List<Node> obsoleteRecords_ = new ArrayList<Node>() ;
+  private List<Node> holableRecords_ = new ArrayList<Node>() ;
+  private List<Node> destroyableRecords_ = new ArrayList<Node>() ;
+  private List<Node> cutoffRecords_ = new ArrayList<Node>() ;
+  private List<Node> accessionableRecords_ = new ArrayList<Node>() ;
   
   private ActionServiceContainer actionsService_;
   private AuditService auditService_;  
@@ -492,104 +500,43 @@ public class RecordsServiceImpl implements RecordsService {
     }
   }
   public List<Node> getAccessionableRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:accessionable") 
-         && !child.getProperty("rma:accessionExecuted").getBoolean()) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;
+    Collections.sort(accessionableRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return accessionableRecords_;
   }
 
   public List<Node> getCutoffRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:cutoffable") && !child.getProperty("rma:cutoffExecuted").getBoolean()) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;
+    Collections.sort(cutoffRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return cutoffRecords_;
   }
 
   public List<Node> getDestroyableRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:destroyable")) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;
+    Collections.sort(destroyableRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return destroyableRecords_;
   }
 
   public List<Node> getHolableRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:holdable") && 
-          !child.getProperty("rma:holdExecuted").getBoolean()) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;
+    Collections.sort(holableRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return holableRecords_;
   }
 
   public List<Node> getObsoleteRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:record") && 
-         child.getProperty("rma:isObsolete").getBoolean()) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;
+    Collections.sort(obsoleteRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return obsoleteRecords_;
   }
 
   public List<Node> getSupersededRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {      
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:record") && 
-         child.getProperty("rma:superseded").getValue().getString().equals("true")) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list;
+    Collections.sort(supersededRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return supersededRecords_ ;
   }
 
   public List<Node> getTransferableRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;          
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:transferable") && 
-         !child.getProperty("rma:transferExecuted").getBoolean()) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(ASCENDING,"rma:dateReceived")) ;
-    return list ;
+    Collections.sort(transferableRecords_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
+    return transferableRecords_ ;
   }
 
   public List<Node> getVitalRecords(Node filePlan) throws RepositoryException {
-    List<Node> list = new ArrayList<Node>() ;
-    for(NodeIterator iter = filePlan.getNodes();iter.hasNext() ;) {
-      Node child = iter.nextNode() ;
-      if(child.isNodeType("rma:vitalRecord")) {
-        list.add(child) ;
-      }
-    }
-    Collections.sort(list,new DateComparator(DESCENDING,"rma:nextReviewDate")) ;
-    return list;
+    Collections.sort(vitalRecordNodes_,new DateComparator(DESCENDING,"rma:nextReviewDate")) ;
+    return vitalRecordNodes_;
   }
 
   public void makeQueryList(Node node) throws RepositoryException {
@@ -598,15 +545,50 @@ public class RecordsServiceImpl implements RecordsService {
       while(nodeIter.hasNext()) {
         Node child = nodeIter.nextNode() ;
         if(child.isNodeType("rma:record")) recordNodes_.add(child) ;
+        if(child.isNodeType("rma:vitalRecord")) vitalRecordNodes_.add(child) ;
+        if(child.isNodeType("rma:transferable") && 
+            !child.getProperty("rma:transferExecuted").getBoolean()) {
+          transferableRecords_.add(child) ;
+        }
+        if(child.isNodeType("rma:record") && 
+            child.getProperty("rma:superseded").getValue().getString().equals("true")) {
+           supersededRecords_.add(child) ;
+        }
+        if(child.isNodeType("rma:record") && child.getProperty("rma:isObsolete").getBoolean()) {
+          obsoleteRecords_.add(child) ;
+        }
+        if(child.isNodeType("rma:holdable") && !child.getProperty("rma:holdExecuted").getBoolean()) {
+          holableRecords_.add(child) ;
+        }
+        if(child.isNodeType("rma:destroyable")) destroyableRecords_.add(child) ;
+        if(child.isNodeType("rma:cutoffable") && !child.getProperty("rma:cutoffExecuted").getBoolean()) {
+          cutoffRecords_.add(child) ;
+        }
+        if(child.isNodeType("rma:accessionable") && 
+            !child.getProperty("rma:accessionExecuted").getBoolean()) {
+          accessionableRecords_.add(child) ;
+        }        
         if(child.hasNodes()) makeQueryList(child) ;
       }
     }
   }
   
+  private void clearList() {
+    recordNodes_.clear() ;
+    vitalRecordNodes_.clear() ;
+    transferableRecords_.clear() ;
+    supersededRecords_.clear() ;
+    obsoleteRecords_.clear() ;
+    holableRecords_.clear() ;
+    destroyableRecords_.clear() ;
+    cutoffRecords_.clear() ;
+    accessionableRecords_.clear() ;
+  }
+  
   public List<Node> getRecords(Node filePlan) throws RepositoryException {
 //TODO: Need to use XPath query instead of this way.Now,we can not use query to get nodes from rma:filePlan(always return nothing). 
 //      Need to check with jcr team about this problem - minh.dang@exoplatform.com
-    recordNodes_.clear() ;
+    clearList() ;
     if(filePlan.hasNodes()) makeQueryList(filePlan) ;
     Collections.sort(recordNodes_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
     return recordNodes_;    

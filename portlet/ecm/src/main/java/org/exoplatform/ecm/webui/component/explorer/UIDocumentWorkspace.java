@@ -21,8 +21,7 @@ public class UIDocumentWorkspace extends UIContainer {
   
   static public String SIMPLE_SEARCH_RESULT = "SimpleSearchResult" ;
   public UIDocumentWorkspace() throws Exception {
-    addChild(UIDocumentInfo.class, null, null) ;
-    addChild(UIDocumentContainer.class, null, null).setRendered(false) ;
+    addChild(UIDocumentContainer.class, null, null) ;
     addChild(UISearchResult.class, null, SIMPLE_SEARCH_RESULT).setRendered(false) ;
   }
 }

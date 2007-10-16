@@ -13,12 +13,16 @@ import org.exoplatform.webui.core.UIContainer;
  *          minh.dang@exoplatform.com
  * Oct 15, 2007 10:05:43 AM
  */
-@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
+@ComponentConfig(template = "app:groovy/webui/component/explorer/UIDocumentTabPane.gtmpl")
 
 public class UIDocumentContainer extends UIContainer {
   
   public UIDocumentContainer() throws Exception {
     addChild(UIDocumentWithTree.class, null, null) ;
-    addChild(UIDocumentInfo.class, null, null).setRendered(false) ;
+    addChild(UIDocumentInfo.class, null, null) ;
+  }
+  
+  public boolean isShowViewFile() throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).isShowViewFile() ;
   }
 }

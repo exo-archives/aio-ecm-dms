@@ -120,7 +120,6 @@ public class UIJCRExplorer extends UIContainer {
   public void setRenderTemplate(String template) { 
     newJCRTemplateResourceResolver() ;
     documentInfoTemplate_  = template ; 
-
   }
 
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
@@ -149,9 +148,11 @@ public class UIJCRExplorer extends UIContainer {
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
     setValue(filterPath(currentNode_.getPath())) ;
-    UIDocumentInfo documentInfo = findFirstComponentOfType(UIDocumentInfo.class) ;
-    documentInfo.updatePageListData();
-    documentInfo.setRendered(true);
+    UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
+    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
+    uiDocumentInfo.updatePageListData();
+    if(isShowViewFile()) uiDocumentInfo.setRendered(false) ;
+    else uiDocumentInfo.setRendered(true) ;
     if(preferences_.isShowSideBar()) {
       UITreeExplorer treeExplorer = findFirstComponentOfType(UITreeExplorer.class);
       treeExplorer.buildTree();
@@ -249,25 +250,18 @@ public class UIJCRExplorer extends UIContainer {
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
-    findFirstComponentOfType(UIDocumentInfo.class).updatePageListData();
+    UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
+    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
+    if(isShowViewFile()) {
+      uiDocumentInfo.updatePageListData();
+      uiDocumentInfo.setRendered(false) ;
+    } else {
+      uiDocumentInfo.setRendered(true) ;
+    }
     if(preferences_.isShowSideBar()) {
       findFirstComponentOfType(UITreeExplorer.class).buildTree();
     }
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    NodeType nodeType = getCurrentNode().getPrimaryNodeType() ;
-    NodeType[] superTypes = nodeType.getSupertypes() ;
-    boolean isFolder = false ;
-    for(NodeType superType : superTypes) {
-      if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
-        isFolder = true ;
-      }
-    }
-    if(templateService.getDocumentTemplates(getRepositoryName()).contains(nodeType.getName()) && isFolder) {
-      findFirstComponentOfType(UIDocumentWithTree.class).updatePageListData();
-      uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
-    } else {
-      uiDocWorkspace.setRenderedChild(UIDocumentInfo.class) ;
-    }
+    uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;    
     if(!isHidePopup_) {
       UIPopupAction popupAction = getChild(UIPopupAction.class) ;
@@ -277,6 +271,22 @@ public class UIJCRExplorer extends UIContainer {
       }
     }    
     isHidePopup_ = false ;    
+  }
+  
+  public boolean isShowViewFile() throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    NodeType nodeType = getCurrentNode().getPrimaryNodeType() ;
+    NodeType[] superTypes = nodeType.getSupertypes() ;
+    boolean isFolder = false ;
+    for(NodeType superType : superTypes) {
+      if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
+        isFolder = true ;
+      }
+    }
+    if(isFolder && templateService.getDocumentTemplates(getRepositoryName()).contains(nodeType.getName())) {
+      return true ;
+    }
+    return false;
   }
 
   public void cancelAction() throws Exception {
