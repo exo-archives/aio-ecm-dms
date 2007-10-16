@@ -12,6 +12,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -136,6 +137,12 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.rename-denied", args, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      } catch(VersionException ve) {
+        uiJCRExplorer.getSession().refresh(false) ;
+        uiJCRExplorer.refreshExplorer() ;
+        uiJCRExplorer.cancelAction() ;
+        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.version-exception", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp,e) ;
       }    

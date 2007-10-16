@@ -134,12 +134,16 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
   static  public class RestoreVersionActionListener extends EventListener<UIVersionInfo> {
     public void execute(Event<UIVersionInfo> event) throws Exception {      
       UIVersionInfo uiVersionInfo = event.getSource();
+      UIJCRExplorer uiExplorer = uiVersionInfo.getAncestorOfType(UIJCRExplorer.class) ;
       for(UIComponent uiChild : uiVersionInfo.getChildren()) {
         uiChild.setRendered(false) ;
       }
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiVersionInfo.curentVersion_  = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
       uiVersionInfo.node_.restore(uiVersionInfo.curentVersion_.getVersion(), true);
+      Node node = uiVersionInfo.getCurrentNode() ;
+      if(!node.isCheckedOut()) node.checkout() ;
+      uiExplorer.getSession().save() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
     }
   }
