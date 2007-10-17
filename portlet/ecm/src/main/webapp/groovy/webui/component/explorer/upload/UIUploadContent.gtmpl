@@ -5,11 +5,17 @@
 %>
 <div class="$uicomponent.id">
 	<div class="GridTitleBar">
-	  <div class="GridTitleLeftBar">
-	    <div class="GridTitleRightBar">
-	      <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIUploadContent.title.uploaded-file")%></div>
-	    </div>
-	  </div>
+		<table>
+			<tr>
+				<td>
+				  <div class="GridTitleLeftBar">
+				    <div class="GridTitleRightBar">
+				      <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIUploadContent.title.uploaded-file")%></div>
+				    </div>
+				  </div>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
 	  <col width="40px;"><col><col><col><col>
@@ -35,11 +41,17 @@
 	  </tbody>
 	</table>
 	<div class="GridTitleBar">
-	  <div class="GridTitleLeftBar">
-	    <div class="GridTitleRightBar">
-	      <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIUploadContent.title.external-metadata")%></div>
-	    </div>
-	  </div>
+		<table>
+			<tr>
+				<td>
+				  <div class="GridTitleLeftBar">
+				    <div class="GridTitleRightBar">
+				      <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIUploadContent.title.external-metadata")%></div>
+				    </div>
+				  </div>
+				</td>
+			</tr>
+		</table> 
 	</div>
 	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
 	  <col width="50px;"><col><col width="50px;">

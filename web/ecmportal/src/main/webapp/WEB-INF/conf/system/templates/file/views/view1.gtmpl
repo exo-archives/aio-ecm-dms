@@ -30,6 +30,7 @@
   .FileContent .Content {  
    	white-space: normal;
    	overflow: auto;
+   	padding: 0px 10px;
    	height: 300px;
   }
   
