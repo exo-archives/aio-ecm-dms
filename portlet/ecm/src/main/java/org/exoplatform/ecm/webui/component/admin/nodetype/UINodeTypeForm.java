@@ -123,22 +123,20 @@ public class UINodeTypeForm extends UIFormTabPane {
   public List<NodeDefinitionValue> addedChildDef_ = new ArrayList<NodeDefinitionValue>();
 
   private List<SelectItemOption<String>> namespacesOptions_ = new ArrayList<SelectItemOption<String>>();
+  private List<SelectItemOption<String>> mixinTypeOptions_ = new ArrayList<SelectItemOption<String>>();
+  private List<SelectItemOption<String>> orderAbleOptions_ = new ArrayList<SelectItemOption<String>>();
   private PropertyDefinition[] propertyDefinitions_ ;
   private NodeDefinition[] childNodeDefinitions_ ;
   private NodeType nodeType_ ;
 
   public UINodeTypeForm() throws Exception {
     super("UINodeTypeForm", false);
-    List<SelectItemOption<String>> booleanItem = new ArrayList<SelectItemOption<String>>() ;
-    booleanItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
-    booleanItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
-
     UIFormInputSetWithAction nodeTypeTab = new UIFormInputSetWithAction(NODETYPE_DEFINITION) ;
     nodeTypeTab.addUIFormInput(new UIFormSelectBox(NAMESPACE,NAMESPACE, null)).
                 addUIFormInput(new UIFormStringInput(NODETYPE_NAME,NODETYPE_NAME, null)).                                 
-                addUIFormInput(new UIFormSelectBox(MIXIN_TYPE,MIXIN_TYPE, booleanItem)).
+                addUIFormInput(new UIFormSelectBox(MIXIN_TYPE,MIXIN_TYPE, null)).
                 addUIFormInput(new UIFormSelectBox(HAS_ORDERABLE_CHILDNODES,
-                                                   HAS_ORDERABLE_CHILDNODES, booleanItem)).
+                                                   HAS_ORDERABLE_CHILDNODES, null)).
                 addUIFormInput(new UIFormStringInput(PRIMARY_ITEMNAME,PRIMARY_ITEMNAME, null)).
                 addUIFormInput(new UIFormStringInput(SUPER_TYPE,SUPER_TYPE, null)).
                 addUIFormInput(new UIFormInputInfo(PROPERTY_DEFINITIONS,PROPERTY_DEFINITIONS, null)).
@@ -265,11 +263,16 @@ public class UINodeTypeForm extends UIFormTabPane {
 
   public void update(NodeType nodeType,  boolean isView) throws Exception{
     namespacesOptions_.clear() ;
+    mixinTypeOptions_.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    mixinTypeOptions_.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    orderAbleOptions_.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    orderAbleOptions_.add(new SelectItemOption<String>(TRUE, TRUE)) ;
     if(nodeType == null) {
       refresh() ;
       setActionInTab((UIFormInputSetWithAction)getChildById(NODETYPE_DEFINITION)) ;
       setActionInTab((UIFormInputSetWithAction)getChildById(CHILDNODE_DEFINITION)) ;
       setActionInTab((UIFormInputSetWithAction)getChildById(PROPERTY_DEFINITION)) ;
+      
       return ;
     }
     String fullName = nodeType.getName() ;
@@ -433,17 +436,14 @@ public class UINodeTypeForm extends UIFormTabPane {
   }
 
   public void refresh() throws Exception{    
-    List<SelectItemOption<String>> booleanItem = new ArrayList<SelectItemOption<String>>() ;
-    booleanItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
-    booleanItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
     UIChildNodeDefinitionForm uiChildNodeTab = getChild(UIChildNodeDefinitionForm.class) ;
     UIPropertyDefinitionForm uiPropertyTab = getChild(UIPropertyDefinitionForm.class) ;
     getUIFormSelectBox(NAMESPACE).setOptions(getNamespaces()).setDisabled(false) ;
     getUIStringInput(NODETYPE_NAME).setEditable(true).setValue(null) ;
     getUIStringInput(PRIMARY_ITEMNAME).setEditable(true).setValue(null) ;
     getUIStringInput(SUPER_TYPE).setEditable(true).setValue(null) ;
-    getUIFormSelectBox(MIXIN_TYPE).setOptions(booleanItem).setDisabled(false) ;
-    getUIFormSelectBox(HAS_ORDERABLE_CHILDNODES).setOptions(booleanItem).setDisabled(false) ;
+    getUIFormSelectBox(MIXIN_TYPE).setOptions(mixinTypeOptions_).setDisabled(false) ;
+    getUIFormSelectBox(HAS_ORDERABLE_CHILDNODES).setOptions(orderAbleOptions_).setDisabled(false) ;
     getUIFormInputInfo(PROPERTY_DEFINITIONS).setValue(null) ;
     getUIFormInputInfo(CHILDNODE_DEFINITIONS).setValue(null) ;
     addedPropertiesDef_ = new ArrayList<PropertyDefinitionValue>();

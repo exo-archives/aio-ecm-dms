@@ -54,11 +54,11 @@ public class UINodeTypeManager extends UIContainer {
   }
   
   public void initPopup(boolean isView) throws Exception {
-    String popupID = "NodeTypePopup" ;
-    if(isView) popupID = "ViewNodeTypePopup" ;
+    String popupId = "NodeTypePopup" ;
+    if(isView) popupId = "ViewNodeTypePopup" ;
     removeChildById("NodeTypePopup") ;
     removeChildById("ViewNodeTypePopup") ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupID) ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId) ;
     UINodeTypeForm uiForm = createUIComponent(UINodeTypeForm.class, null, null) ;
     uiForm.update(null, false) ;
     uiPopup.setWindowSize(660, 400) ;

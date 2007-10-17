@@ -443,6 +443,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
       uiForm.setRenderedChild("Contraints") ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
