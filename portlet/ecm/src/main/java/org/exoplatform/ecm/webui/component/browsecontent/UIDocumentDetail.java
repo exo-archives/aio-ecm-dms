@@ -11,11 +11,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.Value;
-import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -28,7 +25,6 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -78,7 +74,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   }
   protected boolean isValidNode() throws Exception  {
     if(node_ == null) return false ;
-    if(getUIBrowseContainer().getNodeByPath(node_.getPath()) == null) return false ;
+    if(getUIBrowseContainer().getNodeByPath(node_.getPath(), getWorkspaceName()) == null) return false ;
     return true ;
   }
 

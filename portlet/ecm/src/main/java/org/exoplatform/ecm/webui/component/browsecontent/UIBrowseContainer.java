@@ -133,6 +133,7 @@ public class UIBrowseContainer extends UIContainer {
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
   private boolean isSetted_ = false ;
   private int totalRecord_ ;
+  private String wsName_ = null;
 
   @SuppressWarnings("unchecked")
   private LinkedList<String> nodesHistory_ = new LinkedList<String>();
@@ -239,7 +240,19 @@ public class UIBrowseContainer extends UIContainer {
 
   public Node getNodeByPath(String nodePath) throws Exception{
     try{
-      return (Node)getSession().getItem(nodePath) ;
+      if(wsName_ == null) return (Node)getSession().getItem(nodePath) ;
+      return (Node)getSession(getRepository(), wsName_).getItem(nodePath) ;
+    } catch(NullPointerException en) {
+      return rootNode_ ;
+    } catch(Exception e){
+      e.printStackTrace() ;
+      return null  ;
+    }
+  }
+  
+  public Node getNodeByPath(String nodePath, String workspace) throws Exception{
+    try{
+      return (Node)getSession(getRepository(), workspace).getItem(nodePath) ;
     } catch(NullPointerException en) {
       return rootNode_ ;
     } catch(Exception e){
@@ -1113,7 +1126,14 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.setShowAllChildren(false) ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String catPath = event.getRequestContext().getRequestParameter("category") ;  
-      Node selectNode = uiContainer.getNodeByPath(objectId) ;   
+      String wsName = event.getRequestContext().getRequestParameter("workspace") ;
+      Node selectNode = null ;
+      if(wsName != null) {
+        selectNode = uiContainer.getNodeByPath(objectId, wsName) ;
+        uiContainer.wsName_ = wsName ;
+      } else {
+        selectNode = uiContainer.getNodeByPath(objectId) ;   
+      }
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
         app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null)) ;

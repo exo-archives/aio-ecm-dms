@@ -179,7 +179,7 @@
       </preference>
       <preference>
         <name>workspace</name>
-        <value>production</value>
+        <value>system</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
