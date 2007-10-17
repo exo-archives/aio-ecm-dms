@@ -152,7 +152,7 @@
 			                      String cssStyle = "ChildrenContentHolderLeft" ;
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
-									          String docId = Utils.formatNodeName(subChild.getPath()) + "&category=" + Utils.formatNodeName(subCat) ;
+									          String docId = Utils.formatNodeName(subChild.getPath()) + "&category=" + Utils.formatNodeName(subCat) + "&workspace=" + subChild.getSession().getWorkspace().getName() ;
 			                      String subChildLink = uicomponent.event("ChangeNode", docId);                       
 											 %>
 														<div class="$cssStyle">
