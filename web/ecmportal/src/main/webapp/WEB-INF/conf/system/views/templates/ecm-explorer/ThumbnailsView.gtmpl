@@ -58,8 +58,8 @@
 	        		<div class="RightActionIconContainer">
 	        			<div class="MiddleActionIconContainer">
 				          <div class="NodeLabel">
-				            <div class="ActionIcon">
-				              <a style="display: block;" href="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>$strActs</a>
+				            <div class="ActionIcon" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
+				              $strActs<a style="display: block;" href="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></a>
 				            </div>
 				          </div>
 				        </div>
