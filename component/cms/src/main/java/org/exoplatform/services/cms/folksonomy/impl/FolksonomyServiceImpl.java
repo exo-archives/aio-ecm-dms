@@ -179,10 +179,10 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   } 
 
   public List<Node> getAllTags(String repository) throws Exception {
-    Object cachedList = cache_.get(baseTagsPath_) ;
-    if(cachedList != null ) {
-      return (List<Node>)cachedList ;
-    }    
+//    Object cachedList = cache_.get(baseTagsPath_) ;
+//    if(cachedList != null ) {
+//      return (List<Node>)cachedList ;
+//    }    
     List<Node> tagList = new ArrayList<Node>() ;       
     Session systemSession = getSystemSession(repository) ;
     Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
@@ -195,10 +195,10 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
   
   public List<Node> getAllTagStyle(String repository) throws Exception {
-    Object cachedList = cache_.get(exoTagStylePath_) ;
-    if(cachedList != null ) {
-      return (List<Node>)cachedList ;
-    }
+//    Object cachedList = cache_.get(exoTagStylePath_) ;
+//    if(cachedList != null ) {
+//      return (List<Node>)cachedList ;
+//    }
     List<Node> tagStyleList = new ArrayList<Node>() ;   
     Session systemSession = getSystemSession(repository) ;
     Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
