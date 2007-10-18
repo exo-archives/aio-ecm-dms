@@ -708,16 +708,15 @@ public class UIWorkingArea extends UIContainer {
       try {
         if(ClipboardCommand.COPY.equals(type)) {
           pasteByCopy(session, srcPath, destPath) ;
+          Node selectedNode = (Node)session.getItem(destPath) ;
+          ActionServiceContainer actionContainer = 
+            event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
+          PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+          PortletPreferences preferences = context.getRequest().getPreferences() ;
+          actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
         } else {
           if(!srcPath.equals(destPath)) pasteByCut(uiExplorer, session, srcPath, destPath) ;
         }
-        Node selectedNode = (Node)session.getItem(destPath) ;
-        ActionServiceContainer actionContainer = 
-          event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
-        PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-        PortletPreferences preferences = context.getRequest().getPreferences() ;
-        actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
-        
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
             ApplicationMessage.WARNING)) ;
@@ -751,6 +750,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
