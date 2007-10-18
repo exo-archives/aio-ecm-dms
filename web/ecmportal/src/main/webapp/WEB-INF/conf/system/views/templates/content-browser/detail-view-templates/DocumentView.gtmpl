@@ -2,11 +2,11 @@
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 	
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
-	import org.exoplatform.ecm.utils.Utils ;
 	
 	def subDocumentList =  uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
 	String componentName = uicomponent.getName() ;
+
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
@@ -21,7 +21,7 @@
   				<div class="EventContent">
 	      <%
 	        for(Node doc in subDocumentList) {
-	        	String objectId = Utils.formatNodeName(doc.getPath()) + "&category=" + Utils.formatNodeName(uicomponent.getCategoryPath()) ;
+	        	String objectId = doc.getPath() + "&category=" + uicomponent.getCategoryPath() ;
 	          String viewAction = uicomponent.event("ChangeNode",objectId);
 	          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 	          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
