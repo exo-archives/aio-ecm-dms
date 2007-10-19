@@ -243,6 +243,7 @@ public class UIBrowseContainer extends UIContainer {
       if(wsName_ == null) return (Node)getSession().getItem(nodePath) ;
       return (Node)getSession(getRepository(), wsName_).getItem(nodePath) ;
     } catch(NullPointerException en) {
+      en.printStackTrace() ;
       return rootNode_ ;
     } catch(Exception e){
       e.printStackTrace() ;
@@ -472,7 +473,7 @@ public class UIBrowseContainer extends UIContainer {
   public Node getRootNode() throws Exception { return rootNode_ ; }
   public int getRowPerBlock() { return rowPerBlock_ ; }
   public Node getSelectedTab() throws Exception { 
-    if(this.selectedTab_ == null) return rootNode_ ;
+    if(this.selectedTab_ == null) return currentNode_ ;
     return this.selectedTab_ ;  
   }
 
@@ -695,6 +696,8 @@ public class UIBrowseContainer extends UIContainer {
     return getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
   }    
 
+  public void setWorkspaceName(String wsName) { wsName_ = wsName ; }
+  
   public String getWorkSpace() {
     return getPortletPreferences().getValue(Utils.WORKSPACE_NAME, "") ;
   }

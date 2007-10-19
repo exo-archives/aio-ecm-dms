@@ -189,10 +189,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             }
             Node contentNode = node.getNode(Utils.JCR_CONTENT);
             if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
-              if(node.isCheckedOut()) { 
-                node.checkin() ; 
-              }
-              node.checkout() ;
+              if(!node.isCheckedOut()) node.checkout() ; 
               contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
               contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
               contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());

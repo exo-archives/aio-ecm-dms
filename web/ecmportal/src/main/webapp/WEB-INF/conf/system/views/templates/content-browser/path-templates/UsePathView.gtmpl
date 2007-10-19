@@ -117,7 +117,7 @@
                           <div class="MiddleTab">
                           	<div class="Icon CBDefaultFolder16x16Icon"><span></span></div>
                             <div class="LabelButton">                            	
-                              <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(tab));%>">$tabName</a>
+                              <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(tab) + "&workspace=" + currentNode.getSession().getWorkspace().getName());%>">$tabName</a>
                             </div>
                             <div style="clear:left;"><span></span></div>
                           </div>
