@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPageIterator;
 
 
 /**
@@ -28,6 +29,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 public class UIDocumentWithTree extends UIDocumentInfo {
 
   public UIDocumentWithTree() throws Exception {
+    getChild(UIPageIterator.class).setId("PageIteratorWihtTreeView") ;
   }
   
   public String getTemplate() {

@@ -49,9 +49,12 @@
 	    </div>  
 	  </div>  
 	</div>  
-<%} else {
-    def uiDocumentInfo = uicomponent.getChildById("UIDocumentInfo") ;
-    uiDocumentInfo.updatePageListData() ;
-    uicomponent.renderChild("UIDocumentInfo") ;
-  }
-%>
+<%} else { %>
+  <div id="$uicomponent.id">
+<%
+	def uiDocumentInfo = uicomponent.getChildById("UIDocumentInfo") ;
+	uiDocumentInfo.updatePageListData() ;
+	uicomponent.renderChild("UIDocumentInfo") ;
+%>  
+  </div>
+<%}%>

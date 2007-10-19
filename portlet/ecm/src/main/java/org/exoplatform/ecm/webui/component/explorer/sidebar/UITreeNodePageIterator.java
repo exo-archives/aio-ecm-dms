@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -39,13 +40,19 @@ public class UITreeNodePageIterator extends UIPageIterator {
       if(uiPageIterator.getParent() == null) return ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPageIterator.getParent());
       UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);   
-      UIDocumentInfo documentInfo = explorer.findFirstComponentOfType(UIDocumentInfo.class);
-      if(documentInfo == null || !documentInfo.isRendered()) return ;
+      UIDocumentContainer uiDocumentContainer = explorer.findFirstComponentOfType(UIDocumentContainer.class);
+      UIDocumentInfo uiDocumentInfo = null ;
+      if(explorer.isShowViewFile()) {
+        uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentWithTree") ;
+      } else {
+        uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      }
+      if(uiDocumentInfo == null || !uiDocumentInfo.isRendered()) return ;
       String currentPath = explorer.getCurrentNode().getPath();
-      if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;            
-      UIPageIterator iterator = documentInfo.getContentPageIterator();
+      if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;      
+      UIPageIterator iterator = uiDocumentInfo.getContentPageIterator();
       iterator.setCurrentPage(page);
-      event.getRequestContext().addUIComponentToUpdateByAjax(documentInfo.getParent());      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);      
     }
   }    
 }
