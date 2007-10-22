@@ -459,6 +459,14 @@
 	margin: auto;
 }
 
+.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	width: auto;
+}
+
+.UIECMAdminPortlet .UIDriveManager .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
   width: 45px ;
   margin: auto ;

@@ -425,6 +425,15 @@ UIWorkspaceWizardContainer .UIGroupMembershipSelector .UITree .TreeContainer {
 	width: 100%;
 }
 
+.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	width: auto;
+}
+
+.UIECMAdminPortlet .UIDriveManager .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
+
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UITabPane {
 	width: 95%;
 	margin: 10px auto;

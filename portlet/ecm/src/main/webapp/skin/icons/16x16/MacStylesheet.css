@@ -358,6 +358,11 @@
   background: url('DefaultSkin/BlueNextIcon.gif') no-repeat center;
 }
 
+.AddRootNodeIcon {
+	width: 16px ;  height: 16px ;
+  background: url('MacSkin/SelectPage.png') no-repeat;  
+}
+
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
   float: left;

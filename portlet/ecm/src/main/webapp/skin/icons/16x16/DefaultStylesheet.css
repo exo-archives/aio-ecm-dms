@@ -364,6 +364,11 @@
   background: url('DefaultSkin/RepositoryIcon.gif') no-repeat;
 }
 
+.AddRootNodeIcon {
+	width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/SelectPage.gif') no-repeat;  
+}
+
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
   float: left;
