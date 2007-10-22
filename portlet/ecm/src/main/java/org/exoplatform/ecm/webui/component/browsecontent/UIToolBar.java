@@ -54,10 +54,15 @@ public class UIToolBar extends UIContainer {
   public boolean enableTree() {return isEnableTree_ ;}
 
   public List<Node> getNodePaths(Node node) throws Exception {
+    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
+    Node rootNode = getRootNode() ;
+    if(!uiContainer.getWorkSpace().equals(node.getSession().getWorkspace().getName())) {
+      rootNode = node.getSession().getRootNode() ;
+    }
     List<Node> list = new ArrayList<Node>() ;
     if(node != null) {
       Node temp = node ;
-      while(!temp.equals(getRootNode())) {
+      while(!temp.equals(rootNode)) {
         list.add(0, temp) ;
         temp = temp.getParent() ;
       }

@@ -473,7 +473,7 @@ public class UIBrowseContainer extends UIContainer {
   public Node getRootNode() throws Exception { return rootNode_ ; }
   public int getRowPerBlock() { return rowPerBlock_ ; }
   public Node getSelectedTab() throws Exception { 
-    if(this.selectedTab_ == null) return currentNode_ ;
+    if(this.selectedTab_ == null) return getCurrentNode() ;
     return this.selectedTab_ ;  
   }
 
