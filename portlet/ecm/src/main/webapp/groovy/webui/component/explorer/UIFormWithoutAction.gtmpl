@@ -17,12 +17,14 @@
           if(field.isRendered()) {
       %>
 						<tr>
-						  <td class="FieldLabel">
-	              <% if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
-	                <%=uicomponent.getLabel(field.getName())%>
-	              <%} %>
-	            </td>
-						  <td class="FieldComponent"><% uiform.renderField(field) %></td>
+              <%if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
+							  <td class="FieldLabel">
+		                <%=uicomponent.getLabel(field.getName())%>
+		            </td>
+  						  <td class="FieldComponent"><% uiform.renderField(field) %></td>
+              <%} else {%>
+                <td colspan="2" class="FieldComponent"><% uiform.renderField(field) %></td>
+              <%}%>
 						</tr>
       <%
           }

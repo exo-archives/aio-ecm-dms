@@ -88,6 +88,11 @@ public class UIJCRBrowser extends UIContainer implements ComponentSelector{
   
   public String getRepository() { return repository_ ; }
   
+  public void setShowRootPathSelect(boolean isRendered) {
+    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class) ;
+    uiWorkspaceList.setShowRootPathSelect(isRendered) ;
+  }
+  
   public UIComponent getReturnComponent() { return uiComponent ; }
   public String getReturnField() { return returnFieldName ; }
   

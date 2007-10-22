@@ -7,7 +7,12 @@ package org.exoplatform.ecm.webui.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Session;
+
+import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -15,6 +20,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 
 /**
@@ -27,12 +33,16 @@ import org.exoplatform.webui.form.UIFormSelectBox;
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/explorer/UIFormWithoutAction.gtmpl",
     events = { 
-      @EventConfig(listeners = UIWorkspaceList.ChangeWorkspaceActionListener.class)
+      @EventConfig(listeners = UIWorkspaceList.ChangeWorkspaceActionListener.class),
+      @EventConfig(listeners = UIWorkspaceList.AddRootNodeActionListener.class)
     }
 )
 public class UIWorkspaceList extends UIForm {
 
   static private String WORKSPACE_NAME = "workspaceName" ;
+  static private String ROOT_NODE_INFO = "rootNodeInfo" ;
+  static private String ROOT_NODE_PATH = "rootNodePath" ;
+  
   private List<String> wsList_ ;
   private boolean isShowSystem_ = true ;
 
@@ -41,9 +51,21 @@ public class UIWorkspaceList extends UIForm {
     UIFormSelectBox uiWorkspaceList = new UIFormSelectBox(WORKSPACE_NAME, WORKSPACE_NAME, wsList) ;
     uiWorkspaceList.setOnChange("ChangeWorkspace") ;
     addUIFormInput(uiWorkspaceList) ;
+    UIFormInputSetWithAction rootNodeInfo = new UIFormInputSetWithAction(ROOT_NODE_INFO) ;
+    rootNodeInfo.addUIFormInput(new UIFormInputInfo(ROOT_NODE_PATH, ROOT_NODE_PATH, null)) ;
+    String[] actionInfor = {"AddRootNode"} ;
+    rootNodeInfo.setActionInfo(ROOT_NODE_PATH, actionInfor) ;
+    rootNodeInfo.showActionInfo(true) ;
+    rootNodeInfo.setRendered(false) ;
+    addUIComponentInput(rootNodeInfo) ;
   }
   
   public void setIsShowSystem(boolean isShowSystem) { isShowSystem_ = isShowSystem ; }
+  
+  public void setShowRootPathSelect(boolean isRender) { 
+    UIFormInputSetWithAction uiInputAction = getChildById(ROOT_NODE_INFO) ; 
+    uiInputAction.setRendered(isRender) ; 
+  }
   
   public void setWorkspaceList(String repository) throws Exception {
     wsList_ = new ArrayList<String>() ;
@@ -88,6 +110,22 @@ public class UIWorkspaceList extends UIForm {
       uiTreeJCRExplorer.setRootNode(null) ;
       uiTreeJCRExplorer.buildTree() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiJBrowser) ;
+    }
+  }
+  
+  static public class AddRootNodeActionListener extends EventListener<UIWorkspaceList> {
+    public void execute(Event<UIWorkspaceList> event) throws Exception {
+      UIWorkspaceList uiWorkspaceList = event.getSource() ;
+      UIJCRBrowser uiJBrowser = uiWorkspaceList.getParent() ;
+      String returnField = uiJBrowser.getReturnField() ;
+      String workspace = uiJBrowser.getWorkspace() ;
+      String repositoryName = uiJBrowser.getRepository() ;
+      ManageableRepository repository = 
+        uiJBrowser.getChild(UITreeJCRExplorer.class).getRepository(repositoryName) ;
+      Session session = SessionsUtils.getSystemProvider().getSession(workspace, repository) ;
+      String value = session.getRootNode().getPath() ;
+      if(!uiJBrowser.isDisable()) value = uiJBrowser.getWorkspace() + ":" + value ;
+      ((UISelector)uiJBrowser.getReturnComponent()).updateSelect(returnField, value) ;
     }
   }
 }

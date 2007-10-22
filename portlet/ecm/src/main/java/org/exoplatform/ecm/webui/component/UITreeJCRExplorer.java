@@ -153,7 +153,7 @@ public class UITreeJCRExplorer extends UIContainer {
   
   public Node getSelectedNode() { return currentNode_ ; }
   
-  private ManageableRepository getRepository(String repositoryName) throws Exception{
+  public ManageableRepository getRepository(String repositoryName) throws Exception{
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     return repositoryService.getRepository(repositoryName) ;
   } 

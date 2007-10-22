@@ -70,6 +70,7 @@ public class UIDriveManager extends UIContainer {
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
     uiJCRBrowser.setRepository(repository) ;
     uiJCRBrowser.setIsDisable(workspace, isDisable) ;
+    uiJCRBrowser.setShowRootPathSelect(true) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_HOMEPATH}) ;
