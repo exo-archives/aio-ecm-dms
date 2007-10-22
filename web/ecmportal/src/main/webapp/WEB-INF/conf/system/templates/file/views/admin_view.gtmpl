@@ -23,8 +23,9 @@
    	border: 1px solid #cbcbcb; 
   	height: 100% ;
   	overflow: auto;
-  	width: 94%;
+  	width: 93.9%;
   	margin: 5px;
+  	background: white;
   }
   
   .FileContent .Content {  
@@ -113,7 +114,9 @@
 			        	  String iframeId = uicomponent.getId() + "ifame" ;
 			        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
 			        %>
+			        	<div style="text-align: center">
 			        	  <textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
+			        	</div>
 			        <%}%>
 				    </div>   
 	        </div>

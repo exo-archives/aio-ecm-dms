@@ -770,7 +770,8 @@ UIBrowseContentPortlet .Explorer {
   border: 1px solid #cbcbcb; 
   height: 100% ;
   overflow: auto;
-  width: 94%;
+  width: 93.9%;
+  background: white;
   margin: 5px;
 }
   
