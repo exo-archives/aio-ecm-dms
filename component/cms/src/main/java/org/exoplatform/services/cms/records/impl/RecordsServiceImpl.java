@@ -509,6 +509,7 @@ public class RecordsServiceImpl implements RecordsService {
       e.printStackTrace();
     }
   }
+  
   public List<Node> getAccessionableRecords(Node filePlan) throws RepositoryException {
     accessionableRecords_.clear() ;
     if(filePlan.hasNodes()) makeRecordList(filePlan, ACCESSION_ABLE_RECORD) ;
