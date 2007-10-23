@@ -55,10 +55,10 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
   public static final String FIELD_QUERY = "query" ;
   public static final String FIELD_SELECT_BOX = "selectBox" ;
 
-  private static final String ROOT_SQL_QUERY = "select * from nt:base" ;
-  private static final String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%'" ;
-  private static final String ROOT_XPATH_QUERY = "//*" ;
-  private static final String XPATH_QUERY = "/jcr:root$0//*" ;
+  private static final String ROOT_SQL_QUERY = "select * from nt:base order by exo:dateCreated DESC" ;
+  private static final String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' order by exo:dateCreated DESC" ;
+  private static final String ROOT_XPATH_QUERY = "//* order by @exo:dateCreated descending" ;
+  private static final String XPATH_QUERY = "/jcr:root$0//* order by @exo:dateCreated descending" ;
   private static final String CHANGE_OPTION = "ChangeOption" ;
   private boolean isEdit_ = false ;
   private String queryPath_ ;
