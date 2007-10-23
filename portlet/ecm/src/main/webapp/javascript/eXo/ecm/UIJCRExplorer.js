@@ -5,6 +5,7 @@ function UIJCRExplorer() {
 };
 
 UIJCRExplorer.prototype.loadViewNodeScroll = function(e) {
+
 	var jcr = eXo.ecm.UIJCRExplorer;
 	var uiFilePlanView = document.getElementById("UIFilePlanView");
 	if (uiFilePlanView) {

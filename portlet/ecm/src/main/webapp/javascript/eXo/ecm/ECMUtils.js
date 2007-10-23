@@ -13,7 +13,10 @@ ECMUtils.prototype.init = function(portletId) {
 	portlet.onmousedown = function(event) {
 		eXo.ecm.ECMUtils.closeAllPopup() ;
 	}
-	if(document.getElementById("UIPageDesktop")) this.fixHeight(portletId) ;
+	if(document.getElementById("UIPageDesktop")) {
+		this.fixHeight(portletId) ;
+		this.fixScroll();
+	}
 };
 
 ECMUtils.prototype.fixHeight = function(portletId) {
@@ -38,6 +41,20 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 	}
 	
 };
+
+ECMUtils.prototype.fixScroll = function() {
+	var pageDesktop = document.getElementById("UIPageDesktop") ;
+	if(pageDesktop) { 
+		 var uiWindows = eXo.core.DOMUtil.findChildrenByClass(pageDesktop, "div", "UIWindow") ;
+	  for(var i = 0; i < uiWindows.length; i++) {
+			if (uiWindows[i].style.display == "block") {
+				var blockResizes = eXo.core.DOMUtil.findDescendantsByClass(uiWindows[i], "div", "UIResizableBlock");
+				if (blockResizes.length > 1) 	blockResizes[0].style.overflow = "hidden";
+			}
+		}
+	}
+};
+
 
 ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 	evnt.cancelBubble = true;
