@@ -153,6 +153,15 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
   }
   
+  private boolean isSystemWorkspace() throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    ManageableRepository manaRepoService = 
+      getApplicationComponent(RepositoryService.class).getRepository(uiExplorer.getRepositoryName()) ;
+    String systemWsName = manaRepoService.getConfiguration().getSystemWorkspaceName() ;
+    if(systemWsName.equals(uiExplorer.getCurrentWorkspace())) return true ;
+    return false ;
+  }
+  
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;    
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;

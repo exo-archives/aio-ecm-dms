@@ -119,10 +119,12 @@
 	            }            
 	          }
 	          strActs += "</div>" ;
+	          def rightClickMenu = "" ;
+	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
 	      %>
 		      <tr>
 		        <td>
-							<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
+							<div class="NodeLabel" <%=rightClickMenu%>>
 						    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
 	  					</div>
 		        </td>
@@ -131,7 +133,7 @@
 			        else subName = name.substring(0,50) + "..." ;
 		        %>
 		        <td>
-							<div class="NodeLabel" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
+							<div class="NodeLabel" <%=rightClickMenu%>>
 								$strActs<a href="$actionLink" title="$name">$subName</a>
 		 					</div>
 		        </td>

@@ -52,13 +52,15 @@
 	            }            
 	          }
 	          strActs += "</div>" ;
+	          def rightClickMenu = "" ;
+	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 	        %>   
 	        <div class="ActionIconContainer">
 	        	<div class="LeftActionIconContainer">
 	        		<div class="RightActionIconContainer">
 	        			<div class="MiddleActionIconContainer">
 				          <div class="NodeLabel">
-				            <div class="ActionIcon" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
+				            <div class="ActionIcon" <%=rightClickMenu%>>
 				              $strActs<a style="display: block;" href="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></a>
 				            </div>
 				          </div>
@@ -70,7 +72,7 @@
 	          if(name.length() < 20) subName = name ;
 	          else subName = name.substring(0,15) + "..." ;
 	        %>
-	        <div class="ActionIconLabel" <%=contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data));%>>
+	        <div class="ActionIconLabel" <%=rightClickMenu%>>
 	          $strActs<a class="ActionLabel" href="$actionLink" title="$name">$subName</a>
 	        </div>
 	      </div> 
