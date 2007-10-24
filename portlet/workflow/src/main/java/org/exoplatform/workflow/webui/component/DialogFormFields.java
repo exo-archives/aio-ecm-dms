@@ -577,7 +577,6 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addUploadField(String name, String[] arguments) throws Exception {
-    String editable = "true";
     String jcrPath = null;
     String multiValues = null ;
     for(String argument : arguments) {
@@ -585,8 +584,6 @@ public class DialogFormFields extends UIForm {
         jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
-      } else if(argument.startsWith(EDITABLE)) {
-        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
       }
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -607,8 +604,6 @@ public class DialogFormFields extends UIForm {
       uiInputUpload = new UIFormUploadInput(name, name) ;
       addUIFormInput(uiInputUpload) ;
     }
-    if(editable.equals("false")) uiInputUpload.setEditable(false) ;
-    else uiInputUpload.setEditable(false) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     renderField(name) ;
   }
