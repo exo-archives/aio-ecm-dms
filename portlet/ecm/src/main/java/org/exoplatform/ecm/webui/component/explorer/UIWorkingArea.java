@@ -232,7 +232,6 @@ public class UIWorkingArea extends UIContainer {
     }
     if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste") ;
     return actionsList.toString() ;
-
   }
 
   public List<Node> getCustomActions(Node node) throws Exception {
