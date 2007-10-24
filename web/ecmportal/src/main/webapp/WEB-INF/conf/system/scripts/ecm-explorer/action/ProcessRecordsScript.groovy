@@ -23,7 +23,8 @@ public class ProcessRecordsScript implements CmsScript {
     Session session = null ;
     try {
       String workspace = (String) ((Map) context).get("srcWorkspace") ;
-      session = repositoryService.getRepository().login(workspace);
+      String repository = (String) ((Map) context).get("repository") ;
+      session = repositoryService.getRepository(repository).login(workspace);
       Node filePlan = (Node) session.getItem((String)((Map) context).get("srcPath")); 
       Node record = (Node) session.getItem((String)((Map) context).get("nodePath"));
       recordsService.addRecord(filePlan, record);
