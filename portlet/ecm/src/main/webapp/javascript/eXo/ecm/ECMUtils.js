@@ -49,7 +49,10 @@ ECMUtils.prototype.fixScroll = function() {
 	  for(var i = 0; i < uiWindows.length; i++) {
 			if (uiWindows[i].style.display == "block") {
 				var blockResizes = eXo.core.DOMUtil.findDescendantsByClass(uiWindows[i], "div", "UIResizableBlock");
-				if (blockResizes.length > 1) 	blockResizes[0].style.overflow = "hidden";
+				if (blockResizes.length > 1) {
+					blockResizes[0].style.overflow = "hidden";
+					blockResizes[0].style.height = "auto";
+				}
 			}
 		}
 	}
