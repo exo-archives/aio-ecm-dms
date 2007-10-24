@@ -124,11 +124,17 @@ public class UIPathConfig extends UIForm implements UISelector{
     String hasVote = "true" ;
     String itemPerPage = "20" ;
     String template = "" ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String currentRepositoryName = repositoryService.getCurrentRepository().getConfiguration().getName() ;
     UIFormSelectBox repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setOptions(getRepoOption()) ;
+    SelectItemOption selectedRepo = new SelectItemOption<String>(repository, repository) ;
+    if(!getRepoOption().contains(selectedRepo)) repository = getRepoOption().get(0).getValue() ;
     repositoryField.setValue(repository) ;
     UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setOptions(getWorkSpaceOption(repository)) ;
+    SelectItemOption selectedWS = new SelectItemOption<String>(workSpace, workSpace) ;
+    if(!getWorkSpaceOption(repository).contains(selectedWS)) workSpace = currentRepositoryName ;
     workSpaceField.setValue(workSpace) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
@@ -171,6 +177,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
+      if(!getRepoOption().contains(selectedRepo)) repository = currentRepositoryName ;
       templateField.setOptions(getTemplateOption(repository)) ;
       templateField.setValue(template) ;
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
