@@ -124,6 +124,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     String hasVote = "true" ;
     String itemPerPage = "20" ;
     String template = "" ;
+    String detailTemp = "" ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     String currentRepositoryName = repositoryService.getCurrentRepository().getConfiguration().getName() ;
     UIFormSelectBox repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
@@ -177,10 +178,12 @@ public class UIPathConfig extends UIForm implements UISelector{
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
+      detailTemp = (preference.getValue(Utils.CB_BOX_TEMPLATE, "")) ;
       if(!getRepoOption().contains(selectedRepo)) repository = currentRepositoryName ;
       templateField.setOptions(getTemplateOption(repository)) ;
       templateField.setValue(template) ;
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
+      detailtemField.setValue(detailTemp) ;
       enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
       enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
       enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;

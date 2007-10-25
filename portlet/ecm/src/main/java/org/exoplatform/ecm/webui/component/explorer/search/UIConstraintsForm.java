@@ -252,6 +252,12 @@ public class UIConstraintsForm extends UIForm {
       boolean isNotContain = uiForm.getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).isChecked() ;
       boolean isDateTime = uiForm.getUIFormCheckBoxInput(DATE_PROPERTY).isChecked() ;
       boolean isNodeType = uiForm.getUIFormCheckBoxInput(NODETYPE_PROPERTY).isChecked() ;
+      if(!isExactly && !isContain && !isNotContain && !isDateTime && !isNodeType) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.must-choose-one", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       if(isExactly) uiForm.addConstraint(event, 0) ;
       if(isContain) uiForm.addConstraint(event, 1) ;
       if(isNotContain) uiForm.addConstraint(event, 2) ;

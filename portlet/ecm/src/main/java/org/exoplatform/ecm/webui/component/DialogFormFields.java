@@ -594,13 +594,20 @@ public class DialogFormFields extends UIForm {
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
-    if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
-      if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
-        uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
-      } else if(onchange.equals("true") && isOnchange_) {
-        uiSelectBox.setValue(uiSelectBox.getValue()) ;
-      } else {
-        uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+    String[] arrNodes = jcrPath.split("/") ;
+    Node childNode = null ;
+    if(node_ != null && arrNodes.length == 4) childNode = node_.getNode(arrNodes[2]) ;
+    if(childNode != null) {
+      uiSelectBox.setValue(childNode.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+    } else {
+      if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
+        if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+          uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
+        } else if(onchange.equals("true") && isOnchange_) {
+          uiSelectBox.setValue(uiSelectBox.getValue()) ;
+        } else {
+          uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+        }
       }
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
