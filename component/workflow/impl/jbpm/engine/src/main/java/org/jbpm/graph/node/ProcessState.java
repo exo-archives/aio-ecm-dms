@@ -115,7 +115,6 @@ public class ProcessState extends Node implements Parsable {
           // the variable is copied from the super process variable name
           // to the sub process mapped name
           String variableName = variableAccess.getVariableName();
-          System.out.println("variableName === " + variableName) ;
           Object value = superContextInstance.getVariable(variableName, superProcessToken);
           String mappedName = variableAccess.getMappedName();
           subContextInstance.setVariable(mappedName, value);
