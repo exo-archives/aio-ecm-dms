@@ -32,7 +32,8 @@ import org.exoplatform.webui.event.EventListener;
 public class UITagList extends UIComponent {
 
   private String tagPath_ ;   
-  public UITagList() {}
+  public UITagList() throws Exception {
+  }
 
   public List<Node> getTagLink() throws Exception {
     String repository = getRepository() ;

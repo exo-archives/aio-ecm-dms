@@ -224,3 +224,43 @@
 .UITreeNodePageIterator a.PageSelected {
 	color: #fd2020;
 }
+
+/*############################## -- UITagExplorer   -- ##############################*/
+
+.UISideBar .UITagExplorer .TagmapHolder .TagmapTitle{
+	height: 19px; line-height: 19px;
+	margin: 0px;
+	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
+	border: solid 1px #e1e1e1;
+	border-bottom: none;
+}
+
+.UISideBar .UITagExplorer .TagmapHolder .TagLabel {
+	padding: 0px 8px;
+	line-height: 19px;
+	font-weight: bold;
+}
+	
+.UISideBar .UITagExplorer .TagmapHolder .TagmapContent {
+   background: #ffffff;
+   padding: 5px;
+   text-align: left ;
+   line-height: 22px;
+}
+
+.UISideBar .UITagExplorer .TagmapHolder .TagmapContent a{
+   color: red;
+   padding: 3px 7px 3px 0px;
+}
+
+.UISideBar .UITagExplorer .TagmapHolder .TagmapContent a:hover {
+   color: yellow;
+   padding: 3px 7px 3px 0px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .Icon{
+	float: left;
+	width: 19px; height: 16px; 
+	margin: 2px 5px 0px 5px;
+	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
+}

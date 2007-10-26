@@ -28,6 +28,11 @@
   background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
 }
 
+.TagExplorer24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/Tagging.gif') no-repeat center center;
+}
+
 .CloseSidebar24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
