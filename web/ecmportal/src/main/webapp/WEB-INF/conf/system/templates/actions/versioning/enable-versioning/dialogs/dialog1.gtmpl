@@ -94,6 +94,12 @@
 								</td>
 							</tr>
 		 <%			}	
+				  } else {
+					  uicomponent.removeChildById("startTime") ; 
+					  uicomponent.removeChildById("endTime") ; 
+					  uicomponent.removeChildById("repeatCount") ; 
+					  uicomponent.removeChildById("timeInterval") ; 	
+            uicomponent.removeChildById("cronExpression") ;								  
 				  }
 			  }
 			%>	

@@ -87,7 +87,7 @@ public class UIDrivesBrowser extends UIContainer {
     List<DriveData> driveList = new ArrayList<DriveData>() ;
     Session session = null ;
     List<String> userRoles = Utils.getMemberships() ;
-
+    List<String> driveNames = new ArrayList<String>() ;
     for(String role : userRoles ){
       List<DriveData> drives = driveService.getAllDriveByPermission(role, repoName) ;
       if(drives != null && drives.size() > 0) {
@@ -107,7 +107,8 @@ public class UIDrivesBrowser extends UIContainer {
               drive.setIcon("") ;
             }
           }
-          if(isExistWorspace(repository, drive) && !driveList.contains(drive)) driveList.add(drive) ;
+          if(isExistWorspace(repository, drive) && !driveNames.contains(drive.getName())) driveList.add(drive) ;
+          if(!driveNames.contains(drive.getName())) driveNames.add(drive.getName()) ;
         }
       }
     }

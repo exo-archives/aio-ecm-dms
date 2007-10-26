@@ -44,9 +44,9 @@
 						  %>
 					  </td>
 					</tr>
-				<%
-					String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
-					if(ScheduleType.equals("period") ) {%>
+				 <%
+					 String ScheduleType = uicomponent.getSelectBoxFieldValue("scheduleType") ;
+					 if(ScheduleType.equals("period")) {%>
 						<tr>		          					
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.start-time")%></td>
 						  <td class="FieldComponent">
@@ -84,7 +84,7 @@
 							</td>
 						</tr>
 						<% uicomponent.removeChildById("cronExpression") ; %>						
-				<%} else {%>
+				 <%} else {%>
 						<tr>		          					
 						  <td class="FieldLabel"><%=_ctx.appRes("Transform.dialog.label.cron-expression")%></td>
 						  <td class="FieldComponent">
@@ -101,6 +101,12 @@
 						  uicomponent.removeChildById("timeInterval") ; 
 						%>							
 		 <%			}	
+				  } else {
+				    uicomponent.removeChildById("startTime") ; 
+					  uicomponent.removeChildById("endTime") ; 
+					  uicomponent.removeChildById("repeatCount") ; 
+					  uicomponent.removeChildById("timeInterval") ; 
+            uicomponent.removeChildById("cronExpression") ;					  
 				  }
 			  }
 			%>	
