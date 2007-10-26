@@ -745,9 +745,9 @@ public class UIBrowseContainer extends UIContainer {
   //TODO maybe need change name of this method
   public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
-    String repoName = getRepository() ;
-    String workspace = getWorkSpace() ;
-    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
+    String repoName = preferences.getValue(Utils.REPOSITORY, "") ;
+//    String workspace = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
+//    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     setShowDocumentByTag(false) ;
     setShowDocumentDetail(false) ;

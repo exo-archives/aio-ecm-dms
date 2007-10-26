@@ -60,6 +60,9 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
 public class UIPathConfig extends UIForm implements UISelector{
   final static public String FIELD_PATHSELECT = "path" ;
   protected boolean isEdit_ = false ;
+  private List<String> repoNames_ = new ArrayList<String>() ;
+  private List<String> wsNames_ = new ArrayList<String>() ;
+  
   public UIPathConfig()throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<SelectItemOption<String>> repositories = new ArrayList<SelectItemOption<String>>() ;
@@ -97,7 +100,9 @@ public class UIPathConfig extends UIForm implements UISelector{
   private List<SelectItemOption<String>> getRepoOption() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    repoNames_.clear() ;
     for(RepositoryEntry repo : repositoryService.getConfig().getRepositoryConfigurations()) {
+      repoNames_.add(repo.getName()) ;
       options.add(new SelectItemOption<String>(repo.getName(), repo.getName())) ;
     }
     return options ;
@@ -107,7 +112,9 @@ public class UIPathConfig extends UIForm implements UISelector{
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String[] workspaceNames = getApplicationComponent(RepositoryService.class)
     .getRepository(repository).getWorkspaceNames() ;
+    wsNames_.clear() ;
     for(String workspace:workspaceNames) {
+      wsNames_.add(workspace) ;
       options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
     return options ;
@@ -129,13 +136,13 @@ public class UIPathConfig extends UIForm implements UISelector{
     String currentRepositoryName = repositoryService.getCurrentRepository().getConfiguration().getName() ;
     UIFormSelectBox repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY) ;
     repositoryField.setOptions(getRepoOption()) ;
-    SelectItemOption selectedRepo = new SelectItemOption<String>(repository, repository) ;
-    if(!getRepoOption().contains(selectedRepo)) repository = getRepoOption().get(0).getValue() ;
+    if(!repoNames_.contains(repository)) repository = getRepoOption().get(0).getValue() ;
     repositoryField.setValue(repository) ;
     UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setOptions(getWorkSpaceOption(repository)) ;
-    SelectItemOption selectedWS = new SelectItemOption<String>(workSpace, workSpace) ;
-    if(!getWorkSpaceOption(repository).contains(selectedWS)) workSpace = currentRepositoryName ;
+    if(!wsNames_.contains(workSpace)) {
+      workSpace = repositoryService.getCurrentRepository().getConfiguration().getDefaultWorkspaceName() ;
+    }
     workSpaceField.setValue(workSpace) ;
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
@@ -170,6 +177,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, null) ;
       setActions(UINewConfigForm.DEFAULT_ACTION) ;
       repository = preference.getValue(Utils.REPOSITORY, "") ;
+      workSpace = preference.getValue(Utils.WORKSPACE_NAME, "") ;
       template = preference.getValue(Utils.CB_TEMPLATE, "") ;
       hasToolBar = preference.getValue(Utils.CB_VIEW_TOOLBAR, "") ;
       hasRefDoc = preference.getValue(Utils.CB_REF_DOCUMENT, "") ;
@@ -179,11 +187,13 @@ public class UIPathConfig extends UIForm implements UISelector{
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, "")) ;
       detailTemp = (preference.getValue(Utils.CB_BOX_TEMPLATE, "")) ;
-      if(!getRepoOption().contains(selectedRepo)) repository = currentRepositoryName ;
+      if(!repoNames_.contains(repository)) repository = currentRepositoryName ;
       templateField.setOptions(getTemplateOption(repository)) ;
       templateField.setValue(template) ;
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
       detailtemField.setValue(detailTemp) ;
+      repositoryField.setValue(repository) ;
+      workSpaceField.setValue(workSpace) ;
       enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar)) ;
       enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc)) ;
       enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc)) ;
@@ -361,6 +371,8 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       categoryPathField.setValue("/") ;
+      UIFormSelectBox detailtemField = uiForm.getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
+      detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repoName)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
 
