@@ -328,6 +328,8 @@ public class UITask extends UIForm {
 //        workflowVariables.put(name, value);
 //      }
     }
+    String repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
+    workflowVariables.put(Utils.REPOSITORY, repository) ;
     return new VariableMaps(workflowVariables, jcrVariables);
   }
 
