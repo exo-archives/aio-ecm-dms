@@ -162,13 +162,22 @@
   padding: 8px 0px 0px 0px;
 }
 
+.UIJCRExplorerPortlet .UITreeExplorer .Node a {
+	height: 16px;
+	display: block;
+}
+
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
   background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ;
 }
   
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
-  color: black;
   line-height: 16px;
+  height: 16px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Node .NodeLabel {
+	margin-left: 38px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
