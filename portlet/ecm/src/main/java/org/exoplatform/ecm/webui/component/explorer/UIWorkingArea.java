@@ -15,6 +15,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
+import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -485,7 +486,17 @@ public class UIWorkingArea extends UIContainer {
       }      
       Node parentNode = node.getParent() ;
       try {
-        //TODO: need to check again with reference properties
+        node.remove() ;
+        uiExplorer.setSelectNode(parentNode) ;
+        uiExplorer.updateAjax(event) ;
+        parentNode.save() ;
+      } catch(VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception",null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;    
+      } catch(ReferentialIntegrityException ref) {
+        uiExplorer.getSession().refresh(false) ;
+        uiExplorer.refreshExplorer() ;
         uicomp.removeMixins(node) ;
         if(node.hasNodes()) {
           NodeIterator nodeIter = node.getNodes() ;

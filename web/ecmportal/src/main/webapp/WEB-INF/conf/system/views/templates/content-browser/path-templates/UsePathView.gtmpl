@@ -62,9 +62,9 @@
 	                <div class="SubContextMenu">
 	                  <div class="NodeHistoryContainer">
 	                    <%
-	                      def String previousNode =  content.get("previous") ;
-	                      def String  previousNodeName ;
-	                      def String  previousActionLink ;
+	                      String previousNode =  content.get("previous") ;
+	                      String  previousNodeName ;
+	                      String  previousActionLink ;
 	                      if(previousNode != null){
 	                         previousNodeName = "Previous" ;
 	                         previousActionLink = uicomponent.event('ChangeNode',previousNode);
