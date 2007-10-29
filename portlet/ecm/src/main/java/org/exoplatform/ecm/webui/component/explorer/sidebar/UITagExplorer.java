@@ -54,6 +54,7 @@ public class UITagExplorer extends UIContainer {
       UITagExplorer uiTagExplorer = event.getSource() ;
       String tagPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiTagExplorer.getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
       uiExplorer.setTagPath(tagPath) ;
       uiExplorer.setIsViewTag(true) ;
       uiExplorer.updateAjax(event) ;
