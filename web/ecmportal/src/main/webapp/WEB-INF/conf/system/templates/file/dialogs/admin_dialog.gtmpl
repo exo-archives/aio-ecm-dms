@@ -65,9 +65,12 @@
 								if(selectValue != null && selectValue.equals("text/html")) {	
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
-								} else {
+								} else if(selectValue != null && selectValue.equals("text/plain")){
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			          	uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
+								} else {
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
+			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;								  
 								}
 							}
 						%>			
@@ -76,22 +79,22 @@
 		</table>	     
 		<%/* start render action*/%>
 		<div class="UIAction"> 
-	    <table align="center" class="ActionContainer">
+	    <table class="ActionContainer" align="center">
 	    	<tr>
 	    		<td align="center">
 			      <% for(action in uicomponent.getActions()) { 
 			      		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) ;
 								 String link = uicomponent.event(action) ;
 			      %>
-			          <a href="$link" class="ActionButton LightBlueStyle">
-									<div class="ButtonLeft">
-									  <div class="ButtonRight">
-										  <div class="ButtonMiddle">
-										    $actionLabel
-								      </div>
-								    </div>
+		          <a href="$link" class="ActionButton LightBlueStyle">
+								<div class="ButtonLeft">
+								  <div class="ButtonRight">
+									  <div class="ButtonMiddle">
+									    $actionLabel
+							      </div>
 							    </div>
-								</a>
+						    </div>
+							</a>
 			      <%}%>          
 	      	</td>
 	      </tr>
