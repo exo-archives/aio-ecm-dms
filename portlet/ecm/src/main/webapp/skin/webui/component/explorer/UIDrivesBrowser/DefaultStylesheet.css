@@ -146,6 +146,10 @@
   background: url('DefaultSkin/background/AdminTaxonomy.gif') no-repeat;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .AdminsystemIcon {
+  background: url('DefaultSkin/background/AdminSystem.gif') no-repeat;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .Admindigital-assetsIcon {
   background: url('DefaultSkin/background/AdminDigitalAssets.gif') no-repeat;
 }

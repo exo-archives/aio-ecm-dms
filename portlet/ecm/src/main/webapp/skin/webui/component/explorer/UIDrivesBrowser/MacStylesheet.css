@@ -154,6 +154,10 @@
   background: url('MacSkin/background/AdminDigitalAssets.gif') no-repeat;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .AdminsystemIcon {
+  background: url('MacSkin/background/AdminSystem.gif') no-repeat;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserproductionIcon {
   background: url('MacSkin/background/UserProduction.gif') no-repeat;
 }
