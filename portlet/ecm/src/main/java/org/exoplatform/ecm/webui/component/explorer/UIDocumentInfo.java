@@ -377,7 +377,12 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
     Node currentNode = uiExplorer.getCurrentNode();
-    List<Node> childrenList = uiExplorer.getChildrenList(currentNode,pref.isShowPreferenceDocuments());    
+    List<Node> childrenList = new ArrayList<Node>() ;
+    if(!uiExplorer.isViewTag()) {
+      childrenList = uiExplorer.getChildrenList(currentNode,pref.isShowPreferenceDocuments());    
+    } else {
+      childrenList = uiExplorer.getDocumentByTag() ;
+    }
     int nodesPerPage = pref.getNodesPerPage();    
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
     pageIterator_.setPageList(pageList) ;        

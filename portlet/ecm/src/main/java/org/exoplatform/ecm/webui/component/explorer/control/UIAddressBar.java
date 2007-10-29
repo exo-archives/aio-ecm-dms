@@ -10,6 +10,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
@@ -60,10 +61,15 @@ public class UIAddressBar extends UIForm {
       UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       try {        
-        uiAddressBar.getAncestorOfType(UIJCRExplorer.class).
-          getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).setRenderedChild(UIDocumentContainer.class) ;
-        String previousNode = uiExplorer.rewind() ;
-        uiExplorer.setBackNode(previousNode) ;
+        uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
+        setRenderedChild(UIDocumentContainer.class) ;
+        if(uiExplorer.isViewTag()) {
+          uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
+          uiExplorer.setIsViewTag(true) ;
+        } else {
+          String previousNode = uiExplorer.rewind() ;
+          uiExplorer.setBackNode(previousNode) ;
+        }
         uiExplorer.updateAjax(event) ;
       } catch (AccessDeniedException ade) {
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null, 

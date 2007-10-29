@@ -35,6 +35,7 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
+import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -73,6 +74,8 @@ public class UIJCRExplorer extends UIContainer {
   private String documentInfoTemplate_ ;
   public boolean isHidePopup_ = false ;
   private String language_ ;
+  private String tagPath_ ;
+  private boolean isViewTag_ = false ;
 
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
@@ -415,6 +418,19 @@ public class UIJCRExplorer extends UIContainer {
   public Node getNodeByPath(String nodePath, Session session) throws Exception {
     return (Node)session.getItem(nodePath) ;    
   }
+  
+  public void setTagPath(String tagPath) { tagPath_ = tagPath ; }
+  
+  public String getTagPath() { return tagPath_ ; }
+  
+  public List<Node> getDocumentByTag()throws Exception {
+    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    return folksonomyService.getDocumentsOnTag(tagPath_, getRepositoryName()) ;
+  }
+  
+  public void setIsViewTag(boolean isViewTag) { isViewTag_ = isViewTag ; }
+  
+  public boolean isViewTag() { return isViewTag_ ; }
 
   public LinkedList<ClipboardCommand> getAllClipBoard() { return clipboards_ ;}
 

@@ -72,6 +72,7 @@ public class UIViewBar extends UIForm {
     public void execute(Event<UIViewBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
+      uiJCRExplorer.setIsViewTag(false) ;
       prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
       prefs_.setValue(Utils.VIEWS,"") ;
       prefs_.setValue(Utils.JCR_PATH,"") ;

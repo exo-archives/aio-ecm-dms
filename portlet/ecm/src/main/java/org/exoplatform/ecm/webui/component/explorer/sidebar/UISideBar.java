@@ -4,6 +4,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -50,8 +51,11 @@ public class UISideBar extends UIContainer {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource() ;
       uiSideBar.currentComp = "Explorer" ;
+      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.setSelectNode(uiExplorer.getCurrentNode()) ;
+      uiExplorer.setIsViewTag(false) ;
       uiSideBar.setRenderedChild(UITreeExplorer.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 

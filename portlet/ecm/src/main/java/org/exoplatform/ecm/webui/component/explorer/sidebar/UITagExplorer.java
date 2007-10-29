@@ -52,7 +52,11 @@ public class UITagExplorer extends UIContainer {
   static public class ViewTagActionListener extends EventListener<UITagExplorer> {
     public void execute(Event<UITagExplorer> event) throws Exception {
       UITagExplorer uiTagExplorer = event.getSource() ;
-      System.out.println("\n\nTag selected\n\n");
+      String tagPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIJCRExplorer uiExplorer = uiTagExplorer.getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.setTagPath(tagPath) ;
+      uiExplorer.setIsViewTag(true) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 }
