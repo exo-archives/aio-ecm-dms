@@ -11,6 +11,7 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -73,6 +74,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     UIFormInputSetWithAction uiLinkedInput = getChildById(LINKED_TAGS_SET) ;
     uiLinkedInput.setInfoField(LINKED_TAGS, linkedTags.toString()) ;
     uiLinkedInput.setIsShowOnly(true) ;
+    
   }
   public void deActivate() throws Exception {}
 
@@ -131,6 +133,10 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       }
       folksonomyService.addTag(uiExplorer.getCurrentNode(), tagNames, repository) ;
       uiForm.activate() ;
+      if(uiExplorer.isViewTag()) {
+        UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
+      }
       uiForm.getUIStringInput(TAG_NAMES).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }

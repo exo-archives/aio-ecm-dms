@@ -31,7 +31,6 @@ import org.exoplatform.webui.event.EventListener;
 public class UITagExplorer extends UIContainer {
   
   public UITagExplorer() throws Exception {
-    
   }
   
   public List<Node> getTagLink() throws Exception {
