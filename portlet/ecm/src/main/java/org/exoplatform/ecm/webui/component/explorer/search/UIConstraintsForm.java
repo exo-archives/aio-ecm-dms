@@ -159,8 +159,7 @@ public class UIConstraintsForm extends UIForm {
     return advanceQuery;
   }
   
-  private void addConstraint(Event event, int opt) throws Exception {
-    UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+  private void addConstraint(int opt) throws Exception {
     String advanceQuery = "" ;
     String property ;
     virtualDateQuery_ = null ;
@@ -168,65 +167,25 @@ public class UIConstraintsForm extends UIForm {
     switch (opt) {
       case 0:
         property = getUIStringInput(PROPERTY1).getValue() ;
-        if(property == null || property.length() < 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
         String value = getUIStringInput(CONTAIN_EXACTLY).getValue() ;
-        if(value == null || value.trim().length() < 0) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.exactly-require", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
         advanceQuery = "@" + property + " = '" + value.trim() + "'" ;
         break;
       case 1:
         property = getUIStringInput(PROPERTY2).getValue() ; 
-        if(property == null || property.length() < 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
         advanceQuery = getContainQueryString(property, CONTAIN, true) ;
         break;
       case 2:
         property = getUIStringInput(PROPERTY3).getValue() ; 
-        if(property == null || property.length() < 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
         advanceQuery = getContainQueryString(property, NOT_CONTAIN, false) ;
         break;
       case 3:
         String fromDate = getUIFormDateTimeInput(START_TIME).getValue() ;
         String toDate = getUIFormDateTimeInput(END_TIME).getValue() ;
-        if(fromDate == null || fromDate.trim().length() == 0) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.fromDate-required", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-        Calendar bfDate = getUIFormDateTimeInput(START_TIME).getCalendar() ;
-        if(toDate != null && toDate.trim().length() >0) {
-          Calendar afDate = getUIFormDateTimeInput(END_TIME).getCalendar() ;
-          if(bfDate.compareTo(afDate) == 1) {
-            uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
-          }
-        }
         String type = getUIFormSelectBox(TIME_OPTION).getValue() ;
         advanceQuery = getDateTimeQueryString(fromDate, toDate, type) ;
         break ;
       case 4:
         property = getUIStringInput(DOC_TYPE).getValue() ;
-        if(property == null || property.length() < 1) {
-          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
         advanceQuery = getNodeTypeQueryString(property) ;
         break;
       default:
@@ -252,17 +211,94 @@ public class UIConstraintsForm extends UIForm {
       boolean isNotContain = uiForm.getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).isChecked() ;
       boolean isDateTime = uiForm.getUIFormCheckBoxInput(DATE_PROPERTY).isChecked() ;
       boolean isNodeType = uiForm.getUIFormCheckBoxInput(NODETYPE_PROPERTY).isChecked() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       if(!isExactly && !isContain && !isNotContain && !isDateTime && !isNodeType) {
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.must-choose-one", null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
-      if(isExactly) uiForm.addConstraint(event, 0) ;
-      if(isContain) uiForm.addConstraint(event, 1) ;
-      if(isNotContain) uiForm.addConstraint(event, 2) ;
-      if(isDateTime) uiForm.addConstraint(event, 3);
-      if(isNodeType) uiForm.addConstraint(event, 4) ;
+      if(isExactly) {
+        String property = uiForm.getUIStringInput(PROPERTY1).getValue() ;
+        if(property == null || property.length() < 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        String value = uiForm.getUIStringInput(CONTAIN_EXACTLY).getValue() ;
+        if(value == null || value.trim().length() < 0) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.exactly-require", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        uiForm.addConstraint(0) ;
+      }
+      if(isContain) {
+        String property = uiForm.getUIStringInput(PROPERTY2).getValue() ; 
+        if(property == null || property.length() < 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null,
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        String value = uiForm.getUIStringInput(CONTAIN).getValue() ;
+        if(value == null || value.trim().length() < 0) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.value-required", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        uiForm.addConstraint(1) ;
+      }
+      if(isNotContain) {
+        String property = uiForm.getUIStringInput(PROPERTY3).getValue() ; 
+        if(property == null || property.length() < 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null,
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        String value = uiForm.getUIStringInput(NOT_CONTAIN).getValue() ;
+        if(value == null || value.trim().length() < 0) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.value-required", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }        
+        uiForm.addConstraint(2) ;
+      }
+      if(isDateTime) {
+        String fromDate = uiForm.getUIFormDateTimeInput(START_TIME).getValue() ;
+        String toDate = uiForm.getUIFormDateTimeInput(END_TIME).getValue() ;
+        if(fromDate == null || fromDate.trim().length() == 0) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.fromDate-required", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        Calendar bfDate = uiForm.getUIFormDateTimeInput(START_TIME).getCalendar() ;
+        if(toDate != null && toDate.trim().length() >0) {
+          Calendar afDate = uiForm.getUIFormDateTimeInput(END_TIME).getCalendar() ;
+          if(bfDate.compareTo(afDate) == 1) {
+            uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+        uiForm.addConstraint(3);
+      }
+      if(isNodeType) {
+        String property = uiForm.getUIStringInput(DOC_TYPE).getValue() ;
+        if(property == null || property.length() < 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        uiForm.addConstraint(4) ;
+      }
       uiForm.resetConstraintForm() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
