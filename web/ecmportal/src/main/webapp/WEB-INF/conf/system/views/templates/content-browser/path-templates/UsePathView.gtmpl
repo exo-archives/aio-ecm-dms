@@ -16,8 +16,7 @@
 	if(uicomponent.isEnableToolBar()){uicomponent.renderChild(UIToolBar.class);}
   if(uicomponent.isShowSearchForm()) {
   	uicomponent.renderChild(UISearchController.class);
-  }
-  else {
+  } else {
 		jsmanager.importJavascript('eXo.portal.UIBrowseContent');
 		jsmanager.addOnLoadJavascript('eXo.portal.UIBrowseContent.waitForLoadComplete');
 		//jsmanager.addOnResizeJavascript('eXo.portal.UIBrowseContent.loadScroll');
@@ -42,12 +41,12 @@
  %>
  <div class="ContentHolder">
   <%/*Begin TagMap*/ 
-      	String styleWithTag = "margin-right: 0px" ;
-			 	if(isShowTagmap) {	
-			 		styleWithTag = "margin-right: 210px;"	 ;  
-			 	 	uicomponent.renderChild(UITagList.class);
-		 		} 
-   /*End TagMap*/%>  
+  String styleWithTag = "margin-right: 0px" ;
+	if(isShowTagmap) {	
+		styleWithTag = "margin-right: 210px;"	 ;  
+	 	uicomponent.renderChild(UITagList.class);
+	} 
+  /*End TagMap*/%>  
   <div style="$styleWithTag">
   <%/*Begin UICBNavigation*/%>
   <div class="UICBNavigation">
@@ -63,8 +62,8 @@
 	                  <div class="NodeHistoryContainer">
 	                    <%
 	                      String previousNode =  content.get("previous") ;
-	                      String  previousNodeName ;
-	                      String  previousActionLink ;
+	                      String previousNodeName ;
+	                      String previousActionLink ;
 	                      if(previousNode != null){
 	                         previousNodeName = "Previous" ;
 	                         previousActionLink = uicomponent.event('ChangeNode',previousNode);

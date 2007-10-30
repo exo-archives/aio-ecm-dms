@@ -444,12 +444,13 @@ public class UIBrowseContainer extends UIContainer {
     content.put("subCategoryList", subCategoryList) ;
     content.put("subDocumentList", subDocumentList) ;
     List<String> history = new ArrayList<String>() ;
-    if(!isRootNode()) {
+    if(!getCurrentNode().getPath().equals("/") && 
+        getCurrentNode().getSession().getWorkspace().getName().equals(getWorkSpace())) {
       Node parent = getCurrentNode().getParent() ;
       if(!parent.getPath().equals(getRootNode().getPath())) content.put("previous", parent.getPath()) ;
       history = getHistory(templates, parent) ;
     }
-    content.put("history", history) ;
+    content.put(HISTORY, history) ;
     return content ;
   }
 
@@ -470,6 +471,7 @@ public class UIBrowseContainer extends UIContainer {
   public String getRepository() {
     return getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
   }
+  
   public Node getRootNode() throws Exception { return rootNode_ ; }
   public int getRowPerBlock() { return rowPerBlock_ ; }
   public Node getSelectedTab() throws Exception { 
@@ -522,13 +524,14 @@ public class UIBrowseContainer extends UIContainer {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     List<String> templates = templateService.getDocumentTemplates(getRepository()) ;
     NodeIterator item = selectedNode.getNodes() ;
-    if(isEnableChildDocument())
+    if(isEnableChildDocument()) {
       while (item.hasNext()) {
         Node node = item.nextNode() ;
         if(templates.contains(node.getPrimaryNodeType().getName())) {
           if(canRead(node)) subDocumentList.add(node) ; 
         }
       }
+    }
     if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
         selectedNode, isShowAllDocument(), subDocumentList.size(), templates)) ;
     return subDocumentList ;
