@@ -34,14 +34,19 @@
 	      %>
 	      <%=nodeName%>
 	    </a>
-	    <%for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
-	         String actionLink = uicomponent.event("SelectPath", node.getPath()); 
-	         String path = node.getPath() ;
-	         String name = path.substring(path.lastIndexOf("/") + 1) ;
-	     %>
-	        <div class="PathIcon"><span></span></div>
-	        <a class="PathChildLabel" href="$actionLink"><%=name%></a>
-	    <%}%>
+	    <%
+	      if(!uicomponent.getCurrentNode().getPath().trim().equals(Root.getPath())) {
+		      for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
+		         String actionLink = uicomponent.event("SelectPath", node.getPath()); 
+		         String path = node.getPath() ;
+		         String name = path.substring(path.lastIndexOf("/") + 1) ;
+		    %>
+		        <div class="PathIcon"><span></span></div>
+		        <a class="PathChildLabel" href="$actionLink"><%=name%></a>
+	    <%
+	        }
+	      }
+	    %>
       <div style="clear:left"></div>
     <%}%> 
   </div>
