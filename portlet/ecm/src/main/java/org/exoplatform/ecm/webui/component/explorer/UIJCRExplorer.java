@@ -76,6 +76,7 @@ public class UIJCRExplorer extends UIContainer {
   private String language_ ;
   private String tagPath_ ;
   private boolean isViewTag_ = false ;
+  private Node currentStateNode_ = null ;
 
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
@@ -124,6 +125,9 @@ public class UIJCRExplorer extends UIContainer {
     newJCRTemplateResourceResolver() ;
     documentInfoTemplate_  = template ; 
   }
+  
+  public void setCurrentStateNode(Node currentStateNode) { currentStateNode_ = currentStateNode ; }
+  public Node getCurrentStateNode() { return currentStateNode_ ; }
 
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {    
