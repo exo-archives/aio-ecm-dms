@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
@@ -241,6 +242,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     uiConfigTabPane.setNewConfig(true) ;
   }
 
+  @SuppressWarnings("unused")
   public static class SaveActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
@@ -257,18 +259,21 @@ public class UIPathConfig extends UIForm implements UISelector{
       String jcrPath = categoryPathField.getValue() ;
       if((jcrPath == null) || (jcrPath.trim().length() == 0)) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null)) ;
+        app.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null, 
+                                              ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       } 
-      Session session = uiBCContainer.getSession(repository, workSpace) ;
-      Node node = (Node) session.getItem(jcrPath) ;
-      if(node == null) {
+      try {
+        Session session = uiBCContainer.getSession(repository, workSpace) ;
+        Node node = (Node) session.getItem(jcrPath) ;
+      } catch(PathNotFoundException path) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null)) ;
+        app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null, 
+                                              ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
-      } 
+      }
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
       String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       if(Integer.parseInt(itemPerPage) <= 0) {
