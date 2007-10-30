@@ -174,7 +174,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           newLanguageNode = languagesNode.addNode(defaultLanguage) ;
           NodeType[] mixins = node.getMixinNodeTypes() ;
           for(NodeType mixin:mixins) {
-            if(mixin.getName().equals("exo:actionable")) {
+            if(!mixin.getName().equals("exo:actionable")) {
               if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;            
             }
           }
@@ -202,6 +202,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
               }
             }
           }
+          newLanguageNode.setProperty(EXO_LANGUAGE, language) ;
         }
       }
     }   
