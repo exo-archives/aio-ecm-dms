@@ -150,7 +150,7 @@
 		        	if(mimeType.startsWith("image")) {
 		        %> 	
 			    		<div class="ContentDetail">
-		            <image src="<%=uicomponent.getDownloadLink(currentNode)%>"/>
+                <image src="/${uicomponent.getPortalName()}/jcr?workspace=${uicomponent.getWorkspaceName()}&path=${originalNode.getPath()}"/>
 		          </div>
 		        <%}else {%> 
 							<div style="text-align:center; font-style:italic">
