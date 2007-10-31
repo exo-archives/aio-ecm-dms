@@ -5,6 +5,8 @@
 package org.exoplatform.workflow.webui.component.controller ;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -62,12 +64,22 @@ public class UITaskList extends UIContainer {
     }    
   }
 
+  @SuppressWarnings("unchecked")
   public List<Task> getTasks() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     String remoteUser = pcontext.getRemoteUser();
     if (remoteUser == null) return selectVisibleTasks(new ArrayList<Task>()) ;      
     List<Task> unsortedTasks = workflowServiceContainer_.getAllTasks(remoteUser);
+    Collections.sort(unsortedTasks, new DateComparator()) ;
     return selectVisibleTasks(unsortedTasks) ; 
+  }
+  
+  public class DateComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      Date date1 = getProcessInstanceStartDate((Task) o1) ;
+      Date date2 = getProcessInstanceStartDate((Task) o2) ;
+      return date1.compareTo(date2) ;
+    }
   }
 
   private List<Task> selectVisibleTasks(List<Task> all) {

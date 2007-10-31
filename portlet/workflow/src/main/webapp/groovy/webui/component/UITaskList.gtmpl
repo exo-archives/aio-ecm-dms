@@ -1,4 +1,7 @@
 <%
+  import java.text.SimpleDateFormat ;
+ 
+  SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM yyyy HH:mm:ss") ;
   String name = uicomponent.getId() ;
 %>
 <table class="UIGrid" id="$name" cellspacing="0" borderspacing="0">
@@ -40,7 +43,7 @@
 	      <td class="text"><%=(task.getDescription() == null ? "&nbsp;" : task.getDescription()) ;%></td>
 	      <td class="text"><%=task.getActorId()%></td>
 
-	      <td class="text"><%=uicomponent.getProcessInstanceStartDate(task)%></td>
+	      <td class="text"><%=dateFormat.format(uicomponent.getProcessInstanceStartDate(task))%></td>
 	      <td class="text"><a href="<%=uicomponent.event("ManageState", task.getId())%>">Manage</a></td>
 	    </tr>
   <%
