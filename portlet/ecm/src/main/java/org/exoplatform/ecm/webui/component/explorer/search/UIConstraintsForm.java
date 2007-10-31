@@ -6,6 +6,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.query.Query;
@@ -71,6 +72,9 @@ public class UIConstraintsForm extends UIForm {
   final static public String NOT_CONTAIN_PROPERTY = "notContainPro" ;
   final static public String DATE_PROPERTY = "datePro" ;
   final static public String NODETYPE_PROPERTY = "nodetypePro" ;
+  final static private String SPLIT_REGEX = "/|\\s+|:" ;
+  final static private String DATETIME_REGEX = 
+    "^(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})\\s*(\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})?$" ;
   
   private String virtualDateQuery_ ;
   
@@ -203,6 +207,16 @@ public class UIConstraintsForm extends UIForm {
     getUIFormCheckBoxInput(NODETYPE_PROPERTY).setChecked(false) ;
   }
   
+  private boolean isValidDateTime(String dateTime) {
+    String[] arr = dateTime.split(SPLIT_REGEX, 7) ;
+    int valid = Integer.parseInt(arr[0]) ;
+    if(valid < 1 || valid > 12) return false;
+    Calendar date = new GregorianCalendar(Integer.parseInt(arr[2]), valid - 1, 1) ;
+    if(Integer.parseInt(arr[1]) > date.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
+    if(arr.length > 3 && (Integer.parseInt(arr[3]) > 23 || Integer.parseInt(arr[4]) > 59 || Integer.parseInt(arr[5]) > 59)) return false; 
+    return true;
+  }
+  
   static public class AddActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UIConstraintsForm uiForm = event.getSource();
@@ -277,9 +291,21 @@ public class UIConstraintsForm extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
+        if(!fromDate.matches(DATETIME_REGEX) || !uiForm.isValidDateTime(fromDate)) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.fromDate-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         Calendar bfDate = uiForm.getUIFormDateTimeInput(START_TIME).getCalendar() ;
         if(toDate != null && toDate.trim().length() >0) {
           Calendar afDate = uiForm.getUIFormDateTimeInput(END_TIME).getCalendar() ;
+          if(!toDate.matches(DATETIME_REGEX) || !uiForm.isValidDateTime(toDate)) {
+            uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.toDate-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }          
           if(bfDate.compareTo(afDate) == 1) {
             uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.date-invalid", null, 
                                                     ApplicationMessage.WARNING)) ;

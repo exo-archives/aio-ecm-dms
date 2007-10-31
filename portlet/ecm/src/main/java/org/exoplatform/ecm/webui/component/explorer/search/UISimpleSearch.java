@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -198,7 +199,8 @@ public class UISimpleSearch extends UIForm {
       if(text != null)
       for(String filterChar : arrFilterChar) {
         if(text.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -206,9 +208,16 @@ public class UISimpleSearch extends UIForm {
       String statement = uiSimpleSearch.getQueryStatement() ;
       long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(statement, Query.XPATH);      
-      QueryResult queryResult = query.execute();
-      uiSearchResult.setQueryResults(queryResult) ;
-      uiSearchResult.updateGrid() ;
+      try {
+        QueryResult queryResult = query.execute();
+        uiSearchResult.setQueryResults(queryResult) ;
+        uiSearchResult.updateGrid() ;
+      } catch(RepositoryException repo) {
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);
       uiECMSearch.setRenderedChild(UISearchResult.class) ;
