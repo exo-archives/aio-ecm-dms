@@ -79,6 +79,8 @@ public class UILanguageDialogForm extends DialogFormFields {
   public boolean isAddNew() {return isAddNew_ ;}
   public void addNew(boolean b) {isAddNew_ = b ;}
   
+  public void setIsAddNew(boolean isAddNew) { isAddNew_ = isAddNew ; }
+  
   public boolean isEditing() { return !isAddNew_ ; }
   
   public Node getCurrentNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }

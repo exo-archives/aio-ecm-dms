@@ -145,6 +145,8 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       if(!node.isCheckedOut()) node.checkout() ;
       uiExplorer.getSession().save() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo) ;
+      uiExplorer.setIsHidePopup(true) ;
+      uiExplorer.updateAjax(event) ;
     }
   }
 

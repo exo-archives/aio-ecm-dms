@@ -97,8 +97,12 @@ public class UILanguageTypeForm extends UIForm {
         }
         if(node.hasNode(Utils.LANGUAGES)) {
           Node languagesNode = node.getNode(Utils.LANGUAGES) ;
-          if(node.isNodeType(Utils.NT_FILE)) uiDialogForm.setIsNTFile(true) ;
-          else uiDialogForm.setIsNTFile(false) ;
+          if(node.isNodeType(Utils.NT_FILE)) {
+            uiDialogForm.setIsNTFile(true) ;
+            uiDialogForm.setIsAddNew(false) ;
+          } else {
+            uiDialogForm.setIsNTFile(false) ;
+          }
           if(languagesNode.hasNode(selectedLanguage)) {
             uiDialogForm.setNode(languagesNode.getNode(selectedLanguage)) ;
           } else if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {

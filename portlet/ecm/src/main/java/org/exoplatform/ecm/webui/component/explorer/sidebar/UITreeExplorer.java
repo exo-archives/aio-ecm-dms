@@ -58,6 +58,7 @@ public class UITreeExplorer extends UIContainer {
   }
   
   public String getActionsList(Node node) throws Exception {
+    if(node == null) return "" ;
     return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
   }
   

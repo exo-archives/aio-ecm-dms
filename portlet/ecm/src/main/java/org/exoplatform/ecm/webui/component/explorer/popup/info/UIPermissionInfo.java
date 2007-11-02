@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
@@ -146,14 +147,22 @@ public class UIPermissionInfo extends UIContainer {
       }
       if(name.equals(uicomp.getExoOwner(node))) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null, 
-            ApplicationMessage.WARNING)) ;
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(Utils.hasChangePermissionRight(node)) {
         if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
-        node.removePermission(name) ;        
-        node.save() ;
+        try {
+          node.removePermission(name) ;        
+          node.save() ;
+        } catch(AccessDeniedException ace) {
+          uiJCRExplorer.getSession().refresh(false) ;
+          uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.access-denied", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;          
+        }
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
             PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
