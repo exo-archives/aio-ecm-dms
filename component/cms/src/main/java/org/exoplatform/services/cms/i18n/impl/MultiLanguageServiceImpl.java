@@ -159,7 +159,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       }
     }
   }
-  
+
   public void addLanguage(Node node, Map inputs, String language, boolean isDefault) throws Exception {
     Node newLanguageNode = null ;
     Node languagesNode = null ;
@@ -174,7 +174,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           newLanguageNode = languagesNode.addNode(defaultLanguage) ;
           NodeType[] mixins = node.getMixinNodeTypes() ;
           for(NodeType mixin:mixins) {
-            if(!mixin.getName().equals("exo:actionable")) {
+            if(mixin.getName().equals("exo:actionable")) {
               if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;            
             }
           }
@@ -234,12 +234,118 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }               
       }
     }
-//    Iterator iter = inputs.values().iterator() ;
-//    JcrInputProperty property ;
-//    while (iter.hasNext()) {
-//      property = (JcrInputProperty) iter.next() ;
-//      System.out.println("\n\nproperty name====>" +property.getJcrPath()+ "\n\n");
-//    }
+    if(!defaultLanguage.equals(language) && isDefault){
+      Node selectedLangNode = null ;
+      if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
+      setVoteProperty(newLanguageNode, node, selectedLangNode) ;
+      setCommentNode(node, newLanguageNode, selectedLangNode) ;
+    }
+    if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
+    if(isDefault && languagesNode.hasNode(language)) languagesNode.getNode(language).remove() ;
+    node.save() ;
+    node.getSession().save() ;    
+  }
+  
+  public void addLanguage(Node node, Map inputs, String language, boolean isDefault, String nodeType) throws Exception {
+    Node newLanguageNode = null ;
+    Node languagesNode = null ;
+    String defaultLanguage = getDefault(node) ;
+    Workspace ws = node.getSession().getWorkspace() ;
+    if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
+    else languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
+    if(!defaultLanguage.equals(language)){
+      if(isDefault) {
+        if(languagesNode.hasNode(defaultLanguage)) {
+          newLanguageNode = languagesNode.getNode(defaultLanguage) ;
+        } else {
+          newLanguageNode = languagesNode.addNode(defaultLanguage) ;
+          NodeType[] mixins = node.getMixinNodeTypes() ;
+          for(NodeType mixin:mixins) {
+            if(!mixin.getName().equals("exo:actionable")) {
+              if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;            
+            }
+          }
+        }
+      } else {
+        if(languagesNode.hasNode(language)) {
+          newLanguageNode = languagesNode.getNode(language) ;
+        } else {
+          newLanguageNode = languagesNode.addNode(language) ;
+          NodeType[] mixins = node.getMixinNodeTypes() ;
+          for(NodeType mixin : mixins) {
+            if(!mixin.getName().equals("exo:actionable")) {
+              if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;
+              for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
+                if(!def.isProtected()) {
+                  String propName = def.getName() ;
+                  if(def.isMandatory() && !def.isAutoCreated()) {
+                    if(def.isMultiple()) {
+                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
+                    } else {
+                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
+                    }
+                  }        
+                }
+              }
+            }
+          }
+          newLanguageNode.setProperty(EXO_LANGUAGE, language) ;
+        }
+      }
+      Node jcrContent = node.getNode(nodeType) ;
+      node.save() ;
+      if(!newLanguageNode.hasNode(nodeType)) {
+        ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
+      }
+      Node newContentNode = newLanguageNode.getNode(nodeType) ;
+      PropertyIterator props = newContentNode.getProperties() ;
+      while(props.hasNext()) {
+        Property prop = props.nextProperty() ;
+        if(inputs.containsKey(NODE + nodeType + "/" + prop.getName())) {
+          JcrInputProperty inputVariable = (JcrInputProperty) inputs.get(NODE + nodeType + "/" + prop.getName()) ;
+          boolean isMultiple = prop.getDefinition().isMultiple() ;
+          setPropertyValue(prop.getName(), newContentNode, prop.getType(), inputVariable.getValue(), isMultiple) ;
+        }
+      }
+      if(isDefault) {
+        Node tempNode = node.addNode(TEMP_NODE, "nt:unstructured") ;
+        node.getSession().move(node.getNode(nodeType).getPath(), tempNode.getPath() + "/" + nodeType) ;
+        node.getSession().move(newLanguageNode.getNode(nodeType).getPath(), node.getPath() + "/" + nodeType) ;
+        node.getSession().move(tempNode.getNode(nodeType).getPath(), languagesNode.getPath() + "/" + defaultLanguage + "/" + nodeType) ;
+        tempNode.remove() ;
+      }      
+    } else {
+      JcrInputProperty inputVariable = (JcrInputProperty) inputs.get(NODE + nodeType + "/" + JCRDATA) ;
+      setPropertyValue(JCRDATA, node.getNode(nodeType), inputVariable.getType(), inputVariable.getValue(), false) ;
+    }
+    PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
+    for(PropertyDefinition pro : properties){
+      if(!pro.isProtected()) {
+        String propertyName = pro.getName() ;
+        JcrInputProperty property = (JcrInputProperty)inputs.get(NODE + propertyName) ;
+        if(defaultLanguage.equals(language) && property != null) {
+          setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
+        } else {          
+          if(isDefault) {            
+            if(node.hasProperty(propertyName)) {
+              Object value = null ;
+              int requiredType = node.getProperty(propertyName).getDefinition().getRequiredType() ;
+              boolean isMultiple = node.getProperty(propertyName).getDefinition().isMultiple() ;
+              if(isMultiple) value = node.getProperty(propertyName).getValues() ;
+              else value = node.getProperty(propertyName).getValue() ;
+              setPropertyValue(propertyName, newLanguageNode, requiredType, value, isMultiple) ;
+            }
+            if(property != null) {
+              setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
+            }
+          } else {
+            if(property != null) {
+              setPropertyValue(propertyName, newLanguageNode, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
+            }
+          }
+        }               
+      }
+    }
     if(!defaultLanguage.equals(language) && isDefault){
       Node selectedLangNode = null ;
       if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
@@ -346,7 +452,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     node.save() ;
     node.getSession().save() ;    
   }
-
+  
   public String getDefault(Node node) throws Exception {
     if(node.hasProperty(EXO_LANGUAGE)) return node.getProperty(EXO_LANGUAGE).getString() ;
     return null ;
@@ -454,12 +560,8 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           }
         }
       }
-      if(node.getPrimaryNodeType().getName().equals("nt:file")) {
-        Node tempNode = node.addNode(TEMP_NODE, "nt:unstructured") ;
-        node.getSession().move(node.getNode(JCRCONTENT).getPath(), tempNode.getPath() + "/" + JCRCONTENT) ;
-        node.getSession().move(selectedLangNode.getNode(JCRCONTENT).getPath(), node.getPath() + "/" + JCRCONTENT) ;
-        node.getSession().move(tempNode.getNode(JCRCONTENT).getPath(), languagesNode.getPath() + "/" + defaultLanguage + "/" + JCRCONTENT) ;
-        tempNode.remove() ;
+      if(hasNodeTypeNTResource(node)) {
+        processWithDataChildNode(node, selectedLangNode, languagesNode, defaultLanguage, getChildNodeType(node)) ;
       }
       setMixin(node, newLang) ;
       setVoteProperty(newLang, node, selectedLangNode) ;
@@ -469,6 +571,37 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       node.save() ;
       node.getSession().save() ;
     }
+  }
+  
+  private void processWithDataChildNode(Node node, Node selectedLangNode, Node languagesNode, 
+      String defaultLanguage, String nodeType) throws Exception {
+    Node tempNode = node.addNode(TEMP_NODE, "nt:unstructured") ;
+    node.getSession().move(node.getNode(nodeType).getPath(), tempNode.getPath() + "/" + nodeType) ;
+    node.getSession().move(selectedLangNode.getNode(nodeType).getPath(), node.getPath() + "/" + nodeType) ;
+    node.getSession().move(tempNode.getNode(nodeType).getPath(), languagesNode.getPath() + "/" + defaultLanguage + "/" + nodeType) ;
+    tempNode.remove() ;
+  }
+  
+  private boolean hasNodeTypeNTResource(Node node) throws Exception {
+    if(node.hasNodes()) {
+      NodeIterator nodeIter = node.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node childNode = nodeIter.nextNode() ;
+        if(childNode.getPrimaryNodeType().getName().equals("nt:resource")) return true ;
+      }
+    }
+    return false ;
+  }
+  
+  private String getChildNodeType(Node node) throws Exception {
+    if(node.hasNodes()) {
+      NodeIterator nodeIter = node.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node childNode = nodeIter.nextNode() ;
+        if(childNode.getPrimaryNodeType().getName().equals("nt:resource")) return childNode.getName() ;
+      }
+    }
+    return null ;
   }
 
   public Node getLanguage(Node node, String language) throws Exception {

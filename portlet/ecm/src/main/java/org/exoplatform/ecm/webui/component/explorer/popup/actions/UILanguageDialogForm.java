@@ -119,6 +119,16 @@ public class UILanguageDialogForm extends DialogFormFields {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
+    } else if(node.hasNode(Utils.EXO_IMAGE)) {
+      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
+      try {
+        multiLanguageService.addLanguage(node, inputProperties, getSelectedLanguage(), isDefaultLanguage(), Utils.EXO_IMAGE) ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return null;
+      }
     } else {
       Map map = Utils.prepareMap(getChildren(), properties, uiExplorer.getSession()) ;
       try {
