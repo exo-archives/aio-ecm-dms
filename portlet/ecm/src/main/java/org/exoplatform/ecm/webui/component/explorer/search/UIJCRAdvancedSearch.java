@@ -133,22 +133,23 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       UIECMSearch uiSearch = uiForm.getParent() ;
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       long startTime = System.currentTimeMillis();
-      Query query = queryManager.createQuery(queryS, searchType);
-      QueryResult queryResult = null ;
       try {
+        Query query = queryManager.createQuery(queryS, searchType);
+        QueryResult queryResult = null ;
         queryResult = query.execute();
+        UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;      
+        uiSearchResult.setQueryResults(queryResult) ;
+        uiSearchResult.updateGrid() ;
+        long time = System.currentTimeMillis() - startTime;
+        uiSearchResult.setSearchTime(time);
+        uiSearch.setRenderedChild(UIECMSearch.ADVANCED_RESULT) ;
       } catch (Exception e){
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.invalid-queryStatement", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.invalid-queryStatement", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;      
-      uiSearchResult.setQueryResults(queryResult) ;
-      uiSearchResult.updateGrid() ;
-      long time = System.currentTimeMillis() - startTime;
-      uiSearchResult.setSearchTime(time);
-      uiSearch.setRenderedChild(UIECMSearch.ADVANCED_RESULT) ;
     }
   }
 
