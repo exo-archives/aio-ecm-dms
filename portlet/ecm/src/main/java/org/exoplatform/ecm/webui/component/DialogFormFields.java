@@ -518,12 +518,17 @@ public class DialogFormFields extends UIForm {
       }
     }
     if(isNotEditNode_) {
-      if(propertyNode_ != null) {
-        wysiwyg.setValue(getPropertyValue(jcrPath)) ;
-      } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
-        wysiwyg.setValue(node_.getName()) ;
+      if(node_ != null && node_.hasNode("jcr:content") && propertyNode_ != null) {
+        Node jcrContentNode = node_.getNode("jcr:content") ;
+        wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
       } else {
-        wysiwyg.setValue(null) ;
+        if(propertyNode_ != null) {
+          wysiwyg.setValue(getPropertyValue(jcrPath)) ;
+        } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
+          wysiwyg.setValue(node_.getName()) ;
+        } else {
+          wysiwyg.setValue(null) ;
+        }
       }
     }
     renderField(name) ;
