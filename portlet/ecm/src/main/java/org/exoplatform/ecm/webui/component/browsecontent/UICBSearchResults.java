@@ -114,10 +114,10 @@ public class UICBSearchResults extends UIContainer {
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
       Node node = container.getNodeByPath(itemPath) ;  
-      UIApplication app = uiResults.getAncestorOfType(UIApplication.class) ;
+      UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class) ;
       if(node == null) {
-        app.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       }
       Node parentNode = null ;
@@ -132,6 +132,16 @@ public class UICBSearchResults extends UIContainer {
           return ;
         }
         container.changeNode(parentNode) ;
+        return ;
+      }
+      if(uiResults.isDocumentTemplate(parentNode.getPrimaryNodeType().getName())) {
+        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
+        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
+        uiDocument.setNode(parentNode) ;
+        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow") ;
+        uiPopup.setResizable(true) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         return ;
       }
     }

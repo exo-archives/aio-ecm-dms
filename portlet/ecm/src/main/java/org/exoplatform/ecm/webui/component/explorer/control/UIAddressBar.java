@@ -10,7 +10,6 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
@@ -93,9 +92,11 @@ public class UIAddressBar extends UIForm {
       UIAddressBar uiAddress = event.getSource() ;
       String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue() ;
       UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.setIsViewTag(false) ;
       try {
         Node node = uiExplorer.getRootNode().getNode(path.substring(1)) ;
         uiExplorer.setSelectNode(node) ;
+        uiExplorer.setCurrentStateNode(node) ;
       } catch(Exception e) {
         UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null, 
