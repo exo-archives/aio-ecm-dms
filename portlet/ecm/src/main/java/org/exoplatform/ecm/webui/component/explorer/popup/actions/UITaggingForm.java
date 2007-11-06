@@ -133,10 +133,8 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       }
       folksonomyService.addTag(uiExplorer.getCurrentNode(), tagNames, repository) ;
       uiForm.activate() ;
-      if(uiExplorer.isViewTag()) {
-        UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
-      }
+      UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
       uiForm.getUIStringInput(TAG_NAMES).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
