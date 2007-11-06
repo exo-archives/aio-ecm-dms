@@ -626,6 +626,15 @@
   margin: 10px auto;
 }
 
+.UIECMScripts .UIBarStyle .BarStyle2 .MiddleBar {
+
+}
+
+.UIECMAdminPortlet .UIScriptFilterForm .UIForm .UIFormGrid td.FieldComponent {
+	padding: 7px 4px 0px 4px;
+	line-height: 25px;
+}
+
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
   padding-top: 10px;
   background: #f7f7f7;
@@ -637,11 +646,11 @@
 
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
   width: 90px;
-  padding-left: 10px;
+	padding: 0px 4px 0px 10px;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
-  margin: 10px 0px 0px 0px;
+	height: 20px;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer .OverflowContainer {
