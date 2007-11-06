@@ -43,7 +43,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   final private static String TAG_STATUS_PROP = "exo:tagStatus".intern() ;
   final private static String TAG_LAST_UPDATED_DATE_PROP = "exo:lastUpdatedDate".intern() ;
   
-  final private static String EXO_TAG_STYLE = "exo:tagStyle".intern() ;
+//  final private static String EXO_TAG_STYLE = "exo:tagStyle".intern() ;
   final private static String TAG_RATE_PROP = "exo:styleRange".intern() ;
   final private static String HTML_STYLE_PROP = "exo:htmlStyle".intern() ;
 
@@ -137,9 +137,9 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       }      
       exoTagsHomeNode_.save() ;
       node.save() ;
-      cache_.remove(taggingNode.getPath()) ;
-      cache_.remove(baseTagsPath_) ;
-      cache_.remove(node.getPath()) ;
+//      cache_.remove(taggingNode.getPath()) ;
+//      cache_.remove(baseTagsPath_) ;
+//      cache_.remove(node.getPath()) ;
       updateTagStatus(taggingNode.getPath(), repository) ;      
     }        
     currentSession.save() ;    
@@ -153,9 +153,9 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
 
   public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception {
-    if(cache_.get(tagPath)!=null) {
-      return (List<Node>)cache_.get(tagPath) ;
-    }
+//    if(cache_.get(tagPath)!=null) {
+//      return (List<Node>)cache_.get(tagPath) ;
+//    }
     List<Node> documentList = new ArrayList<Node>() ;        
     Session systemSession = getSystemSession(repository) ;
     Node tagNode = (Node)systemSession.getItem(tagPath) ;
@@ -174,7 +174,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       sessionOnWS.logout();
     }
     systemSession.logout();
-    cache_.put(tagPath,documentList) ;
+//    cache_.put(tagPath,documentList) ;
     return documentList;
   } 
 
@@ -189,7 +189,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     for(NodeIterator iter = exoTagsHomeNode_.getNodes(); iter.hasNext();) {
       tagList.add(iter.nextNode()) ;
     }
-    cache_.put(baseTagsPath_,tagList) ;
+//    cache_.put(baseTagsPath_,tagList) ;
     systemSession.logout();
     return tagList ;
   }
@@ -206,7 +206,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       tagStyleList.add(iter.nextNode()) ;
     }
     systemSession.logout();
-    cache_.put(exoTagStylePath_,tagStyleList) ;
+//    cache_.put(exoTagStylePath_,tagStyleList) ;
     return tagStyleList ;
   }    
   
@@ -215,15 +215,15 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }  
 
   public String getTagStyle(String styleName, String repository) throws Exception {
-    Object cachedObj = cache_.get(styleName) ;
-    if(cachedObj != null) {
-      return (String)cachedObj ;
-    }    
+//    Object cachedObj = cache_.get(styleName) ;
+//    if(cachedObj != null) {
+//      return (String)cachedObj ;
+//    }    
     Session systemSession = getSystemSession(repository) ;    
     Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
     Node tagStyle = tagStyleHomeNode.getNode(styleName) ;
     String htmlStyle = tagStyle.getProperty(HTML_STYLE_PROP).getValue().getString() ;
-    cache_.put(styleName,htmlStyle) ;
+//    cache_.put(styleName,htmlStyle) ;
     systemSession.logout();
     return htmlStyle ;
   }
@@ -236,9 +236,9 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     tagStyle.save() ;
     session.save() ;
     session.logout();
-    cache_.remove(tagStyle.getName()) ;
-    cache_.remove(baseTagsPath_) ;
-    cache_.remove(exoTagStylePath_) ;
+//    cache_.remove(tagStyle.getName()) ;
+//    cache_.remove(baseTagsPath_) ;
+//    cache_.remove(exoTagStylePath_) ;
   }
 
   private void updateTagStatus(String tagPath, String repository) throws Exception {    
@@ -293,9 +293,9 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 
       return new ArrayList<Node>() ;
     
-    if(cache_.get(document.getPath())!=null ) {
-      return (List<Node>) cache_.get(document.getPath()) ;
-    }
+//    if(cache_.get(document.getPath())!=null ) {
+//      return (List<Node>) cache_.get(document.getPath()) ;
+//    }
     List<Node> tagList = new ArrayList<Node>() ;    
     Session systemSession = getSystemSession(repository) ;
     try{      
@@ -307,7 +307,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     }catch (Exception e) {      
     }
     systemSession.logout();
-    cache_.put(document.getPath(),tagList) ;
+//    cache_.put(document.getPath(),tagList) ;
     return tagList;
   }   
 }
