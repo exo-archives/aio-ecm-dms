@@ -361,7 +361,7 @@ public class UIBrowseContainer extends UIContainer {
   public Map getPathContent() throws Exception {
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    List templates = templateService.getDocumentTemplates(getRepository()) ;
+    List<String> templates = templateService.getDocumentTemplates(getRepository()) ;
     List<String> tabList = new ArrayList<String>() ;
     List<String> subCategoryList = new ArrayList<String>() ;
     List<Node> subDocumentList = new ArrayList<Node>() ;
@@ -1019,7 +1019,7 @@ public class UIBrowseContainer extends UIContainer {
     return childMap ;
   }
 
-  private List<String> getHistory(List documentTemplates, Node parentNode) throws Exception {
+  private List<String> getHistory(List<String> documentTemplates, Node parentNode) throws Exception {
     List<String> historyList = new ArrayList<String>() ;
     NodeIterator iter = parentNode.getNodes() ;
     while(iter.hasNext()) {
@@ -1172,7 +1172,7 @@ public class UIBrowseContainer extends UIContainer {
           uiContainer.changeNode(selectNode) ;
         }
       }
-      event.getSource().setCurrentNode(selectNode) ;
+      uiContainer.setCurrentNode(selectNode) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer.getAncestorOfType(UIBrowseContentPortlet.class)) ;
     }
   }

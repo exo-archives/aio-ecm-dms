@@ -84,7 +84,8 @@ public class UIToolBar extends UIContainer {
 
   public Node getCurrentNode() throws Exception {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
-    return uiContainer.getSelectedTab();}
+    return uiContainer.getCurrentNode();
+  }
 
   public boolean isShowCategoryTree() {
     UIBrowseContainer uiBrowseContainer = getAncestorOfType(UIBrowseContainer.class) ;

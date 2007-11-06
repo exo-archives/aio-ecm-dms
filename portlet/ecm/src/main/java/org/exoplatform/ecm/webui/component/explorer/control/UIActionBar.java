@@ -892,7 +892,7 @@ public class UIActionBar extends UIForm {
       UIActionBar uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
-      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+//      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       //TODO need search on node name
       String queryStatement = null ;

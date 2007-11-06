@@ -88,7 +88,6 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       Node currentDoc = uiForm.getDocument() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String language = uiDocumentDetail.getLanguage() ;
-      System.out.println("\n\n comment " + comment);
       if(comment == null || comment.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.comment-required", null, ApplicationMessage.WARNING)) ;
         UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;

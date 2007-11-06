@@ -40,11 +40,6 @@ public class UIPropertiesManager extends UIContainer implements UIPopupComponent
   }
   static public class ChangeTabActionListener extends EventListener<UIPropertiesManager> {
     public void execute(Event<UIPropertiesManager> event) throws Exception {
-      System.out.println("\n\nGo here\n\n");
-      UIPropertiesManager uiManager = event.getSource() ;
-      for(UIComponent uiChild : uiManager.getChildren()) {
-        if(uiChild.isRendered()) System.out.println("\n\nuicomponent name====>" +uiChild.getId()+ "\n\n");
-      }
     }
   }
 }
