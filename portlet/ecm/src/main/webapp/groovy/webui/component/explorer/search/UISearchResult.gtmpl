@@ -48,7 +48,7 @@
 	            String nodePath = node.getPath() ;
 	            
 	            if(nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
-	            else if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
+	            else if(nodePath.length() > 40) nodePath = nodePath.substring(0, 30) + "...";
 	            
 	            //String nodeType = node.getPrimaryNodeType().getName().toLowerCase();
 	            //def onClickCall = "";

@@ -1,3 +1,9 @@
 <div id="$uicomponent.id" class="$uicomponent.id">
-  <%uicomponent.renderChildren();%>
+  <%
+    try {
+      uicomponent.renderChildren();
+    } catch(NullPointerException nex) {
+  %>
+    <%=_ctx.appRes(uicomponent.getId() + ".msg.re-config")%>
+  <%} %>
 </div>

@@ -6,9 +6,11 @@ package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
@@ -94,105 +96,116 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     UIFormSelectBox uiRepositoryList = getUIFormSelectBox(REPOSITORY_NAME) ;
     uiRepositoryList.setOptions(repositories) ;
     uiRepositoryList.setValue(repoName) ;
-    ManageableRepository manaRepoService = 
-      getApplicationComponent(RepositoryService.class).getRepository(repoName) ;
-    String[] wsNames = manaRepoService.getWorkspaceNames();
-    String systemWsName = manaRepoService.getConfiguration().getSystemWorkspaceName() ;
-    List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
-    String prefWs = preferences.getValue("workspace", "") ;
-    setTemplateOptions(preferences.getValue("path", ""), repoName, prefWs) ;
-    for(String wsName : wsNames) {
-      if(!wsName.equals(systemWsName)) {
-        if(wsName.equals(prefWs)) isDefaultWs = true ;
-        workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+    try {
+      ManageableRepository manaRepoService = 
+        getApplicationComponent(RepositoryService.class).getRepository(repoName) ;
+      String[] wsNames = manaRepoService.getWorkspaceNames();
+      String systemWsName = manaRepoService.getConfiguration().getSystemWorkspaceName() ;
+      List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
+      String prefWs = preferences.getValue("workspace", "") ;
+      setTemplateOptions(preferences.getValue("path", ""), repoName, prefWs) ;
+      for(String wsName : wsNames) {
+        if(!wsName.equals(systemWsName)) {
+          if(wsName.equals(prefWs)) isDefaultWs = true ;
+          workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+        }
       }
+      UIFormSelectBox uiWorkspaceList = getUIFormSelectBox(WORKSPACE_NAME) ; 
+      uiWorkspaceList.setOptions(workspace) ;
+      if(isDefaultWs) {
+        uiWorkspaceList.setValue(prefWs);
+      } else if(workspace.size() > 0) {
+        uiWorkspaceList.setValue(workspace.get(0).getValue());
+      }
+      getUIStringInput(FIELD_SAVEDPATH).setValue(preferences.getValue("path", "")) ;
+    } catch(RepositoryException repo) {
+      ResourceBundle res = context.getApplicationResourceBundle() ;
+      String label = res.getString(getId() + ".label.select-repository") ;
+      repositories.add(new SelectItemOption<String>(label, "")) ;
+      uiRepositoryList.setValue("") ;
     }
-    UIFormSelectBox uiWorkspaceList = getUIFormSelectBox(WORKSPACE_NAME) ; 
-    uiWorkspaceList.setOptions(workspace) ;
-    if(isDefaultWs) {
-      uiWorkspaceList.setValue(prefWs);
-    } else if(workspace.size() > 0) {
-      uiWorkspaceList.setValue(workspace.get(0).getValue());
-    }
-    getUIStringInput(FIELD_SAVEDPATH).setValue(preferences.getValue("path", "")) ;
   }
   
   private void setTemplateOptions(String nodePath, String repoName, String wsName) throws Exception {
-    Session session = getApplicationComponent(RepositoryService.class).getRepository(repoName).getSystemSession(wsName) ;
-    Node currentNode = null ;
-    UIFormSelectBox uiSelectTemplate = getUIFormSelectBox(FIELD_SELECT) ;
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
-    boolean hasDefaultDoc = false ;
-    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest request = context.getRequest() ; 
-    PortletPreferences preferences = request.getPreferences() ;
-    String defaultValue = preferences.getValue("type", "") ;
     try {
-      currentNode = (Node)session.getItem(nodePath) ;      
-    } catch(PathNotFoundException ex) {
-      UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
-      uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.item-not-found", null, 
-                                              ApplicationMessage.WARNING)) ;
-      session.logout();
-      return ;
-    }
-    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
-    NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
-    NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List templates = templateService.getDocumentTemplates(repoName) ;
-    try {
-      for(int i = 0; i < templates.size(); i ++){
-        String nodeTypeName = templates.get(i).toString() ; 
-        NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
-        NodeType[] superTypes = nodeType.getSupertypes() ;
-        boolean isCanCreateDocument = false ;
-        for(NodeDefinition childDef : childDefs){
-          NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes() ;
-          for(NodeType requiredChild : requiredChilds) {          
-            if(nodeTypeName.equals(requiredChild.getName())){            
-              isCanCreateDocument = true ;
-              break ;
-            }            
-          }
-          if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
-            if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) hasDefaultDoc = true ;
-            String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
-            options.add(new SelectItemOption<String>(label, nodeTypeName));          
-            isCanCreateDocument = true ;          
-          }
-        }      
-        if(!isCanCreateDocument){
-          for(NodeType superType:superTypes) {
-            for(NodeDefinition childDef : childDefs){          
-              for(NodeType requiredType : childDef.getRequiredPrimaryTypes()) {              
-                if (superType.getName().equals(requiredType.getName())) {
-                  if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) {
-                    hasDefaultDoc = true ;
+      Session session = getApplicationComponent(RepositoryService.class).getRepository(repoName).getSystemSession(wsName) ;
+      Node currentNode = null ;
+      UIFormSelectBox uiSelectTemplate = getUIFormSelectBox(FIELD_SELECT) ;
+      List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
+      boolean hasDefaultDoc = false ;
+      PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
+      PortletRequest request = context.getRequest() ; 
+      PortletPreferences preferences = request.getPreferences() ;
+      String defaultValue = preferences.getValue("type", "") ;
+      try {
+        currentNode = (Node)session.getItem(nodePath) ;      
+      } catch(PathNotFoundException ex) {
+        UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.item-not-found", null, 
+            ApplicationMessage.WARNING)) ;
+        session.logout();
+        return ;
+      }
+      NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
+      NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
+      NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
+      TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+      List templates = templateService.getDocumentTemplates(repoName) ;
+      try {
+        for(int i = 0; i < templates.size(); i ++){
+          String nodeTypeName = templates.get(i).toString() ; 
+          NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
+          NodeType[] superTypes = nodeType.getSupertypes() ;
+          boolean isCanCreateDocument = false ;
+          for(NodeDefinition childDef : childDefs){
+            NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes() ;
+            for(NodeType requiredChild : requiredChilds) {          
+              if(nodeTypeName.equals(requiredChild.getName())){            
+                isCanCreateDocument = true ;
+                break ;
+              }            
+            }
+            if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
+              if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) hasDefaultDoc = true ;
+              String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
+              options.add(new SelectItemOption<String>(label, nodeTypeName));          
+              isCanCreateDocument = true ;          
+            }
+          }      
+          if(!isCanCreateDocument){
+            for(NodeType superType:superTypes) {
+              for(NodeDefinition childDef : childDefs){          
+                for(NodeType requiredType : childDef.getRequiredPrimaryTypes()) {              
+                  if (superType.getName().equals(requiredType.getName())) {
+                    if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) {
+                      hasDefaultDoc = true ;
+                    }
+                    String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
+                    options.add(new SelectItemOption<String>(label, nodeTypeName));                
+                    isCanCreateDocument = true ;
+                    break;
                   }
-                  String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
-                  options.add(new SelectItemOption<String>(label, nodeTypeName));                
-                  isCanCreateDocument = true ;
-                  break;
                 }
+                if(isCanCreateDocument) break ;
               }
               if(isCanCreateDocument) break ;
             }
-            if(isCanCreateDocument) break ;
-          }
-        }            
+          }            
+        }
+        uiSelectTemplate.setOptions(options) ;
+        if(hasDefaultDoc) {
+          uiSelectTemplate.setValue(defaultValue);
+        } else if(options.size() > 0) {
+          defaultValue = options.get(0).getValue() ;
+          uiSelectTemplate.setValue(defaultValue);
+        } 
+      } catch(Exception e) {
+        e.printStackTrace() ;
       }
-      uiSelectTemplate.setOptions(options) ;
-      if(hasDefaultDoc) {
-        uiSelectTemplate.setValue(defaultValue);
-      } else if(options.size() > 0) {
-        defaultValue = options.get(0).getValue() ;
-        uiSelectTemplate.setValue(defaultValue);
-      } 
-    } catch(Exception e) {
-      e.printStackTrace() ;
+      session.logout();
+    } catch(Exception ex) {
+      ex.printStackTrace() ;
     }
-    session.logout();
   }
   
   public void updateSelect(String selectField, String value) {
@@ -243,6 +256,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       for(String ws : wsNames) {
         if(!ws.equals(systemWsName)) workspace.add(new SelectItemOption<String>(ws, ws)) ;
       }
+      uiTypeForm.setTemplateOptions("/", repoName, workspace.get(0).getLabel()) ;
       uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).setOptions(workspace) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;
     }

@@ -629,9 +629,8 @@ public class DialogFormFields extends UIForm {
   }
   public String getSelectBoxFieldValue(String name) {
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    String value = null ;
-    if (uiSelectBox != null) value = uiSelectBox.getValue() ;
-    return value ;
+    if (uiSelectBox != null) return uiSelectBox.getValue() ;
+    return null ;
   }
 
   public void addUploadField(String name, String[] arguments) throws Exception {
