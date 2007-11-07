@@ -256,7 +256,9 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       for(String ws : wsNames) {
         if(!ws.equals(systemWsName)) workspace.add(new SelectItemOption<String>(ws, ws)) ;
       }
-      uiTypeForm.setTemplateOptions("/", repoName, workspace.get(0).getLabel()) ;
+      if(workspace.size() > 0) {
+        uiTypeForm.setTemplateOptions("/", repoName, workspace.get(0).getLabel()) ;
+      }
       uiTypeForm.getUIFormSelectBox(WORKSPACE_NAME).setOptions(workspace) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTypeForm) ;
     }
