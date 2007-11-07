@@ -189,7 +189,15 @@ public class UIBrowseContainer extends UIContainer {
   public List<Node> getDocumentByTag()throws Exception {
     String repository = getRepository() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getDocumentsOnTag(getTagPath(), repository) ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    List<String> documentsType = templateService.getDocumentTemplates(repository) ;
+    List<Node> documentsOnTag = new ArrayList<Node>() ;
+    for(Node node : folksonomyService.getDocumentsOnTag(tagPath_, repository)) {
+      if(documentsType.contains(node.getPrimaryNodeType().getName())) {
+        documentsOnTag.add(node) ;
+      }
+    }
+    return documentsOnTag ;
   }
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
