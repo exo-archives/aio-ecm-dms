@@ -429,7 +429,15 @@ public class UIJCRExplorer extends UIContainer {
   
   public List<Node> getDocumentByTag()throws Exception {
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getDocumentsOnTag(tagPath_, getRepositoryName()) ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    List<String> documentsType = templateService.getDocumentTemplates(getRepositoryName()) ;
+    List<Node> documentsOnTag = new ArrayList<Node>() ;
+    for(Node node : folksonomyService.getDocumentsOnTag(tagPath_, getRepositoryName())) {
+      if(documentsType.contains(node.getPrimaryNodeType().getName())) {
+        documentsOnTag.add(node) ;
+      }
+    }
+    return documentsOnTag ;
   }
   
   public void setIsViewTag(boolean isViewTag) { isViewTag_ = isViewTag ; }
