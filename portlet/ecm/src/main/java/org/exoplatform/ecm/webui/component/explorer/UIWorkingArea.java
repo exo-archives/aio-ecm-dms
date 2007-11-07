@@ -488,11 +488,10 @@ public class UIWorkingArea extends UIContainer {
       Node parentNode = node.getParent() ;
       try {
         node.remove() ;
-        uiExplorer.setSelectNode(parentNode) ;
-        uiExplorer.updateAjax(event) ;
         parentNode.save() ;
       } catch(VersionException ve) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception",null,ApplicationMessage.WARNING)) ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception", null,
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;    
       } catch(ReferentialIntegrityException ref) {
@@ -506,10 +505,20 @@ public class UIWorkingArea extends UIContainer {
             uicomp.removeMixins(child) ;
           }
         }
-        node.remove() ;
+        try {
+          node.remove() ;
+          parentNode.save() ;
+        } catch(Exception eee) {
+          eee.printStackTrace() ;
+          uiExplorer.getSession().refresh(false) ;
+          uiExplorer.refreshExplorer() ;
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
+                                                  null,ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ; 
+        }
         uiExplorer.setSelectNode(parentNode) ;
         uiExplorer.updateAjax(event) ;
-        parentNode.save() ;
       } catch(Exception e) {  
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
@@ -517,6 +526,8 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.getSession().refresh(false) ;
         uiExplorer.refreshExplorer() ;
       }
+      uiExplorer.setSelectNode(parentNode) ;
+      uiExplorer.updateAjax(event) ;
       if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;        
     }
   }
