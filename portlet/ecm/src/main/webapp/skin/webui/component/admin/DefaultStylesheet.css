@@ -845,6 +845,10 @@
 
 /*----------------------------UIDialogTab-------------------------------*/
 
+.UITemplatesManager .UITabPane .UIDialogTab .DialogForm {
+	padding-top: 10px;
+}
+
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm .FormContainer {
 	padding-top: 10px;
 }
@@ -856,11 +860,16 @@
 
 /*----------------------------UIViewTab-------------------------------*/
 
+.UITemplatesManager .UITabPane .UIViewTab .ViewForm {
+	padding-top: 10px;
+	border: 1px solid red;
+}
+
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm .FormContainer {
 	padding-top: 10px;
 }
 
-.UIECMAdminPortlet .UITabPane .UIViewTab .UIFormGrid  td.FieldComponent .textarea {
+.UIECMAdminPortlet .UITabPane .UIViewTab .UIFormGrid td.FieldComponent .textarea {
   width: 90%;
   height: 350px;
 }

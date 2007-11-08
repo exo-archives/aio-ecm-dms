@@ -31,11 +31,15 @@
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
-  width: 97%;
+  width: auto;
   margin: 0px auto;
   background: #efefef;
   border: solid 1px #b7b7b7;
   border-top: none;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .UITabContentContainer {
+	width: 95%;
 }
 
 .UIJCRExplorerPortlet .UICompareExactlyForm .UIFormWithTitle {
