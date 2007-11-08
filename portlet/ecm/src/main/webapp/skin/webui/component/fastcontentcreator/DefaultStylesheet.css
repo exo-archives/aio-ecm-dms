@@ -17,6 +17,12 @@
 	padding: 15px 0px ;
 }
 
+.UIFastContentCreatorPortlet .MsgLable {
+	text-align: center;
+	line-height: 40px;
+	color: #E80C00;
+}
+
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
 	width: 160px;
 }
