@@ -6,6 +6,7 @@
 @import url("UINavigation/DefaultStylesheet.css");
 @import url("UICBSearchForm/DefaultStylesheet.css");
 @import url("UIEventViewer/DefaultStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
 
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
@@ -895,4 +896,8 @@ UIBrowseContentPortlet .Explorer {
 	height: 25px;
 	line-height: 25px;
 	border-bottom: solid 1px #BDBDBD;
+}
+
+.UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
+  width:140px;
 }

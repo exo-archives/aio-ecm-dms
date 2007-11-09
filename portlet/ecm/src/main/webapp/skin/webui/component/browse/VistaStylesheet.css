@@ -6,6 +6,7 @@
 @import url("UINavigation/VistaStylesheet.css");
 @import url("UICBSearchForm/VistaStylesheet.css");
 @import url("UIEventViewer/VistaStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
   padding: 5px 0px;

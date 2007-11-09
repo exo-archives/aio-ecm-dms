@@ -13,7 +13,6 @@ import org.exoplatform.ecm.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -51,8 +50,6 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
 
 
   public UICBCommentForm() throws Exception {
-    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-    context.getJavascriptManager().importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
     addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
     addChild(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
     addChild(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null)) ;
