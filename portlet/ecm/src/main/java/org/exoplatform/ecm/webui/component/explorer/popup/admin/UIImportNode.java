@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.ImportUUIDBehavior;
 import javax.jcr.Session;
 
@@ -94,9 +95,13 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       try {
         session.importXML(uiExplorer.getCurrentNode().getPath(),xmlInputStream,
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.access-denied", null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
       } catch(Exception ise) {        
         ise.printStackTrace() ;
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null,ApplicationMessage.ERROR)) ;
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 
