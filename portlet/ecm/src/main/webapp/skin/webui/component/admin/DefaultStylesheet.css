@@ -862,7 +862,6 @@
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm {
 	padding-top: 10px;
-	border: 1px solid red;
 }
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm .FormContainer {
