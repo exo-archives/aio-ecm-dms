@@ -456,3 +456,12 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select{
 	width: 100px;
 }
+
+.UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+	padding: 0px;
+	background: white;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}
