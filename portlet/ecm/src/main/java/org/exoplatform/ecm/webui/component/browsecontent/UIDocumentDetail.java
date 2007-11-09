@@ -300,6 +300,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     return Utils.encodeHTML(text) ;
   }
   
+  @SuppressWarnings("unused")
   public boolean isShowPlanView(Node node) throws Exception {
     return false;
   }

@@ -509,12 +509,12 @@ public class UIWorkingArea extends UIContainer {
           node.remove() ;
           parentNode.save() ;
         } catch(Exception eee) {
-          eee.printStackTrace() ;
           uiExplorer.getSession().refresh(false) ;
           uiExplorer.refreshExplorer() ;
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
                                                   null,ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          uiExplorer.updateAjax(event) ;
           return ; 
         }
         uiExplorer.setSelectNode(parentNode) ;

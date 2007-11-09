@@ -4,11 +4,9 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -38,6 +36,8 @@ public class UIPropertiesManager extends UIContainer implements UIPopupComponent
   public void setLockForm(boolean isLockForm) {
     getChild(UIPropertyForm.class).lockForm(isLockForm) ;
   }
+  
+  @SuppressWarnings("unused")
   static public class ChangeTabActionListener extends EventListener<UIPropertiesManager> {
     public void execute(Event<UIPropertiesManager> event) throws Exception {
     }

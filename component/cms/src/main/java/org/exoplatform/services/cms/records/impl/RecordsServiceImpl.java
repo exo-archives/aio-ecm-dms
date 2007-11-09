@@ -38,6 +38,7 @@ public class RecordsServiceImpl implements RecordsService {
   private List<Node> destroyableRecords_ = new ArrayList<Node>() ;
   private List<Node> cutoffRecords_ = new ArrayList<Node>() ;
   private List<Node> accessionableRecords_ = new ArrayList<Node>() ;
+  private long counter_ = 0 ;
   
   final static private int RECORD = 1 ;
   final static private int VITAL_RECORD = 2 ;
@@ -99,6 +100,18 @@ public class RecordsServiceImpl implements RecordsService {
     record.save() ;
     filePlan.save();    
     filePlan.getSession().save() ;
+  }
+  
+  public void refreshRecord(Node filePlan) throws RepositoryException {
+    getRecords(filePlan) ;
+    getAccessionableRecords(filePlan) ;
+    getCutoffRecords(filePlan) ;
+    getDestroyableRecords(filePlan) ;
+    getHolableRecords(filePlan) ;
+    getObsoleteRecords(filePlan) ;
+    getSupersededRecords(filePlan) ;
+    getTransferableRecords(filePlan) ;
+    getVitalRecords(filePlan) ;
   }
 
   private void processDefaultRecordProperties(Node filePlan, Node record,
@@ -571,19 +584,26 @@ public class RecordsServiceImpl implements RecordsService {
 //TODO: Need to use XPath query instead of this way.Now,we can not use query to get nodes from rma:filePlan(always return nothing). 
 //      Need to check with jcr team about this problem - minh.dang@exoplatform.com
     recordNodes_.clear() ;
-    if(filePlan.hasNodes()) makeRecordList(filePlan, RECORD) ;
+    if(filePlan.hasNodes()) {
+      makeRecordList(filePlan, RECORD) ;
+      filePlan.setProperty("rma:recordCounter", counter_);
+    }
     Collections.sort(recordNodes_,new DateComparator(ASCENDING,"rma:dateReceived")) ;
     return recordNodes_;    
   }
   
   public void makeRecordList(Node node, int typeRecord) throws RepositoryException {
+    long counter = 1;
     if(node.hasNodes()) {
       NodeIterator nodeIter = node.getNodes() ;
       while(nodeIter.hasNext()) {
         Node child = nodeIter.nextNode() ;
         switch(typeRecord) {
           case RECORD:
-            if(child.isNodeType("rma:record")) recordNodes_.add(child) ;
+            if(child.isNodeType("rma:record")) {
+              recordNodes_.add(child) ;
+              counter = counter + 1 ;
+            }
             break ;
           case VITAL_RECORD:
             if(child.isNodeType("rma:vitalRecord")) vitalRecordNodes_.add(child) ;
@@ -630,6 +650,7 @@ public class RecordsServiceImpl implements RecordsService {
         if(child.hasNodes()) makeRecordList(child, typeRecord) ;
       }
     }
+    counter_ = counter ;
   }
 
   private void calculateNextRevDate(Calendar currentDate, String period) {

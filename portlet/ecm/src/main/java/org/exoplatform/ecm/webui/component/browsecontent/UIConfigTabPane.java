@@ -143,6 +143,7 @@ public class UIConfigTabPane extends UIContainer {
     }
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, "exo:taxonomy"} ;
     uiJCRBrowser.setFilterType(filterType) ;
+    uiJCRBrowser.setShowRootPathSelect(true) ;
     uiPopup.setUIComponent(uiJCRBrowser) ;
     uiJCRBrowser.setComponent(uiForm, new String[] {UINewConfigForm.FIELD_CATEGORYPATH}) ;
     uiPopup.setShow(true) ;

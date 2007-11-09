@@ -4,7 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
-import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;

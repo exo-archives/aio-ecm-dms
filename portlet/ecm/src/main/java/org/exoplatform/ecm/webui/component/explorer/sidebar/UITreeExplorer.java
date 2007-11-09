@@ -66,10 +66,13 @@ public class UITreeExplorer extends UIContainer {
     return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
   }
   
+  @SuppressWarnings("unused")
   public boolean isPreferenceNode(Node node) throws RepositoryException {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
   }
   
+  
+  @SuppressWarnings("unchecked")
   public List<TreeNode> getRenderedChildren(TreeNode treeNode) throws Exception {    
     if(isPaginated(treeNode)) {      
       UITreeNodePageIterator pageIterator = findComponentById(treeNode.getPath());      
