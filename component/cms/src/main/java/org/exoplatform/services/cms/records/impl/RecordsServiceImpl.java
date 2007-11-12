@@ -593,7 +593,7 @@ public class RecordsServiceImpl implements RecordsService {
   }
   
   public void makeRecordList(Node node, int typeRecord) throws RepositoryException {
-    long counter = 1;
+    long counter = 0;
     if(node.hasNodes()) {
       NodeIterator nodeIter = node.getNodes() ;
       while(nodeIter.hasNext()) {
