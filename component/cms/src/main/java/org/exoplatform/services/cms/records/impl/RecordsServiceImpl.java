@@ -102,18 +102,6 @@ public class RecordsServiceImpl implements RecordsService {
     filePlan.getSession().save() ;
   }
   
-  public void refreshRecord(Node filePlan) throws RepositoryException {
-    getRecords(filePlan) ;
-    getAccessionableRecords(filePlan) ;
-    getCutoffRecords(filePlan) ;
-    getDestroyableRecords(filePlan) ;
-    getHolableRecords(filePlan) ;
-    getObsoleteRecords(filePlan) ;
-    getSupersededRecords(filePlan) ;
-    getTransferableRecords(filePlan) ;
-    getVitalRecords(filePlan) ;
-  }
-
   private void processDefaultRecordProperties(Node filePlan, Node record,
       long counter) throws RepositoryException {
     record.addMixin("rma:record");
@@ -585,6 +573,7 @@ public class RecordsServiceImpl implements RecordsService {
 //      Need to check with jcr team about this problem - minh.dang@exoplatform.com
     recordNodes_.clear() ;
     if(filePlan.hasNodes()) {
+      counter_ = 0 ;
       makeRecordList(filePlan, RECORD) ;
       filePlan.setProperty("rma:recordCounter", counter_);
     }
@@ -593,7 +582,6 @@ public class RecordsServiceImpl implements RecordsService {
   }
   
   public void makeRecordList(Node node, int typeRecord) throws RepositoryException {
-    long counter = 0;
     if(node.hasNodes()) {
       NodeIterator nodeIter = node.getNodes() ;
       while(nodeIter.hasNext()) {
@@ -602,7 +590,7 @@ public class RecordsServiceImpl implements RecordsService {
           case RECORD:
             if(child.isNodeType("rma:record")) {
               recordNodes_.add(child) ;
-              counter = counter + 1 ;
+              counter_ = counter_ + 1 ;
             }
             break ;
           case VITAL_RECORD:
@@ -650,7 +638,6 @@ public class RecordsServiceImpl implements RecordsService {
         if(child.hasNodes()) makeRecordList(child, typeRecord) ;
       }
     }
-    counter_ = counter ;
   }
 
   private void calculateNextRevDate(Calendar currentDate, String period) {

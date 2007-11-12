@@ -11,8 +11,8 @@
   
   def className = "org.exoplatform.services.cms.records.RecordsService" ;
 	def recordsService = uicomponent.getComponentInstanceOfType(className) ;
+	def recordList = recordsService.getRecords(node) ;
   def rcontext = _ctx.getRequestContext() ;
-  recordsService.refreshRecord(node) ;
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.loadViewNodeScroll()');

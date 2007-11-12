@@ -43,6 +43,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     }
     uiJCRBrowser.setRepository(repositoryName) ;
     uiJCRBrowser.setIsDisable(workspaceName, true) ;
+    uiJCRBrowser.setShowRootPathSelect(true) ;
     uiPopup.setUIComponent(uiJCRBrowser);
     UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;
     uiJCRBrowser.setComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;

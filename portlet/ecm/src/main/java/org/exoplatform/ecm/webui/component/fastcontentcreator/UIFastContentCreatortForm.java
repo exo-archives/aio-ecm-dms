@@ -175,6 +175,9 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
           uploadService.removeUpload(((UIFormUploadInput)uiChild).getUploadId()) ;
         }
       }
+      session.save() ;
+      session.refresh(false) ;
+      homeNode.getSession().refresh(false) ;
       Object[] args = { prefLocate } ;
       uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.saved-successfully", args)) ;
     } catch (AccessControlException ace) {
