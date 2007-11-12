@@ -8,17 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -231,7 +235,10 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-        Node queryNode = (Node) uiExplorer.getSession().getItem(uiForm.queryPath_) ;
+        ManageableRepository repository =
+          uiForm.getApplicationComponent(RepositoryService.class).getRepository(uiExplorer.getRepositoryName()) ;
+        Session session = repository.getSystemSession(repository.getConfiguration().getSystemWorkspaceName()) ; 
+        Node queryNode = (Node) session.getItem(uiForm.queryPath_) ;
         queryNode.setProperty("jcr:language", queryLang) ;
         queryNode.setProperty("jcr:statement", statement) ;
         queryNode.save() ;
