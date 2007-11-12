@@ -21,15 +21,26 @@ ECMUtils.prototype.init = function(portletId) {
 
 ECMUtils.prototype.fixHeight = function(portletId) {
 
+
 	var portlet = document.getElementById(portletId) ;
 	var refElement = eXo.core.DOMUtil.findAncestorByClass(portlet, "UIApplication") ;
 	var delta = refElement.offsetHeight - portlet.offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
+
 	for(var i = 0; i < resizeObj.length; i++) {
 		var nHeight = parseInt(resizeObj[i].offsetHeight) + delta;
 		if (nHeight < 0 ) nHeight = "0px" ;
-		resizeObj[i].style.height = nHeight + 'px' ;
+		var UISideBar = eXo.core.DOMUtil.findAncestorByClass(resizeObj[i], 'UISideBar') ;
+
+		if (UISideBar) {
+				resizeObj[i].style.height = nHeight + 'px' ;
+				nHeight =  resizeObj[i].offsetHeight - (UISideBar.offsetHeight - resizeObj[i].offsetHeight - 3);
+				resizeObj[i].style.height = nHeight + 'px' ;
+		} else {
+			resizeObj[i].style.height = nHeight + 'px' ;
+		}
 	}
+
 	//bug ECM-1415;
 	var uiResize = eXo.core.DOMUtil.findAncestorByClass(portlet, 'UIResizableBlock') ;
 	if (uiResize) {
@@ -38,8 +49,8 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 			if (uiResizableBlock && uiRepositoryControl) {
 				uiResizableBlock.style.height = uiResize.clientHeight - uiRepositoryControl.clientHeight + "px";
 			}
+			uiResize.style.height  = uiResize.clientHeight - 6 + "px";
 	}
-	
 };
 
 ECMUtils.prototype.fixScroll = function() {
@@ -139,7 +150,7 @@ ECMUtils.prototype.showHideComponent = function(elemtClicked) {
 		elemt.style.display = 'block' ;
 	} else {
 		elemtClicked.childNodes[0].style.display = 'block' ;
-		elemtClicked.childNodes[1].style.display = 'none' ;
+		//elemtClicked.childNodes[1].style.display = 'none' ;
 		elemt.style.display = 'none' ;
 	}
 };
