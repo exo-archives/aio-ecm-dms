@@ -47,10 +47,10 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
-import org.exoplatform.workflow.webui.component.UIFormWYSIWYGInput;
 import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 import org.exoplatform.workflow.webui.component.VariableMaps;
 
@@ -203,7 +203,7 @@ public class UITask extends UIForm {
           input = new UIFormTextAreaInput(name, null, (String) value);
           ((UIFormTextAreaInput)input).setEditable(editable);
         } else if (WYSIWYG.equals(component)) {
-          input = new UIFormWYSIWYGInput(name, name, (String) value);
+          input = new UIFormWYSIWYGInput(name, name, (String) value, false);
           ((UIFormWYSIWYGInput)input).setEditable(editable);
         } else if (DATE.equals(component) || DATE_TIME.equals(component)) {
           input = (value == null ? new UIFormDateTimeInput(name, null, new Date()) : 
