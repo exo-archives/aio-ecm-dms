@@ -174,11 +174,11 @@ public class UICBSearchForm extends UIForm {
       }
     }
     UISearchController uiController = uiContainer.getChild(UISearchController.class) ;
-    uiController.setSearchTime(duration_) ;
-    uiController.setResultRecord(resultList.size()) ;
     for(String s: temp.keySet()) {
       resultList.add(temp.get(s)) ;
     }
+    uiController.setSearchTime(duration_) ;
+    uiController.setResultRecord(resultList.size()) ;
     return resultList ;
   }
 
