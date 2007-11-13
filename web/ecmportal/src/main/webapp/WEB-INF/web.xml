@@ -5,6 +5,18 @@
                  "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
   <display-name>portal</display-name>    
+
+  <context-param>
+    <param-name>org.exoplatform.frameworks.web.repositoryMapping</param-name>
+    <param-value>/jcr</param-value>
+    <description>Repository mapping path. If there are servlet/filter for desplaying internal imeges/links inside html documents it should have the same mapping</description>
+  </context-param>
+
+  <context-param>
+    <param-name>org.exoplatform.frameworks.jcr.command.web.fckeditor.digitalAssetsWorkspace</param-name>
+    <param-value>digital-assets</param-value>
+    <description>Binary assets workspace name</description>
+  </context-param>
   
   <filter>
     <filter-name>PortalContainerInitializedFilter</filter-name>
@@ -25,6 +37,15 @@
     <filter-name>PortalContainerInitializedFilter</filter-name>
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>FactoryInitializedFilter</filter-name>
+    <url-pattern>/connector</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>FactoryInitializedFilter</filter-name>
+    <url-pattern>/jcr/*</url-pattern>
+  </filter-mapping>  
 	
   <!-- ================================================================== -->
   <!--           LISTENER                                                 -->

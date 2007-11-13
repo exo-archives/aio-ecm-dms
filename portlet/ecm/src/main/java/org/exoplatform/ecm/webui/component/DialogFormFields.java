@@ -38,6 +38,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
@@ -74,7 +75,7 @@ public class DialogFormFields extends UIForm {
   private static final String JCR_PATH = "jcrPath" + SEPARATOR;
   private static final String EDITABLE = "editable" + SEPARATOR;
   private static final String ONCHANGE = "onchange" + SEPARATOR;
-  private static final String OPTIONS = "options" + SEPARATOR;  
+  private static final String OPTIONS = "options" + SEPARATOR;
   private static final String TYPE = "type" + SEPARATOR ;
   private static final String VISIBLE = "visible" + SEPARATOR;
   private static final String NODETYPE = "nodetype" + SEPARATOR;
@@ -477,6 +478,7 @@ public class DialogFormFields extends UIForm {
     String options = null ;
     String defaultValue = "";
     String jcrPath = null;
+    boolean isBasic = false ;
     String multiValues = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
@@ -486,7 +488,7 @@ public class DialogFormFields extends UIForm {
         options = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
-      } else{
+      } else {
         defaultValue = argument;
       }
     }
@@ -502,9 +504,13 @@ public class DialogFormFields extends UIForm {
       renderField(name) ;
       return ;
     }
+    if(options != null) {
+      if(options.equals("basic")) isBasic = true ;
+      else isBasic = false ;
+    }
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
-      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, options) ;
+      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
       addUIFormInput(wysiwyg) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
@@ -880,13 +886,6 @@ public class DialogFormFields extends UIForm {
             + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>") ;
       } 
     }
-  }
-
-  public void begin() throws Exception {
-    String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
-    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-    context.getJavascriptManager().importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
-    super.begin();
   }
 
   public Node storeValue(Event event) throws Exception { return null ; }

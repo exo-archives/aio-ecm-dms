@@ -33,6 +33,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.EmptyFieldValidator;
@@ -436,6 +437,7 @@ public class DialogFormFields extends UIForm {
     String defaultValue = "";
     String jcrPath = null;
     String multiValues = null ;
+    boolean isBasic = false ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -460,9 +462,13 @@ public class DialogFormFields extends UIForm {
       renderField(name) ;
       return ;
     }
+    if(options != null) {
+      if(options.equals("basic")) isBasic = true ;
+      else isBasic = false ;
+    }
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
-      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, options) ;
+      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
       addUIFormInput(wysiwyg) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
