@@ -89,6 +89,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         else session.exportSystemView(nodePath, bos, false, false ) ;
         ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
         zipService.addInputStream(format + ".xml",input);
+        bos = new ByteArrayOutputStream() ;
         zipService.createZip(bos);
         ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
         dresource = new InputStreamDownloadResource(zipInput, "application/zip") ;
