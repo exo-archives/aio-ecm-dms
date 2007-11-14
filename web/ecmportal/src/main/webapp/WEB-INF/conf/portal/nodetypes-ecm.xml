@@ -189,7 +189,7 @@
           <defaultValue>false</defaultValue>
         </defaultValues>          
       </propertyDefinition>
-      <propertyDefinition name="rma:superseded" requiredType="Reference" autoCreated="true" mandatory="false" onParentVersion="COPY"
+      <propertyDefinition name="rma:superseded" requiredType="Boolean" autoCreated="true" mandatory="false" onParentVersion="COPY"
         protected="false" multiple="false">
         <valueConstraints/>
         <defaultValues>
