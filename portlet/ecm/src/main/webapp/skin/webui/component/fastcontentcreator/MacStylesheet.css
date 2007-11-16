@@ -256,3 +256,16 @@
 	width: 100px;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+	padding: 0px;
+	background: none;
+	border: none;
+}
+
+.UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}

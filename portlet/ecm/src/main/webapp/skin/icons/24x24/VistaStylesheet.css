@@ -392,3 +392,8 @@
 	width: 24px;	height: 19px;
   background: url('VistaSkin/RemoveRepositoryIcon.png') no-repeat ;
 }
+
+.TagExplorer24x24Icon {
+	width: 26px; height: 26px;
+  background: url('VistaSkin/TaggingDocumentIcon.png') no-repeat bottom;
+}

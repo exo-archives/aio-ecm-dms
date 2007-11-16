@@ -636,16 +636,7 @@
   background: url('DefaultSkin/nodetype/kfx-document.gif') no-repeat;  
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.TagExplorer24x24Icon {
+	width: 26px; height: 24px;
+  background: url('DefaultSkin/Tagging.gif') no-repeat ;
+}

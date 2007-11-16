@@ -225,3 +225,11 @@
 	width: 100px;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}
+
