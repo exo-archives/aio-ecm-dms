@@ -246,15 +246,23 @@ ECMUtils.prototype.replaceToIframe = function(txtAreaId) {
 
 
 ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repository,workspace,nodePath,mimetype) {		
- if(eXo.core.Browser.getBrowserType() == "ie") {
- 	if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		 		
- 		window.location = serverInfo+ "/"+portalName + "/rest/lnkproducer/filename.lnk?path=/"+repository +"/" +workspace + nodePath;  
- 	} else {
- 		window.location = serverInfo + "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
- 	} 	  
- } else {
-  window.location = serverInfo+ "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath;
- } 
+  if(eXo.core.Browser.getBrowserType() == "ie") {
+ 	  if(mimetype == "application/xls" || mimetype == "application/msword" || mimetype =="application/ppt") { 		 		
+      // query parameter s must be encoded.
+      var path = "/";
+      nodePath = nodePath.substr(1).split("\/");
+	    if (typeof(nodePath.length) == 'number') {
+	      for (var i=0; i < nodePath.length; i++) {
+	        path += encodeURIComponent(nodePath[i]) + "/";
+	      }
+	    }
+	    window.location = serverInfo+ "/"+portalName + "/rest/lnkproducer/filename.lnk?path=/"+repository +"/" +workspace + path;
+   	} else {
+ 	  	window.location = serverInfo + "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
+ 	  } 	  
+  } else {
+    window.location = serverInfo+ "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath;
+  } 
 } ;
 
 eXo.ecm.ECMUtils = new ECMUtils(); 
