@@ -10,8 +10,7 @@
   <packaging>war</packaging> 
   <version>${org.exoplatform.ecm.version}</version>
   <name>eXo ECM Portal web module</name>
-  <build>
-    <finalName>portal</finalName>
+  <build>    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -24,9 +23,9 @@
               <directory>${exo.projects.directory.src}/portal/trunk/web/portal/src/main/webapp</directory>
               <excludes>
                 <exclude>WEB-INF/web.xml</exclude>                     
-                <exclude>WEB-INF/conf/configuration.xml</exclude>                     
-                <exclude>WEB-INF/conf/users/site/pages.xml</exclude>                     
-                <exclude>WEB-INF/conf/users/site/navigation.xml</exclude>                     
+                <exclude>WEB-INF/conf/*.xml</exclude>                     
+                <exclude>WEB-INF/conf/jcr/*.xml</exclude>                     
+                <exclude>WEB-INF/conf/portal/**/**/*.xml</exclude>                     
               </excludes>
             </resource>
             <resource>
