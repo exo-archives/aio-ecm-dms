@@ -5,9 +5,7 @@
 
 package org.exoplatform.services.cms.queries.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -17,11 +15,10 @@ import javax.jcr.query.QueryManager;
 
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
-import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserEventListener;
 
@@ -35,14 +32,14 @@ public class NewUserListener extends UserEventListener {
   
   private NewUserConfig config_;
   private RepositoryService jcrService_;
-  private CmsConfigurationService cmsConfigurationService_;
+  private NodeHierarchyCreator nodeHierarchyCreator_;
   private String relativePath_;
 
   public NewUserListener(RepositoryService jcrService,
-                         CmsConfigurationService cmsConfigurationService, 
+                         NodeHierarchyCreator nodeHierarchyCreator, 
                          InitParams params)    throws Exception {
     jcrService_ = jcrService;
-    cmsConfigurationService_ = cmsConfigurationService;
+    nodeHierarchyCreator_ = nodeHierarchyCreator;
     config_ = (NewUserConfig) params.getObjectParamValues(NewUserConfig.class).get(0);
     relativePath_ = params.getValueParam("relativePath").getValue();
   }
@@ -62,7 +59,7 @@ public class NewUserListener extends UserEventListener {
         String defaultWorkspaceName = jcrService_.getDefaultRepository().getConfiguration().getDefaultWorkspaceName() ;
         session = jcrService_.getRepository(repo.getName()).getSystemSession(defaultWorkspaceName);
         Node usersHome = (Node) session.getItem(
-            cmsConfigurationService_.getJcrPath(BasePath.CMS_USERS_PATH));
+            nodeHierarchyCreator_.getJcrPath(BasePath.CMS_USERS_PATH));
         initSystemData(usersHome, userName) ;
         session.save();
         session.logout();
@@ -74,11 +71,8 @@ public class NewUserListener extends UserEventListener {
   }
   
   private void initSystemData(Node usersHome, String userName) throws Exception{           
-    Node userHome = Utils.makePath(usersHome, userName, "nt:unstructured", getPermissions(userName));
-    if(userHome.hasNode(relativePath_)) {    
-      return;
-    }     
-    Node queriesHome =  Utils.makePath(userHome, relativePath_, "nt:unstructured", getQueryPermissions(userName));           
+    Node userHome = usersHome.getNode(userName) ;
+    Node queriesHome =  userHome.getNode(relativePath_) ;           
     boolean userFound = false;
     NewUserConfig.User templateConfig = null;
     for (NewUserConfig.User userConfig : config_.getUsers()) {      
@@ -98,19 +92,6 @@ public class NewUserListener extends UserEventListener {
     }
     usersHome.save();   
   }
-  public Map getPermissions(String owner) {
-    Map<String, String[]> permissions = new HashMap<String, String[]>();
-    permissions.put(owner, perms);         
-    permissions.put("*:/admin", perms);
-    return permissions;
-  }
-  
-  public Map getQueryPermissions(String owner) {
-    Map<String, String[]> permissions = new HashMap<String, String[]>();
-    permissions.put(owner, perms);         
-    permissions.put("*:/admin", perms);
-    return permissions;
-  }  
   
   public void importQueries(Node queriesHome, List<NewUserConfig.Query> queries) throws Exception {
     QueryManager manager = queriesHome.getSession().getWorkspace().getQueryManager();

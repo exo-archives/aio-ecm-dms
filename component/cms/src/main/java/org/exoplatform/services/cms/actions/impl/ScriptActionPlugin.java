@@ -74,6 +74,7 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   public String getDescription() { return "Add a action service"; }  
   public void setDescription(String desc) { }
   
+  @SuppressWarnings("unchecked")
   public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
     String script = actionNode.getProperty("exo:script").getString();    
     variables.put("actionNode", actionNode);
@@ -100,6 +101,7 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void activateAction(String userId, String executable, Map variables, String repository) throws Exception {
     variables.put("repository",repository) ;
     executeAction(userId,executable,variables, repository) ;

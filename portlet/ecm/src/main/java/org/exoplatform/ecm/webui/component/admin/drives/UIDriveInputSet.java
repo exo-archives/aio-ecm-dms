@@ -41,6 +41,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder" ;
   final static public String FIELD_BOTH_FOLDER_UNSTRUCTURED = "Both" ;
   final static public String ALLOW_CREATE_FOLDER = "allowCreateFolder" ;
+  final static public String SHOW_HIDDEN_NODE = "showHiddenNode" ;
 
   public UIDriveInputSet(String name) throws Exception {
     super(name);
@@ -61,6 +62,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null)) ;
+    addUIFormInput(new UIFormCheckBoxInput<String>(SHOW_HIDDEN_NODE, SHOW_HIDDEN_NODE, null)) ;
     List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>() ;
     folderOptions.add(new SelectItemOption<String>(FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
     folderOptions.add(new SelectItemOption<String>(FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
@@ -91,5 +93,6 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     getUIFormCheckBoxInput(FIELD_VIEWPREFERENCESDOC).setChecked(false) ;
     getUIFormCheckBoxInput(FIELD_VIEWNONDOC).setChecked(false) ;
     getUIFormCheckBoxInput(FIELD_VIEWSIDEBAR).setChecked(false) ;
+    getUIFormCheckBoxInput(SHOW_HIDDEN_NODE).setChecked(false) ;
   }
 }

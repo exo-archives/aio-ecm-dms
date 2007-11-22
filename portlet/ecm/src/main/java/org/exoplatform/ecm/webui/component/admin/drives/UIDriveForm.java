@@ -153,6 +153,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWPREFERENCESDOC).isChecked() ;
       boolean viewSideBar = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWSIDEBAR).isChecked() ;
+      boolean showHiddenNode = 
+        driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.SHOW_HIDDEN_NODE).isChecked() ;      
       boolean viewNonDocument = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked() ;
       String allowCreateFolder =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER).getValue() ;
@@ -195,7 +197,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
         iconPath = "" ;
       }
       dservice_.addDrive(name, workspace, permissions, path, views, iconPath, viewReferences, 
-          viewNonDocument, viewSideBar, repository, allowCreateFolder) ;
+          viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class) ;
       uiDriveList.updateDriveListGrid() ;

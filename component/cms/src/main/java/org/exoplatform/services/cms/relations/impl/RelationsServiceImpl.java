@@ -11,11 +11,11 @@ import javax.jcr.Value;
 
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
 /**
@@ -28,12 +28,12 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 
   private RepositoryService repositoryService_;
   String repositories_ ;
-  private CmsConfigurationService cmsConfig_;
+  private NodeHierarchyCreator nodeHierarchyCreator_;
 
   public RelationsServiceImpl(RepositoryService repositoryService,
-      CmsConfigurationService cmsConfig, InitParams params) {
+      NodeHierarchyCreator nodeHierarchyCreator, InitParams params) {
     repositoryService_ = repositoryService;
-    cmsConfig_ = cmsConfig;
+    nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositories_ = params.getValueParam("repositories").getValue();
   }
 
@@ -131,7 +131,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     Session session = null;
     Node relationsHome = null;
     try {
-      String relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+      String relationPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
       String[] repositories = repositories_.split(",") ;
       for(String repo : repositories) {
         session = getSession(repo.trim());
@@ -155,7 +155,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
 
   public void init(String repository) throws Exception {
     Session session = getSession(repository);
-    String relationPath = cmsConfig_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+    String relationPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
     try {            
       Node relationsHome = (Node) session.getItem(relationPath);
       for (NodeIterator iterator = relationsHome.getNodes(); iterator.hasNext();) {

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -26,7 +25,6 @@ import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.BaseResourceLoaderService;
 import org.exoplatform.services.cms.impl.ResourceConfig;
 import org.exoplatform.services.cms.scripts.CmsScript;
@@ -35,21 +33,21 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.hibernate.stat.SessionStatisticsImpl;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class ScriptServiceImpl extends BaseResourceLoaderService implements ScriptService, EventListener {
 
   private GroovyClassLoader groovyClassLoader_ ;
   private RepositoryService repositoryService_ ;
-  private CmsConfigurationService cmsConfigService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
 
   public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
-      CmsConfigurationService cmsConfigService,CacheService cacheService) throws Exception {    
-    super(cservice, cmsConfigService, repositoryService, cacheService);
+      NodeHierarchyCreator nodeHierarchyCreator,CacheService cacheService) throws Exception {    
+    super(cservice, nodeHierarchyCreator, repositoryService, cacheService);
     groovyClassLoader_ = createGroovyClassLoader();
     repositoryService_ = repositoryService ; 
-    cmsConfigService_ = cmsConfigService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
   }
 
   public void start() {    
@@ -73,7 +71,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       if(plugin.getAutoCreateInNewRepository()) {
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;                
         for(RepositoryEntry repo : repositories) {
-          session = repositoryService_.getRepository(repo.getName()).getSystemSession(repo.getDefaultWorkspaceName());          
+          session = repositoryService_.getRepository(repo.getName()).getSystemSession(repo.getSystemWorkspaceName());          
           Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
           while(iter.hasNext()) {
             init(session,(ResourceConfig) iter.next().getObject()) ;            
@@ -90,7 +88,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
       }
       ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
-      session = mRepository.getSystemSession(mRepository.getConfiguration().getDefaultWorkspaceName()) ;          
+      session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;          
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
       while(iter.hasNext()) {
         init(session,(ResourceConfig) iter.next().getObject()) ;            
@@ -102,12 +100,12 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     }
   }
 
-  protected String getBasePath() { return cmsConfigService_.getJcrPath(BasePath.CMS_SCRIPTS_PATH); }    
+  protected String getBasePath() { return nodeHierarchyCreator_.getJcrPath(BasePath.CMS_SCRIPTS_PATH); }    
 
   public void initRepo(String repository) throws Exception {
     ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
     String scriptsPath = getBasePath();
-    Session session = mRepository.getSystemSession(mRepository.getConfiguration().getDefaultWorkspaceName()) ;
+    Session session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;
     for(ScriptPlugin plugin : plugins_) {
       if(!plugin.getAutoCreateInNewRepository()) continue ;
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;                           
@@ -167,14 +165,14 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
 
   public String[] getECMCategoriesPath() throws Exception {
     String[] categoriesPath 
-    = { cmsConfigService_.getJcrPath(BasePath.ECM_ACTION_SCRIPTS),
-        cmsConfigService_.getJcrPath(BasePath.ECM_INTERCEPTOR_SCRIPTS), 
-        cmsConfigService_.getJcrPath(BasePath.ECM_WIDGET_SCRIPTS) } ;
+    = { nodeHierarchyCreator_.getJcrPath(BasePath.ECM_ACTION_SCRIPTS),
+        nodeHierarchyCreator_.getJcrPath(BasePath.ECM_INTERCEPTOR_SCRIPTS), 
+        nodeHierarchyCreator_.getJcrPath(BasePath.ECM_WIDGET_SCRIPTS) } ;
     return categoriesPath;
   }
 
   public String[] getCBCategoriesPath() throws Exception {
-    String[] categoriesPath = { cmsConfigService_.getJcrPath(BasePath.CONTENT_BROWSER_SCRIPTS)} ;
+    String[] categoriesPath = { nodeHierarchyCreator_.getJcrPath(BasePath.CONTENT_BROWSER_SCRIPTS)} ;
     return categoriesPath;
   }
 
@@ -182,6 +180,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     return getResourceAsText(scriptName, repository);
   }
 
+  @SuppressWarnings("unused")
   public CmsScript getScript(String scriptName, String repository) throws Exception {
     CmsScript scriptObject = (CmsScript) resourceCache_.get(scriptName);
     if (scriptObject != null) return scriptObject;
@@ -211,7 +210,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }    
 
   private Node getScriptHome(String scriptAlias, Session session) throws Exception {
-    String path = cmsConfigService_.getJcrPath(scriptAlias) ;               
+    String path = nodeHierarchyCreator_.getJcrPath(scriptAlias) ;               
     return (Node)session.getItem(path);
   }
 
@@ -231,8 +230,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         resourceCache_.remove(scriptName) ;
         ExoContainer container = ExoContainerContext.getCurrentContainer();
         container.unregisterComponent(scriptName);
-        Class scriptClass = (Class)cachedobject ;
-        //groovyClassLoader_.removeFromCache(scriptClass) ;
+//        Class scriptClass = (Class)cachedobject ;
+//        groovyClassLoader_.removeFromCache(scriptClass) ;
       }
     }catch (Exception e) {
     }        
@@ -248,8 +247,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
           try {
-            jcrSession = repositoryService_.getRepository(repo.getName())
-            .getSystemSession(cmsConfigService_.getWorkspace(repo.getName()));
+            ManageableRepository manageableRepository = repositoryService_.getRepository(repo.getName()) ;
+            jcrSession = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
             Property property = (Property) jcrSession.getItem(path);
             if ("jcr:data".equals(property.getName())) {
               Node node = property.getParent();
@@ -271,6 +270,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private GroovyClassLoader createGroovyClassLoader() {
     ClassLoader parentLoader = Thread.currentThread().getContextClassLoader();    
     return new GroovyClassLoader(parentLoader) {
+      @SuppressWarnings("unchecked")
       protected Class findClass(String className) throws ClassNotFoundException {
         String repository = null ;
         String filename = null ;
@@ -322,7 +322,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }
   
   private Node getNodeByAlias(String alias,Session session) throws Exception {
-    String path = cmsConfigService_.getJcrPath(alias) ;
+    String path = nodeHierarchyCreator_.getJcrPath(alias) ;
     return (Node)session.getItem(path);
   }
   

@@ -15,22 +15,22 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
 public abstract class BaseResourceLoaderService implements Startable{
 
-  protected CmsConfigurationService cmsConfigService_;
+  protected NodeHierarchyCreator nodeHierarchyCreator_;
   protected RepositoryService repositoryService_;
   protected ConfigurationManager cservice_;
   protected ExoCache resourceCache_ ;
 
   public BaseResourceLoaderService(ConfigurationManager cservice,
-      CmsConfigurationService cmsConfigService, RepositoryService repositoryService,CacheService cacheService) throws Exception {
-    cmsConfigService_ = cmsConfigService;
+      NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repositoryService,CacheService cacheService) throws Exception {
+    nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositoryService_ = repositoryService;    
     cservice_ = cservice;        
     resourceCache_ = cacheService.getCacheInstance(this.getClass().getName()) ;
@@ -58,7 +58,7 @@ public abstract class BaseResourceLoaderService implements Startable{
 
     Node root = session.getRootNode();
     Node resourcesHome = (Node) session.getItem(resourcesPath);
-    String warPath = cmsConfigService_.getContentLocation() 
+    String warPath = nodeHierarchyCreator_.getContentLocation() 
     + "/system" + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
     for (Iterator iter = resources.iterator(); iter.hasNext();) {
       ResourceConfig.Resource resource = (ResourceConfig.Resource) iter.next();
@@ -138,5 +138,4 @@ public abstract class BaseResourceLoaderService implements Startable{
     resource2remove.remove();
     resourcesHome.save();
   }  
-
 }

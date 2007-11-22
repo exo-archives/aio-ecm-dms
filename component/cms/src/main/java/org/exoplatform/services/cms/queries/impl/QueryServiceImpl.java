@@ -19,13 +19,13 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
@@ -41,16 +41,18 @@ public class QueryServiceImpl implements QueryService, Startable{
   private OrganizationService organizationService_ ;
   private String baseUserPath_ ;
   private String baseQueriesPath_ ;
+  private String group_ ;
 
-  public QueryServiceImpl(RepositoryService repositoryService, CmsConfigurationService cmsConf, 
+  public QueryServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, 
       InitParams params, PortalContainerInfo containerInfo, CacheService cacheService,OrganizationService organizationService) throws Exception {
     relativePath_ = params.getValueParam("relativePath").getValue();    
+    group_ = params.getValueParam("group").getValue();
     repositoryService_ = repositoryService;
     containerInfo_ = containerInfo ;
     cacheService_ = cacheService ;
     organizationService_ = organizationService ;
-    baseUserPath_ = cmsConf.getJcrPath(BasePath.CMS_USERS_PATH);
-    baseQueriesPath_ = cmsConf.getJcrPath(BasePath.QUERIES_PATH) ;
+    baseUserPath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
+    baseQueriesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH) ;
   }
 
   public void start() {
@@ -94,20 +96,20 @@ public class QueryServiceImpl implements QueryService, Startable{
     Node userHome = null ;
     if(usersHome.hasNode(userName)) {
       userHome = usersHome.getNode(userName);
-    }else{
+    } else{
       userHome = usersHome.addNode(userName);
-      if (userHome.canAddMixin("exo:privilegeable")){
+      if(userHome.canAddMixin("exo:privilegeable")){
         userHome.addMixin("exo:privilegeable");
       }
       ((ExtendedNode)userHome).setPermissions(getPermissions(userName));
-      Node query = userHome.addNode(relativePath_) ;
+      Node query = userHome.getNode(relativePath_) ;
       if (query.canAddMixin("exo:privilegeable")){
         query.addMixin("exo:privilegeable");
       }
       ((ExtendedNode)query).setPermissions(getPermissions(userName));
       usersHome.save() ;
     }
-    Node queriesHome = userHome.getNode(relativePath_);
+    Node queriesHome = userHome.getNode(relativePath_) ;
     NodeIterator iter = queriesHome.getNodes();
     while (iter.hasNext()) {
       Node node = iter.nextNode();
@@ -120,7 +122,7 @@ public class QueryServiceImpl implements QueryService, Startable{
   private Map<String,String[]> getPermissions(String owner) {
     Map<String, String[]> permissions = new HashMap<String, String[]>();
     permissions.put(owner, perms);         
-    permissions.put("*:/admin", perms);
+    permissions.put(group_, perms);
     return permissions;
   } 
 

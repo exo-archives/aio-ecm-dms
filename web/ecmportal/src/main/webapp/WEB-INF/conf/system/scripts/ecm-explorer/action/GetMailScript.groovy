@@ -17,7 +17,7 @@ import javax.mail.internet.*;
 import javax.jcr.Node;
 //import javax.jcr.Session;
 
-import org.exoplatform.services.cms.CmsConfigurationService;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository ;
 
@@ -29,11 +29,11 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 public class GetMailScript implements CmsScript {
   
   private RepositoryService repositoryService_;
-  private CmsConfigurationService cmsConfigService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
   
-  public GetMailScript(RepositoryService repositoryService, CmsConfigurationService cmsConfigService) {
+  public GetMailScript(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator) {
     repositoryService_ = repositoryService;
-    cmsConfigService_ = cmsConfigService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
   }
   
   public void execute(Object context) {
@@ -161,8 +161,8 @@ public class GetMailScript implements CmsScript {
   
   private Node createStoreNode(String storePath) {
   	try{
-  		Node rootNode = 
-				repositoryService_.getRepository().getSystemSession(cmsConfigService_.getWorkspace()).getRootNode();
+      ManageableRepository manaRepository = repositoryService_.getDefaultRepository() ;
+      Node rootNode = manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()).getRootNode();
 			//Node rootNode = session.getRootNode();
 			String[] array = storePath.split("/") ;
 			int i = 0 ;

@@ -69,7 +69,6 @@ import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.queries.QueryService;
@@ -77,6 +76,8 @@ import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -705,7 +706,9 @@ public class UIActionBar extends UIForm {
       PortletRequestContext pcontext = (PortletRequestContext)event.getRequestContext() ;
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-      CmsConfigurationService cmsService = uiActionBar.getApplicationComponent(CmsConfigurationService.class) ;
+      ManageableRepository manaRepository = 
+        uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+      NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class) ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
       if(uiActionBar.isRootNode(uiExplorer.getCurrentNode())) {
@@ -749,8 +752,8 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;
       uiJCRBrowser.setFilterType(null) ;
       uiJCRBrowser.setRepository(repository) ;
-      uiJCRBrowser.setIsDisable(cmsService.getWorkspace(repository), true) ;
-      uiJCRBrowser.setRootPath(cmsService.getJcrPath(BasePath.EXO_TAXONOMIES_PATH)) ;
+      uiJCRBrowser.setIsDisable(manaRepository.getConfiguration().getDefaultWorkspaceName(), true) ;
+      uiJCRBrowser.setRootPath(nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH)) ;
       uiJCRBrowser.setIsTab(true) ;
       uiJCRBrowser.setComponent(uiCateAddedList, null) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;

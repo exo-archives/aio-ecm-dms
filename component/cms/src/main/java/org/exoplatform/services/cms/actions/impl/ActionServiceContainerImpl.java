@@ -101,6 +101,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   public void createActionType(String actionTypeName, String parentActionTypeName, String executable, 
       List<String> variableNames, boolean isMoveType, String repository) throws Exception {
     NodeTypeValue nodeTypeValue = new NodeTypeValue();
@@ -132,6 +133,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     ntmanager.registerNodeType(nodeTypeValue, ExtendedNodeTypeManager.IGNORE_IF_EXISTS);
   }
 
+  @SuppressWarnings("unchecked")
   private PropertyDefinitionValue createPropertyDef(String name) {
     PropertyDefinitionValue def = new PropertyDefinitionValue();
     def.setName(name);

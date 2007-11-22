@@ -14,12 +14,12 @@ import javax.jcr.Value;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.security.SecurityService;
 import org.picocontainer.Startable;
 
@@ -33,11 +33,12 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private String cmsTemplatesBasePath_ ;  
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
-  public TemplateServiceImpl(RepositoryService jcrService, CmsConfigurationService cmsConfigService,
+  
+  public TemplateServiceImpl(RepositoryService jcrService, NodeHierarchyCreator nodeHierarchyCreator,
       SecurityService securityService) throws Exception {    
     securityService_ = securityService;
     repositoryService_ = jcrService;
-    cmsTemplatesBasePath_ = cmsConfigService.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;
+    cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;    
   }
 
   public void start() {
@@ -173,6 +174,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return roles.toString();
   }
   
+  @SuppressWarnings("unused")
   private Node getTemplateNode(Session session, boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception {
     String type = DIALOGS;
     if (!isDialog) type = VIEWS;

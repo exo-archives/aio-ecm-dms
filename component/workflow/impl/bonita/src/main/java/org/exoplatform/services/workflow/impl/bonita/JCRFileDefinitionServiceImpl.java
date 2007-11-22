@@ -23,13 +23,12 @@ import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.impl.Utils;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.workflow.FileDefinition;
 import org.exoplatform.services.workflow.WorkflowFileDefinitionService;
 
@@ -55,7 +54,7 @@ public class JCRFileDefinitionServiceImpl
   private String bpNodePath;
   
   /** Reference to the Cms configuration Service */
-  private CmsConfigurationService cmsConfigService_;
+  private NodeHierarchyCreator nodeHierarchyCreator_;
  
   /**
    * Cache to store File Definition objets, so we
@@ -160,12 +159,12 @@ public class JCRFileDefinitionServiceImpl
         PortalContainer.setInstance(container);
         checkpoint = true;
       }
-
+      
       RepositoryService repositoryService = (RepositoryService) container
         .getComponentInstanceOfType(RepositoryService.class);
-      String workspace = cmsConfigService_.getWorkspace();
-      
-      return repositoryService.getDefaultRepository().getSystemSession(workspace);
+      String wsName = 
+        repositoryService.getDefaultRepository().getConfiguration().getSystemWorkspaceName() ;
+      return repositoryService.getDefaultRepository().getSystemSession(wsName);
     }
     catch (Exception e) {
       e.printStackTrace();
@@ -186,11 +185,11 @@ public class JCRFileDefinitionServiceImpl
    * @param CmsConfiguration reference to the Cms Configuration Manager
    */
   public JCRFileDefinitionServiceImpl(
-    CmsConfigurationService cmsConfigService) {
+    NodeHierarchyCreator nodeHierarchyCreator) {
     
     // Store references to dependent services
-    this.cmsConfigService_ = cmsConfigService;
-    this.bpNodePath = cmsConfigService_.
+    this.nodeHierarchyCreator_ = nodeHierarchyCreator;
+    this.bpNodePath = nodeHierarchyCreator_.
       getJcrPath(BasePath.ECM_BUSINESS_PROCESSES_PATH);
   }
 
@@ -253,6 +252,7 @@ public class JCRFileDefinitionServiceImpl
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.impl.bonita.WorkflowFileDefinitionService#store(org.exoplatform.services.workflow.impl.bonita.FileDefinition, java.lang.String)
    */
+  @SuppressWarnings("unchecked")
   public void store(FileDefinition fileDefinition, String processId) {
  
     try {

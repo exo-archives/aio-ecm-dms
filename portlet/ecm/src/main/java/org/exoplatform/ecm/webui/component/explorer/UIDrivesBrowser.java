@@ -181,7 +181,8 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setShowSideBar(drive.getViewSideBar()) ;
       pref.setShowNonDocumentType(drive.getViewNonDocument()) ;
       pref.setShowPreferenceDocuments(drive.getViewPreferences()) ;
-      pref.setAllowCreateFoder(drive.getAllowCreateFolder());      
+      pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
+      pref.setShowHiddenNode(drive.getShowHiddenNode()) ;
       uiJCRExplorer.setPreferences(pref);
       
       SessionProvider provider = SessionsUtils.getSessionProvider() ;                  

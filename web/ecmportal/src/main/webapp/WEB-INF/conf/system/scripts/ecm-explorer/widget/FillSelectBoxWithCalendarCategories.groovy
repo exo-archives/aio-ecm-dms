@@ -13,9 +13,9 @@ import javax.jcr.Node ;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.core.model.SelectItemOption;
 
-import org.exoplatform.services.cms.CmsConfigurationService;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.cms.scripts.CmsScript ;
-import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.jcr.ext.hierarchy.PathAlias;
 
 import org.exoplatform.services.jcr.RepositoryService ;
 import org.exoplatform.services.jcr.core.ManageableRepository ;
@@ -24,13 +24,13 @@ import org.exoplatform.services.jcr.core.ManageableRepository ;
 public class FillSelectBoxWithCalendarCategories implements CmsScript {
   
   private RepositoryService repositoryService_ ;
-  private CmsConfigurationService cmsConfigService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
   private String repository_ ;
   
   public FillSelectBoxWithCalendarCategories(RepositoryService repositoryService,
-                                             CmsConfigurationService cmsConfigurationService) {
+      NodeHierarchyCreator nodeHierarchyCreator) {
     repositoryService_ = repositoryService ;
-    cmsConfigService_ = cmsConfigurationService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
   }
   
   public void execute(Object context) {
@@ -38,8 +38,8 @@ public class FillSelectBoxWithCalendarCategories implements CmsScript {
 		try {
       UIFormSelectBox selectBox = (UIFormSelectBox) context;
       ManageableRepository jcrRepository = repositoryService_.getRepository(repository_);
-      session = jcrRepository.getSystemSession(cmsConfigService_.getWorkspace(repository_));
-      String path = cmsConfigService_.getJcrPath(BasePath.CALENDAR_CATEGORIES_PATH) ;
+      session = jcrRepository.getSystemSession(jcrRepository.getConfiguration().getSystemWorkspaceName());
+      String path = nodeHierarchyCreator_.getJcrPath(PathAlias.CALENDAR_CATEGORIES_PATH) ;
       Node calendar = (Node) session.getItem(path) ;
       List options = new ArrayList();
       if (calendar != null){

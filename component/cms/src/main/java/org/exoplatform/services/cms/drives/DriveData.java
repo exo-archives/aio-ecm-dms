@@ -24,43 +24,47 @@ public class DriveData implements Comparable<DriveData> {
   private boolean viewPreferences ;
   private boolean viewNonDocument ;
   private boolean viewSideBar ;
+  private boolean showHiddenNode ;
   private String allowCreateFolder ;
   
   public  DriveData(){}
 
-  public String getName() { return this.name ; }
+  public String getName() { return name ; }
   public void setName(String name) { this.name = name ; }  
 
   
-  public String getRepository() { return this.repository ; }
-  public void setRepository(String rp) { this.repository = rp ; }
+  public String getRepository() { return repository ; }
+  public void setRepository(String rp) { repository = rp ; }
   
-  public String getWorkspace() { return this.workspace ; }
-  public void setWorkspace(String ws) { this.workspace = ws ; }
+  public String getWorkspace() { return workspace ; }
+  public void setWorkspace(String ws) { workspace = ws ; }
   
   public String getPermissions() { return this.permissions ; }
-  public void setPermissions(String permission) { this.permissions = permission ; }
+  public void setPermissions(String permissions) { this.permissions = permissions ; }
 
-  public String getHomePath() { return this.homePath ; }
-  public void setHomePath(String path) { this.homePath = path ; }
+  public String getHomePath() { return homePath ; }
+  public void setHomePath(String path) { homePath = path ; }
   
-  public String getIcon() { return this.icon ; }
-  public void setIcon(String ico) { this.icon = ico ; }
+  public String getIcon() { return icon ; }
+  public void setIcon(String ico) { icon = ico ; }
   
-  public String getAllowCreateFolder() { return this.allowCreateFolder ; }
+  public String getAllowCreateFolder() { return allowCreateFolder ; }
   public void setAllowCreateFolder(String allowCreateFolder) { this.allowCreateFolder = allowCreateFolder ; }
 
-  public String getViews() { return this.views ; }
-  public void setViews(String v) { this.views = v ; }
+  public String getViews() { return views ; }
+  public void setViews(String v) { views = v ; }
   
-  public boolean getViewPreferences() { return this.viewPreferences ; }
-  public void setViewPreferences(boolean b) { this.viewPreferences = b ; }
+  public boolean getViewPreferences() { return viewPreferences ; }
+  public void setViewPreferences(boolean b) { viewPreferences = b ; }
   
-  public boolean getViewNonDocument() { return this.viewNonDocument ; }
-  public void setViewNonDocument(boolean b) { this.viewNonDocument = b ; }
+  public boolean getViewNonDocument() { return viewNonDocument ; }
+  public void setViewNonDocument(boolean b) { viewNonDocument = b ; }
   
-  public boolean getViewSideBar() { return this.viewSideBar ; }
-  public void setViewSideBar(boolean b) { this.viewSideBar = b ; }
+  public boolean getViewSideBar() { return viewSideBar ; }
+  public void setViewSideBar(boolean b) { viewSideBar = b ; }
+  
+  public boolean getShowHiddenNode() { return showHiddenNode ; }
+  public void setShowHiddenNode(boolean b) { showHiddenNode = b ; }
   
   public String[] getAllPermissions() {    
     return permissions.split(",") ;
@@ -83,5 +87,4 @@ public class DriveData implements Comparable<DriveData> {
   public int compareTo(DriveData arg) {
     return name.compareToIgnoreCase(arg.getName()) ;
   }
-  
 }

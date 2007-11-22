@@ -70,6 +70,7 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   public String getDescription() { return "Add an action service" ; }
   public void setDescription(String desc) {}  
   
+  @SuppressWarnings("unchecked")
   public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
     String businessProcess = actionNode.getProperty("exo:businessProcess").getString();
     //TODO check maybe don't need put repository here

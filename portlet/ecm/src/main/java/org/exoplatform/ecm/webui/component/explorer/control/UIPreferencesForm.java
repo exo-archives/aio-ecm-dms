@@ -46,6 +46,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_SHOWSIDEBAR = "showSideBar".intern() ;
   final static public String FIELD_SHOWNONDOCUMENT = "showNonDocument".intern() ;
   final static public String FIELD_SHOWREFDOCUMENTS = "showRefDocuments".intern() ;
+  final static public String FIELD_SHOW_HIDDEN_NODE = "showHiddenNode".intern() ;
   final static public String FIELD_SHORTBY = "sortBy".intern() ;
   final static public String FIELD_ORDERBY = "order".intern() ;
   final static public String FIELD_PROPERTY = "property".intern() ;
@@ -82,6 +83,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOWSIDEBAR, FIELD_SHOWSIDEBAR, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOWNONDOCUMENT, FIELD_SHOWNONDOCUMENT, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOWREFDOCUMENTS, FIELD_SHOWREFDOCUMENTS, null)) ;
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_HIDDEN_NODE, FIELD_SHOW_HIDDEN_NODE, null)) ;
     addUIFormInput(new UIFormSelectBox(FIELD_SHORTBY,FIELD_SHORTBY, sortOptions)) ;
     addUIFormInput(new UIFormSelectBox(FIELD_ORDERBY,FIELD_ORDERBY, orderOption)) ;   
     addUIFormInput(new UIFormSelectBox(NODES_PER_PAGE,NODES_PER_PAGE, nodesPerPagesOptions)) ;   
@@ -96,6 +98,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     getUIFormCheckBoxInput(FIELD_SHOWSIDEBAR).setChecked(pref.isShowSideBar()) ;
     getUIFormCheckBoxInput(FIELD_SHOWNONDOCUMENT).setChecked(pref.isShowNonDocumentType()) ;
     getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).setChecked(pref.isShowPreferenceDocuments()) ;
+    getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).setChecked(pref.isShowHiddenNode()) ;
     getUIFormSelectBox(FIELD_SHORTBY).setValue(pref.getSortType()) ;
     getUIFormSelectBox(FIELD_ORDERBY).setValue(pref.getOrder()) ;
     getUIFormSelectBox(NODES_PER_PAGE).setValue(Integer.toString(pref.getNodesPerPage())) ;
@@ -114,6 +117,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
           uiForm.getUIFormCheckBoxInput(FIELD_SHOWNONDOCUMENT).isChecked()) ;
       pref.setShowPreferenceDocuments(
           uiForm.getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).isChecked()) ;
+      pref.setShowHiddenNode(
+          uiForm.getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).isChecked()) ;      
       pref.setSortType(uiForm.getUIFormSelectBox(FIELD_SHORTBY).getValue()) ;
       pref.setOrder(uiForm.getUIFormSelectBox(FIELD_ORDERBY).getValue()) ;      
       pref.setNodesPerPage(Integer.parseInt(uiForm.getUIFormSelectBox(NODES_PER_PAGE).getValue()));

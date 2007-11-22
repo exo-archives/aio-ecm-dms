@@ -351,6 +351,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void importAction(ActionConfig.Action action, Session session) throws Exception{
     Node srcNode = (Node) session.getItem(action.getSrcPath());
     Node actionNode = null;

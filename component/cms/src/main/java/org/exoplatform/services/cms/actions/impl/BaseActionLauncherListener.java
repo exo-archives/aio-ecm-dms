@@ -41,6 +41,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
   public String getSrcWorkspace() { return srcWorkspace_; }  
   public String getRepository() { return repository_; }
   
+  @SuppressWarnings("unchecked")
   public void onEvent(EventIterator events) {
     ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
     RepositoryService repositoryService = 

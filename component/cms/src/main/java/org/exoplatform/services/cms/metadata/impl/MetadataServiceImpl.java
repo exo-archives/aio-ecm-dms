@@ -12,12 +12,13 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.templates.impl.TemplatePlugin;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
 /**
@@ -39,15 +40,15 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   final static public String VIEW1 = "view1" ;
 
   private RepositoryService repositoryService_;
-  private CmsConfigurationService cmsConfigService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
   private String baseMetadataPath_ ;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
-  public MetadataServiceImpl(CmsConfigurationService cmsConfigService, 
+  public MetadataServiceImpl(NodeHierarchyCreator nodeHierarchyCreator, 
       RepositoryService repositoryService) throws Exception{
-    cmsConfigService_ = cmsConfigService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
     repositoryService_ = repositoryService ;
-    baseMetadataPath_ = cmsConfigService_.getJcrPath(BasePath.METADATA_PATH);
+    baseMetadataPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.METADATA_PATH);
   }
 
   public void start() {
@@ -242,7 +243,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   private Session getSession(String repository) throws Exception{ 
-    return repositoryService_.getRepository(repository)
-    .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ;
   }
 }

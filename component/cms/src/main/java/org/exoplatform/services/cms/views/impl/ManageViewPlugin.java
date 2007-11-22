@@ -12,13 +12,13 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.views.TemplateConfig;
 import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class ManageViewPlugin extends BaseComponentPlugin {
 
@@ -29,15 +29,15 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   private static String ECM_EXPLORER_TEMPLATE = "ecmExplorerTemplate".intern() ;
   private InitParams params_ ;
   private RepositoryService repositoryService_ ;
-  private CmsConfigurationService cmsConfigService_ ; 
+  private NodeHierarchyCreator nodeHierarchyCreator_ ; 
   private ConfigurationManager cservice_ ;
   private boolean autoCreateInNewRepository_ = false ;  
 
   public ManageViewPlugin(RepositoryService repositoryService, InitParams params, ConfigurationManager cservice, 
-      CmsConfigurationService cmsConfigService) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
     params_ = params ;
     repositoryService_ = repositoryService ;
-    cmsConfigService_ = cmsConfigService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
     cservice_ = cservice ;
     ValueParam autoInitParam = params.getValueParam("autoCreateInNewRepository") ;    
     if(autoInitParam !=null) {
@@ -67,11 +67,12 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     importPredefineViews(repository) ;
   }
   
+  @SuppressWarnings("unchecked")
   private void importPredefineViews(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
-    String viewsPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
-    String templatesPath = cmsConfigService_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);    
-    String warViewPath = cmsConfigService_.getContentLocation() 
+    String viewsPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    String templatesPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);    
+    String warViewPath = nodeHierarchyCreator_.getContentLocation() 
     + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;    
     String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
@@ -98,7 +99,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     session.logout();
   }
   
-  
+  @SuppressWarnings("hiding")
   private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
     Node contentNode = viewManager.addNode(name, "exo:view");
     contentNode.setProperty("exo:permissions", permissions);
@@ -107,6 +108,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     return contentNode ;
   }
   
+  @SuppressWarnings("hiding")
   private void addTab(Node view, String name, String buttons) throws Exception {
     Node tab ;
     if(view.hasNode(name)){
@@ -132,7 +134,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     }else if(type.equals(CB_DETAIL_VIEW_TEMPLATE)) {
       alias = BasePath.CB_DETAIL_VIEW_TEMPLATES ;
     }         
-    String templateHomePath = cmsConfigService_.getJcrPath(alias) ;    
+    String templateHomePath = nodeHierarchyCreator_.getJcrPath(alias) ;    
     Node templateHomeNode = (Node)session.getItem(templateHomePath) ;    
     String templateName = tempObject.getName() ;    
     if(templateHomeNode.hasNode(templateName)) return  ;

@@ -12,10 +12,11 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
 /**
@@ -34,18 +35,19 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
+  private static String SHOW_HIDDEN_NODE = "exo:showHiddenNode".intern() ;
   private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
 
   private List<ManageDrivePlugin> drivePlugins_  = new ArrayList<ManageDrivePlugin> ();
   private RepositoryService repositoryService_ ;
   private String baseDrivePath_ ;
-  private CmsConfigurationService cmsConfigurationService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
 
   public ManageDriveServiceImpl(RepositoryService jcrService, 
-      CmsConfigurationService cmsConfigurationService ) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{
     repositoryService_ = jcrService ;
-    cmsConfigurationService_ = cmsConfigurationService ;
-    baseDrivePath_ = cmsConfigurationService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
+    baseDrivePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_DRIVES_PATH);
   }
 
   public void start() {
@@ -86,6 +88,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setViewPreferences(Boolean.parseBoolean(drive.getProperty(VIEW_REFERENCES).getString())) ;
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
+      data.setShowHiddenNode(Boolean.parseBoolean(drive.getProperty(SHOW_HIDDEN_NODE).getString())) ;
       data.setAllowCreateFolder(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
       driveList.add(data) ;
     }
@@ -108,6 +111,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setViewPreferences(Boolean.parseBoolean(drive.getProperty(VIEW_REFERENCES).getString())) ;
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
+      data.setShowHiddenNode(Boolean.parseBoolean(drive.getProperty(SHOW_HIDDEN_NODE).getString())) ;
       data.setAllowCreateFolder(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
       session.logout();
       return data ;
@@ -118,7 +122,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
       String views, String icon, boolean viewReferences, boolean viewNonDocument, 
-      boolean viewSideBar, String repository, String allowCreateFolder) throws Exception {    
+      boolean viewSideBar, boolean showHiddenNode, String repository, String allowCreateFolder) throws Exception {    
     Session session = getSession(repository);
     Node driveHome = (Node)session.getItem(baseDrivePath_) ;
     if (!driveHome.hasNode(name)){
@@ -132,6 +136,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
       driveNode.setProperty(ALLOW_CREATE_FOLDER, allowCreateFolder) ;
+      driveNode.setProperty(SHOW_HIDDEN_NODE, Boolean.toString(showHiddenNode)) ;
       driveHome.save() ;
     }else{
       Node driveNode = driveHome.getNode(name);
@@ -144,6 +149,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(viewNonDocument)) ;
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(viewSideBar)) ;
       driveNode.setProperty(ALLOW_CREATE_FOLDER, allowCreateFolder) ;
+      driveNode.setProperty(SHOW_HIDDEN_NODE, Boolean.toString(showHiddenNode)) ;
       driveNode.save() ;
     }
     session.save() ;
@@ -177,8 +183,8 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   } 
 
   private Session getSession(String repository) throws Exception{    
-    String workspace = cmsConfigurationService_.getWorkspace(repository) ;
-    return repositoryService_.getRepository(repository).getSystemSession(workspace) ;          
+    ManageableRepository manaRepository = repositoryService_.getRepository(repository) ;
+    return manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()) ;          
   }
 
   public boolean isUsedView(String viewName, String repository) throws Exception {

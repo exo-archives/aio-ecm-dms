@@ -16,7 +16,6 @@ import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -33,6 +32,7 @@ import org.exoplatform.services.jcr.config.ReplicationEntry;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -269,7 +269,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   private void initServices(String repository) throws Exception{
     try {
-      getApplicationComponent(CmsConfigurationService.class).init(repository) ;
+      getApplicationComponent(NodeHierarchyCreator.class).init(repository) ;
       getApplicationComponent(CategoriesService.class).init(repository) ;
       getApplicationComponent(ManageDriveService.class).init(repository) ;
       getApplicationComponent(FolksonomyService.class).init(repository) ;

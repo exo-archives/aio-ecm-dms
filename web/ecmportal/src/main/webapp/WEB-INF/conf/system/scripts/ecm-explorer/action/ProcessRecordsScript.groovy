@@ -30,8 +30,7 @@ public class ProcessRecordsScript implements CmsScript {
       recordsService.addRecord(filePlan, record);
       session.save();
       session.logout();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       if(session !=null) {
         session.logout();
       }

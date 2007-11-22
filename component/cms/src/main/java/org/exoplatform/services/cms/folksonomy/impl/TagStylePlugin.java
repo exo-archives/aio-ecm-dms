@@ -10,11 +10,12 @@ import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig.HtmlTagStyle;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class TagStylePlugin extends BaseComponentPlugin{		  
   
@@ -23,16 +24,17 @@ public class TagStylePlugin extends BaseComponentPlugin{
   final private static String HTML_STYLE_PROP = "exo:htmlStyle".intern() ;
 	private InitParams params_ ;
   private RepositoryService repoService_ ;
-  private CmsConfigurationService cmsConfigService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
   
 	public TagStylePlugin(InitParams params, RepositoryService repoService,
-      CmsConfigurationService cmsConfigService) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
     params_ = params ;
     repoService_ = repoService ;
-    cmsConfigService_ = cmsConfigService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
 	}	 
   
   
+  @SuppressWarnings("unchecked")
   public void init() throws Exception {   
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     TagStyleConfig tagConfig ;
@@ -42,27 +44,29 @@ public class TagStylePlugin extends BaseComponentPlugin{
       if(tagConfig.getAutoCreatedInNewRepository()) {
         List<RepositoryEntry> repositories = repoService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
-          session = repoService_.getRepository(repo.getName()).getSystemSession(cmsConfigService_.getWorkspace(repo.getName())) ;
+          ManageableRepository manageableRepository = repoService_.getRepository(repo.getName()) ;
+          session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ; ;
           addTag(session, tagConfig) ;
           session.logout();
         }
-      }else {
-        session = repoService_.getRepository(tagConfig.getRepository()) .getSystemSession(cmsConfigService_.getWorkspace(tagConfig.getRepository())) ;
+      } else {
+        session = repoService_.getRepository(tagConfig.getRepository()).getSystemSession(repoService_.getRepository(tagConfig.getRepository()).getConfiguration().getSystemWorkspaceName()) ;
         addTag(session, tagConfig) ;
         session.logout();
       }      
     }
   }
   
+  @SuppressWarnings("unchecked")
   public void init(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     TagStyleConfig tagConfig ;
     Session session ;
+    ManageableRepository manageableRepository = repoService_.getRepository(repository) ;
     while(it.hasNext()) {
       tagConfig = (TagStyleConfig)it.next().getObject() ;
       if(tagConfig.getAutoCreatedInNewRepository() || repository.equals(tagConfig.getRepository())) {
-        session = repoService_.getRepository(repository)
-        .getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+        session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ; 
         addTag(session, tagConfig) ;
         session.logout();
       }
@@ -70,7 +74,7 @@ public class TagStylePlugin extends BaseComponentPlugin{
   }
   
   private void addTag(Session session, TagStyleConfig tagConfig) throws Exception {
-    String exoTagStylePath = cmsConfigService_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
+    String exoTagStylePath = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
     Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath) ;
     List<HtmlTagStyle> htmlStyle4Tag = tagConfig.getTagStyleList() ;
     for(HtmlTagStyle style: htmlStyle4Tag) {

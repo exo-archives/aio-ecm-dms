@@ -10,12 +10,12 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Taxonomy;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class TaxonomyPlugin extends BaseComponentPlugin{	
 
@@ -25,9 +25,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
   private boolean autoCreateInNewRepository_ = true;  
 
 
-  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, CmsConfigurationService cmsConfig) throws Exception {
+  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
     repositoryService_ = repositoryService ;
-    baseTaxonomiesPath_ = cmsConfig.getJcrPath(BasePath.EXO_TAXONOMIES_PATH) ;    
+    baseTaxonomiesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH) ;    
     params_ = params ;
     ValueParam valueParam = params_.getValueParam("autoCreateInNewRepository") ;
     if(valueParam !=null) {
@@ -57,9 +57,10 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     importPredefineTaxonomies(repository) ;
   }
 
+  @SuppressWarnings("unchecked")
   private void importPredefineTaxonomies(String repository) throws Exception {    
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;    
+    String workspace = manageableRepository.getConfiguration().getSystemWorkspaceName() ;    
     Session session = manageableRepository.getSystemSession(workspace) ;    
     Node taxonomyHomeNode = (Node)session.getItem(baseTaxonomiesPath_) ;
     //TODO Need remove this code

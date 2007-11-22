@@ -36,6 +36,7 @@ public class EmailNotifyListener implements EventListener {
     observedNode_ = oNode ;
   }
   
+  @SuppressWarnings("unused")
   public void onEvent(EventIterator arg0) {
     ExoContainer container = ExoContainerContext.getCurrentContainer() ;
     MailService mailService = 

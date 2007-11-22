@@ -18,6 +18,7 @@ public class ScriptPlugin extends BaseComponentPlugin{
     params_ = params; 
   }
 
+  @SuppressWarnings("unchecked")
   public Iterator<ObjectParameter> getScriptIterator() { return params_.getObjectParamIterator()  ; }
 
   public boolean getAutoCreateInNewRepository() {

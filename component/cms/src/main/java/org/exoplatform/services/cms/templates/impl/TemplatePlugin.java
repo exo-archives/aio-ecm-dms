@@ -13,11 +13,11 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class TemplatePlugin extends BaseComponentPlugin {
 
@@ -41,23 +41,23 @@ public class TemplatePlugin extends BaseComponentPlugin {
 
   private RepositoryService repositoryService_;
   private ConfigurationManager  configManager_;
-  private CmsConfigurationService cmsConfigService_;
+  private NodeHierarchyCreator nodeHierarchyCreator_;
   private String cmsTemplatesBasePath_ ; 
   private InitParams params_ ;
   private String storedLocation_ ;
   private boolean autoCreateInNewRepository_=false;
 
   public TemplatePlugin(InitParams params, RepositoryService jcrService, ConfigurationManager configManager,
-      CmsConfigurationService cmsConfigService) throws Exception {
-    cmsConfigService_ = cmsConfigService;
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+    nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositoryService_ = jcrService;
     configManager_ = configManager;
-    cmsTemplatesBasePath_ = cmsConfigService_.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;
+    cmsTemplatesBasePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;
     params_ = params ;    
     ValueParam locationParam = params_.getValueParam("storedLocation") ;
     if(locationParam== null) {
       storedLocation_ = 
-        cmsConfigService_.getContentLocation() + "/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ; 
+        nodeHierarchyCreator_.getContentLocation() + "/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ; 
     }else {
       storedLocation_ = locationParam.getValue();      
     } 
@@ -118,6 +118,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
 
   public void setBasePath(String basePath) { cmsTemplatesBasePath_ = basePath ; }
 
+  @SuppressWarnings("unchecked")
   private void importPredefineTemplates(String repositoryName) throws Exception {
     ManageableRepository repository = repositoryService_.getRepository(repositoryName) ;
     String workspace = repository.getConfiguration().getDefaultWorkspaceName();

@@ -13,11 +13,11 @@ import javax.jcr.Workspace;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
 public class CategoriesServiceImpl implements CategoriesService,Startable {		
@@ -31,9 +31,9 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   List<TaxonomyPlugin> plugins_ = new ArrayList<TaxonomyPlugin>() ;
 
   public CategoriesServiceImpl(RepositoryService repositoryService,
-      CmsConfigurationService cmsConfigService) throws Exception{  
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{  
     repositoryService_ = repositoryService;    
-    baseTaxonomyPath_ = cmsConfigService.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
+    baseTaxonomyPath_ = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
   }
   
   public void init(String repository) throws Exception {

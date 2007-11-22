@@ -430,7 +430,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-
+  
   <!-- Base node type for Ascent Capture released documents -->
   <nodeType name="kfx:document" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>

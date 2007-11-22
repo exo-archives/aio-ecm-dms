@@ -34,6 +34,7 @@ public class ViewConfig {
   public List<Tab> getTabList() { return this.tabList ; }
   public void setTabList(List<Tab> tabs) { this.tabList = tabs ; }
 
+  @SuppressWarnings("unchecked")
   public List getAllPermissions() {
     String[] allPermissions = StringUtils.split(permissions, ";");
     List permissionList = new ArrayList() ;
@@ -44,6 +45,7 @@ public class ViewConfig {
   }
 
   public boolean hasPermission(String permission) {
+    @SuppressWarnings("hiding")
     List permissions = getAllPermissions() ;
     if(permission == null) return false ;
     String[] array = StringUtils.split(permission , ":/") ;

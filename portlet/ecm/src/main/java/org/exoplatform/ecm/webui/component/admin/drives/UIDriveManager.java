@@ -34,7 +34,7 @@ public class UIDriveManager extends UIContainer {
     UIPopupWindow uiPopup = getChildById(id) ;
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, id) ;
-      uiPopup.setWindowSize(560,400) ;      
+      uiPopup.setWindowSize(560,420) ;      
       uiDriveForm = createUIComponent(UIDriveForm.class, null, null) ;
     } else {
       uiDriveForm = uiPopup.findFirstComponentOfType(UIDriveForm.class) ;

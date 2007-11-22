@@ -16,7 +16,7 @@ public interface ManageDriveService {
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
                         String views, String icon, boolean viewReferences, boolean viewNonDocument,
-                        boolean viewSideBar, String repository, String allowCreateFolder)throws Exception ;
+                        boolean viewSideBar, boolean showHiddenNode, String repository, String allowCreateFolder)throws Exception ;
   public DriveData getDriveByName(String driveName, String repository) throws Exception;
   public List<DriveData> getAllDriveByPermission(String permission, String repository) throws Exception;
   

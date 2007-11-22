@@ -20,6 +20,7 @@ public class Preference {
   private boolean showSideBar = false ;
   private boolean isShowNonDocumentType = false ;
   private boolean isShowPreferenceDocuments = false ;
+  private boolean isShowHiddenNode = false ;
   
   private int nodesPerPage = 20;
     
@@ -39,7 +40,10 @@ public class Preference {
   public void setShowNonDocumentType( boolean b) { isShowNonDocumentType = b ; }
   
   public boolean isShowPreferenceDocuments() { return isShowPreferenceDocuments ; }
-  public void setShowPreferenceDocuments(boolean b) { isShowPreferenceDocuments = b ; }      
+  public void setShowPreferenceDocuments(boolean b) { isShowPreferenceDocuments = b ; }
+  
+  public boolean isShowHiddenNode() { return isShowHiddenNode ; }
+  public void setShowHiddenNode(boolean b) { isShowHiddenNode = b ; }
   
   public String getAllowCreateFoder() { return allowCreateFoder ; }
   public void setAllowCreateFoder(String s) { allowCreateFoder = s ; }

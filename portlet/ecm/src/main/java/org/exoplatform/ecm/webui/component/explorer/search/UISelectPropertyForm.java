@@ -18,7 +18,7 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -69,11 +69,11 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
   
   public void activate() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    CmsConfigurationService cmsConfigService = getApplicationComponent(CmsConfigurationService.class) ;
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
     UIFormSelectBox uiSelect = new UIFormSelectBox(METADATA_TYPE, METADATA_TYPE, options) ;
     uiSelect.setOnChange("ChangeMetadataType") ;
     addUIFormInput(uiSelect) ;
-    String metadataPath = cmsConfigService.getJcrPath(BasePath.METADATA_PATH) ;
+    String metadataPath = nodeHierarchyCreator.getJcrPath(BasePath.METADATA_PATH) ;
     UIJCRExplorer uiExpolrer = getAncestorOfType(UIJCRExplorer.class) ;
     Node homeNode = (Node) uiExpolrer.getSession().getItem(metadataPath) ;
     NodeIterator nodeIter = homeNode.getNodes() ;

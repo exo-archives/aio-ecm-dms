@@ -58,8 +58,9 @@ public class CmsServiceImpl implements CmsService {
     return path;
   }
 
+  @SuppressWarnings("unused")
   public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
-      boolean isAddNew,String repository) throws Exception {    
+      boolean isAddNew, String repository) throws Exception {    
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 

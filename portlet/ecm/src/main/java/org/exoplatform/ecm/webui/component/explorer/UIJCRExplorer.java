@@ -386,13 +386,21 @@ public class UIJCRExplorer extends UIContainer {
     } else {
       while(childrenIterator.hasNext()) {
         Node child = (Node)childrenIterator.next() ;
-        if(Utils.isReadAuthorized(child)) {
-          childrenList.add(child) ;
+        if(Utils.isReadAuthorized(child))  childrenList.add(child) ;
+      }
+    }
+    List<Node> childList = new ArrayList<Node>() ;
+    if(!preferences_.isShowHiddenNode()) {
+      for(Node child : childrenList) {
+        if(Utils.isReadAuthorized(child) && !child.isNodeType("mix:hiddenAble")) {
+          childList.add(child) ;
         }
       }
-    }    
-    sort(childrenList);
-    return childrenList ;
+    } else {
+      childList = childrenList ;
+    }
+    sort(childList);
+    return childList ;
   }
   
   private void sort(List<Node> childrenList) {

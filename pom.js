@@ -19,6 +19,7 @@ function ECM(kernel, core, pc, jcr, portal, version) {
   this.portlet.ecm = 
     new Project("org.exoplatform.ecm", "exo.ecm.portlet.ecm", "exo-portlet", version).
     addDependency(new Project("org.exoplatform.ecm", "exo.ecm.component.cms", "jar",  version)) .      
+    addDependency(new Project("org.exoplatform.ecm", "exo.ecm.component.jcrext", "jar",  version)) .      
     addDependency(new Project("org.exoplatform.ecm", "exo.ecm.component.workflow.api", "jar", version)) .
     addDependency(new Project("org.exoplatform.ecm", "exo.ecm.component.workflow.impl.jbpm.facade", "jar", version)) .
     addDependency(new Project("org.exoplatform.ecm", "exo.ecm.component.workflow.impl.jbpm.engine", "jar", "3.0")) .

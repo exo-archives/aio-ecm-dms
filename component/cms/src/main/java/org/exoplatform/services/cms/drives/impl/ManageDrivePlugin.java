@@ -9,9 +9,10 @@ import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class ManageDrivePlugin extends BaseComponentPlugin {
 
@@ -23,19 +24,21 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
+  private static String SHOW_HIDDEN_NODE = "exo:showHiddenNode".intern() ;
   private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
 
   private RepositoryService repositoryService_;
-  private CmsConfigurationService cmsConfigService_;
+  private NodeHierarchyCreator nodeHierarchyCreator_;
   private InitParams params_ ; 
 
   public ManageDrivePlugin(RepositoryService repositoryService, 
-      InitParams params, CmsConfigurationService cmsConfigService) throws Exception {
+      InitParams params, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
     repositoryService_ = repositoryService;
-    cmsConfigService_ = cmsConfigService ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
     params_ = params ;  
   }
 
+  @SuppressWarnings("unchecked")
   public void init() throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     while(it.hasNext()){
@@ -45,6 +48,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
         addDrive(data, session) ;
         session.logout();
       }catch(Exception e) {
+        e.printStackTrace() ;
         System.out.println("[WARNING] ==> Can not init drive '"+ data.getName()
             +"' in repository '" + data.getRepository()+"'");
       }
@@ -52,6 +56,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void init(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     DriveData data = null ;
@@ -71,7 +76,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   }
 
   private void addDrive(DriveData data, Session session) throws Exception {
-    String drivesPath = cmsConfigService_.getJcrPath(BasePath.EXO_DRIVES_PATH);
+    String drivesPath = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Node driveHome = (Node)session.getItem(drivesPath) ;
     Node driveNode = null ;
     if(!driveHome.hasNode(data.getName())){
@@ -84,6 +89,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(VIEW_REFERENCES, Boolean.toString(data.getViewPreferences())) ;
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(data.getViewNonDocument())) ;
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(data.getViewSideBar())) ;
+      driveNode.setProperty(SHOW_HIDDEN_NODE, Boolean.toString(data.getShowHiddenNode())) ;
       driveNode.setProperty(ALLOW_CREATE_FOLDER, data.getAllowCreateFolder()) ;
       driveHome.save() ;
       session.save() ;
@@ -91,6 +97,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   }
 
   private Session getSession(String repository)throws Exception {
-    return repositoryService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;
+    ManageableRepository manaRepository = repositoryService_.getRepository(repository) ;
+    return manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()) ;
   }
 }

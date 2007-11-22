@@ -21,9 +21,10 @@ import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.rss.RSSService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
@@ -84,11 +85,9 @@ public class RSSServiceImpl implements RSSService{
   static private String MIX_VERSIONABLE = "mix:versionable".intern() ;
 
   private RepositoryService repositoryService_;
-  private CmsConfigurationService cmsConfigService_ ;
   public RSSServiceImpl(RepositoryService repositoryService, 
-      CmsConfigurationService cmsConfigService) {
+      NodeHierarchyCreator nodeHierarchyCreator) {
     repositoryService_ = repositoryService;
-    cmsConfigService_ = cmsConfigService ;
   }
 
   public void generateFeed(Map context) {
@@ -165,6 +164,7 @@ public class RSSServiceImpl implements RSSService{
     }     
   }
 
+  @SuppressWarnings("unchecked")
   private void generatePodcast(Map context){
     try{
       String actionName = (String)context.get("actionName") ;
@@ -269,7 +269,8 @@ public class RSSServiceImpl implements RSSService{
         enc.setType(mimeType) ;
         String path = child.getPath().trim() + "." + ext.trim() ; 
         enc.setLength(child.getProperty(LENGTH).getLong()) ;
-        String encUrl = getEntryUrl(portalName, cmsConfigService_.getWorkspace(), path, rssUrl) ;
+        
+        String encUrl = getEntryUrl(portalName, srcWorkspace, path, rssUrl) ;
         enc.setUrl(encUrl) ;
         enclosureList.add(enc) ;
         entry.setEnclosures(enclosureList) ;
@@ -345,9 +346,8 @@ public class RSSServiceImpl implements RSSService{
   }
   private void storeXML(String feedXML, String rssStoredPath, String rssNodeName, String repository){   
     try {      
-      Session session = 
-        repositoryService_.getRepository(repository)
-        .getSystemSession(cmsConfigService_.getWorkspace(repository));
+      ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+      Session session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
       Node rootNode = session.getRootNode();
       String[] array = rssStoredPath.split("/") ;
       for(int i = 0; i < array.length; i ++) {

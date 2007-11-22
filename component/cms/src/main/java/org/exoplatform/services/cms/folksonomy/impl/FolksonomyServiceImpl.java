@@ -20,10 +20,11 @@ import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.folksonomy.TagStyle;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
 /**
@@ -54,18 +55,18 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   final private static String HOSTES_STYLE = "hotest".intern() ;    
 
   private RepositoryService repoService_ ;
-  private CmsConfigurationService cmsConfigService_ ;   
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;   
   private String baseTagsPath_ ;  
   private String exoTagStylePath_ ;
   private List<TagStylePlugin> plugin_ = new ArrayList<TagStylePlugin>() ;
   private ExoCache cache_ ;  
   
   public FolksonomyServiceImpl(RepositoryService repoService,
-      CmsConfigurationService cmsConfigService, CacheService cacheService ) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService ) throws Exception{
     repoService_ = repoService ;
-    cmsConfigService_ = cmsConfigService ;    
-    baseTagsPath_ = cmsConfigService_.getJcrPath(BasePath.EXO_TAGS_PATH) ;
-    exoTagStylePath_ = cmsConfigService_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;    
+    baseTagsPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAGS_PATH) ;
+    exoTagStylePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
     cache_ = cacheService.getCacheInstance(FolksonomyServiceImpl.class.getName()) ;       
   }
 
@@ -211,7 +212,8 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }    
   
   protected Session getSystemSession(String repository) throws Exception {
-    return repoService_.getRepository(repository).getSystemSession(cmsConfigService_.getWorkspace(repository)) ;    
+    ManageableRepository manageableRepository = repoService_.getRepository(repository) ;
+    return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ;    
   }  
 
   public String getTagStyle(String styleName, String repository) throws Exception {

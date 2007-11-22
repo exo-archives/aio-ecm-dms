@@ -16,13 +16,13 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.CmsConfigurationService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL
@@ -43,13 +43,13 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   private String buttons_ ;
   private RepositoryService repositoryService_ ;
   private String baseViewPath_ ;
-  private CmsConfigurationService cmsConfigurationService_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
 
   public ManageViewServiceImpl(InitParams params, RepositoryService jcrService,
-      CmsConfigurationService cmsConfigurationService) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{
     repositoryService_ = jcrService ;
-    cmsConfigurationService_ = cmsConfigurationService ;
-    baseViewPath_ = cmsConfigurationService.getJcrPath(BasePath.CMS_VIEWS_PATH) ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
+    baseViewPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH) ;
     ValueParam buttonParam = params.getValueParam("buttons") ;
     buttons_ = buttonParam.getValue() ;
   }
@@ -93,7 +93,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   }
 
   public Node getViewHome(String repository) throws Exception {    
-    String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    String viewsPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     return (Node) getSession(repository).getItem(viewsPath);
   }
 
@@ -101,7 +101,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     List<ViewConfig> viewList = new ArrayList<ViewConfig>() ;
     ViewConfig view = null;
     Node viewNode  = null ;
-    String viewsPath = cmsConfigurationService_.getJcrPath(BasePath.CMS_VIEWS_PATH);
+    String viewsPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     Session session = getSession(repository) ;
     try {
       Node viewHome = (Node)session.getItem(viewsPath) ;
@@ -211,7 +211,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   }
 
   private String getJCRPath(String jcrAlias) throws Exception{
-    return cmsConfigurationService_.getJcrPath(jcrAlias) ;
+    return nodeHierarchyCreator_.getJcrPath(jcrAlias) ;
   }
 
 

@@ -21,6 +21,7 @@ public class Utils {
     return makePath(rootNode, path, nodetype, null);
   }
 
+  @SuppressWarnings("unchecked")
   public static Node makePath(Node rootNode, String path, String nodetype, Map permissions)
   throws PathNotFoundException, RepositoryException {    
     String[] tokens = path.split("/") ;
