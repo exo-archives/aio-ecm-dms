@@ -44,8 +44,8 @@ public class ViewConfig {
     return permissionList ;
   }
 
+  @SuppressWarnings("hiding")
   public boolean hasPermission(String permission) {
-    @SuppressWarnings("hiding")
     List permissions = getAllPermissions() ;
     if(permission == null) return false ;
     String[] array = StringUtils.split(permission , ":/") ;
