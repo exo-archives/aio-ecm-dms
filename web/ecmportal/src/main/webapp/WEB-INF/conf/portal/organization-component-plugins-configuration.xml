@@ -24,7 +24,7 @@
              	<collection type="java.util.ArrayList">
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>applicationData</string></field>
+		             		<field name="alias"><string>groupApplicationData</string></field>
 		                <field name="path"><string>Application Data</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>
 		                <field name="permissions">
@@ -170,7 +170,7 @@
              	<collection type="java.util.ArrayList">
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>applicationData</string></field>
+		             		<field name="alias"><string>userApplicationData</string></field>
 		                <field name="path"><string>Application Data</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>
 		                <field name="permissions">
