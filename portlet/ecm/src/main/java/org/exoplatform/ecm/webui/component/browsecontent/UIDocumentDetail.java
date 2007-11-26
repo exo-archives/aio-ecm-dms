@@ -354,7 +354,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       }else {
         node = uiContainer.getNodeByPath(path) ;
       }
-      UIDocumentDetail uiDocumentView =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;
+      UIDocumentDetail uiDocumentView =  uiPopupAction.activate(UIDocumentDetail.class, null, 600, 450) ;
       uiDocumentView.setNode(node) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

@@ -133,7 +133,8 @@ public class UIDrivesBrowser extends UIContainer {
           userGroupsDrive.add(drive) ;
         } else {
           for(String group : groups) {
-            if(drive.getHomePath().equals(group)) {
+            if(drive.getHomePath().equals(groupPath + group)) {
+              drive.setName(group) ;
               userGroupsDrive.add(drive) ;
               break ;
             }

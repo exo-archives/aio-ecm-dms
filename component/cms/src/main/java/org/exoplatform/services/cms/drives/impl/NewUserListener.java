@@ -33,7 +33,7 @@ public class NewUserListener extends UserEventListener {
   
   @SuppressWarnings({"unused", "hiding"})
   public void preSave(User user, boolean isNew) throws Exception { 
-    String name = initParams_.getValueParam("name").getValue() + " " + user.getUserName() ;
+//    String name = initParams_.getValueParam("name").getValue() + " " + user.getUserName() ;
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = initParams_.getValueParam("permissions").getValue();
@@ -45,6 +45,7 @@ public class NewUserListener extends UserEventListener {
     boolean viewSideBar = Boolean.parseBoolean(initParams_.getValueParam("viewSideBar").getValue());
     boolean showHiddenNode = Boolean.parseBoolean(initParams_.getValueParam("showHiddenNode").getValue());
     String allowCreateFolder = initParams_.getValueParam("allowCreateFolder").getValue();
-    driveService_.addDrive(name, workspace, permissions, homePath, views, icon, viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
+    driveService_.addDrive(user.getUserName(), workspace, permissions, homePath, views, icon, 
+        viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
   }
 }
