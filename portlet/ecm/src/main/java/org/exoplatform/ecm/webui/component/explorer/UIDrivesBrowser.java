@@ -24,6 +24,8 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -31,6 +33,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -43,8 +46,8 @@ import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
- * Author : nqhungvn
- *          nguyenkequanghung@yahoo.com
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
  * July 3, 2006
  * 10:07:15 AM
  */
@@ -112,8 +115,35 @@ public class UIDrivesBrowser extends UIContainer {
         }
       }
     }
-    Collections.sort(driveList) ;
-    return driveList ; 
+    List<DriveData> driveContentUserGroup = drivesGroup(driveList) ; 
+    Collections.sort(driveContentUserGroup) ;
+    return driveContentUserGroup ; 
+  }
+  
+  private List<DriveData> drivesGroup(List<DriveData> driveList) throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
+    String userId = Util.getPortalRequestContext().getRemoteUser() ;
+    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
+    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH) ;
+    List<DriveData> userGroupsDrive = new ArrayList<DriveData>() ;
+    List<String> groups = Utils.getGroups() ;
+    for(DriveData drive : driveList) {
+      if(drive.getHomePath().startsWith(userPath) || drive.getHomePath().startsWith(groupPath)) {
+        if(drive.getHomePath().contains(userId)) {
+          userGroupsDrive.add(drive) ;
+        } else {
+          for(String group : groups) {
+            if(drive.getHomePath().equals(group)) {
+              userGroupsDrive.add(drive) ;
+              break ;
+            }
+          }
+        }
+      } else {
+        userGroupsDrive.add(drive) ;
+      }
+    }
+    return userGroupsDrive ;
   }
   
   private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {

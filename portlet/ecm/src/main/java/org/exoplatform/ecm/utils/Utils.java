@@ -23,11 +23,14 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -363,6 +366,24 @@ public class Utils {
       userMemberships.add(role) ;     
     }
     return userMemberships ;
+  }
+  
+  public static List<String> getGroups() throws Exception {
+    String userId = Util.getPortalRequestContext().getRemoteUser() ;
+    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
+    NodeHierarchyCreator nodeHierarchyCreator = Util.getUIPortal().getApplicationComponent(NodeHierarchyCreator.class) ;
+    List<String> groupList = new ArrayList<String> () ;
+    Collection groups = oservice.getGroupHandler().findGroupsOfUser(userId) ;
+    Object[] objects = groups.toArray() ;
+    String rootPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH) ;
+    for(int i = 0 ; i < objects.length ; i ++ ){
+      Group group = (Group)objects[i] ;
+      String groupPath = null ;
+      if(group.getParentId() == null || group.getParentId().length() == 0) groupPath = "/" + group.getGroupName() ; 
+      else groupPath = group.getParentId() + "/" + group.getGroupName() ; 
+      groupList.add(rootPath + groupPath) ;
+    }
+    return groupList ;
   }
 
   public static String getNodeOwner(Node node) throws Exception {

@@ -97,6 +97,58 @@
 	    </init-params> 
 	  </component-plugin>
 	  <component-plugin>
+	    <name>drive.new.group.event.listener</name>
+	    <set-method>addListenerPlugin</set-method>
+	    <type>org.exoplatform.services.cms.drives.impl.NewGroupListener</type>
+	    <description>description</description>
+	    <init-params>
+	      <value-param>
+	        <name>name</name>
+	        <value>Content of group</value>
+	      </value-param>
+	      <value-param>
+	        <name>repository</name>
+	        <value>repository</value>
+	      </value-param>
+	      <value-param>
+	        <name>workspace</name>
+	        <value>production</value>
+	      </value-param>
+	      <value-param>
+	        <name>permissions</name>
+	        <value>member:/user</value>
+	      </value-param>
+	      <value-param>
+	        <name>icon</name>
+	        <value></value>
+	      </value-param>
+	      <value-param>
+	        <name>views</name>
+	        <value>simple-view</value>
+	      </value-param>
+	      <value-param>
+	        <name>viewPreferences</name>
+	        <value>false</value>
+	      </value-param>
+	      <value-param>
+	        <name>viewNonDocument</name>
+	        <value>true</value>
+	      </value-param>	      	      	      	      	      	      	      
+	      <value-param>
+	        <name>viewSideBar</name>
+	        <value>true</value>
+	      </value-param>	      	      	      	      	      	      	      
+	      <value-param>
+	        <name>showHiddenNode</name>
+	        <value>true</value>
+	      </value-param>	      	      	      	      	      	      	      
+	      <value-param>
+	        <name>allowCreateFolder</name>
+	        <value>both</value>
+	      </value-param>	      	      	      	      	      	      	      	      	      	      
+	    </init-params>
+	  </component-plugin>	  
+	  <component-plugin>
 	    <name>ecm.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
 	    <type>org.exoplatform.services.jcr.ext.hierarchy.impl.NewUserListener</type>
@@ -394,6 +446,58 @@
 	      </object-param>
 	    </init-params>
 	  </component-plugin>
+	  <component-plugin>
+	    <name>drive.new.user.event.listener</name>
+	    <set-method>addListenerPlugin</set-method>
+	    <type>org.exoplatform.services.cms.drives.impl.NewUserListener</type>
+	    <description>description</description>
+	    <init-params>
+	      <value-param>
+	        <name>name</name>
+	        <value>Content of user</value>
+	      </value-param>
+	      <value-param>
+	        <name>repository</name>
+	        <value>repository</value>
+	      </value-param>
+	      <value-param>
+	        <name>workspace</name>
+	        <value>production</value>
+	      </value-param>
+	      <value-param>
+	        <name>permissions</name>
+	        <value>member:/user</value>
+	      </value-param>
+	      <value-param>
+	        <name>icon</name>
+	        <value></value>
+	      </value-param>
+	      <value-param>
+	        <name>views</name>
+	        <value>simple-view</value>
+	      </value-param>
+	      <value-param>
+	        <name>viewPreferences</name>
+	        <value>false</value>
+	      </value-param>
+	      <value-param>
+	        <name>viewNonDocument</name>
+	        <value>true</value>
+	      </value-param>	      	      	      	      	      	      	      
+	      <value-param>
+	        <name>viewSideBar</name>
+	        <value>true</value>
+	      </value-param>	      	      	      	      	      	      	      
+	      <value-param>
+	        <name>showHiddenNode</name>
+	        <value>true</value>
+	      </value-param>	      	      	      	      	      	      	      
+	      <value-param>
+	        <name>allowCreateFolder</name>
+	        <value>both</value>
+	      </value-param>	      	      	      	      	      	      	      	      	      	      
+	    </init-params>
+	  </component-plugin>	  	  
 	  <component-plugin>
 	    <name>queries.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
