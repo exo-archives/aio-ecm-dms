@@ -97,11 +97,11 @@
   float: left;
   border: solid 1px #ffffff;
   margin: 5px;
-  width: 95px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   height: 85px;
+  width: 160px;
   border: solid 1px #d1d1d1;
   background: white;
   padding: 8px 0px 5px 0px;
@@ -116,7 +116,6 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel {
   line-height: 14px;
   text-align: center;
-  width: 80px;
   margin: 3px auto 0px auto;
 }
 

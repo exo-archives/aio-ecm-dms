@@ -95,7 +95,6 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
   float: left;
   margin: 7px ;
-  width: 110px;
   padding: 0px 10px;
 }
 
@@ -105,7 +104,7 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   float: left;
-  width: 110px; height:83px;
+  width: 160px; height:83px;
   border: solid 1px #e4e4e4;
   background: white url('VistaSkin/background/DriverContainerBG1x20.gif') repeat-x bottom;
   padding: 10px 5px;
@@ -128,12 +127,10 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a {
   color: #116eaa;
-  font-weight: bold;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a:hover {
   color: orange;
-  text-decoration: none;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
