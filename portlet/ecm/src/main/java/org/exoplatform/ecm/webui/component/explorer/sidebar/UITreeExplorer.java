@@ -82,11 +82,7 @@ public class UITreeExplorer extends UIContainer {
   }
   
   public boolean isSystemWorkspace() throws Exception {
-    String wsName = getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String systemWS = repositoryService.getRepository(getRepository()).getConfiguration().getSystemWorkspaceName() ;
-    if(wsName.equals(systemWS)) return true ;
-    return false ;
+    return getAncestorOfType(UIJCRExplorer.class).isSystemWorkspace() ;
   }
   
   public UITreeNodePageIterator getUIPageIterator(String id) throws Exception {    

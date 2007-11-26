@@ -151,6 +151,14 @@ public class UIJCRExplorer extends UIContainer {
     if(wsName == null ) return getSession() ;                      
     return getSessionProvider().getSession(wsName,getRepository()) ;
   }
+  
+  public boolean isSystemWorkspace() throws Exception {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    String systemWS = 
+      repositoryService.getRepository(getRepositoryName()).getConfiguration().getSystemWorkspaceName() ;
+    if(getCurrentWorkspace().equals(systemWS)) return true ;
+    return false ;
+  }
 
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).

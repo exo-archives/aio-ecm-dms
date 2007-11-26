@@ -39,6 +39,14 @@ public class UISideBar extends UIContainer {
   public String getCurrentComp() { return currentComp ; }
   public void setCurrentComp(String currentComp) { this.currentComp = currentComp ; }
   
+  public boolean isSystemWorkspace() throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).isSystemWorkspace() ;
+  }
+  
+  public String getRepository() { 
+    return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+  }   
+  
   static public class CloseActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent() ;

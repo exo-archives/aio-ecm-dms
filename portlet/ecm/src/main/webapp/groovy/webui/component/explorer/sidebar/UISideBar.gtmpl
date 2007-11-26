@@ -13,10 +13,12 @@
 	  <div style="position: relative;">
 		  <div class="UISelectContent">
 		    <div class="SelectContentContainer">
+        <%if(!uicomponent.isSystemWorkspace()) {%>
 			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Relation")%>">
 			      <div class="ItemIcon Relations24x24Icon"><span></span></div>
 		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Relation")%></div>
 		      </div>
+		    <%}%>
 			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Explorer")%>">
 			      <div class="ItemIcon JCRExplorer24x24Icon"><span></span></div>
 		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Explorer")%></div>

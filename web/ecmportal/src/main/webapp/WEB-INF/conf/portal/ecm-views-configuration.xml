@@ -32,7 +32,7 @@
                       <field  name="tabName"><string>Info</string></field>
                       <field  name="buttons">
                       	<string>
-                      		viewReferences; viewNodeType; viewPermissions; viewProperties; viewMetadatas; viewRelations; showJCRStructure
+                      		viewNodeType; viewPermissions; viewProperties; showJCRStructure
                       	</string>
                       </field>
                     </object>
