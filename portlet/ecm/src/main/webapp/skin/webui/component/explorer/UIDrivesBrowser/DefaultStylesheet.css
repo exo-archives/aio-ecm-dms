@@ -114,8 +114,8 @@
 	background: url('DefaultSkin/background/Group.png') no-repeat left center;
 }
 
-.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDrivesIcon {
-	background: url('eXoResources/src/main/webapp/skin/DefaultSkin/skinIcons/16x16/icons/DefaultPortletIcon.gif') no-repeat left center;
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
+	background: url('DefaultSkin/background/Earth.gif') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
