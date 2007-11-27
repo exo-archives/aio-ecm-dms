@@ -52,7 +52,10 @@
 			</div>
 		</div>
 		<div class="DrivesListContainer" >
-			
+		<%
+      def personalDrives = uicomponent.personalDrives(driveList) ;
+			if(personalDrives.size() > 0) {			
+		%>
 			<div class="DrivesContent">	
   			<div class="DrivesListTitleBG">
 					<div class="DrivesListTitleBGRight"> 
@@ -71,38 +74,25 @@
 			    <div class="DecoratorMiddleLeft">
 			      <div class="DecoratorMiddleRight">
 			        <div class="DecoratorMiddle">
-			          <%
-			            def personalDrives = uicomponent.personalDrives(driveList) ;
-			            if(personalDrives.size() > 0) {
-			              for(personalDrive in personalDrives) {
-			          %>
-			              <div class="Drive">
-			              	<div class="DriveContainer">
-				              <%if(personalDrive.getIcon() != null && personalDrive.getIcon().length() > 0) {%>
-				                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><img src="${personalDrive.icon}" width="48" height="41" /></div>
-				              <%} else {%>
-				                <div class="Icon UserDriveIcon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><span></span></div>
-				              <%}%>
-				                <div class="DriveLabel">
-				                  <div class="LeftBar">
-				                    <div class="RightBar">
-				                      <div class="MiddleBar">
-				                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=personalDrive.getName().substring(personalDrive.getName().lastIndexOf("|") + 1)%></a>
-				                      </div>
-				                    </div>
-				                  </div>
-				                </div>
-				            	</div>    
-			              </div>
-			          <%  
-			              }
-			            } else {
-			          %>
-			            <div class="EmptyDrives">
-			            	<div class="ContainerEmptyDrives">
-			            		<%=_ctx.appRes("UIDrivesBrowser.msg.empty-drives")%>
-			            	</div>
-			            </div>
+			          <%for(personalDrive in personalDrives) {%>
+		              <div class="Drive">
+		              	<div class="DriveContainer">
+			              <%if(personalDrive.getIcon() != null && personalDrive.getIcon().length() > 0) {%>
+			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><img src="${personalDrive.icon}" width="48" height="41" /></div>
+			              <%} else {%>
+			                <div class="Icon UserDriveIcon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><span></span></div>
+			              <%}%>
+			                <div class="DriveLabel">
+			                  <div class="LeftBar">
+			                    <div class="RightBar">
+			                      <div class="MiddleBar">
+			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=personalDrive.getName().substring(personalDrive.getName().lastIndexOf("|") + 1)%></a>
+			                      </div>
+			                    </div>
+			                  </div>
+			                </div>
+			            	</div>    
+		              </div>
 			          <%}%>
 								<div style="clear: left;"><span></span></div>
 			        </div>
@@ -115,7 +105,11 @@
 			    </div>
 			  </div>
 		  </div>
-		  
+		<%}%>
+    <%
+      def groupDrives = uicomponent.groupDrives(driveList) ;
+      if(groupDrives.size() > 0) {
+    %>
       <div class="DrivesContent">	
    			<div class="DrivesListTitleBG">
 					<div class="DrivesListTitleBGRight"> 
@@ -134,38 +128,25 @@
 			    <div class="DecoratorMiddleLeft">
 			      <div class="DecoratorMiddleRight">
 			        <div class="DecoratorMiddle">
-			          <%
-			            def groupDrives = uicomponent.groupDrives(driveList) ;
-			            if(groupDrives.size() > 0) {
-			              for(groupDrive in groupDrives) {
-			          %>
-			              <div class="Drive">
-			              	<div class="DriveContainer">
-				              <%if(groupDrive.getIcon() != null && groupDrive.getIcon().length() > 0) {%>
-				                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><img src="${groupDrive.icon}" width="48" height="41" /></div>
-				              <%} else {%>
-				                <div class="Icon GroupDriveIcon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><span></span></div>
-				              <%}%>
-				                <div class="DriveLabel">
-				                  <div class="LeftBar">
-				                    <div class="RightBar">
-				                      <div class="MiddleBar">
-				                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace("|", "/")%></a>
-				                      </div>
-				                    </div>
-				                  </div>
-				                </div>
-				            	</div>    
-			              </div>
-			          <%  
-			              }
-			            } else {
-			          %>
-			            <div class="EmptyDrives">
-			            	<div class="ContainerEmptyDrives">
-			            		<%=_ctx.appRes("UIDrivesBrowser.msg.empty-drives")%>
-			            	</div>
-			            </div>
+			          <%for(groupDrive in groupDrives) {%>
+		              <div class="Drive">
+		              	<div class="DriveContainer">
+			              <%if(groupDrive.getIcon() != null && groupDrive.getIcon().length() > 0) {%>
+			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><img src="${groupDrive.icon}" width="48" height="41" /></div>
+			              <%} else {%>
+			                <div class="Icon GroupDriveIcon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><span></span></div>
+			              <%}%>
+			                <div class="DriveLabel">
+			                  <div class="LeftBar">
+			                    <div class="RightBar">
+			                      <div class="MiddleBar">
+			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace("|", "/")%></a>
+			                      </div>
+			                    </div>
+			                  </div>
+			                </div>
+			            	</div>    
+		              </div>
 			          <%}%>
 								<div style="clear: left;"><span></span></div>
 			        </div>
@@ -178,7 +159,7 @@
 			    </div>
 			  </div>
 		  </div>
-		  
+		<%}%>  
       <div class="DrivesContent">	
   			<div class="DrivesListTitleBG">
 					<div class="DrivesListTitleBGRight"> 
@@ -245,5 +226,4 @@
 		</div>
 	</div>
 	<div style="clear: left;"><span></span></div>
-  
 </div>
