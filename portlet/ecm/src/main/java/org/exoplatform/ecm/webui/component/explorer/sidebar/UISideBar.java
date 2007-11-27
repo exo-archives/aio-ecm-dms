@@ -24,7 +24,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISideBar.CloseActionListener.class),
         @EventConfig(listeners = UISideBar.ExplorerActionListener.class),
         @EventConfig(listeners = UISideBar.RelationActionListener.class),
-        @EventConfig(listeners = UISideBar.TagExplorerActionListener.class)
+        @EventConfig(listeners = UISideBar.TagExplorerActionListener.class),
+        @EventConfig(listeners = UISideBar.ClipboardActionListener.class)
     }
 )
 public class UISideBar extends UIContainer {
@@ -34,6 +35,7 @@ public class UISideBar extends UIContainer {
     addChild(UITreeExplorer.class, null, null).getId() ;
     addChild(UIViewRelationList.class, null, null).setRendered(false) ;
     addChild(UITagExplorer.class, null, null).setRendered(false) ;
+    addChild(UIClipboard.class, null, null).setRendered(false) ;
   }
   
   public String getCurrentComp() { return currentComp ; }
@@ -86,4 +88,14 @@ public class UISideBar extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
     }
   }
+  
+  static public class ClipboardActionListener extends EventListener<UISideBar> {
+    public void execute(Event<UISideBar> event) throws Exception {
+      UISideBar uiSideBar = event.getSource() ;
+      uiSideBar.currentComp = "Clipboard" ;
+      uiSideBar.setRenderedChild(UIClipboard.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
+    }
+  }
+  
 }
