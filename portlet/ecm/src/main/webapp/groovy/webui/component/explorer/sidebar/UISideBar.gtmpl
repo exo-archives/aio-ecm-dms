@@ -26,7 +26,11 @@
 			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("TagExplorer")%>">
 			      <div class="ItemIcon TagExplorer24x24Icon"><span></span></div>
 		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.TagExplorer")%></div>
-		      </div>		      
+		      </div>
+		      <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Clipboard")%>">
+	          <div class="ItemIcon Clipboard24x24Icon"><span></span></div>
+	          <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Clipboard")%></div>
+	        </div>
 		      <div class="SeparatorLine"><span></span></div>
 			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Close")%>">
 			      <div class="ItemIcon CloseSidebar24x24Icon"><span></span></div>

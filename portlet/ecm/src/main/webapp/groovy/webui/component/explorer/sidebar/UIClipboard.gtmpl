@@ -65,7 +65,7 @@
 		  <tr class="EvenRow">
 	      <td class="text" colspan="3" align="center">
 	        <div class="ClearAllBlock">
-						<a  class="Icon ScissorsEraserWarning16x16Icon" href="<%=uicomponent.url('ClearAll', 'All')%>">&nbsp;&nbsp;&nbsp;&nbsp;
+						<a  class="Icon ScissorsEraserWarning16x16Icon" href="<%=uicomponent.url('ClearAll', 'All')%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						  <%=_ctx.appRes(name+".action.clearall")%>
 						</a>
 					  <div style="clear: both"><span></span></div>
