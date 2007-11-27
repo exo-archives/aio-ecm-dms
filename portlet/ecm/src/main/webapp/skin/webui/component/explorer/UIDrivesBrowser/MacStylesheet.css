@@ -89,8 +89,42 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
   background: #f3f3f3;
   margin: 3px 1px 1px 1px;
-  padding: 5px 0px 5px 10px;
+  padding: 7px;
   background: url('MacSkin/background/BGRepositoryList1x3.gif') repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent {
+	border: 1px solid #d9d9d9;
+	padding: 1px 2px 2px 2px;
+	margin-bottom: 5px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
+	height: 21px;
+	line-height: 21px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .Icon {
+	padding-left: 20px;
+	width: auto; height: auto;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
+	background: url('DefaultSkin/background/Personal.png') no-repeat left center;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
+	background: url('DefaultSkin/background/Group.png') no-repeat left center;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDrivesIcon {
+	background: url('eXoResources/src/main/webapp/skin/DefaultSkin/skinIcons/16x16/icons/DefaultPortletIcon.gif') no-repeat left center;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
+	border: 1px solid #d9d9d9;
+	margin-top: 1px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
