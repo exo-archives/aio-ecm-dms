@@ -147,9 +147,10 @@
 		          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
 		        } else {
 		        	if(mimeType.startsWith("image")) {
+		        	String random = String.valueOf(new Date().getTime());
 		        %> 	
 			    		<div class="ContentDetail">
-                <image src="/${uicomponent.getPortalName()}/jcr?workspace=${uicomponent.getWorkspaceName()}&path=${originalNode.getPath()}"/>
+                <image src="/${uicomponent.getPortalName()}/jcr?workspace=${uicomponent.getWorkspaceName()}&ex=${random}&path=${originalNode.getPath()}"/>
 		          </div>
 		        <%}else {%> 
 							<div style="text-align:center; font-style:italic">
