@@ -236,7 +236,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         }
         ManageableRepository repository =
           uiForm.getApplicationComponent(RepositoryService.class).getRepository(uiExplorer.getRepositoryName()) ;
-        Session session = repository.getSystemSession(repository.getConfiguration().getSystemWorkspaceName()) ; 
+        Session session = repository.getSystemSession(repository.getConfiguration().getDefaultWorkspaceName()) ; 
         Node queryNode = (Node) session.getItem(uiForm.queryPath_) ;
         queryNode.setProperty("jcr:language", queryLang) ;
         queryNode.setProperty("jcr:statement", statement) ;
