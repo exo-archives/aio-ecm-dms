@@ -68,6 +68,11 @@
   background: url('DefaultSkin/DustBin.gif') no-repeat ;
 }
 
+.UIGrid .PasteIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/PasteIcon.gif') no-repeat ;
+}
+
 .UIGrid .EditInfoIcon {
   width: 16px ;  height: 16px ;
   background: url('DefaultSkin/Edit.gif') no-repeat ;

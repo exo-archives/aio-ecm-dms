@@ -33,6 +33,11 @@
   background: url('DefaultSkin/Tagging.gif') no-repeat center center;
 }
 
+.Clipboard24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/Clipboard.gif') no-repeat center center;
+}
+
 .CloseSidebar24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
