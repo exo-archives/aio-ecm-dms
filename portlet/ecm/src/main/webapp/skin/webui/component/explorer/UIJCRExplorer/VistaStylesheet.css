@@ -265,6 +265,7 @@
 	margin: 10px auto;
 	border: solid 1px #b7b7b7;
 	padding: 5px;
+	width: 95%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
@@ -317,11 +318,6 @@
 }
 
 /*############################## -- BEGIN UISimpleSearch -- ##############################*/
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UISimpleSearch .FormContainer {
-	width: 450px;
-	margin: auto;
-}
 
 .UIJCRExplorerPortlet .EditQueryForm .FormContainer {
   width: 450px;

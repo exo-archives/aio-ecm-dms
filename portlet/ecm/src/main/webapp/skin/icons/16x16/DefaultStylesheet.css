@@ -1098,4 +1098,9 @@
 .UIRightClickPopupMenu .Save16x16Icon {
   background: url('DefaultSkin/Save.gif') no-repeat left center;
 }
+
+.ScissorsEraserWarning16x16Icon {
+  width: 16px ; height: 16px ;
+  background: url('DefaultSkin/ScissorsEraserWarning.gif') no-repeat;
+}
 /*############################## -- End BC Portlet Icon -- ########################*/

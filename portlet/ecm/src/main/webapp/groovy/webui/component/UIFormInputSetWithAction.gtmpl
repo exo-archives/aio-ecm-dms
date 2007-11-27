@@ -50,12 +50,10 @@
 						        <%for(j in 0..listInfor.size()-1) {
 					  	          if(uicomponent.isDeleteOnly()) { %>
 						  	          <div class="InforField">
-						  	            <div class="ActionField">
-						  	            	<%=listInfor[j]%>
-						  	            	<a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');" onclick="return confirm('<%=confirm%>');">
-							                  <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif">
-							                </a>
-						  	            </div>      	          
+						  	            <div class="ActionField"><%=listInfor[j]%></div>      	          
+                            <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');" onclick="return confirm('<%=confirm%>');">
+						                  <div class="DeleteIconInfo"><span></span></div>
+						                </a>
 						              </div>	
 						        <%
 					              }
@@ -73,19 +71,19 @@
 							                if(uicomponent.isDeleteOnly()) { %>
 								                <div class="ActionField">
 								                  <%=arrInfor[i]%>
-								                  <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
-										                <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif">		                  
-										              </a>
 								                </div>      	          
+									              <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
+									                <div class="DeleteIconInfo"><span></span></div>		                  
+									              </a>
 							              <%} else { %>
 						                    <div class="ActionField" style="float:left;">
 								                  [ <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
 								                      <%=arrInfor[i]%>
-							                       <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[1]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
-		  									              <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif">                
-											              </a>
 								                  </a> ]
 								                </div>
+									              <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[1]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
+  									              <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif"/>                
+									              </a>
 									              <div style="clear:left"><span></span></div>
 							              <%
 							                }

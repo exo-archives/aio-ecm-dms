@@ -451,4 +451,13 @@
   vertical-align: bottom;
 }
 
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .ActionField {
+	width: 300px;
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
+	float: left;
+}
+
 /*############################## -- End Others   -- ##############################*/

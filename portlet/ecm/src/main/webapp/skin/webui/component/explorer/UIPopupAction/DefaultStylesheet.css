@@ -441,10 +441,11 @@
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .ActionField {
+	width: 300px;
+	float: left;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
-  float: none;
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
