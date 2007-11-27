@@ -150,7 +150,7 @@ ECMUtils.prototype.showHideComponent = function(elemtClicked) {
 		elemt.style.display = 'block' ;
 	} else {
 		elemtClicked.childNodes[0].style.display = 'block' ;
-		//elemtClicked.childNodes[1].style.display = 'none' ;
+		elemtClicked.childNodes[1].style.display = 'none' ;
 		elemt.style.display = 'none' ;
 	}
 };
