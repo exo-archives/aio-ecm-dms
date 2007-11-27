@@ -38,7 +38,7 @@ public class NewGroupListener extends GroupEventListener {
     String parentId = group.getParentId() ;
     if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
     else groupId = parentId + "/" + group.getGroupName() ;
-//    String name = initParams_.getValueParam("name").getValue() + " " + group.getGroupName();
+    String name = groupId.replace("/", "|");
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = initParams_.getValueParam("permissions").getValue();
@@ -50,7 +50,7 @@ public class NewGroupListener extends GroupEventListener {
     boolean viewSideBar = Boolean.parseBoolean(initParams_.getValueParam("viewSideBar").getValue());
     boolean showHiddenNode = Boolean.parseBoolean(initParams_.getValueParam("showHiddenNode").getValue());
     String allowCreateFolder = initParams_.getValueParam("allowCreateFolder").getValue();
-    driveService_.addDrive(group.getGroupName(), workspace, permissions, homePath, views, icon, viewPreferences,
+    driveService_.addDrive(name, workspace, permissions, homePath, views, icon, viewPreferences,
         viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
   }
 }

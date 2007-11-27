@@ -22,6 +22,8 @@ public class NewUserListener extends UserEventListener {
   private ManageDriveService driveService_ ;
   private InitParams initParams_ ;
   private String userPath_ ;
+  final static String PRIVATE = "Private" ;
+  final static String PUBLIC = "Public" ;
 
   public NewUserListener(ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
@@ -33,7 +35,6 @@ public class NewUserListener extends UserEventListener {
   
   @SuppressWarnings({"unused", "hiding"})
   public void preSave(User user, boolean isNew) throws Exception { 
-//    String name = initParams_.getValueParam("name").getValue() + " " + user.getUserName() ;
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = initParams_.getValueParam("permissions").getValue();
@@ -45,7 +46,9 @@ public class NewUserListener extends UserEventListener {
     boolean viewSideBar = Boolean.parseBoolean(initParams_.getValueParam("viewSideBar").getValue());
     boolean showHiddenNode = Boolean.parseBoolean(initParams_.getValueParam("showHiddenNode").getValue());
     String allowCreateFolder = initParams_.getValueParam("allowCreateFolder").getValue();
-    driveService_.addDrive(user.getUserName(), workspace, permissions, homePath, views, icon, 
+    driveService_.addDrive(user.getUserName() + "|" + PRIVATE, workspace, permissions, homePath + "/" + PRIVATE, views, icon, 
+        viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
+    driveService_.addDrive(user.getUserName() + "|" + PUBLIC, workspace, permissions, homePath + "/" + PUBLIC, views, icon, 
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
   }
 }

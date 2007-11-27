@@ -163,6 +163,14 @@
   background: url('DefaultSkin/background/DefaultDrive.gif') no-repeat;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .GroupDriveIcon {
+  background: url('DefaultSkin/background/GroupManagement58x45.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .UserDriveIcon {
+  background: url('DefaultSkin/background/UserManagement58x45.gif') no-repeat;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
   background: url('DefaultSkin/background/AdminProduction.gif') no-repeat;
 }
