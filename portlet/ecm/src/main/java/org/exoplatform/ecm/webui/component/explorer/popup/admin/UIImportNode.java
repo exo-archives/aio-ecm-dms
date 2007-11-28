@@ -11,6 +11,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ImportUUIDBehavior;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
@@ -91,6 +92,11 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.mimetype-invalid",null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      }
+      try {
+        session.getItem(uiExplorer.getCurrentNode().getPath()) ;
+      } catch(PathNotFoundException path) {
+        session = uiExplorer.getCurrentNode().getSession() ;
       }
       try {
         session.importXML(uiExplorer.getCurrentNode().getPath(),xmlInputStream,

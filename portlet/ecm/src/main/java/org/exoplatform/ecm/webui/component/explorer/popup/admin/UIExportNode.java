@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.download.DownloadService;
@@ -84,6 +85,11 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       boolean isZip = uiExport.getUIFormCheckBoxInput(ZIP).isChecked() ;
       ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
       String nodePath = uiExplorer.getCurrentNode().getPath() ;
+      try {
+        session.getItem(nodePath) ;
+      } catch(PathNotFoundException path) {
+        session = uiExplorer.getCurrentNode().getSession() ;
+      }
       if(isZip) {
         if(format.equals(DOC_VIEW)) session.exportDocumentView(nodePath, bos, false, false ) ;
         else session.exportSystemView(nodePath, bos, false, false ) ;
