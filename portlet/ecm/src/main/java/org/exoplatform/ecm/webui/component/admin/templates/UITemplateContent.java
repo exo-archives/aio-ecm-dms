@@ -63,7 +63,7 @@ public class UITemplateContent extends UIForm implements UISelector {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_VIEWPERMISSION = "viewPermission" ;
   final static public String FIELD_ENABLE_VERSION = "enableVersion" ;
-  final static public String[] REG_EXPRESSION = {"[", "]", ":", "&"} ;
+  final static public String[] REG_EXPRESSION = {"[", "]", ":", "&", "%"} ;
 
   private boolean isDialog_  ;
   private boolean isAddNew_ = true ;
