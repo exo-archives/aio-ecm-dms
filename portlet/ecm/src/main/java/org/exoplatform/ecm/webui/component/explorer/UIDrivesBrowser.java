@@ -157,7 +157,7 @@ public class UIDrivesBrowser extends UIContainer {
     String userId = Util.getPortalRequestContext().getRemoteUser() ;
     String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
     for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(userPath + "/" + userId)) personalDrives.add(drive) ;
+      if(drive.getHomePath().startsWith(userPath + "/" + userId + "/")) personalDrives.add(drive) ;
     }
     Collections.sort(personalDrives) ;
     return personalDrives ;
