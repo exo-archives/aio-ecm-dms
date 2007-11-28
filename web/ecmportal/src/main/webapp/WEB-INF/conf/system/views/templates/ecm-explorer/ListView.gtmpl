@@ -84,16 +84,11 @@
 	        for(data in uicomponent.getChildrenList()) {
 	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
-	          String actionLink  ;
 	          String nodePath = data.getPath() ;
 	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
 	          String subName ;
-	          if(isPreferenceNode) {
-	            actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
-	            nodePath = nodePath + "&workspaceName=" + preferenceWS ;
-	          } else if(uicomponent.isReadAuthorized(data)) {
-	            actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path)) ;
-	          }
+	          nodePath = nodePath + "&workspaceName=" + preferenceWS ;
+	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
 	          //Begin WebDav Action
 	          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
 		        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
