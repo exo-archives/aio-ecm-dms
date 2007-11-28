@@ -187,16 +187,18 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       String statement = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String queryLang = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      
+      if(statement == null || statement.trim().length() ==0) {
+        uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.value-save-null", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      
       if(!uiForm.isEdit_) {
         String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
         QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
-        String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
-        if(statement == null || statement.trim().length() ==0) {
-          uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.value-save-null", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
+        String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;        
         if(name == null || name.trim().length() == 0) {
           uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.query-name-null", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
