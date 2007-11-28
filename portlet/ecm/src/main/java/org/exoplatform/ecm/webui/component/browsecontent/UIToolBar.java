@@ -57,7 +57,8 @@ public class UIToolBar extends UIContainer {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
     Node rootNode = getRootNode() ;
     if(!uiContainer.getWorkSpace().equals(node.getSession().getWorkspace().getName())) {
-      rootNode = node.getSession().getRootNode() ;
+//      rootNode = node.getSession().getRootNode() ;
+      return new ArrayList<Node>() ;
     }
     List<Node> list = new ArrayList<Node>() ;
     if(node != null) {

@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
@@ -17,6 +18,7 @@ import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -86,7 +88,15 @@ public class UIMultiLanguageForm extends UIForm {
       MultiLanguageService multiLanguageService = 
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;
-      multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
+      try {
+        multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
+      } catch(AccessDeniedException ace) {
+        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       uiExplorer.setLanguage(selectedLanguage) ;
       uiExplorer.setIsHidePopup(false) ;
       uiExplorer.updateAjax(event) ;

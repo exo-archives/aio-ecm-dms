@@ -186,8 +186,8 @@ public class UIActionList extends UIContainer {
       String actionName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIActionListContainer uiActionListContainer = uiActionList.getParent() ;
       UIPopupWindow uiPopup = uiActionListContainer.getChildById("editActionPopup") ;
+      UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
       if(uiPopup != null && uiPopup.isShow()) {
-        UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.remove-popup-first", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -195,8 +195,15 @@ public class UIActionList extends UIContainer {
       }
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletPreferences preferences = context.getRequest().getPreferences() ;
-      actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 
-                                 preferences.getValue(Utils.REPOSITORY, "")) ;
+      try {
+        actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 
+            preferences.getValue(Utils.REPOSITORY, "")) ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIActionList.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
       uiActionManager.removeChild(UIActionViewContainer.class) ;
       uiActionList.updateGrid(uiExplorer.getCurrentNode()) ;
