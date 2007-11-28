@@ -63,7 +63,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       if(node.hasProperty(RELATION_PROP)) {
         Value[] values = node.getProperty(RELATION_PROP).getValues();
         for (int i = 0; i < values.length; i++) {
-          rels.add(getNodeByUUID(values[i].getString(), repository, provider));
+          if(getNodeByUUID(values[i].getString(), repository, provider) != null) {
+            rels.add(getNodeByUUID(values[i].getString(), repository, provider));
+          }
         }
       }
     } catch(Exception e) {      

@@ -799,7 +799,9 @@ public class UIActionBar extends UIForm {
       UIRelationsAddedList uiRelateAddedList = 
         uiRelationManager.getChild(UIRelationsAddedList.class) ;
       //TODO need renew here
-      uiRelateAddedList.updateGrid(relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;
+      List<Node> relations = 
+        relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider()) ;
+      uiRelateAddedList.updateGrid(relations) ;
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;

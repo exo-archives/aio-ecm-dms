@@ -14,6 +14,8 @@ import javax.jcr.Value;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -38,16 +40,25 @@ public class UIViewRelationList extends UIContainer{
 
   public List<Node> getRelations() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Session session = uiExplorer.getSession() ;
     List<Node> relations = new ArrayList<Node>() ;
     Value[] vals = null ;
     try {
       vals = uiExplorer.getCurrentNode().getProperty("exo:relation").getValues() ;    
     }catch (Exception e) { return relations ;}
-    for(Value val : vals) {
-      String uuid = val.getString();
-      Node node = session.getNodeByUUID(uuid) ;
-      relations.add(node) ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName()) ;
+    String[] wsNames = repository.getWorkspaceNames() ;
+    for(String wsName : wsNames) {
+      Session session = repository.getSystemSession(wsName) ;
+      for(Value val : vals) {
+        String uuid = val.getString();
+        try {
+          Node node = session.getNodeByUUID(uuid) ;
+          relations.add(node) ;
+        } catch(Exception e) {
+          break ;
+        }
+      }
     }
     return relations ;
   }

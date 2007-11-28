@@ -390,10 +390,12 @@
 					            <%if(attachments.size() > 0) {
 													for (att in attachments) {
 														if(att != null) {
+	  													String wsName = att.getSession().getWorkspace().getName() ;
+	  													String attPath = att.getPath() + "&workspaceName=" + wsName ;
 													%>
 													  <div class="AttachmentsContaienr">	
 						                  <div class="AttachmentsContentIcon"><span></span></div>
-						                  <div><a href="<%=uicomponent.event("ChangeNode", att.getPath())%>"><%=att.getName()%></a></div>
+						                  <div><a href="<%=uicomponent.event("ChangeNode", attPath)%>"><%=att.getName()%></a></div>
 						                  <div style="clear: left; overflow: hidden;"><span></span></div>
 						                </div>
 					              <%	}
