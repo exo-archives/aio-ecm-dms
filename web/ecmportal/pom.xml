@@ -22,7 +22,7 @@
               <!-- this is relative to the pom.xml directory -->
               <directory>${exo.projects.directory.src}/portal/trunk/web/portal/src/main/webapp</directory>
               <excludes>
-                <exclude>WEB-INF/index.jsp</exclude>
+                <exclude>index.jsp</exclude>
                 <exclude>WEB-INF/web.xml</exclude>                     
                 <exclude>WEB-INF/conf/*.xml</exclude>                     
                 <exclude>WEB-INF/conf/jcr/*.xml</exclude>                     
