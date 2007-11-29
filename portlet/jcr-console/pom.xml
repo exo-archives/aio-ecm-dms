@@ -5,7 +5,7 @@
       <version>2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo-ecm.portlets.jcr-console</artifactId>
+  <artifactId>exo.ecm.portlet.jcr-console</artifactId>
   <version>${org.exoplatform.ecm.version}</version>
   <packaging>war</packaging>
   <name>exo-ecm.portlets.jcr-console Portlet</name>
@@ -26,7 +26,43 @@
       <version>2.0</version> 
       <scope>compile</scope> 
     </dependency>
-  </dependencies>
+  
+  <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.rmi</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>exo-weblogic</groupId>
+      <artifactId>exo-weblogic-authproviders</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>exo-weblogic</groupId>
+      <artifactId>exo-weblogic-loginmodule</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <scope>provided</scope>
+    </dependency>
+ </dependencies>
+
 
   <build>
     <finalName>jcr-console</finalName>
