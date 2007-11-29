@@ -25,9 +25,7 @@
   </component>
 
   <component>
-    <type>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</type>    
-    </component-plugins>
-
+    <type>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</type>        
   </component>
 
   <component>
