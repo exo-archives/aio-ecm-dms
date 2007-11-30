@@ -95,7 +95,7 @@ public class UITabForm extends UIFormInputSetWithAction {
       throw new MessageException(new ApplicationMessage("UITabForm.msg.button-select-error", null)) ;
     }
     UIViewFormTabPane viewFormTabPane = getParent() ;
-    viewFormTabPane.setSelectedTabId("UIViewForm") ;
+    viewFormTabPane.setSelectedTab("UIViewForm") ;
     UIViewForm uiViewForm =  viewFormTabPane.getChild(UIViewForm.class) ;
     uiViewForm.addTab(tabName, selectedButton.toString()) ;
     uiViewForm.update(null, false, null) ;

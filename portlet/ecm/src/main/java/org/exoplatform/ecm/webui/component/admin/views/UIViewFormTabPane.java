@@ -53,8 +53,7 @@ public class UIViewFormTabPane extends UIFormTabPane {
     uiTabForm = new UITabForm("UITabForm") ;
     uiTabForm.setRendered(false) ;
     addUIComponentInput(uiTabForm) ;
-    
-    setSelectedTabId(uiViewForm.getId()) ;
+    setSelectedTab(uiViewForm.getId()) ;
     setActions(new String[]{}) ;
   }
   
@@ -121,7 +120,7 @@ public class UIViewFormTabPane extends UIFormTabPane {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       String tabName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiViewTabPane.setSelectedTabId("UITabForm") ;
+      uiViewTabPane.setSelectedTab("UITabForm") ;
       uiViewTabPane.uiViewForm.editTab(tabName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
@@ -131,7 +130,7 @@ public class UIViewFormTabPane extends UIFormTabPane {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       String tabName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiViewTabPane.setSelectedTabId("UIViewForm") ;
+      uiViewTabPane.setSelectedTab("UIViewForm") ;
       uiViewTabPane.uiViewForm.deleteTab(tabName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
