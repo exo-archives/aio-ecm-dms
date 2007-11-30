@@ -52,7 +52,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 
 public class JcrConsole extends GenericPortlet {
 
-  private CliAppContext context;
+  //private CliAppContext context;
   
   protected void doView(RenderRequest renderRequest,
       RenderResponse renderResponse) throws PortletException, IOException {
@@ -134,7 +134,7 @@ public class JcrConsole extends GenericPortlet {
   public void serveResource (ResourceRequest resourceRequest, ResourceResponse resourceResponse)
   throws PortletException, IOException {
     
-    //CliAppContext context = (CliAppContext) resourceRequest.getAttribute("context");
+    CliAppContext context = (CliAppContext) resourceRequest.getPortletSession().getAttribute("context");
     
     //CliAppContext context = null;
     
@@ -182,7 +182,7 @@ public class JcrConsole extends GenericPortlet {
       printWriter.print("Invalid command\n");
     }
     finally {
-      //resourceRequest.setAttribute("context", context);
+      resourceRequest.getPortletSession().setAttribute("context", context);
     }
 
   }
