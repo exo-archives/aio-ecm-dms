@@ -8,8 +8,10 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -47,10 +49,16 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       if(currentNode.isNodeType("rma:filePlan")){
+        
+        WebuiRequestContext contx = event.getRequestContext();
+        UIPopupAction popupAction = uiExplorer.getChild(UIPopupAction.class) ;
+        if(popupAction.isRendered()) {
+          popupAction.deActivate() ;
+          contx.addUIComponentToUpdateByAjax(popupAction) ;
+        }
         UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.does-not-support-versioning",null,ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
+        contx.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       currentNode.addMixin(Utils.MIX_VERSIONABLE);
