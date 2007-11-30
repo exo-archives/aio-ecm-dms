@@ -66,9 +66,10 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     UIFormInputSet driveInputSet = new UIDriveInputSet("DriveInputSet") ;
     UIFormSelectBox selectBox = driveInputSet.getChildById(UIDriveInputSet.FIELD_WORKSPACE) ;
     selectBox.setOnChange("Change") ;
-    addUIFormInput(driveInputSet) ;    
+    addUIFormInput(driveInputSet) ;
+    setSelectedTab(driveInputSet.getId()) ;
     UIFormInputSet viewInputSet = new UIViewsInputSet("ViewsInputSet") ;
-    viewInputSet.setRendered(false) ;
+    //viewInputSet.setRendered(false) ;
     addUIFormInput(viewInputSet) ;    
     setActions(ACTIONS) ;
   }

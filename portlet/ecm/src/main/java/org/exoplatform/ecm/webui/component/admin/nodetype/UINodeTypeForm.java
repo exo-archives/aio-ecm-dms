@@ -157,16 +157,17 @@ public class UINodeTypeForm extends UIFormTabPane {
     if(tab.getId().equals(NODETYPE_DEFINITION)) {
       tab.setActionInfo(SUPER_TYPE, new String[] {"AddSuperType"}) ;
       tab.setActions(new String[] {ACTION_SAVE, ACTION_SAVEDRAFT, ACTION_CANCEL}, null) ;
-      tab.setRendered(true) ;
+      //tab.setRendered(true) ;
+      setSelectedTab(tab.getId()) ;
     } else if(tab.getId().equals(CHILDNODE_DEFINITION)) {
-      tab.setRendered(false) ;
+      //tab.setRendered(false) ;
       tab.setActionInfo(UIChildNodeDefinitionForm.DEFAULT_PRIMARY_TYPE, 
                         new String[] {"AddDefaultType"}) ;
       tab.setActionInfo(UIChildNodeDefinitionForm.REQUIRED_PRIMARY_TYPE, 
                         new String[] {"AddRequiredType"}) ;
       tab.setActions(new String[] {ADD_CHILD}, null) ;
     } else if(tab.getId().equals(PROPERTY_DEFINITION)) {
-      tab.setRendered(false) ;
+      //tab.setRendered(false) ;
       tab.setActionInfo(UIPropertyDefinitionForm.VALUE_CONSTRAINTS, new String[] {"AddConstraints"}) ;
       tab.setActions(new String[] {ADD_PROPERTY}, null) ;
     }
@@ -449,7 +450,8 @@ public class UINodeTypeForm extends UIFormTabPane {
     addedPropertiesDef_ = new ArrayList<PropertyDefinitionValue>();
     addedChildDef_ = new ArrayList<NodeDefinitionValue>();
     UIFormInputSetWithAction uiNodeTypeTab = getChildById(NODETYPE_DEFINITION) ;
-    uiNodeTypeTab.setRendered(true) ;
+    setSelectedTab(uiNodeTypeTab.getId()) ;
+    //uiNodeTypeTab.setRendered(true) ;
     uiNodeTypeTab.setIsView(false) ;
     setActionInTab(uiNodeTypeTab) ;
     setChildDefinitions(null) ;
@@ -463,8 +465,8 @@ public class UINodeTypeForm extends UIFormTabPane {
   public void setTabRender(String tabName) {
     for(UIComponent uiComp : getChildren()) {
       UIFormInputSetWithAction tab = getChildById(uiComp.getId()) ;
-      if(tab.getId().equals(tabName)) tab.setRendered(true) ;
-      else tab.setRendered(false) ;
+      if(tab.getId().equals(tabName)) setSelectedTab(tab.getId()) ;//tab.setRendered(true) ;
+      //else tab.setRendered(false) ;
     }
   }
 

@@ -81,16 +81,16 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
     templateTab.setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(templateTab) ;
-    
+    setSelectedTab(templateTab.getId()) ;
     UIFormInputSet defaultDialogTab = new UIFormInputSet(FIELD_TAB_DIALOG) ;
     defaultDialogTab.addUIFormInput(new UIFormTextAreaInput(FIELD_DIALOG, FIELD_DIALOG, null).
                                     addValidator(EmptyFieldValidator.class)) ;
-    defaultDialogTab.setRendered(false) ;
+    //defaultDialogTab.setRendered(false) ;
     addUIFormInput(defaultDialogTab) ;
     UIFormInputSet defaultViewTab = new UIFormInputSet(FIELD_TAB_VIEW) ;
     defaultViewTab.addUIFormInput(new UIFormTextAreaInput(FIELD_VIEW, FIELD_VIEW, null).
                                   addValidator(EmptyFieldValidator.class)) ;
-    defaultViewTab.setRendered(false) ;
+    //defaultViewTab.setRendered(false) ;
     addUIFormInput(defaultViewTab) ;
     setActions(new String[]{"Save", "Refresh", "Cancel"}) ;
   }
