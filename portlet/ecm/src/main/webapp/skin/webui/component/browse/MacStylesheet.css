@@ -17,7 +17,15 @@
   min-width: 400px;
 }
 
+.UIWindow .UIBrowseContentPortlet {
+	border: none;
+	margin: 0px;
+}
+
 .UIBrowseContentPortlet {
+	background: white;
+	border: 1px solid #b7b7b7;
+	margin: 10px;
   overflow: auto;
 }
 

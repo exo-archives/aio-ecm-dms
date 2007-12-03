@@ -8,24 +8,24 @@
  
 /*############################## -- Begin UIDrivesBrowser -- ##############################*/
 
-.UIWindow .UIJCRExplorerPortlet .UIDrivesBrowser {
+.UIJCRExplorerPortlet .UIDrivesBrowser {
   overflow: auto;
   padding: 10px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository {
+.UIJCRExplorerPortlet .UIRepository {
   float: left;
   width: 234px;
   border: solid 1px #d7d7d7;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
+.UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
   border: solid 1px #ffffff;
   background: url('MacSkin/background/BGRepositoryList1x3.gif') repeat;
   width: 232px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
+.UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
   background: url('MacSkin/background/RepositoryTitle232x31.gif') no-repeat ;
   height: 31px;
   line-height: 31px;
@@ -35,19 +35,19 @@
   font-size: 12px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList {
   width: 230px;
   margin: 3px auto 1px auto;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
   background:  url('MacSkin/background/BottomRepositoryList232x30.gif') no-repeat ;
   height: 30px;
   line-height: 30px;
   margin: 70px 0px 1px 0px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .UIVerticalSlideTabs {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList .UIVerticalSlideTabs {
   padding: 5px 7px 0px 7px;
   margin: 0px;
 }

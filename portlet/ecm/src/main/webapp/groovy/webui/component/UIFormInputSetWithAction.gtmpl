@@ -52,7 +52,7 @@
 						  	          <div class="InforField">
 						  	            <div class="ActionField"><%=listInfor[j]%></div>      	          
                             <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');" onclick="return confirm('<%=confirm%>');">
-						                  <div class="DeleteIconInfo"><span></span></div>
+						                  <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif">
 						                </a>
 						              </div>	
 						        <%

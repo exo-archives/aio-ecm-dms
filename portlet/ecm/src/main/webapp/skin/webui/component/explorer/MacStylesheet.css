@@ -18,6 +18,17 @@
   overflow: hidden;
 }
 
+.UIWindow .UIJCRExplorerPortlet {
+	border: none;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet {
+	background: white;
+	border: 1px solid #b7b7b7;
+	margin: 10px;
+}
+
 .UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
   height: 20px ; line-height: 20px;
   font-weight: bold; font-size: 11px;

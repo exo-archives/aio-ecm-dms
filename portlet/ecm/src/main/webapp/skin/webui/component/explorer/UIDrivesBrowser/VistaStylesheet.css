@@ -7,17 +7,17 @@
  */
  
  
-.UIWindow .UIJCRExplorerPortlet .UIDrivesBrowser {
+.UIJCRExplorerPortlet .UIDrivesBrowser {
   padding: 15px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository {
+.UIJCRExplorerPortlet .UIRepository {
   float: left;
   width: 217px;
   border: solid 1px #b7b7b7;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
+.UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
   background: url('VistaSkin/background/RepositoryTitle217x26.gif') no-repeat center center;
   height: 26px;
   line-height: 26px;
@@ -27,11 +27,11 @@
   font-size:11px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList {
   margin: 10px auto 1px auto;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
   background: #f5f5f5 url('VistaSkin/background/ItemListBg1x13.png') repeat-x ;
   height: 13px;
   line-height: 13px;

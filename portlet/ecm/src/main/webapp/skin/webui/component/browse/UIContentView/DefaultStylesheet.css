@@ -37,10 +37,13 @@
 .UIContentView .FormContentView {
   margin-left: 0px;
 	border: 1px solid #dee7ef;
+	overflow: auto;
 }
 
 .UIContentView .SubFormContent {
 	padding: 10px;
+	overflow: auto;
+	border: 1px solid red;
 }
 
 .UIContentView .SubFormContent a {
@@ -60,11 +63,15 @@
 	margin: 5px;
 	padding: 1px;
 }
+
 .UIContentView .SubFormContent .ChildrenContentHolderLeft{
 	float: left;
 	width: 46%;
 	margin: 5px 0px;
 	padding: 1px;
+	overflow: auto;
+	height: 100%;
+	border: 1px solid red;
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
@@ -72,6 +79,8 @@
 	width: 46%;
 	margin: 5px 0px;
 	padding: 1px;
+	overflow: auto;
+	height: 100%;
 } 
 
 .UIContentView .SubFormContent .ImageNote {

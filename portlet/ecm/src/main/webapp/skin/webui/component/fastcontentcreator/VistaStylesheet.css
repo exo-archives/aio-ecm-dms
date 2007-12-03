@@ -13,6 +13,18 @@
   overflow: hidden;
 }
 
+.UIWindow .UIFastContentCreatorPortlet {
+	border: none;
+	margin: 0px;
+	border: none;
+}
+
+.UIFastContentCreatorPortlet {
+	background: white;
+	border: 1px solid #b7b7b7;
+	margin: 10px;
+}
+
 .UIFastContentCreatorPortlet .MsgLable {
 	text-align: center;
 	line-height: 60px;

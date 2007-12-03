@@ -10,7 +10,16 @@
 @import url("UIMetadataManager/MacStylesheet.css");
 @import url("UINodeTypeManager/MacStylesheet.css");
 @import url("UITaxonomyManager/MacStylesheet.css");
+
+.UIWindow .UIECMAdminPortlet {
+	border: none;
+	margin: 0px;
+}
+
 .UIECMAdminPortlet {
+	background: white;
+	border: 1px solid #b7b7b7;
+	margin: 10px;
 	overflow: hidden;
 }
 

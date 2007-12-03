@@ -8,22 +8,22 @@
  
 /*############################## -- Begin UIDrivesBrowser -- ##############################*/
 
-.UIWindow .UIJCRExplorerPortlet .UIDrivesBrowser {
+.UIJCRExplorerPortlet .UIDrivesBrowser {
   overflow: auto;
   padding: 10px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository {
+.UIJCRExplorerPortlet .UIRepository {
   float: left;
   width: 210px;
   border: solid 1px #d9d9d9;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
+.UIJCRExplorerPortlet .UIRepository .RepositoryContainer {
   border: solid 1px #ffffff;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
+.UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
   background: url('DefaultSkin/background/RepositoryTitle228x23.gif') no-repeat center center;
   height: 23px;
   line-height: 23px;
@@ -33,22 +33,22 @@
   font-size: 12px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList {
   width: 202px;
   border: solid 1px #e3e3e3;
   margin: 3px auto 1px auto;
   padding: 1px;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList a{
+.UIJCRExplorerPortlet .UIRepository .RepositoryList a{
 	color: #116EAA;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList a:hover{
+.UIJCRExplorerPortlet .UIRepository .RepositoryList a:hover{
 	color: orange;
 }
 
-.UIWindow .UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
+.UIJCRExplorerPortlet .UIRepository .RepositoryList .RepositoryDecorater {
   background: #f5f5f5 url('DefaultSkin/background/BottomRepositoryList1x10.gif') repeat-x bottom;
   height: 10px;
   line-height: 10px;
