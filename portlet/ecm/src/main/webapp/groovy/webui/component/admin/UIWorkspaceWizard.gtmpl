@@ -34,7 +34,7 @@
 	          }
 	        %>
 	        <%uiform.begin()%>
-	        <input type="hidden" id="<%=uicomponent.RENDER_TAB%>" name="<%=uicomponent.RENDER_TAB%>" value="$uicomponent.renderTabId">
+	        <input type="hidden" id="<%=uicomponent.RENDER_TAB%>" name="<%=uicomponent.RENDER_TAB%>" value="$uicomponent.selectedTabId">
 		    	<div class="HorizontalLayout">
 		        <div class="UITabContentContainer">
 	            <%
