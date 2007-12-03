@@ -50,8 +50,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     for(String ws : workspaces) {
       try{
         return provider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;        
-      }catch(Exception e) {
-
+      } catch(Exception e) {
+        continue ;
       }      
     }
     return null;
@@ -84,11 +84,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         for (int i = 0; i < values.length; i++) {
           String uuid = values[i].getString();
           Node refNode = getNodeByUUID(uuid, repository,provider);
-          if (refNode.getPath().equals(relationPath)) {
-            uuid2Remove = uuid;
-          } else {
-            vals.add(values[i]);
-          }
+          if(refNode == null) continue ;
+          if (refNode.getPath().equals(relationPath)) uuid2Remove = uuid;
+          else vals.add(values[i]);
         }
         if (uuid2Remove == null) return;
       }
