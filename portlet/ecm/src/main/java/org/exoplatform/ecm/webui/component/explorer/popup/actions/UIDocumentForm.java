@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
@@ -158,6 +159,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     } catch(RepositoryException repo) {
       repo.printStackTrace() ;
       String key = "UIDocumentForm.msg.repository-exception" ;
+      if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
