@@ -107,19 +107,15 @@ public class RecordsServiceImpl implements RecordsService {
     record.addMixin("rma:record");
 
     record.setProperty("rma:dateReceived", new GregorianCalendar());
-    record.setProperty("rma:originator", ((ExtendedNode) record).getACL()
-        .getOwner());
+    record.setProperty("rma:originator", ((ExtendedNode) record).getACL().getOwner());
 
-    String recordCategoryIdentifier = filePlan.getProperty(
-        "rma:recordCategoryIdentifier").getString();
-    String recordIdentifier = recordCategoryIdentifier + "-" + counter + " "
-        + record.getName();
+    String recordCategoryIdentifier = filePlan.getProperty("rma:recordCategoryIdentifier").getString();
+    String recordIdentifier = recordCategoryIdentifier + "-" + counter + " " + record.getName();
     record.setProperty("rma:recordIdentifier", recordIdentifier);
 
     String defaultOriginatingOrganization = filePlan.getProperty(
         "rma:defaultOriginatingOrganization").getString();
-    record.setProperty("rma:originatingOrganization",
-        defaultOriginatingOrganization);
+    record.setProperty("rma:originatingOrganization", defaultOriginatingOrganization);
 
     Node dcNode = null;
     Item primaryItem = null;
@@ -158,17 +154,15 @@ public class RecordsServiceImpl implements RecordsService {
 
   private void processVitalInformation(Node filePlan, Node record) {
     try {
-      boolean isVital = filePlan.getProperty("rma:vitalRecordIndicator")
-          .getBoolean();
+      boolean isVital = filePlan.getProperty("rma:vitalRecordIndicator").getBoolean();
       if (isVital) {
         record.addMixin("rma:vitalRecord");
-        String vitalReviewPeriod = filePlan.getProperty(
-            "rma:vitalRecordReviewPeriod").getString();    
+        String vitalReviewPeriod = filePlan.getProperty("rma:vitalRecordReviewPeriod").getString();    
         Calendar previousReviewDate = null ;
         Calendar currentDate = new GregorianCalendar();
         if(record.hasProperty("rma:nextReviewDate")) {
           previousReviewDate = record.getProperty("rma:nextReviewDate").getDate() ;           
-        }else {
+        } else {
           previousReviewDate = currentDate ;
         }                      
         record.setProperty("rma:prevReviewDate",previousReviewDate) ;
@@ -191,8 +185,7 @@ public class RecordsServiceImpl implements RecordsService {
 
         // check if there is a cutoff period, and if so calculate the cutoff
         // date
-        String cutoffPeriod = filePlan.getProperty("rma:cutoffPeriod")
-            .getString();
+        String cutoffPeriod = filePlan.getProperty("rma:cutoffPeriod").getString();
         if (cutoffPeriod != null) {
           Calendar currentDate = new GregorianCalendar();
           calculateNextRevDate(currentDate, cutoffPeriod);
@@ -200,27 +193,20 @@ public class RecordsServiceImpl implements RecordsService {
         }
 
         // check if the record can be cutoff on obsolescence.
-        boolean cutoffObsolete = filePlan.getProperty("rma:cutoffOnObsolete")
-            .getBoolean();
-        if (cutoffObsolete) {
-          record.setProperty("rma:cutoffObsolete", true);
-        }
+        boolean cutoffObsolete = filePlan.getProperty("rma:cutoffOnObsolete").getBoolean();
+        if (cutoffObsolete) record.setProperty("rma:cutoffObsolete", true);
 
         // check if the record can be cutoff on superseded.
-        boolean cutoffSuperseded = filePlan.getProperty(
-            "rma:cutoffOnSuperseded").getBoolean();
-        if (cutoffSuperseded) {
-          record.setProperty("rma:cutoffSuperseded", true);
-        }
+        boolean cutoffSuperseded = filePlan.getProperty("rma:cutoffOnSuperseded").getBoolean();
+        if (cutoffSuperseded) record.setProperty("rma:cutoffSuperseded", true);
 
         // check if some events can trigger the cutoff, then fill the record
         // with the event type
         try {
           String eventTrigger = filePlan.getProperty("rma:eventTrigger").getString();
-          if (eventTrigger != null) {
-            record.setProperty("rma:cutoffEvent", eventTrigger);
-          } 
-        } catch (Exception e) { }        
+          if (eventTrigger != null) record.setProperty("rma:cutoffEvent", eventTrigger);
+        } catch (Exception e) { 
+        }        
       }
       record.save() ;
       filePlan.save() ;        
@@ -234,24 +220,19 @@ public class RecordsServiceImpl implements RecordsService {
     for(Node record: toCutoffList){
 
       // check if it is obsolete
-      if (cutoffObsolete(filePlan, record))
-        return;
+      if (cutoffObsolete(filePlan, record)) return;
 
       // check if it is superseded
-      if (cutoffSuperseded(filePlan, record))
-        return;
+      if (cutoffSuperseded(filePlan, record)) return;
 
       // check if it has expired
-      if (cutoffHasExpired(filePlan, record))
-        return;
+      if (cutoffHasExpired(filePlan, record)) return;
 
       // check if the cutoff now flag is set
-      if (cutoffNow(filePlan, record))
-        return;
+      if (cutoffNow(filePlan, record)) return;
 
       // check if an event occured
-      if (cutoffEvent(filePlan, record))
-        return;
+      if (cutoffEvent(filePlan, record)) return;
 
     }
   }
@@ -271,7 +252,7 @@ public class RecordsServiceImpl implements RecordsService {
   private boolean cutoffSuperseded(Node filePlan, Node record)
       throws RepositoryException {
     try {
-      record.getProperty("rma:superseded").getNode();
+      record.getProperty("rma:superseded").getBoolean();
       log_.info("Cutoff is superseded");
       computeNextRecordPhaseAfterCutoff(filePlan, record);
       return true;
