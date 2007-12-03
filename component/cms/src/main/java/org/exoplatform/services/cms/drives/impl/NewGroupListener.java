@@ -6,6 +6,8 @@ package org.exoplatform.services.cms.drives.impl;
 
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.GroupEventListener;
@@ -19,14 +21,17 @@ import org.exoplatform.services.organization.GroupEventListener;
 public class NewGroupListener extends GroupEventListener {
 
   private ManageDriveService driveService_ ;
+  private RepositoryService jcrService_;
   private InitParams initParams_ ;
   private String groupsPath_ ;
 
   final static private String GROUPS_PATH = "groupsPath";
   
-  public NewGroupListener(ManageDriveService driveService, 
+  public NewGroupListener(RepositoryService jcrService,
+      ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
       InitParams params) throws Exception {
+    jcrService_ = jcrService ;
     driveService_ = driveService ;
     initParams_ = params ;
     groupsPath_ = nodeHierarchyCreatorService.getJcrPath(GROUPS_PATH) ; 
@@ -52,5 +57,14 @@ public class NewGroupListener extends GroupEventListener {
     String allowCreateFolder = initParams_.getValueParam("allowCreateFolder").getValue();
     driveService_.addDrive(name, workspace, permissions, homePath, views, icon, viewPreferences,
         viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
+  }
+  
+  public void preDelete(Group group) throws Exception {
+    String  groupId = null ;
+    String parentId = group.getParentId() ;
+    if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
+    else groupId = parentId + "/" + group.getGroupName() ;
+    ManageableRepository repository = jcrService_.getCurrentRepository() ;
+    driveService_.removeDrive(groupId.replace("/", "|"), repository.getConfiguration().getName()) ;
   }
 }

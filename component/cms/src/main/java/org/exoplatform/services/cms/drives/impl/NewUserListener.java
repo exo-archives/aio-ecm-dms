@@ -7,6 +7,8 @@ package org.exoplatform.services.cms.drives.impl;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserEventListener;
@@ -20,14 +22,17 @@ import org.exoplatform.services.organization.UserEventListener;
 public class NewUserListener extends UserEventListener {
   
   private ManageDriveService driveService_ ;
+  private RepositoryService jcrService_;
   private InitParams initParams_ ;
   private String userPath_ ;
   final static String PRIVATE = "Private" ;
   final static String PUBLIC = "Public" ;
 
-  public NewUserListener(ManageDriveService driveService, 
+  public NewUserListener(RepositoryService jcrService,
+      ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
       InitParams params) throws Exception {
+    jcrService_ = jcrService ;
     driveService_ = driveService ;
     initParams_ = params ;
     userPath_ = nodeHierarchyCreatorService.getJcrPath(BasePath.CMS_USERS_PATH) ; 
@@ -50,5 +55,11 @@ public class NewUserListener extends UserEventListener {
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
     driveService_.addDrive(user.getUserName() + "|" + PUBLIC, workspace, permissions, homePath + "/" + PUBLIC, views, icon, 
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
+  }
+  
+  public void preDelete(User user) throws Exception {
+    ManageableRepository repository = jcrService_.getCurrentRepository() ;
+    driveService_.removeDrive(user.getUserName() + "|" + PRIVATE, repository.getConfiguration().getName()) ;
+    driveService_.removeDrive(user.getUserName() + "|" + PUBLIC, repository.getConfiguration().getName()) ;
   }
 }
