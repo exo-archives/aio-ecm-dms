@@ -113,22 +113,23 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
     if(fieldName.equals(UINodeTypeForm.SUPER_TYPE)) {
       for(UIComponent uiComp : uiNodeTypeForm.getChildren()) {
         UIFormInputSetWithAction tab = uiNodeTypeForm.getChildById(uiComp.getId()) ;
-        if(tab.getId().equals(UINodeTypeForm.NODETYPE_DEFINITION)) tab.setRendered(true) ;
-        else tab.setRendered(false) ;
+        if(tab.getId().equals(UINodeTypeForm.NODETYPE_DEFINITION)) uiNodeTypeForm.setSelectedTab(tab.getId()) ;
       }
       uiNodeTypeForm.removeChildById(UINodeTypeForm.SUPER_TYPE_TAB) ;
     } else if(fieldName.equals(UIChildNodeDefinitionForm.REQUIRED_PRIMARY_TYPE)) { 
       for(UIComponent uiComp : uiNodeTypeForm.getChildren()) {
         UIFormInputSetWithAction tab = uiNodeTypeForm.getChildById(uiComp.getId()) ;
-        if(tab.getId().equals(UINodeTypeForm.CHILDNODE_DEFINITION)) tab.setRendered(true) ;
-        else tab.setRendered(false) ;
+        if(tab.getId().equals(UINodeTypeForm.CHILDNODE_DEFINITION)) {
+          uiNodeTypeForm.setSelectedTab(tab.getId()) ;
+        }
       }
       uiNodeTypeForm.removeChildById(UINodeTypeForm.REQUIRED_PRIMARY_TYPE_TAB) ;
     } else if(fieldName.equals(UIChildNodeDefinitionForm.DEFAULT_PRIMARY_TYPE)) {
       for(UIComponent uiComp : uiNodeTypeForm.getChildren()) {
         UIFormInputSetWithAction tab = uiNodeTypeForm.getChildById(uiComp.getId()) ;
-        if(tab.getId().equals(UINodeTypeForm.CHILDNODE_DEFINITION)) tab.setRendered(true) ;
-        else tab.setRendered(false) ;
+        if(tab.getId().equals(UINodeTypeForm.CHILDNODE_DEFINITION)) {
+          uiNodeTypeForm.setSelectedTab(tab.getId()) ;
+        }
       }
       uiNodeTypeForm.removeChildById(UINodeTypeForm.DEFAULT_PRIMARY_TYPE_TAB) ;
     }
@@ -168,11 +169,11 @@ public class UINodeTypeOptionList extends UIFormInputSetWithAction {
       String tabName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       if(tabName.equals(UINodeTypeForm.SUPER_TYPE_TAB)) {
         uiForm.removeChildById(tabName) ;
-        uiForm.setTabRender(UINodeTypeForm.NODETYPE_DEFINITION) ;
+        uiForm.setSelectedTab(UINodeTypeForm.NODETYPE_DEFINITION) ;
       } else if(tabName.equals(UINodeTypeForm.DEFAULT_PRIMARY_TYPE_TAB) ||
           tabName.equals(UINodeTypeForm.REQUIRED_PRIMARY_TYPE_TAB)) {
         uiForm.removeChildById(tabName) ;
-        uiForm.setTabRender(UINodeTypeForm.CHILDNODE_DEFINITION) ;
+        uiForm.setSelectedTab(UINodeTypeForm.CHILDNODE_DEFINITION) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }

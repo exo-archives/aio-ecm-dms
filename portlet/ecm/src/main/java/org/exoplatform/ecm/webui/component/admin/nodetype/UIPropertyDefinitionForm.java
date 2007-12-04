@@ -404,6 +404,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
       if(uiPropertyForm.getRequiredValue().equals("9")) {
         constraintTab = new UINodeTypeOptionList("Contraints") ;
         uiForm.addUIComponentInput(constraintTab) ;
+        uiForm.setSelectedTab(constraintTab.getId()) ;
         UINodeTypeOptionList uiOptionList = uiForm.getChild(UINodeTypeOptionList.class) ;
         uiOptionList.update(values) ;
       } else if(uiPropertyForm.getRequiredValue().equals("1")) {
@@ -413,6 +414,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
         valuesConstraint.setType(UIFormStringInput.class);
         constraintTab.addUIFormInput(valuesConstraint) ;
         uiForm.addUIComponentInput(constraintTab) ;
+        uiForm.setSelectedTab(constraintTab.getId()) ;
       } else {
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         String message = "UIPropertyDefinitionForm.msg.not-supported-value-constraints" ;
