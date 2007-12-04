@@ -58,7 +58,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   private String repository_ ;
 
   public UIMetadataForm() throws Exception {
-    super("UIMetadataForm", false) ;
+    super("UIMetadataForm") ;
     UIFormInputSetWithAction uiMetadataType = new UIFormInputSetWithAction(METADATA_TAB) ;
     uiMetadataType.addUIFormInput(new UIFormStringInput(METADATA_NAME,METADATA_NAME, null)) ;
     uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).
@@ -68,11 +68,9 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     setSelectedTab(uiMetadataType.getId()) ;
     UIFormInputSet uiDialogTab = new UIFormInputSet(DIALOG_TAB) ;
     uiDialogTab.addUIFormInput(new UIFormTextAreaInput(DIALOG_TEMPLATE, DIALOG_TEMPLATE, null)) ;
-    //uiDialogTab.setRendered(false) ;
     addUIComponentInput(uiDialogTab) ;
     UIFormInputSet uiViewTab = new UIFormInputSet(VIEW_TAB) ;
     uiViewTab.addUIFormInput(new UIFormTextAreaInput(VIEW_TEMPLATE, VIEW_TEMPLATE, null)) ;
-    //uiViewTab.setRendered(false) ;
     addUIComponentInput(uiViewTab) ;
     setActions(new String[] {"Save", "Cancel"}) ;
   }

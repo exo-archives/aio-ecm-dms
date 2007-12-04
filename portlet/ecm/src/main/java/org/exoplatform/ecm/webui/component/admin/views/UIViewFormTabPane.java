@@ -45,13 +45,12 @@ public class UIViewFormTabPane extends UIFormTabPane {
   private UITabForm uiTabForm ;
 
   public UIViewFormTabPane() throws Exception {
-    super("UIViewFormTabPane", false) ;
+    super("UIViewFormTabPane") ;
 
     uiViewForm = new UIViewForm("UIViewForm") ;
     addUIComponentInput(uiViewForm) ;
     
     uiTabForm = new UITabForm("UITabForm") ;
-    uiTabForm.setRendered(false) ;
     addUIComponentInput(uiTabForm) ;
     setSelectedTab(uiViewForm.getId()) ;
     setActions(new String[]{}) ;

@@ -130,7 +130,7 @@ public class UINodeTypeForm extends UIFormTabPane {
   private NodeType nodeType_ ;
 
   public UINodeTypeForm() throws Exception {
-    super("UINodeTypeForm", false);
+    super("UINodeTypeForm");
     UIFormInputSetWithAction nodeTypeTab = new UIFormInputSetWithAction(NODETYPE_DEFINITION) ;
     nodeTypeTab.addUIFormInput(new UIFormSelectBox(NAMESPACE,NAMESPACE, null)).
                 addUIFormInput(new UIFormStringInput(NODETYPE_NAME,NODETYPE_NAME, null)).                                 
@@ -157,17 +157,14 @@ public class UINodeTypeForm extends UIFormTabPane {
     if(tab.getId().equals(NODETYPE_DEFINITION)) {
       tab.setActionInfo(SUPER_TYPE, new String[] {"AddSuperType"}) ;
       tab.setActions(new String[] {ACTION_SAVE, ACTION_SAVEDRAFT, ACTION_CANCEL}, null) ;
-      //tab.setRendered(true) ;
       setSelectedTab(tab.getId()) ;
     } else if(tab.getId().equals(CHILDNODE_DEFINITION)) {
-      //tab.setRendered(false) ;
       tab.setActionInfo(UIChildNodeDefinitionForm.DEFAULT_PRIMARY_TYPE, 
                         new String[] {"AddDefaultType"}) ;
       tab.setActionInfo(UIChildNodeDefinitionForm.REQUIRED_PRIMARY_TYPE, 
                         new String[] {"AddRequiredType"}) ;
       tab.setActions(new String[] {ADD_CHILD}, null) ;
     } else if(tab.getId().equals(PROPERTY_DEFINITION)) {
-      //tab.setRendered(false) ;
       tab.setActionInfo(UIPropertyDefinitionForm.VALUE_CONSTRAINTS, new String[] {"AddConstraints"}) ;
       tab.setActions(new String[] {ADD_PROPERTY}, null) ;
     }

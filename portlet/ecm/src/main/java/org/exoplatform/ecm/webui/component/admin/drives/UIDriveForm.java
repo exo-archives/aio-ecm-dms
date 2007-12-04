@@ -61,7 +61,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   final static public String POPUP_DRIVEPERMISSION = "PopupDrivePermission" ;
 
   public UIDriveForm() throws Exception {
-    super("UIDriveForm", false) ;
+    super("UIDriveForm") ;
 
     UIFormInputSet driveInputSet = new UIDriveInputSet("DriveInputSet") ;
     UIFormSelectBox selectBox = driveInputSet.getChildById(UIDriveInputSet.FIELD_WORKSPACE) ;
@@ -69,7 +69,6 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     addUIFormInput(driveInputSet) ;
     setSelectedTab(driveInputSet.getId()) ;
     UIFormInputSet viewInputSet = new UIViewsInputSet("ViewsInputSet") ;
-    //viewInputSet.setRendered(false) ;
     addUIFormInput(viewInputSet) ;    
     setActions(ACTIONS) ;
   }

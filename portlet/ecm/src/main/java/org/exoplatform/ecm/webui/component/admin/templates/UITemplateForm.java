@@ -71,7 +71,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
   final static public String FIELD_PERMISSION = "permission" ;
 
   public UITemplateForm() throws Exception {
-    super("UITemplateForm", false) ;
+    super("UITemplateForm") ;
     UIFormInputSetWithAction templateTab = new UIFormInputSetWithAction(FIELD_TAB_TEMPLATE) ;
     templateTab.addUIFormInput(new UIFormSelectBox(FIELD_NAME, FIELD_NAME, getOption())) ;
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_LABEL, FIELD_LABEL, null).
@@ -85,12 +85,10 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     UIFormInputSet defaultDialogTab = new UIFormInputSet(FIELD_TAB_DIALOG) ;
     defaultDialogTab.addUIFormInput(new UIFormTextAreaInput(FIELD_DIALOG, FIELD_DIALOG, null).
                                     addValidator(EmptyFieldValidator.class)) ;
-    //defaultDialogTab.setRendered(false) ;
     addUIFormInput(defaultDialogTab) ;
     UIFormInputSet defaultViewTab = new UIFormInputSet(FIELD_TAB_VIEW) ;
     defaultViewTab.addUIFormInput(new UIFormTextAreaInput(FIELD_VIEW, FIELD_VIEW, null).
                                   addValidator(EmptyFieldValidator.class)) ;
-    //defaultViewTab.setRendered(false) ;
     addUIFormInput(defaultViewTab) ;
     setActions(new String[]{"Save", "Refresh", "Cancel"}) ;
   }
