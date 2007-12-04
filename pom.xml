@@ -139,7 +139,7 @@
         <test.classes>Test</test.classes>
         <test.skip>true</test.skip>
 
-        <bonita.version>3.0</bonita.version>
+        <bonita.version>2.1</bonita.version>
       </properties>
     </profile>
   </profiles>
