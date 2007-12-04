@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
@@ -91,6 +92,17 @@ public class UILanguageDialogForm extends DialogFormFields {
   public void setIsDefaultLanguage(boolean isDefault) { isDefault_ = isDefault ; }
   public boolean isDefaultLanguage() { return isDefault_ ; } 
   
+  private boolean hasNodeTypeNTResource(Node node) throws Exception {
+    if(node.hasNodes()) {
+      NodeIterator nodeIter = node.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node childNode = nodeIter.nextNode() ;
+        if(childNode.getPrimaryNodeType().getName().equals("nt:resource")) return true ;
+      }
+    }
+    return false ;
+  }
+  
   @SuppressWarnings("unused")
   public Node storeValue(Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -109,20 +121,31 @@ public class UILanguageDialogForm extends DialogFormFields {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
-    if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
+//    if(hasNodeTypeNTResource(node)) {
+//    //    if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
+//      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
+//      try {
+//        multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
+//      } catch(AccessDeniedException ace) {
+//        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+//                                                ApplicationMessage.WARNING)) ;
+//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//        return null;
+//      }
+    if(node.hasNode(Utils.EXO_IMAGE)) {
       Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
       try {
-        multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
+        multiLanguageService.addLanguage(node, inputProperties, getSelectedLanguage(), isDefaultLanguage(), Utils.EXO_IMAGE) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
-    } else if(node.hasNode(Utils.EXO_IMAGE)) {
+    } else if(hasNodeTypeNTResource(node)) {
       Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
       try {
-        multiLanguageService.addLanguage(node, inputProperties, getSelectedLanguage(), isDefaultLanguage(), Utils.EXO_IMAGE) ;
+        multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;

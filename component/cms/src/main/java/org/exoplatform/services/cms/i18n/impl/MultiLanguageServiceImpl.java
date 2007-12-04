@@ -442,6 +442,34 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       JcrInputProperty inputVariable = (JcrInputProperty) mappings.get(CONTENT_PATH + JCRDATA) ;
       setPropertyValue(JCRDATA, node.getNode(JCRCONTENT), inputVariable.getType(), inputVariable.getValue(), false) ;
     }
+    PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
+    for(PropertyDefinition pro : properties){
+      if(!pro.isProtected()) {
+        String propertyName = pro.getName() ;
+        JcrInputProperty property = (JcrInputProperty)mappings.get(NODE + propertyName) ;
+        if(defaultLanguage.equals(language) && property != null) {
+          setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
+        } else {          
+          if(isDefault) {            
+            if(node.hasProperty(propertyName)) {
+              Object value = null ;
+              int requiredType = node.getProperty(propertyName).getDefinition().getRequiredType() ;
+              boolean isMultiple = node.getProperty(propertyName).getDefinition().isMultiple() ;
+              if(isMultiple) value = node.getProperty(propertyName).getValues() ;
+              else value = node.getProperty(propertyName).getValue() ;
+              setPropertyValue(propertyName, newLanguageNode, requiredType, value, isMultiple) ;
+            }
+            if(property != null) {
+              setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
+            }
+          } else {
+            if(property != null) {
+              setPropertyValue(propertyName, newLanguageNode, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
+            }
+          }
+        }               
+      }
+    }    
     if(!defaultLanguage.equals(language) && isDefault) {
       Node selectedLangNode = null ;
       if(languagesNode.hasNode(language)) selectedLangNode = languagesNode.getNode(language) ;
@@ -482,8 +510,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       }
       if(selectedLangNode != null) {
         node.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
-        node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
-        node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
+        if(selectedLangNode.hasProperty(VOTE_TOTAL_LANG_PROP)) {
+          node.setProperty(VOTE_TOTAL_LANG_PROP, selectedLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong()) ;
+        } else {
+          node.setProperty(VOTE_TOTAL_LANG_PROP, 0) ;
+        }
+        if(selectedLangNode.hasProperty(VOTING_RATE_PROP)) {
+          node.setProperty(VOTING_RATE_PROP, selectedLangNode.getProperty(VOTING_RATE_PROP).getLong()) ;
+        } else {
+          node.setProperty(VOTING_RATE_PROP, 0) ;
+        }
         if(selectedLangNode.hasNode(VOTER_PROP)) {
           node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
         }

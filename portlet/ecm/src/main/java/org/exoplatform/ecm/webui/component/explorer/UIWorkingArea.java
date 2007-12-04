@@ -755,17 +755,19 @@ public class UIWorkingArea extends UIContainer {
       } else {
         destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/")) ;
       }
+      ActionServiceContainer actionContainer = 
+        event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
+      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
+      PortletPreferences preferences = context.getRequest().getPreferences() ;
       try {
         if(ClipboardCommand.COPY.equals(type)) {
           pasteByCopy(session, srcPath, destPath) ;
           Node selectedNode = (Node)session.getItem(destPath) ;
-          ActionServiceContainer actionContainer = 
-            event.getSource().getApplicationComponent(ActionServiceContainer.class) ;
-          PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-          PortletPreferences preferences = context.getRequest().getPreferences() ;
           actionContainer.initiateObservation(selectedNode, preferences.getValue(Utils.REPOSITORY, "")) ;
         } else {
-          if(!srcPath.equals(destPath)) pasteByCut(uiExplorer, session, srcPath, destPath) ;
+          if(!srcPath.equals(destPath)) {
+            pasteByCut(uiExplorer, session, srcPath, destPath, actionContainer, preferences.getValue(Utils.REPOSITORY, "")) ;
+          }
         }
       } catch(ConstraintViolationException ce) {       
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
@@ -823,7 +825,8 @@ public class UIWorkingArea extends UIContainer {
       removeReferences(destNode) ;
     }
 
-    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcPath, String destPath) throws Exception {
+    private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcPath, 
+        String destPath, ActionServiceContainer actionContainer, String repository) throws Exception {
       RelationsService relationsService = 
         uiExplorer.getApplicationComponent(RelationsService.class) ;
       List<Node> refList = new ArrayList<Node>() ;
@@ -855,6 +858,8 @@ public class UIWorkingArea extends UIContainer {
             ApplicationMessage.WARNING)) ;
       }
       session.save() ;
+      Node desNode = (Node)session.getItem(destPath) ;
+      actionContainer.initiateObservation(desNode, repository) ;
       for(int i = 0; i < refList.size(); i ++) {
         Node addRef = refList.get(i) ;
         relationsService.addRelation(addRef, destPath,session.getWorkspace().getName(),uiExplorer.getRepositoryName()) ;
