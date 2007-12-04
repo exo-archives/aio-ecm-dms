@@ -71,7 +71,7 @@
         </DataField>
       </DataFields>
       <Participants>
-        <Participant Id="member:/company/hr" Name="member:/company/hr">
+        <Participant Id="member:/organization/management/human-resources" Name="member:/organization/management/human-resources">
           <ParticipantType Type="ROLE" />
           <ExtendedAttributes>
             <ExtendedAttribute Name="Mapper" Value="Custom" />
@@ -81,7 +81,7 @@
             <ExtendedAttribute Name="YOffset" Value="0" />
           </ExtendedAttributes>
         </Participant>
-        <Participant Id="member:/company/direction" Name="member:/company/direction">
+        <Participant Id="member:/organization/management/executive-board" Name="member:/organization/management/executive-board">
           <ParticipantType Type="ROLE" />
           <ExtendedAttributes>
             <ExtendedAttribute Name="Mapper" Value="Custom" />
@@ -171,7 +171,7 @@
           <Implementation>
             <No />
           </Implementation>
-          <Performer>member:/company/direction</Performer>
+          <Performer>member:/organization/management/executive-board</Performer>
           <StartMode>
             <Manual />
           </StartMode>
@@ -197,7 +197,7 @@
           <Implementation>
             <No />
           </Implementation>
-          <Performer>member:/company/hr</Performer>
+          <Performer>member:/organization/management/human-resources</Performer>
           <StartMode>
             <Manual />
           </StartMode>
@@ -263,7 +263,7 @@
           <Implementation>
             <No />
           </Implementation>
-          <Performer>member:/company/direction</Performer>
+          <Performer>member:/organization/management/executive-board</Performer>
           <StartMode>
             <Manual />
           </StartMode>

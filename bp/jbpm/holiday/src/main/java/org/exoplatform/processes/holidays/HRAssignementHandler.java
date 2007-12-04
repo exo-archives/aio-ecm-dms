@@ -18,7 +18,7 @@ import org.jbpm.taskmgmt.exe.Assignable;
 public class HRAssignementHandler implements AssignmentHandler{
 
   public void assign(Assignable assignable, ExecutionContext executionContext) throws Exception {
-    assignable.setActorId("member:/portal/company/hr");
+    assignable.setActorId("member:/organization/management/human-resources");
   }
 
 }
