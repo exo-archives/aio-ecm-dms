@@ -18,8 +18,8 @@
               if(renderResource) {
                 tabName = _ctx.appRes(compName + ".tab.info." + inputSet.name) ;
               }
-	        		boolean renderTab = uicomponent.hasWithRenderTab();
-              if(renderTab){
+	        		//boolean renderTab = uicomponent.hasWithRenderTab();
+              //if(renderTab){
 	        %>	        
 				        <div class="$className">
 				        	<span class="WizardLabel">
@@ -30,7 +30,7 @@
 				        	</span>
 				        	<div style="clear:left;"><span></span></div>
 				        </div>
-	        <%  }
+	        <% // }
 	          }
 	        %>
 	        <%uiform.begin()%>
