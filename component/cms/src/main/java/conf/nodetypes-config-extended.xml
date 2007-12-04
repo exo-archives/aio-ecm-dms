@@ -743,7 +743,7 @@
     </propertyDefinitions>			
   </nodeType>
   
-  <nodeType name="mix:hiddenAble" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  <nodeType name="exo:hiddenable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <propertyDefinitions>
     </propertyDefinitions>			
   </nodeType>

@@ -26,7 +26,7 @@ public class NewGroupListener extends GroupEventListener {
   private String groupsPath_ ;
 
   final static private String GROUPS_PATH = "groupsPath";
-  
+
   public NewGroupListener(RepositoryService jcrService,
       ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
@@ -36,17 +36,21 @@ public class NewGroupListener extends GroupEventListener {
     initParams_ = params ;
     groupsPath_ = nodeHierarchyCreatorService.getJcrPath(GROUPS_PATH) ; 
   }
-  
+
   @SuppressWarnings({"unused", "hiding"})
   public void preSave(Group group, boolean isNew) throws Exception { 
     String  groupId = null ;
     String parentId = group.getParentId() ;
     if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
-    else groupId = parentId + "/" + group.getGroupName() ;
+    else groupId = parentId + "/" + group.getGroupName() ;    
     String name = groupId.replace("/", "|");
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
-    String permissions = initParams_.getValueParam("permissions").getValue();
+    String permissions = "*:".concat(groupId);
+    String extpermissions = initParams_.getValueParam("permissions").getValue();
+    if(extpermissions != null || extpermissions.length() >0) { 
+      permissions.concat(",").concat(extpermissions); 
+    }
     String homePath = groupsPath_ + groupId ;
     String views = initParams_.getValueParam("views").getValue();
     String icon = initParams_.getValueParam("icon").getValue();

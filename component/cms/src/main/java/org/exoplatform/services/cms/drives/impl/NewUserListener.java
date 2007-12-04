@@ -43,6 +43,7 @@ public class NewUserListener extends UserEventListener {
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = initParams_.getValueParam("permissions").getValue();
+    permissions.concat(","+ user.getUserName());
     String homePath = userPath_ + "/" + user.getUserName() ;
     String views = initParams_.getValueParam("views").getValue();
     String icon = initParams_.getValueParam("icon").getValue();
@@ -51,8 +52,10 @@ public class NewUserListener extends UserEventListener {
     boolean viewSideBar = Boolean.parseBoolean(initParams_.getValueParam("viewSideBar").getValue());
     boolean showHiddenNode = Boolean.parseBoolean(initParams_.getValueParam("showHiddenNode").getValue());
     String allowCreateFolder = initParams_.getValueParam("allowCreateFolder").getValue();
-    driveService_.addDrive(user.getUserName() + "|" + PRIVATE, workspace, permissions, homePath + "/" + PRIVATE, views, icon, 
+    //Only user can access private drive
+    driveService_.addDrive(user.getUserName() + "|" + PRIVATE, workspace, user.getUserName(), homePath + "/" + PRIVATE, views, icon, 
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
+    //User and everyone can see public drive for user
     driveService_.addDrive(user.getUserName() + "|" + PUBLIC, workspace, permissions, homePath + "/" + PUBLIC, views, icon, 
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
   }

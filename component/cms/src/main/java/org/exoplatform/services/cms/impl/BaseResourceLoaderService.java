@@ -42,11 +42,11 @@ public abstract class BaseResourceLoaderService implements Startable{
   public void start(){};  
   public void stop(){};  
 
-  protected void init(Session session, ResourceConfig resourceConfig) throws Exception {                   
-    addScripts(session, resourceConfig.getRessources()) ;       
+  protected void init(Session session, ResourceConfig resourceConfig, String location) throws Exception {                   
+    addScripts(session, resourceConfig.getRessources(),location) ;       
   }
 
-  protected void addScripts(Session session, List resources) throws Exception{
+  protected void addScripts(Session session, List resources,String location) throws Exception{
     String resourcesPath = getBasePath();
     if (resources.size() == 0) return;
     try {
@@ -58,8 +58,7 @@ public abstract class BaseResourceLoaderService implements Startable{
 
     Node root = session.getRootNode();
     Node resourcesHome = (Node) session.getItem(resourcesPath);
-    String warPath = nodeHierarchyCreator_.getContentLocation() 
-    + "/system" + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
+    String warPath = location + resourcesPath.substring(resourcesPath.lastIndexOf("/")) ;
     for (Iterator iter = resources.iterator(); iter.hasNext();) {
       ResourceConfig.Resource resource = (ResourceConfig.Resource) iter.next();
       String name = resource.getName();

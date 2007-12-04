@@ -32,6 +32,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   private NodeHierarchyCreator nodeHierarchyCreator_ ; 
   private ConfigurationManager cservice_ ;
   private boolean autoCreateInNewRepository_ = false ;  
+  private String predefinedViewsLocation_ = "war:/conf/ecm/artifacts";
 
   public ManageViewPlugin(RepositoryService repositoryService, InitParams params, ConfigurationManager cservice, 
       NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
@@ -43,6 +44,10 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     if(autoInitParam !=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(autoInitParam.getValue()) ;
     }    
+    ValueParam predefinedViewLocation = params.getValueParam("predefinedViewsLocation"); 
+    if(predefinedViewLocation != null) {
+      predefinedViewsLocation_ = predefinedViewLocation.getValue();
+    }
   }
 
   public void init() throws Exception {    
@@ -72,8 +77,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;       
     String viewsPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     String templatesPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);    
-    String warViewPath = nodeHierarchyCreator_.getContentLocation() 
-    + "/system" + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
+    String warViewPath = predefinedViewsLocation_ + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;    
     String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
     Session session = manageableRepository.getSystemSession(workspace) ;

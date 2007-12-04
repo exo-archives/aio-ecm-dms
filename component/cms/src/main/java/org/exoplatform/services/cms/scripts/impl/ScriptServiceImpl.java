@@ -40,6 +40,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private GroovyClassLoader groovyClassLoader_ ;
   private RepositoryService repositoryService_ ;
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
+  private String predefineScriptLocation_ = "war:/conf/ecm/artifacts"; 
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
 
   public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
@@ -74,7 +75,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
           session = repositoryService_.getRepository(repo.getName()).getSystemSession(repo.getSystemWorkspaceName());          
           Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
           while(iter.hasNext()) {
-            init(session,(ResourceConfig) iter.next().getObject()) ;            
+            init(session,(ResourceConfig) iter.next().getObject(),predefineScriptLocation_) ;            
           }
           ObservationManager obsManager = session.getWorkspace().getObservationManager();
           obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
@@ -91,7 +92,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;          
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
       while(iter.hasNext()) {
-        init(session,(ResourceConfig) iter.next().getObject()) ;            
+        init(session,(ResourceConfig) iter.next().getObject(),predefineScriptLocation_) ;            
       }
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
@@ -110,7 +111,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       if(!plugin.getAutoCreateInNewRepository()) continue ;
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;                           
       while(iter.hasNext()) {
-        init(session,(ResourceConfig) iter.next().getObject()) ;            
+        init(session,(ResourceConfig) iter.next().getObject(),predefineScriptLocation_) ;            
       }      
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
