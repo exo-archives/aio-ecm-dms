@@ -400,7 +400,7 @@ public class UIJCRExplorer extends UIContainer {
     List<Node> childList = new ArrayList<Node>() ;
     if(!preferences_.isShowHiddenNode()) {
       for(Node child : childrenList) {
-        if(Utils.isReadAuthorized(child) && !child.isNodeType("mix:hiddenAble")) {
+        if(Utils.isReadAuthorized(child) && !child.isNodeType("exo:hiddenable")) {
           childList.add(child) ;
         }
       }

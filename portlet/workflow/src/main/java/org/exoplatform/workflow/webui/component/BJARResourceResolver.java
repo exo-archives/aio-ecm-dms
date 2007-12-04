@@ -12,12 +12,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.workflow.FileDefinition;
+import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.services.workflow.impl.jbpm.WorkflowServiceContainerImpl;
-import org.jbpm.db.TaskMgmtSession;
-import org.jbpm.file.def.FileDefinition;
-import org.jbpm.graph.def.ProcessDefinition;
-import org.jbpm.taskmgmt.exe.TaskInstance;
 
 /**
  * Created by The eXo Platform SARL
@@ -27,32 +25,31 @@ import org.jbpm.taskmgmt.exe.TaskInstance;
  */
 public class BJARResourceResolver extends ResourceResolver {
   private WorkflowServiceContainer service_;
-  
+
   public BJARResourceResolver(WorkflowServiceContainer service) {
     service_ = service ;
   }
-  
+
   @SuppressWarnings("unused")
   public URL getResource(String url) throws Exception {
     throw new Exception("This method is not  supported") ;  
   }
-  
-  public InputStream getInputStream(String fileLocation) throws Exception  {
-    TaskMgmtSession taskSession = ((WorkflowServiceContainerImpl)service_).openSession().getTaskMgmtSession();
+
+  public InputStream getInputStream(String fileLocation) throws Exception  {    
     String[] infos = StringUtils.split(fileLocation, ":");
-        
+
     if(infos.length == 2) {
-      TaskInstance taskInstance = taskSession.loadTaskInstance(new Long(infos[0]).longValue());
-      ProcessDefinition processDef = taskInstance.getTask().getProcessDefinition();
-      FileDefinition fD = processDef.getFileDefinition();
-      byte[] file = fD.getBytes(infos[1]);
+      Task taskInstance = service_.getTask(infos[0]);
+      taskInstance.getProcessInstanceId();
+      FileDefinition fD = service_.getFileDefinitionService().retrieve(taskInstance.getProcessId());
+      byte[] file = fD.getEntry(infos[1]);
       return new ByteArrayInputStream(file);
     }
     throw new Exception("Cannot retrieve data in process "
         + fileLocation
         + "Make sure you have a valid location");    
   }
-  
+
   @SuppressWarnings("unused")
   public List<URL> getResources(String url) throws Exception {
     throw new Exception("This method is not  supported") ;
@@ -63,12 +60,12 @@ public class BJARResourceResolver extends ResourceResolver {
     inputStreams.add(getInputStream(url)) ;
     return inputStreams ;
   }
-  
+
   @SuppressWarnings("unused")
   public boolean isModified(String url, long lastAccess) { return false ; }
-  
+
   public String createResourceId(String url) { return  url ; }
-  
+
   public String getResourceScheme() {  return "jcr:" ; }
-  
+
 }
