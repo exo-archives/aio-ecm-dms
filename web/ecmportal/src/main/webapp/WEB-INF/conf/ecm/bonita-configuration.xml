@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration>  
+	
+	<component>
+    <key>org.exoplatform.services.workflow.WorkflowFormsService</key>
+    <type>org.exoplatform.services.workflow.impl.bonita.WorkflowFormsServiceImpl</type>
+  </component>
+  
+  <component>
+    <key>org.exoplatform.services.workflow.WorkflowFileDefinitionService</key>
+    <type>org.exoplatform.services.workflow.impl.bonita.JCRFileDefinitionServiceImpl</type>
+  </component>
+      
+  <component>
+    <key>org.exoplatform.services.workflow.WorkflowServiceContainer</key>
+    <type>org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl</type>
+      
+    <component-plugins>
+      <component-plugin>
+        <name>deploy.predefined.processes</name>
+        <set-method>addPlugin</set-method>
+        <type>org.exoplatform.services.workflow.PredefinedProcessesPlugin</type>
+        <init-params>
+          <object-param>
+            <name>predefined.processes</name>
+            <description>load of default business processes</description>
+            <object type="org.exoplatform.services.workflow.ProcessesConfig">
+              <field name="processLocation"><string>war:/conf/bp</string></field>
+              <field name="predefinedProcess">
+                <collection type="java.util.HashSet">
+                  <value><string>/exo.ecm.bp.bonita.payraise-2.0.jar</string></value>
+                  <value><string>/exo.ecm.bp.bonita.holiday-2.0.jar</string></value>
+                  <value><string>/exo.ecm.bp.bonita.content.validation-2.0.jar</string></value>
+                  <value><string>/exo.ecm.bp.bonita.content.backup-2.0.jar</string></value>
+                </collection>
+              </field>
+            </object>
+          </object-param>
+        </init-params>
+      </component-plugin>
+    </component-plugins>
+  </component>
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.organization.OrganizationService</target-component>
+    <component-plugin>
+      <name>init.bonita.group.service.listener</name>
+      <set-method>addListenerPlugin</set-method>
+      <type>org.exoplatform.services.organization.OrganizationDatabaseInitializer</type>
+      <description>this listener populate organization data for the first launch</description>
+      <init-params>      
+        <value-param>
+          <name>checkDatabaseAlgorithm</name>
+          <description>check database</description>
+          <value>entry</value>
+        </value-param>      
+        <value-param>
+          <name>printInformation</name>
+          <description>Print information init database</description>
+          <value>false</value>
+        </value-param> 
+        <object-param>
+          <name>configuration</name>
+          <description>description</description>
+          <object type="org.exoplatform.services.organization.OrganizationConfig">            
+            <field  name="group">
+              <collection type="java.util.ArrayList">
+              	<value>
+                  <object type="org.exoplatform.services.organization.OrganizationConfig$Group">
+                    <field  name="name"><string>BONITAUSER</string></field>
+                    <field  name="parentId"><string>/platform</string></field>
+                    <field  name="description"><string>the /platform/BONITAUSER group</string></field>
+                    <field  name="label"><string>BONITAUSER</string></field>                    
+                  </object>
+                </value>                
+              </collection>
+            </field>            
+          </object>
+        </object-param>
+      </init-params>
+    </component-plugin>    
+                       
+    <component-plugin>
+      <name>new.bonita.user.event.listener</name>
+      <set-method>addListenerPlugin</set-method>
+      <type>org.exoplatform.services.organization.impl.NewUserEventListener</type>
+      <description>this listener assign group and membership to a new created user</description>
+      <init-params>
+        <object-param>
+          <name>bonita.configuration</name>
+          <description>description</description>
+          <object type="org.exoplatform.services.organization.impl.NewUserConfig">
+            <field  name="group">
+              <collection type="java.util.ArrayList">
+                <value>
+                  <object type="org.exoplatform.services.organization.impl.NewUserConfig$JoinGroup">
+                    <field  name="groupId"><string>/platform/BONITAUSER</string></field>
+                    <field  name="membership"><string>member</string></field>
+                  </object>
+                </value>               
+              </collection>
+            </field>            
+          </object>
+        </object-param>
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>  
+
+</configuration>

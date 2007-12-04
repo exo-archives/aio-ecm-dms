@@ -23,13 +23,15 @@
     <key>org.exoplatform.services.jcr.RepositoryService</key>
     <type>org.exoplatform.services.jcr.impl.RepositoryServiceImpl</type>
   </component>
-
+  
   <component>
-    <type>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</type>        
-  </component>
-
-  <component>
-    <key>org.exoplatform.services.jcr.ext.audit.AuditService</key>
-    <type>org.exoplatform.services.jcr.ext.audit.AuditServiceImpl</type>
+    <type>org.exoplatform.services.jcr.ext.registry.RegistryService</type>
+    <init-params>
+      <properties-param>
+      	<name>locations</name>
+      	<property name="repository" value="system"/>
+      </properties-param>
+    </init-params>
   </component>  
+   
 </configuration>
