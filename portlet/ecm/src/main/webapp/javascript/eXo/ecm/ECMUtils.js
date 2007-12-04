@@ -21,9 +21,9 @@ ECMUtils.prototype.init = function(portletId) {
 
 ECMUtils.prototype.fixHeight = function(portletId) {
 
-
 	var portlet = document.getElementById(portletId) ;
 	var refElement = eXo.core.DOMUtil.findAncestorByClass(portlet, "UIApplication") ;
+	if (!refElement) return;
 	var delta = refElement.offsetHeight - portlet.offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	if (resizeObj.length) {
@@ -40,7 +40,7 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 				resizeObj[i].style.height = nHeight + 'px' ;
 			}
 		}
-  }
+	}
 	//bug ECM-1415;
 	var uiResize = eXo.core.DOMUtil.findAncestorByClass(portlet, 'UIResizableBlock') ;
 	if (uiResize) {
