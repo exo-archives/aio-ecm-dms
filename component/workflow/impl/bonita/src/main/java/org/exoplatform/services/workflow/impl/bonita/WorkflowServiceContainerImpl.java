@@ -46,6 +46,7 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserHandler;
@@ -73,18 +74,6 @@ import org.picocontainer.Startable;
 public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
                                                      Startable {
 
-  /** Configuration of the Service */
-  private ArrayList<ProcessesConfig> configurations;
-  
-  /** Reference to the Configuration Manager Service */
-  private ConfigurationManager configurationManager = null;
-  
-  /** Reference to the File Definition Service */
-  private WorkflowFileDefinitionService fileDefinitionService = null;
-  
-  /** Reference to the Workflow Forms Service */
-  private WorkflowFormsService formsService = null;
-
   /**
    * Holds variables to be set while instantiating a Process. Indeed Bonita
    * currently executes some mappers and hooks prior having the opportunity to
@@ -94,12 +83,66 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
   public static ThreadLocal<Map<String,Object>> InitialVariables =
     new ThreadLocal<Map<String,Object>>();
   
+  /** Configuration of the Service */
+  private ArrayList<ProcessesConfig> configurations;
+  
+  /** Reference to the Configuration Manager Service */
+  private ConfigurationManager configurationManager = null;
+  
+  /** Reference to the File Definition Service */
+  private WorkflowFileDefinitionService fileDefinitionService = null;
+
+  /** Reference to the Workflow Forms Service */
+  private WorkflowFormsService formsService = null;
+  
   /** Reference to the Organization Service */
   private OrganizationService organizationService = null;
   
   /** Reference to the Portal Container */
   private PortalContainer portalContainer = null;
+  
+  private String superUser_ = "root";
+  private String jaasLoginContext_ = "tomcat";
 
+  /**
+   * Instantiates a new Bonita service instance.
+   * This constructor requires the injection of the Forms Service.
+   * 
+   * @param fileDefinitionService reference to the File Definition Service
+   * @param formsService          reference to the Forms Service
+   * @param organizationService   reference to the Organization Service
+   * @param configuration         reference to the Configuration Manager
+   * @param params                initialization parameters of the service
+   */
+  public WorkflowServiceContainerImpl(
+      WorkflowFileDefinitionService fileDefinitionService,
+      WorkflowFormsService          formsService,
+      OrganizationService           organizationService,
+      ConfigurationManager          configurationManager,
+      PortalContainer               portalContainer,
+      InitParams                    params) {
+    
+    // Store references to dependent services
+    this.fileDefinitionService = fileDefinitionService;
+    this.formsService          = formsService;
+    this.organizationService   = organizationService;
+    this.configurationManager  = configurationManager;
+    this.portalContainer       = portalContainer;
+    
+    // Initialize some fields
+    this.configurations        = new ArrayList<ProcessesConfig>();
+    if(params != null) {
+      ValueParam superUserParam = params.getValueParam("super.user") ;
+      if(superUserParam != null && superUserParam.getValue().length()>0) {
+        this.superUser_ = superUserParam.getValue();
+      }
+      ValueParam jaasLoginContextParam = params.getValueParam("jaas.login.context") ;
+      if(jaasLoginContextParam !=null && jaasLoginContextParam.getValue().length()>0) {
+        this.jaasLoginContext_ = jaasLoginContextParam.getValue();
+      } 
+    }
+  }
+  
   /**
    * Add a plugin to the Workflow service.
    * This method currently only supports plugins to deploy predefined processes.
@@ -220,7 +263,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       e.printStackTrace();
     }
   }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#endTask(java.lang.String, java.util.Map)
    */
@@ -270,7 +313,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
      */
     endTask(taskId, variables);
   }
-
+  
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getAllTasks(java.lang.String)
    */
@@ -281,6 +324,10 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     return allTasks;
   }
   
+  public WorkflowFileDefinitionService getFileDefinitionService() {
+    return this.fileDefinitionService ;
+  }
+  
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getGroupTaskList(java.lang.String)
    */
@@ -288,7 +335,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     // TODO Determine if something can be implemented
     return new ArrayList<Task>();
   }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getProcess(java.lang.String)
    */
@@ -340,7 +387,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     }
     
     return processes;
-  }
+  } 
 
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getProcessInstance(java.lang.String)
@@ -396,8 +443,8 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     }
     
     return processInstances;
-  } 
-
+  }
+  
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getTask(java.lang.String)
    */
@@ -471,7 +518,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     
     return timers;
   }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getUserTaskList(java.lang.String)
    */
@@ -504,7 +551,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     
     return tasks;
   }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#getVariables(java.lang.String)
    */
@@ -564,7 +611,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     
     return variables;
   }
-
+  
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#hasStartTask(java.lang.String)
    */
@@ -576,7 +623,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     
     return ! form.getVariables().isEmpty();
   }
-
+  
   /**
    * Sets attributes of a Process instance.
    * Bonita provides Process instance and Activity attributes. This method sets
@@ -716,13 +763,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       Collection<BnProjectLocal> projects = projectHome.findAll();
 
       // If the predefined Processes need to be deployed
-      if(projects.isEmpty()) {
-
-        /*
-         * Account used to deploy the predefined Processes.
-         * TODO Specify it in the Service configuration.
-         */
-        final String account = "exoadmin";
+      if(projects.isEmpty()) {                
         
         /*
          * Retrieve the corresponding password from the Organization Service.
@@ -730,27 +771,20 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
          * target portal is specified to the Login Module. 
          */
         UserHandler userHandler = this.organizationService.getUserHandler();
-        User user = userHandler.findUserByName(account);
-        final char[] password =
-          (user.getPassword()
-           + "@"
-           + ((PortalContainer) portalContainer).getPortalContainerInfo().
-             getContainerName()).toCharArray();
-
+        User user = userHandler.findUserByName(superUser_);
+        char[] password = user.getPassword().toCharArray();          
         /*
          * As the Application Server is being started, there is no logged in
          * user. It is therefore required to login programmatically.
          */ 
-        BasicCallbackHandler handler =
-          new BasicCallbackHandler(account, password);
-        lc = new LoginContext("tomcat", handler);
+        BasicCallbackHandler handler = new BasicCallbackHandler(superUser_, password);
+        lc = new LoginContext(jaasLoginContext_, handler);
         lc.login();
       
         // Deploy each predefined Process
         for(ProcessesConfig processConfig : configurations) {
           HashSet predefinedProcesses = processConfig.getPredefinedProcess();
-          String processLoc           = processConfig.getProcessLocation();
-          
+          String processLoc           = processConfig.getProcessLocation();          
           for (Iterator iter = predefinedProcesses.iterator(); iter.hasNext();) {
             String parFile = (String) iter.next();
             InputStream iS;
@@ -779,7 +813,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       }
     }
   }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#startProcess(java.lang.String)
    */
@@ -788,7 +822,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
     // Delegate the call
     this.startProcess(null, processId, new HashMap());
   }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.services.workflow.WorkflowServiceContainer#startProcess(java.lang.String, java.lang.String, java.util.Map)
    */
@@ -862,34 +896,5 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
    * @see org.picocontainer.Startable#stop()
    */
   public void stop() {
-  }
-
-  /**
-   * Instantiates a new Bonita service instance.
-   * This constructor requires the injection of the Forms Service.
-   * 
-   * @param fileDefinitionService reference to the File Definition Service
-   * @param formsService          reference to the Forms Service
-   * @param organizationService   reference to the Organization Service
-   * @param configuration         reference to the Configuration Manager
-   * @param params                initialization parameters of the service
-   */
-  public WorkflowServiceContainerImpl(
-      WorkflowFileDefinitionService fileDefinitionService,
-      WorkflowFormsService          formsService,
-      OrganizationService           organizationService,
-      ConfigurationManager          configurationManager,
-      PortalContainer               portalContainer,
-      InitParams                    params) {
-    
-    // Store references to dependent services
-    this.fileDefinitionService = fileDefinitionService;
-    this.formsService          = formsService;
-    this.organizationService   = organizationService;
-    this.configurationManager  = configurationManager;
-    this.portalContainer       = portalContainer;
-    
-    // Initialize some fields
-    this.configurations        = new ArrayList<ProcessesConfig>();
   }
 }

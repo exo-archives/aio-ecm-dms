@@ -4,12 +4,6 @@
  ******************************************************************************/
 package org.exoplatform.services.workflow.impl.bonita;
 
-import hero.interfaces.BnNodeLocal;
-import hero.interfaces.BnProjectLocal;
-import hero.interfaces.BnProjectLocalHome;
-import hero.interfaces.BnProjectPK;
-import hero.interfaces.BnProjectUtil;
-
 import java.util.Locale;
 
 import org.exoplatform.services.workflow.FileDefinition;

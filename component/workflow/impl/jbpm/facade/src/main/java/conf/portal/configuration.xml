@@ -102,8 +102,5 @@
         </values-param>
       </init-params>
     </component-plugin>
-  </external-component-plugins>
-  
-  <import>war:/conf/portal/jbpm-configuration.xml</import>
-  
+  </external-component-plugins>  
 </configuration>

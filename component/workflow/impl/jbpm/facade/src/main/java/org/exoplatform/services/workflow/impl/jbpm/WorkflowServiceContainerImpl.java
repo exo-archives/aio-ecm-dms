@@ -33,6 +33,7 @@ import org.exoplatform.services.workflow.ProcessInstance;
 import org.exoplatform.services.workflow.ProcessesConfig;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.Timer;
+import org.exoplatform.services.workflow.WorkflowFileDefinitionService;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.hibernate.cfg.Configuration;
@@ -450,5 +451,10 @@ public class WorkflowServiceContainerImpl implements
      * Commit the changes. The jBPM session is created lazily by openSession().
      */
     this.closeSession();
+  }
+
+  public WorkflowFileDefinitionService getFileDefinitionService() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

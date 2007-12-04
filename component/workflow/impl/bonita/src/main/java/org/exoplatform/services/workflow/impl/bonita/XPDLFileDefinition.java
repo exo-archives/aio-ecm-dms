@@ -516,6 +516,7 @@ public class XPDLFileDefinition implements FileDefinition {
                                          "forms.xml|" +
                                          ".*\\.properties$|" +
                                          ".*\\.vm$|" +
+                                         ".*\\.gtmpl$|" +
                                          ".*\\.gif$|" +
                                          ".*\\.class$")) {
 

@@ -35,6 +35,8 @@ public interface WorkflowServiceContainer {
   public List<Task> getUserTaskList(String user);
   public List<Task> getGroupTaskList(String user) throws Exception;
   
+  public WorkflowFileDefinitionService getFileDefinitionService();
+  
   public List<Timer> getTimers();
   
   public void startProcess(String processId);  
