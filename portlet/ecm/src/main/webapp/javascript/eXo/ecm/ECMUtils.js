@@ -26,21 +26,21 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 	var refElement = eXo.core.DOMUtil.findAncestorByClass(portlet, "UIApplication") ;
 	var delta = refElement.offsetHeight - portlet.offsetHeight ;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
-
-	for(var i = 0; i < resizeObj.length; i++) {
-		var nHeight = parseInt(resizeObj[i].offsetHeight) + delta;
-		if (nHeight < 0 ) nHeight = "0px" ;
-		var UISideBar = eXo.core.DOMUtil.findAncestorByClass(resizeObj[i], 'UISideBar') ;
-
-		if (UISideBar) {
+	if (resizeObj.length) {
+		for(var i = 0; i < resizeObj.length; i++) {
+			var nHeight = parseInt(resizeObj[i].offsetHeight) + delta;
+			if (nHeight < 0 ) nHeight = "0px" ;
+			var UISideBar = eXo.core.DOMUtil.findAncestorByClass(resizeObj[i], 'UISideBar') ;
+	
+			if (UISideBar) {
+					resizeObj[i].style.height = nHeight + 'px' ;
+					nHeight =  resizeObj[i].offsetHeight - (UISideBar.offsetHeight - resizeObj[i].offsetHeight - 3);
+					resizeObj[i].style.height = nHeight + 'px' ;
+			} else {
 				resizeObj[i].style.height = nHeight + 'px' ;
-				nHeight =  resizeObj[i].offsetHeight - (UISideBar.offsetHeight - resizeObj[i].offsetHeight - 3);
-				resizeObj[i].style.height = nHeight + 'px' ;
-		} else {
-			resizeObj[i].style.height = nHeight + 'px' ;
+			}
 		}
-	}
-
+  }
 	//bug ECM-1415;
 	var uiResize = eXo.core.DOMUtil.findAncestorByClass(portlet, 'UIResizableBlock') ;
 	if (uiResize) {
