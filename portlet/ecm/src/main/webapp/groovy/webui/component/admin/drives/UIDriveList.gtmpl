@@ -38,9 +38,9 @@
               <span></span>
             <%}%>
             </td>
-            <td><div class="Text">$drive.name</div></td>
+            <td><div class="Text"><%=drive.getName().replace("|", " | ")%></div></td>
             <td><div class="Text">$drive.workspace</div></td>
-            <td><div class="Text">$drive.homePath</div></td>
+            <td><div class="Text"><%=drive.getHomePath().replace("/", " /")%></div></td>
             <td><div class="Text">$drive.permissions</div></td>
             <td><div class="Text">$drive.views</div></td>
 	          <td style="width:80px;">
