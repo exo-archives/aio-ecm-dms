@@ -307,6 +307,13 @@ public class UIBrowseContainer extends UIContainer {
       return queryDocuments ;
     }
   }
+  
+  public boolean nodeIsLocked(Node node) throws Exception {
+    if(node.isLocked()) {
+      return !Utils.isLockTokenHolder(node) ; 
+    }
+    return false ;
+  }
 
   public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;

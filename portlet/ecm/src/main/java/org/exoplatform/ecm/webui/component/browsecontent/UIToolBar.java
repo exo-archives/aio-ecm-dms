@@ -182,6 +182,12 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;  
       }
+      if(container.nodeIsLocked(uiDocument.node_)) {
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
       if((uiDocument.node_.isCheckedOut())) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
         UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
@@ -213,6 +219,12 @@ public class UIToolBar extends UIContainer {
       if(!uiDocument.node_.isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-comment", null, 
             ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      }
+      if(container.nodeIsLocked(uiDocument.node_)) {
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
