@@ -43,7 +43,7 @@ public class NewUserListener extends UserEventListener {
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = initParams_.getValueParam("permissions").getValue();
-    permissions.concat(","+ user.getUserName());
+    permissions = permissions.concat(","+ user.getUserName());
     String homePath = userPath_ + "/" + user.getUserName() ;
     String views = initParams_.getValueParam("views").getValue();
     String icon = initParams_.getValueParam("icon").getValue();
