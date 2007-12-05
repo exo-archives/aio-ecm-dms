@@ -39,11 +39,11 @@
 		    </value-param>   
 		    <value-param>
 		      <name>relativePath</name>
-		      <value>Private/Queries</value>
+		      <value>Private/Searches</value>
 		    </value-param>
 		    <value-param>
 		      <name>group</name>
-		      <value>*:/admin</value>
+		      <value>*:/platform/administrators</value>
 		    </value-param>            
 	  	</init-params>	         
 	</component>	   
