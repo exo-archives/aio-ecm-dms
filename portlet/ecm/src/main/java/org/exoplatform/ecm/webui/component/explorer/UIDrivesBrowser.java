@@ -125,7 +125,8 @@ public class UIDrivesBrowser extends UIContainer {
     String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
     String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH) ;
     for(DriveData drive : driveList) {
-      if(!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) {
+      if((!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) 
+          || drive.getHomePath().equals(userPath)) {
         generalDrives.add(drive) ;
       }
     }
