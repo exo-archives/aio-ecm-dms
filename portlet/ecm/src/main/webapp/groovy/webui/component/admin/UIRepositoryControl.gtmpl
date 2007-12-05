@@ -1,5 +1,5 @@
 <% 
-	import org.exoplatform.webui.core.UIDropDownItemSelector ; 
+	//import org.exoplatform.webui.core.UIDropDownItemSelector ; 
 	import org.exoplatform.ecm.webui.component.admin.repository.UIRepositorySelectForm ;
 	import org.exoplatform.ecm.webui.component.UIPopupAction ;
 %>
