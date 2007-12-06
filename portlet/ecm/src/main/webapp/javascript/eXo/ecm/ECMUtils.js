@@ -5,6 +5,7 @@ function ECMUtils() {
 };
 
 ECMUtils.prototype.init = function(portletId) {
+
 	var portlet = document.getElementById(portletId) ;
 	// TODO: Fix temporary for the problem Minimize window in Page Mode
 	if(!portlet) return ;
@@ -17,6 +18,7 @@ ECMUtils.prototype.init = function(portletId) {
 		this.fixHeight(portletId) ;
 		this.fixScroll();
 	}
+
 };
 
 ECMUtils.prototype.fixHeight = function(portletId) {
@@ -135,9 +137,6 @@ ECMUtils.prototype.overVote = function(event) {
 	}
 };
 
-/*
- * minh.js.exo
- */
  
 ECMUtils.prototype.showHideComponent = function(elemtClicked) {
 	var DOMUtil = eXo.core.DOMUtil;
@@ -160,13 +159,13 @@ ECMUtils.prototype.collapseExpand = function(elemt) {
 	var subGroup = eXo.core.DOMUtil.findFirstChildByClass(node, "div", "NodeGroup") ;
 	if(!subGroup) return false;
 	if(subGroup.style.display == "none") {
-		elemt.className = "CollapseIcon" ;
+		if (elemt.className == "ExpandIcon") 	elemt.className = "CollapseIcon" ;
 		subGroup.style.display = "block" ;
 	} else {
-		elemt.className = "ExpandIcon" ;
+		if (elemt.className == "CollapseIcon") elemt.className = "ExpandIcon" ;
 		subGroup.style.display = "none" ;
 	}
-	return true
+	return true;
 };
 
 ECMUtils.prototype.filterValue = function(frmId) {
