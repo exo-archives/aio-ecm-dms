@@ -21,6 +21,7 @@
 .UIWindow .UIJCRExplorerPortlet {
 	border: none;
 	margin: 0px auto;
+	width: auto;
 }
 
 .UIJCRExplorerPortlet {
