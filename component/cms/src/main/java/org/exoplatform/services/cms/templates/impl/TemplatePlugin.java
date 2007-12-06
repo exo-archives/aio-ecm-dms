@@ -55,12 +55,13 @@ public class TemplatePlugin extends BaseComponentPlugin {
     cmsTemplatesBasePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_TEMPLATES_PATH) ;
     params_ = params ;    
     ValueParam locationParam = params_.getValueParam("storedLocation") ;
-    if(locationParam== null) {
-      storedLocation_ = 
-        nodeHierarchyCreator_.getContentLocation() + "/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ; 
-    }else {
-      storedLocation_ = locationParam.getValue();      
-    } 
+//    if(locationParam== null) {
+//      storedLocation_ = 
+//        nodeHierarchyCreator_.getContentLocation() + "/system" + cmsTemplatesBasePath_.substring(cmsTemplatesBasePath_.lastIndexOf("/")) ; 
+//    }else {
+//      storedLocation_ = locationParam.getValue();      
+//    } 
+    storedLocation_ = locationParam.getValue() ;
     ValueParam param = params_.getValueParam("autoCreateInNewRepository");
     if(param!=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(param.getValue()) ;
