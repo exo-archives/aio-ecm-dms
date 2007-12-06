@@ -65,7 +65,7 @@
 					</div>
 			  </div>
 					
-				<div class="BrowserDecorator NodeGroup">
+				<div class="BrowserDecorator NodeGroup" style="display: none;">
 			    <div class="TopLeftCorner">
 			      <div class="DecoratorTopRightCorner">
 			        <div class="DecoratorTopCenterCorner"><span></span></div>
@@ -169,7 +169,7 @@
 					</div>
 			  </div>      
 					
-				<div class="BrowserDecorator  NodeGroup" style="display: none;">
+				<div class="BrowserDecorator  NodeGroup">
 			    <div class="TopLeftCorner">
 			      <div class="DecoratorTopRightCorner">
 			        <div class="DecoratorTopCenterCorner"><span></span></div>
