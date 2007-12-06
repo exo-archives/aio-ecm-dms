@@ -57,7 +57,7 @@
 			if(personalDrives.size() > 0) {			
 		%>
 			<div class="DrivesContent">	
-  			<div class="DrivesListTitleBG">
+  			<div class="DrivesListTitleBG" onclick="eXo.ecm.ECMUtils.collapseExpand(this)">
 					<div class="DrivesListTitleBGRight"> 
 						<div class="DrivesListTitle" >
 							<div class="Icon PersonalDrivesIcon"><%=_ctx.appRes("UIDrivesBrowser.title.PersonalDrives" )%></div>
@@ -65,7 +65,7 @@
 					</div>
 			  </div>
 					
-				<div class="BrowserDecorator">
+				<div class="BrowserDecorator NodeGroup">
 			    <div class="TopLeftCorner">
 			      <div class="DecoratorTopRightCorner">
 			        <div class="DecoratorTopCenterCorner"><span></span></div>
@@ -111,7 +111,7 @@
       if(groupDrives.size() > 0) {
     %>
       <div class="DrivesContent">	
-   			<div class="DrivesListTitleBG">
+   			<div class="DrivesListTitleBG" onclick="eXo.ecm.ECMUtils.collapseExpand(this)">
 					<div class="DrivesListTitleBGRight"> 
 						<div class="DrivesListTitle" >
 							<div class="Icon GroupDrivesIcon"><%=_ctx.appRes("UIDrivesBrowser.title.GroupDrives" )%></div>
@@ -119,7 +119,7 @@
 				  </div>
 				</div>
 					
-				<div class="BrowserDecorator">
+				<div class="BrowserDecorator  NodeGroup" style="display: none;">
 			    <div class="TopLeftCorner">
 			      <div class="DecoratorTopRightCorner">
 			        <div class="DecoratorTopCenterCorner"><span></span></div>
@@ -161,7 +161,7 @@
 		  </div>
 		<%}%>  
       <div class="DrivesContent">	
-  			<div class="DrivesListTitleBG">
+  			<div class="DrivesListTitleBG" onclick="eXo.ecm.ECMUtils.collapseExpand(this)">
 					<div class="DrivesListTitleBGRight"> 
 						<div class="DrivesListTitle" >
 							<div class="Icon GeneralDriveIcon"><%=_ctx.appRes("UIDrivesBrowser.title.GeneralDrives" )%></div>
@@ -169,7 +169,7 @@
 					</div>
 			  </div>      
 					
-				<div class="BrowserDecorator">
+				<div class="BrowserDecorator  NodeGroup" style="display: none;">
 			    <div class="TopLeftCorner">
 			      <div class="DecoratorTopRightCorner">
 			        <div class="DecoratorTopCenterCorner"><span></span></div>
