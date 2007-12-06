@@ -37,15 +37,7 @@
 		    <name>i18n</name>
 		    <label>#{administration.i18n}</label>
 		    <page-reference>group::platform/administrators::i18n</page-reference>
-	    </node>	    	   
-	    
-	    <node>
-		    <uri>administration/console</uri>
-		    <name>console</name>
-		    <label>#{administration.console}</label>
-		    <page-reference>group::platform/administrators::console</page-reference>
-	    </node>	    	   
-	    	   	    
+	    </node>	    	    	    	   	    	   	   
     </node>
     <node>
       <uri>contentAdministration</uri>

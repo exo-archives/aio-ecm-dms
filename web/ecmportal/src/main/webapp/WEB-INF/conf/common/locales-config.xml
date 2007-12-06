@@ -12,28 +12,28 @@
     <locale>en</locale>
     <output-encoding>UTF-8</output-encoding>
     <input-encoding>UTF-8</input-encoding>
-    <description>Default configuration for english locale</description>
+    <description>Default configuration for English locale</description>
   </locale-config>
 
   <locale-config>
     <locale>fr</locale>
     <output-encoding>UTF-8</output-encoding>
     <input-encoding>UTF-8</input-encoding>
-    <description>Default configuration for the french locale</description>
+    <description>Default configuration for the French locale</description>
   </locale-config>
 
   <locale-config>
     <locale>vi</locale>
     <output-encoding>UTF-8</output-encoding>
     <input-encoding>UTF-8</input-encoding>
-    <description>Default configuration for the vitnamese locale</description>
+    <description>Default configuration for the Vietnamese locale</description>
   </locale-config>
 
   <locale-config>
-    <locale>it</locale>
+    <locale>ru</locale>
     <output-encoding>UTF-8</output-encoding>
     <input-encoding>UTF-8</input-encoding>
-    <description>Default configuration for the italian locale</description>
+    <description>Default configuration for the Russian locale</description>
   </locale-config>
 
 </locales-config>

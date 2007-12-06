@@ -90,6 +90,7 @@
 	                <value><string>john</string></value>
 	                <value><string>marry</string></value>
 	                <value><string>demo</string></value>
+	                <value><string>james</string></value>
 	              </collection>
 	            </field>
 	            <field  name="ownerType"><string>user</string></field>

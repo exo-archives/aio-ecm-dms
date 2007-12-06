@@ -8,6 +8,7 @@
     <factory-id>Desktop</factory-id>
     <access-permissions>*:/platform/users</access-permissions>
     <edit-permission>manager:/platform/administrators</edit-permission>
+    <show-max-window>true</show-max-window>
     
     <application location-x="100" location-y="150">
 	    <instance-id>portal#webos:/eXoWidgetWeb/WelcomeWidget/WelcomeWidget</instance-id>
@@ -27,7 +28,7 @@
     </application>        
     	  	  	  	
     <application>
-      <instance-id>group#platform/users:/ecm/FileExplorerPortlet/webosFileExplorer</instance-id>
+      <instance-id>group#platform/users:/ecm/FileExplorerPortlet/fileexplorer</instance-id>
       <title>File Explorer</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -35,7 +36,7 @@
     </application>
     
     <application>
-      <instance-id>group#platform/users:/ecm/FastContentCreatorPortlet/webosFastContentCreator</instance-id>
+      <instance-id>group#platform/users:/ecm/FastContentCreatorPortlet/fastcontentcreator</instance-id>
       <title>Fast Content Creator</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -43,7 +44,7 @@
     </application>
     
     <application>
-      <instance-id>group#platform/users:/ecm/ContentBrowserPortlet/webosContentBrowser</instance-id>
+      <instance-id>group#platform/users:/ecm/ContentBrowserPortlet/contentbrowser</instance-id>
       <title>Content Browser</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -51,7 +52,7 @@
     </application>
     
     <application>
-      <instance-id>group#platform/users:/workflow/WorkflowControllerPortlet/webosWorkflowController</instance-id>    
+      <instance-id>group#platform/users:/workflow/WorkflowControllerPortlet/workflowcontroller</instance-id>    
       <title>Business Process</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -65,8 +66,32 @@
   	<owner-type>group</owner-type>
     <owner-id>platform/users</owner-id>
     <name>ContentManagement</name>
+    <factory-id>Desktop</factory-id>
     <access-permissions>*:/platform/users</access-permissions>
-    <edit-permission>manager:/platform/administrators</edit-permission>         
+    <edit-permission>manager:/platform/administrators</edit-permission>
+    <show-max-window>true</show-max-window>
+    
+    <application>
+      <instance-id>group#platform/users:/ecm/FileExplorerPortlet/fileexplorer</instance-id>
+      <title>File Explorer</title>
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>      
+    </application>
+    
+    <application>
+      <instance-id>group#platform/users:/ecm/FastContentCreatorPortlet/fastcontentcreator</instance-id>
+      <title>Fast Content Creator</title>
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>      
+    </application>
+    
+    <application>
+      <instance-id>group#platform/users:/ecm/ContentBrowserPortlet/contentbrowser</instance-id>
+      <title>Content Browser</title>
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>      
+    </application>
+                             
   </page>
   
   <page>
@@ -80,7 +105,8 @@
     <application>
       <instance-id>group#platform/users:/ecm/FileExplorerPortlet/fileexplorer</instance-id>
       <title>File Explorer</title>
-      <show-info-bar>false</show-info-bar>      
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>      
     </application>  
   </page>
   
@@ -95,7 +121,8 @@
     <application>
       <instance-id>group#platform/users:/ecm/FastContentCreatorPortlet/fastcontentcreator</instance-id>
       <title>Fast Content Creator</title>
-      <show-info-bar>false</show-info-bar>      
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>      
     </application>  
   </page>
   
@@ -110,7 +137,8 @@
     <application>
       <instance-id>group#platform/users:/ecm/ContentBrowserPortlet/contentbrowser</instance-id>
       <title>Content Browser</title>
-      <show-info-bar>false</show-info-bar>      
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>      
     </application>  
   </page>
   

@@ -7,7 +7,7 @@
 		<owner-id>platform/guests</owner-id>
     <name>webos</name>		
     <factory-id>Desktop</factory-id>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>
     <show-max-window>true</show-max-window>
     
@@ -72,11 +72,11 @@
     <owner-id>platform/guests</owner-id>
     <name>register</name>
     <title>Register</title>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
       <instance-id>group#platform/guests:/exoadmin/AccountPortlet/Account</instance-id>
-      <title>Account Portlet</title>
+      <title>Account</title>
       <show-info-bar>false</show-info-bar>      
     </application>  
   </page>    
@@ -87,7 +87,7 @@
     <owner-id>platform/guests</owner-id>
     <name>news</name>
     <title>News</title>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
       <instance-id>group#platform/guests:/ecm/ContentBrowserPortlet/news</instance-id>
@@ -102,7 +102,7 @@
     <owner-id>platform/guests</owner-id>
     <name>ideas</name>
     <title>Ideas</title>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>         
   </page>  
   
@@ -112,7 +112,7 @@
     <owner-id>platform/guests</owner-id>
     <name>read-ideas</name>
     <title>read-ideas</title>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
       <instance-id>group#platform/guests:/ecm/ContentBrowserPortlet/ideas</instance-id>
@@ -127,7 +127,7 @@
     <owner-id>platform/guests</owner-id>
     <name>write-ideas</name>
     <title>read-ideas</title>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
       <instance-id>group#platform/guests:/ecm/FastContentCreatorPortlet/writeyourideas</instance-id>
@@ -142,7 +142,7 @@
     <owner-id>platform/guests</owner-id>
     <name>sitemap</name>
     <title>Site Map</title>
-	  <access-permissions>Everyone</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>	  
 	  <edit-permission>*:/platform/administrators</edit-permission>
 	  <application>
       <instance-id>group#platform/guests:/web/SiteMapPortlet/sitemapportlet</instance-id>

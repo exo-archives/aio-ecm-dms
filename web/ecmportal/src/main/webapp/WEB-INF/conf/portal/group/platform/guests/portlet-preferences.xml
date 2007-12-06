@@ -249,7 +249,7 @@
       </preference>            
     </portlet-preferences>
     
-    <portlet-preferences>
+   <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
     <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/news</window-id> 

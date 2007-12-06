@@ -2,7 +2,7 @@
 <node-navigation>
   <owner-type>group</owner-type>  
 	<owner-id>platform/guests</owner-id>
-	<priority>2</priority>
+	<priority>9</priority>
   <description>description for node navigation </description>
   
   <page-nodes>  		  	  
