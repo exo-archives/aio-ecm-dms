@@ -155,7 +155,7 @@
 		        <description>View configuration for Taxonomy</description>
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field  name="name"><string>taxonomy-list</string></field>
-		          <field  name="permissions"><string>member:/platform/users</string></field>
+		          <field  name="permissions"><string>*:/platform/users</string></field>
 		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
 		          <field  name="tabList">
                 <collection type="java.util.ArrayList">
@@ -184,7 +184,7 @@
 		        <description>View configuration for Taxonomy</description>
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field  name="name"><string>taxonomy-thumbnails</string></field>
-		          <field  name="permissions"><string>member:/platform/users</string></field>
+		          <field  name="permissions"><string>*:/platform/users</string></field>
 		          <field  name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ThumbnailsView</string></field>
 		          <field  name="tabList">
                 <collection type="java.util.ArrayList">
