@@ -45,8 +45,8 @@ public class UITreeJCRExplorer extends UIContainer {
     UITree tree = addChild(UITree.class, null, null) ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;
-    tree.setIcon("LightBlueFolder24x24Icon")  ;    
-    tree.setSelectedIcon("LightBlueOpenFolder24x24Icon") ;
+    tree.setIcon("nt_unstructured16x16Icon")  ;    
+    tree.setSelectedIcon("nt_unstructured16x16Icon") ;
   }
   
   public void setRootNode(Node rootNode) { rootNode_ = rootNode ; }
