@@ -33,7 +33,9 @@
         <value>locale.portal.expression</value>
         <value>locale.portal.services</value>
         <value>locale.portal.webui</value>
-        <value>locale.portal.custom</value>        
+        <value>locale.portal.custom</value>
+        <value>locale.ecm.dialogs</value>
+        <value>locale.ecm.views</value>        
       </values-param>      
     </init-params>
   </component>
