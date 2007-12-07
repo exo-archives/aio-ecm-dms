@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <configuration>    
   <component>
-      <key>org.exoplatform.application.registry.ApplicationRegistryService</key>
-      <type>org.exoplatform.application.registry.jcr.ApplicationRegistryServiceImpl</type>
+    <key>org.exoplatform.application.registry.ApplicationRegistryService</key>
+    <type>org.exoplatform.application.registry.jcr.ApplicationRegistryServiceImpl</type>
   	<component-plugins>      
 	    <component-plugin>
 	      <name>new.portal.portlets.registry</name>
@@ -14,7 +14,7 @@
 	          <name>administration</name>
 	          <description>description</description>
 	          <object type="org.exoplatform.application.registry.ApplicationCategory">
-	            <field  name="name"><string>administration</string></field>
+	            <field  name="name"><string>exoadmin</string></field>
 	            <field  name="displayName"><string>Administration</string></field> 
 	            <field  name="description"><string>application for administration</string></field> 
 	            <field  name="applications">
@@ -26,11 +26,11 @@
 									    <field name="applicationName"><string>PortletRegistryPortlet</string></field>
 						          <field name="displayName"><string>Application Registry</string></field>
 		                  <field name="applicationType"><string>portlet</string></field>
-		                  <field name="applicationGroup"><string>exoadmin</string></field>       
+		                  <field name="applicationGroup"><string>administration</string></field>       
 						          <field name="accessPermissions">
 								        <collection type="java.util.ArrayList" item-type="java.lang.String">													
-								        	<value>*:/platform/administrators</value>
-								        	<value>*:/organization/management/executive-board</value>
+								        	<value><string>*:/platform/administrators</string></value>
+								        	<value><string>*:/organization/management/executive-board</string></value>
 								        </collection>
 						          </field> 
 		                </object>
@@ -38,11 +38,11 @@
 					        <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>exoadmin/OrganizationPortlet</string></field>
-		                  <field  name="categoryName"><string>administration</string></field>
+		                  <field  name="categoryName"><string>exoadmin</string></field>
 		                  <field name="applicationName"><string>OrganizationPortlet</string></field>
 	                    <field name="displayName"><string>Organization Management</string></field>
 		                  <field name="applicationType"><string>portlet</string></field>
-		                  <field name="applicationGroup"><string>exoadmin</string></field>
+		                  <field name="applicationGroup"><string>administration</string></field>
 		                  <field name="accessPermissions">
 								        <collection type="java.util.ArrayList" item-type="java.lang.String">													
 													<value><string>*:/platform/administrators</string></value>
@@ -54,11 +54,11 @@
 					        <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>exoadmin/AccountPortlet</string></field>
-		                  <field  name="categoryName"><string>administration</string></field>
+		                  <field  name="categoryName"><string>exoadmin</string></field>
 		                  <field name="applicationName"><string>AccountPortlet</string></field>
 						          <field name="displayName"><string>New Account</string></field>
 		                  <field name="applicationType"><string>portlet</string></field>
-		                  <field name="applicationGroup"><string>exoadmin</string></field>
+		                  <field name="applicationGroup"><string>administration</string></field>
 		                  <field name="accessPermissions">
 								        <collection type="java.util.ArrayList" item-type="java.lang.String">													
 													<value><string>*:/platform/administrators</string></value>
@@ -132,10 +132,10 @@
 	        </object-param> 
 	        
 	        <object-param>
-	          <name>all</name>
+	          <name>allwidgets</name>
 	          <description>description</description>
 	          <object type="org.exoplatform.application.registry.ApplicationCategory">
-	            <field  name="name"><string>all</string></field>
+	            <field  name="name"><string>eXoWidgetWeb</string></field>
 	            <field  name="displayName"><string>All Widgets</string></field> 
 	            <field  name="description"><string>All Widgets</string></field> 
 	            <field  name="applications">
@@ -143,7 +143,7 @@
 	                <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>eXoWidgetWeb/InfoWidget</string></field>
-		                  <field  name="categoryName"><string>all</string></field>
+		                  <field  name="categoryName"><string>eXoWidgetWeb</string></field>
 		                  <field name="applicationName"><string>InfoWidget</string></field>
 						          <field name="displayName"><string>Information</string></field>
 		                  <field name="applicationType"><string>eXoWidget</string></field>
@@ -158,7 +158,7 @@
 	                <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>eXoWidgetWeb/WelcomeWidget</string></field>
-		                  <field  name="categoryName"><string>all</string></field>
+		                  <field  name="categoryName"><string>eXoWidgetWeb</string></field>
 		                  <field name="applicationName"><string>WelcomeWidget</string></field>
 						          <field name="displayName"><string>Welcome</string></field>
 		                  <field name="applicationType"><string>eXoWidget</string></field>
@@ -173,7 +173,7 @@
 	                <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>eXoWidgetWeb/StickerWidget</string></field>
-		                  <field  name="categoryName"><string>all</string></field>
+		                  <field  name="categoryName"><string>eXoWidgetWeb</string></field>
 		                  <field name="applicationName"><string>StickerWidget</string></field>
 						          <field name="displayName"><string>Sticker</string></field>
 		                  <field name="applicationType"><string>eXoWidget</string></field>
@@ -188,7 +188,7 @@
 	                <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>eXoWidgetWeb/CalendarWidget</string></field>
-		                  <field  name="categoryName"><string>all</string></field>
+		                  <field  name="categoryName"><string>eXoWidgetWeb</string></field>
 		                  <field name="applicationName"><string>CalendarWidget</string></field>
 						          <field name="displayName"><string>Calendar</string></field>
 		                  <field name="applicationType"><string>eXoWidget</string></field>
@@ -203,7 +203,7 @@
 	                <value>                 
 		                <object type="org.exoplatform.application.registry.Application">                     
 	                    <field  name="id"><string>eXoWidgetWeb/CalculatorWidget</string></field>
-		                  <field  name="categoryName"><string>all</string></field>
+		                  <field  name="categoryName"><string>eXoWidgetWeb</string></field>
 		                  <field name="applicationName"><string>CalculatorWidget</string></field>
 						          <field name="displayName"><string>Caculator</string></field>
 		                  <field name="applicationType"><string>eXoWidget</string></field>
