@@ -72,7 +72,7 @@
     <owner-id>platform/guests</owner-id>
     <name>register</name>
     <title>Register</title>
-	  <access-permissions>*:platform/guests</access-permissions>
+	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
       <instance-id>group#platform/guests:/exoadmin/AccountPortlet/Account</instance-id>
