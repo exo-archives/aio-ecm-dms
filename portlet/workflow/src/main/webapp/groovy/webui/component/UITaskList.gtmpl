@@ -4,7 +4,7 @@
   SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMM yyyy HH:mm:ss") ;
   String name = uicomponent.getId() ;
 %>
-<table class="UIGrid" id="$name" cellspacing="0" borderspacing="0">
+<table class="UIGrid" id="$name" cellspacing="0" borderspacing="0" style="width: 99%; margin: auto;">
   <thead>
     <tr>
       <th>&nbsp;</th>

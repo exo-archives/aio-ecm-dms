@@ -46,11 +46,6 @@
   background: #efefef;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
-  height: 20px ; line-height: 20px;
-  font-weight: bold; font-size: 11px;
-}
-
 .UIFastContentCreatorPortlet .UITabPane {
   padding: 10px 0px 20px 0px;
 }
@@ -118,10 +113,6 @@
   margin: 5px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-}
-
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
 
 .UIFastContentCreatorPortlet .Explorer {
@@ -138,13 +129,6 @@
   margin: 0px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-  width: 100%;
-}
-
 .UIFastContentCreatorPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
@@ -157,17 +141,6 @@
   padding: 10px;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
-  white-space: nowrap;
-}
-
-.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	line-height: 24px;
-	height: 24px;
-}
-
-.UIFastContentCreatorPortlet .UIFormInputSet .UIFormGrid td.FieldLabel {
   padding: 0px 4px;
   vertical-align: middle;
 }
@@ -241,4 +214,3 @@
 .UIFastContentCreatorPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
 	padding: 0px;
 }
-

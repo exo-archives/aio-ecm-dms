@@ -174,26 +174,9 @@
   padding: 1px;
 }
 
-.UIJCRExplorerPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
-}
-
-.UIJCRExplorerPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	height: 24px;
-	line-height: 24px;
-}
-
 .UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-  width: 100%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {

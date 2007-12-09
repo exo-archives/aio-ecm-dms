@@ -98,6 +98,13 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
 	height: 21px;
 	line-height: 21px;
+	padding-right: 5px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DropDownArrow16x16Icon {
+	padding-right: 20px;
+	width: auto; height: auto;
+	background-position: right center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .Icon {

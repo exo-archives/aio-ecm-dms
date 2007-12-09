@@ -44,12 +44,6 @@
   border: none;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
-  height: 20px ; line-height: 20px;
-  font-weight: bold; font-size: 11px;
-  background: #8eeaaf ;
-}
-
 .UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
   border: none;
 }
@@ -197,13 +191,6 @@
   margin: 0px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-  width: 100%;
-}
-
 .UIFastContentCreatorPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
@@ -216,17 +203,7 @@
   padding: 10px;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
-  white-space: nowrap;
-}
-
-.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	line-height: 24px;
-	height: 24px;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
 }

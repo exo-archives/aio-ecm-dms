@@ -31,11 +31,6 @@
 	width: 98%;
 }
 
-.UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
-  height: 20px ; line-height: 20px;
-  font-weight: bold; font-size: 11px;
-}
-
 .UIJCRExplorerPortlet .UIPreferencesForm  {
   width: 500px;
   margin: 10px auto;

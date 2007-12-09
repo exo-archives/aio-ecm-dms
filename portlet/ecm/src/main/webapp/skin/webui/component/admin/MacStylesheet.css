@@ -292,10 +292,6 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UIGroupMembershipSelector .UITree .TreeContainer {
-	width: auto;	
-}
-
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
 	display: none  ;	
 }
@@ -407,26 +403,10 @@
 
 /*############################## -- MultiField  -- ########################*/
 
-.UIECMAdminPortlet .UITree .TreeContainer .NodeSelected {
-  height: 20px ; line-height: 20px;
-  font-weight: bold; font-size: 11px;
-}
-
 .UIECMAdminPortlet .Explorer {
   margin: 0px 10px 10px 0px;
   float: left ;
   width: 220px ;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-  width: 100%;
-}
-
-.UIECMAdminPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
 }
 
 .UIECMAdminPortlet .Explorer .ExplorerTree {
@@ -441,10 +421,6 @@
   padding: 10px;
 }
 
-.UIECMAdminPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
-}
-
 .UIECMAdminPortlet .UITreeList{
   width: 300px;
   float: left;
@@ -457,12 +433,6 @@
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
 	padding-bottom: 8px ;
-}
-
-.UIECMAdminPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	height: 24px;
-	line-height: 24px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
@@ -935,10 +905,6 @@
 	border: solid 1px #b7b7b7;
 	padding: 3px;
 }
-
-.UIECMAdminPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
-  border: none;
-} 
 
 .UIECMAdminPortlet .UIPopupWindow .Content {
   border: solid 1px #cdcdcd;

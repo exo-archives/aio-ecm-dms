@@ -282,13 +282,6 @@
   margin-left: 240px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-  width: 100%;
-}
-
 .UIJCRExplorerPortlet .Explorer .ExplorerTree {
   margin-top: 1px;
   border: solid 1px #c6c6c9;
@@ -299,16 +292,6 @@
 .UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UITree .TreeContainer .Node {
-  white-space: nowrap;
-}
-
-.UIJCRExplorerPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	line-height: 24px;
-	height: 24px;
 }
 
 .UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {

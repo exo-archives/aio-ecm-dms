@@ -245,14 +245,6 @@
 	border: none;
 }
 
-.UIECMAdminPortlet .UIGroupMembershipSelector .UITree .TreeContainer {
-	width: auto;	
-}
-
-UIWorkspaceWizardContainer .UIGroupMembershipSelector .UITree .TreeContainer {
-	height: 160px;
-}
-
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
   margin: 5px 5px 10px 5px;
   border: 1px solid #b7b7b7;
@@ -457,10 +449,6 @@ UIWorkspaceWizardContainer .UIGroupMembershipSelector .UITree .TreeContainer {
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer {
   margin-right: 5px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer .UITree{
-	overflow: auto;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {

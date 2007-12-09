@@ -80,11 +80,6 @@
   padding-left: 3px;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeSelected {
-  height: 20px ; line-height: 20px;
-  font-weight: bold; font-size: 11px;
-}
-
 .UIFastContentCreatorPortlet .MultiValueContainer a  {
   margin: 0px 5px;
 }
@@ -139,10 +134,6 @@
   margin: 10px auto;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
-  border: none;
-} 
-
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 
 }
@@ -172,10 +163,6 @@
   vertical-align: middle;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .InnerExplorerTree .UITree .TreeContainer {
-	border: none;
-}
-
 /*############################## -- UITreeJCRExplorer   -- ##############################*/
 
 .UIFastContentCreatorPortlet .Explorer {
@@ -191,26 +178,9 @@
   padding: 1px;
 }
 
-.UIFastContentCreatorPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
-}
-
-.UIFastContentCreatorPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	height: 24px;
-	line-height: 24px;
-}
-
 .UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .ExplorerTree .UITree {
-  border: solid 1px #ABBCCA;
-  overflow: auto;
-  background: white;
-  width: 100%;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {

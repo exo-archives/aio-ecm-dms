@@ -30,10 +30,6 @@
 	width: 98%;
 }
 
-.UIJCRExplorerPortlet .UITree .TreeContainer .NodeSelected {
-  font-weight: bold; 
-}
-
 .UIJCRExplorerPortlet .UIPreferencesForm  {
   width: 500px;
   padding: 15px;

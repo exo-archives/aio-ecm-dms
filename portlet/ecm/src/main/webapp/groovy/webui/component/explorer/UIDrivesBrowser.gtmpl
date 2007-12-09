@@ -60,7 +60,9 @@
   			<div class="DrivesListTitleBG" onclick="eXo.ecm.ECMUtils.collapseExpand(this)">
 					<div class="DrivesListTitleBGRight"> 
 						<div class="DrivesListTitle" >
-							<div class="Icon PersonalDrivesIcon"><%=_ctx.appRes("UIDrivesBrowser.title.PersonalDrives" )%></div>
+							<div class="DropDownArrow16x16Icon">
+								<div class="Icon PersonalDrivesIcon"><%=_ctx.appRes("UIDrivesBrowser.title.PersonalDrives" )%></div>
+							</div>
 						</div>
 					</div>
 			  </div>
@@ -114,7 +116,9 @@
    			<div class="DrivesListTitleBG" onclick="eXo.ecm.ECMUtils.collapseExpand(this)">
 					<div class="DrivesListTitleBGRight"> 
 						<div class="DrivesListTitle" >
-							<div class="Icon GroupDrivesIcon"><%=_ctx.appRes("UIDrivesBrowser.title.GroupDrives" )%></div>
+							<div class="DropDownArrow16x16Icon">
+								<div class="Icon GroupDrivesIcon"><%=_ctx.appRes("UIDrivesBrowser.title.GroupDrives" )%></div>
+							</div>
 						</div>
 				  </div>
 				</div>
@@ -164,7 +168,9 @@
   			<div class="DrivesListTitleBG" onclick="eXo.ecm.ECMUtils.collapseExpand(this)">
 					<div class="DrivesListTitleBGRight"> 
 						<div class="DrivesListTitle" >
-							<div class="Icon GeneralDriveIcon"><%=_ctx.appRes("UIDrivesBrowser.title.GeneralDrives" )%></div>
+							<div class="DropDownArrow16x16Icon">
+								<div class="Icon GeneralDriveIcon"><%=_ctx.appRes("UIDrivesBrowser.title.GeneralDrives" )%></div>
+							</div>
 						</div>
 					</div>
 			  </div>      
