@@ -23,6 +23,10 @@
 	overflow: hidden;
 }
 
+.UIECMAdminPortlet .UITrees .NodeIcon {
+	padding-left: 25px;
+}
+
 .UIECMAdminPortlet .UIRepositoryControl {
 	overflow: hidden;
 }

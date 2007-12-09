@@ -284,8 +284,7 @@
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
 .UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
-  margin-left: 5px;
-  float: left;
+	padding-left: 25px;
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser {
@@ -308,10 +307,6 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-}
-
-.UIBrowseContentPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
 }
 
 .UIBrowseContentPortlet .UITreeList .UIGrid {

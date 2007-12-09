@@ -188,8 +188,8 @@
   margin: 0px;
 }
 
-.UIJCRExplorerPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
+.UIJCRExplorerPortlet .Explorer .ExplorerTree .NodeIcon {
+	padding-left: 25px;
 }
 
 .UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {
