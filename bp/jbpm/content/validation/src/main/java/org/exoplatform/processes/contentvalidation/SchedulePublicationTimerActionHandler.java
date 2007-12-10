@@ -19,8 +19,7 @@ public class SchedulePublicationTimerActionHandler extends MoveNodeActionHandler
 
   public void execute(ExecutionContext context) {
     Date startDate = (Date) context.getVariable("startDate");
-    Date currentDate = new Date();
-    
+    Date currentDate = new Date();    
     if (startDate.before(currentDate)) {
       try {
         moveNode(context);

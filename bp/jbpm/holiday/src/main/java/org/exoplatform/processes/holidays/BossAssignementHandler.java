@@ -18,6 +18,6 @@ import org.jbpm.taskmgmt.exe.Assignable;
 public class BossAssignementHandler implements AssignmentHandler{
 
   public void assign(Assignable assignable, ExecutionContext executionContext) throws Exception {
-    assignable.setActorId("member:/organization/management/executive-board");
+    assignable.setActorId("*:/organization/management/executive-board");
   }
 }
