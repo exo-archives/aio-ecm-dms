@@ -172,7 +172,11 @@ public class UIPermissionForm extends UIForm implements UISelector {
           try {
             node.removePermission(userOrGroup, perm);
           } catch (AccessDeniedException ade) {
-            continue ;
+            uiApp.addMessage(new ApplicationMessage("UIPermissionForm.msg.access-denied", null, 
+                                                    ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+//            continue ;
           }
         } 
         if(Utils.hasChangePermissionRight(node)) node.setPermission(userOrGroup, permsArray);
