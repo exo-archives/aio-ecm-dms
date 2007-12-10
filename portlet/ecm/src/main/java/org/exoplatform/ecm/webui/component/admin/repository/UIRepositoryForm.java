@@ -33,6 +33,7 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.jcr.ext.registry.RegistryService;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -243,6 +244,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected void saveRepo(RepositoryEntry repositoryEntry) throws Exception {    
     InitialContextInitializer ic = (InitialContextInitializer)getApplicationComponent(ExoContainer.class).
     getComponentInstanceOfType(InitialContextInitializer.class) ;
+    RegistryService registryService = getApplicationComponent(RegistryService.class) ;
     if(ic != null) ic.recall() ;
     RepositoryService rService = (RepositoryService)getApplicationComponent(ExoContainer.class).
     getComponentInstanceOfType(RepositoryService.class);
@@ -251,6 +253,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         rService.createRepository(repositoryEntry) ;
         for(WorkspaceEntry ws : getWorkspaceMap().values()) {
           if(!rService.getRepository(repositoryEntry.getName()).isWorkspaceInitialized(ws.getName())) {
+            registryService.addRegistryLocation(repositoryEntry.getName(), ws.getName()) ;
             rService.getRepository(repositoryEntry.getName()).configWorkspace(ws);
             rService.getRepository(repositoryEntry.getName()).createWorkspace(ws.getName()) ;
           }
