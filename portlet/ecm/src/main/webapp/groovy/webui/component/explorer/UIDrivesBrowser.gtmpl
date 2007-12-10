@@ -1,5 +1,6 @@
 <% 
   import org.exoplatform.web.application.JavascriptManager;
+  import org.exoplatform.ecm.utils.Utils ;
   
   def rcontext = _ctx.getRequestContext() ;
   JavascriptManager jsmanager = rcontext.getJavascriptManager();
@@ -200,7 +201,7 @@
 				                  <div class="LeftBar">
 				                    <div class="RightBar">
 				                      <div class="MiddleBar">
-				                        <a href="<%=uicomponent.event("SelectDrive","${drive.name}")%>">${drive.name}</a>
+				                        <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>">${drive.name}</a>
 				                      </div>
 				                    </div>
 				                  </div>

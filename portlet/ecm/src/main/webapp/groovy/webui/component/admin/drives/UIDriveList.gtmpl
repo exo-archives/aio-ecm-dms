@@ -7,7 +7,9 @@
  * 9:21:26 AM 
  */
 %>
-
+<%
+  import org.exoplatform.ecm.utils.Utils ;
+%>
 <div class="UIDriveList" id="$uicomponent.id">
   <table class="UIGrid">
     <thead>
@@ -44,10 +46,10 @@
             <td><div class="Text">$drive.permissions</div></td>
             <td><div class="Text">$drive.views</div></td>
 	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("EditInfo", drive.getName())%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>">
+	            <a href="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>">
 	              <div class="Edit16x16Icon" style="margin-left:10px; float: left;"><span></span></div>
 	            </a>
-	            <a href="<%=uicomponent.event("Delete", drive.getName())%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>">
+	            <a href="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>">
 	              <div class="Delete16x16Icon" style="margin-left:5px;float: left;"><span></span></div>
 	            </a>
 	          </td>	                    
