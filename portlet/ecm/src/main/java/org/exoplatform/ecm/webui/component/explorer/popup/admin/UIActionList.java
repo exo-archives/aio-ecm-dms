@@ -15,8 +15,11 @@ import javax.portlet.PortletPreferences;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -149,7 +152,22 @@ public class UIActionList extends UIContainer {
         uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);
-      Node selectedAction = actionService.getAction(currentNode,actionName);
+      Node selectedAction = null ;
+      try {
+        selectedAction = actionService.getAction(currentNode,actionName);
+      } catch(PathNotFoundException path) {
+        uiExplorer.getSession().refresh(false) ;
+        UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
+        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
+        uiDocumentInfo.updatePageListData();
+        if(uiExplorer.isShowViewFile()) uiDocumentInfo.setRendered(false) ;
+        else uiDocumentInfo.setRendered(true) ;
+        if(uiExplorer.getPreference().isShowSideBar()) {
+          UITreeExplorer treeExplorer = uiExplorer.findFirstComponentOfType(UITreeExplorer.class);
+          treeExplorer.buildTree();
+        }
+        selectedAction = actionService.getAction(currentNode,actionName);
+      }
       String nodeTypeName = selectedAction.getPrimaryNodeType().getName() ;
       UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
       try {
@@ -197,13 +215,11 @@ public class UIActionList extends UIContainer {
       PortletPreferences preferences = context.getRequest().getPreferences() ;
       try {
         actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 
-            preferences.getValue(Utils.REPOSITORY, "")) ;
+                                   preferences.getValue(Utils.REPOSITORY, "")) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.setIsHidePopup(true) ;
-        uiExplorer.updateAjax(event) ;
         return ;
       }
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
