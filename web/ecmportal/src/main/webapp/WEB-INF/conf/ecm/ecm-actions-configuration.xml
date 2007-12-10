@@ -24,7 +24,7 @@
                       <field  name="name"><string>publication</string></field>                  
                       <field  name="description"><string>publication workflow</string></field>
                       <field  name="srcWorkspace"><string>collaboration</string></field>
-                      <field  name="srcPath"><string>/Documents/Draft</string></field>
+                      <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
                       <field  name="lifecyclePhase"><string>add</string></field>                      
                       <field  name="roles"><string>*:/platform/users</string></field>                     
                       <field  name="variables">
@@ -59,7 +59,7 @@
                             <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
                               <field  name="name"><string>exo:move</string></field>
                               <field  name="properties">
-                                <string>exo:destWorkspace=backup;exo:destPath=/Documents;exo:repository=repository</string>
+                                <string>exo:destWorkspace=backup;exo:destPath=/Expired Documents;exo:repository=repository</string>
                               </field>
                             </object>
                           </value>

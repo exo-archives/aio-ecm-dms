@@ -135,11 +135,11 @@
             <name>Draft Documents</name>
             <description>Document managements</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
-              <field  name="name"><string>Draft Documents Center</string></field>
+              <field  name="name"><string>Validation Requests Documents Center</string></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>collaboration</string></field>
               <field  name="permissions"><string>*:/platform/users</string></field>
-              <field  name="homePath"><string>/Documents/Draft</string></field>
+              <field  name="homePath"><string>/Documents/Validation Requests</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
                 <string>simple-view, admin-view</string>
@@ -159,7 +159,7 @@
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>collaboration</string></field>
               <field  name="permissions"><string>*:/platform/administrators</string></field>
-              <field  name="homePath"><string>/Documents/Draft</string></field>
+              <field  name="homePath"><string>/Documents/Pending</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
                 <string>simple-view, admin-view</string>
@@ -179,7 +179,7 @@
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>collaboration</string></field>
               <field  name="permissions"><string>*:/platform/administrators</string></field>
-              <field  name="homePath"><string>/Documents/Draft</string></field>
+              <field  name="homePath"><string>/Documents/Live</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
                 <string>simple-view, admin-view</string>
