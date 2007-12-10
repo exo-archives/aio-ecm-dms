@@ -3,6 +3,7 @@ package org.exoplatform.services.cms.relations.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -115,9 +116,14 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       for (int i = 0; i < values.length; i++) {
         Value value = values[i];
         String uuid = value.getString();
-        Node refNode = session.getNodeByUUID(uuid);
-        if(refNode.getPath().equals(relationPath))
-          return;
+        Node refNode = null ;
+        try {
+          refNode = session.getNodeByUUID(uuid);
+        } catch(ItemNotFoundException ie) {
+          removeRelation(node, relationPath, repository) ;
+          continue ;
+        }
+        if(refNode.getPath().equals(relationPath)) return;
         vals.add(value);
       }
       vals.add(value2add);
