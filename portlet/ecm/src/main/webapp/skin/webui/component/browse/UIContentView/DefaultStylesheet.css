@@ -43,7 +43,6 @@
 .UIContentView .SubFormContent {
 	padding: 10px;
 	overflow: auto;
-	border: 1px solid red;
 }
 
 .UIContentView .SubFormContent a {
@@ -71,7 +70,6 @@
 	padding: 1px;
 	overflow: auto;
 	height: 100%;
-	border: 1px solid red;
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
