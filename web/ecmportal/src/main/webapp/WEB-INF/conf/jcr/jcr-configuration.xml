@@ -33,5 +33,29 @@
       </properties-param>
     </init-params>
   </component>
+  
+  <component>
+    <key>org.exoplatform.services.jcr.ext.audit.AuditService</key>  
+    <type>org.exoplatform.services.jcr.ext.audit.AuditServiceImpl</type>
+	 	<init-params>
+	 		<value-param>
+        <name>repository</name>
+        <value>repository</value>
+      </value-param>
+	  </init-params>
+  </component>
+  
+  <component>
+	  <key>org.exoplatform.services.jcr.ext.app.SessionProviderService</key>  
+	  <type>org.exoplatform.services.jcr.ext.app.MapStoredSessionProviderService</type>  
+  </component>
+  
+  <component>	   
+	  <type>org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService</type>  
+  </component>
+  
+  <component>
+      <type>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</type>      
+  </component>
     
 </configuration>
