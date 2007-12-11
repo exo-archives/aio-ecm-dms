@@ -51,12 +51,16 @@
 
 .Style1NextArrow24x24Icon  {
   width: 24px; height: 24px;
-  background: url('VistaSkin/BlueCircleRightArrow.gif') no-repeat center center;
+  background: url('VistaSkin/BlueCircleRightArrow.gif') no-repeat center;
 }
 
 .Style1BackArrow24x24Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/BlueCircleLeftArrow.png') no-repeat center center;
+  background: url('VistaSkin/BlueCircleLeftArrow.png') no-repeat center;
+}
+
+.Clipboard24x24Icon {
+  background: url('DefaultSkin/BlueCircleLeftArrow.png') no-repeat center;
 }
 
 .EditDocumentIcon {

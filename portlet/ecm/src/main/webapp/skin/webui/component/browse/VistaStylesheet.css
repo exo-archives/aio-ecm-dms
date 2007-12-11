@@ -269,15 +269,6 @@
 }
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
-.UIBrowseContentPortlet .UIPopupWindow .UITree{
-  width: 190px;
-}
-
-.UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
-  margin-left: 5px;
-  float: left;
-}
-
 .UIBrowseContentPortlet .UIJCRBrowser {
   padding: 10px 0px 0px 10px;
 }
@@ -306,33 +297,10 @@ UIBrowseContentPortlet .Explorer {
   padding: 10px;
 }
 
-.UIBrowseContentPortlet .Explorer .ExplorerTree .Node {
-  line-height: 30px;
-}
-
 .UIBrowseContentPortlet .UITreeList .UIGrid {
   width: 310px;
 }
 
-.UIBrowseContentPortlet .Explorer .ExplorerTree .UITree {
-  overflow: auto;
-  background: white;
-  width: 100%;
-}
-
-.UIBrowseContentPortlet .UITree .TreeContainer .Node {
-	white-space: nowrap;
-}
-
-.UIBrowseContentPortlet .UITree .TreeContainer .NodeLabel a {
-	float: none;
-	height: 24px;
-	line-height: 24px;
-}
-
-.UIBrowseContentPortlet .UITree .TreeContainer{
-	border: none;
-}
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
 
 .UIBrowseContentPortlet .UISearchController {

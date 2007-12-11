@@ -303,10 +303,6 @@
   padding: 6px;
 }
 
-.Explorer .ExplorerTree .Node {
-  line-height: 32px;
-}
-
 .Explorer .ExplorerTree .NodeLevel1 {
   height: 30px; line-height: 30px;
   padding-left: 15px;
@@ -315,38 +311,6 @@
 .Explorer .ExplorerTree .NodeLevel2 {
   height: 30px; line-height: 30px;
   padding-left: 30px;
-}
-
-.Explorer .ExplorerTree .ExpandIcon {
-  float: left;
-  width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
-  cursor: pointer;
-  margin: 1px 0px;
-}
-
-.Explorer .ExplorerTree .ColapseIcon {
-  float: left;
-  width: 16px; height: 16px;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
-  cursor: pointer;
-  margin: 3px 0px;
-}
-
-.Explorer .ExplorerTree .NodeIcon {
-  float: left;
-}
-
-.Explorer .ExplorerTree .NodeLabel {
-  float: left;
-  color: #01060d;
-  padding: 0px 10px;
-}
-
-.Explorer .ExplorerTree .NodeLabelSelected {
-  float: left;
-  color: #0848c1;
-  padding: 0px 10px;
 }
 
 .UITreeList .UIGrid {

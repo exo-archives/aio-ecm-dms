@@ -755,7 +755,7 @@ UIBrowseContentPortlet .Explorer {
   
 .UIBrowseContentPortlet .FileContent .ECMIframe {
   border: 1px solid #cbcbcb; 
-  height: 100% ;
+  height: auto ;
   overflow: auto;
   width: 93.9%;
   background: white;
