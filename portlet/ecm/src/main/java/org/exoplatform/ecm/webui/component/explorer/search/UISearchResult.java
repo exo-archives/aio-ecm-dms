@@ -7,6 +7,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.query.QueryResult;
@@ -98,11 +99,20 @@ public class UISearchResult extends UIContainer {
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
       String repository = uiExplorer.getRepositoryName() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Node node = (Node)uiExplorer.getSession().getItem(path) ;
+      UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;
+      Node node = null ;
+      try {
+        node = (Node)uiExplorer.getSession().getItem(path) ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class) ;
       if(!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
-        UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null, 
+                                                ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
