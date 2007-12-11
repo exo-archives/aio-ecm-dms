@@ -15,6 +15,7 @@
 .UIContentView .TiteContentView {
   margin: 8px 0px 3px 0px;
   vertical-align: middle;
+  height: 20px;
 }
 
 .UIContentView .TiteContentIcon {
