@@ -176,46 +176,6 @@ public class UIDrivesBrowser extends UIContainer {
     return personalDrives ;
   }
   
-  public boolean isGroupDrive(DriveData drive) {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH) ;
-    if(drive.getHomePath().startsWith(groupPath)) return true ;
-    return false ;
-  }
-  
-  public boolean isUserDrive(DriveData drive) {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
-    if(drive.getHomePath().startsWith(userPath)) return true ;
-    return false ;
-  }
-  
-//  private List<DriveData> drivesGroup(List<DriveData> driveList) throws Exception {
-//    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-//    String userId = Util.getPortalRequestContext().getRemoteUser() ;
-//    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
-//    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH) ;
-//    List<DriveData> userGroupsDrive = new ArrayList<DriveData>() ;
-//    List<String> groups = Utils.getGroups() ;
-//    for(DriveData drive : driveList) {
-//      if(drive.getHomePath().startsWith(userPath) || drive.getHomePath().startsWith(groupPath)) {
-//        if(drive.getName().equals(userId)) {
-//          userGroupsDrive.add(drive) ;
-//        } else {
-//          for(String group : groups) {
-//            if(drive.getHomePath().equals(groupPath + group)) {
-//              userGroupsDrive.add(drive) ;
-//              break ;
-//            }
-//          }
-//        }
-//      } else {
-//        userGroupsDrive.add(drive) ;
-//      }
-//    }
-//    return userGroupsDrive ;
-//  }
-  
   private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
     for(String ws:  repository.getWorkspaceNames()) {
       if(ws.equals(drive.getWorkspace())) return true ;

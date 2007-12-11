@@ -121,49 +121,49 @@
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>private</string></field>
+		             		<field name="alias"><string>userPrivate</string></field>
 		                <field name="path"><string>Private</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>privateDocuments</string></field>
+		             		<field name="alias"><string>userPrivateDocuments</string></field>
 		                <field name="path"><string>Private/Documents</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			              
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>privateVideo</string></field>
+		             		<field name="alias"><string>userPrivateVideo</string></field>
 		                <field name="path"><string>Private/Videos</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			              
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>privateAudio</string></field>
+		             		<field name="alias"><string>userPrivateAudio</string></field>
 		                <field name="path"><string>Private/Music</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>privatePicture</string></field>
+		             		<field name="alias"><string>userPrivatePicture</string></field>
 		                <field name="path"><string>Private/Pictures</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>privateQueries</string></field>
+		             		<field name="alias"><string>userPrivateSearches</string></field>
 		                <field name="path"><string>Private/Searches</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>              	              	             	              	              	
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		             		<field name="alias"><string>public</string></field>
+		             		<field name="alias"><string>userPublic</string></field>
 		                <field name="path"><string>Public</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>
 		                <field name="permissions">

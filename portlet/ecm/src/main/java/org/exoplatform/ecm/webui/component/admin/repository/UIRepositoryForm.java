@@ -264,8 +264,12 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       try { 
         rService.createRepository(repositoryEntry) ;
         for(WorkspaceEntry ws : getWorkspaceMap().values()) {
-          if(!rService.getRepository(repositoryEntry.getName()).isWorkspaceInitialized(ws.getName())) {
+          if(ws.getName().equals(repositoryEntry.getSystemWorkspaceName())) {
             registryService.addRegistryLocation(repositoryEntry.getName(), ws.getName()) ;
+          }
+        }
+        for(WorkspaceEntry ws : getWorkspaceMap().values()) {
+          if(!rService.getRepository(repositoryEntry.getName()).isWorkspaceInitialized(ws.getName())) {
             rService.getRepository(repositoryEntry.getName()).configWorkspace(ws);
             rService.getRepository(repositoryEntry.getName()).createWorkspace(ws.getName()) ;
           }
@@ -284,6 +288,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   private void initServices(String repository) throws Exception{
     try {
+      getApplicationComponent(RegistryService.class).start() ;
       getApplicationComponent(NodeHierarchyCreator.class).init(repository) ;
       getApplicationComponent(CategoriesService.class).init(repository) ;
       getApplicationComponent(ManageDriveService.class).init(repository) ;
