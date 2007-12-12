@@ -274,7 +274,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
       throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null, 
                                                         ApplicationMessage.WARNING)) ;
     }
-    String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!"} ;
+    String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!", "#", "/", "\\"} ;
     for(String filterChar : arrFilterChar) {
       if(viewName.indexOf(filterChar) > -1) {
         throw new MessageException(new ApplicationMessage("UIViewForm.msg.fileName-invalid", null, 
