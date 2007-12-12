@@ -21,12 +21,14 @@
 			      %>
 				  </td>
 				</tr>
-				<%if(!uicomponent.isEditing()){%>
+				<%
+				System.out.println("uicomponent.isEditing():" + uicomponent.isEditing());
+				if(!uicomponent.isEditing()){%>
 						<tr>		          					
 				      <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.mimeType")%></td>
 				      <td class="FieldComponent">
 					      <%
-					        String[] mimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "text/html", "options=text/html,text/plain", "onchange=true"] ;
+					        String[] mimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "text/plain", "options=text/html,text/plain", "onchange=true"] ;
 					        uicomponent.addSelectBoxField("mimetype", mimetype) ;
 					      %>
 					    </td>
@@ -61,7 +63,8 @@
 			            uicomponent.addWYSIWYGField("summary", fieldSummary) ;						
 								}
 							} else {	
-								String selectValue = uicomponent.getSelectBoxFieldValue("mimetype") ;					
+								String selectValue = uicomponent.getSelectBoxFieldValue("mimetype") ;		
+								System.out.println("selectValue:"+selectValue);			
 								if(selectValue != null && selectValue.equals("text/html")) {	
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
