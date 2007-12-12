@@ -159,6 +159,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     }
     Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
     Node homeNode = null;
+    Node newNode = null ;
     try {
       homeNode = (Node) session.getItem(prefLocate);
     } catch (AccessDeniedException ade){
@@ -178,6 +179,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;
+      newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
       reset() ;
       for(UIComponent uiChild : getChildren()) {
         if(uiChild instanceof UIFormMultiValueInputSet) {
@@ -221,7 +223,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
         session.logout();
       }
     }
-    return null ;
+    return newNode ;
   }
   
   @SuppressWarnings("unchecked")
