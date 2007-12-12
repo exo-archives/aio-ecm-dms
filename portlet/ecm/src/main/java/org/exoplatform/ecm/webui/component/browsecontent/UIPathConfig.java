@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
@@ -269,29 +270,33 @@ public class UIPathConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String jcrPath = categoryPathField.getValue() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       if((jcrPath == null) || (jcrPath.trim().length() == 0)) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null, 
+        uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.require-path", null, 
                                               ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 
       try {
         Session session = uiBCContainer.getSession(repository, workSpace) ;
         Node node = (Node) session.getItem(jcrPath) ;
       } catch(PathNotFoundException path) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null, 
+        uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null, 
                                               ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.access-denied", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
       String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       if(Integer.parseInt(itemPerPage) <= 0) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;

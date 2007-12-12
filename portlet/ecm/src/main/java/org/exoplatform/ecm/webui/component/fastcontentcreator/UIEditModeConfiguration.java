@@ -306,7 +306,6 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       preferences.store() ;
       uiApp.addMessage(new ApplicationMessage("UIEditModeConfiguration.msg.save-successfully", null)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      uiEditModeConfiguration.reset() ;
     }
   }
 }
