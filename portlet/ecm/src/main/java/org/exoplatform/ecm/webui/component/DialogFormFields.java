@@ -411,6 +411,7 @@ public class DialogFormFields extends UIForm {
     String selectorAction = null;
     String selectorClass = null;
     String multiValues = null ;
+    String validateType = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -423,6 +424,8 @@ public class DialogFormFields extends UIForm {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(SELECTOR_CLASS)) {
         selectorClass = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
         defaultValue = argument;
       }
@@ -445,11 +448,17 @@ public class DialogFormFields extends UIForm {
       renderField(name) ;
       return ;
     }
-    UIFormTextAreaInput uiTextArea = findComponentById(name) ;
+    UIFormTextAreaInput uiTextArea = findComponentById(name) ;    
     if(uiTextArea == null) {
       uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
+      if(validateType != null) {
+        if (validateType.equals("empty")){
+          uiTextArea.addValidator(EmptyFieldValidator.class) ;
+        }
+      }     
       addUIFormInput(uiTextArea) ;
     }
+    if(uiTextArea.getValue() == null) uiTextArea.setValue(defaultValue) ;
     if(editable.equals("false")) uiTextArea.setEditable(false) ;
     else uiTextArea.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
@@ -492,6 +501,7 @@ public class DialogFormFields extends UIForm {
     String jcrPath = null;
     boolean isBasic = false ;
     String multiValues = null ;
+    String validateType = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -499,7 +509,9 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(OPTIONS)) {
         options = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
-        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);      
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
         defaultValue = argument;
       }
@@ -523,8 +535,14 @@ public class DialogFormFields extends UIForm {
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
       wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
+      if(validateType != null) {
+        if (validateType.equals("empty")){
+          wysiwyg.addValidator(EmptyFieldValidator.class) ;
+        }
+      }     
       addUIFormInput(wysiwyg) ;
     }
+    if(wysiwyg.getValue() == null) wysiwyg.setValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null && (node_.isNodeType("nt:file") || isNTFile_)) {
