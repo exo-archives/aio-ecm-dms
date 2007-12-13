@@ -63,8 +63,7 @@ public class HolidayEnoughHolidaysLeftHook implements NodeHookI {
    */
   public void beforeStart(Object arg0, BnNodeLocal arg1)
      throws HeroHookException {
-    // TODO Auto-generated method stub
-
+    // TODO Auto-generated method stub    
   }
 
   /* (non-Javadoc)

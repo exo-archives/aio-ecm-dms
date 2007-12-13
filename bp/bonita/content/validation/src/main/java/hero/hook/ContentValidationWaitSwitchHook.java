@@ -17,23 +17,18 @@
 
 package hero.hook;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
-import org.exoplatform.container.PortalContainer;
-
-import hero.interfaces.BnEdge;
-import hero.interfaces.BnEdgeLocal;
-import hero.interfaces.BnNodeHome;
 import hero.interfaces.BnNodeLocal;
-import hero.interfaces.BnNodeLocalHome;
-import hero.interfaces.BnNodeUtil;
 import hero.interfaces.Constants;
 import hero.interfaces.ProjectSessionLocal;
 import hero.interfaces.ProjectSessionLocalHome;
 import hero.interfaces.ProjectSessionUtil;
 import hero.util.HeroHookException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+import org.exoplatform.container.PortalContainer;
 
 /**
  * This Node Hook changes Instance Attributes to indicate the Workflow Engine

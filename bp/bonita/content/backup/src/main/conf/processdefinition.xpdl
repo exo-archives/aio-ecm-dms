@@ -41,7 +41,7 @@
           <DataType>
             <BasicType Type="STRING" />
           </DataType>
-          <Description>Location of the document in the draft Workspace</Description>
+          <Description>Location of the document in the draft space</Description>
         </DataField>
         <DataField Id="actionName" Name="actionName">
           <DataType>

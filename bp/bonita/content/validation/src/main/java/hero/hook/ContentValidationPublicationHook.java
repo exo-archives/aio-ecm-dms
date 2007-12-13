@@ -17,6 +17,13 @@
 
 package hero.hook;
 
+import hero.interfaces.BnNodeLocal;
+import hero.interfaces.Constants;
+import hero.interfaces.ProjectSessionLocal;
+import hero.interfaces.ProjectSessionLocalHome;
+import hero.interfaces.ProjectSessionUtil;
+import hero.util.HeroHookException;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -29,13 +36,6 @@ import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
-
-import hero.interfaces.BnNodeLocal;
-import hero.interfaces.Constants;
-import hero.interfaces.ProjectSessionLocal;
-import hero.interfaces.ProjectSessionLocalHome;
-import hero.interfaces.ProjectSessionUtil;
-import hero.util.HeroHookException;
 
 /**
  * This Node Hook moves the document into the destination Workspace

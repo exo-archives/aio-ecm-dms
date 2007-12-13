@@ -22,9 +22,6 @@ import hero.util.HeroException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-
-import org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl;
 
 /**
  * This Role Mapper retrieves the name of the initiator from Instance
