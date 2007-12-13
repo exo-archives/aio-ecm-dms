@@ -214,7 +214,7 @@
                     <field  name="groups">
                       <string>
                       	member:/platform/administrators,manager:/platform/users,
-                      	manager:/organization/management/executive-board
+                      	manager:/organization/management/executive-board,member:/platform/BONITAUSER
                       </string>
                     </field>
                   </object>
@@ -227,7 +227,7 @@
                     <field  name="lastName"><string>Kelly</string></field>
                     <field  name="email"><string>marry@localhost</string></field>
                     <field  name="groups">
-                      <string>member:/platform/users</string>
+                      <string>member:/platform/users,member:/platform/BONITAUSER</string>
                     </field>
                   </object>
                 </value>
@@ -239,7 +239,7 @@
                     <field  name="lastName"><string>exo</string></field>
                     <field  name="email"><string>demo@localhost</string></field>
                     <field  name="groups">
-                      <string>member:/platform/users</string>
+                      <string>member:/platform/users,member:/platform/BONITAUSER</string>
                     </field>
                   </object>
                 </value>
@@ -251,7 +251,7 @@
                     <field  name="lastName"><string>Anderson</string></field>
                     <field  name="email"><string>james@localhost</string></field>
                     <field  name="groups">
-                      <string>manager:/organization/management/human-resources,member:/platform/users</string>
+                      <string>manager:/organization/management/human-resources,member:/platform/users,member:/platform/BONITAUSER</string>
                     </field>
                   </object>
                 </value>                       

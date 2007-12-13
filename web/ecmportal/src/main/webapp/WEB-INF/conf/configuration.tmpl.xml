@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <configuration>
-	<!-- This file to use for ecm using bonita workflow -->
   <import>war:/conf/common/common-configuration.xml</import> 
   <import>war:/conf/database/database-configuration.xml</import>
   <import>war:/conf/jcr/jcr-configuration.xml</import>
@@ -10,23 +9,24 @@
   <import>war:/conf/organization/hibernate-configuration.xml</import>    
         
   <!-- <import>war:/conf/organization/jdbc-configuration.xml</import> -->
+  
   <!--for organization service used active directory which is user lookup server -->
-  <!-- 	   
-	  <import>war:/conf/organization/activedirectory-configuration.xml</import> 
+  <!-- 
+	  <import>war:/conf/organization/activedirectory-configuration.xml</import> 	   
   -->
   
   <!--for organization service used ldap server which is user lookup server -->
   <!--
-    <import>war:/conf/organization/ldap-configuration.xml</import>          
+    <import>war:/conf/organization/ldap-configuration.xml</import>         
   -->    
-  <import>war:/conf/common/resource-bundle-configuration.xml</import>    
+  <import>war:/conf/common/resource-bundle-configuration.xml</import>        
   <import>war:/conf/common/security-configuration.xml</import>
-  <import>war:/conf/organization/bonita-organization-configuration.xml</import>
-  <import>war:/conf/ecm/${workflow}-configuration.xml</import>
+  <import>war:/conf/organization/${workflow}-organization-configuration.xml</import>
   <import>war:/conf/portal/portal-configuration.xml</import>          
   <import>war:/conf/portal/application-registry-configuration.xml</import>
-   
-  <import>war:/conf/ecm/jcr-component-plugins-configuration.xml</import>
+  
+  <import>war:/conf/jcr/component-plugins-configuration.xml</import>
+  <import>war:/conf/ecm/${workflow}-configuration.xml</import>  
   <import>war:/conf/ecm/ecm-system-configuration.xml</import>  
 	<import>war:/conf/ecm/cms-configuration.xml</import>
 	<import>war:/conf/ecm/ecm-templates-configuration.xml</import>
