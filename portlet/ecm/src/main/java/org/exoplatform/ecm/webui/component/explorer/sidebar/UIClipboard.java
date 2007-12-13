@@ -88,15 +88,15 @@ public class UIClipboard extends UIComponent {
         if(ClipboardCommand.COPY.equals(type)) {
           workspace.copy(srcPath, destPath);
         } else {
-          session.move(srcPath, destPath);
-          session.save() ;
+          workspace.move(srcPath, destPath);
+          session.save();
           uiClipboard.clipboard_.remove(index-1) ;
         }
         Object[] args = { srcPath, destPath };   
         app.addMessage(new ApplicationMessage("UIClipboard.msg.node-pasted", args)) ; 
         uiExplorer.updateAjax(event);
       } catch (Exception e) {
-        app.addMessage(new ApplicationMessage("UIClipboard.msg.unable-pasted", null)) ;
+        app.addMessage(new ApplicationMessage("UIClipboard.msg.unable-pasted", null, ApplicationMessage.WARNING)) ;
       }
     }
   }
