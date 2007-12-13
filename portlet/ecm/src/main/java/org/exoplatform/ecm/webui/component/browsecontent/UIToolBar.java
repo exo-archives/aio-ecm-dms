@@ -75,9 +75,11 @@ public class UIToolBar extends UIContainer {
     List<Node> list = new ArrayList<Node>() ;
     if(node != null) {
       Node temp = node ;
-      while(!temp.equals(rootNode)) {
-        list.add(0, temp) ;
-        temp = temp.getParent() ;
+      if(!temp.getPath().equals("/") && temp.getPath().startsWith(rootNode.getPath())) {
+        while(!temp.getPath().equals(rootNode.getPath())) {
+          list.add(0, temp) ;
+          temp = temp.getParent() ;
+        }
       }
     }
     return list;

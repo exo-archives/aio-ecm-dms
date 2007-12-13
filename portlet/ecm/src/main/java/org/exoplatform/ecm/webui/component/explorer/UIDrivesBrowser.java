@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,12 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.download.DownloadService;
-import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
@@ -89,39 +86,44 @@ public class UIDrivesBrowser extends UIContainer {
     }
     return repositories ;
   }
+  
+  public String getPortalName() {
+    PortalContainer pcontainer =  PortalContainer.getInstance() ;
+    return pcontainer.getPortalContainerInfo().getContainerName() ;  
+  }
 
   public String getRepository(){return repoName_ ;}
   public void setRepository(String repoName){repoName_ = repoName ;}
 
   public List<DriveData> getDrives(String repoName) throws Exception {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+//    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
 
     ManageableRepository repository = rservice.getRepository(repoName) ;  
     List<DriveData> driveList = new ArrayList<DriveData>() ;
-    Session session = null ;
+//    Session session = null ;
     List<String> userRoles = Utils.getMemberships() ;
     List<String> driveNames = new ArrayList<String>() ;
     for(String role : userRoles ){
       List<DriveData> drives = driveService.getAllDriveByPermission(role, repoName) ;
       if(drives != null && drives.size() > 0) {
         for(DriveData drive : drives) {
-          if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-            String[] iconPath = drive.getIcon().split(":/") ;   
-            session = repository.getSystemSession(iconPath[0]) ;
-            try {
-              Node node = (Node) session.getItem("/" + iconPath[1]) ;
-              Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-              InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-              InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
-              dresource.setDownloadName(node.getName()) ;
-              drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
-              session.logout() ;
-            } catch(PathNotFoundException pnf) {
-              drive.setIcon("") ;
-            }
-          }
+//          if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+//            String[] iconPath = drive.getIcon().split(":/") ;   
+//            session = repository.getSystemSession(iconPath[0]) ;
+//            try {
+//              Node node = (Node) session.getItem("/" + iconPath[1]) ;
+//              Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+//              InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
+//              InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+//              dresource.setDownloadName(node.getName()) ;
+//              drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+//              session.logout() ;
+//            } catch(PathNotFoundException pnf) {
+//              drive.setIcon("") ;
+//            }
+//          }
           if(isExistWorspace(repository, drive) && !driveNames.contains(drive.getName())) driveList.add(drive) ;
           if(!driveNames.contains(drive.getName())) driveNames.add(drive.getName()) ;
         }

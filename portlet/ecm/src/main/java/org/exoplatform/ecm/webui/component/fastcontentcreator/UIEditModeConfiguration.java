@@ -163,6 +163,7 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
       NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
       TemplateService templateService = getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates(repoName) ;
+      List<String> labels = new ArrayList<String>() ;
       try {
         for(int i = 0; i < templates.size(); i ++){
           String nodeTypeName = templates.get(i).toString() ; 
@@ -180,7 +181,10 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
             if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
               if(!hasDefaultDoc && nodeTypeName.equals(defaultValue)) hasDefaultDoc = true ;
               String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
-              options.add(new SelectItemOption<String>(label, nodeTypeName));          
+              if(!labels.contains(label)) {
+                options.add(new SelectItemOption<String>(label, nodeTypeName));          
+              }
+              labels.add(label) ;
               isCanCreateDocument = true ;          
             }
           }      
@@ -193,7 +197,10 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
                       hasDefaultDoc = true ;
                     }
                     String label = templateService.getTemplateLabel(nodeTypeName, repoName) ;
-                    options.add(new SelectItemOption<String>(label, nodeTypeName));                
+                    if(!labels.contains(label)) {
+                      options.add(new SelectItemOption<String>(label, nodeTypeName));                
+                    }
+                    labels.add(label) ;
                     isCanCreateDocument = true ;
                     break;
                   }

@@ -1110,10 +1110,28 @@ public class UIBrowseContainer extends UIContainer {
   static public class BackActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource() ;
+      TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
+      List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
+      Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT) ;
       if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
+      } else if(uiContainer.isShowDocumentDetail() && historyNode != null &&
+          templates.contains(historyNode.getPrimaryNodeType().getName())) {
+        uiContainer.setShowDocumentByTag(false) ;
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(true) ;
+        uiDocumentDetail.setRendered(true) ;  
+        ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
+        String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+        String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
+        uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
+            .getNode(detailTemplateName).getPath())  ;
+        uiContainer.viewDocument(historyNode, true) ;
+        uiContainer.setCurrentNode(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT)) ;
+        uiContainer.setSelectedTab(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED)) ;
+        uiContainer.getHistory().clear() ;
       } else {
         uiContainer.setShowDocumentByTag(false) ;
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      

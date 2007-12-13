@@ -62,6 +62,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 public class UIRenameForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_OLDNAME =  "oldName" ;
   final static public String FIELD_NEWNAME = "newName" ;  
+  final static private String RELATION_PROP = "exo:relation";
 
   private Node renameNode_ ;
   private boolean isReferencedNode_ = false ;
@@ -104,9 +105,11 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
             while (references.hasNext()) {
               Property pro = references.nextProperty() ;
               Node refNode = pro.getParent() ;
-              relationsService.removeRelation(refNode, uiRenameForm.renameNode_.getPath(), 
-                                              uiJCRExplorer.getRepositoryName()) ;
-              refNode.save()  ;
+              if(refNode.hasProperty(RELATION_PROP)) {
+                relationsService.removeRelation(refNode, uiRenameForm.renameNode_.getPath(), 
+                    uiJCRExplorer.getRepositoryName()) ;
+                refNode.save()  ;
+              }
             }
           }
         }
@@ -157,6 +160,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.version-exception", null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
       } catch (Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp,e) ;
       }    
     }

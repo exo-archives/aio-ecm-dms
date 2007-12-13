@@ -112,7 +112,7 @@ public class RecordsServiceImpl implements RecordsService {
     processCutoffInformation(filePlan, record);
     
     //make the record auditable
-    record.addMixin("exo:auditable");
+    if(record.canAddMixin("exo:auditable")) record.addMixin("exo:auditable");
     record.save() ;
     filePlan.save();    
     filePlan.getSession().save() ;
@@ -120,18 +120,18 @@ public class RecordsServiceImpl implements RecordsService {
   
   private void processDefaultRecordProperties(Node filePlan, Node record,
       long counter) throws RepositoryException {
-    record.addMixin("rma:record");
-
-    record.setProperty("rma:dateReceived", new GregorianCalendar());
-    record.setProperty("rma:originator", ((ExtendedNode) record).getACL().getOwner());
-
-    String recordCategoryIdentifier = filePlan.getProperty("rma:recordCategoryIdentifier").getString();
-    String recordIdentifier = recordCategoryIdentifier + "-" + counter + " " + record.getName();
-    record.setProperty("rma:recordIdentifier", recordIdentifier);
-
-    String defaultOriginatingOrganization = filePlan.getProperty(
-        "rma:defaultOriginatingOrganization").getString();
-    record.setProperty("rma:originatingOrganization", defaultOriginatingOrganization);
+    if(record.canAddMixin("rma:record")) {
+      record.addMixin("rma:record");
+      record.setProperty("rma:dateReceived", new GregorianCalendar());
+      record.setProperty("rma:originator", ((ExtendedNode) record).getACL().getOwner());
+      
+      String recordCategoryIdentifier = filePlan.getProperty("rma:recordCategoryIdentifier").getString();
+      String recordIdentifier = recordCategoryIdentifier + "-" + counter + " " + record.getName();
+      record.setProperty("rma:recordIdentifier", recordIdentifier);
+      
+      String originatingOrganization = filePlan.getProperty("rma:defaultOriginatingOrganization").getString();
+      record.setProperty("rma:originatingOrganization", originatingOrganization);
+    }
 
     Node dcNode = null;
     Item primaryItem = null;
@@ -171,7 +171,7 @@ public class RecordsServiceImpl implements RecordsService {
   private void processVitalInformation(Node filePlan, Node record) {
     try {
       boolean isVital = filePlan.getProperty("rma:vitalRecordIndicator").getBoolean();
-      if (isVital) {
+      if (isVital && record.canAddMixin("rma:vitalRecord")) {
         record.addMixin("rma:vitalRecord");
         String vitalReviewPeriod = filePlan.getProperty("rma:vitalRecordReviewPeriod").getString();    
         Calendar previousReviewDate = null ;
@@ -196,7 +196,7 @@ public class RecordsServiceImpl implements RecordsService {
     boolean isCutoffable;
     try {
       isCutoffable = filePlan.getProperty("rma:processCutoff").getBoolean();
-      if (isCutoffable) {
+      if (isCutoffable && record.canAddMixin("rma:cutoffable")) {
         record.addMixin("rma:cutoffable");
 
         // check if there is a cutoff period, and if so calculate the cutoff
@@ -317,7 +317,7 @@ public class RecordsServiceImpl implements RecordsService {
         .getBoolean();
     boolean processDestruction = filePlan.getProperty("rma:processDestruction")
         .getBoolean();
-    if (processHold) {
+    if (processHold && record.canAddMixin("rma:holdable")) {
       record.addMixin("rma:holdable");
       // check if the hold is discretionary, aka if the hold period ends after a
       // dedicated event
@@ -388,19 +388,21 @@ public class RecordsServiceImpl implements RecordsService {
   // after cutoff or holding a process can be transfered
   public void setupTransfer(Node filePlan, Node record) {
     try {
-      record.addMixin("rma:transferable");
-      // fill the transfer location
-      String location = filePlan.getProperty("rma:defaultTransferLocation")
-          .getString();
-      record.setProperty("rma:transferLocation", location);
-
-      // By convention the current date is set as the transfer one plus 5
-      // minutes
-      Calendar currentDate = new GregorianCalendar();
-      currentDate.add(Calendar.MINUTE, 5);
-      record.setProperty("rma:transferDate", currentDate);
-      record.save() ;
-      filePlan.save() ;
+      if(record.canAddMixin("rma:transferable")) {
+        record.addMixin("rma:transferable");
+        // fill the transfer location
+        String location = filePlan.getProperty("rma:defaultTransferLocation")
+        .getString();
+        record.setProperty("rma:transferLocation", location);
+        
+        // By convention the current date is set as the transfer one plus 5
+        // minutes
+        Calendar currentDate = new GregorianCalendar();
+        currentDate.add(Calendar.MINUTE, 5);
+        record.setProperty("rma:transferDate", currentDate);
+        record.save() ;
+        filePlan.save() ;
+      }
     } catch (RepositoryException e) {
       e.printStackTrace();
     }
@@ -476,14 +478,16 @@ public class RecordsServiceImpl implements RecordsService {
   // after cutoff or holding a record maybe detroyed
   public void setupDestruction(Node filePlan, Node record) {
     try {
-      record.addMixin("rma:destroyable");
-      // By convention the current date is set as the destruction one plus 5
-      // minutes
-      Calendar currentDate = new GregorianCalendar();
-      currentDate.add(Calendar.MINUTE, 5);
-      record.setProperty("rma:destructionDate", currentDate);
-      record.save() ;
-      filePlan.save() ;
+      if(record.canAddMixin("rma:destroyable")) {
+        record.addMixin("rma:destroyable");
+        // By convention the current date is set as the destruction one plus 5
+        // minutes
+        Calendar currentDate = new GregorianCalendar();
+        currentDate.add(Calendar.MINUTE, 5);
+        record.setProperty("rma:destructionDate", currentDate);
+        record.save() ;
+        filePlan.save() ;
+      }
     } catch (RepositoryException e) {
       e.printStackTrace();
     }
@@ -494,7 +498,7 @@ public class RecordsServiceImpl implements RecordsService {
     try {
       boolean processAccession = filePlan.getProperty("rma:processAccession")
           .getBoolean();
-      if (processAccession) {
+      if (processAccession && record.canAddMixin("ram:accessionable")) {
         record.addMixin("rma:accessionable");
         // By convention the current date is set as the transfer one
         Calendar currentDate = new GregorianCalendar();

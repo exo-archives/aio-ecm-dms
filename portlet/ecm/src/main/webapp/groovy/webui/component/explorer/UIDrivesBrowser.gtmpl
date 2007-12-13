@@ -80,8 +80,13 @@
 			          <%for(personalDrive in personalDrives) {%>
 		              <div class="Drive">
 		              	<div class="DriveContainer">
-			              <%if(personalDrive.getIcon() != null && personalDrive.getIcon().length() > 0) {%>
-			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><img src="${personalDrive.icon}" width="48" height="41" /></div>
+			              <%
+			                if(personalDrive.getIcon() != null && personalDrive.getIcon().length() > 0) {
+			                  String[] personalIconPath = personalDrive.getIcon().split(":/") ;
+			              %>
+			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>">
+			                  <img src="/${uicomponent.getPortalName()}/jcr?workspace=${personalIconPath[0]}&path=/${personalIconPath[1]}" width="48" height="41" />
+			                </div>
 			              <%} else {%>
 			                <div class="Icon UserDriveIcon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><span></span></div>
 			              <%}%>
@@ -136,8 +141,13 @@
 			          <%for(groupDrive in groupDrives) {%>
 		              <div class="Drive">
 		              	<div class="DriveContainer">
-			              <%if(groupDrive.getIcon() != null && groupDrive.getIcon().length() > 0) {%>
-			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><img src="${groupDrive.icon}" width="48" height="41" /></div>
+			              <%
+			                if(groupDrive.getIcon() != null && groupDrive.getIcon().length() > 0) {
+                        String[] groupIconPath = groupDrive.getIcon().split(":/") ;
+			              %>
+			                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>">
+			                  <img src="/${uicomponent.getPortalName()}/jcr?workspace=${groupIconPath[0]}&path=/${groupIconPath[1]}" width="48" height="41" />
+			                </div>
 			              <%} else {%>
 			                <div class="Icon GroupDriveIcon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><span></span></div>
 			              <%}%>
@@ -192,8 +202,13 @@
 			          %>
 			              <div class="Drive">
 			              	<div class="DriveContainer">
-				              <%if(drive.getIcon() != null && drive.getIcon().length() > 0) {%>
-				                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><img src="${drive.icon}" width="48" height="41" /></div>
+				              <%
+				                if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+  				                String[] generalIconPath = drive.getIcon().split(":/") ;
+				              %>
+				                <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>">
+				                  <img src="/${uicomponent.getPortalName()}/jcr?workspace=${generalIconPath[0]}&path=/${generalIconPath[1]}" width="48" height="41" />
+				                </div>
 				              <%} else {%>
 				                <div class="Icon DefaultDriveIcon Admin${drive.workspace}Icon" style="margin:auto" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
 				              <%}%>

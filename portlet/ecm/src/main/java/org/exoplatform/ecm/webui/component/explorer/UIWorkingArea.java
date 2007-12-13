@@ -106,6 +106,7 @@ import org.exoplatform.webui.exception.MessageException;
 
 public class UIWorkingArea extends UIContainer {
 
+  final static private String RELATION_PROP = "exo:relation";
   final static public String WS_NAME = "workspaceName" ;
 
   public UIWorkingArea() throws Exception {
@@ -856,9 +857,11 @@ public class UIWorkingArea extends UIContainer {
           while(references.hasNext()) {
             Property pro = references.nextProperty() ;
             Node refNode = pro.getParent() ;
-            relationsService.removeRelation(refNode, srcPath, uiExplorer.getRepositoryName()) ;
-            refNode.save() ;
-            refList.add(refNode) ;
+            if(refNode.hasProperty(RELATION_PROP)) {
+              relationsService.removeRelation(refNode, srcPath, uiExplorer.getRepositoryName()) ;
+              refNode.save() ;
+              refList.add(refNode) ;
+            }
           }
         }
       }
