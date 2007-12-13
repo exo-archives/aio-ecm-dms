@@ -23,6 +23,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -454,6 +455,10 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
             uiExplorer.setSelectNode(uri, session);
             uiExplorer.updateAjax(event) ;
           }
+        } catch(ItemNotFoundException nu) {
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
         } catch(Exception e) {          
           JCRExceptionManager.process(uiApp, e);
         }
@@ -473,7 +478,6 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
         }
       }      
     }
-    
   }
 
   static  public class SortActionListener extends EventListener<UIDocumentInfo> {

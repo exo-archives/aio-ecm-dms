@@ -109,12 +109,14 @@ public class UIPermissionInfo extends UIContainer {
     String owner = SystemIdentity.SYSTEM ;
     if(getExoOwner(node) != null) owner = getExoOwner(node) ;
     PermissionBean permOwnerBean = new PermissionBean();
-    permOwnerBean.setUsersOrGroups(owner);
-    permOwnerBean.setRead(true) ;
-    permOwnerBean.setAddNode(true) ;
-    permOwnerBean.setSetProperty(true) ;
-    permOwnerBean.setRemove(true) ;
-    permBeans.add(permOwnerBean);
+    if(!permsMap.containsKey(owner)) {
+      permOwnerBean.setUsersOrGroups(owner);
+      permOwnerBean.setRead(true) ;
+      permOwnerBean.setAddNode(true) ;
+      permOwnerBean.setSetProperty(true) ;
+      permOwnerBean.setRemove(true) ;
+      permBeans.add(permOwnerBean);
+    }
 
     while(keysIter.hasNext()) {
       String userOrGroup = (String) keysIter.next();            

@@ -215,7 +215,7 @@
             <name>User's Share</name>
             <description>Document managements</description>
             <object type="org.exoplatform.services.cms.drives.DriveData">
-              <field  name="name"><string>Shared's Users</string></field>
+              <field  name="name"><string>Shared Users Space</string></field>
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>collaboration</string></field>
               <field  name="permissions"><string>*:/platform/users</string></field>
