@@ -43,6 +43,7 @@
 .UIContentView .SubFormContent {
 	padding: 10px;
 	overflow: auto;
+	height: 100%;
 }
 
 .UIContentView .SubFormContent a {
