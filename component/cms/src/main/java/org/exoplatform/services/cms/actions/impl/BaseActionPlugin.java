@@ -255,7 +255,8 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     PropertyDefinition[] propDefs = nt.getDeclaredPropertyDefinitions();
     for (int i = 0; i < propDefs.length; i++) {
       PropertyDefinition definition = propDefs[i];
-      if (definition.getName().equals(getExecutableDefinitionName())) {
+      if (definition.getName().equals(getExecutableDefinitionName()) && 
+          definition.getDefaultValues() != null) {
         return definition.getDefaultValues()[0].getString();
       }
     }

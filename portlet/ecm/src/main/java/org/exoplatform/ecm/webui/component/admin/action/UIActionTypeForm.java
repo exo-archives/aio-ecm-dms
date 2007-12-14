@@ -68,8 +68,7 @@ public class UIActionTypeForm extends UIForm {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_ISMOVE = "isMove" ;
   final static public String FIELD_VARIABLES = "variables" ;
-
-  public UIFormSelectBox actionExecutables ;
+  
   public UIFormMultiValueInputSet uiFormMultiValue = null ;
   
   public UIActionTypeForm() throws Exception {
@@ -81,9 +80,8 @@ public class UIActionTypeForm extends UIForm {
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
         addValidator(EmptyFieldValidator.class)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ISMOVE, FIELD_ISMOVE, null)) ;
-    List<SelectItemOption<String>> executableOptions = new ArrayList<SelectItemOption<String>>() ;
-    actionExecutables = new UIFormSelectBox(FIELD_EXECUTEACTION,FIELD_EXECUTEACTION, 
-                                            executableOptions);
+    UIFormSelectBox actionExecutables = new UIFormSelectBox(FIELD_EXECUTEACTION,FIELD_EXECUTEACTION, 
+        new ArrayList<SelectItemOption<String>>());
     addUIFormInput(actionExecutables) ;
     setActions( new String[]{"Save", "Cancel"}) ;
   }
@@ -136,8 +134,8 @@ public class UIActionTypeForm extends UIForm {
     getUIStringInput(FIELD_NAME).setValue("") ;
     getUIFormCheckBoxInput(FIELD_ISMOVE).setChecked(false) ;
     List<SelectItemOption<String>> executableOptions = getExecutableOptions(actionTypeName) ;
-    actionExecutables.setOptions(executableOptions) ;
-    actionExecutables.setName(actionTypeName.replace(":", "_")) ;
+    getUIFormSelectBox(FIELD_EXECUTEACTION).setOptions(executableOptions) ;
+//    getUIFormSelectBox(FIELD_EXECUTEACTION).setName(actionTypeName.replace(":", "_")) ;
     initMultiValuesField() ;
   }
 
@@ -145,8 +143,8 @@ public class UIActionTypeForm extends UIForm {
     public void execute(Event<UIActionTypeForm> event) throws Exception {
       UIActionTypeForm uiForm = event.getSource() ;
       String actionTypeName = uiForm.getUIFormSelectBox(FIELD_ACTIONTYPE).getValue() ;
-      uiForm.actionExecutables.setName(actionTypeName.replace(":", "_")) ;
-      uiForm.actionExecutables.setOptions(uiForm.getExecutableOptions(actionTypeName));
+//      uiForm.getUIFormSelectBox(FIELD_EXECUTEACTION).setName(actionTypeName.replace(":", "_")) ;
+      uiForm.getUIFormSelectBox(FIELD_EXECUTEACTION).setOptions(uiForm.getExecutableOptions(actionTypeName));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
@@ -187,10 +185,10 @@ public class UIActionTypeForm extends UIForm {
       }
       try {
         boolean isMove = uiForm.getUIFormCheckBoxInput(FIELD_ISMOVE).isChecked() ;
-        String execute = uiForm.actionExecutables.getValue() ;
+        String execute = uiForm.getUIFormSelectBox(FIELD_EXECUTEACTION).getValue() ;
         actionServiceContainer.createActionType(actionName, selectValue, execute, variables, 
                                                 isMove, repository);
-       uiActionManager.refresh() ;
+        uiActionManager.refresh() ;
         uiForm.refresh() ;
         uiActionManager.removeChild(UIPopupWindow.class) ;
       } catch(Exception e) {
