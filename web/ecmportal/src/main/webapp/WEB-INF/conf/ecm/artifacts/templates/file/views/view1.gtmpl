@@ -146,9 +146,11 @@
 		          println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
 		        } else {
 		        	if(mimeType.startsWith("image")) {
+		        	//prevent ajax cache image
+		        	String rndString = String.valueOf(new Date().getTime());
 		        %> 	
 			    		<div class="ContentDetail">
-                <image src="/${uicomponent.getPortalName()}/jcr?workspace=${uicomponent.getWorkspaceName()}&path=${originalNode.getPath()}"/>
+                <image src="/${uicomponent.getPortalName()}/jcr?workspace=${uicomponent.getWorkspaceName()}&hash=${rndString}&path=${contentNode.getPath()}"/>
 		          </div>
 		        <%}else {%> 
 							<div style="text-align:center; font-style:italic">
