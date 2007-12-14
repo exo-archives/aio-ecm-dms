@@ -35,6 +35,7 @@ import org.exoplatform.ecm.jcr.CronExpressionValidator;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.RepeatCountValidator;
 import org.exoplatform.ecm.jcr.RepeatIntervalValidator;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -468,8 +469,8 @@ public class DialogFormFields extends UIForm {
       String value = "";
       if(node_.hasProperty(getPropertyName(jcrPath))) {
         value = node_.getProperty(getPropertyName(jcrPath)).getValue().getString() ;
-      } else if(node_.isNodeType("nt:file")) {
-        Node jcrContentNode = node_.getNode("jcr:content") ;
+      } else if(node_.isNodeType(Utils.NT_FILE)) {
+        Node jcrContentNode = node_.getNode(Utils.JCR_CONTENT) ;
         if(jcrContentNode.hasProperty(getPropertyName(jcrPath))) {
           if(jcrContentNode.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
             Value[] values = jcrContentNode.getProperty(getPropertyName(jcrPath)).getValues() ;

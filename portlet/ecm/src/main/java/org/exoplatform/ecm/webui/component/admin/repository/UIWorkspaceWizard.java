@@ -730,7 +730,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
       return cache ;
     }
     private QueryHandlerEntry newQueryHandlerEntry(String queryHandlerType, String indexPath) {
-      ArrayList<SimpleParameterEntry> queryParams = new ArrayList<SimpleParameterEntry>() ;
+      List<SimpleParameterEntry> queryParams = new ArrayList<SimpleParameterEntry>() ;
       queryParams.add(new SimpleParameterEntry(KEY_INDEXDIR, indexPath)) ;
       QueryHandlerEntry queryHandler = new QueryHandlerEntry(queryHandlerType, queryParams) ;
       queryHandler.setType(queryHandlerType) ;

@@ -125,6 +125,7 @@ public class UILanguageTypeForm extends UIForm {
             uiDialogForm.setIsResetMultiField(true) ;
           }
         } else if(!node.hasNode(Utils.LANGUAGES) && selectedLanguage.equals(multiLanguageService.getDefault(node))) {
+          uiDialogForm.setIsNotEditNode(false) ;
           uiDialogForm.setNode(node) ;
         } else {
           uiDialogForm.setNode(node) ;
