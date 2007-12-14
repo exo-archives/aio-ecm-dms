@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.exoplatform.application.registry.ApplicationRegistryService;
-import org.exoplatform.application.registry.jcr.ApplicationRegistryServiceImpl;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
