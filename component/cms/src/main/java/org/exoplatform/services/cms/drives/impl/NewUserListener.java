@@ -36,14 +36,18 @@ public class NewUserListener extends UserEventListener {
   private ManageDriveService driveService_ ;
   private RepositoryService jcrService_;
   private InitParams initParams_ ;
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;
   private String userPath_ ;
-  final static String PRIVATE = "Private" ;
-  final static String PUBLIC = "Public" ;
+  
+  final static String PRIVATE_ALIAS = "userPrivate" ;
+  final static String PUBLIC_ALIAS = "userPublic" ;
+  
 
   public NewUserListener(RepositoryService jcrService,
       ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
       InitParams params) throws Exception {
+    nodeHierarchyCreator_ = nodeHierarchyCreatorService ;
     jcrService_ = jcrService ;
     driveService_ = driveService ;
     initParams_ = params ;
@@ -65,16 +69,18 @@ public class NewUserListener extends UserEventListener {
     boolean showHiddenNode = Boolean.parseBoolean(initParams_.getValueParam("showHiddenNode").getValue());
     String allowCreateFolder = initParams_.getValueParam("allowCreateFolder").getValue();
     //Only user can access private drive
-    driveService_.addDrive(user.getUserName() + "|" + PRIVATE, workspace, user.getUserName(), homePath + "/" + PRIVATE, views, icon, 
+    String publicPath = nodeHierarchyCreator_.getJcrPath(PUBLIC_ALIAS) ;
+    String privatePath = nodeHierarchyCreator_.getJcrPath(PRIVATE_ALIAS) ;
+    driveService_.addDrive(user.getUserName() + "|" + privatePath, workspace, user.getUserName(), homePath + "/" + privatePath, views, icon, 
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
     //User and everyone can see public drive for user
-    driveService_.addDrive(user.getUserName() + "|" + PUBLIC, workspace, permissions, homePath + "/" + PUBLIC, views, icon, 
+    driveService_.addDrive(user.getUserName() + "|" + publicPath, workspace, permissions, homePath + "/" + publicPath, views, icon, 
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
   }
   
   public void preDelete(User user) throws Exception {
     ManageableRepository repository = jcrService_.getCurrentRepository() ;
-    driveService_.removeDrive(user.getUserName() + "|" + PRIVATE, repository.getConfiguration().getName()) ;
-    driveService_.removeDrive(user.getUserName() + "|" + PUBLIC, repository.getConfiguration().getName()) ;
+    driveService_.removeDrive(user.getUserName() + "|" + nodeHierarchyCreator_.getJcrPath(PRIVATE_ALIAS), repository.getConfiguration().getName()) ;
+    driveService_.removeDrive(user.getUserName() + "|" + nodeHierarchyCreator_.getJcrPath(PUBLIC_ALIAS), repository.getConfiguration().getName()) ;
   }
 }
