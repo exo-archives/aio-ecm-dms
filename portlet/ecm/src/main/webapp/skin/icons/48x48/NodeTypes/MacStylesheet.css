@@ -148,6 +148,31 @@
   background: url('DefaultSkin/exo-createRSSFeedAction.gif') no-repeat;  
 }
 
+.exo_documentFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('MacSkin/exo-documentFolder.gif') no-repeat;  
+}
+
+.exo_searchFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('MacSkin/exo-searchFolder.gif') no-repeat;  
+}
+
+.exo_musicFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('MacSkin/exo-musicFolder.gif') no-repeat;  
+}
+
+.exo_pictureFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('MacSkin/exo-pictureFolder.gif') no-repeat;  
+}
+
+.exo_videoFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('MacSkin/exo-videoFolder.gif') no-repeat;  
+}
+
 .mix_lockable48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/mix-lockable.gif') no-repeat;  

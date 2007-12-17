@@ -158,6 +158,31 @@
   background: url('DefaultSkin/mix-referenceable.gif') no-repeat;  
 }
 
+.exo_documentFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('Vista/exo-documentFolder.png') no-repeat;  
+}
+
+.exo_searchFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('Vista/exo-searchFolder.png') no-repeat;  
+}
+
+.exo_musicFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('Vista/exo-musicFolder.png') no-repeat;  
+}
+
+.exo_pictureFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('Vista/exo-pictureFolder.png') no-repeat;  
+}
+
+.exo_videoFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('Vista/exo-videoFolder.png') no-repeat;  
+}
+
 .mix_versionable48x48Icon {
   width: 48px; height: 48px;
   background: url('DefaultSkin/mix-versionable.gif') no-repeat;  

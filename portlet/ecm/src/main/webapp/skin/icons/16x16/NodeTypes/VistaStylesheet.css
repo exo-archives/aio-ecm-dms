@@ -166,6 +166,31 @@
   background: url('DefaultSkin/exo-createRSSFeedAction.gif') no-repeat;  
 }
 
+.exo_documentFolder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/exo-documentFolder.png') no-repeat;  
+}
+
+.exo_pictureFolder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/exo-pictureFolder.png') no-repeat;  
+}
+
+.exo_videoFolder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/exo-videoFolder.png') no-repeat;  
+}
+
+.exo_searchFolder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/exo-searchFolder.png') no-repeat;  
+}
+
+.exo_musicFolder16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/exo-musicFolder.png') no-repeat;  
+}
+
 .mix_lockable16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/mix-lockable.gif') no-repeat;  
