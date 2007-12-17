@@ -1019,13 +1019,15 @@ public class UIActionBar extends UIForm {
       // TODO need review 
       int i = 0 ;
       for(String template : uiActionBar.getMetadataTemplates()) {
-        String[] nodeTypes = template.split("/") ;
-        UIViewMetadataTemplate uiMetaView = 
-          uiMetadataContainer.createUIComponent(UIViewMetadataTemplate.class, null, nodeTypes[4]) ;
-        uiMetaView.setTemplateType(nodeTypes[4]) ;
-        uiMetadataContainer.addChild(uiMetaView) ;
-        if(i != 0) uiMetaView.setRendered(false) ;
-        i++ ;
+        if(template != null && template.length() > 0) {
+          String[] nodeTypes = template.split("/") ;
+          UIViewMetadataTemplate uiMetaView = 
+            uiMetadataContainer.createUIComponent(UIViewMetadataTemplate.class, null, nodeTypes[4]) ;
+          uiMetaView.setTemplateType(nodeTypes[4]) ;
+          uiMetadataContainer.addChild(uiMetaView) ;
+          if(i != 0) uiMetaView.setRendered(false) ;
+          i++ ;
+        }
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

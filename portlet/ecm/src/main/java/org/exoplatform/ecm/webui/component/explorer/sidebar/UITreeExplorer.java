@@ -20,16 +20,18 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
-import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
@@ -176,12 +178,18 @@ public class UITreeExplorer extends UIContainer {
   
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
-      UITreeExplorer treeExplorer = event.getSource();
+      UITreeExplorer uiTreeExplorer = event.getSource();
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = treeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
+      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
+      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       Node selectedNode = null ;
       try {
         selectedNode = (Node) uiExplorer.getSession().getItem(path) ;
+      } catch(PathNotFoundException pa) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch(AccessDeniedException ace) {
         selectedNode = uiExplorer.getSession().getRootNode() ;
       }
