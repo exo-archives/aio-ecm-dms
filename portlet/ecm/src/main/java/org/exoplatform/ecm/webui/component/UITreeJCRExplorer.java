@@ -25,6 +25,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.utils.SessionsUtils;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -67,7 +68,7 @@ public class UITreeJCRExplorer extends UIContainer {
     UIJCRBrowser uiJCRBrowser = getParent() ;
     String workspace = uiJCRBrowser.getWorkspace() ;
     String repositoryName = uiJCRBrowser.getRepository() ; 
-    Session session = SessionsUtils.getSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
+    Session session = SessionsUtils.getSessionProvider().getSession(workspace, getRepository(repositoryName)) ;
     Iterator sibbling = null ;
     Iterator children = null ;
     if(rootNode_ == null ) {
@@ -97,11 +98,13 @@ public class UITreeJCRExplorer extends UIContainer {
     List<Node> sibblingList = new ArrayList<Node>() ;
     List<Node> childrenList = new ArrayList<Node>() ;
     while(sibbling.hasNext()) {
-      sibblingList.add((Node)sibbling.next()) ;      
+      Node sibblingNode = (Node)sibbling.next();
+      if(Utils.isReadAuthorized(sibblingNode)) sibblingList.add(sibblingNode) ;      
     }    
     if(children != null) {
       while(children.hasNext()) {
-        childrenList.add((Node)children.next()) ;      
+        Node childrenNode = (Node)children.next();
+        if(Utils.isReadAuthorized(childrenNode)) childrenList.add(childrenNode) ;        
       }
     }
     if(nodeSelected.getPath().equals(rootNode_.getPath())) { tree.setSibbling(childrenList) ; } 
@@ -123,7 +126,7 @@ public class UITreeJCRExplorer extends UIContainer {
     if(workspace == null) {
       workspace = repository.getConfiguration().getDefaultWorkspaceName() ;
     }
-    Session session = SessionsUtils.getSystemProvider().getSession(workspace, repository) ;
+    Session session = SessionsUtils.getSessionProvider().getSession(workspace, repository) ;
     rootNode_ = (Node) session.getItem(path) ;
     currentNode_ = rootNode_ ;
     changeNode(rootNode_) ;
@@ -135,7 +138,7 @@ public class UITreeJCRExplorer extends UIContainer {
     UIJCRBrowser uiJCRBrowser = getParent() ;
     String workspace = uiJCRBrowser.getWorkspace() ;
     String repositoryName = uiJCRBrowser.getRepository() ;    
-    Session session = SessionsUtils.getSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
+    Session session = SessionsUtils.getSessionProvider().getSession(workspace, getRepository(repositoryName)) ;
     currentNode_ = (Node) session.getItem(path);
     if(!rootNode_.getPath().equals("/")) {
       if(currentNode_.getPath().equals(rootNode_.getParent().getPath())) currentNode_ = rootNode_ ;
