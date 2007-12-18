@@ -23,6 +23,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -223,6 +224,12 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
+      if(!container.hasAddPermission(uiDocument.node_)) {
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-comment", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(!container.isShowDocumentDetail() || !uiDocument.isValidNode()) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null, 
             ApplicationMessage.WARNING)) ;

@@ -326,6 +326,15 @@ public class UIBrowseContainer extends UIContainer {
     }
     return false ;
   }
+  
+  public boolean hasAddPermission(Node node) {
+    ExtendedNode eNode = (ExtendedNode)node ;
+    try{
+      eNode.checkPermission(PermissionType.ADD_NODE) ;
+      return true ;
+    } catch(Exception ac){}
+    return false ;
+  }
 
   public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
@@ -1019,7 +1028,7 @@ public class UIBrowseContainer extends UIContainer {
     } catch(Exception ac){}
     return false ;
   }
-
+  
   private Map getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
       List documentTemplates) throws Exception {
     List<String> subCategories = new ArrayList<String>() ;
