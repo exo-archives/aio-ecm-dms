@@ -21,9 +21,12 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -131,7 +134,27 @@ public class UIToolBar extends UIContainer {
           uiContainer.changeNode(selectNode) ;
         }
       } else {
-        uiContainer.changeNode(selectNode) ;
+        TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
+        List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
+        if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
+          ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
+          String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+          String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
+          uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
+              .getNode(detailTemplateName).getPath())  ;
+          uiContainer.viewDocument(selectNode, true) ;
+        } else {
+          String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
+          if((templateType.equals(Utils.CB_USE_JCR_QUERY)) || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
+            UIApplication app = uiContainer.getAncestorOfType(UIApplication.class) ;
+            app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.template-notsupported", null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          } else {
+            uiContainer.changeNode(selectNode) ;
+          }
+        }
+        uiContainer.setCurrentNode(selectNode) ;
+        //        uiContainer.changeNode(selectNode) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCPortlet) ;
     }
