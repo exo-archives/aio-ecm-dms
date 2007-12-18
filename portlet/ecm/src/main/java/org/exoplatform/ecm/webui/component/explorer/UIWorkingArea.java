@@ -276,7 +276,13 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      Node selectedNode = (Node) session.getItem(nodePath);
+      Node selectedNode = null;
+      try {
+        selectedNode = (Node)session.getItem(nodePath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
       Object[] arg = { nodePath } ;
       try{
         ((ExtendedNode) selectedNode).checkPermission(PermissionType.SET_PROPERTY);        
@@ -336,7 +342,14 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.setIsHidePopup(false) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
-      Node renameNode = (Node)session.getItem(renameNodePath);
+      Node renameNode = null;
+      try {
+        renameNode = (Node)session.getItem(renameNodePath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
+      
       try{
         ((ExtendedNode) renameNode).checkPermission(PermissionType.SET_PROPERTY);        
       }catch (Exception e) {
@@ -394,7 +407,7 @@ public class UIWorkingArea extends UIContainer {
             clipboards.remove(command) ;
             break ;
           }
-        }       
+        }
         ClipboardCommand clipboard = new ClipboardCommand() ;
         clipboard.setType(ClipboardCommand.COPY) ;
         clipboard.setSrcPath(srcPath) ;
@@ -418,7 +431,13 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
-      Node selectedNode = (Node)session.getItem(nodePath) ;
+      Node selectedNode = null;
+      try {
+        selectedNode = (Node)session.getItem(nodePath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
       try{
         ((ExtendedNode) selectedNode).checkPermission(PermissionType.REMOVE);        
       }catch (Exception e) {
@@ -495,7 +514,13 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
-      Node node = (Node)session.getItem(nodePath) ;
+      Node node = null;
+      try {
+        node = (Node)session.getItem(nodePath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
       try{
         ((ExtendedNode) node).checkPermission(PermissionType.REMOVE);        
       }catch (Exception e) {
@@ -567,7 +592,13 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName);
-      Node node = (Node)session.getItem(nodePath);
+      Node node = null;
+      try {
+        node = (Node)session.getItem(nodePath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
       try{
         ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
       }catch (Exception e) {
@@ -611,8 +642,14 @@ public class UIWorkingArea extends UIContainer {
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      Session session = uiExplorer.getSessionByWorkspace(wsName);      
-      Node node = (Node)session.getItem(nodePath);
+      Session session = uiExplorer.getSessionByWorkspace(wsName);
+      Node node = null;
+      try {
+        node = (Node)session.getItem(nodePath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
       try{
         ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
       }catch (Exception e) {
@@ -734,8 +771,14 @@ public class UIWorkingArea extends UIContainer {
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
-      }      
-      Node destNode = (Node)session.getItem(destPath);
+      }
+      Node destNode = null;
+      try {
+        destNode = (Node)session.getItem(destPath);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
       if(!Utils.isAddNodeAuthorized(destNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-paste-node", null, 
             ApplicationMessage.WARNING)) ;
