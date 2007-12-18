@@ -118,21 +118,42 @@ public class QueryServiceImpl implements QueryService, Startable{
         userHome.addMixin("exo:privilegeable");
       }
       ((ExtendedNode)userHome).setPermissions(getPermissions(userName));
-      Node query = userHome.getNode(relativePath_) ;
+      Node query = null ;
+      if(userHome.hasNode(relativePath_)) {
+        query = userHome.getNode(relativePath_) ;
+      } else {
+        query = getNodeByRelativePath(userHome, relativePath_) ;
+      }
       if (query.canAddMixin("exo:privilegeable")){
         query.addMixin("exo:privilegeable");
       }
       ((ExtendedNode)query).setPermissions(getPermissions(userName));
       usersHome.save() ;
     }
-    Node queriesHome = userHome.getNode(relativePath_) ;
+    Node queriesHome = null ;
+    if(userHome.hasNode(relativePath_)) {
+      queriesHome = userHome.getNode(relativePath_) ;
+    } else {
+      queriesHome = getNodeByRelativePath(userHome, relativePath_) ;
+    }
     NodeIterator iter = queriesHome.getNodes();
     while (iter.hasNext()) {
       Node node = iter.nextNode();
-      if("nt:query".equals(node.getPrimaryNodeType().getName()))
-        queries.add(manager.getQuery(node));
+      if("nt:query".equals(node.getPrimaryNodeType().getName())) queries.add(manager.getQuery(node));
     }    
     return queries;
+  }
+  
+  private Node getNodeByRelativePath(Node userHome, String relativePath) throws Exception {
+    String[] paths = relativePath.split("/") ;
+    String relPath = null ;
+    Node queriesHome = null ;
+    for(String path : paths) {
+      if(relPath == null) relPath = path ;
+      else relPath = relPath + "/" + path ;
+      if(!userHome.hasNode(relPath)) queriesHome = userHome.addNode(relPath) ;
+    }
+    return queriesHome ;
   }
 
   private Map<String,String[]> getPermissions(String owner) {
@@ -155,7 +176,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
     Node userNode = usersNode.getNode(userName) ;
     if(!userNode.hasNode(relativePath_)) {
-      userNode.addNode(relativePath_) ;
+      getNodeByRelativePath(userNode, relativePath_) ;
       userNode.save() ;
       session.save() ;
     }
