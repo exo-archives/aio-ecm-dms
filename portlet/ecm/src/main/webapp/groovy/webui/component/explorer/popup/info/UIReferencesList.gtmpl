@@ -13,6 +13,7 @@
   String path = uicomponent.getParent().getName() ;
   String name = uicomponent.getId() ;
   String key ;
+  int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
 <div class="UIReferencesList">  
 	<table class="UIGrid">
@@ -40,8 +41,10 @@
 	      </tr>
 	  <%}%>
 	  </tbody>
-	</table> <!--End UIGrid-->  	      
+	</table> <!--End UIGrid-->
+  <% if(totalPages>1){ %>
 	<%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+	<% } %>
 	<div class="UIAction">
 	  <table class="ActionContainer" align="center"> 
 	  	<tr>

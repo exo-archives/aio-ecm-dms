@@ -12,6 +12,7 @@
   import javax.jcr.query.Query;
   import javax.jcr.Node;
   import org.exoplatform.ecm.utils.Utils ;
+  int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
 <div class="UISavedQuery" id="UISavedQuery">
   <table class="UIGrid">
@@ -106,9 +107,11 @@
 	    %>
     </tbody>
   </table>
+  <% if(totalPages>1){ %>
   <div style="margin:1px 0px 5px 0px;">
     <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
   </div>
+  <% } %>
 </div>
 <%
 if(uicomponent.getChild(UIPopupWindow.class) != null) { %>

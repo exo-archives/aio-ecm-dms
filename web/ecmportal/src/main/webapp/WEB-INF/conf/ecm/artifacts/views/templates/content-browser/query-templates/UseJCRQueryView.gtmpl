@@ -9,6 +9,7 @@
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
 	boolean isShowTagmap = uicomponent.isShowTagmap() ;
 	boolean isShowDocByTag = uicomponent.isShowDocumentByTag() ;
+	int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
 	<%
@@ -83,7 +84,9 @@
     </div>
     <div style="clear:left"><span></span></div>
     <%}%>
+    <% if(totalPages>1){ %>
     <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+    <% } %>
     <div style="clear:left"><span></span></div>
     <%}%>    
     

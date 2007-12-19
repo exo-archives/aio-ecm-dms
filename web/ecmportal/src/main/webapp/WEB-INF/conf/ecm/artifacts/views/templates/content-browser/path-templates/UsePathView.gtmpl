@@ -9,7 +9,7 @@
   String componentName = uicomponent.getName() ;
   def rcontext = _ctx.getRequestContext() ;
 	JavascriptManager jsmanager = rcontext.getJavascriptManager();
-	
+	int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">
   <%
@@ -221,7 +221,9 @@
     </div>
     <div style="clear:left"><span></span></div>
     <%}%>
+    <% if(totalPages>1){ %>
     <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
+    <% } %>
     <div style="clear:left"><span></span></div>
     <%}%>
     <%if(!isShowAllDoc) {/*Begin UISubContent*/%>
