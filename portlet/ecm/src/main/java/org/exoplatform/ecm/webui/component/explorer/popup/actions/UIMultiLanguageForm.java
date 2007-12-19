@@ -23,6 +23,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -93,6 +94,7 @@ public class UIMultiLanguageForm extends UIForm {
     public void execute(Event<UIMultiLanguageForm> event) throws Exception {
       UIMultiLanguageForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       if(!Utils.isAddNodeAuthorized(uiExplorer.getCurrentNode())) { 
         throw new MessageException(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", 
                                                           null, ApplicationMessage.WARNING)) ;
@@ -103,10 +105,12 @@ public class UIMultiLanguageForm extends UIForm {
       try {
         multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
       } catch(AccessDeniedException ace) {
-        UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(Exception e) {
+        JCRExceptionManager.process(uiApp, e) ;
         return ;
       }
       uiExplorer.setLanguage(selectedLanguage) ;

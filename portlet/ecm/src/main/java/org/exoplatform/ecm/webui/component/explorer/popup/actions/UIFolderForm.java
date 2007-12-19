@@ -101,6 +101,14 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       } catch(PathNotFoundException item) {
         session = node.getSession() ;
       }
+      try {
+        uiExplorer.nodeIsLocked(node.getPath(), session) ;
+      } catch(PathNotFoundException p) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(uiExplorer.nodeIsLocked(node.getPath(), session)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
