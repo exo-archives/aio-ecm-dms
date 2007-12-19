@@ -52,7 +52,7 @@
 								  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.start-time")%></td>
 								  <td class="FieldComponent">	
 								  <% 
-										String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime"] ;
+										String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime"] ;
 										uicomponent.addCalendarField("startTime", fieldStartTime) ;
 								  %>
 								  </td>
@@ -61,7 +61,7 @@
 								  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.end-time")%></td>
 								  <td class="FieldComponent">	
 								  <% 
-								  	String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime"] ;
+								  	String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime"] ;
 										uicomponent.addCalendarField("endTime", fieldEndTime) ;
 								  %>
 								  </td>

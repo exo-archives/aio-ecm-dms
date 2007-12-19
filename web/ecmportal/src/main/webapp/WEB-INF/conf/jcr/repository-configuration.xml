@@ -80,7 +80,7 @@
               <property name="swap-directory" value="../temp/swap/collaboration"/>
             </properties>
             <value-storages>
-              <value-storage id="production" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
+              <value-storage id="collaboration" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
                 <properties>
                   <property name="path" value="../temp/values/collaboration"/>
                 </properties>

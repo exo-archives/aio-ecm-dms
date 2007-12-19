@@ -243,10 +243,10 @@ public class DialogFormFields extends UIForm {
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
         }
+        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+        ResourceBundle res = context.getApplicationResourceBundle() ;
+        uiInput.setLabel(res.getString(getId() + ".validator." + name)) ;
       }
-      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-      ResourceBundle res = context.getApplicationResourceBundle() ;
-      uiInput.setLabel(res.getString(getId() + ".validator." + name)) ;
       addUIFormInput(uiInput) ;
     }
     if(editable.equals("false")) uiInput.setEditable(false) ;
