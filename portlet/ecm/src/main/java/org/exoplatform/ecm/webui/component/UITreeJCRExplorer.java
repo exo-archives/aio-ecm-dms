@@ -99,12 +99,12 @@ public class UITreeJCRExplorer extends UIContainer {
     List<Node> childrenList = new ArrayList<Node>() ;
     while(sibbling.hasNext()) {
       Node sibblingNode = (Node)sibbling.next();
-      if(Utils.isReadAuthorized(sibblingNode)) sibblingList.add(sibblingNode) ;      
+      if(Utils.isReadAuthorized(sibblingNode) && !sibblingNode.isNodeType("exo:hiddenable")) sibblingList.add(sibblingNode) ;      
     }    
     if(children != null) {
       while(children.hasNext()) {
         Node childrenNode = (Node)children.next();
-        if(Utils.isReadAuthorized(childrenNode)) childrenList.add(childrenNode) ;        
+        if(Utils.isReadAuthorized(childrenNode) && !childrenNode.isNodeType("exo:hiddenable")) childrenList.add(childrenNode) ;        
       }
     }
     if(nodeSelected.getPath().equals(rootNode_.getPath())) { tree.setSibbling(childrenList) ; } 
