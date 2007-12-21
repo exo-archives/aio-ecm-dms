@@ -36,6 +36,7 @@ import javax.jcr.Session;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
+import javax.mail.Folder;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.portal.webui.util.Util;
@@ -130,9 +131,17 @@ public class Utils {
   final static public String MIX_LOCKABLE = "mix:lockable" ;
   final static public String EXO_CATEGORIZED = "exo:categorized" ;
   final static public String EXO_CATEGORY = "exo:category" ;
+
+  final static public String EXO_MUSICFOLDER = "exo:musicFolder";
+  final static public String EXO_VIDEOFOLDER = "exo:videoFolder";
+  final static public String EXO_PICTUREFOLDER = "exo:pictureFolder";
+  final static public String EXO_DOCUMENTFOLDER = "exo:documentFolder";
+  final static public String EXO_SEARCHFOLDER = "exo:searchFolder";
+  final static public String[] SPECIFIC_FOLDERS = {EXO_MUSICFOLDER,EXO_VIDEOFOLDER,EXO_PICTUREFOLDER,EXO_DOCUMENTFOLDER,EXO_SEARCHFOLDER };
+
   final static public String[] FOLDERS = {NT_UNSTRUCTURED, NT_FOLDER};
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
-  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;
+  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;  
   public Map<String, Object> maps_ = new HashMap<String, Object>() ;
 
   public static String encodeHTML(String text) {
@@ -216,7 +225,7 @@ public class Utils {
       return name1.compareToIgnoreCase(name2) ;
     }
   }
-  
+
   public static boolean isNameValid(String name, String[] regexpression) {
     for(String c : regexpression){ if(name.contains(c)) return false ;}
     return true ;
@@ -275,14 +284,22 @@ public class Utils {
 
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
     StringBuilder str = new StringBuilder() ;
-    if(isReadAuthorized(node)) {
-      String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
-      str.append(nodeType) ;
-      if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
-      if(node.isNodeType(NT_FILE)) {
-        Node jcrContentNode = node.getNode(JCR_CONTENT) ;
-        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
+    String nodeType = node.getPrimaryNodeType().getName() ;
+    //String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
+    if(nodeType.equals(NT_UNSTRUCTURED) || nodeType.equals(NT_FOLDER)) {
+      for(String specificFolder:SPECIFIC_FOLDERS) {
+        if(node.isNodeType(specificFolder)) {
+          nodeType = specificFolder;
+          break;
+        }
       }
+    }
+    nodeType = nodeType.replaceAll(":","_") + appended ;    
+    str.append(nodeType) ;
+    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
+    if(node.isNodeType(NT_FILE)) {
+      Node jcrContentNode = node.getNode(JCR_CONTENT) ;
+      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);      
     }
     return str.toString() ;
   }
@@ -381,7 +398,7 @@ public class Utils {
     }
     return userMemberships ;
   }
-  
+
   public static List<String> getGroups() throws Exception {
     String userId = Util.getPortalRequestContext().getRemoteUser() ;
     OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
