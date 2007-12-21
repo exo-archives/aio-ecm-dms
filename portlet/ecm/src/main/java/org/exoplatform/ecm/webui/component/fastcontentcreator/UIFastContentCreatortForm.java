@@ -181,6 +181,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       homeNode.getSession().save() ;
       newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
       reset() ;
+      setIsResetForm(true) ;
       for(UIComponent uiChild : getChildren()) {
         if(uiChild instanceof UIFormMultiValueInputSet) {
           ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;

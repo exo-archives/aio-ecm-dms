@@ -81,6 +81,7 @@ public class DialogFormFields extends UIForm {
   private boolean isOnchange_ = false ;
   protected boolean isUpdateSelect_ = false ;
   protected String repository_ = null ;
+  private boolean isResetForm_ = false ;
   
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
@@ -125,6 +126,9 @@ public class DialogFormFields extends UIForm {
   public void setIsResetMultiField(boolean isResetMultiField) { 
     isResetMultiField_ = isResetMultiField ; 
   }
+  
+  public void setIsResetForm(boolean isResetForm) { isResetForm_ = isResetForm ; }
+  public boolean isResetForm() { return isResetForm_ ; }
   
   public void setIsUpdateSelect(boolean isUpdateSelect) { isUpdateSelect_ = isUpdateSelect ; } ;
   
@@ -612,7 +616,7 @@ public class DialogFormFields extends UIForm {
     }
     List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    if(uiSelectBox == null) {
+    if(uiSelectBox == null || isResetForm_) {
       uiSelectBox = new UIFormSelectBox(name, name, null);
       addUIFormInput(uiSelectBox) ;
       if (script != null) {
@@ -629,10 +633,10 @@ public class DialogFormFields extends UIForm {
           optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
         }
         uiSelectBox.setOptions(optionsList);      
-      }else {
+      } else {
         uiSelectBox.setOptions(optionsList) ;
       }      
-      uiSelectBox.setValue(defaultValue) ;
+      if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;

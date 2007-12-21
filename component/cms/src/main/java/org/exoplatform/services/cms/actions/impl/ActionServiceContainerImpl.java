@@ -216,6 +216,10 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     return getActions(node, null);
   }
 
+  public List<Node> getCustomActionsNode(Node node, String lifecyclePhase) throws Exception {
+    return getActions(node.getParent(), lifecyclePhase) ;
+  }
+  
   public List<Node> getActions(Node node, String lifecyclePhase) throws Exception {
     List<Node> actions = new ArrayList<Node>();
     Node actionStorage = null;
@@ -305,8 +309,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     NodeType nodeType = node.getPrimaryNodeType();
     String nodeTypeName = nodeType.getName();
     variables.put("document-type", nodeTypeName);
-
-    Node actionNode = node.getNode(EXO_ACTIONS + "/" + actionName);
+    Node parentNode = node.getParent() ;
+    Node actionNode = parentNode.getNode(EXO_ACTIONS + "/" + actionName);
     NodeType actionNodeType = actionNode.getPrimaryNodeType();
     fillVariables(actionNode, actionNodeType, variables);
 
@@ -331,8 +335,9 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public void executeAction(String userId, Node node, String actionName, Map variables, String repository) throws Exception {
-    if (!node.isNodeType(ACTIONABLE)) return ;
-    Node actionNode = node.getNode(EXO_ACTIONS + "/" +actionName);
+    Node parentNode = node.getParent() ;
+    if (!parentNode.isNodeType(ACTIONABLE)) return ;
+    Node actionNode = parentNode.getNode(EXO_ACTIONS + "/" +actionName);
     String actionTypeName = actionNode.getPrimaryNodeType().getName();
     for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
       ComponentPlugin plugin = (ComponentPlugin) iter.next();

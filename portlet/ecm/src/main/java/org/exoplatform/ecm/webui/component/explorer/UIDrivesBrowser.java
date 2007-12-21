@@ -22,11 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
@@ -255,11 +257,15 @@ public class UIDrivesBrowser extends UIContainer {
       Node node = null ;
       try {
         node = (Node) session.getItem(drive.getHomePath()) ;        
-      } catch(Exception e) {
+      } catch(AccessDeniedException ace) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      } catch(Exception e) {
+        e.printStackTrace() ;
+        JCRExceptionManager.process(uiApp, e) ;
         return ;
       } 
       uiJCRExplorer.getAllClipBoard().clear() ;

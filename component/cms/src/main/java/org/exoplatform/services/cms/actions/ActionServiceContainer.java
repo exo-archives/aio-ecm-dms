@@ -48,6 +48,8 @@ public interface ActionServiceContainer {
 
   public List<Node> getActions(Node node) throws Exception;
 
+  public List<Node> getCustomActionsNode(Node node, String lifecyclePhase) throws Exception ;
+  
   public List<Node> getActions(Node node, String lifecyclePhase) throws Exception;
   
   public void removeAction(Node node, String actionName, String repository) throws Exception;

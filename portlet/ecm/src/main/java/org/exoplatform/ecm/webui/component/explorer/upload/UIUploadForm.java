@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
+import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
@@ -237,6 +238,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         Object[] args = {name, } ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
                                                            args, ApplicationMessage.WARNING)) ;
+      } catch(LockException lock) {
+        throw new MessageException(new ApplicationMessage("UIUploadForm.msg.lock-exception", 
+            null, ApplicationMessage.WARNING)) ;        
       } catch(Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
