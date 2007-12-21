@@ -54,6 +54,7 @@
                             <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');" onclick="return confirm('<%=confirm%>');">
 						                  <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif">
 						                </a>
+						                <div style="clear: left"><span></span></div>
 						              </div>	
 						        <%
 					              }
