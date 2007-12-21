@@ -91,7 +91,13 @@
       <show-info-bar>true</show-info-bar>
       <show-application-mode>true</show-application-mode>      
     </application>
-                             
+    
+    <application>
+      <instance-id>group#platform/users:/workflow/WorkflowControllerPortlet/workflowcontroller</instance-id>    
+      <title>Business Process Center</title>
+      <show-info-bar>false</show-info-bar>      
+    </application>
+                                
   </page>
   
   <page>
