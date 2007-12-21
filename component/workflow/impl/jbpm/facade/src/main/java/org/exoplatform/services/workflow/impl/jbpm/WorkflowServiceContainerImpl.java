@@ -20,10 +20,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipInputStream;
 
@@ -73,16 +75,16 @@ public class WorkflowServiceContainerImpl implements
   private OrganizationService orgService_;
   private ThreadLocal threadLocal_;
   private String hibernateServiceName_;
-
-  public WorkflowServiceContainerImpl(OrganizationService orgService,
+  private WorkflowFileDefinitionService fileDefinitionService_ ;
+  
+  public WorkflowServiceContainerImpl(OrganizationService orgService,WorkflowFileDefinitionService fileDefinitionService,
       ConfigurationManager conf, InitParams params) throws Exception {
-    hibernateServiceName_ = params.getValueParam("hibernate.service")
-        .getValue();
+    hibernateServiceName_ = params.getValueParam("hibernate.service").getValue();
     configs_ =  new ArrayList<ProcessesConfig>();
     this.configurationManager_ = conf;
     threadLocal_ = new ThreadLocal();
     orgService_ = orgService;
-
+    this.fileDefinitionService_ = fileDefinitionService;
   }
 
   /**
@@ -211,21 +213,30 @@ public class WorkflowServiceContainerImpl implements
   }
 
   public List<Task> getAllTasks(String user) throws Exception {
-    List<Task> allTasks = new ArrayList<Task>();
-    allTasks.addAll(getUserTaskList(user));
-    allTasks.addAll(getGroupTaskList(user));
+    List<Task> allTasks = new ArrayList<Task>();       
+    allTasks.addAll(getUserTaskList(user));    
+    List<Task> groupTask = getGroupTaskList(user);
+    for(Task task:allTasks) {
+      for(Task checkTask:groupTask) {
+        if(checkTask.getId().equalsIgnoreCase(task.getId())) {
+          groupTask.remove(checkTask);
+        }
+      }
+    }    
+    allTasks.addAll(groupTask);        
     return allTasks;
   }
 
   public List<Task> getUserTaskList(String user) {
     JbpmSession session = openSession();
-    List taskInstances = session.getTaskMgmtSession().findTaskInstances(user);
+    List taskInstances = session.getTaskMgmtSession().findTaskInstances(user);    
     return wrapTasks(taskInstances);
 
   }
 
   public List<Task> getGroupTaskList(String user) throws Exception {
     List<Task> groupTasks = new ArrayList<Task>();
+    HashSet<TaskInstance> hashSet = new HashSet<TaskInstance>();
     String key = null;
     Collection groups = orgService_.getGroupHandler().findGroupsOfUser(user);
     JbpmSession session = openSession();
@@ -235,19 +246,25 @@ public class WorkflowServiceContainerImpl implements
         orgService_.getMembershipHandler().findMembershipsByUserAndGroup(user, group.getId());
       for (Iterator iterator = memberships.iterator(); iterator.hasNext();) {
         Membership membership = (Membership) iterator.next();
-        key = membership.getMembershipType() + ACTOR_ID_KEY_SEPARATOR
-            + group.getId();
+        key = membership.getMembershipType() + ACTOR_ID_KEY_SEPARATOR + group.getId();
+        
         List tasks = session.getTaskMgmtSession().findTaskInstances(key);
         if (tasks.size() > 0) {
-          groupTasks.addAll(wrapTasks(tasks));
+          hashSet.addAll(tasks);
+//          groupTasks.addAll(wrapTasks(tasks));
         }
       }
       // manage the wildcard memberships
       key = "*" + ACTOR_ID_KEY_SEPARATOR + group.getId();
       List tasks = session.getTaskMgmtSession().findTaskInstances(key);
       if (tasks.size() > 0) {
-        groupTasks.addAll(wrapTasks(tasks));
+        hashSet.addAll(tasks);
+//        groupTasks.addAll(wrapTasks(tasks));
       }
+    }
+    for(Iterator iterator = hashSet.iterator();iterator.hasNext();) {
+      TaskInstance instance = (TaskInstance)iterator.next();
+      groupTasks.add(new TaskData(instance));
     }
     return groupTasks;
   }
@@ -464,8 +481,7 @@ public class WorkflowServiceContainerImpl implements
     this.closeSession();
   }
 
-  public WorkflowFileDefinitionService getFileDefinitionService() {
-    // TODO Auto-generated method stub
-    return null;
+  public WorkflowFileDefinitionService getFileDefinitionService() { 
+    return fileDefinitionService_;
   }
 }

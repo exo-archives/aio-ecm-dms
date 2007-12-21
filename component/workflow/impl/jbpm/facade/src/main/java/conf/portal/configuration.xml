@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>
-              
-  <!-- ============================================================================= -->
-  <!--    W O R K F L O W     C O N F I G U R A T I O N                              -->
-  <!-- ============================================================================= -->
-  <component>
-    <key>org.exoplatform.services.workflow.WorkflowFormsService</key>
-    <type>org.exoplatform.services.workflow.impl.jbpm.WorkflowFormsServiceImpl</type>
-  </component>
-
-  <component>
-    <type>org.exoplatform.services.workflow.impl.jbpm.SchedulerService</type>
-  </component>
-
   <external-component-plugins>
     <target-component>org.exoplatform.services.database.HibernateService</target-component>
     <component-plugin> 
