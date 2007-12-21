@@ -60,7 +60,8 @@
 }
 
 .Clipboard24x24Icon {
-  background: url('DefaultSkin/BlueCircleLeftArrow.png') no-repeat center;
+  background: url('DefaultSkin/Clipboard.gif') no-repeat center;
+  width: 24px; height: 24px;
 }
 
 .EditDocumentIcon {
