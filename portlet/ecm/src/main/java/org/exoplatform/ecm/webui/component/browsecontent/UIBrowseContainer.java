@@ -971,6 +971,7 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentList(hasDocList) ;
     UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class) ;
     uiDocumetDetail.setNode(docNode) ;
+    uiDocumetDetail.setLanguage(null) ;
     uiDocumetDetail.setRendered(true) ;
   }
 
