@@ -536,7 +536,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         } else {
           node.setProperty(VOTING_RATE_PROP, 0) ;
         }
-        if(selectedLangNode.hasNode(VOTER_PROP)) {
+        if(selectedLangNode.hasProperty(VOTER_PROP)) {
           node.setProperty(VOTER_PROP, selectedLangNode.getProperty(VOTER_PROP).getValues()) ;
         }
       } else {
