@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>
+
+	<component>
+    <key>org.exoplatform.services.workflow.WorkflowFileDefinitionService</key>
+    <type>org.exoplatform.services.workflow.impl.jbpm.WorkflowFileDefinitionServiceImpl</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.services.workflow.impl.jbpm.SchedulerService</type>
+  </component>
+  
   <external-component-plugins>
     <target-component>org.exoplatform.services.database.HibernateService</target-component>
     <component-plugin> 
