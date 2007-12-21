@@ -773,7 +773,22 @@
 			</propertyDefinition>	  		
 		</propertyDefinitions>			
  	</nodeType>
- 	                 
+ 	
+ 	<nodeType name="exo:musicFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName=""> 		
+  </nodeType>
+  
+  <nodeType name="exo:documentFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+ 	</nodeType>
+  
+  <nodeType name="exo:pictureFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  </nodeType>
+  
+  <nodeType name="exo:searchFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  </nodeType>
+  
+  <nodeType name="exo:videoFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  </nodeType>
+   	 	       	             
 </nodeTypes>
   
 	
