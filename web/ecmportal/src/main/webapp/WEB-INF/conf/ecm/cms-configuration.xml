@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>
-  
+
+	<component>
+    <key>org.exoplatform.services.cms.CmsService</key>
+    <type>org.exoplatform.services.cms.impl.CmsServiceImpl</type>
+  </component>
+    
   <external-component-plugins>
     <target-component>org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator</target-component>
     <component-plugin>
@@ -180,6 +185,11 @@
 	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 	              		<field  name="alias"><string>digitalPicturePath</string></field>
 	                  <field  name="path"><string>/Digital Assets/Pictures</string></field>
+	                  <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:pictureFolder</string></value>
+				            	</collection>
+				            </field>
 	                  <field name="permissions">
 			                <collection type="java.util.ArrayList">               
 			                  <value>                            
@@ -208,6 +218,11 @@
 	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 	              		<field  name="alias"><string>digitalVideoPath</string></field>
 	                  <field  name="path"><string>/Digital Assets/Videos</string></field>
+	                  <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:videoFolder</string></value>
+				            	</collection>
+				            </field>
 	                  <field name="permissions">
 			                <collection type="java.util.ArrayList">               
 			                  <value>                            
@@ -236,6 +251,11 @@
 	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 	              		<field  name="alias"><string>digitalAudioPath</string></field>
 	                  <field  name="path"><string>/Digital Assets/Music</string></field>
+	                  <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:musicFolder</string></value>
+				            	</collection>
+				            </field>
 	                  <field name="permissions">
 			                <collection type="java.util.ArrayList">               
 			                  <value>                            
@@ -287,6 +307,11 @@
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field  name="alias"><string>documentsPath</string></field>
 		                <field  name="path"><string>/Documents</string></field>
+		                <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:documentFolder</string></value>
+				            	</collection>
+				            </field>
 		                <field name="permissions">
 				              <collection type="java.util.ArrayList">               
 				                <value>                            
@@ -475,6 +500,11 @@
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field  name="alias"><string>documentsBackupPath</string></field>
 		                <field  name="path"><string>/Expired Documents</string></field>
+		                <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:documentFolder</string></value>
+				            	</collection>
+				            </field>
 		                <field name="permissions">
 				              <collection type="java.util.ArrayList">               
 				                <value>                            
