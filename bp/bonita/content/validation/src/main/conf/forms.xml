@@ -1,0 +1,29 @@
+<forms>
+
+  <form>
+    <!-- The Start name is an empty String in the Bonita implementation -->
+    <state-name></state-name>
+    <delegated-view>true</delegated-view>
+  </form>
+
+  <form>
+    <resource-bundle>evaluation</resource-bundle>
+    <state-name>evaluation</state-name>
+    <variable name="document-id" component="nodeview"/>
+    <variable name="initiator" editable="false"/>
+    <variable name="startDate" component="datetime"/>
+    <variable name="endDate" component="datetime"/>
+    <variable name="delegate"/>
+    <variable name="decision" component="radiobox"/>
+    <!-- No need to specify Submit buttons in the Bonita implementation -->
+  </form>
+  
+  <form>
+    <resource-bundle>change-request</resource-bundle>
+    <state-name>change request</state-name>
+    <variable name="document-id" component="nodeedit"/>
+    <variable name="changedecision" component="radiobox"/>
+    <!-- No need to specify Submit buttons in the Bonita implementation -->
+  </form>
+
+</forms>

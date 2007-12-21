@@ -1,0 +1,29 @@
+<%
+	/**
+	 * Created by The eXo Platform SARL
+	 * Author : Tran The Trong
+	 *          trongtt@gmail.com
+	 * August 02, 2006
+	 * version: $Id$	 
+	 */
+%>
+<div class="UIViewBar">
+  <div class="SelectViewBox">
+    <div class="SelectViewLabel">Select View :</div>
+    <% uiform.begin() %>
+    <div class="SelectBox">
+      <% uicomponent.renderChildren(); %>
+    </div>
+    <%uiform.end()%>    
+  </div>
+  <div class="IconFrame">
+    <div class="WorkspaceName">Current Drive : <font color="#0766e7"><%=uicomponent.getWorkspaceName()%></font></div>
+		<div class="Separator ViewBarSeparator"><span></span></div>
+	  <a class="Icon BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="Back to JCR main Drives"><span></span></a>
+	  <a class="Icon SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="Set up your browsing preferences"><span></span></a>
+	  <%if(uicomponent.isShowSaveSession()) {%>
+	    <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="Save Session"><span></span></a>
+	  <%}%>
+	  <a class="Icon RefreshSessionButton" href="<%=uicomponent.event("RefreshSession")%>" title="Refresh"><span></span></a>
+  </div>
+</div>

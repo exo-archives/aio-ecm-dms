@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="holiday process" Name="holiday process">
+  <PackageHeader >
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bull</Vendor>
+    <Created>24 avril 2006 11:39:47</Created>
+  </PackageHeader>
+  <ConformanceClass >NON_BLOCKED</ConformanceClass>
+  <WorkflowProcesses >
+    <WorkflowProcess AccessLevel="PUBLIC" Name="holiday process" Id="holiday process">
+      <DataFields>
+        <DataField Id="initiator" Name="initiator">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+        <DataField Id="start" Name="start">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>holiday start day</Description>
+        </DataField>
+        <DataField Id="end" Name="end">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>holiday end day</Description>
+        </DataField>
+        <DataField Id="choice" Name="choice">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="decision" Name="decision">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="Approve" />
+              <EnumerationValue Name="Disapprove" />
+              <EnumerationValue Name="Refuse" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>Approve</InitialValue>
+          <Description>Direction's decision</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="changedecision" Name="changedecision">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="Modify" />
+              <EnumerationValue Name="Cancel Holiday Request" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>Modify</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="replacement" Name="replacement">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <Description>who will do the job ?</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="*:/organization/management/human-resources" Name="*:/organization/management/human-resources">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="hero.mapper.ExoOrganizationMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="*:/organization/management/executive-board" Name="*:/organization/management/executive-board">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="hero.mapper.ExoOrganizationMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="initiator" Name="initiator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Properties" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="SYSTEM" Name="SYSTEM">
+          <ParticipantType Type="SYSTEM" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="start" Name="start">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="463" />
+            <ExtendedAttribute Name="YOffset" Value="9" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="eval enough holiday" Name="eval enough holiday">
+          <Description>is the initiator have enough holidays left ?</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="416" />
+            <ExtendedAttribute Name="YOffset" Value="91" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="191" />
+            <ExtendedAttribute Name="property" Value="choice">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="hook" Value="hero.hook.HolidayEnoughHolidaysLeftHook">
+              <HookEventName>beforeTerminate</HookEventName>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="assign replacement" Name="assign replacement">
+          <Description>Direction can assign a replacement</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>*:/organization/management/executive-board</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="192" />
+            <ExtendedAttribute Name="YOffset" Value="262" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="132" />
+            <ExtendedAttribute Name="property" Value="replacement">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="hr acknowledgement" Name="hr acknowledgement">
+          <Description>Humain ressources are prevented</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>*:/organization/management/human-resources</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="24" />
+            <ExtendedAttribute Name="YOffset" Value="261" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="126" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="finish" Name="finish">
+          <Description>wait  "hr assignement" AND "assign replacement" activities to complete before the "final" activity</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="158" />
+            <ExtendedAttribute Name="YOffset" Value="365" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>SYSTEM</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="495" />
+            <ExtendedAttribute Name="YOffset" Value="373" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="evaluation" Name="evaluation">
+          <Description>company's direction evaluate the holiday request</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>*:/organization/management/executive-board</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="204" />
+            <ExtendedAttribute Name="YOffset" Value="119" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="66" />
+            <ExtendedAttribute Name="property" Value="decision">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="change request" Name="change request">
+          <Description>Modify holidays</Description>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>initiator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="365" />
+            <ExtendedAttribute Name="YOffset" Value="260" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="98" />
+            <ExtendedAttribute Name="property" Value="changedecision">
+              <Propagated>Yes</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="Iteration" Value="changedecision.equals(&quot;Modify&quot;)">
+              <To>evaluation</To>
+              <ExtendedAttributes>
+                <ExtendedAttribute Name="BreakPoint" Value="414.0-275.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="318.0-231.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="235.0-134.0" />
+              </ExtendedAttributes>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="evaluation_change request" Name="evaluation_change request" From="evaluation" To="change request">
+          <Condition Type="CONDITION">decision.equals("Disapprove")</Condition>
+        </Transition>
+        <Transition Id="assign replacement_finish" Name="assign replacement_finish" From="assign replacement" To="finish" />
+        <Transition Id="evaluation_assign replacement" Name="evaluation_assign replacement" From="evaluation" To="assign replacement">
+          <Condition Type="CONDITION">decision.equals("Approve")</Condition>
+        </Transition>
+        <Transition Id="eval enough holiday_BonitaEnd" Name="eval enough holiday_BonitaEnd" From="eval enough holiday" To="BonitaEnd">
+          <Condition Type="CONDITION">choice.equals("not enough")</Condition>
+        </Transition>
+        <Transition Id="evaluation_hr acknowledgement" Name="evaluation_hr acknowledgement" From="evaluation" To="hr acknowledgement">
+          <Condition Type="CONDITION">decision.equals("Approve")</Condition>
+        </Transition>
+        <Transition Id="eval enough holiday_evaluation" Name="eval enough holiday_evaluation" From="eval enough holiday" To="evaluation">
+          <Condition Type="CONDITION">choice.equals("enough")</Condition>
+        </Transition>
+        <Transition Id="finish_BonitaEnd" Name="finish_BonitaEnd" From="finish" To="BonitaEnd" />
+        <Transition Id="change request_BonitaEnd" Name="change request_BonitaEnd" From="change request" To="BonitaEnd">
+          <Condition Type="CONDITION">changedecision.equals("Cancel Holiday Request")</Condition>
+        </Transition>
+        <Transition Id="evaluation_BonitaEnd" Name="evaluation_BonitaEnd" From="evaluation" To="BonitaEnd">
+          <Condition Type="CONDITION">decision.equals("Refuse")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="468.0-222.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="hr acknowledgement_finish" Name="hr acknowledgement_finish" From="hr acknowledgement" To="finish" />
+        <Transition Id="start_eval enough holiday" Name="start_eval enough holiday" From="start" To="eval enough holiday" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes >
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

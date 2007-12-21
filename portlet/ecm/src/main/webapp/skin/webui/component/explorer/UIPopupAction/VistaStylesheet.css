@@ -1,0 +1,451 @@
+/**
+ * Created by The eXo Platform SARL
+ * Modifile : Vu Duy Tu
+ *           duytucntt@gmail.com
+ * December 08, 2006
+ * version: $Id$
+ */
+
+
+.UIJCRExplorerPortlet .UIVersionInfo  {  
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .FormContainer .UIFormGrid {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout .FormContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout {
+  padding: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout .FormContainer {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
+  margin: 7px 5px 0px 5px;
+  float: left;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .Icon24x24 {
+  margin: 2px 3px 2px 0px;
+  float: left;
+  width: 24px; height: 24px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .HomeNode {
+  padding: 0px 10px;
+  line-height: 30px;
+  background-color: #eaedf6;
+  margin-bottom: 1px;
+  font-weight: bold;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .Node {
+  height: 30px;
+  line-height: 30px;
+  background-color: #eaedf6;
+  margin-bottom: 1px;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .NodeEven {
+  line-height: 30px;
+  background-color: #e4e7f3;
+  margin-bottom: 1px;
+}
+.UIJCRExplorerPortlet .UIVersionInfo .NoneIcon {
+  margin: 7px 0px;
+  float: left;
+  width: 16px; height: 16px;  
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .ExpandIcon {
+  margin: 7px 0px;
+  float: left;
+  width: 16px; height: 16px;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
+  margin: 7px 5px 0px 5px;
+  width: 16px; height: 16px;
+  float: left;
+  cursor: pointer;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
+  float: right;
+}
+
+.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
+	border: none;
+	padding: 10px 0px;
+	margin: 0px auto;
+}
+
+/*############################## -- Begin UIDiff -- ##############################*/
+	
+.UIJCRExplorerPortlet .UIDiff {
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent {  	  
+  font-family: Verdana;
+  color: #0e396c; font-size: 11px;
+  text-align: left;
+  padding: 5px 0px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
+  padding-bottom: 5px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
+  padding-left: 10px;
+  height: 21px; line-height: 21px;
+  font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
+  border: 1px solid #cbcbcb;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .Content {  
+  padding: 10px;
+  border: 1px solid #cbcbcb; 
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetail {
+	text-align: center;
+	border:none ;
+}
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft {  
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:left;
+  margin:0px 10px;
+}
+	
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label{		
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
+	border: 1px dotted #e1e1e1; 	  
+  margin: 2px;
+  padding: 3px 2px;
+}	
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight label{		
+	font-family: Verdana;
+  color: #058ee6; font-weight: bold; 
+  font-size: 11px;	
+} 
+
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailRight {  
+  width: 45%;
+  border: 1px solid #e1e1e1; 	  
+ 	float:right;
+  margin:0px 10px;
+}
+	
+/*############################## -- Begin UIVoteForm   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIVoteForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer {
+	padding-top: 8px;
+  border: solid 1px #aeaeae;
+}
+
+.UIJCRExplorerPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white;
+  width: 150px;
+  padding: 5px 12px;
+  border: solid 1px #b7b7b7;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .NormalVote {
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
+	float: left;
+	margin: 2px 3px 0px 3px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 2px 3px 0px 3px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
+}
+
+.UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 2px 3px 0px 3px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
+}
+
+/*############################## -- Begin UINodeTypeInfo -- ##############################*/
+.UIJCRExplorerPortlet .UINodeTypeInfo {
+  padding: 5px 0px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
+  float: left;
+  width: 16px; height:16px;
+  margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .default16x16Icon {
+  float: left;
+  background: url('VistaSkin/background/default.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
+  border: solid 1px #8D919D;
+  background-color: #f2f2f2;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
+}
+
+.UIJCRExplorerPortlet .UINodeTypeInfo .UIGrid td {
+	padding-left: 2px;
+}
+
+.UIJCRExplorerPortlet .UIGrid td {
+  border: solid 1px #a4a4a4;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar {
+  margin-top: 15px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar table {
+	width: auto;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
+  line-height: 24px;
+  background: url('VistaSkin/background/InfoBarLeftBg30x24.png') no-repeat left;
+  padding-left:30px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar .GridTitleRightBar {
+  line-height: 24px;
+  background: url('VistaSkin/background/InfoBarRightBg35x24.png') no-repeat right;
+  padding-right: 35px;
+}
+
+.UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
+  line-height: 24px;
+  background: url('VistaSkin/background/InfoBarCenterBg1x24.png') repeat-x;
+  padding: 0px 10px;
+}
+/*############################## -- End UINodeTypeInfo -- ##############################*/
+
+/*############################## -- UIExport    -- ##############################*/
+.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode {
+	margin-left: 160px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode input {
+	float:left;
+  width: 20px ;
+}
+
+/*############################## -- End UIExport   -- ##############################*/
+/*############################## -- UITreeJCRExplorer   -- ##############################*/
+.Explorer {
+  margin-bottom: 10px;
+  float: left ;
+  width: 230px ;
+}
+
+
+.Explorer .ExplorerTree {
+  background: #f3f3f3;
+  border: solid 1px #c6c6c9;
+  padding: 1px;
+  margin-top: 1px;
+}
+
+.Explorer .InnerExplorerTree {
+  padding: 6px;
+}
+
+.Explorer .ExplorerTree .NodeLevel1 {
+  height: 30px; line-height: 30px;
+  padding-left: 15px;
+}
+
+.Explorer .ExplorerTree .NodeLevel2 {
+  height: 30px; line-height: 30px;
+  padding-left: 30px;
+}
+
+.UITreeList .UIGrid {
+  width: 310px;
+  margin-left: 5px ;
+}
+
+.UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {
+  margin-left: 15px ;
+}
+
+.UIJCRExplorerPortlet .UIRelationsAddedList .DeleteIcon {
+  margin-left: 15px ;
+}
+
+/*############################## --End UITreeJCRExplorer   -- ##############################*/
+
+/*############################## -- UISearch   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
+	width: 99%;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
+  margin: 10px 0px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .Label {
+  line-height: 18px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption input.checkbox {
+ 	margin: 5px 3px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
+  width: 500px;
+  vertical-align: baseline;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
+	width: 50px;
+	margin: auto ;
+}
+
+.UIJCRExplorerPortlet .UISelectPropertyForm .UIFormWithTitle .HorizontalLayout {
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm .UIFormWithTitle .HorizontalLayout {
+  margin: auto;
+  border: 1px solid #939393;
+  width: 350px ;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
+  width: 500px;
+  border: none;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .ActionField {
+  float: left ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
+  float: left ;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
+  padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
+  padding-left: 185px ;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
+  height: 350px ;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
+  width: 160px;
+}
+
+/*############################## -- End UISearch   -- ##############################*/
+
+/*############################## -- Others   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput input.radio {
+	margin-left: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager {
+  padding: 10px;
+  border: 1px solid #b7b7b7;
+  margin: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
+	border: 1px solid #b7b7b7;
+	margin: 10px;
+}
+
+/*############################## -- End Others   -- ##############################*/
+
+/*############################## -- End UISearch   -- ##############################*/
+
+/*############################## -- UIActionManager   -- ##############################*/
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
+  margin: auto;
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .FieldContainer .SelectFileFrame .SelectFileLabel {
+  width: 160px;
+  margin: 0px 5px 0px 25px;
+}
+
+.UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
+  background: #ffffff;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
+  float: none;
+}
+
+/*############################## -- End UIActionManager   -- ##############################*/

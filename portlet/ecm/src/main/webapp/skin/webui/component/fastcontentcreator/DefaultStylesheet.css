@@ -1,0 +1,216 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+@import url("../../../icons/DefaultStylesheet.css");
+@import url("../../../ExoEditor/MyEditor.css");
+
+.UIPageDesktop .UIDialogPortlet {
+  overflow: hidden;
+}
+
+.UIWindow .UIFastContentCreatorPortlet {
+	border: none;
+	margin: 0px;
+	border: none;
+}
+
+.UIFastContentCreatorPortlet {
+	background: white;
+	border: 1px solid #b7b7b7;
+	margin: 10px;
+	padding: 15px 0px ;
+}
+
+.UIFastContentCreatorPortlet .MsgLable {
+	text-align: center;
+	line-height: 40px;
+	color: #E80C00;
+}
+
+.UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
+	width: 160px;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
+  width: 600px;
+  margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
+  border: none;
+  background: #efefef;
+}
+
+.UIFastContentCreatorPortlet .UITabPane {
+  padding: 10px 0px 20px 0px;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UIFormWithTitle {
+  border: 1px solid #939393;
+  width: 650px;
+  margin: auto ;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration {
+  margin: 10px auto;
+  width: 600px;
+  background: #efefef;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout {
+  padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
+  border: none;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
+	width: 550px;
+	margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout {
+  padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+  padding: 4px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser {
+  width: 95%; 
+  margin: 10px auto;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeDocumentType {
+  padding-bottom: 3px; 
+}
+
+.UIFastContentCreatorPortlet .MultiValueContainer a  {
+  margin: 0px 5px;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent .UIFormWithTitle {
+  width: auto;
+  border-top: none;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContent {
+	border: none;
+}
+
+.UIFastContentCreatorPortlet .TabPaneContent {
+  margin: 5px;
+}
+
+/*############################## -- UITreeJCRExplorer   -- ##############################*/
+
+.UIFastContentCreatorPortlet .Explorer {
+  float: left ;
+  width: 230px ;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList .UIGrid {
+  width: 97%;
+  margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
+  margin-top: 1px;
+  border: solid 1px #c6c6c9;
+  background: #f3f3f3;
+  padding: 1px;
+}
+
+.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+  padding: 0px 4px;
+  vertical-align: middle;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormUploadInput  .FileNameLabel {
+	width: auto;	
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
+	margin: auto;
+	padding-bottom: 0px;
+	width: 100%;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
+	margin-left: 5px;
+	float: none;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
+	width: 550px;
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+	margin: 10px 0px 0px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	width: 98%;
+	margin: 0px;
+	border: 1px solid #E1E1E1;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+	padding: 5px 0px;
+	margin: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout .FieldLabel{
+	width: 100px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
+	width: 100px;
+}
+
+.UIFastContentCreatorPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}
