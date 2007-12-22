@@ -45,7 +45,7 @@ public class SessionsUtils {
 
   public static SessionProvider getSessionProvider() {    
     String key = Util.getPortalRequestContext().getSessionId();
-    return getJcrSessionProvider(key) ;
+    return getJcrSessionProvider(key) ;    
   }
   
   public static SessionProvider getAnonimProvider() {
