@@ -248,7 +248,7 @@ public class UIToolBar extends UIContainer {
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
       if(!container.hasAddPermission(uiDocument.node_)) {
-        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-comment", null, 
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.access-add-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

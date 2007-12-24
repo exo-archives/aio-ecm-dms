@@ -8,6 +8,10 @@
  */
 %>
 <% import org.exoplatform.webui.core.UIPageIterator; %>
+<%
+   UIPageIterator uiIterator = uicomponent.getChild(UIPageIterator.class) ;
+   int totalPages = uiIterator.getAvailablePage();
+%>
 <div class="UIActionList" id="$uicomponent.id">
   <table class="UIGrid">
 	  <thead>
@@ -62,7 +66,9 @@
 	    %>
     </tbody>
   </table>
+  <% if(totalPages > 1){ %>
   <% uicomponent.renderChild(UIPageIterator.class) %>
+  <% } %>
   <div class="UIAction"> 
     <table class="ActionContainer">
     	<tr>
