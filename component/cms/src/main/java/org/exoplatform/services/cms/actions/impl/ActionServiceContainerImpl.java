@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PropertyType;
@@ -217,7 +218,11 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public List<Node> getCustomActionsNode(Node node, String lifecyclePhase) throws Exception {
-    return getActions(node.getParent(), lifecyclePhase) ;
+    try {
+      return getActions(node.getParent(), lifecyclePhase) ;
+    } catch(ItemNotFoundException item) {
+      return null ;
+    }
   }
   
   public List<Node> getActions(Node node, String lifecyclePhase) throws Exception {

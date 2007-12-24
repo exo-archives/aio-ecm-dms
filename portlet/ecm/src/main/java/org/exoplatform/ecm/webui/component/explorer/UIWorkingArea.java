@@ -255,9 +255,9 @@ public class UIWorkingArea extends UIContainer {
     String userName = context.getRemoteUser() ;
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class) ;
     List<Node> unsafeActions = actionContainer.getCustomActionsNode(node, ActionServiceContainer.READ_PHASE);
+    if(unsafeActions == null) return new ArrayList<Node>() ;
     SecurityService securityService = getApplicationComponent(SecurityService.class) ;
-    for (Iterator<Node> iter = unsafeActions.iterator(); iter.hasNext();) {
-      Node actionNode = iter.next();
+    for(Node actionNode : unsafeActions) {
       Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
       for (int i = 0; i < roles.length; i++) {
         String role = roles[i].getString();

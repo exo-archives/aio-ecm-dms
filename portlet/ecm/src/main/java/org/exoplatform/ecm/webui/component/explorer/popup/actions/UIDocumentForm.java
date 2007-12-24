@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
@@ -160,14 +161,17 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       uiExplorer.updateAjax(event);        
     } catch (AccessControlException ace) {
-      ace.printStackTrace() ;
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
-      ve.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
                                               ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
+    } catch(ItemNotFoundException item) {
+      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.item-not-found", null, 
+                                              ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;      
     } catch(RepositoryException repo) {
       repo.printStackTrace() ;
       String key = "UIDocumentForm.msg.repository-exception" ;
