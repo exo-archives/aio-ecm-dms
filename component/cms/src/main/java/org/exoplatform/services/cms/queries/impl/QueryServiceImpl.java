@@ -214,6 +214,8 @@ public class QueryServiceImpl implements QueryService, Startable{
 
     String queriesPath = baseQueriesPath_ ;
     Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
+    QueryManager queryManager = session.getWorkspace().getQueryManager() ;
+    queryManager.createQuery(statement, language) ;
     if(queryHome.hasNode(queryName)) {
       Node query = queryHome.getNode(queryName) ;
       query.setProperty("jcr:language", language) ;

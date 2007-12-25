@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
+import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -158,7 +159,17 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         uiJCRExplorer.refreshExplorer() ;
         uiJCRExplorer.cancelAction() ;
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.version-exception", null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(ConstraintViolationException cons) {
+        uiJCRExplorer.getSession().refresh(false) ;
+        uiJCRExplorer.refreshExplorer() ;
+        uiJCRExplorer.cancelAction() ;
+        Object[] args = {uiRenameForm.renameNode_.getPrimaryNodeType().getName()} ;
+        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.constraintViolation-exception", args,
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp,e) ;
