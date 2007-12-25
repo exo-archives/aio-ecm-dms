@@ -219,7 +219,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!", "#"} ;
         for(String filterChar : arrFilterChar) {
           if(name.indexOf(filterChar) > -1) {
-            uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.name-invalid", null, ApplicationMessage.WARNING)) ;
+            uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.name-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
@@ -228,8 +229,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         try {
           queryService.addQuery(name, statement, queryLang, userName, repository) ;        
         } catch(Exception e){
-          e.printStackTrace() ;
-          uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null,
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
@@ -244,7 +245,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         try {
           queryManager.createQuery(statement, queryLang) ;
         } catch(Exception e) {
-          uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null)) ;
+          uiApp.addMessage(new ApplicationMessage("UIJCRAdvancedSearch.msg.save_unSuccessful", null,
+                                                  ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }

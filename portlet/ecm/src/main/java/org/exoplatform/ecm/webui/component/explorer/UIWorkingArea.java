@@ -17,7 +17,6 @@
 package org.exoplatform.ecm.webui.component.explorer ;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -415,7 +414,16 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.getAllClipBoard().add(clipboard) ;                      
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         uiExplorer.updateAjax(event) ;
+      } catch(ConstraintViolationException cons) {
+        uiExplorer.getSession().refresh(false) ;
+        uiExplorer.refreshExplorer() ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.updateAjax(event) ;
+        return ;              
       } catch(Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
@@ -434,7 +442,16 @@ public class UIWorkingArea extends UIContainer {
       Node selectedNode = null;
       try {
         selectedNode = (Node)session.getItem(nodePath);
+      } catch(ConstraintViolationException cons) {
+        uiExplorer.getSession().refresh(false) ;
+        uiExplorer.refreshExplorer() ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.updateAjax(event) ;
+        return ;        
       } catch (Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         return;
       }
@@ -571,6 +588,14 @@ public class UIWorkingArea extends UIContainer {
         }
         uiExplorer.setSelectNode(parentNode) ;
         uiExplorer.updateAjax(event) ;
+      } catch(ConstraintViolationException cons) {
+        uiExplorer.getSession().refresh(false) ;
+        uiExplorer.refreshExplorer() ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.updateAjax(event) ;
+        return ;        
       } catch(Exception e) {  
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
