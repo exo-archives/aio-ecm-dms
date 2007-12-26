@@ -22,6 +22,7 @@
     <module>jbpm/content/validation</module>
     <module>jbpm/holiday</module>
     <module>jbpm/payraise</module>
+    <module>jbpm/content-publishing</module>
   </modules>
 
   <developers>
