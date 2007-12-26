@@ -9,6 +9,8 @@
 %>
 <% import org.exoplatform.webui.core.UIPageIterator; %>
 <% 
+  UIPageIterator uiIterator = uicomponent.getChild(UIPageIterator.class) ;
+  int totalPages = uiIterator.getAvailablePage();
   def metaDatas = uicomponent.getListMetadata() ; 
   if(metaDatas == null) return ;
 %>
@@ -80,7 +82,9 @@
       <%}%>  
 	  </tbody>
   </table>
+  <% if(totalPages>1){ %>
   <div style="margin:3px 0px 5px 0px;">
     <%uicomponent.renderChild(UIPageIterator.class)%>
   </div>
+  <% } %>
 </div>
