@@ -82,6 +82,11 @@
               <targetPath>WEB-INF/conf/bp</targetPath>
               <includes><include>*.jar</include></includes>
             </resource>
+            <resource>
+              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/bp/exo.ecm.bp.jbpm.content.publishing/${org.exoplatform.ecm.version}</directory>
+              <targetPath>WEB-INF/conf/bp</targetPath>
+              <includes><include>*.jar</include></includes>
+            </resource>
           </webResources>
         </configuration>
       </plugin>

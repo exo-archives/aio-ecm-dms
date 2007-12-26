@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<configuration>  
-  
+<configuration>
+		<component>
+	    <key>org.exoplatform.services.cms.scripts.ScriptService</key>  
+	    <type>org.exoplatform.services.cms.scripts.impl.ScriptServiceImpl</type>
+  	</component>
+    
    <external-component-plugins>
     <target-component>org.exoplatform.services.cms.scripts.ScriptService</target-component>
     	<component-plugin> 
@@ -24,12 +28,7 @@
 		        <object type="org.exoplatform.services.cms.impl.ResourceConfig">		        	
 		          <field  name="resources">
 		            <collection type="java.util.ArrayList">
-		              <!-- ecm-explorer/action -->
-		              <value>
-		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
-		                  <field  name="name"><string>ecm-explorer/action/ReloadBPScript.groovy</string></field>
-		                </object>
-		              </value>
+		              <!-- ecm-explorer/action -->		              
 		              <value>
 		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 		                  <field  name="name"><string>ecm-explorer/action/RSSScript.groovy</string></field>

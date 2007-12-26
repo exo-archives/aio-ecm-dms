@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>
-  
+
+	<component>
+    <key>org.exoplatform.services.cms.metadata.MetadataService</key>
+    <type>org.exoplatform.services.cms.metadata.impl.MetadataServiceImpl</type>    
+  </component>
+    
   <external-component-plugins>
     <target-component>org.exoplatform.services.cms.metadata.MetadataService</target-component>
       <component-plugin>

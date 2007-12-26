@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<configuration>  
-
+<configuration>
+  
+	<component>
+	  <key>org.exoplatform.services.cms.folksonomy.FolksonomyService</key>  
+	  <type>org.exoplatform.services.cms.folksonomy.impl.FolksonomyServiceImpl</type>      
+	</component>
+	
 	<external-component-plugins>
     <target-component>org.exoplatform.services.cms.folksonomy.FolksonomyService</target-component>  	  
     	<component-plugin>

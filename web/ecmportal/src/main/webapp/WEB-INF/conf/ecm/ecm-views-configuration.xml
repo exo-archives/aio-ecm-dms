@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<configuration>  
-
+<configuration>
+  
+	<component>
+    <key>org.exoplatform.services.cms.views.ManageViewService</key>
+    <type>org.exoplatform.services.cms.views.impl.ManageViewServiceImpl</type>
+    <init-params>
+    	<value-param>
+    		<name>buttons</name>
+    		<value>
+    			addFolder; addDocument; editDocument; upload; viewReferences; viewMetadatas;
+                viewNodeType; viewPermissions; viewProperties; manageVersions; manageCategories; manageRelations; 
+    			manageActions; exportNode; importNode; viewRelations; showJCRStructure; watchDocument; taggingDocument; multiLanguage
+    		</value>
+    	</value-param>
+    </init-params>
+  </component>
+  
 	<external-component-plugins>
     <target-component>org.exoplatform.services.cms.views.ManageViewService</target-component>
     	<component-plugin> 

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>
-  
+
+	<component>
+    <key>org.exoplatform.services.cms.templates.TemplateService</key>
+    <type>org.exoplatform.services.cms.templates.impl.TemplateServiceImpl</type>    
+  </component>
+    
    <external-component-plugins>
     <target-component>org.exoplatform.services.cms.templates.TemplateService</target-component>
       <component-plugin>
@@ -173,7 +178,36 @@
                         </collection>
                       </field>                                    
                     </object>
-                  </value>                                                        
+                  </value>
+                  
+                  <value>
+                    <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
+                      <field  name="nodetypeName"><string>exo:publishingProcess</string></field>
+                      <field  name="documentTemplate"><boolean>false</boolean></field>
+                      <field  name="label"><string>Content Publishing Workflow Action</string></field>
+                      <field  name="referencedView">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/bp/contentPublishing/views/view1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                           
+                          </value>  
+                        </collection>
+                      </field>                  
+                      <field  name="referencedDialog">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/bp/contentPublishing/dialogs/dialog1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                           
+                          </value>                      
+                        </collection>
+                      </field>                                    
+                    </object>
+                  </value>
+                                                                          
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:addMetadataAction</string></field>
@@ -227,34 +261,7 @@
                         </collection>
                       </field>                                    
                     </object>
-                  </value>
-                  <value>
-                    <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
-                      <field name="nodetypeName"><string>exo:ReloadBPAction</string></field>
-                      <field name="documentTemplate"><boolean>false</boolean></field>
-                      <field  name="label"><string>Reload Business Process Action</string></field>
-                      <field name="referencedView">
-                        <collection type="java.util.ArrayList">
-                          <value>
-                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">
-                              <field name="templateFile"><string>/actions/script/reloadBP/views/view1.gtmpl</string></field>
-                              <field name="roles"><string>*</string></field>
-                            </object>
-                          </value>
-                        </collection>
-                      </field>
-                      <field name="referencedDialog">
-                        <collection type="java.util.ArrayList">
-                          <value>
-                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">
-                              <field name="templateFile"><string>/actions/script/reloadBP/dialogs/dialog1.gtmpl</string></field>
-                              <field name="roles"><string>*</string></field>
-                            </object>
-                          </value>
-                        </collection>
-                      </field>
-                    </object>
-                  </value>                  
+                  </value>                                   
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:transformBinaryToTextAction</string></field>
