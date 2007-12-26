@@ -220,7 +220,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   public List<Node> getCustomActionsNode(Node node, String lifecyclePhase) throws Exception {
     try {
       return getActions(node.getParent(), lifecyclePhase) ;
-    } catch(ItemNotFoundException item) {
+    } catch(Exception item) {
       return null ;
     }
   }

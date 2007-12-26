@@ -24,6 +24,7 @@ import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.ReferentialIntegrityException;
@@ -278,6 +279,11 @@ public class UIWorkingArea extends UIContainer {
       Node selectedNode = null;
       try {
         selectedNode = (Node)session.getItem(nodePath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
@@ -344,14 +350,18 @@ public class UIWorkingArea extends UIContainer {
       Node renameNode = null;
       try {
         renameNode = (Node)session.getItem(renameNodePath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
       }
-      
-      try{
+      try {
         ((ExtendedNode) renameNode).checkPermission(PermissionType.SET_PROPERTY);        
-      }catch (Exception e) {
+      } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-rename-node",null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
@@ -399,6 +409,15 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;      
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      Session session = uiExplorer.getSessionByWorkspace(wsName) ;
+      try {
+        session.getItem(srcPath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } 
       try {
         List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard() ;
         for(ClipboardCommand command:clipboards) {
@@ -450,6 +469,11 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
         return ;        
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
@@ -515,6 +539,11 @@ public class UIWorkingArea extends UIContainer {
         session.save() ;
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.save-node-success", args));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -534,6 +563,11 @@ public class UIWorkingArea extends UIContainer {
       Node node = null;
       try {
         node = (Node)session.getItem(nodePath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;      
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
@@ -620,6 +654,11 @@ public class UIWorkingArea extends UIContainer {
       Node node = null;
       try {
         node = (Node)session.getItem(nodePath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
@@ -671,6 +710,11 @@ public class UIWorkingArea extends UIContainer {
       Node node = null;
       try {
         node = (Node)session.getItem(nodePath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
@@ -719,6 +763,11 @@ public class UIWorkingArea extends UIContainer {
       try {
         Node node = uiExplorer.getNodeByPath(nodePath, session);
         node.checkin();
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -746,6 +795,11 @@ public class UIWorkingArea extends UIContainer {
       try {
         Node node = uiExplorer.getNodeByPath(nodePath, session) ;
         node.checkout();
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -800,6 +854,11 @@ public class UIWorkingArea extends UIContainer {
       Node destNode = null;
       try {
         destNode = (Node)session.getItem(destPath);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+                                                null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
