@@ -168,7 +168,17 @@ public class UIActionTypeForm extends UIForm {
                                                  ApplicationMessage.WARNING)) ; 
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }      
+      }    
+      String[] arrFilterChar = {"&", "$", "^", "(", ")", "@", ":","]", "[", "*", "%", "!", "+"} ;
+      String[] arrActionNames = actionName.split(":") ;
+      for(String filterChar : arrFilterChar) {
+        if(arrActionNames[1].indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.fileName-invalid", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       List<String> variables = new ArrayList<String>();     
       List values = uiForm.uiFormMultiValue.getValue();
       if(values != null && values.size() > 0) {

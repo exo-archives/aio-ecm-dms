@@ -28,17 +28,25 @@
 	  </thead>
 	  <tbody>
 	    <%
-	    def rowClass = null ;
+	    def rowClass = "EvenRow" ;
 	    boolean even = true ;
-	    for (bean in uicomponent.getBeans())  {
-	      if(even) rowClass = "EvenRow" ;  
-	      else rowClass =  "OddRow" ; 
-	      even = !even ;
-	    %>
+	    if(uicomponent.getBeans().size() > 0) {
+		    for (bean in uicomponent.getBeans())  {
+		      if(even) rowClass = "EvenRow" ;  
+		      else rowClass =  "OddRow" ; 
+		      even = !even ;
+		    %>
+		      <tr class="$rowClass">
+		        <td><%=bean.getWorkspace();%></td>
+		        <td><%=bean.getPath();%></td>
+		      </tr>
+		<%
+		    }
+	    } else {
+    %>
 	      <tr class="$rowClass">
-	        <td><%=bean.getWorkspace();%></td>
-	        <td><%=bean.getPath();%></td>
-	      </tr>
+	        <td colspan="2" align="center"><%=_ctx.appRes("UIReferencesList.msg.no-references")%></td>
+	      </tr>	    
 	  <%}%>
 	  </tbody>
 	</table> <!--End UIGrid-->
