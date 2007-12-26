@@ -175,8 +175,12 @@ public class DialogFormFields extends UIForm {
     }
     return "" ;
   }
-
-  public void addActionField(String name, String[] arguments) throws Exception {
+  
+  public void addActionField(String name, String[] arguments) throws Exception { 
+    addActionField(name,null,arguments);
+  }
+  
+  public void addActionField(String name,String label,String[] arguments) throws Exception {
     String editable = "true";
     String defaultValue = "";
     String jcrPath = null;
@@ -246,10 +250,10 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
-        }
-        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-        ResourceBundle res = context.getApplicationResourceBundle() ;
-        uiInput.setLabel(res.getString(getId() + ".validator." + name)) ;
+        }        
+      }
+      if(label != null && label.length() != 0) {
+        uiInput.setLabel(label);
       }
       addUIFormInput(uiInput) ;
     }
@@ -276,8 +280,12 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-
+    
   public void addTextField(String name, String[] arguments) throws Exception {
+    addTextField(name,null,arguments);
+  }
+  
+  public void addTextField(String name, String label, String[] arguments) throws Exception {
     String editable = "true";
     String type = "text" ;
     String defaultValue = "";
@@ -377,7 +385,10 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(RepeatIntervalValidator.class) ;
         }
       }     
-      addUIFormInput(uiInput) ;
+      if(label != null && label.length()!=0) {
+        uiInput.setLabel(label);
+      }
+      addUIFormInput(uiInput) ;      
     }
     if(uiInput.getValue() == null) uiInput.setValue(defaultValue) ;
     if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
@@ -408,8 +419,11 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-
   public void addTextAreaField(String name, String[] arguments) throws Exception {
+    addTextAreaField(name,null,arguments);
+  }
+  
+  public void addTextAreaField(String name, String label, String[] arguments) throws Exception {
     String editable = "true";
     String defaultValue = "";
     String jcrPath = null;
@@ -499,8 +513,12 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-
+  
   public void addWYSIWYGField(String name, String[] arguments) throws Exception {
+    addWYSIWYGField(name,null,arguments);
+  }
+  
+  public void addWYSIWYGField(String name, String label, String[] arguments) throws Exception {
     String options = null ;
     String defaultValue = "";
     String jcrPath = null;
@@ -668,6 +686,7 @@ public class DialogFormFields extends UIForm {
     if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
     renderField(name) ;
   }
+  
   public String getSelectBoxFieldValue(String name) {
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
     if (uiSelectBox != null) return uiSelectBox.getValue() ;
