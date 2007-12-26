@@ -1,0 +1,30 @@
+<forms>
+
+  <form>
+    <state-name>start</state-name>
+    <delegated-view>true</delegated-view>
+  </form>
+
+  <form>
+    <resource-bundle>evaluation</resource-bundle>
+    <state-name>evaluation</state-name>
+    <variable name="document-id" component="nodeview"/>
+    <variable name="initiator" editable="false"/>
+    <variable name="startDate" component="datetime"/>
+    <variable name="endDate" component="datetime"/>
+    <variable name="reason" component="textarea"/>
+    <variable name="delegate"/>
+    <submitbutton name="approve" transition-name="approve" />
+    <submitbutton name="disapprove" transition-name="disapprove" />
+    <submitbutton name="delegate" transition-name="delegate" />    
+    <submitbutton name="refuse" transition-name="refuse" />
+  </form>
+
+  <form>
+    <resource-bundle>change-request</resource-bundle>
+    <state-name>change-request</state-name>
+    <variable name="document-id" component="nodeedit"/>
+    <submitbutton name="submit" transition-name="submit" />
+    <submitbutton name="cancel" transition-name="cancel" />
+  </form>
+</forms>
