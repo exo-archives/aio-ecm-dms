@@ -48,7 +48,13 @@ public class ScriptPlugin extends BaseComponentPlugin{
     if(param == null) return null ;
     return param.getValue() ;
   }
-
+  
+  public String getPredefineScriptsLocation() {
+    ValueParam param = params_.getValueParam("predefinedScriptsLocation") ;
+    if(param == null) return null ;
+    return param.getValue() ;
+  }
+  
   public String getName() {   return name; }
   public void setName(String s) { name = s ; }
 

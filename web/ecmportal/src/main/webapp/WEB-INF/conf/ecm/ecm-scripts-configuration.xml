@@ -17,19 +17,18 @@
 	        <value-param>
 	        	<name>repository</name>
 	        	<value>repository</value>
-	        </value-param>	        
+	        </value-param>
+			<value-param>
+	        	<name>predefinedScriptsLocation</name>
+	        	<value>war:/conf/ecm/artifacts</value>
+	        </value-param>
 		      <object-param>
 		        <name>predefined.scripts</name>
 		        <description>description</description>
 		        <object type="org.exoplatform.services.cms.impl.ResourceConfig">		        	
 		          <field  name="resources">
 		            <collection type="java.util.ArrayList">
-		              <!-- ecm-explorer/action -->
-		              <value>
-		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
-		                  <field  name="name"><string>ecm-explorer/action/ReloadBPScript.groovy</string></field>
-		                </object>
-		              </value>
+		              <!-- ecm-explorer/action -->		              
 		              <value>
 		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 		                  <field  name="name"><string>ecm-explorer/action/RSSScript.groovy</string></field>
