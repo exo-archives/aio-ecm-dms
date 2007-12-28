@@ -156,6 +156,7 @@ public class UIBrowseContainer extends UIContainer {
   private int rowPerBlock_ = 6;
   private Node selectedTab_ ;
   private String tagPath_ ;  
+  private String keyValue_ ;
 
   private String templatePath_ ;  
   private BCTreeNode treeRoot_ ; 
@@ -335,6 +336,9 @@ public class UIBrowseContainer extends UIContainer {
     } catch(Exception ac){}
     return false ;
   }
+  
+  public void setKeyValue(String keyValue) { keyValue_ = keyValue ; } ;
+  public String getKeyValue() { return keyValue_ ; }
 
   public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
