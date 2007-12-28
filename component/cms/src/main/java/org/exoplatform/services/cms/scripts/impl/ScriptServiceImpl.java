@@ -55,8 +55,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
 
   private GroovyClassLoader groovyClassLoader_ ;
   private RepositoryService repositoryService_ ;
-  private NodeHierarchyCreator nodeHierarchyCreator_ ;
-  private String predefineScriptLocation_ = "war:/conf/ecm/artifacts"; 
+  private NodeHierarchyCreator nodeHierarchyCreator_ ;   
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
 
   public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
@@ -64,7 +63,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     super(cservice, nodeHierarchyCreator, repositoryService, cacheService);
     groovyClassLoader_ = createGroovyClassLoader();
     repositoryService_ = repositoryService ; 
-    nodeHierarchyCreator_ = nodeHierarchyCreator ;
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;    
   }
 
   public void start() {    
@@ -85,13 +84,14 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     Session session = null ;
     String scriptsPath = getBasePath();
     for(ScriptPlugin plugin : plugins_) {
+      String scriptsLocation = plugin.getPredefineScriptsLocation();
       if(plugin.getAutoCreateInNewRepository()) {
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;                
         for(RepositoryEntry repo : repositories) {
           session = repositoryService_.getRepository(repo.getName()).getSystemSession(repo.getSystemWorkspaceName());          
           Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
           while(iter.hasNext()) {
-            init(session,(ResourceConfig) iter.next().getObject(),predefineScriptLocation_) ;            
+            init(session,(ResourceConfig) iter.next().getObject(),scriptsLocation) ;            
           }
           ObservationManager obsManager = session.getWorkspace().getObservationManager();
           obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
@@ -108,7 +108,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;          
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
       while(iter.hasNext()) {
-        init(session,(ResourceConfig) iter.next().getObject(),predefineScriptLocation_) ;            
+        init(session,(ResourceConfig) iter.next().getObject(),scriptsLocation) ;            
       }
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
@@ -125,9 +125,10 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     Session session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;
     for(ScriptPlugin plugin : plugins_) {
       if(!plugin.getAutoCreateInNewRepository()) continue ;
+      String scriptsLocation = plugin.getPredefineScriptsLocation();
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;                           
       while(iter.hasNext()) {
-        init(session,(ResourceConfig) iter.next().getObject(),predefineScriptLocation_) ;            
+        init(session,(ResourceConfig) iter.next().getObject(),scriptsLocation) ;            
       }      
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
       obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
