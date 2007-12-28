@@ -21,6 +21,10 @@
 	        <value-param>
 	        	<name>repository</name>
 	        	<value>repository</value>
+	        </value-param>
+	        <value-param>
+	        	<name>predefinedScriptsLocation</name>
+	        	<value>war:/conf/ecm/artifacts</value>
 	        </value-param>	        
 		      <object-param>
 		        <name>predefined.scripts</name>
