@@ -805,26 +805,10 @@
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
 	border: solid 1px #b7b7b7;
 	background: white;
-	height: 206px;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree {
-  float: left;
-  border: none;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeContainer {
-	height: 173px;
-	width: 228px;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .UITree .TreeLevelContainer {
-	padding: 7px 0px 0px 7px;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
-	height: 173px;
 }
 
 .UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{

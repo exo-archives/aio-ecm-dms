@@ -306,7 +306,7 @@ UIBrowseContentPortlet .Explorer {
   width: 310px;
 }
 
-/*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
+/*############################## -- FIX BUG POPUP -- ##############################*/
 
 .UIBrowseContentPortlet .UISearchController {
 	padding: 5px;
@@ -767,18 +767,19 @@ UIBrowseContentPortlet .Explorer {
   overflow: auto;
   padding: 0px 10px;
   height: 300px;
-  }
+  width: 98%;
+ }
   
 .UIBrowseContentPortlet .FileContent .Content .TextContent {  
   margin: auto;
-  }
+ }
   
 .UIBrowseContentPortlet .FileContent .ContentDetail {  
   border: 1px solid #e1e1e1; 
   text-align: center;
   overflow: visible;
   padding: 15px 0px;
-  }
+}
     
 .UIBrowseContentPortlet .FileContent .UIVoteForm {
   padding: 0px;
