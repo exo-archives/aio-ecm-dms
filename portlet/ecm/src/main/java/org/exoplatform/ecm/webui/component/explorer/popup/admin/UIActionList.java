@@ -223,6 +223,7 @@ public class UIActionList extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      if(uiPopup != null && uiPopup.isRendered()) uiActionListContainer.removeChildById("editActionPopup") ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletPreferences preferences = context.getRequest().getPreferences() ;
       try {
