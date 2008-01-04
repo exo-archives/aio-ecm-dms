@@ -68,7 +68,7 @@ public class UIViewRelationList extends UIContainer{
           Node node = session.getNodeByUUID(uuid) ;
           relations.add(node) ;
         } catch(Exception e) {
-          break ;
+          continue ;
         }
       }
     }
