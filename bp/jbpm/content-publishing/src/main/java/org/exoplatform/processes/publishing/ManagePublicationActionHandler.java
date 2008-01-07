@@ -42,9 +42,9 @@ public class ManagePublicationActionHandler implements ActionHandler {
     } catch (Exception e) {
       e.printStackTrace();
       ExoLogger.getLogger(this.getClass()).error(e);
-    } finally {         
-      context.getToken().signal("publication-done");
-      context.getSchedulerInstance().cancel("publicationTimer", context.getToken());
+    } finally {               
+      context.getSchedulerInstance().cancel("publicationTimer", context.getToken());      
+      context.getToken().signal("publication-done");            
     }
   }
   
@@ -54,16 +54,12 @@ public class ManagePublicationActionHandler implements ActionHandler {
     String currentWorkspace = currentLocation[1];
     String currentPath = currentLocation[2];                    
     String publishWorkspace=(String)context.getVariable("exo:publishWorkspace");
-    String publishPath = (String)context.getVariable("exo:publishPath");        
-    CmsService cmsService = ProcessUtil.getService(CmsService.class);    
-    if(publishPath.endsWith("/")) {
-      publishPath = publishPath + currentPath.substring(currentPath.lastIndexOf("/") + 1) ;
-    } else {
-      publishPath = publishPath + currentPath.substring(currentPath.lastIndexOf("/")) ;
-    }    
-    cmsService.moveNode(currentPath, currentWorkspace, publishWorkspace, publishPath, repository);    
+    String publishPath = (String)context.getVariable("exo:publishPath");
+    String realPublishPath = ProcessUtil.computeDestinationPath(currentPath,publishPath);
+    CmsService cmsService = ProcessUtil.getService(CmsService.class);            
+    cmsService.moveNode(currentPath, currentWorkspace, publishWorkspace, realPublishPath, repository);    
     context.setVariable(ProcessUtil.CURRENT_STATE,ProcessUtil.LIVE);    
-    ProcessUtil.setCurrentLocation(context,publishWorkspace,publishPath);
+    ProcessUtil.setCurrentLocation(context,publishWorkspace,realPublishPath);
     ProcessUtil.publish(context);
   }
 

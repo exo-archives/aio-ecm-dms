@@ -18,8 +18,10 @@ package org.exoplatform.processes.publishing;
 
 import java.util.Date;
 
+import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.Action;
 import org.jbpm.graph.exe.ExecutionContext;
+import org.jbpm.graph.exe.Token;
 import org.jbpm.instantiation.Delegation;
 import org.jbpm.scheduler.exe.Timer;
 
@@ -32,39 +34,39 @@ import org.jbpm.scheduler.exe.Timer;
 public class ScheduleBackupTimerActionHandler extends BackupContentActionHandler {
 
   private static final long serialVersionUID = 1L;
-
+  
   public void execute(ExecutionContext context) {    
-    try {           
-      String currentState = (String)context.getVariable(ProcessUtil.CURRENT_STATE);
-      if(!currentState.equals(ProcessUtil.LIVE)) {
-        backupContent(context);
-        return;
-      }   
+    try {              
       Date endDate = (Date)context.getVariable("endDate");      
       Date currentDate = new Date();
       if (endDate.after(currentDate)) {        
         // Create and save the Action object
         Delegation delegation = new Delegation();
-        delegation.setClassName("org.exoplatform.processes.publishing.BackupContentActionHandler");
+        delegation.setClassName("org.exoplatform.processes.publishing.BackupContentActionHandler");        
         delegation.setProcessDefinition(context.getProcessDefinition());
 
         Action backupAction = new Action();
         backupAction.setName("backupAction");
         backupAction.setActionDelegation(delegation);
+        backupAction.setProcessDefinition(context.getProcessDefinition());
         context.getProcessDefinition().addAction(backupAction);
-        // create the timer        
-        Timer timer = new Timer(context.getToken());        
+        // create the timer               
+        //Token token = new Token(context.getToken(),context.getNode().getName());
+        Token token = context.getToken();        
+        Timer timer = new Timer(token);        
         timer.setName("backupTimer");
         timer.setDueDate(endDate);
         timer.setGraphElement(context.getEventSource());
         timer.setTaskInstance(context.getTaskInstance());
         timer.setAction(backupAction);
         timer.setTransitionName("end");
-        context.getSchedulerInstance().schedule(timer);        
-      } else {
+        context.getSchedulerInstance().schedule(timer);               
+      } else {                
+        backupContent(context);        
         context.getToken().signal("backup-done");
       }      
-    } catch (Exception ex) {      
+    } catch (Exception ex) {
+      ExoLogger.getLogger(this.getClass()).equals(ex);
       ex.printStackTrace();
     }
   }

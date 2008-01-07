@@ -7,11 +7,7 @@
   </description>
 
   <!-- SWIMLANES -->
-  <swimlane name="initiator" />
-  
-  <swimlane name="validator">
-    <assignment class="org.exoplatform.processes.publishing.ValidatorAssignementHandler"/>
-  </swimlane>
+  <swimlane name="initiator" />    
 
   <!-- START-STATE -->
   <start-state name="start">
@@ -24,19 +20,29 @@
   
   <!-- NODES -->
   <task-node name="evaluation">  	
-    <task swimlane="validator"/>  
+    <task name="evaluation" description="evaluate document">
+      <assignment class="org.exoplatform.processes.publishing.ValidatorAssignmentHandler"/>
+    </task>  
     <transition name="approve" to="manage-publication"/>
     <transition name="disapprove" to="change-request"/>
     <transition name="delegate" to="delegate"/>    
-    <transition name="refuse" to="trash-movement"/>
-    
+    <transition name="refuse" to="trash-movement"/>    
   </task-node>  
 
   <task-node name="change-request">
-    <task swimlane="initiator"/> 
+    <task name="change-request" description="update and request for validation again">
+      <assignment class="org.exoplatform.processes.publishing.AuthorAssignmentHandler"/>
+    </task> 
     <transition name="submit" to="evaluation"/>
     <transition name="cancel" to="trash-movement"/>
   </task-node>
+  
+  <state name="trash-movement">
+    <event type="node-enter">
+      <action class="org.exoplatform.processes.publishing.TrashMovementActionHandler"/>
+    </event>
+    <transition name="move-done" to="end"/>  
+  </state>
   
   <process-state name="delegate">
   	<event type="node-enter">
@@ -59,14 +65,7 @@
       <action class="org.exoplatform.processes.publishing.SchedulePublicationTimerActionHandler"/>
     </event>
     <transition name="publication-done" to="manage-backup"/>  
-  </state>
-  
-  <state name="trash-movement">
-    <event type="node-enter">
-      <action class="org.exoplatform.processes.publishing.TrashMovementActionHandler"/>
-    </event>
-    <transition name="move-done" to="end"/>  
-  </state>
+  </state>    
   
   <state name="manage-backup">
     <event type="node-enter">

@@ -17,6 +17,8 @@
 
 package org.exoplatform.processes.publishing;
 
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -321,8 +323,63 @@ public class ProcessUtil {
   }
   
   public static <T> T getService(Class<T> type) {
-    ExoContainer container = ExoContainerContext.getCurrentContainer();
-    return  type.cast(container.getComponentInstanceOfType(type)) ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();    
+    return  type.cast(container.getComponentInstanceOfType(type)) ;       
   }
   
+  public static String getAuthor(ExecutionContext context){
+    String[] location = getCurrentLocation(context);
+    SessionProvider provider = SessionProvider.createSystemProvider();    
+    try{
+      Node node = getNode(location[0],location[1],location[2],provider);
+      return node.getProperty("exo:owner").getString();
+    }catch (Exception e) {
+    }finally {
+      provider.close();
+    }
+    return getActorId(context);
+  }
+  
+  public static String computeDestinationPath(String srcPath,String destPath) {
+    String realDestPath;
+    String datePath = getDateLocation();
+    String nodeName = srcPath.substring(srcPath.lastIndexOf("/")+1);
+    if(destPath.endsWith("/")) {
+      realDestPath = destPath.concat(datePath).concat(nodeName);
+    }else {
+      realDestPath = destPath.concat("/").concat(datePath).concat(nodeName);      
+    }
+    return realDestPath;
+  }
+  
+  public static String getDateLocation() { 
+    Calendar calendar = new GregorianCalendar();
+    String[] monthNames = new DateFormatSymbols().getMonths();
+    String currentYear  = Integer.toString(calendar.get(Calendar.YEAR)) ;    
+    String currentMonth = monthNames[calendar.get(Calendar.MONTH)] ;
+    
+    int weekday = calendar.get(Calendar.DAY_OF_WEEK);        
+    int diff = 2 - weekday ;
+    calendar.add(Calendar.DATE, diff);    
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
+    String startDateOfWeek = dateFormat.format(calendar.getTime());
+    String[] arrStartDate = startDateOfWeek.split("/") ;
+    String startWeekDay = arrStartDate[0] ;       
+    calendar.add(Calendar.DATE, 6);
+    String endDateOfWeek = dateFormat.format(calendar.getTime());
+    String[] arrEndDate = endDateOfWeek.split("/") ;
+    String endWeekDay = arrEndDate[0] ;       
+    StringBuilder builder = new StringBuilder();
+    //Year folder
+    builder.append(currentYear).append("/")
+    //Month folder
+           .append(currentMonth).append("/");
+//    //week folder
+//           .append(startWeekDay).append(" ").append(currentMonth)
+//           .append("-")
+//           .append(endWeekDay).append(" ").append(currentMonth)
+//           .append(" ").append(currentYear).append("/");
+    return builder.toString();
+  }
+
 }

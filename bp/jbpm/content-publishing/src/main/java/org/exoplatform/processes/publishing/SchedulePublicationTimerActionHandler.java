@@ -23,6 +23,7 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.Action;
 import org.jbpm.graph.exe.ExecutionContext;
+import org.jbpm.graph.exe.Token;
 import org.jbpm.instantiation.Delegation;
 import org.jbpm.scheduler.exe.Timer;
 
@@ -67,7 +68,7 @@ public class SchedulePublicationTimerActionHandler extends ManagePublicationActi
       publicationAction.setActionDelegation(delegation);      
       context.getProcessDefinition().addAction(publicationAction);      
           
-      //create the timer
+      //create the timer      
       Timer timer = new Timer(context.getToken());
       timer.setName("publicationTimer");            
       timer.setDueDate(startDate);
@@ -85,15 +86,11 @@ public class SchedulePublicationTimerActionHandler extends ManagePublicationActi
     String currentWorkspace = currentLocation[1];
     String currentPath = currentLocation[2];   
     String pendingWorksapce = (String)context.getVariable("exo:pendingWorkspace");
-    String pendingPath = (String)context.getVariable("exo:pendingPath");        
-    CmsService cmsService = ProcessUtil.getService(CmsService.class);
-    if(pendingPath.endsWith("/")) {
-      pendingPath = pendingPath + currentPath.substring(currentPath.lastIndexOf("/") + 1) ;
-    } else {
-      pendingPath = pendingPath + currentPath.substring(currentPath.lastIndexOf("/")) ;
-    }       
-    cmsService.moveNode(currentPath, currentWorkspace, pendingWorksapce, pendingPath, repository);    
-    ProcessUtil.setCurrentLocation(context,pendingWorksapce,pendingPath);
+    String pendingPath = (String)context.getVariable("exo:pendingPath");
+    String destPath = ProcessUtil.computeDestinationPath(currentPath,pendingPath);
+    CmsService cmsService = ProcessUtil.getService(CmsService.class);           
+    cmsService.moveNode(currentPath, currentWorkspace, pendingWorksapce, destPath, repository);    
+    ProcessUtil.setCurrentLocation(context,pendingWorksapce,destPath);
     ProcessUtil.waitForPublish(context);
   }  
 }
