@@ -18,7 +18,9 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPageIterator;
@@ -51,17 +53,21 @@ public class UITreeNodePageIterator extends UIPageIterator {
       uiPageIterator.setCurrentPage(page) ;
       if(uiPageIterator.getParent() == null) return ;      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPageIterator.getParent());
-      UIJCRExplorer explorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);   
-      UIDocumentContainer uiDocumentContainer = explorer.findFirstComponentOfType(UIDocumentContainer.class);
+      UIJCRExplorer uiExplorer = uiPageIterator.getAncestorOfType(UIJCRExplorer.class);  
+      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.findFirstComponentOfType(UIDocumentWorkspace.class) ;
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChild(UISearchResult.class) ;
+      if(uiSearchResult.isRendered()) return ;
+      UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
       UIDocumentInfo uiDocumentInfo = null ;
-      if(explorer.isShowViewFile()) {
+      if(uiExplorer.isShowViewFile()) {
         uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentWithTree") ;
       } else {
         uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
       }
       if(uiDocumentInfo == null || !uiDocumentInfo.isRendered()) return ;
-      String currentPath = explorer.getCurrentNode().getPath();
+      String currentPath = uiExplorer.getCurrentNode().getPath();
       if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;      
+      
       UIPageIterator iterator = uiDocumentInfo.getContentPageIterator();
       iterator.setCurrentPage(page);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);      
