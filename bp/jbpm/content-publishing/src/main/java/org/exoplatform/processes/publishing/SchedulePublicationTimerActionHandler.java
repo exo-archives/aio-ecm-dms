@@ -23,7 +23,6 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.jbpm.graph.def.Action;
 import org.jbpm.graph.exe.ExecutionContext;
-import org.jbpm.graph.exe.Token;
 import org.jbpm.instantiation.Delegation;
 import org.jbpm.scheduler.exe.Timer;
 
@@ -75,7 +74,7 @@ public class SchedulePublicationTimerActionHandler extends ManagePublicationActi
       timer.setGraphElement(context.getEventSource());
       timer.setTaskInstance(context.getTaskInstance());
       timer.setAction(publicationAction);
-      timer.setTransitionName("manage-backup");
+      timer.setTransitionName("manage-backup");      
       context.getSchedulerInstance().schedule(timer);
     }
   }

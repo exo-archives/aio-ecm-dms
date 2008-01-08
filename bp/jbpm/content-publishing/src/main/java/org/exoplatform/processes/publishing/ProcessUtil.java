@@ -22,6 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -34,6 +37,7 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.resources.LocaleConfigService;
 import org.jbpm.graph.exe.ExecutionContext;
 
 /**
@@ -353,14 +357,15 @@ public class ProcessUtil {
   }
   
   public static String getDateLocation() { 
-    Calendar calendar = new GregorianCalendar();
+    LocaleConfigService configService = getService(LocaleConfigService.class);
+    Locale locale = configService.getDefaultLocaleConfig().getLocale();
+    Calendar calendar = new GregorianCalendar(locale);
     String[] monthNames = new DateFormatSymbols().getMonths();
     String currentYear  = Integer.toString(calendar.get(Calendar.YEAR)) ;    
-    String currentMonth = monthNames[calendar.get(Calendar.MONTH)] ;
-    
+    String currentMonth = monthNames[calendar.get(Calendar.MONTH)] ;    
     int weekday = calendar.get(Calendar.DAY_OF_WEEK);        
-    int diff = 2 - weekday ;
-    calendar.add(Calendar.DATE, diff);    
+    //int diff = 2 - weekday ;        
+    //calendar.add(Calendar.DATE, weekday);    
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
     String startDateOfWeek = dateFormat.format(calendar.getTime());
     String[] arrStartDate = startDateOfWeek.split("/") ;
@@ -373,12 +378,12 @@ public class ProcessUtil {
     //Year folder
     builder.append(currentYear).append("/")
     //Month folder
-           .append(currentMonth).append("/");
-//    //week folder
-//           .append(startWeekDay).append(" ").append(currentMonth)
-//           .append("-")
-//           .append(endWeekDay).append(" ").append(currentMonth)
-//           .append(" ").append(currentYear).append("/");
+           .append(currentMonth).append("/")
+    //week folder
+           .append(startWeekDay).append(" ").append(currentMonth)
+           .append("-")
+           .append(endWeekDay).append(" ").append(currentMonth)
+           .append(" ").append(currentYear).append("/");
     return builder.toString();
   }
 
