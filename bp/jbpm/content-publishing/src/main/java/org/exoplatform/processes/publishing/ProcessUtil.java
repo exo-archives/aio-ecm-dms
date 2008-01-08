@@ -23,8 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -306,7 +304,7 @@ public class ProcessUtil {
   public static Node getNode(String repositoryName, String workspace, String path, SessionProvider provider) throws Exception {
     RepositoryService repositoryService = getService(RepositoryService.class);
     ManageableRepository repository= repositoryService.getRepository(repositoryName);
-    Session session = provider.getSession(workspace,repository);
+    Session session = provider.getSession(workspace,repository);    
     return (Node)session.getItem(path);
   }
   
@@ -364,8 +362,8 @@ public class ProcessUtil {
     String currentYear  = Integer.toString(calendar.get(Calendar.YEAR)) ;    
     String currentMonth = monthNames[calendar.get(Calendar.MONTH)] ;    
     int weekday = calendar.get(Calendar.DAY_OF_WEEK);        
-    //int diff = 2 - weekday ;        
-    //calendar.add(Calendar.DATE, weekday);    
+    int diff = 2 - weekday ;        
+    calendar.add(Calendar.DATE, diff);    
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
     String startDateOfWeek = dateFormat.format(calendar.getTime());
     String[] arrStartDate = startDateOfWeek.split("/") ;
