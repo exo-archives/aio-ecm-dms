@@ -135,7 +135,21 @@
                       <field  name="lifecyclePhase"><string>read</string></field>
                       <field  name="roles"><string>marry</string></field>
                       <field  name="variables">
-                        <string>exo:requestPath=/Documents/Validation Requests;exo:reservePath=/Users/marry/Private/Documents/Reserve</string>
+                        <string>exo:requestPath=/Documents/Validation Requests;exo:reservePath=/Users/marry/Private/Documents/Publishing Requested</string>
+                      </field>                  
+                    </object>  
+                  </value>
+                  <value>
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
+                      <field  name="type"><string>exo:publishingRequest</string></field>
+                      <field  name="name"><string>publishing request</string></field>                  
+                      <field  name="description"><string>request for publishing a document</string></field>
+                      <field  name="srcWorkspace"><string>collaboration</string></field>
+                      <field  name="srcPath"><string>/Users/root/Private/Documents</string></field>
+                      <field  name="lifecyclePhase"><string>read</string></field>
+                      <field  name="roles"><string>root</string></field>
+                      <field  name="variables">
+                        <string>exo:requestPath=/Documents/Validation Requests;exo:reservePath=/Users/root/Private/Documents/Publishing Requested</string>
                       </field>                  
                     </object>  
                   </value>                                  

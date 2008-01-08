@@ -72,6 +72,11 @@
 										<object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 											<field  name="name"><string>ecm-explorer/action/ProcessRecordsScript.groovy</string></field>
 										</object>  
+		              </value>
+		              <value>
+		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+		                  <field  name="name"><string>ecm-explorer/action/PublishingRequestScript.groovy</string></field>
+		                </object>  
 		              </value> 		              
 		              <!-- ecm-explorer/widget -->
 	                <value>

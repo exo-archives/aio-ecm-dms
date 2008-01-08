@@ -16,23 +16,60 @@
  */
 
 import java.util.Map;
+import javax.jcr.Session;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.cms.CmsService;
 
 import org.exoplatform.services.cms.scripts.CmsScript;
 
 /*
-* This action copy a document to requestPath to request for publishing and move the document
-* to reservePath to reserve
-*/
+ * This action copy a document to requestPath to request for publishing and move the document
+ * to reservePath to reserve
+ */
 public class PublishingRequestScript implements CmsScript {
-  
-  public PublishingRequestScript() {
-  }
-  
-  public void execute(Object context) {
-    Map variables = (Map) context;       
+  private CmsService cmsService_ ;
+  private RepositoryService repositoryService_;
 
-    //TODO Should send an email
-    println("Send message in SendMailScript to " + variables.get("exo:to"));
+  public PublishingRequestScript(CmsService cmsService, RepositoryService repositoryService) {
+    this.cmsService_ = cmsService;
+    this.repositoryService_ = repositoryService;
+  }
+
+  public void execute(Object context) {
+    Map variables = (Map) context;
+    String nodePath = (String)variables.get("nodePath") ;
+    String workspace = (String)variables.get("srcWorkspace") ;
+    String srcPath = (String)variables.get("srcPath") ;
+    String repository = (String)variables.get("repository");
+    String requestWorkspace = (String)variables.get("exo:requestWorkspace");
+    String requestPath = (String)variables.get("exo:requestPath");
+    String reservePath = (String)variables.get("exo:reservePath");
+    String destPath = null;
+    //copy the content to request validation folder
+    if(requestPath.endsWith("/")) {
+      destPath = requestPath + nodePath.substring(nodePath.lastIndexOf("/")+1);
+    }else {
+      destPath = requestPath + nodePath.substring(nodePath.lastIndexOf("/"));
+    }
+    Session session = null;
+    try{
+      session = repositoryService_.getRepository(repository).getSystemSession(workspace);
+      session.getWorkspace().copy(nodePath,destPath);
+      session.save();
+      if(reservePath != null && !reservePath.equals(srcPath)) {
+        if(reservePath.endsWith("/")) {
+          reservePath = reservePath + nodePath.substring(nodePath.lastIndexOf("/")+1) 
+        }else {
+          reservePath = reservePath + nodePath.substring(nodePath.lastIndexOf("/"))
+        }
+        cmsService_.moveNode(nodePath, workspace, workspace, reservePath, repository); 
+      } 
+    }catch(Exception e){      
+    } finally {
+      if(session!=null) {
+        session.logout();
+      }
+    }
   }
 
   public void setParams(String[] params) {}

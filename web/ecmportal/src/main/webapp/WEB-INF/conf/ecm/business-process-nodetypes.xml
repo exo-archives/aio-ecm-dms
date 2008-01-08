@@ -82,7 +82,7 @@
         </defaultValues>
       </propertyDefinition>
       <propertyDefinition name="exo:requestPath" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY"
-        protected="false" multiple="false"/>
+        protected="false" multiple="false"/>      
       <propertyDefinition name="exo:reservePath" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY"
         protected="false" multiple="false"/>
     </propertyDefinitions>
