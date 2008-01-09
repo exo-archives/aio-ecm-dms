@@ -363,6 +363,11 @@
   background: url('MacSkin/SelectPage.png') no-repeat;  
 }
 
+.UIGrid .PasteIcon {
+  width: 16px ;  height: 16px ;
+  background: url('MacSkin/PasteIcon.gif') no-repeat ;
+}
+
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
   float: left;

@@ -120,6 +120,11 @@
   cursor: pointer;
 }
 
+.UIGrid .PasteIcon {
+  width: 16px ;  height: 16px ;
+  background: url('VistaSkin/Paste.png') no-repeat ;
+}
+
 .BlueRoundedPlusPage16x16Icon {
   width: 19px; height: 18px;
   background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat ;
