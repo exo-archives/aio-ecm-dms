@@ -80,7 +80,12 @@ public class UIClipboard extends UIComponent {
       String type = selectedClipboard.getType();
       String srcPath = selectedClipboard.getSrcPath();      
       String nodePath = node.getPath();
-      String destPath = nodePath + srcPath.substring(srcPath.lastIndexOf("/"));
+      String destPath = "";
+      if(!nodePath.endsWith("/")){
+        destPath = nodePath + srcPath.substring(srcPath.lastIndexOf("/"));
+      }else{
+        destPath = nodePath + srcPath.substring(srcPath.lastIndexOf("/")+1);
+      }
       UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class) ;
       try {
         Session session = uiExplorer.getSession() ;
