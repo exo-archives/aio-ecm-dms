@@ -171,7 +171,7 @@ public class UIBrowseContainer extends UIContainer {
     addChild(uiTree) ;
     addChild(UIToolBar.class, null, null) ;
     addChild(UISearchController.class, null, null) ;    
-    addChild(UIDocumentDetail.class, null, null) ;
+    addChild(UIDocumentDetail.class, null, "DocumentDetail") ;
   }  
 
   public void changeNode(Node selectNode) throws Exception {
