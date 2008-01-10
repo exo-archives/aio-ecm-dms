@@ -20,7 +20,8 @@ ECMUtils.prototype.init = function(portletId) {
 		var uiJCRExplorers = eXo.core.DOMUtil.findDescendantsByClass(uiPageDeskTop, 'div', 'UIJCRExplorer') ;
 		if (uiJCRExplorers.length) {
 			for (var i = 0; i < uiJCRExplorers.length; i++) {
-				var uiResizeBlocks = eXo.core.DOMUtil.findAncestorByClass(uiJCRExplorers[i], "UIResizableBlock");
+				var uiResizeBlock = eXo.core.DOMUtil.findAncestorByClass(uiJCRExplorers[i], "UIResizableBlock");
+				if (uiResizeBlock) uiResizeBlock.style.overflow = "hidden";
 			}
 		}
 	}
