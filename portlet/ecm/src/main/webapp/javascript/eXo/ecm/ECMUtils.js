@@ -16,61 +16,28 @@ ECMUtils.prototype.init = function(portletId) {
 	}
 	if(document.getElementById("UIPageDesktop")) {
 		this.fixHeight(portletId) ;
-		this.fixScroll();
+		var uiPageDeskTop = document.getElementById("UIPageDesktop");
+		var uiJCRExplorers = eXo.core.DOMUtil.findDescendantsByClass(uiPageDeskTop, 'div', 'UIJCRExplorer') ;
+		if (uiJCRExplorers.length) {
+			for (var i = 0; i < uiJCRExplorers.length; i++) {
+				var uiResizeBlocks = eXo.core.DOMUtil.findAncestorByClass(uiJCRExplorers[i], "UIResizableBlock");
+			}
+		}
 	}
-
 };
 
 ECMUtils.prototype.fixHeight = function(portletId) {
-
 	var portlet = document.getElementById(portletId) ;
 	var refElement = eXo.core.DOMUtil.findAncestorByClass(portlet, "UIApplication") ;
 	if (!refElement) return;
-	var delta = refElement.offsetHeight - portlet.offsetHeight ;
+	var delta = parseInt(refElement.style.height) - portlet.offsetHeight;
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	if (resizeObj.length) {
 		for(var i = 0; i < resizeObj.length; i++) {
-			var nHeight = parseInt(resizeObj[i].offsetHeight) + delta;
-			if (nHeight < 0 ) nHeight = "0px" ;
-			var UISideBar = eXo.core.DOMUtil.findAncestorByClass(resizeObj[i], 'UISideBar') ;
-	
-			if (UISideBar) {
-					resizeObj[i].style.height = nHeight + 'px' ;
-					nHeight =  resizeObj[i].offsetHeight - (UISideBar.offsetHeight - resizeObj[i].offsetHeight - 3);
-					resizeObj[i].style.height = nHeight + 'px' ;
-			} else {
-				resizeObj[i].style.height = nHeight + 'px' ;
-			}
-		}
-	}
-	//bug ECM-1415;
-	var uiResize = eXo.core.DOMUtil.findAncestorByClass(portlet, 'UIResizableBlock') ;
-	if (uiResize) {
-			var uiRepositoryControl = eXo.core.DOMUtil.findDescendantById(portlet, "UIRepositoryControl");
-			var uiResizableBlock = eXo.core.DOMUtil.findFirstDescendantByClass(portlet, 'div', 'UIResizableBlock') ;
-			if (uiResizableBlock && uiRepositoryControl) {
-				uiResizableBlock.style.height = uiResize.clientHeight - uiRepositoryControl.clientHeight + "px";
-			}
-			uiResize.style.height  = uiResize.clientHeight - 6 + "px";
-	}
-};
-
-ECMUtils.prototype.fixScroll = function() {
-	var pageDesktop = document.getElementById("UIPageDesktop") ;
-	if(pageDesktop) { 
-		 var uiWindows = eXo.core.DOMUtil.findChildrenByClass(pageDesktop, "div", "UIWindow") ;
-	  for(var i = 0; i < uiWindows.length; i++) {
-			if (uiWindows[i].style.display == "block") {
-				var blockResizes = eXo.core.DOMUtil.findDescendantsByClass(uiWindows[i], "div", "UIResizableBlock");
-				if (blockResizes.length > 1) {
-					blockResizes[0].style.overflow = "hidden";
-					blockResizes[0].style.height = "auto";
-				}
-			}
+			resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px" ;
 		}
 	}
 };
-
 
 ECMUtils.prototype.clickLeftMouse = function(evnt, clickedElemt, pos, option) {
 	evnt.cancelBubble = true;
