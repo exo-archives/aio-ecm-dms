@@ -741,16 +741,15 @@ UIBrowseContentPortlet .Explorer {
 }
   
 .UIBrowseContentPortlet .FileContent .NavigationContainer {  
-  padding-bottom: 5px;
+  padding-bottom: 0px;
   border: 1px solid #cbcbcb;
+  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x top;
 }
   
 .UIBrowseContentPortlet .FileContent .TopTitle {  
   padding-left: 10px;
-  height: 21px; line-height: 21px;
+  height: 22px; line-height: 22px;
   color: #058ee6; font-weight: bold; 
-  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
-  border-bottom: 1px solid #cbcbcb;
 }
   
 .UIBrowseContentPortlet .FileContent .ECMIframe {
@@ -764,10 +763,8 @@ UIBrowseContentPortlet .Explorer {
   
 .UIBrowseContentPortlet .FileContent .Content {  
   white-space: normal;
-  overflow: auto;
   padding: 0px 10px;
   height: 300px;
-  width: 98%;
  }
   
 .UIBrowseContentPortlet .FileContent .Content .TextContent {  
@@ -777,8 +774,10 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .FileContent .ContentDetail {  
   border: 1px solid #e1e1e1; 
   text-align: center;
-  overflow: visible;
-  padding: 15px 0px;
+  overflow: auto;
+  margin: 10px auto;
+  width: 97.4%;
+  padding: 5px;
 }
     
 .UIBrowseContentPortlet .FileContent .UIVoteForm {
