@@ -77,6 +77,10 @@
 	float: right;
 }
 
+.UIWorkflowPortlet .UIAdministrationManager .UITabContent .UIGrid {
+	width: 99.7%;
+}
+
 /*********************************************** Begin Icon16x16 ***********************************/
 .ManageStartIcon {
 	width: 16px; height: 16px;
