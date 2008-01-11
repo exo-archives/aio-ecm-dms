@@ -646,11 +646,10 @@ public class DialogFormFields extends UIForm {
         }      
       } else if (options != null && options.length() >0) {
         String[] array = options.split(",");
-//        optionsList = new ArrayList<SelectItemOption<String>>(5);
         for(int i = 0; i < array.length; i++) {
           optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
         }
-        uiSelectBox.setOptions(optionsList);      
+        uiSelectBox.setOptions(optionsList);
       } else {
         uiSelectBox.setOptions(optionsList) ;
       }      

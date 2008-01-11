@@ -195,6 +195,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       homeNode.getSession().refresh(false) ;
       Object[] args = { prefLocate } ;
       uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.saved-successfully", args)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(this.getParent()) ;
     } catch (AccessControlException ace) {
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {

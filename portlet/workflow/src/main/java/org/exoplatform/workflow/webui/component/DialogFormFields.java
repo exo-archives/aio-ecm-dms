@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.workflow.webui.component;
+package org.exoplatform.ecm.webui.component;
 
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -24,12 +24,18 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.jcr.CronExpressionValidator;
+import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.jcr.RepeatCountValidator;
+import org.exoplatform.ecm.jcr.RepeatIntervalValidator;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -53,28 +59,37 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
- * Author : Dang Van Minh
- *          minh.dang@exoplatform.com
- * Jun 13, 2007 1:00:39 AM
+ * Author : nqhungvn
+ *          nguyenkequanghung@yahoo.com
+ * nov 6, 2006
+ * 
  */
+
 @SuppressWarnings("unused")
 public class DialogFormFields extends UIForm {
 
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
+  public Map<String, String> fieldNames_ = new HashMap<String, String>() ;
   protected Node node_ = null;
-  protected Node dialogPortletHomeNode_ = null ;
   private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
+  private boolean isResetMultiField_ = false ;
+  private String workspace_ = null ;
+  private String storedPath_ = null ;
+  private boolean isOnchange_ = false ;
+  protected boolean isUpdateSelect_ = false ;
   protected String repository_ = null ;
+  private boolean isResetForm_ = false ;
+  
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
   private static final String SEPARATOR = "=";
   private static final String JCR_PATH = "jcrPath" + SEPARATOR;
   private static final String EDITABLE = "editable" + SEPARATOR;
   private static final String ONCHANGE = "onchange" + SEPARATOR;
-  private static final String OPTIONS = "options" + SEPARATOR;  
+  private static final String OPTIONS = "options" + SEPARATOR;
   private static final String TYPE = "type" + SEPARATOR ;
   private static final String VISIBLE = "visible" + SEPARATOR;
   private static final String NODETYPE = "nodetype" + SEPARATOR;
@@ -88,6 +103,7 @@ public class DialogFormFields extends UIForm {
   private static final String SCRIPT = "script" + SEPARATOR;
   private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
+  private static final String REPOSITORY = "repository";
 
   public static final  String[]  ACTIONS = {"Save", "Cancel"};
 
@@ -106,11 +122,24 @@ public class DialogFormFields extends UIForm {
   public Map<String, Object> getInputProperties() { return properties ; }
 
   public void resetProperties() { properties.clear() ; }
+  
+  public void setIsResetMultiField(boolean isResetMultiField) { 
+    isResetMultiField_ = isResetMultiField ; 
+  }
+  
+  public void setIsResetForm(boolean isResetForm) { isResetForm_ = isResetForm ; }
+  public boolean isResetForm() { return isResetForm_ ; }
+  
+  public void setIsUpdateSelect(boolean isUpdateSelect) { isUpdateSelect_ = isUpdateSelect ; } ;
+  
+  public void setIsOnchange(boolean isOnchange) { isOnchange_ = isOnchange ; }
 
   public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }
   public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
   
-  public void setDialogHomeNode(Node node) { dialogPortletHomeNode_ = node ; }
+  public void setWorkspace(String workspace) { workspace_ = workspace ; }
+  public void setStoredPath(String storedPath) { storedPath_ = storedPath ; }
+  
   public String getPropertyName(String jcrPath) { 
     return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
   }
@@ -146,8 +175,12 @@ public class DialogFormFields extends UIForm {
     }
     return "" ;
   }
-
-  public void addActionField(String name, String[] arguments) throws Exception {
+  
+  public void addActionField(String name, String[] arguments) throws Exception { 
+    addActionField(name,null,arguments);
+  }
+  
+  public void addActionField(String name,String label,String[] arguments) throws Exception {
     String editable = "true";
     String defaultValue = "";
     String jcrPath = null;
@@ -158,6 +191,7 @@ public class DialogFormFields extends UIForm {
     String selectorIcon = null ;
     String multiValues = null ;
     String validateType = null ;
+    String params = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -173,7 +207,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(SELECTOR_ICON)) {
         selectorIcon = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(SELECTOR_PARAMS)) {
-        String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
+        params = argument.substring(argument.indexOf(SEPARATOR) + 1);
         selectorParams = StringUtils.split(params, ",");
       }else if (argument.startsWith(WORKSPACE_FIELD)) {
         workspaceField = argument.substring(argument.indexOf(SEPARATOR) + 1);
@@ -189,6 +223,7 @@ public class DialogFormFields extends UIForm {
       fieldPropertiesMap.put("returnField", name) ;
       fieldPropertiesMap.put("selectorIcon", selectorIcon) ;
       fieldPropertiesMap.put("workspaceField", workspaceField) ;
+      if(params != null) fieldPropertiesMap.put("selectorParams", params) ;
       components.put(name, fieldPropertiesMap) ;
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -215,20 +250,24 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
-        }
-      }    
+        }        
+      }
+      if(label != null && label.length() != 0) {
+        uiInput.setLabel(label);
+      }
       addUIFormInput(uiInput) ;
     }
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
         uiInput.setValue(node_.getName()) ;
         uiInput.setEditable(false) ;
-      } else if(node_.hasProperty(getPropertyName(jcrPath))) {
+      } else if(node_.hasProperty(getPropertyName(jcrPath)) && !isUpdateSelect_) {
         uiInput.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
-      }
+      } 
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
@@ -241,8 +280,12 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-
+    
   public void addTextField(String name, String[] arguments) throws Exception {
+    addTextField(name,null,arguments);
+  }
+  
+  public void addTextField(String name, String label, String[] arguments) throws Exception {
     String editable = "true";
     String type = "text" ;
     String defaultValue = "";
@@ -275,6 +318,7 @@ public class DialogFormFields extends UIForm {
     if(mixintype != null) inputProperty.setMixintype(mixintype) ;
     properties.put(name, inputProperty) ;
     propertiesName_.put(name, propertyName) ;
+    fieldNames_.put(propertyName, name) ;
     if(multiValues != null && multiValues.equals("true")) {
       UIFormMultiValueInputSet uiMulti ;
       if(node_ == null && propertyNode_ == null) {
@@ -314,13 +358,16 @@ public class DialogFormFields extends UIForm {
         }
         uiMulti.setValue(valueList) ;        
       }
-      
+      if(isResetMultiField_) {
+        uiMulti.setValue(new ArrayList<Value>()) ;
+      }
       renderField(name) ;
       return ;
     } 
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
+      //TODO need use full class name for validate type. 
       if(validateType != null) {
         if(validateType.equals("name")) {
           uiInput.addValidator(ECMNameValidator.class) ;
@@ -330,10 +377,20 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
+        } else if(validateType.equals("cronExpressionValidator")) {
+          uiInput.addValidator(CronExpressionValidator.class) ;
+        } else if(validateType.equals("repeatCountValidator")) {
+          uiInput.addValidator(RepeatCountValidator.class) ;
+        } else if(validateType.equals("repeatIntervalValidator")) {
+          uiInput.addValidator(RepeatIntervalValidator.class) ;
         }
       }     
-      addUIFormInput(uiInput) ;
+      if(label != null && label.length()!=0) {
+        uiInput.setLabel(label);
+      }
+      addUIFormInput(uiInput) ;      
     }
+    if(uiInput.getValue() == null) uiInput.setValue(defaultValue) ;
     if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
@@ -349,7 +406,7 @@ public class DialogFormFields extends UIForm {
         uiInput.setEditable(false) ;
       } else if(node_.hasProperty(propertyName)) {
         uiInput.setValue(node_.getProperty(propertyName).getValue().getString()) ;
-      }
+      } 
     }
     if(isNotEditNode_) {
       if(propertyNode_ != null) {
@@ -357,19 +414,23 @@ public class DialogFormFields extends UIForm {
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         uiInput.setValue(node_.getName()) ;
       } else {
-        uiInput.setValue(null) ;
+        uiInput.setValue(defaultValue) ;
       }
     }
     renderField(name) ;
   }
-
   public void addTextAreaField(String name, String[] arguments) throws Exception {
+    addTextAreaField(name,null,arguments);
+  }
+  
+  public void addTextAreaField(String name, String label, String[] arguments) throws Exception {
     String editable = "true";
     String defaultValue = "";
     String jcrPath = null;
     String selectorAction = null;
     String selectorClass = null;
     String multiValues = null ;
+    String validateType = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -382,6 +443,8 @@ public class DialogFormFields extends UIForm {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(SELECTOR_CLASS)) {
         selectorClass = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
         defaultValue = argument;
       }
@@ -404,21 +467,28 @@ public class DialogFormFields extends UIForm {
       renderField(name) ;
       return ;
     }
-    UIFormTextAreaInput uiTextArea = findComponentById(name) ;
+    UIFormTextAreaInput uiTextArea = findComponentById(name) ;    
     if(uiTextArea == null) {
       uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
+      if(validateType != null) {
+        if (validateType.equals("empty")){
+          uiTextArea.addValidator(EmptyFieldValidator.class) ;
+        }
+      }     
       addUIFormInput(uiTextArea) ;
     }
+    if(uiTextArea.getValue() == null) uiTextArea.setValue(defaultValue) ;
     if(editable.equals("false")) uiTextArea.setEditable(false) ;
     else uiTextArea.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     
     if(node_ != null) {
       String value = "";
       if(node_.hasProperty(getPropertyName(jcrPath))) {
         value = node_.getProperty(getPropertyName(jcrPath)).getValue().getString() ;
-      } else if(node_.isNodeType("nt:file")) {
-        Node jcrContentNode = node_.getNode("jcr:content") ;
+      } else if(node_.isNodeType(Utils.NT_FILE)) {
+        Node jcrContentNode = node_.getNode(Utils.JCR_CONTENT) ;
         if(jcrContentNode.hasProperty(getPropertyName(jcrPath))) {
           if(jcrContentNode.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
             Value[] values = jcrContentNode.getProperty(getPropertyName(jcrPath)).getValues() ;
@@ -443,13 +513,18 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-
+  
   public void addWYSIWYGField(String name, String[] arguments) throws Exception {
+    addWYSIWYGField(name,null,arguments);
+  }
+  
+  public void addWYSIWYGField(String name, String label, String[] arguments) throws Exception {
     String options = null ;
     String defaultValue = "";
     String jcrPath = null;
-    String multiValues = null ;
     boolean isBasic = false ;
+    String multiValues = null ;
+    String validateType = null ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -457,8 +532,10 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(OPTIONS)) {
         options = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(MULTI_VALUES)) {
-        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
-      } else{
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);      
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
         defaultValue = argument;
       }
     }
@@ -481,9 +558,16 @@ public class DialogFormFields extends UIForm {
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
       wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
+      if(validateType != null) {
+        if (validateType.equals("empty")){
+          wysiwyg.addValidator(EmptyFieldValidator.class) ;
+        }
+      }     
       addUIFormInput(wysiwyg) ;
     }
+    if(wysiwyg.getValue() == null) wysiwyg.setValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null && (node_.isNodeType("nt:file") || isNTFile_)) {
       Node jcrContentNode = node_.getNode("jcr:content") ;
       wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
@@ -493,12 +577,17 @@ public class DialogFormFields extends UIForm {
       }
     }
     if(isNotEditNode_) {
-      if(propertyNode_ != null) {
-        wysiwyg.setValue(getPropertyValue(jcrPath)) ;
-      } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
-        wysiwyg.setValue(node_.getName()) ;
+      if(node_ != null && node_.hasNode("jcr:content") && propertyNode_ != null) {
+        Node jcrContentNode = node_.getNode("jcr:content") ;
+        wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
       } else {
-        wysiwyg.setValue(null) ;
+        if(propertyNode_ != null) {
+          wysiwyg.setValue(getPropertyValue(jcrPath)) ;
+        } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
+          wysiwyg.setValue(node_.getName()) ;
+        } else {
+          wysiwyg.setValue(null) ;
+        }
       }
     }
     renderField(name) ;
@@ -543,36 +632,45 @@ public class DialogFormFields extends UIForm {
       renderField(name) ;
       return ;
     }
-    List<SelectItemOption<String>> optionsList = null;
+    List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    if(uiSelectBox == null) {
+    if(uiSelectBox == null || isResetForm_) {
       uiSelectBox = new UIFormSelectBox(name, name, null);
       addUIFormInput(uiSelectBox) ;
-      uiSelectBox.setValue(defaultValue) ;
       if (script != null) {
-        try{
+        try {
+          if(scriptParams[0].equals("repository")) scriptParams[0] = repository_ ;
           executeScript(script, uiSelectBox, scriptParams);
-        }catch(Exception e) {
-          uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+        } catch(Exception e) {
+          uiSelectBox.setOptions(optionsList) ;
         }      
       } else if (options != null && options.length() >0) {
         String[] array = options.split(",");
-        optionsList = new ArrayList<SelectItemOption<String>>(5);
         for(int i = 0; i < array.length; i++) {
           optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
         }
-        uiSelectBox.setOptions(optionsList);      
-      }else {
-        uiSelectBox.setOptions(new ArrayList<SelectItemOption<String>>()) ;
+        uiSelectBox.setOptions(optionsList);
+      } else {
+        uiSelectBox.setOptions(optionsList) ;
       }      
+      if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
-    if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
-      
-      if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
-        uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
-      } else {
-        uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
+    String[] arrNodes = jcrPath.split("/") ;
+    Node childNode = null ;
+    if(node_ != null && arrNodes.length == 4) childNode = node_.getNode(arrNodes[2]) ;
+    if(childNode != null) {
+      uiSelectBox.setValue(childNode.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+    } else {
+      if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
+        if(node_.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+          uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
+        } else if(onchange.equals("true") && isOnchange_) {
+          uiSelectBox.setValue(uiSelectBox.getValue()) ;
+        } else {
+          uiSelectBox.setValue(node_.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+        }
       }
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -587,11 +685,11 @@ public class DialogFormFields extends UIForm {
     if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
     renderField(name) ;
   }
+  
   public String getSelectBoxFieldValue(String name) {
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    String value = null ;
-    if (uiSelectBox != null) value = uiSelectBox.getValue() ;
-    return value ;
+    if (uiSelectBox != null) return uiSelectBox.getValue() ;
+    return null ;
   }
 
   public void addUploadField(String name, String[] arguments) throws Exception {
@@ -623,6 +721,7 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiInputUpload) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     renderField(name) ;
   }
 
@@ -698,6 +797,7 @@ public class DialogFormFields extends UIForm {
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
     Date date = new Date() ;
+    if(options == null) formatter = new SimpleDateFormat("MM/dd/yyyy") ;
     if(defaultValue.length() > 0) {
       try {
         date = formatter.parse(defaultValue) ;
@@ -719,16 +819,22 @@ public class DialogFormFields extends UIForm {
     } 
     UIFormDateTimeInput uiDateTime = findComponentById(name) ;
     if(uiDateTime == null) {
-      uiDateTime = new UIFormDateTimeInput(name, name, date) ;
+      if(options != null && options.equals("displaytime")) {
+        uiDateTime = new UIFormDateTimeInput(name, name, date) ;
+      } else {
+        uiDateTime = new UIFormDateTimeInput(name, name, date, false) ;
+      }
       addUIFormInput(uiDateTime) ;
     }
     if(options != null && options.equals("displaytime")) uiDateTime.setDisplayTime(true) ;
+    else uiDateTime.setDisplayTime(false) ;
     if(validateType != null) {
       if(validateType.equals("datetime")) {
         uiDateTime.addValidator(DateTimeValidator.class) ;
       }
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(node_ != null && node_.hasProperty(getPropertyName(jcrPath))) {
       uiDateTime.setCalendar(node_.getProperty(getPropertyName(jcrPath)).getDate()) ;
     } 
@@ -737,9 +843,14 @@ public class DialogFormFields extends UIForm {
       if(propertyNode_ != null) {
         String propertyName = jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ;
         if(propertyNode_.hasProperty(propertyName)) {
-          if(!propertyNode_.getProperty(propertyName).getDefinition().isMultiple()) {
+          if(propertyNode_.getProperty(propertyName).getDefinition().isMultiple()) {
+            Value[] values = propertyNode_.getProperty(propertyName).getValues() ;
+            for(Value value : values) {
+              uiDateTime.setCalendar(value.getDate()) ;
+            }
+          } else {
             uiDateTime.setCalendar(propertyNode_.getProperty(propertyName).getValue().getDate());
-          } 
+          }
         }
       } else if(propertyNode_ == null && jcrPath.equals("/node") && node_ != null) {
         uiDateTime.setCalendar(node_.getProperty(getPropertyName(jcrPath)).getDate());
@@ -799,7 +910,10 @@ public class DialogFormFields extends UIForm {
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     try {
       CmsScript dialogScript = scriptService.getScript(script, repository_);
-      if(params != null) dialogScript.setParams(params);
+      if(params != null) {
+        if(params.equals(REPOSITORY)) params = new String[] { repository_ } ; 
+        dialogScript.setParams(params);
+      }
       dialogScript.execute(o);
     } catch (Exception e) {
       e.printStackTrace();
@@ -820,18 +934,11 @@ public class DialogFormFields extends UIForm {
       }
 
       if(name.equals(fieldName)) {
-        w.write("<div class='ActionIcon "+ iconClass +"' style=\"cursor:pointer;\" "
+        w.write("<a style=\"cursor:pointer;\" "
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
-            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><span></span></div>") ;
+            + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>") ;
       } 
     }
-  }
-
-  public void begin() throws Exception {
-    String portalName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
-    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-    context.getJavascriptManager().importJavascript("eXo.ecm.ExoEditor","/ecm/javascript/");
-    super.begin();
   }
 
   public Node storeValue(Event event) throws Exception { return null ; }
@@ -840,13 +947,7 @@ public class DialogFormFields extends UIForm {
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
-      String workspace = null;
-      String storePath = null;
-      if(dialogForm.dialogPortletHomeNode_ != null) {
-        storePath = dialogForm.dialogPortletHomeNode_.getPath() ;
-        workspace = dialogForm.dialogPortletHomeNode_.getSession().getWorkspace().getName() ;
-      } 
-      String path = storePath+ "&workspaceName=" + workspace + 
+      String path = dialogForm.storedPath_ + "&workspaceName=" + dialogForm.workspace_ + 
                     "&repository=" + dialogForm.repository_;
       for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
@@ -871,6 +972,7 @@ public class DialogFormFields extends UIForm {
 
   static  public class OnchangeActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {     
+      event.getSource().isOnchange_ = true ;
       event.getSource().onchange(event) ;
     }
   }
