@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component;
+package org.exoplatform.workflow.webui.component;
 
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -31,11 +31,7 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.jcr.CronExpressionValidator;
-import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.jcr.RepeatCountValidator;
-import org.exoplatform.ecm.jcr.RepeatIntervalValidator;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -377,12 +373,6 @@ public class DialogFormFields extends UIForm {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
           uiInput.addValidator(EmptyFieldValidator.class) ;
-        } else if(validateType.equals("cronExpressionValidator")) {
-          uiInput.addValidator(CronExpressionValidator.class) ;
-        } else if(validateType.equals("repeatCountValidator")) {
-          uiInput.addValidator(RepeatCountValidator.class) ;
-        } else if(validateType.equals("repeatIntervalValidator")) {
-          uiInput.addValidator(RepeatIntervalValidator.class) ;
         }
       }     
       if(label != null && label.length()!=0) {
