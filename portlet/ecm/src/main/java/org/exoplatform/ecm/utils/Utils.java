@@ -36,7 +36,6 @@ import javax.jcr.Session;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
-import javax.mail.Folder;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.portal.webui.util.Util;
