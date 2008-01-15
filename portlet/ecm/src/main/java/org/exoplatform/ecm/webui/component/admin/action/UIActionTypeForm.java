@@ -163,22 +163,22 @@ public class UIActionTypeForm extends UIForm {
       String selectValue = uiForm.getUIFormSelectBox(FIELD_ACTIONTYPE).getValue() ;
       String actionName = uiForm.getUIStringInput(FIELD_NAME).getValue();
       Object[] args = {actionName} ;
+      String[] arrFilterChar = {"&", "$", "^", "(", ")", "@", "]", "[", "*", "%", "!", "+"} ;
+      String[] arrActionNames = actionName.split(":") ;
+      for(String filterChar : arrFilterChar) {
+        if(actionName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.fileName-invalid", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
       if(!actionName.startsWith("exo:")) { 
         uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.action-name-invalid", args,
                                                  ApplicationMessage.WARNING)) ; 
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }    
-      String[] arrFilterChar = {"&", "$", "^", "(", ")", "@", ":","]", "[", "*", "%", "!", "+"} ;
-      String[] arrActionNames = actionName.split(":") ;
-      for(String filterChar : arrFilterChar) {
-        if(arrActionNames[1].indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UIActionTypeForm.msg.fileName-invalid", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-      }
       List<String> variables = new ArrayList<String>();     
       List values = uiForm.uiFormMultiValue.getValue();
       if(values != null && values.size() > 0) {
