@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
@@ -263,11 +264,7 @@ public class UIBrowseContainer extends UIContainer {
     try{
       if(wsName_ == null) return (Node)getSession().getItem(nodePath) ;
       return (Node)getSession(getRepository(), wsName_).getItem(nodePath) ;
-    } catch(NullPointerException en) {
-      en.printStackTrace() ;
-      return rootNode_ ;
     } catch(Exception e){
-      e.printStackTrace() ;
       return null  ;
     }
   }
@@ -278,7 +275,6 @@ public class UIBrowseContainer extends UIContainer {
     } catch(NullPointerException en) {
       return rootNode_ ;
     } catch(Exception e){
-      e.printStackTrace() ;
       return null  ;
     }
   }
@@ -563,14 +559,18 @@ public class UIBrowseContainer extends UIContainer {
     if(selectedNode == null) return subDocumentList ;
     TemplateService templateService  = getApplicationComponent(TemplateService.class) ;
     List<String> templates = templateService.getDocumentTemplates(getRepository()) ;
-    NodeIterator item = selectedNode.getNodes() ;
-    if(isEnableChildDocument()) {
-      while (item.hasNext()) {
-        Node node = item.nextNode() ;
-        if(templates.contains(node.getPrimaryNodeType().getName())) {
-          if(canRead(node)) subDocumentList.add(node) ; 
+    try {
+      NodeIterator item = selectedNode.getNodes() ;
+      if(isEnableChildDocument()) {
+        while (item.hasNext()) {
+          Node node = item.nextNode() ;
+          if(templates.contains(node.getPrimaryNodeType().getName())) {
+            if(canRead(node)) subDocumentList.add(node) ; 
+          }
         }
       }
+    } catch(Exception e) {
+      return new ArrayList<Node>() ;
     }
     if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
         selectedNode, isShowAllDocument(), subDocumentList.size(), templates)) ;
