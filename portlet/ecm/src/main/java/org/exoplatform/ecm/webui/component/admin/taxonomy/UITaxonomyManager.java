@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
+import javax.jcr.ReferentialIntegrityException;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -121,9 +122,18 @@ public class UITaxonomyManager extends UIContainer {
         if(parentPath != null) {
           root.update(parentPath,null) ;
         }
-      } catch(Exception e) {
+      } catch(ReferentialIntegrityException ref) {
         Object[] arg = { path } ;
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg)) ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.reference-exception", arg, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      } catch(Exception e) {
+        e.printStackTrace() ;
+        Object[] arg = { path } ;
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyManager.msg.path-error", arg, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(uiManager.getChildById("TaxonomyPopup") != null) {
