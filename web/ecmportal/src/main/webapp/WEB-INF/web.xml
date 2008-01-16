@@ -82,6 +82,11 @@
   </servlet>
                           
   <servlet>
+		<servlet-name>javascript</servlet-name>
+		<servlet-class>org.exoplatform.portal.webui.javascript.JavascriptServlet</servlet-class>
+  </servlet>
+                          
+  <servlet>
     <servlet-name>DisplayJCRContent</servlet-name>
     <description>
       eXo - Platform DisplayJCRContent Servlet.
@@ -108,6 +113,11 @@
     <servlet-name>portal</servlet-name>
     <url-pattern>/public/*</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>javascript</servlet-name>
+    <url-pattern>/javascript/*</url-pattern>
+  </servlet-mapping>  
 
   <servlet-mapping>
     <servlet-name>portal</servlet-name>
