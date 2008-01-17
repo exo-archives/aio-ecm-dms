@@ -28,7 +28,6 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
@@ -449,8 +448,12 @@ public class UIBrowseContainer extends UIContainer {
       content.put("subCategoryList", subCategoryList) ;
       return content ;
     }
-
-    NodeIterator tabIter = getCurrentNode().getNodes() ;
+    NodeIterator tabIter = null ;
+    try {
+      tabIter = getCurrentNode().getNodes() ;
+    } catch(Exception e) {
+      tabIter = getRootNode().getNodes() ;
+    }
     while(tabIter.hasNext()) {
       Node tab = tabIter.nextNode() ;
       if(canRead(tab)) {
@@ -480,9 +483,16 @@ public class UIBrowseContainer extends UIContainer {
     content.put("subCategoryList", subCategoryList) ;
     content.put("subDocumentList", subDocumentList) ;
     List<String> history = new ArrayList<String>() ;
-    if(!getCurrentNode().getPath().equals("/") && 
-        getCurrentNode().getSession().getWorkspace().getName().equals(getWorkSpace())) {
-      Node parent = getCurrentNode().getParent() ;
+    Node currentNode = null ;
+    try {
+      currentNode = getCurrentNode() ;
+      currentNode.getParent() ;
+    } catch(Exception e) {
+      currentNode = getRootNode() ;
+    }
+    if(!currentNode.getPath().equals("/") && 
+        currentNode.getSession().getWorkspace().getName().equals(getWorkSpace())) {
+      Node parent = currentNode.getParent() ;
       if(!parent.getPath().equals(getRootNode().getPath())) content.put("previous", parent.getPath()) ;
       history = getHistory(templates, parent) ;
     }
