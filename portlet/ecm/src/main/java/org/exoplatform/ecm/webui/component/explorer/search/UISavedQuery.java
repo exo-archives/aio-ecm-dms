@@ -180,7 +180,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       }
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSystemProvider()) ;
+        queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSessionProvider()) ;
         if(queryResult == null || queryResult.getNodes().getSize() ==0) {
           uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)) ; 
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
