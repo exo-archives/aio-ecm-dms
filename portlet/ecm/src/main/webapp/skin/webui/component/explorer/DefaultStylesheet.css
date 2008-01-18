@@ -12,7 +12,6 @@
 @import url("UIPopupAction/DefaultStylesheet.css");
 @import url("UIDrivesBrowser/DefaultStylesheet.css");
 @import url("UIJCRExplorer/DefaultStylesheet.css");
-@import url("../../../ExoEditor/MyEditor.css");
 
 .UIPageDesktop .UIJCRExplorerPortlet {
   overflow: hidden;

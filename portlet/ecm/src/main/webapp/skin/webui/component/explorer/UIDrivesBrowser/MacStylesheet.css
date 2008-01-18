@@ -118,15 +118,15 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
-	background: url('DefaultSkin/background/Personal.png') no-repeat left center;
+	background: url('MacSkin/background/Personal.png') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
-	background: url('DefaultSkin/background/Group.png') no-repeat left center;
+	background: url('MacSkin/background/Group.png') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
-	background: url('DefaultSkin/background/Earth.gif') no-repeat left center;
+	background: url('MacSkin/background/Earth.gif') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
@@ -168,6 +168,14 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a:hover {
   color: orange;
   text-decoration: none;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .GroupDriveIcon {
+  background: url('MacSkin/background/GroupManagement58x45.gif') no-repeat;
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .UserDriveIcon {
+  background: url('MacSkin/background/UserManagement58x45.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
