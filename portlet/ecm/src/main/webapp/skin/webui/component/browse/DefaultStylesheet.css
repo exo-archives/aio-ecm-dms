@@ -6,7 +6,6 @@
 @import url("UINavigation/DefaultStylesheet.css");
 @import url("UICBSearchForm/DefaultStylesheet.css");
 @import url("UIEventViewer/DefaultStylesheet.css");
-@import url("../../../ExoEditor/MyEditor.css");
 
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
