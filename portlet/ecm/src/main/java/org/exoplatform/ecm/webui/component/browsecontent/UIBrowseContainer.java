@@ -1275,9 +1275,10 @@ public class UIBrowseContainer extends UIContainer {
       String[] arrUri = {uri} ;
       if(uri.contains("/")) arrUri = uri.split("/") ;
       PageNodeEvent<UIPortal> pnevent ;
+      uiPortal.getSelectedNode().setPageReference(arrUri[0]) ;
       pnevent = new PageNodeEvent<UIPortal>(uiPortal, PageNodeEvent.CHANGE_PAGE_NODE, null, arrUri[0]) ;      
       uiPortal.broadcast(pnevent, Event.Phase.PROCESS) ;
-      uiPortal.getSelectedNode().setLabel(uri) ;
+      uiPortal.getSelectedNode().setUri(uri) ;
     }
   }
   
