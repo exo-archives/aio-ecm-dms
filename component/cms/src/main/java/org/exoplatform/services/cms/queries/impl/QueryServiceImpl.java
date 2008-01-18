@@ -17,6 +17,9 @@
 package org.exoplatform.services.cms.queries.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.cache.CacheService;
@@ -305,19 +309,26 @@ public class QueryServiceImpl implements QueryService, Startable{
         String key = portalName + queryPath ;
         QueryResult result = (QueryResult)queryCache.get(key) ;
         if (result != null) return result ;
-        Session querySession = getSession(repository,workspace,provider) ;
-        Query query = querySession.getWorkspace().getQueryManager().getQuery(queryNode) ;
-        result = query.execute() ;
+        Session querySession = getSession(repository,workspace,provider) ;        
+        result = execute(querySession,queryNode) ;
         queryCache.put(key, result) ;
         return result ;      
       }
     }
-    Session querySession = getSession(repository,workspace,provider) ;
-    Query query = querySession.getWorkspace().getQueryManager().getQuery(queryNode) ;
-    QueryResult result = query.execute();    
-    return result;
+    Session querySession = getSession(repository,workspace,provider) ;        
+    return execute(querySession,queryNode);
   }
-
+  
+  private QueryResult execute(Session session,Node queryNode) throws Exception {
+    String statement = queryNode.getProperty("jcr:statement").getString();
+    String language = queryNode.getProperty("jcr:language").getString();
+    String userId = session.getUserID();    
+    statement = statement.replace("${UserId}$",userId);    
+    String currentDate = ISO8601.format(new GregorianCalendar()) ;
+    statement = statement.replace("${Date}$",currentDate);    
+    Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
+    return query.execute();
+  }  
   private void removeFromCache(String queryPath) throws Exception {
     ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
     String portalName = containerInfo_.getContainerName() ;
