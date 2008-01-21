@@ -329,8 +329,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     String language = queryNode.getProperty("jcr:language").getString();
     String userId = session.getUserID();    
     statement = statement.replace("${UserId}$",userId);        
-    statement = replaceDateTimeParameters(statement);
-    System.out.println("============>"+statement);
+    statement = replaceDateTimeParameters(statement);    
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
     return query.execute();
   }  
