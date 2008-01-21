@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.cms.queries.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,8 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFactory;
@@ -33,6 +36,8 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -51,6 +56,8 @@ import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
 
 public class QueryServiceImpl implements QueryService, Startable{
+  
+  private static final String DATE_PARAMETER = "${Date}$".intern();  
   private static final String[] perms = {PermissionType.READ, PermissionType.ADD_NODE, 
     PermissionType.SET_PROPERTY, PermissionType.REMOVE };
   private String relativePath_;  
@@ -207,38 +214,36 @@ public class QueryServiceImpl implements QueryService, Startable{
   public void addSharedQuery(String queryName, String statement, String language, 
       String[] permissions, boolean cachedResult, String repository) throws Exception {
     Session session = getSession(repository);
-    ValueFactory vt = session.getValueFactory();
-    String queryPath ;
+    ValueFactory vt = session.getValueFactory();    
     List<Value> perm = new ArrayList<Value>() ;                 
     for(String permission : permissions) {
       Value vl = vt.createValue(permission) ;
       perm.add(vl) ;
     }
     Value[] vls = perm.toArray(new Value[] {}) ;
-
     String queriesPath = baseQueriesPath_ ;
     Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
-    QueryManager queryManager = session.getWorkspace().getQueryManager() ;
-    queryManager.createQuery(statement, language) ;
-    if(queryHome.hasNode(queryName)) {
-      Node query = queryHome.getNode(queryName) ;
+    String queryPath ;
+    Node query = null;
+    try{
+     query = queryHome.getNode(queryName);     
+     query.setProperty("jcr:language", language) ;
+     query.setProperty("jcr:statement", statement) ;
+     query.setProperty("exo:permissions", vls) ;
+     query.setProperty("exo:cachedResult", cachedResult) ;
+     query.save() ;     
+     queryPath = query.getPath() ;
+    }catch (PathNotFoundException e) {
+      query = queryHome.addNode(queryName,"nt:query");
       query.setProperty("jcr:language", language) ;
       query.setProperty("jcr:statement", statement) ;
+      query.addMixin("mix:sharedQuery") ;      
       query.setProperty("exo:permissions", vls) ;
       query.setProperty("exo:cachedResult", cachedResult) ;
-      query.save() ;
-      session.save() ;
-      queryPath = query.getPath() ;
-    }else {
-      QueryManager manager = session.getWorkspace().getQueryManager();    
-      Query query = manager.createQuery(statement, language);      
-      Node newQuery = query.storeAsNode(baseQueriesPath_ + "/" + queryName);
-      newQuery.addMixin("mix:sharedQuery") ;
-      newQuery.setProperty("exo:permissions", vls) ;
-      newQuery.setProperty("exo:cachedResult", cachedResult) ;
-      session.getItem(queriesPath).save();
+      queryHome.save();
       queryPath = queriesPath ;
     }
+    session.save();
     session.logout();
     removeFromCache(queryPath) ;
   }
@@ -323,12 +328,39 @@ public class QueryServiceImpl implements QueryService, Startable{
     String statement = queryNode.getProperty("jcr:statement").getString();
     String language = queryNode.getProperty("jcr:language").getString();
     String userId = session.getUserID();    
-    statement = statement.replace("${UserId}$",userId);    
-    String currentDate = ISO8601.format(new GregorianCalendar()) ;
-    statement = statement.replace("${Date}$",currentDate);    
+    statement = statement.replace("${UserId}$",userId);        
+    statement = replaceDateTimeParameters(statement);
+    System.out.println("============>"+statement);
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
     return query.execute();
   }  
+  
+  private String replaceDateTimeParameters(String statement) {
+    Calendar calendar = new GregorianCalendar();    
+    SimpleDateFormat dateFormat = new SimpleDateFormat(ISO8601.COMPLETE_DATE_FORMAT);
+    //TODO should us expression here
+    int count = StringUtils.countMatches(statement,DATE_PARAMETER);    
+    if(count==-1) return statement;
+    int index = 0;
+    int i =0;
+    do{
+      index = statement.indexOf("${Date}") ;
+      if(statement.charAt(index+7)=='$') {
+        dateFormat.format(calendar.getTime());
+        statement = statement.replace(DATE_PARAMETER,dateFormat.format(calendar.getTime())) ;
+      }else if(statement.charAt(index+7)=='-') {
+        int lastIndex = StringUtils.indexOf(statement,'$',index+7);
+        String dayBefore = statement.substring(index+8,lastIndex);
+        int minusDays = Integer.parseInt(dayBefore);        
+        calendar.add(Calendar.DATE,-minusDays);        
+        String fullParameter = "${Date}-".concat(dayBefore).concat("$");
+        statement = statement.replace(fullParameter,dateFormat.format(calendar.getTime()));        
+      }
+      i++;
+    }while(i<count-1) ;    
+    return statement;
+  }
+  
   private void removeFromCache(String queryPath) throws Exception {
     ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
     String portalName = containerInfo_.getContainerName() ;
