@@ -349,10 +349,17 @@ public class QueryServiceImpl implements QueryService, Startable{
         statement = statement.replace(DATE_PARAMETER,dateFormat.format(calendar.getTime())) ;
       }else if(statement.charAt(index+7)=='-') {
         int lastIndex = StringUtils.indexOf(statement,'$',index+7);
-        String dayBefore = statement.substring(index+8,lastIndex);
-        int minusDays = Integer.parseInt(dayBefore);        
-        calendar.add(Calendar.DATE,-minusDays);        
-        String fullParameter = "${Date}-".concat(dayBefore).concat("$");
+        char type = statement.charAt(lastIndex-1);
+        String dayBefore = statement.substring(index+8,lastIndex-1);
+        int minusDays = Integer.parseInt(dayBefore);
+        if(type == 'D' || type =='d') {
+          calendar.add(Calendar.DATE,-minusDays); 
+        }else if(type == 'M'|| type =='m') {
+          calendar.add(Calendar.MONTH,-minusDays);
+        }else if(type == 'Y' || type =='y') {
+          calendar.add(Calendar.YEAR,-minusDays);
+        }        
+        String fullParameter = "${Date}-".concat(dayBefore).concat(Character.toString(type)).concat("$");
         statement = statement.replace(fullParameter,dateFormat.format(calendar.getTime()));        
       }
       i++;
