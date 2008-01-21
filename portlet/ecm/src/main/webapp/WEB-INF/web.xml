@@ -19,15 +19,15 @@
     <filter-class>org.exoplatform.frameworks.jcr.web.SimpleSessionFactoryInitializedFilter</filter-class>
   </filter>  
   
-  <filter-mapping>
-    <filter-name>JcrFilter</filter-name>
-    <url-pattern>/repository/*</url-pattern>
-  </filter-mapping>
-
   <filter>
     <filter-name>ResourceRequestFilter</filter-name>
     <filter-class>org.exoplatform.portal.application.ResourceRequestFilter</filter-class>
   </filter>
+
+  <filter-mapping>
+    <filter-name>JcrFilter</filter-name>
+    <url-pattern>/repository/*</url-pattern>
+  </filter-mapping>
 
   <filter-mapping>
     <filter-name>ResourceRequestFilter</filter-name>
