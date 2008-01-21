@@ -200,7 +200,8 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       if(jcrPatth.endsWith("/") || docName.startsWith("/")) fullPath = jcrPatth + docName ;
       else  fullPath = jcrPatth + Utils.SLASH + docName ;
       if(container.getNodeByPath(fullPath) == null){
-        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null)) ;
+        app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null, 
+                                              ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
       } 
