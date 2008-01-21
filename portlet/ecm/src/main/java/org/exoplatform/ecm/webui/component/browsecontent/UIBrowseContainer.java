@@ -213,7 +213,11 @@ public class UIBrowseContainer extends UIContainer {
     return documentsOnTag ;
   }
   public String getIcons(Node node, String type) throws Exception {
-    return Utils.getNodeTypeIcon(node, type) ; 
+    try {
+      return Utils.getNodeTypeIcon(node, type) ; 
+    } catch(Exception e) {
+      return "" ;
+    }
   }
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
@@ -796,7 +800,7 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   //TODO maybe need change name of this method
-  public void loadPortletConfig(PortletPreferences preferences ) throws Exception {
+  public void loadPortletConfig(PortletPreferences preferences) throws Exception {
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     String repoName = preferences.getValue(Utils.REPOSITORY, "") ;
 //    String workspace = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
@@ -841,7 +845,8 @@ public class UIBrowseContainer extends UIContainer {
       try{
         documentNode = (Node)getSession().getItem(documentPath) ;
       }catch (Exception e) { 
-        e.printStackTrace() ;
+        return ;
+        //e.printStackTrace() ;
       }      
       viewDocument(documentNode, false) ;
       if(isEnableToolBar()) initToolBar(false, false, false) ;
