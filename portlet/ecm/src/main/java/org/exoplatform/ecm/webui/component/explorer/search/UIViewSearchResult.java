@@ -226,6 +226,16 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
     inputResource.setDownloadName(node.getName()) ;
     return downloadService.getDownloadLink(downloadService.addDownloadResource(inputResource)) ;
   }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
 
   public String getPortalName() {
     PortalContainer pContainer = PortalContainer.getInstance() ;
