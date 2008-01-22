@@ -179,7 +179,9 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;
-      newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
+      if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
+        newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
+      }
       reset() ;
       setIsResetForm(true) ;
       for(UIComponent uiChild : getChildren()) {
