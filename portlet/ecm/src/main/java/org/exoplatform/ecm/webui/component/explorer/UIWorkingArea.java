@@ -589,7 +589,6 @@ public class UIWorkingArea extends UIContainer {
       }      
       Node parentNode = node.getParent() ;
       try {
-        uicomp.removeMixins(node) ;
         node.remove() ;
         parentNode.save() ;
       } catch(VersionException ve) {
