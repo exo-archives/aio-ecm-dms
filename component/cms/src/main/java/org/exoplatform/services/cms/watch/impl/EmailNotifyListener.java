@@ -36,7 +36,7 @@ import org.exoplatform.services.organization.User;
  * Created by The eXo Platform SAS
  * Author : Xuan Hoa Pham
  *          hoapham@exoplatform.com
- * 					phamvuxuanhoa@gmail.com
+ *          phamvuxuanhoa@gmail.com
  * Dec 6, 2006  
  */
 public class EmailNotifyListener implements EventListener {  
@@ -63,7 +63,7 @@ public class EmailNotifyListener implements EventListener {
         mailService.sendMessage(message) ; 
       }catch (Exception e) {
         System.out.println("===> Exeption when send message to: " + message.getTo());
-        //e.printStackTrace() ;
+        e.printStackTrace() ;
         
       }      
     }
@@ -96,7 +96,8 @@ public class EmailNotifyListener implements EventListener {
           }
         }
       } 
-    }catch (Exception e) {
+    } catch (Exception e) {
+      e.printStackTrace() ;
     }
     return emailList ;
   }

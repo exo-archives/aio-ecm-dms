@@ -98,15 +98,8 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         EmailNotifyListener listener = new EmailNotifyListener(documentNode) ;                
         observeNode(documentNode,listener) ;        
       }        
-      if(notifyType == NOTIFICATION_BY_RSS ) {        
-        documentNode.setProperty(RSS_WATCHERS_PROP,new Value[] {newWatcher}) ;
-        documentNode.save() ;        
-        RssNotifyListener listener = new RssNotifyListener(documentNode) ;
-        observeNode(documentNode,listener) ;        
-        //TODO Send an RSS feed to user when document is modify        
-      }
       session.save() ;
-    }else {      
+    } else {      
       List<Value>  watcherList = new ArrayList<Value>() ;
       if(notifyType == NOTIFICATION_BY_EMAIL) {
         if(documentNode.hasProperty(EMAIL_WATCHERS_PROP)) {
@@ -119,17 +112,8 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         documentNode.setProperty(EMAIL_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
         documentNode.save() ;
       }
-      if(notifyType == NOTIFICATION_BY_RSS) {
-        if(documentNode.hasProperty(RSS_WATCHERS_PROP)) {
-          for(Value watcher : documentNode.getProperty(RSS_WATCHERS_PROP).getValues()) {
-            watcherList.add(watcher) ;
-          }
-          watcherList.add(newWatcher) ;
-        }
-        documentNode.setProperty(RSS_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
-        documentNode.save() ;
-      }
       session.save() ;
+      session.logout() ;
     }
   }
 
@@ -146,19 +130,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
       }
       documentNode.setProperty(EMAIL_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
     }
-
-    if(notificationType == NOTIFICATION_BY_RSS) {
-      Value[] watchers = documentNode.getProperty(RSS_WATCHERS_PROP).getValues() ;
-      List<Value> watcherList = new ArrayList<Value>() ;
-      for(Value watcher: watchers) {
-        if(!watcher.getString().equals(userName)) {
-          watcherList.add(watcher) ;
-        }
-      }
-      documentNode.setProperty(RSS_WATCHERS_PROP,watcherList.toArray(new Value[watcherList.size()])) ;
-    }
     documentNode.save() ;  
     session.save() ;
+    session.logout() ;
   }  
 
   private void observeNode(Node node, EventListener listener) throws Exception {
@@ -193,8 +167,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
       nodeTypeNameList.add(primaryType.getName()) ;
     }    
     for(NodeType nodeType: node.getMixinNodeTypes()) {
-      if(templateService_.isManagedNodeType(nodeType.getName(), repository)) 
+      if(templateService_.isManagedNodeType(nodeType.getName(), repository)) {
         nodeTypeNameList.add(nodeType.getName()) ;
+      }
     }
     return nodeTypeNameList ;
   }
@@ -208,7 +183,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
         QueryManager queryManager = null ;
         try{
           queryManager = session.getWorkspace().getQueryManager() ;
-        }catch (Exception e) { }
+        } catch (Exception e) { 
+          e.printStackTrace() ;
+        }
         if(queryManager == null) { 
           session.logout(); 
           continue ;
@@ -224,16 +201,12 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
             String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;          
             manager.addEventListener(emailNotifyListener,Event.PROPERTY_CHANGED,
                 observedNode.getPath(),true,null,observedNodeTypeNames,false) ;          
-            // TODO Add Listener for notify type by RSS
-            RssNotifyListener rssNotifyListener = new RssNotifyListener(observedNode) ;
-            manager.addEventListener(rssNotifyListener,Event.PROPERTY_CHANGED,
-                observedNode.getPath(),true,null,observedNodeTypeNames,false) ;
           }
           session.logout();
-        }catch (Exception e) {
+        } catch (Exception e) {
           System.out.println("==>>> Cannot init observer for node: " 
               +e.getLocalizedMessage() + " in '"+repo.getName()+"' repository");
-          //e.printStackTrace() ;
+          e.printStackTrace() ;
         }
       }
     }
