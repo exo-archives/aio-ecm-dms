@@ -25,6 +25,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.ImportUUIDBehavior;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
+import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
@@ -115,6 +116,12 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.access-denied", null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
+      } catch(ConstraintViolationException con) {
+        Object[] args = { uiExplorer.getCurrentNode().getPrimaryNodeType().getName() } ;
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.constraint-violation-exception", 
+                                                args,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       } catch(Exception ise) {        
