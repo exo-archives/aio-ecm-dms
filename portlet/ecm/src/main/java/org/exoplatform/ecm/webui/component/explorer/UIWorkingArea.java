@@ -554,6 +554,7 @@ public class UIWorkingArea extends UIContainer {
 
   static  public class DeleteActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+//TODO: Need review this method with remove record.
       UIWorkingArea uicomp = event.getSource().getParent() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -589,6 +590,7 @@ public class UIWorkingArea extends UIContainer {
       }      
       Node parentNode = node.getParent() ;
       try {
+        if(node.isNodeType(Utils.RMA_RECORD)) uicomp.removeMixins(node) ;
         node.remove() ;
         parentNode.save() ;
       } catch(VersionException ve) {
