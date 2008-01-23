@@ -147,7 +147,8 @@
 				<td style="width: 30%"><%=_ctx.appRes("FilePlan.view.label.number-of-record")%></td>
 				<%
 					String numberOfRecord = "" ;
-					if(node.hasProperty("rma:recordCounter")) numberOfRecord = node.getProperty("rma:recordCounter").getString() ;
+//					if(node.hasProperty("rma:recordCounter")) numberOfRecord = node.getProperty("rma:recordCounter").getString() ;
+          if(node.hasProperty("rma:recordCounter")) numberOfRecord = recordList.size() ;
 				%>				
 				<td><%=numberOfRecord%></td>
 			</tr>
@@ -283,7 +284,7 @@
 								<th><%=_ctx.appRes("FilePlan.view.label.date-received")%></th>
 								<th><%=_ctx.appRes("FilePlan.view.label.originating-organization")%></th>				
 							</tr>   
-							<%for(record in recordsService.getRecords(node)) { %>
+							<%for(record in recordList) { %>
 									<tr>
 										<td>
 											<div class="<%=uicomponent.getIcons(record,"16x16Icon")%>"></div>
