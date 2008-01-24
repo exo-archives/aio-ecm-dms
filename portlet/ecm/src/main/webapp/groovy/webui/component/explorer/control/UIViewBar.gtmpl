@@ -9,10 +9,9 @@
 %>
 <div class="UIViewBar">
   <div class="SelectViewBox">
-    <div class="SelectViewLabel">Select View :</div>
     <% uiform.begin() %>
     <div class="SelectBox">
-      <% uicomponent.renderChildren(); %>
+      <label class="SelectViewLabel">Select View</label><% uicomponent.renderChildren(); %>
     </div>
     <%uiform.end()%>    
   </div>
