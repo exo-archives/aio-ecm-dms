@@ -106,6 +106,7 @@
 
 .UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContent {
 	border: none;
+	background: none;
 }
 
 .UIFastContentCreatorPortlet .TabPaneContent {

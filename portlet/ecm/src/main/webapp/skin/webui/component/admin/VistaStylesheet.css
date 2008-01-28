@@ -423,6 +423,7 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
+	padding: 10px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
