@@ -21,37 +21,43 @@
   				<div class="EventContent">
 	      <%
 	        for(Node doc in subDocumentList) {
-	        	String objectId = doc.getPath() + "&category=" + uicomponent.getCategoryPath() ;
-	          String viewAction = uicomponent.event("ChangeNode",objectId);
-	          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
-	          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
+	        	try {
+		        	String objectId = doc.getPath() + "&category=" + uicomponent.getCategoryPath() ;
+		          String viewAction = uicomponent.event("ChangeNode",objectId);
+		          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
+		          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
+		      %>
+		          <div class="EventContentDetail">
+		            <div class="TopEventContentDetail">
+		              <table>  
+		                 <tr>
+		                  <td>
+		                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
+		                    <div class="EventDocumentLabel">
+		                      <a href="$viewAction"><%=docName%></a>
+		                    </div>  
+		                  </td>
+		                  <td class="EventAuthorNameLabel">
+		                  	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
+		                  </td>	                  
+		                </tr>        
+		              </table>
+		            </div>
+		            <div class="MainEventContent">
+		              <div class="SummaryTitleLabel">
+		              	<%=_ctx.appRes(componentName + ".label.summary")%>:
+		                <%if(doc.hasProperty("exo:summary")){%>
+		                 <%=doc.getProperty("exo:summary").getString()%>
+		                <%}%>
+		              </div>
+		            </div>
+		          </div>
+	      <%
+	          } catch(Exception e) {
+	            continue ;
+	          }
+	        }
 	      %>
-	          <div class="EventContentDetail">
-	            <div class="TopEventContentDetail">
-	              <table>  
-	                 <tr>
-	                  <td>
-	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
-	                    <div class="EventDocumentLabel">
-	                      <a href="$viewAction"><%=docName%></a>
-	                    </div>  
-	                  </td>
-	                  <td class="EventAuthorNameLabel">
-	                  	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-	                  </td>	                  
-	                </tr>        
-	              </table>
-	            </div>
-	            <div class="MainEventContent">
-	              <div class="SummaryTitleLabel">
-	              	<%=_ctx.appRes(componentName + ".label.summary")%>:
-	                <%if(doc.hasProperty("exo:summary")){%>
-	                 <%=doc.getProperty("exo:summary").getString()%>
-	                <%}%>
-	              </div>
-	            </div>
-	          </div>
-	      <%}%>
    			</div>
    			<% if(totalPages>1){ %>
 		    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>

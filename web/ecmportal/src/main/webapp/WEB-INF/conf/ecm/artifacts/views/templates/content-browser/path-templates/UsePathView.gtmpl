@@ -181,6 +181,11 @@
           String viewAction = uicomponent.event("ChangeNode", objectId);
           String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
           String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
+          try {
+            uicomponent.getOwner(doc) ;
+          } catch(Exception e) {
+            break ;
+          }
       %>
           <div class="EventContentDetail">
             <div class="TopEventContentDetail">
