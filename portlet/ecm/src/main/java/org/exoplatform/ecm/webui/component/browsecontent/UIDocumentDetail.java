@@ -358,7 +358,9 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
           session = SessionsUtils.getSystemProvider().getSession(wsName,manageableRepository) ;
         }else {
           if(SessionsUtils.isAnonim()) {
-            session = SessionsUtils.getAnonimProvider().getSession(wsName,manageableRepository) ;
+            //TODO: Anonim session
+            // session = SessionsUtils.getAnonimProvider().getSession(wsName,manageableRepository) ;
+            session = SessionsUtils.getSystemProvider().getSession(wsName,manageableRepository) ;
           }else {
             session = SessionsUtils.getSessionProvider().getSession(wsName,manageableRepository) ;
           }
