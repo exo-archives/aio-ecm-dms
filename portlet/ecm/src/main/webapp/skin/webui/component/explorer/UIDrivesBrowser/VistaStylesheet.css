@@ -184,11 +184,11 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .GroupDriveIcon {
-  background: url('VistaSkin/background/GroupManagement58x45.gif') no-repeat;
+  background: url('VistaSkin/background/GroupManagement58x45.png') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserDriveIcon {
-  background: url('VistaSkin/background/UserManagement58x45.gif') no-repeat;
+  background: url('VistaSkin/background/UserManagement58x45.png') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {

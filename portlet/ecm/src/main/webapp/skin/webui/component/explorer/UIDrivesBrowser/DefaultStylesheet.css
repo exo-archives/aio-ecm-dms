@@ -73,7 +73,6 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
   background: #b0cfea url('DefaultSkin/background/DrivesTitle338x23.gif') no-repeat left;
-  height: 23px;
   line-height: 23px;
   color: white;
   font-weight: bold;
@@ -96,7 +95,6 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
-	height: 21px;
 	line-height: 21px;
 	padding-right: 5px;
 }
@@ -125,6 +123,10 @@
 	background: url('DefaultSkin/background/Earth.gif') no-repeat left center;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DecoratorMiddle {
+	_width: 99.8%;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
 	border: 1px solid #d9d9d9;
 	margin-top: 1px;
@@ -138,7 +140,7 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   float: left;
-  width: 160px; height: 80px;
+  width: 158px; height: 80px;
   border: solid 1px #d1d1d1;
   background: white;
   padding: 8px 0px 5px 0px;

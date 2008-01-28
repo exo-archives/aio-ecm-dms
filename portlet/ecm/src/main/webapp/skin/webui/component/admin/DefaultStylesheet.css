@@ -217,6 +217,10 @@
 	border: none;
 }
 
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UITabPane .TabPaneContent {
+	padding: 0px;
+}
+
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
 	background: #f4f4f4;
 	padding: 0px;
@@ -409,6 +413,7 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
+ 	line-height: 18px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {

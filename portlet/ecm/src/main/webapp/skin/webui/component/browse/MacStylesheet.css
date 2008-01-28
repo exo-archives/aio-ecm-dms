@@ -94,6 +94,10 @@
 	width: 200px;
 }
 
+.UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
+	width: auto;
+}
+
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
 	margin: auto;
 }
