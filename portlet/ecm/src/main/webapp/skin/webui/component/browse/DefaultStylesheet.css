@@ -793,6 +793,10 @@ UIBrowseContentPortlet .Explorer {
 	margin: 10px;
 }
 
+.UIBrowseContentPortlet .WorkKofax .UIGrid td {
+	border-top: 1px solid #cccccc;
+}
+
 /******************* Podcast ********************/
 .UIBrowseContentPortlet .ContentPodcast {
 	border-bottom: 1px solid #bdbdbd; 

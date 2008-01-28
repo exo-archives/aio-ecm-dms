@@ -180,6 +180,11 @@
   background: url('DefaultSkin/ViewPermission.gif') no-repeat ;
 }
 
+.Clipboard24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/Clipboard.gif') no-repeat center center;
+}
+
 .HardDisk24x24Icon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/HardDisk.gif') no-repeat ;
