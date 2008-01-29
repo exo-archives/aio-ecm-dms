@@ -129,7 +129,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       return data ;
     }    
     session.logout();
-    return  null ;    
+    return null ;    
   }
 
   public void addDrive(String name, String workspace, String permissions, String homePath, 
@@ -172,14 +172,15 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     List<DriveData> driveByPermission = new ArrayList<DriveData>() ;
     try{
       List<DriveData> driveList = getAllDrives(repository);    
-      for(int i = 0; i < driveList.size(); i ++) {
-        DriveData drive = driveList.get(i) ;
+      for(DriveData drive : driveList) {
         if(drive.hasPermission(drive.getAllPermissions(), permission)){
           driveByPermission.add(drive) ;
         } 
       }
-      driveByPermission.add(getDriveByName("Private", repository)) ;
-    }catch(Exception e) {
+      if(getDriveByName("Private", repository) != null) {
+        driveByPermission.add(getDriveByName("Private", repository)) ;
+      }
+    } catch(Exception e) {
       e.printStackTrace() ;
     }    
     return driveByPermission ;
