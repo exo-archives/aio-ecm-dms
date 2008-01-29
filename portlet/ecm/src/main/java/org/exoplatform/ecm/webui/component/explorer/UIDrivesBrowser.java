@@ -19,8 +19,11 @@ package org.exoplatform.ecm.webui.component.explorer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
@@ -97,39 +100,33 @@ public class UIDrivesBrowser extends UIContainer {
   public String getRepository(){return repoName_ ;}
   public void setRepository(String repoName){repoName_ = repoName ;}
 
-  public List<DriveData> getDrives(String repoName) throws Exception {
-    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
-//    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
-
-    ManageableRepository repository = rservice.getRepository(repoName) ;  
-    List<DriveData> driveList = new ArrayList<DriveData>() ;
-//    Session session = null ;
-    List<String> userRoles = Utils.getMemberships() ;
-    List<String> driveNames = new ArrayList<String>() ;
-    for(String role : userRoles ){
-      List<DriveData> drives = driveService.getAllDriveByPermission(role, repoName) ;
-      if(drives != null && drives.size() > 0) {
-        for(DriveData drive : drives) {
-//          if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-//            String[] iconPath = drive.getIcon().split(":/") ;   
-//            session = repository.getSystemSession(iconPath[0]) ;
-//            try {
-//              Node node = (Node) session.getItem("/" + iconPath[1]) ;
-//              Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-//              InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-//              InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
-//              dresource.setDownloadName(node.getName()) ;
-//              drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
-//              session.logout() ;
-//            } catch(PathNotFoundException pnf) {
-//              drive.setIcon("") ;
-//            }
-//          }
-          if(isExistWorspace(repository, drive) && !driveNames.contains(drive.getName())) driveList.add(drive) ;
-          if(!driveNames.contains(drive.getName())) driveNames.add(drive.getName()) ;
+  public List<DriveData> getDrives(String repoName) throws Exception {    
+    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;      
+    List<DriveData> driveList = new ArrayList<DriveData>() ;    
+    List<String> userRoles = Utils.getMemberships() ;    
+    List<DriveData> allDrives = driveService.getAllDrives(repoName);
+    Set<DriveData> temp = new HashSet<DriveData>();
+    //We will improve ManageDrive service to allow getAllDriveByUser
+    for(DriveData driveData:allDrives) {
+      String[] allPermission = driveData.getAllPermissions();
+      boolean flag = false;
+      for(String permission:allPermission) {
+        if(permission.equalsIgnoreCase("${userId}")) {
+          temp.add(driveData);
+          flag = true;
+          break;
         }
-      }
+        if(flag) continue;
+        for(String rolse:userRoles) {
+          if(driveData.hasPermission(allPermission,rolse)) {
+            temp.add(driveData);
+            break;
+          }
+        }
+      }      
+    }        
+    for(Iterator<DriveData> iterator = temp.iterator();iterator.hasNext();) {
+      driveList.add(iterator.next());
     }
     Collections.sort(driveList) ;
     return driveList ; 
