@@ -171,10 +171,11 @@ public class UIDrivesBrowser extends UIContainer {
   public List<DriveData> personalDrives(List<DriveData> driveList) {
     List<DriveData> personalDrives = new ArrayList<DriveData>() ;
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    String userId = Util.getPortalRequestContext().getRemoteUser() ;
     String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
     for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(userPath + "/" + userId + "/")) personalDrives.add(drive) ;
+      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
+        personalDrives.add(drive) ;
+      }
     }
     Collections.sort(personalDrives) ;
     return personalDrives ;
@@ -203,6 +204,7 @@ public class UIDrivesBrowser extends UIContainer {
       RepositoryService rservice = uiDrive.getApplicationComponent(RepositoryService.class) ;
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
       DriveData drive = dservice.getDriveByName(driveName, uiDrive.repoName_) ;
+      String userId = Util.getPortalRequestContext().getRemoteUser() ;
       UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class) ;
       List<String> userRoles = Utils.getMemberships() ;
       Map<String, String> viewMap = new HashMap<String, String>() ;
@@ -214,6 +216,7 @@ public class UIDrivesBrowser extends UIContainer {
           Node viewNode = 
             uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
           String permiss = viewNode.getProperty("exo:permissions").getString();
+          if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId) ;
           String[] viewPermissions = permiss.split(",") ;
           if(permiss.equals("*")) viewMap.put(viewName, viewName) ;
           if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
@@ -230,10 +233,12 @@ public class UIDrivesBrowser extends UIContainer {
         else viewList = viewName ;
       }
       drive.setViews(viewList) ;
+      String homePath = drive.getHomePath() ;
+      if(homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId) ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
       PortletPreferences preferences = context.getRequest().getPreferences() ;
       preferences.setValue(Utils.WORKSPACE_NAME, drive.getWorkspace()) ;
-      preferences.setValue(Utils.JCR_PATH, drive.getHomePath()) ;
+      preferences.setValue(Utils.JCR_PATH, homePath) ;
       preferences.setValue(Utils.VIEWS, drive.getViews()) ;
       preferences.setValue(Utils.DRIVE, drive.getName()) ;
       preferences.setValue(Utils.DRIVE_FOLDER, drive.getAllowCreateFolder()) ;
@@ -256,7 +261,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setSession(session) ;
       Node node = null ;
       try {
-        node = (Node) session.getItem(drive.getHomePath()) ;        
+        node = (Node) session.getItem(homePath) ;        
       } catch(AccessDeniedException ace) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 

@@ -239,6 +239,7 @@
 	      </value-param>	      	      	      	      	      	      	      	      	      	      
 	    </init-params>
 	  </component-plugin>	  	  
+<!--
 	  <component-plugin>
 	    <name>drive.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
@@ -290,7 +291,8 @@
 	        <value>both</value>
 	      </value-param>	      	      	      	      	      	      	      	      	      	      
 	    </init-params>
-	  </component-plugin>	  	  
+	  </component-plugin>	  
+-->	  	
 	  <component-plugin>
 	    <name>queries.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
