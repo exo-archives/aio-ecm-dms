@@ -259,7 +259,7 @@ public class UIWorkingArea extends UIContainer {
     SecurityService securityService = getApplicationComponent(SecurityService.class) ;
     for(Node actionNode : unsafeActions) {
       Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
-      for (int i = 0; i < roles.length; i++) {
+      for (int i = 0; i < roles.length - 1; i++) {
         String role = roles[i].getString();
         if(securityService.hasMembershipInGroup(userName, role)) safeActions.add(actionNode);
       }

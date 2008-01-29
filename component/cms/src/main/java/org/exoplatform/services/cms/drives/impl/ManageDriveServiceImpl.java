@@ -178,6 +178,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
           driveByPermission.add(drive) ;
         } 
       }
+      driveByPermission.add(getDriveByName("Private", repository)) ;
     }catch(Exception e) {
       e.printStackTrace() ;
     }    

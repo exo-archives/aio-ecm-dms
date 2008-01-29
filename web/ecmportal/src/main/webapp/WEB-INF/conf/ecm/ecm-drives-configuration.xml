@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <configuration>  
-		
-		<component>
-	    <key>org.exoplatform.services.cms.drives.ManageDriveService</key>
-	    <type>org.exoplatform.services.cms.drives.impl.ManageDriveServiceImpl</type>
-  	</component>
-    
+  
    <external-component-plugins>
    	<target-component>org.exoplatform.services.cms.drives.ManageDriveService</target-component>    
 
@@ -235,7 +230,67 @@
               <field  name="showHiddenNode"><boolean>false</boolean></field>
               <field  name="allowCreateFolder"><string>both</string></field>       
             </object>
-          </object-param>                                                               
+          </object-param> 
+          <object-param>        
+            <name>Records Management Center</name>
+            <description>Records Management Center</description>
+            <object type="org.exoplatform.services.cms.drives.DriveData">
+              <field  name="name"><string>Records Management Center</string></field>
+              <field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>collaboration</string></field>
+              <field  name="permissions"><string>*:/platform/administrators</string></field>
+              <field  name="homePath"><string>/Records Space</string></field>
+              <field  name="icon"><string></string></field>
+              <field  name="views">
+                <string>simple-view, admin-view</string>
+              </field>
+              <field  name="viewPreferences"><boolean>false</boolean></field>
+              <field  name="viewNonDocument"><boolean>false</boolean></field>
+              <field  name="viewSideBar"><boolean>true</boolean></field>
+              <field  name="showHiddenNode"><boolean>false</boolean></field>
+              <field  name="allowCreateFolder"><string>both</string></field>       
+            </object>
+          </object-param>                                                                        
+          <object-param>        
+            <name>Private</name>
+            <description>Private drive</description>
+            <object type="org.exoplatform.services.cms.drives.DriveData">
+              <field  name="name"><string>Private</string></field>
+              <field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>collaboration</string></field>
+              <field  name="permissions"><string>${userId}</string></field>
+              <field  name="homePath"><string>/Users/${userId}/Private</string></field>
+              <field  name="icon"><string></string></field>
+              <field  name="views">
+                <string>simple-view, admin-view</string>
+              </field>
+              <field  name="viewPreferences"><boolean>true</boolean></field>
+              <field  name="viewNonDocument"><boolean>true</boolean></field>
+              <field  name="viewSideBar"><boolean>true</boolean></field>
+              <field  name="showHiddenNode"><boolean>true</boolean></field>
+              <field  name="allowCreateFolder"><string>both</string></field>       
+            </object>
+          </object-param>                                                                                  
+          <object-param>        
+            <name>Public</name>
+            <description>Public drive</description>
+            <object type="org.exoplatform.services.cms.drives.DriveData">
+              <field  name="name"><string>Public</string></field>
+              <field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>collaboration</string></field>
+              <field  name="permissions"><string>*:/platform/users</string></field>
+              <field  name="homePath"><string>/Users/${userId}/Public</string></field>
+              <field  name="icon"><string></string></field>
+              <field  name="views">
+                <string>simple-view, admin-view</string>
+              </field>
+              <field  name="viewPreferences"><boolean>false</boolean></field>
+              <field  name="viewNonDocument"><boolean>false</boolean></field>
+              <field  name="viewSideBar"><boolean>true</boolean></field>
+              <field  name="showHiddenNode"><boolean>false</boolean></field>
+              <field  name="allowCreateFolder"><string>both</string></field>       
+            </object>
+          </object-param>                                                                        
         </init-params>  
       </component-plugin> 
 

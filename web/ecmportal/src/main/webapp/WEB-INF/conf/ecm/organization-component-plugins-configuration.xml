@@ -50,11 +50,6 @@
 		             		<field name="alias"><string>documents</string></field>
 		                <field name="path"><string>Documents</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>
-		                <field name="mixinTypes">
-				              <collection type="java.util.ArrayList">
-				              	<value><string>exo:documentFolder</string></value>
-				            	</collection>
-				            </field>
 		                <field name="permissions">
 				              <collection type="java.util.ArrayList">               
 				                <value>                            
@@ -135,60 +130,35 @@
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>userPrivateDocuments</string></field>
 		                <field name="path"><string>Private/Documents</string></field>
-		                <field name="nodeType"><string>nt:unstructured</string></field>
-		                <field name="mixinTypes">
-				              <collection type="java.util.ArrayList">
-				              	<value><string>exo:documentFolder</string></value>
-				            	</collection>
-				            </field>		                			                 			              
+		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			              
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>userPrivateVideo</string></field>
 		                <field name="path"><string>Private/Videos</string></field>
-		                <field name="nodeType"><string>nt:unstructured</string></field>
-		                <field name="mixinTypes">
-				              <collection type="java.util.ArrayList">
-				              	<value><string>exo:videoFolder</string></value>
-				            	</collection>
-				            </field>		                			                 			              
+		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			              
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>userPrivateAudio</string></field>
 		                <field name="path"><string>Private/Music</string></field>
-		                <field name="nodeType"><string>nt:unstructured</string></field>
-		                <field name="mixinTypes">
-				              <collection type="java.util.ArrayList">
-				              	<value><string>exo:musicFolder</string></value>
-				            	</collection>
-				            </field>		                			                 			               
+		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>userPrivatePicture</string></field>
 		                <field name="path"><string>Private/Pictures</string></field>
-		                <field name="nodeType"><string>nt:unstructured</string></field>
-		                <field name="mixinTypes">
-				              <collection type="java.util.ArrayList">
-				              	<value><string>exo:pictureFolder</string></value>
-				            	</collection>
-				            </field>		                			                 			               
+		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>userPrivateSearches</string></field>
 		                <field name="path"><string>Private/Searches</string></field>
-		                <field name="nodeType"><string>nt:unstructured</string></field>
-		                <field name="mixinTypes">
-				              <collection type="java.util.ArrayList">
-				              	<value><string>exo:searchFolder</string></value>
-				            	</collection>
-				            </field>		                			                 			               
+		                <field name="nodeType"><string>nt:unstructured</string></field>		                			                 			               
 	              	</object>
               	</value>              	              	             	              	              	
                 <value>              	
@@ -269,6 +239,7 @@
 	      </value-param>	      	      	      	      	      	      	      	      	      	      
 	    </init-params>
 	  </component-plugin>	  	  
+<!--
 	  <component-plugin>
 	    <name>drive.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
@@ -320,7 +291,8 @@
 	        <value>both</value>
 	      </value-param>	      	      	      	      	      	      	      	      	      	      
 	    </init-params>
-	  </component-plugin>	  	  
+	  </component-plugin>	  
+-->	  	
 	  <component-plugin>
 	    <name>queries.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
