@@ -82,6 +82,10 @@
 	width: 200px;
 }
 
+.UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
+		text-transform: capitalize;
+}
+
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
 	margin: auto;
 }

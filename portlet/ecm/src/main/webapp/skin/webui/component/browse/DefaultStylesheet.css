@@ -87,18 +87,22 @@
 }
 
 .UIBrowseContentPortlet .TagmapHolder .Icon{
-	float: left;
-	width: 19px; height: 16px; 
-	margin: 2px 5px 0px 5px;
-	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
+		float: left;
+		width: 19px; height: 16px; 
+		margin: 2px 5px 0px 5px;
+		background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 200px;
+		width: 200px;
+}
+
+.UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
+		text-transform: capitalize;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
-	margin: auto;
+		margin: auto;
 }
 
 .UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
@@ -106,12 +110,12 @@
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
-	padding: 0px;
+		padding: 0px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16{
-	float:none;
-	margin-left: 5px;
+		float:none;
+		margin-left: 5px;
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {

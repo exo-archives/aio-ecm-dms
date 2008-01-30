@@ -89,47 +89,48 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent {
-	border: 1px solid #d9d9d9;
-	padding: 1px 2px 2px 2px;
-	margin-bottom: 5px;
+		border: 1px solid #d9d9d9;
+		padding: 1px 2px 2px 2px;
+		margin-bottom: 5px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
-	line-height: 21px;
-	padding-right: 5px;
+		line-height: 21px;
+		padding-right: 5px;
+		height: 21px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DropDownArrow16x16Icon {
-	padding-right: 20px;
-	width: auto; height: auto;
-	background-position: right center;
+		padding-right: 20px;
+		width: auto; height: auto;
+		background-position: right center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .Icon {
-	padding-left: 20px;
-	width: auto; height: auto;
-	margin: 0px;
+		padding-left: 20px;
+		width: auto; height: auto;
+		margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
-	background: url('DefaultSkin/background/Personal.png') no-repeat left center;
+		background: url('DefaultSkin/background/Personal.png') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
-	background: url('DefaultSkin/background/Group.png') no-repeat left center;
+		background: url('DefaultSkin/background/Group.png') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
-	background: url('DefaultSkin/background/Earth.gif') no-repeat left center;
+		background: url('DefaultSkin/background/Earth.gif') no-repeat left center;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DecoratorMiddle {
-	_width: 99.8%;
+		_width: 99.8%;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
-	border: 1px solid #d9d9d9;
-	margin-top: 1px;
+		border: 1px solid #d9d9d9;
+		margin-top: 1px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
