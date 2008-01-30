@@ -25,9 +25,8 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .SubTaxonomyContainer {
-	border-top: solid 1px #d9d8d8;
-	border-left: solid 1px #d9d8d8;
-	border-right: solid 1px #d9d8d8;
+		border: solid 1px #d9d8d8;
+		width: 100%;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .HomeNode {

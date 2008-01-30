@@ -94,6 +94,10 @@
 	width: 200px;
 }
 
+.UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
+		text-transform: capitalize;
+}
+
 .UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
 	width: auto;
 }
