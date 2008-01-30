@@ -34,6 +34,9 @@ public class DelegateActionHandler implements ActionHandler {
   
   public void execute(ExecutionContext context) {    
     try {      
+      System.err.println("Delegate"+context.getVariable("delegate").toString());
+      System.err.println("initiator"+context.getVariable("initiator").toString());
+      System.err.println("exo:validator"+context.getVariable("exo:validator").toString());
       ProcessUtil.delegate(context);
     } catch (Exception e) {      
     } 

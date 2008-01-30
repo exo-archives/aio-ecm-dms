@@ -10,8 +10,8 @@
   <swimlane name="initiator" />    
 
   <!-- START-STATE -->
-  <start-state name="start">
-    <task swimlane="initiator"/>
+  <start-state name="start">  
+    <task swimlane="initiator"/>    
     <event type="node-leave">
       <action class="org.exoplatform.processes.publishing.InitialActionHandler"/>
     </event>  
@@ -49,7 +49,7 @@
       <action class="org.exoplatform.processes.publishing.DelegateActionHandler"/>
     </event>
     <sub-process name="content-publishing" />
-    <variable name="initiator" access="read,write" mapped-name="initiator" />
+    <variable name="delegate" access="read,write" mapped-name="initiator" />
     <variable name="delegate" access="read,write" mapped-name="exo:validator" />
     <variable name="document-type" access="read,write" mapped-name="document-type" />    
     <variable name="nodePath" access="read,write" mapped-name="nodePath" />   

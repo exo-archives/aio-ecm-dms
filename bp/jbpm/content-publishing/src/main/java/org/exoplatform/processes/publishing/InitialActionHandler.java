@@ -37,14 +37,13 @@ import org.jbpm.graph.exe.ExecutionContext;
  */
 public class InitialActionHandler implements ActionHandler {
   
-  private static final long serialVersionUID = 1L;    
-  private boolean executed = false;
+  private static final long serialVersionUID = 1L;      
   
   public void execute(ExecutionContext context) throws Exception {
-    if(executed) {
-      return;
-    }
-    executed = true;
+    System.out.println("==========INITIAL==");
+    System.err.println("Delegate:"+context.getVariable("delegate").toString());
+    System.err.println("initiator:"+context.getVariable("initiator").toString());
+    System.err.println("exo:validator:"+context.getVariable("exo:validator").toString());    
     initialVariables(context);
     ProcessUtil.requestForValidation(context);
   }

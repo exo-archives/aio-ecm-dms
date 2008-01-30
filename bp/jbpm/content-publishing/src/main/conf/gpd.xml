@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="content-publishing" width="702" height="421">
+<root-container name="content-publishing" width="603" height="490">
   <node name="start" x="0" y="0" width="132" height="36">
     <edge>
       <label x="5" y="-10"/>

@@ -328,7 +328,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     statement = statement.replace("${Date}$",currentDate);    
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
     return query.execute();
-  }  
+  }    
   private void removeFromCache(String queryPath) throws Exception {
     ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
     String portalName = containerInfo_.getContainerName() ;
