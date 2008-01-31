@@ -38,7 +38,6 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
-import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -74,7 +73,7 @@ import org.exoplatform.webui.event.EventListener;
 
 )
 public class UIDrivesBrowser extends UIContainer {
-
+  
   private String repoName_ ;
 
   public UIDrivesBrowser() throws Exception {
@@ -110,15 +109,15 @@ public class UIDrivesBrowser extends UIContainer {
     for(DriveData driveData:allDrives) {
       String[] allPermission = driveData.getAllPermissions();
       boolean flag = false;
-      for(String permission:allPermission) {
-        if(permission.equalsIgnoreCase("${userId}")) {
+      for(String permission:allPermission) {        
+        if(permission.equalsIgnoreCase("${userId}")) {          
           temp.add(driveData);
           flag = true;
           break;
         }
         if(flag) continue;
-        for(String rolse:userRoles) {
-          if(driveData.hasPermission(allPermission,rolse)) {
+        for(String role:userRoles) {
+          if(driveData.hasPermission(allPermission,role)) {
             temp.add(driveData);
             break;
           }
@@ -167,23 +166,14 @@ public class UIDrivesBrowser extends UIContainer {
   
   public List<DriveData> personalDrives(List<DriveData> driveList) {
     List<DriveData> personalDrives = new ArrayList<DriveData>() ;
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    String userId = Util.getPortalRequestContext().getRemoteUser() ;
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;    
     String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
-    for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(userPath + "/" + userId + "/")) personalDrives.add(drive) ;
-    }
+    for(DriveData drive : driveList) {      
+      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) personalDrives.add(drive) ;
+    }    
     Collections.sort(personalDrives) ;
     return personalDrives ;
-  }
-  
-  private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
-    for(String ws:  repository.getWorkspaceNames()) {
-      if(ws.equals(drive.getWorkspace())) return true ;
-    }
-    return false ;
-  }
-
+  }    
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -228,9 +218,12 @@ public class UIDrivesBrowser extends UIContainer {
       }
       drive.setViews(viewList) ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletPreferences preferences = context.getRequest().getPreferences() ;
+      PortletPreferences preferences = context.getRequest().getPreferences() ;      
+      String currentUser = context.getRemoteUser();
+      String homePath = drive.getHomePath();      
+      homePath = homePath.replace("${userId}",currentUser);
       preferences.setValue(Utils.WORKSPACE_NAME, drive.getWorkspace()) ;
-      preferences.setValue(Utils.JCR_PATH, drive.getHomePath()) ;
+      preferences.setValue(Utils.JCR_PATH, homePath) ;
       preferences.setValue(Utils.VIEWS, drive.getViews()) ;
       preferences.setValue(Utils.DRIVE, drive.getName()) ;
       preferences.setValue(Utils.DRIVE_FOLDER, drive.getAllowCreateFolder()) ;
@@ -253,15 +246,14 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setSession(session) ;
       Node node = null ;
       try {
-        node = (Node) session.getItem(drive.getHomePath()) ;        
+        node = (Node) session.getItem(homePath) ;        
       } catch(AccessDeniedException ace) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
-      } catch(Exception e) {
-        e.printStackTrace() ;
+      } catch(Exception e) {        
         JCRExceptionManager.process(uiApp, e) ;
         return ;
       } 
