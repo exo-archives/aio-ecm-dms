@@ -90,6 +90,10 @@
 	margin: auto;
 }
 
+.UIBrowseContentPortlet .UIConfigContainer .UIFormGrid .DocSelectIcon {
+  float: none;
+}
+
 .UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .UIFormGrid {
 	margin: auto;
 }
@@ -108,8 +112,14 @@
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
+  *padding: 0px 4px 0px 0px;
   padding: 0px 4px;
   vertical-align: middle;
+  *width: auto;
+}
+
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+  padding: 0px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .UIFormWithTitle .FormContainer {
