@@ -1,5 +1,3 @@
-eXo.require('eXo.webui.UIRightClickPopupMenu');
-
 function ECMUtils() {
 	this.popupArray =  new Array() ;
 };

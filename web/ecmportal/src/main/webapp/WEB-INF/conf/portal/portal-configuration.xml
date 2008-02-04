@@ -32,11 +32,20 @@
         <description>specific membership type have full permission with group navigation</description>
         <value>manager</value>	    
       </value-param>    
+      
       <value-param>
         <name>guests.group</name>
-        <description>pulic group for portal</description>
+        <description>public group for portal</description>
         <value>/platform/guests</value>	    
       </value-param>    
+      
+       <value-param>
+        <name>access.control.workspace</name>
+        <description>groups with memberships that have the right to access the User Control Workspace</description>
+        <value>*:/platform/administrators,*:/organization/management/executive-board</value>	    
+      </value-param>         
+      
+      
 	  </init-params>   
   </component>
   
