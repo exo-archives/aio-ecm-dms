@@ -67,7 +67,7 @@
   
   <filter>
     <filter-name>AnonymousUserContextRedirectionFilter</filter-name>                                                         
-    <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>                 
+    <filter-class>org.exoplatform.frameworks.jcr.web.AnonymousUserContextRedirectionFilter</filter-class>                 
     <init-param>                                                                                                             
       <param-name>context-name</param-name>                                                                                  
       <param-value>/rest</param-value>                                                                                       
