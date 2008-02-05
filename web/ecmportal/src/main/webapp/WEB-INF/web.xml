@@ -64,7 +64,16 @@
       <param-value>UTF-8</param-value>                                                                                                                                 
     </init-param>
   </filter>
-
+  
+  <filter>
+    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>                                                         
+    <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>                 
+    <init-param>                                                                                                             
+      <param-name>context-name</param-name>                                                                                  
+      <param-value>/rest</param-value>                                                                                       
+    </init-param>                                                                                                            
+  </filter>
+  
   <filter>
     <filter-name>FactoryInitializedFilter</filter-name>
     <filter-class>org.exoplatform.frameworks.jcr.web.SimpleSessionFactoryInitializedFilter</filter-class>
@@ -85,6 +94,11 @@
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
 
+  <filter-mapping>                                                                                                           
+    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>                                                         
+    <url-pattern>/rest/*</url-pattern>                                                                                       
+  </filter-mapping>
+  
   <filter-mapping>
     <filter-name>PortalContainerInitializedFilter</filter-name>
     <url-pattern>/rest/*</url-pattern>
