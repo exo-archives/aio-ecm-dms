@@ -48,12 +48,19 @@
       <type>war</type>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.ws.frameworks</groupId>
+      <artifactId>exo.ws.frameworks.servlet</artifactId>
+      <version>${org.exoplatform.ws.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.ftp</artifactId>
-		  <version>${org.exoplatform.jcr.version}</version>
-		  <scope>provided</scope>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
