@@ -29,20 +29,7 @@
     <param-value>/exo:applications</param-value>
     <description>Binary assets workspace name</description>
   </context-param>
-  
-  <!-- ================================================================== -->
-  <!--           LISTENER                                                 -->
-  <!-- ================================================================== -->
-  <listener>
-    <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>org.exoplatform.ecm.application.JcrSessionListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>org.exoplatform.portal.webui.javascript.JavascriptListener</listener-class>
-  </listener>  
-  
+
   <!-- ================================================================== -->
   <!--   RESOURCE FILTER TO CACHE MERGED JAVASCRIPT AND CSS               -->
   <!-- ================================================================== -->
@@ -50,14 +37,14 @@
     <filter-name>ResourceRequestFilter</filter-name>
     <filter-class>org.exoplatform.portal.application.ResourceRequestFilter</filter-class>
   </filter>
-    
+
   <filter>
-    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>                                                         
-    <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>                 
-    <init-param>                                                                                                             
-      <param-name>context-name</param-name>                                                                                  
-      <param-value>/rest</param-value>                                                                                       
-    </init-param>                                                                                                            
+    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
+    <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>
+    <init-param>
+      <param-name>context-name</param-name>
+      <param-value>/rest</param-value>
+    </init-param>
   </filter>
 
   <filter>
@@ -66,10 +53,10 @@
   </filter>
 
   <filter>
-    <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>    
-    <filter-class>org.exoplatform.frameworks.jcr.web.ThreadLocalSessionProviderInitializedFilter</filter-class>                 
+    <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
+    <filter-class>org.exoplatform.frameworks.jcr.web.ThreadLocalSessionProviderInitializedFilter</filter-class>
   </filter>
-  
+
   <filter>
     <filter-name>RestEncodingFilter</filter-name>
     <filter-class>org.exoplatform.services.rest.servlet.RestEncodingFilter</filter-class>
@@ -83,7 +70,7 @@
     <filter-name>FactoryInitializedFilter</filter-name>
     <filter-class>org.exoplatform.frameworks.jcr.web.SimpleSessionFactoryInitializedFilter</filter-class>
   </filter>
-  
+
   <filter-mapping>
     <filter-name>ResourceRequestFilter</filter-name>
     <url-pattern>/javascript/*</url-pattern>
@@ -93,8 +80,8 @@
     <filter-name>ResourceRequestFilter</filter-name>
     <url-pattern>/css/*</url-pattern>
   </filter-mapping>
-  
-  <filter-mapping>                                                                      
+
+  <filter-mapping>
     <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
@@ -104,7 +91,7 @@
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
 
-  <filter-mapping>                                                                      
+  <filter-mapping>
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
@@ -118,12 +105,25 @@
     <filter-name>FactoryInitializedFilter</filter-name>
     <url-pattern>/connector</url-pattern>
   </filter-mapping>
-  
+
   <filter-mapping>
     <filter-name>FactoryInitializedFilter</filter-name>
     <url-pattern>/jcr/*</url-pattern>
-  </filter-mapping>	    
-	  
+  </filter-mapping>
+
+  <!-- ================================================================== -->
+  <!--           LISTENER                                                 -->
+  <!-- ================================================================== -->
+  <listener>
+    <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.exoplatform.ecm.application.JcrSessionListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.exoplatform.portal.webui.javascript.JavascriptListener</listener-class>
+  </listener>
+
   <!-- ================================================================== -->
   <!--           SERVLET                                                  -->
   <!-- ================================================================== -->
@@ -145,9 +145,7 @@
 
   <servlet>
     <servlet-name>DisplayJCRContent</servlet-name>
-    <description>
-      eXo - Platform DisplayJCRContent Servlet.
-    </description>
+    <description>eXo - Platform DisplayJCRContent Servlet.</description>
     <servlet-class>org.exoplatform.frameworks.jcr.web.DisplayJCRContentServlet</servlet-class>
     <load-on-startup>4</load-on-startup>
   </servlet>
@@ -158,17 +156,17 @@
     <servlet-class>org.exoplatform.services.rest.servlet.RestServlet</servlet-class>
     <load-on-startup>4</load-on-startup>
   </servlet>
-  
+
   <servlet>
     <servlet-name>javascript</servlet-name>
     <servlet-class>org.exoplatform.portal.webui.javascript.JavascriptServlet</servlet-class>
-   </servlet>
-   
+  </servlet>
+
   <servlet>
     <servlet-name>css</servlet-name>
     <servlet-class>org.exoplatform.portal.webui.skin.CSSServlet</servlet-class>
-  </servlet>   
-   
+  </servlet>
+
   <!-- ================================================================= -->
 
 
@@ -176,11 +174,11 @@
     <servlet-name>javascript</servlet-name>
     <url-pattern>/javascript/*</url-pattern>
   </servlet-mapping>
-  
+
   <servlet-mapping>
     <servlet-name>css</servlet-name>
     <url-pattern>/css/*</url-pattern>
-  </servlet-mapping>    
+  </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>portal</servlet-name>
@@ -202,7 +200,7 @@
     <url-pattern>/command/*</url-pattern>
   </servlet-mapping>
 
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>Controller</servlet-name>
     <url-pattern>/connector</url-pattern>
   </servlet-mapping>
@@ -213,9 +211,9 @@
   </servlet-mapping>
 
   <servlet-mapping>
-		<servlet-name>RestServer</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
+    <servlet-name>RestServer</servlet-name>
+    <url-pattern>/rest/*</url-pattern>
+  </servlet-mapping>
 
   <session-config>
     <session-timeout>15</session-timeout>
