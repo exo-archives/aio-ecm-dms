@@ -40,7 +40,6 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.BinarySwapEntry;
-import org.exoplatform.services.jcr.config.ReplicationEntry;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -98,10 +97,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_SCURITY  = "securityDomain" ;
   final static public String FIELD_SESSIONTIME = "sessionTime" ;
 
-  final static public String FIELD_REPCHANNEL = "channelConfig" ;
+  /*final static public String FIELD_REPCHANNEL = "channelConfig" ;
   final static public String FIELD_REPENABLE = "enableReplication" ;
   final static public String FIELD_REPMODE = "repMode" ;
-  final static public String FIELD_REPTESTMODE = "repTestMode" ;
+  final static public String FIELD_REPTESTMODE = "repTestMode" ;*/
 
   final static public String FIELD_BSEPATH = "directoryPath" ;
   final static public String FIELD_BSEMAXBUFFER = "maxBufferSize" ;
@@ -125,12 +124,14 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     addChild(autField) ;
     addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null)) ;
-    UIFormCheckBoxInput<Boolean> bseCheckbox = new UIFormCheckBoxInput<Boolean>(FIELD_REPENABLE,FIELD_REPENABLE, null) ;
+    
+    // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
+    /*UIFormCheckBoxInput<Boolean> bseCheckbox = new UIFormCheckBoxInput<Boolean>(FIELD_REPENABLE,FIELD_REPENABLE, null) ;
     bseCheckbox.setOnChange("ShowHidden") ;
     addChild(bseCheckbox) ;
     addChild(new UIFormStringInput(FIELD_REPCHANNEL,FIELD_REPCHANNEL, null).setRendered(false)) ;
     addChild(new UIFormStringInput(FIELD_REPMODE,FIELD_REPMODE, null).setRendered(false)) ;
-    addChild(new UIFormCheckBoxInput<Boolean>(FIELD_REPTESTMODE,FIELD_REPTESTMODE, null).setRendered(false)) ;
+    addChild(new UIFormCheckBoxInput<Boolean>(FIELD_REPTESTMODE,FIELD_REPTESTMODE, null).setRendered(false)) ;*/
     addChild(new UIFormStringInput(FIELD_BSEPATH,FIELD_BSEPATH, null).setRendered(false)) ;
     addChild(new UIFormStringInput(FIELD_BSEMAXBUFFER,FIELD_BSEMAXBUFFER, null).addValidator(NumberFormatValidator.class).setRendered(false)) ;
   }  
@@ -138,8 +139,11 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   public void refresh(RepositoryEntry repo) throws Exception{
     reset() ;
     getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
-    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
-    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(false) ;
+    
+    // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
+    /*getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
+    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(false) ;*/
+    
     UIFormInputSetWithAction autField = getChildById(FIELD_AUTHINPUTSET) ;
     workspaceMap_.clear() ;
     if(repo != null) {
@@ -151,10 +155,12 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false) ;
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false) ;
         setActions(new String[] {"Save","AddWorkspace", "Reset", "Close"}) ;
-        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
+        
+        // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
+        /*getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false) ;
         getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setRendered(false) ;
         getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setRendered(false) ;
-        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setRendered(false) ;
+        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setRendered(false) ;*/
         getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setRendered(false) ;
         getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setRendered(false);
       } else {
@@ -170,7 +176,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false);
         autField.setActionInfo(FIELD_AUTHENTICATION, null) ;
         setActions(new String[] {"AddWorkspace", "Close"}) ;
-        ReplicationEntry re = repo.getReplication() ;
+        
+        // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
+        /*ReplicationEntry re = repo.getReplication() ;
         if(re != null) {
           getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled()) ;
           if(re.isEnabled()) {
@@ -188,7 +196,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
               getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setValue(bse.getMaxBufferSize()) ;
             } 
           }
-        }
+        }*/
       }
       getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl()) ;      
       autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy()) ;      
@@ -206,14 +214,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     } else {
       autField.setActionInfo(FIELD_AUTHENTICATION, new String[]{"Select"}) ;
     }
-    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setEnable(editable) ;
+    
+//    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setEnable(editable) ;
     getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setEditable(editable); 
     autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setEditable(editable);     
     getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setEditable(editable); 
     getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setEditable(editable);
-    getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setEditable(editable) ;
-    getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setEditable(editable) ;
-    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setEnable(editable) ;;
+//    getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setEditable(editable) ;
+//    getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setEditable(editable) ;
+//    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setEnable(editable) ;;
     getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setEditable(editable) ;
     getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setEditable(editable) ;
   }
@@ -307,9 +316,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   }
   
   protected void ShowHidden() {
-    getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered()) ;
-    getUIStringInput(FIELD_REPMODE).setRendered(!getUIStringInput(FIELD_REPMODE).isRendered()) ;
-    getUIFormCheckBoxInput(FIELD_REPTESTMODE).setRendered(!getUIFormCheckBoxInput(FIELD_REPTESTMODE).isRendered()) ;
+   // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
+//    getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered()) ;
+//    getUIStringInput(FIELD_REPMODE).setRendered(!getUIStringInput(FIELD_REPMODE).isRendered()) ;
+//    getUIFormCheckBoxInput(FIELD_REPTESTMODE).setRendered(!getUIFormCheckBoxInput(FIELD_REPTESTMODE).isRendered()) ;
     getUIStringInput(FIELD_BSEPATH).setRendered(!getUIStringInput(FIELD_BSEPATH).isRendered()) ;
     getUIStringInput(FIELD_BSEMAXBUFFER).setRendered(!getUIStringInput(FIELD_BSEMAXBUFFER).isRendered()) ;
   }
@@ -398,7 +408,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       re.setAuthenticationPolicy(authen) ;
       re.setSecurityDomain(security) ;
       re.setSessionTimeOut(Long.parseLong(sessionTimeOut)) ;
-      Boolean repEnable = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).isChecked() ;
+
+      // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
+      /*Boolean repEnable = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).isChecked() ;
       if(repEnable) {
         String chanel = uiForm.getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).getValue() ;     
         String mode = uiForm.getUIStringInput(UIRepositoryForm.FIELD_REPMODE).getValue() ;     
@@ -425,17 +437,20 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
           return ;
         }
+        
+        // TODO [07.0.2008]  replication package has been moved to jcr/trunk/component/ext : http://jira.exoplatform.org/browse/JCR-356
         ReplicationEntry repl = new ReplicationEntry() ;
         repl.setChannelConfig(chanel) ;
         repl.setEnabled(repEnable) ;
         repl.setMode(mode) ;
         repl.setTestMode(testMode) ;
         re.setReplication(repl) ;
+        
         BinarySwapEntry bse = new BinarySwapEntry() ;
         bse.setDirectoryPath(path) ;
         bse.setMaxBufferSize(buffer) ;
         re.setBinaryTemp(bse) ;        
-      }
+      }*/
       re.setSystemWorkspaceName(uiForm.defaulWorkspace_) ;
       re.setDefaultWorkspaceName(uiForm.defaulWorkspace_) ;
       re.addWorkspace(uiForm.getWorkspace(uiForm.defaulWorkspace_)) ;
