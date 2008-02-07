@@ -52,6 +52,7 @@
     <servlet-name>rssservlet</servlet-name>
     <url-pattern>/rss/*</url-pattern>
   </servlet-mapping>  
+  
   <servlet-mapping>
     <servlet-name>PortletWrapper</servlet-name>
     <url-pattern>/PortletWrapper</url-pattern>
