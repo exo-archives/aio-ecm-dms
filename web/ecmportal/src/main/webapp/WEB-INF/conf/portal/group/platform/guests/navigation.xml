@@ -22,7 +22,7 @@
       <uri>ideas</uri>
       <name>ideas</name>
       <label>#{platform-guests.ideas}</label>
-      <page-reference>group::platform/guests::ideas</page-reference>
+      <page-reference>group::platform/guests::read-ideas</page-reference>
       
       <node>
 	      <uri>ideas/read</uri>
