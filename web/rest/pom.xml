@@ -15,9 +15,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.exoplatform.jcr</groupId>
-      <artifactId>exo.jcr.framework.web</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
+      <groupId>org.exoplatform.ws.frameworks</groupId>
+      <artifactId>exo.ws.frameworks.servlet</artifactId>
+      <version>${org.exoplatform.ws.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
