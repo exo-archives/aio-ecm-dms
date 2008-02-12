@@ -193,6 +193,9 @@
   float: left;
   margin: 7px 0px;
   cursor: pointer;
+  width: 18px;
+  height: 16px;
+  background: url('/ecm/skin/icons/16x16/VistaSkin/SmallGrayPlus.gif') no-repeat center;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
