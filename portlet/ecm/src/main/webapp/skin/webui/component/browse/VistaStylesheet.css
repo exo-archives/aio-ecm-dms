@@ -8,7 +8,7 @@
 @import url("UIEventViewer/VistaStylesheet.css");
 
 .UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px 0px;
+  padding: 5px 0px 5px 5px;
   width: 98.5%;
   /*
   minh.js.exo

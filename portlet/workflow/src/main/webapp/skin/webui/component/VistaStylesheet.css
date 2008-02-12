@@ -5,10 +5,20 @@
  * APR 24, 2007
  * version: $Id$
  */
+.UIWindow .UIWorkflowPortlet {
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
 
 .UIWorkflowPortlet {
 	overflow: auto;
+	margin: 10px;
+	background: white;
+	border: 1px solid #b7b7b7;
+	padding: 5px;
 }
+
 .UIWorkflowPortlet .WorkflowPortletContent{
 	padding: 15px;
 }

@@ -22,9 +22,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
-  float: left;
   line-height: 28px; font-weight: bold;
-  padding-left: 23px;
+  padding: 0px 8px 0px 23px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewBox {
@@ -33,7 +32,6 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
-  float: left;
   padding: 2px 15px 3px 10px;
 }
 
