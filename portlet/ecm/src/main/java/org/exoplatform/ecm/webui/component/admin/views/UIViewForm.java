@@ -348,16 +348,18 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     UIViewFormTabPane viewTabPane = getParent() ;
     UITabForm tabForm = viewTabPane.getChild(UITabForm.class) ;
     tabForm.update(tabMap_.get(tabName), isView_) ;
-    setRenderSibbling(UITabForm.class) ;
+    viewTabPane.setSelectedTab(tabForm.getId()) ;
   }
 
   public void deleteTab(String tabName) throws Exception {
     tabMap_.remove(tabName) ;
     update(null, false, null) ;
+    UIViewFormTabPane viewTabPane = getParent() ;
     UIViewContainer uiViewContainer = getAncestorOfType(UIViewContainer.class) ;
     UIViewList uiViewList = uiViewContainer.getChild(UIViewList.class) ;
     uiViewList.updateViewListGrid() ;
-    setRenderSibbling(UIViewForm.class) ;
+    UIViewForm uiViewForm = viewTabPane.getChild(UIViewForm.class) ;
+    viewTabPane.setSelectedTab(uiViewForm.getId()) ;
   }
 
   public void changeVersion() throws Exception {

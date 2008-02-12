@@ -80,8 +80,11 @@ public class UITabForm extends UIFormInputSetWithAction {
   
   public void save() throws Exception {
     String tabName = getUIStringInput(FIELD_NAME).getValue() ;
+    UIViewFormTabPane viewFormTabPane = getParent() ;
+    UIViewForm uiViewForm = viewFormTabPane.getChild(UIViewForm.class) ;
+    UITabForm uiTabForm = viewFormTabPane.getChild(UITabForm.class) ;
     if(tabName == null || tabName.trim().length() == 0) {
-      setRenderSibbling(UITabForm.class) ;
+      viewFormTabPane.setSelectedTab(uiTabForm.getId()) ;
       throw new MessageException(new ApplicationMessage("UITabForm.msg.tab-name-error", null, 
                                                         ApplicationMessage.WARNING)) ;
     }
@@ -103,15 +106,12 @@ public class UITabForm extends UIFormInputSetWithAction {
       }
     }
     if(!isSelected) {
-      setRenderSibbling(UITabForm.class) ;
+      viewFormTabPane.setSelectedTab(uiTabForm.getId()) ;
       throw new MessageException(new ApplicationMessage("UITabForm.msg.button-select-error", null)) ;
     }
-    UIViewFormTabPane viewFormTabPane = getParent() ;
-    viewFormTabPane.setSelectedTab("UIViewForm") ;
-    UIViewForm uiViewForm =  viewFormTabPane.getChild(UIViewForm.class) ;
+    viewFormTabPane.setSelectedTab(uiViewForm.getId()) ;
     uiViewForm.addTab(tabName, selectedButton.toString()) ;
     uiViewForm.update(null, false, null) ;
     refresh(true) ;
-    setRenderSibbling(UIViewForm.class) ;    
   }  
 }
