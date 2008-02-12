@@ -100,6 +100,7 @@ public class UIDrivesBrowser extends UIContainer {
   public String getRepository(){return repoName_ ;}
   public void setRepository(String repoName){repoName_ = repoName ;}
 
+  @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(String repoName) throws Exception {    
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;      
     List<DriveData> driveList = new ArrayList<DriveData>() ;    
@@ -178,13 +179,6 @@ public class UIDrivesBrowser extends UIContainer {
     return personalDrives ;
   }
   
-  private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
-    for(String ws:  repository.getWorkspaceNames()) {
-      if(ws.equals(drive.getWorkspace())) return true ;
-    }
-    return false ;
-  }
-
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
