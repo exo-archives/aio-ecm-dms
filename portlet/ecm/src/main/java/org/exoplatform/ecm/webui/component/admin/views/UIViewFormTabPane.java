@@ -130,8 +130,10 @@ public class UIViewFormTabPane extends UIFormTabPane {
   static  public class EditTabActionListener extends EventListener<UIViewFormTabPane> {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
+      UITabForm uiTabForm = uiViewTabPane.getChild(UITabForm.class) ;
       String tabName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiViewTabPane.setSelectedTab("UITabForm") ;
+      uiTabForm.setRendered(true) ;
+      uiViewTabPane.setSelectedTab(uiTabForm.getId()) ;
       uiViewTabPane.uiViewForm.editTab(tabName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
