@@ -38,6 +38,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -73,7 +74,7 @@ import org.exoplatform.webui.event.EventListener;
 
 )
 public class UIDrivesBrowser extends UIContainer {
-  
+
   private String repoName_ ;
 
   public UIDrivesBrowser() throws Exception {
@@ -99,6 +100,7 @@ public class UIDrivesBrowser extends UIContainer {
   public String getRepository(){return repoName_ ;}
   public void setRepository(String repoName){repoName_ = repoName ;}
 
+  @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(String repoName) throws Exception {    
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;      
     List<DriveData> driveList = new ArrayList<DriveData>() ;    
@@ -109,15 +111,15 @@ public class UIDrivesBrowser extends UIContainer {
     for(DriveData driveData:allDrives) {
       String[] allPermission = driveData.getAllPermissions();
       boolean flag = false;
-      for(String permission:allPermission) {        
-        if(permission.equalsIgnoreCase("${userId}")) {          
+      for(String permission:allPermission) {
+        if(permission.equalsIgnoreCase("${userId}")) {
           temp.add(driveData);
           flag = true;
           break;
         }
         if(flag) continue;
-        for(String role:userRoles) {
-          if(driveData.hasPermission(allPermission,role)) {
+        for(String rolse:userRoles) {
+          if(driveData.hasPermission(allPermission,rolse)) {
             temp.add(driveData);
             break;
           }
@@ -166,14 +168,17 @@ public class UIDrivesBrowser extends UIContainer {
   
   public List<DriveData> personalDrives(List<DriveData> driveList) {
     List<DriveData> personalDrives = new ArrayList<DriveData>() ;
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;    
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
     String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH) ;
-    for(DriveData drive : driveList) {      
-      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) personalDrives.add(drive) ;
-    }    
+    for(DriveData drive : driveList) {
+      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
+        personalDrives.add(drive) ;
+      }
+    }
     Collections.sort(personalDrives) ;
     return personalDrives ;
-  }    
+  }
+  
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -190,6 +195,7 @@ public class UIDrivesBrowser extends UIContainer {
       RepositoryService rservice = uiDrive.getApplicationComponent(RepositoryService.class) ;
       ManageDriveService dservice = uiDrive.getApplicationComponent(ManageDriveService.class) ;
       DriveData drive = dservice.getDriveByName(driveName, uiDrive.repoName_) ;
+      String userId = Util.getPortalRequestContext().getRemoteUser() ;
       UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class) ;
       List<String> userRoles = Utils.getMemberships() ;
       Map<String, String> viewMap = new HashMap<String, String>() ;
@@ -201,6 +207,7 @@ public class UIDrivesBrowser extends UIContainer {
           Node viewNode = 
             uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
           String permiss = viewNode.getProperty("exo:permissions").getString();
+          if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId) ;
           String[] viewPermissions = permiss.split(",") ;
           if(permiss.equals("*")) viewMap.put(viewName, viewName) ;
           if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
@@ -217,11 +224,10 @@ public class UIDrivesBrowser extends UIContainer {
         else viewList = viewName ;
       }
       drive.setViews(viewList) ;
+      String homePath = drive.getHomePath() ;
+      if(homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId) ;
       PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletPreferences preferences = context.getRequest().getPreferences() ;      
-      String currentUser = context.getRemoteUser();
-      String homePath = drive.getHomePath();      
-      homePath = homePath.replace("${userId}",currentUser);
+      PortletPreferences preferences = context.getRequest().getPreferences() ;
       preferences.setValue(Utils.WORKSPACE_NAME, drive.getWorkspace()) ;
       preferences.setValue(Utils.JCR_PATH, homePath) ;
       preferences.setValue(Utils.VIEWS, drive.getViews()) ;
@@ -253,7 +259,8 @@ public class UIDrivesBrowser extends UIContainer {
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
-      } catch(Exception e) {        
+      } catch(Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
         return ;
       } 
