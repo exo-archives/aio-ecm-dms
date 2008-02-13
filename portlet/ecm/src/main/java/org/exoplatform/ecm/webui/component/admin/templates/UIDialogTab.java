@@ -77,7 +77,7 @@ public class UIDialogTab extends UIContainer {
   
   public void updateGrid(String nodeName, String repository) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository,SessionsUtils.getSessionProvider()) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository,SessionsUtils.getSystemProvider()) ;
     List<DialogData> data = new ArrayList<DialogData>() ;
     DialogData item  ;
     while (iter.hasNext()){

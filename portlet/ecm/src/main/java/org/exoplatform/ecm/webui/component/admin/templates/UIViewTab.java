@@ -77,7 +77,7 @@ public class UIViewTab extends UIContainer {
   
   public void updateGrid(String nodeName) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository(),SessionsUtils.getSessionProvider()) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository(),SessionsUtils.getSystemProvider()) ;
     List<ViewData> data = new ArrayList<ViewData>() ;
     ViewData item  ;
     while(iter.hasNext()) {
