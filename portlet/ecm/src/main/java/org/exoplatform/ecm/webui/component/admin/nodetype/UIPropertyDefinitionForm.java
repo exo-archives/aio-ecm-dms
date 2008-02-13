@@ -434,7 +434,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      uiForm.setRenderedChild("Contraints") ;
+      uiForm.setSelectedTab("Contraints") ;
       String[] actionNames = new String[] {"AddValue", "CancelConstraints"} ;
       constraintTab.setActions(actionNames, null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
@@ -456,7 +456,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
   static public class AddActionListener extends EventListener<UINodeTypeForm> {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
-      uiForm.setRenderedChild("Contraints") ;
+      uiForm.setSelectedTab("Contraints") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
@@ -465,7 +465,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
   static public class RemoveActionListener extends EventListener<UINodeTypeForm> {
     public void execute(Event<UINodeTypeForm> event) throws Exception {
       UINodeTypeForm uiForm = event.getSource() ;
-      uiForm.setRenderedChild("Contraints") ;
+      uiForm.setSelectedTab("Contraints") ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
   }
