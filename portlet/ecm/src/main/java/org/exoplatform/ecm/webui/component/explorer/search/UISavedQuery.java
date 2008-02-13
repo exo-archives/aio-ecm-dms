@@ -181,6 +181,14 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       QueryResult queryResult = null ;
       try {
         queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSessionProvider()) ;
+      } catch(AccessDeniedException ace) {
+        queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSystemProvider()) ;
+      } catch(Exception e) {
+        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null, 
+                                                ApplicationMessage.WARNING)) ;
+        if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
+        return ;
+      } finally {
         if(queryResult == null || queryResult.getNodes().getSize() ==0) {
           uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)) ; 
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -189,10 +197,6 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
         }        
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
-      } catch(Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null)) ;
-        if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
-        return ;
       }
       if(uiQuery.isQuickSearch_) {
         ((UIDocumentWorkspace)uiSearch).setRenderedChild(UISearchResult.class) ;

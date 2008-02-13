@@ -559,8 +559,9 @@ public class UIBrowseContainer extends UIContainer {
         //TODO Anonim Session
         //session = getAnonimProvider().getSession(workspace,manageableRepository) ;
         session = getSystemProvider().getSession(workspace,manageableRepository) ;
-      }else {
-        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
+      } else {
+        //TODO Check with login session
+        session = getSystemProvider().getSession(workspace,manageableRepository) ; 
       }
     }
     return session ;
