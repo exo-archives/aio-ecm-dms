@@ -114,7 +114,7 @@ public class UITemplateContent extends UIForm implements UISelector {
       String repository = getRepository() ;
       String templateContent = templateService.getTemplate(isDialog_, nodeTypeName_, templateName, repository) ;
       Node template = 
-        templateService.getTemplateNode(isDialog_, nodeTypeName_, templateName, repository,SessionsUtils.getSessionProvider()) ;      
+        templateService.getTemplateNode(isDialog_, nodeTypeName_, templateName, repository,SessionsUtils.getSystemProvider()) ;      
       getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).setRendered(true) ;
       String templateRole = 
         templateService.getTemplateRoles(isDialog_, nodeTypeName_, templateName, repository) ;
@@ -213,7 +213,7 @@ public class UITemplateContent extends UIForm implements UISelector {
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       Node node = templateService.getTemplateNode(uiForm.isDialog_,  uiForm.nodeTypeName_, 
-          name, uiForm.getRepository(),SessionsUtils.getSessionProvider()) ;
+          name, uiForm.getRepository(),SessionsUtils.getSystemProvider()) ;
       String vesion = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ;
       String baseVesion = node.getBaseVersion().getName() ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
@@ -287,7 +287,7 @@ public class UITemplateContent extends UIForm implements UISelector {
             new String[] {role},  content, repository) ;
       } else {
         Node node = 
-          templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name, repository,SessionsUtils.getSessionProvider()) ;
+          templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name, repository,SessionsUtils.getSystemProvider()) ;
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;            
         path = templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
@@ -312,7 +312,7 @@ public class UITemplateContent extends UIForm implements UISelector {
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
       Node node = templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, 
-          name, uiForm.getRepository(),SessionsUtils.getSessionProvider()) ;
+          name, uiForm.getRepository(),SessionsUtils.getSystemProvider()) ;
       String version = uiForm.getUIFormSelectBox(FIELD_SELECT_VERSION).getValue() ; 
       String path = node.getVersionHistory().getVersion(version).getPath() ;           
       VersionNode versionNode = uiForm.getRootVersion(node).findVersionNode(path) ;
