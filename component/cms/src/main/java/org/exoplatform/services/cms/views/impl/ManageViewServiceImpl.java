@@ -150,8 +150,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   public Node getViewByName(String name, String repository,SessionProvider provider) throws Exception{          
     Session session = getSession(repository,provider) ;
     try {
-      Node viewHome = (Node)session.getItem(baseViewPath_) ;
-      return viewHome.getNode(name);    
+      return (Node)session.getItem(baseViewPath_ + "/" + name) ;
     } catch(AccessDeniedException ace) {
       return null ;
     }
