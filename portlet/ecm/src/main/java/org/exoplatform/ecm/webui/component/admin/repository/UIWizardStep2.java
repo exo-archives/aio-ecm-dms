@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer;
+import org.exoplatform.services.jcr.impl.storage.jdbc.DBConstants;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
@@ -71,7 +71,7 @@ public class UIWizardStep2 extends UIFormInputSetWithAction {
   }
   private List<SelectItemOption<String>> getDbType() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    for(String dataType : JDBCWorkspaceDataContainer.DB_DIALECTS) {
+    for(String dataType : DBConstants.DB_DIALECTS) {
       options.add(new SelectItemOption<String>(dataType, dataType)) ;
     }
     return options ;
