@@ -134,7 +134,11 @@ public class CommentsServiceImpl implements CommentsService {
       languageNode = document ;
     }
     if(!languageNode.hasNode(COMMENTS)) return new ArrayList<Node>() ;    
-    commentsNode = languageNode.getNode(COMMENTS) ;
+    Session session = document.getSession();
+    ManageableRepository  repository = (ManageableRepository)session.getRepository();
+    //TODO check if really need delegate to system session
+    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
+    commentsNode = (Node)systemSession.getItem(languageNode.getPath() + "/" + COMMENTS) ;
     String cacheKey = document.getPath().concat(commentsNode.getPath());
     Object comments = commentsCache_.get(cacheKey) ;
     if(comments !=null) return (List<Node>)comments ;        
