@@ -171,8 +171,7 @@ public class UIViewList extends UIGrid {
   static  public class EditInfoActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
-      String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class)
-      .getPreferenceRepository() ;
+      String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       uiViewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;      
       Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class)
@@ -192,7 +191,7 @@ public class UIViewList extends UIGrid {
       }
       viewForm.setActionInfo(UIViewForm.FIELD_PERMISSION, new String[] {"AddPermission"}) ;
       viewTabPane.getChild(UITabForm.class).setActions(new String[]{"Save"}, null) ;
-      viewTabPane.setRenderedChild(UIViewForm.class) ;
+      viewTabPane.setSelectedTab(viewForm.getId()) ;
       UIViewManager uiManager = uiViewList.getAncestorOfType(UIViewManager.class) ;
       uiManager.setRenderedChild(UIViewContainer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;

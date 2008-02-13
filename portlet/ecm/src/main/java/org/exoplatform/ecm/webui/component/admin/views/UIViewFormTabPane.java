@@ -117,11 +117,12 @@ public class UIViewFormTabPane extends UIFormTabPane {
   static  public class ResetActionListener extends EventListener<UIViewFormTabPane> {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
+      UIViewForm uiViewForm = uiViewTabPane.getChild(UIViewForm.class) ;
       uiViewTabPane.uiTabForm.refresh(true) ;
-      if(uiViewTabPane.getSelectedTabId().equalsIgnoreCase("UIViewForm")) {
+      if(uiViewTabPane.getSelectedTabId().equalsIgnoreCase(uiViewForm.getId())) {
         uiViewTabPane.uiViewForm.revertVersion() ;
         uiViewTabPane.uiViewForm.refresh(true) ;
-        uiViewTabPane.setRenderedChild(UIViewForm.class) ;
+        uiViewTabPane.setSelectedTab(uiViewForm.getId()) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
@@ -143,7 +144,8 @@ public class UIViewFormTabPane extends UIFormTabPane {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       String tabName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiViewTabPane.setSelectedTab("UIViewForm") ;
+      UIViewForm uiViewForm = uiViewTabPane.getChild(UIViewForm.class) ;
+      uiViewTabPane.setSelectedTab(uiViewForm.getId()) ;
       uiViewTabPane.uiViewForm.deleteTab(tabName) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
