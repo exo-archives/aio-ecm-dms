@@ -21,6 +21,7 @@
     <module>portlet/workflow</module>
 
     <module>web/ecmportal</module>
+    <module>server/tomcat/patch</module>
   </modules>
 
   <build>
