@@ -279,4 +279,39 @@
       </preference>            
     </portlet-preferences>    
   </portlet>    
+  
+  <portlet>
+    <description xml:lang="EN">ECMHome Portlet</description>
+    <portlet-name>ECMHomePortlet</portlet-name>
+    <display-name xml:lang="EN">ECMHome Portlet</display-name>
+    <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
+    
+    <init-param>
+      <name>webui.configuration</name>
+      <value>/WEB-INF/conf/portlet/ecm/ECMHomePortlet/webui/configuration.xml</value>
+    </init-param>    
+
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>help</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>
+    <resource-bundle>locale.portlet.web.GroovyPortlet</resource-bundle>
+    
+    <portlet-info>
+      <title>ECMHome Portlet</title>
+      <short-title>ECMHome Portlet</short-title>
+      <keywords>ecmhome</keywords>
+    </portlet-info>     
+
+    <portlet-preferences>
+      <preference>
+        <name>template</name>
+        <value>app:/groovy/webui/component/ecmhome/UIECMHomePortlet.gtmpl</value>
+        <read-only>false</read-only>
+      </preference>
+    </portlet-preferences>
+    
+  </portlet>  
 </portlet-app>
