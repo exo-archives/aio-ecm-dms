@@ -92,8 +92,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      } catch (Exception e) {
-        e.printStackTrace() ;
+      } catch (Exception e) {        
         uiApp.addMessage(new ApplicationMessage("UICBVoteForm.msg.error-vote", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

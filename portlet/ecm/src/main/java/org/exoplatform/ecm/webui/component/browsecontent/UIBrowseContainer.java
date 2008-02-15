@@ -1091,7 +1091,12 @@ public class UIBrowseContainer extends UIContainer {
     List<Node> refDocuments = new ArrayList<Node>() ;    
     String repository = getRepository() ;
     ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
-    SessionProvider provider = getSystemProvider() ;
+    SessionProvider provider = null;
+    if(SessionsUtils.isAnonim()) {
+      provider = getSystemProvider();
+    }else {
+      provider = getSessionProvider();
+    }
     if(isEnableRefDocument() && isReferenceableNode(node)) {
       String uuid = node.getUUID() ;
       String[] workspaces = manageableRepository.getWorkspaceNames() ;
