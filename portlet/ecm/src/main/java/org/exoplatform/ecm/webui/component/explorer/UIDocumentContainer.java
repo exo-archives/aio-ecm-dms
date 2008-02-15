@@ -25,7 +25,7 @@ import org.exoplatform.webui.core.UIContainer;
  *          minh.dang@exoplatform.com
  * Oct 15, 2007 10:05:43 AM
  */
-@ComponentConfig(template = "app:groovy/webui/component/explorer/UIDocumentTabPane.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/explorer/UIDocumentTabPane.gtmpl")
 
 public class UIDocumentContainer extends UIContainer {
   
