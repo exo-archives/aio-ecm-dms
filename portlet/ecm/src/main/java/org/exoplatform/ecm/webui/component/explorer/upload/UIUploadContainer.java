@@ -35,7 +35,7 @@ import org.exoplatform.webui.event.EventListener;
  * May 25, 2007 8:59:34 AM
  */
 @ComponentConfig(
-    template = "app:groovy/webui/component/explorer/UITabPaneWithAction.gtmpl",
+    template = "app:/groovy/webui/component/explorer/UITabPaneWithAction.gtmpl",
     events = { 
         @EventConfig(listeners = UIUploadContainer.CloseActionListener.class),
         @EventConfig(listeners = UIUploadContainer.AddMetadataActionListener.class)
