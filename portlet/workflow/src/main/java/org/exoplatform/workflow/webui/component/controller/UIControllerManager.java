@@ -46,10 +46,10 @@ import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 @ComponentConfigs({
   @ComponentConfig(
       type = UIGrid.class, id = "UIControllerGrid",
-      template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+      template = "app:/groovy/webui/component/UIECMGrid.gtmpl"
   ),
   @ComponentConfig(
-      template = "system:groovy/webui/core/UITabPane.gtmpl",
+      template = "system:/groovy/webui/core/UITabPane.gtmpl",
       events = {@EventConfig(listeners = UIControllerManager.ManageStartActionListener.class)}
   )
 })
