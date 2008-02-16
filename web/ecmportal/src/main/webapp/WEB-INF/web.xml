@@ -121,6 +121,9 @@
     <listener-class>org.exoplatform.ecm.application.JcrSessionListener</listener-class>
   </listener>
   <listener>
+    <listener-class>org.exoplatform.portal.webui.skin.SkinListener</listener-class>
+  </listener>  
+  <listener>
     <listener-class>org.exoplatform.portal.webui.javascript.JavascriptListener</listener-class>
   </listener>
 
