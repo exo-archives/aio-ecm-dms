@@ -428,6 +428,7 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
 	width: auto;
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .rootNodeInfo .FormContainer {
@@ -450,6 +451,10 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer {
   margin-right: 5px;
+}
+
+.UIECMAdminPortlet .UIJCRBrowser .UITrees .Node {
+  line-height: 24px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
