@@ -476,6 +476,10 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm td.FieldLabel {
+  text-transform: capitalize;
+}
+
 /*================================UIConstraintsForm=================================*/
 
 /*================================UIActivateVersion=================================*/
@@ -662,6 +666,10 @@
 
 .UIJCRExplorer .UIJCRBrowser .UIFormWithTitle{
 	padding: 3px;
+}
+
+.UIJCRExplorer .UIJCRBrowser .UITrees .Node {
+  line-height: 24px;
 }
 
 .UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {

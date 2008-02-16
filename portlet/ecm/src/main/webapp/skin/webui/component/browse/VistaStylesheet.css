@@ -64,11 +64,11 @@
 }
 	
 .UIBrowseContentPortlet .TagmapHolder .TagmapContent {
-   border: solid 1px #e1e1e1 ;	
-   background: #ffffff;
-   padding: 5px;
-   text-align: justify ;
-   line-height: 22px;
+  border: solid 1px #e1e1e1 ;	
+  background: #ffffff;
+  padding: 5px;
+  text-align: justify ;
+  line-height: 22px;
 }
 
 .UIBrowseContentPortlet .TagmapHolder .Icon{
@@ -83,7 +83,7 @@
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
-		text-transform: capitalize;
+	text-transform: capitalize;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
@@ -112,10 +112,8 @@
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
-  *padding: 0px 4px 0px 0px;
   padding: 0px 4px;
   vertical-align: middle;
-  *width: auto;
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
@@ -284,6 +282,10 @@
 /*############################## -- FIX BUG POPUP  -- ##############################*/
 .UIBrowseContentPortlet .UIJCRBrowser {
   padding: 10px 0px 0px 10px;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser .UITrees .Node {
+  line-height: 24px;
 }
 
 .UIBrowseContentPortlet .Explorer {

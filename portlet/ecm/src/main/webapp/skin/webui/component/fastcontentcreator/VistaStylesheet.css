@@ -104,6 +104,10 @@
 	width: auto;
 }
 
+.UIFastContentCreatorPortlet .UIJCRBrowser .UITrees .Node {
+  line-height: 24px;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeDocumentType {
   padding-bottom: 3px; 
 }
