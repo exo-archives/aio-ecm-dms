@@ -82,25 +82,3 @@ SkinService.addSkin(
     "/ecm/skin/webui/component/fastcontentcreator/MacStylesheet.css",
     ServletContext
 ) ;
-
-/***************************HomePagePortlet**************************************************/
-SkinService.addSkin(
-    "ecm/ECMHomePortlet",
-    "Default",
-    "/ecm/skin/webui/component/ecmhome/DefaultStylesheet.css",
-    ServletContext
-) ;
-
-SkinService.addSkin(
-    "ecm/ECMHomePortlet",
-    "Vista",
-    "/ecm/skin/webui/component/ecmhome/DefaultStylesheet.css",
-    ServletContext
-) ;
- 
-SkinService.addSkin(
-    "ecm/ECMHomePortlet",
-    "Mac",
-    "/ecm/skin/webui/component/ecmhome/DefaultStylesheet.css",
-    ServletContext
-) ;
