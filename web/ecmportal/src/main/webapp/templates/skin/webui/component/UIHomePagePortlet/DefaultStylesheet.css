@@ -15,15 +15,15 @@
 }
 
 .UIHomePagePortlet .HomePortletAdBackround{	
-	background: #fff url('DefaultSkin/background/HomePortletBG.gif') repeat-x top;
-	height: 260px;
+	background: #fff url('DefaultSkin/background/ECMHomePortletBG.jpg') repeat-x top;
+	height: 250px;
 }
 
 .UIHomePagePortlet .AdImage {
-	background: url('DefaultSkin/background/HomePortletAd.jpg') no-repeat left;
+	background: url('DefaultSkin/background/HomePortletAd.jpg') no-repeat left top;
 	padding: 0px 20px 0px 0px;
 	text-align: right;
-	height: 260px;
+	height: 250px;
 }
 
 .UIHomePagePortlet .AdImage .EmptyBlock{
@@ -31,10 +31,10 @@
 }
 
 .UIHomePagePortlet .AdImage .ProductSlogan {
-	font-size: 28px;
+	font-size: 20px;
 	font-style: italic;
 	height: 45px;
-	padding-right: 18%;
+	padding-right: 20px;
 	letter-spacing: 1px;
 	color: #696a6a;
 }
@@ -85,6 +85,13 @@
 	background: url('DefaultSkin/background/UserAccountsBG.gif') no-repeat left -300px;
 }
 
+.UIHomePagePortlet .HomePortletContent .HRManagerUser {
+	height: 100px;
+	float: left;
+	padding: 0px 20px 0px 80px ;
+	background: url('DefaultSkin/background/UserAccountsBG.gif') no-repeat left -200px;
+}
+
 .UIHomePagePortlet .HomePortletContent .NormalUser {
 	height: 100px;
 	float: left;
@@ -124,5 +131,3 @@
 	color: #2c6fbd;
 	line-height: 25px;
 }
-
-
