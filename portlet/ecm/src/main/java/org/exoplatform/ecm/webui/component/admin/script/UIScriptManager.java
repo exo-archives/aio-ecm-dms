@@ -27,7 +27,7 @@ import org.exoplatform.webui.core.UIPopupWindow;
  * September 27, 2006
  * 09:13:15 AM
  */
-@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
+@ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
 
 public class UIScriptManager extends UIContainer {
 

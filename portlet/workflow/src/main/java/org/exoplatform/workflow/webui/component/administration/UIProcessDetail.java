@@ -44,7 +44,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfigs({
   @ComponentConfig(
       type = UIGrid.class, id = "UIProcessGrid",
-      template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+      template = "app:/groovy/webui/component/UIECMGrid.gtmpl"
   ),
   @ComponentConfig(
       lifecycle = UIContainerLifecycle.class,

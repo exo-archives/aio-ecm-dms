@@ -60,7 +60,7 @@ import org.exoplatform.webui.event.EventListener;
 
 @ComponentConfig(
     type     = UIViewVersion.class,
-    template = "system:groovy/webui/core/UITabPane.gtmpl",
+    template = "system:/groovy/webui/core/UITabPane.gtmpl",
     events = {
       @EventConfig(listeners = UIViewVersion.ChangeLanguageActionListener.class),
       @EventConfig(listeners = UIViewVersion.ChangeNodeActionListener.class),

@@ -26,7 +26,7 @@ import org.exoplatform.webui.core.UIContainer;
  * Jan 25, 2007  
  * 1:59:57 PM
  */
-@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
+@ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
 public class UIViewMetadataContainer extends UIContainer {
 
   public UIViewMetadataContainer() throws Exception {

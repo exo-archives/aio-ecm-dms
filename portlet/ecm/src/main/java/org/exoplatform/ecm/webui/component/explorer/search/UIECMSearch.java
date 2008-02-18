@@ -30,7 +30,7 @@ import org.exoplatform.webui.core.UIPageIterator;
  * Editor: pham tuan Oct 27, 2006
  */
 
-@ComponentConfig( template = "system:groovy/webui/core/UITabPane.gtmpl" )
+@ComponentConfig( template = "system:/groovy/webui/core/UITabPane.gtmpl" )
 public class UIECMSearch extends UIContainer implements UIPopupComponent {
   
   static public String ADVANCED_RESULT = "AdvancedSearchResult" ;

@@ -37,10 +37,10 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfigs({
   @ComponentConfig(
       type = UIGrid.class, id = "UIECMGrid",
-      template = "app:groovy/webui/component/UIECMGrid.gtmpl"
+      template = "app:/groovy/webui/component/UIECMGrid.gtmpl"
   ),
   @ComponentConfig(
-      template = "app:groovy/webui/component/UITabPaneWithAction.gtmpl",
+      template = "app:/groovy/webui/component/UITabPaneWithAction.gtmpl",
       events = {
           @EventConfig(listeners = UIAdministrationManager.ViewActionListener.class),
           @EventConfig(listeners = UIAdministrationManager.DeleteActionListener.class, confirm = "UIAdministrationManager.msg.confirm-delete-process"),
