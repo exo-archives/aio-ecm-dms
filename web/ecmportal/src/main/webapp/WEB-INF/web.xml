@@ -69,9 +69,29 @@
   </filter-mapping>
 
   <filter-mapping>
+    <filter-name>PortalContainerInitializedFilter</filter-name>
+    <url-pattern>/private/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PortalContainerInitializedFilter</filter-name>
+    <url-pattern>/public/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
+    <url-pattern>/private/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
+    <url-pattern>/public/*</url-pattern>
+  </filter-mapping>
+  
+   <filter-mapping>
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
     <url-pattern>/rest/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping> 
 
   <filter-mapping>
     <filter-name>FactoryInitializedFilter</filter-name>
@@ -88,9 +108,6 @@
   <!-- ================================================================== -->
   <listener>
     <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>org.exoplatform.ecm.application.JcrSessionListener</listener-class>
   </listener>
   <listener>
     <listener-class>org.exoplatform.portal.webui.skin.SkinListener</listener-class>

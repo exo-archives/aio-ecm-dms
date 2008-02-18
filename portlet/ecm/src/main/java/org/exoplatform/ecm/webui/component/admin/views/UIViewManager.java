@@ -27,7 +27,7 @@ import org.exoplatform.webui.core.UIContainer;
  * 11:45:11 AM 
  */
 
-@ComponentConfig(template = "system:groovy/webui/core/UITabPane.gtmpl")
+@ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
 public class UIViewManager extends UIContainer {
   public UIViewManager() throws Exception{
     addChild(UIViewContainer.class, null, null) ;

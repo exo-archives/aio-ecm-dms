@@ -31,7 +31,7 @@ import org.exoplatform.webui.event.EventListener;
  * 10:07:15 AM
  */
 @ComponentConfig(
-    template = "system:groovy/webui/core/UITabPane.gtmpl",
+    template = "system:/groovy/webui/core/UITabPane.gtmpl",
     events = {
         @EventConfig(listeners = UIPropertiesManager.ChangeTabActionListener.class)
     }
