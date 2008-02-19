@@ -288,8 +288,12 @@ public class UITemplateContent extends UIForm implements UISelector {
       } else {
         Node node = 
           templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name, repository,SessionsUtils.getSystemProvider()) ;
-        if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
-        else node.checkout() ;            
+        if(!node.isNodeType(Utils.MIX_VERSIONABLE)) {
+          node.addMixin(Utils.MIX_VERSIONABLE) ;
+          node.save();
+        } else {
+          node.checkout() ;            
+        }
         path = templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
             new String[] {role},  content, repository) ;
         node.save() ;
