@@ -286,8 +286,12 @@ public class UITemplateForm extends UIForm {
         uiForm.template_ = manageViewService.getTemplate(path, repository, SessionsUtils.getSessionProvider()) ;
       } else {
         if(isEnableVersioning) {
-          if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);
-          else uiForm.template_.checkout() ;
+          if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) {
+            uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);
+            uiForm.template_.save() ;
+          } else {
+            uiForm.template_.checkout() ;
+          }
           path = manageViewService.addTemplate(templateName, content, homeTemplate, repository) ;
           uiForm.template_.save() ;
           uiForm.template_.checkin() ;
