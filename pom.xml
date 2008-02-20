@@ -19,8 +19,9 @@
     <module>portlet/ecm</module>
     <module>portlet/workflow</module>
 	
-	<module>web/rest</module>
+	  <module>web/rest</module>
     <module>web/ecmportal</module>
+    <module>server/tomcat/patch</module>
   </modules>
 
   <build>
