@@ -134,7 +134,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         String uuid = value.getString();
         Node refNode = null ;
         try {
-          refNode = session.getNodeByUUID(uuid);
+//          refNode = session.getNodeByUUID(uuid);
+          refNode = getNodeByUUID(uuid, repository, provider) ;
         } catch(ItemNotFoundException ie) {
           removeRelation(node, relationPath, repository) ;
           continue ;
