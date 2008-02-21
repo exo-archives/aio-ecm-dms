@@ -90,12 +90,25 @@ public class UIQueryConfig extends UIForm {
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE, null, Options).setRendered(false)) ;
     addChild(new UIFormTextAreaInput(UINewConfigForm.FIELD_QUERY, null, null)) ;    
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE, null, Options)) ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)) ;
+    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE, null, itemPerPages())) ;
+//    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETAGMAP, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
+  }
+  
+  private List<SelectItemOption<String>> itemPerPages() {
+    List<SelectItemOption<String>> itemPerPages = new ArrayList<SelectItemOption<String>>() ;
+    itemPerPages.add(new SelectItemOption<String>("5", "5")) ;
+    itemPerPages.add(new SelectItemOption<String>("10", "10")) ;
+    itemPerPages.add(new SelectItemOption<String>("15", "15")) ;
+    itemPerPages.add(new SelectItemOption<String>("20", "20")) ;
+    itemPerPages.add(new SelectItemOption<String>("30", "30")) ;
+    itemPerPages.add(new SelectItemOption<String>("40", "40")) ;
+    itemPerPages.add(new SelectItemOption<String>("50", "50")) ;    
+    return itemPerPages ;
   }
 
   public PortletPreferences getPortletPreferences() {    
@@ -125,7 +138,8 @@ public class UIQueryConfig extends UIForm {
     UIFormSelectBox queryStoreField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
     UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+//    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+    UIFormSelectBox numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
@@ -263,8 +277,9 @@ public class UIQueryConfig extends UIForm {
       List<Query> queries = qservice.getQueries(userId, repository,provider);
       for(Query queryNode : queries) {
         String path = queryNode.getStoredQueryPath() ;
-        if(queryNode.getLanguage().equals(queryLanguage))
+        if(queryNode.getLanguage().equals(queryLanguage)) {
           options.add(new SelectItemOption<String>(path.substring(path.lastIndexOf("/")+ 1), path)) ;
+        }
       }
     } else {      
       List<Node> queries = qservice.getSharedQueries(queryLanguage,userId, repository,provider);
@@ -299,7 +314,8 @@ public class UIQueryConfig extends UIForm {
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String query = uiForm.getUIStringInput(UINewConfigForm.FIELD_QUERY).getValue() ;
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
-      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+//      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+      String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       UIFormSelectBox queryValueField = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;      
       String  queryPath = "" ;
