@@ -62,7 +62,9 @@ public class VotingServiceImpl implements VotingService {
     NodeIterator nodeIter = multiLanguages.getNodes() ;
     while(nodeIter.hasNext()) {
       Node languageNode = nodeIter.nextNode() ;
-      voteTotal = voteTotal + languageNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong() ;
+      if(languageNode.hasProperty(VOTE_TOTAL_LANG_PROP)) {
+        voteTotal = voteTotal + languageNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong() ;
+      }
     }
     return voteTotal ;
   }
