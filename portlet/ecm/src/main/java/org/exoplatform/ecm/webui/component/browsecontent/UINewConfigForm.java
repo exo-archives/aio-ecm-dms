@@ -19,14 +19,9 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.Session;
-
-import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -106,24 +101,12 @@ public class UINewConfigForm extends UIForm {
     return options ;
   }
 
-  private ManageableRepository getRepository(String repositoryName) throws Exception{
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    return repositoryService.getRepository(repositoryName) ;
-  } 
-  
   private List<SelectItemOption<String>> getWorkSpaceOption(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    Session session ;
     String[] workspaceNames = 
       getApplicationComponent(RepositoryService.class).getRepository(repository).getWorkspaceNames() ;
     for(String workspace:workspaceNames) {
-      session = SessionsUtils.getSessionProvider().getSession(workspace, getRepository(repository)) ;
-      try {
-        session.getRootNode() ;
-        options.add(new SelectItemOption<String>(workspace,workspace)) ;
-      } catch(AccessDeniedException ace) {
-        continue ;
-      }
+      options.add(new SelectItemOption<String>(workspace,workspace)) ;
     }   
     return options ;
   }
