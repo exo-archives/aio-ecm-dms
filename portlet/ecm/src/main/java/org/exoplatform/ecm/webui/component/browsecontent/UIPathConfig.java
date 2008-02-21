@@ -34,6 +34,7 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -122,14 +123,26 @@ public class UIPathConfig extends UIForm implements UISelector{
     return options ;
   }
   
+  private ManageableRepository getRepository(String repositoryName) throws Exception{
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
+    return repositoryService.getRepository(repositoryName) ;
+  } 
+  
   private List<SelectItemOption<String>> getWorkSpaceOption(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    Session session ;
     String[] workspaceNames = getApplicationComponent(RepositoryService.class)
     .getRepository(repository).getWorkspaceNames() ;
     wsNames_.clear() ;
     for(String workspace:workspaceNames) {
-      wsNames_.add(workspace) ;
-      options.add(new SelectItemOption<String>(workspace,workspace)) ;
+      session = SessionsUtils.getSessionProvider().getSession(workspace, getRepository(repository)) ;
+      try {
+        session.getRootNode() ;
+        wsNames_.add(workspace) ;
+        options.add(new SelectItemOption<String>(workspace,workspace)) ;
+      } catch(AccessDeniedException ace) {
+        continue ;
+      }
     }   
     return options ;
   }
