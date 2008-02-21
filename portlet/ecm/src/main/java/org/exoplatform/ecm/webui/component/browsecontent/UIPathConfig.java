@@ -49,8 +49,6 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
-import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -98,8 +96,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETOOLBAR, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
-    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null).
-        addValidator(NumberFormatValidator.class).addValidator(EmptyFieldValidator.class)) ;
+//    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null).
+    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE, null, itemPerPages())) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
@@ -108,6 +106,19 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
   }
+  
+  private List<SelectItemOption<String>> itemPerPages() {
+    List<SelectItemOption<String>> itemPerPages = new ArrayList<SelectItemOption<String>>() ;
+    itemPerPages.add(new SelectItemOption<String>("5", "5")) ;
+    itemPerPages.add(new SelectItemOption<String>("10", "10")) ;
+    itemPerPages.add(new SelectItemOption<String>("15", "15")) ;
+    itemPerPages.add(new SelectItemOption<String>("20", "20")) ;
+    itemPerPages.add(new SelectItemOption<String>("30", "30")) ;
+    itemPerPages.add(new SelectItemOption<String>("40", "40")) ;
+    itemPerPages.add(new SelectItemOption<String>("50", "50")) ;
+    return itemPerPages ;
+  }
+  
   public PortletPreferences getPortletPreferences() {    
     return getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
   }
@@ -175,7 +186,8 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     categoryPathField.setEditable(false) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+//    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+    UIFormSelectBox numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR)  ;
@@ -305,7 +317,8 @@ public class UIPathConfig extends UIForm implements UISelector{
         return ;
       }
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
-      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+//      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+      String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       if(Integer.parseInt(itemPerPage) <= 0) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
