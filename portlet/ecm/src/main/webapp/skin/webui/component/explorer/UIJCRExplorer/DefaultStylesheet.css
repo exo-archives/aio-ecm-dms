@@ -401,6 +401,21 @@
   _width: 98.8%;
 }
 
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UITabContentContainer .FileContent .NavigationContainer {
+  border: solid 1px #939393;
+  border-top: none;
+  padding-bottom: 0px;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UITabContentContainer .FileContent .Content {
+  padding: 0px;
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UITabContentContainer .FileContent .TopTitle {
+	background: url(/ecm/skin/images/file/TitleBG1x21.gif) repeat-x ;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: none;
   background: #efefef;
