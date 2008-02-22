@@ -96,7 +96,9 @@ public class UILanguageDialogForm extends DialogFormFields {
   
   public boolean isEditing() { return !isAddNew_ ; }
   
-  public Node getCurrentNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
+  public Node getCurrentNode() throws Exception { 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; 
+  }
   
   public void setSelectedLanguage(String selectedLanguage) { selectedLanguage_ = selectedLanguage; }
   public String getSelectedLanguage() { return selectedLanguage_ ; }

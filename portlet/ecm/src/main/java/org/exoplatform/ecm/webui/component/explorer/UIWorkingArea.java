@@ -133,9 +133,9 @@ public class UIWorkingArea extends UIContainer {
     return session.getNodeByUUID(uuid);
   }
 
-  protected Node getCurrentNode() {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    return uiExplorer.getCurrentNode() ;
+  //TODO: Review this method
+  protected Node getCurrentNode() throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
   }
 
   public boolean isReferenceableNode(Node node) throws Exception {
@@ -263,7 +263,7 @@ public class UIWorkingArea extends UIContainer {
         String role = roles[i].getString();
         if(securityService.hasMembershipInGroup(userName, role)) safeActions.add(actionNode);
       }
-    }
+    }      
     return safeActions;
   }
 

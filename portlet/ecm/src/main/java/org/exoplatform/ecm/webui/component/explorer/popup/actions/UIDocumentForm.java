@@ -125,7 +125,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
   
-  public Node getCurrentNode() { return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
+  public Node getCurrentNode() throws Exception { 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; 
+  }
   
   public boolean isEditing() { return !isAddNew_ ; }
   
