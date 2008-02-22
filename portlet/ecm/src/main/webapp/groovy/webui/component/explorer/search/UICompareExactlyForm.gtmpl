@@ -10,8 +10,24 @@
 <div class="$uicomponent.id">
   <div class="UIFormWithTitle">
     <% uiform.begin() %>
-      <div class="ConstraintOption">Filter : <%uiform.renderField(uicomponent.getChild(0))%><a href="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif"></a></div>
-      <div class="ConstraintOption">Results : <%uiform.renderField(uicomponent.getChild(1))%><span style="display: none;"><%uiform.renderField(uicomponent.getChild(2))%></span></div>
+    	<div class="ConstraintOption"> 
+	    	<div class="HorizontalLayout">
+	    		<div class="FormContainer">
+	      		<table class="UIFormGrid">
+	            <tbody>
+	            	<tr>
+		  	          <td class="FieldLabel"> Filter :</td>
+		  	          <td class="FieldComponent"><%uiform.renderField(uicomponent.getChild(0))%><a href="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif"></a></td>
+			          </tr>
+		            <tr>
+		  	          <td class="FieldLabel">Results :</td>
+		  	          <td class="FieldComponent"><%uiform.renderField(uicomponent.getChild(1))%><span style="display: none;"><%uiform.renderField(uicomponent.getChild(2))%></span></td>
+			          </tr>
+		           </tbody>
+		         </table>
+		      </div>
+		    </div>
+		  </div>
       <div class="UIAction"> 
         <table class="ActionContainer">
         	<tr>

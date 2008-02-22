@@ -95,6 +95,10 @@
 	margin: auto;
 }
 
+.UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormGrid td.FieldComponent{
+	_width: 414px;
+}
+
 .UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
 	border: none;
 }

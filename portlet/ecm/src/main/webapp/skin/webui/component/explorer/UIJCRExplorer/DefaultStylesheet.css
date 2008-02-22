@@ -398,6 +398,7 @@
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: solid 1px #939393;
   border-top: none;
+  _width: 98.8%;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
@@ -886,7 +887,19 @@
   border: 1px solid #b7b7b7;
   margin-top: 5px;
   padding-left: 5px;
-  width:98.8%;
+  width: 98.8%;
+}
+
+.UIJCRExplorerPortlet .PopupContent .WorkingAreaWithHelp .UIHorizontalTabs {
+  _width: 99.1%;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISimpleSearch {
+  _width: 98.8%;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UIConstraintsForm {
+  _width: 98.8%;
 }
 /*====================================UISavedQuery==================================*/
 
