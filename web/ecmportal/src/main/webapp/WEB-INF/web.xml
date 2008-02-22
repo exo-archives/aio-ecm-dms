@@ -51,7 +51,7 @@
 
   <filter>
     <filter-name>FactoryInitializedFilter</filter-name>
-    <filter-class>org.exoplatform.frameworks.jcr.web.AnonymousUserContextRedirectionFilter</filter-class>
+    <filter-class>org.exoplatform.frameworks.jcr.web.SimpleSessionFactoryInitializedFilter</filter-class>
   </filter>
   
   <filter>
