@@ -78,6 +78,10 @@
 	float: right;
 }
 
+.UIWorkflowPortlet .WorkflowPortletContent #UIBPDefinition .UIGrid {
+  _width: 99%;
+}
+
 .UIWorkflowPortlet .UIAdministrationManager .UITabContent .UIGrid {
 	width: 99.7%;
 }
