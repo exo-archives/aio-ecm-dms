@@ -81,8 +81,8 @@ public class UIAddressBar extends UIForm {
           uiExplorer.setIsViewTag(false) ;
           uiExplorer.setSelectNode(uiExplorer.getCurrentStateNode()) ;
         } else {
-          String previousNode = uiExplorer.rewind() ;
-          uiExplorer.setBackNode(previousNode) ;
+          String previousNodePath = uiExplorer.rewind() ;
+          uiExplorer.setBackNodePath(previousNodePath) ;
         }
         uiExplorer.updateAjax(event) ;
       } catch (AccessDeniedException ade) {
@@ -106,9 +106,10 @@ public class UIAddressBar extends UIForm {
       UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.setIsViewTag(false) ;
       try {
+//TODO: need check again after refactor
         Node node = uiExplorer.getRootNode().getNode(path.substring(1)) ;
         uiExplorer.setSelectNode(node) ;
-        uiExplorer.setCurrentStateNode(node) ;
+        uiExplorer.setCurrentStatePath(node.getPath()) ;
       } catch(Exception e) {
         UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null, 

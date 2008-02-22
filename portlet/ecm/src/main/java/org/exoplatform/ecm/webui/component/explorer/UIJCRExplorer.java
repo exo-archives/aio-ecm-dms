@@ -75,21 +75,23 @@ public class UIJCRExplorer extends UIContainer {
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
   private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;
 
-  private Session session_ = null ;
   private PortletPreferences pref_ ;
   private Preference preferences_;
   private Set<String> addressPath_ = new HashSet<String>() ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;  
-  private Node rootNode_ ;
-  private Node currentNode_ ;
-
+  
+  private String rootPath_ ;
+  private String currentPath_ ;
+  private String currentStatePath_ ;
+  private String currentWorkspaceName_ ;
+  private String currentRepositoryName_ ;
   private String documentInfoTemplate_ ;
-  public boolean isHidePopup_ = false ;
   private String language_ ;
   private String tagPath_ ;
+  
   private boolean isViewTag_ = false ;
-  private Node currentStateNode_ = null ;
-
+  private boolean isHidePopup_ = false ;
+  
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
     addChild(UIWorkingArea.class, null, null) ;
@@ -98,21 +100,21 @@ public class UIJCRExplorer extends UIContainer {
     pref_ = pcontext.getRequest().getPreferences() ;
   }
 
-  private String filterPath(String currentPath) throws RepositoryException {
-    if(rootNode_.getDepth() == 0) return currentPath ;
-    if(rootNode_.equals(currentNode_)) return "/" ;
-    return currentPath.replaceFirst(rootNode_.getPath(), "") ;
+  private String filterPath(String currentPath) throws Exception {
+    if(getRootNode().getDepth() == 0) return currentPath ;
+    if(rootPath_.equals(currentPath_)) return "/" ;
+    return currentPath.replaceFirst(rootPath_, "") ;
   }
-
-  public void setRootNode(Node node) {
-    rootNode_ = node ;
-    currentNode_ = node ;    
+  
+  public void setRootPath(String rootPath) {
+    rootPath_ = rootPath ;
+    currentPath_ = rootPath ;
   }
-  public Node getRootNode() { return rootNode_ ; }
+  public Node getRootNode() throws Exception { return getNodeByPath(rootPath_, getSession()) ; }
 
-  public Node getCurrentNode() { return currentNode_ ; }
-  public void setBackNode(String historyNode) throws Exception {
-    currentNode_ = (Node)session_.getItem(historyNode) ;    
+  public Node getCurrentNode() throws Exception { return getNodeByPath(currentPath_, getSession()) ; }
+  public void setBackNodePath(String historyPath) throws Exception {
+    currentPath_ = historyPath ;    
     refreshExplorer() ;
   }
 
@@ -129,8 +131,9 @@ public class UIJCRExplorer extends UIContainer {
 
   public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }  
 
-  public Session getSession() { return session_ ; }
-  public void setSession(Session session) { this.session_ = session ; }  
+  public Session getSession() throws Exception { 
+    return getSessionProvider().getSession(currentWorkspaceName_, getRepository()) ; 
+  }
 
   public String getDocumentInfoTemplate() { return documentInfoTemplate_ ; }
   public void setRenderTemplate(String template) { 
@@ -138,8 +141,10 @@ public class UIJCRExplorer extends UIContainer {
     documentInfoTemplate_  = template ; 
   }
   
-  public void setCurrentStateNode(Node currentStateNode) { currentStateNode_ = currentStateNode ; }
-  public Node getCurrentStateNode() { return currentStateNode_ ; }
+  public void setCurrentStatePath(String currentStatePath) { currentStatePath_ =  currentStatePath ; }
+  public Node getCurrentStateNode() throws Exception { 
+    return getNodeByPath(currentStatePath_, getSession()) ; 
+  }
 
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {    
@@ -152,11 +157,15 @@ public class UIJCRExplorer extends UIContainer {
     }         
   }
 
-  public String getRepositoryName() { return pref_.getValue(Utils.REPOSITORY,"") ; }
+  public void setRepositoryName(String repositoryName) { currentRepositoryName_ = repositoryName ; }
+  public String getRepositoryName() { return currentRepositoryName_ ; }
+  
+  public void setWorkspaceName(String workspaceName) { currentWorkspaceName_ = workspaceName ; }
+  public String getCurrentWorkspace() { return currentWorkspaceName_ ; }
 
   private ManageableRepository getRepository() throws Exception{         
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
-    return repositoryService.getRepository(getRepositoryName());
+    return repositoryService.getRepository(currentRepositoryName_);
   }
 
   public Session getSessionByWorkspace(String wsName) throws Exception{    
@@ -174,7 +183,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public void refreshExplorer() throws Exception { 
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
-    setValue(filterPath(currentNode_.getPath())) ;
+    setValue(filterPath(currentPath_)) ;
     UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
     UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
     uiDocumentInfo.updatePageListData();
@@ -205,7 +214,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasAddPermission() {
     try {
-      ((ExtendedNode)currentNode_).checkPermission(PermissionType.ADD_NODE) ;      
+      ((ExtendedNode)getCurrentNode()).checkPermission(PermissionType.ADD_NODE) ;      
     } catch(Exception e) {
       return false ;
     }
@@ -214,7 +223,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasEditPermission() {
     try {
-      ((ExtendedNode)currentNode_).checkPermission(PermissionType.SET_PROPERTY) ;
+      ((ExtendedNode)getCurrentNode()).checkPermission(PermissionType.SET_PROPERTY) ;
     } catch(Exception e) {
       return false ;
     }
@@ -223,7 +232,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasRemovePermission() {
     try {
-      ((ExtendedNode)currentNode_).checkPermission(PermissionType.REMOVE) ;
+      ((ExtendedNode)getCurrentNode()).checkPermission(PermissionType.REMOVE) ;
     } catch(Exception e) {
       return false ;
     }
@@ -232,7 +241,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean hasReadPermission() {
     try {
-      ((ExtendedNode)currentNode_).checkPermission(PermissionType.READ) ;
+      ((ExtendedNode)getCurrentNode()).checkPermission(PermissionType.READ) ;
     } catch(Exception e) {
       return false ;
     }
@@ -247,7 +256,9 @@ public class UIJCRExplorer extends UIContainer {
         Node primaryNode = (Node) primaryItem ;
         if(primaryNode.isNodeType(nodeType)) return primaryNode ;
       }
-    } catch(Exception e) { }
+    } catch(Exception e) { 
+      e.printStackTrace() ;
+    }
     return getCurrentNode() ;
   }
 
@@ -273,7 +284,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public void updateAjax(Event event) throws Exception { 
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
-    uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(filterPath(currentNode_.getPath())) ;
+    uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(filterPath(currentPath_)) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
@@ -323,8 +334,6 @@ public class UIJCRExplorer extends UIContainer {
     context.addUIComponentToUpdateByAjax(popupAction) ;
   }
 
-  public String getCurrentWorkspace() { return session_.getWorkspace().getName() ; }
-
   public void record(String str) {
     nodesHistory_.add(str) ;
     addressPath_.add(str) ;
@@ -333,26 +342,30 @@ public class UIJCRExplorer extends UIContainer {
   public String rewind() { return nodesHistory_.removeLast() ; }
 
   public void setSelectNode(Node node) throws Exception {
-    if(currentNode_ != null && !node.equals(currentNode_)) record(currentNode_.getPath()) ;
-    currentNode_ = node ;
-    if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
-      setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
+    Node currentNode = getCurrentNode() ;
+    if(currentNode != null && !node.getPath().equals(currentPath_)) record(currentPath_) ;
+    currentPath_ = node.getPath() ;
+    if(currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
+      setLanguage(currentNode.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }    
   }
 
   public void setSelectNode(String uri, Session session) throws Exception {  
     Node previousNode = null ;
+    Node currentNode = getCurrentNode() ;
     if(uri == null || uri.length() == 0) uri = "/" ;
-    previousNode = currentNode_ ;   
+    previousNode = currentNode ;   
     try {
-      currentNode_ = (Node) session.getItem(uri);
+      currentPath_ = uri ;
+      currentNode = (Node) session.getItem(uri);
     } catch (Exception e) {
-      currentNode_ = currentNode_.getParent() ;
+      currentPath_ = currentNode.getParent().getPath() ;
+      currentNode = currentNode.getParent() ;
     }    
-    if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
-      setLanguage(currentNode_.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
+    if(currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
+      setLanguage(currentNode.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }
-    if(previousNode != null && !currentNode_.equals(previousNode)) record(previousNode.getPath()) ;    
+    if(previousNode != null && !currentNode.equals(previousNode)) record(previousNode.getPath()) ;    
   }
 
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {

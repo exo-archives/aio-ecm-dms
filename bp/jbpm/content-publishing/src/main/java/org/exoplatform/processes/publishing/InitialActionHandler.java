@@ -40,10 +40,6 @@ public class InitialActionHandler implements ActionHandler {
   private static final long serialVersionUID = 1L;      
   
   public void execute(ExecutionContext context) throws Exception {
-    System.out.println("==========INITIAL==");
-    System.err.println("Delegate:"+context.getVariable("delegate").toString());
-    System.err.println("initiator:"+context.getVariable("initiator").toString());
-    System.err.println("exo:validator:"+context.getVariable("exo:validator").toString());    
     initialVariables(context);
     ProcessUtil.requestForValidation(context);
   }

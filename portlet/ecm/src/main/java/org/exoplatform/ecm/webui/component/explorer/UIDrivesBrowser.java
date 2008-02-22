@@ -249,7 +249,6 @@ public class UIDrivesBrowser extends UIContainer {
       SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Session session = provider.getSession(drive.getWorkspace(),repository) ;      
-      uiJCRExplorer.setSession(session) ;
       Node node = null ;
       try {
         node = (Node) session.getItem(homePath) ;        
@@ -265,7 +264,9 @@ public class UIDrivesBrowser extends UIContainer {
         return ;
       } 
       uiJCRExplorer.getAllClipBoard().clear() ;
-      uiJCRExplorer.setRootNode(node) ;
+      uiJCRExplorer.setRepositoryName(uiDrive.repoName_) ;
+      uiJCRExplorer.setWorkspaceName(drive.getWorkspace()) ;
+      uiJCRExplorer.setRootPath(homePath) ;
       uiJCRExplorer.setSelectNode(node) ;
       uiJCRExplorer.refreshExplorer() ;      
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>() ;

@@ -125,7 +125,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private void setPath(String scriptPath) {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(scriptPath.indexOf(":") < 0) {
-      scriptPath = uiExplorer.getSession().getWorkspace().getName() + ":" + scriptPath ;
+//      scriptPath = uiExplorer.getSession().getWorkspace().getName() + ":" + scriptPath ;
+      scriptPath = uiExplorer.getCurrentWorkspace() + ":" + scriptPath ;
     }
     scriptPath_ = scriptPath ; 
   }

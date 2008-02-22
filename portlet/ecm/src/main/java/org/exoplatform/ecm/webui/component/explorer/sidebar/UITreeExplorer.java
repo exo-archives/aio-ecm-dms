@@ -63,10 +63,10 @@ public class UITreeExplorer extends UIContainer {
   
   public TreeNode getRootTreeNode() { return treeRoot_ ; }
   
-  public String getRootActionList() throws RepositoryException {
-    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class);
-    if(jcrExplorer.getAllClipBoard().size() > 0) {
-      return getContextMenu().getJSOnclickShowPopup(jcrExplorer.getRootNode().getPath(), "Paste").toString() ;
+  public String getRootActionList() throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    if(uiExplorer.getAllClipBoard().size() > 0) {
+      return getContextMenu().getJSOnclickShowPopup(uiExplorer.getRootNode().getPath(), "Paste").toString() ;
     }
     return "" ;
   }

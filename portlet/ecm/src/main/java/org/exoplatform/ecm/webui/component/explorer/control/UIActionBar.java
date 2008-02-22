@@ -253,7 +253,7 @@ public class UIActionBar extends UIForm {
     return templates;
   }
 
-  private boolean isRootNode(Node node) {
+  private boolean isRootNode(Node node) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getRootNode().equals(node) ;
   }
 
