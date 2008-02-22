@@ -402,7 +402,8 @@
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
-  width: 500px;
+  width: 450px;
+  height: 170px;
   vertical-align: baseline;
 }
 
