@@ -153,7 +153,8 @@ public class UIToolBar extends UIContainer {
             uiContainer.changeNode(selectNode) ;
           }
         }
-        uiContainer.setCurrentNode(selectNode) ;
+        uiContainer.setCurrentNodePath(nodePath) ;
+        uiContainer.setSelectedTabPath(nodePath) ;
         //        uiContainer.changeNode(selectNode) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCPortlet) ;

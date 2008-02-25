@@ -102,8 +102,8 @@ public class UICategoryTree extends UIComponent {
       uiContainer.setShowDocumentDetail(false)  ;
       uiContainer.setShowDocumentByTag(false)  ;
       uiContainer.setShowAllChildren(false) ;
-      uiContainer.setSelectedTab(null) ;
-      uiContainer.setCurrentNode(node) ;
+      uiContainer.setSelectedTabPath(null) ;
+      uiContainer.setCurrentNodePath(path) ;
       cateTree.buildTree(node.getPath()) ;
       uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
