@@ -11,6 +11,7 @@ import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -23,7 +24,10 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.records.RecordsService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.log.ExoLogger;
 
@@ -36,13 +40,18 @@ public class RecordsServiceImpl implements RecordsService {
   final static public String CONSTRAINTS_STATEMENT = "/jcr:root$path//element(*,$recordType) $propertyConstraints order by @$orderProperty $orderType";
 
   private static Log log_ = ExoLogger.getLogger("services.cms.records");
-  private ActionServiceContainer actionsService_;  
+  private ActionServiceContainer actionsService_;
+  private SessionProviderService providerService_ ;
+  private RepositoryService repositoryService_ ;
 
   private AuditService auditService_;
 
-  public RecordsServiceImpl(ActionServiceContainer actionServiceContainer, AuditService auditService) {
+  public RecordsServiceImpl(ActionServiceContainer actionServiceContainer, AuditService auditService,
+                            SessionProviderService sessionProviderService, RepositoryService repositoryService) {
     actionsService_ = actionServiceContainer;
     auditService_ = auditService;    
+    providerService_ = sessionProviderService;
+    repositoryService_ = repositoryService;
   }
 
   // TODO handle a lock
@@ -421,9 +430,11 @@ public class RecordsServiceImpl implements RecordsService {
     statement = StringUtils.replace(statement,"$orderProperty",orderProperty);
     statement = StringUtils.replace(statement,"$orderType",orderType);    
     QueryManager queryManager = null;
-    try {
-      queryManager = filePlan.getSession().getWorkspace().getQueryManager(); 
-    } catch (Exception e) {
+    try {            
+      String workspace = filePlan.getSession().getWorkspace().getName();            
+      ManageableRepository repository = (ManageableRepository)filePlan.getSession().getRepository();
+      queryManager = providerService_.getSessionProvider(null).getSession(workspace,repository).getWorkspace().getQueryManager();
+    } catch (Exception e) {      
       return list;
     }    
     Query query = queryManager.createQuery(statement,Query.XPATH);
