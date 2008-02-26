@@ -685,8 +685,9 @@ public class UIWorkingArea extends UIContainer {
         node.save();
       }
       try {
-        node.lock(true, true);        
+        node.lock(true, false);        
       } catch(LockException le) {
+        le.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
