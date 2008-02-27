@@ -143,6 +143,11 @@
     </init-params>
   </component>
   
+  <component>
+    <key>org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService</key>
+    <type>org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService</type>
+  </component>
+  
   <external-component-plugins>
 	  <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>      
 	  <component-plugin>
