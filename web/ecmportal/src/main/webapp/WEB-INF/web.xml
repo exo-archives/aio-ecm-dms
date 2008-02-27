@@ -97,7 +97,13 @@
     <url-pattern>/public/*</url-pattern>
   </filter-mapping>
   
-   <filter-mapping>
+  <filter-mapping>
+  <!-- must be before ThreadLocalSessionProviderInitializedFilter for URI /rest/* -->
+    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping> 
@@ -112,10 +118,6 @@
     <url-pattern>/jcr/*</url-pattern>
   </filter-mapping>
   
-  <filter-mapping>
-    <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
-    <url-pattern>/rest/*</url-pattern>
-  </filter-mapping>
 
   <!-- ================================================================== -->
   <!--           LISTENER                                                 -->
