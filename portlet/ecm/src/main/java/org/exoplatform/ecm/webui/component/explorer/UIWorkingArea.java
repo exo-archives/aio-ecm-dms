@@ -32,6 +32,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
+import javax.jcr.lock.Lock;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
@@ -52,6 +53,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -685,7 +687,9 @@ public class UIWorkingArea extends UIContainer {
         node.save();
       }
       try {
-        node.lock(true, false);        
+        Lock lock = node.lock(true, false);
+        LockTokenHolderService lockTokenHolderService = uicomp.getApplicationComponent(LockTokenHolderService.class);  
+        lockTokenHolderService.keepLockToken(node,lock.getLockToken());
       } catch(LockException le) {
         le.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
@@ -731,7 +735,11 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }
       try {
-        if(node.holdsLock())  node.unlock() ;
+        if(node.holdsLock())   {
+          LockTokenHolderService lockTokenHolderService = uicomp.getApplicationComponent(LockTokenHolderService.class);
+          session.addLockToken(lockTokenHolderService.getLockToken(node));
+          node.unlock() ;
+        }
       } catch(LockException le) {
         Object[] args = {node.getName()} ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-unlock-node", args, 
