@@ -42,6 +42,7 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 
 public class UIBrowseContentPortlet extends UIPortletApplication  {
 
+  private boolean isViewModing_ = true ;
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
@@ -73,16 +74,19 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(false) ;
       uiContainer.setRendered(true) ;
-      uiContainer.refreshContent() ;
+      if(!isViewModing_) uiContainer.refreshContent() ; 
+      isViewModing_ = true ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {      
       if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
       uiTabPane.setRendered(true) ;
       uiBCHelp.setRendered(false) ;
       uiContainer.setRendered(false) ;
+      isViewModing_ = false ;
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {      
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(true) ;
       uiContainer.setRendered(false) ;
+      isViewModing_ = false ;
     }
     try {
       super.processRender(app, context) ;
