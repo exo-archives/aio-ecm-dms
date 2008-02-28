@@ -154,7 +154,7 @@ public class Utils {
   }
 
   public static boolean isVersionable(Node node) throws RepositoryException {
-    return node.isNodeType(MIX_VERSIONABLE) && !node.isNodeType(JCR_FROZEN);
+    return node.isNodeType(MIX_VERSIONABLE);
   }
 
   public static boolean isReadAuthorized(Node node) throws RepositoryException {
