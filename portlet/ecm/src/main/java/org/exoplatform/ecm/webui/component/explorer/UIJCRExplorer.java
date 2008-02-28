@@ -113,6 +113,9 @@ public class UIJCRExplorer extends UIContainer {
   public Node getRootNode() throws Exception { return getNodeByPath(rootPath_, getSession()) ; }
 
   public Node getCurrentNode() throws Exception { return getNodeByPath(currentPath_, getSession()) ; }
+  
+  public void setCurrentPath(String currentPath) { currentPath_ = currentPath ; }
+   
   public void setBackNodePath(String historyPath) throws Exception {
     currentPath_ = historyPath ;    
     refreshExplorer() ;
@@ -342,9 +345,9 @@ public class UIJCRExplorer extends UIContainer {
   public String rewind() { return nodesHistory_.removeLast() ; }
 
   public void setSelectNode(Node node) throws Exception {
+    currentPath_ = node.getPath() ;
     Node currentNode = getCurrentNode() ;
     if(currentNode != null && !node.getPath().equals(currentPath_)) record(currentPath_) ;
-    currentPath_ = node.getPath() ;
     if(currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode.getProperty(Utils.EXO_LANGUAGE).getValue().getString()) ;
     }    
