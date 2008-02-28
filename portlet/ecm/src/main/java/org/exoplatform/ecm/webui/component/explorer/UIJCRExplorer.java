@@ -114,6 +114,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public Node getCurrentNode() throws Exception { return getNodeByPath(currentPath_, getSession()) ; }
   
+  public String getCurrentPath() { return currentPath_ ; }
   public void setCurrentPath(String currentPath) { currentPath_ = currentPath ; }
    
   public void setBackNodePath(String historyPath) throws Exception {
