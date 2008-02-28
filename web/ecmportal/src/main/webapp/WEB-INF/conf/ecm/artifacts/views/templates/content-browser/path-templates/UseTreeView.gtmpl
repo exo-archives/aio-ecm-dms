@@ -1,5 +1,4 @@
 <%
-  import org.exoplatform.ecm.webui.component.browsecontent.BCTreeNode ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar;	
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
@@ -7,7 +6,6 @@
   import javax.jcr.Node;
   import org.exoplatform.ecm.utils.Utils ;
   
-  BCTreeNode treeNode = uicomponent.getTreeRoot() ;  
   String componentName = uicomponent.getName() ;
   def content = uicomponent.getTreeContent() ;                  
   def subCategoryList = content.get("subCategoryList") ;
@@ -25,8 +23,9 @@
 	<%if(uicomponent.isEnableToolBar()){uicomponent.renderChild(UIToolBar.class);}%>
 	<div class="ContentHolder">  
 	<%
-	 if(uicomponent.isShowSearchForm()) {uicomponent.renderChild(UISearchController.class); 
-	 }else {	 
+	 if(uicomponent.isShowSearchForm()) {
+	   uicomponent.renderChild(UISearchController.class); 
+	 } else {	 
 	  /*Begin TagMap*/   
 			 	String styleWithTag = "margin-right: 0px" ;
 			 	if(isShowTagmap) {	
