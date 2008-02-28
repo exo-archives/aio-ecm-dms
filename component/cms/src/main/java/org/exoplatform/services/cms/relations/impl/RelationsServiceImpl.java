@@ -55,8 +55,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   }
 
   public boolean hasRelations(Node node) throws Exception {
-    if (node.isNodeType(RELATION_MIXIN))
-      return true;
+    if (node.isNodeType(RELATION_MIXIN)) return true;
     return false;
 
   }
@@ -115,17 +114,18 @@ public class RelationsServiceImpl implements RelationsService, Startable {
   public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
     SessionProvider provider = SessionProvider.createSystemProvider() ;
     Session session = getSession(repository,workpace,provider) ;
-    Node catNode = (Node) session.getItem(relationPath);    
+    Node catNode = (Node) session.getItem(relationPath); 
     if(!catNode.isNodeType("mix:referenceable")) {
       catNode.addMixin("mix:referenceable") ;
       catNode.save() ;
       session.save() ;
-      session.refresh(true) ;
     }      
-    Value value2add = session.getValueFactory().createValue(catNode); 
+    Value value2add = session.getValueFactory().createValue(catNode);
     if (!node.isNodeType(RELATION_MIXIN)) {
       node.addMixin(RELATION_MIXIN);    
       node.setProperty(RELATION_PROP, new Value[] {value2add});
+      node.save() ;
+      session.save() ;
     } else {
       List<Value> vals = new ArrayList<Value>();
       Value[] values = node.getProperty(RELATION_PROP).getValues();
@@ -145,6 +145,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       }
       vals.add(value2add);
       node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
+      node.save() ;
       session.save() ;
       provider.close();
     }
