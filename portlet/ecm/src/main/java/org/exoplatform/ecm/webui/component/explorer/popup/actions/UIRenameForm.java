@@ -131,12 +131,13 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           if(parent.getPath().equals("/")) destPath = "/" + newName ; 
           else destPath = parent.getPath() + "/" + newName ;
         } else {
-          if(uiJCRExplorer.getCurrentNode().getPath().equals("/")) destPath = "/" + newName ;
-          else destPath = uiJCRExplorer.getCurrentNode().getPath() + "/" + newName ;
+          if(uiJCRExplorer.getCurrentPath().equals("/")) destPath = "/" + newName ;
+          else destPath = uiJCRExplorer.getCurrentPath()+ "/" + newName ;
         }
         Session nodeSession = uiRenameForm.renameNode_.getSession() ;
         nodeSession.refresh(true) ;
         nodeSession.move(srcPath,destPath) ;
+        if(srcPath.equals(uiJCRExplorer.getCurrentPath())) uiJCRExplorer.setCurrentPath(destPath) ;
         nodeSession.save() ;
         nodeSession.refresh(false) ;
         for(int i = 0; i < refList.size(); i ++) {
