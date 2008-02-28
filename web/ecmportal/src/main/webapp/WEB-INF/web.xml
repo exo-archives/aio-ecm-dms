@@ -123,7 +123,7 @@
   <!--           LISTENER                                                 -->
   <!-- ================================================================== -->
   <listener>
-    <listener-class> org.exoplatform.ecm.LockManagerListener</listener-class>
+    <listener-class> org.exoplatform.ecm.application.LockManagerListener</listener-class>
   </listener>
   <listener>
     <listener-class>org.exoplatform.portal.application.PortalSessionListener</listener-class>
