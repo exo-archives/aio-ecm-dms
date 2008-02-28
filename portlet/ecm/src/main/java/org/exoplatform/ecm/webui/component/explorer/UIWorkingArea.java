@@ -53,7 +53,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
-import org.exoplatform.services.cms.lock.LockTokenHolderService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -300,7 +299,7 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }
       boolean isReferenced = false ;
-      if(uiExplorer.nodeIsLocked(nodePath, session)) {        
+      if(uiExplorer.nodeIsLocked(selectedNode)) {        
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -369,12 +368,11 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(renameNodePath, session)) {
+      if(uiExplorer.nodeIsLocked(renameNode)) {
         Object[] arg = { renameNodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
         return ;
       }      
       if(renameNode.isNodeType("mix:versionable")) {
@@ -489,7 +487,7 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
         return ;
       }      
-      if(uiExplorer.nodeIsLocked(nodePath, session)) {
+      if(uiExplorer.nodeIsLocked(selectedNode)) {        
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING)) ;
@@ -582,7 +580,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(nodePath, session)) {
+      if(uiExplorer.nodeIsLocked(node)) {
         Object[] arg = { nodePath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING)) ;
@@ -687,9 +685,8 @@ public class UIWorkingArea extends UIContainer {
         node.save();
       }
       try {
-        Lock lock = node.lock(true, false);        
-        LockTokenHolderService lockTokenHolderService = uicomp.getApplicationComponent(LockTokenHolderService.class);
-        lockTokenHolderService.keepLockToken(node,lock.getLockToken());
+        Lock lock = node.lock(false, false);                  
+        Utils.keepLock(lock);
       } catch(LockException le) {        
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
             ApplicationMessage.WARNING)) ;
@@ -733,13 +730,12 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }
       try {
-        if(node.holdsLock())  { 
-          LockTokenHolderService lockTokenHolderService = uicomp.getApplicationComponent(LockTokenHolderService.class);
-          String lockToken = lockTokenHolderService.getLockToken(node);
+        if(node.holdsLock())  {           
+          String lockToken = Utils.getLockToken(node);
           if(lockToken != null) {
             session.addLockToken(lockToken);
           }
-          node.unlock() ; 
+          node.unlock() ;          
         }
       } catch(LockException le) {        
         Object[] args = {node.getName()} ;
@@ -763,17 +759,16 @@ public class UIWorkingArea extends UIContainer {
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(nodePath, session)) {
-        Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
-        return ;
-      }    
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;         
       try {
         Node node = uiExplorer.getNodeByPath(nodePath, session);
+        if(uiExplorer.nodeIsLocked(node)) {
+          Object[] arg = { nodePath } ;
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;     
+          return ;
+        }
         node.checkin();
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
@@ -795,17 +790,16 @@ public class UIWorkingArea extends UIContainer {
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;      
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(uiExplorer.nodeIsLocked(nodePath, session)) {
-        Object[] arg = { nodePath } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
-        return ;
-      }    
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;       
       try {
         Node node = uiExplorer.getNodeByPath(nodePath, session) ;
+        if(uiExplorer.nodeIsLocked(node)) {
+          Object[] arg = { nodePath } ;
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
+          return ;
+        }   
         node.checkout();
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
@@ -890,16 +884,14 @@ public class UIWorkingArea extends UIContainer {
       if(ClipboardCommand.CUT.equals(type) && srcPath.equals(realDestPath)) { 
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
             ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
         return; 
       }
-      if(uiExplorer.nodeIsLocked(destPath, session)) {
+      if(uiExplorer.nodeIsLocked(destNode)) {
         Object[] arg = { destPath } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;        
         return ;
       }
       if(destPath.endsWith("/")) {

@@ -157,7 +157,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     } catch(Exception e) {
       session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
     }
-    Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
+    Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
     Node homeNode = null;
     Node newNode = null ;
     try {

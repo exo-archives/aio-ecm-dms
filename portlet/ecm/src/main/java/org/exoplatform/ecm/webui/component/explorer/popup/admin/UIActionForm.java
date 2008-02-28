@@ -150,14 +150,15 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     ActionServiceContainer actionServiceContainer = getApplicationComponent(ActionServiceContainer.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;   
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession());
-    if(!Utils.isAddNodeAuthorized(uiExplorer.getCurrentNode()) || !Utils.isSetPropertyNodeAuthorized(uiExplorer.getCurrentNode())) {
+    Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties());
+    Node currentNode = uiExplorer.getCurrentNode();
+    if(!Utils.isAddNodeAuthorized(currentNode) || !Utils.isSetPropertyNodeAuthorized(currentNode)) {
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
     if(!isAddNew_) {
-      CmsService cmsService = getApplicationComponent(CmsService.class) ;
+      CmsService cmsService = getApplicationComponent(CmsService.class) ;      
       Node storedHomeNode = getNode().getParent() ;
       cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
@@ -213,8 +214,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
       isEditInList_ = false ;
-    } catch(RepositoryException repo) {
-      repo.printStackTrace() ;
+    } catch(RepositoryException repo) {      
       String key = "UIActionForm.msg.repository-exception" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -224,8 +224,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
-    } catch (Exception e) {
-      e.printStackTrace() ;
+    } catch (Exception e) {      
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
       return null;
     }

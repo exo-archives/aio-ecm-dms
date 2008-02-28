@@ -262,7 +262,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;      
-      if(!uiExplorer.hasAddPermission()) {
+      if(!Utils.isAddNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -274,7 +274,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -289,29 +289,24 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasAddPermission()) {
+      Node currentNode = uiExplorer.getCurrentNode();      
+      if(!Utils.isAddNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())){
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)){
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      if(!uiExplorer.hasAddPermission()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
+      }     
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       UIDocumentFormController uiController = 
         event.getSource().createUIComponent(UIDocumentFormController.class, null, null) ;
@@ -324,7 +319,7 @@ public class UIActionBar extends UIForm {
         return ;
       }
       uiController.init() ;
-      uiPopupAction.activate(uiController, 700, 550) ;
+      uiPopupAction.activate(uiController, 800, 600) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
@@ -335,7 +330,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       Node selectedNode = uiExplorer.getCurrentNode() ;        
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasEditPermission()) {
+      if(!Utils.isSetPropertyNodeAuthorized(selectedNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -384,7 +379,7 @@ public class UIActionBar extends UIForm {
           uiDocumentForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
           uiDocumentForm.setStoredPath(selectedNode.getPath()) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-          uiPopupAction.activate(uiDocumentForm, 700, 550) ;
+          uiPopupAction.activate(uiDocumentForm, 800, 600) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         } else {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null)) ;
@@ -398,30 +393,25 @@ public class UIActionBar extends UIForm {
   static public class UploadActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;               
-      if(!uiExplorer.hasAddPermission()) {
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!Utils.isAddNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if( uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if( uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      if(!uiExplorer.hasAddPermission()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
+      }      
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
       UIUploadManager uiUploadManager = event.getSource().createUIComponent(UIUploadManager.class, null, null) ;
       uiPopupAction.activate(uiUploadManager, 600, 500) ;
@@ -443,24 +433,25 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;      
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;      
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
 
-      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
+      NodeType nodeType = currentNode.getPrimaryNodeType() ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
-        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        if(!currentNode.isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.watch-checkedin", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
@@ -482,23 +473,24 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
       NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasEditPermission()) {
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
       if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
-        if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+        if(!currentNode.isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.tagnode-checkedin", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
@@ -518,26 +510,27 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
+      Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasEditPermission()) {
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.multilang-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      NodeType nodeType = currentNode.getPrimaryNodeType() ;
       NodeType[] superTypes = nodeType.getSupertypes() ;
       boolean isFolder = false ;
       for(NodeType superType : superTypes) {
@@ -638,7 +631,8 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
-      if(uiActionBar.isRootNode(uiJCRExplorer.getCurrentNode())) {
+      Node currentNode = uiJCRExplorer.getCurrentNode();
+      if(uiActionBar.isRootNode(currentNode)) {
         UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -685,7 +679,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -723,26 +717,27 @@ public class UIActionBar extends UIForm {
       NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class) ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiActionBar.isRootNode(uiExplorer.getCurrentNode())) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(uiActionBar.isRootNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }         
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      }               
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.hasEditPermission()) {
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -780,28 +775,29 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(uiActionBar.isRootNode(uiExplorer.getCurrentNode())) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(uiActionBar.isRootNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
-      if(!uiExplorer.hasEditPermission()) {
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }               
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }      
+      }            
       uiExplorer.setIsHidePopup(true) ;
       RepositoryService repoService = uiActionBar.getApplicationComponent(RepositoryService.class) ;
       UIRelationManager uiRelationManager = 
@@ -844,19 +840,20 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasEditPermission()) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -881,19 +878,20 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasAddPermission()) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!Utils.isAddNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -971,26 +969,27 @@ public class UIActionBar extends UIForm {
   static public class VoteActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;      
-      if(!uiExplorer.hasEditPermission()) {
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;   
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
-      if(!uiExplorer.getCurrentNode().isNodeType("mix:votable")) {
+      if(!currentNode.isNodeType("mix:votable")) {
         uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-support", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIVoteForm.msg.not-checkedout", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -1037,25 +1036,25 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.hasAddPermission()) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!Utils.isAddNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-add-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiExplorer.getCurrentNode().isNodeType("mix:commentable")) {
+      if(!currentNode.isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-support", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } 
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      Object[] arg = { currentNode.getPath() } ;
+      if(!currentNode.isCheckedOut()) {        
         uiApp.addMessage(new ApplicationMessage("UICommentForm.msg.not-checkedout", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.nodeIsLocked(uiExplorer.getCurrentNode())) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() } ;
+      if(uiExplorer.nodeIsLocked(currentNode)) {        
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

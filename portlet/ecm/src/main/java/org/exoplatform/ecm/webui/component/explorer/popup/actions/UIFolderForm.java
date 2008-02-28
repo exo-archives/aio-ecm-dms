@@ -93,61 +93,46 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiFolderForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiFolderForm.getAncestorOfType(UIApplication.class);
       String name = uiFolderForm.getUIStringInput(FIELD_NAME).getValue() ;
-      Node node = uiExplorer.getCurrentNode() ;
-      Session session = uiExplorer.getSession() ;
-      String type = null ;
-      try {
-        session.getItem(node.getPath()) ;
-      } catch(PathNotFoundException item) {
-        session = node.getSession() ;
-      }
-      try {
-        uiExplorer.nodeIsLocked(node.getPath(), session) ;
-      } catch(PathNotFoundException p) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      if(uiExplorer.nodeIsLocked(node.getPath(), session)) {
+      Node node = uiExplorer.getCurrentNode() ;                  
+      if(uiExplorer.nodeIsLocked(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      if(name != null) {
-        if(uiFolderForm.allowCreateFolder_.equals("both")) {
-          type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
-        } else {
-          type = uiFolderForm.allowCreateFolder_ ;
-        }
-        try {
-          node.addNode(name, type) ;
-          node.save() ;
-          node.getSession().refresh(false) ;
-          if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;
-          uiExplorer.updateAjax(event) ;
-        } catch(ConstraintViolationException cve) {  
-          Object[] arg = { type } ;
-          throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
-                                                            arg, ApplicationMessage.WARNING)) ;
-        } catch(RepositoryException re) {
-          String key = "UIFolderForm.msg.repository-exception" ;
-          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        } catch(NumberFormatException nume) {
-          String key = "UIFolderForm.msg.numberformat-exception" ;
-          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        } catch (Exception e) {
-          JCRExceptionManager.process(uiApp, e);
-        }
-      } else {
+      }      
+      if(name == null || name.length() ==0) {
         uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      String type = null ;
+      if(uiFolderForm.allowCreateFolder_.equals("both")) {
+        type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
+      } else {
+        type = uiFolderForm.allowCreateFolder_ ;
+      }
+      try {
+        node.addNode(name, type) ;
+        node.save() ;
+        node.getSession().save();
+        if(!uiExplorer.getPreference().isJcrEnable())  { node.getSession().save() ; }
+        uiExplorer.updateAjax(event) ;
+      } catch(ConstraintViolationException cve) {  
+        Object[] arg = { type } ;
+        throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
+            arg, ApplicationMessage.WARNING)) ;
+      } catch(RepositoryException re) {
+        String key = "UIFolderForm.msg.repository-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(NumberFormatException nume) {
+        String key = "UIFolderForm.msg.numberformat-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+      }      
     }
   }
 

@@ -135,19 +135,8 @@ public class UILanguageDialogForm extends DialogFormFields {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
-//    if(hasNodeTypeNTResource(node)) {
-//    //    if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) { 
-//      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
-//      try {
-//        multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
-//      } catch(AccessDeniedException ace) {
-//        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
-//                                                ApplicationMessage.WARNING)) ;
-//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//        return null;
-//      }
     if(node.hasNode(Utils.EXO_IMAGE)) {
-      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
+      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
       try {
         multiLanguageService.addLanguage(node, inputProperties, getSelectedLanguage(), isDefaultLanguage(), Utils.EXO_IMAGE) ;
       } catch(AccessDeniedException ace) {
@@ -157,7 +146,7 @@ public class UILanguageDialogForm extends DialogFormFields {
         return null;
       }
     } else if(hasNodeTypeNTResource(node)) {
-      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), uiExplorer.getSession()) ;
+      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
       try {
         multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
       } catch(AccessDeniedException ace) {
@@ -167,7 +156,7 @@ public class UILanguageDialogForm extends DialogFormFields {
         return null;
       }
     } else {
-      Map map = Utils.prepareMap(getChildren(), properties, uiExplorer.getSession()) ;
+      Map map = Utils.prepareMap(getChildren(), properties) ;
       try {
         multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
       } catch(AccessDeniedException ace) {

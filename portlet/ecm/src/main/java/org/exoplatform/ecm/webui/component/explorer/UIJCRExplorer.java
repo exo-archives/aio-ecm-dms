@@ -203,17 +203,17 @@ public class UIJCRExplorer extends UIContainer {
 
   public boolean nodeIsLocked(String path, Session session) throws Exception {
     Node node = getNodeByPath(path, session) ;
-    if(node.isLocked()) {
-      return !Utils.isLockTokenHolder(node) ; 
-    }
-    return false ;
+    return nodeIsLocked(node);
   }
 
-  public boolean nodeIsLocked(Node node) throws Exception {
-    if(node.isLocked()) {
-      return !Utils.isLockTokenHolder(node) ; 
-    }
-    return false ;
+  public boolean nodeIsLocked(Node node) throws Exception {    
+    if(!node.isLocked()) return false;        
+    String lockToken = Utils.getLockToken(node);
+    if(lockToken != null) {
+      node.getSession().addLockToken(lockToken);
+      return false;
+    }                
+    return true;
   }
 
   public boolean hasAddPermission() {
@@ -464,8 +464,11 @@ public class UIJCRExplorer extends UIContainer {
     }
   }
 
-  public Node getNodeByPath(String nodePath, Session session) throws Exception {
-    return (Node)session.getItem(nodePath) ;    
+  public Node getNodeByPath(String nodePath, Session session) throws Exception {    
+    Node node = (Node)session.getItem(nodePath) ;
+    String lockToken = Utils.getLockToken(node);
+    if(lockToken != null) session.addLockToken(lockToken);
+    return node;
   }
   
   public void setTagPath(String tagPath) { tagPath_ = tagPath ; }

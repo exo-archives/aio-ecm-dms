@@ -33,17 +33,22 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.lock.Lock;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
+import javax.servlet.http.HttpSession;
 
+import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.impl.core.lock.LockManager;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
@@ -143,7 +148,7 @@ public class Utils {
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
   final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;  
   public Map<String, Object> maps_ = new HashMap<String, Object>() ;
-
+  
   public static String encodeHTML(String text) {
     return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
     .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
@@ -183,7 +188,7 @@ public class Utils {
       return false;
     }    
   }
-
+  
   public static boolean hasChangePermissionRight(Node node) throws RepositoryException {
     return isAddNodeAuthorized(node) && isSetPropertyNodeAuthorized(node) && isRemoveNodeAuthorized(node) ;
   }
@@ -336,7 +341,7 @@ public class Utils {
     } 
     return false ;    
   }
-
+    
   public static String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;   
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
@@ -344,7 +349,7 @@ public class Utils {
   }
 
   @SuppressWarnings({"unchecked", "unused"})
-  public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
+  public static Map prepareMap(List inputs, Map properties) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
     HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
     for (int i = 0; i < inputs.size(); i++) {
@@ -442,6 +447,38 @@ public class Utils {
     zipStream.close();
     ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray()) ;
     return inputStream ;
+  }    
+  
+  public static void keepLock(Lock lock) throws Exception {
+    PortalRequestContext requestContext = Util.getPortalRequestContext();
+    HttpSession httpSession = requestContext.getRequest().getSession();
+    String key = createLockKey(lock.getNode());
+    //TODO    
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
+    lockedNodesInfo.put(key,lock.getLockToken());
+    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+  }   
+  
+  public static String getLockToken(Node node) throws Exception {    
+    PortalRequestContext requestContext = Util.getPortalRequestContext();
+    HttpSession httpSession = requestContext.getRequest().getSession();
+    String key = createLockKey(node);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    if(lockedNodesInfo == null) return null;    
+    return lockedNodesInfo.get(key);
+  }  
+  
+  public static String createLockKey(Node node) throws Exception {
+    StringBuffer buffer = new StringBuffer();
+    Session session = node.getSession();
+    String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
+    buffer.append(repositoryName).append("/::/")
+          .append(session.getWorkspace().getName()).append("/::/")
+          .append(session.getUserID()).append(":/:")
+          .append(node.getPath());        
+    return buffer.toString();
   }
-
 }

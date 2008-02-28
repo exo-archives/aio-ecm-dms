@@ -135,17 +135,18 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public Node storeValue(Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     List inputs = getChildren() ;
-    Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), uiExplorer.getSession()) ;
+    Map inputProperties = Utils.prepareMap(inputs, getInputProperties()) ;
     Node newNode = null ;
     String nodeType ;
     Node homeNode ;
+    Node currentNode = uiExplorer.getCurrentNode();
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
     if(isAddNew()) {
       UIDocumentFormController uiDFController = getParent() ;
-      homeNode = uiExplorer.getCurrentNode() ;
+      homeNode = currentNode ;
       nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
     } else { 
-      homeNode = getNode().getParent() ;
+      homeNode = getNode().getParent();
       nodeType = getNode().getPrimaryNodeType().getName() ;
     }       
     try {
