@@ -1,5 +1,6 @@
 <%
 	import java.text.SimpleDateFormat ;
+	import org.exoplatform.web.application.Parameter ;
 	
 	def node = uicomponent.getNode() ;
 	def originalNode = uicomponent.getOriginalNode();
@@ -291,7 +292,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-					            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+					            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 					            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 					            </a>					            
 				              <%}%>
