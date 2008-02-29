@@ -88,9 +88,11 @@ public class UIJCRExplorer extends UIContainer {
   private String documentInfoTemplate_ ;
   private String language_ ;
   private String tagPath_ ;
+  private String referenceWorkspace_ ;
   
   private boolean isViewTag_ = false ;
   private boolean isHidePopup_ = false ;
+  private boolean isReferenceNode_ = false ;
   
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
@@ -116,6 +118,12 @@ public class UIJCRExplorer extends UIContainer {
   
   public String getCurrentPath() { return currentPath_ ; }
   public void setCurrentPath(String currentPath) { currentPath_ = currentPath ; }
+  
+  public boolean isReferenceNode() { return isReferenceNode_ ; }
+  public void setIsReferenceNode(boolean isReferenceNode) { isReferenceNode_ = isReferenceNode ; }
+  
+  public void setReferenceWorkspace(String referenceWorkspace) { referenceWorkspace_ = referenceWorkspace ; }
+  public String getReferenceWorkspace() { return referenceWorkspace_ ; }
    
   public void setBackNodePath(String historyPath) throws Exception {
     currentPath_ = historyPath ;    
@@ -136,6 +144,7 @@ public class UIJCRExplorer extends UIContainer {
   public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }  
 
   public Session getSession() throws Exception { 
+    if(isReferenceNode_) return getSessionProvider().getSession(referenceWorkspace_, getRepository()) ;
     return getSessionProvider().getSession(currentWorkspaceName_, getRepository()) ; 
   }
 
@@ -312,7 +321,7 @@ public class UIJCRExplorer extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
       }
     }    
-    isHidePopup_ = false ;    
+    isHidePopup_ = false ;
   }
   
   public boolean isShowViewFile() throws Exception {

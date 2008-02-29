@@ -453,13 +453,19 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
             }
           } else {
             uiExplorer.setSelectNode(uri, session);
+            if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {
+              uiExplorer.setIsReferenceNode(true) ;
+              uiExplorer.setReferenceWorkspace(workspaceName) ;
+            } else {
+              uiExplorer.setIsReferenceNode(false) ;
+            }
             uiExplorer.updateAjax(event) ;
           }
         } catch(ItemNotFoundException nu) {
           uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
-        } catch(Exception e) {          
+        } catch(Exception e) {    
           JCRExceptionManager.process(uiApp, e);
         }
       } else {
