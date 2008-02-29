@@ -395,6 +395,10 @@
 	width: auto;	
 }
 
+.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIHorizontalTabs {
+  _width: 99.2%;
+}
+
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: solid 1px #939393;
   border-top: none;

@@ -224,6 +224,7 @@
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer {
 	border: solid 1px #939393;
 	border-top: none;
+	_margin-left: 3px;
 }
 
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
