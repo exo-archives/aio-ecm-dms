@@ -46,6 +46,8 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
+import com.amazon.s3.Owner;
+
 /**
  * Created by The eXo Platform SARL
  * Author : nqhungvn
@@ -157,16 +159,20 @@ public class UIPermissionInfo extends UIContainer {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        return ;        
       }
-      if(name.equals(uicomp.getExoOwner(node))) {
+      String nodeOwner = Utils.getNodeOwner(node);
+      if(name.equals(nodeOwner)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(Utils.hasChangePermissionRight(node)) {
-        if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+        if(node.canAddMixin("exo:privilegeable"))  {
+          node.addMixin("exo:privilegeable");
+          node.setPermission(nodeOwner,PermissionType.ALL);
+        }
         try {
           node.removePermission(name) ;        
           node.save() ;

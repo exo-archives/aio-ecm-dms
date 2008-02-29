@@ -179,7 +179,10 @@ public class UIPermissionForm extends UIForm implements UISelector {
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       ExtendedNode node = (ExtendedNode) uiJCRExplorer.getCurrentNode();
       if (Utils.hasChangePermissionRight(node)) {
-        if (node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+        if (node.canAddMixin("exo:privilegeable")){
+          node.addMixin("exo:privilegeable");
+          node.setPermission(Utils.getNodeOwner(node),PermissionType.ALL);
+        }
         for (String perm : permsRemoveList) {
           try {
             node.removePermission(userOrGroup, perm);
