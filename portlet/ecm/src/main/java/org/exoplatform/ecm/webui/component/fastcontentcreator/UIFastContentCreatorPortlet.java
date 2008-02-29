@@ -91,7 +91,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         uiDialogForm.setTemplateNode(prefType) ;
         uiDialogForm.setWorkspace(preferences.getValue("workspace", "")) ;
         uiDialogForm.setStoredPath(preferences.getValue("path", "")) ;
-        uiDialogForm.setRepository(repo) ;
+        uiDialogForm.setRepositoryName(repo) ;
         addChild(uiDialogForm) ; 
       }
     } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {

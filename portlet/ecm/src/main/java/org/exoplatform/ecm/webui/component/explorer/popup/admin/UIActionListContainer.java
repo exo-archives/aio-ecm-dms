@@ -46,7 +46,8 @@ public class UIActionListContainer extends UIContainer {
     UIActionForm uiActionForm = createUIComponent(UIActionForm.class, null, "EditFormAction") ;
     uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false) ;
     uiActionForm.setIsUpdateSelect(false) ;
-    uiActionForm.setNode(actionNode) ;
+//    uiActionForm.setNode(actionNode) ;
+    uiActionForm.setNodePath(actionNode.getPath()) ;
     uiActionForm.setIsEditInList(true) ;
     uiPopup.setWindowSize(650, 450);
     uiPopup.setUIComponent(uiActionForm) ;

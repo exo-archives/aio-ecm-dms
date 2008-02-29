@@ -102,12 +102,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   }
   
   public String getTemplate() {
-    repository_ = getRepository() ;
+    repositoryName_ = getRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       resetScriptInterceptor() ;
-      return templateService.getTemplatePathByUser(true, documentType_, userName, repository_) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName_) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;

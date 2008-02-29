@@ -359,7 +359,8 @@ public class UIActionBar extends UIForm {
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false) ;
         uiActionForm.createNewAction(selectedNode, selectedNode.getPrimaryNodeType().getName(), false) ;
         uiActionForm.setIsUpdateSelect(false) ;
-        uiActionForm.setNode(selectedNode) ;
+//        uiActionForm.setNode(selectedNode) ;
+        uiActionForm.setNodePath(selectedNode.getPath()) ;
         uiActionForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
         uiActionForm.setStoredPath(selectedNode.getPath()) ;
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
@@ -379,7 +380,8 @@ public class UIActionBar extends UIForm {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          uiDocumentForm.setNode(selectedNode) ;
+//          uiDocumentForm.setNode(selectedNode) ;
+          uiDocumentForm.setNodePath(selectedNode.getPath()) ;
           uiDocumentForm.addNew(false) ;
           uiDocumentForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
           uiDocumentForm.setStoredPath(selectedNode.getPath()) ;

@@ -44,7 +44,8 @@ public class UIAddLanguageContainer extends UIContainer {
     Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     UILanguageDialogForm uiDialogForm = createUIComponent(UILanguageDialogForm.class, null, null) ;
     uiDialogForm.setTemplateNode(nodeTypeName) ;
-    uiDialogForm.setNode(currentNode) ;
+//    uiDialogForm.setNode(currentNode) ;
+    uiDialogForm.setNodePath(currentNode.getPath()) ;
     uiDialogForm.setWorkspace(getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace()) ;
     uiDialogForm.setStoredPath(currentNode.getPath()) ;
     addChild(uiDialogForm) ;

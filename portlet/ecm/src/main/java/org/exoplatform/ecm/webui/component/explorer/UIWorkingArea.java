@@ -314,7 +314,9 @@ public class UIWorkingArea extends UIContainer {
         UIActionForm uiActionForm = uiContainer.getChild(UIActionForm.class) ;
         uiActionForm.createNewAction(uiExplorer.getCurrentNode(), 
             selectedNode.getPrimaryNodeType().getName(), false) ;
-        uiActionForm.setNode(selectedNode) ;
+//        uiActionForm.setNode(selectedNode) ;
+        uiActionForm.setWorkspace(wsName) ;
+        uiActionForm.setNodePath(nodePath) ;
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
         uiPopupAction.activate(uiContainer, 600, 550) ;
       } else {
@@ -326,7 +328,9 @@ public class UIWorkingArea extends UIContainer {
           UIDocumentForm uiDocumentForm = 
             uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
-          uiDocumentForm.setNode(selectedNode) ;
+//          uiDocumentForm.setNode(selectedNode) ;
+          uiDocumentForm.setWorkspace(wsName) ;
+          uiDocumentForm.setNodePath(nodePath) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
           uiPopupAction.activate(uiDocumentForm, 600, 550) ;
         } else {          
