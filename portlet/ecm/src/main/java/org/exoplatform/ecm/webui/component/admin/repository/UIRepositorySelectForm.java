@@ -20,11 +20,13 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -75,7 +77,9 @@ public class UIRepositorySelectForm extends UIForm {
       UIRepositorySelectForm uiForm = event.getSource() ;
       RepositoryService rservice = uiForm.getApplicationComponent(RepositoryService.class) ;
       UIRepositoryControl uiControl = uiForm.getAncestorOfType(UIRepositoryControl.class) ;
-      PortletPreferences portletPref = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPortletPreferences() ;
+      PortletRequestContext requestContext = (PortletRequestContext)event.getRequestContext() ;
+      PortletRequest portletRequest = requestContext.getRequest() ;
+      PortletPreferences portletPref = portletRequest.getPreferences() ;
       String oldRepository = portletPref.getValue(Utils.REPOSITORY, "") ; 
       String selectRepo = uiForm.getSelectedValue() ;
       portletPref.setValue(Utils.REPOSITORY, selectRepo) ;
