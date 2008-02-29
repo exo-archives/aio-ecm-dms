@@ -741,19 +741,26 @@ UIBrowseContentPortlet .Explorer {
 	padding: 10px;
 	color: #0e396c;
 }
+
+.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
+	height: 100%;
+	border: 1px solid %b7b7b7;
+}
 	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;
 	background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x top;
+	height: 100%;
 }
 	
 .UIBrowseContentPortlet .FileContent .TopTitle {	
+	background:transparent url(/ecm/skin/images/file/TitleBG1x21.gif) repeat-x ;
 	padding-left: 10px;
 	height: 22px; line-height: 22px;
 	color: #058ee6; font-weight: bold; 
 }
-	
+
 .UIBrowseContentPortlet .FileContent .ECMIframe {
 	border: 1px solid #cbcbcb; 
 	height: auto ;

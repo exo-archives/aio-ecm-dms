@@ -232,10 +232,10 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
-  width: 16px;
-  height: 16px;
-  float: left;
+  line-height: 16px;
   margin: 0px 3px 0px 0px;
+  padding-left: 20px;
+  width: auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
@@ -315,7 +315,7 @@
 }
 
 .UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
-  width: 160px;
+  white-space: nowrap;
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/

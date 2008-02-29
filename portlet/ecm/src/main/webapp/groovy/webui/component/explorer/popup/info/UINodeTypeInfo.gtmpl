@@ -14,16 +14,14 @@
   Collection collect = uicomponent.getNodeTypes();
   public void repairName(boolean bln) {
     println """
-      <div class="Icon16x16 ${bln}16x16Icon"></div>
-      <span>$bln</span>
+      <div class="Icon16x16 ${bln}16x16Icon" >$bln</div>
     """;
   }
 
   public void repairName(String name) {
     String str = name.replace(":", "_");
     println """
-	    <div class="Icon16x16 default16x16Icon ${str}16x16Icon"></div>
-	    <span>$name</span>
+	    <div class="Icon16x16 default16x16Icon ${str}16x16Icon">$name</div>
     """;
   }
  %>
