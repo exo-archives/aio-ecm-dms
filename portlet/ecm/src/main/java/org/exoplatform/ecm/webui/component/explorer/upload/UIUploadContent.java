@@ -109,7 +109,7 @@ public class UIUploadContent extends UIContainer {
       uiAddMetadataForm.setIsNotEditNode(true) ;
       uiAddMetadataForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
       uiAddMetadataForm.setStoredPath(uiExplorer.getCurrentNode().getPath()) ;
-      uiAddMetadataForm.setPropertyNode(uiUploadContainer.getEditNode(nodeType)) ;
+      uiAddMetadataForm.setChildPath(uiUploadContainer.getEditNode(nodeType).getPath()) ;
       uiUploadContainer.addChild(uiAddMetadataForm) ;
       uiUploadContainer.setRenderedChild(UIAddMetadataForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadContainer) ;

@@ -100,6 +100,7 @@ public class UILanguageTypeForm extends UIForm {
         uiDialogForm.getChildren().clear() ;
         uiDialogForm.setTemplateNode(uiContainer.nodeTypeName_) ;
         Node node = uiExplorer.getCurrentNode() ;
+        String currentPath = uiExplorer.getCurrentPath() ;
         if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(true) ;
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setEnable(false) ;
@@ -116,32 +117,40 @@ public class UILanguageTypeForm extends UIForm {
             uiDialogForm.setIsNTFile(false) ;
           }
           if(languagesNode.hasNode(selectedLanguage)) {
-            uiDialogForm.setNode(languagesNode.getNode(selectedLanguage)) ;
+//            uiDialogForm.setNode(languagesNode.getNode(selectedLanguage)) ;
+            uiDialogForm.setNodePath(languagesNode.getNode(selectedLanguage).getPath()) ;
           } else if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
-            uiDialogForm.setNode(node) ;
+//            uiDialogForm.setNode(node) ;
+            uiDialogForm.setNodePath(currentPath) ;
           } else {
-            uiDialogForm.setNode(node) ;
+//            uiDialogForm.setNode(node) ;
+            uiDialogForm.setNodePath(currentPath) ;
             uiDialogForm.setIsNotEditNode(true) ;
             uiDialogForm.setIsResetMultiField(true) ;
           }
         } else if(!node.hasNode(Utils.LANGUAGES) && selectedLanguage.equals(multiLanguageService.getDefault(node))) {
           uiDialogForm.setIsNotEditNode(false) ;
-          uiDialogForm.setNode(node) ;
+//          uiDialogForm.setNode(node) ;
+          uiDialogForm.setNodePath(currentPath) ;
         } else {
-          uiDialogForm.setNode(node) ;
+//          uiDialogForm.setNode(node) ;
+          uiDialogForm.setNodePath(currentPath) ;
           uiDialogForm.setIsNotEditNode(true) ;
           uiDialogForm.setIsResetMultiField(true) ;
         }
         uiDialogForm.setSelectedLanguage(selectedLanguage) ;
         if(selectedLanguage.equals(node.getProperty(Utils.EXO_LANGUAGE).getString())) {                  
-          uiDialogForm.setPropertyNode(node) ;
+//          uiDialogForm.setPropertyNode(node) ;
+          uiDialogForm.setChildPath(currentPath) ;
         } else {
           if(node.hasNode(Utils.LANGUAGES + Utils.SLASH + selectedLanguage)){
             uiDialogForm.getChildren().clear() ;
             Node languageNode = multiLanguageService.getLanguage(node, selectedLanguage) ;
-            uiDialogForm.setPropertyNode(languageNode) ;
+//            uiDialogForm.setPropertyNode(languageNode) ;
+            uiDialogForm.setChildPath(languageNode.getPath()) ;
           } else {
-            uiDialogForm.setPropertyNode(null) ;
+//            uiDialogForm.setPropertyNode(null) ;
+            uiDialogForm.setChildPath(null) ;
           }
         }
       } else {

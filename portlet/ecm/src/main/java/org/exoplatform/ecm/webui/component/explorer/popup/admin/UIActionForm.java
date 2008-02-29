@@ -67,7 +67,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
 )
 public class UIActionForm extends DialogFormFields implements UISelector {
   
-  private Node parentNode_;
+  private String parentPath_ ;
   private String nodeTypeName_ = null ;
   private boolean isAddNew_ ;
   private String scriptPath_ = null ;
@@ -77,13 +77,15 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
     reset() ;
-    parentNode_ = parentNode;
+    parentPath_ = parentNode.getPath() ;
     nodeTypeName_ = actionType;
     isAddNew_ = isAddNew ;
     components.clear() ;
     properties.clear() ;
     getChildren().clear() ;
   }
+  
+  private Node getParentNode() throws Exception{ return (Node) getSesssion().getItem(parentPath_) ; }
   
   public void updateSelect(String selectField, String value) {
     isUpdateSelect_ = true ;
@@ -106,13 +108,13 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public String getTemplate() { return getDialogPath() ; }
 
   public String getDialogPath() {
-    repository_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    repositoryName_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String dialogPath = null ;
     if (nodeTypeName_ != null) {
       try {
-        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repository_);
+        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repositoryName_);
       } catch (Exception e){
         e.printStackTrace() ;
       }      
@@ -192,25 +194,25 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue());
       }
       String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
-      if(parentNode_.hasNode(actionName)) { 
+      if(getParentNode().hasNode(actionName)) { 
         Object[] args = {actionName} ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
-      if(parentNode_.isNew()) {
-        String[] args = {parentNode_.getPath()} ;
+      if(getParentNode().isNew()) {
+        String[] args = {getParentNode().getPath()} ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
-      actionServiceContainer.addAction(parentNode_, repository, nodeTypeName_, sortedInputs);
+      actionServiceContainer.addAction(getParentNode(), repository, nodeTypeName_, sortedInputs);
       setIsOnchange(false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
       createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;
       UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
-      uiActionList.updateGrid(parentNode_) ;
+      uiActionList.updateGrid(getParentNode()) ;
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
       isEditInList_ = false ;

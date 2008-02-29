@@ -16,8 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import javax.jcr.Node;
-
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -41,12 +39,14 @@ public class UIAddLanguageContainer extends UIContainer {
   
   public void setComponentDisplay(String nodeTypeName) throws Exception {
     nodeTypeName_ = nodeTypeName ;
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+//    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    String currentPath = getAncestorOfType(UIJCRExplorer.class).getCurrentPath() ;
     UILanguageDialogForm uiDialogForm = createUIComponent(UILanguageDialogForm.class, null, null) ;
     uiDialogForm.setTemplateNode(nodeTypeName) ;
-    uiDialogForm.setNode(currentNode) ;
+//    uiDialogForm.setNode(currentNode) ;
+    uiDialogForm.setNodePath(currentPath) ;
     uiDialogForm.setWorkspace(getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace()) ;
-    uiDialogForm.setStoredPath(currentNode.getPath()) ;
+    uiDialogForm.setStoredPath(currentPath) ;
     addChild(uiDialogForm) ;
   }
 }
