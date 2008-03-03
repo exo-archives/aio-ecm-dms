@@ -75,8 +75,6 @@ public class DialogFormFields extends UIForm {
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
   public Map<String, String> fieldNames_ = new HashMap<String, String>() ;
-//  protected Node node_ = null;
-//  private Node propertyNode_ = null ;
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
   private boolean isResetMultiField_ = false ;
@@ -117,10 +115,6 @@ public class DialogFormFields extends UIForm {
 
   public DialogFormFields() throws Exception {}
 
-//  public void setNode(Node node) throws Exception { node_ = node ; }
-//  public Node getNode() { return node_ ; }
-  
-  
   public Node getNode() throws Exception { 
     if(nodePath_ == null) return null ;
     return (Node) getSesssion().getItem(nodePath_) ; 
@@ -135,8 +129,6 @@ public class DialogFormFields extends UIForm {
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
     return repositoryService.getRepository(repositoryName_);
   }
-  
-//  public void setPropertyNode(Node node) throws Exception { getChildNode() = node ; }
   
   public void setChildPath(String childPath) { childPath_ = childPath ; }
   public Node getChildNode() throws Exception { 
