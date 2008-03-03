@@ -90,7 +90,7 @@ public class UINamespaceForm extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UINamespaceForm.msg.register-unsuccessfull", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        //e.printStackTrace() ;
+        return ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
