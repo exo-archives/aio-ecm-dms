@@ -474,8 +474,7 @@ public class UINodeTypeForm extends UIFormTabPane {
   public void setTabRender(String tabName) {
     for(UIComponent uiComp : getChildren()) {
       UIFormInputSetWithAction tab = getChildById(uiComp.getId()) ;
-      if(tab.getId().equals(tabName)) setSelectedTab(tab.getId()) ;//tab.setRendered(true) ;
-      //else tab.setRendered(false) ;
+      if(tab.getId().equals(tabName)) setSelectedTab(tab.getId()) ;
     }
   }
 
@@ -509,6 +508,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       String propertyName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIPropertyDefinitionForm uiPropertyForm = uiForm.getChild(UIPropertyDefinitionForm.class) ;
       uiPropertyForm.update(uiForm.nodeType_, propertyName) ;
+      uiPropertyForm.setRendered(true) ;
       uiForm.setTabRender(PROPERTY_DEFINITION) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
@@ -520,6 +520,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       String childNodeName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIChildNodeDefinitionForm uiChildNodeForm = uiForm.getChild(UIChildNodeDefinitionForm.class) ;
       uiChildNodeForm.update(uiForm.nodeType_, childNodeName) ;
+      uiChildNodeForm.setRendered(true) ;
       uiForm.setTabRender(CHILDNODE_DEFINITION) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
