@@ -1286,9 +1286,10 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.setShowDocumentDetail(false) ;
       uiContainer.setShowDocumentByTag(false) ;
       uiContainer.setShowAllChildren(false) ;
-      uiContainer.setSelectedTabPath(null) ;
+      uiContainer.setSelectedTabPath(path) ;
       uiContainer.setCurrentNodePath(path) ;
       cateTree.buildTree(node.getPath()) ;
+      uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getCurrentNode())) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }
