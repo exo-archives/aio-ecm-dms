@@ -44,6 +44,7 @@ public class UIActionListContainer extends UIContainer {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node currentNode = uiExplorer.getCurrentNode() ;    
     UIActionForm uiActionForm = createUIComponent(UIActionForm.class, null, "EditFormAction") ;
+    uiActionForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
     uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false) ;
     uiActionForm.setIsUpdateSelect(false) ;
 //    uiActionForm.setNode(actionNode) ;
