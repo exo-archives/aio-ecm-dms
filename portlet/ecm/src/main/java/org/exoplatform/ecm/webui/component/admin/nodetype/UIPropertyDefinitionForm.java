@@ -52,7 +52,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
 
-  final static public String NAMESPACE = "namespace" ;
+  final static public String NAMESPACE = "propertyNamespace" ;
   final static public String DEFINITION_NAME = "propertyname" ;
   final static public String REQUIRED_TYPE = "requiredType" ;
   final static public String MULTIPLE = "multiple" ;
@@ -72,20 +72,32 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
   public UIPropertyDefinitionForm(String name) throws Exception {
     super(name) ;
     setComponentConfig(getClass(), null) ;
-    List<SelectItemOption<String>> booleanItem = new ArrayList<SelectItemOption<String>>() ;
-    booleanItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
-    booleanItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    List<SelectItemOption<String>> autoListItem = new ArrayList<SelectItemOption<String>>() ;
+    autoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    autoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> mandoListItem = new ArrayList<SelectItemOption<String>>() ;
+    mandoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    mandoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> multiListItem = new ArrayList<SelectItemOption<String>>() ;
+    multiListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    multiListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> protectedItem = new ArrayList<SelectItemOption<String>>() ;
+    protectedItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    protectedItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;    
 
     addUIFormInput(new UIFormSelectBox(NAMESPACE, NAMESPACE, getNamespaces())) ;
     addUIFormInput(new UIFormStringInput(DEFINITION_NAME, DEFINITION_NAME, null)) ;
     UIFormSelectBox uiRequired = new UIFormSelectBox(REQUIRED_TYPE, REQUIRED_TYPE, getRequiredTypes()) ;
     uiRequired.setOnChange("ChangeRequiredType") ;
     addUIFormInput(uiRequired) ;
-    addUIFormInput(new UIFormSelectBox(AUTOCREATED, AUTOCREATED, booleanItem)) ;
-    addUIFormInput(new UIFormSelectBox(MANDATORY, MANDATORY, booleanItem)) ;
+    addUIFormInput(new UIFormSelectBox(AUTOCREATED, AUTOCREATED, autoListItem)) ;
+    addUIFormInput(new UIFormSelectBox(MANDATORY, MANDATORY, mandoListItem)) ;
     addUIFormInput(new UIFormSelectBox(PARENTVERSION, PARENTVERSION, getParentVersions())) ;
-    addUIFormInput(new UIFormSelectBox(PROTECTED, PROTECTED, booleanItem)) ;
-    addUIFormInput(new UIFormSelectBox(MULTIPLE, MULTIPLE, booleanItem)) ;
+    addUIFormInput(new UIFormSelectBox(PROTECTED, PROTECTED, protectedItem)) ;
+    addUIFormInput(new UIFormSelectBox(MULTIPLE, MULTIPLE, multiListItem)) ;
     addUIFormInput(new UIFormStringInput(VALUE_CONSTRAINTS, VALUE_CONSTRAINTS, null)) ;
   }
   
@@ -133,17 +145,30 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
   }
   
   public void refresh() throws Exception {
-    List<SelectItemOption<String>> booleanItem = new ArrayList<SelectItemOption<String>>() ;
-    booleanItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
-    booleanItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    List<SelectItemOption<String>> autoListItem = new ArrayList<SelectItemOption<String>>() ;
+    autoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    autoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> mandoListItem = new ArrayList<SelectItemOption<String>>() ;
+    mandoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    mandoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> multiListItem = new ArrayList<SelectItemOption<String>>() ;
+    multiListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    multiListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> protectedItem = new ArrayList<SelectItemOption<String>>() ;
+    protectedItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    protectedItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;    
+    
     getUIFormSelectBox(NAMESPACE).setOptions(getNamespaces()).setDisabled(false) ;
     getUIStringInput(DEFINITION_NAME).setEditable(true).setValue(null) ;
     getUIFormSelectBox(REQUIRED_TYPE).setOptions(getRequiredTypes()).setDisabled(false) ;
-    getUIFormSelectBox(AUTOCREATED).setOptions(booleanItem).setDisabled(false) ;
-    getUIFormSelectBox(MANDATORY).setOptions(booleanItem).setDisabled(false) ;
+    getUIFormSelectBox(AUTOCREATED).setOptions(autoListItem).setDisabled(false) ;
+    getUIFormSelectBox(MANDATORY).setOptions(mandoListItem).setDisabled(false) ;
     getUIFormSelectBox(PARENTVERSION).setOptions(getParentVersions()).setDisabled(false) ;
-    getUIFormSelectBox(PROTECTED).setOptions(booleanItem).setDisabled(false) ;
-    getUIFormSelectBox(MULTIPLE).setOptions(booleanItem).setDisabled(false) ;
+    getUIFormSelectBox(PROTECTED).setOptions(protectedItem).setDisabled(false) ;
+    getUIFormSelectBox(MULTIPLE).setOptions(multiListItem).setDisabled(false) ;
     getUIStringInput(VALUE_CONSTRAINTS).setEditable(true).setValue(null) ;
     UINodeTypeForm uiForm = getParent() ;
     UIFormInputSetWithAction uiPropertyTab = uiForm.getChildById(UINodeTypeForm.PROPERTY_DEFINITION) ; 

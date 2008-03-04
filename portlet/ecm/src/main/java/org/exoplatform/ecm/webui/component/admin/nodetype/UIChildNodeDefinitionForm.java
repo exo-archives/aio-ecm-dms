@@ -66,18 +66,30 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
   public UIChildNodeDefinitionForm(String name) throws Exception {
     super(name) ;
     setComponentConfig(getClass(), null) ;
-    List<SelectItemOption<String>> booleanItem = new ArrayList<SelectItemOption<String>>() ;
-    booleanItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
-    booleanItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    List<SelectItemOption<String>> autoListItem = new ArrayList<SelectItemOption<String>>() ;
+    autoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    autoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> mandoListItem = new ArrayList<SelectItemOption<String>>() ;
+    mandoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    mandoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> sameNameListItem = new ArrayList<SelectItemOption<String>>() ;
+    sameNameListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    sameNameListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> protectedItem = new ArrayList<SelectItemOption<String>>() ;
+    protectedItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    protectedItem.add(new SelectItemOption<String>(TRUE, TRUE)) ; 
 
     addUIFormInput(new UIFormSelectBox(NAMESPACE, NAMESPACE, getNamespaces())) ;
     addUIFormInput(new UIFormStringInput(CHILD_NAME, CHILD_NAME, null)) ;
     addUIFormInput(new UIFormStringInput(DEFAULT_PRIMARY_TYPE, DEFAULT_PRIMARY_TYPE, null)) ;
-    addUIFormInput(new UIFormSelectBox(AUTOCREATED, AUTOCREATED, booleanItem)) ;
-    addUIFormInput(new UIFormSelectBox(MANDATORY, MANDATORY, booleanItem)) ;
+    addUIFormInput(new UIFormSelectBox(AUTOCREATED, AUTOCREATED, autoListItem)) ;
+    addUIFormInput(new UIFormSelectBox(MANDATORY, MANDATORY, mandoListItem)) ;
     addUIFormInput(new UIFormSelectBox(PARENTVERSION, PARENTVERSION, getParentVersions())) ;
-    addUIFormInput(new UIFormSelectBox(PROTECTED, PROTECTED, booleanItem)) ; 
-    addUIFormInput(new UIFormSelectBox(SAME_NAME, SAME_NAME, booleanItem)) ;
+    addUIFormInput(new UIFormSelectBox(PROTECTED, PROTECTED, protectedItem)) ; 
+    addUIFormInput(new UIFormSelectBox(SAME_NAME, SAME_NAME, sameNameListItem)) ;
     addUIFormInput(new UIFormStringInput(REQUIRED_PRIMARY_TYPE, REQUIRED_PRIMARY_TYPE, null)) ;
   }
   
@@ -110,17 +122,30 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
   }
   
   public void refresh() throws Exception {
-    List<SelectItemOption<String>> booleanItem = new ArrayList<SelectItemOption<String>>() ;
-    booleanItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
-    booleanItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    List<SelectItemOption<String>> autoListItem = new ArrayList<SelectItemOption<String>>() ;
+    autoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    autoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> mandoListItem = new ArrayList<SelectItemOption<String>>() ;
+    mandoListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    mandoListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> sameNameListItem = new ArrayList<SelectItemOption<String>>() ;
+    sameNameListItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    sameNameListItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
+    List<SelectItemOption<String>> protectedItem = new ArrayList<SelectItemOption<String>>() ;
+    protectedItem.add(new SelectItemOption<String>(FALSE, FALSE)) ;
+    protectedItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;
+    
     getUIFormSelectBox(NAMESPACE).setOptions(getNamespaces()).setDisabled(false) ;
     getUIStringInput(CHILD_NAME).setEditable(true).setValue(null) ;
     getUIStringInput(DEFAULT_PRIMARY_TYPE).setEditable(true).setValue(null) ;
-    getUIFormSelectBox(AUTOCREATED).setOptions(booleanItem).setDisabled(false) ;
-    getUIFormSelectBox(MANDATORY).setOptions(booleanItem).setDisabled(false) ;
+    getUIFormSelectBox(AUTOCREATED).setOptions(autoListItem).setDisabled(false) ;
+    getUIFormSelectBox(MANDATORY).setOptions(mandoListItem).setDisabled(false) ;
     getUIFormSelectBox(PARENTVERSION).setOptions(getParentVersions()).setDisabled(false) ;
-    getUIFormSelectBox(PROTECTED).setOptions(booleanItem).setDisabled(false) ;
-    getUIFormSelectBox(SAME_NAME).setOptions(booleanItem).setDisabled(false) ;
+    getUIFormSelectBox(PROTECTED).setOptions(protectedItem).setDisabled(false) ;
+    getUIFormSelectBox(SAME_NAME).setOptions(sameNameListItem).setDisabled(false) ;
     getUIStringInput(REQUIRED_PRIMARY_TYPE).setEditable(true).setValue(null) ;
     UINodeTypeForm uiForm = getParent() ;
     UIFormInputSetWithAction uiChildTab = uiForm.getChildById(UINodeTypeForm.CHILDNODE_DEFINITION) ; 
