@@ -50,7 +50,6 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UITreeExplorer.CollapseActionListener.class)
     }    
 )
-  //TODO Maybe can reuse UITree from portal
 
 public class UITreeExplorer extends UIContainer {
   private TreeNode treeRoot_ ;
@@ -193,7 +192,7 @@ public class UITreeExplorer extends UIContainer {
       } catch(AccessDeniedException ace) {
         selectedNode = uiExplorer.getSession().getRootNode() ;
       }
-      uiExplorer.setSelectNode(selectedNode) ; 
+      uiExplorer.setSelectNode(selectedNode.getPath(), uiExplorer.getSession()) ; 
       uiExplorer.updateAjax(event) ;      
     }
   }
