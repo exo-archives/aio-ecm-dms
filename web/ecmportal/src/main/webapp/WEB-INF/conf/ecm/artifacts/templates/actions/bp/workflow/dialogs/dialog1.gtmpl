@@ -34,7 +34,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.description")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldDescription = ["jcrPath=/node/exo:description"] ; 
+		        String[] fieldDescription = ["jcrPath=/node/exo:description", "validate=empty"] ; 
 		        uicomponent.addTextAreaField("description", fieldDescription) 
 		      %>
 		    </td>
