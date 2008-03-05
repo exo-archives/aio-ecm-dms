@@ -274,8 +274,9 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME) ;
+      if(wsName == null) wsName = uiExplorer.getCurrentWorkspace() ;
       Session session = uiExplorer.getSessionByWorkspace(wsName) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Node selectedNode = null;
