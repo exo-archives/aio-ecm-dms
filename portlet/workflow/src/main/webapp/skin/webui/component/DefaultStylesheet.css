@@ -316,3 +316,8 @@
 .UIWorkflowPopup .UITabPane .UIFormWithTitle {
 	width: auto;
 }
+
+.UIWorkflowPopup .UITabPane .UIFormWithTitle .TitleBar:first-letter {
+  text-transform: uppercase;
+}
+
