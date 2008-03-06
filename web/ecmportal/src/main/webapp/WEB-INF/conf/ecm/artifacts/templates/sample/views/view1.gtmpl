@@ -1,5 +1,6 @@
 <%
 	import java.text.SimpleDateFormat ;
+	import org.exoplatform.web.application.Parameter ;
 	def node = uicomponent.getNode() ;
 	def originalNode = uicomponent.getOriginalNode()
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
@@ -153,7 +154,7 @@
 					<div style="width: 100%;" >
 						<%
 						  for(rel in relations) {
-						  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath()) ;
+						  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", rel.getSession().getWorkspace().getName())) ;
 						%>
 							<div style="font-size: 12px; padding: 10px;">
 								-	<a href="$actionLink2">
