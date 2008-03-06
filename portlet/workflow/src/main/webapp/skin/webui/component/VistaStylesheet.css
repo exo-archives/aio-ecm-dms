@@ -297,3 +297,7 @@
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
+
+.UIWorkflowPopup .UITabPane .UIFormWithTitle .TitleBar:first-letter {
+  text-transform: uppercase;
+}

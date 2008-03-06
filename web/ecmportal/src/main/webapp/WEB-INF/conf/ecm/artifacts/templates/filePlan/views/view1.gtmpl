@@ -27,6 +27,7 @@
 	.UIDivInfo .Title {
 		font-size: 13px; font-weight: bold;
 		padding-bottom: 3px;
+		height: 100%;
 	}	
 	
 	.UIDivInfo .FilePlanContentTable {

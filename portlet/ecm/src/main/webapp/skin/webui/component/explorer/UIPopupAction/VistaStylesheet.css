@@ -348,7 +348,7 @@
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
-  width: 500px;
+  width: 430px;
   vertical-align: baseline;
 }
 
@@ -368,7 +368,7 @@
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
-  width: 500px;
+  width: 520px;
   border: none;
   margin: auto;
 }

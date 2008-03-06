@@ -19,7 +19,7 @@
 	padding: 5px;
 }
 
-.UIWorkflowPortlet .WorkflowPortletContent {
+.UIWorkflowPortlet .WorkflowPortletContent{
 	padding: 10px;
 }
 
@@ -316,3 +316,8 @@
 .UIWorkflowPopup .UITabPane .UIFormWithTitle {
 	width: auto;
 }
+
+.UIWorkflowPopup .UITabPane .UIFormWithTitle .TitleBar:first-letter {
+  text-transform: uppercase;
+}
+

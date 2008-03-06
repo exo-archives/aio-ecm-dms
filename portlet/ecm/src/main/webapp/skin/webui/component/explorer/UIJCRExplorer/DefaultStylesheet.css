@@ -402,7 +402,7 @@
 .UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
   border: solid 1px #939393;
   border-top: none;
-  _width: 98.8%;
+  _width: 99%;
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UITabContentContainer .FileContent .NavigationContainer {

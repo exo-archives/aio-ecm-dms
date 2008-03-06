@@ -464,6 +464,11 @@
 	margin: 10px auto;
 }
 
+.UIJCRExplorerPortlet .UINodeTypeSelectForm .HorizontalLayout {
+  border: 1px solid #b7b7b7;
+  margin: 10px;
+}
+
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch {
@@ -478,6 +483,11 @@
 
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm td.FieldLabel {
   text-transform: capitalize;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm .HorizontalLayout {
+  border: 1px solid #b7b7b7;
+  margin: 10px;
 }
 
 /*================================UIConstraintsForm=================================*/
