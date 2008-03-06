@@ -944,7 +944,6 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
         return ;
       } catch (LoginException e){
-        e.printStackTrace();
         if(ClipboardCommand.CUT.equals(type)) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-login-node", null, 
               ApplicationMessage.WARNING)) ;
@@ -964,7 +963,6 @@ public class UIWorkingArea extends UIContainer {
         uiExplorer.updateAjax(event) ;
         return ;
       } catch(Exception e) {
-        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
