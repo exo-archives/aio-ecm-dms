@@ -286,6 +286,11 @@ public class UIWorkingArea extends UIContainer {
             null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", 
+            null,ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
@@ -296,7 +301,6 @@ public class UIWorkingArea extends UIContainer {
       }catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission",null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        uiExplorer.updateAjax(event) ;
         return ;
       }
       boolean isReferenced = false ;
@@ -314,7 +318,6 @@ public class UIWorkingArea extends UIContainer {
         UIActionForm uiActionForm = uiContainer.getChild(UIActionForm.class) ;
         uiActionForm.createNewAction(uiExplorer.getCurrentNode(), 
             selectedNode.getPrimaryNodeType().getName(), false) ;
-//        uiActionForm.setNode(selectedNode) ;
         uiActionForm.setWorkspace(wsName) ;
         uiActionForm.setNodePath(nodePath) ;
         UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
@@ -328,7 +331,6 @@ public class UIWorkingArea extends UIContainer {
           UIDocumentForm uiDocumentForm = 
             uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
-//          uiDocumentForm.setNode(selectedNode) ;
           uiDocumentForm.setWorkspace(wsName) ;
           uiDocumentForm.setNodePath(nodePath) ;
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;

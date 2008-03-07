@@ -465,8 +465,13 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
           uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;          
         } catch(Exception e) {    
           JCRExceptionManager.process(uiApp, e);
+          return ;
         }
       } else {
         try {
@@ -481,6 +486,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
           }
         } catch(Exception e) {
           JCRExceptionManager.process(uiApp, e);
+          return ;
         }
       }      
     }
