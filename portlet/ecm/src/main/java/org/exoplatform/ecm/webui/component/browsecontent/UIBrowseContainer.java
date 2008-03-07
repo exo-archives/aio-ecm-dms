@@ -1263,6 +1263,7 @@ public class UIBrowseContainer extends UIContainer {
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         } else {
           uiContainer.changeNode(selectNode) ;
+          uiContainer.setPageIterator(uiContainer.getSubDocumentList(selectNode)) ;
         }
       }
       uiContainer.setCurrentNodePath(objectId) ;

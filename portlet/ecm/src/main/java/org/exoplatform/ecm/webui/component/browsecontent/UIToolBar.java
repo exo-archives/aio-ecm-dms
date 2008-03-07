@@ -151,6 +151,7 @@ public class UIToolBar extends UIContainer {
             event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
           } else {
             uiContainer.changeNode(selectNode) ;
+            uiContainer.setPageIterator(uiContainer.getSubDocumentList(selectNode)) ;
           }
         }
         uiContainer.setCurrentNodePath(nodePath) ;
