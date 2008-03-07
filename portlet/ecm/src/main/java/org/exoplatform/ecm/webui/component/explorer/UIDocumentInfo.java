@@ -461,6 +461,10 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
             }
             uiExplorer.updateAjax(event) ;
           }
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
         } catch(ItemNotFoundException nu) {
           uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
