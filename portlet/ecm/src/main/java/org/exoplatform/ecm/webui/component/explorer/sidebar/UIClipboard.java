@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar;
 import java.util.LinkedList;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Workspace;
 
@@ -96,9 +97,14 @@ public class UIClipboard extends UIComponent {
         Object[] args = { srcPath, destPath };   
         app.addMessage(new ApplicationMessage("UIClipboard.msg.node-pasted", args)) ; 
         uiExplorer.updateAjax(event);
+      } catch(PathNotFoundException path) {
+        app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        return ;    
       } catch (Exception e) {
-        e.printStackTrace() ;
         app.addMessage(new ApplicationMessage("UIClipboard.msg.unable-pasted", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        return ;
       }
     }
   }
