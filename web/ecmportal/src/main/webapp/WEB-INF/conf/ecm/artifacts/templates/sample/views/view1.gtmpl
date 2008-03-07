@@ -178,7 +178,7 @@
 					<div style="width: 100%" >
 						<%
 						  for(att in attachments) {
-						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath()) ;
+						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
 						%>
 							<div style="font-size: 12px; padding: 10px;">
 							 -<a href="$actionLink3">
