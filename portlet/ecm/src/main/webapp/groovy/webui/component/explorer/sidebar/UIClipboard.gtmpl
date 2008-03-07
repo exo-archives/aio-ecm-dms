@@ -14,7 +14,7 @@
   String[] beanActions =  uicomponent.getBeanActions() ;
   String name = uicomponent.getName() ;
 %>
-<div class="UIClipboard">
+<div class="UIClipboard" id="$uicomponent.id">
 	<table class="UIGrid">
 	  <thead>
 	    <tr>
@@ -54,7 +54,7 @@
 			        <div class="ActionContainer" style="margin: 0px auto;">
 			          <div class="OverflowContainer" style="margin: auto;">          
 			          <%for(action in beanActions) { %>
-	                <a class="${action}Icon" href="<%=uicomponent.url(action, index.toString())%>" title = "$action"><span></span></a>	           
+	                <a class="${action}Icon" href="<%=uicomponent.event(action, index.toString())%>" title = "$action"><span></span></a>	           
 			          <%}%>        
 			          </div>
 			        </div>
@@ -65,7 +65,7 @@
 		  <tr class="EvenRow">
 	      <td class="text" colspan="3" align="center">
 	        <div class="ClearAllBlock">
-						<a  class="Icon ScissorsEraserWarning16x16Icon" href="<%=uicomponent.url('ClearAll', 'All')%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a  class="Icon ScissorsEraserWarning16x16Icon" href="<%=uicomponent.event('ClearAll', 'All')%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						  <%=_ctx.appRes(name+".action.clearall")%>
 						</a>
 					  <div style="clear: both"><span></span></div>
