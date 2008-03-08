@@ -7,22 +7,8 @@
 	<container template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
   	<container template="system:/groovy/portal/webui/container/UITabContainer.gtmpl">
     	<factory-id>TabContainer</factory-id>
-      	<container template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
-			    <application>
-			      <instance-id>/exoadmin/AccountPortlet</instance-id>
-			      <title>New Account</title>
-			      <show-info-bar>true</show-info-bar>
-			      <show-application-state>true</show-application-state>      
-			    </application>           	
-      	</container>
-      	<container template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
-			    <application>
-			      <instance-id>/web/BrowserPortlet</instance-id>
-			      <title>Web Explorer</title>
-			      <show-info-bar>true</show-info-bar>
-			      <show-application-state>true</show-application-state>
-			    </application>        	
-      	</container>
+      	<container template="system:/groovy/portal/webui/container/UIContainer.gtmpl"></container>
+      	<container template="system:/groovy/portal/webui/container/UIContainer.gtmpl"></container>
     </container>
   </container>  
 </page>
