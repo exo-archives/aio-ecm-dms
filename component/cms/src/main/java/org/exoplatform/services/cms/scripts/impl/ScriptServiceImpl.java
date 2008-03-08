@@ -97,8 +97,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
           obsManager.addEventListener(this, Event.PROPERTY_CHANGED, scriptsPath, true, null, null, true);
           session.save();
           session.logout();
-        }
-        return ;        
+        }        
       }
       String repository = plugin.getInitRepository() ;
       if(repository == null) {
