@@ -224,7 +224,6 @@
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer {
 	border: solid 1px #939393;
 	border-top: none;
-	_margin-left: 3px;
 }
 
 .WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
@@ -239,6 +238,10 @@
 
 .UIWorkflowPortlet .UITask .UIForm .HorizontalLayout label {
   width: 160px; 
+}
+
+.UIWorkflowPortlet .UITask .UIForm .UIFormGrid img {
+  width: 500px;
 }
 
 /*##############################- Begin UIProcessDetail -################################*/
