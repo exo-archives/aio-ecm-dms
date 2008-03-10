@@ -1,24 +1,18 @@
 <%
   public void writeAction(String label, String action, String param) {
+    if(param != null)
+				  println " <a href=\"" + uicomponent.event(action, param) + "\" class=\"ActionButton LightBlueStyle\">" ;
+				else
+		  		println " <a href=\"" + uicomponent.event(action) + "\" class=\"ActionButton LightBlueStyle\">" ;
     println """
-	    <div class="ActionButton">
-	      <div class="LightBlueStyle" >
 					<div class="ButtonLeft">
 					  <div class="ButtonRight">
 						  <div class="ButtonMiddle">
-	  """;
-		if(param != null)
-		  println " <a href=\"" + uicomponent.event(action, param) + "\">" ;
-		else
-  		println " <a href=\"" + uicomponent.event(action) + "\">" ;
-    println """
 							    $label
-							  </a>
 				      </div>
 				    </div>
 			    </div>
-				</div>
-			</div>
+				</a>
 		""" ;
   }
 %>
@@ -45,12 +39,16 @@
 			<%}%>
 		</table>
 	  <div class="UIAction"> 
-	    <div class="ActionContainer">
+	    <table align="center" class="ActionContainer">
+	    	<tr>
+	    		<td align="center">
 			  <%
 			  	writeAction("Finish it", "EndOfState", null) ;
 			    writeAction("Cancel", "Cancel", null) ;
 		    %>
-	    </div>
+	        </td>
+				</tr>
+			</table>
 	  </div>
   </div>
   <%uiform.end()%>

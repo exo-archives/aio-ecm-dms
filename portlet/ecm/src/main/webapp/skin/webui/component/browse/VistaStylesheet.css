@@ -79,7 +79,7 @@
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 100px;
+	width: 200px;
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
@@ -104,6 +104,7 @@
 
 .UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
 	padding: 0px;
+	width: 500px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
