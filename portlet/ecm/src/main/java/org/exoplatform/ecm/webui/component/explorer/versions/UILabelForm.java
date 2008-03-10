@@ -32,7 +32,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -58,7 +58,7 @@ public class UILabelForm extends UIForm {
   private static  String FIELD_LABEL = "label" ;
 
   public UILabelForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_LABEL , FIELD_LABEL , null).addValidator(EmptyFieldValidator.class));   
+    addUIFormInput(new UIFormStringInput(FIELD_LABEL , FIELD_LABEL , null).addValidator(MandatoryValidator.class));   
   }
 
   @SuppressWarnings("unused")

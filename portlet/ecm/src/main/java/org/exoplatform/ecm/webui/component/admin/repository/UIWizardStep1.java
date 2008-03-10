@@ -30,7 +30,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
@@ -59,7 +59,7 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
     setActionInfo(FIELD_PERMISSION, actionInfor) ;
     setFieldActions(FIELD_PERMISSION, new String[]{"AddPermission"}) ;
     showActionInfo(true) ;
-    addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(EmptyFieldValidator.class).
+    addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(MandatoryValidator.class).
         addValidator(NumberFormatValidator.class)) ; 
   }
   private List<SelectItemOption<String>>  getNodeType() {

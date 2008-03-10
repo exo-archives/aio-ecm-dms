@@ -50,7 +50,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NameValidator;
 
 /**
@@ -93,7 +93,7 @@ public class UITemplateForm extends UIForm {
     versions.setOnChange("Change") ;
     versions.setRendered(false) ;
     addUIFormInput(versions) ;
-    addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null).addValidator(EmptyFieldValidator.class)) ;
+    addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null).addValidator(MandatoryValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(NameValidator.class)) ;
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>() ;
     addUIFormInput(new UIFormSelectBox(FIELD_HOMETEMPLATE, FIELD_HOMETEMPLATE, typeList)) ;

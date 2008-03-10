@@ -30,7 +30,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -60,7 +60,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     setComponentConfig(getClass(), null) ;
 
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-                       addValidator(EmptyFieldValidator.class)) ;
+                       addValidator(MandatoryValidator.class)) ;
     addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;  
     UIFormStringInput homePathField = new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null) ;
     homePathField.setValue("/") ;
@@ -68,7 +68,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(homePathField) ;
     addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null).setEditable(false)) ;
     UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null) ;
-    permissonSelectField.addValidator(EmptyFieldValidator.class) ;
+    permissonSelectField.addValidator(MandatoryValidator.class) ;
     permissonSelectField.setEditable(false) ;
     addUIFormInput(permissonSelectField) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;

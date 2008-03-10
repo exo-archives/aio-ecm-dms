@@ -46,7 +46,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -90,7 +90,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
     addUIFormInput(uiSelectBox) ;
     UIFormTextAreaInput uiStatement = new UIFormTextAreaInput(STATEMENT, STATEMENT, null) ;
     uiStatement.setValue(XPATH_QUERY) ;
-    uiStatement.addValidator(EmptyFieldValidator.class) ;
+    uiStatement.addValidator(MandatoryValidator.class) ;
     addUIFormInput(uiStatement) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(CACHE_RESULT, CACHE_RESULT, null)) ;
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("PermissionButton") ;

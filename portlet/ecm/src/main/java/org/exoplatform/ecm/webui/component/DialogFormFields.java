@@ -58,7 +58,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
@@ -269,7 +269,7 @@ public class DialogFormFields extends UIForm {
         } else if (validateType.equals("number")) {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
-          uiInput.addValidator(EmptyFieldValidator.class) ;
+          uiInput.addValidator(MandatoryValidator.class) ;
         }        
       }
       if(label != null && label.length() != 0) {
@@ -396,7 +396,7 @@ public class DialogFormFields extends UIForm {
         } else if (validateType.equals("number")) {
           uiInput.addValidator(NumberFormatValidator.class) ;
         } else if (validateType.equals("empty")){
-          uiInput.addValidator(EmptyFieldValidator.class) ;
+          uiInput.addValidator(MandatoryValidator.class) ;
         } else if(validateType.equals("cronExpressionValidator")) {
           uiInput.addValidator(CronExpressionValidator.class) ;
         } else if(validateType.equals("repeatCountValidator")) {
@@ -492,7 +492,7 @@ public class DialogFormFields extends UIForm {
       uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
       if(validateType != null) {
         if (validateType.equals("empty")){
-          uiTextArea.addValidator(EmptyFieldValidator.class) ;
+          uiTextArea.addValidator(MandatoryValidator.class) ;
         }
       }     
       addUIFormInput(uiTextArea) ;
@@ -580,7 +580,7 @@ public class DialogFormFields extends UIForm {
       wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
       if(validateType != null) {
         if (validateType.equals("empty")){
-          wysiwyg.addValidator(EmptyFieldValidator.class) ;
+          wysiwyg.addValidator(MandatoryValidator.class) ;
         }
       }     
       addUIFormInput(wysiwyg) ;

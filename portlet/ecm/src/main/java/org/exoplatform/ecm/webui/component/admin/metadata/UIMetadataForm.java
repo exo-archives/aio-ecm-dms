@@ -32,7 +32,7 @@ import org.exoplatform.webui.form.UIFormInputSet;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -74,7 +74,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     UIFormInputSetWithAction uiMetadataType = new UIFormInputSetWithAction(METADATA_TAB) ;
     uiMetadataType.addUIFormInput(new UIFormStringInput(METADATA_NAME,METADATA_NAME, null)) ;
     uiMetadataType.addUIFormInput(new UIFormStringInput(VIEW_PERMISSION, VIEW_PERMISSION, null).
-                                  addValidator(EmptyFieldValidator.class).setEditable(false)) ;
+                                  addValidator(MandatoryValidator.class).setEditable(false)) ;
     uiMetadataType.setActionInfo(VIEW_PERMISSION, new String[] {"AddPermission"}) ;
     addUIComponentInput(uiMetadataType) ;
     setSelectedTab(uiMetadataType.getId()) ;

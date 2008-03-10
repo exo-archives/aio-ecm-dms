@@ -51,7 +51,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 
 /**
@@ -87,7 +87,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     UIFormInputSetWithAction templateTab = new UIFormInputSetWithAction(FIELD_TAB_TEMPLATE) ;
     templateTab.addUIFormInput(new UIFormSelectBox(FIELD_NAME, FIELD_NAME, getOption())) ;
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_LABEL, FIELD_LABEL, null).
-                               addValidator(EmptyFieldValidator.class)) ;
+                               addValidator(MandatoryValidator.class)) ;
     
     templateTab.addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ISTEMPLATE, FIELD_ISTEMPLATE, null));                               
     templateTab.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
@@ -96,11 +96,11 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     setSelectedTab(templateTab.getId()) ;
     UIFormInputSet defaultDialogTab = new UIFormInputSet(FIELD_TAB_DIALOG) ;
     defaultDialogTab.addUIFormInput(new UIFormTextAreaInput(FIELD_DIALOG, FIELD_DIALOG, null).
-                                    addValidator(EmptyFieldValidator.class)) ;
+                                    addValidator(MandatoryValidator.class)) ;
     addUIFormInput(defaultDialogTab) ;
     UIFormInputSet defaultViewTab = new UIFormInputSet(FIELD_TAB_VIEW) ;
     defaultViewTab.addUIFormInput(new UIFormTextAreaInput(FIELD_VIEW, FIELD_VIEW, null).
-                                  addValidator(EmptyFieldValidator.class)) ;
+                                  addValidator(MandatoryValidator.class)) ;
     addUIFormInput(defaultViewTab) ;
     setActions(new String[]{"Save", "Refresh", "Cancel"}) ;
   }

@@ -32,7 +32,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL 
@@ -57,7 +57,7 @@ public class UINamespaceForm extends UIForm {
     addUIFormInput(new UIFormStringInput(FIELD_PREFIX, FIELD_PREFIX, null).
         addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_URI, FIELD_URI, null).
-        addValidator(EmptyFieldValidator.class)) ;
+        addValidator(MandatoryValidator.class)) ;
   }
 
   static public class SaveActionListener extends EventListener<UINamespaceForm> {

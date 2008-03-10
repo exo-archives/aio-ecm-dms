@@ -45,7 +45,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL 
@@ -80,12 +80,12 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       new UIFormSelectBox(FIELD_SELECT_VERSION , FIELD_SELECT_VERSION, options) ;
     UIFormTextAreaInput contents = 
       new UIFormTextAreaInput(FIELD_SCRIPT_CONTENT , FIELD_SCRIPT_CONTENT, null) ;
-    contents.addValidator(EmptyFieldValidator.class) ;
+    contents.addValidator(MandatoryValidator.class) ;
     UIFormCheckBoxInput isVersion = 
       new UIFormCheckBoxInput<Boolean>(FIELD_ENABLE_VERSION , FIELD_ENABLE_VERSION, null) ;
     UIFormStringInput scriptName = 
       new UIFormStringInput(FIELD_SCRIPT_NAME, FIELD_SCRIPT_NAME, null) ;
-    scriptName.addValidator(EmptyFieldValidator.class) ;
+    scriptName.addValidator(MandatoryValidator.class) ;
     versions.setOnChange("Change") ;
     versions.setRendered(false) ;    
     isVersion.setRendered(false) ;
