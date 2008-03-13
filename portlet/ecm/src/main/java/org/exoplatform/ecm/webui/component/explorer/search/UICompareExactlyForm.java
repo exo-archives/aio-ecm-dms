@@ -38,7 +38,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -70,7 +70,7 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
     listValue_ = new ArrayList<String>() ;
     List<SelectItemOption<String>> opts = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormStringInput(FILTER, FILTER, null)) ;
-    addUIFormInput(new UIFormSelectBox(RESULT, RESULT, opts).setSize(15).addValidator(EmptyFieldValidator.class)) ;
+    addUIFormInput(new UIFormSelectBox(RESULT, RESULT, opts).setSize(15).addValidator(MandatoryValidator.class)) ;
     addUIFormInput(new UIFormSelectBox(TEMP_RESULT, TEMP_RESULT, opts)) ;
     
     NodeIterator iter = result.getNodes() ;

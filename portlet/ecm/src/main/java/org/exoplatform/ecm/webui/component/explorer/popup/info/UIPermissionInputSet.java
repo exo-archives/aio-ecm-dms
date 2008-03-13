@@ -21,7 +21,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -39,7 +39,7 @@ public class UIPermissionInputSet extends UIFormInputSetWithAction {
     super(name);
     setComponentConfig(getClass(), null) ;
     UIFormStringInput userGroup = new UIFormStringInput(FIELD_USERORGROUP, FIELD_USERORGROUP, null) ;
-    userGroup.addValidator(EmptyFieldValidator.class) ;   
+    userGroup.addValidator(MandatoryValidator.class) ;   
     userGroup.setEditable(false) ;
     addUIFormInput(userGroup) ;
     for (String perm : PermissionType.ALL) {

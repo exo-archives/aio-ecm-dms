@@ -42,7 +42,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL 
@@ -78,7 +78,7 @@ public class UIActionTypeForm extends UIForm {
     actionType.setOnChange("ChangeType") ;
     addUIFormInput(actionType) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-        addValidator(EmptyFieldValidator.class)) ;
+        addValidator(MandatoryValidator.class)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_ISMOVE, FIELD_ISMOVE, null)) ;
     UIFormSelectBox actionExecutables = new UIFormSelectBox(FIELD_EXECUTEACTION,FIELD_EXECUTEACTION, 
         new ArrayList<SelectItemOption<String>>());

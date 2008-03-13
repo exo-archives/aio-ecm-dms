@@ -31,7 +31,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -51,7 +51,7 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
   final static public String FIELD_PERMISSION = "permission" ;
 
   public UIWorkspacePermissionForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).addValidator(EmptyFieldValidator.class).setEditable(false)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).addValidator(MandatoryValidator.class).setEditable(false)) ;
     for (String perm : PermissionType.ALL) {
       addUIFormInput(new UIFormCheckBoxInput<String>(perm, perm, null)) ;
     }

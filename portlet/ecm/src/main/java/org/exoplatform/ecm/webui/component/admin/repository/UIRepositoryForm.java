@@ -57,7 +57,7 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.EmptyFieldValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -109,18 +109,18 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>() ; 
 
   public UIRepositoryForm() throws Exception { 
-    addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(EmptyFieldValidator.class)) ; 
+    addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(MandatoryValidator.class)) ; 
     UIFormInputSetWithAction workspaceField = new UIFormInputSetWithAction(FIELD_WSINPUTSET) ;
     workspaceField.addUIFormInput(new UIFormInputInfo(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;
     workspaceField.setActionInfo(FIELD_WORKSPACE, new String[]{"EditWorkspace", "RemoveWorkspace"}) ;
     addUIComponentInput(workspaceField) ;
     addChild(new UIFormCheckBoxInput<String>(FIELD_ISDEFAULT,FIELD_ISDEFAULT, null).setEditable(false)) ;
-    addChild(new UIFormStringInput(FIELD_ACCESSCONTROL,FIELD_ACCESSCONTROL, null).addValidator(EmptyFieldValidator.class)) ;  
+    addChild(new UIFormStringInput(FIELD_ACCESSCONTROL,FIELD_ACCESSCONTROL, null).addValidator(MandatoryValidator.class)) ;  
     UIFormInputSetWithAction autField = new UIFormInputSetWithAction(FIELD_AUTHINPUTSET) ;
-    autField.addChild(new UIFormStringInput(FIELD_AUTHENTICATION, FIELD_AUTHENTICATION, null).addValidator(EmptyFieldValidator.class)) ;
+    autField.addChild(new UIFormStringInput(FIELD_AUTHENTICATION, FIELD_AUTHENTICATION, null).addValidator(MandatoryValidator.class)) ;
     autField.setActionInfo(FIELD_AUTHENTICATION, new String[]{"Select"}) ;
     addChild(autField) ;
-    addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(EmptyFieldValidator.class)) ;    
+    addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(MandatoryValidator.class)) ;    
     addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null)) ;
 //    UIFormCheckBoxInput<Boolean> bseCheckbox = new UIFormCheckBoxInput<Boolean>(FIELD_REPENABLE,FIELD_REPENABLE, null) ;
 //    bseCheckbox.setOnChange("ShowHidden") ;
