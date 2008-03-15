@@ -24,14 +24,12 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.CronExpressionValidator;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.RepeatCountValidator;
@@ -313,6 +311,7 @@ public class DialogFormFields extends UIForm {
     String mixintype = null;
     String multiValues = null ;
     String validateType = null ;
+    String nodetype = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -327,7 +326,9 @@ public class DialogFormFields extends UIForm {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else {
+      } else if(argument.startsWith(NODETYPE)){
+        nodetype = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
+      }else {
         defaultValue = argument;
       }
     }
@@ -336,6 +337,7 @@ public class DialogFormFields extends UIForm {
     setInputProperty(name, inputProperty) ;
     String propertyName = getPropertyName(jcrPath) ;
     if(mixintype != null) inputProperty.setMixintype(mixintype) ;
+    if(jcrPath.equals("/node") && nodetype != null ) inputProperty.setNodetype(nodetype);
     properties.put(name, inputProperty) ;
     propertiesName_.put(name, propertyName) ;
     fieldNames_.put(propertyName, name) ;

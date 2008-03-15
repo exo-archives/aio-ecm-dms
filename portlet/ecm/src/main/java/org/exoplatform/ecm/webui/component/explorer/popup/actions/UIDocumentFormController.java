@@ -60,11 +60,11 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
   }
 
   public void setCurrentNode(Node node) { currentNode_ = node ; }
-  
+
   public void setRepository(String repository) { repository_ = repository ; }
-  
+
   public void setWorkspace(String workspace) { workspace_ = workspace ; }
-  
+
   public void initPopup(UIComponent uiComp) throws Exception {
     removeChildById("PopupComponent") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent") ;
@@ -73,7 +73,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
-  
+
   public List<SelectItemOption<String>> getListFileType() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
     List<String> nodeTypes = new ArrayList<String>() ;
@@ -87,8 +87,16 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     List templates = templateService.getDocumentTemplates(repository_) ;
     try {
       for(int i = 0; i < templates.size(); i ++){
-        String nodeTypeName = templates.get(i).toString() ; 
+        String nodeTypeName = templates.get(i).toString() ;        
+        String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
         NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
+        if(nodeType.isMixin()) {
+          if(!nodeTypes.contains(nodeTypeName)) {
+            options.add(new SelectItemOption<String>(label, nodeTypeName));
+            nodeTypes.add(nodeTypeName) ;
+            continue;
+          }
+        }
         NodeType[] superTypes = nodeType.getSupertypes() ;
         boolean isCanCreateDocument = false ;
         for(NodeDefinition childDef : childDefs){
@@ -103,8 +111,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
             if(!hasDefaultDoc && nodeTypeName.equals(DEFAULT_VALUE)) {
               defaultDocument_ = DEFAULT_VALUE ;
               hasDefaultDoc = true ;
-            }
-            String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
+            }            
             if(!nodeTypes.contains(nodeTypeName)) {
               options.add(new SelectItemOption<String>(label, nodeTypeName));
               nodeTypes.add(nodeTypeName) ;
@@ -120,8 +127,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
                   if(!hasDefaultDoc && nodeTypeName.equals(DEFAULT_VALUE)) {
                     defaultDocument_ = DEFAULT_VALUE ;
                     hasDefaultDoc = true ;
-                  }
-                  String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
+                  }                  
                   if(!nodeTypes.contains(nodeTypeName)) {
                     options.add(new SelectItemOption<String>(label, nodeTypeName));
                     nodeTypes.add(nodeTypeName) ;
@@ -144,18 +150,18 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
         uiSelectBox.setValue(defaultDocument_);
       } 
     } catch(Exception e) {
-//      e.printStackTrace() ;
+//    e.printStackTrace() ;
     }
     return options ;
   }
-  
+
   public void init() throws Exception {
     getChild(UIDocumentForm.class).setTemplateNode(defaultDocument_) ;
     getChild(UIDocumentForm.class).setWorkspace(workspace_) ;
     getChild(UIDocumentForm.class).setStoredPath(currentNode_.getPath()) ;
     getChild(UIDocumentForm.class).resetProperties();
   }
-  
+
   public void activate() throws Exception {}
 
   public void deActivate() throws Exception {}
