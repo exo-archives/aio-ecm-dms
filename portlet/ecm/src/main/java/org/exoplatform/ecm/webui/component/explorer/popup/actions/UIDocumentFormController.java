@@ -87,8 +87,16 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     List templates = templateService.getDocumentTemplates(repository_) ;
     try {
       for(int i = 0; i < templates.size(); i ++){
-        String nodeTypeName = templates.get(i).toString() ; 
+        String nodeTypeName = templates.get(i).toString() ;         
         NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
+        String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
+        if(nodeType.isMixin()) {
+          if(!nodeTypes.contains(nodeTypeName)) {
+            options.add(new SelectItemOption<String>(label, nodeTypeName));
+            nodeTypes.add(nodeTypeName) ;
+            continue;
+          }
+        }
         NodeType[] superTypes = nodeType.getSupertypes() ;
         boolean isCanCreateDocument = false ;
         for(NodeDefinition childDef : childDefs){
@@ -103,8 +111,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
             if(!hasDefaultDoc && nodeTypeName.equals(DEFAULT_VALUE)) {
               defaultDocument_ = DEFAULT_VALUE ;
               hasDefaultDoc = true ;
-            }
-            String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
+            }            
             if(!nodeTypes.contains(nodeTypeName)) {
               options.add(new SelectItemOption<String>(label, nodeTypeName));
               nodeTypes.add(nodeTypeName) ;
@@ -120,8 +127,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
                   if(!hasDefaultDoc && nodeTypeName.equals(DEFAULT_VALUE)) {
                     defaultDocument_ = DEFAULT_VALUE ;
                     hasDefaultDoc = true ;
-                  }
-                  String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
+                  }                  
                   if(!nodeTypes.contains(nodeTypeName)) {
                     options.add(new SelectItemOption<String>(label, nodeTypeName));
                     nodeTypes.add(nodeTypeName) ;

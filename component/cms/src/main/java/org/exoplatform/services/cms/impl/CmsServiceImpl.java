@@ -81,9 +81,13 @@ public class CmsServiceImpl implements CmsService {
     if (nodeName == null || nodeName.length() == 0) {      
       nodeName = idGeneratorService.generateStringID(nodeTypeName);
     }
+    String primaryNodetype = relRootProp.getNodetype();
+    if(primaryNodetype == null) {
+      primaryNodetype = nodeTypeName;
+    }
     Session session = storeHomeNode.getSession();
     NodeTypeManager nodetypeManager = session.getWorkspace().getNodeTypeManager();
-    NodeType nodeType = nodetypeManager.getNodeType(nodeTypeName);
+    NodeType nodeType = nodetypeManager.getNodeType(primaryNodetype);
     Node currentNode = null;
     String[] mixinTypes = null ;
     String mixintypeName = relRootProp.getMixintype();
@@ -95,7 +99,7 @@ public class CmsServiceImpl implements CmsService {
       }
     }
     if (isAddNew) {
-      currentNode = storeHomeNode.addNode(nodeName, nodeTypeName);            
+      currentNode = storeHomeNode.addNode(nodeName, primaryNodetype);            
       if(mixinTypes != null){
         for(String type : mixinTypes){
           NodeType mixinType = nodetypeManager.getNodeType(type);
