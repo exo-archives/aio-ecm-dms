@@ -35,11 +35,21 @@
 		%>
 			  <tr>
 			    <td style="width:25%"><%=_ctx.appRes("Kofax.view.label.downloadable")%> #<%=i%></td>
+					<%						  
+						  String actionLink = uicomponent.event("ChangeNode", child.getPath(), new Parameter("workspaceName", child.getSession().getWorkspace().getName())) ;
+					%>
+					<td>
+						<a href="$actionLink">
+						 		<%=child.getName()%>
+					 	</a>
+					</td>
+					<!--
 			    <td>
 			      <a href="<%=uicomponent.getDownloadLink(child)%>">
 			        <%=child.getName()%>
 			      </a>
 			    </td>
+					-->
 			  </tr>
 		<%  } else {%>
 		      <tr>
