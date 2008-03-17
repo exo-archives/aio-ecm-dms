@@ -523,7 +523,6 @@ public class DialogFormFields extends UIForm {
     String defaultValue = parsedArguments.get(DEFAULT_VALUES);
     String options = parsedArguments.get(OPTIONS);
     String script = parsedArguments.get(SCRIPT);
-    String[] scriptParams = parsedArguments.get(SCRIPT_PARAMS).split(",");
     List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
     if(uiSelectBox == null || isResetForm_) {
@@ -531,6 +530,7 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiSelectBox) ;
       if (script != null) {
         try {
+          String[] scriptParams = parsedArguments.get(SCRIPT_PARAMS).split(",");
           if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName_ ;
           executeScript(script, uiSelectBox, scriptParams);
         } catch(Exception e) {
