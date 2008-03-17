@@ -117,6 +117,20 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return nodeTypeNode.getNode(type).getNode(templateName);
   }
   
+  public String getTemplatePath(Node node, boolean isDialog) throws Exception {
+    String userId = node.getSession().getUserID();
+    String repository = ((ManageableRepository)node.getSession().getRepository()).getConfiguration().getName();
+    String templateType = null ;
+    if(node.isNodeType("exo:presentationable")) {
+      templateType = node.getProperty("exo:presentationType").getString() ;
+    }else {
+      templateType = node.getPrimaryNodeType().getName();
+    }
+    if(isManagedNodeType(templateType,repository))
+      return getTemplatePathByUser(isDialog,templateType,userId,repository);
+    return null ;
+  }
+  
   public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception {    
     Session session = getSession(repository) ;
     Node templateHomeNode = (Node)session.getItem(cmsTemplatesBasePath_) ;
