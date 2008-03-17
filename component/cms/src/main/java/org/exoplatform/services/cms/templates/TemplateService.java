@@ -51,6 +51,8 @@ public interface TemplateService {
   
   public Node getTemplatesHome(String repository,SessionProvider provider) throws Exception ;
   
+  public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
+  
   public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception ;
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
     

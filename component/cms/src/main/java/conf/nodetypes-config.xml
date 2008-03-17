@@ -14,6 +14,15 @@
     </propertyDefinitions>
   </nodeType>
   
+  <nodeType name="exo:presentationable" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+    <propertyDefinitions>
+      <propertyDefinition name="exo:presentationType" requiredType="String" autoCreated="true" mandatory="false"
+        onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>	      
+      </propertyDefinition>      
+    </propertyDefinitions>
+  </nodeType>
+  
   <nodeType name="exo:action" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>nt:base</supertype>
