@@ -345,8 +345,8 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiInput) ;      
     }
     if(uiInput.getValue() == null) uiInput.setValue(defaultValue) ;
-    if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
-    if(editable.equals("false")) uiInput.setEditable(false) ;
+    if("password".equals(type)) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
+    if("false".equals(editable)) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     if(getNode() != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
