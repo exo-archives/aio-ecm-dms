@@ -731,7 +731,7 @@ public class DialogFormFields extends UIForm {
     String visible = parsedArguments.get(VISIBLE);    
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
-    if(defaultValue.length() > 0) {
+    if(defaultValue != null && defaultValue.length() > 0) {
       inputProperty.setValue(defaultValue) ;
     }
     if (nodetype != null || mixintype != null) {
