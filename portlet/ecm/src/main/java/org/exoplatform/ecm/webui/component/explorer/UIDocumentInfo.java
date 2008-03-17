@@ -89,43 +89,38 @@ import org.exoplatform.webui.exception.MessageException;
     }
 )
 public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
-  
+
   final private static String CONTENT_PAGE_ITERATOR_ID = "UIContentPageIterator".intern();
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String typeSortOrder_ = Preference.ASCENDING_ORDER;
   private String nameSortOrder_ = Preference.ASCENDING_ORDER;
   private Node currentNode_ ;    
-  
+
   private UIPageIterator pageIterator_ ;  
-  
+
   public UIDocumentInfo() throws Exception {
     pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID) ;    
   }
-  
+
   public UIPageIterator getContentPageIterator() {return pageIterator_ ; }
-  
-  public String getTemplate() {
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+
+  public String getTemplate() {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    String repository = uiExplorer.getRepositoryName();
-    try {
-      String nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType().getName() ;
-      if(uiExplorer.getPreference().isJcrEnable()) {
-        return uiExplorer.getDocumentInfoTemplate(); 
-      } else if(isNodeTypeSupported(nodeType)) {
-        return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ; 
-      }
+    if(uiExplorer.getPreference().isJcrEnable()) 
+      return uiExplorer.getDocumentInfoTemplate();    
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    try {      
+      Node node = uiExplorer.getCurrentNode();             
+      String templatePath = templateService.getTemplatePath(node,false) ;
+      if(templatePath != null) return templatePath;
     } catch(AccessDeniedException ace) {
       try {
         uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
         Object[] args = { uiExplorer.getCurrentNode().getName() } ;
         throw new MessageException(new ApplicationMessage("UIDocumentInfo.msg.access-denied", args, ApplicationMessage.WARNING)) ;
       } catch(Exception exc) {
-        exc.printStackTrace() ;
       }
-    } catch(Exception e) {
-      e.printStackTrace() ;
+    } catch(Exception e) {     
     }
     return uiExplorer.getDocumentInfoTemplate(); 
   }
@@ -134,11 +129,11 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
-  
+
   public UIRightClickPopupMenu getContextMenu() {
     return getAncestorOfType(UIWorkingArea.class).getChild(UIRightClickPopupMenu.class) ;
   }
-  
+
   public Node getNodeByUUID(String uuid) throws Exception{
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
@@ -147,7 +142,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       try{
         return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
       }catch(Exception e) {
-        
+
       }      
     }
     return null;
@@ -161,11 +156,11 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
   }
-  
+
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
   }
-  
+
   public boolean isSystemWorkspace() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     ManageableRepository manaRepoService = 
@@ -174,7 +169,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     if(systemWsName.equals(uiExplorer.getCurrentWorkspace())) return true ;
     return false ;
   }
-  
+
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;    
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
@@ -190,7 +185,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     dresource.setDownloadName(fileName) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
-  
+
   public String getImage(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
@@ -200,7 +195,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
-  
+
   public String getImage(Node node, String nodeTypeName) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
@@ -210,41 +205,41 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     dresource.setDownloadName(node.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
-  
+
   public String getWebDAVServerPrefix() throws Exception {    
     PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
     String prefixWebDAV = portletRequestContext.getRequest().getScheme() + "://" + 
-                          portletRequestContext.getRequest().getServerName() + ":" +
-                          String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
+    portletRequestContext.getRequest().getServerName() + ":" +
+    String.format("%s",portletRequestContext.getRequest().getServerPort()) ;
     return prefixWebDAV ;
   }
-  
+
   public Node getViewNode(String nodeType) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getNode(nodeType) ;
   }
-  
+
   public Node getNodeByPath(String nodePath, String workspace) throws Exception {
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
     Session session = manageRepo.getSystemSession(workspace) ;
     return getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session) ;
   }
-  
+
   public String getActionsList(Node node) throws Exception {
     return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
   }
-  
+
   public List<Node> getCustomActions(Node node) throws Exception {
     return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
   }
-  
+
   public boolean isPreferenceNode(Node node) throws Exception {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
   }
-  
+
   public boolean isReadAuthorized(ExtendedNode node) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).isReadAuthorized(node) ;
   }
-  
+
   @SuppressWarnings("unchecked")
   public Object getComponentInstanceOfType(String className) {
     Object service = null;
@@ -257,28 +252,28 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     } 
     return service;
   }
-  
+
   public String getNodeOwner(Node node) throws RepositoryException {
     if(node.hasProperty("exo:owner")) {
       return node.getProperty("exo:owner").getString();
     }
     return SystemIdentity.ANONIM ;
   }
-  
+
   public Date getDateCreated(Node node) throws Exception{
     if(node.hasProperty("exo:dateCreated")) {
       return node.getProperty("exo:dateCreated").getDate().getTime();
     }
     return new GregorianCalendar().getTime();
   }
-  
+
   public Date getDateModified(Node node) throws Exception {
     if(node.hasProperty("exo:dateModified")) {
       return node.getProperty("exo:dateModified").getDate().getTime();
     }
     return new GregorianCalendar().getTime();
   }
-  
+
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
     if (currentNode_.hasProperty(Utils.EXO_RELATION)) {
@@ -291,7 +286,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     }
     return relations;
   }
-  
+
   public List<Node> getAttachments() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<Node> attachments = new ArrayList<Node>() ;
@@ -315,7 +310,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       return false;
     }
   }
-  
+
   public String getNodeType() throws Exception { return null; }
 
   public List<String> getSupportedLocalise() throws Exception {
@@ -326,25 +321,25 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public String getTemplatePath() throws Exception { return null; }
 
   public boolean isNodeTypeSupported() { return false; }
-  
+
   public String getVersionName(Node node) throws Exception {
     return node.getBaseVersion().getName() ;
   }
-  
+
   public void setNode(Node node) { currentNode_ = node ; }
-  
+
   public boolean isRssLink() { return false ; }
   public String getRssLink() { return null ; }
-  
+
   public String getPortalName() {
     PortalContainer pcontainer =  PortalContainer.getInstance() ;
     return pcontainer.getPortalContainerInfo().getContainerName() ;  
   }
-  
+
   public String getRepository() throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
   }
-  
+
   public String getWorkspaceName() throws Exception {
     return currentNode_.getSession().getWorkspace().getName();
   }
@@ -361,9 +356,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     }    
     return currentNode_; 
   }
-  
+
   public Node getOriginalNode() throws Exception {return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;}
-  
+
   public String getIcons(Node node, String size) throws Exception {
     return Utils.getNodeTypeIcon(node, size) ;
   }
@@ -377,7 +372,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
-  
+
   public String getLanguage() {
     return getAncestorOfType(UIJCRExplorer.class).getLanguage() ;
   }
@@ -385,7 +380,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public void setLanguage(String language) { 
     getAncestorOfType(UIJCRExplorer.class).setLanguage(language) ;
   }
-  
+
   public void updatePageListData() throws Exception {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
@@ -400,18 +395,18 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
     pageIterator_.setPageList(pageList) ;        
   }
-  
+
   @SuppressWarnings("unchecked")
   public List<Node> getChildrenList() throws Exception {
     return pageIterator_.getCurrentPageData();    
   }
-  
+
   public String getTypeSort() { return typeSort_ ; }
   public String getTypeSortOrder() { return typeSortOrder_ ; }
   public String getNameSortOrder() { return nameSortOrder_ ; }
-  
+
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
-  
+
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
@@ -525,7 +520,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       uiExplorer.updateAjax(event) ;
     }
   }
-  
+
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiDocumentInfo = event.getSource() ;
@@ -535,7 +530,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       uiExplorer.updateAjax(event) ;
     }   
   }
-  
+
   static  public class VoteActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
@@ -545,7 +540,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       votingService.vote(uiComp.currentNode_, objId, userName, uiComp.getLanguage()) ;
     }
   }
-  
+
   static  public class DownloadActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
@@ -553,7 +548,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");      
     }
   }
-  
+
   static  public class ShowPageActionListener extends EventListener<UIPageIterator> {
     public void execute(Event<UIPageIterator> event) throws Exception {      
       UIPageIterator uiPageIterator = event.getSource() ;
