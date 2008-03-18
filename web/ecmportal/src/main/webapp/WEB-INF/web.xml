@@ -63,6 +63,15 @@
     </init-param>
   </filter>
   
+  <filter>                                                                                                                                     
+    <filter-name>RestEncodingFilter</filter-name>                                                                                              
+      <filter-class>org.exoplatform.services.rest.servlet.RestEncodingFilter</filter-class>                                                      
+      <init-param>                                                                                                                               
+        <param-name>REQUEST_ENCODING</param-name>                                                                                                
+        <param-value>UTF-8</param-value>                                                                                                         
+      </init-param>                                                                                                                              
+  </filter>       
+  
   <filter-mapping>
     <filter-name>ResourceRequestFilter</filter-name>
     <url-pattern>/javascript/*</url-pattern>
@@ -98,6 +107,11 @@
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
     <url-pattern>/public/*</url-pattern>
   </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RestEncodingFilter</filter-name>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping> 
 
   <filter-mapping>
   <!-- This must be before ThreadLocalSessionProviderInitializedFilter for URI /rest/* -->
