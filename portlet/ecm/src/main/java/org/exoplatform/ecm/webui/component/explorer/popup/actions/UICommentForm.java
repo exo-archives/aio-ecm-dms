@@ -39,6 +39,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
+import org.exoplatform.webui.form.validator.NullFieldValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -64,7 +65,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   private Node document_ ;
   
   public UICommentForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(NullFieldValidator.class).addValidator(EmailAddressValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
     addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true)) ;
   }
