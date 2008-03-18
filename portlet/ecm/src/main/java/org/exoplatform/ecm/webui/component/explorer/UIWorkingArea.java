@@ -1022,6 +1022,7 @@ public class UIWorkingArea extends UIContainer {
           break ;
         }
       }
+      if(srcPath.equals(uiExplorer.getCurrentPath())) uiExplorer.setCurrentPath(srcNode.getParent().getPath()) ;
     }
 
     private void removeReferences(Node destNode) throws Exception {

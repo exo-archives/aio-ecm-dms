@@ -94,8 +94,6 @@ public class UIClipboard extends UIComponent {
           session.save();
           uiClipboard.clipboard_.remove(index-1) ;
         }
-        Object[] args = { srcPath, destPath };   
-        app.addMessage(new ApplicationMessage("UIClipboard.msg.node-pasted", args)) ; 
         uiExplorer.updateAjax(event);
       } catch(PathNotFoundException path) {
         app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;
