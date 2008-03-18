@@ -57,8 +57,7 @@ public class UIAddressBar extends UIForm {
   final static public String FIELD_ADDRESS = "address" ; 
   
   public UIAddressBar() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null).
-                   addValidator(MandatoryValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
   }
 
   public Set<String> getHistory() {
@@ -103,6 +102,7 @@ public class UIAddressBar extends UIForm {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiAddress = event.getSource() ;
       String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue() ;
+      if (path == null || path.trim().length() == 0) path = "/";
       UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.setIsViewTag(false) ;
       try {
