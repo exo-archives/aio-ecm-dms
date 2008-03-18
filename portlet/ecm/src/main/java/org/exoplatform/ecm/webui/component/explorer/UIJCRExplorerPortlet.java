@@ -55,3 +55,4 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     return repository ;
   }
 }
+

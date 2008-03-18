@@ -956,8 +956,11 @@ public class UIWorkingArea extends UIContainer {
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
-        return ;
-      } catch(Exception e) {
+        return ;             
+      }catch(LockException locke){      
+        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());       
+      }catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
