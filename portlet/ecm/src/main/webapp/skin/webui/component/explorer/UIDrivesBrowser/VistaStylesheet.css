@@ -64,7 +64,6 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBG {
   background: url('VistaSkin/background/DrivesListTitleBG1x26.gif') repeat-x center;
-  height: 26px;
   line-height: 26px;
 	width: auto;
 	white-space: nowrap;
@@ -72,14 +71,12 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBGRight {
   background: url('VistaSkin/background/DrivesListTitleBGRight31x26.gif') no-repeat right;
-  height: 26px;
   line-height: 26px;
   padding-right: 31px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
   background: url('VistaSkin/background/DrivesListTitle161x26.gif') no-repeat left;
-  height: 26px;
   line-height: 26px;
   font-weight: bold;
   padding-left: 10px;
@@ -99,23 +96,22 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitleBG {
-	height: 21px;
 	line-height: 21px;
+	height: auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitleBGRight {
-	height: 21px;
 	line-height: 21px;
+	height: auto;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
-	height: 21px;
 	line-height: 21px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DropDownArrow16x16Icon {
 	padding-right: 20px;
-	width: auto; height: auto;
+	width: auto; height: 21px;
 	background-position: right center;
 }
 
