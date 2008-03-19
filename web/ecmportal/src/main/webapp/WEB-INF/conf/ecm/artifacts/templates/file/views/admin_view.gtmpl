@@ -38,6 +38,10 @@
     margin: auto;
   }
   
+  .FileContent .Content .TextContent pre {  
+    white-space: normal;
+  }
+  
   .FileContent .ContentDetail {  
     text-align: center;
     overflow: visible;

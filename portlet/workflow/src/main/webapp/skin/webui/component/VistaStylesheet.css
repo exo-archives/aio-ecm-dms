@@ -229,6 +229,15 @@
 	float: none;
 }
 
+.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .TabPaneContent .UITabContentContainer {
+  padding: 0px;
+}
+
+.UIWorkflowPortlet .WorkflowPortletContent ..UITabPane .TabPaneContent .UIGrid {
+  width: 99.7%;
+  margin: 0px auto;
+}
+
 /*##############################- Begin UIProcessDetail -################################*/
 
 .UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {

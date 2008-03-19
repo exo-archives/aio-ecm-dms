@@ -77,7 +77,6 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
   background: #c8e0f2 url('MacSkin/background/DrivesListTitle195x28.gif') no-repeat left center;
-  height: 28px;
   line-height: 28px;
   color: #333333;
   font-weight: bold;
@@ -100,14 +99,14 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
-	height: 21px;
+	height: auto;
 	line-height: 21px;
 	padding-right: 5px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DropDownArrow16x16Icon {
 	padding-right: 20px;
-	width: auto; height: auto;
+	width: auto; height: 21px;
 	background-position: right center;
 }
 
@@ -142,7 +141,7 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
   height: 85px;
-  width: 160px;
+  width: 155px;
   border: solid 1px #d1d1d1;
   background: white;
   padding: 8px 0px 5px 0px;
