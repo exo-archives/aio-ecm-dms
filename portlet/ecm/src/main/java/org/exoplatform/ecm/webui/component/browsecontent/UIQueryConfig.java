@@ -91,7 +91,6 @@ public class UIQueryConfig extends UIForm {
     addChild(new UIFormTextAreaInput(UINewConfigForm.FIELD_QUERY, null, null)) ;    
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE, null, Options)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE, null, itemPerPages())) ;
-//    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETAGMAP, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
@@ -126,6 +125,7 @@ public class UIQueryConfig extends UIForm {
     String hasVote = "false" ;
     String hasTagMap = "false" ;
     String itemPerPage = "20" ;
+    String detailTemp = "" ;
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
@@ -138,7 +138,6 @@ public class UIQueryConfig extends UIForm {
     UIFormSelectBox queryStoreField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
     UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-//    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
@@ -176,11 +175,13 @@ public class UIQueryConfig extends UIForm {
       itemPerPage = preference.getValue(Utils.CB_NB_PER_PAGE, "") ;
       hasTagMap  = preference.getValue(Utils.CB_VIEW_TAGMAP, "") ;
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
+      detailTemp = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
       templateField.setOptions(getQueryTemplate(repository)) ;
       numbPerPageField.setValue(itemPerPage) ;
       UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
+      detailtemField.setValue(detailTemp) ;
       enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
       enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
       enableVoteField.setChecked(Boolean.parseBoolean(hasVote)) ;
@@ -312,11 +313,11 @@ public class UIQueryConfig extends UIForm {
       String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
-      String query = uiForm.getUIStringInput(UINewConfigForm.FIELD_QUERY).getValue() ;
+      String query = uiForm.getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).getValue() ;
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
 //      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
-      String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
+      String boxTemplate = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       UIFormSelectBox queryValueField = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;      
       String  queryPath = "" ;
       String queryStatu = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTATUS).getValue() ;
