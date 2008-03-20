@@ -146,14 +146,19 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         Session nodeSession = uiRenameForm.renameNode_.getSession() ;
         nodeSession.refresh(true) ;
         nodeSession.move(srcPath,destPath) ;
-        if(srcPath.equals(uiJCRExplorer.getCurrentPath())) uiJCRExplorer.setCurrentPath(destPath) ;
+        String currentPath = uiJCRExplorer.getCurrentPath() ;
+        if(srcPath.equals(uiJCRExplorer.getCurrentPath())) {
+          uiJCRExplorer.setCurrentPath(destPath) ;
+        } else if(currentPath.startsWith(srcPath)) {
+          uiJCRExplorer.setCurrentPath(destPath + currentPath.substring(currentPath.lastIndexOf("/"))) ;
+        }
         nodeSession.save() ;
         nodeSession.refresh(false) ;
         for(int i = 0; i < refList.size(); i ++) {
           Node addRef = refList.get(i) ;
           relationsService.addRelation(addRef, destPath, nodeSession.getWorkspace().getName(),uiJCRExplorer.getRepositoryName()) ;
           addRef.save() ;
-        }  
+        }
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
         uiJCRExplorer.updateAjax(event) ;
       } catch(AccessDeniedException ace) {
@@ -183,12 +188,14 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
        
         return ;     
-      }catch(LockException lockex){
+      } catch(LockException lockex){
         Object[] agrs = {uiRenameForm.renameNode_.getPrimaryNodeType().getName()};
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", agrs, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp,e) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       }     
     }
   }
@@ -206,4 +213,3 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public void deActivate() throws Exception { }
   
 }
-
