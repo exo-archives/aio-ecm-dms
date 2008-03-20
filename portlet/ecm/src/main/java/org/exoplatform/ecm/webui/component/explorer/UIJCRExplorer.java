@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javax.jcr.Item;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
@@ -195,8 +196,13 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public void refreshExplorer() throws Exception { 
+    try {
+      getSession().getItem(currentPath_) ;
+    } catch(PathNotFoundException path) {
+      currentPath_ = getRootNode().getPath() ;
+    }
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
-    setValue(filterPath(currentPath_)) ;
+      setValue(filterPath(currentPath_)) ;
     UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
     UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
     uiDocumentInfo.updatePageListData();
