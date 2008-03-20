@@ -48,7 +48,7 @@
 		      if (path.length() > 20 ) path = "..." + path.substring(path.length() - 20, path.length());
 		%>
 		    <tr class="$rowClass">
-		      <td class="text"><%=path%></td>
+		      <td class="text" title="<%=path%>"><%=path%></td>
 		    	<td class="text"><%=item.getType()%></td>
 			      <td>         
 			        <div class="ActionContainer" style="margin: 0px auto;">
