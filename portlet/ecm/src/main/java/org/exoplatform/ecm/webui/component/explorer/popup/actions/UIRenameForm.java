@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
@@ -115,7 +116,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           }
         }
         String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue();
-        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!", "."} ;
         for(String filterChar : arrFilterChar) {
           if(newName.indexOf(filterChar) > -1) {
             uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.fileName-invalid", null, 
@@ -126,11 +127,12 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         }
         String srcPath = uiRenameForm.renameNode_.getPath() ;
         String destPath ;
-        if(uiJCRExplorer.nodeIsLocked(uiRenameForm.renameNode_)) {        
+        if(uiJCRExplorer.nodeIsLocked(uiRenameForm.renameNode_)) {  
+          
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null, 
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          uiJCRExplorer.updateAjax(event) ;
+          uiJCRExplorer.updateAjax(event) ;        
           return ;
         }      
         if(uiRenameForm.isReferencedNode_) {        
@@ -161,6 +163,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         Object[] args = {uiRenameForm.renameNode_.getName()} ;
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.rename-denied", args, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+       
         return ;
       } catch(VersionException ve) {
         uiJCRExplorer.getSession().refresh(false) ;
@@ -168,6 +171,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         uiJCRExplorer.cancelAction() ;
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.version-exception", null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        
         return ;
       } catch(ConstraintViolationException cons) {
         uiJCRExplorer.getSession().refresh(false) ;
@@ -177,11 +181,15 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.constraintViolation-exception", args,
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+       
+        return ;     
+      }catch(LockException lockex){
+        Object[] agrs = {uiRenameForm.renameNode_.getPrimaryNodeType().getName()};
+        uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", agrs, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       } catch (Exception e) {
-        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp,e) ;
-      }    
+      }     
     }
   }
 
