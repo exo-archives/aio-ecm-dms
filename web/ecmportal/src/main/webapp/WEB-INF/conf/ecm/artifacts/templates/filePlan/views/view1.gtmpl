@@ -335,7 +335,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-						            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+						            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 						            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 						            </a>
 				              <%}%>
@@ -378,12 +378,12 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-					            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+					            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 					            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 					            </a>
 				              <%}%>
 					          </td>
-					          <td><a href="<%=uicomponent.event("ChangeNode", record.getPath())%>"><%=record.getName()%></a></td>
+					          <td><a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>"><%=record.getName()%></a></td>
 					          <td>
 					            <%if(record.hasProperty("rma:originator")) {%>
 					            <%= record.getProperty("rma:originator").getString()%>
@@ -420,12 +420,12 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-					            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+					            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 					            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 					            </a>
 				              <%}%>
 					          </td>
-					          <td><a href="<%=uicomponent.event("ChangeNode", record.getPath())%>"><%=record.getName()%></a></td>
+					          <td><a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>"><%=record.getName()%></a></td>
 					          <td>
 					            <%if(record.hasProperty("rma:nextReviewDate")) {%>
 					            <%=dateFormat.format(record.getProperty("rma:nextReviewDate").getDate().getTime())%>
@@ -458,7 +458,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-					            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+					            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 					            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 					            </a>
 				              <%}%>
@@ -489,7 +489,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-					            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+					            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 					            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 					            </a>
 				              <%}%>
@@ -521,7 +521,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-						            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+						            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 						            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 						            </a>
 				              <%}%>
@@ -558,7 +558,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-						            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+						            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 						            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 						            </a>
 				              <%}%>
@@ -594,7 +594,7 @@
 										</td>
 					          <td>
 					            <%if(record.hasProperty("rma:recordIdentifier")) {%>
-						            <a href="<%=uicomponent.event("ChangeNode", record.getPath())%>">
+						            <a href="<%=uicomponent.event("ChangeNode", record.getPath(), new Parameter("workspaceName", node.getSession().getWorkspace().getName()))%>">
 						            	<%=record.getProperty("rma:recordIdentifier").getString()%>
 						            </a>
 				              <%}%>
