@@ -116,7 +116,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           }
         }
         String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue();
-        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!", "."} ;
         for(String filterChar : arrFilterChar) {
           if(newName.indexOf(filterChar) > -1) {
             uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.fileName-invalid", null, 
