@@ -28,7 +28,6 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
