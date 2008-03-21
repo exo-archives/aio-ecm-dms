@@ -129,11 +129,12 @@ public class ECMStandardPropertyNameValidator implements Validator {
 		}
 	}		
 	
+  //TODO: This method should use private instead of public
 	public void throwException(String s, UIFormInput uiInput) throws MessageException {
 		Object[] args = { uiInput.getName() };
 		throw new MessageException(new ApplicationMessage(s, args, ApplicationMessage.WARNING));
 	}
-	
+	//TODO: Should remove this method
 	public static void main(String[] args) {
 		String s = ".xyzs";
 		String s2 = s.substring(1, 2);
