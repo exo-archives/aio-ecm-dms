@@ -29,6 +29,7 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
+import org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -72,7 +73,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public UIRenameForm() throws Exception {    
     addUIFormInput(new UIFormStringInput(FIELD_OLDNAME, FIELD_OLDNAME, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NEWNAME, FIELD_NEWNAME, null).
-                   addValidator(ECMNameValidator.class)) ;
+                   addValidator(ECMStandardPropertyNameValidator.class)) ;
   }
 
   public void update(Node renameNode, boolean isReferencedNode) throws Exception {
@@ -115,16 +116,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
             }
           }
         }
-        String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue();
-        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!", "."} ;
-        for(String filterChar : arrFilterChar) {
-          if(newName.indexOf(filterChar) > -1) {
-            uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.fileName-invalid", null, 
-                                                    ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
-          }
-        }
+        String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue();        
         String srcPath = uiRenameForm.renameNode_.getPath() ;
         String destPath ;
         if(uiJCRExplorer.nodeIsLocked(uiRenameForm.renameNode_)) {  
