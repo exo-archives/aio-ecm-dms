@@ -54,6 +54,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
    * @param array
    * @return
    */
+//TODO: This method should use private instead of public
   public boolean checkArr(String s, String[] arrFilterChars) {
     for (String filter : arrFilterChars) {
       if (s.equals(filter)) {
@@ -69,6 +70,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
    * @param uiInput
    * @throws MessageException 
    */
+//TODO: This method should use private instead of public
   public void checkOneChar(String s, UIFormInput uiInput) throws MessageException {
     String[] arrFilterChars = {".", "/", ":", "[", "]", "*", "'", "|", "\""} ;
     if (checkArr(s, arrFilterChars)) {
@@ -81,6 +83,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
    * @param s
    * @param uiInput
    */
+//TODO: This method should use private instead of public
   public void checkTwoChars(String s, UIFormInput uiInput) throws MessageException {
     String s2 = "";
     if (s.startsWith(".")) {
@@ -109,6 +112,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
    * @param s
    * @param uiInput
    */
+//TODO: This method should use private instead of public
   public void checkMoreChars(String s, UIFormInput uiInput) throws MessageException {
     //check nonspace start and end char
     String[] arrFilterChars = {"/", ":", "[", "]", "*", "'", "|", "\""} ; 
