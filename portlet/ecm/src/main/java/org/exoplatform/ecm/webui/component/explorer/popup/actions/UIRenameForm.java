@@ -43,6 +43,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -72,7 +73,8 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public UIRenameForm() throws Exception {    
     addUIFormInput(new UIFormStringInput(FIELD_OLDNAME, FIELD_OLDNAME, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NEWNAME, FIELD_NEWNAME, null).
-                   addValidator(ECMStandardPropertyNameValidator.class)) ;
+    			addValidator(MandatoryValidator.class).
+                addValidator(ECMStandardPropertyNameValidator.class)) ;
   }
 
   public void update(Node renameNode, boolean isReferencedNode) throws Exception {

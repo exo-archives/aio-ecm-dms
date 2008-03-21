@@ -37,6 +37,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -83,14 +84,14 @@ public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
     protectedItem.add(new SelectItemOption<String>(TRUE, TRUE)) ; 
 
     addUIFormInput(new UIFormSelectBox(NAMESPACE, NAMESPACE, getNamespaces())) ;
-    addUIFormInput(new UIFormStringInput(CHILD_NAME, CHILD_NAME, null)) ;
-    addUIFormInput(new UIFormStringInput(DEFAULT_PRIMARY_TYPE, DEFAULT_PRIMARY_TYPE, null)) ;
+    addUIFormInput(new UIFormStringInput(CHILD_NAME, CHILD_NAME, null).addValidator(MandatoryValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(DEFAULT_PRIMARY_TYPE, DEFAULT_PRIMARY_TYPE, null).addValidator(MandatoryValidator.class)) ;
     addUIFormInput(new UIFormSelectBox(AUTOCREATED, AUTOCREATED, autoListItem)) ;
     addUIFormInput(new UIFormSelectBox(MANDATORY, MANDATORY, mandoListItem)) ;
     addUIFormInput(new UIFormSelectBox(PARENTVERSION, PARENTVERSION, getParentVersions())) ;
     addUIFormInput(new UIFormSelectBox(PROTECTED, PROTECTED, protectedItem)) ; 
     addUIFormInput(new UIFormSelectBox(SAME_NAME, SAME_NAME, sameNameListItem)) ;
-    addUIFormInput(new UIFormStringInput(REQUIRED_PRIMARY_TYPE, REQUIRED_PRIMARY_TYPE, null)) ;
+    addUIFormInput(new UIFormStringInput(REQUIRED_PRIMARY_TYPE, REQUIRED_PRIMARY_TYPE, null).addValidator(MandatoryValidator.class)) ;
   }
   
   public void processRender(WebuiRequestContext context) throws Exception {

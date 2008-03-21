@@ -30,11 +30,12 @@ import org.exoplatform.webui.form.validator.Validator;
 public class ECMNameValidator implements Validator {
 
   public void validate(UIFormInput uiInput) throws Exception {
-    String s = (String)uiInput.getValue();
-    if(s == null || s.trim().length() == 0) {
-      Object[] args = { uiInput.getName() };
-      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, ApplicationMessage.WARNING)) ;
-    } 
+	  if (uiInput.getValue()==null || ((String)uiInput.getValue()).trim().length()==0) return;
+   String s = (String)uiInput.getValue();
+//    if(s == null || s.trim().length() == 0) {
+//      Object[] args = { uiInput.getName() };
+//      throw new MessageException(new ApplicationMessage("ECMNameValidator.msg.empty-input", args, ApplicationMessage.WARNING)) ;
+//    } 
     for(int i = 0; i < s.length(); i ++){
       char c = s.charAt(i);
       if(Character.isLetter(c) || Character.isDigit(c) || Character.isSpaceChar(c) || c=='_'

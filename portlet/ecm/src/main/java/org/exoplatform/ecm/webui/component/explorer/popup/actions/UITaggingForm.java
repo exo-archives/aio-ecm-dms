@@ -38,6 +38,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -65,7 +66,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
   
   public UITaggingForm() throws Exception {
     UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET) ;
-    uiInputSet.addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null)) ;
+    uiInputSet.addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null).addValidator(MandatoryValidator.class)) ;
     uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null)) ;
     uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName") ;
     addUIComponentInput(uiInputSet) ;

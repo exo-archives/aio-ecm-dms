@@ -14,7 +14,7 @@
 	      <td class="FieldLabel">Name</td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
+		        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=empty,name"] ;
 		        uicomponent.addTextField("name", fieldName) ;   
 		      %>
 		    </td>

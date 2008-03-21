@@ -55,6 +55,7 @@ public class UINamespaceForm extends UIForm {
 
   public UINamespaceForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_PREFIX, FIELD_PREFIX, null).
+    		addValidator(MandatoryValidator.class).
         addValidator(ECMNameValidator.class)) ;
     addUIFormInput(new UIFormStringInput(FIELD_URI, FIELD_URI, null).
         addValidator(MandatoryValidator.class)) ;

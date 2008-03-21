@@ -81,6 +81,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
   
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
+    	addValidator(MandatoryValidator.class).
         addValidator(ECMNameValidator.class)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
     ls.add(new SelectItemOption<String>("xPath", "xpath")) ;

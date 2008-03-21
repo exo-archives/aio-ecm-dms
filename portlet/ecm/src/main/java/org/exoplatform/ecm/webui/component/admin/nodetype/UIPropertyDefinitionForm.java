@@ -39,6 +39,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -89,7 +90,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     protectedItem.add(new SelectItemOption<String>(TRUE, TRUE)) ;    
 
     addUIFormInput(new UIFormSelectBox(NAMESPACE, NAMESPACE, getNamespaces())) ;
-    addUIFormInput(new UIFormStringInput(DEFINITION_NAME, DEFINITION_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(DEFINITION_NAME, DEFINITION_NAME, null).addValidator(MandatoryValidator.class)) ;
     UIFormSelectBox uiRequired = new UIFormSelectBox(REQUIRED_TYPE, REQUIRED_TYPE, getRequiredTypes()) ;
     uiRequired.setOnChange("ChangeRequiredType") ;
     addUIFormInput(uiRequired) ;

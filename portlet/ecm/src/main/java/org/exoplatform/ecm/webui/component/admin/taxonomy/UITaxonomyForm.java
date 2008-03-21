@@ -30,7 +30,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
-
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong
@@ -55,6 +55,7 @@ public class UITaxonomyForm extends UIForm {
   public UITaxonomyForm() throws Exception {
     addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
+    			addValidator(MandatoryValidator.class).
                    addValidator(ECMNameValidator.class)) ;
   }
   

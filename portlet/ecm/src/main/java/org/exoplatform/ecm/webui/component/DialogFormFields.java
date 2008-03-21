@@ -53,6 +53,7 @@ import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
+import org.exoplatform.webui.form.UIFormInputBase;
 
 /**
  * Created by The eXo Platform SARL
@@ -232,7 +233,8 @@ public class DialogFormFields extends UIForm {
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       if(validateType != null) {
-        uiInput.addValidator(getValidator(validateType)) ;
+    	  addValidators(uiInput, validateType);
+       //uiInput.addValidator(getValidator(validateType)) ;
       }
       if(label != null ) {
         uiInput.setLabel(label);
@@ -337,7 +339,8 @@ public class DialogFormFields extends UIForm {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       //TODO need use full class name for validate type. 
       if(validateType != null) {
-        uiInput.addValidator(getValidator(validateType)) ;
+    	  addValidators(uiInput, validateType);
+       // uiInput.addValidator(getValidator(validateType)) ;
       }     
       if(label != null && label.length()!=0) {
         uiInput.setLabel(label);
@@ -404,7 +407,8 @@ public class DialogFormFields extends UIForm {
     if(uiTextArea == null) {
       uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
       if(validateType != null) {
-        uiTextArea.addValidator(getValidator(validateType)) ;
+    	  addValidators(uiTextArea, validateType);
+//        uiTextArea.addValidator(getValidator(validateType)) ;
       }
       if(label != null) uiTextArea.setLabel(label) ;
       addUIFormInput(uiTextArea) ;
@@ -474,7 +478,8 @@ public class DialogFormFields extends UIForm {
     if(wysiwyg == null) {
       wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
       if(validateType != null) {
-        wysiwyg.addValidator(getValidator(validateType)) ;
+    	  addValidators(wysiwyg, validateType);
+//        wysiwyg.addValidator(getValidator(validateType)) ;
       }     
       addUIFormInput(wysiwyg) ;
     }
@@ -664,7 +669,7 @@ public class DialogFormFields extends UIForm {
     setInputProperty(name, inputProperty) ;
     Date date = new Date() ;
     if(options == null) formatter = new SimpleDateFormat("MM/dd/yyyy") ;
-    if(defaultValue.length() > 0) {
+    if(defaultValue != null && defaultValue.length() > 0) {
       try {
         date = formatter.parse(defaultValue) ;
         if(defaultValue.indexOf("/") > -1) arrDate = defaultValue.split("/") ;
@@ -690,8 +695,9 @@ public class DialogFormFields extends UIForm {
     }
     if(options != null && options.equals("displaytime")) uiDateTime.setDisplayTime(true) ;
     else uiDateTime.setDisplayTime(false) ;
-    if(validateType != null) {      
-        uiDateTime.addValidator(getValidator(validateType)) ;      
+    if(validateType != null) {
+    	addValidators(uiDateTime, validateType);
+//        uiDateTime.addValidator(getValidator(validateType)) ;      
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
@@ -784,7 +790,7 @@ public class DialogFormFields extends UIForm {
         map.put(DEFAULT_VALUES,value); continue;
       } else if(argument.startsWith(OPTIONS)){        
         map.put(OPTIONS,value);  continue;
-      }else if(argument.startsWith(SCRIPT)) {        
+      }else if(argument.startsWith(SCRIPT)) {
         map.put(SCRIPT,value); continue;
       }else if(argument.startsWith(SCRIPT_PARAMS)) {        
         map.put(SCRIPT_PARAMS,value); continue;
@@ -794,11 +800,21 @@ public class DialogFormFields extends UIForm {
         map.put(TYPE,value) ; continue;
       } else if(argument.startsWith(ONCHANGE)){
         map.put(ONCHANGE,value); continue;
+      } else if (argument.startsWith(MIXINTYPE)) {
+    	  map.put(MIXINTYPE, value); continue;
       }else {
         map.put(DEFAULT_VALUES,argument);
       }      
     }
     return map;
+  }
+  
+  private void addValidators(UIFormInputBase uiInput, String validators) throws Exception {
+	  String[] validatorList = null;
+	  if (validators.indexOf(',') > -1) validatorList = validators.split(",");
+      else validatorList = new String[] {validators};
+      for (String validator : validatorList)
+        uiInput.addValidator(getValidator(validator.trim())) ;
   }
 
   private Class getValidator(String validatorType) throws ClassNotFoundException {

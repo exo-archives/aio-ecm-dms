@@ -31,6 +31,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -57,9 +58,9 @@ public class UITagStyleForm extends UIForm {
   private Node selectedTagStyle_ ;
 
   public UITagStyleForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(STYLE_NAME, STYLE_NAME, null)) ;
-    addUIFormInput(new UIFormStringInput(DOCUMENT_RANGE, DOCUMENT_RANGE, null)) ;
-    addUIFormInput(new UIFormTextAreaInput(STYLE_HTML, STYLE_HTML, null)) ;
+    addUIFormInput(new UIFormStringInput(STYLE_NAME, STYLE_NAME, null).addValidator(MandatoryValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(DOCUMENT_RANGE, DOCUMENT_RANGE, null).addValidator(MandatoryValidator.class)) ;
+    addUIFormInput(new UIFormTextAreaInput(STYLE_HTML, STYLE_HTML, null).addValidator(MandatoryValidator.class)) ;
   }
 
   public Node getTagStyle() { return selectedTagStyle_ ; }
