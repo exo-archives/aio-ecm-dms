@@ -479,8 +479,17 @@ public class UIJCRExplorer extends UIContainer {
     }
   }
 
-  public Node getNodeByPath(String nodePath, Session session) throws Exception {
-    return (Node)session.getItem(nodePath) ;    
+  public Node getNodeByPath(String nodePath, Session session) throws Exception {    
+    try {
+      return (Node)session.getItem(nodePath) ;
+    } catch(PathNotFoundException e) {
+      refreshExplorer() ;
+      return (Node)session.getItem(rootPath_) ;
+    } catch(Exception e) {
+      e.printStackTrace() ;
+      refreshExplorer() ;
+      return (Node)session.getItem(rootPath_) ;
+    }
   }
   
   public void setTagPath(String tagPath) { tagPath_ = tagPath ; }
