@@ -480,10 +480,19 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public Node getNodeByPath(String nodePath, Session session) throws Exception {    
-    Node node = (Node)session.getItem(nodePath) ;
-    String lockToken = Utils.getLockToken(node);
-    if(lockToken != null) session.addLockToken(lockToken);
-    return node;
+    try {
+      Node node = (Node)session.getItem(nodePath) ;
+      String lockToken = Utils.getLockToken(node);
+      if(lockToken != null) session.addLockToken(lockToken);
+      return node;
+    } catch(PathNotFoundException e) {
+      refreshExplorer() ;
+      return (Node)session.getItem(rootPath_) ;
+    } catch(Exception e) {
+      e.printStackTrace() ;
+      refreshExplorer() ;
+      return (Node)session.getItem(rootPath_) ;
+    }
   }
   
   public void setTagPath(String tagPath) { tagPath_ = tagPath ; }
