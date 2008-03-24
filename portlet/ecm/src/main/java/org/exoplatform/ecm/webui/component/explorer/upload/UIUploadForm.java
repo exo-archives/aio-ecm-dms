@@ -27,6 +27,7 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
@@ -115,16 +116,24 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       String fileName = input.getUploadResource().getFileName() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
+          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+      }      
+      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
+      for(String filterChar : arrFilterChar) {
+        if (fileName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }     
 
       byte[] content = input.getUploadData() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
-      if(name == null) name = fileName;
-      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!", "+"} ;
+      if (name == null) name = fileName;      
+      
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
           uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
