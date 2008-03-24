@@ -109,6 +109,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       provider.close();
     }
     node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
+    node.save() ;
   }
 
   public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
