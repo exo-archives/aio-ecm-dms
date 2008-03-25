@@ -45,6 +45,7 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 
 
 /**
@@ -87,7 +88,7 @@ public class CmsServiceImpl implements CmsService {
     }
     Session session = storeHomeNode.getSession();
     NodeTypeManager nodetypeManager = session.getWorkspace().getNodeTypeManager();
-    NodeType nodeType = nodetypeManager.getNodeType(primaryType);
+    NodeType nodeType = nodetypeManager.getNodeType(primaryType);    
     Node currentNode = null;
     String[] mixinTypes = null ;
     String mixintypeName = relRootProp.getMixintype();
@@ -108,6 +109,7 @@ public class CmsServiceImpl implements CmsService {
         }
       }        
       createNodeRecursively(NODE, currentNode, nodeType, mappings);      
+      NodeType documentType = nodetypeManager.getNodeType(nodeTypeName) ;            
     } else {
       currentNode = storeHomeNode.getNode(nodeName);      
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
@@ -354,6 +356,36 @@ public class CmsServiceImpl implements CmsService {
         }else {
           node.setProperty(propertyName, (String) value);
         }
+      }else if(value instanceof String[]) {
+        String[] values = (String[]) value;        
+        String referenceWorksapce = null;
+        String referenceNodeName = null ;
+        Session session = node.getSession();
+        String repositoty = ((ManageableRepository)session.getRepository()).getConfiguration().getName();
+        List<Value> list = new ArrayList<Value>() ;        
+        for(String v: values) {          
+          Value valueObj = null ;
+          if(v.indexOf(":/")>0) {
+            referenceWorksapce = v.split(":/")[0];
+            referenceNodeName = v.split(":/")[1] ;
+            Session session2 = jcrService.getRepository(repositoty).getSystemSession(referenceWorksapce) ;            
+            if(session2.getRootNode().hasNode(referenceNodeName)) {
+              Node referenceNode = session2.getRootNode().getNode(referenceNodeName) ;
+              valueObj = session2.getValueFactory().createValue(referenceNode) ;              
+            }else {             
+              valueObj = session2.getValueFactory().createValue(v) ;
+            }            
+          }else {            
+            if(session.getRootNode().hasNode(v)) {
+              Node referenceNode = session.getRootNode().getNode(v) ;
+              valueObj = session.getValueFactory().createValue(referenceNode) ;
+            }else {
+              valueObj = session.getValueFactory().createValue(v) ;
+            }
+          }
+          list.add(valueObj) ;          
+        }
+        node.setProperty(propertyName,list.toArray(new Value[list.size()])) ;
       }       
       break ;
     default:
