@@ -365,7 +365,12 @@ public class UIActionBar extends UIForm {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
         String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
         List documentNodeType = tservice.getDocumentTemplates(repository) ;
-        String nodeType = selectedNode.getPrimaryNodeType().getName() ;
+        String nodeType = null ;
+        if(selectedNode.hasProperty("exo:presentationType")) {
+          nodeType = selectedNode.getProperty("exo:presentationType").getString() ;
+        }else {
+          nodeType = selectedNode.getPrimaryNodeType().getName() ;
+        }        
         if(documentNodeType.contains(nodeType)){
           UIDocumentForm uiDocumentForm = 
             uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;

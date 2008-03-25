@@ -51,6 +51,10 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInput;
+import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -83,24 +87,31 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   }
 
   public void setTemplateNode(String type) { documentType_ = type ;}
-  
+
   public boolean isAddNew() {return isAddNew_ ;}
-  
+
   public void addNew(boolean b) {isAddNew_ = b ;}
-  
+
   private String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     return portletPref.getValue(Utils.REPOSITORY, "") ;
   }
-  
+
   public void updateSelect(String selectField, String value) {
-    isUpdateSelect_ = true ;
-    getUIStringInput(selectField).setValue(value) ;
+    isUpdateSelect_ = true ;    
+    UIFormInput formInput = getUIInput(selectField) ;
+    if(formInput instanceof UIFormInputBase) {
+      ((UIFormInputBase)formInput).setValue(value) ;
+    }else if(formInput instanceof UIFormMultiValueInputSet) {
+      UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput ;
+      UIFormInputBase input = inputSet.getChild(inputSet.getChildren().size()-1);
+      input.setValue(value);
+    }
     UIDocumentFormController uiContainer = getParent() ;
     uiContainer.removeChildById("PopupComponent") ;
   }
-  
+
   public String getTemplate() {
     repositoryName_ = getRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
@@ -112,7 +123,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
-                                              ApplicationMessage.ERROR)) ;
+          ApplicationMessage.ERROR)) ;
       return null ;
     } 
   }
@@ -121,16 +132,16 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
-  
+
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
-  
+
   public Node getCurrentNode() throws Exception { 
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; 
   }
-  
+
   public boolean isEditing() { return !isAddNew_ ; }
-  
+
   @SuppressWarnings("unchecked")
   public Node storeValue(Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -167,12 +178,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       throw new AccessDeniedException(ace.getMessage());
     } catch(VersionException ve) {
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
-                                              ApplicationMessage.WARNING)) ;
+          ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     } catch(ItemNotFoundException item) {
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.item-not-found", null, 
-                                              ApplicationMessage.WARNING)) ;
+          ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;      
     } catch(RepositoryException repo) {
@@ -196,7 +207,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     }
     return newNode ;
   }
-  
+
   @SuppressWarnings("unchecked")
   static public class ShowComponentActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
@@ -238,7 +249,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       uiExplorer.cancelAction() ;
     }
   }
-  
+
   static public class AddActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;

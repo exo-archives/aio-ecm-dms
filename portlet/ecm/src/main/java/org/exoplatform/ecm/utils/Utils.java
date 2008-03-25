@@ -354,8 +354,8 @@ public class Utils {
     HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
     for (int i = 0; i < inputs.size(); i++) {
       JcrInputProperty property = null;
-      if(inputs.get(i) instanceof UIFormMultiValueInputSet) {
-        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;
+      if(inputs.get(i) instanceof UIFormMultiValueInputSet) {        
+        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;        
         if(!hasMap.containsKey(inputName)) {
           List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
           property = (JcrInputProperty) properties.get(inputName);        
