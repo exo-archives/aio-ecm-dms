@@ -95,8 +95,8 @@
 	margin: auto;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormGrid td.FieldComponent{
-	_width: 414px;
+.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
+  _width: 118px;
 }
 
 .UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {

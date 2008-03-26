@@ -8,8 +8,8 @@
 
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
-  background: white;
-  width: 99.8%; /* Bug on IE */
+  *width: 99.7%; /* Bug on IE */
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {

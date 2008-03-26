@@ -83,6 +83,10 @@
 	width: 99.7%;
 }
 
+.UIWorkflowPortlet .WorkflowPortletContent #UIBPDefinition .UIGrid {
+  _width: 99.5%;
+}
+
 /*********************************************** Begin Icon16x16 ***********************************/
 
 .ManageStartIcon {

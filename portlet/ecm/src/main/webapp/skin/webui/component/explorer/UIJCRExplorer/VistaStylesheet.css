@@ -9,7 +9,8 @@
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
   background: white;
-  width: 99.8%;
+  *width: 99.7%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {

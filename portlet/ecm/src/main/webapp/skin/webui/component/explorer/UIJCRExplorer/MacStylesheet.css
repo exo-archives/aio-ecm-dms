@@ -9,7 +9,8 @@
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
   background: white;
-  width: 99.9%; /*  Bug on IE */
+  *width: 99.7%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
@@ -511,6 +512,15 @@
 
 /*================================UISimpleSearch=================================*/
 
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .FieldLabel {
+  width: 135px;
+}
+
 .UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
   padding-bottom: 0px;
 }
@@ -576,7 +586,7 @@
 	margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIMetadataSelectForm .FormContainer{
+.UIJCRExplorerPortlet .UIMetadataSelectForm .FormContainer {
 	width: 400px;
 	margin: auto;
 }

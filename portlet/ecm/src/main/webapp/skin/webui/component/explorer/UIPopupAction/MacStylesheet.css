@@ -112,7 +112,7 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
-  width: 16px;
+  width: auto;
   height: 16px;
   float: left;
   margin: 0px 3px 0px 0px; 

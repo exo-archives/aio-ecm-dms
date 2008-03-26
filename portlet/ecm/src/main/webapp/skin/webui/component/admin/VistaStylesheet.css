@@ -115,6 +115,10 @@
 	margin: auto;
 }
 
+.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
+  _width: 118px;
+}
+
 .UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
