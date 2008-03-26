@@ -341,6 +341,7 @@ public class UIWorkingArea extends UIContainer {
           uiDocumentForm.setTemplateNode(nodeType) ;
           uiDocumentForm.setWorkspace(wsName) ;
           uiDocumentForm.setNodePath(nodePath) ;
+          uiDocumentForm.addNew(false) ;
           uiController.setRenderedChild(UIDocumentForm.class) ;
           uiPopupAction.activate(uiController, 800, 600) ;
 //          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
