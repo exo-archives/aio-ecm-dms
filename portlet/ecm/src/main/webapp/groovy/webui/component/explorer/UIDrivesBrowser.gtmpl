@@ -10,6 +10,7 @@
 %>
 
 <div class="UIDrivesBrowser" id="<%=uicomponent.getId()%>">
+
 	<div class="UIRepository">
 		<div class="RepositoryContainer">
 			<div class="RepositoryTitle">	<%=_ctx.appRes("UIDrivesBrowser.title.repositoryList" )%></div>
@@ -43,6 +44,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="UIDrivesList">
 		<div class="DrivesListTitleBG">
 			<div class="DrivesListTitleBGRight">
@@ -247,5 +249,5 @@
 		  
 		</div>
 	</div>
-	<div style="clear: left;"><span></span></div>
+
 </div>

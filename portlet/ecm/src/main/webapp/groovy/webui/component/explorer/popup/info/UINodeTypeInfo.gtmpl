@@ -14,14 +14,18 @@
   Collection collect = uicomponent.getNodeTypes();
   public void repairName(boolean bln) {
     println """
-      <div class="Icon16x16 ${bln}16x16Icon" >$bln</div>
+      <div class="Icon16x16 ${bln}16x16Icon"></div>
+      <div style="float: left;">$bln</div>
+      <div style="clear: left;"><span></span></div>
     """;
   }
 
   public void repairName(String name) {
     String str = name.replace(":", "_");
     println """
-	    <div class="Icon16x16 default16x16Icon ${str}16x16Icon">$name</div>
+	    <div class="Icon16x16 default16x16Icon ${str}16x16Icon"></div>
+	    <div  style="float: left;">$name</div>
+	    <div style="clear: left;"><span></span></div>
     """;
   }
  %>
@@ -119,8 +123,8 @@
 	        		</tr>
 	        	</table>
 	        </div>
-	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
-	          <col><col><col width="80"><col width="80"><col width="80"><col width="80"><col><col>
+	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;border: 1px solid red;">
+	          <col><col><col width="50"><col width="50"><col width="50"><col width="50"><col><col>
 	          <thead>
 	            <tr>
 	              <th><%=_ctx.appRes("UINodeTypeInfo.label.prop-name")%></th>
@@ -174,7 +178,7 @@
 	        	</table>
 	        </div>
 	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
-	          <col><col><col width="80"><col width="80"><col width="80"><col>
+	          <col><col><col width="60"><col width="60"><col width="60"><col>
 	          <thead>
 	            <tr>
 	              <th><%=_ctx.appRes("UINodeTypeInfo.label.node-def-name")%></th>

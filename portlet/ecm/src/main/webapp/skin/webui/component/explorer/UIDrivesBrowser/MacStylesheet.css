@@ -11,6 +11,8 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser {
   overflow: auto;
   padding: 10px;
+  *width: 97%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIRepository {
@@ -99,7 +101,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
-	height: auto;
+	height: 21px;
 	line-height: 21px;
 	padding-right: 5px;
 }

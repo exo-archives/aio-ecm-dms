@@ -9,6 +9,8 @@
  
 .UIJCRExplorerPortlet .UIDrivesBrowser {
   padding: 15px;
+  *width: 96.6%;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIRepository {

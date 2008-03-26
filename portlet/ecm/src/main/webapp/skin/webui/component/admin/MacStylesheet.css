@@ -247,7 +247,7 @@
 	margin: auto;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
 	width: 95%;
 	margin: 10px auto;
 }
@@ -255,6 +255,10 @@
 .UIECMAdminPortlet .UIRepositoryFormContainer .HorizontalLayout .UIFormInputSet {
 	width: 100%;
 	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
+  _width: 118px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{

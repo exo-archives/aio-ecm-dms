@@ -144,6 +144,9 @@
 .UIBrowseContentPortlet .UIBrowseContainer {
   padding: 0px;
   background: white;
+  _border: 1px solid white;
+  _width: 99%;
+  margin: auto;
 }
 
 /*############################## -- Begin UIToolBar -- ##############################*/
@@ -454,3 +457,455 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
 	padding: 0px;
 }
+
+
+/*********************************Template Style - Fix for IE*************************************/
+
+/********************* File plan ***********************/
+
+.UIBrowseContentPortlet .UIDivInfo {
+	margin: auto; padding: 10px;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .Title {
+	font-size: 13px; font-weight: bold;
+	padding-bottom: 3px;
+}	
+	
+.UIBrowseContentPortlet	.UIDivInfo .FilePlanContentTable {
+	width: 97.5%;
+	border-collapse: collapse;
+	border-top: 1px solid #dbdbdb;
+	margin: auto;
+	}
+	
+.UIBrowseContentPortlet	.UIDivInfo .FilePlanContentTable td {
+	border: 1px solid #dbdbdb;
+	border-top: none;
+	height: 25px;
+	padding-left: 7px;
+	background: white;
+	line-height: 25px;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .UIHorizontalTabs .TabsContainer {
+	padding: 0px;
+	height: 23px;
+	overflow-y: hidden;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .NavigationButtonContainer {
+	cursor: pointer;		
+	display: none;
+	float: right;
+	height: 20px;
+	padding-top: 4px;
+	z-index: 1;
+}
+	
+.UIBrowseContentPortlet .LabelFielPlan {
+	padding-left: 5px;
+	font-weight: normal;
+}
+				
+.UIBrowseContentPortlet .UIDivInfo a:hover {		 
+	color: blue;
+}	
+	
+/************** Article ***************/
+
+.UIBrowseContentPortlet .UIArticle {
+	background: white;
+}
+			
+.UIBrowseContentPortlet .UIArticle .ArticleTLDecorator {
+	background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
+	padding-left: 51px;
+	height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTRDecorator {
+	background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
+	padding-right:154px;
+	height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator {
+	background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
+	height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator .TitleLabel {
+	padding-top: 38px;
+	font: normal bold 16px Arial;
+	color: #0467e2;
+}
+	
+.UIBrowseContentPortlet .UIArticle .ArticleMLDecorator {
+	background: url('/ecm/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left;
+	padding-left: 3px ;	
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleMCDecorator {
+	background: #fcfcfc;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleMRDecorator {
+	background: url('/ecm/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right;
+	padding-right: 10px ;	
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBLDecorator {
+	background: url('/ecm/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left ;
+	padding-left: 3px;
+	height: 8px;
+	line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBCDecorator {
+	background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
+	height: 8px;
+	line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBRDecorator {
+	background: url('/ecm/skin/images/article/BottomRightArticle10x8.gif') no-repeat right ;
+	padding-right: 10px ;	
+	height: 8px;
+	line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame {
+	background: white;
+	padding: 0px 10px;
+}
+			
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopLeftArticleFrame {
+	background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
+	padding-left: 9px;
+	height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopRightArtictleFrame {
+	background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
+	padding-right: 2px;
+	height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopCenterArticleFrame {
+	background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
+	height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .ArticleFrameContainer {
+	border: solid 1px #e0e0e0;
+	border-top: none;
+}
+		
+.UIBrowseContentPortlet .UIArticle .TopCenterArticleFrame .ArticleField {
+	padding: 0px 0px 0px 5px;
+	width: 120px;
+	background: white;
+}
+		
+.UIBrowseContentPortlet .UIArticle .MidlleLeftArticleFrame	{
+	background: white;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldLabel {
+	float: left;
+	font-weight: bold;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldIcon {
+	float: left; 
+	margin-right: 5px;
+	width: 16px; height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .SummaryIcon {
+	background: url('/ecm/skin/images/article/SummaryIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsIcon {
+	background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .RatingIcon {
+	background: url('/ecm/skin/images/article/RatingInfo.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
+	background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+	width: 16px;
+	height: 16px;
+	margin: 0px 5px 0px 3px;
+	float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ContentIcon {
+	background: url('/ecm/skin/images/article/ContentIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .LinksIcon {
+	background: url('/ecm/skin/images/article/Links.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent {
+	padding: 1px 8px 5px 0px;
+	width: 90%;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .FieldContainerContent {
+	font: normal 11px Verdana;
+	background: white;
+	margin: 5px 2px 3px 5px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .LabelContent{
+ 	padding: 5px 0px 0px 5px;
+ 	overflow: auto;
+}
+
+.UIBrowseContentPortlet .UIArticle .DocumentRating {
+	margin-left: 150px;
+	width: 300px;
+} 
+		
+.UIBrowseContentPortlet .UIArticle .ContainerLinks {
+	border-top: dotted 1px #dcdcdc;
+	margin: 12px	10px 0px 10px;
+	padding: 5px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ContentLinks {
+	float: left;
+	width: 75px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .WorkContentLinks {
+	float: left;
+	padding-left: 5px;
+}
+
+.UIBrowseContentPortlet .UIArticle .Links div {
+	padding-bottom: 3px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .Links a {
+	color: #058ee6;
+}
+		
+.UIBrowseContentPortlet .UIArticle .Links a:hover {
+	text-decortaion: underline;
+	color: orange;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator .Language {
+	text-align: left;
+	color: #7d7d7d;
+	padding: 12px 0px 0px 10px;
+	font-weight: bold;
+}
+		
+.UIBrowseContentPortlet .UIArticle	.Language a.LanguageTitle {
+	text-align: left;
+	color: #058ee6;
+	font-weight: normal;
+}
+		
+.UIBrowseContentPortlet .UIArticle	.Language a:hover.LanguageTitle {
+	color: #ffa21d;
+}
+		
+.UIBrowseContentPortlet .UIArticle	.Language a:hover.DefaultLanguageTitle {
+	text-align: left;
+	color: #ffa21d;
+	font-weight: bold;
+}		
+		
+.UIBrowseContentPortlet .UIVoteForm .RatingInfo {
+	color: #0489d5;
+}
+		
+.UIBrowseContentPortlet .UIArticle .UIRatingInfoContainer {
+	margin: 0px 0px 0px auto;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .AttachmentsContaienr {
+	margin: 0px 6px 1px 0px;
+	float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr a {
+	color: #058ee6;
+	float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr a:hover {
+	text-decortaion: underline;
+	color: orange;
+}
+
+/***************** File ******************/
+
+.UIBrowseContentPortlet .FileContent {	
+	padding: 10px;
+	color: #0e396c;
+}
+
+.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
+	height: 100%;
+	border: none;
+}
+	
+.UIBrowseContentPortlet .FileContent .NavigationContainer {	
+	padding-bottom: 0px;
+	border: 1px solid #cbcbcb;
+	background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x top;
+	height: 100%;
+}
+	
+.UIBrowseContentPortlet .FileContent .TopTitle {	
+	background:transparent url(/ecm/skin/images/file/TitleBG1x21.gif) repeat-x ;
+	padding-left: 10px;
+	height: 22px; line-height: 22px;
+	color: #058ee6; font-weight: bold; 
+}
+
+.UIBrowseContentPortlet .FileContent .ECMIframe {
+	border: 1px solid #cbcbcb; 
+	height: auto ;
+	overflow: auto;
+	width: 93.7%;
+	background: white;
+	margin: 5px;
+}
+	
+.UIBrowseContentPortlet .FileContent .Content {	
+	white-space: normal;
+	padding: 0px 10px;
+	height: 300px;
+ }
+	
+.UIBrowseContentPortlet .FileContent .Content .TextContent {	
+	margin: auto;
+ }
+	
+.UIBrowseContentPortlet .FileContent .ContentDetail {	
+	border: 1px solid #e1e1e1; 
+	text-align: center;
+	overflow: auto;
+	margin: 10px auto;
+	width: 97.4%;
+	padding: 5px;
+}
+		
+.UIBrowseContentPortlet .FileContent .UIVoteForm {
+	padding: 0px;
+}
+	
+.UIBrowseContentPortlet .FileContent .UIRatingInfoContainer {
+	margin:0px 0px 0px auto;
+}
+
+/******************* Kofax *******************/
+
+.UIBrowseContentPortlet .WorkKofax {
+	margin: 10px;
+}
+
+.UIBrowseContentPortlet .WorkKofax .UIGrid td {
+	border-top: 1px solid #cccccc;
+}
+
+/******************* Podcast ********************/
+.UIBrowseContentPortlet .ContentPodcast {
+	border-bottom: 1px solid #bdbdbd; 
+	height: 25px;
+	line-height: 25px;
+}
+		
+.UIBrowseContentPortlet label.text { 
+	font: normal bold 11px Verdana;
+	line-height: 18px; 
+}
+		
+.UIBrowseContentPortlet .TitleBG label.text { 
+	line-height: 20px;
+}
+		
+.UIBrowseContentPortlet span.text	{ 
+	vertical-align:bottom; 
+	text-align: left ;
+	font-weight: normal;
+}
+		
+.UIBrowseContentPortlet div.summary { 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+} 
+		
+.UIBrowseContentPortlet div.content { 
+	font-size: 11px; 
+	padding: 5px; 
+	overflow: auto;
+}
+
+/******************* Sample ********************/
+
+.UIBrowseContentPortlet .WorkSample {
+	margin: 8xp 0px;
+}
+		
+.UIBrowseContentPortlet label.text { 
+	font: normal bold 11px Verdana;
+	line-height: 18px;
+}
+		
+.UIBrowseContentPortlet span.text	{ 
+	vertical-align:bottom; 
+	color: #00000; 
+}
+		
+.UIBrowseContentPortlet div.summary { 
+	width: 96%; 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+} 
+		
+.UIBrowseContentPortlet div.content { 
+	width: 96%; 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+}
+
+.UIBrowseContentPortlet .WorkSample .TitleBG {
+	background: transparent url(/ecm/skin/images/event/EventFrameBG.gif) repeat-x;
+	height: 18px;
+	line-height: 18px;
+}
+
+		
+.UIBrowseContentPortlet .HeaderSampleBG {
+	background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+	margin-bottom: 2px;
+	padding: 0px 5px 0px 5px; 
+	height: 18px;
+	border: solid 1px #bdbdbd;
+	border-bottom: none;
+	line-height: 18px;
+}
+		
+.UIBrowseContentPortlet .SampleBG {
+	height: 25px;
+	line-height: 25px;
+	border-bottom: solid 1px #BDBDBD;
+}
+
