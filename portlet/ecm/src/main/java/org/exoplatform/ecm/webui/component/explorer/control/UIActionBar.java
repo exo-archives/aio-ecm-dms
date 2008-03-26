@@ -367,8 +367,10 @@ public class UIActionBar extends UIForm {
         List documentNodeType = tservice.getDocumentTemplates(repository) ;
         String nodeType = selectedNode.getPrimaryNodeType().getName() ;
         if(documentNodeType.contains(nodeType)){
-          UIDocumentForm uiDocumentForm = 
-            uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
+          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
+          UIDocumentFormController uiController = 
+            event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController") ;
+          UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
           if(uiDocumentForm.getTemplate() == null) {
             uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.template-null", null)) ;
@@ -384,8 +386,8 @@ public class UIActionBar extends UIForm {
             uiDocumentForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
           }
           uiDocumentForm.setStoredPath(selectedNode.getPath()) ;
-          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-          uiPopupAction.activate(uiDocumentForm, 800, 600) ;
+          uiController.setRenderedChild(UIDocumentForm.class) ;
+          uiPopupAction.activate(uiController, 800, 600) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         } else {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null)) ;
