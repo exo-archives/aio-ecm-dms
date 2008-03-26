@@ -47,6 +47,7 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIRenameForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
@@ -333,13 +334,17 @@ public class UIWorkingArea extends UIContainer {
           nodeType = selectedNode.getPrimaryNodeType().getName() ;
         }
         if(documentNodeType.contains(nodeType)){
-          UIDocumentForm uiDocumentForm = 
-            uiExplorer.createUIComponent(UIDocumentForm.class, null, null) ;
+          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
+          UIDocumentFormController uiController = 
+            event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController") ;
+          UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
           uiDocumentForm.setWorkspace(wsName) ;
           uiDocumentForm.setNodePath(nodePath) ;
-          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-          uiPopupAction.activate(uiDocumentForm, 600, 550) ;
+          uiController.setRenderedChild(UIDocumentForm.class) ;
+          uiPopupAction.activate(uiController, 800, 600) ;
+//          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
+//          uiPopupAction.activate(uiDocumentForm, 600, 550) ;
         } else {          
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-support", arg, 
               ApplicationMessage.WARNING)) ;
