@@ -103,13 +103,14 @@ public class CmsServiceImpl implements CmsService {
       currentNode = storeHomeNode.addNode(nodeName, primaryType);            
       if(mixinTypes != null){
         for(String type : mixinTypes){
-          NodeType mixinType = nodetypeManager.getNodeType(type);
-          currentNode.addMixin(type);
+          if(currentNode.isNodeType(type)) {
+            currentNode.addMixin(type);
+          }
+          NodeType mixinType = nodetypeManager.getNodeType(type);          
           createNodeRecursively(NODE, currentNode, mixinType, mappings);
         }
       }        
-      createNodeRecursively(NODE, currentNode, nodeType, mappings);      
-      NodeType documentType = nodetypeManager.getNodeType(nodeTypeName) ;            
+      createNodeRecursively(NODE, currentNode, nodeType, mappings);                       
     } else {
       currentNode = storeHomeNode.getNode(nodeName);      
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
