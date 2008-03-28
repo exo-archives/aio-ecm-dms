@@ -138,8 +138,8 @@ ECMUtils.prototype.filterValue = function(frmId) {
 	var form = document.getElementById(frmId) ;
 	form['result'].innerHTML = form['tempSel'].innerHTML ;
 	var	filterValue = form['filter'].value ;
-	filterValue = "^" + filterValue.replace("*", ".*") ;
-	var re = new RegExp(filterValue, "gi") ;
+	filterValue = filterValue.replace("*", ".*") ;		
+	var re = new RegExp(filterValue, "i") ;	
 	var elSel = form['result'];
   var i;
   for (i = elSel.length - 1; i>=0; i--) {
