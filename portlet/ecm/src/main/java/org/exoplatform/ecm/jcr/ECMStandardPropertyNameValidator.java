@@ -54,8 +54,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
 	 * @param array
 	 * @return
 	 */
-//TODO: This method should use private instead of public
-  public boolean checkArr(String s, String[] arrFilterChars) {
+  private boolean checkArr(String s, String[] arrFilterChars) {
 		for (String filter : arrFilterChars) {
 			if (s.equals(filter)) {
 				return true;
@@ -70,8 +69,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
 	 * @param uiInput
 	 * @throws MessageException 
 	 */
-//TODO: This method should use private instead of public
-  public void checkOneChar(String s, UIFormInput uiInput) throws MessageException {
+  private void checkOneChar(String s, UIFormInput uiInput) throws MessageException {
 		String[] arrFilterChars = {".", "/", ":", "[", "]", "*", "'", "|", "\""} ;
 		if (checkArr(s, arrFilterChars)) {
 			throwException("ECMStandardPropertyNameValidator.msg.Invalid-char", uiInput);			
@@ -83,8 +81,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
 	 * @param s
 	 * @param uiInput
 	 */
-//TODO: This method should use private instead of public
-  public void checkTwoChars(String s, UIFormInput uiInput) throws MessageException {
+  private void checkTwoChars(String s, UIFormInput uiInput) throws MessageException {
 		String s2 = "";
 		if (s.startsWith(".")) {
 			s2 = s.substring(1, 2);
@@ -112,8 +109,7 @@ public class ECMStandardPropertyNameValidator implements Validator {
 	 * @param s
 	 * @param uiInput
 	 */
-//TODO: This method should use private instead of public
-  public void checkMoreChars(String s, UIFormInput uiInput) throws MessageException {
+  private void checkMoreChars(String s, UIFormInput uiInput) throws MessageException {
 		//check nonspace start and end char
 		String[] arrFilterChars = {"/", ":", "[", "]", "*", "'", "|", "\""} ;	
 		//get start and end char
@@ -132,22 +128,9 @@ public class ECMStandardPropertyNameValidator implements Validator {
 	        }
 		}
 	}		
-	
-  //TODO: This method should use private instead of public
-	public void throwException(String s, UIFormInput uiInput) throws MessageException {
+	  
+	private void throwException(String s, UIFormInput uiInput) throws MessageException {
 		Object[] args = { uiInput.getName() };
 		throw new MessageException(new ApplicationMessage(s, args, ApplicationMessage.WARNING));
-	}
-	//TODO: Should remove this method
-	public static void main(String[] args) {
-		String s = ".xyzs";
-		String s2 = s.substring(1, 2);
-		String s3 = s.substring(0, s.length() - 1);
-		String s4 = s.substring(s.length() - 1, s.length());
-		String s5 = s.substring(1, s.length() - 1);
-		System.out.println(s2);
-		System.out.println(s3);
-		System.out.println(s4);
-		System.out.println(s5);
 	}
 }
