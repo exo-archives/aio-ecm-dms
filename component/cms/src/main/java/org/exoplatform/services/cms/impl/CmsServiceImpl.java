@@ -103,7 +103,7 @@ public class CmsServiceImpl implements CmsService {
       currentNode = storeHomeNode.addNode(nodeName, primaryType);            
       if(mixinTypes != null){
         for(String type : mixinTypes){
-          if(currentNode.isNodeType(type)) {
+          if(!currentNode.isNodeType(type)) {
             currentNode.addMixin(type);
           }
           NodeType mixinType = nodetypeManager.getNodeType(type);          
