@@ -87,13 +87,15 @@ public class MoveNodeActionHandler implements ActionHandler {
     }
     srcNode.save();
 
+    // Compute the destination path relatively to the destination path.
+    String relPath = nodePath.substring(srcPath.length() + 1);
+    if(!relPath.startsWith("/"))
+      relPath = "/" + relPath;
+    relPath = relPath.replaceAll("\\[\\d*\\]", "");
+    
+    // Move the node.
     CmsService cmsService = (CmsService) container.getComponentInstanceOfType(CmsService.class);    
-    if(destPath.endsWith("/")) {
-      destPath = destPath + nodePath.substring(nodePath.lastIndexOf("/") + 1) ;
-    } else {
-      destPath = destPath + nodePath.substring(nodePath.lastIndexOf("/")) ;
-    }     
-    cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath, repository);
+    cmsService.moveNode(nodePath, srcWorkspace, destWorkspace, destPath + relPath, repository);
     session.logout();
   }
 
