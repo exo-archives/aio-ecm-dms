@@ -29,7 +29,6 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
-import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -41,7 +40,6 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.UIVoteForm;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
@@ -91,7 +89,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -722,9 +719,6 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
-//      PortletRequestContext pcontext = (PortletRequestContext)event.getRequestContext() ;
-//      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-//      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String repository = uiExplorer.getRepositoryName() ;
       ManageableRepository manaRepository = 
         uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository) ;

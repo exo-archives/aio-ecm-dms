@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
@@ -45,8 +44,6 @@ import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-
-import com.amazon.s3.Owner;
 
 /**
  * Created by The eXo Platform SARL
@@ -185,12 +182,12 @@ public class UIPermissionInfo extends UIContainer {
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-            prefs_.setValue(Utils.VIEWS,"") ;
-            prefs_.setValue(Utils.JCR_PATH,"") ;
-            prefs_.setValue(Utils.DRIVE,"") ;
-            prefs_.store() ;
+//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
+//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
+//            prefs_.setValue(Utils.VIEWS,"") ;
+//            prefs_.setValue(Utils.JCR_PATH,"") ;
+//            prefs_.setValue(Utils.DRIVE,"") ;
+//            prefs_.store() ;
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }

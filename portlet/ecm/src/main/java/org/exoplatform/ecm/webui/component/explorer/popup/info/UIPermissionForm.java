@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
@@ -199,12 +198,12 @@ public class UIPermissionForm extends UIForm implements UISelector {
         node.save();
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-            prefs_.setValue(Utils.VIEWS,"") ;
-            prefs_.setValue(Utils.JCR_PATH,"") ;
-            prefs_.setValue(Utils.DRIVE,"") ;
-            prefs_.store() ;
+//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
+//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
+//            prefs_.setValue(Utils.VIEWS,"") ;
+//            prefs_.setValue(Utils.JCR_PATH,"") ;
+//            prefs_.setValue(Utils.DRIVE,"") ;
+//            prefs_.store() ;
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }
