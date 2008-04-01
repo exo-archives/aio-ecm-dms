@@ -80,7 +80,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
                                                         null, ApplicationMessage.WARNING)) ;
     }
     try {
-      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String wsName = value.substring(0, value.indexOf(":")) ;
       String path = value.substring(value.indexOf(":") + 1) ;           
       //TODO maybe lost data here      

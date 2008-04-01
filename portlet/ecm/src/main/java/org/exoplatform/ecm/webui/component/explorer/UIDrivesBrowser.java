@@ -245,6 +245,7 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
       pref.setShowHiddenNode(drive.getShowHiddenNode()) ;
       uiJCRExplorer.setPreferences(pref);
+      uiJCRExplorer.setDriveData(drive) ;
       
       SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;

@@ -48,6 +48,7 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
+import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -94,6 +95,7 @@ public class UIJCRExplorer extends UIContainer {
   private boolean isViewTag_ = false ;
   private boolean isHidePopup_ = false ;
   private boolean isReferenceNode_ = false ;
+  private DriveData driveData_ ;
   
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
@@ -130,6 +132,9 @@ public class UIJCRExplorer extends UIContainer {
     currentPath_ = historyPath ;    
     refreshExplorer() ;
   }
+  
+  public void setDriveData(DriveData driveData) { driveData_ = driveData ; }
+  public DriveData getDriveData() { return driveData_ ; }
 
   public void setLanguage(String language) { language_ = language ; }
   public String getLanguage() { return language_ ; }
@@ -163,7 +168,8 @@ public class UIJCRExplorer extends UIContainer {
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {    
     try{                        
-      String workspace =  getPortletPreferences().getValue(Utils.WORKSPACE_NAME,"") ; // repository.getConfiguration().get .getDefaultWorkspaceName() ;
+//      String workspace =  getPortletPreferences().getValue(Utils.WORKSPACE_NAME,"") ; // repository.getConfiguration().get .getDefaultWorkspaceName() ;
+      String workspace =  driveData_.getWorkspace() ;
       Session session = getSystemProvider().getSession(workspace,getRepository());        
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     }catch(Exception e) {
@@ -389,7 +395,6 @@ public class UIJCRExplorer extends UIContainer {
 
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     Iterator childrenIterator = node.getNodes() ;
     List<Node> childrenList  = new ArrayList<Node>() ;
@@ -401,11 +406,11 @@ public class UIJCRExplorer extends UIContainer {
         isFolder = true ;
       }
     }
-    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName(), repository) && !isFolder) {
+    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName(), currentRepositoryName_) && !isFolder) {
       return childrenList ;
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
-      ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+      ManageableRepository manageableRepository = repositoryService.getRepository(currentRepositoryName_) ;
       SessionProvider sessionProvider = SessionsUtils.getSystemProvider();
       for(String workspace:manageableRepository.getWorkspaceNames()) {
         Session session = sessionProvider.getSession(workspace,manageableRepository) ;
@@ -423,7 +428,7 @@ public class UIJCRExplorer extends UIContainer {
       }
     }
     if(!preferences_.isShowNonDocumentType()) {
-      List documentTypes = templateService.getDocumentTemplates(repository) ;      
+      List documentTypes = templateService.getDocumentTemplates(currentRepositoryName_) ;      
       while(childrenIterator.hasNext()){
         Node child = (Node)childrenIterator.next() ;
         if(Utils.isReadAuthorized(child)) {
@@ -533,15 +538,17 @@ public class UIJCRExplorer extends UIContainer {
   public void setPreferences(Preference preference) {this.preferences_ = preference; } 
   
   public String getPreferencesPath() {
-    PortletPreferences prefs_ = getPortletPreferences() ;
-    String prefPath = prefs_.getValue(Utils.JCR_PATH, "") ;
+//    PortletPreferences prefs_ = getPortletPreferences() ;
+//    String prefPath = prefs_.getValue(Utils.JCR_PATH, "") ;
+    String prefPath = driveData_.getHomePath() ;
     if (prefPath == null || prefPath.length() == 0 || prefPath == "/") return "" ;
     return prefPath ;
   }
 
   public String getPreferencesWorkspace() {       
-    PortletPreferences prefs_ = getPortletPreferences() ;
-    String workspaceName = prefs_.getValue(Utils.WORKSPACE_NAME, "") ;
+//    PortletPreferences prefs_ = getPortletPreferences() ;
+//    String workspaceName = prefs_.getValue(Utils.WORKSPACE_NAME, "") ;
+    String workspaceName = driveData_.getWorkspace() ;
     if(workspaceName == null || workspaceName.length() == 0) return "" ;
     return workspaceName ;
   }

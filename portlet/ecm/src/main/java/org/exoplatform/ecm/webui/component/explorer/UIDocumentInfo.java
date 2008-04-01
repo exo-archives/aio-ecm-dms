@@ -135,7 +135,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public Node getNodeByUUID(String uuid) throws Exception{
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+//    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getDriveData().getRepository() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
@@ -304,8 +305,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-      return templateService.isManagedNodeType(nodeTypeName, repository);
+//      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+      return templateService.isManagedNodeType(nodeTypeName, getRepository());
     } catch (Exception e) {
       return false;
     }
@@ -369,8 +370,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
+//    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
   }
 
   public String getLanguage() {
@@ -417,9 +418,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       if(workspaceName == null ) {
         session = uiExplorer.getSession() ;
       } else {
-        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+//        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
-        ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+        ManageableRepository manageableRepository = repositoryService.getRepository(uicomp.getRepository()) ;
         SessionProvider provider = SessionsUtils.getSessionProvider() ;
         session = provider.getSession(workspaceName,manageableRepository) ;
       }

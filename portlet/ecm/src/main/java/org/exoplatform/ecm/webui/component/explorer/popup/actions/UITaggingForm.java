@@ -17,17 +17,13 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import javax.jcr.Node;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -73,9 +69,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
   }
   
   public void activate() throws Exception {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
     StringBuilder linkedTags = new StringBuilder() ;
     Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
@@ -93,10 +87,8 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
   static public class AddTagActionListener extends EventListener<UITaggingForm> {
     public void execute(Event<UITaggingForm> event) throws Exception {
       UITaggingForm uiForm = event.getSource() ;
-      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;

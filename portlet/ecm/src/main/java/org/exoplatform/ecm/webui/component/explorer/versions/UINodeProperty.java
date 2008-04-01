@@ -31,7 +31,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import javax.jcr.version.Version;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -57,7 +57,7 @@ public class UINodeProperty extends UIForm{
     RepositoryService repositoryService = 
       (RepositoryService)PortalContainer.getComponent(RepositoryService.class) ;
     List<Property> list = new ArrayList<Property>() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     NodeTypeManager nodeTypeManager = repositoryService.getRepository(repository).getNodeTypeManager() ;
     NodeType jcrFrozenNode = nodeTypeManager.getNodeType("nt:frozenNode") ;        
     NodeType ntVersion = nodeTypeManager.getNodeType("nt:version") ;
@@ -147,7 +147,7 @@ public class UINodeProperty extends UIForm{
   }
 
   private Session getSystemSession() throws Exception {
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;    
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;    
     ManageableRepository manageableRepository = 
       getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();

@@ -90,7 +90,7 @@ public class UIUploadContent extends UIContainer {
       UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
       MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
       UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class) ;
-      String repository = uiExplorer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+      String repository = uiExplorer.getRepositoryName() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String template = metadataService.getMetadataTemplate(nodeType, true, repository) ;
       if(template == null || template.trim().length() == 0) {

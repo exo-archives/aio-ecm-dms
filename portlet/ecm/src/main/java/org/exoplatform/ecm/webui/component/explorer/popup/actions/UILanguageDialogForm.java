@@ -25,7 +25,6 @@ import javax.jcr.NodeIterator;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -69,7 +68,7 @@ public class UILanguageDialogForm extends DialogFormFields {
   public void setTemplateNode(String type) { documentType_ = type ;}
   
   public String getTemplate() {
-    repositoryName_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {

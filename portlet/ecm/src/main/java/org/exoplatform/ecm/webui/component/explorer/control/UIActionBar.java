@@ -179,7 +179,7 @@ public class UIActionBar extends UIForm {
     tabOptions.clear() ;
     tabs_.clear() ;
     tabs_ = new ArrayList<String[]>() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository,SessionsUtils.getSystemProvider()); 
     NodeIterator tabs = view_.getNodes() ;
     int i = 0;
@@ -220,14 +220,14 @@ public class UIActionBar extends UIForm {
 
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return getApplicationComponent(QueryService.class).getQueries(userName, repository,SessionsUtils.getSystemProvider()) ;
   }
 
   public List<String> getMetadataTemplates() throws Exception {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     List<String> templates = new ArrayList<String>();
 
     NodeType[] nodeTypes = node.getMixinNodeTypes();
@@ -362,7 +362,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
-        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         List documentNodeType = tservice.getDocumentTemplates(repository) ;
         String nodeType = null ;
         if(selectedNode.hasProperty("exo:presentationType")) {
@@ -461,7 +461,7 @@ public class UIActionBar extends UIForm {
 
       NodeType nodeType = currentNode.getPrimaryNodeType() ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         if(!currentNode.isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.watch-checkedin", null)) ;
@@ -500,7 +500,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         if(!currentNode.isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.tagnode-checkedin", null)) ;
@@ -541,7 +541,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       NodeType nodeType = currentNode.getPrimaryNodeType() ;
       NodeType[] superTypes = nodeType.getSupertypes() ;
       boolean isFolder = false ;
@@ -721,13 +721,14 @@ public class UIActionBar extends UIForm {
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      PortletRequestContext pcontext = (PortletRequestContext)event.getRequestContext() ;
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+//      PortletRequestContext pcontext = (PortletRequestContext)event.getRequestContext() ;
+//      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+//      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      String repository = uiExplorer.getRepositoryName() ;
       ManageableRepository manaRepository = 
         uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository) ;
       NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class) ;
-      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode();
       if(uiActionBar.isRootNode(currentNode)) {
@@ -822,7 +823,7 @@ public class UIActionBar extends UIForm {
       List<Node> relations = 
         relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider()) ;
       uiRelateAddedList.updateGrid(relations) ;
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;
       TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class) ;

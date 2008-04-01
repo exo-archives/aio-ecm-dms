@@ -112,7 +112,7 @@ public class UIActionList extends UIContainer {
       TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
       UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
       String repository = 
-        uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        uiActionList.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       try {
         String path = templateService.getTemplatePathByUser(false, nodeTypeName, userName, repository);
         if(path == null) {
@@ -161,7 +161,7 @@ public class UIActionList extends UIContainer {
       TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
       String userName = event.getRequestContext().getRemoteUser() ;
       String repository = 
-        uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        uiActionList.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);
       Node selectedAction = null ;
@@ -224,11 +224,8 @@ public class UIActionList extends UIContainer {
         return ;
       }
       if(uiPopup != null && uiPopup.isRendered()) uiActionListContainer.removeChildById("editActionPopup") ;
-      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletPreferences preferences = context.getRequest().getPreferences() ;
       try {
-        actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 
-                                   preferences.getValue(Utils.REPOSITORY, "")) ;
+        actionService.removeAction(uiExplorer.getCurrentNode(), actionName, uiExplorer.getRepositoryName()) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;

@@ -20,11 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.nodetype.ConstraintViolationException;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -32,8 +29,6 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -62,9 +57,10 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
   private String allowCreateFolder_ ;
 
   public UIFolderForm() throws Exception {
-    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences preferences = context.getRequest().getPreferences() ;
-    allowCreateFolder_ = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
+  }
+
+  public void activate() throws Exception { 
+    allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
     if(allowCreateFolder_.equals("both")) {
       List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
       options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
@@ -73,9 +69,6 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     }
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
-  }
-
-  public void activate() throws Exception { 
     getUIStringInput(FIELD_NAME).setValue(null) ;
     if(getUIFormSelectBox(FIELD_TYPE) != null) {
       if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {

@@ -108,7 +108,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   public String getTemplate() { return getDialogPath() ; }
 
   public String getDialogPath() {
-    repositoryName_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String dialogPath = null ;
@@ -151,7 +151,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     ActionServiceContainer actionServiceContainer = getApplicationComponent(ActionServiceContainer.class) ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;   
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties());
     Node currentNode = uiExplorer.getCurrentNode();
     if(!Utils.isAddNodeAuthorized(currentNode) || !Utils.isSetPropertyNodeAuthorized(currentNode)) {

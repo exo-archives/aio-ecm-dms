@@ -71,8 +71,9 @@ public class UIViewBar extends UIForm {
   
   public String getWorkspaceName() {
     UIJCRExplorer uicomp = getAncestorOfType(UIJCRExplorer.class) ;
-    PortletPreferences prefs_ = uicomp.getPortletPreferences();
-    return prefs_.getValue(Utils.DRIVE, "") ;
+//    PortletPreferences prefs_ = uicomp.getPortletPreferences();
+//    return prefs_.getValue(Utils.DRIVE, "") ;
+    return uicomp.getDriveData().getWorkspace() ;
   }  
   
   public boolean isShowSaveSession() throws Exception{
