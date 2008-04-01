@@ -156,6 +156,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
   }
 
   public void init() throws Exception {
+    getChild(UIDocumentForm.class).setRepositoryName(repository_) ;
     getChild(UIDocumentForm.class).setTemplateNode(defaultDocument_) ;
     getChild(UIDocumentForm.class).setWorkspace(workspace_) ;
     getChild(UIDocumentForm.class).setStoredPath(currentNode_.getPath()) ;
