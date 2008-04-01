@@ -135,9 +135,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public Node getNodeByUUID(String uuid) throws Exception{
-//    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-    String repository = getAncestorOfType(UIJCRExplorer.class).getDriveData().getRepository() ;
-    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{

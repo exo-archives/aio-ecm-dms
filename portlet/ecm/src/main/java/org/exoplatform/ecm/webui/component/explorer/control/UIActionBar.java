@@ -968,6 +968,8 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null) ;
       uiSavedQuery.setIsQuickSearch(true) ;
+      uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName()) ;
+      uiSavedQuery.updateGrid() ;
       uiPopupAction.activate(uiSavedQuery, 700, 400) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
@@ -49,6 +50,7 @@ public class UIECMSearch extends UIContainer implements UIPopupComponent {
     UIJCRAdvancedSearch advanceSearch = getChild(UIJCRAdvancedSearch.class);
     advanceSearch.update(null);
     UISavedQuery uiQuery = getChild(UISavedQuery.class);
+    uiQuery.setRepositoryName(getAncestorOfType(UIJCRExplorer.class).getRepositoryName()) ;
     uiQuery.updateGrid();
   }
 

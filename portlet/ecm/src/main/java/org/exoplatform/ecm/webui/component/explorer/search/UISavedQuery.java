@@ -72,10 +72,10 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   private List<Query> privateQueries = new ArrayList<Query>() ;
   
   private boolean isQuickSearch_ = false ;
+  private String repositoryName_ ;
 
   public UISavedQuery() throws Exception {        
     uiPageIterator_ = addChild(UIPageIterator.class, null, "SavedQueryIterator");
-    updateGrid() ;  
   }  
 
   public void updateGrid() throws Exception {
@@ -121,7 +121,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   public boolean hasQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     try {
-      privateQueries = queryService.getQueries(getCurrentUserId(), getRepositoryName(),SessionsUtils.getSessionProvider());
+      privateQueries = queryService.getQueries(getCurrentUserId(), repositoryName_,SessionsUtils.getSessionProvider());
       return !privateQueries.isEmpty() ;    
     } catch(AccessDeniedException ace) {
       return privateQueries.isEmpty() ;
@@ -137,21 +137,19 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     String userId = pcontext.getRemoteUser() ;    
     SessionProvider provider = SessionsUtils.getSystemProvider() ;    
-    sharedQueries_ = queryService.getSharedQueries(userId, getRepositoryName(),provider) ;
+    sharedQueries_ = queryService.getSharedQueries(userId, repositoryName_,provider) ;
     return !sharedQueries_.isEmpty();
   }
   
   public List<Node> getSharedQueries() { return sharedQueries_ ; }
+ 
+  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName ; }
   
   public void activate() throws Exception { }
   
   public void deActivate() throws Exception { }
   
   public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
-  
-  private String getRepositoryName() {
-    return getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-  }
   
   static public class ExecuteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
@@ -174,9 +172,9 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       }
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath, wsName, uiQuery.getRepositoryName(),SessionsUtils.getSessionProvider()) ;
+        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,SessionsUtils.getSessionProvider()) ;
       } catch(AccessDeniedException ace) {
-        queryResult = queryService.execute(queryPath, wsName, uiQuery.getRepositoryName(),SessionsUtils.getSystemProvider()) ;
+        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,SessionsUtils.getSystemProvider()) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -206,7 +204,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
       String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Query query = queryService.getQueryByPath(queryPath, userName, uiQuery.getRepositoryName(),SessionsUtils.getSystemProvider()) ;
+      Query query = queryService.getQueryByPath(queryPath, userName, uiQuery.repositoryName_,SessionsUtils.getSystemProvider()) ;
       uiQuery.initPopupEditForm(query) ;
       if(!uiQuery.isQuickSearch_) {
         UIECMSearch uiECSearch = uiQuery.getParent() ;
@@ -224,7 +222,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;      
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      queryService.removeQuery(path, userName, uiQuery.getRepositoryName()) ;
+      queryService.removeQuery(path, userName, uiQuery.repositoryName_) ;
       uiQuery.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery) ;
     }
