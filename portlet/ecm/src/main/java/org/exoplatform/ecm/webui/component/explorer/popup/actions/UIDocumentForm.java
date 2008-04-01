@@ -89,9 +89,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
 
   public void addNew(boolean b) {isAddNew_ = b ;}
 
-  private String getRepository() {
-    return getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-  }
+  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName ; }
 
   public void updateSelect(String selectField, String value) {
     isUpdateSelect_ = true ;    
@@ -108,7 +106,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
   }
 
   public String getTemplate() {
-    repositoryName_ = getRepository() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
@@ -156,9 +153,8 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       nodeType = getNode().getPrimaryNodeType().getName() ;
     }       
     try {
-      String repository = getRepository() ;
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
-      String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(),repository);
+      String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(),repositoryName_);
       try {
         homeNode.save() ;
         newNode = (Node)homeNode.getSession().getItem(addedPath);

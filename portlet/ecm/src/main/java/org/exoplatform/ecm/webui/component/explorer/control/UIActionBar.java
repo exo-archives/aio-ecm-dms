@@ -372,7 +372,7 @@ public class UIActionBar extends UIForm {
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController") ;
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class) ;
-
+          uiDocumentForm.setRepositoryName(uiExplorer.getRepositoryName()) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
           if(uiDocumentForm.getTemplate() == null) {
             uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.template-null", null)) ;
