@@ -811,8 +811,6 @@ public class UIBrowseContainer extends UIContainer {
   public void loadPortletConfig(PortletPreferences preferences) throws Exception {
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     String repoName = preferences.getValue(Utils.REPOSITORY, "") ;
-//    String workspace = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
-//    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     setShowDocumentByTag(false) ;
     setShowDocumentDetail(false) ;
@@ -1191,6 +1189,10 @@ public class UIBrowseContainer extends UIContainer {
           if(uiContainer.isShowCommentForm() || uiContainer.isShowVoteForm()) uiContainer.initToolBar(false, false, false) ;
           if(!uiContainer.isShowDocumentByTag()) uiContainer.setPageIterator(uiContainer.getNodeByQuery(-1)) ;
           return ;
+        }
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+          uiContainer.setCurrentNodePath(uiContainer.categoryPath_) ;
+          uiContainer.setSelectedTabPath(uiContainer.categoryPath_) ;
         }
       } else {
         uiContainer.setShowDocumentByTag(false) ;
