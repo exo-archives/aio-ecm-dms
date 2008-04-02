@@ -372,7 +372,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
       Session session = SessionsUtils.getSessionProvider().getSession(workspaceName, repository) ;
       Node selectedNode = (Node) session.getItem(uri) ;
       uiComp.setNode(selectedNode) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp) ;
     }
   }
 }
