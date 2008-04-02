@@ -66,12 +66,9 @@ public class UIViewBar extends UIForm {
     getUIFormSelectBox(FIELD_SELECT_VIEW).setValue(viewOptions.get(0).getValue()) ;
   }
   
-  public String getWorkspaceName() {
-    UIJCRExplorer uicomp = getAncestorOfType(UIJCRExplorer.class) ;
-//    PortletPreferences prefs_ = uicomp.getPortletPreferences();
-//    return prefs_.getValue(Utils.DRIVE, "") ;
-    return uicomp.getDriveData().getWorkspace() ;
-  }  
+  public String getDriveName() {
+    return getAncestorOfType(UIJCRExplorer.class).getDriveData().getName() ;
+  }
   
   public boolean isShowSaveSession() throws Exception{
     UIJCRExplorer uiExplorer =  getAncestorOfType(UIJCRExplorer.class) ;
