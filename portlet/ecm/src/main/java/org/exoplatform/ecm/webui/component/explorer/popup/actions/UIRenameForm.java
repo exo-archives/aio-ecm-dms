@@ -29,7 +29,6 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -73,7 +72,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public UIRenameForm() throws Exception {    
     addUIFormInput(new UIFormStringInput(FIELD_OLDNAME, FIELD_OLDNAME, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NEWNAME, FIELD_NEWNAME, null).
-                   addValidator(ECMStandardPropertyNameValidator.class)) ;
+                   addValidator(ECMNameValidator.class)) ;
   }
 
   public void update(Node renameNode, boolean isReferencedNode) throws Exception {
