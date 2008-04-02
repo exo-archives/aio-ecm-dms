@@ -123,7 +123,7 @@
 	        		</tr>
 	        	</table>
 	        </div>
-	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;border: 1px solid red;">
+	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
 	          <col><col><col width="50"><col width="50"><col width="50"><col width="50"><col><col>
 	          <thead>
 	            <tr>
