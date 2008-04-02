@@ -1161,6 +1161,7 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT) ;
+      ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
       if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
@@ -1171,7 +1172,6 @@ public class UIBrowseContainer extends UIContainer {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(true) ;
         uiDocumentDetail.setRendered(true) ;  
-        ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
         String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
         uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
@@ -1180,6 +1180,18 @@ public class UIBrowseContainer extends UIContainer {
         uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath()) ;
         uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath()) ;
         uiContainer.getHistory().clear() ;
+      } else if(uiContainer.isShowDocumentDetail() && historyNode == null) {
+        uiContainer.setShowDocumentByTag(false) ;
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+          String tempName = uiContainer.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
+          uiContainer.setTemplate(vservice.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, uiContainer.getRepository(),SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+          if(uiContainer.isShowCommentForm() || uiContainer.isShowVoteForm()) uiContainer.initToolBar(false, false, false) ;
+          if(!uiContainer.isShowDocumentByTag()) uiContainer.setPageIterator(uiContainer.getNodeByQuery(-1)) ;
+          return ;
+        }
       } else {
         uiContainer.setShowDocumentByTag(false) ;
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
