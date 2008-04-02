@@ -58,6 +58,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UICategoryManage
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIExportNode;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIImportNode;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertiesManager;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationsAddedList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UINodeTypeInfo;
@@ -625,6 +626,9 @@ public class UIActionBar extends UIForm {
       }
       UIPropertiesManager uiPropertiesManager = 
         uiJCRExplorer.createUIComponent(UIPropertiesManager.class, null, null) ;
+      UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class) ;
+      uiForm.setRepositoryName(uiJCRExplorer.getRepositoryName()) ;
+      uiForm.getUIFormSelectBox(UIPropertyForm.FIELD_NAMESPACE).setOptions(uiForm.getNamespaces()) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiPropertiesManager, 700, 0) ;
       if(uiJCRExplorer.nodeIsLocked(node)){

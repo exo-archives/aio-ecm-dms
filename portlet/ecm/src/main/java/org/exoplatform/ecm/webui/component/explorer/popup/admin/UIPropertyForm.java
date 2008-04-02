@@ -72,6 +72,8 @@ public class UIPropertyForm extends UIForm {
   final static public String FIELD_VALUE = "value" ;
   final static public String FIELD_NAMESPACE = "namespace" ;
 
+  private String repositoryName_ ;
+  
   public UIPropertyForm() throws Exception {
     setMultiPart(true);
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -95,7 +97,8 @@ public class UIPropertyForm extends UIForm {
         Integer.toString(PropertyType.REFERENCE))) ;
     options.add(new SelectItemOption<String>(PropertyType.TYPENAME_UNDEFINED, 
         Integer.toString(PropertyType.UNDEFINED))) ;
-    addUIFormInput(new UIFormSelectBox(FIELD_NAMESPACE,FIELD_NAMESPACE, getNamespaces())) ;
+    List<SelectItemOption<String>> nsOptions = new ArrayList<SelectItemOption<String>>() ;
+    addUIFormInput(new UIFormSelectBox(FIELD_NAMESPACE,FIELD_NAMESPACE, nsOptions)) ;
     addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null).addValidator(ECMNameValidator.class)) ;
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options) ; 
     uiSelectBox.setOnChange("ChangeType") ;
@@ -106,9 +109,8 @@ public class UIPropertyForm extends UIForm {
 
   public List<SelectItemOption<String>> getNamespaces() throws Exception {
     List<SelectItemOption<String>> namespaceOptions = new ArrayList<SelectItemOption<String>>() ; 
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     String[] namespaces = 
-      getApplicationComponent(RepositoryService.class).getRepository(repository).getNamespaceRegistry().getPrefixes() ;
+      getApplicationComponent(RepositoryService.class).getRepository(repositoryName_).getNamespaceRegistry().getPrefixes() ;
     for(String namespace : namespaces){
       namespaceOptions.add(new SelectItemOption<String>(namespace, namespace)) ;
     }
@@ -122,6 +124,8 @@ public class UIPropertyForm extends UIForm {
     initMultiValuesField() ;
   }
 
+  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName ; }
+  
   private void initMultiValuesField() throws Exception{
     UIFormMultiValueInputSet uiFormMValue = 
       createUIComponent(UIFormMultiValueInputSet.class, null, null) ;

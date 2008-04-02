@@ -38,12 +38,15 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UIPropertiesManager extends UIContainer implements UIPopupComponent {
-
-  public void activate() throws Exception {
+  
+  public UIPropertiesManager() throws Exception {
     addChild(UIPropertyTab.class, null, null)  ;
     addChild(UIPropertyForm.class, null, null).setRendered(false) ;
   }
-
+  
+  public void activate() throws Exception {
+  }
+  
   public void deActivate() throws Exception {}
   public void setLockForm(boolean isLockForm) {
     getChild(UIPropertyForm.class).lockForm(isLockForm) ;
@@ -55,4 +58,3 @@ public class UIPropertiesManager extends UIContainer implements UIPopupComponent
     }
   }
 }
-
