@@ -43,6 +43,10 @@
 	color: #058ee6;
 }
 
+.UIEventViewer .EventContent .TopEventContentDetail {
+  height: 100%;
+}
+
 .UIEventViewer .EventContent .EventDocumentLabel {
 	margin-left: 5px;
   line-height: 18px; 

@@ -22,7 +22,7 @@
     border: 1px solid #cbcbcb; 
     height: 100% ;
     overflow: auto;
-    width: 93.9%;
+    width: 93%;
     margin: 5px;
     background: white;
   }
