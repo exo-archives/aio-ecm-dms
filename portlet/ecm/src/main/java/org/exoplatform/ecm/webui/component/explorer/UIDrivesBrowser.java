@@ -224,15 +224,6 @@ public class UIDrivesBrowser extends UIContainer {
       drive.setViews(viewList) ;
       String homePath = drive.getHomePath() ;
       if(homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId) ;
-//      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-//      PortletPreferences preferences = context.getRequest().getPreferences() ;
-//      preferences.setValue(Utils.WORKSPACE_NAME, drive.getWorkspace()) ;
-//      preferences.setValue(Utils.JCR_PATH, homePath) ;
-//      preferences.setValue(Utils.VIEWS, drive.getViews()) ;
-//      preferences.setValue(Utils.DRIVE, drive.getName()) ;
-//      preferences.setValue(Utils.DRIVE_FOLDER, drive.getAllowCreateFolder()) ;
-//      preferences.setValue(Utils.REPOSITORY, uiDrive.repoName_) ;
-//      preferences.store() ;
       UIJCRExplorerPortlet uiParent = uiDrive.getParent() ;      
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class) ;
 
@@ -244,6 +235,7 @@ public class UIDrivesBrowser extends UIContainer {
       pref.setShowHiddenNode(drive.getShowHiddenNode()) ;
       uiJCRExplorer.setPreferences(pref);
       uiJCRExplorer.setDriveData(drive) ;
+      uiJCRExplorer.setIsReferenceNode(false) ;
       
       SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
