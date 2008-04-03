@@ -58,6 +58,9 @@ public class UIUploadContent extends UIContainer {
   public List<String> getExternalList() throws Exception { 
     NodeType[] mixinTypes = getUploadedNode().getMixinNodeTypes() ;
     for(NodeType nodeType : mixinTypes) {
+      if(nodeType.getName().equals(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
+        externalList_.add(nodeType.getName()) ;
+      }
       for(NodeType superType : nodeType.getSupertypes()) {
         if(superType.getName().equals(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
           externalList_.add(nodeType.getName()) ;
