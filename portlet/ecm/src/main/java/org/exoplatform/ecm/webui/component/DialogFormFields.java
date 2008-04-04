@@ -26,11 +26,20 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.apache.commons.lang.StringUtils;
+import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.ecm.jcr.CronExpressionValidator;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.ecm.jcr.RepeatCountValidator;
+import org.exoplatform.ecm.jcr.RepeatIntervalValidator;
+import org.exoplatform.ecm.utils.SessionsUtils;
+import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -43,6 +52,8 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
+import org.exoplatform.webui.form.UIFormInput;
+import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -53,7 +64,6 @@ import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
-import org.exoplatform.webui.form.UIFormInputBase;
 
 /**
  * Created by The eXo Platform SARL
@@ -69,7 +79,6 @@ public class DialogFormFields extends UIForm {
   public Map<String, Map> components = new HashMap<String, Map>();
   public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
   public Map<String, String> fieldNames_ = new HashMap<String, String>() ;
-
   private boolean isNotEditNode_ = false ;
   private boolean isNTFile_ = false ;
   private boolean isResetMultiField_ = false ;
@@ -84,26 +93,25 @@ public class DialogFormFields extends UIForm {
 
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
-  private final String SEPARATOR = "=";
-  private final String JCR_PATH = "jcrPath" + SEPARATOR;
-  private final String EDITABLE = "editable" + SEPARATOR;
-  private final String ONCHANGE = "onchange" + SEPARATOR;
-  private final String OPTIONS = "options" + SEPARATOR;
-  private final String TYPE = "type" + SEPARATOR ;
-  private final String VISIBLE = "visible" + SEPARATOR;
-  private final String NODETYPE = "nodetype" + SEPARATOR;
-  private final String MIXINTYPE = "mixintype" + SEPARATOR;
-  private final String VALIDATE = "validate" + SEPARATOR;
-  private final String SELECTOR_ACTION = "selectorAction" + SEPARATOR;
-  private final String SELECTOR_CLASS = "selectorClass" + SEPARATOR;
-  private final String SELECTOR_ICON = "selectorIcon" + SEPARATOR;
-  private final String SELECTOR_PARAMS = "selectorParams" + SEPARATOR;
-  private final String WORKSPACE_FIELD = "workspaceField" + SEPARATOR;
-  private final String SCRIPT = "script" + SEPARATOR;
-  private final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
-  private final String MULTI_VALUES = "multiValues" + SEPARATOR;
-  private final String REPOSITORY = "repository";
-  private final String DEFAULT_VALUES = "defaultValues" + SEPARATOR ;
+  private static final String SEPARATOR = "=";
+  private static final String JCR_PATH = "jcrPath" + SEPARATOR;
+  private static final String EDITABLE = "editable" + SEPARATOR;
+  private static final String ONCHANGE = "onchange" + SEPARATOR;
+  private static final String OPTIONS = "options" + SEPARATOR;
+  private static final String TYPE = "type" + SEPARATOR ;
+  private static final String VISIBLE = "visible" + SEPARATOR;
+  private static final String NODETYPE = "nodetype" + SEPARATOR;
+  private static final String MIXINTYPE = "mixintype" + SEPARATOR;
+  private static final String VALIDATE = "validate" + SEPARATOR;
+  private static final String SELECTOR_ACTION = "selectorAction" + SEPARATOR;
+  private static final String SELECTOR_CLASS = "selectorClass" + SEPARATOR;
+  private static final String SELECTOR_ICON = "selectorIcon" + SEPARATOR;
+  private static final String SELECTOR_PARAMS = "selectorParams" + SEPARATOR;
+  private static final String WORKSPACE_FIELD = "workspaceField" + SEPARATOR;
+  private static final String SCRIPT = "script" + SEPARATOR;
+  private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
+  private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
+  private static final String REPOSITORY = "repository";
 
   public static final  String[]  ACTIONS = {"Save", "Cancel"};
 
@@ -118,8 +126,8 @@ public class DialogFormFields extends UIForm {
   public void setNodePath(String nodePath) { nodePath_ = nodePath ; }
 
   public Session getSesssion() throws Exception {
-    return SessionProviderFactory.createSessionProvider().getSession(workspaceName_, getRepository()) ;
-  }    
+    return SessionsUtils.getSessionProvider().getSession(workspaceName_, getRepository()) ;
+  }
 
   private ManageableRepository getRepository() throws Exception{         
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
@@ -193,26 +201,96 @@ public class DialogFormFields extends UIForm {
     return "" ;
   }
 
+  private List<String> getPropertyValues(String jcrPath, Node node) throws Exception {
+    String propertyName = getPropertyName(jcrPath) ;    
+    if(node == null || !node.hasProperty(propertyName)) return null ;   
+    Property property = node.getProperty(propertyName) ;    
+    int valueType = property.getType();
+    boolean isMultiple = property.getDefinition().isMultiple() ;
+    if(!isMultiple) return null;    
+    Value[] values = property.getValues();
+    List<String> convertedValues = new ArrayList<String>() ;
+    switch(valueType) {
+    case PropertyType.STRING: //String      
+      for(Value value:values) {
+        convertedValues.add(value.getString()) ;
+      }
+      break ;    
+    case PropertyType.LONG: // Long    
+      for(Value value:values) {
+        convertedValues.add(Long.toString(value.getLong())) ;
+      }
+      break;
+    case PropertyType.DOUBLE: // Double
+      for(Value value:values) {
+        convertedValues.add(Double.toString(value.getDouble())) ;
+      }
+      break;
+    case PropertyType.DATE: //Date
+      for(Value value:values) {
+        convertedValues.add(value.getDate().toString()) ;
+      }
+      break;
+    case PropertyType.BOOLEAN: //Boolean
+      for(Value value:values) {
+        convertedValues.add(Boolean.toString(value.getBoolean())) ;
+      }
+      break;              
+    case PropertyType.REFERENCE :
+      Session session = node.getSession();
+      for(Value value:values) {
+        try {
+          String nodePath = session.getNodeByUUID(value.getString()).getPath() ;          
+          convertedValues.add(nodePath.substring(1)) ; 
+        }catch (Exception e) {
+        }        
+      }
+      break;      
+    }
+    return convertedValues;
+  }    
+
   public void addActionField(String name, String[] arguments) throws Exception { 
     addActionField(name,null,arguments);
   }
 
   public void addActionField(String name,String label,String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String editable = parsedArguments.get(EDITABLE);
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String selectorAction = parsedArguments.get(SELECTOR_ACTION);
-    String selectorClass = parsedArguments.get(SELECTOR_CLASS);    
-    String workspaceField = parsedArguments.get(WORKSPACE_FIELD);
-    String selectorIcon = parsedArguments.get(SELECTOR_ICON);
-    String multiValues = parsedArguments.get(MULTI_VALUES);
-    String validateType = parsedArguments.get(VALIDATE) ;
-    String params = parsedArguments.get(SELECTOR_PARAMS) ;
+    String editable = "true";
+    String defaultValue = "";
+    String jcrPath = null;
+    String selectorAction = null;
+    String selectorClass = null;
     String[] selectorParams = null;
-    if(params != null) {
-      selectorParams = params.split(",");
-    }
+    String workspaceField = null ;
+    String selectorIcon = null ;
+    String multiValues = null ;
+    String validateType = null ;
+    String params = null ;
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(EDITABLE)) {
+        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SELECTOR_ACTION)) {
+        selectorAction = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SELECTOR_CLASS)) {
+        selectorClass = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SELECTOR_ICON)) {
+        selectorIcon = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SELECTOR_PARAMS)) {
+        params = argument.substring(argument.indexOf(SEPARATOR) + 1);
+        selectorParams = StringUtils.split(params, ",");
+      }else if (argument.startsWith(WORKSPACE_FIELD)) {
+        workspaceField = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+        defaultValue = argument;
+      }
+    }    
     if(selectorClass != null) { 
       Map<String, String> fieldPropertiesMap = new HashMap<String, String>() ;
       fieldPropertiesMap.put("selectorClass", selectorClass) ;
@@ -225,25 +303,43 @@ public class DialogFormFields extends UIForm {
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
-    if("true".equals(multiValues)) {
-      renderMultiValuesInput(UIFormStringInput.class,name,label) ;      
+    if(multiValues != null && multiValues.equals("true")) {      
+      UIFormMultiValueInputSet uiMulti ;      
+      uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
+      uiMulti.setId(name) ;
+      uiMulti.setName(name) ;
+      uiMulti.setType(UIFormStringInput.class) ;              
+      List<String> values = getPropertyValues(jcrPath,getNode()) ;      
+      if(values != null) {        
+        uiMulti.setValue(values) ;                
+      }                                                          
+      addUIFormInput(uiMulti) ;
+      renderField(name) ;      
       return ;
-    }
+    }    
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       if(validateType != null) {
-    	  addValidators(uiInput, validateType);
-       //uiInput.addValidator(getValidator(validateType)) ;
+        if(validateType.equals("name")) {
+          uiInput.addValidator(ECMNameValidator.class) ;
+        } else if (validateType.equals("email")){
+          uiInput.addValidator(EmailAddressValidator.class) ;
+        } else if (validateType.equals("number")) {
+          uiInput.addValidator(NumberFormatValidator.class) ;
+        } else if (validateType.equals("empty")){
+          uiInput.addValidator(MandatoryValidator.class) ;
+        }        
       }
-      if(label != null ) {
+      if(label != null && label.length() != 0) {
         uiInput.setLabel(label);
       }
       addUIFormInput(uiInput) ;
     }
-    if("false".equals(editable)) uiInput.setEditable(false) ;
+    if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
+    properties.put(name,inputProperty) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
     if(getNode() != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
@@ -254,8 +350,8 @@ public class DialogFormFields extends UIForm {
       } 
     }
     if(isNotEditNode_) {
-      if(getChildNode() != null) {
-        uiInput.setValue(getPropertyValue(jcrPath)) ;
+      if(getChildNode() != null) {        
+        uiInput.setValue(getPropertyValue(jcrPath)) ;        
       } else if(getChildNode() == null && jcrPath.equals("/node") && getNode() != null) {
         uiInput.setValue(getNode().getName()) ;
       } else {
@@ -270,16 +366,34 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addTextField(String name, String label, String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;       
-    String type = parsedArguments.get(TYPE);
-    String editable = parsedArguments.get(EDITABLE);
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String mixintype = parsedArguments.get(MIXINTYPE);
-    String multiValues = parsedArguments.get(MULTI_VALUES);
-    String validateType = parsedArguments.get(VALIDATE) ;
-    String nodetype = parsedArguments.get(NODETYPE);
-
+    String editable = "true";
+    String type = "text" ;
+    String defaultValue = "";
+    String jcrPath = null;
+    String mixintype = null;
+    String multiValues = null ;
+    String validateType = null ;
+    String nodetype = null;
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(EDITABLE)) {
+        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(TYPE)){
+        type = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MIXINTYPE)) {
+        mixintype = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if(argument.startsWith(NODETYPE)){
+        nodetype = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
+      }else {
+        defaultValue = argument;
+      }
+    }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
@@ -289,7 +403,7 @@ public class DialogFormFields extends UIForm {
     properties.put(name, inputProperty) ;
     propertiesName_.put(name, propertyName) ;
     fieldNames_.put(propertyName, name) ;
-    if("true".equalsIgnoreCase(multiValues)) {
+    if(multiValues != null && multiValues.equals("true")) {
       UIFormMultiValueInputSet uiMulti ;
       if(getNode() == null && getChildNode() == null) {
         uiMulti = findComponentById(name) ;
@@ -339,8 +453,21 @@ public class DialogFormFields extends UIForm {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       //TODO need use full class name for validate type. 
       if(validateType != null) {
-    	  addValidators(uiInput, validateType);
-       // uiInput.addValidator(getValidator(validateType)) ;
+        if(validateType.equals("name")) {
+          uiInput.addValidator(ECMNameValidator.class) ;
+        } else if (validateType.equals("email")){
+          uiInput.addValidator(EmailAddressValidator.class) ;
+        } else if (validateType.equals("number")) {
+          uiInput.addValidator(NumberFormatValidator.class) ;
+        } else if (validateType.equals("empty")){
+          uiInput.addValidator(MandatoryValidator.class) ;
+        } else if(validateType.equals("cronExpressionValidator")) {
+          uiInput.addValidator(CronExpressionValidator.class) ;
+        } else if(validateType.equals("repeatCountValidator")) {
+          uiInput.addValidator(RepeatCountValidator.class) ;
+        } else if(validateType.equals("repeatIntervalValidator")) {
+          uiInput.addValidator(RepeatIntervalValidator.class) ;
+        }
       }     
       if(label != null && label.length()!=0) {
         uiInput.setLabel(label);
@@ -348,8 +475,8 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiInput) ;      
     }
     if(uiInput.getValue() == null) uiInput.setValue(defaultValue) ;
-    if("password".equals(type)) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
-    if("false".equals(editable)) uiInput.setEditable(false) ;
+    if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
+    if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
     if(getNode() != null) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
@@ -376,20 +503,36 @@ public class DialogFormFields extends UIForm {
     }
     renderField(name) ;
   }
-
   public void addTextAreaField(String name, String[] arguments) throws Exception {
     addTextAreaField(name,null,arguments);
   }
 
   public void addTextAreaField(String name, String label, String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String editable = parsedArguments.get(EDITABLE);
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String selectorAction = parsedArguments.get(SELECTOR_ACTION);
-    String selectorClass = parsedArguments.get(SELECTOR_CLASS);
-    String multiValues = parsedArguments.get(MULTI_VALUES);
-    String validateType = parsedArguments.get(VALIDATE) ;    
+    String editable = "true";
+    String defaultValue = "";
+    String jcrPath = null;
+    String selectorAction = null;
+    String selectorClass = null;
+    String multiValues = null ;
+    String validateType = null ;
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(EDITABLE)) {
+        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SELECTOR_ACTION)) {
+        selectorAction = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SELECTOR_CLASS)) {
+        selectorClass = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+        defaultValue = argument;
+      }
+    }
     if(selectorClass != null) { 
       Map<String, String> fieldPropertiesMap = new HashMap<String, String>() ;
       fieldPropertiesMap.put("selectorClass", selectorClass) ;
@@ -400,21 +543,26 @@ public class DialogFormFields extends UIForm {
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
     if(multiValues != null && multiValues.equals("true")) {
-      renderMultiValuesInput(UIFormDateTimeInput.class,name,label) ;      
+      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
+      uiMulti.setId(name) ;
+      uiMulti.setName(name) ;
+      uiMulti.setType(UIFormTextAreaInput.class) ;
+      addUIFormInput(uiMulti) ;
+      renderField(name) ;
       return ;
     }
     UIFormTextAreaInput uiTextArea = findComponentById(name) ;    
     if(uiTextArea == null) {
       uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
       if(validateType != null) {
-    	  addValidators(uiTextArea, validateType);
-//        uiTextArea.addValidator(getValidator(validateType)) ;
-      }
-      if(label != null) uiTextArea.setLabel(label) ;
+        if (validateType.equals("empty")){
+          uiTextArea.addValidator(MandatoryValidator.class) ;
+        }
+      }     
       addUIFormInput(uiTextArea) ;
     }
     if(uiTextArea.getValue() == null) uiTextArea.setValue(defaultValue) ;
-    if("false".equals(editable)) uiTextArea.setEditable(false) ;
+    if(editable.equals("false")) uiTextArea.setEditable(false) ;
     else uiTextArea.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
@@ -423,8 +571,8 @@ public class DialogFormFields extends UIForm {
       String value = "";
       if(getNode().hasProperty(getPropertyName(jcrPath))) {
         value = getNode().getProperty(getPropertyName(jcrPath)).getValue().getString() ;
-      } else if(getNode().isNodeType("nt:file")) {
-        Node jcrContentNode = getNode().getNode("jcr:content") ;
+      } else if(getNode().isNodeType(Utils.NT_FILE)) {
+        Node jcrContentNode = getNode().getNode(Utils.JCR_CONTENT) ;
         if(jcrContentNode.hasProperty(getPropertyName(jcrPath))) {
           if(jcrContentNode.getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
             Value[] values = jcrContentNode.getProperty(getPropertyName(jcrPath)).getValues() ;
@@ -455,31 +603,49 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addWYSIWYGField(String name, String label, String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String options = parsedArguments.get(OPTIONS) ;
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String jcrPath = parsedArguments.get(JCR_PATH);    
-    String multiValues = parsedArguments.get(MULTI_VALUES) ;
-    String validateType = parsedArguments.get(VALIDATE) ;
+    String options = null ;
+    String defaultValue = "";
+    String jcrPath = null;
     boolean isBasic = false ;
+    String multiValues = null ;
+    String validateType = null ;
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(OPTIONS)) {
+        options = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);      
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+        defaultValue = argument;
+      }
+    }
     JcrInputProperty inputProperty = new JcrInputProperty();
-    inputProperty.setJcrPath(jcrPath);       
+    inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
-    if("true".equalsIgnoreCase(multiValues)) {
-      renderMultiValuesInput(UIFormWYSIWYGInput.class,name,label);      
+    if(multiValues != null && multiValues.equals("true")) {
+      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
+      uiMulti.setId(name) ;
+      uiMulti.setName(name) ;
+      uiMulti.setType(UIFormWYSIWYGInput.class) ;
+      addUIFormInput(uiMulti) ;
+      renderField(name) ;
       return ;
     }
-    if("basic".equals(options)) 
-      isBasic = true ;
-    else 
-      isBasic = false;        
-
+    if(options != null) {
+      if(options.equals("basic")) isBasic = true ;
+      else isBasic = false ;
+    }
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
       wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
       if(validateType != null) {
-    	  addValidators(wysiwyg, validateType);
-//        wysiwyg.addValidator(getValidator(validateType)) ;
+        if (validateType.equals("empty")){
+          wysiwyg.addValidator(MandatoryValidator.class) ;
+        }
       }     
       addUIFormInput(wysiwyg) ;
     }
@@ -512,22 +678,44 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addSelectBoxField(String name, String[] arguments) throws Exception {
-    addSelectBoxField(name,null,arguments) ;
-  }
-
-  public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;    
-    String multiValues = parsedArguments.get(MULTI_VALUES) ;    
-    if("true".equals(multiValues)) {
-      renderMultiValuesInput(UIFormSelectBox.class,name,label);
+    String jcrPath = null;
+    String editable = "true";
+    String onchange = "false" ;
+    String defaultValue = "" ;
+    String options = null;
+    String script = null;
+    String[] scriptParams = null;
+    String multiValues = null ;
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(EDITABLE)) {
+        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(OPTIONS)) {
+        options = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SCRIPT)) {
+        script = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(SCRIPT_PARAMS)) {
+        String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
+        scriptParams = StringUtils.split(params, ","); 
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+      } else if(argument.startsWith(ONCHANGE)) {
+        onchange = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
+      } else {
+        defaultValue = argument;
+      } 
+    }
+    if(multiValues != null && multiValues.equals("true")) {
+      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
+      uiMulti.setId(name) ;
+      uiMulti.setName(name) ;
+      uiMulti.setType(UIFormSelectBox.class) ;
+      addUIFormInput(uiMulti) ;
+      renderField(name) ;
       return ;
     }
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String editable = parsedArguments.get(EDITABLE);
-    String onchange = parsedArguments.get(ONCHANGE);
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String options = parsedArguments.get(OPTIONS);
-    String script = parsedArguments.get(SCRIPT);
     List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
     if(uiSelectBox == null || isResetForm_) {
@@ -535,8 +723,7 @@ public class DialogFormFields extends UIForm {
       addUIFormInput(uiSelectBox) ;
       if (script != null) {
         try {
-          String[] scriptParams = parsedArguments.get(SCRIPT_PARAMS).split(",");
-          if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName_ ;
+          if(scriptParams[0].equals("repository")) scriptParams[0] = repositoryName_ ;
           executeScript(script, uiSelectBox, scriptParams);
         } catch(Exception e) {
           uiSelectBox.setOptions(optionsList) ;
@@ -563,7 +750,7 @@ public class DialogFormFields extends UIForm {
       if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
         if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
           uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
-        } else if("true".equals(onchange) && isOnchange_) {
+        } else if(onchange.equals("true") && isOnchange_) {
           uiSelectBox.setValue(uiSelectBox.getValue()) ;
         } else {
           uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
@@ -573,15 +760,15 @@ public class DialogFormFields extends UIForm {
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
-    if("false".equalsIgnoreCase(editable)) uiSelectBox.setDisabled(false) ;
+    if(editable.equals("false")) uiSelectBox.setDisabled(false) ;
     else uiSelectBox.setEditable(true) ;
     addUIFormInput(uiSelectBox) ;
     if(isNotEditNode_) {
       if(getChildNode() != null) uiSelectBox.setValue(getPropertyValue(jcrPath)) ; 
     }
-    if("true".equalsIgnoreCase(onchange)) uiSelectBox.setOnChange("Onchange") ;
-    renderField(name) ;   
-  }    
+    if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
+    renderField(name) ;
+  }
 
   public String getSelectBoxFieldValue(String name) {
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
@@ -590,25 +777,31 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addUploadField(String name, String[] arguments) throws Exception {
-    addUploadField(name,null,arguments) ;
-  }
-
-  public void addUploadField(String name,String label,String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String multiValues = parsedArguments.get(MULTI_VALUES) ;    
+    String jcrPath = null;
+    String multiValues = null ;
+    for(String argument : arguments) {
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+      }
+    }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
     setMultiPart(true) ;
-    if("true".equalsIgnoreCase(multiValues)) {
-      renderMultiValuesInput(UIFormUploadInput.class,name,label) ;      
+    if(multiValues != null && multiValues.equals("true")) {
+      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
+      uiMulti.setId(name) ;
+      uiMulti.setName(name) ;
+      uiMulti.setType(UIFormUploadInput.class) ;
+      addUIFormInput(uiMulti) ;
+      renderField(name) ;
       return ;
-    }    
+    }
     UIFormUploadInput uiInputUpload = findComponentById(name) ;
     if(uiInputUpload == null) {
       uiInputUpload = new UIFormUploadInput(name, name) ;
-      if(label != null) uiInputUpload.setLabel(label) ;
       addUIFormInput(uiInputUpload) ;
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
@@ -617,18 +810,28 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addMixinField(String name, String[] arguments) throws Exception {
-    addMixinField(name,null,arguments) ;
-  }
-
-  public void addMixinField(String name,String label,String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String nodetype = parsedArguments.get(NODETYPE);
-    String mixintype = parsedArguments.get(MIXINTYPE);
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String editable = parsedArguments.get(EDITABLE);
-    String visible = parsedArguments.get(VISIBLE);
-
+    String jcrPath = null;
+    String nodetype = null;
+    String mixintype = null;
+    String defaultValue = "";
+    String editable = "true";
+    String visible = "true";
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(NODETYPE)) {
+        nodetype = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MIXINTYPE)) {
+        mixintype = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VISIBLE)) {
+        visible = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(EDITABLE)) {
+        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+        defaultValue = argument;
+      }
+    }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     if (nodetype != null || mixintype != null) {
@@ -637,39 +840,49 @@ public class DialogFormFields extends UIForm {
       if(mixintype != null) inputProperty.setMixintype(mixintype);
     }
     setInputProperty(name, inputProperty) ;
-    if(getNode() != null && "if-not-null".equals(visible)) {
+    if(getNode() != null && visible.equals("if-not-null")) {
       UIFormStringInput uiMixin = findComponentById(name) ;
       if(uiMixin == null) {
         uiMixin = new UIFormStringInput(name, name, defaultValue) ;
-        if(label != null) uiMixin.setLabel(label) ;
         addUIFormInput(uiMixin) ;
       }
       uiMixin.setValue(getNode().getName()) ;
       uiMixin.setEditable(false) ;
       renderField(name) ; 
     }
-  }      
-
-  public void addCalendarField(String name, String[] arguments) throws Exception {
-    addCalendarField(name,null,arguments) ;
   }
 
-  public void addCalendarField(String name, String label, String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String options = parsedArguments.get(OPTIONS);
-    String defaultValue =parsedArguments.get(DEFAULT_VALUES);    
-    String multiValues =parsedArguments.get(MULTI_VALUES) ;
-    String visible = parsedArguments.get(VISIBLE);
-    String validateType = parsedArguments.get(VALIDATE);
+  public void addCalendarField(String name, String[] arguments) throws Exception {
+    String jcrPath = null;
+    String options = null;
+    String defaultValue = "";
     String[] arrDate = null;
-    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss") ;    
+    String multiValues = null ;
+    String visible = "true";
+    String validateType = null ;
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss") ;
+    for(int i = 0; i < arguments.length; i++) {
+      String argument = arguments[i];
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(OPTIONS)) {
+        options = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VISIBLE)) {
+        visible = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MULTI_VALUES)) {
+        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VALIDATE)) {
+        validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+        defaultValue = argument ;
+      }
+    }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
     Date date = new Date() ;
     if(options == null) formatter = new SimpleDateFormat("MM/dd/yyyy") ;
-    if(defaultValue != null && defaultValue.length() > 0) {
+    if(defaultValue.length() > 0) {
       try {
         date = formatter.parse(defaultValue) ;
         if(defaultValue.indexOf("/") > -1) arrDate = defaultValue.split("/") ;
@@ -680,7 +893,12 @@ public class DialogFormFields extends UIForm {
       }
     }
     if(multiValues != null && multiValues.equals("true")) {
-      renderMultiValuesInput(UIFormDateTimeInput.class,name,label) ;      
+      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
+      uiMulti.setId(name) ;
+      uiMulti.setName(name) ;
+      uiMulti.setType(UIFormDateTimeInput.class) ;
+      addUIFormInput(uiMulti) ;
+      renderField(name) ;
       return ;
     } 
     UIFormDateTimeInput uiDateTime = findComponentById(name) ;
@@ -690,14 +908,14 @@ public class DialogFormFields extends UIForm {
       } else {
         uiDateTime = new UIFormDateTimeInput(name, name, date, false) ;
       }
-      if(label != null) uiDateTime.setLabel(label);
       addUIFormInput(uiDateTime) ;
     }
     if(options != null && options.equals("displaytime")) uiDateTime.setDisplayTime(true) ;
     else uiDateTime.setDisplayTime(false) ;
     if(validateType != null) {
-    	addValidators(uiDateTime, validateType);
-//        uiDateTime.addValidator(getValidator(validateType)) ;      
+      if(validateType.equals("datetime")) {
+        uiDateTime.addValidator(DateTimeValidator.class) ;
+      }
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
@@ -724,20 +942,34 @@ public class DialogFormFields extends UIForm {
         uiDateTime.setCalendar(new GregorianCalendar()) ;
       }
     }
-    if(!"false".equalsIgnoreCase(visible)) renderField(name) ;
-  }  
-
+    if(!visible.equals("false")) renderField(name) ;
+  }
+  
   public void addHiddenField(String name, String[] arguments) throws Exception {
-    HashMap<String,String> parsedArguments = parseArguments(arguments) ;
-    String jcrPath = parsedArguments.get(JCR_PATH);
-    String nodetype = parsedArguments.get(NODETYPE);
-    String mixintype = parsedArguments.get(MIXINTYPE);
-    String defaultValue = parsedArguments.get(DEFAULT_VALUES);
-    String editable = parsedArguments.get(EDITABLE);
-    String visible = parsedArguments.get(VISIBLE);    
+    String jcrPath = null;
+    String nodetype = null;
+    String mixintype = null;
+    String defaultValue = "";
+    String editable = "true";
+    String visible = "true";
+    for(String argument : arguments) {
+      if (argument.startsWith(JCR_PATH)) {
+        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(NODETYPE)) {
+        nodetype = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(MIXINTYPE)) {
+        mixintype = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(VISIBLE)) {
+        visible = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if (argument.startsWith(EDITABLE)) {
+        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+        defaultValue = argument;
+      }
+    }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
-    if(defaultValue != null && defaultValue.length() > 0) {
+    if(defaultValue.length() > 0) {
       inputProperty.setValue(defaultValue) ;
     }
     if (nodetype != null || mixintype != null) {
@@ -756,92 +988,6 @@ public class DialogFormFields extends UIForm {
         postScriptInterceptor_.add(scriptPath + ";" + type) ;
       }
     } 
-  }
-
-  private HashMap<String,String> parseArguments(String[] arguments) {
-    HashMap<String,String> map = new HashMap<String,String>() ;    
-    for(String argument:arguments) {
-      String value = null;
-      if(argument.indexOf(SEPARATOR)>0) {
-        value = argument.substring(argument.indexOf(SEPARATOR)+1) ;
-      }else {
-        value = argument;
-        map.put(DEFAULT_VALUES,value) ; continue;
-      }      
-      if (argument.startsWith(JCR_PATH)) {        
-        map.put(JCR_PATH,value); continue;
-      } else if (argument.startsWith(EDITABLE)) {       
-        map.put(EDITABLE,value); continue;
-      } else if (argument.startsWith(SELECTOR_ACTION)) {        
-        map.put(SELECTOR_ACTION,value) ; continue;
-      } else if (argument.startsWith(SELECTOR_CLASS)) {        
-        map.put(SELECTOR_CLASS,value); continue;
-      } else if (argument.startsWith(MULTI_VALUES)) {        
-        map.put(MULTI_VALUES,value); continue;
-      } else if (argument.startsWith(SELECTOR_ICON)) {        
-        map.put(SELECTOR_ICON,value); continue;
-      } else if (argument.startsWith(SELECTOR_PARAMS)) {               
-        map.put(SELECTOR_PARAMS,value); continue;
-      }else if (argument.startsWith(WORKSPACE_FIELD)) {        
-        map.put(WORKSPACE_FIELD,value); continue;
-      } else if (argument.startsWith(VALIDATE)) {       
-        map.put(VALIDATE,value); continue;
-      } else if(argument.startsWith(DEFAULT_VALUES)) {       
-        map.put(DEFAULT_VALUES,value); continue;
-      } else if(argument.startsWith(OPTIONS)){        
-        map.put(OPTIONS,value);  continue;
-      }else if(argument.startsWith(SCRIPT)) {
-        map.put(SCRIPT,value); continue;
-      }else if(argument.startsWith(SCRIPT_PARAMS)) {        
-        map.put(SCRIPT_PARAMS,value); continue;
-      }else if(argument.startsWith(VISIBLE)){        
-        map.put(VISIBLE,value); continue;
-      }else if(argument.startsWith(TYPE)){
-        map.put(TYPE,value) ; continue;
-      } else if(argument.startsWith(ONCHANGE)){
-        map.put(ONCHANGE,value); continue;
-      } else if (argument.startsWith(MIXINTYPE)) {
-    	  map.put(MIXINTYPE, value); continue;
-      }else {
-        map.put(DEFAULT_VALUES,argument);
-      }      
-    }
-    return map;
-  }
-  
-  private void addValidators(UIFormInputBase uiInput, String validators) throws Exception {
-	  String[] validatorList = null;
-	  if (validators.indexOf(',') > -1) validatorList = validators.split(",");
-      else validatorList = new String[] {validators};
-      for (String validator : validatorList)
-        uiInput.addValidator(getValidator(validator.trim())) ;
-  }
-
-  private Class getValidator(String validatorType) throws ClassNotFoundException {
-    if(validatorType.equals("name")) {
-      return ECMNameValidator.class ;
-    } else if (validatorType.equals("email")){
-      return EmailAddressValidator.class ;
-    } else if (validatorType.equals("number")) {
-      return NumberFormatValidator.class;
-    } else if (validatorType.equals("empty")){
-      return MandatoryValidator.class ;
-    }else if(validatorType.equals("datetime")) {
-      return DateTimeValidator.class;
-    }else {
-      ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
-      return cl.loadClass(validatorType);
-    }
-  }
-
-  private void renderMultiValuesInput(Class type, String name,String label) throws Exception{
-    UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
-    uiMulti.setId(name) ;
-    uiMulti.setName(name) ;
-    uiMulti.setType(type) ;
-    addUIFormInput(uiMulti) ;
-    if(label != null) uiMulti.setLabel(label) ;
-    renderField(name) ;
   }
 
   private void executeScript(String script, Object o, String[] params) throws Exception{
@@ -909,9 +1055,21 @@ public class DialogFormFields extends UIForm {
   }
 
   static  public class OnchangeActionListener extends EventListener<DialogFormFields> {
-    public void execute(Event<DialogFormFields> event) throws Exception {      
+    public void execute(Event<DialogFormFields> event) throws Exception {     
       event.getSource().isOnchange_ = true ;
       event.getSource().onchange(event) ;
     }
   }
+  
+  
+  //update by quangld
+  public void removeComponent(String name) {
+	  if (!properties.isEmpty() && properties.containsKey(name)) {
+		  properties.remove(name);
+		  String jcrPath = propertiesName_.get(name);
+		  propertiesName_.remove(name);
+		  fieldNames_.remove(jcrPath);
+	  }
+  }		
+  
 }

@@ -16,7 +16,7 @@
 				  <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.name")%></td>
 				  <td class="FieldComponent">
 			      <%
-			        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=empty,name"] ;
+			        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
 			        uicomponent.addTextField("name", fieldName) ; 
 			      %>
 				  </td>
@@ -47,7 +47,7 @@
 				              uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
 										} else {
 											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			          			uicomponent.addTextAreaField("content", fieldSummary) ;
+			          			uicomponent.addTextAreaField("contentTextArea", fieldSummary) ;
 										}
 									} else {
 									%>
@@ -67,7 +67,7 @@
 			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
 								} else if(selectValue != null && selectValue.equals("text/plain")){
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-			          	uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
+			          	uicomponent.addTextAreaField("contentTextArea", fieldSummary) ;
 								} else {
 									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
 			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;								  
