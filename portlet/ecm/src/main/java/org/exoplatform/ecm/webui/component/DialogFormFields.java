@@ -944,7 +944,7 @@ public class DialogFormFields extends UIForm {
     }
     if(!visible.equals("false")) renderField(name) ;
   }
-
+  
   public void addHiddenField(String name, String[] arguments) throws Exception {
     String jcrPath = null;
     String nodetype = null;
@@ -1060,4 +1060,16 @@ public class DialogFormFields extends UIForm {
       event.getSource().onchange(event) ;
     }
   }
+  
+  
+  //update by quangld
+  public void removeComponent(String name) {
+	  if (!properties.isEmpty() && properties.containsKey(name)) {
+		  properties.remove(name);
+		  String jcrPath = propertiesName_.get(name);
+		  propertiesName_.remove(name);
+		  fieldNames_.remove(jcrPath);
+	  }
+  }		
+  
 }
