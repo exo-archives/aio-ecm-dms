@@ -26,6 +26,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -77,7 +78,7 @@ public class UISimpleSearch extends UIForm {
   
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
-    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
+    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null).addValidator(ECMNameValidator.class)) ;
     List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>() ;
     operators.add(new SelectItemOption<String>(AND, AND)) ;
     operators.add(new SelectItemOption<String>(OR, OR)) ;
