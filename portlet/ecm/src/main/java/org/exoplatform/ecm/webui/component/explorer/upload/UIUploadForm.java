@@ -27,12 +27,10 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.services.cms.CmsService;
@@ -128,7 +126,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
-      }     
+      }
 
       byte[] content = input.getUploadData() ;
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
@@ -141,6 +139,15 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           return ;
         }
       }
+/*
+      InputStream in = new ByteArrayInputStream(content) ;
+      float fileLeng = in.available()/1024 ;
+      if(fileLeng > 20240) {
+        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileSize-too-big", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+*/
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       //String mimeType = input.getUploadResource().getMimeType() ;
@@ -196,7 +203,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrEncoding.setValue("UTF-8") ;
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
             CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
-            String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+            String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
             cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
             selectedNode.getSession().save() ;                        

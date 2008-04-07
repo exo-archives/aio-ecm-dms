@@ -107,20 +107,20 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public String getTemplate() {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(uiExplorer.getPreference().isJcrEnable()) 
-      return uiExplorer.getDocumentInfoTemplate();    
+      return uiExplorer.getDocumentInfoTemplate();
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    try {      
-      Node node = uiExplorer.getCurrentNode();             
-      String templatePath = templateService.getTemplatePath(node,false) ;
-      if(templatePath != null) return templatePath;
+    try {
+      Node node = uiExplorer.getCurrentNode();                   
+      String template = templateService.getTemplatePath(node,false) ;
+      if(template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {
         uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
         Object[] args = { uiExplorer.getCurrentNode().getName() } ;
         throw new MessageException(new ApplicationMessage("UIDocumentInfo.msg.access-denied", args, ApplicationMessage.WARNING)) ;
-      } catch(Exception exc) {
+      } catch(Exception exc) {        
       }
-    } catch(Exception e) {     
+    } catch(Exception e) {      
     }
     return uiExplorer.getDocumentInfoTemplate(); 
   }
@@ -135,8 +135,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public Node getNodeByUUID(String uuid) throws Exception{
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{
@@ -149,9 +148,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public String getCapacityOfFile(Node file) throws Exception {
-    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
-    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    float capacity = in.available()/1024 ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    float capacity = uiExplorer.getFileSize(file) ;
     String strCapacity = Float.toString(capacity) ;
     if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
@@ -304,8 +302,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-      return templateService.isManagedNodeType(nodeTypeName, repository);
+      return templateService.isManagedNodeType(nodeTypeName, getRepository());
     } catch (Exception e) {
       return false;
     }
@@ -369,8 +366,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
+//    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
   }
 
   public String getLanguage() {
@@ -417,9 +414,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       if(workspaceName == null ) {
         session = uiExplorer.getSession() ;
       } else {
-        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+//        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
-        ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+        ManageableRepository manageableRepository = repositoryService.getRepository(uicomp.getRepository()) ;
         SessionProvider provider = SessionsUtils.getSessionProvider() ;
         session = provider.getSession(workspaceName,manageableRepository) ;
       }
@@ -456,16 +453,17 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
             }
             uiExplorer.updateAjax(event) ;
           }
-        } catch(AccessDeniedException ace) {
-          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
         } catch(ItemNotFoundException nu) {
           uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;          
         } catch(Exception e) {    
           JCRExceptionManager.process(uiApp, e);
+          return ;
         }
       } else {
         try {
@@ -480,6 +478,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
           }
         } catch(Exception e) {
           JCRExceptionManager.process(uiApp, e);
+          return ;
         }
       }      
     }

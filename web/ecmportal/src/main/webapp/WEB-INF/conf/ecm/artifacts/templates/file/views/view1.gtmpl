@@ -147,7 +147,15 @@
 	    	<div class="TextContent">
 		      <%        
 		        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		          println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
+		          if(uicomponent.getFileSize(originalNode) =< 1024) {
+		            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
+		          } else {
+		       %>
+		            <div style="text-align:center; font-style:italic">
+							    <%=_ctx.appRes("File.view.label.file-size-too-big")%>
+							  </div>
+		       <%
+		          }
 		        } else {
 		        	if(mimeType.startsWith("image")) {
 		        	//prevent ajax cache image
