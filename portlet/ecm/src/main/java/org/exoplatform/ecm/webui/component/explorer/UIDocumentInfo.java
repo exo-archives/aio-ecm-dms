@@ -148,9 +148,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public String getCapacityOfFile(Node file) throws Exception {
-    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
-    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    float capacity = in.available()/1024 ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    float capacity = uiExplorer.getFileSize(file) ;
     String strCapacity = Float.toString(capacity) ;
     if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
@@ -303,7 +302,6 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-//      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       return templateService.isManagedNodeType(nodeTypeName, getRepository());
     } catch (Exception e) {
       return false;

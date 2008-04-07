@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer ;
 
+import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,6 +132,12 @@ public class UIJCRExplorer extends UIContainer {
   public void setBackNodePath(String historyPath) throws Exception {
     currentPath_ = historyPath ;    
     refreshExplorer() ;
+  }
+  
+  public float getFileSize(Node file)throws Exception {
+    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
+    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
+    return in.available()/1024 ;
   }
   
   public void setDriveData(DriveData driveData) { driveData_ = driveData ; }
