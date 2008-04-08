@@ -178,8 +178,36 @@
                         </collection>
                       </field>                                    
                     </object>
-                  </value>
-                  
+                  </value> 
+                    <!--  -->                    
+                  <value>
+                    <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
+                      <field  name="nodetypeName"><string>exo:backupAction</string></field>
+                      <field  name="documentTemplate"><boolean>false</boolean></field>
+                      <field  name="label"><string>Backup Action</string></field>
+                      <field  name="referencedView">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/backup/views/view1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                           
+                          </value>  
+                        </collection>
+                      </field>                  
+                      <field  name="referencedDialog">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+                              <field name="templateFile"><string>/actions/backup/dialogs/dialog1.gtmpl</string></field>
+                              <field name="roles"><string>*</string></field>                
+                            </object>                           
+                          </value>                      
+                        </collection>
+                      </field>                                    
+                    </object>
+                  </value>                        
+                  <!--  -->                              
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:publishingProcess</string></field>

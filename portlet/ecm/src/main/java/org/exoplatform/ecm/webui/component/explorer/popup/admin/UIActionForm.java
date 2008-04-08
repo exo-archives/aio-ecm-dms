@@ -195,9 +195,9 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
       if(getParentNode().hasNode(actionName)) { 
         Object[] args = {actionName} ;
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;        
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;
+        return null; 
       }
       if(getParentNode().isNew()) {
         String[] args = {getParentNode().getPath()} ;
