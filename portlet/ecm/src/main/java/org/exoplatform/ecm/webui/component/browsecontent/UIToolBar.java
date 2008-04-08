@@ -71,16 +71,16 @@ public class UIToolBar extends UIContainer {
 
   public List<Node> getNodePaths(Node node) throws Exception {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
-    Node rootNode = getRootNode() ;
+    Node rootNode = getRootNode() ;    
     if(!uiContainer.getWorkSpace().equals(node.getSession().getWorkspace().getName())) {
-//      rootNode = node.getSession().getRootNode() ;
-      return new ArrayList<Node>() ;
+//      rootNode = node.getSession().getRootNode() ;    	
+    	return new ArrayList<Node>() ;
     }
     List<Node> list = new ArrayList<Node>() ;
     if(node != null) {
       Node temp = node ;
       if(!temp.getPath().equals("/") && temp.getPath().startsWith(rootNode.getPath())) {
-        while(!temp.getPath().equals(rootNode.getPath())) {
+        while(!temp.getPath().equals(rootNode.getPath())) {        	
           list.add(0, temp) ;
           temp = temp.getParent() ;
         }
@@ -122,7 +122,7 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIBrowseContentPortlet uiBCPortlet =  uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
       Node selectNode = uiContainer.getNodeByPath(nodePath) ;
-      if(selectNode == null) {
+      if(selectNode == null) {   	  
         if(uiContainer.getNodeByPath(uiContainer.getCategoryPath()) == null) {
           uiBCPortlet.setPorletMode(PortletRequestContext.HELP_MODE);
           uiBCPortlet.reload() ;
@@ -133,7 +133,7 @@ public class UIToolBar extends UIContainer {
           selectNode = uiComp.getRootNode() ;
           uiContainer.changeNode(selectNode) ;
         }
-      } else {
+      } else {    	  
         TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
         List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
         if(templates.contains(selectNode.getPrimaryNodeType().getName())) {

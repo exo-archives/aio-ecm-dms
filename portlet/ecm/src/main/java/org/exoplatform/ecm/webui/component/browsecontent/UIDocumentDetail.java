@@ -345,7 +345,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       UIBrowseContentPortlet cbPortlet = uiDocument.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
       uiPopupAction.deActivate() ;
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;    
       String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
       Node node = null ;
       UIBrowseContainer uiContainer = cbPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;     

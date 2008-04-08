@@ -183,7 +183,7 @@ public class UIBrowseContainer extends UIContainer {
     } else {
       setSelectedTabPath(selectNode.getPath()) ;
 //      setCurrentNodePath(selectNode.getParent().getPath()) ;
-      setCurrentNodePath(selectNode.getPath()) ;
+      setCurrentNodePath(selectNode.getPath()) ;     
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
   }
