@@ -147,7 +147,7 @@
 	    	<div class="TextContent">
 		      <%        
 		        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		          if(uicomponent.getFileSize(originalNode) =< 1024) {
+		          if(uicomponent.getFileSize(originalNode) < 1024) {
 		            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
 		          } else {
 		       %>
