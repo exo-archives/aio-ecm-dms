@@ -154,6 +154,10 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
   }
+  
+  public float getFileSize(Node file) throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).getFileSize(file) ;
+  }
 
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
