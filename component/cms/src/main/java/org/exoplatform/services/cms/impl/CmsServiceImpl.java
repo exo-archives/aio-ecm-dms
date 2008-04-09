@@ -341,23 +341,37 @@ public class CmsServiceImpl implements CmsService {
 
         }
       }      
-
       break;
     case PropertyType.REFERENCE:      
-      if (value == null)
-        throw new RepositoryException("null value for a reference " + requiredtype);
-      if (value instanceof Value[]) 
+      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
+      if (value instanceof Value[]) {
         node.setProperty(propertyName, (Value[]) value);
-      else if (value instanceof String){
+      } else if (value instanceof String) {
+        String referenceWorksapce = null;
+        String referenceNodeName = null ;
         Session session = node.getSession();
-        if(session.getRootNode().hasNode((String)value)) {
-          Node catNode = session.getRootNode().getNode((String)value);
-          Value value2add = session.getValueFactory().createValue(catNode);
-          node.setProperty(propertyName, new Value[] {value2add});          
-        }else {
-          node.setProperty(propertyName, (String) value);
+        String repositoty = ((ManageableRepository)session.getRepository()).getConfiguration().getName();
+        if(((String)value).indexOf(":/") > -1) {
+          referenceWorksapce = ((String)value).split(":/")[0];
+          referenceNodeName = ((String)value).split(":/")[1] ;
+          Session session2 = jcrService.getRepository(repositoty).getSystemSession(referenceWorksapce) ;
+          if(session2.getRootNode().hasNode(referenceNodeName)) {
+            Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
+            Value value2add = session2.getValueFactory().createValue(referenceNode);
+            node.setProperty(propertyName, new Value[] {value2add});          
+          }else {
+            node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
+          }
+        } else {
+          if(session.getRootNode().hasNode((String) value)) {
+            Node referenceNode = session.getRootNode().getNode(referenceNodeName);
+            Value value2add = session.getValueFactory().createValue(referenceNode);
+            node.setProperty(propertyName, new Value[] {value2add});
+          } else {
+            node.setProperty(propertyName, session.getValueFactory().createValue((String)value));
+          }
         }
-      }else if(value instanceof String[]) {
+      } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
         String referenceWorksapce = null;
         String referenceNodeName = null ;
@@ -397,8 +411,7 @@ public class CmsServiceImpl implements CmsService {
   private String extractNodeName(Set keys) {
     for (Iterator iter = keys.iterator(); iter.hasNext();) {
       String key = (String) iter.next();
-      if (key.endsWith(NODE))
-        return key;
+      if (key.endsWith(NODE)) return key;
     }
     return null;
   }
@@ -464,5 +477,4 @@ public class CmsServiceImpl implements CmsService {
     }
     session.save() ;    
   }
-
 }
