@@ -226,7 +226,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
-    } catch (Exception e) {      
+    } catch (Exception e) {   
+      e.printStackTrace() ;
       uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
       return null;
     }

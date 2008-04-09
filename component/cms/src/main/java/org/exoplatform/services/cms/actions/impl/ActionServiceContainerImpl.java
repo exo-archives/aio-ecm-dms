@@ -295,7 +295,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     try {
       actionService.addAction(actionType, repository, srcWorkspace, srcPath, mappings);
     } catch (Exception e) {
-      Session session = getSystemSession(repository, storeActionNode.getSession().getWorkspace().getName());
+      e.printStackTrace() ;
+    	Session session = getSystemSession(repository, storeActionNode.getSession().getWorkspace().getName());
       Node actionNode = (Node) session.getItem(newActionPath);
       actionNode.remove();
       session.save();

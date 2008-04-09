@@ -173,9 +173,7 @@
                         </collection>
                       </field>                                    
                     </object>
-                  </value>  
-                  
-                  <!--  -->                    
+                  </value>                         
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:backupAction</string></field>
@@ -202,8 +200,7 @@
                         </collection>
                       </field>                                    
                     </object>
-                  </value>                 
-                  <!--  -->                                                      
+                  </value>                                                     
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:addMetadataAction</string></field>
