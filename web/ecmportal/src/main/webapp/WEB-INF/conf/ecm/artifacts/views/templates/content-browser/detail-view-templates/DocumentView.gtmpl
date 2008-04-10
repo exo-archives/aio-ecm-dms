@@ -33,7 +33,7 @@
 		                  <td>
 		                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
 		                    <div class="EventDocumentLabel">		                  
-		                      <a href="$viewAction"><%=docName%> || <%=docName%> || <%=docName%> ||<%=docName%></a>
+		                      <a href="$viewAction"><%=docName%></a>
 		                    </div>  
 		                  </td>
 		                  <td class="EventAuthorNameLabel">
