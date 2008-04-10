@@ -72,6 +72,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private boolean isAddNew_ ;
   private String scriptPath_ = null ;
   private boolean isEditInList_ = false ;
+  private String rootPath_ = null;
   
   public UIActionForm() throws Exception {setActions(new String[]{"Save","Back"}) ;}
   
@@ -132,8 +133,11 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     }
     scriptPath_ = scriptPath ; 
   }
-  public String getPath() { return scriptPath_ ; }
-  
+  public String getPath() { return scriptPath_ ; }  
+  public void setRootPath(String rootPath){
+	 rootPath_ = rootPath;
+  }
+  public String getRootPath(){return rootPath_;}
   public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
   
   public void onchange(Event event) throws Exception {
@@ -247,20 +251,22 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
+      String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
       if(uiComp instanceof UIJCRBrowser) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         String repositoryName = explorer.getRepositoryName() ;
-        SessionProvider provider = explorer.getSessionProvider() ;                
+        SessionProvider provider = explorer.getSessionProvider() ;        
         ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
         ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
         if(wsFieldName != null && wsFieldName.length() > 0) {
           String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
-          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;          
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
         }
+        if(rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
       }
       if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp) ;
       else ((UIActionContainer)uiContainer).initPopup(uiComp) ;

@@ -90,6 +90,7 @@ public class DialogFormFields extends UIForm {
   protected String repositoryName_ = null ;
   private String nodePath_ ;
   private String childPath_ ;
+  private String rootPath_;
 
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
@@ -112,6 +113,7 @@ public class DialogFormFields extends UIForm {
   private static final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   private static final String MULTI_VALUES = "multiValues" + SEPARATOR;
   private static final String REPOSITORY = "repository";
+  private static final String ROOTPATH = "rootPath" + SEPARATOR;
 
   public static final  String[]  ACTIONS = {"Save", "Cancel"};
 
@@ -124,7 +126,7 @@ public class DialogFormFields extends UIForm {
     return (Node) getSesssion().getItem(nodePath_) ; 
   }
   public void setNodePath(String nodePath) { nodePath_ = nodePath ; }
-
+  
   public Session getSesssion() throws Exception {
     return SessionsUtils.getSessionProvider().getSession(workspaceName_, getRepository()) ;
   }
@@ -133,8 +135,10 @@ public class DialogFormFields extends UIForm {
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
     return repositoryService.getRepository(repositoryName_);
   }
-
+  public void setRootPath(String rootPath){rootPath_ = rootPath;}
+  public String getRootPath(){return rootPath_;}
   public void setChildPath(String childPath) { childPath_ = childPath ; }
+  
   public Node getChildNode() throws Exception { 
     if(childPath_ == null) return null ;
     return (Node) getSesssion().getItem(childPath_) ; 
@@ -266,6 +270,7 @@ public class DialogFormFields extends UIForm {
     String multiValues = null ;
     String validateType = null ;
     String params = null ;
+    String rootPath = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -287,7 +292,9 @@ public class DialogFormFields extends UIForm {
         workspaceField = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else {
+      } else if(argument.startsWith(ROOTPATH)){
+    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      }else {
         defaultValue = argument;
       }
     }    
@@ -297,6 +304,7 @@ public class DialogFormFields extends UIForm {
       fieldPropertiesMap.put("returnField", name) ;
       fieldPropertiesMap.put("selectorIcon", selectorIcon) ;
       fieldPropertiesMap.put("workspaceField", workspaceField) ;
+      if(rootPath != null) fieldPropertiesMap.put("rootPath", rootPath) ;
       if(params != null) fieldPropertiesMap.put("selectorParams", params) ;
       components.put(name, fieldPropertiesMap) ;
     }
@@ -374,6 +382,7 @@ public class DialogFormFields extends UIForm {
     String multiValues = null ;
     String validateType = null ;
     String nodetype = null;
+    String rootPath = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -390,8 +399,10 @@ public class DialogFormFields extends UIForm {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(NODETYPE)){
         nodetype = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
-      }else {
-        defaultValue = argument;
+      }	else if(argument.startsWith(ROOTPATH)){
+    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {
+            defaultValue = argument;
       }
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -515,6 +526,7 @@ public class DialogFormFields extends UIForm {
     String selectorClass = null;
     String multiValues = null ;
     String validateType = null ;
+    String rootPath = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -529,7 +541,9 @@ public class DialogFormFields extends UIForm {
         selectorClass = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else {
+      } else if(argument.startsWith(ROOTPATH)){
+    	  rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      }else {
         defaultValue = argument;
       }
     }
@@ -609,6 +623,7 @@ public class DialogFormFields extends UIForm {
     boolean isBasic = false ;
     String multiValues = null ;
     String validateType = null ;
+    String rootPath = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -619,7 +634,9 @@ public class DialogFormFields extends UIForm {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);      
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else {
+      } else if(argument.startsWith(ROOTPATH)){
+    	  rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      }else {
         defaultValue = argument;
       }
     }
@@ -686,6 +703,7 @@ public class DialogFormFields extends UIForm {
     String script = null;
     String[] scriptParams = null;
     String multiValues = null ;
+    String rootPath = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -703,7 +721,9 @@ public class DialogFormFields extends UIForm {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
       } else if(argument.startsWith(ONCHANGE)) {
         onchange = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
-      } else {
+      }else if(argument.startsWith(ROOTPATH)){
+    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      }else {
         defaultValue = argument;
       } 
     }
@@ -816,6 +836,7 @@ public class DialogFormFields extends UIForm {
     String defaultValue = "";
     String editable = "true";
     String visible = "true";
+    String rootPath = null;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
       if (argument.startsWith(JCR_PATH)) {
@@ -828,7 +849,9 @@ public class DialogFormFields extends UIForm {
         visible = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(EDITABLE)) {
         editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else {
+      } else if(argument.startsWith(ROOTPATH)){
+    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else {      
         defaultValue = argument;
       }
     }
@@ -860,6 +883,7 @@ public class DialogFormFields extends UIForm {
     String multiValues = null ;
     String visible = "true";
     String validateType = null ;
+    String rootPath = null;
     SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss") ;
     for(int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
@@ -873,7 +897,9 @@ public class DialogFormFields extends UIForm {
         multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else {
+      } else if(argument.startsWith(ROOTPATH)){
+    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      }  else {
         defaultValue = argument ;
       }
     }
@@ -952,6 +978,7 @@ public class DialogFormFields extends UIForm {
     String defaultValue = "";
     String editable = "true";
     String visible = "true";
+    String rootPath = null;
     for(String argument : arguments) {
       if (argument.startsWith(JCR_PATH)) {
         jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
@@ -963,6 +990,8 @@ public class DialogFormFields extends UIForm {
         visible = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if (argument.startsWith(EDITABLE)) {
         editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if(argument.startsWith(ROOTPATH)){
+    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);    	
       } else {
         defaultValue = argument;
       }

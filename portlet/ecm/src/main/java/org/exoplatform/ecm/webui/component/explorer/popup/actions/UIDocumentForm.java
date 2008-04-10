@@ -210,6 +210,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
+      String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
       if(uiComp instanceof UIJCRBrowser) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
@@ -217,6 +218,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
         SessionProvider provider = explorer.getSessionProvider() ;                
         ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
         ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
+        String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        if(wsFieldName != null && wsFieldName.length() > 0) {
+          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+        }
+        if(wsFieldName != null && rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
         String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;

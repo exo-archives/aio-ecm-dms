@@ -52,7 +52,7 @@
 		      <td class="FieldLabel"><%=_ctx.appRes("Backup.dialog.label.with-path")%></td>
 		      <td class="FieldComponent">
 			      <% 
-			        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "/", "workspaceField=destWorkspace", "selectorIcon=SelectPath24x24Icon", "editable=false"] ;
+			        String[] fieldPath = ["jcrPath=/node/exo:destPath", "selectorAction=selectDestPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "/", "rootPath=/", "workspaceField=destWorkspace", "selectorIcon=SelectPath24x24Icon", "editable=false"] ;
 			        uicomponent.addActionField("destPath", fieldPath)  ;
 			      %>
 			    </td>
