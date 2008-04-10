@@ -112,7 +112,7 @@ public class CmsServiceImpl implements CmsService {
       }        
       createNodeRecursively(NODE, currentNode, nodeType, mappings);                       
     } else {
-      currentNode = storeHomeNode.getNode(nodeName);      
+      currentNode = storeHomeNode.getNode(nodeName);
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(currentNode.isNodeType("exo:datetime")) {
         currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
@@ -189,8 +189,7 @@ public class CmsServiceImpl implements CmsService {
       for (int i = 0; i < childNodeDefs.length; i++) {
         childs.add(childNodeDefs[i]);
       }
-    }
-    else {
+    } else {
       NodeIterator nodes = currentNode.getNodes();
       while(nodes.hasNext()) {
         childs.add(nodes.next());
@@ -208,10 +207,8 @@ public class CmsServiceImpl implements CmsService {
         nodeDef = (NodeDefinition) o;
         nodeName = ((NodeDefinition) o).getName();
       }
-      if (!nodeDef.isAutoCreated()
-          && !nodeDef.isProtected()
-          && !("*".equals(nodeDef.getName())
-              && (o instanceof NodeDefinition))) {
+      if (!nodeDef.isAutoCreated() && !nodeDef.isProtected() && !("*".equals(nodeDef.getName()) && 
+          (o instanceof NodeDefinition))) {
         String currentPath = path + "/" + nodeName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath);
         String nodetypeName = null;
@@ -241,7 +238,7 @@ public class CmsServiceImpl implements CmsService {
         } else {
           try {
             childNode = currentNode.getNode(nodeName);
-          } catch (PathNotFoundException e) {
+          } catch(PathNotFoundException e) {
             childNode = currentNode.addNode(nodeName, nodeType.getName());
             if(mixintypeName != null) {
               childNode.addMixin(mixintypeName);
@@ -262,55 +259,58 @@ public class CmsServiceImpl implements CmsService {
 
     switch (requiredtype) {
     case PropertyType.STRING:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else {
+      } else {
         if(isMultiple) {
-          if (value instanceof String)
+          if (value instanceof String) {
             node.setProperty(propertyName, new String[] { (String)value});
-          else if (value instanceof String[])
-            node.setProperty(propertyName, (String[]) value);          
-        } else
+          } else if (value instanceof String[]) {
+            node.setProperty(propertyName, (String[]) value);
+          }
+        } else {
           node.setProperty(propertyName, (String) value);
+        }
       }
       break;
     case PropertyType.BINARY:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else if (value instanceof byte[])
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream((byte[]) value));
-      else if (value instanceof String)
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream(((String)value).getBytes()));
-      else if (value instanceof String[])        
+      } else if (value instanceof byte[]) {
+        node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
+      } else if (value instanceof String) {
+        node.setProperty(propertyName, new ByteArrayInputStream(((String)value).getBytes()));
+      } else if (value instanceof String[]) {
         node.setProperty(propertyName, 
             new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
+      }
       break;
     case PropertyType.BOOLEAN:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, false);
-      else if (value instanceof String)
-        node.setProperty(propertyName, 
-            new Boolean((String) value).booleanValue());
-      else if (value instanceof String[])
+      } else if (value instanceof String) {
+        node.setProperty(propertyName, new Boolean((String) value).booleanValue());
+      } else if (value instanceof String[]) {
         node.setProperty(propertyName, (String[]) value);         
+      }
       break;
     case PropertyType.LONG:
-      if (value == null || "".equals(value))
+      if (value == null || "".equals(value)) {
         node.setProperty(propertyName, 0);
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, new Long((String) value).longValue());
-      else if (value instanceof String[])
+      } else if (value instanceof String[]) {
         node.setProperty(propertyName, (String[]) value);  
+      }
       break;
     case PropertyType.DOUBLE:
-      if (value == null || "".equals(value))
+      if (value == null || "".equals(value)) {
         node.setProperty(propertyName, 0);
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, new Double((String) value).doubleValue());
-      else if (value instanceof String[])
+      } else if (value instanceof String[]) {
         node.setProperty(propertyName, (String[]) value);        
+      }
       break;
     case PropertyType.DATE:      
       if (value == null){        

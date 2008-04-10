@@ -279,7 +279,7 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
       Node selectedNode = null;
       try {
-        selectedNode = (Node)session.getItem(nodePath);
+        selectedNode = uiExplorer.getNodeByPath(nodePath, session) ;
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING)) ;
@@ -343,8 +343,6 @@ public class UIWorkingArea extends UIContainer {
           uiDocumentForm.addNew(false) ;
           uiController.setRenderedChild(UIDocumentForm.class) ;
           uiPopupAction.activate(uiController, 800, 600) ;
-//          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-//          uiPopupAction.activate(uiDocumentForm, 600, 550) ;
         } else {          
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-support", arg, 
               ApplicationMessage.WARNING)) ;

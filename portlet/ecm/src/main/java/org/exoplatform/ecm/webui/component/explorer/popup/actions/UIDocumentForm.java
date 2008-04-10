@@ -151,6 +151,9 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     } else { 
       homeNode = getNode().getParent();
       nodeType = getNode().getPrimaryNodeType().getName() ;
+      if(getNode().isLocked()) {
+        getNode().getSession().addLockToken(Utils.getLockToken(getNode())) ;
+      }
     }       
     try {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;
