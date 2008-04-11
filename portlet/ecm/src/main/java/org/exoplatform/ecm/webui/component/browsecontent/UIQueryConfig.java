@@ -21,6 +21,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.query.InvalidQueryException;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.portlet.PortletPreferences;
@@ -155,7 +157,8 @@ public class UIQueryConfig extends UIForm {
         queryLangField.setValue(queryLang) ;
         queryTypeField.setOptions(getQueryType()) ;
         queryTypeField.setValue(queryType) ;
-        onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), queryLangField.getValue(), null, queryStatement) ;
+        onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), 
+            queryLangField.getValue(), null, queryStatement) ;
         numbPerPageField.setValue(itemPerPage) ;
         enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap)) ;
         enableCommentField.setChecked(Boolean.parseBoolean(hasComment)) ;
@@ -191,7 +194,8 @@ public class UIQueryConfig extends UIForm {
       queryLangField.setOptions(getQueryLang()) ;
       queryLangField.setValue(queryLang) ;
       queryTypeField.setOptions(getQueryType()) ;
-      onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), queryLangField.getValue(), queryStoreName, queryStatement) ;
+      onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), queryLangField.getValue(),
+          queryStoreName, queryStatement) ;
     }
     queryStatusField.setOnChange("ChangeStatus") ;
     queryLangField.setOnChange("ChangeLang") ;
@@ -209,7 +213,8 @@ public class UIQueryConfig extends UIForm {
     enableVoteField.setEnable(isEdit_) ; 
   }
 
-  protected void onchangeAction(String queryStatus, String queryType, String queryLanguage, String queryStoreName, 
+  protected void onchangeAction(String queryStatus, String queryType, String queryLanguage, 
+      String queryStoreName, 
       String queryStatement) throws Exception {
     boolean isNewquery = queryStatus.equals(NEW_QUERY) ;
     UIFormSelectBox queryStore = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
@@ -317,7 +322,7 @@ public class UIQueryConfig extends UIForm {
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
 //      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
-      String boxTemplate = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
+      String boxTemplate = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue();
       UIFormSelectBox queryValueField = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;      
       String  queryPath = "" ;
       String queryStatu = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTATUS).getValue() ;
@@ -326,14 +331,16 @@ public class UIQueryConfig extends UIForm {
       if((!queryStatu.equals(UIQueryConfig.NEW_QUERY))&&(queryValueField.isRendered())) {
         queryPath = queryValueField.getValue() ;
         if(queryPath.equals(UIQueryConfig.EMPTYQUERY)){
-          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-name", null)) ;
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-name", null,
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
           return ;
         }
       }
       if(isNewquery) {
         if(Utils.isNameEmpty(query)) {
-          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null, 
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
           return ;
         } 
@@ -342,15 +349,29 @@ public class UIQueryConfig extends UIForm {
           Query queryObj = queryManager.createQuery(query, queryLang);
           queryObj.execute();
         } catch(InvalidQueryException iqe) {
-          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null, 
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
           return ;
+        } catch(NoSuchNodeTypeException nt){          
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.noSuchNodeTypeException", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          return ;
+        } catch(RepositoryException rp){          
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.repostoryException", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          return ;
+        }catch(Exception e){
+          e.printStackTrace();
         }
       }
       try{
         Integer.parseInt(itemPerPage) ;
       } catch(Exception e){
-        app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null)) ;
+        app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null,
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
