@@ -244,12 +244,12 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   public List getSupportedLocalise() throws Exception {
     List<String> local = new ArrayList<String>() ;
     if(node_.hasNode(Utils.LANGUAGES)){
+      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;
       Node languages = node_.getNode(Utils.LANGUAGES) ;
       NodeIterator iter = languages.getNodes() ;
       while(iter.hasNext()) {
         local.add(iter.nextNode().getName()) ;
-      }
-      local.add(node_.getProperty(Utils.EXO_LANGUAGE).getString()) ;      
+      }            
     } 
     return local ;
   }
