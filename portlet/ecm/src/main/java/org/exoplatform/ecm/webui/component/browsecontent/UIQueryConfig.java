@@ -21,6 +21,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.query.InvalidQueryException;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.portlet.PortletPreferences;
@@ -345,6 +347,18 @@ public class UIQueryConfig extends UIForm {
           app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-query", null)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
           return ;
+        } catch(NoSuchNodeTypeException nt){          
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.noSuchNodeTypeException", null, 
+          ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          return ;               
+        } catch(RepositoryException rp){          
+          app.addMessage(new ApplicationMessage("UIQueryConfig.msg.repostoryException", null, 
+          ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          return ;
+        } catch(Exception e){
+          e.printStackTrace();
         }
       }
       try{
