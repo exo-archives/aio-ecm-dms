@@ -29,7 +29,6 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
-import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -41,7 +40,6 @@ import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.UIVoteForm;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
@@ -60,6 +58,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UICategoryManage
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIExportNode;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIImportNode;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertiesManager;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationsAddedList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UINodeTypeInfo;
@@ -91,7 +90,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -179,7 +177,7 @@ public class UIActionBar extends UIForm {
     tabOptions.clear() ;
     tabs_.clear() ;
     tabs_ = new ArrayList<String[]>() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository,SessionsUtils.getSystemProvider()); 
     NodeIterator tabs = view_.getNodes() ;
     int i = 0;
@@ -220,14 +218,14 @@ public class UIActionBar extends UIForm {
 
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return getApplicationComponent(QueryService.class).getQueries(userName, repository,SessionsUtils.getSystemProvider()) ;
   }
 
   public List<String> getMetadataTemplates() throws Exception {
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     List<String> templates = new ArrayList<String>();
 
     NodeType[] nodeTypes = node.getMixinNodeTypes();
@@ -354,7 +352,6 @@ public class UIActionBar extends UIForm {
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false) ;
         uiActionForm.createNewAction(selectedNode, selectedNode.getPrimaryNodeType().getName(), false) ;
         uiActionForm.setIsUpdateSelect(false) ;
-//        uiActionForm.setNode(selectedNode) ;
         uiActionForm.setNodePath(selectedNode.getPath()) ;
         uiActionForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
         uiActionForm.setStoredPath(selectedNode.getPath()) ;
@@ -363,21 +360,26 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
-        String repository = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         List documentNodeType = tservice.getDocumentTemplates(repository) ;
-        String nodeType = selectedNode.getPrimaryNodeType().getName() ;
+        String nodeType = null ;
+        if(selectedNode.hasProperty("exo:presentationType")) {
+          nodeType = selectedNode.getProperty("exo:presentationType").getString() ;
+        }else {
+          nodeType = selectedNode.getPrimaryNodeType().getName() ;
+        }        
         if(documentNodeType.contains(nodeType)){
           UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController") ;
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class) ;
+          uiDocumentForm.setRepositoryName(uiExplorer.getRepositoryName()) ;
           uiDocumentForm.setTemplateNode(nodeType) ;
           if(uiDocumentForm.getTemplate() == null) {
             uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.template-null", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-//          uiDocumentForm.setNode(selectedNode) ;
           uiDocumentForm.setNodePath(selectedNode.getPath()) ;
           uiDocumentForm.addNew(false) ;
           if(!uiExplorer.getCurrentWorkspace().equals(selectedNode.getSession().getWorkspace().getName())) {
@@ -387,7 +389,7 @@ public class UIActionBar extends UIForm {
           }
           uiDocumentForm.setStoredPath(selectedNode.getPath()) ;
           uiController.setRenderedChild(UIDocumentForm.class) ;
-          uiPopupAction.activate(uiController, 800, 600) ;
+          uiPopupAction.activate(uiController, 800, 600) ;          
           event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
         } else {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null)) ;
@@ -457,7 +459,7 @@ public class UIActionBar extends UIForm {
 
       NodeType nodeType = currentNode.getPrimaryNodeType() ;
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class) ;
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         if(!currentNode.isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.watch-checkedin", null)) ;
@@ -496,7 +498,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       if(templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         if(!currentNode.isCheckedOut()) {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.tagnode-checkedin", null)) ;
@@ -537,7 +539,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       NodeType nodeType = currentNode.getPrimaryNodeType() ;
       NodeType[] superTypes = nodeType.getSupertypes() ;
       boolean isFolder = false ;
@@ -624,6 +626,9 @@ public class UIActionBar extends UIForm {
       }
       UIPropertiesManager uiPropertiesManager = 
         uiJCRExplorer.createUIComponent(UIPropertiesManager.class, null, null) ;
+      UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class) ;
+      uiForm.setRepositoryName(uiJCRExplorer.getRepositoryName()) ;
+      uiForm.getUIFormSelectBox(UIPropertyForm.FIELD_NAMESPACE).setOptions(uiForm.getNamespaces()) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(uiPropertiesManager, 700, 0) ;
       if(uiJCRExplorer.nodeIsLocked(node)){
@@ -717,13 +722,11 @@ public class UIActionBar extends UIForm {
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;
-      PortletRequestContext pcontext = (PortletRequestContext)event.getRequestContext() ;
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+      String repository = uiExplorer.getRepositoryName() ;
       ManageableRepository manaRepository = 
         uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository) ;
       NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class) ;
-      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode();
       if(uiActionBar.isRootNode(currentNode)) {
@@ -818,7 +821,7 @@ public class UIActionBar extends UIForm {
       List<Node> relations = 
         relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider()) ;
       uiRelateAddedList.updateGrid(relations) ;
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
       uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;
       TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class) ;
@@ -969,6 +972,8 @@ public class UIActionBar extends UIForm {
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null) ;
       uiSavedQuery.setIsQuickSearch(true) ;
+      uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName()) ;
+      uiSavedQuery.updateGrid() ;
       uiPopupAction.activate(uiSavedQuery, 700, 400) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

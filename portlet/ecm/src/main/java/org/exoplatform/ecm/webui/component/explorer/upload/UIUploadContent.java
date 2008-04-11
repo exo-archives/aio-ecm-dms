@@ -58,6 +58,9 @@ public class UIUploadContent extends UIContainer {
   public List<String> getExternalList() throws Exception { 
     NodeType[] mixinTypes = getUploadedNode().getMixinNodeTypes() ;
     for(NodeType nodeType : mixinTypes) {
+      if(nodeType.getName().equals(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
+        externalList_.add(nodeType.getName()) ;
+      }
       for(NodeType superType : nodeType.getSupertypes()) {
         if(superType.getName().equals(Utils.EXO_METADATA) && isExternalUse(nodeType) && !externalList_.contains(nodeType.getName())) {
           externalList_.add(nodeType.getName()) ;
@@ -90,7 +93,7 @@ public class UIUploadContent extends UIContainer {
       UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
       MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
       UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class) ;
-      String repository = uiExplorer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
+      String repository = uiExplorer.getRepositoryName() ;
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String template = metadataService.getMetadataTemplate(nodeType, true, repository) ;
       if(template == null || template.trim().length() == 0) {
@@ -109,7 +112,6 @@ public class UIUploadContent extends UIContainer {
       uiAddMetadataForm.setIsNotEditNode(true) ;
       uiAddMetadataForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
       uiAddMetadataForm.setStoredPath(uiExplorer.getCurrentNode().getPath()) ;
-//      uiAddMetadataForm.setPropertyNode(uiUploadContainer.getEditNode(nodeType)) ;
       uiAddMetadataForm.setChildPath(uiUploadContainer.getEditNode(nodeType).getPath()) ;
       uiUploadContainer.addChild(uiAddMetadataForm) ;
       uiUploadContainer.setRenderedChild(UIAddMetadataForm.class) ;

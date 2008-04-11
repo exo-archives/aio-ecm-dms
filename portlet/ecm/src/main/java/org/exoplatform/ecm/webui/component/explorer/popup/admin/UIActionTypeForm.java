@@ -24,7 +24,6 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -69,7 +68,7 @@ public class UIActionTypeForm extends UIForm {
 
   private Iterator getCreatedActionTypes() throws Exception {
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return actionService.getCreatedActionTypes(repository).iterator();
   }
 
@@ -104,7 +103,7 @@ public class UIActionTypeForm extends UIForm {
       UIJCRExplorer uiExplorer = uiActionType.getAncestorOfType(UIJCRExplorer.class) ;
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue() ;
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
-      String repository = uiActionType.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiActionType.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
       try {

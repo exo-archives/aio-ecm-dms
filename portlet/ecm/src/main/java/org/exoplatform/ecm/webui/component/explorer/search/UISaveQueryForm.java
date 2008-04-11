@@ -21,7 +21,7 @@ import javax.jcr.AccessDeniedException;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -73,7 +73,7 @@ public class UISaveQueryForm extends UIForm implements UIPopupComponent {
   static  public class SaveActionListener extends EventListener<UISaveQueryForm> {
     public void execute(Event<UISaveQueryForm> event) throws Exception {
       UISaveQueryForm uiSaveQueryForm = event.getSource() ;
-      String repository = uiSaveQueryForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = uiSaveQueryForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       UIECMSearch uiECMSearch = uiSaveQueryForm.getAncestorOfType(UIECMSearch.class) ;
       UIApplication uiApp = uiSaveQueryForm.getAncestorOfType(UIApplication.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;

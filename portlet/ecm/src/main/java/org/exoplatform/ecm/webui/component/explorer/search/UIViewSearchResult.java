@@ -36,7 +36,6 @@ import org.exoplatform.ecm.jcr.ECMViewComponent;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -76,7 +75,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     try {
       String nodeType = node_.getPrimaryNodeType().getName() ;
       return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ;
@@ -150,7 +149,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       return templateService.isManagedNodeType(nodeTypeName, repository);
     } catch (Exception e) {
       return false;
@@ -170,7 +169,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public void setNode(Node node) { node_ = node ; }
   
   public Node getNodeByUUID(String uuid) throws Exception{
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     SessionProvider sessionProvider = SessionsUtils.getSessionProvider() ;
@@ -195,7 +194,7 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
 

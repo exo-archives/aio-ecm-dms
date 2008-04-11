@@ -23,13 +23,11 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -74,10 +72,10 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   private List<Query> privateQueries = new ArrayList<Query>() ;
   
   private boolean isQuickSearch_ = false ;
+  private String repositoryName_ ;
 
   public UISavedQuery() throws Exception {        
     uiPageIterator_ = addChild(UIPageIterator.class, null, "SavedQueryIterator");
-    updateGrid() ;  
   }  
 
   public void updateGrid() throws Exception {
@@ -122,11 +120,8 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   
   public boolean hasQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;    
     try {
-      privateQueries = queryService.getQueries(getCurrentUserId(), repository,SessionsUtils.getSessionProvider());
+      privateQueries = queryService.getQueries(getCurrentUserId(), repositoryName_,SessionsUtils.getSessionProvider());
       return !privateQueries.isEmpty() ;    
     } catch(AccessDeniedException ace) {
       return privateQueries.isEmpty() ;
@@ -139,16 +134,16 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   
   public boolean hasSharedQueries() throws Exception {    
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     String userId = pcontext.getRemoteUser() ;    
     SessionProvider provider = SessionsUtils.getSystemProvider() ;    
-    sharedQueries_ = queryService.getSharedQueries(userId, repository,provider) ;
+    sharedQueries_ = queryService.getSharedQueries(userId, repositoryName_,provider) ;
     return !sharedQueries_.isEmpty();
   }
   
   public List<Node> getSharedQueries() { return sharedQueries_ ; }
+ 
+  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName ; }
   
   public void activate() throws Exception { }
   
@@ -160,9 +155,6 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
       UIJCRExplorer uiExplorer = uiQuery.getAncestorOfType(UIJCRExplorer.class) ;
-      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String wsName = uiQuery.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
       UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class) ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
@@ -180,9 +172,9 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       }
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSessionProvider()) ;
+        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,SessionsUtils.getSessionProvider()) ;
       } catch(AccessDeniedException ace) {
-        queryResult = queryService.execute(queryPath, wsName, repository,SessionsUtils.getSystemProvider()) ;
+        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,SessionsUtils.getSystemProvider()) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -209,13 +201,10 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   static public class EditActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
-      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
       String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Query query = queryService.getQueryByPath(queryPath, userName, repository,SessionsUtils.getSystemProvider()) ;
+      Query query = queryService.getQueryByPath(queryPath, userName, uiQuery.repositoryName_,SessionsUtils.getSystemProvider()) ;
       uiQuery.initPopupEditForm(query) ;
       if(!uiQuery.isQuickSearch_) {
         UIECMSearch uiECSearch = uiQuery.getParent() ;
@@ -230,13 +219,10 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
   static public class DeleteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
       UISavedQuery uiQuery = event.getSource() ;
-      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-      String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;      
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      queryService.removeQuery(path, userName, repository) ;
+      queryService.removeQuery(path, userName, uiQuery.repositoryName_) ;
       uiQuery.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery) ;
     }

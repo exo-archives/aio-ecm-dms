@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.Utils;
@@ -157,16 +156,20 @@ public class UIPermissionInfo extends UIContainer {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        return ;        
       }
-      if(name.equals(uicomp.getExoOwner(node))) {
+      String nodeOwner = Utils.getNodeOwner(node);
+      if(name.equals(nodeOwner)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
       if(Utils.hasChangePermissionRight(node)) {
-        if(node.canAddMixin("exo:privilegeable")) node.addMixin("exo:privilegeable");
+        if(node.canAddMixin("exo:privilegeable"))  {
+          node.addMixin("exo:privilegeable");
+          node.setPermission(nodeOwner,PermissionType.ALL);
+        }
         try {
           node.removePermission(name) ;        
           node.save() ;
@@ -179,12 +182,12 @@ public class UIPermissionInfo extends UIContainer {
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-            prefs_.setValue(Utils.VIEWS,"") ;
-            prefs_.setValue(Utils.JCR_PATH,"") ;
-            prefs_.setValue(Utils.DRIVE,"") ;
-            prefs_.store() ;
+//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
+//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
+//            prefs_.setValue(Utils.VIEWS,"") ;
+//            prefs_.setValue(Utils.JCR_PATH,"") ;
+//            prefs_.setValue(Utils.DRIVE,"") ;
+//            prefs_.store() ;
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }

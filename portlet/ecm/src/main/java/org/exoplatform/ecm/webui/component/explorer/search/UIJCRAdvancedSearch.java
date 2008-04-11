@@ -29,7 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -208,7 +207,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       }
       
       if(!uiForm.isEdit_) {
-        String repository = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         QueryService queryService = uiForm.getApplicationComponent(QueryService.class) ;
         String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;        
         if(name == null || name.trim().length() == 0) {

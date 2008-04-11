@@ -26,7 +26,6 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -80,7 +79,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
                                                         null, ApplicationMessage.WARNING)) ;
     }
     try {
-      String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String wsName = value.substring(0, value.indexOf(":")) ;
       String path = value.substring(value.indexOf(":") + 1) ;           
       //TODO maybe lost data here      

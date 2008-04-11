@@ -20,11 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.nodetype.ConstraintViolationException;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
@@ -32,8 +29,6 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -46,7 +41,6 @@ import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
@@ -63,20 +57,18 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
   private String allowCreateFolder_ ;
 
   public UIFolderForm() throws Exception {
-    PortletRequestContext context = (PortletRequestContext) WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences preferences = context.getRequest().getPreferences() ;
-    allowCreateFolder_ = preferences.getValue(Utils.DRIVE_FOLDER, "") ;
+  }
+
+  public void activate() throws Exception { 
+    allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
     if(allowCreateFolder_.equals("both")) {
       List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
       options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
       options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
       addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options)) ;
     }
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class).addValidator(ECMNameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
-  }
-
-  public void activate() throws Exception { 
     getUIStringInput(FIELD_NAME).setValue(null) ;
     if(getUIFormSelectBox(FIELD_TYPE) != null) {
       if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
@@ -94,61 +86,46 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiFolderForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiFolderForm.getAncestorOfType(UIApplication.class);
       String name = uiFolderForm.getUIStringInput(FIELD_NAME).getValue() ;
-      Node node = uiExplorer.getCurrentNode() ;
-      Session session = uiExplorer.getSession() ;
-      String type = null ;
-      try {
-        session.getItem(node.getPath()) ;
-      } catch(PathNotFoundException item) {
-        session = node.getSession() ;
-      }
-      try {
-        uiExplorer.nodeIsLocked(node.getPath(), session) ;
-      } catch(PathNotFoundException p) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      if(uiExplorer.nodeIsLocked(node.getPath(), session)) {
+      Node node = uiExplorer.getCurrentNode() ;                  
+      if(uiExplorer.nodeIsLocked(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
-      if(name != null) {
-        if(uiFolderForm.allowCreateFolder_.equals("both")) {
-          type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
-        } else {
-          type = uiFolderForm.allowCreateFolder_ ;
-        }
-        try {
-          node.addNode(name, type) ;
-          node.save() ;
-          node.getSession().refresh(false) ;
-          if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;
-          uiExplorer.updateAjax(event) ;
-        } catch(ConstraintViolationException cve) {  
-          Object[] arg = { type } ;
-          throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
-                                                            arg, ApplicationMessage.WARNING)) ;
-        } catch(RepositoryException re) {
-          String key = "UIFolderForm.msg.repository-exception" ;
-          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        } catch(NumberFormatException nume) {
-          String key = "UIFolderForm.msg.numberformat-exception" ;
-          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        } catch (Exception e) {
-          JCRExceptionManager.process(uiApp, e);
-        }
-      } else {
+      }      
+      if(name == null || name.length() ==0) {
         uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      String type = null ;
+      if(uiFolderForm.allowCreateFolder_.equals("both")) {
+        type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
+      } else {
+        type = uiFolderForm.allowCreateFolder_ ;
+      }
+      try {
+        node.addNode(name, type) ;
+        node.save() ;
+        node.getSession().save();
+        if(!uiExplorer.getPreference().isJcrEnable())  { node.getSession().save() ; }
+        uiExplorer.updateAjax(event) ;
+      } catch(ConstraintViolationException cve) {  
+        Object[] arg = { type } ;
+        throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
+            arg, ApplicationMessage.WARNING)) ;
+      } catch(RepositoryException re) {
+        String key = "UIFolderForm.msg.repository-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(NumberFormatException nume) {
+        String key = "UIFolderForm.msg.numberformat-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+      }      
     }
   }
 

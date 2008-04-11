@@ -22,20 +22,16 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -112,7 +108,7 @@ public class UIActionList extends UIContainer {
       TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
       UIApplication uiApp = uiActionList.getAncestorOfType(UIApplication.class) ;
       String repository = 
-        uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        uiActionList.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       try {
         String path = templateService.getTemplatePathByUser(false, nodeTypeName, userName, repository);
         if(path == null) {
@@ -161,7 +157,7 @@ public class UIActionList extends UIContainer {
       TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
       String userName = event.getRequestContext().getRemoteUser() ;
       String repository = 
-        uiActionList.getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+        uiActionList.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);
       Node selectedAction = null ;
@@ -224,11 +220,8 @@ public class UIActionList extends UIContainer {
         return ;
       }
       if(uiPopup != null && uiPopup.isRendered()) uiActionListContainer.removeChildById("editActionPopup") ;
-      PortletRequestContext context = (PortletRequestContext) event.getRequestContext() ;
-      PortletPreferences preferences = context.getRequest().getPreferences() ;
       try {
-        actionService.removeAction(uiExplorer.getCurrentNode(), actionName, 
-                                   preferences.getValue(Utils.REPOSITORY, "")) ;
+        actionService.removeAction(uiExplorer.getCurrentNode(), actionName, uiExplorer.getRepositoryName()) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;

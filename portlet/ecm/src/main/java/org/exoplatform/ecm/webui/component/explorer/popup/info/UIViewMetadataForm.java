@@ -26,7 +26,6 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -71,7 +70,7 @@ public class UIViewMetadataForm extends DialogFormFields {
   public String getNodeType() { return nodeType_ ; } 
   
   public String getDialogTemplatePath() { 
-    repositoryName_ = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository() ;
+    repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     try {
       return metadataService.getMetadataPath(nodeType_, true, repositoryName_) ;

@@ -18,9 +18,6 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
-
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
@@ -69,11 +66,9 @@ public class UIViewBar extends UIForm {
     getUIFormSelectBox(FIELD_SELECT_VIEW).setValue(viewOptions.get(0).getValue()) ;
   }
   
-  public String getWorkspaceName() {
-    UIJCRExplorer uicomp = getAncestorOfType(UIJCRExplorer.class) ;
-    PortletPreferences prefs_ = uicomp.getPortletPreferences();
-    return prefs_.getValue(Utils.DRIVE, "") ;
-  }  
+  public String getDriveName() {
+    return getAncestorOfType(UIJCRExplorer.class).getDriveData().getName() ;
+  }
   
   public boolean isShowSaveSession() throws Exception{
     UIJCRExplorer uiExplorer =  getAncestorOfType(UIJCRExplorer.class) ;
@@ -83,13 +78,6 @@ public class UIViewBar extends UIForm {
   static public class BackActionListener extends EventListener<UIViewBar> {
     public void execute(Event<UIViewBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-      uiJCRExplorer.setIsViewTag(false) ;
-      prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-      prefs_.setValue(Utils.VIEWS,"") ;
-      prefs_.setValue(Utils.JCR_PATH,"") ;
-      prefs_.setValue(Utils.DRIVE,"") ;
-      prefs_.store() ;
       UISearchResult simpleSearchResult = uiJCRExplorer.findComponentById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
       if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
       uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
