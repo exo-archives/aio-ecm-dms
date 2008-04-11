@@ -344,6 +344,46 @@ public class Utils {
   }
 
   @SuppressWarnings({"unchecked", "unused"})
+  public static Map prepareMap(List inputs, Map properties) throws Exception {
+    Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
+    HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
+    for (int i = 0; i < inputs.size(); i++) {
+      JcrInputProperty property = null;
+      if(inputs.get(i) instanceof UIFormMultiValueInputSet) {        
+        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;        
+        if(!hasMap.containsKey(inputName)) {
+          List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
+          property = (JcrInputProperty) properties.get(inputName);        
+          if(property != null){          
+            property.setValue(values.toArray(new String[values.size()])) ;
+          }
+        }
+        hasMap.put(inputName, property) ;
+      } else {
+        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        property = (JcrInputProperty) properties.get(input.getName());
+        if(property != null) {
+          if (input instanceof UIFormUploadInput) {
+            byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
+            property.setValue(content);
+          } else if(input instanceof UIFormDateTimeInput) {
+            property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
+          } else {
+            property.setValue(input.getValue()) ;
+          }
+        }
+      }
+    }
+    Iterator iter = properties.values().iterator() ;
+    JcrInputProperty property ;
+    while (iter.hasNext()) {
+      property = (JcrInputProperty) iter.next() ;
+      rawinputs.put(property.getJcrPath(), property) ;
+    }
+    return rawinputs;
+  }
+  
+  @SuppressWarnings({"unchecked", "unused"})
   public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
     HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
