@@ -204,7 +204,7 @@ public class UITemplateForm extends UIForm {
       getUIStringInput(FIELD_NAME).setEditable(false) ;
       String value = templatePath.substring(0, templatePath.lastIndexOf("/")) ;
       getUIFormSelectBox(FIELD_HOMETEMPLATE).setValue(value) ;
-      getUIFormSelectBox(FIELD_HOMETEMPLATE).setDisabled(false) ;
+      getUIFormSelectBox(FIELD_HOMETEMPLATE).setDisabled(true) ;
       getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true) ;
       if (isVersioned(template_)) {
         baseVersion_ = template_.getBaseVersion() ;
