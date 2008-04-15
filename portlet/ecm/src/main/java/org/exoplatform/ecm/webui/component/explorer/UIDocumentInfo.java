@@ -148,16 +148,17 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public String getCapacityOfFile(Node file) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    float capacity = uiExplorer.getFileSize(file) ;
-    String strCapacity = Float.toString(capacity) ;
+    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;       
+    long size = contentNode.getProperty(Utils.JCR_DATA).getLength() ;    
+    long capacity = size/1024 ;
+    String strCapacity = Long.toString(capacity) ;
     if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
   }
   
-  public float getFileSize(Node file) throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getFileSize(file) ;
-  }
+//  public long getFileSize(Node file) throws Exception {
+//    return getAncestorOfType(UIJCRExplorer.class).getFileSize(file) ;
+//  }
 
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
@@ -415,9 +416,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;      
       Session session ;
-      if(workspaceName == null ) {
+      if(workspaceName == null ) {       
         session = uiExplorer.getSession() ;
-      } else {
+      } else {        
 //        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
         ManageableRepository manageableRepository = repositoryService.getRepository(uicomp.getRepository()) ;
@@ -445,14 +446,14 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
           if ((".." + prefPath).equals(uri)) {
             if (prefPath.equals(uiExplorer.getCurrentNode().getPath())) {
               uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
-              uiExplorer.updateAjax(event) ;
+              uiExplorer.updateAjax(event) ;              
             }
-          } else {
+          } else {            
             uiExplorer.setSelectNode(uri, session);
-            if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {
+            if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
               uiExplorer.setIsReferenceNode(true) ;
               uiExplorer.setReferenceWorkspace(workspaceName) ;
-            } else {
+            } else {              
               uiExplorer.setIsReferenceNode(false) ;
             }
             uiExplorer.updateAjax(event) ;
@@ -469,14 +470,14 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
           JCRExceptionManager.process(uiApp, e);
           return ;
         }
-      } else {
+      } else {        
         try {
           if ("../".equals(uri)) {
-            if (!"/".equals(uiExplorer.getCurrentNode().getPath())) {
+            if (!"/".equals(uiExplorer.getCurrentNode().getPath())) {              
               uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
               uiExplorer.updateAjax(event) ;
             }
-          } else {
+          } else {            
             uiExplorer.setSelectNode(uri, session);
             uiExplorer.updateAjax(event) ;
           }
