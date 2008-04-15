@@ -57,6 +57,7 @@
   }
 </style>
 <%
+	import javax.jcr.Node;
   def originalNode = uicomponent.getOriginalNode();
   def currentNode = uicomponent.getNode() ;	
   def contentNode = currentNode.getNode("jcr:content") ;
