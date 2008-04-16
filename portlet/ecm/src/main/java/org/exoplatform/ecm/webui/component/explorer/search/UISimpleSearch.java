@@ -78,7 +78,7 @@ public class UISimpleSearch extends UIForm {
   
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
-    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null).addValidator(ECMNameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
     List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>() ;
     operators.add(new SelectItemOption<String>(AND, AND)) ;
     operators.add(new SelectItemOption<String>(OR, OR)) ;
@@ -209,13 +209,14 @@ public class UISimpleSearch extends UIForm {
       }
       //TODO need review this code. should use validator for text field
       String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
-      if(text != null)
-      for(String filterChar : arrFilterChar) {
-        if(text.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+      if(text != null) {
+        for(String filterChar : arrFilterChar) {
+          if(text.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         }
       }
       String statement = uiSimpleSearch.getQueryStatement() ;
