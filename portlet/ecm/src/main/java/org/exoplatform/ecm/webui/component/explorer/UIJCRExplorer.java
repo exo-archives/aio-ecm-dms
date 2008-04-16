@@ -134,12 +134,6 @@ public class UIJCRExplorer extends UIContainer {
     refreshExplorer() ;
   }
   
-  public float getFileSize(Node file)throws Exception {
-    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;
-    InputStream in = contentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    return in.available()/1024 ;
-  }
-  
   public void setDriveData(DriveData driveData) { driveData_ = driveData ; }
   public DriveData getDriveData() { return driveData_ ; }
 

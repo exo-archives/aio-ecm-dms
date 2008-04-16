@@ -148,16 +148,17 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   }
 
   public String getCapacityOfFile(Node file) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    float capacity = uiExplorer.getFileSize(file) ;
-    String strCapacity = Float.toString(capacity) ;
+	Node contentNode = file.getNode(Utils.JCR_CONTENT) ;       
+    long size = contentNode.getProperty(Utils.JCR_DATA).getLength() ;    
+    long capacity = size/1024 ;
+    String strCapacity = Long.toString(capacity) ;
     if(strCapacity.indexOf(".") > -1) return strCapacity.substring(0, strCapacity.lastIndexOf(".")) ;
     return strCapacity ;
   }
   
-  public float getFileSize(Node file) throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getFileSize(file) ;
-  }
+//  public float getFileSize(Node file) throws Exception {
+//    return getAncestorOfType(UIJCRExplorer.class).getFileSize(file) ;
+//  }
 
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
