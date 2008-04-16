@@ -108,7 +108,7 @@
 
 /*############################## -- UIViewRelationList   -- ##############################*/
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
- width:auto;
+	width:auto;
 }
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
   margin-top: 2px;

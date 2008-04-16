@@ -744,7 +744,11 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: 1px solid %b7b7b7;
+	border: none;
+}
+
+.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer .UITabContent {
+  border-top: none;
 }
 	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
