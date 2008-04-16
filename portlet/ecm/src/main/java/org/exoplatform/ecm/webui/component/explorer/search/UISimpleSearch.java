@@ -208,15 +208,17 @@ public class UISimpleSearch extends UIForm {
       }
       //TODO need review this code. should use validator for text field
       String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
-      if(text != null)
-      for(String filterChar : arrFilterChar) {
-        if(text.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
+      if(text != null) {
+    	for(String filterChar : arrFilterChar) {
+	      if(text.indexOf(filterChar) > -1) {
+	        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null, 
+	        		ApplicationMessage.WARNING)) ;
+	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	        return ;
+	      }
+	    }
       }
+      
       String statement = uiSimpleSearch.getQueryStatement() ;
       long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(statement, Query.XPATH);      
