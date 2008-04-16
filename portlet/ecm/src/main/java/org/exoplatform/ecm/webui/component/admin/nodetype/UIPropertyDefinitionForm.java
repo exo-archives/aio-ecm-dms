@@ -126,7 +126,7 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
     requireType.add(new SelectItemOption<String>("BOOLEAN", "6")) ;
     requireType.add(new SelectItemOption<String>("NAME", "7")) ;
     requireType.add(new SelectItemOption<String>("PATH", "8")) ;
-    requireType.add(new SelectItemOption<String>("REFERENCES", "9")) ;
+    requireType.add(new SelectItemOption<String>("REFERENCE", "9")) ;
     requireType.add(new SelectItemOption<String>("UNDEFINED", "0")) ;
     return requireType ;
   }

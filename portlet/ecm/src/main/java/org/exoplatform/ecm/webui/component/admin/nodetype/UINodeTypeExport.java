@@ -200,7 +200,7 @@ public class UINodeTypeExport extends UIForm {
     
     private String representPropertyDefinition(NodeType nodeType) {
       String[] requireType = {"undefined", "String", "Binary", "Long", "Double", "Date", "Boolean", 
-                              "Name", "Path", "References"} ;
+                              "Name", "Path", "Reference"} ;
       String[] onparentVersion = {"", "COPY", "VERSION", "INITIALIZE", "COMPUTE", "IGNORE", "ABORT"} ;
       StringBuilder propertyXML = new StringBuilder() ;
       propertyXML.append("<propertyDefinitions>").append("\n") ;        
