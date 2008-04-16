@@ -169,12 +169,8 @@ public class TemplatePlugin extends BaseComponentPlugin {
       InputStream in = configManager_.getInputStream(path);
       String nodeName = 
         templateFileName.substring(templateFileName.lastIndexOf("/") + 1, templateFileName.indexOf("."));
-      Node contentNode = null;
-      if(nodeTypeHome.hasNode(nodeName)){
-        contentNode = nodeTypeHome.getNode(nodeName);
-      }else {
-        contentNode = nodeTypeHome.addNode(nodeName, EXO_TEMPLATE);
-      }
+      if(nodeTypeHome.hasNode(nodeName)) return ;
+      Node contentNode = nodeTypeHome.addNode(nodeName, EXO_TEMPLATE);
       contentNode.setProperty(EXO_ROLES_PROP, template.getParsedRoles());
       contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, in);      
     }
