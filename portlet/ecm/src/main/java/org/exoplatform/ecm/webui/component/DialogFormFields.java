@@ -489,19 +489,30 @@ public class DialogFormFields extends UIForm {
     if(type.equals("password")) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
     if(editable.equals("false")) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
-    if(getNode() != null) {
-      if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
-        Node parentNode = getNode().getParent() ;
-        if(parentNode != null && parentNode.getName().equals("languages")) {
-          uiInput.setValue(getNode().getParent().getParent().getName()) ;
-        } else {
-          String nameValue =  getNode().getPath().substring(getNode().getPath().lastIndexOf("/") + 1) ;
-          uiInput.setValue(nameValue) ;
+    if(getNode() != null) {      
+      String[] arrNodes = jcrPath.split("/") ;      
+      
+//    update by quangld      
+      if (arrNodes.length == 4) {
+        Node childNode = null;        
+        childNode = getNode().getNode(arrNodes[2]);
+        if (childNode != null) {
+          uiInput.setValue(childNode.getProperty(propertyName).getValue().getString());
         }
-        uiInput.setEditable(false) ;
-      } else if(getNode().hasProperty(propertyName)) {
-        uiInput.setValue(getNode().getProperty(propertyName).getValue().getString()) ;
-      } 
+      } else {
+        if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {        
+          Node parentNode = getNode().getParent() ;
+          if(parentNode != null && parentNode.getName().equals("languages")) {
+            uiInput.setValue(getNode().getParent().getParent().getName()) ;
+          } else {          
+            String nameValue =  getNode().getPath().substring(getNode().getPath().lastIndexOf("/") + 1) ;
+            uiInput.setValue(nameValue) ;
+          }                        
+          uiInput.setEditable(false) ;
+        } else if(getNode().hasProperty(propertyName)) {      
+            uiInput.setValue(getNode().getProperty(propertyName).getValue().getString()) ;        
+        } 
+      }            
     }
     if(isNotEditNode_) {
       if(getChildNode() != null) {
