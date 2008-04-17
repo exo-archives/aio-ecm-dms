@@ -64,6 +64,7 @@
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
+  float: none;
 }
 
 .UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
@@ -161,10 +162,6 @@
   margin: 10px auto;
   width: 95%;
   border: none;
-}
-
-.UIJCRExplorerPortlet  .UIActionListContainer .UIFormGrid input {
-  float: left;
 }
 
 .UIJCRExplorerPortlet .UIMenuPopup {
@@ -939,6 +936,10 @@
 	width: 95%;
 	margin: auto;
 	padding: 10px 0px;
+}
+
+.UIJCRExplorer .UIJCRExplorer .UIPropertyForm .HorizontalLayout {
+  border: none;
 }
 
 /*====================================MultiValueContainer==================================*/
