@@ -9,7 +9,6 @@
 @import url("../../../icons/MacStylesheet.css");
 @import url("UIMetadataManager/MacStylesheet.css");
 @import url("UINodeTypeManager/MacStylesheet.css");
-@import url("UITaxonomyManager/MacStylesheet.css");
 
 .UIWindow .UIECMAdminPortlet {
 	border: none;
