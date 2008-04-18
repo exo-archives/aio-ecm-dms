@@ -90,3 +90,40 @@
   width: 65px;
   margin: auto;
 }
+
+/*############################## -- UITaxonomyPageIterator   -- ##############################*/
+
+.UITaxonomyPageIterator {
+	margin: 0px 0px 0px 9px;
+	padding: 9px 0px 0px 0px;
+}
+
+.UITaxonomyPageIterator .NodePageIterator {
+	background: #ededed;
+	border-right: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+	padding-left: 1px;
+	width: auto;
+}
+
+.UITaxonomyPageIterator .DisablePage {
+	filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40;
+	cursor: normal;
+}
+
+.UITaxonomyPageIterator .Icon {
+	margin: 0px 4px;
+	padding: 0px;
+	float: left;
+}
+
+.UITaxonomyPageIterator a {
+	color: #2f7bc9;
+	padding: 0px 3px;
+	display: block;
+	line-height: 18px;
+}
+
+.UITaxonomyPageIterator a.PageSelected {
+	color: #fd2020;
+}

@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -65,6 +66,12 @@ public class UITaxonomyForm extends UIForm {
     getUIStringInput(FIELD_NAME).setValue(null) ;
   }
   
+  public void addTaxonomy(String parentPath, String name) throws Exception {
+    UITaxonomyManager uiManager = getAncestorOfType(UITaxonomyManager.class) ;
+    getApplicationComponent(CategoriesService.class).addTaxonomy(parentPath, name, 
+        uiManager.getRepository()) ;
+  }
+  
   static public class SaveActionListener extends EventListener<UITaxonomyForm> {
     public void execute(Event<UITaxonomyForm> event) throws Exception {
       UITaxonomyForm uiForm = event.getSource() ;
@@ -93,7 +100,8 @@ public class UITaxonomyForm extends UIForm {
       }
       String parentPath = ROOT_PATH + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
       try {
-        uiManager.addTaxonomy(parentPath, name)  ;        
+        uiForm.addTaxonomy(parentPath, name)  ;
+        uiManager.update(parentPath) ;
       } catch(Exception e) {
         Object[] arg = {name} ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", arg, 

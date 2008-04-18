@@ -9,7 +9,7 @@
 @import url("../../../icons/DefaultStylesheet.css");
 @import url("UIMetadataManager/DefaultStylesheet.css");
 @import url("UINodeTypeManager/DefaultStylesheet.css");
-@import url("UITaxonomyManager/DefaultStylesheet.css");
+/*@import url("UITaxonomyManager/DefaultStylesheet.css");*/
 
 
 .UIWindow .UIECMAdminPortlet {
@@ -22,6 +22,14 @@
 	border: 1px solid #b7b7b7;
 	margin: 10px;
 	overflow: hidden;
+}
+
+.UIECMAdminPortlet .UITaxonomyWorkingArea {
+  margin-left: 235px;
+}
+
+.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
+  width: 98.5%;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
