@@ -23,8 +23,12 @@
 	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UITrees .NodeIcon {
-	padding-left: 25px;
+.UIECMAdminPortlet .UITaxonomyWorkingArea {
+  margin-left: 235px;
+}
+
+.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
+  width: 98.5%;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
