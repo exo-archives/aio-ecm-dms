@@ -9,7 +9,7 @@
 @import url("../../../icons/VistaStylesheet.css");
 @import url("UIMetadataManager/VistaStylesheet.css");
 @import url("UINodeTypeManager/VistaStylesheet.css");
-@import url("UITaxonomyManager/VistaStylesheet.css");
+/*@import url("UITaxonomyManager/VistaStylesheet.css");*/
 
 .UIWindow .UIECMAdminPortlet {
 	border: none;
@@ -23,12 +23,20 @@
 	overflow: hidden;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UITrees .Node  {
+  line-height: 24px;
+}
+
 .UIECMAdminPortlet .UITaxonomyWorkingArea {
-  margin-left: 235px;
+  margin-left: 240px;
 }
 
 .UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
-  width: 98.5%;
+  width: 93%;
+}
+
+.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid .Icon16x16 {
+  margin: 0px 6px;
 }
 
 /***********************UIRepositoryControl**************************/
