@@ -9,8 +9,6 @@
 @import url("../../../icons/DefaultStylesheet.css");
 @import url("UIMetadataManager/DefaultStylesheet.css");
 @import url("UINodeTypeManager/DefaultStylesheet.css");
-/*@import url("UITaxonomyManager/DefaultStylesheet.css");*/
-
 
 .UIWindow .UIECMAdminPortlet {
 	border: none;
