@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -30,7 +31,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
-
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong
@@ -55,6 +56,7 @@ public class UITaxonomyForm extends UIForm {
   public UITaxonomyForm() throws Exception {
     addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
+          addValidator(MandatoryValidator.class).
                    addValidator(ECMNameValidator.class)) ;
   }
   
@@ -62,6 +64,12 @@ public class UITaxonomyForm extends UIForm {
     path = path.replaceFirst(ROOT_PATH, "") ;
     getUIFormInputInfo(FIELD_PARENT).setValue(path) ;
     getUIStringInput(FIELD_NAME).setValue(null) ;
+  }
+  
+  public void addTaxonomy(String parentPath, String name) throws Exception {
+    UITaxonomyManager uiManager = getAncestorOfType(UITaxonomyManager.class) ;
+    getApplicationComponent(CategoriesService.class).addTaxonomy(parentPath, name, 
+        uiManager.getRepository()) ;
   }
   
   static public class SaveActionListener extends EventListener<UITaxonomyForm> {
@@ -92,7 +100,8 @@ public class UITaxonomyForm extends UIForm {
       }
       String parentPath = ROOT_PATH + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
       try {
-        uiManager.addTaxonomy(parentPath, name)  ;        
+        uiForm.addTaxonomy(parentPath, name)  ;
+        uiManager.update(parentPath) ;
       } catch(Exception e) {
         Object[] arg = {name} ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", arg, 
