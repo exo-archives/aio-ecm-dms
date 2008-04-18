@@ -26,8 +26,16 @@
   margin-left: 235px;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .UITrees .Node .NodeIcon   {
+  padding-left: 24px;
+}
+
 .UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
-  width: 98.5%;
+  width: 93%;
+}
+
+.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid .Icon16x16 {
+  margin: 0px 6px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
