@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.portlet.PortletMode;
 
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
@@ -124,7 +125,7 @@ public class UIToolBar extends UIContainer {
       Node selectNode = uiContainer.getNodeByPath(nodePath) ;
       if(selectNode == null) {
         if(uiContainer.getNodeByPath(uiContainer.getCategoryPath()) == null) {
-          uiBCPortlet.setPorletMode(PortletRequestContext.HELP_MODE);
+          uiBCPortlet.setPorletMode(PortletMode.HELP);
           uiBCPortlet.reload() ;
         } else {
           UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;

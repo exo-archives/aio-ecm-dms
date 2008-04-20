@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.browsecontent;
 
+import javax.portlet.PortletMode;
+import javax.portlet.PortletModeException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -59,7 +61,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     try {
       uiBrowseContainer.loadPortletConfig(getPortletPreferences()) ;
     } catch (Throwable e) {      
-      setPorletMode(PortletRequestContext.HELP_MODE) ;
+      setPorletMode(PortletMode.HELP) ;
     }
   }
 
@@ -70,19 +72,19 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
     UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
     UIBrowseContentHelp uiBCHelp = getChild(UIBrowseContentHelp.class) ;
-    if(portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {       
+    if(portletReqContext.getApplicationMode() == PortletMode.VIEW) {       
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(false) ;
       uiContainer.setRendered(true) ;
       if(!isViewModing_) uiContainer.refreshContent() ; 
       isViewModing_ = true ;
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {      
+    } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {      
       if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
       uiTabPane.setRendered(true) ;
       uiBCHelp.setRendered(false) ;
       uiContainer.setRendered(false) ;
       isViewModing_ = false ;
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {      
+    } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {      
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(true) ;
       uiContainer.setRendered(false) ;
@@ -100,7 +102,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     processRender(app, context) ;
   }
   
-  protected void setPorletMode(int mode) {
+  protected void setPorletMode(PortletMode mode) throws PortletModeException {
     PortletRequestContext portletReqContext =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     portletReqContext.setApplicationMode(mode) ;
   }
