@@ -48,7 +48,7 @@ public class UITaxonomyTree extends UIContainer {
   private String rootPath_ ;
   
   public UITaxonomyTree() throws Exception {
-    UITree tree = addChild(UITree.class, null, null) ;
+    UITree tree = addChild(UITree.class, null, "UITaxonomyTree") ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;
     tree.setIcon("nt_unstructured16x16Icon")  ;    
@@ -72,7 +72,7 @@ public class UITaxonomyTree extends UIContainer {
       children = rootNode_.getNodes() ;
       changeNode(rootNode_) ;
     }
-    UITree tree = getChild(UITree.class) ;
+    UITree tree = getChildById("UITaxonomyTree") ;
     Node nodeSelected = getSelectedNode() ;
     if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
       nodeSelected = rootNode_ ;
@@ -134,9 +134,9 @@ public class UITaxonomyTree extends UIContainer {
     return currentNode_ ; 
   }
   
-  static public class ChangeNodeActionListener extends EventListener<UITree> {
-    public void execute(Event<UITree> event) throws Exception {
-      UITaxonomyTree uiTaxonomyTree = event.getSource().getParent() ;
+  static public class ChangeNodeActionListener extends EventListener<UITaxonomyTree> {
+    public void execute(Event<UITaxonomyTree> event) throws Exception {
+      UITaxonomyTree uiTaxonomyTree = event.getSource() ;
       String uri = event.getRequestContext().getRequestParameter(OBJECTID)  ;
       uiTaxonomyTree.setNodeSelect(uri) ;
       UITaxonomyManager uiTaxonomyManager = uiTaxonomyTree.getParent() ;
