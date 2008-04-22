@@ -25,6 +25,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -61,7 +62,7 @@ public class UIViewRelationList extends UIContainer{
     ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName()) ;
     String[] wsNames = repository.getWorkspaceNames() ;
     for(String wsName : wsNames) {
-      Session session = repository.getSystemSession(wsName) ;
+      Session session = SessionsUtils.getSystemProvider().getSession(wsName, repository) ;
       for(Value val : vals) {
         String uuid = val.getString();
         try {
