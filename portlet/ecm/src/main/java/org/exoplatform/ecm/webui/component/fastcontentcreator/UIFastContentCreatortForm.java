@@ -109,8 +109,8 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
   public Node getCurrentNode() throws Exception {  
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     PortletPreferences preferences = getPortletPreferences() ;
-    Session session = repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))
-    .getSystemSession(preferences.getValue("workspace", "")) ;
+    Session session = SessionsUtils.getSystemProvider().getSession(preferences.getValue("workspace", ""), 
+        repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))) ;
     return (Node) session.getItem(preferences.getValue("path", ""));
   }
 

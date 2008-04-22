@@ -29,6 +29,7 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ECMViewComponent;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
@@ -117,8 +118,8 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{
-        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
+        return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
+      } catch(Exception e) {
 
       }      
     }
