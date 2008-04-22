@@ -35,7 +35,9 @@ public class SessionsUtils {
 	}
 
 	public static SessionProvider getSystemProvider() {
-		return SessionProvider.createSystemProvider();
+	  SessionProviderService service = (SessionProviderService) PortalContainer
+    .getComponent(SessionProviderService.class);
+	  return service.getSystemSessionProvider(null) ;		
 	}
 
 	public static SessionProvider getSessionProvider() {
