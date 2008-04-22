@@ -265,6 +265,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
           String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
           ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
         }
+        ((UIJCRBrowser)uiComp).setShowRootPathSelect(true);
         if(rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
       }
       if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp) ;
