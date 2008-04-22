@@ -27,6 +27,7 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
@@ -251,7 +252,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         }
         ManageableRepository repository =
           uiForm.getApplicationComponent(RepositoryService.class).getRepository(uiExplorer.getRepositoryName()) ;
-        Session session = repository.getSystemSession(repository.getConfiguration().getDefaultWorkspaceName()) ; 
+        Session session = 
+          SessionsUtils.getSystemProvider().getSession(repository.getConfiguration().getDefaultWorkspaceName(), repository) ; 
         Node queryNode = (Node) session.getItem(uiForm.queryPath_) ;
         queryNode.setProperty("jcr:language", queryLang) ;
         queryNode.setProperty("jcr:statement", statement) ;
