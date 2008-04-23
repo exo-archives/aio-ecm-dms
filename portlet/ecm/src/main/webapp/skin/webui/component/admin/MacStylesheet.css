@@ -22,6 +22,10 @@
 	overflow: hidden;
 }
 
+.UIECMAdminPortlet .UIGrid .ActionContainer a {
+	float: left;
+}
+
 .UIECMAdminPortlet .UITaxonomyWorkingArea {
   margin-left: 235px;
 }

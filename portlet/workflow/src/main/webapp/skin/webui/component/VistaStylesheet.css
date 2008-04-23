@@ -24,6 +24,10 @@
 }
 
 .UIWorkflowPortlet .UIGrid .ActionContainer a {
+	float: left;
+}
+
+.UIWorkflowPortlet .UIGrid .ActionContainer a {
 	width: 24px; height: 24px;
 	margin: 3px 0px 0px 0px;
 }
