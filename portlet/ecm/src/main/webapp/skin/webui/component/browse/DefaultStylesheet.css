@@ -283,20 +283,12 @@
 }
 /*############################## -- FIX BUG POPUP	-- ##############################*/
 .UIBrowseContentPortlet .UIJCRBrowser {
-	padding: 10px 0px 0px 10px;
+	padding: 10px;
 }
 
 .UIBrowseContentPortlet .Explorer {
-	margin-right: 10px;
 	float: left ;
 	width: 220px ;
-}
-
-UIBrowseContentPortlet .Explorer {
-	margin-right: 10px;
-	float: left ;
-	width: 230px ;
-	overflow: hidden;
 }
 
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
@@ -304,8 +296,8 @@ UIBrowseContentPortlet .Explorer {
 	padding: 10px;
 }
 
-.UIBrowseContentPortlet .UITreeList .UIGrid {
-	width: 310px;
+.UIBrowseContentPortlet .UITreeList {
+	margin-left: 230px;
 }
 
 /*############################## -- FIX BUG POPUP -- ##############################*/
@@ -421,7 +413,7 @@ UIBrowseContentPortlet .Explorer {
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: 540px;
+	width: auto;
 	margin: 0px;
 	border: 1px solid #E1E1E1;
 }
