@@ -22,7 +22,7 @@
 	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UITrees .Node  {
+.UIECMAdminPortlet .UITrees .Node  {
   line-height: 24px;
 }
 
@@ -469,10 +469,6 @@
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer {
   margin-right: 5px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UITrees .Node {
-  line-height: 24px;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {

@@ -532,7 +532,7 @@
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
 	margin-top: 10px;
 	border: solid 1px #b7b7b7;
-	width: 98%;
+	width: auto;
 	padding-left: 5px;
 }
 

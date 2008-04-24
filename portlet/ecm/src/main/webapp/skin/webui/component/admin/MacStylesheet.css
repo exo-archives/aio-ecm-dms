@@ -26,7 +26,7 @@
   margin-left: 235px;
 }
 
-.UIECMAdminPortlet .UITaxonomyManager .UITrees .Node .NodeIcon   {
+.UIECMAdminPortlet .UITrees .Node .NodeIcon   {
   padding-left: 24px;
 }
 
@@ -888,12 +888,13 @@
 }
 
 .UIQueriesManager .UIQueriesForm {
-	width: 95%;
 	margin: 10px auto;
 }
 
 .UIQueriesManager .UIQueriesForm .HorizontalLayout {
 	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
+	width: 500px;
+	margin: auto;
 	padding-top: 10px;
 }
 
@@ -903,6 +904,9 @@
 	padding: 3px;
 }
 
+.UIQueriesManager .HorizontalLayout .PermissionButton .UIFormInputSet {
+  width: auto;
+}
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
 .UIECMAdminPortlet .UIFolksonomyManager {

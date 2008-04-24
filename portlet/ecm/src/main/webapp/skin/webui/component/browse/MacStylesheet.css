@@ -119,9 +119,10 @@
 	width: 500px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16{
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
 	float: none;
 	margin-left: 5px;
+	*height: 20px;
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
@@ -333,6 +334,14 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UISearchController .SearchResult{
 	border: solid 1px #b7b7b7;
 	padding: 5px;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm input {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm select {
+  width: auto;
 }
 
 .UIBrowseContentPortlet .UISearchController .UIPageIterator{
