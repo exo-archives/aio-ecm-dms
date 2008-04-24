@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer ;
 
-import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;

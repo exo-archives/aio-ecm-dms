@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
+import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
@@ -76,7 +77,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIFastContentCreatorPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
-    if (portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
+    if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
       if(getChild(UIEditModeConfiguration.class) != null) {
         removeChild(UIEditModeConfiguration.class) ;
         removeChild(UIPopupWindow.class) ;
@@ -94,7 +95,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         uiDialogForm.setRepositoryName(repo) ;
         addChild(uiDialogForm) ; 
       }
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.EDIT_MODE) {
+    } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {
       if(getChild(UIFastContentCreatortForm.class) != null) {
         removeChild(UIFastContentCreatortForm.class) ;
       }
@@ -102,7 +103,7 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
         UIEditModeConfiguration uiEditMode = addChild(UIEditModeConfiguration.class, null, null) ;
         uiEditMode.initEditMode() ;
       }
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
+    } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
     super.processRender(app, context) ;

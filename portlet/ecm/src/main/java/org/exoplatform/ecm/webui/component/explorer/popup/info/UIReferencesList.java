@@ -87,8 +87,11 @@ public class UIReferencesList extends UIGrid implements UIPopupComponent{
             referBeans.add(new ReferenceBean(workspace, refNode.getPath())) ;
           }
         }
-      } catch(Exception e) { }
-     session.logout() ; 
+      } catch(Exception e) {
+        continue ;
+      } finally {
+        if(session != null) session.logout() ;
+      }
     }
     return referBeans ;
   }

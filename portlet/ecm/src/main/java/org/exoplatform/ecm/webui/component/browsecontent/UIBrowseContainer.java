@@ -35,6 +35,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
@@ -875,7 +876,7 @@ public class UIBrowseContainer extends UIContainer {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
       super.processRender(context) ;
     } catch (Exception e) {
-      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletRequestContext.HELP_MODE) ;
+      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletMode.HELP) ;
       return ;
     }
   }
@@ -890,7 +891,7 @@ public class UIBrowseContainer extends UIContainer {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
           if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
             UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
+            uiPorlet.setPorletMode(PortletMode.HELP) ;
             uiPorlet.reload() ;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {

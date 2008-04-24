@@ -579,6 +579,8 @@ public class UIWorkingArea extends UIContainer {
       Node node = null;
       try {
         node = (Node)session.getItem(nodePath);
+        String lockToken = Utils.getLockToken(node);
+        if(lockToken != null) session.addLockToken(lockToken);
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING)) ;

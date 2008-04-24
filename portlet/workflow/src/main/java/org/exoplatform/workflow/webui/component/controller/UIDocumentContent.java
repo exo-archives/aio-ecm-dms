@@ -133,7 +133,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   
   public Node getNodeByPath(String nodePath, String workspace) throws Exception {
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
-    Session session = manageRepo.getSystemSession(workspace) ;
+    Session session = SessionsUtils.getSystemProvider().getSession(workspace, manageRepo) ;
     return (Node) session.getItem(nodePath) ;
   }
   
