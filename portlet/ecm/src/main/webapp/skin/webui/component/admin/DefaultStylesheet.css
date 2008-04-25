@@ -510,7 +510,7 @@
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
-  padding: 10px 0px 10px 7px;
+  padding: 10px 7px;
 }
 
 .UIECMAdminPortlet .UIDriveList {
@@ -763,7 +763,6 @@
 
 .UIECMAdminPortlet .Explorer {
   margin-bottom: 10px;
-  margin-right: 10px;
   float: left ;
   width: 230px ;
 }
@@ -775,13 +774,13 @@
   padding: 1px;
 }
 
+.UIECMAdminPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
+}
+
 .UIECMAdminPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
-}
-
-.UIECMAdminPortlet .UITreeList .UIGrid {
-  width: 300px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
@@ -790,8 +789,8 @@
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
 	border: solid 1px #e1e1e1;
-	margin: 0px;
-	width: 540px;
+	margin: 0px auto;
+	width: auto;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
