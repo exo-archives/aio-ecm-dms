@@ -19,6 +19,10 @@
 	padding: 5px;
 }
 
+.UIWorkflowPortlet .UIGrid .ActionContainer a {
+	float: left;
+}
+
 .UIWorkflowPortlet .WorkflowPortletContent{
 	padding: 15px;
 }

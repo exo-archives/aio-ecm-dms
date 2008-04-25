@@ -22,6 +22,10 @@
 	overflow: hidden;
 }
 
+.UIECMAdminPortlet .UIGrid .ActionContainer a {
+	float: left;
+}
+
 .UIECMAdminPortlet .UITrees .Node  {
   line-height: 24px;
 }

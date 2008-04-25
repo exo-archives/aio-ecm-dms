@@ -30,6 +30,10 @@
   width: 98%;
 }
 
+.UIBrowseContentPortlet .UIGrid .ActionContainer a {
+	float: left;
+}
+
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 650px;
