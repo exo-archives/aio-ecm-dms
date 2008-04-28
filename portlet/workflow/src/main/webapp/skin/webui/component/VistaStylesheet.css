@@ -19,17 +19,8 @@
 	padding: 5px;
 }
 
-.UIWorkflowPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
 .UIWorkflowPortlet .WorkflowPortletContent{
 	padding: 15px;
-}
-
-.UIWorkflowPortlet .UIGrid .ActionContainer a {
-	width: 24px; height: 24px;
-	margin: 3px 0px 0px 0px;
 }
 
 .UIWorkflowPortlet .OverflowContainer {
@@ -228,11 +219,6 @@
   margin: auto;
 }
 
-.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
-	width: 75px;
-	float: none;
-}
-
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .TabPaneContent .UITabContentContainer {
   padding: 0px;
 }
@@ -254,17 +240,9 @@
 	margin: 10px auto;
 }
 
-.UIWorkflowPortlet .WorkflowPortletContent .UIProcessDetail .ActionContainer {
-	width: 60px;
-}
-
 .UIWorkflowPortlet .UIWorkflowPopup .UITabPane  {
 	width: 95%;
 	margin: 10px auto;
-}
-
-.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
-	width: 60px;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a {

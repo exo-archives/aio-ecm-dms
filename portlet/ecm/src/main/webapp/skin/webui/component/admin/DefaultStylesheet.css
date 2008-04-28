@@ -22,10 +22,6 @@
 	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
 .UIECMAdminPortlet .UITaxonomyWorkingArea {
   margin-left: 235px;
 }
@@ -35,7 +31,21 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid .Icon16x16 {
-  margin: 0px 9px;
+  margin: 0px 0px 0px 12px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm  {
+	padding: 10px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .HorizontalLayout  {
+	padding-top: 10px;
+	background: #F7F7F7;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FormContainer  {
+	width: 500px;
+	margin: auto;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
@@ -495,15 +505,6 @@
 	padding: 0px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
-  width: 45px ;
-  margin: auto ;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer .OverflowContainer{
-	width: 53px;
-}
- 
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane {
   width: 95% ;
   margin: auto;
@@ -527,7 +528,7 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16{
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16 {
   float: none;
   margin-left: 5px;
 }
@@ -539,14 +540,6 @@
 
 .UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
 	padding: 0px 10px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer .OverflowContainer {
-  width: 75px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
-  width: 70px;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewList {
@@ -575,10 +568,6 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer {
-	width: 60px;
-}
-
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm {
   width: 95%;
   margin: 10px auto;
@@ -595,10 +584,6 @@
 }
 
 /*############################## -- CBTemplate -- ########################*/
-
-.UIECMAdminPortlet .CBTemplate .UIGrid .ActionContainer {
-  width: 50px;
-}
 
 .UIECMAdminPortlet .CBTemplate .UICBTemplateList {
   width: 85px;
@@ -681,10 +666,6 @@
 	height: 20px;
 }
 
-.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer .OverflowContainer {
-  width: 75px;
-}
-
 .UIECMScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
   height: 350px;
   width: 90%;
@@ -695,10 +676,6 @@
 
 .UIECMAdminPortlet .UICBScripts  {
   padding: 2px 0px 0px 0px;
-}
-
-.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer .OverflowContainer {
-  width: 75px;
 }
 
 .UIECMAdminPortlet .UICBScripts .CBScriptForm {
@@ -821,10 +798,6 @@
 .UIECMAdminPortlet .UITemplatesManager   {
  	padding: 2px 0px 0px 0px;
  	width: 97%;
-}
-
-.UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {
-  width: 50px ;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {

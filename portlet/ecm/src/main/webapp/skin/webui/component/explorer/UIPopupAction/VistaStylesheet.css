@@ -352,11 +352,6 @@
   vertical-align: baseline;
 }
 
-.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
-	width: 50px;
-	margin: auto ;
-}
-
 .UIJCRExplorerPortlet .UISelectPropertyForm .UIFormWithTitle .HorizontalLayout {
   margin: auto;
 }

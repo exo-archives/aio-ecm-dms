@@ -45,13 +45,17 @@
             <td><div class="Text"><%=drive.getHomePath().replace("/", " /")%></div></td>
             <td><div class="Text">$drive.permissions</div></td>
             <td><div class="Text">$drive.views</div></td>
-	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>">
-	              <div class="Edit16x16Icon" style="margin-left:10px; float: left;"><span></span></div>
-	            </a>
-	            <a href="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>">
-	              <div class="Delete16x16Icon" style="margin-left:5px;float: left;"><span></span></div>
-	            </a>
+	          <td align="center" style="width: 80px">
+	          	<div class="ActionContainer">
+			          <div class="OverflowContainer">  
+			            <a href="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>">
+			              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Edit16x16Icon">
+			            </a>
+			            <a href="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>">
+			              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Delete16x16Icon">
+			            </a>
+			          </div>
+			        </div>
 	          </td>	                    
           </tr>
       <%}%>  

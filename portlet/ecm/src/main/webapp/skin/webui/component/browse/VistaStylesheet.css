@@ -30,10 +30,6 @@
   overflow: auto;
 }
 
-.UIBrowseContentPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 650px;
@@ -349,10 +345,6 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UISearchController .ResultInfo{
 	line-height: 26px; vertical-align: middle;
 	font-size: 11px;	
-}
-
-.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 50px; 
 }
 
 .UIBrowseContentPortlet .UISearchController .GotoIcon{

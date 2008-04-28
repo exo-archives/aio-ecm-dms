@@ -30,10 +30,6 @@
   width: 98%;
 }
 
-.UIBrowseContentPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 650px;
@@ -77,7 +73,7 @@
    line-height: 22px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapContent a{
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a {
    color: red;
    padding: 3px 7px 3px 0px;
 }
