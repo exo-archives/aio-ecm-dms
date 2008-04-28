@@ -1,0 +1,54 @@
+<%
+   String[] hiddenField1 = ["jcrPath=/node/exo:accessControllable", "exo:accessControllable", "visible=false"] ; 
+   uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
+%>
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+    <table class="UIFormGrid">
+			<tr>
+			  <td class="FieldLabel"><%=_ctx.appRes("AccessControllable.dialog.label.owner")%></td>
+			  <td class="FieldComponent">
+		      <%
+		        String[] fieldOwner = ["jcrPath=/node/exo:accessControllable/exo:owner"] ;
+		        uicomponent.addTextField("owner", fieldOwner) ;
+		      %>
+        </td>
+			</tr>
+			<tr>
+			  <td class="FieldLabel"><%=_ctx.appRes("AccessControllable.dialog.label.permissions")%></td>
+			  <td class="FieldComponent">
+					<%
+						String[] fieldPermissions = ["jcrPath=/node/exo:accessControllable/exo:permissions"] ;
+						uicomponent.addTextField("permissions", fieldPermissions) ;
+					%>
+        </td>
+			</tr>
+    </table>
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <table align="center" class="ActionContainer">
+	    	<tr>
+	    		<td align="center">
+	      <% for(action in uicomponent.getActions()) { 
+	      		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+						 String link = uicomponent.event(action) ;
+	      %>
+	          <a href="$link" class="ActionButton LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+								    $actionLabel
+						      </div>
+						    </div>
+					    </div>
+						</a>
+	      <%}%>          
+	      	</td>
+	      </tr>
+	    </table>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

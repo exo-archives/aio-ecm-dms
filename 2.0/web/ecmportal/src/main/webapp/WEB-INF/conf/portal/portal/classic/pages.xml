@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page-set>  
+
+  <page>
+  	<page-id>portal::classic::homepage</page-id>
+    <owner-type>portal</owner-type>
+    <owner-id>classic</owner-id>
+    <name>homepage</name>
+    <title>Home Page</title>
+	  <access-permissions>Everyone</access-permissions>
+	  <edit-permission>*:/platform/administrators</edit-permission>
+    <application>
+      <instance-id>portal#classic:/web/HomePagePortlet/homepageportlet</instance-id>
+      <title>Home Page</title>
+      <show-info-bar>false</show-info-bar>      
+    </application>
+  </page>       
+    
+  <page>
+  	<page-id>portal::classic::welcome</page-id>
+    <owner-type>portal</owner-type>
+    <owner-id>classic</owner-id>
+    <name>welcome</name>
+    <title>Welcome</title>
+	  <access-permissions>*:/platform/users</access-permissions>
+	  <edit-permission>*:/platform/administrators</edit-permission>    
+    <application>
+      <instance-id>portal#classic:/ecm/ContentBrowserPortlet/welcome</instance-id>
+      <title>For User</title>
+      <show-info-bar>false</show-info-bar>      
+    </application>  
+  </page>
+                
+</page-set>

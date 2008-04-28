@@ -1,0 +1,59 @@
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+  	<table class="UIFormGrid">
+  		<tr>
+	      <td class="FieldLabel"><%=_ctx.appRes("Transferable.dialog.label.transfer-executed")%></td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTransferExecuted = ["jcrPath=/node/rma:holdExecuted", "false", "options=false,true"] ;
+		        uicomponent.addSelectBoxField("transferExecuted", fieldTransferExecuted) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel"><%=_ctx.appRes("Transferable.dialog.label.transfer-date")%></td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTransferDate = ["jcrPath=/node/rma:transferDate"] ;
+		        uicomponent.addCalendarField("transferDate", fieldTransferDate) ;
+		      %>
+		    </td>
+		  </tr>
+		  <tr>
+	      <td class="FieldLabel"><%=_ctx.appRes("Transferable.dialog.label.transfer-location")%></td>
+	      <td class="FieldComponent">
+		      <%
+		        String[] fieldTransferLocation = ["jcrPath=/node/rma:transferLocation" ] ;
+		        uicomponent.addTextField("transferLocation", fieldTransferLocation) ;
+		      %>
+		    </td>
+		  </tr>
+		</table>
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <table align="center" class="ActionContainer">
+	    	<tr>
+	    		<td align="center">
+			      <% for(action in uicomponent.getActions()) {
+								 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+								 String link = uicomponent.event(action) ;	      
+			      %>
+		          <a href="$link" class="ActionButton LightBlueStyle">
+								<div class="ButtonLeft">
+								  <div class="ButtonRight">
+									  <div class="ButtonMiddle">
+									    $actionLabel
+							      </div>
+							    </div>
+						    </div>
+							</a>
+			      <%}%> 
+			    </td>
+			  </tr>         
+	    </table>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

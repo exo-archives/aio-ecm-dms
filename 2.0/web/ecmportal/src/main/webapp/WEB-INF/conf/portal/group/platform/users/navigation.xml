@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<node-navigation>
+  <owner-type>group</owner-type>  
+	<owner-id>platform/users</owner-id>
+	<priority>8</priority>
+  <description>description for node navigation </description>  
+  <page-nodes>  		  	  
+	  <node>
+	    <uri>contentmanagement</uri>
+	    <name>ContentManagement</name>
+	    <label>#{platform.users.content-management}</label>
+	    <page-reference>group::platform/users::ContentManagement</page-reference>
+	    
+	    <node>
+		    <uri>contentmanagement/fileexplorer</uri>
+		    <name>FileExplorer</name>
+		    <label>#{platform.users.file-explorer}</label>
+		    <page-reference>group::platform/users::FileExplorer</page-reference>	    
+	  	</node>
+		  <node>
+		    <uri>contentmanagement/contentbrowser</uri>
+		    <name>ContentBrowser</name>
+		    <label>#{platform.users.content-browser}</label>
+		    <page-reference>group::platform/users::ContentBrowser</page-reference>	    
+		  </node>
+		  <node>
+		    <uri>contentmanagement/fastcontentcreator</uri>
+		    <name>FastContentCreator</name>
+		    <label>#{platform.users.content-creator}</label>
+		    <page-reference>group::platform/users::FastContentCreator</page-reference>	    
+		  </node>
+		  <node>
+		    <uri>contentmanagement/workflowcontroller</uri>
+		    <name>WorkflowController</name>
+		    <label>#{platform.users.workflow-controller}</label>
+		    <page-reference>group::platform/users::WorkflowController</page-reference>	    
+		  </node>		  		  	   
+	  </node>
+	  
+	  <node>
+	    <uri>sitemap</uri>
+	    <name>sitemap</name>
+	    <label>#{platform.users.sitemap}</label>
+	    <page-reference>group::platform/users::sitemap</page-reference>	    
+		</node>
+  </page-nodes>
+  
+</node-navigation>

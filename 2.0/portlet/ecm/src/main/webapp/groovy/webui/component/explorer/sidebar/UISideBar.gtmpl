@@ -1,0 +1,56 @@
+<%
+	/**
+	 * Created by The eXo Platform SARL
+	 * Author : Tran The Trong
+	 *          trongtt@gmail.com
+	 * August 02, 2006
+	 * version: $Id$
+	 */
+%>
+<div class="UISideBar" id="UISideBar">
+  <div class="UISideBarControl UIPopupSelector">
+	  <%/*Begin popup*/%>
+	  <div style="position: relative;">
+		  <div class="UISelectContent">
+		    <div class="SelectContentContainer">
+        <%if(!uicomponent.isSystemWorkspace()) {%>
+			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Relation")%>">
+			      <div class="ItemIcon Relations24x24Icon"><span></span></div>
+		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Relation")%></div>
+		      </div>
+		    <%}%>
+			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Explorer")%>">
+			      <div class="ItemIcon JCRExplorer24x24Icon"><span></span></div>
+		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Explorer")%></div>
+		      </div>
+			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("TagExplorer")%>">
+			      <div class="ItemIcon TagExplorer24x24Icon"><span></span></div>
+		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.TagExplorer")%></div>
+		      </div>
+		      <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Clipboard")%>">
+	          <div class="ItemIcon Clipboard24x24Icon"><span></span></div>
+	          <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Clipboard")%></div>
+	        </div>
+		      <div class="SeparatorLine"><span></span></div>
+			    <div class="NormalItem" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Close")%>">
+			      <div class="ItemIcon CloseSidebar24x24Icon"><span></span></div>
+		        <div class="ItemLabel"><%=_ctx.appRes("UISideBar.label.Close")%></div>
+		      </div>
+		    </div>
+		  </div>
+	  </div>
+	  <%/*End popup*/%>
+    <div class="DropSelectButton" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)">
+      <div class="DropDownButton" title="Control Sidebar"><span></span></div>
+    </div>
+    <div class="ControlBody">
+      <div class="CloseButton Close16x16Icon" onclick="<%=uicomponent.event("Close")%>" title="Close Sidebar"><span></span></div>
+      <div class="Label"><%=_ctx.appRes("UISideBar.label." + uicomponent.currentComp)%></div>
+    </div>
+  </div>
+  <div style="width: 100%;">
+	  <div class="UISideBarContainer UIResizableBlock" style="overflow: auto;">
+	    <% uicomponent.renderChildren(); %>
+	  </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>config</artifactId>
+    <version>2.0</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.portlet.ecm</artifactId>
+  <packaging>war</packaging>
+  <version>${org.exoplatform.ecm.version}</version>
+  <name>exo-portal.portlets.ecm Portlet</name>
+  <url>http://www.exoplatform.org</url>
+  <description>exo-portal.portlets.ecm Portlet</description>
+  
+  <dependencies> 
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.eXo</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+       
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.webdav</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.ftp</artifactId>
+		  <version>${org.exoplatform.jcr.version}</version>
+		  <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.engine</artifactId>
+      <version>3.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.facade</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.bonita</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.cms</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies> 
+
+  <build>
+    <finalName>ecm</finalName>
+  </build>
+</project>

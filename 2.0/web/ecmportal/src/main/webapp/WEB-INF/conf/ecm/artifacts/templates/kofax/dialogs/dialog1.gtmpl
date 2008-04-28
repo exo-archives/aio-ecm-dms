@@ -1,0 +1,64 @@
+<%
+  def node = uicomponent.getCurrentNode() ;
+  String namespace = "kfx:" ;
+%>
+<div class="UIFormWithTitle">  
+	<% uiform.begin() %>
+  <div class="HorizontalLayout" style="border:0px;">
+		<table class="UIFormGrid">			
+			<tr>
+			  <td class="FieldLabel"><%=_ctx.appRes("Kofax.dialog.label.name")%></td>
+			  <td class="FieldComponent">
+	      <%
+	        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
+	        uicomponent.addTextField("name", fieldName) ; 
+	      %>			  
+			  </td>
+			</tr>		
+	    <%
+	      int i = 1;
+	      for(property in node.getProperties()) {
+	        def propertyName = property.getName() ;
+	        if(propertyName.startsWith(namespace)) { %>
+	        <tr>		 
+	        	<td class="FieldLabel"><%=propertyName.substring(namespace.length(), propertyName.length())%></td>         					
+	        	<td class="FieldComponent">
+			      <%
+			        String[] param = ["jcrPath=/node/" + propertyName] ;
+			        uicomponent.addTextField("component_" + i, param) ; 
+			      %>
+			      </td>
+	        </tr>
+	    <%
+	        }
+	        i++ ;
+	      }
+	    %>
+		</table>	    
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <table align="center" class="ActionContainer">
+	    	<tr>
+	    		<td align="center">
+	      <% for(action in uicomponent.getActions()) { 
+	      		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+						 String link = uicomponent.event(action) ;
+	      %>
+	          <a href="$link" class="ActionButton LightBlueStyle">
+							<div class="ButtonLeft">
+							  <div class="ButtonRight">
+								  <div class="ButtonMiddle">
+								    $actionLabel
+						      </div>
+						    </div>
+					    </div>
+						</a>
+	      <%}%>          
+	      	</td>
+	      </tr>
+	    </table>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <%uiform.end()%>
+</div>

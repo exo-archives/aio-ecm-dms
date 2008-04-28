@@ -1,0 +1,109 @@
+<style>
+	.UIVote {
+    padding: 5px 2px 2px 2px;
+	}
+	
+  .UIVote .VoteResultContainer {
+    margin-left: auto;
+    padding-right: 8px;
+    width: 370px;
+    height: 26px;
+	}
+	
+  .UIVote .LeftVoteBar {
+    background: url('/ecm/skin/images/vote/LeftVoteBar5x26.gif') no-repeat left;
+    padding-left: 5px;
+    height: 26px;
+	}
+	
+	.UIVote .RightVoteBar {
+	  background: url('/ecm/skin/images/vote/RightVoteBar5x26.gif') no-repeat right;
+    padding-right: 5px;
+    height: 26px;
+	}
+	
+	.UIVote .CenterVoteBar {
+	  height: 26px; line-height: 26px;
+	  background: url('/ecm/skin/images/vote/CenterVoteBar1x26.gif') repeat-x;
+	}
+
+   .UIVote .VoteResultContainer .RatingInfoContainer {
+		float: left;
+	}
+	
+	.UIVote .VoteResultContainer .AvgRatingImages {
+		width: 100px; 
+		overflow: hidden;
+		margin-left: 15px;
+	}
+	
+	.UIVote .AvgRatingImages .Voted {
+		float: left;
+		width: 16px;
+		height: 16px;
+		background: url('/ecm/skin/images/vote/SmallYellowStar.gif') no-repeat;
+		margin: 5px 1px;
+	}
+	
+	.UIVote .AvgRatingImages .Unvoted {
+		float: left;
+		width: 16px;
+		height: 16px;
+		background: url('/ecm/skin/images/vote/SmallGreyStar.gif') no-repeat;
+		margin: 5px 1px;
+	}
+	
+	.UIVote .VoteRatingInfo {
+		font: normal normal 11px verdana;
+		float: left;
+	  vertical-align: middle;
+		padding: 0px 5px;
+		margin-top: 5px;
+	}
+	
+	.UIVote .VoteRatingInfo .VoteRatingLabel {
+		margin: 0px 5px;
+	}
+	
+	.UIVote .VoteRatingInfo .VotedInfo {
+		color: #058ee6;
+	}
+</style>
+
+<%
+  def voteNode = uicomponent.getNode() ;
+  double voteRating = 0 ;
+  if(voteNode.hasProperty("exo:votingRate")) voteRating = voteNode.getProperty("exo:votingRate").getDouble() ;
+  long voteTotal = 0 ;
+  if(voteNode.hasProperty("exo:voteTotalOfLang")) voteTotal = voteNode.getProperty("exo:voteTotalOfLang").getLong() ;
+%>
+<div class="UIVote">
+  <div class="VoteResultContainer">
+	  <div class="LeftVoteBar">
+	    <div class="RightVoteBar">
+	      <div class="CenterVoteBar">
+					<div class="RatingInfoContainer">
+					  <div class="AvgRatingImages">
+					    <%
+					      int i = 0;
+					      while(++i <= voteRating) {
+					    %>
+					          <div class="Voted"><span></span></div>
+					      <%
+					        }
+					        while(i++ <= 5) {
+					      %>
+					        <div class="Unvoted"><span></span></div>
+					      <%}%>
+						</div>
+					</div>
+					<div class="VoteRatingInfo">
+				    <span class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.avg-rating")%>: <span class="VotedInfo">$voteRating</span></span>
+				    <span class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.subscription")%>: <span class="VotedInfo">$voteTotal</span></span>
+					</div>
+					<div style="clear: left;"><span></span></div>
+				</div>
+		 	</div>
+		</div>
+	</div>
+</div>

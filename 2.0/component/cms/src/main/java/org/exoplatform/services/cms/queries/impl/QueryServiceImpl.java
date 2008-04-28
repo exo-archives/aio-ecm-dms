@@ -1,0 +1,426 @@
+/*
+ * Copyright (C) 2003-2007 eXo Platform SAS.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see<http://www.gnu.org/licenses/>.
+ */
+package org.exoplatform.services.cms.queries.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.Session;
+import javax.jcr.Value;
+import javax.jcr.ValueFactory;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.util.StringUtil;
+import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.PortalContainerInfo;
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
+import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.queries.QueryService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.organization.MembershipHandler;
+import org.exoplatform.services.organization.OrganizationService;
+import org.picocontainer.Startable;
+
+public class QueryServiceImpl implements QueryService, Startable{
+  
+  private static final String DATE_PARAMETER = "${Date}$".intern();  
+  private static final String[] perms = {PermissionType.READ, PermissionType.ADD_NODE, 
+    PermissionType.SET_PROPERTY, PermissionType.REMOVE };
+  private String relativePath_;  
+  private List<QueryPlugin> queryPlugins_ = new ArrayList<QueryPlugin> ();
+  private RepositoryService repositoryService_;
+  private CacheService cacheService_ ;  
+  private PortalContainerInfo containerInfo_ ;
+  private OrganizationService organizationService_ ;
+  private String baseUserPath_ ;
+  private String baseQueriesPath_ ;
+  private String group_ ;
+
+  public QueryServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, 
+      InitParams params, PortalContainerInfo containerInfo, CacheService cacheService,OrganizationService organizationService) throws Exception {
+    relativePath_ = params.getValueParam("relativePath").getValue();    
+    group_ = params.getValueParam("group").getValue();
+    repositoryService_ = repositoryService;
+    containerInfo_ = containerInfo ;
+    cacheService_ = cacheService ;
+    organizationService_ = organizationService ;
+    baseUserPath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
+    baseQueriesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH) ;
+  }
+
+  public void start() {
+    for(QueryPlugin queryPlugin : queryPlugins_){
+      try{
+        queryPlugin.init(baseQueriesPath_) ;
+      }catch (Exception e) {
+        System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
+        //e.printStackTrace() ;
+      }
+    }
+  }
+
+  public void stop() {
+    // TODO Auto-generated method stub    
+  }
+
+  public void init(String repository) throws Exception {
+    for(QueryPlugin queryPlugin : queryPlugins_){
+      try{
+        queryPlugin.init(repository,baseQueriesPath_) ;
+      }catch (Exception e) { 
+        System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
+        //e.printStackTrace() ;
+      }
+    } 
+  }
+
+  public void setQueryPlugin(QueryPlugin queryPlugin) {
+    queryPlugins_.add(queryPlugin) ;
+  }
+
+  public String getRelativePath() { return relativePath_; }
+
+  public List<Query> getQueries(String userName, String repository,SessionProvider provider) throws Exception {
+    List<Query> queries = new ArrayList<Query>();        
+    if(userName == null) return queries;    
+    Session session = getSession(repository,provider) ;
+    QueryManager manager = session.getWorkspace().getQueryManager();           
+    Node usersHome = (Node) session.getItem(baseUserPath_);
+    Node userHome = null ;
+    if(usersHome.hasNode(userName)) {
+      userHome = usersHome.getNode(userName);
+    } else{
+      userHome = usersHome.addNode(userName);
+      if(userHome.canAddMixin("exo:privilegeable")){
+        userHome.addMixin("exo:privilegeable");
+      }
+      ((ExtendedNode)userHome).setPermissions(getPermissions(userName));
+      Node query = null ;
+      if(userHome.hasNode(relativePath_)) {
+        query = userHome.getNode(relativePath_) ;
+      } else {
+        query = getNodeByRelativePath(userHome, relativePath_) ;
+      }
+      if (query.canAddMixin("exo:privilegeable")){
+        query.addMixin("exo:privilegeable");
+      }
+      ((ExtendedNode)query).setPermissions(getPermissions(userName));
+      usersHome.save() ;
+    }
+    Node queriesHome = null ;
+    if(userHome.hasNode(relativePath_)) {
+      queriesHome = userHome.getNode(relativePath_) ;
+    } else {
+      queriesHome = getNodeByRelativePath(userHome, relativePath_) ;
+    }
+    NodeIterator iter = queriesHome.getNodes();
+    while (iter.hasNext()) {
+      Node node = iter.nextNode();
+      if("nt:query".equals(node.getPrimaryNodeType().getName())) queries.add(manager.getQuery(node));
+    }    
+    return queries;
+  }
+  
+  private Node getNodeByRelativePath(Node userHome, String relativePath) throws Exception {
+    String[] paths = relativePath.split("/") ;
+    String relPath = null ;
+    Node queriesHome = null ;
+    for(String path : paths) {
+      if(relPath == null) relPath = path ;
+      else relPath = relPath + "/" + path ;
+      if(!userHome.hasNode(relPath)) queriesHome = userHome.addNode(relPath) ;
+    }
+    return queriesHome ;
+  }
+
+  private Map<String,String[]> getPermissions(String owner) {
+    Map<String, String[]> permissions = new HashMap<String, String[]>();
+    permissions.put(owner, perms);         
+    permissions.put(group_, perms);
+    return permissions;
+  } 
+
+  public void addQuery(String queryName, String statement, String language, 
+      String userName, String repository) throws Exception {
+    if(userName == null) return;
+    Session session = getSession(repository) ;
+    QueryManager manager = session.getWorkspace().getQueryManager();    
+    Query query = manager.createQuery(statement, language);    
+    Node usersNode = (Node) session.getItem(baseUserPath_) ;
+    if(!usersNode.hasNode(userName)) {
+      usersNode.addNode(userName) ;
+      usersNode.save() ;
+    }
+    Node userNode = usersNode.getNode(userName) ;
+    if(!userNode.hasNode(relativePath_)) {
+      getNodeByRelativePath(userNode, relativePath_) ;
+      userNode.save() ;
+      session.save() ;
+    }
+    String absPath = baseUserPath_ + "/" + userName + "/" + relativePath_ + "/" + queryName;
+    query.storeAsNode(absPath);
+    session.refresh(true) ;
+    session.getItem(baseUserPath_).save();
+    session.save();
+    session.logout();
+  }
+
+  public void removeQuery(String queryPath, String userName, String repository) throws Exception {
+    if(userName == null) return;    
+    Session session = getSession(repository) ;
+    Node queryNode = (Node) session.getItem(queryPath);
+    Node queriesHome = queryNode.getParent() ;
+    queryNode.remove() ;
+    queriesHome.save() ;
+    session.save();
+    session.logout();
+    removeFromCache(queryPath) ;
+  }
+
+  public void addSharedQuery(String queryName, String statement, String language, 
+      String[] permissions, boolean cachedResult, String repository) throws Exception {
+    Session session = getSession(repository);
+    ValueFactory vt = session.getValueFactory();    
+    List<Value> perm = new ArrayList<Value>() ;                 
+    for(String permission : permissions) {
+      Value vl = vt.createValue(permission) ;
+      perm.add(vl) ;
+    }
+    Value[] vls = perm.toArray(new Value[] {}) ;
+    String queriesPath = baseQueriesPath_ ;
+    Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
+    String queryPath ;
+    Node query = null;
+    try{
+     query = queryHome.getNode(queryName);     
+     query.setProperty("jcr:language", language) ;
+     query.setProperty("jcr:statement", statement) ;
+     query.setProperty("exo:permissions", vls) ;
+     query.setProperty("exo:cachedResult", cachedResult) ;
+     query.save() ;     
+     queryPath = query.getPath() ;
+    }catch (PathNotFoundException e) {
+      query = queryHome.addNode(queryName,"nt:query");
+      query.setProperty("jcr:language", language) ;
+      query.setProperty("jcr:statement", statement) ;
+      query.addMixin("mix:sharedQuery") ;      
+      query.setProperty("exo:permissions", vls) ;
+      query.setProperty("exo:cachedResult", cachedResult) ;
+      queryHome.save();
+      queryPath = queriesPath ;
+    }
+    session.save();
+    session.logout();
+    removeFromCache(queryPath) ;
+  }
+
+  public Node getSharedQuery(String queryName, String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider) ;    
+    return (Node)session.getItem(baseQueriesPath_ + "/" + queryName);
+  }
+  
+  public List<Node> getSharedQueries(String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);
+    List<Node> queries = new ArrayList<Node>() ;
+    Node sharedQueryHome = (Node) session.getItem(baseQueriesPath_);
+    NodeIterator iter = sharedQueryHome.getNodes();
+    while (iter.hasNext()) {
+      Node node = iter.nextNode();
+      if("nt:query".equals(node.getPrimaryNodeType().getName()))
+        queries.add(node);
+    }
+    return queries ;
+  }
+  
+  public List<Node> getSharedQueries(String userId, String repository, SessionProvider provider) throws Exception {
+    List<Node> sharedQueries = new ArrayList<Node>();
+    for(Node query:getSharedQueries(repository,provider)) {
+      if(canUseQuery(userId,query)) {
+        sharedQueries.add(query) ;
+      }
+    }
+    return sharedQueries;
+  }  
+  public List<Node> getSharedQueries(String queryType, String userId, String repository, SessionProvider provider) throws Exception {
+    List<Node> resultList = new ArrayList<Node>() ;
+    String language = null ;    
+    for(Node queryNode: getSharedQueries(repository,provider)) {
+      language = queryNode.getProperty("jcr:language").getString() ;
+      if(!queryType.equalsIgnoreCase(language)) continue ;
+      if(canUseQuery(userId,queryNode)) {
+        resultList.add(queryNode) ;
+      }
+    }
+    return resultList;
+  }
+
+
+  public Query getQueryByPath(String queryPath, String userName, String repository,SessionProvider provider) throws Exception {
+    List<Query> queries = getQueries(userName, repository,provider) ;
+    for(Query query : queries) {
+      if(query.getStoredQueryPath().equals(queryPath)) return query ;
+    }
+    return null ;
+  }
+
+  public void removeSharedQuery(String queryName, String repository) throws Exception {
+    Session session = getSession(repository) ;    
+    session.getItem(baseQueriesPath_ + "/" + queryName).remove();
+    session.save() ;
+    session.logout();
+  }
+  
+  public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider) throws Exception {
+    Session session = getSession(repository,provider);    
+    Node queryNode = (Node)session.getItem(queryPath) ;    
+    if(queryNode.hasProperty("exo:cachedResult")){
+      if(queryNode.getProperty("exo:cachedResult").getBoolean()) {
+        ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
+        String portalName = containerInfo_.getContainerName() ;
+        String key = portalName + queryPath ;
+        QueryResult result = (QueryResult)queryCache.get(key) ;
+        if (result != null) return result ;
+        Session querySession = getSession(repository,workspace,provider) ;        
+        result = execute(querySession,queryNode) ;
+        queryCache.put(key, result) ;
+        return result ;      
+      }
+    }
+    Session querySession = getSession(repository,workspace,provider) ;        
+    return execute(querySession,queryNode);
+  }
+  
+  private QueryResult execute(Session session,Node queryNode) throws Exception {
+    String statement = queryNode.getProperty("jcr:statement").getString();
+    String language = queryNode.getProperty("jcr:language").getString();
+    String userId = session.getUserID();    
+    statement = statement.replace("${UserId}$",userId);        
+    statement = replaceDateTimeParameters(statement);    
+    Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
+    return query.execute();
+  }  
+  
+  private String replaceDateTimeParameters(String statement) {
+    Calendar calendar = new GregorianCalendar();    
+    SimpleDateFormat dateFormat = new SimpleDateFormat(ISO8601.COMPLETE_DATE_FORMAT);
+    //TODO should us expression here
+    int count = StringUtils.countMatches(statement,DATE_PARAMETER);    
+    if(count==-1) return statement;
+    int index = 0;
+    int i =0;
+    do{
+      index = statement.indexOf("${Date}") ;
+      if(statement.charAt(index+7)=='$') {
+        dateFormat.format(calendar.getTime());
+        statement = statement.replace(DATE_PARAMETER,dateFormat.format(calendar.getTime())) ;
+      }else if(statement.charAt(index+7)=='-') {
+        int lastIndex = StringUtils.indexOf(statement,'$',index+7);
+        char type = statement.charAt(lastIndex-1);
+        String dayBefore = statement.substring(index+8,lastIndex-1);
+        int minusDays = Integer.parseInt(dayBefore);
+        if(type == 'D' || type =='d') {
+          calendar.add(Calendar.DATE,-minusDays); 
+        }else if(type == 'M'|| type =='m') {
+          calendar.add(Calendar.MONTH,-minusDays);
+        }else if(type == 'Y' || type =='y') {
+          calendar.add(Calendar.YEAR,-minusDays);
+        }        
+        String fullParameter = "${Date}-".concat(dayBefore).concat(Character.toString(type)).concat("$");
+        statement = statement.replace(fullParameter,dateFormat.format(calendar.getTime()));        
+      }
+      i++;
+    }while(i<count-1) ;    
+    return statement;
+  }
+  
+  private void removeFromCache(String queryPath) throws Exception {
+    ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
+    String portalName = containerInfo_.getContainerName() ;
+    String key = portalName + queryPath ;
+    QueryResult result = (QueryResult)queryCache.get(key) ;
+    if (result != null) queryCache.remove(key) ;
+  }
+
+  //TODO need to use SystemProvider
+  private Session getSession(String repository) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    return manageableRepository.getSystemSession(workspace);    
+  }
+
+  private Session getSession(String repository,SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    return provider.getSession(workspace,manageableRepository) ;
+  }
+
+  private Session getSession(String repository,String workspace,SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    return provider.getSession(workspace,manageableRepository) ;
+  }
+  
+  private boolean canUseQuery(String userId,Node queryNode) throws Exception{    
+    Value[] values = queryNode.getProperty("exo:permissions").getValues() ;
+    for(Value value : values) {
+      String accessPermission = value.getString() ;
+      if(hasMembership(userId,accessPermission)) {
+        return true ;
+      }
+    }
+    return false ;
+  }
+
+  //TODO :this method will be removed when MembershipHandler support
+  private boolean hasMembership(String userId, String roleExpression) {
+    if("*".equals(roleExpression))
+      return true;
+    String membershipType = roleExpression.substring(0, roleExpression.indexOf(":"));
+    String groupName = roleExpression.substring(roleExpression.indexOf(":") + 1);
+    try {
+      MembershipHandler membershipHandler = organizationService_.getMembershipHandler() ;
+      if ("*".equals(membershipType)) {
+        // Determine if there exists at least one membership
+        return !membershipHandler.findMembershipsByUserAndGroup( userId,groupName).isEmpty();
+      } 
+      // Determine if there exists the membership of specified type
+      return membershipHandler.findMembershipByUserGroupAndType(userId,groupName,membershipType) != null;      
+    }
+    catch(Exception e) {            
+    }  
+    return false ;
+  }   
+}

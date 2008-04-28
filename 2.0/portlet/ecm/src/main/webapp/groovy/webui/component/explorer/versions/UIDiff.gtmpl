@@ -1,0 +1,70 @@
+<%
+	import org.exoplatform.services.document.diff.Delta ;
+%>
+<div class="UIDiff">
+	<div class="FileContent">
+		<div class="NavigationContainer">  			
+			<div class="TopTitle"><%=_ctx.appRes("UIDiff.label.diffTitle")%></div>
+			<div class="Content">
+				<%
+					def arr = uicomponent.getDeltas() ;					
+					if(!uicomponent.isCompareable()) {											
+				%>
+				<div class="ContentDetail">						
+					<label><%=_ctx.appRes("UIDiff.label.can-not-compare")%></label>						
+				</div>	
+				<%
+					} else {										
+					if(arr.isEmpty()) {
+				%>
+					<div class="ContentDetail">	
+						<div  class="ContentEmpty">					
+							<label> <%=_ctx.appRes("UIDiff.label.noChange")%> </label>	
+						</div>					
+					</div>	
+					<%
+						} else {
+					%>
+						<table class="UIGrid">
+							<thead>
+						    <tr>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.compareVerion")%>:
+						      	<%=uicomponent.getCurrentVersionNum()%>,
+						      	<%=uicomponent.getCurrentVersionDate()%>
+						      </th>
+						      <th>
+						      	<%=_ctx.appRes("UIDiff.label.baseVerion")%>:
+						      	<%=uicomponent.getBaseVersionNum()%>,
+						      	<%=uicomponent.getBaseVersionDate()%>
+						      </th>
+						    </tr>
+						  </thead>
+						  <%  
+						  	for(Delta delta in uicomponent.getDeltas()){		    		
+			    		%>		    		
+		    			<tr> 
+		    				<% 
+		    					if (uicomponent.isDeleteDelta(delta)) {
+		    				%>	   
+		    				<td class ="DiffDelete" style="background:#fce8d4; width: 50%"><div class="WorkContainerDiff"><%=delta.getOriginal()%></div></td>	 				
+		    				<td class = "DiffEmpty" style="background:#f1f1f1; width: 50%"><div class="WorkContainerDiffEmpty"><%=delta.getRevised()%></div></td>	
+		    				<% 
+		    					} else if(uicomponent.isAddDelta(delta)) { 
+		    				%>
+		    				<td class = "DiffEmpty" style="background:#f1f1f1; width: 50%"><div class="WorkContainerDiffEmpty"><%=delta.getOriginal()%></div></td>
+		    				<td class = "DiffAdd" style="background:#e7f9c8; width: 50%"><div class="WorkContainerDiff"><%=delta.getRevised()%></div></td>	
+		    				<% 
+		    					} else {	    					
+		    				%>
+		    				<td class = "DiffModify" style="background:#fffdd3; width: 50%"><div class="WorkContainerDiff"><%=delta.getOriginal()%></div></td>	
+		    				<td class = "DiffModify" style="background:#fffdd3; width: 50%"><div class="WorkContainerDiff"><%=delta.getRevised()%></div></td>    					    					    						    			
+		    				<% } %>	    				
+		    			</tr>
+		    			<% } %>					  					  
+						</table>
+					<% } } %>			    	
+			</div>
+		</div>
+	</div>
+</div>

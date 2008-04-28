@@ -1,0 +1,276 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+ 
+/*############################## -- Begin UISideBar   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISideBar {
+  padding-right: 4px;
+  background: url('DefaultSkin/background/LineDecorator4x1.gif') repeat-y top right;
+}
+
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl {
+  height: 20px;
+  background: url('DefaultSkin/background/SideBarControlBG1x20.gif') repeat-x center center;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropSelectButton {
+  float: left;
+  width: 36px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropDownButton {
+  cursor: pointer;
+  width: 24px; height: 20px;
+  background: url('DefaultSkin/background/DropDownButton24x20.gif') no-repeat center;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .ControlBody {
+  line-height: 20px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .Icon24x24 {
+  float: left;
+  margin: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .Label {
+  float: left;
+  font-weight: bold;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
+  float: right;
+  margin: 2px 7px 0px 7px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent {
+  border: solid 1px gray;
+  background-color: white;
+  width: 140px;
+  position: absolute;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectContentContainer {
+  border: solid 1px #ffffff;
+  background-color: #f4f4f4;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
+  clear: both;
+  line-height: 26px;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectedItem {
+  clear: both;
+  line-height: 26px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: #d6ddef;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
+  float: left;
+  margin: 3px 3px 0px 3px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent .SeparatorLine {
+  margin: 0px auto 0px 4px;
+  background: url('DefaultSkin/background/SidebarSeparatorLine.gif') repeat-x;
+  height: 2px;
+  width: 90%;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
+  width: 100%;
+  padding: 5px 0px 0px 0px;
+	height: 295px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
+  padding: 5px 3px 5px 15px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .TitleLabel {
+  padding: 5px 0px 5px 8px;
+  font: normal bold 11px Verdana;
+}
+
+/*############################## -- UIViewRelationList   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
+ width:auto;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
+  margin-top: 2px;
+  border: solid 1px #bdbdbd;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .TitleLabel {
+  height: 18px;
+  padding: 2px 0px 0px 15px;
+  font: normal bold 11px Verdana;
+  background: url('/ecm/skin/images/article/EventFrameBG.gif') repeat-x;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .FrameContent {
+  padding: 10px;
+}
+
+/*############################## -- End UISideBar   -- ##############################*/
+/*############################## -- Begin UITreeExplorer   -- ##############################*/
+.UIJCRExplorerPortlet .UITreeExplorer {
+	padding-bottom: 20px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
+  float: left;
+  cursor: pointer;
+  margin: 0px 5px 0px 1px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
+  background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
+  height: 15px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
+	padding-left: 10px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
+  font-weight: bold;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .NodeGroup .PageIterator {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Node {
+  background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
+  clear: both; 
+  margin-left: 14px;
+  padding: 8px 0px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Node a {
+	height: 16px;
+	display: block;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .LastNode {
+  background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ;
+}
+  
+.UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
+  line-height: 16px;
+  height: 16px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .Node .NodeLabel {
+	margin-left: 38px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
+  float: left;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
+  float: left;
+  width: 16px; height: 16px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer a:hover {
+  color: blue;
+}
+
+/*############################## -- End UITreeExplorer   -- ##############################*/
+
+/*############################## -- UITreeNodePageIterator   -- ##############################*/
+
+.UITreeNodePageIterator {
+	margin: 0px 0px 0px 9px;
+	padding: 9px 0px 0px 0px;
+}
+
+.UITreeNodePageIterator .NodePageIterator {
+	background: #ededed;
+	border-right: 1px solid #d7d7d7;
+	border-bottom: 1px solid #d7d7d7;
+	padding-left: 1px;
+	width: auto;
+}
+
+.UITreeNodePageIterator .DisablePage {
+	filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40;
+	cursor: normal;
+}
+
+.UITreeNodePageIterator .Icon {
+	margin: 0px 4px;
+	padding: 0px;
+	float: left;
+}
+
+.UITreeNodePageIterator a {
+	color: #2f7bc9;
+	padding: 0px 3px;
+	display: block;
+	line-height: 18px;
+}
+
+.UITreeNodePageIterator a.PageSelected {
+	color: #fd2020;
+}
+
+/*############################## -- UITagExplorer   -- ##############################*/
+
+.UISideBar .UITagExplorer .TagmapHolder .TagmapTitle{
+	height: 19px; line-height: 19px;
+	margin: 0px;
+	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
+	border: solid 1px #e1e1e1;
+	border-bottom: none;
+}
+
+.UISideBar .UITagExplorer .TagmapHolder .TagLabel {
+	padding: 0px 8px;
+	line-height: 19px;
+	font-weight: bold;
+}
+	
+.UISideBar .UITagExplorer .TagmapHolder .TagmapContent {
+   background: #ffffff;
+   padding: 5px;
+   text-align: left ;
+   line-height: 22px;
+}
+
+.UISideBar .UITagExplorer .TagmapHolder .TagmapContent a{
+   color: red;
+   padding: 3px 7px 3px 0px;
+}
+
+.UISideBar .UITagExplorer .TagmapHolder .TagmapContent a:hover {
+   color: yellow;
+   padding: 3px 7px 3px 0px;
+}
+
+.UIBrowseContentPortlet .TagmapHolder .Icon{
+	float: left;
+	width: 19px; height: 16px; 
+	margin: 2px 5px 0px 5px;
+	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
+}

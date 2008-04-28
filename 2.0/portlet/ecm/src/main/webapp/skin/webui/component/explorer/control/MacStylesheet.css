@@ -1,0 +1,307 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+/*############################## -- Begin UIViewBar -- ##############################*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar {
+  border-bottom: solid 1px #b7b7b7;
+  background: url('DefaultSkin/background/LineDecorator1x28.gif') repeat-x center center;
+  height: 28px;
+  line-height: 28px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewLabel {
+  padding: 0px 8px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewBox {
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
+  padding-left: 6px;
+  margin-top: 2px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
+  float: right;
+  padding-right: 10px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .IconFrame .WorkspaceName {
+	float: left;
+	padding-right: 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
+  float: left;
+  height: 27px;
+  margin: 0px 4px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
+  float: left;
+  margin: 2px 7px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/BackToMainDriveButton.gif') no-repeat center ;
+}
+
+.UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/SetupPreferencesButton.gif') no-repeat bottom;
+}
+
+.UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/RefreshSessionButton.gif') no-repeat bottom;
+}
+
+/*############################## -- End UIViewBar -- ##############################*/
+/*############################## -- Begin UIViewBar -- ##############################*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  background: url('DefaultSkin/background/LineDecorator1x30.gif') repeat-x center center;
+  height: 30px;
+  line-height: 30px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressBarSeparator {
+  float: left;
+  height: 26px;
+  padding: 2px 4px 0px 4px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockLeft {
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressLabel {
+  float: left;
+  line-height: 28px;
+  padding-left: 2px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockRight {
+  float: right;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BackButton {
+  float: left;
+  margin: 3px 3px 0px 3px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .GoButton {
+  float: left;
+  margin: 8px 3px 0px 3px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .GoText {
+  float: left;
+  height: 16px;
+}
+ 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
+  margin: 4px 50px 0px 93px;
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd;
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
+  float: left;
+  margin: 4px 0px 0px 4px;
+  width: 20px;
+  height: 13px;
+  background: url('DefaultSkin/background/HardDisk20x12.gif') no-repeat center center;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .InputContainer {
+  margin: 0px 30px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar input {
+  border: solid 1px white;
+  float: left;
+  width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {
+  float: right;
+  width: 18px;  height: 18px;
+  background-color: white;
+  border: solid 1px white;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButton {
+  cursor: pointer;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent {
+  border: solid 1px #716f64;
+  border-top: none;
+  position: absolute;
+  height: 150px;
+  width: 100%;
+  overflow: auto;
+  background: white;
+  left: -1px;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent .AddressItem {
+  line-height: 18px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent .SelectedAddressItem {
+  line-height: 18px;
+  margin: 2px;
+  cursor: pointer;
+  color: white;
+  background-color: #316ac5;
+}
+
+/*############################## -- End UIAddressBar -- ##############################*/
+/*############################## -- Begin UIActionBar -- ##############################*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  background: url('DefaultSkin/background/LineDecorator1x32.gif') repeat-x center center;
+  height: 32px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
+  float: left;
+  line-height: 32px;
+  text-align: center;
+  font-size: 11px; color: #058ee6;
+  width: 92px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
+  float: left;
+  height: 31px;
+  padding: 0px 4px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
+  float: left;
+  padding: 6px 4px 0px 4px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox select{
+  font-size: 11px;
+  width: 97px;
+  height: 19px;
+  padding-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg {
+  float: left;
+  margin: 1px 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg .Icon {
+  margin: 3px 3px 0px 2px;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SwitchSearch {
+  float: left;
+  cursor: pointer;
+  margin: 2px 0px 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SearchIcon {
+  float: left;
+  margin-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SavedQueries {
+  float: left;
+  margin: 2px 0px 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch {
+  padding: 4px 5px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch  .SeparatorLine{
+  height: 25px;
+  float: left;
+  padding: 0px 10px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch input {
+  float: left;
+  width: 270px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch select {
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch {
+  padding: 4px 5px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .AdvanceSearchContainer {
+  float: left;
+  margin-left: 5px;
+  width: 300px; height: 20px;
+  background: white;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch input {
+  width: 270px;
+  border: solid 1px white;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .DropDownButtonBox {
+  float: right;
+  width: 18px;  height: 18px;
+  background-color: white;
+  border: solid 1px white;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .DropDownButton {
+  cursor: pointer;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .UISelectContent {
+  border: solid 1px #716f64;
+  position: absolute;
+  height: 100px;
+  overflow: auto;
+  background: white;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .UISelectContent .Item {
+  white-space: nowrap;
+  cursor: pointer;
+  margin: 2px 0px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
+  width: 128px;
+}

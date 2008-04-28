@@ -1,0 +1,130 @@
+<%
+  /**
+   * Created by The eXo Platform SARL
+   * Author : Dang Van Minh
+   *          minhdv@exoplatform.com
+   * Otb 8, 2007
+   * 3:20:23 PM
+   */
+%>
+<%
+  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
+  
+  String componentId = uicomponent.getId();
+  java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm");  
+%>
+<div id = "$componentId">	
+	<div class="UIListView" style="overflow: auto; width: 99.5%; height: 275px;">
+	  <table class="UIGridControl" style="width:99.5%">
+	    <%
+	      String typeSort = uicomponent.getTypeSort() ;
+	      String typeSortOrder = uicomponent.getTypeSortOrder() ;
+	      String nameSortOrder = uicomponent.getNameSortOrder() ;
+	      String typeClass = "" ;
+	      String nameClass = "" ;
+	      String typeBgColor = "" ;
+	      String nameBgColor = "" ;
+	      String classSortTypeIcon = "BlueDownArrow";
+	      String classSortNameIcon = "BlueDownArrow";
+	      String typeActionLink  = uicomponent.event("Sort","Type;Descending") ;
+	      String nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
+	      if(typeSort.equals("Type")) { 
+	        typeClass = "OverHeader" ;
+	        typeBgColor = "background: #f1f2f5" ;
+	        if(typeSortOrder.equals("Ascending")) {
+	          classSortTypeIcon = "BlueDownArrow" ;
+	          typeActionLink = uicomponent.event("Sort","Type;Descending") ;
+	        } else if(typeSortOrder.equals("Descending")) {
+	          classSortTypeIcon = "BlueUpArrow" ;
+	          typeActionLink = uicomponent.event("Sort","Type;Ascending") ;
+	        }
+	      } else if(typeSort.equals("Alphabetic")) {
+	        nameClass = "OverHeader" ;
+	        nameBgColor = "background: #f1f2f5" ;
+	        if(nameSortOrder.equals("Ascending")) {
+	          classSortNameIcon = "BlueDownArrow" ;
+	          nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
+	        } else if(nameSortOrder.equals("Descending")) {
+	          classSortNameIcon = "BlueUpArrow" ;
+	          nameActionLink = uicomponent.event("Sort","Alphabetic;Ascending") ;
+	        }
+	      }
+	    %>
+	    <col style="$typeBgColor ;width: 40px;"></col>
+	    <col style="$nameBgColor"></col>
+	    <col></col>
+	    <col></col>
+	    <thead>
+	      <tr>
+	        <th class="$typeClass;">
+	          <a href="$typeActionLink">
+	            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
+	          </a>
+	        </th>
+	        <th class="$nameClass">
+	          <div class="HeaderLabel"><%=_ctx.appRes("ListView.view.label.name")%></div>
+	          <a href="$nameActionLink">
+	            <div class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
+	          </a>
+	        </th>
+	        <th><%=_ctx.appRes("ListView.view.label.dateCreated")%></th>
+	        <th><%=_ctx.appRes("ListView.view.label.dateModified")%></th>
+	        <th><%=_ctx.appRes("ListView.view.label.owner")%></th>
+	        <th><%=_ctx.appRes("ListView.view.label.versionable")%></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <%
+	      	String serverUrl = uicomponent.getWebDAVServerPrefix();
+	      	String portalName = uicomponent.getPortalName() ;
+	      	String repository = uicomponent.getRepository();
+	        for(data in uicomponent.getChildrenList()) {
+	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+	          def preferenceWS = data.getSession().getWorkspace().getName() ;
+	          String actionLink  ;
+	          String nodePath = data.getPath() ;
+	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
+	          String subName ;
+	          if(isPreferenceNode) {
+	            actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+	            nodePath = nodePath + "&workspaceName=" + preferenceWS ;
+	          } else if(uicomponent.isReadAuthorized(data)) {
+	            actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", data.getSession().getWorkspace().getName())) ;
+	          }
+	      %>
+		      <tr>
+		        <td>
+							<div class="NodeLabel">
+						    <a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
+	  					</div>
+		        </td>
+		        <%
+	  	        if(name.length() < 50) subName = name ;
+			        else subName = name.substring(0,50) + "..." ;
+		        %>
+		        <td>
+							<div class="NodeLabel"><a href="$actionLink" title="$name">$subName</a></div>
+		        </td>
+		        <td style="width:100px;"><%=dateFormat.format(uicomponent.getDateCreated(data))%></td>
+		        <td style="width:100px;"><%=dateFormat.format(uicomponent.getDateModified(data))%></td>
+		        <td style="width:80px;"><%=uicomponent.getNodeOwner(data)%></td>
+		        <td style="width:50px;">
+		          <%=Utils.isVersionable(data)%>
+		          <%
+		            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
+		              println "(" + uicomponent.getVersionName(data) + ")" ;
+		            }
+		          %>
+		        </td>
+		      </tr>
+	      <%}%>
+	    </tbody>
+	  </table>	   
+	</div>
+	<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
+		<div style="margin:4px 0px 4px 0px;">
+			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
+		</div>
+	<% } %>
+</div>	

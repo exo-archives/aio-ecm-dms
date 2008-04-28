@@ -1,0 +1,90 @@
+<%
+	/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minhdv@exoplatform.com
+ * Sep 19, 2006
+ * 11:57:24 AM 
+ */
+%>
+<% import org.exoplatform.webui.core.UIPageIterator; %>
+<% 
+  UIPageIterator uiIterator = uicomponent.getChild(UIPageIterator.class) ;
+  int totalPages = uiIterator.getAvailablePage();
+  def metaDatas = uicomponent.getListMetadata() ; 
+  if(metaDatas == null) return ;
+%>
+<div class="UIMetadataList" id="UIMetadataList">
+  <table class="UIGrid">
+	  <thead>
+	    <tr>
+	      <th><%=_ctx.appRes("UIMetadataList.header.icon")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.name")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.internalUse")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.type")%></th>
+		    <th><%=_ctx.appRes("UIMetadataList.header.action")%></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+      <%
+        def rowClass = null ;
+		    boolean even = true ;
+		    boolean found = false ;
+		    for (meta in metaDatas) {
+		      found = true  ;
+		      if(even) rowClass = "EvenRow" ;  
+		      else rowClass =  "OddRow" ; 
+		      even = !even ;
+      %>
+          <tr class="$rowClass">
+            <%
+              String nodeType = meta.getName() ;
+              nodeType = nodeType.replace(":", "_") ;
+            %>
+            <td style="width:30px; margin-left:5px;">
+              <div class="default16x16Icon  ${nodeType}16x16Icon"><span></span></div>
+            </td>
+            <td><div class="Text">$meta.name</div></td>
+            <td>
+              <%
+                String internalText = _ctx.appRes("UIMetadataList.label." + meta.getInternalUse()) ;
+                String internalIconType = meta.getInternalUse() ;                
+              %>
+              <div style="width: 65px; margin: auto;">
+	              <div class="Icon16x16 ${internalIconType}16x16Icon"><span></span></div>
+	              <div class="Text">$internalText</div>
+	            </div>
+            </td>
+            <td>
+              <div style="width: 65px; margin: auto;">
+	              <div class="Icon16x16 True16x16Icon"><span></span></div>
+	              <div class="Text">true</div>
+	            </div>
+            </td>
+            <td style="width:130px;padding-left:20px;">
+              <a href="<%=uicomponent.event("View", meta.getName())%>">
+                <div class="Icon16x16 MetaView16x16Icon" style="margin-left:7px;" title="View"><span></span></div>
+              </a>
+              <a href="<%=uicomponent.event("Edit", meta.getName())%>">
+                <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="Edit"><span></span></div>
+              </a>
+              <%
+              	if(meta.hasTemplate()) {
+              	%>
+              		<a href="<%=uicomponent.event("Delete", meta.getName())%>">
+		                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="Delete"><span></span></div>
+		              </a>	
+              	<%
+              	}
+              %>
+            </td>
+          </tr>
+      <%}%>  
+	  </tbody>
+  </table>
+  <% if(totalPages>1){ %>
+  <div style="margin:3px 0px 5px 0px;">
+    <%uicomponent.renderChild(UIPageIterator.class)%>
+  </div>
+  <% } %>
+</div>

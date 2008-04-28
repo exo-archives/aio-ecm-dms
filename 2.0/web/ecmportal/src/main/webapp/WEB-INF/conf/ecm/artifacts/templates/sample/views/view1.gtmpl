@@ -1,0 +1,199 @@
+<%
+	import java.text.SimpleDateFormat ;
+	import org.exoplatform.web.application.Parameter ;
+	def node = uicomponent.getNode() ;
+	def originalNode = uicomponent.getOriginalNode()
+	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
+%>
+	<style>
+		.WorkSample {
+			margin: 8xp 0px;
+		}
+		
+		label.text { 
+			font: normal bold 11px Verdana;
+			color: black; 
+			line-height: 18px;
+		}
+		
+		span.text  { 
+			font-size: 11px; 
+			vertical-align:bottom; 
+			color: #00000; 
+		}
+		
+		div.summary { 
+			width: 96%; 
+			height: 160px ; 
+			font-size: 11px; 
+			padding: 5px 5px 5px 10px; 
+			color: black ; 
+			font-weight: normal;
+			overflow: auto;
+		} 
+		
+		div.content { 
+			width: 96%; 
+			height: 160px ; 
+			font-size: 11px; 
+			padding: 5px 5px 5px 10px; 
+			color: black ; 
+			font-weight: normal;
+			overflow: auto;
+		}
+		
+		.HeaderSampleBG {
+			background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+		  margin-bottom: 2px;
+		  padding: 0px 5px 0px 5px; 
+		  height: 18px;
+		  border: solid 1px #bdbdbd;
+		  border-bottom: none;
+		  line-height: 18px;
+	  }
+	  
+	  .SampleBG {
+		  height: 25px;
+		  line-height: 25px;
+		  border-bottom: solid 1px #BDBDBD;
+	  }
+		
+	</style>
+<div style="text-align: left; margin: 5px;" id="$uicomponent.id">
+	<div class="WorkSample">
+		<div class="SampleBG">
+				<label class="text"><%=_ctx.appRes("Sample.view.label.node-name")%>: </label>
+				<span class="text"><%=originalNode.getName()%></span>
+		</div>
+		<div class="SampleBG">
+			<label class="text"><%=_ctx.appRes("Sample.view.label.title")%>: </label>
+			<span class="text">
+				<%if(node.hasProperty("exo:title")) {%>
+					<%=node.getProperty("exo:title").getString()%>
+				<%}%>
+			</span>
+		</div>
+		<div class="SampleBG">
+			<label class="text"><%=_ctx.appRes("Sample.view.label.date")%>: </label>
+			<span class="text">
+				<%if(node.hasProperty("exo:date")) {
+				  dateFormat.applyPattern("MMMMM dd yyyy") ;						
+				%>
+					<%=dateFormat.format(node.getProperty("exo:date").getDate().getTime())%>
+				<%}%>
+			</span>
+		</div>
+		<div class="SampleBG">
+			<label class="text"><%=_ctx.appRes("Sample.view.label.date-time")%>: </label>
+			<span class="text">
+				<%if(node.hasProperty("exo:datetime")) {
+					 dateFormat.applyPattern("MMMMM dd yyyy hh:mm:ss") ;		
+				%>
+					<%=dateFormat.format(node.getProperty("exo:datetime").getDate().getTime())%>
+				<%}%>	
+			</span>
+		</div>
+		<div style="overflow: hidden">
+			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
+				<div class="TitleBG">
+					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.description")%>:</label>
+				</div>
+				<div class="summary" >
+					<%if(node.hasProperty("exo:description")) {%>
+						<%=node.getProperty("exo:description").getString()%>
+					<%}%>
+				</div>
+			</div>
+			<% if(node.hasNode("exo:image")) {
+				 imgSrc = uicomponent.getImage(node) ;
+			%>
+					<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd;">
+						<div class="TitleBG" >
+							<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.image")%>: </label>
+						</div>
+						<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px;">
+			      	<image src="$imgSrc" width="250" height="150"/> 
+						</div>
+					</div>
+			<% } %>
+		</div>
+		<!-- div for  Summary and Image -->
+		<div style="overflow: hidden;">
+			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd;">
+				<div class="TitleBG">
+					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.summary")%>:</label>
+				</div>
+				<div class="summary" >
+					<%if(node.hasProperty("exo:summary")) {%>
+						<%=node.getProperty("exo:summary").getString()%>
+					<%}%>
+				</div>
+			</div>
+			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd;">
+				<div class="TitleBG" >
+					<label class="text" style="padding: 5px;"><%=_ctx.appRes("Sample.view.label.content")%>:</label>
+				</div>
+				<div class="content">
+					<%if(node.hasProperty("exo:content")) {%>
+						<%=node.getProperty("exo:content").getString()%>
+					<%}%>
+				</div>
+			</div>
+		</div>
+		<!-- div for Content -->
+		<!-- div for  relation and attackments -->
+		<div style="overflow: hidden;">
+			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: left; margin-top: 5px;">
+				<div class="TitleBG" >
+					<label class="text" style="padding-left: 5px;"><%=_ctx.appRes("Sample.view.label.relation")%>: </label>
+				</div>
+				<%
+				  def relations = uicomponent.getRelations() ;
+				  if(relations.size() > 0) {
+				%>
+					<div style="width: 100%;" >
+						<%
+						  for(rel in relations) {
+						  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", rel.getSession().getWorkspace().getName())) ;
+						%>
+							<div style="font-size: 12px; padding: 10px;">
+								-	<a href="$actionLink2">
+										<%=rel.getName()%>
+									</a>
+							</div>
+						<%}%>	  	
+					</div>		  
+				<%} else {%>
+					<div style="width: 100%; height: 20px;"> </div>
+			  <%}%>
+			</div>
+			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: right; margin-top: 5px;">
+				<div class="TitleBG" >
+					<label class="text" style="padding-left: 5px;"><%=_ctx.appRes("Sample.view.label.attachment")%>: </label>
+				</div>
+				<%
+				  def attachments = uicomponent.getAttachments() ;
+				  if(attachments.size() > 0) {
+				%>			
+					<div style="width: 100%" >
+						<%
+						  for(att in attachments) {
+						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
+						%>
+							<div style="font-size: 12px; padding: 10px;">
+							 -<a href="$actionLink3">
+							 		<%=att.getName()%>
+							 	</a>
+							</div>
+						<%}%>	  	
+					</div>		  
+				<%} else { %>
+					<div style="width: 100%; height: 20px;"> </div>
+				<%}%>
+			</div>	
+			<div style="clear: both"><span></span></div>
+		</div>		
+	</div>
+	<div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
+  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
+</div>
