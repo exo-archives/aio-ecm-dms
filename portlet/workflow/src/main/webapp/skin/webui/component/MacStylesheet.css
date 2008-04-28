@@ -283,15 +283,11 @@
   text-transform: uppercase;
 }
 
-.UIWorkflowPortlet .WorkflowPortletContent .ActionContainer .OverflowContainer {
-	width: 50px;
-}
-
 .UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid {
 	border-top: none;
 }
 
-.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td {
 	border-top: solid 1px #AFAEAE;
 	line-height: 26px;
 }
@@ -307,7 +303,7 @@
 	border-top: none;
 }
 
-.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td{
+.UIWorkflowPortlet .UITabContent .WorkKofax .UIGrid td {
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }

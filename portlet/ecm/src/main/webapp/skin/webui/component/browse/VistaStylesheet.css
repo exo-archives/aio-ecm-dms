@@ -334,6 +334,14 @@ UIBrowseContentPortlet .Explorer {
 	padding: 5px;
 }
 
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm input {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm select {
+  width: auto;
+}
+
 .UIBrowseContentPortlet .UISearchController .UIPageIterator{
 	margin-right: 0px;
 }
@@ -341,10 +349,6 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UISearchController .ResultInfo{
 	line-height: 26px; vertical-align: middle;
 	font-size: 11px;	
-}
-
-.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 50px; 
 }
 
 .UIBrowseContentPortlet .UISearchController .GotoIcon{

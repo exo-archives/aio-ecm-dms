@@ -78,7 +78,7 @@
 	line-height: 22px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapContent a{
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a {
 	color: red;
 	padding: 3px 7px 3px 0px;
 }
@@ -88,7 +88,7 @@
 	padding: 3px 7px 3px 0px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .Icon{
+.UIBrowseContentPortlet .TagmapHolder .Icon {
 	float: left;
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
@@ -115,7 +115,7 @@
 	padding: 0px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16{
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
 	float:none;
 	margin-left: 5px;
 }
@@ -310,7 +310,7 @@
 	padding: 5px;
 }
 
-.UIBrowseContentPortlet .UISearchController .SearchResult{
+.UIBrowseContentPortlet .UISearchController .SearchResult {
 	border: solid 1px #b7b7b7;
 	padding: 5px;
 }
@@ -323,20 +323,16 @@
   width: auto;
 }
 
-.UIBrowseContentPortlet .UISearchController .UIPageIterator{
+.UIBrowseContentPortlet .UISearchController .UIPageIterator {
 	margin-right: 0px;
 }
 
-.UIBrowseContentPortlet .UISearchController .ResultInfo{
+.UIBrowseContentPortlet .UISearchController .ResultInfo {
 	line-height: 26px; vertical-align: middle;
 	font-size: 11px;	
 }
 
-.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 50px;
-}
-
-.UIBrowseContentPortlet .UISearchController .GotoIcon{
+.UIBrowseContentPortlet .UISearchController .GotoIcon {
 	width: 16px ;	height: 16px ;
 	background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
 }
@@ -406,7 +402,7 @@
 	border-top: none;
 }
 
-.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td{
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td {
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
@@ -433,11 +429,11 @@
 	margin: 0px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel {
 	width: 100px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select {
 	width: 100px;
 }
 

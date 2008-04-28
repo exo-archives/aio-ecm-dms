@@ -1,841 +1,1361 @@
-/**
- * Created by The eXo Platform SAS
- * Modifier : Vu Duy Tu
- *           duytucntt@gmail.com
- * January 05, 2006
- * version: $Id$
- */
 
 @import url("../../../icons/VistaStylesheet.css");
-@import url("UIMetadataManager/VistaStylesheet.css");
-@import url("UINodeTypeManager/VistaStylesheet.css");
-/*@import url("UITaxonomyManager/VistaStylesheet.css");*/
+@import url("UICategoryTree/VistaStylesheet.css");
+@import url("UIContentView/VistaStylesheet.css");
+@import url("UISubContent/VistaStylesheet.css");
+@import url("UINavigation/VistaStylesheet.css");
+@import url("UICBSearchForm/VistaStylesheet.css");
+@import url("UIEventViewer/VistaStylesheet.css");
 
-.UIWindow .UIECMAdminPortlet {
-	border: none;
-	margin: 0px;
+.UIWindow .UIBrowseContentPortlet .ContentHolder {
+  padding: 5px 0px 5px 5px;
+  width: 98.5%;
+  /*
+  minh.js.exo
+  */
+  min-width: 400px;
 }
 
-.UIECMAdminPortlet {
+.UIWindow .UIBrowseContentPortlet {
+	border: none;
+	margin: 0px auto;
+	width: auto;
+}
+
+.UIBrowseContentPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px;
-	overflow: hidden;
+	margin: 10px auto;
+	width: 98%;
+  overflow: auto;
 }
 
+<<<<<<< .mine
+.UIBrowseContentPortlet .UIFormWithTitle {
+	margin: 10px auto;
+	width: 650px;
+=======
 .UIECMAdminPortlet .UIGrid .ActionContainer a {
 	float: left;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .UITrees .Node  {
   line-height: 24px;
+>>>>>>> .r13793
 }
 
-.UIECMAdminPortlet .UITaxonomyWorkingArea {
-  margin-left: 240px;
+.UIBrowseContentPortlet .UIConfigTabPane {
+  padding: 5px;
 }
 
-.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
-  width: 93%;
+.UIBrowseContentPortlet .ViewActicle {
+  margin: 9px 10px 0px 0px;
 }
 
-.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid .Icon16x16 {
-  margin: 0px 6px;
+.UIBrowseContentPortlet .TagmapHolder {
+	float: right ;  
+  width: 200px;
+  border: solid 1px #c4c4c4 ;	
+	background: #ffffff;
+	padding: 1px;
 }
 
-/***********************UIRepositoryControl**************************/
-.UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
-  background: url('VistaSkin/background/ECMAdminTitleBar1x35.gif') repeat-x left top ; 
-  height: 35px;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
-  float: left;
-  margin: auto ;
-  height: 34px;
-	line-height: 34px;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
-	font-weight: bold ;
-	float: left;
-	padding: 0px 7px 0px 20px;
-	line-height: 34px;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
-	 width: 190px;
-	 margin: 0px;
-	 float: left;	 
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .UISelect .UIForm .HorizontalLayout select {
-	 width: 170px;
-	 margin-top: 3px;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .UISelect .UIForm .HorizontalLayout {
-	 padding-top: 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
-  float: left; 
-  height: 34px;
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .ActionButton {
-  height: 24px;
-	float: left ;
-	margin: 5px 0px 0px 5px;		
-}
-
-.UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
-  width: 2px;
-  height: 25px;
-  margin: 2px 2px 0px 8px;		
-  background: url('VistaSkin/background/SeparatorLine2x1.png') repeat-y;
-  float: left;
-}
-
-/********************************** End UIRepositoryControl************************/
-
-.UIECMAdminPortlet .ProgressBarFrame {
+.UIBrowseContentPortlet .TagmapHolder .TagmapTitle{
+	height: 24px; line-height: 24px;
 	margin: 0px;
-	width: 320px;
+	background: url('VistaSkin/background/TagmapTitleBG1x24.png') repeat-x;
 }
 
-.UIECMAdminPortlet .SelectFileFrame {
-	margin: 0px;
-}
-
-.UIECMAdminPortlet .FileNameLabel {
-	width: auto;
-}
-
-/*############################## --Begin UIRepositoryManager -- ########################*/
-
-.UIPageBody .UIECMAdminPortlet {
-  background: url('VistaSkin/background/ECMAdminbottom1x30.gif') repeat-x left bottom;
-  background-color: white;
-  padding-bottom: 30px;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm  {
-	width: 95%;
-	margin: 10px auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
-	padding-top: 10px;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm .FormContainer {
-	width: 510px;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
-  _width: 118px;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
-	margin-left: 5px;
-	float: none;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIPageIterator {
-	width: 90%;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
-	width: 95%;
-	margin: 10px auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .OverflowContainer {
-	width: auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
-	background: url('VistaSkin/background/SelectIcon.gif') no-repeat;
-	width: 16px; 
-	height: 16px;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
-	padding: 10px 0px;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
-	width: 500px;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard {
-	padding: 10px 10px 0px 10px;
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
-	display: none  ;	
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard .SelectedLabel {
-	display: block ;
-	background: #F4F4F4 none repeat scroll 0%;
-	border: 1px solid #B7B7B7 ;
-	padding: 10px 0px 10px 10px;
-	line-height: 15px;
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard .WizardLabel {
-  font-weight: bold; 
-  padding-right: 10px;
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction {
-	background: #F4F4F4 none repeat scroll 0%;
-	border: none ;
-	border-top: 1px solid #939393 ;
-	border-bottom: 1px solid #B7B7B7 ;
-	height: 40px;
-	line-height: 40px;
-}
-
-.UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
-  float: left;
-  font-weight: bold;
-  margin: 0px 10px 0px 15px;
-}
-
-.UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
-  float: left;
-}
-
-.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a{
-  float: left;
-  width: 18px; height: 18px; 
-  line-height: 18px;
-  font-weight: bold;
-  text-align: center; 
-  margin: 10px 3px 0px 3px;
-  border: solid 1px gray;
-}
-
-.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a:hover {
-  height: 18px; line-height: 18px; vertical-align: middle;
-  color: orange;
-  background: #f8f8f8;
-  border: solid 1px #fdb913 ;
-}
-
-.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a.SelectedStep {
-  color: red;
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .UIAction {
-	float: right;
-	padding-right: 5px;
-	width: 50%;
-}
-
-.UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .ActionContainer {
-  margin: 0px ;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane {
-	padding: 0px;
-	margin: 0px;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .HorizontalLayout {
-	padding: 0px;
-	margin: 0px;
-	border: solid 1px #b7b7b7;
-	border-top: none;
-	border-bottom: none;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .UITabContentContainer .UITabContent {
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
-  margin: 5px 5px 10px 5px;
-  border: 1px solid #b7b7b7;
-}
-
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
-  width: 500px;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIFormGrid input {
-  padding-left: 3px;
-  border: solid 1px #808080;
-}
-
-.UIECMAdminPortlet .UIFormGrid input.radio {
-  float: none;
-  margin-left: 0px;
-}
-
-.UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
-  margin: 0px 5px;
-}
-
-.UIECMAdminPortlet .UIFormGrid .FieldLabel {
-  width: 128px;
-}
-
-.UIECMAdminPortlet .UIECMPortletLayout {
-  background: url('VistaSkin/background/ECMAdminTitleBar1x33.gif') repeat-x left top;
-  border-collapse: collapse ;
-}
-
-.UIECMAdminPortlet .ECMLayoutSeparator {
-	width: 8px;
-	background: url('VistaSkin/background/LayoutSeparator.gif') repeat-y center;
-}
-
-.UIECMAdminPortlet .CollapseSideBar {
-	width: 8px; height: 100%;
-	background: url('VistaSkin/background/CollapseSideBar.gif') no-repeat center center;
-	cursor: pointer;
-}
-
-.UIECMAdminPortlet .ExpandSideBar {
-	width: 8px; height: 100%;
-	background: url('VistaSkin/background/ExpandSideBar.gif') no-repeat center;
-	cursor: pointer;
-}
-
-.UIECMAdminPortlet .ECMAdminTitleBar {
-	font-weight: bold; 
-	text-align: center;
-	padding: 10px 0px 4px 0px;
-	line-height: 20px;
-}
-
-.UIECMAdminPortlet .UIECMAdminFunctionTitle {
+.UIBrowseContentPortlet .TagmapHolder .TagLabel {
+	padding: 0px 8px;
+	line-height: 19px;
 	font-weight: bold;
-	padding: 10px 0px 0px 7px;
 }
-
-.UIECMAdminPortlet .UIECMAdminFunctionTitle .RightFunctionTitle {
-	height: 32px;
-}
-
-.UIECMAdminPortlet .UIECMAdminFunctionTitle .FunctionTitle {
-	line-height: 20px;
-}
-
-.UIECMAdminPortlet .UIResizableBlock {
-  height: 400px;
-}
-
-.UIResizableBlock .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIForm .UITabContentContainer .UITabContent {
-	border: none;
-}
-
-.UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
-  margin: 10px;
-}
-
-.UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab {
-  margin: 8px 0px;
-  cursor: pointer;
-}
-
-.UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab .TabIcon {
-	float: left;
-  margin: 1px 5px;
-}
-
-.UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent {
+	
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent {
+  border: solid 1px #e1e1e1 ;	
   background: #ffffff;
-  border: solid 1px #b2b1b1;
-  margin: 1px 3px;
-  padding: 5px ;
-  overflow: hidden;
+  padding: 5px;
+  text-align: justify ;
+  line-height: 22px;
 }
 
-.UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent a {
-	color: black;
+.UIBrowseContentPortlet .TagmapHolder .Icon{
+	float: left;
+	width: 24px; height: 24px; 
+	margin: 0px 5px;
+	background: url('VistaSkin/background/TagMapIcon24x24.png') no-repeat; 
 }
 
-.UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent a:hover {
-	color: orange;
+.UIBrowseContentPortlet .UIFormGrid .FieldLabel {
+	width: 200px;
 }
 
-.UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem {
-  height: 25px;
-  clear: both;
-  margin: 4px 2px;
+.UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
+	text-transform: capitalize;
 }
 
-.UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemIcon {
-  float: left;
-  margin-right: 6px;
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
+	margin: auto;
 }
 
-.UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemLabel {
-  line-height: 25px;
-  cursor: pointer;
+.UIBrowseContentPortlet .UIConfigContainer .UIFormGrid .DocSelectIcon {
+  float: none;
 }
 
-.UIECMAdminPortlet .UIECMAdminWorkingArea {
-  margin: 1px 10px 10px 10px;
+.UIBrowseContentPortlet .UINewConfigForm .HorizontalLayout .UIFormGrid {
+	margin: auto;
 }
 
-.UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet  {
-  margin: auto;
-  width: auto;
-  padding-bottom: 0px;
+.UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
+  padding: 4px 0px;
 }
 
-.UIECMAdminPortlet .UIGrid .ActionContainer a {
-	width: 24px; height: 24px;
+.UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
+	padding: 0px;
+	width: 500px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
-	float: none;
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
+	float:none;
 	margin-left: 5px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionFieldContainer {
-	padding-left: 170px;
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
+  padding: 0px 4px;
+  vertical-align: middle;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField {
-  float: left ;
-  margin-right: 5px ;
+.UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+  padding: 0px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a {
-  color: blue;
+.UIBrowseContentPortlet .UIConfigContainer .UIFormWithTitle .FormContainer {
+	padding: 3px 0px;
+	border: none;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
-  color: orange;
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+  width: 100%;
+  padding: 0px;
+  margin: auto;
 }
 
-/*############################## -- UINamespaceManager -- ########################*/
-
-.UIECMAdminPortlet .UINamespaceManager {
-  width: 97.5%;
+/*############################## -- Begin UIBrowseContainer -- ##############################*/
+.UIBrowseContentPortlet .UIBrowseContainer {
+  padding: 0px;
+  background: white;
+  _width: 99%;
+  margin: auto;
 }
 
-.UIECMAdminPortlet .UINamespaceList {
-  margin-top: 5px ;
+/*############################## -- Begin UIToolBar -- ##############################*/
+
+.UIBrowseContentPortlet .UIToolBar {
+  background: url('VistaSkin/background/CBToolbarBG1x31.png') repeat-x;
+  height: 31px;
+  margin-bottom: 5px;
 }
 
-/*############################## -- UIDriveManager -- ########################*/
-
-.UIECMAdminPortlet .UIDriveList {
-  margin-top: 5px ;
+.UIBrowseContentPortlet .UIToolBar .SeparatorLine {
+  width: 2px;
+  height: 20px;
+  margin: 4px 5px 0px 0px;
+  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
-	width: 100%;
-	padding: 10px;
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar {
+  float: left;
+  height: 27px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
-	width: auto;
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .ShowHiddenIcon {
+  float: left;
+  height: 24px;
+  cursor: pointer;
+  margin: 2px 0px 2px 5px;
+}
+
+.UIBrowseContentPortlet .CategoryListIcon {
+  float: left;
+  height: 24px; width: 24px;
+  background: url('VistaSkin/background/CategoryListIcon.png') no-repeat;
+  margin: 4px 5px 0px 8px;
+  
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathLabel {
+  float: left;
+  height: 27px;
+  font-weight: bold; font-size: 11px; color: #058ee6;
+  line-height: 27px; vertical-align: middle;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathChildLabel {
+  float: left;
+  height: 27px;
+	font-size: 11px; color: black;
+  line-height: 27px; vertical-align: middle;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar a:hover {
+	color: #f97c01;
+}
+
+.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathIcon {
+  float: left;
+  height: 16px; width: 16px;
+  margin: 11px 0px 0px 5px;
+  background: url('DefaultSkin/background/CBPathArrow8x7.gif') no-repeat;
+}
+
+.UIBrowseContentPortlet .UIToolBar .SelectViewLabel {
+  float: left;
+  line-height: 28px;
+  padding-left: 10px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .SelectBox {
+  float: left;
+  padding: 3px 15px;
+  font-size: 11px;
+}
+
+.UIBrowseContentPortlet .UIToolBar .CBActionContainer {
+  height: 27px;
+  float: right;
+}
+
+.UIBrowseContentPortlet .UIToolBar .CBActionContainer .Icon {
+  float: left;
+  margin: 2px 6px;
+  cursor: pointer;
+}
+
+.UIBrowseContentPortlet .UIToolBar .CBRefreshButton {
+	width: 28px; height: 28px;
+	background: url('VistaSkin/background/CBRefreshButton.png') no-repeat;
+}
+
+.UIBrowseContentPortlet .UIToolBar .CBSearchButton {
+	width: 28px; height: 28px;
+	background: url('VistaSkin/background/CBSearchButton.png') no-repeat;
+}
+
+.UIBrowseContentPortlet .UIToolBar .VoteDocumentButton{
+	width: 28px; height: 28px;
+	background: url('VistaSkin/background/VoteDocumentButton.png') no-repeat;
+}
+
+.UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
+	width: 28px; height: 28px;
+	background:url('VistaSkin/background/WriteCommentButton.png') no-repeat;
+}
+
+.UIBrowseContainer .UIDocumentList {
+	margin: 5px;
+}
+
+.UIBrowseContainer .DocNodeIcon{
+	float: left;
+	margin: 2px 3px 0px 10px;
+}
+
+.UIBrowseContainer .UIDocumentList .DocumentLabel{
+	vertical-align: middle;
+	line-height: 16px;
+}
+
+.UIBrowseContainer .UIDocumentList .TopSubContent {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.UIBrowseContainer .UIDocumentList .UIPageIterator {
+	background: none;
+	border: none;
+}
+
+.UIBrowseContainer .VoteHolder {
+  width: 250px;
+  float: right;
+}
+
+.UIBrowseContentPortlet .UIBrowseContainer .UIArticle{
+  width: 97%;
+}
+
+.UIBrowseContentPortlet .UIBrowseContainer .UIDivInfo {
+	width: 97%;
+	margin: 10px 0px;
 	padding: 0px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .rootNodeInfo .FormContainer {
-	padding: 0px;
+/*############################## -- FIX BUG POPUP  -- ##############################*/
+.UIBrowseContentPortlet .UIJCRBrowser {
+  padding: 10px 0px 0px 10px;
 }
 
-
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane .UITabPane {
-	width: 95%;
-	margin: 10px auto;
-}
-
-.UIECMAdminPortlet .UIDriveManager .WorkingArea .UITabContentContainer .UITabContent {
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
-  width: 140px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer {
-  margin-right: 5px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UITrees .Node {
+.UIBrowseContentPortlet .UIJCRBrowser .UITrees .Node {
   line-height: 24px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
-  width: 65px ;
-  margin: auto ;
+.UIBrowseContentPortlet .Explorer {
+  margin-right: 10px;
+  float: left ;
+  width: 220px ;
 }
 
-.UIECMAdminPortlet .MultiRadioInput {
+UIBrowseContentPortlet .Explorer {
+  margin-right: 10px;
+  float: left ;
+  width: 230px ;
+  overflow: hidden;
+}
+
+.UIBrowseContentPortlet .Explorer .ExplorerTree {
+  border: solid 1px #c6c6c9;
+  background: #f3f3f3;
+  padding: 1px;
+}
+
+.UIBrowseContentPortlet .Explorer .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.UIBrowseContentPortlet .UITreeList .UIGrid {
+  width: 310px;
+}
+
+/*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
+
+.UIBrowseContentPortlet .UISearchController {
+	padding: 5px;
+}
+
+.UIBrowseContentPortlet .UISearchController .SearchResult{
+	border: solid 1px #b7b7b7;
+	padding: 5px;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm input {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm select {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .UIPageIterator{
+	margin-right: 0px;
+}
+
+.UIBrowseContentPortlet .UISearchController .ResultInfo{
+	line-height: 26px; vertical-align: middle;
+	font-size: 11px;	
+}
+
+.UIBrowseContentPortlet .UISearchController .GotoIcon{
+	width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
+}
+
+/*############################## -- Begin UIVoteForm   -- ##############################*/
+
+./*############################## -- Begin UIVoteForm   -- ##############################*/
+
+.UIBrowseContentPortlet .UIVoteForm {
+  padding: 10px;
+}
+
+.UIBrowseContentPortlet .VoteFormContainer {
+	padding-top: 8px;
+  border: solid 1px #aeaeae;
+}
+
+.UIBrowseContentPortlet .VoteFormContainer .UIRatingInfoContainer {
+  background: white;
+  width: 150px; padding: 5px 12px;
+	margin: auto;
+  border: solid 1px #b7b7b7;
+}
+
+.UIBrowseContentPortlet .UIVoteForm .NormalVote {
+  cursor: pointer;
+}
+
+.UIBrowseContentPortlet .UIVoteForm .OptionsContainer {
+	margin: auto;
+	width: 120px; height: 20px;
+}
+
+.UIBrowseContentPortlet .UIVoteForm .OptionsContainer .NormalVote {
 	float: left;
+	margin: 2px 3px 0px 3px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16 {
-  float: none;
-  margin-left: 5px;
+.UIBrowseContentPortlet .UIVoteForm .OptionsContainer .RatedVote {
+	float: left;
+	margin: 2px 3px 0px 3px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
 }
 
-/*############################## -- UIViewManager -- ########################*/
-
-.UIECMAdminPortlet .UIViewManager {
-  height: 300px;
+.UIBrowseContentPortlet .UIVoteForm .OptionsContainer .OverVote {
+	float: left;
+	margin: 2px 3px 0px 3px;
+	width: 16px; height: 16px;
+  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
-  width: 100px;
+/*############################## -- End UIVoteForm   -- ##############################*/
+
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
+  padding: 10px;
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
-  width: 500px ;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIFormInputSetWithActions {
-	padding-top: 15px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIViewList {
-  margin-top: 5px;
-}
-
-.UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
-	padding: 0px 10px;
-}
-
-.UIECMAdminPortlet .UIViewManager .UIFormTabPane {
-	width: 550px ;
-	margin: 0px auto;
-}
-
-.UIECMAdminPortlet .UIGrid .OverflowContainer {
-	width: 65px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIGrid .OverflowContainer {
-	width: 90px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
-  width: 93%;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UICBTemplateList {
-  margin-top: 5px;
-}
-
-.UIECMAdminPortlet .CBTemplate .UIGrid .ActionContainer {
-  width: 60px;
-}
-
-.UIECMAdminPortlet .ECMTemplate .ECMTempForm {
-  width: 95%;
-  margin: 10px auto;
-}
-
-.ECMTempForm .UIForm .textarea {
-  width: 95%;
-  height: 300px;
-  padding: 3px;
-}
-
-.UIECMAdminPortlet .CBTemplate .CBTempForm {
-  width: 95%;
-  margin: 10px auto;
-}
-
-.CBTempForm .UIForm textarea {
-  width: 95%;
-  height: 300px;
-  padding: 3px;
-}
-
-/*############################## -- UIActionManager -- ########################*/
-
-.UIECMAdminPortlet .UIActionManager {
-	width: 97.5%;
-}
-
-.UIActionManager .UIActionTypeForm .AddNewNodeIcon {
-	margin: 0px 0px 0px 3px;
-}
-
-.UIActionManager .UIActionTypeForm label {
-	width: 140px;
-}
-
-.UIActionManager .UIActionTypeForm .HorizontalLayout {
-	padding: 10px 0px 0px 30px; 
-}
-
-/*############################## -- UIScriptManager UIScriptFilterForm  -- ########################*/
-
-.UIECMAdminPortlet .UIECMScripts {
-	width: 97%;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
-  text-align: center;
-  width: 100px;
-}
-
-.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
-  margin: 10px 0px 0px 0px;
-}
-
-.UIECMScripts .UIBarStyle {
-}
-
-.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer {
-  margin: auto;
-  width: 75px;
-}
-
-.UIECMScripts .UIScriptFilterForm .UIForm .selectbox {
-  margin-top: 7px;
-}
-
-.UIECMScripts .HorizontalLayout {
-  padding-top: 7px;
-}
-
-.UIECMScripts .UIForm textarea {
-  width: 90%;
-  height: 300px;
-  padding: 3px;
-}
-
-/*############################## -- UIScriptManager UIScriptForm  -- ########################*/
-
-.UICBScripts .HorizontalLayout {
-  padding-top: 7px;
-}
-
-.UICBScripts .UIForm textarea {
-  width: 90%; 
-  height: 300px;
-  padding: 3px;
-}
-
-/*############################## --Begin UITemplatesManager --##############################*/
-
-.UIECMAdminPortlet .UITemplatesManager   {
- 	width: 97.5%;
-  border: none;
-}
-
-.UITemplatesManager .UIGrid .ActionContainer {
-  width: 70px ;
-}
-
-.UITemplatesManager .UITabPane {
-	width: 95%;
-	padding: 10px 0px;
-	margin: auto;
-}
-
-.UITemplatesManager .UIFormInputSetWithActions {
-	padding-top: 15px;
-}
-
-.UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 95%;  height: 300px; 
-  padding: 3px;
-}
-.UITemplatesManager .UITabPane .UIDialogTab{
-	padding: 10px;
-}
-
-.UITemplatesManager .UITabPane .UIViewTab{
-	padding: 10px;
-}
-
-.UITemplatesManager .UITemplateEditForm .HorizontalLayout {
-	border: none;
-	padding: 0px;
-}
-
-.UITemplatesManager .UIDialogTab .UIForm .textarea {
-  width: 90%;  
-  height: 320px; 
-  padding: 3px;
-}
-
-.UITemplatesManager .UIViewTab .UIForm .textarea {
-  width: 90%;  
-  height: 320px; 
-  padding: 3px;
-}
-
-.UITemplatesManager .UIFormTabPane .HorizontalLayout .template { 
-	height: 305px;
-	padding-top: 15px;
-}
-
-.UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {
-	width: 500px;
-	margin: auto;
-}
-
-.UITemplatesManager .UIFormTabPane .HorizontalLayout .UIFormInputSet .UIForm .HorizontalLayout .textarea{ 
-	width: 95%;
-	height: 350px;
-	padding: 3px;
-}
-
-/*############################## -- UINamespaceManager -- ########################*/
-
-.UINamespaceManager .HorizontalLayout {
-  padding-top: 15px;
-}
-
-/*############################## -- UIRuleManager  -- ########################*/
-
-.UIRuleManager .HorizontalLayout {
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
   padding-top: 10px;
 }
 
-.UIRuleManager .textarea {
-  width: 446px;
-  height: 300px;
-  margin-left: 25px;
+.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout td.FieldLabel {
+	width: 70px;
 }
 
-.UIRuleManager .ActionContainer {
-  width: auto;
-  margin: auto;
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid {
+	border-top: none;
 }
 
-/*############################## -- UIQueriesManager  -- ########################*/
-
-.UIQueriesManager .UIQueriesForm .FormContainer {
-	width: 95%;
-	margin: auto;
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td{
+	border-top: solid 1px #cccccc;
+	line-height: 26px;
 }
 
-.UIQueriesManager .UIQueriesForm .UIFormInputSet .UIFormInputSetWithAction .FormContainer {
-	width: 100%;
-	margin: auto;
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+	margin: 10px 0px 0px 0px;
 }
 
-.UIQueriesManager .UIQueriesForm .UIForm .textarea {
-	width: 80%; 
-	height: 320px ;
-	padding: 3px;
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	width: 547px;
+	margin: 0px;
+	border: 1px solid #E1E1E1;
 }
 
-.UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout {
-	padding-top: 15px;
-}
-
-.UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout .UIFormGrid td {
-	padding: 4px 2px;
-}
-
-/*############################## -- UIFolksonomyManager  -- ########################*/
-
-.UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
-	height: 320px;
-	padding: 3px;
-	width: 95%;
-}
-
-.UIFolksonomyManager .UITagStyleForm .UIForm .HorizontalLayout {
-	padding-top: 10px;
-}
-
-.UIFolksonomyManager .UIGrid .OverflowContainer {
-	width: 30px;
-}
-/************************* UIFormInputSet ***********************************/
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
-  float: none;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  margin: 0px 0px 5px 0px ;
-  line-height: 20px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
-  color: blue;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
-  color: orange;
-}
-
-/*############################## -- MultiField  -- ########################*/
-
-.UIECMAdminPortlet .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin: 0px 0px 4px 175px;
-}
-
-.Explorer {
-  margin-bottom: 10px;
-  float: left ;
-  width: 230px ;
-}
-
-.UIECMAdminPortlet .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
-  float: left;
-  margin: 3px 5px 0px 5px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser  {
-	width: 95%;
-	margin: 10px auto;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	margin: 0px 0px 10px 0px;
-	width: 540px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .HorizontalLayout {
 	background: white;
 	padding: 5px 0px;
 	margin: 0px;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormGrid select{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select{
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UITreeList .UIGrid {
+.UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}
+/*********************************Template Style - Fix for IE*************************************/
+
+/********************* File plan ***********************/
+
+.UIBrowseContentPortlet .UIDivInfo {
+	margin: auto; padding: 10px;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .Title {
+	font-size: 13px; font-weight: bold;
+	padding-bottom: 3px;
+}	
+	
+.UIBrowseContentPortlet	.UIDivInfo .FilePlanContentTable {
+	width: 97.5%;
+	border-collapse: collapse;
+	border-top: 1px solid #dbdbdb;
+  margin: auto;
+	}
+	
+.UIBrowseContentPortlet	.UIDivInfo .FilePlanContentTable td {
+	border: 1px solid #dbdbdb;
+	border-top: none;
+	height: 25px;
+	padding-left: 7px;
+	background: white;
+	line-height: 25px;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .UIHorizontalTabs .TabsContainer {
+	padding: 0px;
+	height: 23px;
+	overflow-y: hidden;
+}
+  
+.UIBrowseContentPortlet .UIDivInfo .NavigationButtonContainer {
+  cursor: pointer;  	
+  display: none;
+  float: right;
+	height: 20px;
+	padding-top: 4px;
+	z-index: 1;
+}
+  
+.UIBrowseContentPortlet .LabelFielPlan {
+  padding-left: 5px;
+  font-weight: normal;
+}
+      	
+.UIBrowseContentPortlet .UIDivInfo a:hover {		 
+	color: blue;
+}  
+	
+/************** Article ***************/
+
+.UIBrowseContentPortlet .UIArticle {
+	background: white;
+}
+			
+.UIBrowseContentPortlet .UIArticle .ArticleTLDecorator {
+  background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
+  padding-left: 51px;
+  height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTRDecorator {
+  background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
+  padding-right:154px;
+  height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator {
+  background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
+  height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator .TitleLabel {
+  padding-top: 38px;
+  font: normal bold 16px Arial;
+  color: #0467e2;
+}
+	
+.UIBrowseContentPortlet .UIArticle .ArticleMLDecorator {
+  background: url('/ecm/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left;
+	padding-left: 3px ;  
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleMCDecorator {
+  background: #fcfcfc;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleMRDecorator {
+  background: url('/ecm/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right;
+  padding-right: 10px ;  
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBLDecorator {
+  background: url('/ecm/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left ;
+  padding-left: 3px;
+  height: 8px;
+  line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBCDecorator {
+  background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
+  height: 8px;
+  line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBRDecorator {
+  background: url('/ecm/skin/images/article/BottomRightArticle10x8.gif') no-repeat right ;
+  padding-right: 10px ;  
+  height: 8px;
+  line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame {
+  background: white;
+  padding: 0px 10px;
+}
+			
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopLeftArticleFrame {
+  background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
+  padding-left: 9px;
+  height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopRightArtictleFrame {
+  background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
+  padding-right: 2px;
+  height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopCenterArticleFrame {
+  background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
+  height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .ArticleFrameContainer {
+	border: solid 1px #e0e0e0;
+  border-top: none;
+}
+		
+.UIBrowseContentPortlet .UIArticle .TopCenterArticleFrame .ArticleField {
+  padding: 0px 0px 0px 5px;
+  width: 120px;
+  background: white;
+}
+		
+.UIBrowseContentPortlet .UIArticle .MidlleLeftArticleFrame  {
+  background: white;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldLabel {
+  float: left;
+  font-weight: bold;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldIcon {
+  float: left; 
+  margin-right: 5px;
+  width: 16px; height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .SummaryIcon {
+  background: url('/ecm/skin/images/article/SummaryIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsIcon {
+  background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .RatingIcon {
+  background: url('/ecm/skin/images/article/RatingInfo.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
+  background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+  width: 16px;
+  height: 16px;
+  margin: 0px 5px 0px 3px;
+  float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ContentIcon {
+  background: url('/ecm/skin/images/article/ContentIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .LinksIcon {
+  background: url('/ecm/skin/images/article/Links.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent {
+  padding: 1px 8px 5px 0px;
+  width: 90%;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .FieldContainerContent {
+	font: normal 11px Verdana;
+  background: white;
+  margin: 5px 2px 3px 5px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .LabelContent{
+ 	padding: 5px 0px 0px 5px;
+ 	overflow: auto;
+}
+
+.UIBrowseContentPortlet .UIArticle .DocumentRating {
+	margin-left: 150px;
 	width: 300px;
+} 
+		
+.UIBrowseContentPortlet .UIArticle .ContainerLinks {
+	border-top: dotted 1px #dcdcdc;
+	margin: 12px  10px 0px 10px;
+	padding: 5px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ContentLinks {
+  float: left;
+  width: 75px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .WorkContentLinks {
+  float: left;
+  padding-left: 5px;
+}
+
+.UIBrowseContentPortlet .UIArticle .Links div {
+  padding-bottom: 3px;
+}
+  	
+.UIBrowseContentPortlet .UIArticle .Links a {
+  color: #058ee6;
+}
+		
+.UIBrowseContentPortlet .UIArticle .Links a:hover {
+  text-decortaion: underline;
+  color: orange;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator .Language {
+  text-align: left;
+  color: #7d7d7d;
+  padding: 12px 0px 0px 10px;
+  font-weight: bold;
+}
+	  
+.UIBrowseContentPortlet .UIArticle  .Language a.LanguageTitle {
+  text-align: left;
+  color: #058ee6;
+  font-weight: normal;
+}
+	  
+.UIBrowseContentPortlet .UIArticle  .Language a:hover.LanguageTitle {
+	color: #ffa21d;
+}
+	  
+.UIBrowseContentPortlet .UIArticle  .Language a:hover.DefaultLanguageTitle {
+  text-align: left;
+	color: #ffa21d;
+	font-weight: bold;
+}	  
+	  
+.UIBrowseContentPortlet .UIVoteForm .RatingInfo {
+	color: #0489d5;
+}
+		
+.UIBrowseContentPortlet .UIArticle .UIRatingInfoContainer {
+	margin: 0px 0px 0px auto;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .AttachmentsContaienr {
+  margin: 0px 6px 1px 0px;
+  float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr a {
+  color: #058ee6;
+  float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr a:hover {
+	text-decortaion: underline;
+	color: orange;
+}
+
+/***************** File ******************/
+
+.UIBrowseContentPortlet .FileContent {  
+  padding: 10px;
+  color: #0e396c;
+}
+  
+.UIBrowseContentPortlet .FileContent .NavigationContainer {  
+  padding-bottom: 0px;
+  border: 1px solid #cbcbcb;
+  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x top;
+}
+  
+.UIBrowseContentPortlet .FileContent .TopTitle {  
+  padding-left: 10px;
+  height: 22px; line-height: 22px;
+  color: #058ee6; font-weight: bold; 
+}
+  
+.UIBrowseContentPortlet .FileContent .ECMIframe {
+  border: 1px solid #cbcbcb; 
+  height: auto ;
+  overflow: auto;
+  width: 93.9%;
+  background: white;
+  margin: 5px;
+}
+  
+.UIBrowseContentPortlet .FileContent .Content {  
+  white-space: normal;
+  padding: 0px 10px;
+  height: 300px;
+ }
+  
+.UIBrowseContentPortlet .FileContent .Content .TextContent {  
+  margin: auto;
+ }
+  
+.UIBrowseContentPortlet .FileContent .ContentDetail {  
+  border: 1px solid #e1e1e1; 
+  text-align: center;
+  overflow: auto;
+  margin: 10px auto;
+  width: 96.9%;
+  padding: 5px;
+}
+    
+.UIBrowseContentPortlet .FileContent .UIVoteForm {
+  padding: 0px;
+}
+  
+.UIBrowseContentPortlet .FileContent .UIRatingInfoContainer {
+  margin:0px 0px 0px auto;
+}
+
+/******************* Kofax *******************/
+
+.UIBrowseContentPortlet .WorkKofax {
+	margin: 10px;
+}
+
+.UIBrowseContentPortlet .WorkKofax .UIGrid td {
+	border-top: 1px solid #a3a3a3;
+}
+
+/******************* Podcast ********************/
+.UIBrowseContentPortlet .ContentPodcast {
+	border-bottom: 1px solid #bdbdbd; 
+	height: 25px;
+	line-height: 25px;
+}
+		
+.UIBrowseContentPortlet label.text { 
+	font: normal bold 11px Verdana;
+	line-height: 18px; 
+}
+		
+.UIBrowseContentPortlet .TitleBG label.text { 
+	line-height: 20px;
+}
+		
+.UIBrowseContentPortlet span.text  { 
+	vertical-align:bottom; 
+	text-align: left ;
+	font-weight: normal;
+}
+		
+.UIBrowseContentPortlet div.summary { 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+} 
+		
+.UIBrowseContentPortlet div.content { 
+	font-size: 11px; 
+	padding: 5px; 
+	overflow: auto;
+}
+
+/******************* Sample ********************/
+
+.UIBrowseContentPortlet .WorkSample {
+	margin: 8xp 0px;
+}
+		
+.UIBrowseContentPortlet label.text { 
+	font: normal bold 11px Verdana;
+	line-height: 18px;
+}
+		
+.UIBrowseContentPortlet span.text  { 
+	vertical-align:bottom; 
+	color: #00000; 
+}
+		
+.UIBrowseContentPortlet div.summary { 
+	width: 96%; 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+} 
+		
+.UIBrowseContentPortlet div.content { 
+	width: 96%; 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+}
+
+.UIBrowseContentPortlet .WorkSample .TitleBG {
+	background: transparent url(/ecm/skin/images/event/EventFrameBG.gif) repeat-x;
+	height: 18px;
+	line-height: 18px;
+}
+
+		
+.UIBrowseContentPortlet .HeaderSampleBG {
+	background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+  margin-bottom: 2px;
+  padding: 0px 5px 0px 5px; 
+  height: 18px;
+  border: solid 1px #bdbdbd;
+  border-bottom: none;
+  line-height: 18px;
+}
+	  
+.UIBrowseContentPortlet .SampleBG {
+	height: 25px;
+	line-height: 25px;
+	border-bottom: solid 1px #BDBDBD;
+}
+
+
+/*********************************Template Style - Fix for IE*************************************/
+
+/********************* File plan ***********************/
+
+.UIBrowseContentPortlet .UIDivInfo {
+	margin: auto; padding: 10px;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .Title {
+	font-size: 13px; font-weight: bold;
+	padding-bottom: 3px;
+}	
+	
+.UIBrowseContentPortlet	.UIDivInfo .FilePlanContentTable {
+	width: 97.5%;
+	border-collapse: collapse;
+	border-top: 1px solid #dbdbdb;
+	margin: auto;
+	}
+	
+.UIBrowseContentPortlet	.UIDivInfo .FilePlanContentTable td {
+	border: 1px solid #dbdbdb;
+	border-top: none;
+	height: 25px;
+	padding-left: 7px;
+	background: white;
+	line-height: 25px;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .UIHorizontalTabs .TabsContainer {
+	padding: 0px;
+	height: 23px;
+	overflow-y: hidden;
+}
+	
+.UIBrowseContentPortlet .UIDivInfo .NavigationButtonContainer {
+	cursor: pointer;		
+	display: none;
+	float: right;
+	height: 20px;
+	padding-top: 4px;
+	z-index: 1;
+}
+	
+.UIBrowseContentPortlet .LabelFielPlan {
+	padding-left: 5px;
+	font-weight: normal;
+}
+				
+.UIBrowseContentPortlet .UIDivInfo a:hover {		 
+	color: blue;
+}	
+	
+/************** Article ***************/
+
+.UIBrowseContentPortlet .UIArticle {
+	background: white;
+}
+			
+.UIBrowseContentPortlet .UIArticle .ArticleTLDecorator {
+	background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
+	padding-left: 51px;
+	height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTRDecorator {
+	background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
+	padding-right:154px;
+	height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator {
+	background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
+	height: 100px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator .TitleLabel {
+	padding-top: 38px;
+	font: normal bold 16px Arial;
+	color: #0467e2;
+}
+	
+.UIBrowseContentPortlet .UIArticle .ArticleMLDecorator {
+	background: url('/ecm/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left;
+	padding-left: 3px ;	
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleMCDecorator {
+	background: #fcfcfc;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleMRDecorator {
+	background: url('/ecm/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right;
+	padding-right: 10px ;	
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBLDecorator {
+	background: url('/ecm/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left ;
+	padding-left: 3px;
+	height: 8px;
+	line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBCDecorator {
+	background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
+	height: 8px;
+	line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleBRDecorator {
+	background: url('/ecm/skin/images/article/BottomRightArticle10x8.gif') no-repeat right ;
+	padding-right: 10px ;	
+	height: 8px;
+	line-height: 8px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame {
+	background: white;
+	padding: 0px 10px;
+}
+			
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopLeftArticleFrame {
+	background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
+	padding-left: 9px;
+	height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopRightArtictleFrame {
+	background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
+	padding-right: 2px;
+	height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .TopCenterArticleFrame {
+	background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
+	height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleFrame .ArticleFrameContainer {
+	border: solid 1px #e0e0e0;
+	border-top: none;
+}
+		
+.UIBrowseContentPortlet .UIArticle .TopCenterArticleFrame .ArticleField {
+	padding: 0px 0px 0px 5px;
+	width: 120px;
+	background: white;
+}
+		
+.UIBrowseContentPortlet .UIArticle .MidlleLeftArticleFrame	{
+	background: white;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldLabel {
+	float: left;
+	font-weight: bold;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldIcon {
+	float: left; 
+	margin-right: 5px;
+	width: 16px; height: 16px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .SummaryIcon {
+	background: url('/ecm/skin/images/article/SummaryIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsIcon {
+	background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .RatingIcon {
+	background: url('/ecm/skin/images/article/RatingInfo.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
+	background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+	width: 16px;
+	height: 16px;
+	margin: 0px 5px 0px 3px;
+	float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ContentIcon {
+	background: url('/ecm/skin/images/article/ContentIcon.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .LinksIcon {
+	background: url('/ecm/skin/images/article/Links.gif') no-repeat;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent {
+	padding: 1px 8px 5px 0px;
+	width: 90%;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .FieldContainerContent {
+	font: normal 11px Verdana;
+	background: white;
+	margin: 5px 2px 3px 5px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .LabelContent{
+ 	padding: 5px 0px 0px 5px;
+ 	overflow: auto;
+}
+
+.UIBrowseContentPortlet .UIArticle .DocumentRating {
+	margin-left: 150px;
+	width: 300px;
+} 
+		
+.UIBrowseContentPortlet .UIArticle .ContainerLinks {
+	border-top: dotted 1px #dcdcdc;
+	margin: 12px	10px 0px 10px;
+	padding: 5px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ContentLinks {
+	float: left;
+	width: 75px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .WorkContentLinks {
+	float: left;
+	padding-left: 5px;
+}
+
+.UIBrowseContentPortlet .UIArticle .Links div {
+	padding-bottom: 3px;
+}
+		
+.UIBrowseContentPortlet .UIArticle .Links a {
+	color: #058ee6;
+}
+		
+.UIBrowseContentPortlet .UIArticle .Links a:hover {
+	text-decortaion: underline;
+	color: orange;
+}
+		
+.UIBrowseContentPortlet .UIArticle .ArticleTCDecorator .Language {
+	text-align: left;
+	color: #7d7d7d;
+	padding: 12px 0px 0px 10px;
+	font-weight: bold;
+}
+		
+.UIBrowseContentPortlet .UIArticle	.Language a.LanguageTitle {
+	text-align: left;
+	color: #058ee6;
+	font-weight: normal;
+}
+		
+.UIBrowseContentPortlet .UIArticle	.Language a:hover.LanguageTitle {
+	color: #ffa21d;
+}
+		
+.UIBrowseContentPortlet .UIArticle	.Language a:hover.DefaultLanguageTitle {
+	text-align: left;
+	color: #ffa21d;
+	font-weight: bold;
+}		
+		
+.UIBrowseContentPortlet .UIVoteForm .RatingInfo {
+	color: #0489d5;
+}
+		
+.UIBrowseContentPortlet .UIArticle .UIRatingInfoContainer {
+	margin: 0px 0px 0px auto;
+}
+		
+.UIBrowseContentPortlet .UIArticle .FieldContent .AttachmentsContaienr {
+	margin: 0px 6px 1px 0px;
+	float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr a {
+	color: #058ee6;
+	float: left;
+}
+		
+.UIBrowseContentPortlet .UIArticle .AttachmentsContaienr a:hover {
+	text-decortaion: underline;
+	color: orange;
+}
+
+/***************** File ******************/
+
+.UIBrowseContentPortlet .FileContent {	
+	padding: 10px;
+	color: #0e396c;
+}
+
+.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
+	height: 100%;
+	border: 1px solid %b7b7b7;
+}
+	
+.UIBrowseContentPortlet .FileContent .NavigationContainer {	
+	padding-bottom: 0px;
+	border: 1px solid #cbcbcb;
+	background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x top;
+	height: 100%;
+}
+	
+.UIBrowseContentPortlet .FileContent .TopTitle {	
+	background:transparent url(/ecm/skin/images/file/TitleBG1x21.gif) repeat-x ;
+	padding-left: 10px;
+	height: 22px; line-height: 22px;
+	color: #058ee6; font-weight: bold; 
+}
+
+.UIBrowseContentPortlet .FileContent .ECMIframe {
+	border: 1px solid #cbcbcb; 
+	height: auto ;
+	overflow: auto;
+	width: 93.7%;
+	background: white;
+	margin: 5px;
+}
+	
+.UIBrowseContentPortlet .FileContent .Content {	
+	white-space: normal;
+	padding: 0px 10px;
+	height: 300px;
+ }
+	
+.UIBrowseContentPortlet .FileContent .Content .TextContent {	
+	margin: auto;
+ }
+	
+.UIBrowseContentPortlet .FileContent .ContentDetail {	
+	border: 1px solid #e1e1e1; 
+	text-align: center;
+	overflow: auto;
+	margin: 10px auto;
+	width: 97.4%;
+	padding: 5px;
+}
+		
+.UIBrowseContentPortlet .FileContent .UIVoteForm {
+	padding: 0px;
+}
+	
+.UIBrowseContentPortlet .FileContent .UIRatingInfoContainer {
+	margin:0px 0px 0px auto;
+}
+
+/******************* Kofax *******************/
+
+.UIBrowseContentPortlet .WorkKofax {
+	margin: 10px;
+}
+
+.UIBrowseContentPortlet .WorkKofax .UIGrid td {
+	border-top: 1px solid #cccccc;
+}
+
+/******************* Podcast ********************/
+.UIBrowseContentPortlet .ContentPodcast {
+	border-bottom: 1px solid #bdbdbd; 
+	height: 25px;
+	line-height: 25px;
+}
+		
+.UIBrowseContentPortlet label.text { 
+	font: normal bold 11px Verdana;
+	line-height: 18px; 
+}
+		
+.UIBrowseContentPortlet .TitleBG label.text { 
+	line-height: 20px;
+}
+		
+.UIBrowseContentPortlet span.text	{ 
+	vertical-align:bottom; 
+	text-align: left ;
+	font-weight: normal;
+}
+		
+.UIBrowseContentPortlet div.summary { 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+} 
+		
+.UIBrowseContentPortlet div.content { 
+	font-size: 11px; 
+	padding: 5px; 
+	overflow: auto;
+}
+
+/******************* Sample ********************/
+
+.UIBrowseContentPortlet .WorkSample {
+	margin: 8xp 0px;
+}
+		
+.UIBrowseContentPortlet label.text { 
+	font: normal bold 11px Verdana;
+	line-height: 18px;
+}
+		
+.UIBrowseContentPortlet span.text	{ 
+	vertical-align:bottom; 
+	color: #00000; 
+}
+		
+.UIBrowseContentPortlet div.summary { 
+	width: 96%; 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+} 
+		
+.UIBrowseContentPortlet div.content { 
+	width: 96%; 
+	height: 160px ; 
+	padding: 5px 5px 5px 10px; 
+	font-weight: normal;
+	overflow: auto;
+}
+
+.UIBrowseContentPortlet .WorkSample .TitleBG {
+	background: transparent url(/ecm/skin/images/event/EventFrameBG.gif) repeat-x;
+	height: 18px;
+	line-height: 18px;
+}
+
+		
+.UIBrowseContentPortlet .HeaderSampleBG {
+	background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+	margin-bottom: 2px;
+	padding: 0px 5px 0px 5px; 
+	height: 18px;
+	border: solid 1px #bdbdbd;
+	border-bottom: none;
+	line-height: 18px;
+}
+		
+.UIBrowseContentPortlet .SampleBG {
+	height: 25px;
+	line-height: 25px;
+	border-bottom: solid 1px #BDBDBD;
 }

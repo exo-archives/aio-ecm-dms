@@ -722,10 +722,6 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-  width: 50px;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;
@@ -839,10 +835,6 @@
 	border: none;
 }
 
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
-	float: left;
-	margin: 4px 3px 0px 3px;
-}
 /*=================================UICategoryManager==============================*/
 
 .UIJCRExplorer .UITabPane {
@@ -882,7 +874,7 @@
 	border-top: none;
 }
 
-.UIJCRExplorer .WorkKofax .UIGrid td{
+.UIJCRExplorer .WorkKofax .UIGrid td {
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }

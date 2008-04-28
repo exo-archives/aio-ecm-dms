@@ -236,10 +236,6 @@
 
 /*############################## -- End UIThumbnailsView -- ##############################*/
 
-.UIJCRExplorer .UISearchResult .UIGrid .ActionContainer {
-  width: 60px ;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
 	margin: 10px auto;
 	width: 96.5%;
@@ -532,7 +528,7 @@
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
 	margin-top: 10px;
 	border: solid 1px #b7b7b7;
-	width: 98%;
+	width: auto;
 	padding-left: 5px;
 }
 
@@ -658,23 +654,23 @@
 	background: white;
 }
 
-.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel {
 	width: 100px;
 }
 
-.UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
+.UIJCRExplorer .UIWorkspaceList .UIFormGrid select {
 	width: 100px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer  {
+.UIJCRExplorerPortlet .UIActionContainer {
 	border: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle  {
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle {
 	border: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon{
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon {
   cursor: pointer;
   float: none;
   margin-left: 5px;
@@ -798,10 +794,6 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-  width: 50px;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
 	padding: 10px;
 }
@@ -822,11 +814,6 @@
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
-}
-
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
-	float: left;
-	margin: 4px 3px 0px 3px;
 }
 
 /*=================================UICategoryManager==============================*/

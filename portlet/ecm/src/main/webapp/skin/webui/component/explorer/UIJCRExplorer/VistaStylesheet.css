@@ -332,11 +332,6 @@
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*############################## -- BEGIN UIFolderForm -- ##############################*/
-.UIJCRExplorerPortlet .ActionContainer {
-	 width: auto;
-	 margin: auto;
-}
-
 .UIJCRExplorerPortlet .UIGrid .ActionContainer a {
 	 width: 24px; height: 24px;
 }
@@ -607,15 +602,6 @@
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
-}
-
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
-	float: left;
-	margin: 4px 3px 0px 3px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-	width: 60px;
 }
 
 /*================================UINodeTypeInfo=================================*/

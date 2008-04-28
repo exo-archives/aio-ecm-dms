@@ -299,14 +299,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {
-  width: 30px;
-}
-
-.UIJCRExplorerPortlet .UIRelationsAddedList .OverflowContainer {
-  width: 30px;
-}
-
 /*############################## -- UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
@@ -408,11 +400,6 @@
   vertical-align: baseline;
 }
 
-.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
-	width: 50px;
-	margin: auto ;
-}
-
 .UIJCRExplorerPortlet .UISelectPropertyForm .UIFormWithTitle .HorizontalLayout {
   margin: auto;
 }
@@ -434,7 +421,7 @@
 	float: left;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
+.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo {
 }
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
@@ -461,7 +448,7 @@
 	border-top: none;
 }
 
-.UIJCRExplorer .UIPopupWindow .Content .WorkWorkFlow .UIGrid td{
+.UIJCRExplorer .UIPopupWindow .Content .WorkWorkFlow .UIGrid td {
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }

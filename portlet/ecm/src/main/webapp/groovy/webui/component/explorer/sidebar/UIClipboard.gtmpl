@@ -38,23 +38,23 @@
     <%} else {
 		    def rowClass = null ;
 		    boolean even = true ;
-		    String path ;
+		    String path, fullPath ;
 		    int index = 1 ;
 		    for(item in uicomponent.getClipboardData()) {
 		      if(even) rowClass = "EvenRow" ;  
 		      else rowClass =  "OddRow" ; 
 		      even = !even ;
-		      path = item.getSrcPath() ;
+		      path = fullPath = item.getSrcPath() ;
 		      if (path.length() > 20 ) path = "..." + path.substring(path.length() - 20, path.length());
 		%>
 		    <tr class="$rowClass">
-		      <td class="text" title="<%=path%>"><%=path%></td>
+		      <td class="text" title="<%=fullPath%>"><%=path%></td>
 		    	<td class="text"><%=item.getType()%></td>
-			      <td>         
-			        <div class="ActionContainer" style="margin: 0px auto;">
-			          <div class="OverflowContainer" style="margin: auto;">          
+			      <td align="center">         
+			        <div class="ActionContainer">
+			          <div class="OverflowContainer">          
 			          <%for(action in beanActions) { %>
-	                <a class="${action}Icon" href="<%=uicomponent.event(action, index.toString())%>" title = "$action"><span></span></a>	           
+	                <a href="<%=uicomponent.event(action, index.toString())%>" title = "$action"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>	           
 			          <%}%>        
 			          </div>
 			        </div>

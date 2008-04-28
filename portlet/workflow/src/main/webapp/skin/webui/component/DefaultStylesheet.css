@@ -19,11 +19,7 @@
 	padding: 5px;
 }
 
-.UIWorkflowPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
-.UIWorkflowPortlet .WorkflowPortletContent{
+.UIWorkflowPortlet .WorkflowPortletContent {
 	padding: 10px;
 }
 
@@ -257,10 +253,6 @@
 .UIWorkflowPortlet .UIProcessDetail .UIGrid .Date {
 	background: none ;
 	width: auto ;
-}
-
-.UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid .ActionContainer {
-	width: 50px;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a {
