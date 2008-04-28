@@ -180,6 +180,7 @@ public class UIQueryConfig extends UIForm {
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       detailTemp = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+      
       templateField.setOptions(getQueryTemplate(repository)) ;
       numbPerPageField.setValue(itemPerPage) ;
       UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
@@ -194,6 +195,8 @@ public class UIQueryConfig extends UIForm {
       queryLangField.setOptions(getQueryLang()) ;
       queryLangField.setValue(queryLang) ;
       queryTypeField.setOptions(getQueryType()) ;
+      queryTypeField.setValue(queryType) ;
+      queryStoreField.setValue(queryStoreName) ;
       onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), queryLangField.getValue(),
           queryStoreName, queryStatement) ;
     }
@@ -320,7 +323,6 @@ public class UIQueryConfig extends UIForm {
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String query = uiForm.getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).getValue() ;
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
-//      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       String boxTemplate = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue();
       UIFormSelectBox queryValueField = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;      
@@ -379,6 +381,9 @@ public class UIQueryConfig extends UIForm {
       boolean hasTagMap = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLETAGMAP).isChecked() ;
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
       boolean hasVote = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEVOTE).isChecked() ;    
+      System.out.println("\n\nquery type========>" +queryType+ "\n\n");
+      System.out.println("\n\nquery name========>" +queryPath+ "\n\n");
+      System.out.println("\n\nquery language========>" +queryLang+ "\n\n");
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_JCR_QUERY) ;
       prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;

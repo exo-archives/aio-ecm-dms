@@ -831,7 +831,6 @@ public class UIBrowseContainer extends UIContainer {
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-//      Node node = (Node)getSession().getItem(categoryPath) ;
       setRootPath(categoryPath) ;
       setCategoryPath(categoryPath) ;
       setSelectedTabPath(categoryPath) ;
