@@ -8,26 +8,20 @@
 @import url("UIEventViewer/DefaultStylesheet.css");
 
 
-.UIWindow .UIBrowseContentPortlet .ContentHolder {
-	padding: 5px 0px;
-	width: 98.5%;
-	/*
-	minh.js.exo
-	*/
-	min-width: 400px;
-}
-
 .UIWindow .UIBrowseContentPortlet {
 	border: 1px solid white;
-	margin: 0px auto;
-	padding: 0px;
+	margin: 0px;
+	min-width: 400px;
 }
 
 .UIBrowseContentPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px auto;
 	overflow: auto;
+	margin: 8px;
+}
+
+.UIBrowseContentPortlet .ContentHolder {
 	padding: 5px;
 }
 
@@ -136,7 +130,6 @@
 .UIBrowseContentPortlet .UIBrowseContainer {
 	padding: 0px;
 	background: white;
-	_width: 99%;
   margin: auto;
 }
 
@@ -245,12 +238,12 @@
 	margin: 5px;
 }
 
-.UIBrowseContainer .DocNodeIcon{
+.UIBrowseContainer .DocNodeIcon {
 	float: left;
 	margin: 2px 3px 0px 10px;
 }
 
-.UIBrowseContainer .UIDocumentList .DocumentLabel{
+.UIBrowseContainer .UIDocumentList .DocumentLabel {
 	vertical-align: middle;
 	line-height: 16px;
 }
