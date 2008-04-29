@@ -30,18 +30,13 @@
   overflow: auto;
 }
 
-<<<<<<< .mine
 .UIBrowseContentPortlet .UIFormWithTitle {
 	margin: 10px auto;
 	width: 650px;
-=======
-.UIECMAdminPortlet .UIGrid .ActionContainer a {
-	float: left;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .UITrees .Node  {
   line-height: 24px;
->>>>>>> .r13793
 }
 
 .UIBrowseContentPortlet .UIConfigTabPane {

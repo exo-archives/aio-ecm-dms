@@ -7,19 +7,11 @@
 @import url("UICBSearchForm/VistaStylesheet.css");
 @import url("UIEventViewer/VistaStylesheet.css");
 
-.UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px 0px 5px 5px;
-  width: 98.5%;
-  /*
-  minh.js.exo
-  */
-  min-width: 400px;
-}
-
 .UIWindow .UIBrowseContentPortlet {
 	border: none;
 	margin: 0px auto;
 	width: auto;
+  min-width: 400px;
 }
 
 .UIBrowseContentPortlet {
@@ -30,8 +22,8 @@
   overflow: auto;
 }
 
-.UIBrowseContentPortlet .UIGrid .ActionContainer a {
-	float: left;
+.UIBrowseContentPortlet .ContentHolder {
+  padding: 5px;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {

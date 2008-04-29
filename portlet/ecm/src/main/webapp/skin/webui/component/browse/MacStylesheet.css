@@ -7,19 +7,11 @@
 @import url("UICBSearchForm/MacStylesheet.css");
 @import url("UIEventViewer/MacStylesheet.css");
 
-.UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px 0px;
-  width: 98.5%;
-  /*
-  minh.js.exo
-  */
-  min-width: 400px;
-}
-
 .UIWindow .UIBrowseContentPortlet {
 	border: none;
 	margin: 0px auto;
 	width: auto;
+  min-width: 400px;
 }
 
 .UIBrowseContentPortlet {
@@ -27,11 +19,10 @@
 	border: 1px solid #b7b7b7;
 	margin: 10px auto;
   overflow: auto;
-  width: 98%;
 }
 
-.UIBrowseContentPortlet .UIGrid .ActionContainer a {
-	float: left;
+.UIBrowseContentPortlet .ContentHolder {
+  padding: 5px;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
