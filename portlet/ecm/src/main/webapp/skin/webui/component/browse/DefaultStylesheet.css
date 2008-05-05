@@ -733,13 +733,8 @@
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: none;
 }
 
-.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer .UITabContent {
-  border-top: none;
-}
-	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;
