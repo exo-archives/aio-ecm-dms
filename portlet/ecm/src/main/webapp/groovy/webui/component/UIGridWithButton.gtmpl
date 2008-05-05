@@ -54,7 +54,7 @@
 	          
 	      <%}%>
 	      <%if(beanActions != null && beanActions.length > 0) { %>
-	        <td>         
+	        <td align="center">         
 	          <div class="ActionContainer" style="margin: 0px auto;">
 	            <div class="OverflowContainer" style="margin: auto;">          
 	            <%def beanIdField = uicomponent.getBeanIdField() ; %>          
