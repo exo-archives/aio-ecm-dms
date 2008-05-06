@@ -55,6 +55,7 @@ public class CmsServiceImpl implements CmsService {
 
   private RepositoryService jcrService;  
   private IDGeneratorService idGeneratorService;  
+  final static private String MIX_REFERENCEABLE = "mix:referenceable" ;
 
   public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService) {
     this.idGeneratorService = idGeneratorService;
@@ -119,6 +120,56 @@ public class CmsServiceImpl implements CmsService {
       }
     }
     return currentNode.getPath();
+  }
+  
+  @SuppressWarnings("unused")
+  public String storeNodeByUUID(String nodeTypeName, Node storeHomeNode, Map mappings, 
+      boolean isAddNew, String repository) throws Exception {    
+    Set keys = mappings.keySet();
+    String nodePath = extractNodeName(keys);
+    JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 
+    String nodeName = (String)relRootProp.getValue();    
+    if (nodeName == null || nodeName.length() == 0) {      
+      nodeName = idGeneratorService.generateStringID(nodeTypeName);
+    }
+    String primaryType = relRootProp.getNodetype() ;
+    if(primaryType == null || primaryType.length() == 0) {
+      primaryType = nodeTypeName ;
+    }
+    Session session = storeHomeNode.getSession();
+    NodeTypeManager nodetypeManager = session.getWorkspace().getNodeTypeManager();
+    NodeType nodeType = nodetypeManager.getNodeType(primaryType);    
+    Node currentNode = null;
+    String[] mixinTypes = null ;
+    String mixintypeName = relRootProp.getMixintype();
+    if(mixintypeName != null && mixintypeName.trim().length() > 0) {
+      if(mixintypeName.indexOf(",") > -1){
+        mixinTypes = mixintypeName.split(",") ;
+      }else {
+        mixinTypes = new String[] {mixintypeName} ;
+      }
+    }
+    if (isAddNew) {
+      currentNode = storeHomeNode.addNode(nodeName, primaryType);            
+      if(mixinTypes != null){
+        for(String type : mixinTypes){
+          if(!currentNode.isNodeType(type)) {
+            currentNode.addMixin(type);
+          }
+          NodeType mixinType = nodetypeManager.getNodeType(type);          
+          createNodeRecursively(NODE, currentNode, mixinType, mappings);
+        }
+      }        
+      createNodeRecursively(NODE, currentNode, nodeType, mappings);                       
+    } else {
+      currentNode = storeHomeNode.getNode(nodeName);      
+      updateNodeRecursively(NODE, currentNode, nodeType, mappings);
+      if(currentNode.isNodeType("exo:datetime")) {
+        currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
+      }
+    }
+    if(!currentNode.isNodeType(MIX_REFERENCEABLE)) currentNode.addMixin(MIX_REFERENCEABLE) ;
+    return currentNode.getUUID();
   }
 
   private void updateNodeRecursively(String path, Node currentNode,

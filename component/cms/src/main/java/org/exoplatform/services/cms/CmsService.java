@@ -32,6 +32,8 @@ public interface CmsService {
   
   public String storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception;
   
+  public String storeNodeByUUID(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception;
+  
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace, String destPath, String repository);  
     
 }

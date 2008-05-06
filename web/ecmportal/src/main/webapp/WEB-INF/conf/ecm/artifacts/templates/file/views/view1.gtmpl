@@ -57,6 +57,7 @@
   }
 </style>
 <%
+	import javax.jcr.Node;
   def originalNode = uicomponent.getOriginalNode();
   def currentNode = uicomponent.getNode() ;	
   def contentNode = currentNode.getNode("jcr:content") ;
@@ -65,6 +66,12 @@
   public String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
   }
+  
+  public long getFileSize(Node contentNode) throws Exception {
+    long size = contentNode.getProperty("jcr:data").getLength()/1024;      	        
+    return size;
+  }
+  
 %>
 <div class="FileContent">
 	<%if(mimeType.equals("text/html")) { 
@@ -147,7 +154,7 @@
 	    	<div class="TextContent">
 		      <%        
 		        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		          if(uicomponent.getFileSize(originalNode) < 1024) {
+		          if(getFileSize(contentNode) < 1024) {
 		            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
 		          } else {
 		       %>
