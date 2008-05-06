@@ -57,10 +57,8 @@ public abstract class BaseECMTestCase extends BasicTestCase {
       System.setProperty("java.security.auth.login.config", loginConf);
 
     credentials = new CredentialsImpl("exo", "exo".toCharArray());
-
     repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
-    System.out.println(repositoryService.getRepository(REPO_NAME).getConfiguration().getSystemWorkspaceName());
-
+    
   }
 
   protected void checkMixins(String[] mixins, NodeImpl node) {
