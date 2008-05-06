@@ -142,7 +142,7 @@
           <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
           <forkMode>${exo.test.forkmode}</forkMode>
           <includes>
-            <include>**/ecm/core/Test*.java</include>            
+            <include>**/Test*.java</include>    
           </includes>
           <excludes>
             <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
