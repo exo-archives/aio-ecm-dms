@@ -34,11 +34,12 @@ public class NodeServiceImpl implements NodeService {
 
   public void addNode(String repository, String workspace, String parentPath, String nodetype,
       Map<String, JcrInputProperty> jcrProperties, boolean isNew, SessionProvider sessionProvider)
-      throws Exception {    
+      throws Exception {        
   }
 
   public void addNode(Node parent, String nodetype, Map<String, JcrInputProperty> jcrProperties,
-      boolean isNew) throws Exception {    
+      boolean isNew) throws Exception {
+    
   }
 
   public void copyNode(String repository, String srcWorkspace, String srcPath,

@@ -16,7 +16,6 @@
  */
 package org.exoplatform.services.ecm.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -38,20 +37,23 @@ public interface NodeTemplateService {
   
   public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
   public String getTemplatePathByUser(String nodeTypeName, boolean isDialog, String userName, String repository, SessionProvider sessionProvider) throws Exception ;
+  
+  public List<String> getTemplatePaths(Node node, boolean isDialog) throws Exception ;
+  public List<String> getTemplatePathsByUser(String nodeTypeName, boolean isDialog, String userName, String repository, SessionProvider sessionProvider) throws Exception ;
+  
   public String getTemplatePath(String nodeTypeName, String templateName, boolean isDialog,String repository, SessionProvider sessionProvider) throws Exception ;
-    
+  
   public String getTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception ;
   
-  public String addTemplate(String nodeTypeName, String label, String templateName, boolean isDialog, 
-      boolean isDocumentTemplate, ArrayList<String> accessPermission, String templateData, String repository, SessionProvider sessionProvider) throws Exception;  
+  public String addTemplate(TemplateEntry entry, String repository, SessionProvider sessionProvider) throws Exception;  
   
   public void removeTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, 
                              SessionProvider sessionProvider) throws Exception;
   
-  public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception ;   
-  public List<String> getDocumentTemplates(String repository) throws Exception ;       
+  public boolean isManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception ;
   
-  public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception ;
+  public List<String> getDocumentTemplates(String repository, SessionProvider sessionProvider) throws Exception ;       
   
-  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository, SessionProvider provider) throws Exception ;
+  public void removeManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception ;
+  
 }
