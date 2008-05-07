@@ -20,10 +20,6 @@
 	padding: 5px;
 }
 
-.UIWorkflowPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
 .UIWorkflowPortlet .WorkflowPortletContent{
 	padding: 10px;
 }
@@ -237,12 +233,6 @@
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .UITabContent .UIGrid td a:hover{
 	color: orange;
-}
-
-.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-	padding-bottom: 15px;
-	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .WorkflowPortletContent .UIFormGrid td.FieldLabel {

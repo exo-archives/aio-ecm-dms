@@ -24,10 +24,6 @@
 	margin: 10px;
 }
 
-.UIFastContentCreatorPortlet .UIGrid .ActionContainer a {
-	float: left;
-}
-
 .UIFastContentCreatorPortlet .MsgLable {
 	text-align: center;
 	line-height: 60px;
@@ -41,14 +37,6 @@
 
 .UIFastContentCreatorPortlet .UITabPane {
   padding: 10px 0px 20px 0px;
-}
-
-.UIFastContentCreatorPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer  {
-  border: none;
-}
-
-.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
-  border: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {

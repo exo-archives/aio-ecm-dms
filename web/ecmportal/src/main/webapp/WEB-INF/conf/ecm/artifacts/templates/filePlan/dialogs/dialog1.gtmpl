@@ -55,9 +55,8 @@
       <%/*End UIHorizontalTabs*/%>
       <%/*Start UITabContentContainer*/%>
       
-      <div class="UIFormWithTitle" style="margin:0px; "> 
 			<%uiform.begin()%>
-				<div class="HorizontalLayout" style="border: none; margin:0px;">	  
+				<div class="HorizontalLayout" style="border: none; margin:0px; background: none; padding: 0px">	  
       
 		      <div class="UITabContentContainer">
 		      	<div class="UITabContent" style="display: block;">
@@ -66,7 +65,7 @@
 									  <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.name")%></td>
 									  <td class="FieldComponent">
 							      <%
-							        String[] fieldName = ["jcrPath=/node", "editable=if-null", "mixintype=mix:i18n", "validate=empty,name"] ;
+							        String[] fieldName = ["jcrPath=/node", "editable=if-null", "mixintype=mix:i18n", "validate=name"] ;
 							        uicomponent.addTextField("name", fieldName) ; 
 							      %>									  							      
 									  </td>
@@ -343,9 +342,8 @@
 				    </table>
 				  </div>
 			  	<%/*end render action*/%>      	
-      		</div>  
-      	<%uiform.end()%>						 
-				</div>
+      	</div>  
+      <%uiform.end()%>						 
       <%/*End UITabContentContainer*/%>
       
     </div>  
