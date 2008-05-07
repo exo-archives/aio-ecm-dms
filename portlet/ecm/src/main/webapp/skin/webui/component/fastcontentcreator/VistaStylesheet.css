@@ -39,14 +39,6 @@
   padding: 10px 0px 20px 0px;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer  {
-  border: none;
-}
-
-.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
-  border: none;
-}
-
 .UIFastContentCreatorPortlet .UIFormWithTitle {
   border: 1px solid #e1e1e1;
   width: 650px;

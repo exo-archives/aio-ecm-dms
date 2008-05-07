@@ -19,14 +19,12 @@
 .UIWindow .UIJCRExplorerPortlet {
 	border: none;
 	margin: 0px auto;
-	width: auto;
 }
 
 .UIJCRExplorerPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
 	margin: 10px auto;
-	width: 98%;
 }
 
 .UIJCRExplorerPortlet .UIPreferencesForm  {

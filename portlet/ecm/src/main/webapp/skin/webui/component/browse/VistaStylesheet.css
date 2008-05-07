@@ -268,7 +268,7 @@
   float: right;
 }
 
-.UIBrowseContentPortlet .UIBrowseContainer .UIArticle{
+.UIBrowseContentPortlet .UIBrowseContainer .UIArticle {
   width: 97%;
 }
 
@@ -280,7 +280,17 @@
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
 .UIBrowseContentPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 10px;
+  padding: 10px;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+	margin: 10px 0px 0px 0px;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	width: auto;
+	border: 1px solid #E1E1E1;
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser .UITrees .Node {
@@ -288,16 +298,8 @@
 }
 
 .UIBrowseContentPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 220px ;
-}
-
-UIBrowseContentPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 230px ;
-  overflow: hidden;
+  float: left;
+  width: 220px;
 }
 
 .UIBrowseContentPortlet .Explorer .ExplorerTree {
@@ -306,13 +308,17 @@ UIBrowseContentPortlet .Explorer {
   padding: 1px;
 }
 
+.UIBrowseContentPortlet .UIJCRBrowser .UITreeList {
+	margin-left: 230px;
+}
+
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.UIBrowseContentPortlet .UITreeList .UIGrid {
-  width: 310px;
+.UIBrowseContentPortlet .UIJCRBrowser table {
+  *width: 94%;
 }
 
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
@@ -416,34 +422,9 @@ UIBrowseContentPortlet .Explorer {
 	border-top: none;
 }
 
-.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td{
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td {
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
-	margin: 10px 0px 0px 0px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: 547px;
-	margin: 0px;
-	border: 1px solid #E1E1E1;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .HorizontalLayout {
-	background: white;
-	padding: 5px 0px;
-	margin: 0px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
-	width: 100px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select{
-	width: 100px;
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
@@ -1194,7 +1175,6 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: 1px solid %b7b7b7;
 }
 	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	

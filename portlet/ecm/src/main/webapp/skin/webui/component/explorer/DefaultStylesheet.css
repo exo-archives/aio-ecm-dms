@@ -20,12 +20,10 @@
 .UIWindow .UIJCRExplorerPortlet {
 	border: none;
 	margin: 0px auto;
-	width: auto;
 }
 
 .UIJCRExplorerPortlet {
 	border: 1px solid #b7b7b7;
-	width: 98%;
 	margin: 10px auto;
 }
 

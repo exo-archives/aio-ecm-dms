@@ -45,7 +45,7 @@
 	padding: 1px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapTitle{
+.UIBrowseContentPortlet .TagmapHolder .TagmapTitle {
 	height: 19px; line-height: 19px;
 	margin: 0px;
 	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
@@ -282,6 +282,10 @@
 .UIBrowseContentPortlet .Explorer {
 	float: left ;
 	width: 220px ;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser table {
+	*width: 94%;
 }
 
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
@@ -733,13 +737,8 @@
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: none;
 }
 
-.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer .UITabContent {
-  border-top: none;
-}
-	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;

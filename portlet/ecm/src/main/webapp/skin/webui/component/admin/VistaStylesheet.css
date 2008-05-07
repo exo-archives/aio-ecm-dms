@@ -30,6 +30,15 @@
   margin-left: 240px;
 }
 
+.UIECMAdminPortlet .UITaxonomyManager .Explorer {
+  float: left ;
+  width: 230px ;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITreeList {
+	margin-left: 240px;
+}
+
 .UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
   width: 93%;
 }
@@ -249,24 +258,16 @@
 	margin: 0px;
 }
 
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UITabPane .UITabContentContainer {
+	border: none;
+}
+
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .HorizontalLayout {
 	padding: 0px;
 	margin: 0px;
 	border: solid 1px #b7b7b7;
 	border-top: none;
 	border-bottom: none;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .UITabContentContainer .UITabContent {
-	padding: 0px;
-	margin: 0px;
-	border: none;
 }
 
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
@@ -341,10 +342,6 @@
 
 .UIECMAdminPortlet .UIResizableBlock {
   height: 400px;
-}
-
-.UIResizableBlock .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIForm .UITabContentContainer .UITabContent {
-	border: none;
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVerticalSlideTabs {
@@ -471,10 +468,6 @@
 
 .UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
   width: 140px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser .Explorer {
-  margin-right: 5px;
 }
 
 .UIECMAdminPortlet .MultiRadioInput {
@@ -755,46 +748,41 @@
   margin: 0px 0px 4px 175px;
 }
 
-.Explorer {
-  margin-bottom: 10px;
-  float: left ;
-  width: 230px ;
-}
-
 .UIECMAdminPortlet .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
   float: left;
   margin: 3px 5px 0px 5px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser  {
-	width: 95%;
-	margin: 10px auto;
+	padding: 10px;
+}
+
+.UIECMAdminPortlet .UIJCRBrowser .UIFormWithTitle {
+	width: auto;
+}
+
+.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
+	padding: 5px 0px;
+	margin: 10px 0px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	margin: 0px 0px 10px 0px;
-	width: 540px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
 	border: solid 1px #B1B0B0;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: white;
-	padding: 5px 0px;
-	margin: 0px;
+.UIECMAdminPortlet .UIJCRBrowser .Explorer {
+  float: left ;
+  width: 230px ;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormGrid select {
-	width: 100px;
+.UIECMAdminPortlet .UIJCRBrowser .UITreeList {
+	margin-left: 240px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel { 
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UITreeList .UIGrid {
-	width: 300px;
+.UIECMAdminPortlet .UIJCRBrowser table {
+	*width: 99%;
 }

@@ -9,8 +9,10 @@
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
   background: white;
-  *width: 99.7%;
-  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UITabPane {
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
@@ -353,31 +355,19 @@
  	padding: 13px 0px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .UIFormWithTitle {
+	padding: 10px;
+	margin: 10px auto;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
+	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .UIFormWithTitle {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
-  padding-bottom: 3px; 
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid {
-	margin: 10px auto;	
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
-  margin: 5px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormGrid td.FieldComponent{
-	padding: 4px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-left: 198px;
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
+	width: 95%;
+	margin: auto;
+	border: 1px solid #8D919D;
 }
 
 /*===========================UIUploadForm====================*/
@@ -491,11 +481,6 @@
 /*================================UIActivateVersion=================================*/
 
 /*================================UIActionContainer=================================*/
-
-.UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm {
-  padding-bottom: 8px;
-  border: solid 1px #bec1c7;
-}
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
 	float: none;
@@ -661,7 +646,7 @@
 	width: 70px;
 }
 
-.UIJCRExplorer .UIJCRBrowser .UIFormWithTitle{
+.UIJCRExplorer .UIJCRBrowser .UIFormWithTitle {
 	padding: 3px;
 }
 
@@ -688,12 +673,6 @@
 .UIJCRExplorer .UIRelationManager {
 	width: 95%;
 	margin: auto;
-}
-
-/*=================================UILabelForm==============================*/
-
-.UIJCRExplorerPortlet .WorkingAreaWithHelp {
-  margin: 8px;
 }
 
 /*====================================UISavedQuery==================================*/

@@ -235,12 +235,6 @@
 	color: orange;
 }
 
-.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-	padding-bottom: 15px;
-	background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
 .WorkflowPortletContent .UIFormGrid td.FieldLabel {
 	width: 128px;
 }

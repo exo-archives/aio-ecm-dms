@@ -221,17 +221,6 @@
   width: auto;
 }
 
-.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer {
-	border: solid 1px #939393;
-	border-top: none;
-}
-
-.WorkflowPortletContent .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-	padding-bottom: 15px;
-	background: #efefef;
-}
-
 .UIWorkflowPortlet .UIPopupWindow .Content .UIFormWithTitle .HorizontalLayout {
   background: white;
 }

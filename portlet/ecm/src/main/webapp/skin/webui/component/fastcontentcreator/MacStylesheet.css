@@ -49,10 +49,6 @@
   background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-	border: none;
-} 
-
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
 	width: 555px;
 	margin: auto;
@@ -64,11 +60,6 @@
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer select {
   padding-left: 3px;
-}
-
-.UIFastContentCreatorPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
-	border: none;
-	background: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer textarea {
@@ -108,14 +99,6 @@
   width: 600px;
   margin: auto;
   padding-top: 10px;
-}
-
-.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
-  border: none;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithTitle .FieldContainer .MyEditor{
-  margin-left: 7px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {

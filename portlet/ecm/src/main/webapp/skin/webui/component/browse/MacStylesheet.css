@@ -290,34 +290,26 @@
 }
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
-.UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
+.UIBrowseContentPortlet .UIPopupWindow .NodeIcon {
 	padding-left: 25px;
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 10px;
-}
-
-.UIBrowseContentPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 220px ;
-}
-
-UIBrowseContentPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 230px ;
-  overflow: hidden;
-}
-
-.UIBrowseContentPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.UIBrowseContentPortlet .UITreeList .UIGrid {
-  width: 310px;
+.UIBrowseContentPortlet .Explorer {
+  float: left;
+  width: 200px;
+  overflow: hidden;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser .UITreeList {
+	margin-left: 210px;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser table {
+	*width: 94%;
 }
 
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
@@ -760,7 +752,6 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: none;
 }
 	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	

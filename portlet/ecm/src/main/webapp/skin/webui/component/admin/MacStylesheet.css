@@ -296,17 +296,6 @@
 	width: 128px;
 }
 
-.UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-	background: none;
-}
-
-.UIRepositoryManager .UIFormTabPane .UITabPane .TabPaneContent .UITabContentContainer {
-	border: solid 1px #b7b7b7;
-	border-top: none;
-	border-bottom: none;
-}
-
 .UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
 	width: 128px;	
 }
@@ -344,9 +333,8 @@
 
 .UIECMAdminPortlet  .UIWorkspaceWizard .UIWizardAction {
 	background: #F4F4F4 none repeat scroll 0%;
-	border: none ;
-	border-top: 1px solid #939393 ;
-	border-bottom: 1px solid #B7B7B7 ;
+	border: 1px solid #B7B7B7 ;
+	border-top: none;
 	height: 40px;
 }
 
@@ -383,15 +371,10 @@
 
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane {
 	padding: 0px;
-	margin: 0px;
 }
 
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .HorizontalLayout {
+.UIWorkspaceWizardContainer .UIWorkspaceWizard .UITabPane .TabPaneContent {
 	padding: 0px;
-	margin: 0px;
-	border: solid 1px #b7b7b7;
-	border-top: none;
-	border-bottom: none;
 }
 
 .UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
@@ -403,19 +386,7 @@
 	margin: 0px;
 }
 
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .UITabContentContainer .UITabContent {
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
+ .UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
 	padding: 10px 0px;
 	margin: 0px;
 }
@@ -436,17 +407,18 @@
 
 /*############################## -- MultiField  -- ########################*/
 
-.UIECMAdminPortlet .Explorer {
-  margin: 0px 10px 10px 0px;
-  float: left ;
-  width: 220px ;
+.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
+	padding: 10px;
 }
 
-.UIECMAdminPortlet .Explorer .ExplorerTree {
-  margin-top: 1px;
-  border: solid 1px #c6c6c9;
+.UIECMAdminPortlet .Explorer {
+  float: left ;
+  width: 230px ;
   background: #f3f3f3;
-  padding: 1px;
+}
+
+.UIECMAdminPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
 }
 
 .UIECMAdminPortlet .Explorer .InnerExplorerTree {
@@ -454,52 +426,24 @@
   padding: 10px;
 }
 
-.UIECMAdminPortlet .UITreeList{
-  width: 300px;
-  float: left;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser {
-	width: 95%;
-	margin: 10px auto;
-}
-
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
+	border: solid 1px #b7b7b7;
+	background: #EFEFEF;
+	padding: 5px 0px;
+	margin: 10px 0px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	border: solid 1px #E1E1E1;
-	margin: 0px;
-	width: 530px;
+	margin: 0px auto;
+	width: auto;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: white;
-	padding: 0px;
-	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout select{
+.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel {
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: #efefef;
-	padding: 5px 0px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormGrid select{
-	width: 100px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
-	width: 100px;
+.UIECMAdminPortlet .UIJCRBrowser table {
+	*width: 99%;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
@@ -717,13 +661,15 @@
   margin-bottom: 2px;
 }
 
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid td {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	vertical-align: middle;
+}
+
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
   width: 90px;
   padding-left: 10px;
-}
-
-.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
-  margin: 10px 0px 0px 0px;
 }
 
 .UIECMScripts .UIBarStyle {
