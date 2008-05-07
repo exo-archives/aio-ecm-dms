@@ -33,8 +33,9 @@
               <directory>${exo.projects.directory.src}/portal/branches/2.0.1/web/portal/target/exo.portal.web.portal-${org.exoplatform.portal.version}</directory>
               <includes>
                 <include>WEB-INF/classes/locale/portal/</include>
-				<include>WEB-INF/conf/uiconf/</include>
-				<include>WEB-INF/conf/script/</include>
+								<include>WEB-INF/conf/uiconf/</include>
+								<include>WEB-INF/conf/script/</include>
+              	<include>WEB-INF/conf/portal/template/</include>
               </includes>
             </resource>    
             <resource>

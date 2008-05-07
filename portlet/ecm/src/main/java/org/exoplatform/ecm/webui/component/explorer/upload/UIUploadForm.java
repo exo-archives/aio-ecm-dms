@@ -153,6 +153,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       //String mimeType = input.getUploadResource().getMimeType() ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
+      String newNodeUUID = null;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
         selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);        
@@ -204,7 +205,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
             CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
             String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-            cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
+            newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
             selectedNode.getSession().save() ;                        
           } else {
@@ -237,8 +238,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         UIUploadManager uiManager = uiForm.getParent() ;
         UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
-        if(uiForm.isMultiLanguage_) uiUploadContainer.setUploadedNode(selectedNode) ; 
-        else uiUploadContainer.setUploadedNode(selectedNode.getNode(name)) ;
+        if(uiForm.isMultiLanguage_) {
+          uiUploadContainer.setUploadedNode(selectedNode) ; 
+        } else {
+          Node newNode = uiExplorer.getSession().getNodeByUUID(newNodeUUID) ;
+          uiUploadContainer.setUploadedNode(newNode) ;
+        }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         String fileSize = String.valueOf((((float)(content.length/100))/10));     
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
