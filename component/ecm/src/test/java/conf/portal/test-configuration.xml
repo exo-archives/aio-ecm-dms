@@ -145,6 +145,11 @@
 	<component>    
     <type>org.exoplatform.services.ecm.vote.VoteService</type>
   </component>
+  
+  <component>
+		<key>org.exoplatform.services.ecm.drive.DriveManagerService</key>
+		<type>org.exoplatform.services.ecm.drive.impl.DriveManagerServiceImpl</type>
+	</component>
 
 	<component>
     <key>org.exoplatform.services.ecm.i18n.MultiLanguageService</key>
