@@ -56,13 +56,13 @@ public class VoteService {
     Session session = node.getSession();    
     Session systemSession = null;
     Node document = null;
-    if (userName == null) {
+    if (userName != null && userName.trim().length() > 0) {
+      document = node;
+    } else {
       ManageableRepository repository = (ManageableRepository) session.getRepository();
       systemSession = repository.getSystemSession(session.getWorkspace().getName());
-      document = (Node)systemSession.getItem(node.getPath());      
-    } else {
-      document = node;
-    }    
+      document = (Node)systemSession.getItem(node.getPath());    
+    }   
     if (document.canAddMixin(VOTABLE)) {
       document.addMixin(VOTABLE);
     }            
