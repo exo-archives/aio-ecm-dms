@@ -49,7 +49,7 @@ public class DriveEntry {
   public void setName(String name) { this.name = name ; }
   
   public String getGroup() { return group ; }
-  public String setGroup() { return group; }
+  public void setGroup(String group) { this.group = group; }
   
   public String getRepository() { return repository ; }
   public void setRepository(String rp) { repository = rp ; }

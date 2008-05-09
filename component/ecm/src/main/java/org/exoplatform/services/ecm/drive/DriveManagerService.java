@@ -28,7 +28,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface DriveManagerService {
   
-  final public String DRIVE_REGISTRY_PATH = "/exo:registry/exo:services/exo:ecm/exo:drives".intern();     
+  final public String DRIVE_REGISTRY_PATH = "exo:services/exo:ecm/exo:drives".intern();     
   
   public DriveEntry getDrive(String repository, String group,String name, SessionProvider sessionProvider) throws Exception ;  
   public List<DriveEntry> getAllDrives(String repository, SessionProvider sessionProvider) throws Exception ;  
