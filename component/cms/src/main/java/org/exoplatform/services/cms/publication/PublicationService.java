@@ -226,6 +226,5 @@ public interface PublicationService {
   public void enrollNodeInLifecycle(Node node, String lifecycle) throws AlreadyInPublicationLifecycleException;
 
 
-  public void testMethod ();
   
 }
