@@ -30,6 +30,8 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface NodeService {
   
+  public static final String NODE = "/node";
+  
   public void addNode(String repository, String workspace,String parentPath,String nodetype,Map<String,JcrInputProperty> jcrProperties,boolean isNew,SessionProvider sessionProvider) throws Exception ;
   
   public void addNode(Node parent,String nodetype,Map<String,JcrInputProperty> jcrProperties,boolean isNew) throws Exception;

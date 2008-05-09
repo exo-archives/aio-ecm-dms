@@ -36,11 +36,16 @@
     </init-params>
   </component>
   
+  <component>
+    <key>org.exoplatform.services.organization.auth.AuthenticationService</key>
+    <type>org.exoplatform.services.organization.auth.impl.AuthenticationServiceImpl</type>
+  </component>
+  
   <!-- REST -->
   <component>
     <type>org.exoplatform.services.jcr.ext.registry.RESTRegistryService</type>
   </component>
-
+  
 	<component>
 		<type>org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService</type>
 	</component>
@@ -121,7 +126,22 @@
   <component>
     <type>org.exoplatform.services.organization.impl.mock.DummyOrganizationService</type>
   </component>
-
+  
+  <component>
+		<key>org.exoplatform.services.ecm.core.NodeService</key>
+		<type>org.exoplatform.services.ecm.core.impl.NodeServiceImpl</type>
+		<init-params>
+			<value-param>
+				<name>repository</name>
+				<value>repository</value>				
+			</value-param>
+			<value-param>
+				<name>workspace</name>
+				<value>system</value>
+			</value-param>
+		</init-params>
+	</component>
+	
 	<component>    
     <type>org.exoplatform.services.ecm.vote.VoteService</type>
   </component>
@@ -161,7 +181,16 @@
           </init-params>
         </component-plugin>        
   </external-component-plugins>
-    
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.listener.ListenerService</target-component>
+    <component-plugin>
+      <name>exo.service.authentication.login</name>
+      <set-method>addListener</set-method>
+      <type>org.exoplatform.services.organization.auth.MembershipListener</type>
+    </component-plugin>
+  </external-component-plugins>
+     
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>    
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>  
 </configuration>

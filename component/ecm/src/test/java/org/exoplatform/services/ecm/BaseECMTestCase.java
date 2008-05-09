@@ -52,7 +52,7 @@ public abstract class BaseECMTestCase extends BasicTestCase {
 
     StandaloneContainer.addConfigurationURL(containerConf);
     container = StandaloneContainer.getInstance();
-
+    
     if (System.getProperty("java.security.auth.login.config") == null)
       System.setProperty("java.security.auth.login.config", loginConf);
 
