@@ -14,25 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.services.ecm.action;
-
-import javax.jcr.observation.EventIterator;
+package org.exoplatform.services.ecm.lifecycle;
 
 /**
  * Created by The eXo Platform SAS
  * @author : Hoa.Pham
  *          hoa.pham@exoplatform.com
- * May 5, 2008  
+ * May 9, 2008  
  */
-public abstract class BaseActionLauncherListener implements ActionEventListener {  
+public class IncorrectStateUpdateLifecycleException extends Exception {
 
-  public String getRepository() { return null; }
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-  public String getSrcWorkspace() { return null; }
-
-  public void onEvent(EventIterator event) {
-    
-  }
-
-  protected abstract boolean doAction(EventIterator event) ;
 }

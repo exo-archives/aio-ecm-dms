@@ -131,8 +131,7 @@ public class DriveManagerServiceImpl implements DriveManagerService{
   public DriveEntry getDrive(String repository, String group, String name, SessionProvider sessionProvider) throws Exception {
     DriveEntry driveEntry = new DriveEntry() ;
     String entryPath = DRIVE_REGISTRY_PATH + "/" + group + "/" + name ;
-    RegistryEntry registryEntry = registryService_.getEntry(sessionProvider, entryPath) ;
-    
+    RegistryEntry registryEntry = registryService_.getEntry(sessionProvider, entryPath) ;    
     //Debug code
     Node registryNode = registryService_.getRegistry(sessionProvider).getNode();
     System.out.println("==============>"+registryNode.getPath());

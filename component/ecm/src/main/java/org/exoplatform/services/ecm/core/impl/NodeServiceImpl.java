@@ -39,13 +39,9 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import net.fortuna.ical4j.model.property.ProdId;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.util.StringUtil;
-import org.codehaus.groovy.tools.shell.util.NoExitSecurityManager;
 import org.exoplatform.commons.utils.ISO8601;
-import org.exoplatform.services.ecm.core.JcrInputProperty;
+import org.exoplatform.services.ecm.core.JcrItemInput;
 import org.exoplatform.services.ecm.core.NodeService;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -72,48 +68,48 @@ public class NodeServiceImpl implements NodeService {
   }
   
   //Add node from workspace
-  public void addNode(String repository, String workspace, String parentPath, String nodetype,
-      Map<String, JcrInputProperty> jcrProperties, boolean isNew, SessionProvider sessionProvider)
-      throws Exception {
-      Session session =  repositoryService_.getRepository(repository).login(workspace);
-      Node nodeHome = (Node)session.getItem(parentPath);
-      addNode(nodeHome, nodetype, jcrProperties, isNew) ;      
-      session.save();
-      session.logout();      
-  }
+//  public void addNode(String repository, String workspace, String parentPath, String nodetype,
+//      Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
+//      throws Exception {
+//      Session session =  repositoryService_.getRepository(repository).login(workspace);
+//      Node nodeHome = (Node)session.getItem(parentPath);
+//      addNode(nodeHome, nodetype, jcrProperties, isNew) ;      
+//      session.save();
+//      session.logout();      
+//  }
   
   //Add node from parent node
   @SuppressWarnings("unused")
-  public void addNode(Node parent, String nodetype, Map<String, JcrInputProperty> jcrProperties,
-      boolean isNew) throws Exception {
-      Set keys = jcrProperties.keySet();
-      String nodePath = extractNodeName(keys);
-      JcrInputProperty jcrInputPro = (JcrInputProperty)jcrProperties.get(nodePath);
-      String nodeName = (String)jcrInputPro.getValue();
-      if(nodeName == null || nodeName.length() == 0)
-        nodeName = idGeneratorService_.generateStringID(nodetype);
-     
-      String primaryType = jcrInputPro.getPrimaryNodeType();
-      if(primaryType == null || primaryType.length() == 0)
-         primaryType = nodetype;
-    
-      Session session = parent.getSession();
-      NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
-      NodeType nodeType = nodeTypeManager.getNodeType(primaryType);
-      Node currentNode = null;
-      String [] mixinNodeTypes = jcrInputPro.getMixinNodeType();
-      if(isNew){
-        currentNode = parent.addNode(nodetype, primaryType);
-        if(mixinNodeTypes != null){
-          for(String typeNode : mixinNodeTypes){
-            if(currentNode.isNodeType(typeNode))
-              currentNode.addMixin(typeNode);
-              NodeType mixinType = nodeTypeManager.getNodeType(typeNode);
-          }
-        }
-      }
-      System.out.println("\n\n\n----This is AddNode(Node parent, ....) method ----: Building...\n\n\n");
-  }
+//  public void addNode(Node parent, String nodetype, Map<String, JcrItemInput> jcrProperties,
+//      boolean isNew) throws Exception {
+//      Set keys = jcrProperties.keySet();
+//      String nodePath = extractNodeName(keys);
+//      JcrItemInput jcrInputPro = (JcrItemInput)jcrProperties.get(nodePath);
+//      String nodeName = (String)jcrInputPro.getValue();
+//      if(nodeName == null || nodeName.length() == 0)
+//        nodeName = idGeneratorService_.generateStringID(nodetype);
+//     
+//      String primaryType = jcrInputPro.getPrimaryNodeType();
+//      if(primaryType == null || primaryType.length() == 0)
+//         primaryType = nodetype;
+//    
+//      Session session = parent.getSession();
+//      NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
+//      NodeType nodeType = nodeTypeManager.getNodeType(primaryType);
+//      Node currentNode = null;
+//      String [] mixinNodeTypes = jcrInputPro.getMixinNodeType();
+//      if(isNew){
+//        currentNode = parent.addNode(nodetype, primaryType);
+//        if(mixinNodeTypes != null){
+//          for(String typeNode : mixinNodeTypes){
+//            if(currentNode.isNodeType(typeNode))
+//              currentNode.addMixin(typeNode);
+//              NodeType mixinType = nodeTypeManager.getNodeType(typeNode);
+//          }
+//        }
+//      }
+//      System.out.println("\n\n\n----This is AddNode(Node parent, ....) method ----: Building...\n\n\n");
+//  }
   
   //Create node task
   private void createNodeRecusively(String path, Node curentNode, 
@@ -139,9 +135,9 @@ public class NodeServiceImpl implements NodeService {
         String proName = property.getName();
         int proReqType = property.getType();
         String curentPath = path + "/" + proName;
-        JcrInputProperty varJcrInputPro = (JcrInputProperty)jcrInputPro.get(curentPath);
+        JcrItemInput varJcrInputPro = (JcrItemInput)jcrInputPro.get(curentPath);
         Object value = null;
-        if(varJcrInputPro != null) value = varJcrInputPro.getValue();
+        if(varJcrInputPro != null) value = varJcrInputPro.getPropertyValue();
         if(value != null && !proDefiDetail.isProtected())
           processProperty(proName, curentNode, proReqType, value, proDefiDetail.isMultiple());
       }
@@ -173,12 +169,12 @@ public class NodeServiceImpl implements NodeService {
       if(!nodeDefin.isAutoCreated() && !nodeDefin.isProtected()
           && ("*".equals(nodeDefin.getName()) && (obj instanceof NodeDefinition))){
         String curentPath = path + "/" + nodeName;
-        JcrInputProperty jcrInputVariable = (JcrInputProperty)jcrInputPro.get(curentPath);
+        JcrItemInput jcrInputVariable = (JcrItemInput)jcrInputPro.get(curentPath);
         String nodeTypeName = null;
         String mixinTypeName [] = null;
         if(jcrInputVariable != null){
           nodeTypeName = jcrInputVariable.getPrimaryNodeType();
-          mixinTypeName = jcrInputVariable.getMixinNodeType();
+          mixinTypeName = jcrInputVariable.getMixinNodeTypes();
           NodeTypeManager nodeTypeManger = curentNode.getSession().getWorkspace().getNodeTypeManager();
           NodeType nodeType = null;
           if(obj instanceof Node)
@@ -234,9 +230,9 @@ public class NodeServiceImpl implements NodeService {
            String proName = proDefiDetail.getName();
            int proReqType = proDefiDetail.getRequiredType();
            String curentPath = path + "/" + proName;
-           JcrInputProperty varJcrInput = (JcrInputProperty)jcrInputPro.get(curentPath);
+           JcrItemInput varJcrInput = (JcrItemInput)jcrInputPro.get(curentPath);
            Object value = null;
-           if(varJcrInput == null) value = varJcrInput.getValue();
+           if(varJcrInput == null) value = varJcrInput.getPropertyValue();
            if(varJcrInput != null && !proDefiDetail.isMandatory())
              processProperty(proName, curentNode, proReqType, value, proDefiDetail.isMultiple());
          }
@@ -518,5 +514,30 @@ public class NodeServiceImpl implements NodeService {
       rootNode = rootNode.addNode(splitName[splIndex]);
     }
     session.save();
+  }
+
+  public Node copyNode(String repository, String srcWorkspace, String srcPath,
+      String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Node moveNode(String repository, String srcWorkspace, String srcPath,
+      String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Node addNode(String repository, String workspace, String parentPath, String nodetype,
+      Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
+      throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Node addNode(Node parent, String nodetype, Map<String, JcrItemInput> jcrProperties,
+      boolean isNew) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

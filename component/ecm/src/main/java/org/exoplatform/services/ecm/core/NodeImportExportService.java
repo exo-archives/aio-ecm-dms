@@ -14,25 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.services.ecm.action;
-
-import javax.jcr.observation.EventIterator;
+package org.exoplatform.services.ecm.core;
 
 /**
  * Created by The eXo Platform SAS
  * @author : Hoa.Pham
  *          hoa.pham@exoplatform.com
- * May 5, 2008  
+ * May 9, 2008  
  */
-public abstract class BaseActionLauncherListener implements ActionEventListener {  
-
-  public String getRepository() { return null; }
-
-  public String getSrcWorkspace() { return null; }
-
-  public void onEvent(EventIterator event) {
-    
-  }
-
-  protected abstract boolean doAction(EventIterator event) ;
+public interface NodeImportExportService {
+  /* The purpose of this service is: Leverage node import/export feature from jcr
+   * Import/Export in UI need use this service to handle import/export function
+   * Some improvement need implement:
+   * - import/export a huge node in diamond thread(use notification service to notify that import/export sucess or not)
+   * - import/export from/to zip file
+   * - Support full import/export feature from jcr
+   * */
 }

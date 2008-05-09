@@ -29,14 +29,15 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  * Apr 25, 2008  
  */
 public interface NodeService {
-  
+
   public static final String NODE = "/node";
-  
-  public void addNode(String repository, String workspace,String parentPath,String nodetype,Map<String,JcrInputProperty> jcrProperties,boolean isNew,SessionProvider sessionProvider) throws Exception ;
-  
-  public void addNode(Node parent,String nodetype,Map<String,JcrInputProperty> jcrProperties,boolean isNew) throws Exception;
 
-  public void moveNode(String repository, String srcWorkspace,String srcPath, String destWorkspace, String destPath) throws Exception ;
+  public Node addNode(String repository, String workspace,String parentPath,String nodetype,Map<String,JcrItemInput> jcrItemInputs,boolean isNew,SessionProvider sessionProvider) throws Exception ;
 
-  public void copyNode(String repository, String srcWorkspace,String srcPath, String destWorkspace, String destPath) throws Exception ;
+  public Node addNode(Node parent,String nodetype,Map<String,JcrItemInput> jcrItemInputs,boolean isNew) throws Exception;
+
+  public Node moveNode(String repository, String srcWorkspace,String srcPath, String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception ;
+
+  public Node copyNode(String repository, String srcWorkspace,String srcPath, String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception ;
+
 }

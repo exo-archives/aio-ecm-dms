@@ -42,7 +42,7 @@ import org.exoplatform.services.jcr.impl.core.SessionRegistry;
 public class TestNodeService extends BaseECMTestCase {
   private NodeService nodeService_ ; 
   private RepositoryService repoService_ ;
-  private JcrInputProperty jcrProper_ ;
+  private JcrItemInput jcrProper_ ;
   public void setUp() throws Exception {
     super.setUp(); 
     
@@ -65,13 +65,13 @@ public class TestNodeService extends BaseECMTestCase {
     String nodeType = "nt:unstructured";
     Node parentNode = rootNode.addNode("Test", nodeType) ;
     boolean isNew = true;
-    Map<String,JcrInputProperty> jcrProperties = new HashMap<String, JcrInputProperty>() ;
-    JcrInputProperty inputProperty = new JcrInputProperty();
+    Map<String,JcrItemInput> jcrProperties = new HashMap<String, JcrItemInput>() ;
+    JcrItemInput inputProperty = new JcrItemInput();
     inputProperty.setJcrPath("jcrPath");
     inputProperty.setMixinNodeType("mixintype");
     inputProperty.setPrimaryNodeType("nodetype");
     inputProperty.setType("int type");
-    inputProperty.setValue("Object value");
+    inputProperty.setPropertyValue("Object value");
     inputProperty.setValueType("int type");
     jcrProperties.put("String", inputProperty);
     nodeService_.addNode(parentNode,nodeType, jcrProperties, isNew );    
