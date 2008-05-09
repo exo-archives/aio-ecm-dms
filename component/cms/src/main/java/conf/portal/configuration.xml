@@ -148,6 +148,11 @@
     <type>org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService</type>
   </component>
   
+  <component>
+    <key>org.exoplatform.services.cms.publication.PublicationService</key>
+    <type>org.exoplatform.services.cms.publication.impl.PublicationServiceImpl</type>
+  </component>
+  
   <external-component-plugins>
 	  <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>      
 	  <component-plugin>
