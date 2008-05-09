@@ -52,7 +52,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public void addLog(Node node, String[] log) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
-
+    log.info("addLog");
   }
 
   /* (non-Javadoc)
@@ -60,7 +60,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public void addPublicationPlugin(PublicationPlugin p) {
     // TODO Auto-generated method stub
-
+    log.info("addPublicationPlugin");
   }
 
   /* (non-Javadoc)
@@ -69,7 +69,7 @@ public class PublicationServiceImpl implements PublicationService {
   public void changeState(Node node, String newState, HashMap<String, String> context)
       throws NotInPublicationLifecycleException, IncorrectStateUpdateLifecycleException {
     // TODO Auto-generated method stub
-
+    log.info("changeState");
   }
 
   /* (non-Javadoc)
@@ -78,7 +78,7 @@ public class PublicationServiceImpl implements PublicationService {
   public void enrollNodeInLifecycle(Node node, String lifecycle)
       throws AlreadyInPublicationLifecycleException {
     // TODO Auto-generated method stub
-
+    log.info("enrollNodeInLifecycle");
   }
 
   /* (non-Javadoc)
@@ -86,6 +86,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public String getCurrentState(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getCurrentState");
     return null;
   }
 
@@ -94,6 +95,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public String[][] getLog(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getLog");
     return null;
   }
 
@@ -102,6 +104,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public String getNodeLifecycleDesc(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getNodeLifecycleDesc");
     return null;
   }
 
@@ -110,6 +113,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public String getNodeLifecycleName(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getNodeLifecycleName");
     return null;
   }
 
@@ -118,6 +122,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public Set<PublicationPlugin> getPublicationPlugins() {
     // TODO Auto-generated method stub
+    log.info("getPublicationPlugins");
     return null;
   }
 
@@ -126,6 +131,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public byte[] getStateImage(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getStateImage");
     return null;
   }
 
@@ -134,6 +140,8 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getStateUI");
+    
     return null;
   }
 
@@ -142,6 +150,7 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public String getUserInfo(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
+    log.info("getUserInfo");
     return null;
   }
 
@@ -150,11 +159,8 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public boolean isNodeEnrolledInLifecycle(Node node) {
     // TODO Auto-generated method stub
+    log.info("isNodeEnrolledInLifecycle");
     return false;
-  }
-  
-  public void testMethod () {
-    log.info("TestMethod");
   }
 
 }
