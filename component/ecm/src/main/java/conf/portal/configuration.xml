@@ -24,4 +24,8 @@
     <key>org.exoplatform.services.ecm.i18n.MultiLanguageService</key>
     <type>org.exoplatform.services.ecm.i18n.impl.MultiLanguageServiceImpl</type>
   </component>
+	<component>
+		<key>org.exoplatform.services.ecm.drive.DriveManagerService</key>
+		<type>org.exoplatform.services.ecm.drive.impl.DriveManagerServiceImpl</type>
+	</component>
 </configuration>
