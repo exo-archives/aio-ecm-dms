@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <configuration>  
+	<component>    
+    <type>org.exoplatform.services.ecm.vote.VoteService</type>
+  </component>
+
+	<component>
+    <key>org.exoplatform.services.ecm.i18n.MultiLanguageService</key>
+    <type>org.exoplatform.services.ecm.i18n.impl.MultiLanguageServiceImpl</type>
+  </component>
 </configuration>
