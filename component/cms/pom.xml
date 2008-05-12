@@ -67,6 +67,13 @@
 
     
     <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.core</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
       <groupId>org.exoplatform.ecm</groupId>
       <artifactId>exo.ecm.component.workflow.api</artifactId>
       <version>${org.exoplatform.ecm.version}</version>
@@ -101,4 +108,5 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
+  
 </project>
