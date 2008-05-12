@@ -19,7 +19,9 @@ package org.exoplatform.services.ecm.access;
 import java.util.Collection;
 import java.util.List;
 
+import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
+import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.auth.AuthenticationService;
 import org.exoplatform.services.organization.auth.Identity;
 
@@ -52,22 +54,42 @@ public class PermissionManagerService {
     // in case of permission list has Everyone permission or contains userID
     if(permissions.contains(EVERYONE) || permissions.contains(userId)) return true ;
     Identity identity = authService_.getIdentityBySessionId(userId) ;
+    if(identity == null) return checkPermission(userId, permissions) ;
+    return checkPermission(identity, permissions) ;    
+  }
+
+  private boolean checkPermission(String userId,List<String> permissions) throws Exception {
     boolean hasPermission = false ;
     for(String permision:permissions) {
-      if(permision.indexOf(":/*")> 0) {
-        String membershipType = permision.split(":/*")[0] ;
-        hasPermission = isMembershipTypeMatch(userId, membershipType) ;
-      }else if( permision.indexOf(":/")>0) {
-        hasPermission = isMembershipMatch(identity,permision) ;
-      }else {
+      if(permision.indexOf(":/*")> 0) {        
+        hasPermission = isMembershipTypeMatch(userId, permision) ;
+      }else if( permision.indexOf(":/")>0) {                          
+        hasPermission = isMembershipMatch(userId,permision) ;        
+      }else {        
+        hasPermission = isGroupMatch(userId,permision) ;
+      }
+      if(hasPermission) return true ;
+    }    
+    return false ;    
+  }
+
+  private boolean checkPermission(Identity identity, List<String> permissions) throws Exception {
+    boolean hasPermission = false ;
+    for(String permision:permissions) {
+      if(permision.indexOf(":/*")> 0) {        
+        hasPermission = isMembershipTypeMatch(identity.getUsername(), permision) ;
+      }else if( permision.indexOf(":/")>0) {                          
+        hasPermission = isMembershipMatch(identity,permision) ;        
+      }else {        
         hasPermission = isGroupMatch(identity,permision) ;
       }
       if(hasPermission) return true ;
     }    
     return false ;
-  }    
+  }
 
-  private boolean isMembershipTypeMatch(String userId, String membershipType) throws Exception {
+  private boolean isMembershipTypeMatch(String userId, String permission) throws Exception {
+    String membershipType  = permission.split(":")[0] ;    
     if(WILD_CARD.equalsIgnoreCase(membershipType)) return true ;
     Collection<Membership> allMembership = authService_.getOrganizationService().getMembershipHandler().findMembershipsByUser(userId) ;
     for(Membership membership: allMembership) {
@@ -85,11 +107,36 @@ public class PermissionManagerService {
     return identity.hasMembership(membershipType, groupID) ;    
   }
 
+  private boolean isMembershipMatch(String userId, String memebership) throws Exception {
+    String membershipType = memebership.substring(0, memebership.indexOf(":"));
+    String groupID = memebership.substring(memebership.indexOf(":") + 1);
+    MembershipHandler membershipHandler = authService_.getOrganizationService().getMembershipHandler() ;
+    if(WILD_CARD.equalsIgnoreCase(membershipType)) {     
+      Collection memeberships = membershipHandler.findMembershipsByUserAndGroup(userId, groupID) ;
+      if(memeberships.size()>0) return true;
+    }
+    Membership membership = membershipHandler.findMembershipByUserGroupAndType(userId, groupID, membershipType) ;
+    if(membership != null) return true;
+    return false ;
+  }
+
   private boolean isGroupMatch(Identity identity, String groupID) {
     if(groupID.indexOf(WILD_CARD)>0) {
       return false ;
       //we don't support wild card with group name
     }
     return identity.isInGroup(groupID); 
-  }  
+  }
+
+  private boolean isGroupMatch(String userID, String groupName) throws Exception {
+    if(groupName.indexOf(WILD_CARD)>0) {
+      return false ;
+      //we don't support wild card with group name
+    } 
+    Collection<Group> groups = authService_.getOrganizationService().getGroupHandler().findGroupsOfUser(userID) ;
+    for(Group group:groups) {
+      if(group.getGroupName().equals(groupName)) return true ;
+    }
+    return true ;
+  }
 }
