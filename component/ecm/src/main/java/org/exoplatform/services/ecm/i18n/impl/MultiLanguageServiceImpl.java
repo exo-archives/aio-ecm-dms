@@ -16,8 +16,12 @@
  */
 package org.exoplatform.services.ecm.i18n.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.jcr.Node;
 
+import org.exoplatform.services.ecm.core.JcrItemInput;
 import org.exoplatform.services.ecm.i18n.MultiLanguageService;
 
 /**
@@ -31,5 +35,24 @@ public class MultiLanguageServiceImpl implements MultiLanguageService {
 
   public String getDefaultLanguage(Node document) throws Exception {
     return null;
+  }
+
+  public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language,
+      boolean isDefault) throws Exception {    
+  }
+
+  public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language,
+      boolean isDefault, String nodeType) throws Exception {   
+  }
+
+  public List<String> getAvailableLanguages(Node document) throws Exception {
+    return null;
+  }
+
+  public Node getLanguage(Node node, String language) throws Exception {
+    return null;
+  }
+
+  public void setDefault(Node node, String language) throws Exception {    
   }  
 }

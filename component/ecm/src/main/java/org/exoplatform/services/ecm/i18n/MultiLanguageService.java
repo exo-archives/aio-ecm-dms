@@ -16,7 +16,13 @@
  */
 package org.exoplatform.services.ecm.i18n;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.jcr.Node;
+import javax.jcr.Value;
+
+import org.exoplatform.services.ecm.core.JcrItemInput;
 
 /**
  * Created by The eXo Platform SAS
@@ -25,6 +31,22 @@ import javax.jcr.Node;
  *			    xxx5669@yahoo.com
  * May 7, 2008  
  */
-public interface MultiLanguageService {  
+public interface MultiLanguageService {
+  
+  final public String LANGUAGES = "languages".intern() ;
+  final public String EXO_LANGUAGE = "exo:language".intern() ;
+  final public String COMMENTS = "comments".intern() ;
+  
+  //TODO need review this service
   public String getDefaultLanguage(Node document) throws Exception ;
+  public void setDefault(Node node, String language) throws Exception ;   
+  
+  public List<String> getAvailableLanguages(Node document) throws Exception ;  
+  
+  public void addFileLanguage(Node node, Value value, String mimeType, String language, boolean isDefault) throws Exception ;
+  public void addFileLanguage(Node node, String language, Map<String,JcrItemInput> mappings, boolean isDefault) throws Exception ;
+  public void addLanguage(Node document, Map<String,JcrItemInput> inputs, String language, boolean isDefault) throws Exception ;
+  public void addLanguage(Node document, Map<String,JcrItemInput> inputs, String language, boolean isDefault, String nodeType) throws Exception ;   
+  public Node getLanguage(Node node, String language) throws Exception ;
+  
 }
