@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.Value;
 
 import org.exoplatform.services.ecm.core.JcrItemInput;
 import org.exoplatform.services.ecm.i18n.MultiLanguageService;
@@ -54,5 +55,17 @@ public class MultiLanguageServiceImpl implements MultiLanguageService {
   }
 
   public void setDefault(Node node, String language) throws Exception {    
+  }
+
+  public void addFileLanguage(Node node, Value value, String mimeType, String language,
+      boolean isDefault) throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void addFileLanguage(Node node, String language, Map<String, JcrItemInput> mappings,
+      boolean isDefault) throws Exception {
+    // TODO Auto-generated method stub
+    
   }  
 }
