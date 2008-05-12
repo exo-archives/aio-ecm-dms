@@ -50,7 +50,7 @@ public class PublicationServiceImpl implements PublicationService {
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#addLog(javax.jcr.Node, java.lang.String[])
    */
-  public void addLog(Node node, String[] log) throws NotInPublicationLifecycleException {
+  public void addLog(Node node, String[] args) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
     log.info("addLog");
   }
