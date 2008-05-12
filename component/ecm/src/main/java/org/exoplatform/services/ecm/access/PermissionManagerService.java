@@ -53,9 +53,10 @@ public class PermissionManagerService {
   public final boolean hasPermission(String userId, List<String> permissions) throws Exception {
     // in case of permission list has Everyone permission or contains userID
     if(permissions.contains(EVERYONE) || permissions.contains(userId)) return true ;
-    Identity identity = authService_.getIdentityBySessionId(userId) ;
-    if(identity == null) return checkPermission(userId, permissions) ;
-    return checkPermission(identity, permissions) ;    
+    Identity identity = authService_.getCurrentIdentity();
+    if(identity != null && identity.getUsername().equalsIgnoreCase(userId)) 
+      return checkPermission(identity, permissions) ;    
+    return checkPermission(userId, permissions) ;    
   }
 
   private boolean checkPermission(String userId,List<String> permissions) throws Exception {
