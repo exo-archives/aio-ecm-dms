@@ -16,22 +16,18 @@
  */
 package org.exoplatform.services.ecm.core;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.jcr.Node;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.Workspace;
+import javax.jcr.nodetype.NodeType;
 
-import org.apache.avalon.framework.activity.Startable;
 import org.exoplatform.services.ecm.BaseECMTestCase;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.impl.core.SessionRegistry;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SAS
@@ -40,43 +36,63 @@ import org.exoplatform.services.jcr.impl.core.SessionRegistry;
  * May 4, 2008  
  */
 public class TestNodeService extends BaseECMTestCase {
+  
   private NodeService nodeService_ ; 
   private RepositoryService repoService_ ;
+  private SessionProviderService sessionProviderService_ ;
   private JcrItemInput jcrProper_ ;
+  
   public void setUp() throws Exception {
-    super.setUp(); 
     
+    super.setUp();     
     //look up services
     nodeService_ = (NodeService)container.getComponentInstanceOfType(NodeService.class);
     repoService_ = (RepositoryService)container.getComponentInstanceOfType(RepositoryService.class);
+    sessionProviderService_ = (SessionProviderService)container.getComponentInstanceOfType(SessionProviderService.class);
   }
   
   //test add node
   public void testAddNode() throws Exception {    
-    //nodeService.addNode(REPO_NAME, COLLABORATION_WS, null, null, null, true, null);    
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     System.out.println("\n\n\n\n----This is testAddNode() method: Building....----\n\n\n");
   }
   
   //Test add node1
   public void testAddNode1() throws Exception{
+    
     ManageableRepository repository = repoService_.getRepository(REPO_NAME);
     Session session = repository.getSystemSession(COLLABORATION_WS) ;
     Node rootNode = session.getRootNode() ;
-    String nodeType = "nt:unstructured";
-    Node parentNode = rootNode.addNode("Test", nodeType) ;
-    boolean isNew = true;
-    Map<String,JcrItemInput> jcrProperties = new HashMap<String, JcrItemInput>() ;
-    JcrItemInput inputProperty = new JcrItemInput();
-    inputProperty.setJcrPath("jcrPath");
-    inputProperty.setMixinNodeType("mixintype");
-    inputProperty.setPrimaryNodeType("nodetype");
-    inputProperty.setType("int type");
-    inputProperty.setPropertyValue("Object value");
-    inputProperty.setValueType("int type");
-    jcrProperties.put("String", inputProperty);
-    nodeService_.addNode(parentNode,nodeType, jcrProperties, isNew );    
-    System.out.println("\n\n\n---A node added----\n\n\n");
-  }
+    Node parentNode = rootNode.addNode("Test", "nt:unstructured") ;
+    Map<String,JcrItemInput> map = new HashMap<String, JcrItemInput>() ;
+    
+    //node case
+    JcrItemInput jcrItemInputNode = new JcrItemInput() ;
+    jcrItemInputNode.setType(jcrItemInputNode.NODE) ;
+    jcrItemInputNode.setMixinNodeType("mix:votable") ;
+    jcrItemInputNode.setPath("/node") ;
+    jcrItemInputNode.setPrimaryNodeType("nt:unstructured") ;
+    jcrItemInputNode.setValue("NodeTest") ;
+    map.put("/node", jcrItemInputNode) ; 
+    
+    //properties case
+    JcrItemInput jcrItemInputProperties = new JcrItemInput() ;
+    jcrItemInputProperties.setType(JcrItemInput.PROPERTY) ;
+    jcrItemInputProperties.setPath("/node/exo:title");
+    jcrItemInputProperties.setValue("PropertiesCase") ;
+    map.put("/node/exo:title", jcrItemInputProperties) ;
+    
+    Node nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, true) ;  
+    NodeType nodeTypeTest = nodetTest.getPrimaryNodeType() ;
+    
+    System.out.println(
+         "\n\n----------Test NodeService - 1 -------" +
+         "\n\n   Parent node name: "+ parentNode.getName() +
+         "\n\n   node test name: "+nodetTest.getName()+
+         "\n\n   node test type: "+nodeTypeTest.getName()+
+         "\n\n   node test path: "+nodetTest.getPath()+
+         "\n\n\n");
+ }
   
   //test move node
   public void testMoveNode() throws Exception{

@@ -26,26 +26,26 @@ public class JcrItemInput {
 
   public static final int PROPERTY = 0;
   public static final int NODE = 1;    
-
-  private String itemPath;
-  private int itemType = PROPERTY;
+  
+  private String path;  
+  private int type = PROPERTY;
   private String primaryNodeType;
   private String mixinNodeType;
-  private Object propertyValue;  
-
-  public String getItemPath() { return itemPath; }
-  public void setItemPath(String path) { this.itemPath = path; }
-
+  private Object value;  
+    
+  public String getPath() { return path; }
+  public void setPath(String path) { this.path = path; }
+  
+  public int getType() { return type; }
+  public void setType(int type) { this.type = type; }
+  
   public String getPrimaryNodeType() { return primaryNodeType; }
   public void setPrimaryNodeType(String nodetype) { this.primaryNodeType = nodetype;}
 
   public String[] getMixinNodeTypes() { return mixinNodeType.split(","); }
   public void setMixinNodeType(String mixintype) { this.mixinNodeType = mixintype; }
 
-  public int getItemType() { return itemType; }
-  public void setItemType(int type) { this.itemType = type; }
-
-  public void setPropertyValue(Object value) { this.propertyValue = value; }
-  public Object getPropertyValue() { return propertyValue; }
+  public void setValue(Object value) { this.value = value; }
+  public Object getValue() { return value; }
   
 }

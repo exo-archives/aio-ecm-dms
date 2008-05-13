@@ -30,7 +30,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface NodeService {
 
-  public static final String NODE = "/node";
+  public static final String NODE = "/node" ;
 
   public Node addNode(String repository, String workspace,String parentPath,String nodetype,Map<String,JcrItemInput> jcrItemInputs,boolean isNew,SessionProvider sessionProvider) throws Exception ;
 
@@ -39,5 +39,6 @@ public interface NodeService {
   public Node moveNode(String repository, String srcWorkspace,String srcPath, String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception ;
 
   public Node copyNode(String repository, String srcWorkspace,String srcPath, String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception ;
-
+  
+  public void setProperty(Node node, String propertyName, Object value, int requiredtype, boolean isMultiple) throws Exception ;
 }

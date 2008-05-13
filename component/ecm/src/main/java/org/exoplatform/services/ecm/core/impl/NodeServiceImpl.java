@@ -16,31 +16,19 @@
  */
 package org.exoplatform.services.ecm.core.impl;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
-import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.Value;
-import javax.jcr.Workspace;
-import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.services.ecm.core.JcrItemInput;
 import org.exoplatform.services.ecm.core.NodeService;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
@@ -56,194 +44,175 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public class NodeServiceImpl implements NodeService {
   
-  private RepositoryService repositoryService_ ;
-  private IDGeneratorService idGeneratorService_ ;  
   private static final String EXO_DATETIME_ = "exo:datetime";
-  private static final String EXO_DATE_MODIFIED_ = "exo:dateModified";
+  private static final String EXO_DATE_MODIFIED_ = "exo:dateModified";  
   private static final String FOLDER_NT_UNSTRUCTURED_ = "nt:unstructured";
+  private RepositoryService repositoryService_ ;
+  private IDGeneratorService idGeneratorService_ ;
   
   public NodeServiceImpl(RepositoryService repoService, IDGeneratorService idGenerateService) throws Exception{
      repositoryService_ = repoService;
      idGeneratorService_ = idGenerateService;     
   }
   
-  //Add node from workspace
-//  public void addNode(String repository, String workspace, String parentPath, String nodetype,
-//      Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
-//      throws Exception {
-//      Session session =  repositoryService_.getRepository(repository).login(workspace);
-//      Node nodeHome = (Node)session.getItem(parentPath);
-//      addNode(nodeHome, nodetype, jcrProperties, isNew) ;      
-//      session.save();
-//      session.logout();      
-//  }
-  
-  //Add node from parent node
   @SuppressWarnings("unused")
-//  public void addNode(Node parent, String nodetype, Map<String, JcrItemInput> jcrProperties,
-//      boolean isNew) throws Exception {
-//      Set keys = jcrProperties.keySet();
-//      String nodePath = extractNodeName(keys);
-//      JcrItemInput jcrInputPro = (JcrItemInput)jcrProperties.get(nodePath);
-//      String nodeName = (String)jcrInputPro.getValue();
-//      if(nodeName == null || nodeName.length() == 0)
-//        nodeName = idGeneratorService_.generateStringID(nodetype);
-//     
-//      String primaryType = jcrInputPro.getPrimaryNodeType();
-//      if(primaryType == null || primaryType.length() == 0)
-//         primaryType = nodetype;
-//    
-//      Session session = parent.getSession();
-//      NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
-//      NodeType nodeType = nodeTypeManager.getNodeType(primaryType);
-//      Node currentNode = null;
-//      String [] mixinNodeTypes = jcrInputPro.getMixinNodeType();
-//      if(isNew){
-//        currentNode = parent.addNode(nodetype, primaryType);
-//        if(mixinNodeTypes != null){
-//          for(String typeNode : mixinNodeTypes){
-//            if(currentNode.isNodeType(typeNode))
-//              currentNode.addMixin(typeNode);
-//              NodeType mixinType = nodeTypeManager.getNodeType(typeNode);
-//          }
-//        }
-//      }
-//      System.out.println("\n\n\n----This is AddNode(Node parent, ....) method ----: Building...\n\n\n");
-//  }
-  
-  //Create node task
-  private void createNodeRecusively(String path, Node curentNode, 
-      NodeType curentNodeType, Map jcrInputPro) throws Exception{
-      processNodeRecusively(true, path, curentNode, curentNodeType, jcrInputPro);
-  }
-  
-  //Edit node task
-  public void updateNodeRecusively(String path, Node curentNode, 
-      NodeType curentNodeType, Map jcrInputPro) throws Exception{
-    processNodeRecusively(false, path, curentNode, curentNodeType, jcrInputPro);
-  }
-  
-  //Create node process
-  public void processNodeRecusively(boolean create, String path, 
-      Node curentNode, NodeType curentNodeType, Map jcrInputPro) throws Exception{
-    if(create)
-      processEditNodeProperty(true, path, curentNode, curentNodeType, jcrInputPro);
-    else{
-      for(PropertyIterator proIterate = curentNode.getProperties(); proIterate.hasNext();){
-        Property property = proIterate.nextProperty();
-        PropertyDefinition proDefiDetail = property.getDefinition();
-        String proName = property.getName();
-        int proReqType = property.getType();
-        String curentPath = path + "/" + proName;
-        JcrItemInput varJcrInputPro = (JcrItemInput)jcrInputPro.get(curentPath);
-        Object value = null;
-        if(varJcrInputPro != null) value = varJcrInputPro.getPropertyValue();
-        if(value != null && !proDefiDetail.isProtected())
-          processProperty(proName, curentNode, proReqType, value, proDefiDetail.isMultiple());
-      }
-    } 
-    processEditNodeProperty(false, path, curentNode, curentNodeType, jcrInputPro);
-    
-    List<Object> childs = new ArrayList<Object>();
-    if(create){
-      PropertyDefinition [] childNodeDefins = curentNodeType.getPropertyDefinitions();
-      for(int childIndex = 0; childIndex < childNodeDefins.length; childIndex++)
-        childs.add(childNodeDefins[childIndex]);
-    }else{
-      NodeIterator nodeIterate = curentNode.getNodes();
-      while(nodeIterate.hasNext())
-        childs.add(nodeIterate.next());
-    }
-    Iterator iterate = childs.iterator();
-    while(iterate.hasNext()){
-      Object obj = iterate.next();
-      NodeDefinition nodeDefin;
-      String nodeName = null;
-      if(obj instanceof Node){
-        nodeDefin = ((Node)obj).getDefinition();
-        nodeName = ((Node)obj).getName();
-      }else{
-        nodeDefin = (NodeDefinition)obj;
-        nodeName = ((NodeDefinition)obj).getName();
-      }
-      if(!nodeDefin.isAutoCreated() && !nodeDefin.isProtected()
-          && ("*".equals(nodeDefin.getName()) && (obj instanceof NodeDefinition))){
-        String curentPath = path + "/" + nodeName;
-        JcrItemInput jcrInputVariable = (JcrItemInput)jcrInputPro.get(curentPath);
-        String nodeTypeName = null;
-        String mixinTypeName [] = null;
-        if(jcrInputVariable != null){
-          nodeTypeName = jcrInputVariable.getPrimaryNodeType();
-          mixinTypeName = jcrInputVariable.getMixinNodeTypes();
-          NodeTypeManager nodeTypeManger = curentNode.getSession().getWorkspace().getNodeTypeManager();
-          NodeType nodeType = null;
-          if(obj instanceof Node)
-            nodeType = ((Node)obj).getPrimaryNodeType();            
-          else if(nodeTypeName != null || "".equals(nodeTypeName))
-            nodeType = nodeDefin.getRequiredPrimaryTypes()[0];
-          else
-            nodeType = nodeTypeManger.getNodeType(nodeTypeName);
-          
-          Node childNode = null;
-          if(create){
-            childNode = curentNode.addNode(nodeName, nodeType.getName());
-            if(mixinTypeName.length > 0){
-              for(String typeNode : mixinTypeName){
-                if(childNode.isNodeType(typeNode))
-                  childNode.addMixin(typeNode);
-                  NodeType mixinType = nodeTypeManger.getNodeType(typeNode);
-              }
-            }
-            String nodePath = path + "/" + nodeName;
-            processNodeRecusively(create, nodePath, curentNode, curentNodeType, jcrInputPro);
-          }else{
-            try{
-              childNode = curentNode.getNode(nodeName);
-            }catch(PathNotFoundException pathEx){
-              childNode = curentNode.addNode(nodeName, nodeType.getName());
-              if(mixinTypeName.length > 0){
-                for(String typeNode : mixinTypeName){
-                  if(childNode.isNodeType(typeNode))
-                    childNode.addMixin(typeNode);
-                    NodeType mixinType = nodeTypeManger.getNodeType(typeNode);
-                }
-              }
-              String nodePath = path + "/" + nodeName;
-              processNodeRecusively(create, nodePath, curentNode, curentNodeType, jcrInputPro);
-            }
-          }
-          String nodePath = path + "/" + nodeName;
-          processNodeRecusively(create, nodePath, curentNode, curentNodeType, jcrInputPro);
+  public Node addNode(Node parent, String nodetype, Map<String, JcrItemInput> maps,
+      boolean isNew) throws Exception {
+    Set<String> keys = maps.keySet();
+    String nodePath = extractNodeName(keys);
+    JcrItemInput jcrInputPro = (JcrItemInput) maps.get(nodePath);
+    String nodeName = (String) jcrInputPro.getValue();
+    if (nodeName == null || nodeName.length() == 0){
+      nodeName = idGeneratorService_.generateStringID(nodetype);
+    }  
+    String primaryType = jcrInputPro.getPrimaryNodeType();
+    if (primaryType == null || primaryType.length() == 0){
+      primaryType = nodetype;
+    }  
+    Session session = parent.getSession();
+    NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
+    NodeType nodeType = nodeTypeManager.getNodeType(primaryType);
+    Node currentNode = null;
+    String[] mixinNodeTypes = jcrInputPro.getMixinNodeTypes();
+    if (isNew) {
+      currentNode = parent.addNode(nodeName, primaryType);
+      if (mixinNodeTypes != null) {
+        for (String typeNode : mixinNodeTypes) {
+          if (currentNode.isNodeType(typeNode)){
+            currentNode.addMixin(typeNode);
+          } 
+          NodeType mixinType = nodeTypeManager.getNodeType(typeNode);
         }
       }
+    }else{
+      //TO DO update
     }
-  } 
-  
-  //Process edit properties
-  public void processEditNodeProperty(boolean create, String path, 
-      Node curentNode, NodeType curentNodeTye, Map jcrInputPro) throws Exception{
-     if(create || path.equals(NODE)){
-       PropertyDefinition [] proDefin = curentNodeTye.getPropertyDefinitions();
-       for(int proIndex = 0; proIndex < proDefin.length; proIndex++){
-         PropertyDefinition proDefiDetail = proDefin[proIndex];
-         if(!proDefiDetail.isAutoCreated() && !proDefiDetail.isProtected()){
-           String proName = proDefiDetail.getName();
-           int proReqType = proDefiDetail.getRequiredType();
-           String curentPath = path + "/" + proName;
-           JcrItemInput varJcrInput = (JcrItemInput)jcrInputPro.get(curentPath);
-           Object value = null;
-           if(varJcrInput == null) value = varJcrInput.getPropertyValue();
-           if(varJcrInput != null && !proDefiDetail.isMandatory())
-             processProperty(proName, curentNode, proReqType, value, proDefiDetail.isMultiple());
-         }
-       }
-     }
+    return currentNode;
   }
-  
-  //process property
-  private void processProperty(String propertyName, Node node, int requiredtype,
-      Object value, boolean isMultiple) throws Exception{
-    switch(requiredtype){
+  public Node addNode(String repository, String workspace, String parentPath, String nodetype,
+      Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
+      throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    Session session = sessionProvider.getSession(workspace, manageableRepository);
+    Node nodeHome = (Node)session.getItem(parentPath);
+    Node currentNode = addNode(nodeHome, nodetype, jcrProperties, isNew);
+    session.save();    
+    return currentNode;
+  }
+  //Copy node task
+  public Node copyNode(String repository, String srcWorkspace, String srcPath,
+      String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
+    /*
+    Session srcSession = null;
+    Session desSession = null;
+    if(srcWorkspace.equals(destWorkspace)){
+      try{
+        srcSession = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
+        desSession = repositoryService_.getRepository(repository).getSystemSession(destWorkspace);
+        Workspace workspace = desSession.getWorkspace();
+        Node srcNode = (Node)srcSession.getItem(srcPath);
+        try{
+          desSession.getItem(destPath);
+        }catch(PathNotFoundException pathEx){
+          createNode(desSession, srcPath);
+        }
+        workspace.copy(srcWorkspace, srcPath, destPath);
+        
+        System.out.println("\n\n\n-------Copying...........\n\n\n\n");
+        
+        srcSession.save();
+        srcSession.logout();
+        desSession.save();
+        desSession.logout();
+      }catch(Exception ex){
+        if(srcSession != null) srcSession.logout();
+        if(desSession != null) desSession.logout();
+      }
+    }else{
+      Session session = null;
+      try{
+        session = repositoryService_.getRepository(srcPath).getSystemSession(srcWorkspace);
+        Workspace workspace = session.getWorkspace();
+        try{
+          session.getItem(destPath);
+        }catch(PathNotFoundException pathEx){
+          createNode(session, destPath);
+          session.refresh(false);
+        }
+        workspace.copy(srcPath, destPath);
+        
+        System.out.println("\n\n\n----ELSE---Copying...........\n\n\n\n");
+        
+        session.save();
+        session.logout();
+      }catch(Exception ex){
+        if(session != null) session.logout(); 
+      }
+    }
+    System.out.println("\n\n\n----This is copyNode(....) method ----: Building....\n\n\n");
+    */
+    return null;
+  }  
+  //Move node task
+  public Node moveNode(String repository, String srcWorkspace, String srcPath,
+      String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
+    // TODO Auto-generated method stub
+   /*
+    Session srcSession = null;
+    Session desSession = null;
+    if(srcWorkspace.equals(destWorkspace)){
+      try{
+        srcSession = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
+        desSession = repositoryService_.getRepository(repository).getSystemSession(destWorkspace);
+        Workspace workspace = desSession.getWorkspace();
+        Node srcNode = (Node)srcSession.getItem(srcPath);
+        try{
+          desSession.getItem(destPath);
+        }catch(PathNotFoundException pathEx){
+          createNode(desSession, srcPath);
+        }
+        workspace.clone(srcWorkspace, srcPath, destPath, true);
+        srcNode.remove();
+        
+        System.out.println("\n\n\n-----Removing...........\n\n\n\n");
+        
+        srcSession.save();
+        srcSession.logout();
+        desSession.save();
+        desSession.logout();
+      }catch(Exception ex){
+        if(srcSession != null) srcSession.logout();
+        if(desSession != null) desSession.logout();
+      }
+    }else{
+      Session session = null;
+      try{
+        session = repositoryService_.getRepository(srcPath).getSystemSession(srcWorkspace);
+        Workspace workspace = session.getWorkspace();
+        try{
+          session.getItem(destPath);
+        }catch(PathNotFoundException pathEx){
+          createNode(session, destPath);
+          session.refresh(false);
+        }
+        workspace.move(srcPath, destPath);
+        
+        System.out.println("\n\n\n----ELSE---Copying...........\n\n\n\n");
+        
+        session.save();
+        session.logout();
+      }catch(Exception ex){
+        if(session != null) session.logout(); 
+      }
+    }
+    System.out.println("\n\n\n----This is moveNode(....) method ----: Building....\n\n\n");
+    */
+    return null;
+  }
+  //Set properties task
+  public void setProperty(Node node, String propertyName, Object value, int requiredtype,
+      boolean isMultiple) throws Exception{
+   /* switch(requiredtype){
       case PropertyType.BINARY:
         if (value == null)
           node.setProperty(propertyName, "");
@@ -384,122 +353,8 @@ public class NodeServiceImpl implements NodeService {
         default:
           throw new RepositoryException("unknown type " + requiredtype);
     }
-  }
-  //Copy node task
-  public void copyNode(String repository, String srcWorkspace, String srcPath,
-      String destWorkspace, String destPath) throws Exception {
-    Session srcSession = null;
-    Session desSession = null;
-    if(srcWorkspace.equals(destWorkspace)){
-      try{
-        srcSession = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
-        desSession = repositoryService_.getRepository(repository).getSystemSession(destWorkspace);
-        Workspace workspace = desSession.getWorkspace();
-        Node srcNode = (Node)srcSession.getItem(srcPath);
-        try{
-          desSession.getItem(destPath);
-        }catch(PathNotFoundException pathEx){
-          createNode(desSession, srcPath);
-        }
-        workspace.copy(srcWorkspace, srcPath, destPath);
-        
-        System.out.println("\n\n\n-------Copying...........\n\n\n\n");
-        
-        srcSession.save();
-        srcSession.logout();
-        desSession.save();
-        desSession.logout();
-      }catch(Exception ex){
-        if(srcSession != null) srcSession.logout();
-        if(desSession != null) desSession.logout();
-      }
-    }else{
-      Session session = null;
-      try{
-        session = repositoryService_.getRepository(srcPath).getSystemSession(srcWorkspace);
-        Workspace workspace = session.getWorkspace();
-        try{
-          session.getItem(destPath);
-        }catch(PathNotFoundException pathEx){
-          createNode(session, destPath);
-          session.refresh(false);
-        }
-        workspace.copy(srcPath, destPath);
-        
-        System.out.println("\n\n\n----ELSE---Copying...........\n\n\n\n");
-        
-        session.save();
-        session.logout();
-      }catch(Exception ex){
-        if(session != null) session.logout(); 
-      }
-    }
-    System.out.println("\n\n\n----This is copyNode(....) method ----: Building....\n\n\n");
-  }
-  
-  //Move node task
-  public void moveNode(String repository, String srcWorkspace, String srcPath,
-      String destWorkspace, String destPath) throws Exception {
-    Session srcSession = null;
-    Session desSession = null;
-    if(srcWorkspace.equals(destWorkspace)){
-      try{
-        srcSession = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
-        desSession = repositoryService_.getRepository(repository).getSystemSession(destWorkspace);
-        Workspace workspace = desSession.getWorkspace();
-        Node srcNode = (Node)srcSession.getItem(srcPath);
-        try{
-          desSession.getItem(destPath);
-        }catch(PathNotFoundException pathEx){
-          createNode(desSession, srcPath);
-        }
-        workspace.clone(srcWorkspace, srcPath, destPath, true);
-        srcNode.remove();
-        
-        System.out.println("\n\n\n-----Removing...........\n\n\n\n");
-        
-        srcSession.save();
-        srcSession.logout();
-        desSession.save();
-        desSession.logout();
-      }catch(Exception ex){
-        if(srcSession != null) srcSession.logout();
-        if(desSession != null) desSession.logout();
-      }
-    }else{
-      Session session = null;
-      try{
-        session = repositoryService_.getRepository(srcPath).getSystemSession(srcWorkspace);
-        Workspace workspace = session.getWorkspace();
-        try{
-          session.getItem(destPath);
-        }catch(PathNotFoundException pathEx){
-          createNode(session, destPath);
-          session.refresh(false);
-        }
-        workspace.move(srcPath, destPath);
-        
-        System.out.println("\n\n\n----ELSE---Copying...........\n\n\n\n");
-        
-        session.save();
-        session.logout();
-      }catch(Exception ex){
-        if(session != null) session.logout(); 
-      }
-    }
-    System.out.println("\n\n\n----This is moveNode(....) method ----: Building....\n\n\n");
-  }
-  
-  //Extract node task
-  private String extractNodeName(Set keys){
-    for(Iterator iter = keys.iterator(); iter.hasNext();){
-      String key = (String)iter.next();
-      if(key.endsWith(NODE))
-        return key;
-    }
-   return null;
-  }
-  
+    */
+  } 
   //Create node
   private void createNode(Session session, String uri) throws RepositoryException{
     String [] splitName = StringUtils.split(uri, "/");
@@ -515,29 +370,140 @@ public class NodeServiceImpl implements NodeService {
     }
     session.save();
   }
-
-  public Node copyNode(String repository, String srcWorkspace, String srcPath,
-      String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
+  //Create node task
+  private void createNodeRecusively(String path, Node curentNode, 
+      NodeType curentNodeType, Map<String, JcrItemInput> jcrInputPro) throws Exception{
+      processNodeRecusively(true, path, curentNode, curentNodeType, jcrInputPro);
+  }
+  //Extract node task
+  private String extractNodeName(Set keys){
+    String key = null ;
+    for(Iterator iter = keys.iterator(); iter.hasNext();){
+      key = (String)iter.next() ;
+      if(key.endsWith(NODE)) return key;
+    }
     return null;
   }
-
-  public Node moveNode(String repository, String srcWorkspace, String srcPath,
-      String destWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  //Process edit properties
+  private void processEditNodeProperty(boolean create, String path, 
+      Node curentNode, NodeType curentNodeTye, Map<String,JcrItemInput> jcrInputPro) throws Exception{
+     if(create || path.equals(NODE)){
+       PropertyDefinition [] proDefin = curentNodeTye.getPropertyDefinitions();
+       for(int proIndex = 0; proIndex < proDefin.length; proIndex++){
+         PropertyDefinition proDefiDetail = proDefin[proIndex];
+         if(!proDefiDetail.isAutoCreated() && !proDefiDetail.isProtected()){
+           String proName = proDefiDetail.getName();
+           int proReqType = proDefiDetail.getRequiredType();
+           String curentPath = path + "/" + proName;
+           JcrItemInput varJcrInput = (JcrItemInput)jcrInputPro.get(curentPath);
+           Object value = null;
+           if(varJcrInput == null) value = varJcrInput.getValue();
+           if(varJcrInput != null && !proDefiDetail.isMandatory())
+             setProperty(curentNode,proName, value,proReqType, proDefiDetail.isMultiple());
+         }
+       }
+     }
   }
-
-  public Node addNode(String repository, String workspace, String parentPath, String nodetype,
-      Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
-      throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  //Create node process
+  private void processNodeRecusively(boolean create, String path, 
+      Node curentNode, NodeType curentNodeType, Map jcrInputPro) throws Exception{
+   /*
+    if(create)
+      processEditNodeProperty(true, path, curentNode, curentNodeType, jcrInputPro);
+    else{
+      for(PropertyIterator proIterate = curentNode.getProperties(); proIterate.hasNext();){
+        Property property = proIterate.nextProperty();
+        PropertyDefinition proDefiDetail = property.getDefinition();
+        String proName = property.getName();
+        int proReqType = property.getType();
+        String curentPath = path + "/" + proName;
+        JcrItemInput varJcrInputPro = (JcrItemInput)jcrInputPro.get(curentPath);
+        Object value = null;
+        if(varJcrInputPro != null) value = varJcrInputPro.getValue();
+        if(value != null && !proDefiDetail.isProtected())
+          setProperty(curentNode, proName, value, proReqType, proDefiDetail.isMultiple());
+      }
+    } 
+    processEditNodeProperty(false, path, curentNode, curentNodeType, jcrInputPro);
+    
+    List<Object> childs = new ArrayList<Object>();
+    if(create){
+      PropertyDefinition [] childNodeDefins = curentNodeType.getPropertyDefinitions();
+      for(int childIndex = 0; childIndex < childNodeDefins.length; childIndex++)
+        childs.add(childNodeDefins[childIndex]);
+    }else{
+      NodeIterator nodeIterate = curentNode.getNodes();
+      while(nodeIterate.hasNext())
+        childs.add(nodeIterate.next());
+    }
+    Iterator iterate = childs.iterator();
+    while(iterate.hasNext()){
+      Object obj = iterate.next();
+      NodeDefinition nodeDefin;
+      String nodeName = null;
+      if(obj instanceof Node){
+        nodeDefin = ((Node)obj).getDefinition();
+        nodeName = ((Node)obj).getName();
+      }else{
+        nodeDefin = (NodeDefinition)obj;
+        nodeName = ((NodeDefinition)obj).getName();
+      }
+      if(!nodeDefin.isAutoCreated() && !nodeDefin.isProtected()
+          && ("*".equals(nodeDefin.getName()) && (obj instanceof NodeDefinition))){
+        String curentPath = path + "/" + nodeName;
+        JcrItemInput jcrInputVariable = (JcrItemInput)jcrInputPro.get(curentPath);
+        String nodeTypeName = null;
+        String mixinTypeName [] = null;
+        if(jcrInputVariable != null){
+          nodeTypeName = jcrInputVariable.getPrimaryNodeType();
+          mixinTypeName = jcrInputVariable.getMixinNodeTypes();
+          NodeTypeManager nodeTypeManger = curentNode.getSession().getWorkspace().getNodeTypeManager();
+          NodeType nodeType = null;
+          if(obj instanceof Node)
+            nodeType = ((Node)obj).getPrimaryNodeType();            
+          else if(nodeTypeName != null || "".equals(nodeTypeName))
+            nodeType = nodeDefin.getRequiredPrimaryTypes()[0];
+          else
+            nodeType = nodeTypeManger.getNodeType(nodeTypeName);
+          
+          Node childNode = null;
+          if(create){
+            childNode = curentNode.addNode(nodeName, nodeType.getName());
+            if(mixinTypeName.length > 0){
+              for(String typeNode : mixinTypeName){
+                if(childNode.isNodeType(typeNode))
+                  childNode.addMixin(typeNode);
+                  NodeType mixinType = nodeTypeManger.getNodeType(typeNode);
+              }
+            }
+            String nodePath = path + "/" + nodeName;
+            processNodeRecusively(create, nodePath, curentNode, curentNodeType, jcrInputPro);
+          }else{
+            try{
+              childNode = curentNode.getNode(nodeName);
+            }catch(PathNotFoundException pathEx){
+              childNode = curentNode.addNode(nodeName, nodeType.getName());
+              if(mixinTypeName.length > 0){
+                for(String typeNode : mixinTypeName){
+                  if(childNode.isNodeType(typeNode))
+                    childNode.addMixin(typeNode);
+                    NodeType mixinType = nodeTypeManger.getNodeType(typeNode);
+                }
+              }
+              String nodePath = path + "/" + nodeName;
+              processNodeRecusively(create, nodePath, curentNode, curentNodeType, jcrInputPro);
+            }
+          }
+          String nodePath = path + "/" + nodeName;
+          processNodeRecusively(create, nodePath, curentNode, curentNodeType, jcrInputPro);
+        }
+      }
+    }
+    */
   }
-
-  public Node addNode(Node parent, String nodetype, Map<String, JcrItemInput> jcrProperties,
-      boolean isNew) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  //Edit node task
+  private void updateNodeRecusively(String path, Node curentNode, 
+      NodeType curentNodeType, Map jcrInputPro) throws Exception{
+    processNodeRecusively(false, path, curentNode, curentNodeType, jcrInputPro);
   }
 }
