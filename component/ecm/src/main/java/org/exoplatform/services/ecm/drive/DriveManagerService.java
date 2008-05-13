@@ -27,15 +27,15 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  * Apr 28, 2008  
  */
 public interface DriveManagerService {
-  
+
   final public String DRIVE_REGISTRY_PATH = "exo:services/exo:ecm/exo:drives".intern();     
-  
+
   public DriveEntry getDrive(String repository, String group,String name, SessionProvider sessionProvider) throws Exception ;  
   public List<DriveEntry> getAllDrives(String repository, SessionProvider sessionProvider) throws Exception ;  
-  public List<DriveEntry> getDrives(String repository , String group, SessionProvider sessionProvider) throws Exception ;
+  public List<DriveEntry> getDrivesByGroup(String repository , String group, SessionProvider sessionProvider) throws Exception ;
   public List<DriveEntry> getDrivesByUser(String repository,String userId, SessionProvider sessionProvider) throws Exception ;
-  
+
   public void addDrive(DriveEntry drive, SessionProvider sessionProvider) throws Exception ;
   public void removeDrive(String repository,String group,String name, SessionProvider sessionProvider)  throws Exception ;
-  
+
 }
