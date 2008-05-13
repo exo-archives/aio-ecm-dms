@@ -30,14 +30,15 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface TaxonomyManagerService {
   
-  public void addTaxonomy(String parentPath,String childName, String repository, SessionProvider sessionProvider) throws Exception  ;
-  public void removeTaxonomyNode(String realPath, String repository, SessionProvider sessionProvider) throws Exception ;   
-  public void moveTaxonomyNode(String srcPath, String destPath, String type, String repository, SessionProvider sessionProvider) throws Exception ;    
+  public void addTaxonomy(String parentPath,String childName, String workspace, String repository, SessionProvider sessionProvider) throws Exception  ;
+  public void removeTaxonomy(String realPath, String repository, String workspace, SessionProvider sessionProvider) throws Exception ;   
+  public void copyTaxonomy(String srcPath, String destPath,String workspace, String repository, SessionProvider sessionProvider) throws Exception ;
+  public void moveTaxonomy(String srcPath, String destPath,String workspace,String repository, SessionProvider sessionProvider) throws Exception ;    
   
-  public List<Node> getCategories(Node node, String repository) throws Exception;
-  public void removeCategory(Node node, String categoryPath, String repository) throws Exception;
+  public List<Node> getCategories(Node node) throws Exception;
+  public void removeCategory(Node node, String categoryPath) throws Exception;
   
-  public void addCategory(Node node, String categoryPath, String repository) throws Exception;   
-  public void addCategory(Node node, String categoryPath, boolean replaceAll, String repository) throws Exception;
+  public void addCategory(Node node, String categoryPath) throws Exception;   
+  public void addCategory(Node node, String categoryPath, boolean replaceAll) throws Exception;
   
 }

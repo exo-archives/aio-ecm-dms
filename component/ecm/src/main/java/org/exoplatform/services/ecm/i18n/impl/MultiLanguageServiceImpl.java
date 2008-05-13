@@ -35,7 +35,7 @@ import org.exoplatform.services.ecm.i18n.MultiLanguageService;
 public class MultiLanguageServiceImpl implements MultiLanguageService {
 
   public String getDefaultLanguage(Node document) throws Exception {
-    return null;
+    return null;    
   }
 
   public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language,

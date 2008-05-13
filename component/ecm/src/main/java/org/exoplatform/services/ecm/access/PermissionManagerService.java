@@ -40,7 +40,8 @@ public class PermissionManagerService {
    * - membership type: "manager:/* " 
    * - membership: manager:/platform/user, *:/platform/administrator 
    * - public resource to everyone: Everyone 
-   * It should implement base on sun security(subject, intents....)*/
+   * It should implement base on sun security(subject, intents....)
+   * This service should be implement in exo-core*/
 
   final public static String WILD_CARD = "*".intern() ;
   final public static String EVERYONE = "Everyone".intern();     
