@@ -17,7 +17,6 @@
 package org.exoplatform.services.ecm.drive;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by The eXo Platform SAS
@@ -26,7 +25,7 @@ import java.util.List;
  * Apr 28, 2008  
  */
 public class DriveEntry {
-  
+
   private String name ;  
   private String group ;  
   private ArrayList<String> accessPermissions ;
@@ -35,66 +34,53 @@ public class DriveEntry {
   private String homePath ;
   private String iconPath ;
   private ArrayList<String> views ;
-  
+
   //TODO should move to userSetting
   private boolean showReference ;
   private boolean showNonDocument ;
   private boolean showSideBar ;
   private boolean showHiddenNode ;
   private String allowCreateFolder ;
-  
+
   public  DriveEntry(){}
 
   public String getName() { return name ; }
   public void setName(String name) { this.name = name ; }
-  
+
   public String getGroup() { return group ; }
   public void setGroup(String group) { this.group = group; }
-  
+
   public String getRepository() { return repository ; }
   public void setRepository(String rp) { repository = rp ; }
-  
+
   public String getWorkspace() { return workspace ; }
   public void setWorkspace(String ws) { workspace = ws ; }
-  
+
   public ArrayList<String> getAccessPermissions() { return this.accessPermissions ; }
   public void setAcessPermissions(ArrayList<String> accessPermissions) { this.accessPermissions = accessPermissions ; }
 
   public String getHomePath() { return homePath ; }
   public void setHomePath(String path) { homePath = path ; }
-  
-  public String getIcon() { return iconPath ; }
-  public void setIcon(String ico) { iconPath = ico ; }
-  
+
+  public String getIconPath() { return iconPath ; }
+  public void setIconPath(String ico) { iconPath = ico ; }
+
   public String getAllowCreateFolder() { return allowCreateFolder ; }
   public void setAllowCreateFolder(String allowCreateFolder) { this.allowCreateFolder = allowCreateFolder ; }
 
   public ArrayList<String> getViews() { return views ; }
   public void setViews(ArrayList<String> v) { views = v ; }
-  
-  public boolean getViewPreferences() { return showReference ; }
-  public void setViewPreferences(boolean b) { showReference = b ; }
-  
-  public boolean getViewNonDocument() { return showNonDocument ; }
-  public void setViewNonDocument(boolean b) { showNonDocument = b ; }
-  
-  public boolean getViewSideBar() { return showSideBar ; }
-  public void setViewSideBar(boolean b) { showSideBar = b ; }
-  
+
+  public boolean getShowPreferences() { return showReference ; }
+  public void setShowPreferences(boolean b) { showReference = b ; }
+
+  public boolean getShowNonDocument() { return showNonDocument ; }
+  public void setShowNonDocument(boolean b) { showNonDocument = b ; }
+
+  public boolean getShowSideBar() { return showSideBar ; }
+  public void setShowSideBar(boolean b) { showSideBar = b ; }
+
   public boolean getShowHiddenNode() { return showHiddenNode ; }
   public void setShowHiddenNode(boolean b) { showHiddenNode = b ; }
-  
-  public boolean hasPermission(String[] allPermissions, String permission) {
-    List<String> permissionList = new ArrayList<String>() ;
-    for(String per : allPermissions){
-      permissionList.add(per.trim()) ;
-    }
-    if(permission == null) return false ;
-    if(permission.indexOf(":/") > -1){
-      String[] array = permission.split(":/") ;
-      if(array == null || array.length < 2) return false ;
-      if(permissionList.contains("*:/"+array[1])) return true ;
-    }    
-    return permissionList.contains(permission) ;
-  }  
+
 }
