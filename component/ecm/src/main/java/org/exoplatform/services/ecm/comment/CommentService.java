@@ -111,7 +111,7 @@ public class CommentService {
   }  
   
   private boolean isSupportedLocalize(Node document, String language) throws Exception {
-    List<String> locales = multiLanguageService_.getSupportedLanguages(document) ;
+    List<String> locales = multiLanguageService_.getAvailableLanguages(document) ;
     if (locales != null &&locales.contains(language)) return true;
     return false ;
   }
