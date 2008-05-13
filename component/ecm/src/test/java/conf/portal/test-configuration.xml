@@ -199,7 +199,73 @@
       <type>org.exoplatform.services.organization.auth.MembershipListener</type>
     </component-plugin>
   </external-component-plugins>
-     
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.ecm.drive.DriveManagerService</target-component>
+    <component-plugin>
+      <name>test.drive.component.plugin</name>
+      <set-method>addPlugin</set-method>
+      <type>org.exoplatform.services.ecm.drive.impl.DriveManagerPlugin</type>
+      <init-params>
+	      <object-param>        
+	        <name>System files1</name>
+	        <description>DriveEntry one</description>
+	        <object type="org.exoplatform.services.ecm.drive.DriveEntry">
+	          <field  name="name"><string>Mydrive1</string></field>
+	          <field  name="group"><string>Mygroup1</string></field>
+	          <field  name="accessPermissions">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>*:/platform/administrators</string></value>	          		               
+	          	</collection>   	            	          
+	          </field>
+	          <field  name="repository"><string>Repository1</string></field>
+	          <field  name="workspace"><string>system1</string></field>
+	          <field  name="homePath"><string>HomePath1</string></field>
+	          <field  name="iconPath"><string>IconPath1</string></field>
+	          <field  name="views">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>system-view1</string></value>	          		               
+	          	</collection>   	            
+	          </field>
+            <field  name="showReference"><boolean>false</boolean></field>
+            <field  name="showNonDocument"><boolean>true</boolean></field>
+            <field  name="showSideBar"><boolean>true</boolean></field>
+            <field  name="showHiddenNode"><boolean>true</boolean></field>
+            <field  name="allowCreateFolder"><string>both</string></field>
+	        </object>
+	      </object-param>
+	      <object-param>        
+	        <name>System files2</name>
+	        <description>DriveEntry Two</description>
+	        <object type="org.exoplatform.services.ecm.drive.DriveEntry">
+          	<field  name="repository"><string>Repository2</string></field>
+	          <field  name="name"><string>Mydrive2</string></field>
+	          <field  name="group"><string>Mygroup2</string></field>
+	          <field  name="accessPermissions">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>*:/platform/administrators</string></value>	          		               
+	          	</collection>   	            	          
+	          </field>
+	         
+	          <field  name="workspace"><string>system2</string></field>
+	          <field  name="homePath"><string>HomePath2</string></field>
+	          <field  name="iconPath"><string>IconPath2</string></field>
+	          <field  name="views">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>system-view2</string></value>	          		               
+	          	</collection>   	            
+	          </field>
+            <field  name="showReference"><boolean>false</boolean></field>
+            <field  name="showNonDocument"><boolean>true</boolean></field>
+            <field  name="showSideBar"><boolean>true</boolean></field>
+            <field  name="showHiddenNode"><boolean>true</boolean></field>
+            <field  name="allowCreateFolder"><string>both</string></field>
+	        </object>
+	      </object-param>    
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>
+       
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>    
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>  
 </configuration>
