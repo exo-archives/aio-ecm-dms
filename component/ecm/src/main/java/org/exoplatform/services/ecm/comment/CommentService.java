@@ -66,7 +66,7 @@ public class CommentService {
     if(user != null) {
       addComment(node, user.getFullName(), user.getEmail(), "", comment, language);
     } else {
-      addComment(node, ANONYMOUS, "", "", comment, language);
+      addComment(node, null, "", "", comment, language);
     }
   }
 
