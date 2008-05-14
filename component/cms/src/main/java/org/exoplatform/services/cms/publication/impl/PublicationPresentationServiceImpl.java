@@ -37,8 +37,13 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
   
   public PublicationPresentationServiceImpl () {
     log = ExoLogger.getLogger("portal:PublicationPresentationServiceImpl");
-    log.info("PublicationPresentationServiceImpl initialization");    
-    log.info("PublicationPresentationServiceImpl initialized");
+    
+    log.info("#################################################");
+    log.info("# PublicationPresentationService initialization #");
+    log.info("#################################################\n");
+    log.info("#################################################");    
+    log.info("#  PublicationPresentationService initialized   #");
+    log.info("#################################################\n");
   }
   
   /* (non-Javadoc)
@@ -46,7 +51,9 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
    */
   public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException {
     // TODO Auto-generated method stub
-    log.info("getStateUI");
+    log.info("################");
+    log.info("#  getStateUI  #");
+    log.info("################\n");
     
     return null;
   }
