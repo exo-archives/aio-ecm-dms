@@ -66,7 +66,7 @@ public class VoteService {
     if (document.canAddMixin(VOTABLE)) {
       document.addMixin(VOTABLE);
     }            
-    String defaultLanguage = multiLangService_.getDefaultLanguage(document);    
+    String defaultLanguage = multiLangService_.getDefault(document);    
     if(language != null && !language.equalsIgnoreCase(defaultLanguage)) {
       try {
         languageNode = document.getNode(LANGUAGES + "/" +language) ;

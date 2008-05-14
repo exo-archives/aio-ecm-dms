@@ -86,7 +86,7 @@ public class CommentService {
     if (!document.isNodeType(COMMENTABLE)) {
       document.addMixin(COMMENTABLE);
     }
-    String defaultLanguage = multiLanguageService_.getDefaultLanguage(document);
+    String defaultLanguage = multiLanguageService_.getDefault(document);
     Node languageNode = null;
     if (language != null && !language.equalsIgnoreCase(defaultLanguage)) {
       try {
