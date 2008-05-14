@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Value;
 
 import org.exoplatform.services.ecm.core.JcrItemInput;
@@ -29,43 +30,69 @@ import org.exoplatform.services.ecm.i18n.MultiLanguageService;
  * Created by The eXo Platform SAS
  * Author : Ly Dinh Quang
  *          quang.ly@exoplatform.com
- *			    xxx5669@yahoo.com
+ *          xxx5669@yahoo.com
  * May 7, 2008  
  */
 public class MultiLanguageServiceImpl implements MultiLanguageService {
-
-  public String getDefaultLanguage(Node document) throws Exception {
-    return null;    
+  final static public String JCRCONTENT = "jcr:content";
+  final static public String JCRDATA = "jcr:data";
+  final static public String JCRMIMETYPE = "jcr:mimeType";
+  final static public String NTUNSTRUCTURED = "nt:unstructured";
+  
+  
+  public void addFileLanguage(Node node, Value value, String mimeType, String language, boolean isDefault) throws Exception {
+    // TODO Auto-generated method stub
+    
   }
 
-  public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language,
-      boolean isDefault) throws Exception {    
+  public void addFileLanguage(Node node, String language, Map<String, JcrItemInput> mappings, boolean isDefault) throws Exception {
+    // TODO Auto-generated method stub
+    
   }
 
-  public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language,
-      boolean isDefault, String nodeType) throws Exception {   
+  public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language, boolean isDefault) throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void addLanguage(Node document, Map<String, JcrItemInput> inputs, String language, boolean isDefault, String nodeType) throws Exception {
+    // TODO Auto-generated method stub
+    
   }
 
   public List<String> getAvailableLanguages(Node document) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getDefaultLanguage(Node document) throws Exception {
+    // TODO Auto-generated method stub
     return null;
   }
 
   public Node getLanguage(Node node, String language) throws Exception {
+    // TODO Auto-generated method stub
     return null;
   }
 
-  public void setDefault(Node node, String language) throws Exception {    
+  public List<String> getSupportedLanguages(Node node) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
   }
 
-  public void addFileLanguage(Node node, Value value, String mimeType, String language,
-      boolean isDefault) throws Exception {
+  public void setDefault(Node node, String language) throws Exception {
     // TODO Auto-generated method stub
     
   }
 
-  public void addFileLanguage(Node node, String language, Map<String, JcrItemInput> mappings,
-      boolean isDefault) throws Exception {
-    // TODO Auto-generated method stub
-    
-  }  
+  public String getDefault(Node node) throws Exception {
+    System.out.println("---------------------------------------------------------Chui vao getDefault");
+    String defaultValue;
+//    try {
+//      defaultValue = node.getProperty("exo:language").getString();
+//    } catch (PathNotFoundException e) {
+//      defaultValue = "";      
+//    }    
+    return null;
+  }
 }

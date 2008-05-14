@@ -38,15 +38,16 @@ public interface MultiLanguageService {
   final public String COMMENTS = "comments".intern() ;
   
   //TODO need review this service
-  public String getDefaultLanguage(Node document) throws Exception ;
+  public List<String> getSupportedLanguages(Node node) throws Exception ;
   public void setDefault(Node node, String language) throws Exception ;   
-  
-  public List<String> getAvailableLanguages(Node document) throws Exception ;  
-  
+  public String getDefaultLanguage(Node document) throws Exception ;
+  public void addLanguage(Node document, Map<String,JcrItemInput> inputs, String language, boolean isDefault) throws Exception ;
+  public void addLanguage(Node document, Map<String,JcrItemInput> inputs, String language, boolean isDefault, String nodeType) throws Exception ;
   public void addFileLanguage(Node node, Value value, String mimeType, String language, boolean isDefault) throws Exception ;
   public void addFileLanguage(Node node, String language, Map<String,JcrItemInput> mappings, boolean isDefault) throws Exception ;
-  public void addLanguage(Node document, Map<String,JcrItemInput> inputs, String language, boolean isDefault) throws Exception ;
-  public void addLanguage(Node document, Map<String,JcrItemInput> inputs, String language, boolean isDefault, String nodeType) throws Exception ;   
   public Node getLanguage(Node node, String language) throws Exception ;
+  public String getDefault(Node node) throws Exception ;
+  public List<String> getAvailableLanguages(Node document) throws Exception ;  
   
+    
 }
