@@ -32,6 +32,7 @@ import javax.jcr.Session;
 import org.exoplatform.services.ecm.i18n.MultiLanguageService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
 
 /**
  * Created by The eXo Platform SAS
@@ -52,13 +53,23 @@ public class CommentService {
   final static String CREATED_DATE = "exo:commentDate".intern() ;
   static final String LANGUAGES = "languages".intern() ;
   static final String ANONYMOUS = "anonymous".intern() ;
-  
+
   private MultiLanguageService multiLanguageService_;
   private OrganizationService orgService_ ;
   public CommentService(MultiLanguageService multiLanguageService) throws Exception {
     multiLanguageService_ = multiLanguageService;    
   }
-  
+
+  public void addComment(Node node,String comment,String language) throws Exception {
+    String commentor = node.getSession().getUserID() ;
+    User user = orgService_.getUserHandler().findUserByName(commentor) ;   
+    if(user != null) {
+      addComment(node, user.getFullName(), user.getEmail(), "", comment, language);
+    } else {
+      addComment(node, ANONYMOUS, "", "", comment, language);
+    }
+  }
+
   public void addComment(Node node, String commentor,String email, String site, String comment,String language) throws Exception {   
     Node document = null;
     Node commentNode = null;
@@ -96,26 +107,21 @@ public class CommentService {
     Node newComment = commentNode.addNode(name, EXO_COMMENTS);
     newComment.setProperty(COMMENTOR, commentor) ;
     newComment.setProperty(CREATED_DATE, commentDate) ;
-    newComment.setProperty(MESSAGE, comment) ;
-    if (email != null && email.length() > 0) {
-      newComment.setProperty(COMMENTOR_EMAIL, email);
-    }
-    if (site == null) {
-      site = "";      
-    }
+    newComment.setProperty(MESSAGE, comment) ;    
+    newComment.setProperty(COMMENTOR_EMAIL, email);    
     newComment.setProperty(COMMENTOR_SITE, site);
     document.getSession().save();
     if(systemSession != null) {
       systemSession.logout();
     }
   }  
-  
+
   private boolean isSupportedLocalize(Node document, String language) throws Exception {
     List<String> locales = multiLanguageService_.getAvailableLanguages(document) ;
     if (locales != null &&locales.contains(language)) return true;
     return false ;
   }
-  
+
   public List<Node> getComment(Node node, String language) throws Exception {
     Node commentsNode = null, languageNode = null;
     if (!isSupportedLocalize(node, language)) {
@@ -126,13 +132,13 @@ public class CommentService {
     } catch (Exception e) {
       languageNode = node;
     }
-    
+
     if (languageNode.hasNode(COMMENTS)) {
       commentsNode = languageNode.getNode(COMMENTS) ;
     } else {
       return new ArrayList<Node>();
     }
-    
+
     List<Node> list = new ArrayList<Node>() ;
     NodeIterator iterate = commentsNode.getNodes();
     while (iterate.hasNext()) {
@@ -141,7 +147,7 @@ public class CommentService {
     Collections.sort(list,new DateComparator()) ;   
     return list;
   }
-  
+
   private class DateComparator implements Comparator<Node> {
 
     public int compare(Node node1, Node node2) {
