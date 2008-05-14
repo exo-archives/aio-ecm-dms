@@ -35,7 +35,7 @@ import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
  * Created by The eXo Platform SAS
  * Author : Ly Dinh Quang
  *          quang.ly@exoplatform.com
- *			xxx5669@yahoo.com
+ *			    xxx5669@yahoo.com
  * May 7, 2008  
  */
 public class TestVoteService extends BaseECMTestCase {  
