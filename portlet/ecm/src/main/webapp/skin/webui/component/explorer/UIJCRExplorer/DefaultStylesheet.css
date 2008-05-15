@@ -15,6 +15,10 @@
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
+	width: 99%;
+}
+
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 .UIJCRExplorerPortlet .UIFormWithTitle {

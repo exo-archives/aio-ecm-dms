@@ -108,7 +108,7 @@
 
 /*############################## -- UIViewRelationList   -- ##############################*/
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
-	width:auto;
+ width:auto;
 }
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
   margin-top: 2px;
@@ -132,11 +132,11 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
-  float: left;
+  float: none;
   cursor: pointer;
-  margin: 3px 4px 0px 0px;
-  height: 24px; width: 20px;
-  background-position: center;
+  height: 24px; width: auto;
+  background-position: left center;
+  padding-left: 24px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {
@@ -151,6 +151,7 @@
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode .HardDisk24x24Icon {
 	width: 27px;
+	float: left;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
@@ -167,6 +168,7 @@
   clear: both;
   line-height: 30px;
   background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
+  padding: 2px 0px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
@@ -184,22 +186,19 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
-  float: left;
-  margin: 7px 0px;
+  float: none;
   cursor: pointer;
+  padding-left: 18px;
+  background-position: left center;
+  width: auto; height: auto;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
-  float: left;
-  margin: 7px 0px;
+  float: none;
   cursor: pointer;
-  width: 18px;
-  height: 16px;
-  background: url('/ecm/skin/icons/16x16/VistaSkin/SmallGrayPlus.gif') no-repeat center;
-}
-
-.UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
-  line-height: 30px;
+  padding-left: 18px;
+  background-position: left center;
+  width: auto; height: auto;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
