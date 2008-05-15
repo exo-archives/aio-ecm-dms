@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 
@@ -59,11 +60,106 @@ public class TestNodeService extends BaseECMTestCase {
   
   //Test add node1
   public void testAddNode1() throws Exception{
+//    
+//    ManageableRepository repository = repoService_.getRepository(REPO_NAME);
+//    Session session = repository.getSystemSession(COLLABORATION_WS) ;
+//    Node rootNode = session.getRootNode() ;
+//    Node parentNode = rootNode.addNode("Test", "nt:unstructured") ;
+//    Map<String,JcrItemInput> map = new HashMap<String, JcrItemInput>() ;
+//    
+//    //node case
+//    JcrItemInput jcrItemInputNode = new JcrItemInput() ;
+//    jcrItemInputNode.setType(jcrItemInputNode.NODE) ;
+//    jcrItemInputNode.setMixinNodeType("mix:votable") ;
+//    jcrItemInputNode.setPath("/node") ;
+//    jcrItemInputNode.setPrimaryNodeType("nt:unstructured") ;
+//    jcrItemInputNode.setValue("TestNodeName") ;
+//    map.put("/node", jcrItemInputNode) ; 
+//    
+//    //properties case
+//    JcrItemInput jcrItemInputProperties = new JcrItemInput() ;
+//    jcrItemInputProperties.setType(JcrItemInput.PROPERTY) ;
+//    jcrItemInputProperties.setPath("/node/exo:title");
+//    jcrItemInputProperties.setValue("PropertiesCaseTest") ;
+//    map.put("/node/exo:title", jcrItemInputProperties) ;
+//    
+//    Node nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, true) ; 
+//    NodeType nodeTypeTest = nodetTest.getPrimaryNodeType() ;
+//    
+//    System.out.println(
+//         "\n\n----------Test NodeService - 1 -------" +
+//         "\n\n   Parent node name: "+ parentNode.getName() +
+//         "\n\n   node test name: "+nodetTest.getName()+
+//         "\n\n   node test type: "+nodeTypeTest.getName()+
+//         "\n\n   node test path: "+nodetTest.getPath()+
+//         "\n\n   property - path: "+ jcrItemInputProperties.getPath()+
+//         "\n\n   property - type: "+ jcrItemInputProperties.getType()+
+//         "\n\n   property - value: "+ jcrItemInputProperties.getValue().toString()+
+//         "\n\n\n");
+//    
+//   //Edit node test
+//    jcrItemInputProperties.setValue("EditValue");
+//    map.put("/node/exo:title", jcrItemInputProperties) ;
+//    nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, false);
+//    
+//    System.out.println(
+//        "\n\n----------Test NodeService - AFTER EDITED -------" +
+//        "\n\n   Parent node name: "+ parentNode.getName() +
+//        "\n\n   node test name: "+nodetTest.getName()+
+//        "\n\n   node test type: "+nodeTypeTest.getName()+
+//        "\n\n   node test path: "+nodetTest.getPath()+
+//        "\n\n   property - path: "+ jcrItemInputProperties.getPath()+
+//        "\n\n   property - type: "+ jcrItemInputProperties.getType()+
+//        "\n\n   property - value: "+ jcrItemInputProperties.getValue().toString()+
+//        "\n\n\n");
+ }
+  
+  //test move node
+  public void testMoveNode() throws Exception{
+   
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
+    Node desNode = createTestNode("NodeByMove", REPO_NAME, "nt:unstructured", sessionProvider) ;
+    Node testGetNode = createTestNode("NodeByGive", REPO_NAME, "nt:unstructured", sessionProvider) ;
+    Node srcNode = testGetNode.addNode("ChildNode", "nt:unstructured") ;
+    String srcPath = srcNode.getPath();
+    String desPath = desNode.getPath();
+    Node testMoveNodeCase = nodeService_.moveNode(REPO_NAME, COLLABORATION_WS, 
+        srcPath, COLLABORATION_WS, desPath, sessionProvider);
+    System.out.println("\n\n---Source path node-----"+srcNode.getPath()+"---------\n\n");
+    System.out.println("\n\n---Dest path node-----"+desNode.getPath()+"---------\n\n");
+    System.out.println("\n\n---The path after moved node-----"+testMoveNodeCase.getPath()+"----\n\n");
+   
+  }
+  
+  //test copy node
+  public void testCopyNode() throws Exception{
+    /*
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
+    Node desNode = createTestNode("NodeByMove", REPO_NAME, "nt:unstructured", sessionProvider) ;
+    Node testGetNode = createTestNode("NodeByGive", REPO_NAME, "nt:unstructured", sessionProvider) ;
+    Node srcNode = testGetNode.addNode("ChildNode", "nt:unstructured") ;
+    String srcPath = srcNode.getPath();
+    String desPath = desNode.getPath();
+    Node testCopyNodeCase = nodeService_.copyNode(REPO_NAME, COLLABORATION_WS, 
+        srcPath, COLLABORATION_WS, desPath, sessionProvider);
+    System.out.println("\n\n---Source path node-----"+srcNode.getPath()+"---------\n\n");
+    System.out.println("\n\n---Dest path node-----"+desNode.getPath()+"---------\n\n");
+    System.out.println("\n\n---The path after copy node-----"+testCopyNodeCase.getPath()+"----\n\n");
+  */
+  }
+  
+  private Node createTestNode(String nodeName, String repoString, String nodeType, SessionProvider sessionProvider) throws Exception{
     
-    ManageableRepository repository = repoService_.getRepository(REPO_NAME);
-    Session session = repository.getSystemSession(COLLABORATION_WS) ;
+    ManageableRepository repository = repoService_.getRepository(repoString);
+    Session session = sessionProvider.getSession(COLLABORATION_WS, repository) ;
     Node rootNode = session.getRootNode() ;
-    Node parentNode = rootNode.addNode("Test", "nt:unstructured") ;
+    
+    Node parentNode = null ;
+    try {
+      parentNode = rootNode.getNode("Test") ;
+    } catch(PathNotFoundException pe) {
+      parentNode = rootNode.addNode("Test", "nt:unstructured") ;
+    }
     Map<String,JcrItemInput> map = new HashMap<String, JcrItemInput>() ;
     
     //node case
@@ -71,37 +167,19 @@ public class TestNodeService extends BaseECMTestCase {
     jcrItemInputNode.setType(jcrItemInputNode.NODE) ;
     jcrItemInputNode.setMixinNodeType("mix:votable") ;
     jcrItemInputNode.setPath("/node") ;
-    jcrItemInputNode.setPrimaryNodeType("nt:unstructured") ;
-    jcrItemInputNode.setValue("NodeTest") ;
+    jcrItemInputNode.setPrimaryNodeType(nodeType) ;
+    jcrItemInputNode.setValue(nodeName) ;
     map.put("/node", jcrItemInputNode) ; 
     
     //properties case
     JcrItemInput jcrItemInputProperties = new JcrItemInput() ;
     jcrItemInputProperties.setType(JcrItemInput.PROPERTY) ;
     jcrItemInputProperties.setPath("/node/exo:title");
-    jcrItemInputProperties.setValue("PropertiesCase") ;
+    jcrItemInputProperties.setValue("PropertiesCaseTest") ;
     map.put("/node/exo:title", jcrItemInputProperties) ;
     
-    Node nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, true) ;  
-    NodeType nodeTypeTest = nodetTest.getPrimaryNodeType() ;
+    Node nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, true) ; 
     
-    System.out.println(
-         "\n\n----------Test NodeService - 1 -------" +
-         "\n\n   Parent node name: "+ parentNode.getName() +
-         "\n\n   node test name: "+nodetTest.getName()+
-         "\n\n   node test type: "+nodeTypeTest.getName()+
-         "\n\n   node test path: "+nodetTest.getPath()+
-         "\n\n\n");
- }
-  
-  //test move node
-  public void testMoveNode() throws Exception{
-    //call back
-    //nodeService_.moveNode(null, null, null, null, null);
-  }
-  //test copy node
-  public void testCopyNode() throws Exception{
-    //call back
-    //nodeService_.copyNode(null, null, null, null, null);
+    return nodetTest;
   }
 }
