@@ -331,6 +331,7 @@
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   width: 95%;
   margin: 10px auto;
+  border: 1px solid #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
