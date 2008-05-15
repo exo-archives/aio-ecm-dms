@@ -42,6 +42,14 @@
 	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
+	width: 99.5%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
+	width: 130px;
+}
+
 /*======================== -- End UIJCRExplorer -- ==========================================*/
 
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/

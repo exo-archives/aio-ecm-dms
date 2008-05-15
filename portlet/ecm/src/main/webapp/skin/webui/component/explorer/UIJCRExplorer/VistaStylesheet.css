@@ -52,6 +52,14 @@
 	margin-top: 3px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
+	width: 97%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
+	width: 140px;
+}
+
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/

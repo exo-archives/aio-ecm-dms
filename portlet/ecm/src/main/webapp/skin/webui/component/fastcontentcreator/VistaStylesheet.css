@@ -14,14 +14,14 @@
 
 .UIWindow .UIFastContentCreatorPortlet {
 	border: none;
-	margin: 0px;
+	margin: auto;
 	border: none;
 }
 
 .UIFastContentCreatorPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px;
+	margin: 5px;
 }
 
 .UIFastContentCreatorPortlet .MsgLable {

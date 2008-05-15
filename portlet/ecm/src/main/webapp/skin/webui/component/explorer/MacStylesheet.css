@@ -19,17 +19,22 @@
 
 .UIWindow .UIJCRExplorerPortlet {
 	border: none;
-	margin: 0px auto;
+	margin: auto;
 }
 
 .UIJCRExplorerPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px auto;
+	margin: 5px;
 }
 
 .UIJCRExplorerPortlet .UIPreferencesForm  {
   width: 500px;
   margin: 10px auto;
   border: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPageIterator {
+	width: auto;
+	padding-right: 10px;
 }
