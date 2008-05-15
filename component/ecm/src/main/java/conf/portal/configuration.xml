@@ -38,4 +38,9 @@
 		<type>org.exoplatform.services.ecm.drive.impl.DriveManagerServiceImpl</type>
 	</component>
 	
+	<component>
+		<key>org.exoplatform.services.ecm.template.NodeTemplateService</key>
+		<type>org.exoplatform.services.ecm.template.impl.NodeTemplateServiceImpl</type>
+	</component>
+	
 </configuration>
