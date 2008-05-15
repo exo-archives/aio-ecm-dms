@@ -30,7 +30,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface NodeTemplateService {
   
-  final public String TEMPLATE_REGISTRY_PATH = "/exo:registry/exo:services/exo:ecm/exo:templates".intern();
+  final public String TEMPLATE_REGISTRY_PATH = "exo:services/exo:ecm/exo:templates".intern();
   
   final public String DIALOG_TYPE = "dialog".intern();
   final public String VIEW_TYPE = "view".intern();
@@ -43,9 +43,9 @@ public interface NodeTemplateService {
   
   public String getTemplatePath(String nodeTypeName, String templateName, boolean isDialog,String repository, SessionProvider sessionProvider) throws Exception ;
   
-  public String getTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception ;
+  public TemplateEntry getTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception ;
   
-  public String addTemplate(TemplateEntry entry, String repository, SessionProvider sessionProvider) throws Exception;  
+  public void addTemplate(TemplateEntry entry, String repository, SessionProvider sessionProvider) throws Exception;  
   
   public void removeTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, 
                              SessionProvider sessionProvider) throws Exception;
