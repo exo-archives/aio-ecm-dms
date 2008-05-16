@@ -68,8 +68,9 @@
       }
       label.append("</label>") ;
 			String show = "Version: " + node.getName() + " " + label.toString() + baseVersion;
+			String dateCreated = node.getVersion().getCreated().getTime().toString() ;
 			println """
-				    <div class="NodeLabel">$show</div>
+				    <div class="NodeLabel" title="$dateCreated">$show</div>
 				    <div style="clear: both;"><span></span></div>
 			  </div>
 	    """;
@@ -105,5 +106,3 @@
 	  </table>
   </div>
 </div>
-
-
