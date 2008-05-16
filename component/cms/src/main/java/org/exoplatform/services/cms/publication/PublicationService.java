@@ -17,7 +17,8 @@
 package org.exoplatform.services.cms.publication;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.jcr.Node;
 
@@ -46,7 +47,7 @@ public interface PublicationService {
    * 
    * @return the added publication plugins
    */
-  public Set<PublicationPlugin> getPublicationPlugins();
+  public Map<String,PublicationPlugin> getPublicationPlugins();
   
   
   /**
@@ -69,24 +70,8 @@ public interface PublicationService {
    * allowed
    */ 
   public void changeState(Node node, String newState, HashMap<String, String> context) 
-                          throws NotInPublicationLifecycleException, IncorrectStateUpdateLifecycleException;
+                          throws NotInPublicationLifecycleException, IncorrectStateUpdateLifecycleException, Exception;
   
-  
-  /**
-   * Retrieves the WebUI form corresponding to the current state of the
-   * specified node.
-   * The method first inspects the specified Node. If it does not contain
-   * a publication mixin, then it throws a NotInPublicationLifecycleException
-   * exception. Else, it retrieves the lifecycle name from the mixin,
-   * selects the appropriate publication plugin and delegates the call to it.
-   * 
-   * @param node the Node from which the state UI should be retrieved
-   * @return a WebUI form corresponding to the current state and node.
-   * @throws NotInPublicationLifecycleException in case the Node has not
-   * been registered in any lifecycle yet (in other words, if no publication
-   * mixin has been found).
-   */
-  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException;
   
   
   /**
@@ -103,7 +88,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public byte[] getStateImage(Node node)throws NotInPublicationLifecycleException;
+  public byte[] getStateImage(Node node)throws NotInPublicationLifecycleException ,Exception;
   
   /**
    * Retrieves the name of the publication state corresponding to the
@@ -120,7 +105,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public String getCurrentState(Node node) throws NotInPublicationLifecycleException;
+  public String getCurrentState(Node node) throws NotInPublicationLifecycleException ,Exception;
 
   /**
    * Retrieves description information explaining to the user the current
@@ -136,7 +121,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public String getUserInfo(Node node) throws NotInPublicationLifecycleException;
+  public String getUserInfo(Node node, Locale locale) throws NotInPublicationLifecycleException ,Exception;
   
   /**
    * Retrieves the history of publication changes made to the specified Node.
@@ -158,7 +143,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public String[][] getLog(Node node) throws NotInPublicationLifecycleException; 
+  public String[][] getLog(Node node) throws NotInPublicationLifecycleException, Exception; 
 
   /**
    * Adds a log entry to the specified Node.
@@ -172,7 +157,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public void addLog(Node node, String[] log) throws NotInPublicationLifecycleException;
+  public void addLog(Node node, String[] log) throws NotInPublicationLifecycleException, Exception;
   
   /**
    * Determines whether the specified Node has been enrolled into a
@@ -181,7 +166,7 @@ public interface PublicationService {
    * @param node the Node from which the enrollment should be evaluated
    * @return true of the Node is enrolled
    */
-  public boolean isNodeEnrolledInLifecycle(Node node);
+  public boolean isNodeEnrolledInLifecycle(Node node) throws Exception;
   
   /**
    * Retrieves the name of the lifecycle in which the specified Node has
@@ -193,7 +178,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public String getNodeLifecycleName(Node node) throws NotInPublicationLifecycleException;
+  public String getNodeLifecycleName(Node node) throws NotInPublicationLifecycleException, Exception;
   
   /**
    * Retrieves the description of the lifecycle in which the specified Node
@@ -211,7 +196,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public String getNodeLifecycleDesc(Node node) throws NotInPublicationLifecycleException;
+  public String getNodeLifecycleDesc(Node node) throws NotInPublicationLifecycleException ,Exception;
   
   /**
    * Enroll the specified Node to the specified lifecycle.
@@ -223,7 +208,7 @@ public interface PublicationService {
    * @param lifecycle the name of the lifecycle in which the Node should be
    * enrolled
    */
-  public void enrollNodeInLifecycle(Node node, String lifecycle) throws AlreadyInPublicationLifecycleException;
+  public void enrollNodeInLifecycle(Node node, String lifecycle) throws AlreadyInPublicationLifecycleException, Exception;
 
 
   

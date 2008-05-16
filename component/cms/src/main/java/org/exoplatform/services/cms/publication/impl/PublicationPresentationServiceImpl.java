@@ -16,10 +16,17 @@
  */
 package org.exoplatform.services.cms.publication.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jcr.Node;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.publication.NotInPublicationLifecycleException;
+import org.exoplatform.services.cms.publication.PublicationPlugin;
 import org.exoplatform.services.cms.publication.PublicationPresentationService;
+import org.exoplatform.services.cms.publication.PublicationService;
 import org.exoplatform.webui.form.UIForm;
 
 import org.apache.commons.logging.Log;
@@ -33,7 +40,8 @@ import org.exoplatform.services.log.ExoLogger;
  */ 
 public class PublicationPresentationServiceImpl implements PublicationPresentationService {
 
-  protected static Log log;  
+  protected static Log log;
+  private Map<String, PublicationPlugin> publicationPlugins_;
   
   public PublicationPresentationServiceImpl () {
     log = ExoLogger.getLogger("portal:PublicationPresentationServiceImpl");
@@ -41,6 +49,9 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
     log.info("#################################################");
     log.info("# PublicationPresentationService initialization #");
     log.info("#################################################\n");
+    
+    this.publicationPlugins_ = new HashMap<String, PublicationPlugin>();
+    
     log.info("#################################################");    
     log.info("#  PublicationPresentationService initialized   #");
     log.info("#################################################\n");
@@ -49,12 +60,33 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#getStateUI(javax.jcr.Node)
    */
-  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException {
+  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException, Exception {
     // TODO Auto-generated method stub
     log.info("################");
     log.info("#  getStateUI  #");
     log.info("################\n");
     
-    return null;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();    
+    PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+    
+    if (!publicationService.isNodeEnrolledInLifecycle(node)) {
+      throw new NotInPublicationLifecycleException();
+    } else {
+      String lifecycleName=publicationService.getNodeLifecycleName(node);
+      PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
+      return nodePlugin.getStateUI(node);
+    }
+  }
+  
+  
+  
+  /**
+   * Add a Publication Plugin to the service.
+   * The method caches all added plugins.
+   * 
+   * @param p the plugin to add
+   */
+  public void addPublicationPlugin(PublicationPlugin p) {
+    this.publicationPlugins_.put(p.getLifecycleName(),p);
   }
 }

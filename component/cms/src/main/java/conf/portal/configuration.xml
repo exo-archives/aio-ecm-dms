@@ -224,4 +224,22 @@
 	    </init-params>
 	  </component-plugin>
 	</external-component-plugins> 
+	
+	
+	<external-component-plugins>
+	  <target-component>org.exoplatform.services.publication.PublicationService</target-component>      
+	  <component-plugin>
+	    <name>addPublication</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.publication.impl.StaticAndDirectPublicationPlugin</type>
+	    <init-params>
+	      <values-param>
+	        <name>StaticAndDirect</name>
+	        <description>Node types configuration file</description>
+	        <value>jar:/conf/nodetypes-config.xml</value>
+	        <value>jar:/conf/nodetypes-config-extended.xml</value>
+	      </values-param>
+	    </init-params>
+	  </component-plugin>
+	</external-component-plugins>
 </configuration>

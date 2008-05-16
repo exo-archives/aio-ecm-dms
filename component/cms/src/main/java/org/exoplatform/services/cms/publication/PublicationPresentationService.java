@@ -17,6 +17,8 @@
 package org.exoplatform.services.cms.publication;
 
 
+import java.util.Map;
+
 import javax.jcr.Node;
 
 import org.exoplatform.webui.form.UIForm;
@@ -29,7 +31,7 @@ import org.exoplatform.webui.form.UIForm;
  */
 public interface PublicationPresentationService {
  
-  
+ 
   /**
    * Retrieves the WebUI form corresponding to the current state of the
    * specified node.
@@ -44,6 +46,14 @@ public interface PublicationPresentationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException;
+  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException, Exception;
+  
+  /**
+   * Add a Publication Plugin to the service.
+   * The method caches all added plugins.
+   * 
+   * @param p the plugin to add
+   */
+  public void addPublicationPlugin(PublicationPlugin p);
   
 }

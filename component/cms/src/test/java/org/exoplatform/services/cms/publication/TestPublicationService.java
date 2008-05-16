@@ -21,8 +21,10 @@ import java.util.Map.Entry;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 
 import org.apache.commons.chain.Context;
 import org.apache.commons.logging.Log;
@@ -75,13 +77,35 @@ public class TestPublicationService extends BaseStandaloneTest {
 
   }
   
-  public void testIfPublicationServiceIsConfigured() {
+  public void testIfPublicationServiceIsConfigured() throws NoSuchNodeTypeException,RepositoryException {
     log.info("########################################");
     log.info("# testIfPublicationServiceIsConfigured #");
     log.info("########################################\n");
     
     assertNotNull(container.getComponentInstanceOfType(PublicationService.class));
     assertNotNull(container.getComponentInstanceOfType(PublicationPresentationService.class));
+    assertNotNull(repository.getNodeTypeManager().getNodeType("exo:publication"));
+  }
+  
+  public void testAddAndGetPublicationPlugin() {
+    log.info("########################################");
+    log.info("#    testAddAndGetPublicationPlugin    #");
+    log.info("########################################\n");
+    
+  }
+  
+  public void testEnrollAndCheckIfNodeIsEnrolled() {
+    log.info("########################################");
+    log.info("#  testEnrollAndCheckIfNodeIsEnrolled  #");
+    log.info("########################################\n");
+
+  }
+  
+  public void testChangeStateAndCheckNewStateNotNull() {
+    log.info("##########################################");
+    log.info("# testChangeStateAndCheckNewStateNotNull #");
+    log.info("##########################################\n");
+
   }
   
   public void test2() {

@@ -115,5 +115,25 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
      * @return a String giving the current state.
      */
     public abstract String getUserInfo(Node node);
+    
+    /**
+     * Retrieves the lifecycleName
+     * 
+     * @return a String giving the lifecycleName
+     */
+    
+    public String getLifecycleName() {
+      return getName();
+    }
+    
+    /** 
+     * Retrieves the description of the plugin
+     * 
+     * @return a String giving the description
+     */
+    public String getNodeLifecycleDesc(Node node) {
+      return getDescription();
+    }
+    
 }
 

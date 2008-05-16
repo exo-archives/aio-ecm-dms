@@ -127,4 +127,39 @@
     </propertyDefinitions>
   </nodeType>    
   
+  <nodeType name="exo:publication" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+    <propertyDefinitions>
+    	<propertyDefinition name="exo:lifecycleName" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="IGNORE" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:currentState" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="IGNORE" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:history" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="IGNORE" protected="false" multiple="true">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
+  
+  <nodeType name="exo:staticAndDirectPublication" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+		<supertypes>
+      <supertype>exo:publication</supertype>
+    </supertypes>
+    <propertyDefinitions>
+    	<propertyDefinition name="exo:visibility" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="IGNORE" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:versionsPublicationStates" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="IGNORE" protected="false" multiple="true">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
+  
+  
+  
 </nodeTypes>

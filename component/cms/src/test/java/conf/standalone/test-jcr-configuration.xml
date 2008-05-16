@@ -16,7 +16,21 @@
           </properties-param>
         </init-params>
       </component-plugin>
+      <component-plugin>
+	    <name>add.nodeType</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.jcr.impl.AddNodeTypePlugin</type>
+	    <init-params>
+	      <values-param>
+	        <name>autoCreatedInNewRepository</name>
+	        <description>Node types configuration file</description>
+	        <value>jar:/conf/nodetypes-config.xml</value>
+	        <value>jar:/conf/nodetypes-config-extended.xml</value>
+	      </values-param>
+	    </init-params>
+	   </component-plugin>
     </component-plugins>
+    
   </component>
 
   <component>
