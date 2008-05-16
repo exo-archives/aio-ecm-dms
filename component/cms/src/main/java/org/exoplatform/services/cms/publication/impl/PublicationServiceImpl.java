@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -74,6 +73,16 @@ public class PublicationServiceImpl implements PublicationService {
     
     publicationPlugins_ = new HashMap<String, PublicationPlugin>();
     
+    try {
+    ExoContainer container2 = ExoContainerContext.getCurrentContainer();    
+    ResourceBundleService resourceBundleService = (ResourceBundleService) container2.getComponentInstanceOfType(ResourceBundleService.class);
+    ResourceBundleData resourceBundleData= resourceBundleService.getResourceBundleData("locale.ecm.cms.publication.PublicationService_en");
+    
+    System.out.println(resourceBundleData.toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+      
+    }
     log.info("#####################################");    
     log.info("#  PublicationService initialized   #");
     log.info("#####################################\n");
