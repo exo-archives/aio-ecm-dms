@@ -29,7 +29,6 @@ import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 
 import org.exoplatform.services.ecm.BaseECMTestCase;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 
 /**
  * Created by The eXo Platform SAS
@@ -45,53 +44,27 @@ public class TestVoteService extends BaseECMTestCase {
   final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ; 
   final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;  
   final static String VOTE_TOTAL_LANG_PROP = "exo:voteTotalOfLang".intern() ;
-  
-  private Node initData() throws RepositoryException, RepositoryConfigurationException {
+    
+  public void testVoteService() throws Exception {
     Session session = repositoryService.getRepository(REPO_NAME).getSystemSession(COLLABORATION_WS) ;    
     Node root = session.getRootNode();    
-    Node child_b = root.addNode("b", "nt:folder");
-    Node test = child_b.addNode("Test", "nt:file");            
+    Node test = root.addNode("Test", "nt:file");            
     Node content1 = test.addNode("jcr:content", "nt:resource");
     content1.setProperty("jcr:lastModified", Calendar.getInstance());
     content1.setProperty("jcr:mimeType", "text/xml");
-    content1.setProperty("jcr:data", "");
-        
-    voteService = (VoteService) container.getComponentInstanceOfType(VoteService.class);    
+    content1.setProperty("jcr:data", "");       
     session.save();
-    return test;
-  }
-  
-  /**
-   * This method needn't creating because the method getVoteTotal() is invoked by the method vote()
-   * If the method vote() is success, then the method getVoteTotal() will success 
-   * @throws Exception
-   */  
-  public void testVoteTotal() throws Exception {        
-//  prepare data: create some document like nt:file, exo:article
-    Node test = initData();
-    
+        
     //begin test
-    voteService.vote(test, 2, "root", null);  
-    assertEquals(1, voteService.getVoteTotal(test));
-    
-    voteService.vote(test, 3, "root", null);    
-    assertEquals(2, voteService.getVoteTotal(test));
-  }
-  
-  public void testVoteService() throws Exception {
     List<Value> newVoterList1 = new ArrayList<Value>();
     List<Value> newVoterList2 = new ArrayList<Value>();
     
-//  prepare data: create some document like nt:file, exo:article
-    Node test = initData();
-    
-    //begin test    
+    voteService = (VoteService) container.getComponentInstanceOfType(VoteService.class);
     voteService.vote(test, 2, "root", null);    
     newVoterList1 = createValue(test, newVoterList2, "root");        
     newVoterList2 = getVoter(test, voteService);  
 
-    assertEquals(1, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());
-    assertEquals(1, test.getProperty(voteService.VOTE_TOTAL_LANG_PROP).getLong());
+    assertEquals(1, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());    
     assertEquals(2.0, test.getProperty(voteService.VOTING_RATE_PROP).getDouble());
     assertEquals(newVoterList1, newVoterList2);
            
@@ -100,8 +73,7 @@ public class TestVoteService extends BaseECMTestCase {
     newVoterList1 = createValue(test, newVoterList2, "root");        
     newVoterList2 = getVoter(test, voteService);  
       
-    assertEquals(2, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());
-    assertEquals(2, test.getProperty(voteService.VOTE_TOTAL_LANG_PROP).getLong());
+    assertEquals(2, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());   
     assertEquals(2.5, test.getProperty(voteService.VOTING_RATE_PROP).getDouble());
     assertEquals(newVoterList1, newVoterList2);
         
@@ -110,8 +82,7 @@ public class TestVoteService extends BaseECMTestCase {
     newVoterList1 = createValue(test, newVoterList2, "john");        
     newVoterList2 = getVoter(test, voteService);  
     
-    assertEquals(3, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());
-    assertEquals(3, test.getProperty(voteService.VOTE_TOTAL_LANG_PROP).getLong());
+    assertEquals(3, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());   
     assertEquals(2.0, test.getProperty(voteService.VOTING_RATE_PROP).getDouble());
     assertEquals(newVoterList1, newVoterList2);
         
@@ -120,8 +91,7 @@ public class TestVoteService extends BaseECMTestCase {
     newVoterList1 = createValue(test, newVoterList2, "john");        
     newVoterList2 = getVoter(test, voteService);  
     
-    assertEquals(4, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());
-    assertEquals(4, test.getProperty(voteService.VOTE_TOTAL_LANG_PROP).getLong());
+    assertEquals(4, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong()); 
     assertEquals(2.5, test.getProperty(voteService.VOTING_RATE_PROP).getDouble());    
     assertEquals(newVoterList1, newVoterList2);
     
@@ -132,8 +102,7 @@ public class TestVoteService extends BaseECMTestCase {
     newVoterList1 = createValue(test, newVoterList2, null);        
     newVoterList2 = getVoter(test, voteService);  
     
-    assertEquals(5, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());
-    assertEquals(5, test.getProperty(voteService.VOTE_TOTAL_LANG_PROP).getLong());
+    assertEquals(5, test.getProperty(voteService.VOTE_TOTAL_PROP).getLong());  
     assertEquals(2.6, test.getProperty(voteService.VOTING_RATE_PROP).getDouble());    
     assertEquals(newVoterList1, newVoterList2);
   }
