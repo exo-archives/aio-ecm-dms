@@ -35,10 +35,10 @@ public interface NodeTemplateService {
   final public String DIALOG_TYPE = "dialog".intern();
   final public String VIEW_TYPE = "view".intern();
   
-  public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
+  public String getTemplatePath(Node node, boolean isDialog, SessionProvider sessionProvider) throws Exception ;
   public String getTemplatePathByUser(String nodeTypeName, boolean isDialog, String userName, String repository, SessionProvider sessionProvider) throws Exception ;
   
-  public List<String> getTemplatePaths(Node node, boolean isDialog) throws Exception ;
+  public List<String> getTemplatePaths(Node node, boolean isDialog, SessionProvider sessionProvider) throws Exception ;
   public List<String> getTemplatePathsByUser(String nodeTypeName, boolean isDialog, String userName, String repository, SessionProvider sessionProvider) throws Exception ;
   
   public String getTemplatePath(String nodeTypeName, String templateName, boolean isDialog,String repository, SessionProvider sessionProvider) throws Exception ;
@@ -52,7 +52,7 @@ public interface NodeTemplateService {
   
   public boolean isManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception ;
   
-  public List<String> getDocumentTemplates(String repository, SessionProvider sessionProvider) throws Exception ;       
+  public List<String> getDocumentNodeTypes(String repository, SessionProvider sessionProvider) throws Exception ;       
   
   public void removeManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception ;
   
