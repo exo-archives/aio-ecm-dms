@@ -55,8 +55,8 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public class NodeServiceImpl implements NodeService {
 
-  private static final String EXO_DATETIME_ = "exo:datetime";
-  private static final String EXO_DATE_MODIFIED_ = "exo:dateModified";  
+  final static private String EXO_DATETIME_ = "exo:datetime";
+  final static private String EXO_DATE_MODIFIED_ = "exo:dateModified";  
   private RepositoryService repositoryService_ ;
   private IDGeneratorService idGeneratorService_ ;
 
@@ -105,6 +105,7 @@ public class NodeServiceImpl implements NodeService {
     }
     return currentNode;
   }
+  
   public Node addNode(String repository, String workspace, String parentPath, String nodetype,
       Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
   throws Exception {
@@ -144,7 +145,7 @@ public class NodeServiceImpl implements NodeService {
     Session srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository);
     Session desSession = sessionProvider.getSession(desWorkspace, manageableRepository);
     nodeReturnPath = destPath + "/" + srcPath.substring(srcPath.lastIndexOf("/") + 1);
-    srcSession.move(srcPath, nodeReturnPath);
+    srcSession.getWorkspace().move(srcPath, nodeReturnPath);
     srcSession.save();
     desSession.save();
     Node returnNode = (Node) desSession.getItem(nodeReturnPath);
@@ -302,9 +303,9 @@ public class NodeServiceImpl implements NodeService {
     processNodeRecusively(true, path, curentNode, curentNodeType, jcrInputPro) ;
   }
 
-  private String extractNodeName(Set keys){
+  private String extractNodeName(Set<String> keys){
     String key = null ;
-    for(Iterator iter = keys.iterator(); iter.hasNext();){
+    for(Iterator<String> iter = keys.iterator(); iter.hasNext();){
       key = (String)iter.next() ;
       if(key.endsWith(NODE)) return key;
     }
