@@ -20,12 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.exoplatform.services.ecm.access.PermissionManagerService;
 import org.exoplatform.services.ecm.template.NodeTemplateService;
 import org.exoplatform.services.ecm.template.TemplateEntry;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.registry.RegistryEntry;
 import org.exoplatform.services.jcr.ext.registry.RegistryService;
@@ -57,7 +62,7 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
 
   public void addTemplate(TemplateEntry entry, String repository, SessionProvider sessionProvider) throws Exception {
     RegistryEntry registryEntry ;
-    String groupPath = TEMPLATE_REGISTRY_PATH + entry.getNodeTypeName() ;
+    String groupPath = TEMPLATE_REGISTRY_PATH + "/" + entry.getNodeTypeName() ;
     if (entry.isDialog()) {
       groupPath += "/" + DIALOG_TYPE ;
     } else {
@@ -76,71 +81,136 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
     }
   }
 
-  public List<String> getDocumentTemplates(String repository, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  public List<String> getDocumentNodeTypes(String repository, SessionProvider sessionProvider) throws Exception {
+    //Search on exo:registryEntry->entry.getParent(dialogs).getParent(nodetype)
+    ArrayList<String> documentNodeTypes = new ArrayList<String>() ; 
+    String queryStr = "select * from exo:registryEntry where jcr:path LIKE '" + "/exo:registry/"+ TEMPLATE_REGISTRY_PATH +"/%'" ;
+    Node regNode = registryService_.getRegistry(sessionProvider).getNode() ;
+    Session session = regNode.getSession() ;
+    QueryManager queryManager = session.getWorkspace().getQueryManager() ;
+    Query query = queryManager.createQuery(queryStr, Query.SQL) ;
+    QueryResult result = query.execute() ;
+    NodeIterator nodeIterator = result.getNodes() ;
+    while (nodeIterator.hasNext()) {
+      Node entryNode = nodeIterator.nextNode() ;
+      documentNodeTypes.add(entryNode.getParent().getParent().getName()) ;
+    }
+    return documentNodeTypes ;
   }
 
   public TemplateEntry getTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception {
-    String entryPath = TEMPLATE_REGISTRY_PATH + nodeTypeName ;
+    String entryPath = TEMPLATE_REGISTRY_PATH + "/" + nodeTypeName ;
     if (isDialog) {
       entryPath += "/" + DIALOG_TYPE + "/" + templateName ;
     } else {
       entryPath += "/" + VIEW_TYPE + "/" + templateName ;
     }
-
+    RegistryEntry registryEntry = registryService_.getEntry(sessionProvider, entryPath) ;
     TemplateEntry tempEntry = new TemplateEntry();
-    RegistryEntry registryEntry ;
-
-    registryEntry = registryService_.getEntry(sessionProvider, entryPath) ;
     mapToTempalateEntry(registryEntry, tempEntry) ;
-
     return tempEntry ;
   }
 
-  public String getTemplatePath(Node node, boolean isDialog) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  public String getTemplatePath(Node document, boolean isDialog, SessionProvider sessionProvider) throws Exception {
+    String presentationNodeType = null ;
+    if(document.isNodeType("exo:presentationable") && document.hasProperty("exo:presentationType")) {
+      presentationNodeType = document.getProperty("exo:presentationType").getString() ;
+    } else {
+      presentationNodeType = document.getPrimaryNodeType().getName();
+    }
+    String userName = document.getSession().getUserID() ;
+    String repository = ((ManageableRepository)document.getSession().getRepository()).getConfiguration().getName();    
+    return getTemplatePathByUser(presentationNodeType, isDialog, userName, repository, sessionProvider) ;
   }
 
   public String getTemplatePath(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
+    String tmp = null ;
+    if(isDialog) {
+      tmp = nodeTypeName + "/" + DIALOG_TYPE + "/" + templateName ;
+    }else {
+      tmp = nodeTypeName + "/" + VIEW_TYPE + "/" + templateName ;
+    }
+    try {
+      Node templateRegistryHome = getTemplateRegistryHome(sessionProvider) ;
+      return templateRegistryHome.getNode(tmp).getPath() ;
+    } catch (PathNotFoundException e) {      
+    }
     return null;
   }
 
   public String getTemplatePathByUser(String nodeTypeName, boolean isDialog, String userName, String repository, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
+    String tmp = null ;
+    if(isDialog) {
+      tmp = nodeTypeName + "/" + DIALOG_TYPE ;
+    }else {
+      tmp = nodeTypeName + "/" + VIEW_TYPE ;
+    }
+    try {
+      Node registryTemplateHome = getTemplateRegistryHome(sessionProvider) ;
+      for(NodeIterator iterator = registryTemplateHome.getNode(tmp).getNodes(); iterator.hasNext();) {
+        Node entry = iterator.nextNode();
+        String templateName = entry.getName() ;
+        TemplateEntry templateEntry = getTemplate(nodeTypeName, templateName, isDialog, repository, sessionProvider) ;
+        if(permissionManagerService_.hasPermission(userName, templateEntry.getAccessPermissions())) {
+          return entry.getPath() ;
+        }
+      }
+    } catch (PathNotFoundException e) {
+    }
     return null;
   }
 
-  public List<String> getTemplatePaths(Node node, boolean isDialog) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  public List<String> getTemplatePaths(Node document, boolean isDialog, SessionProvider sessionProvider) throws Exception {
+    String presentationNodeType = null ;
+    if(document.isNodeType("exo:presentationable") && document.hasProperty("exo:presentationType")) {
+      presentationNodeType = document.getProperty("exo:presentationType").getString() ;
+    } else {
+      presentationNodeType = document.getPrimaryNodeType().getName();
+    }
+    String userName = document.getSession().getUserID() ;
+    String repository = ((ManageableRepository)document.getSession().getRepository()).getConfiguration().getName();
+    return getTemplatePathsByUser(presentationNodeType, isDialog, userName, repository, sessionProvider) ;    
   }
 
   public List<String> getTemplatePathsByUser(String nodeTypeName, boolean isDialog, String userName, String repository, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    List<String> paths = new ArrayList<String>() ;
+    String tmp = null ;
+    if(isDialog) {
+      tmp = nodeTypeName + "/" + DIALOG_TYPE ;
+    }else {
+      tmp = nodeTypeName + "/" + VIEW_TYPE ;
+    }
+    try {
+      Node registryTemplateHome = getTemplateRegistryHome(sessionProvider) ;
+      for(NodeIterator iterator = registryTemplateHome.getNode(tmp).getNodes(); iterator.hasNext();) {
+        Node entry = iterator.nextNode();
+        String templateName = entry.getName() ;
+        TemplateEntry templateEntry = getTemplate(nodeTypeName, templateName, isDialog, repository, sessionProvider) ;
+        if(permissionManagerService_.hasPermission(userName, templateEntry.getAccessPermissions())) {
+          paths.add(entry.getPath()) ;
+        }
+      }
+    } catch (PathNotFoundException e) {
+    }
+    return paths;
   }
 
-  public boolean isManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception {
-    Node regNode = registryService_.getRegistry(sessionProvider).getNode() ;
-    Session session = regNode.getSession() ;
-    Node systemTemplateHome = (Node) session.getItem("/exo:registry/"+ TEMPLATE_REGISTRY_PATH) ;
-    boolean isManagedNodeType = false ;
-    if (systemTemplateHome.hasNode(nodeTypeName)) {
-      isManagedNodeType = true ;
+  public boolean isManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception {  
+    Node templateRegistryHome = getTemplateRegistryHome(sessionProvider) ;
+    if (templateRegistryHome.hasNode(nodeTypeName)) {
+      return true ;
     }
-    return isManagedNodeType ;
+    return false ;
   }
 
   public void removeManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception {
-    // TODO Auto-generated method stub
-
+    Node templateRegistryHome = getTemplateRegistryHome(sessionProvider) ;
+    templateRegistryHome.getNode(nodeTypeName).remove() ;
+    templateRegistryHome.save() ;
   }
 
   public void removeTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception {
-    String entryPath = TEMPLATE_REGISTRY_PATH + nodeTypeName ;
+    String entryPath = TEMPLATE_REGISTRY_PATH + "/" + nodeTypeName ;
     if (isDialog) {
       entryPath += "/" + DIALOG_TYPE + "/" + templateName ;
     } else {
@@ -150,6 +220,11 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
     RegistryEntry registryEntry ;
     registryService_.removeEntry(sessionProvider, entryPath) ;
   }
+
+  private Node getTemplateRegistryHome(SessionProvider sessionProvider) throws Exception {
+    Node registryNode = registryService_.getRegistry(sessionProvider).getNode() ;
+    return registryNode.getNode(TEMPLATE_REGISTRY_PATH) ;
+  } 
 
   private void mapToRegistryEntry(TemplateEntry tempEntry, RegistryEntry registryEntry) {
     Document doc = registryEntry.getDocument() ;
