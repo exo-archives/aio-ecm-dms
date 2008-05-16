@@ -23,6 +23,7 @@ import javax.jcr.PathNotFoundException;
 import org.exoplatform.services.ecm.BaseECMTestCase;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.organization.OrganizationService;
 
 /**
  * Created by The eXo Platform SAS
@@ -31,30 +32,36 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  * May 15, 2008  
  */
 public class TestTemplateService extends BaseECMTestCase{
+  private String GROUP1 = "group1".intern() ;
+  private String GROUP2 = "group2".intern() ;
+  private String memship1 = "user1".intern() ;
+  private String memship2 = "user2".intern() ;
+
   private NodeTemplateService nodeTemplateService_ ;
   private ArrayList<String> permission1, permission2 ;
   private SessionProviderService sessionProviderService_ ;
-  
+  private OrganizationService organizationServices_ ;
+
   public void setUp() throws Exception {
     super.setUp() ;
     nodeTemplateService_ = (NodeTemplateService) container.getComponentInstanceOfType(NodeTemplateService.class) ;
     sessionProviderService_ = (SessionProviderService) container.getComponentInstanceOfType(SessionProviderService.class) ;
   }
-  
+
   public void tearDown() {
-    
+
   }
-  
+
   public void testAddTemplate() throws Exception {
     SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null) ;
     TemplateEntry tempEntry = new TemplateEntry() ;
     tempEntry = createTemplateEntryToTest("nt:file", "article", "exo:article", true, true, permission1, "<abc>") ;
     assertNotNull(tempEntry) ;
     nodeTemplateService_.addTemplate(tempEntry, "repository", sessionProvider) ;
-    
+
     TemplateEntry savedTemplate = new TemplateEntry() ;
     savedTemplate = nodeTemplateService_.getTemplate("nt:file", "exo:article", true, "repository", sessionProvider) ;
-    
+
     nodeTemplateService_.removeTemplate("nt:file", "exo:article", true, "repository", sessionProvider) ;
     Exception ex = new Exception();
     try{
@@ -65,10 +72,24 @@ public class TestTemplateService extends BaseECMTestCase{
     assertEquals(ex.getClass(), PathNotFoundException.class) ;
     assertGetTemplate(tempEntry, savedTemplate) ;
   }
-  
+
+  public void testGetTemplatePath() throws Exception {
+    SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null) ;
+    TemplateEntry templateEntry = new TemplateEntry() ;
+    templateEntry = createTemplateEntryToTest("xml", "data", "news", true, false, permission1, "<abc>") ;
+    String entryPath = "/exo:registry/exo:services/exo:ecm/exo:templates/"+ "xml/" +"dialog/"+ "news" ;
+    nodeTemplateService_.addTemplate(templateEntry, "repository", sessionProvider) ;
+
+    assertNotNull(templateEntry) ;
+    String savedTemplatePath = nodeTemplateService_.getTemplatePath("xml", "news", true, "repository", sessionProvider) ; 
+    assertNotNull(savedTemplatePath) ;
+    assertEquals(entryPath, savedTemplatePath) ;
+    nodeTemplateService_.removeTemplate("xml", "news", true, "repository", sessionProvider) ;
+  }
+
   private TemplateEntry createTemplateEntryToTest(String nodeTypeName, String label, String templateName,
-                                                  Boolean isDialog, Boolean isDocumentTemplate, 
-                                                  ArrayList<String> permission, String templateData) {
+      Boolean isDialog, Boolean isDocumentTemplate, 
+      ArrayList<String> permission, String templateData) {
     TemplateEntry tempEntry = new TemplateEntry() ;
     tempEntry.setNodeTypeName(nodeTypeName) ;
     tempEntry.setLabel(label) ;
@@ -83,7 +104,7 @@ public class TestTemplateService extends BaseECMTestCase{
     tempEntry.setTemplateData(templateData) ;
     return tempEntry ;
   }
-  
+
   private void assertGetTemplate(TemplateEntry tempEntry, TemplateEntry savedTemplate) {
     assertEquals(tempEntry.getLabel(), savedTemplate.getLabel()) ;
     assertEquals(tempEntry.getNodeTypeName(), savedTemplate.getNodeTypeName()) ;
