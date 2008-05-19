@@ -39,16 +39,15 @@ public class NodeTypeTemplate {
   static public class Template {
     
     private String name;
-    private String type;    
+    private boolean isDialog ;
     private String templateFile;    
     private ArrayList<String> accessPermissions;
     
     public String getName() {return name ; }
-    public void setName(String name) { this.name = name ;}    
+    public void setName(String name) { this.name = name ;}                    
     
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type ; }
-    
+    public boolean isDialog() { return this.isDialog ; }
+    public void setDialog(boolean isDialog) { this.isDialog = isDialog ; }
     public String getTemplateFile() { return templateFile; }
     public void setTemplateFile(String templateFile) { this.templateFile = templateFile; }
 
