@@ -17,6 +17,7 @@
 package org.exoplatform.services.ecm.template.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -27,6 +28,9 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.ecm.access.PermissionManagerService;
 import org.exoplatform.services.ecm.template.NodeTemplateService;
 import org.exoplatform.services.ecm.template.TemplateEntry;
@@ -34,6 +38,8 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.registry.RegistryEntry;
 import org.exoplatform.services.jcr.ext.registry.RegistryService;
+import org.exoplatform.services.log.ExoLogger;
+import org.picocontainer.Startable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 /**
@@ -42,7 +48,7 @@ import org.w3c.dom.Element;
  *          dzungdev@gmail.com
  * May 13, 2008  
  */
-public class NodeTemplateServiceImpl implements NodeTemplateService{
+public class NodeTemplateServiceImpl implements NodeTemplateService, Startable {
 
   private static String NODETYPE_NAME = "exo:nodeTypeName".intern() ;
   private static String LABEL = "exo:label".intern() ;
@@ -54,6 +60,8 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
 
   private RegistryService registryService_ ;
   private PermissionManagerService permissionManagerService_ ;
+  private List<NodeTemplatePlugin> templatePlugins_ = new ArrayList<NodeTemplatePlugin>() ;
+  private Log log_ = ExoLogger.getLogger("ecm:nodeTemplateService") ;
 
   public NodeTemplateServiceImpl(RegistryService registryService, PermissionManagerService permissionManagerService) {
     registryService_ = registryService ;
@@ -84,7 +92,7 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
   public List<String> getDocumentNodeTypes(String repository, SessionProvider sessionProvider) throws Exception {
     //Search on exo:registryEntry->entry.getParent(dialogs).getParent(nodetype)
     ArrayList<String> documentNodeTypes = new ArrayList<String>() ; 
-    String queryStr = "select * from exo:registryEntry where jcr:path LIKE '" + "/exo:registry/"+ TEMPLATE_REGISTRY_PATH +"/%'" ;
+    String queryStr = "select * from exo:registryEntry where jcr:path LIKE '/exo:registry/"+ TEMPLATE_REGISTRY_PATH +"/%'" ;
     Node regNode = registryService_.getRegistry(sessionProvider).getNode() ;
     Session session = regNode.getSession() ;
     QueryManager queryManager = session.getWorkspace().getQueryManager() ;
@@ -93,7 +101,9 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
     NodeIterator nodeIterator = result.getNodes() ;
     while (nodeIterator.hasNext()) {
       Node entryNode = nodeIterator.nextNode() ;
-      documentNodeTypes.add(entryNode.getParent().getParent().getName()) ;
+      if (!documentNodeTypes.contains(entryNode.getParent().getParent().getName())) {
+        documentNodeTypes.add(entryNode.getParent().getParent().getName()) ;
+      }
     }
     return documentNodeTypes ;
   }
@@ -206,7 +216,8 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
   public void removeManagedNodeType(String nodeTypeName, String repository, SessionProvider sessionProvider) throws Exception {
     Node templateRegistryHome = getTemplateRegistryHome(sessionProvider) ;
     templateRegistryHome.getNode(nodeTypeName).remove() ;
-    templateRegistryHome.save() ;
+    Session session = templateRegistryHome.getSession() ;
+    session.save() ;
   }
 
   public void removeTemplate(String nodeTypeName, String templateName, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception {
@@ -216,8 +227,6 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
     } else {
       entryPath += "/" + VIEW_TYPE + "/" + templateName ;
     }
-
-    RegistryEntry registryEntry ;
     registryService_.removeEntry(sessionProvider, entryPath) ;
   }
 
@@ -301,6 +310,31 @@ public class NodeTemplateServiceImpl implements NodeTemplateService{
   private String getCDATAValue(Document doc, String cdataTagName) {
     org.w3c.dom.Node eleNode = doc.getElementsByTagName(cdataTagName).item(0) ;
     return eleNode.getFirstChild().getNodeValue() ;
+  }
+
+  public void addPlugin(ComponentPlugin plugin) {
+    if (plugin instanceof NodeTemplatePlugin) {
+      templatePlugins_.add((NodeTemplatePlugin) plugin) ;
+    }
+  }
+
+  public void start() {
+    SessionProvider sessionProvider = SessionProvider.createSystemProvider() ;
+    for(NodeTemplatePlugin plugin: templatePlugins_) {
+      for(Iterator<ObjectParameter> iterator = plugin.getPredefinedTemplateEntries(); iterator.hasNext();) {
+        TemplateEntry templateEntry = (TemplateEntry) iterator.next().getObject() ;
+        try{
+          addTemplate(templateEntry, "repository", sessionProvider) ;
+        }catch(Exception e) {
+          log_.error("Can not init template: "+ templateEntry.getTemplateName()+e) ;
+        }
+      }
+    }
+  }
+
+  public void stop() {
+    // TODO Auto-generated method stub
+
   }
 
 }
