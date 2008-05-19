@@ -86,21 +86,11 @@ public class CommentService {
     if (!document.isNodeType(COMMENTABLE)) {
       document.addMixin(COMMENTABLE);
     }
-    String defaultLanguage = multiLanguageService_.getDefault(document);
-    Node languageNode = null;
-    if (language != null && !language.equalsIgnoreCase(defaultLanguage)) {
-      try {
-        languageNode = document.getNode(LANGUAGES);        
-      } catch (PathNotFoundException e) {
-        languageNode = document;
-      }
-    } else {
-      languageNode = document;      
-    }   
+         
     try {
-      commentNode = languageNode.getNode(COMMENTS);
+      commentNode = document.getNode(COMMENTS);
     } catch (PathNotFoundException e) {      
-      commentNode = languageNode.addNode(COMMENTS, NT_UNSTRUCTURE);      
+      commentNode = document.addNode(COMMENTS, NT_UNSTRUCTURE);      
     }
     Calendar commentDate = new GregorianCalendar();
     String name = Long.toString(commentDate.getTimeInMillis());
@@ -116,25 +106,10 @@ public class CommentService {
     }
   }  
 
-  private boolean isSupportedLocalize(Node document, String language) throws Exception {
-    List<String> locales = multiLanguageService_.getAvailableLanguages(document) ;
-    if (locales != null &&locales.contains(language)) return true;
-    return false ;
-  }
-
-  public List<Node> getComment(Node node, String language) throws Exception {
-    Node commentsNode = null, languageNode = null;
-    if (!isSupportedLocalize(node, language)) {
-      language = node.getProperty("exo:language").getString();
-    }
-    try {
-      languageNode = node.getNode(LANGUAGES + "/" + language);      
-    } catch (Exception e) {
-      languageNode = node;
-    }
-
-    if (languageNode.hasNode(COMMENTS)) {
-      commentsNode = languageNode.getNode(COMMENTS) ;
+  public List<Node> getComment(Node node) throws Exception {
+    Node commentsNode = null;
+    if (node.hasNode(COMMENTS)) {
+      commentsNode = node.getNode(COMMENTS) ;
     } else {
       return new ArrayList<Node>();
     }
@@ -147,7 +122,7 @@ public class CommentService {
     Collections.sort(list,new DateComparator()) ;   
     return list;
   }
-
+  
   private class DateComparator implements Comparator<Node> {
 
     public int compare(Node node1, Node node2) {
@@ -160,4 +135,39 @@ public class CommentService {
       return 0;
     }        
   }
+  
+  
+//  private boolean isSupportedLocalize(Node document, String language) throws Exception {
+//    List<String> locales = multiLanguageService_.getAvailableLanguages(document) ;
+//    if (locales != null &&locales.contains(language)) return true;
+//    return false ;
+//  }
+  
+//  public List<Node> getComment(Node node, String language) throws Exception {
+//    Node commentsNode = null, languageNode = null;
+//    if (!isSupportedLocalize(node, language)) {
+//      language = node.getProperty("exo:language").getString();
+//    }
+//    try {
+//      languageNode = node.getNode(LANGUAGES + "/" + language);      
+//    } catch (Exception e) {
+//      languageNode = node;
+//    }
+//
+//    if (languageNode.hasNode(COMMENTS)) {
+//      commentsNode = languageNode.getNode(COMMENTS) ;
+//    } else {
+//      return new ArrayList<Node>();
+//    }
+//
+//    List<Node> list = new ArrayList<Node>() ;
+//    NodeIterator iterate = commentsNode.getNodes();
+//    while (iterate.hasNext()) {
+//      list.add(iterate.nextNode());
+//    }       
+//    Collections.sort(list,new DateComparator()) ;   
+//    return list;
+//  }
+
+  
 }

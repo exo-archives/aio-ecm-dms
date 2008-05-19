@@ -39,8 +39,7 @@ public class TestCommentService extends BaseECMTestCase{
   public void testGetComment() throws Exception {
     Session session = repositoryService.getRepository(REPO_NAME).getSystemSession(COLLABORATION_WS);
     Node root = session.getRootNode();
-    Node test = root.addNode("Test", "nt:unstructured");
-    test.setProperty("exo:language", "English");
+    Node test = root.addNode("Test", "nt:unstructured");   
     session.save();
     //Add Comment
     commentService_ = (CommentService)container.getComponentInstanceOfType(CommentService.class);
@@ -48,7 +47,7 @@ public class TestCommentService extends BaseECMTestCase{
     commentService_.addComment(test, "john", "xxx5668@yahoo.com", null, "thanks", null);
     
     //Get Comment
-    List<Node> list = commentService_.getComment(test, "English");
+    List<Node> list = commentService_.getComment(test);
     assertEquals(2, list.size());
     
     Node node1 = list.get(0);//node1 : commenter: john
