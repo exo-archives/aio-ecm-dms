@@ -230,7 +230,7 @@ public class DriveManagerServiceImpl implements DriveManagerService, Startable {
         try {
           addDrive(driveEntry, sessionProvider) ; 
         } catch (Exception e) {
-          log_.error("Can not init drive"+driveEntry.getName(), e) ;
+          log_.error("Can not init drive "+driveEntry.getName(), e) ;
         }       
       }
     }
