@@ -270,6 +270,51 @@
       </init-params>
     </component-plugin>
   </external-component-plugins>
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.ecm.template.NodeTemplateService</target-component>
+    <component-plugin>
+      <name>test.template.component.plugin</name>
+      <set-method>addPlugin</set-method>
+      <type>org.exoplatform.services.ecm.template.impl.NodeTemplatePlugin</type>
+      <init-params>
+	      <object-param>        
+	        <name>System files1</name>
+	        <description>DriveEntry one</description>
+	        <object type="org.exoplatform.services.ecm.template.TemplateEntry">
+	          <field  name="nodeTypeName"><string>exo:file</string></field>
+	          <field  name="label"><string>article</string></field>
+	          <field  name="templateName"><string>exo:article</string></field>
+	           <field  name="isDialog"><boolean>true</boolean></field>
+            <field  name="isDocumentTemplate"><boolean>true</boolean></field>
+	          <field  name="accessPermissions">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>*:/platform/administrators</string></value>	          		               
+	          	</collection>   	            	          
+	          </field>
+						<field  name="templateData"><string>ds?!@#$%>fsdsdfsdf</string></field>
+	        </object>
+	      </object-param>
+	      <object-param>        
+	        <name>System files2</name>
+	        <description>DriveEntry Two</description>
+	        <object type="org.exoplatform.services.ecm.template.TemplateEntry">
+	          <field  name="nodeTypeName"><string>xml</string></field>
+	          <field  name="label"><string>article</string></field>
+	          <field  name="templateName"><string>exo:article</string></field>
+	           <field  name="isDialog"><boolean>true</boolean></field>
+            <field  name="isDocumentTemplate"><boolean>true</boolean></field>
+	          <field  name="accessPermissions">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>*:/platform/administrators</string></value>	          		               
+	          	</collection>   	            	          
+	          </field>
+						<field  name="templateData"><string>ds?!@#$%>fsdsdfsdf</string></field>
+	        </object>
+	      </object-param>    
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>
        
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>    
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>  
