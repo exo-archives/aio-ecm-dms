@@ -453,14 +453,27 @@ public class Utils {
     PortalRequestContext requestContext = Util.getPortalRequestContext();
     HttpSession httpSession = requestContext.getRequest().getSession();
     String key = createLockKey(lock.getNode());
-    //TODO    
     Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.put(key,lock.getLockToken());
     httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
-  }   
+  }
+  
+  public static void changeLockToken(Node oldNode, Node newNode) throws Exception {
+    PortalRequestContext requestContext = Util.getPortalRequestContext();
+    HttpSession httpSession = requestContext.getRequest().getSession();
+    String newKey = createLockKey(newNode);
+    String oldKey = createLockKey(oldNode);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
+    lockedNodesInfo.remove(oldKey) ;
+    lockedNodesInfo.put(newKey,newNode.getLock().getLockToken());
+    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+  }
   
   public static String getLockToken(Node node) throws Exception {    
     PortalRequestContext requestContext = Util.getPortalRequestContext();
@@ -478,7 +491,7 @@ public class Utils {
     buffer.append(repositoryName).append("/::/")
           .append(session.getWorkspace().getName()).append("/::/")
           .append(session.getUserID()).append(":/:")
-          .append(node.getPath());        
+          .append(node.getPath());      
     return buffer.toString();
   }
 }
