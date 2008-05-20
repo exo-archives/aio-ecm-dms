@@ -49,8 +49,8 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SAS
- * Author : Hoa.Pham
- *          hoa.pham@exoplatform.com
+ * Author : Hao Le Minh
+ *          hao.le@exoplatform.com
  * Apr 28, 2008  
  */
 public class NodeServiceImpl implements NodeService {
@@ -364,7 +364,7 @@ public class NodeServiceImpl implements NodeService {
         childs.add(nodeIterate.nextNode()) ;
       }
     }
-    Iterator iterate = childs.iterator() ;
+    Iterator<Object> iterate = childs.iterator() ;
     while(iterate.hasNext()){
       Object obj = iterate.next() ;
       NodeDefinition nodeDefin ;
@@ -401,7 +401,6 @@ public class NodeServiceImpl implements NodeService {
               for(String typeNode : mixinTypeName){
                 if(childNode.isNodeType(typeNode))
                   childNode.addMixin(typeNode) ;
-                NodeType mixinType = nodeTypeManger.getNodeType(typeNode) ;
               }
             }
             String nodePath = path + "/" + nodeName;
@@ -415,7 +414,6 @@ public class NodeServiceImpl implements NodeService {
                 for(String typeNode : mixinTypeName){
                   if(childNode.isNodeType(typeNode))
                     childNode.addMixin(typeNode) ;
-                  NodeType mixinType = nodeTypeManger.getNodeType(typeNode) ;
                 }
               }
               String nodePath = path + "/" + nodeName ;
