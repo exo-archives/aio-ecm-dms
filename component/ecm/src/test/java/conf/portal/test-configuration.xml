@@ -278,38 +278,55 @@
       <set-method>addPlugin</set-method>
       <type>org.exoplatform.services.ecm.template.impl.NodeTemplatePlugin</type>
       <init-params>
+      	<value-param>
+        	<name>repository</name>
+        	<value>testRepository</value>
+      	</value-param>
 	      <object-param>        
 	        <name>System files1</name>
-	        <description>DriveEntry one</description>
-	        <object type="org.exoplatform.services.ecm.template.TemplateEntry">
-	          <field  name="nodeTypeName"><string>exo:file</string></field>
-	          <field  name="label"><string>article</string></field>
-	          <field  name="templateName"><string>exo:article</string></field>
-	           <field  name="isDialog"><boolean>true</boolean></field>
-            <field  name="isDocumentTemplate"><boolean>true</boolean></field>
-	          <field  name="accessPermissions">
-	          	<collection type="java.util.ArrayList">
-	          		<value><string>*:/platform/administrators</string></value>	          		               
+	        <description>Template one</description>
+	        <object type="org.exoplatform.services.ecm.template.impl.TemplateConfig">
+	        	<field  name="nodeTypes">
+	        		<collection type="java.util.ArrayList">
+	          		 <value>
+	          		 	<object type="org.exoplatform.services.ecm.template.impl.TemplateConfig$NodeType">	
+	          		 		<field  name="name"><string>exo:file</string></field>
+	          		 		<field  name="label"><string>article</string></field>
+	          		 		<field  name="documentTemplate"><boolean>true</boolean></field>
+	          		 		<field  name="dialogs">
+	          		 			<collection type="java.util.ArrayList">
+	          		 				<value>
+	          		 					<object type="org.exoplatform.services.ecm.template.impl.TemplateConfig$Template">
+	          		 						<field  name="name"><string>dialog</string></field>
+	          		 						<field name="templateFilePath"><string>jar:/templates/file/dialogs/admin_dialog.gtmpl</string></field>
+	          		 						<field  name="accessPermissions">
+	          									<collection type="java.util.ArrayList">
+	          										<value><string>*:/platform/administrators</string></value>	          		               
+	          									</collection>   	            	          
+	          								</field>
+	          		 					</object>
+	          		 				</value>
+	          		 			</collection>
+	          		 		</field>
+	          		 		<field  name="views">
+	          		 			<collection type="java.util.ArrayList">
+	          		 				<value>
+	          		 					<object type="org.exoplatform.services.ecm.template.impl.TemplateConfig$Template">
+	          		 						<field  name="name"><string>view</string></field>
+	          		 						<field name="templateFilePath"><string>jar:/templates/file/views/view1.gtmpl</string></field>
+	          		 						<field  name="accessPermissions">
+	          									<collection type="java.util.ArrayList">
+	          										<value><string>*:/platform/administrators</string></value>	          		               
+	          									</collection>   	            	          
+	          								</field>
+	          		 					</object>
+	          		 				</value>
+	          		 			</collection>
+	          		 		</field>
+	          		 	</object>
+	          		 </value>	          		               
 	          	</collection>   	            	          
 	          </field>
-						<field  name="templateData"><string>ds?!@#$%>fsdsdfsdf</string></field>
-	        </object>
-	      </object-param>
-	      <object-param>        
-	        <name>System files2</name>
-	        <description>DriveEntry Two</description>
-	        <object type="org.exoplatform.services.ecm.template.TemplateEntry">
-	          <field  name="nodeTypeName"><string>xml</string></field>
-	          <field  name="label"><string>article</string></field>
-	          <field  name="templateName"><string>exo:article</string></field>
-	           <field  name="isDialog"><boolean>true</boolean></field>
-            <field  name="isDocumentTemplate"><boolean>true</boolean></field>
-	          <field  name="accessPermissions">
-	          	<collection type="java.util.ArrayList">
-	          		<value><string>*:/platform/administrators</string></value>	          		               
-	          	</collection>   	            	          
-	          </field>
-						<field  name="templateData"><string>ds?!@#$%>fsdsdfsdf</string></field>
 	        </object>
 	      </object-param>    
       </init-params>
