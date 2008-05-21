@@ -17,7 +17,6 @@
 package org.exoplatform.services.ecm.template.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -30,7 +29,6 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.ecm.access.PermissionManagerService;
 import org.exoplatform.services.ecm.template.NodeTemplateService;
 import org.exoplatform.services.ecm.template.TemplateEntry;
@@ -90,7 +88,6 @@ public class NodeTemplateServiceImpl implements NodeTemplateService, Startable {
   }
 
   public List<String> getDocumentNodeTypes(String repository, SessionProvider sessionProvider) throws Exception {
-    //Search on exo:registryEntry->entry.getParent(dialogs).getParent(nodetype)
     ArrayList<String> documentNodeTypes = new ArrayList<String>() ; 
     String queryStr = "select * from exo:registryEntry where jcr:path LIKE '/exo:registry/"+ TEMPLATE_REGISTRY_PATH +"/%'" ;
     Node regNode = registryService_.getRegistry(sessionProvider).getNode() ;
@@ -246,7 +243,7 @@ public class NodeTemplateServiceImpl implements NodeTemplateService, Startable {
     element.setAttribute(IS_DIALOG, Boolean.toString(tempEntry.isDialog())) ;
     element.setAttribute(IS_DOCUMENT_TEMPLATE, Boolean.toString(tempEntry.isDocumentTemplate())) ;
     element.setAttribute(PERMISSION, toXMLMultiValue(tempEntry.getAccessPermissions())) ;
-    storeTemplateDataAsCDATA(doc, TEMPLATE_DATA, tempEntry.getTemplateData()) ;
+    storeTemplateDataAsCDATA(doc, TEMPLATE_DATA, tempEntry.getTemplateData().trim()) ;
   }
 
   private void mapToTempalateEntry(RegistryEntry registryEntry, TemplateEntry tempEntry) {
@@ -309,7 +306,7 @@ public class NodeTemplateServiceImpl implements NodeTemplateService, Startable {
 
   private String getCDATAValue(Document doc, String cdataTagName) {
     org.w3c.dom.Node eleNode = doc.getElementsByTagName(cdataTagName).item(0) ;
-    return eleNode.getFirstChild().getNodeValue() ;
+    return eleNode.getTextContent().trim() ;
   }
 
   public void addPlugin(ComponentPlugin plugin) {
@@ -321,20 +318,18 @@ public class NodeTemplateServiceImpl implements NodeTemplateService, Startable {
   public void start() {
     SessionProvider sessionProvider = SessionProvider.createSystemProvider() ;
     for(NodeTemplatePlugin plugin: templatePlugins_) {
-      for(Iterator<ObjectParameter> iterator = plugin.getPredefinedTemplateEntries(); iterator.hasNext();) {
-        TemplateEntry templateEntry = (TemplateEntry) iterator.next().getObject() ;
-        try{
-          addTemplate(templateEntry, "repository", sessionProvider) ;
-        }catch(Exception e) {
-          log_.error("Can not init template: "+ templateEntry.getTemplateName()+e) ;
-        }
+      try{
+        String repository = plugin.getRepository() ;
+        for(TemplateEntry entry: plugin.getTemplateEntries()) {
+          addTemplate(entry, repository, sessionProvider) ;
+        }        
+      }catch (Exception e) {
+        log_.error("Error when load template from plugin" + plugin.getName(),e) ;
       }
     }
+    sessionProvider.close() ;
   }
 
-  public void stop() {
-    // TODO Auto-generated method stub
-
-  }
+  public void stop() { }
 
 }
