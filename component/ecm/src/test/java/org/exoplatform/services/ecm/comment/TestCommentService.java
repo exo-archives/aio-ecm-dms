@@ -62,6 +62,10 @@ public class TestCommentService extends BaseECMTestCase{
     assertEquals("root", node2.getProperty(commentService_.COMMENTOR).getString());
     assertEquals("Cam on nha", node2.getProperty(commentService_.MESSAGE).getString());
     
+    
+    //remove data
+    test.remove();
+    session.save();
   }
   
   public void testAddComment() throws Exception {    
@@ -86,6 +90,10 @@ public class TestCommentService extends BaseECMTestCase{
       i++;
     }    
     assertNotNull(comments);    
+    
+    //remove data
+    test.remove();
+    session.save();
   }
   
   private void check(int i, Node node) throws PathNotFoundException, RepositoryException {
