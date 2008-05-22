@@ -221,12 +221,12 @@ ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repositor
 	        path += encodeURIComponent(nodePath[i]) + "/";
 	      }
 	    }
-	    window.location = serverInfo+ "/"+portalName + "/rest/lnkproducer/filename.lnk?path=/"+repository +"/" +workspace + path;
+	    window.location = serverInfo+"/rest/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
    	} else {
- 	  	window.location = serverInfo + "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
+ 	  	window.location = serverInfo + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
  	  } 	  
   } else {
-    window.location = serverInfo+ "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath;
+    window.location = serverInfo+ "/rest/jcr/"+repository +"/" +workspace + nodePath;
   } 
 } ;
 
