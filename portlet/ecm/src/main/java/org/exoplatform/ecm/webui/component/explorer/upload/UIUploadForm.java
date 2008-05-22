@@ -160,7 +160,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
-          multiLangService.addFileLanguage(selectedNode, contentValue, mimeType, uiForm.getLanguageSelected(), uiForm.isDefault_) ;
+          multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
@@ -241,7 +241,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         if(uiForm.isMultiLanguage_) {
           uiUploadContainer.setUploadedNode(selectedNode) ; 
         } else {
-          Node newNode = uiExplorer.getSession().getNodeByUUID(newNodeUUID) ;
+          Node newNode = null ;
+          if(!isExist) {
+            newNode = uiExplorer.getSession().getNodeByUUID(newNodeUUID) ;
+          } else {
+            newNode = selectedNode.getNode(name) ;
+          }
           uiUploadContainer.setUploadedNode(newNode) ;
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
@@ -257,6 +262,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } catch(ConstraintViolationException con) {
         Object[] args = {name, } ;
+        con.printStackTrace() ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
                                                            args, ApplicationMessage.WARNING)) ;
       } catch(LockException lock) {

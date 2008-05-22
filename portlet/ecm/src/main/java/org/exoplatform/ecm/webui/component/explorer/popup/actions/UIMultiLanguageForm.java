@@ -103,13 +103,14 @@ public class UIMultiLanguageForm extends UIForm {
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;
       try {
-        multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage) ;
+        multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage, uiExplorer.getRepositoryName()) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
         return ;
       }
