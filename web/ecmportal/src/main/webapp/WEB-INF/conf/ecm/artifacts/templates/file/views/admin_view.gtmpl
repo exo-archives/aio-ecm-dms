@@ -58,9 +58,26 @@
 </style>
 <%
 	import javax.jcr.Node;
+	import javax.jcr.NodeIterator;
+  
+  public Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }
+  
   def originalNode = uicomponent.getOriginalNode();
-  def currentNode = uicomponent.getNode() ;	
-  def contentNode = currentNode.getNode("jcr:content") ;
+  def currentNode = uicomponent.getNode() ;
+  def fileLangNode = getFileLangNode(currentNode) ;
+  def contentNode = fileLangNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
   
   public String formatNodeName(String text) {
@@ -71,6 +88,7 @@
     long size = contentNode.getProperty("jcr:data").getLength()/1024;      	        
     return size;
   }
+  
 %>
 <div class="FileContent">
 	<%if(mimeType.equals("text/html")) { 
@@ -153,7 +171,7 @@
 	    	<div class="TextContent">
 		      <%        
 		        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		          if(getFileSize(originalNode) < 1024) {
+		          if(getFileSize(contentNode) < 1024) {
 		            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
 		          } else {
 		       %>
@@ -184,7 +202,7 @@
 	  <table align="center" class="ActionContainer">  
 	  	<tr>
 	  		<td align="center">
-		      <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(originalNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
+		      <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(fileLangNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle">
@@ -193,7 +211,7 @@
 		          </div>
 		        </div>
 		      </a>
-		      <a href="<%=uicomponent.getDownloadLink(currentNode)%>" class="ActionButton LightBlueStyle">
+		      <a href="<%=uicomponent.getDownloadLink(fileLangNode)%>" class="ActionButton LightBlueStyle">
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">

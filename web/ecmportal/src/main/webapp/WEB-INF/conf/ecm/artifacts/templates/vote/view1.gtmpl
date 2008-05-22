@@ -71,7 +71,28 @@
 </style>
 
 <%
+  import javax.jcr.Node;
+	import javax.jcr.NodeIterator;
+	
+  public Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }
+  
+  def originalNode = uicomponent.getOriginalNode() ;
   def voteNode = uicomponent.getNode() ;
+  if(originalNode.getPrimaryNodeType().getName().equals("nt:file")) {
+    voteNode = getFileLangNode(voteNode) ;
+  } 
   double voteRating = 0 ;
   if(voteNode.hasProperty("exo:votingRate")) voteRating = voteNode.getProperty("exo:votingRate").getDouble() ;
   long voteTotal = 0 ;
