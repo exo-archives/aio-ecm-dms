@@ -64,7 +64,6 @@ public class TestNodeService extends BaseECMTestCase {
     //2.1 Test Add exo:article
     //3.Remove data
     SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null) ;
-    System.out.println("\n\n\n-----------NT:UNSTRUCTURED and EXO:TITLE------\n\n\n");
     ManageableRepository repository = repositoryService.getRepository(REPO_NAME);
     Session session = sessionProvider.getSession(COLLABORATION_WS, repository) ;
     Node rootNode = session.getRootNode() ;
@@ -79,16 +78,11 @@ public class TestNodeService extends BaseECMTestCase {
     Map<String,JcrItemInput> map = new HashMap<String, JcrItemInput>() ;
 
     //node case
-    JcrItemInput jcrItemInputNode = new JcrItemInput() ;
-    jcrItemInputNode.setType(jcrItemInputNode.NODE) ;
-    jcrItemInputNode.setPrimaryNodeType("nt:unstructured") ;
-    jcrItemInputNode.setMixinNodeType("mix:votable") ; 
-    jcrItemInputNode.setPath("/node") ;
-    jcrItemInputNode.setValue("TestNodeName") ;
-
+    JcrItemInput jcrItemInputNode = getNodeInput("nt:unstructured", "mix:votable", "NodeName") ;
+     
     //------check--------
     assertNotNull(jcrItemInputNode);
-    assertEquals("TestNodeName", jcrItemInputNode.getValue().toString());
+    assertEquals("NodeName", jcrItemInputNode.getValue().toString());
     assertEquals("mix:votable", jcrItemInputNode.getMixinNodeTypes()[0].toString());
     assertEquals("/node", jcrItemInputNode.getPath());
     //------------------------
@@ -96,10 +90,14 @@ public class TestNodeService extends BaseECMTestCase {
     map.put("/node", jcrItemInputNode) ; 
 
     //properties case
-    JcrItemInput jcrItemInputProperties = new JcrItemInput() ;
-    jcrItemInputProperties.setType(JcrItemInput.PROPERTY) ;
-    jcrItemInputProperties.setPath("/node/exo:votable"); 
-    jcrItemInputProperties.setValue("PropertiesCaseTest") ;
+    JcrItemInput jcrItemInputProperties = getPropertyInput("/node/exo:votable", "PropValue") ;
+    
+    //----check----------
+    assertNotNull(jcrItemInputProperties);
+    assertEquals("/node/exo:votable", jcrItemInputProperties.getPath());
+    assertEquals("PropValue", jcrItemInputProperties.getValue());
+    //----------------------
+    
     map.put("/node/exo:votable", jcrItemInputProperties) ;
 
     Node nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, true) ;
@@ -111,17 +109,6 @@ public class TestNodeService extends BaseECMTestCase {
     assertEquals("nt:unstructured", nodetTest.getPrimaryNodeType().getName());
     //--------------------------
 
-    System.out.println(
-        "\n\n----------Test NodeService - 1 -------" +
-        "\n\n   Parent node name: "+ parentNode.getName() +
-        "\n\n   node test name: "+nodetTest.getName()+
-        "\n\n   node test type: "+nodeTypeTest.getName()+
-        "\n\n   node test path: "+nodetTest.getPath()+
-        "\n\n   property - path: "+ jcrItemInputProperties.getPath()+
-        "\n\n   property - type: "+ jcrItemInputProperties.getType()+
-        "\n\n   property - value: "+ jcrItemInputProperties.getValue().toString()+
-    "\n\n\n");
-
     //Edit node test
     jcrItemInputProperties.setValue("EditValue");
     map.put("/node/exo:title", jcrItemInputProperties) ;
@@ -130,22 +117,12 @@ public class TestNodeService extends BaseECMTestCase {
     assertNotNull(nodetTest);
     assertEquals("EditValue", jcrItemInputProperties.getValue().toString());
 
-    System.out.println(
-        "\n\n----------Test NodeService - AFTER EDITED -------" +
-        "\n\n   Parent node name: "+ parentNode.getName() +
-        "\n\n   node test name: "+nodetTest.getName()+
-        "\n\n   node test type: "+nodeTypeTest.getName()+
-        "\n\n   node test path: "+nodetTest.getPath()+
-        "\n\n   property - path: "+ jcrItemInputProperties.getPath()+
-        "\n\n   property - type: "+ jcrItemInputProperties.getType()+
-        "\n\n   property - value: "+ jcrItemInputProperties.getValue().toString()+
-    "\n\n\n");
     sessionProvider.close() ;
   }
   /**
    * @throws Exception
    */
-  public void testAddNodeNTFileArticle() throws Exception{
+  public void testAddNodeNTFileAndArticle() throws Exception{
 
     ManageableRepository repository = repositoryService.getRepository(REPO_NAME) ;
     Session session = repository.getSystemSession(COLLABORATION_WS) ;
@@ -162,19 +139,23 @@ public class TestNodeService extends BaseECMTestCase {
     assertNotNull(parentNode);
     assertEquals("Test", parentNode.getName());
     //---------------------------------
+    
     System.out.println("\n\n\n-----------NT:FILE------\n\n\n");
     InputStream inputStream = null;
     Date date = null;
-    Map<String , JcrItemInput> mapFile = prepareFileProperties("myFile", "MimeType", inputStream, date);
+    Map<String , JcrItemInput> mapFile = prepareFileProperties("myFile", "text/plain", inputStream, date);
     Node testNtFile = nodeService_.addNode(parentNode, "nt:file", mapFile, true) ;
+    
     //--------check------
     assertNotNull(testNtFile);
     assertEquals("/Test", parentNode.getPath());
     assertEquals("nt:file", testNtFile.getPrimaryNodeType().getName());
     //-----------------------
+    
     System.out.println("\n\n\n-----------EXO:ARTICLE------\n\n\n");
     Map<String , JcrItemInput> mapArticle = prepareArticleProperties();
     Node testArticle = nodeService_.addNode(parentNode, "exo:article", mapArticle, true);
+    
     //--------check------
     assertNotNull(testArticle);
     assertEquals("exo:article", testArticle.getPrimaryNodeType().getName());
@@ -300,39 +281,14 @@ public class TestNodeService extends BaseECMTestCase {
     Map<String,JcrItemInput> map = new HashMap<String, JcrItemInput>() ;
 
     //node case
-    jcrItemInputNode = new JcrItemInput() ;
-    jcrItemInputNode.setType(jcrItemInputNode.NODE) ;
-    jcrItemInputNode.setMixinNodeType("mix:votable") ;
-    jcrItemInputNode.setPath("/node") ;
-    jcrItemInputNode.setPrimaryNodeType(nodeType) ;
-    jcrItemInputNode.setValue(nodeName) ;
+    jcrItemInputNode = getNodeInput(nodeType, "mix:votable", nodeName) ;
     map.put("/node", jcrItemInputNode) ; 
 
-    //----------check-----------
-    assertEquals(jcrItemInputNode.NODE, jcrItemInputNode.getType());
-    assertEquals("mix:votable" , jcrItemInputNode.getMixinNodeTypes()[0].toString());
-    assertEquals("/node", jcrItemInputNode.getPath());
-    //---------------------------
-
     //properties case
-    jcrItemInputProperties = new JcrItemInput() ;
-    jcrItemInputProperties.setType(JcrItemInput.PROPERTY) ;
-    jcrItemInputProperties.setPath("/node/exo:title");
-    jcrItemInputProperties.setValue("PropertiesCaseTest") ;
+    jcrItemInputProperties = getPropertyInput("/node/exo:title", "PropertiesCaseTest") ;
     map.put("/node/exo:title", jcrItemInputProperties) ;
 
-    //----------check-----------
-    assertEquals(jcrItemInputProperties.PROPERTY, jcrItemInputProperties.getType());
-    assertEquals("/node/exo:title", jcrItemInputProperties.getPath());
-    //---------------------------
-
     Node nodetTest = nodeService_.addNode(parentNode, "nt:unstructured", map, true) ; 
-
-    //------check--------
-    assertNotNull(nodetTest);
-    assertNotNull(map);
-    assertEquals("nt:unstructured", nodetTest.getPrimaryNodeType().getName());
-    //-----------------------
 
     rootNode = null;
     return nodetTest;
@@ -343,8 +299,14 @@ public class TestNodeService extends BaseECMTestCase {
     JcrItemInput itemInput = getNodeInput("exo:article", "mix:votable", "MyArticle");
     map.put("/node", itemInput);
     
-    JcrItemInput itemInputProp = getPropertyInput("/node/exo:text", "MyArticle");
-    map.put("/node/exo:text", itemInputProp);
+    JcrItemInput itemInputPropText = getPropertyInput("/node/exo:text", "MyText");
+    map.put("/node/exo:text", itemInputPropText);
+    
+    JcrItemInput itemInputPropTitle = getPropertyInput("/node/exo:title", "MyTitle");
+    map.put("/node/exo:title", itemInputPropTitle);
+    
+    JcrItemInput itemInputPropSummary = getPropertyInput("/node/exo:summary", "MySummary");
+    map.put("/node/exo:summary", itemInputPropSummary);
     
     return map ;
   }
@@ -366,7 +328,7 @@ public class TestNodeService extends BaseECMTestCase {
     JcrItemInput itemInputData = getPropertyInput("/node/jcr:content/jcr:data", inputStream);
     map.put("/node/jcr:content/jcr:data", itemInputData);
 
-    //properties - mime type
+    //properties - mimetype
     //mimetype can be: text/html,text/plain....
     JcrItemInput itemInputMimeType = getPropertyInput("/node/jcr:content/jcr:mimeType", mimeType);
     map.put("/node/jcr:content/jcr:mimeType", itemInputMimeType);
@@ -386,7 +348,7 @@ public class TestNodeService extends BaseECMTestCase {
     jcrItemInput.setPrimaryNodeType(primaryType);
     if(mixinTypes!= null && mixinTypes.length()!= 0  ) {
       jcrItemInput.setMixinNodeType(mixinTypes);       
-    }    
+    }   
     jcrItemInput.setValue(nodeName);
     return jcrItemInput ;
   }  

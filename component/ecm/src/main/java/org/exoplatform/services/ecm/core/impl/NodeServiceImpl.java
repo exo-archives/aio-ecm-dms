@@ -148,8 +148,7 @@ public class NodeServiceImpl implements NodeService {
     srcSession.getWorkspace().move(srcPath, nodeReturnPath);
     srcSession.save();
     desSession.save();
-    Node returnNode = (Node) desSession.getItem(nodeReturnPath);
-    return returnNode;
+    return (Node) desSession.getItem(nodeReturnPath);
   }
 
   public void setProperty(Node node, String propertyName, Object value, int requiredtype,
@@ -242,7 +241,6 @@ public class NodeServiceImpl implements NodeService {
               valueObj = session2.getValueFactory().createValue(referenceNode) ;              
             }else              
               valueObj = session2.getValueFactory().createValue(v) ;
-
           }else {            
             if(session.getRootNode().hasNode(v)) {
               Node referenceNode = session.getRootNode().getNode(v) ;
@@ -316,8 +314,7 @@ public class NodeServiceImpl implements NodeService {
       Node curentNode, NodeType curentNodeTye, Map<String,JcrItemInput> jcrInputPro) throws Exception{
     if(create || path.equals(NODE)){
       PropertyDefinition [] proDefin = curentNodeTye.getPropertyDefinitions() ;
-      for(int proIndex = 0; proIndex < proDefin.length; proIndex++){
-        PropertyDefinition proDefiDetail = proDefin[proIndex] ;
+      for(PropertyDefinition proDefiDetail : proDefin){
         if(!proDefiDetail.isAutoCreated() && !proDefiDetail.isProtected()){
           String proName = proDefiDetail.getName() ;
           int proReqType = proDefiDetail.getRequiredType() ;
@@ -336,6 +333,7 @@ public class NodeServiceImpl implements NodeService {
       Node curentNode, NodeType curentNodeType, Map<String, JcrItemInput> jcrItemInput) throws Exception{
 
     if(isCreate){
+      processEditNodeProperty(true, path, curentNode, curentNodeType, jcrItemInput) ;
     }else{
       for(PropertyIterator proIterate = curentNode.getProperties(); proIterate.hasNext();){
         Property property = proIterate.nextProperty() ;
@@ -387,13 +385,13 @@ public class NodeServiceImpl implements NodeService {
           mixinTypeName = jcrInputVariable.getMixinNodeTypes() ;
           NodeTypeManager nodeTypeManger = curentNode.getSession().getWorkspace().getNodeTypeManager() ; 
           NodeType nodeType = null ;
-          if(obj instanceof Node)
+          if(obj instanceof Node){
             nodeType = ((Node)obj).getPrimaryNodeType() ;            
-          else if(nodeTypeName != null || "".equals(nodeTypeName))
+          }else if(nodeTypeName != null || "".equals(nodeTypeName)){
             nodeType = nodeDefin.getRequiredPrimaryTypes()[0] ;
-          else
+          }else{
             nodeType = nodeTypeManger.getNodeType(nodeTypeName) ;
-
+          }  
           Node childNode = null;
           if(isCreate){
             childNode = curentNode.addNode(nodeName, nodeType.getName()) ;
@@ -412,8 +410,7 @@ public class NodeServiceImpl implements NodeService {
               childNode = curentNode.addNode(nodeName, nodeType.getName()) ;
               if(mixinTypeName.length > 0){
                 for(String typeNode : mixinTypeName){
-                  if(childNode.isNodeType(typeNode))
-                    childNode.addMixin(typeNode) ;
+                  if(childNode.isNodeType(typeNode)) childNode.addMixin(typeNode) ;
                 }
               }
               String nodePath = path + "/" + nodeName ;
