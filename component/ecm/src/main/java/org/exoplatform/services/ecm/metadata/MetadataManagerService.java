@@ -31,17 +31,17 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface MetadataManagerService {
   
-  public final String METADATA_TEMPLATE_REGISTRY = "exo:service/exo:ecm/exo:metadata".intern() ;
+  public final String METADATA_TEMPLATE_REGISTRY = "exo:services/exo:ecm/exo:metadata".intern() ;
   final public String DIALOG_TYPE = "dialogs".intern();
   final public String VIEW_TYPE = "views".intern();
   
-  public String addMetadataTemplate(TemplateEntry entry, String repository, SessionProvider sessionProvider) throws Exception;
-  public void removeMetadataTempateType(String nodetype, String repository, SessionProvider sessionProvider) throws Exception;  
+  public void addMetadataTemplate(TemplateEntry entry, String repository, SessionProvider sessionProvider) throws Exception;
+  public void removeMetadataTemplateType(String nodetype, String repository, SessionProvider sessionProvider) throws Exception;  
   public List<NodeType> getAllMetadataNodeType(String repository) throws Exception ;  
   
   public String getMetadataPath(String metadataType, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception;
   
   public List<String> getMetadataPaths(String metadataType, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception;
   
-  public boolean hasTemplate(String metadataType, boolean isDialog, String repository, SessionProvider sessionProvider) throws Exception;
+  public boolean isManagedNodeType(String metadataType, String repository, SessionProvider sessionProvider) throws Exception;
 }
