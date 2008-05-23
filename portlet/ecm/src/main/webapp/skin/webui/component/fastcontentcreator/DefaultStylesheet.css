@@ -25,6 +25,10 @@
 	padding: 15px 0px ;
 }
 
+.UIFastContentCreatorPortlet .UIFormGrid {
+	width: 100%;
+}
+
 .UIFastContentCreatorPortlet .MsgLable {
 	text-align: center;
 	line-height: 40px;

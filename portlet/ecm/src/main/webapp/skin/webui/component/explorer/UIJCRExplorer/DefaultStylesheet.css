@@ -455,8 +455,13 @@
 
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm  {
+.UIJCRExplorerPortlet .UICommentForm {
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UICommentForm .HorizontalLayout {
+	padding: 10px;
+	background: #f3f3f3;
 }
 
 /*================================UISimpleSearch=================================*/

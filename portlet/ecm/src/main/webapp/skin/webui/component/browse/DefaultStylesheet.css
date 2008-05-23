@@ -21,6 +21,10 @@
 	margin: 5px;
 }
 
+.UIBrowseContentPortlet .UIFormGrid {
+	width: 100%;
+}
+
 .UIBrowseContentPortlet .ContentHolder {
 	padding: 5px;
 }
