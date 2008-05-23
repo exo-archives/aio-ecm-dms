@@ -82,7 +82,7 @@
           <include>**/*.pom</include>
           <include>**/*.sha1</include>
           <include>**/*.conf</include>
-          <include>**/*.gtml</include>
+          <include>**/*.gtmpl</include>
         </includes>
       </testResource>
       <testResource>
@@ -101,7 +101,7 @@
           <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
           <forkMode>${exo.test.forkmode}</forkMode>
           <includes>
-            <include>**/Test*.java</include>    
+            <include>org/exoplatform/services/ecm/taxonomy/TestTaxonomyManagerService.java</include>    						
           </includes>
           <excludes>
             <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
