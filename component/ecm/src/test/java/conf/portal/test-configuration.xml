@@ -164,6 +164,11 @@
     <key>org.exoplatform.services.ecm.i18n.MultiLanguageService</key>
     <type>org.exoplatform.services.ecm.i18n.impl.MultiLanguageServiceImpl</type>
   </component>
+  
+  <component>
+		<key>org.exoplatform.services.ecm.metadata.MetadataManagerService</key>
+		<type>org.exoplatform.services.ecm.metadata.impl.MetadataManagerServiceImpl</type>
+	</component>
 
 	<component>
 		<key>org.exoplatform.services.ecm.taxonomy.TaxonomyManagerService</key>
@@ -337,7 +342,69 @@
       </init-params>
     </component-plugin>
   </external-component-plugins>
-       
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.ecm.metadata.MetadataManagerService</target-component>
+    <component-plugin>
+      <name>test.template.component.plugin</name>
+      <set-method>addPlugin</set-method>
+      <type>org.exoplatform.services.ecm.template.impl.NodeTemplatePlugin</type>
+      <init-params>
+      	<value-param>
+        	<name>repository</name>
+        	<value>testRepository</value>
+      	</value-param>
+	      <object-param>        
+	        <name>System files1</name>
+	        <description>Template one</description>
+	        <object type="org.exoplatform.services.ecm.template.impl.TemplateConfig">
+	        	<field  name="nodeTypes">
+	        		<collection type="java.util.ArrayList">
+	          		 <value>
+	          		 	<object type="org.exoplatform.services.ecm.template.impl.TemplateConfig$NodeType">	
+	          		 		<field  name="name"><string>file</string></field>
+	          		 		<field  name="label"><string>article</string></field>
+	          		 		<field  name="documentTemplate"><boolean>true</boolean></field>
+	          		 		<field  name="dialogs">
+	          		 			<collection type="java.util.ArrayList">
+	          		 				<value>
+	          		 					<object type="org.exoplatform.services.ecm.template.impl.TemplateConfig$Template">
+	          		 						<field  name="name"><string>dialog</string></field>
+	          		 						<field name="templateFilePath"><string>jar:/templates/file/dialogs/admin_dialog.gtmpl</string></field>
+	          		 						<field  name="accessPermissions">
+	          									<collection type="java.util.ArrayList">
+	          										<value><string>*:/platform/administrators</string></value>	          		               
+	          									</collection>   	            	          
+	          								</field>
+	          		 					</object>
+	          		 				</value>
+	          		 			</collection>
+	          		 		</field>
+	          		 		<field  name="views">
+	          		 			<collection type="java.util.ArrayList">
+	          		 				<value>
+	          		 					<object type="org.exoplatform.services.ecm.template.impl.TemplateConfig$Template">
+	          		 						<field  name="name"><string>view</string></field>
+	          		 						<field name="templateFilePath"><string>jar:/templates/file/views/view1.gtmpl</string></field>
+	          		 						<field  name="accessPermissions">
+	          									<collection type="java.util.ArrayList">
+	          										<value><string>*:/platform/administrators</string></value>	          		               
+	          									</collection>   	            	          
+	          								</field>
+	          		 					</object>
+	          		 				</value>
+	          		 			</collection>
+	          		 		</field>
+	          		 	</object>
+	          		 </value>	          		               
+	          	</collection>   	            	          
+	          </field>
+	        </object>
+	      </object-param>    
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>
+
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>    
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>  
 </configuration>
