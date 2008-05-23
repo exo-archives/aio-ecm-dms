@@ -21,9 +21,12 @@ import java.util.List;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.services.ecm.BaseECMTestCase;
 import org.exoplatform.services.ecm.template.TemplateEntry;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
+import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.registry.RegistryEntry;
 import org.exoplatform.services.jcr.ext.registry.RegistryService;
@@ -126,10 +129,20 @@ public class TestMetadataService extends BaseECMTestCase {
   public void testGetAllMetadataNodeType() throws Exception {
     SessionProvider sessionProvider = SessionProvider.createSystemProvider() ;
     List<NodeType> nodeTypeList = new ArrayList<NodeType>() ;
-
+    NodeTypeManager nodeTypeManager =  registryService_.getRepositoryService().getRepository("repository").getNodeTypeManager() ;
+    NodeTypeValue nodeTypeValue = new NodeTypeValue() ;
+    List<String> superType = new ArrayList<String>() ;
+    superType.add("exo:metadata") ;
+    nodeTypeValue.setName("myNodeType") ;
+    nodeTypeValue.setPrimaryItemName("") ;
+    nodeTypeValue.setMixin(true) ;
+    nodeTypeValue.setDeclaredSupertypeNames(superType) ;
+    ExtendedNodeTypeManager extNodeTypeManager = (ExtendedNodeTypeManager) nodeTypeManager ;
+    extNodeTypeManager.registerNodeType(nodeTypeValue, ExtendedNodeTypeManager.FAIL_IF_EXISTS) ;
+    
     nodeTypeList = metadataManagerService_.getAllMetadataNodeType("repository") ;
     assertNotNull(nodeTypeList) ;
-    assertEquals(2, nodeTypeList.size()) ;
+    assertEquals(4, nodeTypeList.size()) ;
     sessionProvider.close() ;
   }
 
