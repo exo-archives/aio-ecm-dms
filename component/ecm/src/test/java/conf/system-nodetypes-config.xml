@@ -396,7 +396,7 @@
 	  </propertyDefinitions> 
   </nodeType>
   
-  <nodeType name="exo:myMetadata" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+  <nodeType name="exo:myMetadata" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:metadata</supertype>
     </supertypes>
