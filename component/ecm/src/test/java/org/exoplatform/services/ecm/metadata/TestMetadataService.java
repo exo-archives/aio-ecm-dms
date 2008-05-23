@@ -79,7 +79,6 @@ public class TestMetadataService extends BaseECMTestCase {
     }catch(PathNotFoundException e) {
       fail("Error in add method: haven't just added metadataTemplate") ;
     }
-    assertNotNull(regEntry) ;
     String metadataPath = null ;
     metadataPath = metadataManagerService_.getMetadataPath("xml", true, "repository", sessionProvider) ;
     assertNotNull(metadataPath) ;
@@ -117,7 +116,6 @@ public class TestMetadataService extends BaseECMTestCase {
     } catch (Exception e) {}
 
     paths = metadataManagerService_.getMetadataPaths("file", false, "repository", sessionProvider) ;
-    assertNotNull(paths) ;
     assertEquals(3, paths.size()) ;
     assertEquals(1, metadataManagerService_.getMetadataPaths("exo:file", false, "repository", sessionProvider).size()) ;
 
@@ -143,6 +141,7 @@ public class TestMetadataService extends BaseECMTestCase {
     nodeTypeList = metadataManagerService_.getAllMetadataNodeType("repository") ;
     assertNotNull(nodeTypeList) ;
     assertEquals(4, nodeTypeList.size()) ;
+    // can not delete NodeType which is created.
     sessionProvider.close() ;
   }
 
@@ -188,6 +187,6 @@ public class TestMetadataService extends BaseECMTestCase {
 
   private String getCDATA(Document doc, String tagName) {
     Node node = doc.getElementsByTagName(tagName).item(0) ;
-    return node.getTextContent().trim() ; 
+    return node.getTextContent() ; 
   }
 }
