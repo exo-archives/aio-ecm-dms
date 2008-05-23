@@ -20,21 +20,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.jcr.Node;
-import javax.jcr.Workspace;
-
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.ecm.BaseECMTestCase;
-import org.exoplatform.services.ecm.drive.impl.DriveManagerServiceImpl;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
-import org.exoplatform.services.jcr.impl.core.SessionImpl;
-import org.exoplatform.services.organization.Group;
-import org.exoplatform.services.organization.MembershipType;
-import org.exoplatform.services.organization.MembershipTypeHandler;
-import org.exoplatform.services.organization.OrganizationService;
 
 /**
  * Created by The eXo Platform SAS
@@ -148,20 +135,20 @@ public class TestDriveService extends BaseECMTestCase {
       assertEquals(true, drive.getShowHiddenNode()) ;
       assertEquals("both", drive.getAllowCreateFolder()) ;
     }
-    
+
     driveManagerService_.removeDrive("repository", "person", "film", sessionProvider) ;
     driveManagerService_.removeDrive("repository", "public", "music", sessionProvider) ;
     sessionProvider.close() ;
   }
-  
+
   public void testGetDriveByUser() throws Exception {
-    
+
   }
 
   private DriveEntry createDriveEntryToTest(String name, String group, String homePath, String Icon, 
-    String workspace, String allowCreateFolder, Boolean viewPreferences,
-    Boolean viewNonDocument, Boolean viewSideBar, Boolean showHiddenNode, 
-    ArrayList<String> permissionList, ArrayList<String> viewList) {
+      String workspace, String allowCreateFolder, Boolean viewPreferences,
+      Boolean viewNonDocument, Boolean viewSideBar, Boolean showHiddenNode, 
+      ArrayList<String> permissionList, ArrayList<String> viewList) {
     DriveEntry drive = new DriveEntry() ;
 
     drive.setName(name) ;
