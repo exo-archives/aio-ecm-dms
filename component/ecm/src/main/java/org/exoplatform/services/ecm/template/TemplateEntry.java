@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * May 5, 2008  
  */
 public class TemplateEntry {
-  
+
   private String nodeTypeName ;
   private String label ; 
   private String templateName ; 
@@ -33,7 +33,7 @@ public class TemplateEntry {
   private boolean isDocumentTemplate ; 
   private ArrayList<String> accessPermissions; 
   private String templateData ;
-  
+
   /**
    * @return the nodeTypeName
    */
@@ -90,5 +90,5 @@ public class TemplateEntry {
    * @param templateData the templateData to set
    */
   public void setTemplateData(String templateData) { this.templateData = templateData; }
-  
+
 }
