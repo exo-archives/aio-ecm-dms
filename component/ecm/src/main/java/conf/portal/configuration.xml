@@ -48,4 +48,8 @@
 		<type>org.exoplatform.services.ecm.taxonomy.impl.TaxonomyManagerServiceImpl</type>
 	</component>
 	
+	<component>
+		<key>org.exoplatform.services.ecm.metadata.MetadataManagerService</key>
+		<type>org.exoplatform.services.ecm.metadata.impl.MetadataManagerServiceImpl</type>
+	</component>
 </configuration>
