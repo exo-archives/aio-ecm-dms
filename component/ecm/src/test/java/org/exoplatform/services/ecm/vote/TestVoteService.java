@@ -60,7 +60,7 @@ public class TestVoteService extends BaseECMTestCase {
     List<Value> newVoterList2 = new ArrayList<Value>();
     
     voteService = (VoteService) container.getComponentInstanceOfType(VoteService.class);
-    voteService.vote(test, 2, "root", null);    
+    voteService.vote(test, 2, "root");    
     newVoterList1 = createValue(test, newVoterList2, "root");        
     newVoterList2 = getVoter(test, voteService);  
 
@@ -69,7 +69,7 @@ public class TestVoteService extends BaseECMTestCase {
     assertEquals(newVoterList1, newVoterList2);
            
     /*************************/
-    voteService.vote(test, 3, "root", null);    
+    voteService.vote(test, 3, "root");    
     newVoterList1 = createValue(test, newVoterList2, "root");        
     newVoterList2 = getVoter(test, voteService);  
       
@@ -78,7 +78,7 @@ public class TestVoteService extends BaseECMTestCase {
     assertEquals(newVoterList1, newVoterList2);
         
 //    /*************************/
-    voteService.vote(test, 1, "john", null);   
+    voteService.vote(test, 1, "john");   
     newVoterList1 = createValue(test, newVoterList2, "john");        
     newVoterList2 = getVoter(test, voteService);  
     
@@ -87,7 +87,7 @@ public class TestVoteService extends BaseECMTestCase {
     assertEquals(newVoterList1, newVoterList2);
         
     /*************************/
-    voteService.vote(test, 4, "john", null);  
+    voteService.vote(test, 4, "john");  
     newVoterList1 = createValue(test, newVoterList2, "john");        
     newVoterList2 = getVoter(test, voteService);  
     
@@ -98,7 +98,7 @@ public class TestVoteService extends BaseECMTestCase {
     /*************************/
     //anonymous vote
     
-    voteService.vote(test, 3, null, null);  
+    voteService.vote(test, 3, null);  
     newVoterList1 = createValue(test, newVoterList2, null);        
     newVoterList2 = getVoter(test, voteService);  
     

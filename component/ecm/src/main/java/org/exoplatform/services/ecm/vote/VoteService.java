@@ -40,7 +40,7 @@ public class VoteService {
   final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;
   final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ;    
       
-  public void vote(Node node, double rate, String userName, String language) throws Exception {   
+  public void vote(Node node, double rate, String userName) throws Exception {   
     Session session = node.getSession();    
     Session systemSession = null;
     Node document = null;
