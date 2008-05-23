@@ -22,6 +22,10 @@
 	overflow: hidden;
 }
 
+.UIECMAdminPortlet .UIFormGrid {
+	width: 100%;
+}
+
 .UIECMAdminPortlet .UITrees .Node  {
   line-height: 24px;
 }

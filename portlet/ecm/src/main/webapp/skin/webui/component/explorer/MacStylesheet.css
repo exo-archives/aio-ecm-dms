@@ -28,6 +28,10 @@
 	margin: 5px;
 }
 
+.UIJCRExplorerPortlet .UIFormGrid {
+	width: 100%;
+}
+
 .UIJCRExplorerPortlet .UIPreferencesForm  {
   width: 500px;
   margin: 10px auto;
