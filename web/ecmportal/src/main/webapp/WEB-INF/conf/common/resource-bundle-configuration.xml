@@ -25,6 +25,7 @@
         <value>locale.navigation.group.platform.users</value>
         <value>locale.navigation.group.platform.guests</value>
         <value>locale.navigation.group.organization.management.executive-board</value>               
+        <value>locale.ecm.cms.publication.PublicationService</value>
       </values-param>      
       <values-param>
         <name>portal.resource.names</name>

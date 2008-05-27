@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.publication;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.jcr.Node;
 
@@ -63,7 +64,7 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
     public abstract void changeState(Node node,
                                      String newState,
                                      HashMap<String, String> context)
-        throws IncorrectStateUpdateLifecycleException;
+        throws IncorrectStateUpdateLifecycleException, Exception;
 
     /**
      * Retrieves the WebUI form corresponding to the current state of the
@@ -114,7 +115,7 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
      * @param node the node from which the publication state should be retrieved
      * @return a String giving the current state.
      */
-    public abstract String getUserInfo(Node node);
+    public abstract String getUserInfo(Node node, Locale locale) throws Exception;
     
     /**
      * Retrieves the lifecycleName

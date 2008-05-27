@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.publication;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 import javax.jcr.ItemNotFoundException;
@@ -28,6 +29,7 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 
 import org.apache.commons.chain.Context;
 import org.apache.commons.logging.Log;
+import org.exoplatform.services.cms.publication.impl.StaticAndDirectPublicationPlugin;
 import org.exoplatform.services.command.action.Action;
 import org.exoplatform.services.command.action.ActionMatcher;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -53,7 +55,11 @@ public class TestPublicationService extends BaseStandaloneTest {
   private Session exo1Session;
   private Session adminSession;
   
+  private String LIFECYCLE = "StaticAndDirect"; 
+  
   protected static Log log;  
+
+  protected NodeImpl                   publicationServiceTestRoot;
   
   public void setUp() throws Exception {
     super.setUp();
@@ -61,8 +67,16 @@ public class TestPublicationService extends BaseStandaloneTest {
     publicationPresentationService = (PublicationPresentationService) container.getComponentInstanceOfType(PublicationPresentationService.class);
     publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
 
-    exo1Session = repository.login(new SimpleCredentials("exo1", "exo1".toCharArray()));
-    adminSession = repository.login(new SimpleCredentials("admin", "admin".toCharArray()));
+    adminSession = repository.login(new SimpleCredentials("root", "exo".toCharArray()));
+    
+    NodeImpl rootAdmin = (NodeImpl) adminSession.getRootNode();
+    publicationServiceTestRoot = (NodeImpl) rootAdmin.addNode(ROOT_PATH);
+    publicationServiceTestRoot.addMixin("mix:versionable");
+    publicationServiceTestRoot.addMixin("exo:privilegeable");
+    
+    publicationServiceTestRoot.setPermission(SystemIdentity.ANY, PermissionType.ALL);
+    rootAdmin.save();
+    
     
   }
   
@@ -77,6 +91,19 @@ public class TestPublicationService extends BaseStandaloneTest {
 
   }
   
+  public void testIfPluginIsAddAtStart () {
+    log.info("############################");
+    log.info("# testIfPluginIsAddAtStart #");
+    log.info("############################\n");
+    
+    assertTrue(publicationService.getPublicationPlugins().size()!=0);
+    log.info(publicationService.getPublicationPlugins().get("StaticAndDirect").getName());
+    log.info(publicationService.getPublicationPlugins().get("StaticAndDirect").getDescription());
+    
+    
+    
+  }
+  
   public void testIfPublicationServiceIsConfigured() throws NoSuchNodeTypeException,RepositoryException {
     log.info("########################################");
     log.info("# testIfPublicationServiceIsConfigured #");
@@ -86,6 +113,7 @@ public class TestPublicationService extends BaseStandaloneTest {
     assertNotNull(container.getComponentInstanceOfType(PublicationPresentationService.class));
     assertNotNull(repository.getNodeTypeManager().getNodeType("exo:publication"));
   }
+ 
   
   public void testAddAndGetPublicationPlugin() {
     log.info("########################################");
@@ -98,6 +126,22 @@ public class TestPublicationService extends BaseStandaloneTest {
     log.info("########################################");
     log.info("#  testEnrollAndCheckIfNodeIsEnrolled  #");
     log.info("########################################\n");
+    
+    try {
+      publicationService.enrollNodeInLifecycle(publicationServiceTestRoot, LIFECYCLE);
+      assertTrue(publicationService.isNodeEnrolledInLifecycle(publicationServiceTestRoot));
+      assertTrue(hasMixin(publicationServiceTestRoot, "exo:publication"));
+      System.out.println("lifeCycleName = "+publicationService.getNodeLifecycleName(publicationServiceTestRoot));
+      System.out.println("CurrentState = "+publicationService.getCurrentState(publicationServiceTestRoot));
+      System.out.println("Log = "+publicationService.getLog(publicationServiceTestRoot).toString());
+      System.out.println("UserInfo FR = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.FRENCH));
+      System.out.println("UserInfo EN = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.ENGLISH));
+      
+     
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
 
   }
   
@@ -112,7 +156,7 @@ public class TestPublicationService extends BaseStandaloneTest {
     log.info("#########");
     log.info("# test2 #");
     log.info("#########\n");
-    
+    publicationService.testMethod();
     
   }
   

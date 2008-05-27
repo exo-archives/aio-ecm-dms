@@ -12,6 +12,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.ValueFactory;
 import javax.jcr.Workspace;
+import javax.jcr.nodetype.NodeType;
 
 import junit.framework.TestCase;
 
@@ -314,6 +315,14 @@ public abstract class BaseStandaloneTest extends TestCase {
 
       fail("Mixin '" + mixin + "' isn't accessible");
     }
+  }
+  
+  protected boolean hasMixin(Node node, String nodeTypeName) throws Exception {
+    NodeType[] mixinTypes = node.getMixinNodeTypes() ; 
+    for(NodeType nodeType : mixinTypes) {
+      if(nodeType.getName().equals(nodeTypeName)) return true ;
+    }
+    return false ;
   }
 
   protected String memoryInfo() {

@@ -21,7 +21,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Map; 
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -36,7 +37,6 @@ import org.exoplatform.services.cms.publication.NotInPublicationLifecycleExcepti
 import org.exoplatform.services.cms.publication.PublicationPlugin;
 import org.exoplatform.services.cms.publication.PublicationPresentationService;
 import org.exoplatform.services.cms.publication.PublicationService;
-import org.exoplatform.services.resources.ResourceBundleService;
 import org.exoplatform.services.resources.*;
 
 import org.apache.commons.logging.Log;
@@ -52,12 +52,15 @@ import org.exoplatform.services.log.ExoLogger;
 public class PublicationServiceImpl implements PublicationService {
 
   private static final String         PUBLICATION           = "exo:publication".intern();
-  private static final String         LIFECYCLE_NAME        = "exo:lyfecycleName".intern();
+  private static final String         LIFECYCLE_NAME        = "exo:lifecycleName".intern();
   private static final String         CURRENT_STATE         = "exo:currentState".intern();
   private static final String         HISTORY               = "exo:history".intern();
   
   protected static Log log;  
   private PublicationPresentationService publicationPresentationService;
+  
+  private final String localeFile = "locale.ecm.cms.publication.StaticAndDirectPublicationPlugin";
+  
   
   Map<String, PublicationPlugin> publicationPlugins_;
   
@@ -72,17 +75,7 @@ public class PublicationServiceImpl implements PublicationService {
     publicationPresentationService = (PublicationPresentationService) container.getComponentInstanceOfType(PublicationPresentationService.class);
     
     publicationPlugins_ = new HashMap<String, PublicationPlugin>();
-    
-    try {
-    ExoContainer container2 = ExoContainerContext.getCurrentContainer();    
-    ResourceBundleService resourceBundleService = (ResourceBundleService) container2.getComponentInstanceOfType(ResourceBundleService.class);
-    ResourceBundleData resourceBundleData= resourceBundleService.getResourceBundleData("locale.ecm.cms.publication.PublicationService_en");
-    
-    System.out.println(resourceBundleData.toString());
-    } catch (Exception e) {
-      e.printStackTrace();
-      
-    }
+   
     log.info("#####################################");    
     log.info("#  PublicationService initialized   #");
     log.info("#####################################\n");
@@ -92,9 +85,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#addLog(javax.jcr.Node, java.lang.String[])
    */
   public void addLog(Node node, String[] args) throws NotInPublicationLifecycleException, Exception {
-    log.info("############");
-    log.info("#  addLog  #");
-    log.info("############\n");
+//    log.info("############");
+//    log.info("#  addLog  #");
+//    log.info("############\n");
     
     Session session = node.getSession() ;
     ManageableRepository repository = (ManageableRepository)session.getRepository() ;
@@ -124,9 +117,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#addPublicationPlugin(org.exoplatform.services.cms.publication.PublicationPlugin)
    */
   public void addPublicationPlugin(PublicationPlugin p) {
-    log.info("##########################");
-    log.info("#  addPublicationPlugin  #");
-    log.info("##########################\n");
+//    log.info("##########################");
+//    log.info("#  addPublicationPlugin  #");
+//    log.info("##########################\n");
     
     this.publicationPlugins_.put(p.getLifecycleName(),p);
     publicationPresentationService.addPublicationPlugin(p);
@@ -137,9 +130,9 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public void changeState(Node node, String newState, HashMap<String, String> context)
       throws NotInPublicationLifecycleException, IncorrectStateUpdateLifecycleException, Exception {
-    log.info("#################");
-    log.info("#  changeState  #");
-    log.info("#################\n");
+//    log.info("#################");
+//    log.info("#  changeState  #");
+//    log.info("#################\n");
     
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
@@ -157,9 +150,9 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public void enrollNodeInLifecycle(Node node, String lifecycle)
       throws AlreadyInPublicationLifecycleException, Exception {
-    log.info("###########################");
-    log.info("#  enrollNodeInLifecycle  #");
-    log.info("###########################\n");
+//    log.info("###########################");
+//    log.info("#  enrollNodeInLifecycle  #");
+//    log.info("###########################\n");
     
     if (isNodeEnrolledInLifecycle(node)) {
       throw new AlreadyInPublicationLifecycleException();
@@ -174,6 +167,10 @@ public class PublicationServiceImpl implements PublicationService {
       node.setProperty(CURRENT_STATE, "enrolled"); 
       List<Value> history = new ArrayList<Value>();
       node.setProperty(HISTORY, history.toArray(new Value[history.size()]));
+      
+      publicationPlugins_.get(lifecycle).changeState(node, "enrolled", new HashMap<String,String>());
+      
+      
     }
   }
 
@@ -181,9 +178,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getCurrentState(javax.jcr.Node)
    */
   public String getCurrentState(Node node) throws NotInPublicationLifecycleException,Exception {
-    log.info("#####################");
-    log.info("#  getCurrentState  #");
-    log.info("#####################\n");
+//    log.info("#####################");
+//    log.info("#  getCurrentState  #");
+//    log.info("#####################\n");
     
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
@@ -196,9 +193,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getLog(javax.jcr.Node)
    */
   public String[][] getLog(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("############");
-    log.info("#  getLog  #");
-    log.info("############\n");
+//    log.info("############");
+//    log.info("#  getLog  #");
+//    log.info("############\n");
     
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
@@ -220,9 +217,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getNodeLifecycleDesc(javax.jcr.Node)
    */
   public String getNodeLifecycleDesc(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("##########################");
-    log.info("#  getNodeLifecycleDesc  #");
-    log.info("##########################\n");
+//    log.info("##########################");
+//    log.info("#  getNodeLifecycleDesc  #");
+//    log.info("##########################\n");
     
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
@@ -238,9 +235,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getNodeLifecycleName(javax.jcr.Node)
    */
   public String getNodeLifecycleName(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("##########################");
-    log.info("#  getNodeLifecycleName  #");
-    log.info("##########################\n");
+//    log.info("##########################");
+//    log.info("#  getNodeLifecycleName  #");
+//    log.info("##########################\n");
     
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
@@ -254,9 +251,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getPublicationPlugins()
    */
   public Map<String,PublicationPlugin> getPublicationPlugins() {
-    log.info("##########################");
-    log.info("#  getPublicationPlugins #");
-    log.info("##########################\n");
+//    log.info("##########################");
+//    log.info("#  getPublicationPlugins #");
+//    log.info("##########################\n");
     return this.publicationPlugins_;
   }
 
@@ -264,9 +261,9 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getStateImage(javax.jcr.Node)
    */
   public byte[] getStateImage(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("###################");
-    log.info("#  getStateImage  #");
-    log.info("###################\n");
+//    log.info("###################");
+//    log.info("#  getStateImage  #");
+//    log.info("###################\n");
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
     } else {
@@ -281,24 +278,16 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getUserInfo(javax.jcr.Node)
    */
   public String getUserInfo(Node node, Locale locale) throws NotInPublicationLifecycleException, Exception {
-    log.info("#################");
-    log.info("#  getUserInfo  #");
-    log.info("#################\n");
+//    log.info("#################");
+//    log.info("#  getUserInfo  #");
+//    log.info("#################\n");
     
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
     } else {
       String lifecycleName=getNodeLifecycleName(node);
       PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
-      String userInfo = nodePlugin.getUserInfo(node);
-      
-      ExoContainer container = ExoContainerContext.getCurrentContainer();    
-      ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
-      ResourceBundleData resourceBundleData= resourceBundleService.getResourceBundleData(userInfo);
-      
-      resourceBundleData.setLanguage(locale.getDisplayLanguage());
-      return resourceBundleData.getData();
-       
+      return nodePlugin.getUserInfo(node, locale);
     }
   }
 
@@ -306,11 +295,33 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#isNodeEnrolledInLifecycle(javax.jcr.Node)
    */
   public boolean isNodeEnrolledInLifecycle(Node node) throws Exception {
-    log.info("###############################");
-    log.info("#  isNodeEnrolledInLifecycle  #");
-    log.info("###############################\n");
+//    log.info("###############################");
+//    log.info("#  isNodeEnrolledInLifecycle  #");
+//    log.info("###############################\n");
     
     return node.isNodeType(PUBLICATION);
+  }
+  
+  public String getLocalizedAndSubstituteLog(Locale locale, String key, String[] values){
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
+    ResourceBundle resourceBundle= resourceBundleService.getResourceBundle(localeFile,locale);
+   
+    String result = resourceBundle.getString("key");
+    return String.format(result,values);
+    
+  }
+  
+  public void testMethod () {
+//    log.info("################");
+//    log.info("#  testMethod  #");
+//    log.info("################\n");
+    
+    String s="test %s test %s test %s";
+    String [] values ={"a","b","c"};
+    System.out.println(String.format(s, values));
+    
+    
   }
 
 }

@@ -153,6 +153,7 @@ public interface PublicationService {
    * 
    * @param node the Node from which the history Log should be updated
    * @param log the Log information to be added
+   *  log contains : date, newState, userInvolved, key for additionalInformation in locale with possible subsitutions, values for substitutions
    * @throws NotInPublicationLifecycleException in case the Node has not
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
@@ -210,6 +211,17 @@ public interface PublicationService {
    */
   public void enrollNodeInLifecycle(Node node, String lifecycle) throws AlreadyInPublicationLifecycleException, Exception;
 
+  
+  /**
+   * Get localized log messages and substitute variables
+   * @param locale : the locale to use
+   * @param key : the key to translate
+   * @param values : array of string to susbtitute in the string
+   * @result a string localized and where values are substitute
+   */
+  public String getLocalizedAndSubstituteLog(Locale locale, String key, String[] values);
+  
+    public void testMethod();
 
   
 }
