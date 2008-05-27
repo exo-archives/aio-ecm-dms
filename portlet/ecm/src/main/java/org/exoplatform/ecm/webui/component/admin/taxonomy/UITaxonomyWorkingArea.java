@@ -174,11 +174,9 @@ public class UITaxonomyWorkingArea extends UIContainer {
       CategoriesService categoriesService = 
         uiWorkingArea.getApplicationComponent(CategoriesService.class) ;
       try {
-//        String parentSrc = uiManager.getNodeByPath(srcPath).getParent().getPath();        
         categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiWorkingArea.getRepository()) ;        
         uiManager.update(realPath) ;
       } catch(Exception e) {
-        e.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.referential-integrity", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

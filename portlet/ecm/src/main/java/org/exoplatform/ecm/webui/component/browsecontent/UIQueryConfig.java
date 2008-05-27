@@ -370,6 +370,12 @@ public class UIQueryConfig extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
+      if(Integer.parseInt(itemPerPage) == 0) {
+        app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null,
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        return ;
+      }
       String  queryType = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYTYPE).getValue() ;
       boolean hasTagMap = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLETAGMAP).isChecked() ;
       boolean hasComment = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECOMMENT).isChecked() ;
