@@ -15,8 +15,20 @@
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea {
+	width: 100%;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
 	width: 99%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
+	float: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UITabPane {
+	height: auto;
 }
 
 /*############################## -- End UIJCRExplorer -- ##############################*/
@@ -455,8 +467,13 @@
 
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm  {
+.UIJCRExplorerPortlet .UICommentForm {
   padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UICommentForm .HorizontalLayout {
+	padding: 10px;
+	background: #f3f3f3;
 }
 
 /*================================UISimpleSearch=================================*/
@@ -824,9 +841,4 @@
 
 /*====================================UIDivInfo==================================*/
 
-.UIJCRExplorer .UIDivInfo .UITabPane {
-	width: 97%;
-	padding: 0px; 
-	margin: auto;
-}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
