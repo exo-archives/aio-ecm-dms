@@ -19,7 +19,6 @@ package org.exoplatform.services.ecm.core.impl;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,98 +47,93 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
- * Created by The eXo Platform SAS
- * Author : Hao Le Minh
- *          hao.le@exoplatform.com
- * Apr 28, 2008  
+ * Created by The eXo Platform SAS Author :
+ *  Hao Le Minh hao.le@exoplatform.com
+ * Apr 28, 2008
  */
 public class NodeServiceImpl implements NodeService {
 
-  final static private String EXO_DATETIME_ = "exo:datetime";
-  final static private String EXO_DATE_MODIFIED_ = "exo:dateModified";  
-  private RepositoryService repositoryService_ ;
-  private IDGeneratorService idGeneratorService_ ;
+  final static private String EXO_DATETIME_      = "exo:datetime";
+  final static private String EXO_DATE_MODIFIED_ = "exo:dateModified";
+  private RepositoryService   repositoryService_;
+  private IDGeneratorService  idGeneratorService_;
 
-  public NodeServiceImpl(RepositoryService repoService, IDGeneratorService idGenerateService) throws Exception{
+  public NodeServiceImpl(RepositoryService repoService, IDGeneratorService idGenerateService)
+      throws Exception {
     repositoryService_ = repoService;
-    idGeneratorService_ = idGenerateService;     
+    idGeneratorService_ = idGenerateService;
   }
 
   @SuppressWarnings("unused")
-  public Node addNode(Node parent, String nodetype, Map<String, JcrItemInput> maps,
-      boolean isNew) throws Exception {
+  public Node addNode(Node parent, String nodetype, Map<String, JcrItemInput> maps, boolean isNew)
+      throws Exception {
     Set<String> keys = maps.keySet();
     String nodePath = extractNodeName(keys);
     JcrItemInput jcrInputPro = (JcrItemInput) maps.get(nodePath);
     String nodeName = (String) jcrInputPro.getValue();
-    if (nodeName == null || nodeName.length() == 0){
+    if (nodeName == null || nodeName.length() == 0) {
       nodeName = idGeneratorService_.generateStringID(nodetype);
-    }  
+    }
     String primaryType = jcrInputPro.getPrimaryNodeType();
-    if (primaryType == null || primaryType.length() == 0){
-      primaryType = nodetype;
-    }  
+    if (primaryType == null || primaryType.length() == 0) primaryType = nodetype;
     Session session = parent.getSession();
     NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
     NodeType nodeType = nodeTypeManager.getNodeType(primaryType);
     Node currentNode = null;
     String[] mixinNodeTypes = jcrInputPro.getMixinNodeTypes();
-    if (isNew) { 
+    if (isNew) {
       currentNode = parent.addNode(nodeName, primaryType);
       if (mixinNodeTypes != null) {
         for (String typeNode : mixinNodeTypes) {
-          if (currentNode.isNodeType(typeNode)){
+          if (!currentNode.isNodeType(typeNode)) {
             currentNode.addMixin(typeNode);
-          } 
-          NodeType mixinType = nodeTypeManager.getNodeType(typeNode) ;
-          createNodeRecusively(NODE, currentNode, nodeType, maps) ;
+          }
+          NodeType mixinType = nodeTypeManager.getNodeType(typeNode);
+          createNodeRecusively(NODE, currentNode, nodeType, maps);
         }
       }
-      createNodeRecusively(NODE, currentNode, nodeType, maps) ;
-    }else{ 
-      currentNode = parent.getNode(nodeName) ;
-      updateNodeRecusively(NODE, currentNode, nodeType, maps) ;
-      if(currentNode.isNodeType(EXO_DATETIME_)){
-        currentNode.setProperty(EXO_DATE_MODIFIED_, new GregorianCalendar()) ;
+      createNodeRecusively(NODE, currentNode, nodeType, maps);
+    } else {
+      currentNode = parent.getNode(nodeName);
+      updateNodeRecusively(NODE, currentNode, nodeType, maps);
+      if (currentNode.isNodeType(EXO_DATETIME_)) {
+        currentNode.setProperty(EXO_DATE_MODIFIED_, new GregorianCalendar());
       }
     }
     return currentNode;
   }
-  
+
   public Node addNode(String repository, String workspace, String parentPath, String nodetype,
       Map<String, JcrItemInput> jcrProperties, boolean isNew, SessionProvider sessionProvider)
-  throws Exception {
+      throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     Session session = sessionProvider.getSession(workspace, manageableRepository);
-    Node nodeHome = (Node)session.getItem(parentPath);
-    Node currentNode = addNode(nodeHome, nodetype, jcrProperties, isNew);
-    session.save();    
-    return currentNode;
+    Node nodeHome = (Node) session.getItem(parentPath);
+    return addNode(nodeHome, nodetype, jcrProperties, isNew);
   }
 
-  public Node copyNode(String repository, String srcWorkspace, String srcPath,
-      String desWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {    
+  public Node copyNode(String repository, String srcWorkspace, String srcPath, String desWorkspace,
+      String destPath, SessionProvider sessionProvider) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-    Session srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository); ;
-    String newNodePath = destPath + "/" + srcPath.substring(srcPath.lastIndexOf("/") + 1);    
-    if(srcWorkspace.equals(desWorkspace)){ 
-      srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository);            
-      srcSession.getWorkspace().copy(srcPath, newNodePath);      
+    Session srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository);
+    String newNodePath = destPath + "/" + srcPath.substring(srcPath.lastIndexOf("/") + 1);
+    if (srcWorkspace.equals(desWorkspace)) {
+      srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository);
+      srcSession.getWorkspace().copy(srcPath, newNodePath);
       srcSession.save();
-      return (Node)srcSession.getItem(newNodePath);            
+      return (Node) srcSession.getItem(newNodePath);
     }
     srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository);
     Session destSession = sessionProvider.getSession(desWorkspace, manageableRepository);
-    Workspace workspace = destSession.getWorkspace();    
-    destSession.getItem(destPath);        
+    Workspace workspace = destSession.getWorkspace();
+    destSession.getItem(destPath);
     workspace.clone(srcWorkspace, srcPath, destPath, true);
     srcSession.save();
-    destSession.save() ;    
-    return (Node)destSession.getItem(destPath) ;
-  } 
+    return (Node) destSession.getItem(destPath);
+  }
 
-  public Node moveNode(String repository, String srcWorkspace, String srcPath,
-      String desWorkspace, String destPath, SessionProvider sessionProvider) throws Exception {
+  public Node moveNode(String repository, String srcWorkspace, String srcPath, String desWorkspace,
+      String destPath, SessionProvider sessionProvider) throws Exception {
     String nodeReturnPath = null;
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     Session srcSession = sessionProvider.getSession(srcWorkspace, manageableRepository);
@@ -147,285 +141,300 @@ public class NodeServiceImpl implements NodeService {
     nodeReturnPath = destPath + "/" + srcPath.substring(srcPath.lastIndexOf("/") + 1);
     srcSession.getWorkspace().move(srcPath, nodeReturnPath);
     srcSession.save();
-    desSession.save();
     return (Node) desSession.getItem(nodeReturnPath);
   }
 
   public void setProperty(Node node, String propertyName, Object value, int requiredtype,
-      boolean isMultiple) throws Exception{
-    switch(requiredtype){
+      boolean isMultiple) throws Exception {
+    switch (requiredtype) {
     case PropertyType.BINARY:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else if (value instanceof byte[])
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream((byte[]) value));
-      else if (value instanceof String)
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream(((String)value).getBytes()));
-      else if (value instanceof String[])        
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream((((String[]) value)).toString().getBytes())); 
+      } else if (value instanceof byte[]) {
+          node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
+      } else if (value instanceof String) {
+          node.setProperty(propertyName, new ByteArrayInputStream(((String) value).getBytes()));
+      } else if (value instanceof String[]) {
+          node.setProperty(propertyName, new ByteArrayInputStream((((String[]) value)).toString()
+            .getBytes()));
+      }
       break;
     case PropertyType.DOUBLE:
-      if (value == null || "".equals(value))
+      if (value == null || "".equals(value)) {
         node.setProperty(propertyName, 0);
-      else if (value instanceof String)
-        node.setProperty(propertyName, new Double((String) value).doubleValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value); 
+      } else if (value instanceof String) {
+          node.setProperty(propertyName, new Double((String) value).doubleValue());
+      } else if (value instanceof String[]) {
+          node.setProperty(propertyName, (String[]) value);
+      }
       break;
     case PropertyType.LONG:
-      if (value == null || "".equals(value))
+      if (value == null || "".equals(value)) {
         node.setProperty(propertyName, 0);
-      else if (value instanceof String)
-        node.setProperty(propertyName, new Long((String) value).longValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value); 
+      } else if (value instanceof String) {
+          node.setProperty(propertyName, new Long((String) value).longValue());
+      } else if (value instanceof String[]) {
+          node.setProperty(propertyName, (String[]) value);
+      }
       break;
     case PropertyType.STRING:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else {
-        if(isMultiple) {
-          if (value instanceof String)
-            node.setProperty(propertyName, new String[] { (String)value});
-          else if (value instanceof String[])
-            node.setProperty(propertyName, (String[]) value);          
-        } else
-          node.setProperty(propertyName, (String) value);
+      } else {
+        if (isMultiple) {
+          if (value instanceof String) {
+            node.setProperty(propertyName, new String[] { (String) value });
+          } else if (value instanceof String[]) {
+              node.setProperty(propertyName, (String[]) value);
+          } else {
+              node.setProperty(propertyName, (String) value);
+          }
+        } else {
+          node.setProperty(propertyName, value.toString()) ;
+        }
       }
       break;
     case PropertyType.REFERENCE:
-      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
+      if (value == null)
+        throw new RepositoryException("null value for a reference " + requiredtype);
       if (value instanceof Value[]) {
         node.setProperty(propertyName, (Value[]) value);
       } else if (value instanceof String) {
         String referenceWorksapce = null;
-        String referenceNodeName = null ;
+        String referenceNodeName = null;
         Session session = node.getSession();
-        String repositoty = ((ManageableRepository)session.getRepository()).getConfiguration().getName();
-        if(((String)value).indexOf(":/") > -1) {
-          referenceWorksapce = ((String)value).split(":/")[0];
-          referenceNodeName = ((String)value).split(":/")[1] ;
-          Session session2 = repositoryService_.getRepository(repositoty).getSystemSession(referenceWorksapce) ;
-          if(session2.getRootNode().hasNode(referenceNodeName)) {
+        String repositoty = ((ManageableRepository) session.getRepository()).getConfiguration()
+            .getName();
+        if (((String) value).indexOf(":/") > -1) {
+          referenceWorksapce = ((String) value).split(":/")[0];
+          referenceNodeName = ((String) value).split(":/")[1];
+          Session session2 = repositoryService_.getRepository(repositoty).getSystemSession(
+              referenceWorksapce);
+          if (session2.getRootNode().hasNode(referenceNodeName)) {
             Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
             Value value2add = session2.getValueFactory().createValue(referenceNode);
-            node.setProperty(propertyName, new Value[] {value2add});          
-          }else
-            node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
-        } else {
-          if(session.getRootNode().hasNode((String) value)) {
-            Node referenceNode = session.getRootNode().getNode(referenceNodeName);
-            Value value2add = session.getValueFactory().createValue(referenceNode);
-            node.setProperty(propertyName, new Value[] {value2add});
-          } else
-            node.setProperty(propertyName, session.getValueFactory().createValue((String)value));
-        }
-      } else if(value instanceof String[]) {
-        String[] values = (String[]) value ;        
-        String referenceWorksapce = null ;
-        String referenceNodeName = null ;
-        Session session = node.getSession();
-        String repositoty = ((ManageableRepository)session.getRepository()).getConfiguration().getName();
-        List<Value> list = new ArrayList<Value>() ;        
-        for(String v: values) {          
-          Value valueObj = null ;
-          if(v.indexOf(":/")>0) {
-            referenceWorksapce = v.split(":/")[0];
-            referenceNodeName = v.split(":/")[1] ;
-            Session session2 = repositoryService_.getRepository(repositoty).getSystemSession(referenceWorksapce) ;            
-            if(session2.getRootNode().hasNode(referenceNodeName)) {
-              Node referenceNode = session2.getRootNode().getNode(referenceNodeName) ;
-              valueObj = session2.getValueFactory().createValue(referenceNode) ;              
-            }else              
-              valueObj = session2.getValueFactory().createValue(v) ;
-          }else {            
-            if(session.getRootNode().hasNode(v)) {
-              Node referenceNode = session.getRootNode().getNode(v) ;
-              valueObj = session.getValueFactory().createValue(referenceNode) ;
-            }else
-              valueObj = session.getValueFactory().createValue(v) ;
+            node.setProperty(propertyName, new Value[] { value2add });
+          } else {
+              node.setProperty(propertyName, session2.getValueFactory().createValue((String) value));
           }
-          list.add(valueObj) ;          
+        } else {
+          if (session.getRootNode().hasNode((String) value)) {
+             Node referenceNode = session.getRootNode().getNode(referenceNodeName);
+             Value value2add = session.getValueFactory().createValue(referenceNode);
+             node.setProperty(propertyName, new Value[] { value2add });
+          } else {
+              node.setProperty(propertyName, session.getValueFactory().createValue((String) value));
+          }
         }
-        node.setProperty(propertyName,list.toArray(new Value[list.size()])) ;
-      }    
+      } else if (value instanceof String[]) {
+        String[] values = (String[]) value;
+        String referenceWorksapce = null;
+        String referenceNodeName = null;
+        Session session = node.getSession();
+        String repositoty = ((ManageableRepository) session.getRepository()).getConfiguration()
+            .getName();
+        List<Value> list = new ArrayList<Value>();
+        for (String v : values) {
+          Value valueObj = null;
+          if (v.indexOf(":/") > 0) {
+            referenceWorksapce = v.split(":/")[0];
+            referenceNodeName = v.split(":/")[1];
+            Session session2 = repositoryService_.getRepository(repositoty).getSystemSession(
+                referenceWorksapce);
+            if (session2.getRootNode().hasNode(referenceNodeName)) {
+              Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
+              valueObj = session2.getValueFactory().createValue(referenceNode);
+            } else {
+                valueObj = session2.getValueFactory().createValue(v);
+            }
+          } else {
+            if (session.getRootNode().hasNode(v)) {
+               Node referenceNode = session.getRootNode().getNode(v);
+               valueObj = session.getValueFactory().createValue(referenceNode);
+            } else {
+                valueObj = session.getValueFactory().createValue(v);
+            }
+          }
+          list.add(valueObj);
+        }
+        node.setProperty(propertyName, list.toArray(new Value[list.size()]));
+      }
       break;
     case PropertyType.DATE:
-      if (value == null){        
+      if (value == null) {
         node.setProperty(propertyName, new GregorianCalendar());
       } else {
-        if(isMultiple) {
+        if (isMultiple) {
           Session session = node.getSession();
           if (value instanceof String) {
             Value value2add = session.getValueFactory().createValue(ISO8601.parse((String) value));
-            node.setProperty(propertyName, new Value[] {value2add});
+            node.setProperty(propertyName, new Value[] { value2add });
           } else if (value instanceof String[]) {
-            String[] values = (String[]) value;
-            Value[] convertedCalendarValues = new Value[values.length];
+              String[] values = (String[]) value;
+              Value[] convertedCalendarValues = new Value[values.length];
             int i = 0;
             for (String stringValue : values) {
               Value value2add = session.getValueFactory().createValue(ISO8601.parse(stringValue));
               convertedCalendarValues[i] = value2add;
               i++;
             }
-            node.setProperty(propertyName, convertedCalendarValues);        
+            node.setProperty(propertyName, convertedCalendarValues);
           }
         } else {
           if (value instanceof String) {
-            node.setProperty(propertyName, ISO8601.parse((String)value));
+            node.setProperty(propertyName, ISO8601.parse((String) value));
           } else if (value instanceof GregorianCalendar)
-            node.setProperty(propertyName, (GregorianCalendar) value);
+              node.setProperty(propertyName, (GregorianCalendar) value);
         }
-      }      
+      }
       break;
     case PropertyType.BOOLEAN:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, false);
-      else if (value instanceof String)
-        node.setProperty(propertyName, 
-            new Boolean((String) value).booleanValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value); 
+      } else if (value instanceof String) {
+          node.setProperty(propertyName, new Boolean((String) value).booleanValue());
+      } else if (value instanceof String[]) {
+          node.setProperty(propertyName, (String[]) value);
+      }
       break;
     default:
       throw new RepositoryException("unknown type " + requiredtype);
     }
 
-  }   
-
-  private void createNodeRecusively(String path, Node curentNode, 
-      NodeType curentNodeType, Map<String, JcrItemInput> jcrInputPro) throws Exception{
-    processNodeRecusively(true, path, curentNode, curentNodeType, jcrInputPro) ;
   }
 
-  private String extractNodeName(Set<String> keys){
-    String key = null ;
-    for(Iterator<String> iter = keys.iterator(); iter.hasNext();){
-      key = (String)iter.next() ;
-      if(key.endsWith(NODE)) return key;
+  private void createNodeRecusively(String path, Node curentNode, NodeType curentNodeType,
+      Map<String, JcrItemInput> jcrInputPro) throws Exception {
+    processNodeRecusively(true, path, curentNode, curentNodeType, jcrInputPro);
+  }
+
+  private String extractNodeName(Set<String> keys) {
+    for (String key : keys){
+      if (key.endsWith(NODE)) return key;
     }
     return null;
   }
 
-  private void processEditNodeProperty(boolean create, String path, 
-      Node curentNode, NodeType curentNodeTye, Map<String,JcrItemInput> jcrInputPro) throws Exception{
-    if(create || path.equals(NODE)){
-      PropertyDefinition [] proDefin = curentNodeTye.getPropertyDefinitions() ;
-      for(PropertyDefinition proDefiDetail : proDefin){
-        if(!proDefiDetail.isAutoCreated() && !proDefiDetail.isProtected()){
-          String proName = proDefiDetail.getName() ;
-          int proReqType = proDefiDetail.getRequiredType() ;
-          String curentPath = path + "/" + proName ; 
-          JcrItemInput varJcrInput = (JcrItemInput)jcrInputPro.get(curentPath) ;
-          Object value = null ;
-          if(varJcrInput != null) value = varJcrInput.getValue() ;
-          if(varJcrInput != null && !proDefiDetail.isMandatory())
-            setProperty(curentNode, proName, value, proReqType, proDefiDetail.isMultiple()) ;
+  private void processEditNodeProperty(boolean create, String path, Node curentNode,
+      NodeType curentNodeTye, Map<String, JcrItemInput> jcrInputPro) throws Exception {
+    if (create || path.equals(NODE)) {
+      PropertyDefinition[] proDefin = curentNodeTye.getPropertyDefinitions();
+      for (PropertyDefinition proDefiDetail : proDefin) {
+        if (!proDefiDetail.isAutoCreated() && !proDefiDetail.isProtected()) {
+          String proName = proDefiDetail.getName();
+          int proReqType = proDefiDetail.getRequiredType();
+          String curentPath = path + "/" + proName;
+          JcrItemInput varJcrInput = (JcrItemInput) jcrInputPro.get(curentPath);
+          Object value = null;
+          if (varJcrInput != null) value = varJcrInput.getValue();
+          if (varJcrInput != null && proDefiDetail.isMandatory()) {
+            setProperty(curentNode, proName, value, proReqType, proDefiDetail.isMultiple());
+          }
         }
       }
     }
   }
-  
-  private void processNodeRecusively(boolean isCreate, String path, 
-      Node curentNode, NodeType curentNodeType, Map<String, JcrItemInput> jcrItemInput) throws Exception{
 
-    if(isCreate){
-      processEditNodeProperty(true, path, curentNode, curentNodeType, jcrItemInput) ;
-    }else{
-      for(PropertyIterator proIterate = curentNode.getProperties(); proIterate.hasNext();){
-        Property property = proIterate.nextProperty() ;
-        PropertyDefinition proDefiDetail = property.getDefinition() ;
-        String proName = property.getName() ;
-        int proReqType = property.getType() ;
-        String curentPath = path + "/" + proName ;
-        JcrItemInput varJcrItemInput = (JcrItemInput)jcrItemInput.get(curentPath) ;
+  private void processNodeRecusively(boolean isCreate, String path, Node currentNode,
+      NodeType currentNodeType, Map<String, JcrItemInput> jcrItemInputs) throws Exception {
+    
+    if (isCreate) {
+      processEditNodeProperty(true, path, currentNode, currentNodeType, jcrItemInputs);
+    } else {
+      for (PropertyIterator proIterate = currentNode.getProperties(); proIterate.hasNext();) {
+        Property property = proIterate.nextProperty();
+        PropertyDefinition proDefiDetail = property.getDefinition();
+        String proName = property.getName();
+        int proReqType = property.getType();
+        String currentPath = path + "/" + proName;
+        JcrItemInput varJcrItemInput = (JcrItemInput) jcrItemInputs.get(currentPath);
         Object value = null;
-        if(varJcrItemInput != null) value = varJcrItemInput.getValue() ;
-        if(value != null && !proDefiDetail.isProtected())
-          setProperty(curentNode, proName, value, proReqType, proDefiDetail.isMultiple()) ;
+        if (varJcrItemInput != null) value = varJcrItemInput.getValue();
+        if (value != null && !proDefiDetail.isProtected()) {
+          setProperty(currentNode, proName, value, proReqType, proDefiDetail.isMultiple());
+        }
       }
-      processEditNodeProperty(false, path, curentNode, curentNodeType, jcrItemInput) ;
-    } 
+      processEditNodeProperty(false, path, currentNode, currentNodeType, jcrItemInputs);
+    }
 
-    List<Object> childs = new ArrayList<Object>() ;
-    if(isCreate){
-      NodeDefinition [] childNodeDefins = curentNodeType.getChildNodeDefinitions() ;
-      for(Object childObj : childNodeDefins){
-        childs.add(childObj) ;
+    List<Object> childs = new ArrayList<Object>();
+    if (isCreate) {
+      NodeDefinition[] childNodeDefins = currentNodeType.getChildNodeDefinitions();
+      for (NodeDefinition childObj : childNodeDefins) {
+        childs.add(childObj);
       }
-    }else{
-      NodeIterator nodeIterate = curentNode.getNodes() ;
-      while(nodeIterate.hasNext()) {
-        childs.add(nodeIterate.nextNode()) ;
+    } else {
+      NodeIterator nodeIterate = currentNode.getNodes();
+      while (nodeIterate.hasNext()) {
+        childs.add(nodeIterate.nextNode());
       }
     }
-    Iterator<Object> iterate = childs.iterator() ;
-    while(iterate.hasNext()){
-      Object obj = iterate.next() ;
-      NodeDefinition nodeDefin ;
-      String nodeName = null ;
-      if(obj instanceof Node){
-        nodeDefin = ((Node)obj).getDefinition() ;
-        nodeName = ((Node)obj).getName() ;
-      }else{
-        nodeDefin = (NodeDefinition)obj ;
-        nodeName = ((NodeDefinition)obj).getName() ;
+    for(Object obj : childs){  
+      NodeDefinition nodeDefin;
+      String nodeName = null;
+      if (obj instanceof Node) {
+        nodeDefin = ((Node) obj).getDefinition();
+        nodeName = ((Node) obj).getName();
+      } else {
+        nodeDefin = (NodeDefinition) obj;
+        nodeName = ((NodeDefinition) obj).getName();
       }
-      if(!nodeDefin.isAutoCreated() && !nodeDefin.isProtected()
-          && ("*".equals(nodeDefin.getName()) && (obj instanceof NodeDefinition))){
-        String curentPath = path + "/" + nodeName ;
-        JcrItemInput jcrInputVariable = (JcrItemInput)jcrItemInput.get(curentPath) ;
-        String nodeTypeName = null ;
-        String mixinTypeName [] = null ;
-        if(jcrInputVariable != null){
-          nodeTypeName = jcrInputVariable.getPrimaryNodeType() ;
-          mixinTypeName = jcrInputVariable.getMixinNodeTypes() ;
-          NodeTypeManager nodeTypeManger = curentNode.getSession().getWorkspace().getNodeTypeManager() ; 
-          NodeType nodeType = null ;
-          if(obj instanceof Node){
-            nodeType = ((Node)obj).getPrimaryNodeType() ;            
-          }else if(nodeTypeName != null || "".equals(nodeTypeName)){
-            nodeType = nodeDefin.getRequiredPrimaryTypes()[0] ;
-          }else{
-            nodeType = nodeTypeManger.getNodeType(nodeTypeName) ;
-          }  
+      if (!nodeDefin.isAutoCreated() && !nodeDefin.isProtected()
+          && (!"*".equals(nodeDefin.getName()) && (obj instanceof NodeDefinition))) {
+        String curentPath = path + "/" + nodeName;
+        JcrItemInput jcrInputVariable = (JcrItemInput) jcrItemInputs.get(curentPath);
+        if (jcrInputVariable != null) {
+          String nodeTypeName = jcrInputVariable.getPrimaryNodeType();
+          String[] mixinTypeName = jcrInputVariable.getMixinNodeTypes();
+          NodeTypeManager nodeTypeManger = currentNode.getSession().getWorkspace()
+              .getNodeTypeManager();
+          NodeType nodeType = null;
+          if(obj instanceof Node) {
+            nodeType = ((Node) obj).getPrimaryNodeType();
+          } else if (nodeTypeName == null || nodeTypeName.length() == 0) {
+            nodeType = nodeDefin.getRequiredPrimaryTypes()[0];
+          } else {
+            nodeType = nodeTypeManger.getNodeType(nodeTypeName);
+          }
           Node childNode = null;
-          if(isCreate){
-            childNode = curentNode.addNode(nodeName, nodeType.getName()) ;
-            if(mixinTypeName.length > 0){
-              for(String typeNode : mixinTypeName){
-                if(childNode.isNodeType(typeNode))
-                  childNode.addMixin(typeNode) ;
+          if (isCreate) {
+            try {
+              childNode = currentNode.getNode(nodeName) ;
+            } catch(PathNotFoundException pe) {
+              childNode = currentNode.addNode(nodeName, nodeType.getName());
+            }
+            if (mixinTypeName.length > 0) {
+              for (String mixinName : mixinTypeName) {
+                if (childNode.isNodeType(mixinName))
+                  childNode.addMixin(mixinName);
               }
             }
             String nodePath = path + "/" + nodeName;
-            processNodeRecusively(isCreate, nodePath, curentNode, curentNodeType, jcrItemInput) ;
-          }else{
-            try{
-              childNode = curentNode.getNode(nodeName) ;
-            }catch(PathNotFoundException pathEx){
-              childNode = curentNode.addNode(nodeName, nodeType.getName()) ;
-              if(mixinTypeName.length > 0){
-                for(String typeNode : mixinTypeName){
-                  if(childNode.isNodeType(typeNode)) childNode.addMixin(typeNode) ;
+            processNodeRecusively(isCreate, nodePath, childNode, childNode.getPrimaryNodeType(), jcrItemInputs);
+          } else {
+            try {
+              childNode = currentNode.getNode(nodeName);
+            } catch (PathNotFoundException pathEx) {
+              childNode = currentNode.addNode(nodeName, nodeType.getName());
+              if (mixinTypeName.length > 0) {
+                for (String mixinName : mixinTypeName) {
+                  if (childNode.isNodeType(mixinName))
+                    childNode.addMixin(mixinName);
                 }
               }
-              String nodePath = path + "/" + nodeName ;
-              processNodeRecusively(isCreate, nodePath, curentNode, curentNodeType, jcrItemInput) ;
+              String nodePath = path + "/" + nodeName;
+              processNodeRecusively(isCreate, nodePath, childNode, childNode.getPrimaryNodeType(), jcrItemInputs);
             }
           }
-          String nodePath = path + "/" + nodeName ;
-          processNodeRecusively(isCreate, nodePath, curentNode, curentNodeType, jcrItemInput) ;
+          String nodePath = path + "/" + nodeName;
+          processNodeRecusively(isCreate, nodePath, currentNode, currentNodeType, jcrItemInputs);
         }
       }
     }
   }
 
-  private void updateNodeRecusively(String path, Node curentNode, 
-      NodeType curentNodeType, Map<String, JcrItemInput> jcrInputPro) throws Exception{
+  private void updateNodeRecusively(String path, Node curentNode, NodeType curentNodeType,
+      Map<String, JcrItemInput> jcrInputPro) throws Exception {
     processNodeRecusively(false, path, curentNode, curentNodeType, jcrInputPro);
   }
 }
