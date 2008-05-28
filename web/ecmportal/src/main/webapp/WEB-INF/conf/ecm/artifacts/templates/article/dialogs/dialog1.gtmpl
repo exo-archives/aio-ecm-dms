@@ -1,7 +1,7 @@
 <% uicomponent.addInterceptor("ecm-explorer/interceptor/PreNodeSaveInterceptor.groovy", "post") ; %>
 <div class="UIFormWithTitle"> 
 	<% uiform.begin() %>
-  <div class="HorizontalLayout">	  
+  <div class="HorizontalLayout" style="border: 0px;">	  
    <table class="UIFormGrid">
 			<tr>
 			  <td class="FieldLabel"><%=_ctx.appRes("Article.dialog.label.name")%></td>
