@@ -335,6 +335,13 @@
 }
 
 /*===========================DocumentFormController=====================*/
+.UIJCRExplorerPortlet .EditFormController .UIFormWithTitle {
+	border: 1px solid #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .EditFormController .UIFormWithTitle .HorizontalLayout {
+	padding: 10px;
+}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
 	padding: 10px;
