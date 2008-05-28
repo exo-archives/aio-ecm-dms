@@ -17,6 +17,10 @@
   width: 95%;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UITabPane {
+	height: auto;
+}
+
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
   width: 99.7%;
   margin: 0px auto;
@@ -42,8 +46,20 @@
 	background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea {
+	width: 100%;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
-	width: 99.5%;
+	width: 99.3%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
+	width: 90%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
+	float: none;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {

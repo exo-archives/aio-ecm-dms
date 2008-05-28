@@ -27,10 +27,10 @@
 	%>
   <div style="$style">
     <div style="">			
-			<div class="UIResizableBlock" style="overflow: auto; height: 320px;">
+			<div class="UIResizableBlock" style="overflow: auto; height: 320px; width: auto">
 				<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
 			</div>											
     </div>
 	</div>
-	<div style="clear: right; height: 0px;"><span></span></div>
+	<div style="clear: left; height: 0px;"><span></span></div>
 </div>
