@@ -42,7 +42,10 @@ public class JcrItemInput {
   public String getPrimaryNodeType() { return primaryNodeType; }
   public void setPrimaryNodeType(String nodetype) { this.primaryNodeType = nodetype;}
 
-  public String[] getMixinNodeTypes() { return mixinNodeType.split(","); }
+  public String[] getMixinNodeTypes() { 
+    if(mixinNodeType == null) return new String[] {} ;
+    return mixinNodeType.split(","); 
+  }
   public void setMixinNodeType(String mixintype) { this.mixinNodeType = mixintype; }
 
   public void setValue(Object value) { this.value = value; }
