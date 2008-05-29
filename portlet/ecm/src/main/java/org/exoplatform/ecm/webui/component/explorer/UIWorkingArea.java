@@ -606,6 +606,10 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }      
       Node parentNode = node.getParent() ;
+      if(parentNode.isLocked()) {
+        String lockToken1 = Utils.getLockToken(parentNode);
+        session.addLockToken(lockToken1) ;
+      }
       try {
         if(node.isNodeType(Utils.RMA_RECORD)) uicomp.removeMixins(node) ;
         node.remove() ;
