@@ -649,6 +649,13 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
         return ;        
+      } catch(LockException le) {
+        Object[] arg = { nodePath } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.updateAjax(event) ;
+        return ;
       } catch(Exception e) {  
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
