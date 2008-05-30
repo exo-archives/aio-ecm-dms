@@ -37,21 +37,32 @@
 			          <div class="Text">$nodeName</div>
 			        </td>
 			        <td align="center">
-	              <a href="<%=uicomponent.event("Add", node.getPath())%>">
-	                <div class="Icon16x16 Add16x16Icon"></div>
-	              </a>
-	              <a href="<%=uicomponent.event("Copy", node.getPath())%>">
-	                <div class="Icon16x16 Copy16x16Icon"></div>
-	              </a>
-	              <a href="<%=uicomponent.event("Cut", node.getPath())%>">
-	                <div class="Icon16x16 Cut16x16Icon"></div>
-	              </a>
-	              <a href="<%=uicomponent.event("Paste", node.getPath())%>">
-	                <div class="Icon16x16 Paste16x16Icon"></div>
-	              </a>
-	              <a href="<%=uicomponent.event("Remove", node.getPath())%>">
-	                <div class="Icon16x16 Remove16x16Icon"></div>
-	              </a>
+	              <%
+	                if(uicomponent.isRootNode()) {
+	              %>
+	                <a href="<%=uicomponent.event("Add", node.getPath())%>">
+	                  <div class="Icon16x16 Add16x16Icon"></div>
+	                </a>
+	                <a href="<%=uicomponent.event("Paste", node.getPath())%>">
+	                  <div class="Icon16x16 Paste16x16Icon"></div>
+	                </a>
+	              <%} else {%>
+		              <a href="<%=uicomponent.event("Add", node.getPath())%>">
+		                <div class="Icon16x16 Add16x16Icon"></div>
+		              </a>
+		              <a href="<%=uicomponent.event("Copy", node.getPath())%>">
+		                <div class="Icon16x16 Copy16x16Icon"></div>
+		              </a>
+		              <a href="<%=uicomponent.event("Cut", node.getPath())%>">
+		                <div class="Icon16x16 Cut16x16Icon"></div>
+		              </a>
+		              <a href="<%=uicomponent.event("Paste", node.getPath())%>">
+		                <div class="Icon16x16 Paste16x16Icon"></div>
+		              </a>
+		              <a href="<%=uicomponent.event("Remove", node.getPath())%>">
+		                <div class="Icon16x16 Remove16x16Icon"></div>
+		              </a>
+	              <%}%>
 			        </td>
 			      </tr>
 			<%
