@@ -66,6 +66,14 @@ public class UITaxonomyWorkingArea extends UIContainer {
     return uiManager.getRepository() ;
   }
   
+  public boolean isRootNode() throws Exception {
+    UITaxonomyManager uiManager = getParent() ;
+    String selectedPath = uiManager.getSelectedPath() ;
+    if(selectedPath == null) selectedPath = uiManager.getRootNode().getPath() ;
+    if(selectedPath.equals(uiManager.getRootNode().getPath())) return true ;
+    return false ;
+  }
+  
   public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath ; }
   
   public void update() throws Exception {
@@ -78,7 +86,6 @@ public class UITaxonomyWorkingArea extends UIContainer {
       listNodes.add(node) ;
     }
     setNodeList(listNodes) ;
-    
   }
   
   static public class AddActionListener extends EventListener<UITaxonomyWorkingArea> {
@@ -174,11 +181,9 @@ public class UITaxonomyWorkingArea extends UIContainer {
       CategoriesService categoriesService = 
         uiWorkingArea.getApplicationComponent(CategoriesService.class) ;
       try {
-//        String parentSrc = uiManager.getNodeByPath(srcPath).getParent().getPath();        
         categoriesService.moveTaxonomyNode(srcPath, destPath, type, uiWorkingArea.getRepository()) ;        
         uiManager.update(realPath) ;
       } catch(Exception e) {
-        e.printStackTrace() ;
         uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.referential-integrity", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

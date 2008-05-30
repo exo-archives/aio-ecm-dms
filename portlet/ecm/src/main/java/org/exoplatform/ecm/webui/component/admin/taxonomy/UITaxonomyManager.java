@@ -43,6 +43,9 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UITaxonomyManager extends UIContainer {
   
   static private String TAXONIMIES_ALIAS = "exoTaxonomiesPath" ;
+  static private String EXO_ECM_ALIAS = "exoECMSystemPath" ;
+  
+  private String selectedPath_ = null ;
 
   public UITaxonomyManager() throws Exception {
     addChild(UITaxonomyTree.class, null, null) ;
@@ -64,8 +67,16 @@ public class UITaxonomyManager extends UIContainer {
   
   public Node getRootNode() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
+    return (Node)getSession().getItem(nodeHierarchyCreator.getJcrPath(EXO_ECM_ALIAS)) ;
+  }
+  
+  public Node getTaxonomyNode() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
     return (Node)getSession().getItem(nodeHierarchyCreator.getJcrPath(TAXONIMIES_ALIAS)) ;
   }
+  
+  public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath ; }
+  public String getSelectedPath() { return selectedPath_ ; }
   
   public Node getNodeByPath(String path) throws Exception {
     return (Node) getSession().getItem(path) ;
