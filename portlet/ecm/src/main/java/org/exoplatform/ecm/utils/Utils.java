@@ -449,6 +449,7 @@ public class Utils {
     return inputStream ;
   }    
   
+  @SuppressWarnings("unchecked")
   public static void keepLock(Lock lock) throws Exception {
     PortalRequestContext requestContext = Util.getPortalRequestContext();
     HttpSession httpSession = requestContext.getRequest().getSession();
@@ -461,6 +462,7 @@ public class Utils {
     httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
   }
   
+  @SuppressWarnings("unchecked")
   public static void changeLockToken(Node oldNode, Node newNode) throws Exception {
     PortalRequestContext requestContext = Util.getPortalRequestContext();
     HttpSession httpSession = requestContext.getRequest().getSession();
@@ -475,6 +477,7 @@ public class Utils {
     httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
   }
   
+  @SuppressWarnings("unchecked")
   public static String getLockToken(Node node) throws Exception {    
     PortalRequestContext requestContext = Util.getPortalRequestContext();
     HttpSession httpSession = requestContext.getRequest().getSession();
