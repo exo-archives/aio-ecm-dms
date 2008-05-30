@@ -212,5 +212,13 @@ public class TestTaxonomyManagerService extends BaseECMTestCase {
     // remove data
     test3.remove();
     session.save();
+  }    
+  
+  public void testInitData() throws Exception {
+    Session session = repositoryService.getRepository(REPO_NAME).getSystemSession(COLLABORATION_WS);
+    Node world = (Node)session.getItem("/exo:services/exo:ecm/exo:taxonomies/ecm/news/world");
+    assertNotNull(world);
+    Node metting = (Node)session.getItem("/exo:services/exo:ecm/exo:taxonomies/calendar/Meeting");
+    assertNotNull(metting);
   }
 }

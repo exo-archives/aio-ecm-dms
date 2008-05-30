@@ -45,7 +45,7 @@
 	
 	<component>
 		<key>org.exoplatform.services.ecm.taxonomy.TaxonomyManagerService</key>
-		<type>org.exoplatform.services.ecm.taxonomy.impl.TaxonomyManagerServiceImpl</type>
+		<type>org.exoplatform.services.ecm.taxonomy.impl.TaxonomyManagerServiceImpl</type>			
 	</component>
 	
 	<component>

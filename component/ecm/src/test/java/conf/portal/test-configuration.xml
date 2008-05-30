@@ -404,6 +404,354 @@
       </init-params>
     </component-plugin>
   </external-component-plugins>
+	
+	<!-- Test for Taxonomy -->
+	<external-component-plugins>
+    <target-component>org.exoplatform.services.ecm.taxonomy.TaxonomyManagerService</target-component>  	  
+		  <component-plugin>
+			  <name>predefinedTaxonomyPlugin</name>
+		    <set-method>addPlugin</set-method>
+		    <type>org.exoplatform.services.ecm.taxonomy.impl.TaxonomyPlugin</type>
+		    <init-params>
+		    	<value-param>
+	        	<name>autoCreateInNewRepository</name>
+	        	<value>true</value>
+	        </value-param>	        
+	        <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>	        
+		    	<object-param>
+		    		<name>taxonomy.configuration</name>
+	          <description>configuration predefined taxonomies to inject in jcr</description>
+	          <object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig">	          	
+	          	<field  name="taxonomies">
+	          		<collection type="java.util.ArrayList">	          		  
+	          			<value>
+	          				<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>ecmTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>	
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>newsTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/news</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>sportsTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/sports</string></field>		          				          						          				
+		          			</object>
+		          		</value>		          				          		
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>footballTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/sports/football</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>champions-leagueTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/sports/football/champions-league</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>uefaTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/sports/football/uefa</string></field>		          				          						          				
+		          			</object>
+		          		</value>		          		
+	          		  <!-- calendar taxonomy -->
+	          			<value>
+	          				<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>calendarTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>	
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>birthdayTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Birthday</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>breakfastTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Breakfast</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>callTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Call</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>lunchTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Lunch</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>meetingTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Meeting</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>otherCalendarTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Other</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>persionalTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Personal</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>professionalTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Professional</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>vacationsTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/calendar/Vacations</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+	          		</collection>
+	          	</field>          	          
+	          </object>
+		    	</object-param>
+		    </init-params>	  
+		  </component-plugin> 
+	</external-component-plugins>
+
+	<external-component-plugins>
+    <target-component>org.exoplatform.services.ecm.taxonomy.TaxonomyManagerService</target-component>  	  
+		  <component-plugin>
+			  <name>predefinedTaxonomyPlugin2</name>
+		    <set-method>addPlugin</set-method>
+		    <type>org.exoplatform.services.ecm.taxonomy.impl.TaxonomyPlugin</type>
+		    <init-params>
+		    	<value-param>
+	        	<name>autoCreateInNewRepository</name>
+	        	<value>true</value>
+	        </value-param>	        
+	        <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>	        
+		    	<object-param>
+		    		<name>taxonomy.configuration</name>
+	          <description>configuration predefined taxonomies to inject in jcr</description>
+	          <object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig">	          	
+	          	<field  name="taxonomies">
+	          		<collection type="java.util.ArrayList">	          		  
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>worldTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/news/world</string></field>		          				          						          				
+		          			</object>
+		          		</value>
+		          		<value>
+		          			<object type="org.exoplatform.services.ecm.taxonomy.impl.HierarchicalTaxonomyConfig$Taxonomy">
+		          			  <field  name="name"><string>economyTaxonomy</string></field>		          				          				
+		          				<field  name="path"><string>/ecm/news/economy</string></field>		          				          						          				
+		          			</object>
+		          		</value>		          			          	
+	          		</collection>
+	          	</field>          	          
+	          </object>
+		    	</object-param>
+		    </init-params>	  
+		  </component-plugin> 
+	</external-component-plugins>
+	
+	<external-component-plugins>
+    <target-component>org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator</target-component>
+    <component-plugin>
+	    <name>addPaths</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.jcr.ext.hierarchy.impl.AddPathPlugin</type>            
+	    <init-params>
+	      <object-param>
+	        <name>cms.configuration</name>
+	        <description>configuration for the cms path</description>
+	        <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig">
+	        	<field  name="repository"><string>repository</string></field>
+	        	<field name="workspaces">
+	          	<collection type="java.util.ArrayList">
+	          		<value><string>collaboration</string></value>	          		               
+	          	</collection>              	
+	          </field>
+	          <field  name="jcrPaths">
+	          	<collection type="java.util.ArrayList">
+	          		<value>              	
+		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+		             		<field  name="alias"><string>eXoApplications</string></field>
+		                <field  name="path"><string>/exo:applications</string></field>
+		                <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:hiddenable</string></value>
+				            	</collection>
+				            </field>				            	
+		                <field name="permissions">
+				              <collection type="java.util.ArrayList">               
+				                <value>                            
+				                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+				                      <field name="identity"><string>*:/platform/administrators</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>true</string></field>                
+				                      <field name="setProperty"><string>true</string></field>                
+				                      <field name="remove"><string>true</string></field>                
+				                    </object>  
+				                </value>			                  
+			                </collection>
+			              </field>   			               
+	              	</object>
+              	</value>
+             		<value>              	
+		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+		             		<field  name="alias"><string>eXoServices</string></field>
+		                <field  name="path"><string>/exo:services</string></field>
+		                <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:hiddenable</string></value>
+				            	</collection>
+				            </field>
+		                <field name="permissions">
+				              <collection type="java.util.ArrayList">               
+				                <value>                            
+				                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+				                      <field name="identity"><string>*:/platform/administrators</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>true</string></field>                
+				                      <field name="setProperty"><string>true</string></field>                
+				                      <field name="remove"><string>true</string></field>                
+				                    </object>  
+				                </value>			                  
+			                </collection>
+			              </field>   			               
+	              	</object>
+              	</value>	          		
+              	<value>              	
+	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+	              		<field  name="alias"><string>usersPath</string></field>
+	                  <field  name="path"><string>/Users</string></field>
+	                  <field name="permissions">
+			                <collection type="java.util.ArrayList">               
+			                  <value>                            
+			                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+			                      <field name="identity"><string>*:/platform/administrators</string></field>
+			                      <field name="read"><string>true</string></field>                
+			                      <field name="addNode"><string>false</string></field>                
+			                      <field name="setProperty"><string>false</string></field>                
+			                      <field name="remove"><string>false</string></field>                
+			                    </object>  
+			                  </value>
+			                  <value>                            
+			                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+			                      <field name="identity"><string>any</string></field>
+			                      <field name="read"><string>true</string></field>                
+			                      <field name="addNode"><string>false</string></field>                
+			                      <field name="setProperty"><string>false</string></field>                
+			                      <field name="remove"><string>false</string></field>                
+			                    </object>  
+			                  </value>
+			                </collection>
+			              </field>   			               
+	              	</object>
+              	</value>
+              	<value>              	
+	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+	              		<field  name="alias"><string>groupsPath</string></field>
+	                  <field  name="path"><string>/Groups</string></field>
+	                  <field name="permissions">
+			                <collection type="java.util.ArrayList">               
+			                  <value>                            
+			                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+			                      <field name="identity"><string>*:/platform/administrators</string></field>
+			                      <field name="read"><string>true</string></field>                
+			                      <field name="addNode"><string>false</string></field>                
+			                      <field name="setProperty"><string>false</string></field>                
+			                      <field name="remove"><string>false</string></field>                
+			                    </object>  
+			                  </value>
+			                  <value>                            
+			                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+			                      <field name="identity"><string>any</string></field>
+			                      <field name="read"><string>true</string></field>                
+			                      <field name="addNode"><string>false</string></field>                
+			                      <field name="setProperty"><string>true</string></field>                
+			                      <field name="remove"><string>false</string></field>                
+			                    </object>  
+			                  </value>
+			                </collection>
+			              </field>   			               
+	              	</object>
+              	</value>
+								<value>              	
+		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+		             		<field  name="alias"><string>eXoECMServices</string></field>
+		                <field  name="path"><string>/exo:services/exo:ecm</string></field>
+		                <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:hiddenable</string></value>
+				            	</collection>
+				            </field>
+		                <field name="permissions">
+				              <collection type="java.util.ArrayList">               
+				                <value>                            
+				                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+				                      <field name="identity"><string>*:/platform/administrators</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>true</string></field>                
+				                      <field name="setProperty"><string>true</string></field>                
+				                      <field name="remove"><string>true</string></field>                
+				                    </object>  
+				                </value>			                  
+			                </collection>
+			              </field>   			               
+	              	</object>
+              	</value>
+								<value>              	
+		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+		             		<field  name="alias"><string>eXoTaxonomyService</string></field>
+		                <field  name="path"><string>/exo:services/exo:ecm/exo:taxonomies</string></field>
+		                <field name="mixinTypes">
+				              <collection type="java.util.ArrayList">
+				              	<value><string>exo:hiddenable</string></value>
+				            	</collection>
+				            </field>
+		                <field name="permissions">
+				              <collection type="java.util.ArrayList">               
+				                <value>                            
+				                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+				                      <field name="identity"><string>*:/platform/administrators</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>true</string></field>                
+				                      <field name="setProperty"><string>true</string></field>                
+				                      <field name="remove"><string>true</string></field>                
+				                    </object>  
+				                </value>			                  
+			                </collection>
+			              </field>   			               
+	              	</object>
+              	</value>	       									              		              		              		              		       									              		              		              		              	
+	          	</collection>              	              	
+	          </field>
+	        </object>
+	      </object-param>
+	    </init-params>            
+	  </component-plugin>
+	</external-component-plugins>
+
 
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>    
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>  
