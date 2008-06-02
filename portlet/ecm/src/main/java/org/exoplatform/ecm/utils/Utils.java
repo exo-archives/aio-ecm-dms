@@ -54,6 +54,7 @@ import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
+import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
@@ -228,6 +229,18 @@ public class Utils {
       String name1 = ((NodeType) o1).getName() ;
       String name2 = ((NodeType) o2).getName() ;
       return name1.compareToIgnoreCase(name2) ;
+    }
+  }
+  
+  static public class ItemOptionNameComparator implements Comparator {
+    public int compare(Object o1, Object o2) throws ClassCastException {
+      try {
+        String name1 = ((SelectItemOption) o1).getValue().toString() ;
+        String name2 = ((SelectItemOption) o2).getValue().toString() ;
+        return name1.compareToIgnoreCase(name2) ;
+      } catch(Exception e) {
+        return 0;
+      }
     }
   }
 
