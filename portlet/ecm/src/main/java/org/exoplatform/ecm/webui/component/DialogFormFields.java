@@ -279,7 +279,6 @@ public class DialogFormFields extends UIForm {
     String multiValues = parsedArguments.get(MULTI_VALUES);
     String validateType = parsedArguments.get(VALIDATE) ;
     String nodetype = parsedArguments.get(NODETYPE);
-
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
@@ -802,6 +801,9 @@ public class DialogFormFields extends UIForm {
         map.put(ONCHANGE,value); continue;
       } else if (argument.startsWith(MIXINTYPE)) {
     	  map.put(MIXINTYPE, value); continue;
+      }else if(argument.startsWith(NODETYPE)) {
+        map.put(NODETYPE, value) ;
+        continue ;
       }else {
         map.put(DEFAULT_VALUES,argument);
       }      
@@ -885,8 +887,10 @@ public class DialogFormFields extends UIForm {
   static  public class SaveActionListener extends EventListener<DialogFormFields> {
     public void execute(Event<DialogFormFields> event) throws Exception {
       DialogFormFields dialogForm = event.getSource() ;
+      //TODO : workspace name is null
       String path = dialogForm.storedPath_ + "&workspaceName=" + dialogForm.workspaceName_ + 
       "&repository=" + dialogForm.repositoryName_;
+      
       for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
         String type = interceptor.split(";")[1] ;
@@ -895,7 +899,7 @@ public class DialogFormFields extends UIForm {
         } 
       }
       Node newNode = dialogForm.storeValue(event) ;
-      if(newNode == null) return ;      
+      if(newNode == null) return ; 
       path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() +
       "&repository=" + dialogForm.repositoryName_;
       for(String interceptor : dialogForm.postScriptInterceptor_) {
