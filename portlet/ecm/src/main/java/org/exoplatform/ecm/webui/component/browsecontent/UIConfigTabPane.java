@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -72,14 +73,16 @@ public class UIConfigTabPane extends UIContainer {
     return Options ;
   }
 
+  @SuppressWarnings("unchecked")
   public List<SelectItemOption<String>> getBoxTemplateOption(String repository) throws Exception {
-    List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> docTemplates = getApplicationComponent(ManageViewService.class)
     .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
     for(Node template: docTemplates) {
-      Options.add(new SelectItemOption<String>(template.getName(), template.getName())) ;
+      options.add(new SelectItemOption<String>(template.getName(), template.getName())) ;
     }
-    return Options ;
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    return options ;
   }
   
   public void setIsChangeValue(boolean isChanged) { isChanged_ = isChanged ; }
