@@ -26,6 +26,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
@@ -108,11 +109,8 @@ public class RSSServiceImpl implements RSSService{
 
   public void generateFeed(Map context) {
     String feedType = (String) context.get(FEED_TYPE) ;
-    if(feedType.equals("rss")) {
-      generateRSS(context) ;
-    }else if(feedType.equals("podcast") || feedType.equals("video podcast")) {
-      generatePodcast(context) ;
-    }
+    if(feedType.equals("rss")) generateRSS(context) ;
+    else if(feedType.equals("podcast") || feedType.equals("video podcast")) generatePodcast(context) ;
   }
 
   private void generateRSS(Map context) {  
@@ -128,10 +126,8 @@ public class RSSServiceImpl implements RSSService{
     String rssUrl = (String) context.get(URL) ;
     String repository = (String) context.get("repository") ;
     storePath = storePath + "/" + feedType ;
-    if(feedName == null || feedName.length() == 0 || feedName.equals("")) 
-      feedName = actionName ;
-    if(feedTitle == null || feedTitle.length() == 0 || feedTitle.equals("")) 
-      feedTitle = actionName ;        
+    if(feedName == null || feedName.length() == 0) feedName = actionName ;
+    if(feedTitle == null || feedTitle.length() == 0) feedTitle = actionName ;        
     try {      
       Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
@@ -152,7 +148,6 @@ public class RSSServiceImpl implements RSSService{
       String portalName = containerInfo.getContainerName() ; 
       String wsName = session.getWorkspace().getName() ;
       NodeIterator iter = queryResult.getNodes() ;
-      System.out.println("---  \nThere are "+ iter.getSize() + " items in RSS  ---.\n") ;
       while (iter.hasNext()) {        
         Node child = iter.nextNode(); 
         if(child.isNodeType("exo:rss-enable")) {
@@ -209,11 +204,8 @@ public class RSSServiceImpl implements RSSService{
       String rssUrl = (String) context.get(URL) ;
       String repository = (String) context.get("repository") ;
       storePath = storePath + "/" + feedType ;
-      if(feedName == null || feedName.length() == 0 || feedName.equals("")) 
-        feedName = actionName ;
-      if(feedTitle == null || feedTitle.length() == 0 || feedTitle.equals("")) 
-        feedTitle = actionName ;
-
+      if(feedName == null || feedName.length() == 0) feedName = actionName ;
+      if(feedTitle == null || feedTitle.length() == 0) feedTitle = actionName ;
       Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
@@ -248,7 +240,6 @@ public class RSSServiceImpl implements RSSService{
         String[] arrKeywords = keywords.split(" ");
         infor.setKeywords(arrKeywords) ;
       }
-
       infor.setOwnerEmailAddress(ownerEmail) ;
       infor.setOwnerName(ownerName) ;
       infor.setSummary(feedDescription) ;
@@ -272,7 +263,6 @@ public class RSSServiceImpl implements RSSService{
       String portalName = containerInfo.getContainerName() ;  
       MimeTypeResolver resolver = new MimeTypeResolver();
       NodeIterator iter = queryResult.getNodes() ;
-      System.out.println("---  \nThere are "+ iter.getSize() + " items in Podcast.  ---\n") ;
       while (iter.hasNext()) {        
         Node child = iter.nextNode();        
         entry = new SyndEntryImpl();
@@ -284,8 +274,7 @@ public class RSSServiceImpl implements RSSService{
         String ext = resolver.getExtension(mimeType);
         enc.setType(mimeType) ;
         String path = child.getPath().trim() + "." + ext.trim() ; 
-        enc.setLength(child.getProperty(LENGTH).getLong()) ;
-        
+        if(child.hasProperty(LENGTH)) enc.setLength(child.getProperty(LENGTH).getLong()) ;
         String encUrl = getEntryUrl(portalName, srcWorkspace, path, rssUrl) ;
         enc.setUrl(encUrl) ;
         enclosureList.add(enc) ;
@@ -363,18 +352,16 @@ public class RSSServiceImpl implements RSSService{
   private void storeXML(String feedXML, String rssStoredPath, String rssNodeName, String repository){   
     try {      
       ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-      Session session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
+      Session session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getDefaultWorkspaceName());
       Node rootNode = session.getRootNode();
-      String[] array = rssStoredPath.split("/") ;
-      for(int i = 0; i < array.length; i ++) {
-        if(array[i] != null && array[i].trim().length() > 0) {
-          if(rootNode.hasNode(array[i].trim())) {
-            rootNode = rootNode.getNode(array[i].trim()) ;
-          }else {
-            rootNode.addNode(array[i].trim(),NT_UNSTRUCTURED) ;
-            rootNode.save() ;
-            rootNode = rootNode.getNode(array[i].trim()) ;
-          }
+      String[] arrayPaths = rssStoredPath.split("/") ;
+      for(String path : arrayPaths) {
+        try {
+          rootNode = rootNode.getNode(path.trim()) ;
+        } catch(PathNotFoundException pe) {
+          rootNode.addNode(path.trim(),NT_UNSTRUCTURED) ;
+          rootNode.save() ;
+          rootNode = rootNode.getNode(path.trim()) ;
         }
       }
       session.save() ;
@@ -412,16 +399,12 @@ public class RSSServiceImpl implements RSSService{
     }
   }
 
-  private String getEntryUrl(String portalName, String wsName, String path, String rssUrl) 
-  throws Exception{
-    StringBuilder url ;
+  private String getEntryUrl(String portalName, String wsName, String path, String rssUrl) throws Exception{
+    StringBuilder url = new StringBuilder("") ;
     if(rssUrl.indexOf(RSS) > -1 ) {
-      String baseUrl = rssUrl.substring(0, rssUrl.indexOf(RSS) + 4) ;
-      url = new StringBuilder(baseUrl) ;
-    } else url = new StringBuilder("") ;
-    url.append("/").append(portalName)
-    .append("/").append(wsName)
-    .append(path) ;           
+      url = new StringBuilder(rssUrl.substring(0, rssUrl.indexOf(RSS) + 4)) ;
+    }
+    url.append("/").append(portalName).append("/").append(wsName).append(path) ;           
     return url.toString();
   }
 }

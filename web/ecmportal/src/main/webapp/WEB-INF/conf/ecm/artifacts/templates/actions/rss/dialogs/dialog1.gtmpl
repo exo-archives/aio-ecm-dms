@@ -1,3 +1,7 @@
+<%
+  String[] fieldURL = ["jcrPath=/node/exo:url", "http://localhost:8080/ecm/rss"] ;
+  uicomponent.addHiddenField("url", fieldURL) ; 
+%>
 <div class="UIFormWithTitle">
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
   <% uiform.begin() %>
@@ -117,26 +121,36 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-store-path")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		         String[] fieldFeedStorePath = ["jcrPath=/node/exo:storePath", "/cms/feed"] ;
+		         String[] fieldFeedStorePath = ["jcrPath=/node/exo:storePath", "/Feeds"] ;
 		         uicomponent.addTextField("store-path", fieldFeedStorePath) ;
 		      %>
 		    </td>
 	    </tr>
 	    <tr>                        
-	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.query-items")%></td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-type")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldQueryPath = ["jcrPath=/node/exo:queryPath", "/jcr:root/cms/publications//element(*, exo:podcast)"] ;
-		        uicomponent.addTextAreaField("queryPath", fieldQueryPath) ; 
+		        String[] fieldFeedType = ["jcrPath=/node/exo:feedType", "rss", "options=rss,podcast,video podcast", "onchange=true"] ;
+		        uicomponent.addSelectBoxField("feed-type", fieldFeedType) ;
 		      %>
 		    </td>
 	    </tr>
+	    <%
+	      String feedTypeValue = uicomponent.getSelectBoxFieldValue("feed-type") ;
+	    %>
 	    <tr>                        
-	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.rss-url")%></td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.query-items")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldURL = ["jcrPath=/node/exo:url", "http://localhost:8080/ecm/rss"] ;
-		        uicomponent.addTextField("url", fieldURL) ; 
+		        if(feedTypeValue.equals("rss")) {
+		          String[] fieldQueryPathRss = ["jcrPath=/node/exo:queryPath", "/jcr:root/Documents//element(*, exo:article)"] ;
+		          uicomponent.addTextAreaField("queryPathRss", fieldQueryPathRss) ; 
+		          uicomponent.removeComponent("queryPathPodcast") ;
+		        } else {
+		          String[] fieldQueryPathPodcast = ["jcrPath=/node/exo:queryPath", "/jcr:root/Documents//element(*, exo:podcast)"] ;
+		          uicomponent.addTextAreaField("queryPathPodcast", fieldQueryPathPodcast) ; 
+		          uicomponent.removeComponent("queryPathRss") ;
+		        }
 		      %>
 		    </td>
 	    </tr>
@@ -149,15 +163,6 @@
 		      %>
 		    </td>
 	    </td>
-	    <tr>                        
-	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.feed-type")%></td>
-	      <td class="FieldComponent">
-		      <%
-		        String[] fieldFeedType = ["jcrPath=/node/exo:feedType", "rss", "options=rss,podcast,video podcast"] ;
-		        uicomponent.addSelectBoxField("feed-type", fieldFeedType) ;
-		      %>
-		    </td>
-	    </tr>
 	    <tr>                        
 	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.rss-version")%></td>
 	      <td class="FieldComponent">
@@ -198,7 +203,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.copyright")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldCopyright = ["jcrPath=/node/exo:copyright", "Copyright ? 2000-2005 eXo Platform SARL"] ; 
+		        String[] fieldCopyright = ["jcrPath=/node/exo:copyright", "Copyright ? 2000-2008 eXo Platform SARL"] ; 
 		        uicomponent.addTextField("copyright", fieldCopyright) ; 
 		      %>
 		    </td>
@@ -257,6 +262,13 @@
 		      %>
 		    </td>
 	    </tr>
+	    <%
+	  		uicomponent.removeChildById("startTime") ; 
+				uicomponent.removeChildById("endTime") ; 
+				uicomponent.removeChildById("repeatCount") ; 
+		    uicomponent.removeChildById("timeInterval") ; 
+		    uicomponent.removeChildById("cronExpression") ;
+	    %>
 	  </table>
     <%/* start render action*/%>
     <div class="UIAction"> 
