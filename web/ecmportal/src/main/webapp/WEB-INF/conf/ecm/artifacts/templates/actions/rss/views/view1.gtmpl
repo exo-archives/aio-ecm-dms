@@ -33,10 +33,39 @@
 		</td>
   </tr>
   <tr>
+		<td style="width:25%"><%=_ctx.appRes("Rss.view.label.Url")%></td>
+		<td>
+			<%
+			  if(node.hasProperty("exo:url")) {
+			    String feedUrl = node.getProperty("exo:url").getString() ;
+			    String portalName = uicomponent.getPortalName() ;
+			    String wsName = uicomponent.getWorkspaceName() ;
+			    String storePath = "" ;
+			    String feedType = "" ;
+			    String feedName = "" ;
+			    if(node.hasProperty("exo:storePath")) {
+			      storePath = node.getProperty("exo:storePath").getString() ;
+			    }
+			    if(node.hasProperty("exo:feedType")) {
+			      feedType = node.getProperty("exo:feedType").getString() ;
+			    }
+			    if(node.hasProperty("exo:feedName")) {
+				    feedName = node.getProperty("exo:feedName").getString() ;
+    			}
+    		  feedUrl = feedUrl +  "/" + portalName + "/" + wsName + "/" + storePath + "/" + feedType + "/" + feedName ;
+    	%>	  
+    		<a href="$feedUrl" title="$feedUrl" target="_blank">$feedUrl</a>  
+			<%}%>	
+		</td>
+  </tr>
+  <tr>
 		<td style="width:25%"><%=_ctx.appRes("Rss.view.label.link")%></td>
 		<td>
-			<%if(node.hasProperty("exo:link")) {%>
-				<%=node.getProperty("exo:link").getString()%>
+			<%
+			  if(node.hasProperty("exo:link")) {
+			    String actionLink = node.getProperty("exo:link").getString() ; 
+			%>
+        <a href="$actionLink" title="$actionLink" target="_blank">$actionLink</a>			
 			<%}%>	
 		</td>
   </tr>

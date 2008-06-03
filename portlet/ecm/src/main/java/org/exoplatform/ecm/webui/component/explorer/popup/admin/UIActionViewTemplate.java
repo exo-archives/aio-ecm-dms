@@ -18,6 +18,9 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import javax.jcr.Node;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -54,6 +57,17 @@ public class UIActionViewTemplate extends UIContainer {
     } catch (Exception e) {
       return null ;
     }         
+  }
+  
+  public String getPortalName() {
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
+    PortalContainerInfo containerInfo = 
+      (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class) ;      
+    return containerInfo.getContainerName() ; 
+  }
+  
+  public String getWorkspaceName() throws Exception {
+    return node_.getSession().getWorkspace().getName() ;
   }
 
   public String getTemplate() { return getViewTemplatePath() ;}
