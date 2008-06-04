@@ -23,7 +23,7 @@ import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
 import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.security.impl.CredentialsImpl;
+import org.exoplatform.services.jcr.core.CredentialsImpl;
 
 /**
  * Created by The eXo Platform SAS .

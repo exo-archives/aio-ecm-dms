@@ -32,7 +32,8 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.security.SecurityService;
+//import org.exoplatform.services.security.SecurityService;
+import org.exoplatform.services.security.ConversationRegistry;
 
 public abstract class BaseActionLauncherListener implements ECMEventListener {
   
@@ -64,8 +65,10 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    SecurityService securityService = 
-      (SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);        
+    //SecurityService securityService = 
+      //(SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
+    ConversationRegistry conversationRegistry =
+      (ConversationRegistry) exoContainer.getComponentInstanceOfType(ConversationRegistry.class);
     TemplateService templateService = 
       (TemplateService) exoContainer.getComponentInstanceOfType(TemplateService.class);       
     if (events.hasNext()) {
@@ -82,7 +85,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         Value[] roles = rolesProp.getValues();
         for (int i = 0; i < roles.length; i++) {
           String role = roles[i].getString();
-          if (securityService.hasMembershipInGroup(userId, role)
+          if (conversationRegistry.getState(userId).getIdentity().isMemberOf(userId, role)
               || SystemIdentity.SYSTEM.equals(userId)) {
             hasPermission = true;
             break;

@@ -30,7 +30,8 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.actions.impl.BPActionPlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.security.SecurityService;
+import org.exoplatform.services.security.ConversationRegistry;
+//import org.exoplatform.services.security.SecurityService;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -50,8 +51,10 @@ public class BPActionActivationJob implements Job {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    SecurityService securityService = 
-      (SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
+    //SecurityService securityService = 
+      //(SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
+    ConversationRegistry conversationRegistry = 
+      (ConversationRegistry)exoContainer.getComponentInstanceOfType(ConversationRegistry.class); 
     ActionPlugin bpActionService = actionServiceContainer.getActionPlugin(BPActionPlugin.ACTION_TYPE) ;
 
     Session jcrSession = null;
@@ -74,7 +77,8 @@ public class BPActionActivationJob implements Job {
       Value[] roles = rolesProp.getValues();
       for (int i = 0; i < roles.length; i++) {
         String role = roles[i].getString();
-        if (securityService.hasMembershipInGroup(userId, role)
+        //if (securityService.hasMembershipInGroup(userId, role)
+        if (conversationRegistry.getState(userId).getIdentity().isMemberOf(userId, role)
             || SystemIdentity.SYSTEM.equals(userId)) {
           hasPermission = true;
           break;

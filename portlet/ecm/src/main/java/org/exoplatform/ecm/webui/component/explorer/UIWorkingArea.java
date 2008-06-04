@@ -60,7 +60,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.security.SecurityService;
+import org.exoplatform.services.security.ConversationRegistry;
+//import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -257,14 +258,16 @@ public class UIWorkingArea extends UIContainer {
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class) ;
     List<Node> unsafeActions = actionContainer.getCustomActionsNode(node, ActionServiceContainer.READ_PHASE);
     if(unsafeActions == null) return new ArrayList<Node>() ;
-    SecurityService securityService = getApplicationComponent(SecurityService.class) ;
+    //SecurityService securityService = getApplicationComponent(SecurityService.class) ;
+    ConversationRegistry conversationRegistry = getApplicationComponent(ConversationRegistry.class);
     for(Node actionNode : unsafeActions) {
       Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
       for (int i = 0; i < roles.length; i++) {
         String role = roles[i].getString();
-        if(securityService.hasMembershipInGroup(userName, role)) safeActions.add(actionNode);
+        //if(securityService.hasMembershipInGroup(userName, role)) safeActions.add(actionNode);
+        if (conversationRegistry.getState(userName).getIdentity().isMemberOf(userName, role)) safeActions.add(actionNode);
       }
-    }      
+    }
     return safeActions;
   }
 
