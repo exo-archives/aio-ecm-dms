@@ -81,7 +81,7 @@
     <Connector port="9000" maxHttpHeaderSize="8192"
                maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
                enableLookups="false" redirectPort="9043" acceptCount="100"
-               connectionTimeout="20000" disableUploadTimeout="true" 
+               connectionTimeout="20000" disableUploadTimeout="true"
                URIEncoding="UTF-8"/>
     <!-- Note : To disable connection timeouts, set connectionTimeout value
      to 0 -->
@@ -157,8 +157,8 @@
       <!-- This Realm uses the JAAS model to authenticate users.
            User and Role Principals are eXo Platform specific. -->
       <Realm className="org.objectweb.jonas.security.realm.web.catalina55.JAAS"
-           userClassNames="org.exoplatform.services.organization.auth.UserPrincipal"
-           roleClassNames="org.exoplatform.services.organization.auth.RolePrincipal"
+           userClassNames="org.exoplatform.services.security.jaas.UserPrincipal"
+           roleClassNames="org.exoplatform.services.security.jaas.RolePrincipal"
            debug="99"/>
 <!-- ======================= End eXo configuration ========================= -->
       <!-- Note that the validation can be turned on/off in JOnAS configuration
@@ -170,14 +170,14 @@
       <Host name="localhost" debug="0" appBase="webapps"
        unpackWARs="false" autoDeploy="false"
        deployOnStartup="false" deployXML="false">
-       
+
        	<!-- Bonita Context -->
 	        <Context className="org.objectweb.jonas.web.catalina55.JOnASStandardContext"
 	                 path="/bonita"
 	                 docBase="">
 	          <Realm className="org.objectweb.jonas.security.realm.web.catalina55.JACC" resourceName="dsrlm_1"/>
 	        </Context>
-	
+
 	        <Context className="org.objectweb.jonas.web.catalina55.JOnASStandardContext"
 	                 path="/bonita_ws"
 	                 docBase="">
