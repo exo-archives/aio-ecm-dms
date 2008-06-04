@@ -2,7 +2,7 @@
   <div class="ApplicationMinWidth">
 	  <div class="Toolbar">
 	  	<div class="Separator"><span></span></div>
-	  	<div class="TextAdmin">Admin Workflow Management</div>
+	  	<div class="TextAdmin"><%=_ctx.appRes(uicomponent.getId() + ".tab.text")%></div>
 	  	<div class="Separator"><span></span></div>
 	  	<div class="ButtonContainerSelected">
 	  		<div class="ToolbarIcon Monitor24x24Icon"><span></span></div>

@@ -44,11 +44,11 @@
 		  <div class="SelectBoxContent" style="$style">
 		    <div class="UISimpleSearch">
 		      <% uicomponent.renderChild(1); %>
-		      <a class="SearchIcon" href="<%=uicomponent.event("SimpleSearch")%>" title="Quick Search"><span></span></a>
+		      <a class="SearchIcon" href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>"><span></span></a>
 		      <div class="SeparatorLine Separator"><span></span></div>
-		      <div class="SwitchSearch" onclick="<%=uicomponent.event("AdvanceSearch")%>" title="Advance Search"><span></span></div>
+		      <div class="SwitchSearch" onclick="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>"><span></span></div>
 		      <div class="SeparatorLine Separator"><span></span></div>
-		      <div class="SavedQueries" onclick="<%=uicomponent.event("SavedQueries")%>" title="Saved queries"><span></span></div>
+		      <div class="SavedQueries" onclick="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"><span></span></div>
 		    </div>
 		  </div>
 	  </div>
