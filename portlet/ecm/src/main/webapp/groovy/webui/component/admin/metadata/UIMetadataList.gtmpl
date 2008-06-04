@@ -7,6 +7,7 @@
  * 11:57:24 AM 
  */
 %>
+
 <% import org.exoplatform.webui.core.UIPageIterator; %>
 <% 
   UIPageIterator uiIterator = uicomponent.getChild(UIPageIterator.class) ;
@@ -63,16 +64,16 @@
             </td>
             <td style="width:130px;padding-left:20px;">
               <a href="<%=uicomponent.event("View", meta.getName())%>">
-                <div class="Icon16x16 MetaView16x16Icon" style="margin-left:7px;" title="View"><span></span></div>
+                <div class="Icon16x16 MetaView16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIMetadataList.title.view")%>"><span></span></div>
               </a>
               <a href="<%=uicomponent.event("Edit", meta.getName())%>">
-                <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="Edit"><span></span></div>
+                <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIMetadataList.title.edit")%>"><span></span></div>
               </a>
               <%
               	if(meta.hasTemplate()) {
               	%>
               		<a href="<%=uicomponent.event("Delete", meta.getName())%>">
-		                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="Delete"><span></span></div>
+		                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIMetadataList.title.delete")%>"><span></span></div>
 		              </a>	
               	<%
               	}
