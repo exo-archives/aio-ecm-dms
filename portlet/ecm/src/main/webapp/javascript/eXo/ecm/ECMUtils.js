@@ -29,7 +29,7 @@ ECMUtils.prototype.fixHeight = function(portletId) {
 	var portlet = document.getElementById(portletId) ;
 	var refElement = eXo.core.DOMUtil.findAncestorByClass(portlet, "UIApplication") ;
 	if (refElement == null) return;
-	var delta = (parseInt(refElement.style.height) - portlet.offsetHeight) || 0;
+	var delta = (parseInt(refElement.style.height) - portlet.offsetHeight);
 	var resizeObj = eXo.core.DOMUtil.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 	if (resizeObj.length) {
 		for(var i = 0; i < resizeObj.length; i++) {
@@ -136,7 +136,12 @@ ECMUtils.prototype.collapseExpand = function(elemt) {
 
 ECMUtils.prototype.filterValue = function(frmId) {
 	var form = document.getElementById(frmId) ;
-	form['result'].innerHTML = form['tempSel'].innerHTML ;
+	if (eXo.core.Browser.browserType == "ie") {
+		var text = document.createTextNode(form['tempSel'].innerHTML);
+		form['result'].appendChild(text);
+	}else {
+	  form['result'].innerHTML = form['tempSel'].innerHTML ;
+	}
 	var	filterValue = form['filter'].value ;
 	filterValue = filterValue.replace("*", ".*") ;		
 	var re = new RegExp(filterValue, "i") ;	
@@ -221,12 +226,12 @@ ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repositor
 	        path += encodeURIComponent(nodePath[i]) + "/";
 	      }
 	    }
-	    window.location = serverInfo+"/rest/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
+	    window.location = serverInfo+ "/"+portalName + "/rest/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
    	} else {
- 	  	window.location = serverInfo + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
+ 	  	window.location = serverInfo + "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
  	  } 	  
   } else {
-    window.location = serverInfo+ "/rest/jcr/"+repository +"/" +workspace + nodePath;
+    window.location = serverInfo+ "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath;
   } 
 } ;
 
