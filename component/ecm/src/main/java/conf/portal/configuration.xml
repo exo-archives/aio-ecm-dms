@@ -52,4 +52,25 @@
 		<key>org.exoplatform.services.ecm.metadata.MetadataManagerService</key>
 		<type>org.exoplatform.services.ecm.metadata.impl.MetadataManagerServiceImpl</type>
 	</component>
+
+	<component>
+		<key>org.exoplatform.services.ecm.watch.WatchDocumentService</key>
+		<type>org.exoplatform.services.ecm.watch.impl.WatchDocumentServiceImpl</type>		
+		<init-params>
+      <object-param>
+        <name>messageConfig</name>
+        <description>description</description>
+        <object type="org.exoplatform.services.ecm.watch.impl.MessageConfig">
+          <field  name="sender"><string>support@exoplatform.com</string></field>
+          <field  name="subject"><string>Your watching document is changed</string></field>
+          <field  name="mimeType"><string>text/plain</string></field>
+          <field  name="content">
+          	<string>The document that you are watching is changed. 
+                    Please go to ecm to see this change
+            </string>
+          </field>          
+        </object>
+      </object-param>
+    </init-params>     
+	</component>
 </configuration>
