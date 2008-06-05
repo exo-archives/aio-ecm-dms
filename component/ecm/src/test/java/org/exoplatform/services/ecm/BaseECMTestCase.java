@@ -21,9 +21,10 @@ import javax.jcr.RepositoryException;
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.CredentialsImpl;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.security.impl.CredentialsImpl;
+import org.exoplatform.services.security.Credential;
 import org.exoplatform.test.BasicTestCase;
 
 /**
