@@ -31,6 +31,8 @@ import org.exoplatform.services.cms.actions.impl.ScriptActionPlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.security.ConversationRegistry;
+import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.MembershipEntry;
 //import org.exoplatform.services.security.SecurityService;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -73,18 +75,9 @@ public class ScriptActionActivationJob implements Job {
       jcrSession = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);      
       Node node = (Node) jcrSession.getItem(srcPath);
       actionNode = actionServiceContainer.getAction(node, actionName);
-      Property rolesProp = actionNode.getProperty("exo:roles");
-      boolean hasPermission = false;
+      Property rolesProp = actionNode.getProperty("exo:roles");      
       Value[] roles = rolesProp.getValues();
-      for (int i = 0; i < roles.length; i++) {
-        String role = roles[i].getString();
-        //if (securityService.hasMembershipInGroup(userId, role)
-        if (conversationRegistry.getState(userId).getIdentity().isMemberOf(userId, role)
-            || SystemIdentity.SYSTEM.equals(userId)) {
-          hasPermission = true;
-          break;
-        }
-      }
+      boolean hasPermission = checkExcetuteable(userId, roles, conversationRegistry);      
       if (!hasPermission) {
         jcrSession.logout();
         return; 
@@ -99,5 +92,22 @@ public class ScriptActionActivationJob implements Job {
       return;
     }                        
   }
-
+  
+  private boolean checkExcetuteable(String userId,Value[] roles, ConversationRegistry conversationRegistry) throws Exception {        
+    if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
+      return true ;
+    }
+    Identity identity = conversationRegistry.getState(userId).getIdentity() ;
+    if(identity == null) {
+      return false ; 
+    }        
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
+      if(identity.isMemberOf(membershipEntry)) {
+        return true ;
+      }
+    }
+    return false ;
+  }
 }
