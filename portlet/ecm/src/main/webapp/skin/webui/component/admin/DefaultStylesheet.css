@@ -82,6 +82,10 @@
 	 height: 34px; 
 }
 
+.UIECMAdminPortlet .UISelect .UIForm .HorizontalLayout {
+	padding: 0px;
+}
+
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
 	 width: 180px;
 	 float:left;

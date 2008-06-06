@@ -298,7 +298,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       } else {
         folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
         folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
-        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_BOTH_FOLDER_UNSTRUCTURED, "both")) ;
+        folderOptions.add(new SelectItemOption<String>(driveInputSet.bothLabel_, driveInputSet.bothLabel_)) ;
       }
       uiInput.setOptions(folderOptions) ;
       if(!uiDriveForm.isAddNew_) {

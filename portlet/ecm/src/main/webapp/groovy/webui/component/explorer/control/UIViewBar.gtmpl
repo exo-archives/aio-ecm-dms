@@ -18,11 +18,11 @@
   <div class="IconFrame">
     <div class="WorkspaceName">Current Drive : <font color="#0766e7"><%=uicomponent.getDriveName()%></font></div>
 		<div class="Separator ViewBarSeparator"><span></span></div>
-	  <a class="Icon BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="Back to JCR main Drives"><span></span></a>
-	  <a class="Icon SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="Set up your browsing preferences"><span></span></a>
+	  <a class="Icon BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIViewBar.title.backToJCR")%>"><span></span></a>
+	  <a class="Icon SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIViewBar.title.setUpBrowser")%>"><span></span></a>
 	  <%if(uicomponent.isShowSaveSession()) {%>
-	    <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="Save Session"><span></span></a>
+	    <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="<%=_appRes("UIViewBar.title.saveSession")%>"><span></span></a>
 	  <%}%>
-	  <a class="Icon RefreshSessionButton" href="<%=uicomponent.event("RefreshSession")%>" title="Refresh"><span></span></a>
+	  <a class="Icon RefreshSessionButton" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.title.refesh")%>"><span></span></a>
   </div>
 </div>
