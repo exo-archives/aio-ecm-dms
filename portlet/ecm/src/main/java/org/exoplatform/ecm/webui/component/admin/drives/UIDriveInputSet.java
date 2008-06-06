@@ -18,12 +18,14 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
@@ -51,9 +53,10 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_VIEWSIDEBAR = "viewSideBar" ;
   final static public String FIELD_FOLDER_ONLY = "Folder" ;
   final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder" ;
-  final static public String FIELD_BOTH_FOLDER_UNSTRUCTURED = "Both" ;
   final static public String ALLOW_CREATE_FOLDER = "allowCreateFolder" ;
   final static public String SHOW_HIDDEN_NODE = "showHiddenNode" ;
+  
+  public String bothLabel_ ;
 
   public UIDriveInputSet(String name) throws Exception {
     super(name);
@@ -77,8 +80,11 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormCheckBoxInput<String>(SHOW_HIDDEN_NODE, SHOW_HIDDEN_NODE, null)) ;
     List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>() ;
     folderOptions.add(new SelectItemOption<String>(FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
+    RequestContext context = RequestContext.getCurrentInstance() ;
+    ResourceBundle res = context.getApplicationResourceBundle() ;
+    bothLabel_ = res.getString(getId() + ".label.both") ;
     folderOptions.add(new SelectItemOption<String>(FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
-    folderOptions.add(new SelectItemOption<String>(FIELD_BOTH_FOLDER_UNSTRUCTURED, "both")) ;
+    folderOptions.add(new SelectItemOption<String>(bothLabel_, bothLabel_)) ;
     addUIFormInput(new UIFormRadioBoxInput(ALLOW_CREATE_FOLDER, ALLOW_CREATE_FOLDER, folderOptions).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
