@@ -11,16 +11,16 @@
   <div class="HorizontalLayout" style="border:0px;">	
   	<table class="UIFormGrid">      
 	    <tr>		          					
-	      <td class="FieldLabel">Name</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.name")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
+		        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=empty,name"] ;
 		        uicomponent.addTextField("name", fieldName) ;   
 		      %>
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Title</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.title")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldTitle = ["jcrPath=/node/exo:title"] ;
@@ -29,7 +29,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Link</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.link")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldLink = ["jcrPath=/node/exo:link", "validate=empty"] ;
@@ -38,7 +38,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Author</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.author")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldAuthor = ["jcrPath=/node/exo:author"] ;
@@ -47,7 +47,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Explicit</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.explicit")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldExplicit = ["jcrPath=/node/exo:explicit", "no", "options=no,yes"] ;
@@ -56,7 +56,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Category</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.category")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldCategory = ["jcrPath=/node/exo:podcastCategory"] ;
@@ -65,7 +65,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Keywords</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.keywords")%></td>
 	      <td class="FieldComponent">
 		      <%
 			      String[] fieldKeywords = ["jcrPath=/node/exo:keywords"] ;
@@ -74,7 +74,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Publish Date</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.pubDate")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldPublishedDate = ["jcrPath=/node/exo:publishedDate", "options=displaytime", "validate=datetime"] ;
@@ -83,7 +83,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Description</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.description")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldDescription = ["jcrPath=/node/exo:description"] ;
@@ -92,7 +92,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Media file to upload</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.uploadFile")%></td>
 	      <td class="FieldComponent">
 		      <%
 					  String[] fieldMedia = ["jcrPath=/node/jcr:content/jcr:data"] ;
@@ -101,7 +101,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Media MimeType</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.mimeType")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        String[] fieldMediamimetype = ["jcrPath=/node/jcr:content/jcr:mimeType", "audio/mp3", "options=audio/mp3,audio/x-m4a,video/mpeg,video/x-m4v,video/quicktime"] ;
@@ -110,7 +110,7 @@
 		    </td>
 	    </tr>
 	    <tr>		          					
-	      <td class="FieldLabel">Length</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("UISelectDocumentForm.label.lenght")%></td>
 	      <td class="FieldComponent">
 		      <%
 		       String[] fieldSize = ["jcrPath=/node/exo:length", "validate=number"] ;
