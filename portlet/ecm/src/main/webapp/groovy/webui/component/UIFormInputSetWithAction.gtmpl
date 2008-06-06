@@ -7,7 +7,6 @@
  * Oct 9, 2006  
  */
 %>
-
 <%
   import org.exoplatform.webui.form.UIFormRadioBoxInput ;
 %>

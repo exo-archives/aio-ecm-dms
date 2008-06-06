@@ -7,7 +7,6 @@
  * 11:57:24 AM 
  */
 %>
-
 <% import org.exoplatform.webui.core.UIPageIterator; %>
 <% 
   UIPageIterator uiIterator = uicomponent.getChild(UIPageIterator.class) ;

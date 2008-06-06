@@ -36,6 +36,7 @@
 	    </a>
 	    <%
 	      if(!uicomponent.getCurrentNode().getPath().trim().equals(root.getPath())) {
+	      		
 		      for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
 		        String actionLink = uicomponent.event("SelectPath", node.getPath()); 
 		        String name = node.getPath().substring(node.getPath().lastIndexOf("/") + 1) ;
