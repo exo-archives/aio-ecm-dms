@@ -162,6 +162,9 @@ public class UIBrowseContainer extends UIContainer {
   private BCTreeNode treeRoot_ ; 
   private UIPageIterator uiPageIterator_ ;
   
+  private HashMap<String, WindowState> windowState_ = new HashMap<String, WindowState>() ;
+  private String windowId_ ;
+  
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
@@ -619,10 +622,21 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public String getTemplate() {
+    PortletRequestContext context = PortletRequestContext.getCurrentInstance() ;
+    PortletRequest portletRequest = context.getRequest() ;
+    WindowState currentWindowState = portletRequest.getWindowState() ;
+    if(windowState_.containsKey(windowId_)) {
+      WindowState keptWindowState = windowState_.get(windowId_) ;
+      if(isShowDetailDocument_ && currentWindowState.equals(WindowState.NORMAL) && 
+          keptWindowState.equals(WindowState.MAXIMIZED)) {
+        setShowDocumentDetail(false) ;
+        return templatePath_ ;
+      }
+    }
     if(isShowDetailDocument_) return detailTemplate_ ;
     return templatePath_ ; 
   }
-
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
@@ -1230,11 +1244,16 @@ public class UIBrowseContainer extends UIContainer {
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
+      UIBrowseContainer uiContainer = event.getSource() ;
+      PortletRequest portletRequest = event.getRequestContext().getRequest() ;
+      uiContainer.windowId_ = portletRequest.getWindowID() ;
       if(useMaxState != null) {
         ActionResponse response = event.getRequestContext().getResponse() ;
         response.setWindowState(WindowState.MAXIMIZED);
+        if(!uiContainer.windowState_.containsKey(uiContainer.windowId_)) {
+          uiContainer.windowState_.put(uiContainer.windowId_, WindowState.MAXIMIZED) ;
+        }
       }
-      UIBrowseContainer uiContainer = event.getSource() ;
       uiContainer.setShowDocumentDetail(false) ;
       uiContainer.setShowAllChildren(false) ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
