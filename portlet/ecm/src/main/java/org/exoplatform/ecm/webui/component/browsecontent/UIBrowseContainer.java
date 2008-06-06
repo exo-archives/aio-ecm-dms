@@ -162,6 +162,9 @@ public class UIBrowseContainer extends UIContainer {
   private BCTreeNode treeRoot_ ; 
   private UIPageIterator uiPageIterator_ ;
   
+  private HashMap<String, WindowState> windowState_ = new HashMap<String, WindowState>() ;
+  private String windowId_ ;
+  
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class) ;
@@ -184,7 +187,7 @@ public class UIBrowseContainer extends UIContainer {
     } else {
       setSelectedTabPath(selectNode.getPath()) ;
 //      setCurrentNodePath(selectNode.getParent().getPath()) ;
-      setCurrentNodePath(selectNode.getPath()) ;
+      setCurrentNodePath(selectNode.getPath()) ;     
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
   }
@@ -563,8 +566,8 @@ public class UIBrowseContainer extends UIContainer {
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
     } else {
       if(SessionsUtils.isAnonim()) {
-        //TODO Anonim Session
-        //session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+        //TODO Anonim Session - Failed if we use AnonimProvider
+//        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
         session = getSystemProvider().getSession(workspace,manageableRepository) ;
       } else {
         //TODO Check with login session
@@ -619,10 +622,21 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public String getTemplate() {
+    PortletRequestContext context = PortletRequestContext.getCurrentInstance() ;
+    PortletRequest portletRequest = context.getRequest() ;
+    WindowState currentWindowState = portletRequest.getWindowState() ;
+    if(windowState_.containsKey(windowId_)) {
+      WindowState keptWindowState = windowState_.get(windowId_) ;
+      if(isShowDetailDocument_ && currentWindowState.equals(WindowState.NORMAL) && 
+          keptWindowState.equals(WindowState.MAXIMIZED)) {
+        setShowDocumentDetail(false) ;
+        return templatePath_ ;
+      }
+    }
     if(isShowDetailDocument_) return detailTemplate_ ;
     return templatePath_ ; 
   }
-
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
@@ -812,8 +826,6 @@ public class UIBrowseContainer extends UIContainer {
   public void loadPortletConfig(PortletPreferences preferences) throws Exception {
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "") ;
     String repoName = preferences.getValue(Utils.REPOSITORY, "") ;
-//    String workspace = preferences.getValue(Utils.WORKSPACE_NAME, "") ;
-//    ManageableRepository manageableRepository = getRepositoryService().getRepository(repoName) ;        
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     setShowDocumentByTag(false) ;
     setShowDocumentDetail(false) ;
@@ -833,7 +845,6 @@ public class UIBrowseContainer extends UIContainer {
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-//      Node node = (Node)getSession().getItem(categoryPath) ;
       setRootPath(categoryPath) ;
       setCategoryPath(categoryPath) ;
       setSelectedTabPath(categoryPath) ;
@@ -1162,6 +1173,7 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT) ;
+      ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
       if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
@@ -1172,7 +1184,6 @@ public class UIBrowseContainer extends UIContainer {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(true) ;
         uiDocumentDetail.setRendered(true) ;  
-        ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
         String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
         uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
@@ -1181,6 +1192,22 @@ public class UIBrowseContainer extends UIContainer {
         uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath()) ;
         uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath()) ;
         uiContainer.getHistory().clear() ;
+      } else if(uiContainer.isShowDocumentDetail() && historyNode == null) {
+        uiContainer.setShowDocumentByTag(false) ;
+        UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
+        uiContainer.setShowDocumentDetail(false) ;
+        uiDocumentDetail.setRendered(false) ;
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
+          String tempName = uiContainer.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "") ;
+          uiContainer.setTemplate(vservice.getTemplateHome(BasePath.CB_QUERY_TEMPLATES, uiContainer.getRepository(),SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
+          if(uiContainer.isShowCommentForm() || uiContainer.isShowVoteForm()) uiContainer.initToolBar(false, false, false) ;
+          if(!uiContainer.isShowDocumentByTag()) uiContainer.setPageIterator(uiContainer.getNodeByQuery(-1)) ;
+          return ;
+        }
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+          uiContainer.setCurrentNodePath(uiContainer.categoryPath_) ;
+          uiContainer.setSelectedTabPath(uiContainer.categoryPath_) ;
+        }
       } else {
         uiContainer.setShowDocumentByTag(false) ;
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
@@ -1217,11 +1244,16 @@ public class UIBrowseContainer extends UIContainer {
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
+      UIBrowseContainer uiContainer = event.getSource() ;
+      PortletRequest portletRequest = event.getRequestContext().getRequest() ;
+      uiContainer.windowId_ = portletRequest.getWindowID() ;
       if(useMaxState != null) {
         ActionResponse response = event.getRequestContext().getResponse() ;
         response.setWindowState(WindowState.MAXIMIZED);
+        if(!uiContainer.windowState_.containsKey(uiContainer.windowId_)) {
+          uiContainer.windowState_.put(uiContainer.windowId_, WindowState.MAXIMIZED) ;
+        }
       }
-      UIBrowseContainer uiContainer = event.getSource() ;
       uiContainer.setShowDocumentDetail(false) ;
       uiContainer.setShowAllChildren(false) ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
