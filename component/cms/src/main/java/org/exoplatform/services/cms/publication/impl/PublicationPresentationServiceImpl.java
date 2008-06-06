@@ -27,6 +27,7 @@ import org.exoplatform.services.cms.publication.NotInPublicationLifecycleExcepti
 import org.exoplatform.services.cms.publication.PublicationPlugin;
 import org.exoplatform.services.cms.publication.PublicationPresentationService;
 import org.exoplatform.services.cms.publication.PublicationService;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 
 import org.apache.commons.logging.Log;
@@ -60,7 +61,7 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#getStateUI(javax.jcr.Node)
    */
-  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException, Exception {
+  public UIForm getStateUI(Node node, UIComponent component) throws NotInPublicationLifecycleException, Exception {
     // TODO Auto-generated method stub
     log.info("################");
     log.info("#  getStateUI  #");
@@ -74,7 +75,7 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
     } else {
       String lifecycleName=publicationService.getNodeLifecycleName(node);
       PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
-      return nodePlugin.getStateUI(node);
+      return nodePlugin.getStateUI(node,component);
     }
   }
   

@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 import javax.jcr.Node;
@@ -24,6 +28,8 @@ import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 /**
  * Created by The eXo Platform SAS .
@@ -343,4 +349,39 @@ public abstract class BaseStandaloneTest extends TestCase {
         + "min";
   }
 
+  protected void printLog (String [][] log, Locale locale) {
+    if (log.length == 0) {
+      System.out.println("Pas de log pour ce noeud");
+    }
+    for (int i = 0; i< log.length;i++) {
+      String [] log2 = log[i];
+      String log2display = "Log n°"+i+" : ";
+      for (int j = 0; j< log2.length;j++) {
+        if (j==0) {
+          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd.HHmmss.SSS");
+          
+          try {
+            Date date = dateFormat.parse(log2[j]);
+            log2display+=date.toString()+" ";
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          
+        } else if (j==3) {
+          PublicationService pubService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+          
+          String [] values= new String[log2.length - (j+1)];
+          for (int k=j+1;k<log2.length;k++) {
+            values [k-(j+1)] =log2[k]; 
+          }
+          
+          log2display+=pubService.getLocalizedAndSubstituteLog(locale, log2[j], values);
+          j=log2.length;
+        } else {
+          log2display+=log2[j]+" ";
+        }
+      }
+      System.out.println(log2display); 
+    }
+  }
 }

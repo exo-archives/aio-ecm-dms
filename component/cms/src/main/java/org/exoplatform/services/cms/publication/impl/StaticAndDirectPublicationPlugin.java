@@ -17,8 +17,12 @@
 package org.exoplatform.services.cms.publication.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -27,6 +31,8 @@ import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
@@ -40,6 +46,7 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.resources.ResourceBundleService;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 
 /**
@@ -62,13 +69,15 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   private static final String         VISIBILITY         = "exo:visibility".intern();
   private static final String         VERSIONS_PUBLICATION_STATES            = "exo:versionsPublicationStates".intern();
   
-  private static final String         PUBLIC         = "public".intern();
-  private static final String         PRIVATE            = "private".intern();
+  public static final String         PUBLIC         = "public".intern();
+  public static final String         PRIVATE            = "private".intern();
+  
+  public static final String        MIXIN_TYPE      = "exo:staticAndDirectPublication".intern();
   
   
   protected static Log log; 
   
-  private final String localeFile = "locale.ecm.cms.publication.StaticAndDirectPublicationPlugin";
+  private final String localeFile = "locale.ecm.cms.publication.PublicationService";
   
   public StaticAndDirectPublicationPlugin() {
     log = ExoLogger.getLogger("portal:StaticAndDirectPublicationPlugin");
@@ -111,7 +120,11 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
             
             String newStringValue= nodeVersionUUID+","+PUBLISHED;
             Value value2add=systemSession.getValueFactory().createValue(newStringValue);
-            values[i] = value2add;
+            if (i==values.length) {
+              values = addValueToArray(values, value2add);
+            } else {
+              values[i] = value2add;
+            }
             node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
             
             //set visibility
@@ -187,7 +200,11 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
             
             String newStringValue= nodeVersionUUID+","+PUBLISHED;
             Value value2add=systemSession.getValueFactory().createValue(newStringValue);
-            values[i] = value2add;
+            if (i==values.length) {
+              values = addValueToArray(values, value2add);
+            } else {
+              values[i] = value2add;
+            }
             node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
             
             //set visibility
@@ -262,6 +279,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     } else {
       throw new IncorrectStateUpdateLifecycleException("Incorrect current State");
     }
+    node.save();
   }
 
   @Override
@@ -280,9 +298,21 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   }
 
   @Override
-  public UIForm getStateUI(Node node) {
-    // TODO Auto-generated method stub
-    return null;
+  public UIForm getStateUI(Node node, UIComponent component) throws Exception {
+    
+    if (node.getProperty(CURRENT_STATE).getString().equals(ENROLLED) || node.getProperty(CURRENT_STATE).getString().equals(NON_PUBLISHED)) {
+      
+      UINonPublishedForm form=  component.createUIComponent(UINonPublishedForm.class, null, null);
+      
+      return form;
+    } else if (node.getProperty(CURRENT_STATE).getString().equals(PUBLISHED)) {
+      UIPublishedForm form=  component.createUIComponent(UIPublishedForm.class, null, null);
+      return form;
+    } else {
+      //should not append : unknown state
+      throw new Exception("StaticAndDirectPublicationPlugin.getStateUI : Unknown state : "+node.getProperty(CURRENT_STATE).getString());
+    }
+    
   }
  
   @Override
@@ -290,10 +320,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
     ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
-    ResourceBundle resourceBundle= resourceBundleService.getResourceBundle(localeFile,locale);
-    
+    ResourceBundle resourceBundle=resourceBundleService.getResourceBundle(localeFile,locale,this.getClass().getClassLoader());
     Session session = node.getSession() ;
-    
     if (node.getProperty(CURRENT_STATE).getString().equals(ENROLLED) || node.getProperty(CURRENT_STATE).getString().equals(NON_PUBLISHED)) {
       return resourceBundle.getString("PublicationService.StaticAndDirectPublicationPlugin.nodeNotPublished");
     } else if (node.getProperty(CURRENT_STATE).getString().equals(PUBLISHED)) {
@@ -342,7 +370,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           result += publicationService.getLocalizedAndSubstituteLog(locale, "PublicationService.StaticAndDirectPublicationPlugin.versionPublishedWithLabel", valuesLocale);
         }
         
-        if (visibility.equals("PUBLIC")) {
+        if (visibility.equals(PUBLIC)) {
           result += resourceBundle.getString("PublicationService.StaticAndDirectPublicationPlugin.visibilityPublic");
         } else {
           result += resourceBundle.getString("PublicationService.StaticAndDirectPublicationPlugin.visibilityPrivate");
@@ -366,12 +394,33 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     
     if (visibility.equals(PUBLIC)) {
       //add any
-      String[] arrayPersmission = {PermissionType.READ} ;
-      extNode.setPermission(SystemIdentity.ANY, arrayPersmission);
+      
+      String[] arrayPermission = {PermissionType.READ} ;
+      extNode.setPermission(SystemIdentity.ANY, arrayPermission);
     } else {
       extNode.removePermission(SystemIdentity.ANY);
     }
   }
  
+  public boolean canAddMixin (Node node) throws Exception {
+    return node.canAddMixin(MIXIN_TYPE);
+  }
+  
+  public void addMixin (Node node) throws Exception {
+    node.addMixin(MIXIN_TYPE) ;
+    node.setProperty(VISIBILITY, PRIVATE); 
+    List<Value> publicationStates = new ArrayList<Value>();
+    node.setProperty(VERSIONS_PUBLICATION_STATES, publicationStates.toArray(new Value[publicationStates.size()]));
+  }
+  
+  public Value[] addValueToArray (Value[] array, Value value2add) {
+    Value[] newarray = new Value[array.length + 1];
+    for (int i = 0;i < array.length;i++){
+      newarray[i] = array[i];
+    }
+    newarray[array.length] = value2add;
+    return newarray; 
+  }
+  
 
 }

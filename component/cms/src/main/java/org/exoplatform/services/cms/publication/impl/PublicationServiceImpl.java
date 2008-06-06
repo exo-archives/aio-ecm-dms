@@ -18,6 +18,7 @@ package org.exoplatform.services.cms.publication.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,7 +60,7 @@ public class PublicationServiceImpl implements PublicationService {
   protected static Log log;  
   private PublicationPresentationService publicationPresentationService;
   
-  private final String localeFile = "locale.ecm.cms.publication.StaticAndDirectPublicationPlugin";
+  private final String localeFile = "/locale/ecm/cms/publication/PublicationService";
   
   
   Map<String, PublicationPlugin> publicationPlugins_;
@@ -161,7 +162,7 @@ public class PublicationServiceImpl implements PublicationService {
       //with lifecycleName = lifecycle
       //current state = default state = enrolled
       //history : empty
-      if(node.canAddMixin(PUBLICATION)) node.addMixin(PUBLICATION) ;
+      if(publicationPlugins_.get(lifecycle).canAddMixin(node)) publicationPlugins_.get(lifecycle).addMixin(node) ;
       else throw new NoSuchNodeTypeException() ;
       node.setProperty(LIFECYCLE_NAME, lifecycle);
       node.setProperty(CURRENT_STATE, "enrolled"); 
@@ -305,9 +306,11 @@ public class PublicationServiceImpl implements PublicationService {
   public String getLocalizedAndSubstituteLog(Locale locale, String key, String[] values){
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
-    ResourceBundle resourceBundle= resourceBundleService.getResourceBundle(localeFile,locale);
-   
-    String result = resourceBundle.getString("key");
+    ClassLoader cl=this.getClass().getClassLoader();
+    ResourceBundle resourceBundle=resourceBundleService.getResourceBundle(localeFile,locale,cl);
+    
+    
+    String result = resourceBundle.getString(key);
     return String.format(result,values);
     
   }

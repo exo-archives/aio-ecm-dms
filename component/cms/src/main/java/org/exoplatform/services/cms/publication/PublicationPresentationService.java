@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 
 /**
@@ -46,7 +47,7 @@ public interface PublicationPresentationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public UIForm getStateUI(Node node) throws NotInPublicationLifecycleException, Exception;
+  public UIForm getStateUI(Node node, UIComponent component) throws NotInPublicationLifecycleException, Exception;
   
   /**
    * Add a Publication Plugin to the service.

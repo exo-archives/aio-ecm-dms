@@ -26,6 +26,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.version.Version;
 
 import org.apache.commons.chain.Context;
 import org.apache.commons.logging.Log;
@@ -74,15 +75,14 @@ public class TestPublicationService extends BaseStandaloneTest {
     publicationServiceTestRoot.addMixin("mix:versionable");
     publicationServiceTestRoot.addMixin("exo:privilegeable");
     
-    publicationServiceTestRoot.setPermission(SystemIdentity.ANY, PermissionType.ALL);
-    rootAdmin.save();
+    publicationServiceTestRoot.setPermission("root", PermissionType.ALL); // exo
+    publicationServiceTestRoot.removePermission(SystemIdentity.ANY);
+    publicationServiceTestRoot.save();
     
     
   }
   
   protected void tearDown() throws Exception {
-    exo1Session.logout();
-    exo1Session = null;
 
     adminSession.logout();
     adminSession = null;
@@ -113,14 +113,6 @@ public class TestPublicationService extends BaseStandaloneTest {
     assertNotNull(container.getComponentInstanceOfType(PublicationPresentationService.class));
     assertNotNull(repository.getNodeTypeManager().getNodeType("exo:publication"));
   }
- 
-  
-  public void testAddAndGetPublicationPlugin() {
-    log.info("########################################");
-    log.info("#    testAddAndGetPublicationPlugin    #");
-    log.info("########################################\n");
-    
-  }
   
   public void testEnrollAndCheckIfNodeIsEnrolled() {
     log.info("########################################");
@@ -130,10 +122,10 @@ public class TestPublicationService extends BaseStandaloneTest {
     try {
       publicationService.enrollNodeInLifecycle(publicationServiceTestRoot, LIFECYCLE);
       assertTrue(publicationService.isNodeEnrolledInLifecycle(publicationServiceTestRoot));
-      assertTrue(hasMixin(publicationServiceTestRoot, "exo:publication"));
       System.out.println("lifeCycleName = "+publicationService.getNodeLifecycleName(publicationServiceTestRoot));
       System.out.println("CurrentState = "+publicationService.getCurrentState(publicationServiceTestRoot));
-      System.out.println("Log = "+publicationService.getLog(publicationServiceTestRoot).toString());
+      String [][] log =publicationService.getLog(publicationServiceTestRoot);
+      printLog(log,Locale.FRENCH);
       System.out.println("UserInfo FR = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.FRENCH));
       System.out.println("UserInfo EN = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.ENGLISH));
       
@@ -145,10 +137,56 @@ public class TestPublicationService extends BaseStandaloneTest {
 
   }
   
-  public void testChangeStateAndCheckNewStateNotNull() {
+  public void testChangeStateNonPublishedToPublished() {
     log.info("##########################################");
-    log.info("# testChangeStateAndCheckNewStateNotNull #");
+    log.info("# testChangeStateNonPublishedToPublished #");
     log.info("##########################################\n");
+    try {
+      
+      Version version = publicationServiceTestRoot.checkin();
+      publicationServiceTestRoot.checkout();
+      
+      System.out.println("isEnrolled: "+publicationService.isNodeEnrolledInLifecycle(publicationServiceTestRoot));
+      System.out.println("hasMixin : "+hasMixin(publicationServiceTestRoot, "exo:publication"));
+       
+      publicationService.enrollNodeInLifecycle(publicationServiceTestRoot, LIFECYCLE);
+      System.out.println("isEnrolled: "+publicationService.isNodeEnrolledInLifecycle(publicationServiceTestRoot));
+      System.out.println("hasMixin : "+hasMixin(publicationServiceTestRoot, "exo:publication"));
+      
+      HashMap<String,String> context=new HashMap<String,String>();
+      context.put("nodeVersionUUID", version.getUUID());
+      context.put("visibility", StaticAndDirectPublicationPlugin.PUBLIC);
+      publicationService.changeState(publicationServiceTestRoot, StaticAndDirectPublicationPlugin.PUBLISHED, context);
+     
+      
+      System.out.println("lifeCycleName = "+publicationService.getNodeLifecycleName(publicationServiceTestRoot));
+      System.out.println("CurrentState = "+publicationService.getCurrentState(publicationServiceTestRoot));
+      String [][] log =publicationService.getLog(publicationServiceTestRoot);
+      printLog(log,Locale.FRENCH);
+      System.out.println("UserInfo FR = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.FRENCH));
+      System.out.println("UserInfo EN = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.ENGLISH));
+      
+      
+      version = publicationServiceTestRoot.checkin();
+      publicationServiceTestRoot.save();
+      publicationServiceTestRoot.checkout();
+      
+      context.put("nodeVersionUUID", version.getUUID());
+      context.put("visibility", StaticAndDirectPublicationPlugin.PRIVATE);
+      publicationService.changeState(publicationServiceTestRoot, StaticAndDirectPublicationPlugin.PUBLISHED, context);
+      
+      
+      System.out.println("lifeCycleName = "+publicationService.getNodeLifecycleName(publicationServiceTestRoot));
+      System.out.println("CurrentState = "+publicationService.getCurrentState(publicationServiceTestRoot));
+      log =publicationService.getLog(publicationServiceTestRoot);
+      printLog(log,Locale.FRENCH);
+      System.out.println("UserInfo FR = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.FRENCH));
+      System.out.println("UserInfo EN = "+publicationService.getUserInfo(publicationServiceTestRoot, Locale.ENGLISH));
+      
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
   }
   

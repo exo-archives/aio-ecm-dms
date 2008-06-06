@@ -151,6 +151,19 @@
   <component>
     <key>org.exoplatform.services.cms.publication.PublicationService</key>
     <type>org.exoplatform.services.cms.publication.impl.PublicationServiceImpl</type>
+    <component-plugins>
+    	<component-plugin>
+	    <name>StaticAndDirect</name>
+	    <set-method>addPublicationPlugin</set-method>
+	    <type>org.exoplatform.services.cms.publication.impl.StaticAndDirectPublicationPlugin</type>
+	    <init-params>
+	      <values-param>
+	    		<name>StaticAndDirect</name>
+	    		<description>This publication lifecycle keeps the content at their original place. Any version of the Node can be published.</description>
+	      </values-param>
+	    </init-params>
+	  </component-plugin>
+    </component-plugins>
   </component>
   
   <component>

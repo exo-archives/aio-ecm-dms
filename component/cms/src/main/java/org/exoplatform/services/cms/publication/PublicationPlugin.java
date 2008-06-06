@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import javax.jcr.Node;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 
 /**
@@ -83,7 +85,7 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
      * @param node the Node from which the state UI should be retrieved
      * @return a WebUI form corresponding to the current state and node.
      */
-    public abstract UIForm getStateUI(Node node);
+    public abstract UIForm getStateUI(Node node, UIComponent component) throws Exception;
     
     /**
      * Retrieves an image showing the lifecycle state of the specified Node.
@@ -135,6 +137,23 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
     public String getNodeLifecycleDesc(Node node) {
       return getDescription();
     }
+    
+    
+    /**
+     * Return if the plugin can add the specific mixin for the publication
+     * @param node the node to add the mixin
+     * @return boolean
+     */
+    public abstract boolean canAddMixin (Node node) throws Exception;
+    
+    /**
+     * Add the specific plugin mixin to the node
+     * @param node
+     */
+    public abstract void addMixin (Node node) throws Exception;
+    
+    
+    
     
 }
 

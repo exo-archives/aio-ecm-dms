@@ -24,8 +24,8 @@
 	      <values-param>
 	        <name>autoCreatedInNewRepository</name>
 	        <description>Node types configuration file</description>
-	        <value>jar:/conf/standalone/nodetypes-config.xml</value>
-	        <value>jar:/conf/standalone/nodetypes-config-extended.xml</value>
+	        <value>jar:/conf/nodetypes-config.xml</value>
+	        <value>jar:/conf/nodetypes-config-extended.xml</value>
 	      </values-param>
 	    </init-params>
 	   </component-plugin>
