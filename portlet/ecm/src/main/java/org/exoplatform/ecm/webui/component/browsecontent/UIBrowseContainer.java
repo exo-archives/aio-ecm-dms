@@ -630,6 +630,7 @@ public class UIBrowseContainer extends UIContainer {
       if(isShowDetailDocument_ && currentWindowState.equals(WindowState.NORMAL) && 
           keptWindowState.equals(WindowState.MAXIMIZED)) {
         setShowDocumentDetail(false) ;
+        windowState_.clear() ;
         return templatePath_ ;
       }
     }
@@ -1246,7 +1247,7 @@ public class UIBrowseContainer extends UIContainer {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
       UIBrowseContainer uiContainer = event.getSource() ;
       PortletRequest portletRequest = event.getRequestContext().getRequest() ;
-      uiContainer.windowId_ = portletRequest.getWindowID() ;
+      uiContainer.windowId_ = portletRequest.getWindowID() + portletRequest.getPortletSession().getId();
       if(useMaxState != null) {
         ActionResponse response = event.getRequestContext().getResponse() ;
         response.setWindowState(WindowState.MAXIMIZED);
