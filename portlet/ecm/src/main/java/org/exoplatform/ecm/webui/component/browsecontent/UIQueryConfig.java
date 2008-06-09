@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -233,6 +234,7 @@ public class UIQueryConfig extends UIForm {
     queryField.setRendered(isNewquery) ;
   }
 
+  @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getQueryTemplate(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> querylTemplates = getApplicationComponent(ManageViewService.class)
@@ -240,6 +242,7 @@ public class UIQueryConfig extends UIForm {
     for(Node node: querylTemplates){
       options.add(new SelectItemOption<String>(node.getName(),node.getName())) ;
     }
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
     return options ;
   }
 
@@ -269,6 +272,7 @@ public class UIQueryConfig extends UIForm {
     return options ;
   }
 
+  @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getQueryStore(String queryType, String queryLanguage) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ; 
@@ -292,6 +296,7 @@ public class UIQueryConfig extends UIForm {
     if(options.isEmpty()) {
       options.add(new SelectItemOption<String>(EMPTYQUERY, EMPTYQUERY)) ;
     }
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
     return options ;
   }
 

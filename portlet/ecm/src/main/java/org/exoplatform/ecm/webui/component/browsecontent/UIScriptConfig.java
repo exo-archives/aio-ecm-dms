@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -133,6 +134,7 @@ public class UIScriptConfig extends UIForm {
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
   }
+  @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> scriptTemplates = getApplicationComponent(ManageViewService.class).
@@ -140,6 +142,7 @@ public class UIScriptConfig extends UIForm {
     for(Node template:scriptTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
+    Collections.sort(Options, new Utils.ItemOptionNameComparator()) ;
     return Options ;
   }
 
