@@ -70,7 +70,6 @@
     }
     
     .Comments .CommentBox {
-      width: 99%;
       margin-right: auto;
     }
     
