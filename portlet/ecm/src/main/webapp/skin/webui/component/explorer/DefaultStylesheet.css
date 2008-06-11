@@ -41,3 +41,8 @@
 	width: auto;
 	padding-right: 10px;
 }
+
+.UIJCRExplorerPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
+}

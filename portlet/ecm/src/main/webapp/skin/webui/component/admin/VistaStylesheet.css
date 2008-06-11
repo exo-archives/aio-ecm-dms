@@ -286,7 +286,6 @@
 
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
-  border: solid 1px #808080;
 }
 
 .UIECMAdminPortlet .UIFormGrid input.radio {
@@ -490,7 +489,6 @@
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
-  width: 500px ;
   margin: auto;
 }
 
@@ -667,6 +665,17 @@
 	padding: 3px;
 }
 
+.UITemplatesManager .UITemplateContent .UIForm .HorizontalLayout .UIFormInputSet { 
+	padding: 0px;
+}
+
+.UITemplatesManager .UITemplateContent .UIFormInputSet { 
+	padding: 0px;
+}
+
+.UITemplatesManager .UITemplateContent .UIFormInputSet .UIFormGrid td.FieldLabel { 
+	padding: 4px 4px 4px 0px;
+}
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UINamespaceManager .HorizontalLayout {
@@ -724,10 +733,6 @@
 }
 
 /************************* UIFormInputSet ***********************************/
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
-}
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction input.radio {
   float: none;

@@ -131,6 +131,10 @@
   _width: 118px;
 }
 
+.UIECMAdminPortlet .UIFormInputSet a {
+	border: 1px solid red;
+}
+
 .UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
@@ -140,12 +144,12 @@
 	width: 128px;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
 	width: 95%;
 	margin: 10px auto;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon {
 	background: url('DefaultSkin/background/SelectPage.gif') no-repeat;
 	width: 16px; 
 	height: 16px;
@@ -403,6 +407,12 @@
 }
 
 /*############################## --UIFormWithTitle -- ########################*/
+
+.UIECMAdminPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
+}
+
 /*############################## -- UIFormInputSet -- ########################*/
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;

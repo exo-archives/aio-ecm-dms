@@ -784,6 +784,10 @@
   padding: 0px;
 }
 
+.UIJCRExplorerPortlet .UIViewMetadataManager #UIViewMetadataForm {
+	border: 1px solid #b7b7b7;
+}
+
 /*=============================== UIConstraintsForm =======================================*/
 
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle {
