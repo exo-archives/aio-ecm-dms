@@ -21,7 +21,7 @@
 	  <a class="Icon BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIViewBar.title.backToJCR")%>"><span></span></a>
 	  <a class="Icon SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIViewBar.title.setUpBrowser")%>"><span></span></a>
 	  <%if(uicomponent.isShowSaveSession()) {%>
-	    <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="<%=_appRes("UIViewBar.title.saveSession")%>"><span></span></a>
+	    <a class="Icon BlueFloppyDisk24x24Icon" href="<%=uicomponent.event("SaveSession")%>" title="<%=_ctx.appRes("UIViewBar.title.saveSession")%>"><span></span></a>
 	  <%}%>
 	  <a class="Icon RefreshSessionButton" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.title.refesh")%>"><span></span></a>
   </div>
