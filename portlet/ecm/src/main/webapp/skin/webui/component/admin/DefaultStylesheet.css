@@ -131,10 +131,6 @@
   _width: 118px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet a {
-	border: 1px solid red;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
