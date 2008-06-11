@@ -565,13 +565,13 @@
 	margin: auto;
 }
 
+.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid {
+	line-height: 30px;
+}
+
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldLabel {
   text-align: center;
   width: 100px;
-}
-
-.UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm .UIFormGrid .FieldComponent select {
-  margin: 10px 0px 0px 0px;
 }
 
 .UIECMScripts .UIBarStyle {
