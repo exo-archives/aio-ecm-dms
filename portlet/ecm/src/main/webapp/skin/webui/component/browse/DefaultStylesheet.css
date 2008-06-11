@@ -896,3 +896,8 @@
 .UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
 	width:140px;
 }
+
+.UIBrowseContentPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
+}
