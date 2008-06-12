@@ -71,7 +71,7 @@
 	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
 	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs ;
-	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" ;
+	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" + strActs;
 	    println "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "  </div>" ; 
 	    println "  </div>" ; 
