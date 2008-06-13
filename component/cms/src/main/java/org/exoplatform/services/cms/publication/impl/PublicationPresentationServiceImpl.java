@@ -28,6 +28,7 @@ import org.exoplatform.services.cms.publication.PublicationPlugin;
 import org.exoplatform.services.cms.publication.PublicationPresentationService;
 import org.exoplatform.services.cms.publication.PublicationService;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.form.UIForm;
 
 import org.apache.commons.logging.Log;

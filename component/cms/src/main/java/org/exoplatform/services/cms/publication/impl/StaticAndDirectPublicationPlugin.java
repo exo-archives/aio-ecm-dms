@@ -16,6 +16,12 @@
  */
 package org.exoplatform.services.cms.publication.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +79,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   public static final String         PRIVATE            = "private".intern();
   
   public static final String        MIXIN_TYPE      = "exo:staticAndDirectPublication".intern();
+  
+  public static final String 		IMG_LIFECYCLE 	="conf/image/staticAndDirectPublication.gif".intern();
   
   
   protected static Log log; 
@@ -292,21 +300,41 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   }
 
   @Override
-  public byte[] getStateImage(Node node) {
+  public byte[] getStateImage(Node node) throws IOException,FileNotFoundException {
     // TODO Auto-generated method stub
-    return null;
+	  
+	byte[] bytes = null;
+    log.trace("loading file '" + name + "' from file system '" + IMG_LIFECYCLE + "'");
+    InputStream in = this.getClass().getClassLoader().getResourceAsStream(IMG_LIFECYCLE);
+	ByteArrayOutputStream out = new ByteArrayOutputStream();
+	transfer(in, out);
+	bytes = out.toByteArray();
+	return bytes;
+  }
+  
+  private static final int BUFFER_SIZE = 512;
+  public static int transfer(InputStream in, OutputStream out) throws IOException {
+    int total = 0;
+    byte[] buffer = new byte[BUFFER_SIZE];
+    int bytesRead = in.read( buffer );
+    while ( bytesRead != -1 ) {
+      out.write( buffer, 0, bytesRead );
+      total += bytesRead;
+      bytesRead = in.read( buffer );
+    }
+    return total;
   }
 
   @Override
   public UIForm getStateUI(Node node, UIComponent component) throws Exception {
     
     if (node.getProperty(CURRENT_STATE).getString().equals(ENROLLED) || node.getProperty(CURRENT_STATE).getString().equals(NON_PUBLISHED)) {
-      
       UINonPublishedForm form=  component.createUIComponent(UINonPublishedForm.class, null, null);
-      
+      form.setNode(node);
       return form;
     } else if (node.getProperty(CURRENT_STATE).getString().equals(PUBLISHED)) {
       UIPublishedForm form=  component.createUIComponent(UIPublishedForm.class, null, null);
+      form.setNode(node);
       return form;
     } else {
       //should not append : unknown state

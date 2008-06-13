@@ -1,5 +1,6 @@
-<div>
-	No version is currently published. Please select a version to be published :
+﻿<div>
+	Generic data :<br/>
+	<%= uiform.renderChild(UIPublicationComponent.class) %>
 	
-	--ToDo : display the versions Tree
+	Specific data : published State
 </div>

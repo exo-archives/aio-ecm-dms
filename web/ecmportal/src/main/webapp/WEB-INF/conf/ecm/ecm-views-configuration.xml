@@ -10,7 +10,7 @@
     		<name>buttons</name>
     		<value>
     			addFolder; addDocument; editDocument; upload; viewReferences; viewMetadatas;
-                viewNodeType; viewPermissions; viewProperties; manageVersions; manageCategories; manageRelations; 
+                viewNodeType; viewPermissions; viewProperties; manageVersions; manageCategories; manageRelations; managePublications; 
     			manageActions; exportNode; importNode; viewRelations; showJCRStructure; watchDocument; taggingDocument; multiLanguage
     		</value>
     	</value-param>
@@ -74,7 +74,7 @@
                       <field  name="tabName"><string>Admin</string></field>
                       <field  name="buttons">
                       	<string>
-                      		manageVersions; manageCategories; manageRelations; manageActions; viewProperties; exportNode; importNode
+                      		manageVersions; managePublications; manageCategories; manageRelations; manageActions; viewProperties; exportNode; importNode
                       	</string>
                       </field>
                     </object>

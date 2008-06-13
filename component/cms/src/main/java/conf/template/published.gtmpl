@@ -1,8 +1,7 @@
 <div>
-	The following version is published: [version id] – [version label].
-	
-	--ToDo : display the versions Tree
-	--ToDo : display the "unpublished" button
-	--ToDo : replace variables
-	
+	Generic data :<br/>
+	<% uiform.renderChildren() %>
+	<br/>
+	<br/>
+	Specific data : published State
 </div>

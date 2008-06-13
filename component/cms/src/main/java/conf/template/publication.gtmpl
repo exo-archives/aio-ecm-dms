@@ -1,0 +1,10 @@
+﻿<div>
+    Static an direct Publication panel
+    <br />
+    <br />
+    Node Name = <%=uicomponent.getNodeName()%><br />
+    LifeCycle Name = <%=uicomponent.getLifeCycleName()%><br />
+    State Name = <%=uicomponent.getStateName()%><br />
+    
+    imageLink : <img src="<%=uicomponent.getLinkStateImage()%>" height="50" width="400" border="0" alt=""/><br />
+  </div>

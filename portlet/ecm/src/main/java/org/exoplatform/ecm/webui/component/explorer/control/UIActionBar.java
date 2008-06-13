@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.jcr.Item;
@@ -29,6 +30,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.model.Preference;
@@ -81,6 +83,9 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.services.cms.publication.PublicationPresentationService;
+import org.exoplatform.services.cms.publication.PublicationService;
+import org.exoplatform.services.cms.publication.impl.StaticAndDirectPublicationPlugin;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -92,6 +97,9 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -100,6 +108,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.jmock.core.constraint.IsInstanceOf;
 
 /**
  * Created by The eXo Platform SARL
@@ -126,6 +135,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManagePublicationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
@@ -717,6 +727,61 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
     }
   }
+  
+  static public class ManagePublicationsActionListener extends EventListener<UIActionBar> {
+	    public void execute(Event<UIActionBar> event) throws Exception {
+	      UIActionBar uiActionBar = event.getSource() ;
+	      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
+	      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
+	      Node currentNode = uiExplorer.getCurrentNode() ;
+	      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
+	      uiExplorer.setIsHidePopup(false) ;
+	      
+	      if(currentNode.equals(uiExplorer.getRootNode())) {
+	        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-publication-rootnode", null)) ;
+	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	        return ;
+	      }
+	      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+	        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+	            ApplicationMessage.WARNING)) ;
+	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	        return ;
+	      }
+	      if(uiExplorer.nodeIsLocked(currentNode)) {
+	        Object[] arg = { currentNode.getPath() } ;
+	        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
+	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	        return ;
+	      }  
+	      PublicationService publicationService = uiActionBar.getApplicationComponent(PublicationService.class);
+	      PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);
+	      //this is to state inclusion of panel in UI
+	      //TODO : change to correct code
+	      
+	      if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {
+	    	  publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
+	      }
+	      Version version = currentNode.checkin();
+	      currentNode.checkout();
+	      
+	      HashMap<String,String> context=new HashMap<String,String>();
+	      context.put("nodeVersionUUID", version.getUUID());
+	      context.put("visibility", StaticAndDirectPublicationPlugin.PUBLIC);
+	      
+	      publicationService.changeState(currentNode, "published", context);
+	      
+	      UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
+	      UIForm form=publicationPresentationService.getStateUI(currentNode,cont);
+	      UIPopupWindow popupWindow = uiPopupAction.getChild(UIPopupWindow.class);
+	      popupWindow.setUIComponent(form);
+	      popupWindow.setWindowSize(400, 400);
+	      popupWindow.setRendered(true);
+	      popupWindow.setShow(true);
+	      popupWindow.setResizable(true);
+	      
+	    }
+	  }
 
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {

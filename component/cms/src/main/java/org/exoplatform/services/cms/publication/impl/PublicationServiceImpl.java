@@ -60,7 +60,7 @@ public class PublicationServiceImpl implements PublicationService {
   protected static Log log;  
   private PublicationPresentationService publicationPresentationService;
   
-  private final String localeFile = "/locale/ecm/cms/publication/PublicationService";
+  private final String localeFile = "locale.ecm.cms.publication.PublicationService";
   
   
   Map<String, PublicationPlugin> publicationPlugins_;

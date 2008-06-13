@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.form.UIForm;
 
 /**

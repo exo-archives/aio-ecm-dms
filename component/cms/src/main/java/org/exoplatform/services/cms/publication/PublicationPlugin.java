@@ -16,6 +16,8 @@
  */
 package org.exoplatform.services.cms.publication;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -25,6 +27,7 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.form.UIForm;
 
 /**
@@ -98,7 +101,7 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
      * @return an array of bytes corresponding to the image to be shown to the
      * user
      */
-    public abstract byte[] getStateImage(Node node);
+    public abstract byte[] getStateImage(Node node) throws IOException,FileNotFoundException;
     
     /**
      * Retrieves description information explaining to the user the current

@@ -104,6 +104,12 @@
   background: url('VistaSkin/ManageVersionsIcon.png') no-repeat ;
 }
 
+.ManagePublicationsIcon {
+	width: 24px; height: 24px;
+	/* TODO : add and change icon */
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
+}
+
 .ManageActionsIcon {
 	width: 32px; height: 31px;
   background: url('VistaSkin/HammerDataBox.png') no-repeat bottom;
