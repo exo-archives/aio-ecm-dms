@@ -556,6 +556,7 @@
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .HorizontalLayout {
   background: #f7f7f7;
   padding-top: 10px;
+  border: 1px solid #b7b7b7;
 }
 
 .ECMTempForm .HorizontalLayout .textarea {
@@ -578,6 +579,7 @@
 .UIECMAdminPortlet .CBTemplate .CBTempForm .HorizontalLayout {
   background: #f7f7f7;
   padding-top: 10px;
+  border: 1px solid #b7b7b7;
 }
 
 .CBTempForm .HorizontalLayout .textarea {
@@ -631,6 +633,7 @@
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
   padding-top: 10px;
   background: #f7f7f7;
+  border: 1px solid #b7b7b7;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm  {
@@ -666,6 +669,7 @@
 .UICBScripts .CBScriptForm .HorizontalLayout {
   padding-top: 10px;
   background: #f7f7f7;
+  border: 1px solid #b7b7b7;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
