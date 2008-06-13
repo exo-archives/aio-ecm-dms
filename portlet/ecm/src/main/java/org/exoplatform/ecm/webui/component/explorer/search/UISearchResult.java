@@ -24,8 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.query.QueryResult;
 
-import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.ecm.jcr.model.ExtendsiblePageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -34,7 +33,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -61,12 +59,16 @@ public class UISearchResult extends UIContainer {
 
   private QueryResult queryResult_;
   private long searchTime_ = 0; 
-  
+  private boolean flag_ = false ;
   private boolean isQuickSearch_ = false ;
-  private UIPageIterator uiPageIterator_ ;
+  private UIQueryResultPageIterator uiPageIterator_ ;
+  private List<Node> currentListNodes_ = new ArrayList<Node>() ;
+  private int currentAvailablePage_ = 0 ;
+  
+  static private int PAGE_SIZE = 10 ;
 
   public UISearchResult() throws Exception {
-    uiPageIterator_ = addChild(UIPageIterator.class, null, null) ;
+    uiPageIterator_ = addChild(UIQueryResultPageIterator.class, null, null) ;
   }
 
   public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
@@ -82,28 +84,54 @@ public class UISearchResult extends UIContainer {
     return uiPageIterator_.getCurrentPageData() ;    
   }
 
+  private void addNode(List<Node> listNodes, Node node) throws Exception {
+    List<Node> checkList = new ArrayList<Node>() ;
+    if(flag_) checkList = currentListNodes_ ; 
+    else checkList = listNodes ;
+    if(node.getName().equals(Utils.JCR_CONTENT) && !checkList.contains(node.getParent())) {
+      listNodes.add(node.getParent()) ;
+    } else if(!checkList.contains(node)){
+      listNodes.add(node) ;
+    }
+  }
+  
   @SuppressWarnings("unchecked")
   public List<Node> getResultList() throws Exception {
-    List<Node> lists = new ArrayList<Node>() ;    
-    for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-      Node node = iter.nextNode();
-      if(node.getName().equals(Utils.JCR_CONTENT)) {
-        if(!lists.contains(node.getParent())) {
-          lists.add(node.getParent()) ;
-        } 
-      } else if(!lists.contains(node)){
-        lists.add(node) ;
+    List<Node> listNodes = new ArrayList<Node>() ;    
+    long before = System.currentTimeMillis();
+    long resultListSize = queryResult_.getNodes().getSize() ;
+    if(!queryResult_.getNodes().hasNext()) return currentListNodes_ ;
+    if(resultListSize > 100) {
+      for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+        Node node = iter.nextNode() ;
+        addNode(listNodes, node) ;
+        if(listNodes.size() == 100) {
+          currentListNodes_.addAll(listNodes) ;
+          break ;
+        }
+        if(listNodes.size() < 100 && !iter.hasNext()) currentListNodes_.addAll(listNodes) ;
+        flag_ = true ;
       }
-    }    
-    return lists ;
+    } else {
+      for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+        Node node = iter.nextNode() ;
+        addNode(listNodes, node) ;
+      }
+      currentListNodes_= listNodes ;
+    }
+    System.out.println("Time taken by the UI = " + (System.currentTimeMillis() - before)); 
+    return currentListNodes_ ;
   }
 
-  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_ ; }
 
   public void updateGrid() throws Exception {
-    PageList pageList = new ObjectPageList(getResultList(), 10) ;
+    ExtendsiblePageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE) ;
+    currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE ;
     uiPageIterator_.setPageList(pageList) ;
   }
+  
+  public int getCurrentAvaiablePage() { return currentAvailablePage_ ; }
    
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {

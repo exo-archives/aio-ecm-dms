@@ -27,7 +27,6 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
@@ -149,6 +148,13 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       long startTime = System.currentTimeMillis();
       try {
+        if(queryS.indexOf("order by") < 0) {
+          if(searchType.equals("sql")) {
+            queryS = queryS + " order by exo:dateCreated DESC" ;
+          } else if(searchType.equals("xpath")) {
+            queryS = queryS + " order by @exo:dateCreated descending" ;
+          }
+        }
         Query query = queryManager.createQuery(queryS, searchType);
         QueryResult queryResult = null ;
         queryResult = query.execute();
@@ -252,12 +258,12 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         }
         ManageableRepository repository =
           uiForm.getApplicationComponent(RepositoryService.class).getRepository(uiExplorer.getRepositoryName()) ;
-        Session session = 
-          SessionsUtils.getSystemProvider().getSession(repository.getConfiguration().getDefaultWorkspaceName(), repository) ; 
+        Session session = repository.getSystemSession(repository.getConfiguration().getDefaultWorkspaceName()) ; 
         Node queryNode = (Node) session.getItem(uiForm.queryPath_) ;
         queryNode.setProperty("jcr:language", queryLang) ;
         queryNode.setProperty("jcr:statement", statement) ;
         queryNode.save() ;
+        session.logout() ;
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         UISavedQuery uiSavedQuery = uiForm.getAncestorOfType(UISavedQuery.class) ; 
         uiSavedQuery.updateGrid() ;
