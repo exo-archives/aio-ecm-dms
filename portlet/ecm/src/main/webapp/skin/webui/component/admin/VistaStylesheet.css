@@ -707,7 +707,7 @@
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
-	width: 80%; 
+	width: 350px; 
 	height: 320px ;
 	padding: 3px;
 }

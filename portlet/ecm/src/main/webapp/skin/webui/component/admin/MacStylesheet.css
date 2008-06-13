@@ -797,18 +797,19 @@
 
 .UIQueriesManager .UIQueriesForm {
 	margin: 10px auto;
+	width: 95%;
+	overflow: hidden;
 }
 
 .UIQueriesManager .UIQueriesForm .HorizontalLayout {
 	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-	width: 500px;
 	margin: auto;
 	padding-top: 10px;
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 300px ;
-	width: 95%;
+	width: 350px;
 	padding: 3px;
 }
 
