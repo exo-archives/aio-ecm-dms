@@ -25,7 +25,7 @@
 			println "<div class=\"Icon16x16 Add16x16Icon\" onclick=\"" + uicomponent.event("Add",node.getPath()) + "\" title=\"" +  <%=_ctx.appRes("UITaxonomyManager.title.add")%> + "\"></div>" ;
 			println "<div class=\"Icon16x16 Copy16x16Icon\" onclick=\"" + uicomponent.event("Copy",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.copy")%> + "\"></div>" ;
 			println "<div class=\"Icon16x16 Cut16x16Icon\" onclick=\"" + uicomponent.event("Cut",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.cut")%> + "\"></div>" ;
-			println "<div class=\"Icon16x16 Paste16x16Icon\" onclick=\"" + uicomponent.event("Paste",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.pase")%> + "\"></div>" ;
+			println "<div class=\"Icon16x16 Paste16x16Icon\" onclick=\"" + uicomponent.event("Paste",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.paste")%> + "\"></div>" ;
 			println "<div class=\"Icon16x16 Delete16x16Icon\" onclick=\"" + uicomponent.event("Remove",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.remove")%> + "\"></div>" ;
 			println "</div>" ;
 			if(node.getChildrenSize() > 0) {
@@ -55,7 +55,7 @@
 		  <div class="HomeNode">
   		  <div class="NodeActionsContainer">
 			    <div class="Icon16x16 Add16x16Icon" onclick="<%=uicomponent.event("Add",rootNode.getPath());%>" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>"><span></span></div>
-			    <div class="Icon16x16 Paste16x16Icon" onclick="<%=uicomponent.event("Paste",rootNode.getPath())%>" title="<%=_ctx.appRes("UITaxonomyManager.title.pase")%>"><span></span></div>
+			    <div class="Icon16x16 Paste16x16Icon" onclick="<%=uicomponent.event("Paste",rootNode.getPath())%>" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>"><span></span></div>
 	      </div>
 		    <div class="Icon24x24 UITaxonomyManagerIcon"><span></span></div>
 		    <div class="NodeLabel">$rootNode.name</div>

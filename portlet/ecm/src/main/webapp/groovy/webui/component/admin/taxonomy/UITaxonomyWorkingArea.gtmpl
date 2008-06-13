@@ -44,7 +44,7 @@
 	                  <div class="Icon16x16 Add16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>"></div>
 	                </a>
 	                <a href="<%=uicomponent.event("Paste", node.getPath())%>">
-	                  <div class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.pase")%>"></div>
+	                  <div class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>"></div>
 	                </a>
 	              <%} else {%>
 		              <a href="<%=uicomponent.event("Add", node.getPath())%>">
@@ -57,7 +57,7 @@
 		                <div class="Icon16x16 Cut16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.cut")%>"></div>
 		              </a>
 		              <a href="<%=uicomponent.event("Paste", node.getPath())%>">
-		                <div class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.pase")%>"></div>
+		                <div class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>"></div>
 		              </a>
 		              <a href="<%=uicomponent.event("Remove", node.getPath())%>">
 		                <div class="Icon16x16 Remove16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.remove")%>"></div>
