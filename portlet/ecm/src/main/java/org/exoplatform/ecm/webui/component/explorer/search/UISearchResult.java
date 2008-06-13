@@ -24,7 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.query.QueryResult;
 
-import org.exoplatform.ecm.jcr.model.ExtendsiblePageList;
+import org.exoplatform.ecm.jcr.model.ExtensiblePageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -126,7 +126,7 @@ public class UISearchResult extends UIContainer {
   public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_ ; }
 
   public void updateGrid() throws Exception {
-    ExtendsiblePageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE) ;
+    ExtensiblePageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE) ;
     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE ;
     uiPageIterator_.setPageList(pageList) ;
   }

@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.exoplatform.ecm.jcr.model.ExtendsiblePageList;
+import org.exoplatform.ecm.jcr.model.ExtensiblePageList;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -38,16 +38,16 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIQueryResultPageIterator extends UIComponent {
 
-  private ExtendsiblePageList pageList_ = new SearchResultPageList(null, new ArrayList(), 10);
+  private ExtensiblePageList pageList_ = new SearchResultPageList(null, new ArrayList(), 10);
   
   public UIQueryResultPageIterator() {
   }
   
-  public void setPageList(ExtendsiblePageList pageList) { 
+  public void setPageList(ExtensiblePageList pageList) { 
     pageList_ = pageList ;
   }
   
-  public ExtendsiblePageList getPageList() { return pageList_; }
+  public ExtensiblePageList getPageList() { return pageList_; }
   
   public int getAvailablePage() { return pageList_.getAvailablePage() ; } 
   
