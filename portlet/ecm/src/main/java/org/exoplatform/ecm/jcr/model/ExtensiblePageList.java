@@ -26,7 +26,7 @@ import org.exoplatform.commons.exception.ExoMessageException;
  *          minh.dang@exoplatform.com
  * Jun 13, 2008  
  */
-abstract public class ExtendsiblePageList {
+abstract public class ExtensiblePageList {
   
   private int pageSize_ ;
   protected int available_ = 0;
@@ -34,7 +34,7 @@ abstract public class ExtendsiblePageList {
   protected int currentPage_ = -1 ;
   protected List currentListPage_ ;
   
-  public ExtendsiblePageList(int pageSize) {
+  public ExtensiblePageList(int pageSize) {
     pageSize_ = pageSize ;
   }
   

@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.jcr.query.QueryResult;
 
-import org.exoplatform.ecm.jcr.model.ExtendsiblePageList;
+import org.exoplatform.ecm.jcr.model.ExtensiblePageList;
 
 /**
  * Created by The eXo Platform SARL
@@ -28,7 +28,7 @@ import org.exoplatform.ecm.jcr.model.ExtendsiblePageList;
  *          minh.dang@exoplatform.com
  * Jun 11, 2008  
  */
-public class SearchResultPageList extends ExtendsiblePageList {
+public class SearchResultPageList extends ExtensiblePageList {
   
   private QueryResult queryResult_ ;
   private List listNodes_  ;
