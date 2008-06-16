@@ -32,9 +32,11 @@ public class SearchResultPageList extends ExtensiblePageList {
   
   private QueryResult queryResult_ ;
   private List listNodes_  ;
+  private boolean isEndOfIterator_ = false ;
   
-  public SearchResultPageList(QueryResult queryResult, List listNodes, int pageSize) {
+  public SearchResultPageList(QueryResult queryResult, List listNodes, int pageSize, boolean isEndOfIterator) {
     super(pageSize) ;
+    isEndOfIterator_ = isEndOfIterator ;
     queryResult_ = queryResult ;
     listNodes_ = listNodes ;
     try {
@@ -58,5 +60,16 @@ public class SearchResultPageList extends ExtensiblePageList {
     } catch(Exception e) {
       return 0 ;
     }
+  }
+
+  @Override
+  public int getRealNumberNodes() {
+    if(isEndOfIterator_) return listNodes_.size() ; 
+    return 0;
+  }
+
+  @Override
+  public boolean isEndOfIterator() {
+    return isEndOfIterator_ ;
   }
 }

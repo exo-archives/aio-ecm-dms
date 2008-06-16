@@ -935,6 +935,7 @@ public class UIActionBar extends UIForm {
       Query query = queryManager.createQuery(queryStatement, Query.SQL);        
       QueryResult queryResult = query.execute();       
       uiSearchResult.setIsQuickSearch(true) ;
+      uiSearchResult.clearAll() ;
       uiSearchResult.setQueryResults(queryResult) ;            
       uiSearchResult.updateGrid() ;
       long time = System.currentTimeMillis() - startTime;
