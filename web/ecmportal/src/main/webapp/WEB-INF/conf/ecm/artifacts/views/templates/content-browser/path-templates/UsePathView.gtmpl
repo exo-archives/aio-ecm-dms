@@ -73,7 +73,7 @@
 	                      }
 	                    %> 
 	                    <div class="NodeHistoryContainer">   
-		                    <a class="NodeNavigationIcon BackButtonLabel" href="$previousActionLink">$previousNodeName</a>
+		                    <a class="NodeNavigationIcon BackButtonLabel" href="$previousActionLink"><%= _ctx.appRes("UIBrowseContainer.label.path-"+previousNodeName) %></a>
 		                  </div>  
 	                  </div>            
 	                  <%
@@ -93,8 +93,8 @@
               <div class="LeftHomeTab">
                 <div class="RightHomeTab">
                   <div class="MiddleHomeTab">
-                  	<div class="LeftIcon CBHome16x16Icon" title="Home"><span></span></div>
-                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" >Home</a>
+                  	<div class="LeftIcon CBHome16x16Icon" title="<%= _ctx.appRes( componentName  +".title.home") %>"><span></span></div>
+                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" ><%= _ctx.appRes(componentName + ".label.home") %></a>
                     <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
                   </div>
                 </div>
@@ -127,8 +127,8 @@
               <%}%>  
             </div>
             <div class="NavigationButtonContainer">
-							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
-								<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+								<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 							</div>
 				  		<!--<div style="clear:both"><span></span></div>-->
 						</div>                  
@@ -147,8 +147,8 @@
               <%}%>
             </div>
             <div class="NavigationButtonContainer">
-							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
-								<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+								<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 							</div>
               <!--<div style="clear:both"><span></span></div>-->
             </div>
@@ -268,8 +268,8 @@
 						                  <%}%>
 						                  </div>
 						                  <div class="NavigationButtonContainer">
-																<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
-																	<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+																<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs")%>"><!--<span></span>-->
+																	<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 																</div>
 									              <!--<div style="clear:both"><span></span></div>-->
 									            </div>                  
