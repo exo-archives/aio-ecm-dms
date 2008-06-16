@@ -1000,13 +1000,8 @@ public class UIActionBar extends UIForm {
       long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(queryStatement, Query.SQL);        
       QueryResult queryResult = query.execute();                  
-//      if(queryResult.getNodes().getSize() ) {
-//        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-found", null)) ;
-//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//        return ;
-//      }        
-      
       uiSearchResult.setIsQuickSearch(true) ;
+      uiSearchResult.clearAll() ;
       uiSearchResult.setQueryResults(queryResult) ;            
       uiSearchResult.updateGrid() ;
       long time = System.currentTimeMillis() - startTime;

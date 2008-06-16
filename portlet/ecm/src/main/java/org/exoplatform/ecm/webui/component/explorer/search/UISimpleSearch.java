@@ -223,6 +223,7 @@ public class UISimpleSearch extends UIForm {
       Query query = queryManager.createQuery(statement, Query.XPATH);      
       try {
         QueryResult queryResult = query.execute();
+        uiSearchResult.clearAll() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
       } catch(RepositoryException repo) {

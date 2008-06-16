@@ -36,7 +36,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SAS
- * Author : Hoa Pham	
+ * Author : Hoa Pham  
  *          hoa.pham@exoplatform.com
  * Oct 2, 2007  
  */
@@ -98,6 +98,7 @@ public class UIContentNameSearch extends UIForm {
       Query query = queryManager.createQuery(statement,Query.SQL);
       long startTime = System.currentTimeMillis();
       QueryResult queryResult = query.execute();
+      uiSearchResult.clearAll() ;
       uiSearchResult.setQueryResults(queryResult);
       uiSearchResult.updateGrid();
       long time = System.currentTimeMillis() - startTime;

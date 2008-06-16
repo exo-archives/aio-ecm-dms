@@ -24,7 +24,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.query.QueryResult;
 
-import org.exoplatform.ecm.jcr.model.ExtensiblePageList;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -64,6 +63,7 @@ public class UISearchResult extends UIContainer {
   private UIQueryResultPageIterator uiPageIterator_ ;
   private List<Node> currentListNodes_ = new ArrayList<Node>() ;
   private int currentAvailablePage_ = 0 ;
+  private boolean isEndOfIterator_ = false ;
   
   static private int PAGE_SIZE = 10 ;
 
@@ -88,8 +88,10 @@ public class UISearchResult extends UIContainer {
     List<Node> checkList = new ArrayList<Node>() ;
     if(flag_) checkList = currentListNodes_ ; 
     else checkList = listNodes ;
-    if(node.getName().equals(Utils.JCR_CONTENT) && !checkList.contains(node.getParent())) {
-      listNodes.add(node.getParent()) ;
+    if(node.getName().equals(Utils.JCR_CONTENT)) {
+      if(!checkList.contains(node.getParent())) {
+        listNodes.add(node.getParent()) ;
+      }
     } else if(!checkList.contains(node)){
       listNodes.add(node) ;
     }
@@ -98,13 +100,13 @@ public class UISearchResult extends UIContainer {
   @SuppressWarnings("unchecked")
   public List<Node> getResultList() throws Exception {
     List<Node> listNodes = new ArrayList<Node>() ;    
-    long before = System.currentTimeMillis();
     long resultListSize = queryResult_.getNodes().getSize() ;
     if(!queryResult_.getNodes().hasNext()) return currentListNodes_ ;
     if(resultListSize > 100) {
       for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
         Node node = iter.nextNode() ;
         addNode(listNodes, node) ;
+        if(!iter.hasNext()) isEndOfIterator_ = true ;
         if(listNodes.size() == 100) {
           currentListNodes_.addAll(listNodes) ;
           break ;
@@ -115,19 +117,26 @@ public class UISearchResult extends UIContainer {
     } else {
       for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
         Node node = iter.nextNode() ;
+        if(!iter.hasNext()) isEndOfIterator_ = true ;
         addNode(listNodes, node) ;
       }
       currentListNodes_= listNodes ;
     }
-    System.out.println("Time taken by the UI = " + (System.currentTimeMillis() - before)); 
     return currentListNodes_ ;
   }
 
+  public void clearAll() {
+    flag_ = false ;
+    isEndOfIterator_ = false ;
+    currentListNodes_.clear() ;
+  }
+  
   public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_ ; }
 
   public void updateGrid() throws Exception {
-    ExtensiblePageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE) ;
+    SearchResultPageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_) ;
     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE ;
+    uiPageIterator_.setSearchResultPageList(pageList) ;
     uiPageIterator_.setPageList(pageList) ;
   }
   

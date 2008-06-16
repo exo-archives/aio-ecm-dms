@@ -17,12 +17,11 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.exoplatform.ecm.jcr.model.ExtensiblePageList;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -36,40 +35,19 @@ import org.exoplatform.webui.event.EventListener;
     template =  "app:/groovy/webui/component/explorer/search/UIQueryResultPageIterator.gtmpl",
     events = @EventConfig(listeners = UIQueryResultPageIterator.ShowPageActionListener.class )    
 )
-public class UIQueryResultPageIterator extends UIComponent {
+public class UIQueryResultPageIterator extends UIPageIterator {
 
-  private ExtensiblePageList pageList_ = new SearchResultPageList(null, new ArrayList(), 10);
+  private ExtensiblePageList searchRsultPageList_ = new SearchResultPageList(null, new ArrayList(), 10, false);
   
-  public UIQueryResultPageIterator() {
+  public void  setSearchResultPageList(SearchResultPageList resultPageList) {
+    searchRsultPageList_ = resultPageList ;
   }
   
-  public void setPageList(ExtensiblePageList pageList) { 
-    pageList_ = pageList ;
-  }
+  public long getEstimateNumberOfNodes() { return searchRsultPageList_.getPageNumberEstimate() ; }
   
-  public ExtensiblePageList getPageList() { return pageList_; }
+  public int getRealNumberOfNodes() { return searchRsultPageList_.getRealNumberNodes() ; }
   
-  public int getAvailablePage() { return pageList_.getAvailablePage() ; } 
-  
-  public int getCurrentPage() { return  pageList_.getCurrentPage() ; }  
-  
-  public List getCurrentPageData() throws Exception { return  pageList_.currentPage() ; }  
-  
-  public int getAvailable() { return pageList_.getAvailable() ; }
-  
-  public int getFrom() { return pageList_.getFrom() ; }
-  
-  public int getTo() { return pageList_ .getTo() ; }
-  
-  public Object getObjectInPage(int index) throws Exception {
-    return pageList_.currentPage().get(index) ;
-  }
-  
-  public void setCurrentPage(int page) throws Exception {
-    pageList_.getPage(page) ;
-  }
-  
-  public long getNumberOfNodes() { return pageList_.getPageNumberEstimate() ; }
+  public boolean isEndOfIterator() { return searchRsultPageList_.isEndOfIterator() ; }
   
   static  public class ShowPageActionListener extends EventListener<UIQueryResultPageIterator> {
     public void execute(Event<UIQueryResultPageIterator> event) throws Exception {

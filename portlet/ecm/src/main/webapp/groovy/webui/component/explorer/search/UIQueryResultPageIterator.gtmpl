@@ -53,8 +53,16 @@
 	  <div class="LeftPageIteratorBlock">
 	  	  <%=_ctx.appRes("UIQueryResultPageIterator.label.results")%>
 	  	  <strong><%=uicomponent.getFrom() + 1%> - <%=uicomponent.getTo()%></strong>
-	  	  <%=_ctx.appRes("UIQueryResultPageIterator.label.of-about")%>
-	  	  <strong><%=uicomponent.getNumberOfNodes()%></strong>
+	  	  <%
+	  	    def txtInfor = _ctx.appRes("UIQueryResultPageIterator.label.of-about") ;
+	  	    def intNumberOfNodes = uicomponent.getEstimateNumberOfNodes() ;
+	  	    if(uicomponent.isEndOfIterator()) {
+	  	      txtInfor = _ctx.appRes("UIQueryResultPageIterator.label.of") ;
+	  	      intNumberOfNodes = uicomponent.getRealNumberOfNodes() ;
+	  	    }
+	  	  %>
+	  	  <%=txtInfor%>
+	  	  <strong><%=intNumberOfNodes%></strong>
 	  	<div style="clear: left"><span></span></div>
 	  </div>
   </div>
