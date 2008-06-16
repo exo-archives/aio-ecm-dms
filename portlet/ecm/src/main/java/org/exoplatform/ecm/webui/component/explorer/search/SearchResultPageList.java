@@ -40,7 +40,8 @@ public class SearchResultPageList extends ExtensiblePageList {
     queryResult_ = queryResult ;
     listNodes_ = listNodes ;
     try {
-      setAvailablePage(Integer.parseInt(Long.toString(queryResult.getNodes().getSize()))) ;
+      if(isEndOfIterator_) setAvailablePage(listNodes_.size()) ;
+      else setAvailablePage(Integer.parseInt(Long.toString(queryResult.getNodes().getSize()))) ;
     } catch(Exception e) {
       setAvailablePage(0) ;
     }
