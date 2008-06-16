@@ -73,13 +73,13 @@
 	                      }
 	                    %> 
 	                    <div class="NodeHistoryContainer">   
-		                    <a class="NodeNavigationIcon BackButtonLabel" href="$previousActionLink">$previousNodeName</a>
+		                    <a class="NodeNavigationIcon BackButtonLabel" href="$previousActionLink"><%= _ctx.appRes("UIBrowseContainer.label.path-"+previousNodeName) %></a>
 		                  </div>  
 	                  </div>            
 	                  <%
 	                    for(String nodePath : content.get("history")) {
 	                      String classStyleName = "NodeLabel" ;
-	                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);                  
+	                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);
 	                      String nodeLink = uicomponent.event('ChangeNode',Utils.formatNodeName(nodePath)) ;
 	                       if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
 	                  %>
@@ -93,8 +93,8 @@
               <div class="LeftHomeTab">
                 <div class="RightHomeTab">
                   <div class="MiddleHomeTab">
-                  	<div class="LeftIcon CBHome16x16Icon" title="Home"><span></span></div>
-                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" >Home</a>
+                  	<div class="LeftIcon CBHome16x16Icon" title="<%= _ctx.appRes(componentName + ".title.home") %>"><span></span></div>
+                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" ><%= _ctx.appRes(componentName + ".label.home") %></a>
                     <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
                   </div>
                 </div>
@@ -127,8 +127,8 @@
               <%}%>  
             </div>
             <div class="NavigationButtonContainer">
-							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
-								<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+								<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 							</div>
 				  		<!--<div style="clear:both"><span></span></div>-->
 						</div>                  
@@ -147,8 +147,8 @@
               <%}%>
             </div>
             <div class="NavigationButtonContainer">
-							<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
-								<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+							<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+								<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 							</div>
               <!--<div style="clear:both"><span></span></div>-->
             </div>
@@ -268,8 +268,8 @@
 						                  <%}%>
 						                  </div>
 						                  <div class="NavigationButtonContainer">
-																<div class="NavigationIcon DisableBackArrow16x16Icon" title="Previous Tabs"><!--<span></span>-->
-																	<div class="NavigationIcon DisableNextArrow16x16Icon" title="More Tabs"><span></span></div>
+																<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+																	<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
 																</div>
 									              <!--<div style="clear:both"><span></span></div>-->
 									            </div>                  
@@ -313,9 +313,9 @@
                               </td>
                               <td>
                           			<div class="AuthorNameLabel">
-																	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-																</div>
-															</td>                              
+										<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
+									</div>
+							 </td>                              
                             </tr> 
                       <%}%>
 			                      <tr>
@@ -326,9 +326,7 @@
 			                             %>
 			                             	<div class="ViewMoreDocument">
 			                                	<div class="NextIcon"><span></span></div>
-			                                	<a href="$subCatLink">
-																					<%=_ctx.appRes(label)%>
-																				</a>
+			                                		<a href="$subCatLink"><%=_ctx.appRes(label)%></a>
 			                                	<div style="clear: left;"><span></span></div>                               
 			                            	</div>
 			                          		<div style="clear:right"><span></span></div>
