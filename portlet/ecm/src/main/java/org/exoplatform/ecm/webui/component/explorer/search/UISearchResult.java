@@ -100,7 +100,6 @@ public class UISearchResult extends UIContainer {
   @SuppressWarnings("unchecked")
   public List<Node> getResultList() throws Exception {
     List<Node> listNodes = new ArrayList<Node>() ;    
-    long before = System.currentTimeMillis();
     long resultListSize = queryResult_.getNodes().getSize() ;
     if(!queryResult_.getNodes().hasNext()) return currentListNodes_ ;
     if(resultListSize > 100) {
@@ -123,7 +122,6 @@ public class UISearchResult extends UIContainer {
       }
       currentListNodes_= listNodes ;
     }
-    System.out.println("Time taken by the UI = " + (System.currentTimeMillis() - before)); 
     return currentListNodes_ ;
   }
 
