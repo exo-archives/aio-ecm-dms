@@ -100,6 +100,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     }
   }
   
+  public String getCurrentPath() throws Exception { 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentPath();
+  }
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
@@ -127,7 +131,6 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private void setPath(String scriptPath) {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(scriptPath.indexOf(":") < 0) {
-//      scriptPath = uiExplorer.getSession().getWorkspace().getName() + ":" + scriptPath ;
       scriptPath = uiExplorer.getCurrentWorkspace() + ":" + scriptPath ;
     }
     scriptPath_ = scriptPath ; 
@@ -262,8 +265,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
         if(wsFieldName != null && wsFieldName.length() > 0) {
-          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
-          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;          
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;           
         }
         ((UIJCRBrowser)uiComp).setShowRootPathSelect(true);
         if(rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;

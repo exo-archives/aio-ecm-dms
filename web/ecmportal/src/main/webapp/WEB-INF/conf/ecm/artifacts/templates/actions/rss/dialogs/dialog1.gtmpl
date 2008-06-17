@@ -139,15 +139,44 @@
 	      String feedTypeValue = uicomponent.getSelectBoxFieldValue("feed-type") ;
 	    %>
 	    <tr>                        
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.title")%></td>
+	      <td class="FieldComponent">
+		      <% 
+		         String[] title = ["jcrPath=/node/exo:title", "validate=empty", "exo:title"] ;
+		         uicomponent.addTextField("title", title) ;
+		      %>
+		    </td>
+	    </tr>
+	    
+	    <tr>                        
+	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.summary")%></td>
+	      <td class="FieldComponent">
+		      <% 
+		         if(feedTypeValue.equals("rss")) {
+			         String[] summary = ["jcrPath=/node/exo:summary", "exo:summary"] ;
+			         uicomponent.addTextField("entrySummary", summary) ;
+			         uicomponent.removeComponent("entryDescription") ;
+		         } else {
+			         String[] description = ["jcrPath=/node/exo:summary", "exo:description"] ;
+			         uicomponent.addTextField("entryDescription", description) ;
+			         uicomponent.removeComponent("entrySummary") ;
+		         }
+		      %>
+		    </td>
+	    </tr>
+	    
+	    <tr>                        
 	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.query-items")%></td>
 	      <td class="FieldComponent">
 		      <%
 		        if(feedTypeValue.equals("rss")) {
-		          String[] fieldQueryPathRss = ["jcrPath=/node/exo:queryPath", "/jcr:root/Documents//element(*, exo:article)"] ;
+		        	String s1 = "/jcr:root" + uicomponent.getCurrentPath() + "//element(*, exo:article)";
+		          String[] fieldQueryPathRss = ["jcrPath=/node/exo:queryPath", s1] ;
 		          uicomponent.addTextAreaField("queryPathRss", fieldQueryPathRss) ; 
 		          uicomponent.removeComponent("queryPathPodcast") ;
 		        } else {
-		          String[] fieldQueryPathPodcast = ["jcrPath=/node/exo:queryPath", "/jcr:root/Documents//element(*, exo:podcast)"] ;
+		        	String s2 = "/jcr:root" + uicomponent.getCurrentPath() + "//element(*, exo:podcast)";
+		          String[] fieldQueryPathPodcast = ["jcrPath=/node/exo:queryPath", s2] ;
 		          uicomponent.addTextAreaField("queryPathPodcast", fieldQueryPathPodcast) ; 
 		          uicomponent.removeComponent("queryPathRss") ;
 		        }
