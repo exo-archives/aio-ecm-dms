@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer ;
 
-import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -154,7 +153,12 @@ public class UIJCRExplorer extends UIContainer {
     if(isReferenceNode_) return getSessionProvider().getSession(referenceWorkspace_, getRepository()) ;
     return getSessionProvider().getSession(currentWorkspaceName_, getRepository()) ; 
   }
-
+  
+  public Session getSystemSession() throws Exception {
+    if(isReferenceNode_) return getSystemProvider().getSession(referenceWorkspace_, getRepository()) ;
+    return getSystemProvider().getSession(currentWorkspaceName_, getRepository()) ;    
+  }
+  
   public String getDocumentInfoTemplate() { return documentInfoTemplate_ ; }
   public void setRenderTemplate(String template) { 
     newJCRTemplateResourceResolver() ;
