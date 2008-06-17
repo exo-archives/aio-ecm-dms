@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
@@ -32,7 +34,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -68,7 +69,7 @@ public class UITaskList extends UIContainer {
 
   public String getIconURL(Task task) {
     try {
-      Locale locale = getAncestorOfType(UIApplication.class).getLocale();    
+      Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;    
       Form form = workflowFormsService_.getForm(task.getProcessId(), task.getTaskName(), locale);
       return form.getIconURL(); 
     } catch(Exception e) {
@@ -96,7 +97,7 @@ public class UITaskList extends UIContainer {
 
   private List<Task> selectVisibleTasks(List<Task> all) {
     List<Task> filtered = new ArrayList<Task>();
-    Locale locale = getAncestorOfType(UIApplication.class).getLocale();    
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;    
     for (Iterator iter = all.iterator(); iter.hasNext();) {
       Task task = (Task) iter.next();
       Form form = workflowFormsService_.getForm(task.getProcessId(), task.getTaskName(), locale);
