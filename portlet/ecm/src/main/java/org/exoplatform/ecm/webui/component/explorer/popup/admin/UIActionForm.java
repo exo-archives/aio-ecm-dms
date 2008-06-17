@@ -25,7 +25,6 @@ import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
@@ -101,6 +100,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     }
   }
   
+  public String getCurrentPath() throws Exception { 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentPath();
+  }
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
@@ -128,7 +131,6 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private void setPath(String scriptPath) {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(scriptPath.indexOf(":") < 0) {
-//      scriptPath = uiExplorer.getSession().getWorkspace().getName() + ":" + scriptPath ;
       scriptPath = uiExplorer.getCurrentWorkspace() + ":" + scriptPath ;
     }
     scriptPath_ = scriptPath ; 

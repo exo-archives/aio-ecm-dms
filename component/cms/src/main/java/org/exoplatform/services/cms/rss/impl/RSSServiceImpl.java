@@ -74,7 +74,7 @@ public class RSSServiceImpl implements RSSService{
   static private String DESCRIPTION = "exo:description".intern() ;
   static private String STORE_PATH = "exo:storePath".intern() ;
   static private String KEYWORDS = "exo:keywords".intern() ;
-  static private String TITLE = "exo:title".intern() ;
+  static private String TITLE = "exo:title";
   static private String LINK = "exo:link".intern() ;
   static private String LANGUAGE = "exo:language".intern() ;
   static private String COPYRIGHT = "exo:copyright".intern() ;
@@ -89,7 +89,7 @@ public class RSSServiceImpl implements RSSService{
   static private String FEED_NAME = "exo:feedName".intern() ;
   static private String QUERY_PATH = "exo:queryPath".intern() ;
   static private String URL = "exo:url".intern() ;
-  static private String SUMMARY = "exo:summary".intern() ;
+  static private String SUMMARY = "exo:summary";
   static private String LENGTH = "exo:length".intern() ;
   static private String JCR_CONTENT = "jcr:content".intern() ;
   static private String JCR_DATA = "jcr:data".intern() ;
@@ -117,13 +117,15 @@ public class RSSServiceImpl implements RSSService{
     String actionName = (String)context.get("actionName") ;
     String srcWorkspace = (String)context.get(SRC_WORKSPACE);                   
     String rssVersion = (String) context.get(RSS_VERSION) ;
-    String feedTitle = (String) context.get(FEED_TITLE) ;
+    String feedTitle = (String) context.get(FEED_TITLE) ;    
+    String summary = (String)context.get(SUMMARY);
     String feedType = (String) context.get(FEED_TYPE) ;
     String feedDescription = (String) context.get(DESCRIPTION) ;
     String storePath = (String) context.get(STORE_PATH) ;
     String feedName = (String) context.get(FEED_NAME) ;      
     String queryPath = (String) context.get(QUERY_PATH) ;
     String rssUrl = (String) context.get(URL) ;
+    String title = (String) context.get(TITLE) ;
     String repository = (String) context.get("repository") ;
     storePath = storePath + "/" + feedType ;
     if(feedName == null || feedName.length() == 0) feedName = actionName ;
@@ -153,11 +155,19 @@ public class RSSServiceImpl implements RSSService{
         if(child.isNodeType("exo:rss-enable")) {
           String url = getEntryUrl(portalName, wsName, child.getPath(), rssUrl) ;
           entry = new SyndEntryImpl();
-          entry.setTitle(child.getName());                
+          try {
+            entry.setTitle(child.getProperty(title).getString());                
+          } catch(PathNotFoundException path) {
+            entry.setTitle("") ;
+          }
           entry.setLink(url);        
           description = new SyndContentImpl();
-          description.setType("text/plain");
-          description.setValue(child.getProperty(SUMMARY).getString());
+          description.setType("text/plain");          
+          try {
+            description.setValue(child.getProperty(summary).getString());
+          } catch(PathNotFoundException path) {
+            description.setValue("") ;
+          }
           entry.setDescription(description);        
           entries.add(entry);
           entry.getEnclosures() ;
@@ -186,6 +196,8 @@ public class RSSServiceImpl implements RSSService{
       String feedDescription = (String) context.get(DESCRIPTION) ;
       String language = (String) context.get(LANGUAGE) ;
       String copyright = (String) context.get(COPYRIGHT) ;
+      String title = (String) context.get(TITLE);
+      String summary = (String) context.get(SUMMARY);
       Date pubDate ; 
       try{
         pubDate = ((GregorianCalendar)context.get(PUBDATE)).getTime() ;
@@ -266,7 +278,13 @@ public class RSSServiceImpl implements RSSService{
       while (iter.hasNext()) {        
         Node child = iter.nextNode();        
         entry = new SyndEntryImpl();
-        entry.setTitle(child.getProperty(TITLE).getString());
+        try {
+          entry.setTitle(child.getProperty(title).getString());
+        } catch(PathNotFoundException path) {
+          entry.setTitle("") ;
+        }
+        if (child.hasProperty(title)) {
+        }        
         List enclosureList = new ArrayList() ;
         SyndEnclosure enc = new SyndEnclosureImpl() ;
         Node content = child.getNode(JCR_CONTENT) ;
@@ -283,15 +301,15 @@ public class RSSServiceImpl implements RSSService{
         EntryInformation entryInfo = new EntryInformationImpl() ;
         description = new SyndContentImpl();
         description.setType("text/plain");
-        if(child.hasProperty(DESCRIPTION)){
-          description.setValue(child.getProperty(DESCRIPTION).getString());
-          entryInfo.setSubtitle(child.getProperty(DESCRIPTION).getString()) ;
-          entryInfo.setSummary(child.getProperty(DESCRIPTION).getString()) ;
-        }else{
+        try {
+          description.setValue(child.getProperty(summary).getString());
+          entryInfo.setSubtitle(child.getProperty(summary).getString()) ;
+          entryInfo.setSummary(child.getProperty(summary).getString()) ;
+        } catch(PathNotFoundException pnf) {
           description.setValue("");
           entryInfo.setSubtitle("") ;
           entryInfo.setSummary("") ;
-        }        
+        }
         entry.setDescription(description);
         try{
           Date pdate = child.getProperty(PUBLISHED_DATE).getDate().getTime() ;

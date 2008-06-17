@@ -336,7 +336,13 @@
       </propertyDefinition>                                    
       <propertyDefinition name="exo:feedTitle" requiredType="String" autoCreated="false" mandatory="true" 
         onParentVersion="COPY" protected="false" multiple="false" /> 
-               
+			
+			<propertyDefinition name="exo:summary" requiredType="String" autoCreated="false" mandatory="true" 
+        onParentVersion="COPY" protected="false" multiple="false" /> 
+			
+			<propertyDefinition name="exo:title" requiredType="String" autoCreated="false" mandatory="true" 
+        onParentVersion="COPY" protected="false" multiple="false" /> 
+     
       <propertyDefinition name="exo:feedType" requiredType="String" autoCreated="false" mandatory="true"
 	      onParentVersion="COPY" protected="false" multiple="false" />
 	      
@@ -790,8 +796,3 @@
   </nodeType>
    	 	       	             
 </nodeTypes>
-  
-	
-
-
-  
