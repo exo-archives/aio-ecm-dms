@@ -117,7 +117,7 @@
             <phase>test-compile</phase>
             <configuration>
               <tasks if="emma.run">
-                <echo message="[EMMA] classes instrumentation executes: ${exo.emma.enable}" />
+                <echo message="[EMMA] classes instrumentation executes..." />
                 <taskdef resource="emma_ant.properties" classpathref="maven.dependency.classpath" />
                 <mkdir dir="target" />
                 <mkdir dir="target/classes" />
@@ -125,7 +125,7 @@
                 <copy todir="target/emma/classes" verbose="false" overwrite="true">
                   <fileset dir="target/classes" />
                 </copy>
-                <emma enabled="${exo.emma.enable}">
+                <emma enabled="true">
                   <instr mode="overwrite" metadatafile="target/emma/metadata.em">
                     <filter excludes="*JiBX*" />
                     <instrpath>
@@ -146,9 +146,9 @@
             <phase>test</phase>
             <configuration>
               <tasks if="emma.run">             
-              	<echo message="[EMMA]report generation executes: ${exo.emma.enable}" />
+              	<echo message="[EMMA]report generation executes..." />
                 <taskdef resource="emma_ant.properties" classpathref="maven.dependency.classpath" />
-                <emma enabled="${exo.emma.enable}">
+                <emma enabled="true">
                   <merge outfile="${exo.projects.directory.src}/ecm/trunk/target/coverage.es">
                     <fileset dir="${exo.projects.directory.src}/ecm/trunk/">
                       <include name="**/target/emma/*.e*" />
@@ -224,8 +224,7 @@
         <org.exoplatform.ecm.version>trunk</org.exoplatform.ecm.version>
         <exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
-        <bonita.version>3.0</bonita.version>
-        <exo.emma.enable>false</exo.emma.enable>
+        <bonita.version>3.0</bonita.version>        
       </properties>
     </profile>
   </profiles>
