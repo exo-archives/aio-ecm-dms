@@ -31,6 +31,8 @@ import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -44,7 +46,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -135,7 +136,7 @@ public class UITask extends UIForm {
 
   public String getStateImageURL() {
     try {
-      Locale locale = getAncestorOfType(UIApplication.class).getLocale();
+      Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
       if (isStart_) {
         Process process = serviceContainer.getProcess(identification_);
         form = formsService.getForm(identification_, process.getStartStateName(), locale);
@@ -152,7 +153,7 @@ public class UITask extends UIForm {
   public void updateUITree() throws Exception {
     clean() ;
     UITaskManager uiTaskManager = getParent() ;
-    Locale locale = getAncestorOfType(UIApplication.class).getLocale();
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
     Map variablesForService = new HashMap();
     if (isStart_) {
       Process process = serviceContainer.getProcess(identification_);
