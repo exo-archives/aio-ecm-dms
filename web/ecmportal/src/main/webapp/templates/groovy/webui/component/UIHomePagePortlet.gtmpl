@@ -9,6 +9,11 @@
   ResourceBundleService service = 
       (ResourceBundleService)PortalContainer.getComponent(ResourceBundleService.class) ;
   Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
+  
+  /*
+    Using a specific bundle and not the one provided by WebUI, 
+    so that each project can specify its own messages and translations
+  */
   ResourceBundle res = service.getResourceBundle("locale.ecm.homepage", locale) ;
 %>
 <div class="UIHomePagePortlet" id="$uicomponent.id">
