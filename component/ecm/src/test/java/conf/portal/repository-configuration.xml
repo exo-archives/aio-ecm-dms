@@ -54,14 +54,14 @@
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
-            <property name="indexDir" value="../temp/jcrlucenedb/index"/>
+            <property name="indexDir" value="../temp/jcrlucenedb/index/system"/>
           </properties>
          </query-handler>
          <lock-manager>
 			    <time-out>900000</time-out><!-- 15min -->
 			     <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
 			       <properties>
-			         <property name="path" value="../temp/lock"/>
+			         <property name="path" value="../temp/lock/system"/>
 			       </properties>
 			     </persister>
 			   </lock-manager>
@@ -98,14 +98,14 @@
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
-            <property name="indexDir" value="../temp/jcrlucenedb/index"/>
+            <property name="indexDir" value="../temp/jcrlucenedb/index/collaboration"/>
           </properties>
          </query-handler>
          <lock-manager>
 			    <time-out>900000</time-out><!-- 15min -->
 			     <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
 			       <properties>
-			         <property name="path" value="../temp/lock"/>
+			         <property name="path" value="../temp/lock/collaboration"/>
 			       </properties>
 			     </persister>
 			   </lock-manager>
@@ -142,14 +142,14 @@
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
-            <property name="indexDir" value="../temp/jcrlucenedb/index"/>
+            <property name="indexDir" value="../temp/jcrlucenedb/index/backup"/>
           </properties>
          </query-handler>
          <lock-manager>
 			    <time-out>900000</time-out><!-- 15min -->
 			     <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
 			       <properties>
-			         <property name="path" value="../temp/lock"/>
+			         <property name="path" value="../temp/lock/backup"/>
 			       </properties>
 			     </persister>
 			   </lock-manager>
