@@ -42,7 +42,7 @@ public class GetDocuments implements CmsScript {
     Session session = null ;
     try{      
       String repository = data.getRepository();
-      String worksapce = data.getWorkspace() ;
+      String workspace = data.getWorkspace() ;
       session = repositoryService_.getRepository(repository).login(workspace) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();     
       Query query = queryManager.createQuery("/jcr:root//element(*, exo:article)", Query.XPATH); 
