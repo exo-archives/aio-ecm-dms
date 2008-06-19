@@ -274,8 +274,8 @@ public class CmsServiceImpl implements CmsService {
         if(jcrInputVariable == null) continue ;
         String nodeTypeName = jcrInputVariable.getNodetype();
         String[] mixinTypes = null ; 
-        if(input.getMixintype()!= null) {
-          mixinTypes = input.getMixintype().split(",") ; 
+        if(jcrInputVariable.getMixintype()!= null) {
+          mixinTypes = jcrInputVariable.getMixintype().split(",") ; 
         }           
         NodeType nodeType = null;
         if(obj instanceof Node) {
