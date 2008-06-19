@@ -56,7 +56,7 @@ public class GetDocuments implements CmsScript {
       data.setContentList(nodeList) ;      
       session.logout();
     } catch (Exception e) {
-      //e.printStackTrace() ;
+      e.printStackTrace() ;
     }
     
   }
