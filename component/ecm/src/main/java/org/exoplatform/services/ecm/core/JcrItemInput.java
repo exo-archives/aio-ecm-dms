@@ -31,8 +31,9 @@ public class JcrItemInput {
   private int type = PROPERTY;
   private String primaryNodeType;
   private String mixinNodeType;
-  private Object value;  
-    
+  private Object value;
+  private int nodeLevel = 0 ;
+  
   public String getPath() { return path; }
   public void setPath(String path) { this.path = path; }
   
@@ -45,10 +46,14 @@ public class JcrItemInput {
   public String[] getMixinNodeTypes() { 
     if(mixinNodeType == null) return new String[] {} ;
     return mixinNodeType.split(","); 
-  }
+  }  
   public void setMixinNodeType(String mixintype) { this.mixinNodeType = mixintype; }
-
-  public void setValue(Object value) { this.value = value; }
-  public Object getValue() { return value; }
   
+  public Object getValue() { return value; }
+  public void setValue(Object value) { this.value = value; }  
+  
+  public int getNodeLevel(){ return this.nodeLevel ; }
+  public void setNodeLevel(int nodeLevel) {this.nodeLevel = nodeLevel ; }
+  
+  public boolean isNodeInput() {return this.type == NODE ; }
 }
