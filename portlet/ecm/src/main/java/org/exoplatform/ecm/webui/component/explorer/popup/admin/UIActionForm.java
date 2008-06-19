@@ -73,6 +73,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private boolean isEditInList_ = false ;
   private String rootPath_ = null;
   
+  private static final String EXO_ACTIONS = "exo:actions".intern();
+  
   public UIActionForm() throws Exception {setActions(new String[]{"Save","Back"}) ;}
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
@@ -200,25 +202,29 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue());
       }
       String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
-      if(getParentNode().hasNode(actionName)) { 
-        Object[] args = {actionName} ;
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;
+      Node parentNode = getParentNode() ;
+      if(parentNode.hasNode(EXO_ACTIONS)) {
+        if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
+          Object[] args = {actionName} ;
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return null;
+        }
       }
-      if(getParentNode().isNew()) {
-        String[] args = {getParentNode().getPath()} ;
+      if(parentNode.isNew()) {
+        String[] args = {parentNode.getPath()} ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
-      actionServiceContainer.addAction(getParentNode(), repository, nodeTypeName_, sortedInputs);
+      actionServiceContainer.addAction(parentNode, repository, nodeTypeName_, sortedInputs);
       setIsOnchange(false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
       createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;
       UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
-      uiActionList.updateGrid(getParentNode()) ;
+      uiActionList.updateGrid(parentNode) ;
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
       isEditInList_ = false ;
