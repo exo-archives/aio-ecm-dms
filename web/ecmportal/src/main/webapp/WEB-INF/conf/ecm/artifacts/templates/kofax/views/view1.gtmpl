@@ -10,6 +10,9 @@
 		margin: 10px;
 	}
 	
+	.WorkKofax .UIGrid {
+		width: 97%;
+	}
 </style>
 <div class="WorkKofax">
 	<table class="UIGrid">      	 			
