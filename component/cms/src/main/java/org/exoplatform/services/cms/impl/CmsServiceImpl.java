@@ -46,6 +46,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedItemDefinition;
 
 
 /**
@@ -121,7 +122,7 @@ public class CmsServiceImpl implements CmsService {
     }
     return currentNode.getPath();
   }
-  
+
   @SuppressWarnings("unused")
   public String storeNodeByUUID(String nodeTypeName, Node storeHomeNode, Map mappings, 
       boolean isAddNew, String repository) throws Exception {    
@@ -185,7 +186,7 @@ public class CmsServiceImpl implements CmsService {
   }
 
   private void processAddEditProperty(boolean create, Node currentNode, String path, NodeType currentNodeType, Map jcrVariables) throws Exception {
-    if(create || path.equals(NODE)) {
+    if(create) {
       PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
       for (int i = 0; i < propertyDefs.length; i++) {      
         PropertyDefinition propertyDef = propertyDefs[i];         
@@ -204,18 +205,18 @@ public class CmsServiceImpl implements CmsService {
     }
   }
 
-  private void processNodeRecursively(boolean create, String path,
+  private void processNodeRecursively(boolean create, String itemPath, 
       Node currentNode, NodeType currentNodeType, Map jcrVariables)
   throws Exception {
     if(create) {
-      processAddEditProperty(true, currentNode, path, currentNodeType, jcrVariables) ;
+      processAddEditProperty(true, currentNode, itemPath, currentNodeType, jcrVariables) ;
     } else {
       for(PropertyIterator pi = currentNode.getProperties(); pi.hasNext();) {
         Property property = pi.nextProperty();
         PropertyDefinition propertyDef = property.getDefinition();
         String propertyName = property.getName();
         int requiredtype = property.getType();
-        String currentPath = path + "/" + propertyName;
+        String currentPath = itemPath + "/" + propertyName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
         Object value = null;
         if(inputVariable != null) value = inputVariable.getValue();
@@ -223,87 +224,66 @@ public class CmsServiceImpl implements CmsService {
           processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
         }
       }
-      processAddEditProperty(false, currentNode, path, currentNodeType, jcrVariables) ;
+      processAddEditProperty(false, currentNode, itemPath, currentNodeType, jcrVariables) ;
     }
-
-    /*
-     * We wish to allow update of Nodes that have a "*" as child Node definition
-     * name. Hence we need to work on the Node themselves to retrieve the actual
-     * names and not on the types. This is why we compute a list of Objects,
-     * where each Object is a Node or a Node definition, depending on the
-     * current operation. This allows to keep the algorithm common, regardless
-     * the operation.
-     */
+    int itemLevel = StringUtils.countMatches(itemPath, "/") ;            
+    List<JcrInputProperty>childNodeInputs = extractNodeInputs(jcrVariables, itemLevel + 1) ;    
+    NodeTypeManager nodeTypeManger = currentNode.getSession().getWorkspace().getNodeTypeManager();
     List<Object> childs = new ArrayList<Object>();
-    if (create){
-      NodeDefinition[] childNodeDefs = currentNodeType.getChildNodeDefinitions();
-      for (int i = 0; i < childNodeDefs.length; i++) {
-        childs.add(childNodeDefs[i]);
+    if (create) {            
+      for (NodeDefinition childNodeDef : currentNodeType.getChildNodeDefinitions()) {        
+        childs.add(childNodeDef);             
       }
-    }
-    else {
-      NodeIterator nodes = currentNode.getNodes();
-      while(nodes.hasNext()) {
-        childs.add(nodes.next());
-      }
-    }
-    Iterator it = childs.iterator();
-    while (it.hasNext()) {
-      Object o = it.next();
-      NodeDefinition nodeDef;
-      String nodeName;
-      if (o instanceof Node) {
-        nodeDef = ((Node) o).getDefinition();
-        nodeName = ((Node) o).getName();
+    } else {
+      for(NodeIterator iterator = currentNode.getNodes(); iterator.hasNext();) {
+        childs.add(iterator.nextNode());
+      }      
+    }        
+    for(Object obj : childs){  
+      NodeDefinition nodeDef;      
+      if (obj instanceof Node) {
+        nodeDef = ((Node) obj).getDefinition();        
       } else {
-        nodeDef = (NodeDefinition) o;
-        nodeName = ((NodeDefinition) o).getName();
-      }
-      if (!nodeDef.isAutoCreated()
-          && !nodeDef.isProtected()
-          && !("*".equals(nodeDef.getName())
-              && (o instanceof NodeDefinition))) {
-        String currentPath = path + "/" + nodeName;
-        JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath);
-        String nodetypeName = null;
-        String mixintypeName = null;
-        if (inputVariable!=null) {
-          nodetypeName = inputVariable.getNodetype();
-          mixintypeName = inputVariable.getMixintype();
-        }        
-        NodeTypeManager nodetypeManager = currentNode.getSession().getWorkspace().getNodeTypeManager();
+        nodeDef = (NodeDefinition) obj;
+      } 
+      if(nodeDef.isAutoCreated() || nodeDef.isProtected() || !(obj instanceof NodeDefinition)) {
+        continue ;
+      }            
+      if(((ExtendedItemDefinition)nodeDef).isResidualSet()) {
+        for(JcrInputProperty input:childNodeInputs) {
+          String primaryNodeType = input.getNodetype();
+          NodeType nodeType = nodeTypeManger.getNodeType(primaryNodeType) ;
+          if(!canAddNode(nodeDef, nodeType)) continue ;
+          String[] 
+          if(input.getMixintype()!= null) {
+            String[] mixinTypes = input.getMixintype().split(",") ; 
+          }                   
+          Node childNode = doAddNode(currentNode, (String)input.getValue(), nodeType.getName(), mixinTypes) ;
+          String childItemPath = itemPath + "/" + childNode.getName();
+          processNodeRecursively(create, childItemPath, childNode, childNode.getPrimaryNodeType(), jcrVariables);          
+        }
+      }else {               
+        String childNodeName = null;
+        if (obj instanceof Node) {          
+          childNodeName = ((Node) obj).getName();
+        } else {
+          childNodeName = ((NodeDefinition) obj).getName();
+        }
+        String newItemPath = itemPath + "/" + childNodeName;
+        JcrInputProperty jcrInputVariable = (JcrInputProperty) jcrVariables.get(newItemPath);
+        if(jcrInputVariable == null) continue ;
+        String nodeTypeName = jcrInputVariable.getNodetype();
+        String[] mixinTypes = jcrInputVariable.getMixintype().split(",");          
         NodeType nodeType = null;
-        if (o instanceof Node){
-          nodeType = ((Node) o).getPrimaryNodeType();
-        } else if(nodetypeName == null || "".equals(nodetypeName)) {
+        if(obj instanceof Node) {
+          nodeType = ((Node) obj).getPrimaryNodeType();
+        } else if (nodeTypeName == null || nodeTypeName.length() == 0) {
           nodeType = nodeDef.getRequiredPrimaryTypes()[0];
         } else {
-          nodeType = nodetypeManager.getNodeType(nodetypeName);
+          nodeType = nodeTypeManger.getNodeType(nodeTypeName);
         }
-        Node childNode = null;
-        if (create) {
-          childNode = currentNode.addNode(nodeName, nodeType.getName());
-          if(mixintypeName != null) {
-            childNode.addMixin(mixintypeName);
-            NodeType mixinType = nodetypeManager.getNodeType(mixintypeName);
-            processNodeRecursively(create, path + "/" + nodeName, childNode,
-                mixinType, jcrVariables);
-          }
-        } else {
-          try {
-            childNode = currentNode.getNode(nodeName);
-          } catch (PathNotFoundException e) {
-            childNode = currentNode.addNode(nodeName, nodeType.getName());
-            if(mixintypeName != null) {
-              childNode.addMixin(mixintypeName);
-              NodeType mixinType = nodetypeManager.getNodeType(mixintypeName);
-              processNodeRecursively(create, path + "/" + nodeName, childNode,
-                  mixinType, jcrVariables);
-            }
-          }
-        }
-        processNodeRecursively(create, path + "/" + nodeName, childNode,
-            nodeType, jcrVariables);
+        Node childNode = doAddNode(currentNode, childNodeName, nodeType.getName(), mixinTypes) ;        
+        processNodeRecursively(create, newItemPath, childNode, childNode.getPrimaryNodeType(), jcrVariables);                  
       }
     }    
   }
@@ -527,5 +507,42 @@ public class CmsServiceImpl implements CmsService {
       rootNode = rootNode.getNode(splittedName[i]) ;
     }
     session.save() ;    
+  }
+
+  private List<JcrInputProperty> extractNodeInputs(final Map<String, JcrInputProperty> map,int itemLevel) {    
+    List<JcrInputProperty> list = new ArrayList<JcrInputProperty>() ;
+    for(Iterator<String> iterator = map.keySet().iterator();iterator.hasNext();) {
+      String jcrPath = iterator.next();
+      if(itemLevel == StringUtils.countMatches(jcrPath, "/")) {
+        JcrInputProperty input = map.get(jcrPath) ;
+        if(input.getType() == JcrInputProperty.NODE) {
+          list.add(input) ;
+        }
+      }
+    }
+    return list ;
+  }
+
+  private boolean canAddNode(final NodeDefinition nodeDef,final NodeType nodeType) {
+    for(NodeType type: nodeDef.getRequiredPrimaryTypes()) {
+      if(nodeType.isNodeType(type.getName())) return true ;
+    }
+    return false ;
+  }
+
+  private Node doAddNode(final Node currentNode,String nodeName,String nodeType, String[] mixinTypes) throws Exception {
+    Node childNode = null;    
+    try {
+      childNode = currentNode.getNode(nodeName) ;
+    } catch(PathNotFoundException pe) {
+      childNode = currentNode.addNode(nodeName, nodeType);
+    }
+    if (mixinTypes.length > 0) {
+      for (String mixinName : mixinTypes) {
+        if (childNode.isNodeType(mixinName))
+          childNode.addMixin(mixinName);
+      }
+    }          
+    return childNode ;     
   }
 }
