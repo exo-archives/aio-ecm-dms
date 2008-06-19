@@ -220,13 +220,13 @@ public class UISimpleSearch extends UIForm {
       }
       String statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending" ;
       long startTime = System.currentTimeMillis();
-      Query query = queryManager.createQuery(statement, Query.XPATH);      
       try {
+        Query query = queryManager.createQuery(statement, Query.XPATH);      
         QueryResult queryResult = query.execute();
         uiSearchResult.clearAll() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
-      } catch(RepositoryException repo) {
+      } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
