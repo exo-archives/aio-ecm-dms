@@ -254,9 +254,9 @@ public class CmsServiceImpl implements CmsService {
           String primaryNodeType = input.getNodetype();
           NodeType nodeType = nodeTypeManger.getNodeType(primaryNodeType) ;
           if(!canAddNode(nodeDef, nodeType)) continue ;
-          String[] 
+          String[] mixinTypes = null ; 
           if(input.getMixintype()!= null) {
-            String[] mixinTypes = input.getMixintype().split(",") ; 
+            mixinTypes = input.getMixintype().split(",") ; 
           }                   
           Node childNode = doAddNode(currentNode, (String)input.getValue(), nodeType.getName(), mixinTypes) ;
           String childItemPath = itemPath + "/" + childNode.getName();
@@ -273,7 +273,10 @@ public class CmsServiceImpl implements CmsService {
         JcrInputProperty jcrInputVariable = (JcrInputProperty) jcrVariables.get(newItemPath);
         if(jcrInputVariable == null) continue ;
         String nodeTypeName = jcrInputVariable.getNodetype();
-        String[] mixinTypes = jcrInputVariable.getMixintype().split(",");          
+        String[] mixinTypes = null ; 
+        if(input.getMixintype()!= null) {
+          mixinTypes = input.getMixintype().split(",") ; 
+        }           
         NodeType nodeType = null;
         if(obj instanceof Node) {
           nodeType = ((Node) obj).getPrimaryNodeType();
@@ -537,7 +540,7 @@ public class CmsServiceImpl implements CmsService {
     } catch(PathNotFoundException pe) {
       childNode = currentNode.addNode(nodeName, nodeType);
     }
-    if (mixinTypes.length > 0) {
+    if (mixinTypes != null && mixinTypes.length > 0) {
       for (String mixinName : mixinTypes) {
         if (childNode.isNodeType(mixinName))
           childNode.addMixin(mixinName);
