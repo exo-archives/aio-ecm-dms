@@ -80,6 +80,7 @@
 	padding: 0px 6px;
 	font-weight: bold;
   line-height: 29px;
+  float: left;
 }
 
 .UIWorkflowPortlet .Toolbar .SeparatorRight {
