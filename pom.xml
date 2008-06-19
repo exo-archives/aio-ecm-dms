@@ -3,7 +3,7 @@
   <groupId>org.exoplatform.ecm</groupId>
   <artifactId>config</artifactId>
   <name>eXo ECM Config</name>
-  <version>2.0</version>
+  <version>rc6</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -135,9 +135,9 @@
         <org.exoplatform.core.version>2.0.2</org.exoplatform.core.version>
       	<org.exoplatform.ws.version>1.1.2</org.exoplatform.ws.version>
         <org.exoplatform.jcr.version>1.8.3</org.exoplatform.jcr.version>
-        <org.exoplatform.pc.version>2.0rc5</org.exoplatform.pc.version>		
-        <org.exoplatform.portal.version>2.0.1</org.exoplatform.portal.version>
-        <org.exoplatform.ecm.version>2.0</org.exoplatform.ecm.version>
+        <org.exoplatform.pc.version>2.0</org.exoplatform.pc.version>		
+        <org.exoplatform.portal.version>2.1</org.exoplatform.portal.version>
+        <org.exoplatform.ecm.version>rc6</org.exoplatform.ecm.version>
         <test.classes>Test</test.classes>
         <test.skip>true</test.skip>
 
