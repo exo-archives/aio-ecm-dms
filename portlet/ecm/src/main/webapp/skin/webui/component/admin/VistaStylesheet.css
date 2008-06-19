@@ -620,7 +620,7 @@
 }
 
 .UITemplatesManager .UIFormTabPane .UIForm .textarea {
-  width: 95%;  height: 300px; 
+  width: 380px;  height: 300px; 
   padding: 3px;
 }
 .UITemplatesManager .UITabPane .UIDialogTab {
@@ -637,13 +637,13 @@
 }
 
 .UITemplatesManager .UIDialogTab .UIForm .textarea {
-  width: 90%;  
+  width: 400px;  
   height: 320px; 
   padding: 3px;
 }
 
 .UITemplatesManager .UIViewTab .UIForm .textarea {
-  width: 90%;  
+  width: 380px;  
   height: 320px; 
   padding: 3px;
 }
@@ -659,7 +659,7 @@
 }
 
 .UITemplatesManager .UIFormTabPane .HorizontalLayout .UIFormInputSet .UIForm .HorizontalLayout .textarea{ 
-	width: 95%;
+	width: 380px;
 	height: 350px;
 	padding: 3px;
 }
