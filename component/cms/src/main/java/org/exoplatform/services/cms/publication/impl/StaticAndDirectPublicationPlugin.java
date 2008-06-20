@@ -102,7 +102,12 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     
     if (newState.equals(ENROLLED)) {
       log.info("Set node to "+NON_PUBLISHED);
+      
+      // add mixin versionable
+      if (node.canAddMixin("mix:versionable")) node.addMixin("mix:versionable");
       node.setProperty(CURRENT_STATE, NON_PUBLISHED);
+      
+      
     } else if (newState.equals(PUBLISHED)) {
       String currentState = node.getProperty(CURRENT_STATE).getString();
       if (currentState.equals(NON_PUBLISHED)) {
