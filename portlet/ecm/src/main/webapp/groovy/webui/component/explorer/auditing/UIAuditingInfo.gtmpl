@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.jcr.Node;
 import org.exoplatform.services.jcr.ext.audit.AuditRecord;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 %>
 
 
@@ -19,20 +19,10 @@ import java.text.SimpleDateFormat;
       <table class="UIGrid" id="$uicomponent.id">  
       <tbody>
     <tr>
-      <td>
-        <% 
-          Node node_=uicomponent.getCurrentNode();
-          if ((node_.getPrimaryNodeType().getName().equals("nt:unstructured"))||(node_.getPrimaryNodeType().getName().equals("nt:folder"))){
-            println _ctx.appRes("UIAuditingInfo.label.folderName");
-          }else{
-            println _ctx.appRes("UIAuditingInfo.label.documentName");
-          }
-        %>
-      </td>
       <td><%= _ctx.appRes("UIAuditingInfo.label.operation") %></td>
-      <td><%= _ctx.appRes("UIAuditingInfo.label.userName") %></td>    
-      <td><%= _ctx.appRes("UIAuditingInfo.label.date") %></td> 
-      <td><%= _ctx.appRes("UIAuditingInfo.label.version") %></td>   
+      <td><%= _ctx.appRes("UIAuditingInfo.label.userName")  %></td>    
+      <td><%= _ctx.appRes("UIAuditingInfo.label.date")      %></td> 
+      <td><%= _ctx.appRes("UIAuditingInfo.label.version")   %></td>   
     </tr>
     
     <div class="HomeNode">
@@ -43,9 +33,15 @@ import java.text.SimpleDateFormat;
     %>
     
     <%try{
-        final String labelAuditingEventInfo="UIAuditingInfo.eventName.";
+      final String labelAuditingEventInfo="UIAuditingInfo.eventName.";
       final String rootVersion="jcr:rootVersion";
-      
+
+      // Displaying the Date in the appropriate Locale
+      DateFormat df=DateFormat.getDateTimeInstance(DateFormat.FULL,
+                                                   DateFormat.FULL,
+                                                   _ctx.getRequestContext().getLocale());
+
+
       Iterator<AuditRecord> it=listRec.iterator();
       while(it.hasNext()){
         AuditRecord ar=it.next();
@@ -66,12 +62,10 @@ import java.text.SimpleDateFormat;
         //action name 4 Auditing system      
         label=(new StringBuffer(labelAuditingEventInfo)).append(ar.getEventType());          
         println "<tr>";
-        println "<td>"+node_.getName()+"</td>";
+
         println "<td>"+_ctx.appRes(label.toString())+"</td>";
         println "<td>"+ar.getUserId()+"</td>";
-        // TODO INTERNATIONALIZE IT !!!
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy  '&agrave;' HH:mm:ss ");
-        println "<td>"+sdf.format(ar.getDate().getTime())+"</td>";
+        println "<td>"+df.format(ar.getDate().getTime())+"</td>";
         println "<td>"+vers+"</td>";
         println "</tr>";    
         ar=null;
