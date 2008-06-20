@@ -104,6 +104,11 @@
   background: url('VistaSkin/ManageVersionsIcon.png') no-repeat ;
 }
 
+.ManageAuditingIcon {
+	width: 32px; height: 30px;
+  background: url('VistaSkin/ManageAuditingIcon.png') no-repeat ;
+}}
+
 .ManagePublicationsIcon {
 	width: 24px; height: 24px;
 	/* TODO : add and change icon */

@@ -72,6 +72,7 @@
 	        <th><%=_ctx.appRes("ListView.view.label.dateModified")%></th>
 	        <th><%=_ctx.appRes("ListView.view.label.owner")%></th>
 	        <th><%=_ctx.appRes("ListView.view.label.versionable")%></th>
+	        <th><%=_ctx.appRes("ListView.view.label.auditing")%></th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -116,6 +117,14 @@
 		              println "(" + uicomponent.getVersionName(data) + ")" ;
 		            }
 		          %>
+		        </td>
+		        <td style="width:60px;"><!--added CPop Bull SA -->
+		          <%=Utils.isAuditable(data)%>
+		          <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
+		            println "("+ uicomponent.getNumAuditHistory(data)+")";
+		              else
+		            println ""; 
+		          %>   
 		        </td>
 		      </tr>
 	      <%}%>

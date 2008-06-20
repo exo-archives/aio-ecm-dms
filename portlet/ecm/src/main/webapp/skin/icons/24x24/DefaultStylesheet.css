@@ -103,6 +103,11 @@
   background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
 }
 
+.ManageAuditingIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
+}
+
 .ManagePublicationsIcon {
 	width: 24px; height: 24px;
 	/* TODO : add and change icon */

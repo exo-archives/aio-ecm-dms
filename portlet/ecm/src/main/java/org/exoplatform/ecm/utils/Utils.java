@@ -117,6 +117,7 @@ public class Utils {
   final static public String EXO_METADATA = "exo:metadata" ;
   final static public String MIX_REFERENCEABLE = "mix:referenceable" ;
   final static public String MIX_VERSIONABLE = "mix:versionable" ;
+  final static public String EXO_AUDITABLE = "exo:auditable" ;
   final static public String NT_RESOURCE = "nt:resource" ;
   final static public String DEFAULT = "default" ;
   final static public String JCR_CONTENT = "jcr:content" ;
@@ -156,6 +157,15 @@ public class Utils {
 
   public static boolean isVersionable(Node node) throws RepositoryException {
     return node.isNodeType(MIX_VERSIONABLE);
+  }
+
+  /**
+   * Is the node Auditable?
+   * @author CPop Bull SA
+   * 
+   */
+  public static boolean isAuditable(Node node) throws RepositoryException {
+    return node.isNodeType(EXO_AUDITABLE);
   }
 
   public static boolean isReadAuthorized(Node node) throws RepositoryException {

@@ -128,6 +128,20 @@
   border-top:1px solid white;
 } 
 
+/*############################## -- Begin UIAuditingInfo -- added CPop Bull CS ##############################*/
+
+.UIJCRExplorerPortlet .UIAuditingInfo  {  
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIAuditingInfo .HomeNode {
+  padding: 0px 10px;
+  line-height: 30px;
+  background-color: #eaedf6;
+  margin-bottom: 1px;
+  font-weight: bold;
+}
+
 /*############################## -- Begin UIDiff -- ##############################*/
 
 .UIJCRExplorerPortlet .UIDiff .FileContent {  	  

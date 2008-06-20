@@ -780,6 +780,14 @@
 	background: #efefef;
 }
 
+/*====================================UIActivateAuditing==================================*/
+
+.UIJCRExplorer .UIActivateAuditing {
+	border: solid 1px #b7b7b7;
+	margin: 10px;
+	background: #efefef;
+}
+
 /*================================ UIViewMetadataManager ====================================*/
 
 .UIJCRExplorerPortlet .UIViewMetadataManager .UITabPane {

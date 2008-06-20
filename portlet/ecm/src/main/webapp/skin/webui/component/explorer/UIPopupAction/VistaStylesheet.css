@@ -96,6 +96,12 @@
 	margin: 0px auto;
 }
 
+/*############################## -- Begin UIAuditingInfo -- added CPop Bull CS ##############################*/
+
+.UIJCRExplorerPortlet .UIAuditingInfo  {  
+  padding: 10px;
+}
+
 /*############################## -- Begin UIDiff -- ##############################*/
 	
 .UIJCRExplorerPortlet .UIDiff {

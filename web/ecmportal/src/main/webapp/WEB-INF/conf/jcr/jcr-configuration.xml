@@ -33,18 +33,23 @@
       </properties-param>
     </init-params>
   </component>
-  
+
   <component>
     <key>org.exoplatform.services.jcr.ext.audit.AuditService</key>  
     <type>org.exoplatform.services.jcr.ext.audit.AuditServiceImpl</type>
-	 <init-params>
-	   <value-param>
-         <name>repository</name>
-         <value>repository</value>
+      <init-params>
+        <!-- Group or user who may view audit information -->
+        <value-param>
+          <name>adminIdentity</name>
+          <value>*:/Platform/Administrators</value>
+        </value-param>
+        <value-param>
+          <name>repository</name>
+          <value>repository</value>
       </value-param>
-	</init-params>
+    </init-params>
   </component>
-  
+
   <component>
 	  <type>org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService</type>  
   </component>

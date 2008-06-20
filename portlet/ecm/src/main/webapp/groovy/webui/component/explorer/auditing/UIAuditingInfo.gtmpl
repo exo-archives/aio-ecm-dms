@@ -1,0 +1,118 @@
+<% 
+  /**
+   * 
+   * Author : CPop Bull SA
+   * 
+   * version: $Id$   
+   */
+   
+   
+import java.util.Iterator;
+import java.util.List;
+import javax.jcr.Node;
+import org.exoplatform.services.jcr.ext.audit.AuditRecord;
+import java.text.SimpleDateFormat;
+%>
+
+
+<div class="UIVersionInfo" id="$uicomponent.id">
+      <table class="UIGrid" id="$uicomponent.id">  
+      <tbody>
+    <tr>
+      <td>
+        <% 
+          Node node_=uicomponent.getCurrentNode();
+          if ((node_.getPrimaryNodeType().getName().equals("nt:unstructured"))||(node_.getPrimaryNodeType().getName().equals("nt:folder"))){
+            println _ctx.appRes("UIAuditingInfo.label.folderName");
+          }else{
+            println _ctx.appRes("UIAuditingInfo.label.documentName");
+          }
+        %>
+      </td>
+      <td><%= _ctx.appRes("UIAuditingInfo.label.operation") %></td>
+      <td><%= _ctx.appRes("UIAuditingInfo.label.userName") %></td>    
+      <td><%= _ctx.appRes("UIAuditingInfo.label.date") %></td> 
+      <td><%= _ctx.appRes("UIAuditingInfo.label.version") %></td>   
+    </tr>
+    
+    <div class="HomeNode">
+    <%
+      List<AuditRecord> listRec=uicomponent.getListRecords();
+      
+      if ((listRec!=null)&&(listRec.size()!=0)){
+    %>
+    
+    <%try{
+        final String labelAuditingEventInfo="UIAuditingInfo.eventName.";
+      final String rootVersion="jcr:rootVersion";
+      
+      Iterator<AuditRecord> it=listRec.iterator();
+      while(it.hasNext()){
+        AuditRecord ar=it.next();
+        StringBuffer vers=new StringBuffer();
+        String tmpStr;
+        StringBuffer label;
+        tmpStr=ar.getVersionName();
+        
+        if (null!=tmpStr){
+          if (!tmpStr.equalsIgnoreCase((rootVersion))) 
+            vers.append(tmpStr);
+          else 
+            vers.append(_ctx.appRes("UIAuditingInfo.msg.noVersion"));
+          }else{
+            vers.append(_ctx.appRes("UIAuditingInfo.msg.noVersion"));
+          }
+  
+        //action name 4 Auditing system      
+        label=(new StringBuffer(labelAuditingEventInfo)).append(ar.getEventType());          
+        println "<tr>";
+        println "<td>"+node_.getName()+"</td>";
+        println "<td>"+_ctx.appRes(label.toString())+"</td>";
+        println "<td>"+ar.getUserId()+"</td>";
+        // TODO INTERNATIONALIZE IT !!!
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy  '&agrave;' HH:mm:ss ");
+        println "<td>"+sdf.format(ar.getDate().getTime())+"</td>";
+        println "<td>"+vers+"</td>";
+        println "</tr>";    
+        ar=null;
+        tmpStr=null;
+        label=null;
+      }
+       }catch(Exception e){
+        System.out.println("UIAuditingInfo groovy, Exception: "+e.getMessage());
+        e.printStackTrace();
+       }  
+    %>   
+  
+    
+    <% }else{ %>
+    <tr>
+        <td align="center" style="font-style:italic; color: #FF5604" colspan="5">
+                       <%=_ctx.appRes("UIGrid.msg.empty")%>
+            </td>
+      </tr>
+    <%}%>
+    </div>
+    </tbody>
+     </table> 
+   
+      
+ 
+  <div class="UIAction">
+    <table class="ActionContainer" align="center"> 
+      <tr>
+        <td align="center">
+          <a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle">
+            <div class="ButtonLeft">
+              <div class="ButtonRight">
+                <div class="ButtonMiddle">
+                  Close
+                </div>
+              </div>
+            </div>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

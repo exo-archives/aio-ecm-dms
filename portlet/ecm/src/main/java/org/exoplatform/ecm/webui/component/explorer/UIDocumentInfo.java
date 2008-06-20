@@ -53,6 +53,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.audit.AuditHistory;
+import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -326,6 +328,30 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
 
   public String getVersionName(Node node) throws Exception {
     return node.getBaseVersion().getName() ;
+  }
+
+  /**
+   * Method which returns true if the node has a history.
+   * @author CPop
+   */  
+  public boolean hasAuditHistory(Node node) throws Exception{
+    PortalContainer cont = PortalContainer.getInstance();
+    AuditService auServ = (AuditService)cont.getComponentInstanceOfType(AuditService.class);
+    return auServ.hasHistory(node);
+  }
+
+  /**
+   * Method which returns the number of histories.
+   * @author CPop
+   */ 
+  public int getNumAuditHistory(Node node) throws Exception{
+    PortalContainer cont = PortalContainer.getInstance();
+    AuditService auServ = (AuditService)cont.getComponentInstanceOfType(AuditService.class);
+    if (auServ.hasHistory(node)) {
+      AuditHistory auHistory = auServ.getHistory(node);
+      return (auHistory.getAuditRecords()).size();
+    }
+    return 0;
   }
 
   public void setNode(Node node) { currentNode_ = node ; }
