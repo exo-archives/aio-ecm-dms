@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
@@ -239,9 +240,9 @@ public class UIDrivesBrowser extends UIContainer {
       
       SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
-      Session session = provider.getSession(drive.getWorkspace(),repository) ;      
       Node node = null ;
       try {
+        Session session = provider.getSession(drive.getWorkspace(),repository) ;      
         node = (Node) session.getItem(homePath) ;        
       } catch(AccessDeniedException ace) {
         Object[] args = { driveName } ;
@@ -249,8 +250,13 @@ public class UIDrivesBrowser extends UIContainer {
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
+      } catch(NoSuchWorkspaceException nosuchWS) {
+        Object[] args = { driveName } ;
+        uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.workspace-not-exist", args, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;        
       } catch(Exception e) {
-        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;
         return ;
       } 
