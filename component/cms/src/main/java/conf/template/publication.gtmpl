@@ -1,10 +1,246 @@
-﻿<div>
-    Static an direct Publication panel
-    <br />
-    <br />
-    Node Name = <%=uicomponent.getNodeName()%><br />
-    LifeCycle Name = <%=uicomponent.getLifeCycleName()%><br />
-    State Name = <%=uicomponent.getStateName()%><br />
-    
-    imageLink : <img src="<%=uicomponent.getLinkStateImage()%>" height="50" width="400" border="0" alt=""/><br />
-  </div>
+<style type="text/css" media="all">
+.UIPuplication .UIHorizontalTabs .NormalTabStyle .SelectedTab {
+  float: left
+}
+
+.UIPuplication .UIHorizontalTabs .NormalTabStyle .NormalTab {
+  float: left
+}
+
+.UIPuplication .ChildrenContainer {
+  padding-left: 16px;
+}
+
+.UIPuplication .TrueIcon {
+  width: 16px; height: 16px;
+  border: 1px solid red;
+}
+
+.UIPuplication .TrueSelectIcon {
+  width: 16px; height: 16px;
+  border: 1px solid red;
+}
+
+.UIPuplication .ItemIcon {
+  width: 16px; height: 16px;
+  border: 1px solid red;
+}
+
+.UIPuplication .UIGrid .EvenRow {
+  background: #F5F5F5;
+}
+
+.UIPuplication .UIGrid .OddRow {
+  background: #F0F0F0;
+}
+
+.UIPuplication .UIGrid td {
+  padding: 0px 0px 0px 7px
+}
+
+.UIPuplication .UITrees .Node {
+  padding-top: 0px;
+  height: 23px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplication .UIFormGrid .FieldLabel {
+  width: 100px;
+}
+
+</style>
+
+<div class="UIPuplication">
+  
+  <div class="UIFormTabPane">
+		<div class="UITabPane">
+		  <div class="TabPaneContent">
+	      <div class="UIHorizontalTabs">
+	        <div class="LeftHorizontalTabs">
+		     	  <div class="RightHorizontalTabs">
+		     	    <div class="CenterHorizontalTabs">
+				        <div class="TabsContainer">
+			            <div class="UITab NormalTabStyle">
+			              <div class="SelectedTab">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab">
+			                    	<div class="TabIcon AccountIcon"><span></span></div>
+			                    	<a href="#" class="Title">State</a>
+			                    	<div style="clear:left;"><span></span></div>
+			                    </div>
+			                  </div>
+			                </div>
+			              </div>
+			              <div class="NormalTab">
+			                <div class="LeftTab">
+			                  <div class="RightTab">                
+			                    <div class="MiddleTab">
+			                    	<div class="TabIcon AccountIcon"><span></span></div>
+			                    	<a href="#" class="Title">History</a>
+			                    	<div style="clear:left;"><span></span></div>
+			                    </div>
+			                  </div>
+			                </div>
+			              </div>
+			            </div>              
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+	      </div>
+	      <div class="UITabContentContainer">
+	        <div class="UITabContent" >
+        		<div class="UIForm State">
+        			<div class="HorizontalLayout">
+								<div class="FormContainer">
+  								<table class="UIFormGrid">
+  									<tr>
+											<td class="FieldLabel">Node name:</td>
+											<td class="FieldComponent">
+												<%=uicomponent.getNodeName()%>
+											</td>
+										</tr>
+										<tr>
+											<td class="FieldLabel">Lifecycle name:</td>
+											<td class="FieldComponent">
+												<%=uicomponent.getLifeCycleName()%>
+											</td>
+										</tr>
+										<tr>
+											<td class="FieldLabel">State name:</td>
+											<td class="FieldComponent">
+												<%=uicomponent.getStateName()%>
+											</td>
+										</tr>
+  								</table>
+  								<div style="margin: auto; width: 448px; height: 50px;"><img src="<%=uicomponent.getLinkStateImage()%>" height="34" width="448" border="0" alt=""/><br /></div>
+  								<div class="UITrees">
+	  						    <table class="UIGrid">
+										  <thead>
+											  <tr>
+													<th width="40"></th>
+													<th >Version</th>
+													<th width="40">State</th>
+												</tr>
+											 </thead>
+											 <tbody>
+												<tr class="EvenRow">
+													<td align="center">
+															<div class="TrueIcon"></div>
+													</td>
+													<td class="text">
+															<div class="Node"><a class="ExpandIcon">Version:1</a></div>
+													</td>
+													<td align="center">
+														<a title="UnPublished" href="#">
+															<div class="ItemIcon UnPublishedicon"><span></span></div>
+														</a>
+													</td>
+												</tr>
+												<tr class="OddRow">
+													<td align="center">
+															<div class="TrueSelectIcon"></div>
+													</td>
+													<td class="text">
+															<div class="Node"><a class="CollapseIcon">Version:1</a></div>
+													</td>
+													<td align="center">
+														<a title="Published" href="#">
+															<div class="ItemIcon Publishedicon"><span></span></div>
+														</a>
+													</td>
+												</tr>
+												<tr class="EvenRow">
+													<td align="center">
+															<div class="TrueSelectIcon"></div>
+													</td>
+													<td class="text">
+															<div class="Node"><div class="Node"><a class="ExpandIcon">Version:1</a></div></div>
+													</td>
+													<td align="center">
+														<a title="Published" href="#">
+															<div class="ItemIcon Publishedicon"><span></span></div>
+														</a>
+													</td>
+												</tr>
+												<tr class="OddRow">
+													<td align="center">
+															<div class="TrueSelectIcon"></div>
+													</td>
+													<td class="text">
+															<div class="Node"><div class="LastNode Node"><a class="ExpandIcon">Version:1</a></div></div>
+													</td>
+													<td align="center">
+														<a title="Published" href="#">
+															<div class="ItemIcon Publishedicon"><span></span></div>
+														</a>
+													</td>
+												</tr>
+												<tr class="EvenRow">
+													<td align="center">
+															<div class="TrueSelectIcon"></div>
+													</td>
+													<td class="text">
+															<div class="LastNode Node"><a class="ExpandIcon">Version:1</a></div>
+													</td>
+													<td align="center">
+														<a title="Published" href="#">
+															<div class="ItemIcon Publishedicon"><span></span></div>
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+	  						  <table class="UIFormGrid">
+										<tr>
+											<td class="FieldLabel">Visibility:</td>
+											<td class="FieldComponent" style="width: 80px;">
+												<input type="radio" value="true" name="setActive" class="radio"/> Public
+											</td>
+											<td class="FieldComponent">
+												<input type="radio" value="true" name="setActive" class="radio"/> Private
+											</td>
+										</tr>
+										<tr>
+											<td class="FieldLabel">State:</td>
+											<td class="FieldComponent">
+												<input type="radio" value="true" name="setActive" class="radio"/> Published
+											</td>
+											<td class="FieldComponent">
+												<input type="radio" value="true" name="setActive" class="radio"/> unPublished
+											</td>
+										</tr>
+  								</table>
+	  						</div>
+	  					</div>
+        		</div>
+	        </div>
+	      </div>  
+		  </div>  
+		</div>  
+	</div>
+		
+	<div class="UIAction"> 
+	  <table class="ActionContainer" align="center">
+		 	 <tr>
+			  <td align="center">
+	  			<a href="#" class="ActionButton LightBlueStyle">
+	      	  <div class="ButtonLeft">
+	        	  <div class="ButtonRight">
+	          	  <div class="ButtonMiddle"> Save </div>
+	            </div>
+	          </div>
+	        </a>
+	        <a href="#" class="ActionButton LightBlueStyle">
+	      	  <div class="ButtonLeft">
+	        	  <div class="ButtonRight">
+	          	  <div class="ButtonMiddle"> Reset </div>
+	            </div>
+	          </div>
+	        </a>
+	  		</td>
+			</tr>
+	 	</table>
+	</div>	
+</div>
