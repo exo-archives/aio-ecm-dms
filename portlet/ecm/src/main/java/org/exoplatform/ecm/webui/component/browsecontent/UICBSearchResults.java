@@ -111,8 +111,8 @@ public class UICBSearchResults extends UIContainer {
       if(container.isCategories(nodeType)) {
         uiSearchController.setShowHiddenSearch() ;
         if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+          container.getChild(UICategoryTree.class).buildTree(itemPath) ;
           container.setCurrentNodePath(itemPath) ;
-          return ;
         }
         container.changeNode(node) ;
         return ;
@@ -140,8 +140,8 @@ public class UICBSearchResults extends UIContainer {
       if(container.isCategories(nodeType)) {
         uiSearchController.setShowHiddenSearch() ;
         if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+          container.getChild(UICategoryTree.class).buildTree(parentNode.getPath()) ;
           container.setCurrentNodePath(parentNode.getPath()) ;
-          return ;
         }
         container.changeNode(parentNode) ;
         return ;
