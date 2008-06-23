@@ -35,7 +35,9 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.security.ConversationRegistry;
-// import org.exoplatform.services.security.SecurityService;
+import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.MembershipEntry;
+//import org.exoplatform.services.security.SecurityService;
 import org.picocontainer.Startable;
 
 /**
@@ -46,7 +48,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private RepositoryService    repositoryService_;
 
   //private SecurityService      securityService_;
-  
+
   private ConversationRegistry conversationRegistry_;
 
   private String               cmsTemplatesBasePath_;
@@ -110,7 +112,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   public String getTemplatePath(Node node, boolean isDialog) throws Exception {
     String userId = node.getSession().getUserID();
     String repository = ((ManageableRepository) node.getSession().getRepository())
-        .getConfiguration().getName();
+    .getConfiguration().getName();
     String templateType = null;
     if (node.isNodeType("exo:presentationable")) {
       templateType = node.getProperty("exo:presentationType").getString();
@@ -157,23 +159,10 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     while (templateIter.hasNext()) {
       Node node = templateIter.nextNode();
       Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
-      for (int i = 0; i < roles.length; i++) {
-        String templateRole = roles[i].getString();
-        if ("*".equals(templateRole)) {
-          session.logout();
-          return node.getPath();
-        } else if (SystemIdentity.SYSTEM.equals(userName)) {
-          session.logout();
-          return node.getPath();
-        } else if (userName != null && userName.equals(templateRole)) {
-          session.logout();
-          return node.getPath();
-        } else if (userName != null
-            //&& securityService_.hasMembershipInGroup(userName, templateRole)) {
-            && conversationRegistry_.getState(userName).getIdentity().isMemberOf(templateRole)) {
-          session.logout();
-          return node.getPath();
-        }
+      if(hasPermission(userName, roles, conversationRegistry_)) {
+        String templatePath = node.getPath() ;
+        session.logout();
+        return templatePath ;
       }
     }
     session.logout();
@@ -334,5 +323,24 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
     return provider.getSession(systemWorksapce, manageableRepository);
+  }
+
+  private boolean hasPermission(String userId,Value[] roles, ConversationRegistry conversationRegistry) throws Exception {        
+    if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
+      return true ;
+    }
+    Identity identity = conversationRegistry.getState(userId).getIdentity() ;
+    if(identity == null) {
+      return false ; 
+    }        
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
+      MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
+      if(identity.isMemberOf(membershipEntry)) {
+        return true ;
+      }
+    }
+    return false ;
   }
 }
