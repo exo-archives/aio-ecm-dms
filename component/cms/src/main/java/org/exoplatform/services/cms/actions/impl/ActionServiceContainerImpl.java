@@ -64,7 +64,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   private static final String         SCHEDULABLE_MIXIN    = "exo:schedulableInfo".intern();
   private static final String         EXO_ACTIONS          = "exo:actions".intern();
   private static final String         ACTION_STORAGE       = "exo:actionStorage".intern();
-
+  private static final String         EXO_HIDDENABLE       = "exo:hiddenable".intern();
   private RepositoryService           repositoryService_;  
   private CmsService                  cmsService_;
   private Collection<ComponentPlugin> actionPlugins        = new ArrayList<ComponentPlugin>();
@@ -282,6 +282,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       actionsNode = storeActionNode.getNode(EXO_ACTIONS) ;
     }else {
       actionsNode = storeActionNode.addNode(EXO_ACTIONS,ACTION_STORAGE) ;
+      actionsNode.addMixin(EXO_HIDDENABLE) ;
       storeActionNode.save();
     }
     String newActionPath = cmsService_.storeNode(actionType, actionsNode, mappings,true,repository);

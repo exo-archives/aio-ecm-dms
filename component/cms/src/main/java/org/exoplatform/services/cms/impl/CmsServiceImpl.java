@@ -56,15 +56,15 @@ public class CmsServiceImpl implements CmsService {
 
   private RepositoryService jcrService;  
   private IDGeneratorService idGeneratorService;  
-  final static private String MIX_REFERENCEABLE = "mix:referenceable" ;
+  private static final String MIX_REFERENCEABLE = "mix:referenceable" ;
 
-  public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService) {
+  public CmsServiceImpl(final RepositoryService jcrService, final IDGeneratorService idGeneratorService) {
     this.idGeneratorService = idGeneratorService;
     this.jcrService = jcrService;      
   }
 
-  public String storeNode(String workspace, String nodeTypeName,
-      String storePath, Map mappings,String repository) throws Exception {    
+  public final String storeNode(final String workspace, final String nodeTypeName,
+      final String storePath, final Map mappings,final String repository) throws Exception {    
     Session session = jcrService.getRepository(repository).login(workspace);
     Node storeHomeNode = (Node) session.getItem(storePath);
     String path = storeNode(nodeTypeName, storeHomeNode, mappings, true,repository);
@@ -75,8 +75,8 @@ public class CmsServiceImpl implements CmsService {
   }
 
   @SuppressWarnings("unused")
-  public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
-      boolean isAddNew, String repository) throws Exception {    
+  public final String storeNode(final String nodeTypeName, final Node storeHomeNode, final Map mappings, 
+      final boolean isAddNew, final String repository) throws Exception {    
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 
@@ -124,8 +124,8 @@ public class CmsServiceImpl implements CmsService {
   }
 
   @SuppressWarnings("unused")
-  public String storeNodeByUUID(String nodeTypeName, Node storeHomeNode, Map mappings, 
-      boolean isAddNew, String repository) throws Exception {    
+  public final String storeNodeByUUID(final String nodeTypeName, final Node storeHomeNode, final Map mappings, 
+      final boolean isAddNew, final String repository) throws Exception {    
     Set keys = mappings.keySet();
     String nodePath = extractNodeName(keys);
     JcrInputProperty relRootProp = (JcrInputProperty) mappings.get(nodePath); 
@@ -169,23 +169,25 @@ public class CmsServiceImpl implements CmsService {
         currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
       }
     }
-    if(!currentNode.isNodeType(MIX_REFERENCEABLE)) currentNode.addMixin(MIX_REFERENCEABLE) ;
+    if(!currentNode.isNodeType(MIX_REFERENCEABLE)) {
+      currentNode.addMixin(MIX_REFERENCEABLE) ;
+    }
     return currentNode.getUUID();
   }
 
-  private void updateNodeRecursively(String path, Node currentNode,
-      NodeType currentNodeType, Map jcrVariables) throws Exception {
+  private void updateNodeRecursively(final String path, final Node currentNode,
+      final NodeType currentNodeType, final Map jcrVariables) throws Exception {
     processNodeRecursively(false, path, currentNode, currentNodeType,
         jcrVariables);
   }
 
-  private void createNodeRecursively(String path, Node currentNode,
-      NodeType currentNodeType, Map jcrVariables) throws Exception {
+  private void createNodeRecursively(final String path, final Node currentNode,
+      final NodeType currentNodeType, final Map jcrVariables) throws Exception {
     processNodeRecursively(true, path, currentNode, currentNodeType,
         jcrVariables);
   }
 
-  private void processAddEditProperty(boolean create, Node currentNode, String path, NodeType currentNodeType, Map jcrVariables) throws Exception {
+  private void processAddEditProperty(final boolean create, final Node currentNode, final String path, final NodeType currentNodeType, final Map jcrVariables) throws Exception {
     if(create) {
       PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
       for (int i = 0; i < propertyDefs.length; i++) {      
@@ -196,7 +198,9 @@ public class CmsServiceImpl implements CmsService {
           String currentPath = path + "/" + propertyName;
           JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
           Object value = null;
-          if(inputVariable != null) value = inputVariable.getValue();
+          if(inputVariable != null) {
+            value = inputVariable.getValue();
+          }
           if(value != null || propertyDef.isMandatory()) {
             processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
           }
@@ -205,8 +209,8 @@ public class CmsServiceImpl implements CmsService {
     }
   }
 
-  private void processNodeRecursively(boolean create, String itemPath, 
-      Node currentNode, NodeType currentNodeType, Map jcrVariables)
+  private void processNodeRecursively(final boolean create, final String itemPath, 
+      final Node currentNode, final NodeType currentNodeType, final Map jcrVariables)
   throws Exception {
     if(create) {
       processAddEditProperty(true, currentNode, itemPath, currentNodeType, jcrVariables) ;
@@ -219,7 +223,9 @@ public class CmsServiceImpl implements CmsService {
         String currentPath = itemPath + "/" + propertyName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
         Object value = null;
-        if(inputVariable != null) value = inputVariable.getValue();
+        if(inputVariable != null) {
+          value = inputVariable.getValue();
+        }
         if(value != null &&  !propertyDef.isProtected()) {
           processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
         }
@@ -251,15 +257,19 @@ public class CmsServiceImpl implements CmsService {
       }            
       if(((ExtendedItemDefinition)nodeDef).isResidualSet()) {
         for(JcrInputProperty input:childNodeInputs) {
+          String childItemPath = itemPath + "/"+ input.getValue();
+          //Only child node input has dependent path of current node is added as child node
+          if(!childItemPath.equals(input.getJcrPath())) continue ;
           String primaryNodeType = input.getNodetype();
           NodeType nodeType = nodeTypeManger.getNodeType(primaryNodeType) ;
-          if(!canAddNode(nodeDef, nodeType)) continue ;
+          if(!canAddNode(nodeDef, nodeType)) {
+            continue ;
+          }
           String[] mixinTypes = null ; 
           if(input.getMixintype()!= null) {
             mixinTypes = input.getMixintype().split(",") ; 
           }                   
-          Node childNode = doAddNode(currentNode, (String)input.getValue(), nodeType.getName(), mixinTypes) ;
-          String childItemPath = itemPath + "/" + childNode.getName();
+          Node childNode = doAddNode(currentNode, (String)input.getValue(), nodeType.getName(), mixinTypes) ;          
           processNodeRecursively(create, childItemPath, childNode, childNode.getPrimaryNodeType(), jcrVariables);          
         }
       }else {               
@@ -271,7 +281,9 @@ public class CmsServiceImpl implements CmsService {
         }
         String newItemPath = itemPath + "/" + childNodeName;
         JcrInputProperty jcrInputVariable = (JcrInputProperty) jcrVariables.get(newItemPath);
-        if(jcrInputVariable == null) continue ;
+        if(jcrInputVariable == null) {
+          continue ;
+        }
         String nodeTypeName = jcrInputVariable.getNodetype();
         String[] mixinTypes = null ; 
         if(jcrInputVariable.getMixintype()!= null) {
@@ -291,60 +303,66 @@ public class CmsServiceImpl implements CmsService {
     }    
   }
 
-  private void processProperty(String propertyName, Node node, int requiredtype,
-      Object value, boolean isMultiple) throws Exception {
+  private void processProperty(final String propertyName, final Node node, final int requiredtype,
+      final Object value, final boolean isMultiple) throws Exception {
 
     switch (requiredtype) {
     case PropertyType.STRING:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else {
+      } else {
         if(isMultiple) {
-          if (value instanceof String)
+          if (value instanceof String) {
             node.setProperty(propertyName, new String[] { (String)value});
-          else if (value instanceof String[])
-            node.setProperty(propertyName, (String[]) value);          
-        } else
+          } else if (value instanceof String[]) {
+            node.setProperty(propertyName, (String[]) value);
+          }          
+        } else {
           node.setProperty(propertyName, (String) value);
+        }
       }
       break;
     case PropertyType.BINARY:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else if (value instanceof byte[])
+      } else if (value instanceof byte[]) {
         node.setProperty(propertyName, 
             new ByteArrayInputStream((byte[]) value));
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, 
             new ByteArrayInputStream(((String)value).getBytes()));
-      else if (value instanceof String[])        
+      } else if (value instanceof String[]) {
         node.setProperty(propertyName, 
-            new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
+            new ByteArrayInputStream((((String[]) value)).toString().getBytes()));
+      }      
       break;
     case PropertyType.BOOLEAN:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, false);
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, 
             new Boolean((String) value).booleanValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);         
+      } else if (value instanceof String[]) {
+        node.setProperty(propertyName, (String[]) value);
+      }         
       break;
     case PropertyType.LONG:
-      if (value == null || "".equals(value))
+      if (value == null || "".equals(value)) {
         node.setProperty(propertyName, 0);
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, new Long((String) value).longValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);  
+      } else if (value instanceof String[]) {
+        node.setProperty(propertyName, (String[]) value);
+      }  
       break;
     case PropertyType.DOUBLE:
-      if (value == null || "".equals(value))
+      if (value == null || "".equals(value)) {
         node.setProperty(propertyName, 0);
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, new Double((String) value).doubleValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);        
+      } else if (value instanceof String[]) {
+        node.setProperty(propertyName, (String[]) value);
+      }        
       break;
     case PropertyType.DATE:      
       if (value == null){        
@@ -377,7 +395,9 @@ public class CmsServiceImpl implements CmsService {
       }      
       break;
     case PropertyType.REFERENCE:      
-      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
+      if (value == null) {
+        throw new RepositoryException("null value for a reference " + requiredtype);
+      }
       if (value instanceof Value[]) {
         node.setProperty(propertyName, (Value[]) value);
       } else if (value instanceof String) {
@@ -427,9 +447,9 @@ public class CmsServiceImpl implements CmsService {
           }else {            
             if(session.getRootNode().hasNode(v)) {
               Node referenceNode = session.getRootNode().getNode(v) ;
-              valueObj = session.getValueFactory().createValue(referenceNode) ;
+              valueObj = session.getValueFactory().createValue(referenceNode);
             }else {
-              valueObj = session.getValueFactory().createValue(v) ;
+              valueObj = session.getValueFactory().createValue(v);
             }
           }
           list.add(valueObj) ;          
@@ -442,16 +462,18 @@ public class CmsServiceImpl implements CmsService {
     }
   }
 
-  private String extractNodeName(Set keys) {
+  private String extractNodeName(final Set keys) {
     for (Iterator iter = keys.iterator(); iter.hasNext();) {
       String key = (String) iter.next();
-      if (key.endsWith(NODE)) return key;
+      if (key.endsWith(NODE)) {
+        return key;
+      }
     }
     return null;
   }
 
-  public void moveNode(String nodePath, String srcWorkspace, String destWorkspace,
-      String destPath, String repository) {
+  public final void moveNode(final String nodePath, final String srcWorkspace, final String destWorkspace,
+      final String destPath, final String repository) {
     Session srcSession = null ;
     Session destSession = null ;
     if(!srcWorkspace.equals(destWorkspace)){      
@@ -473,9 +495,13 @@ public class CmsServiceImpl implements CmsService {
         srcSession.logout();
         destSession.logout();
       } catch (Exception e) {
-        if(srcSession != null) srcSession.logout();
-        if(destSession !=null) destSession.logout();
-        //e.printStackTrace();
+        if(srcSession != null) {
+          srcSession.logout();
+        }
+        if(destSession !=null) {
+          destSession.logout();
+          //e.printStackTrace();
+        }
       }
     }else {
       Session session = null ;
@@ -491,13 +517,15 @@ public class CmsServiceImpl implements CmsService {
         workspace.move(nodePath, destPath);
         session.logout();
       }catch(Exception e){
-        if(session !=null && session.isLive()) session.logout(); 
-        //e.printStackTrace() ;
+        if(session !=null && session.isLive()) {
+          session.logout(); 
+          //e.printStackTrace() ;
+        }
       }
     }
   }
 
-  private void createNode(Session session, String uri) throws RepositoryException {
+  private void createNode(final Session session, final String uri) throws RepositoryException {
     String[] splittedName = StringUtils.split(uri, "/"); 
     Node rootNode = session.getRootNode();
     for (int i = 0; i < splittedName.length - 1; i++) {
@@ -512,7 +540,7 @@ public class CmsServiceImpl implements CmsService {
     session.save() ;    
   }
 
-  private List<JcrInputProperty> extractNodeInputs(final Map<String, JcrInputProperty> map,int itemLevel) {    
+  private List<JcrInputProperty> extractNodeInputs(final Map<String, JcrInputProperty> map,final int itemLevel) {    
     List<JcrInputProperty> list = new ArrayList<JcrInputProperty>() ;
     for(Iterator<String> iterator = map.keySet().iterator();iterator.hasNext();) {
       String jcrPath = iterator.next();
@@ -528,12 +556,14 @@ public class CmsServiceImpl implements CmsService {
 
   private boolean canAddNode(final NodeDefinition nodeDef,final NodeType nodeType) {
     for(NodeType type: nodeDef.getRequiredPrimaryTypes()) {
-      if(nodeType.isNodeType(type.getName())) return true ;
+      if(nodeType.isNodeType(type.getName())) {
+        return true ;
+      }
     }
     return false ;
   }
 
-  private Node doAddNode(final Node currentNode,String nodeName,String nodeType, String[] mixinTypes) throws Exception {
+  private Node doAddNode(final Node currentNode,final String nodeName,final String nodeType, final String[] mixinTypes) throws Exception {
     Node childNode = null;    
     try {
       childNode = currentNode.getNode(nodeName) ;
@@ -542,8 +572,9 @@ public class CmsServiceImpl implements CmsService {
     }
     if (mixinTypes != null && mixinTypes.length > 0) {
       for (String mixinName : mixinTypes) {
-        if (childNode.isNodeType(mixinName))
+        if (childNode.isNodeType(mixinName)) {
           childNode.addMixin(mixinName);
+        }
       }
     }          
     return childNode ;     
