@@ -320,15 +320,40 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
   
   private QueryResult execute(Session session,Node queryNode) throws Exception {
-    String statement = queryNode.getProperty("jcr:statement").getString();
+    String statement = this.computeStatement(session, queryNode.getProperty("jcr:statement").getString());
     String language = queryNode.getProperty("jcr:language").getString();
-    String userId = session.getUserID();    
-    statement = statement.replace("${UserId}$",userId);    
-    String currentDate = ISO8601.format(new GregorianCalendar()) ;
-    statement = statement.replace("${Date}$",currentDate);    
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
     return query.execute();
   }    
+  
+  /**
+   * This method replaces tokens in the statement by their actual values
+   * Current supported tokens are :
+   * ${UserId}$ corresponds to the current user
+   * ${Date}$   corresponds to the current date
+   * That way, predefined queries can be equipped with dynamic values. This is
+   * useful when querying for documents made by the current user, or documents
+   * in publication state.
+   * 
+   * @param session reference to the JCR Session
+   * @return the processed String, with replaced tokens
+   */
+  private String computeStatement(Session session, String statement) {
+
+    // The returned computed statement
+    String ret = statement;
+      
+    // Replace ${UserId}$
+    String userId = session.getUserID();
+    ret = ret.replace("${UserId}$",userId);
+    
+    // Replace ${Date}$
+    String currentDate = ISO8601.format(new GregorianCalendar());
+    ret = ret.replace("${Date}$",currentDate);
+    
+    return ret;
+  }
+  
   private void removeFromCache(String queryPath) throws Exception {
     ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
     String portalName = containerInfo_.getContainerName() ;

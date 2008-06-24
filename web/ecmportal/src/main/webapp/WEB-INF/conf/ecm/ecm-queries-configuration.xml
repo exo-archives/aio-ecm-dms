@@ -43,7 +43,8 @@
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//*[(@jcr:primaryType = 'exo:article' or @jcr:primaryType = 'nt:file') and @exo:owner='${UserId}$'] order by @exo:dateCreated descending</string></field>
            <field  name="permissions"><string>*:/platform/users</string></field>
-           <field  name="cachedResult"><boolean>true</boolean></field>             
+		   <!-- Don't cache this query as it is sensitive to user -->
+           <field  name="cachedResult"><boolean>false</boolean></field>             
          </object>
        </object-param>
        <object-param>        
