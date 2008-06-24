@@ -176,14 +176,14 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-      String jcrPatth = categoryPathField.getValue() ;
+      String jcrPath = categoryPathField.getValue() ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(Utils.isNameEmpty(jcrPatth)) {
+      if(Utils.isNameEmpty(jcrPath)) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
       } 
-      if(container.getNodeByPath(jcrPatth) == null) {
+      if(container.getNodeByPath(jcrPath, workSpace) == null) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return ;
@@ -197,9 +197,9 @@ public class UIDocumentConfig extends UIForm implements UISelector{
         return ;
       } 
       String fullPath = null ;
-      if(jcrPatth.endsWith("/") || docName.startsWith("/")) fullPath = jcrPatth + docName ;
-      else  fullPath = jcrPatth + Utils.SLASH + docName ;
-      if(container.getNodeByPath(fullPath) == null){
+      if(jcrPath.endsWith("/") || docName.startsWith("/")) fullPath = jcrPath + docName ;
+      else  fullPath = jcrPath + Utils.SLASH + docName ;
+      if(container.getNodeByPath(fullPath, workSpace) == null){
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null, 
                                               ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
@@ -211,7 +211,7 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_DOCUMENT) ;
       prefs.setValue(Utils.REPOSITORY, repository) ;
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace) ;
-      prefs.setValue(Utils.JCR_PATH, jcrPatth) ;
+      prefs.setValue(Utils.JCR_PATH, jcrPath) ;
       prefs.setValue(Utils.CB_DOCUMENT_NAME, docName) ;
       prefs.setValue(Utils.CB_TEMPLATE, boxTemplate) ;
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate) ;
@@ -289,22 +289,22 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
       String workspace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
-      String jcrPatth = categoryPathField.getValue() ;
+      String jcrPath = categoryPathField.getValue() ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(Utils.isNameEmpty(jcrPatth)) {
+      if(Utils.isNameEmpty(jcrPath)) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       UIBrowseContentPortlet uiBrowseContentPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIBrowseContainer container = uiBrowseContentPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
-      if(container.getNodeByPath(jcrPatth) == null){
+      if(container.getNodeByPath(jcrPath, workspace) == null){
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
         return ;
       }
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
-      uiConfig.initPopupDocumentSelect(uiForm, repo, workspace, jcrPatth) ;
+      uiConfig.initPopupDocumentSelect(uiForm, repo, workspace, jcrPath) ;
       uiForm.isEdit_ = true ;
       uiConfig.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;
