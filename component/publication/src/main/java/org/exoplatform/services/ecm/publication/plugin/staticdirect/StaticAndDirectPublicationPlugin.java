@@ -149,7 +149,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
           String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
           String version = session.getNodeByUUID(nodeVersionUUID).getName();
-          String log[] = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
+          @SuppressWarnings("hiding")
+          String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
           publicationService.addLog(node, log);
 
         } else {
@@ -228,7 +229,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
           String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
           String version = session.getNodeByUUID(nodeVersionUUID).getName();
-          String log[] = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
+          @SuppressWarnings("hiding")
+          String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
           publicationService.addLog(node, log);
 
         } else {
@@ -268,7 +270,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           ExoContainer container = ExoContainerContext.getCurrentContainer();   
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
           String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-          String log[] = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished"};
+          @SuppressWarnings("hiding")
+          String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished"};
           publicationService.addLog(node, log);
         } else {
           //error : currentSate = PUBLISHED but no version PUBLISHED
@@ -362,8 +365,9 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
 
       //get name and label of this version
       Node versionNode = session.getNodeByUUID(uuid);
+      @SuppressWarnings("hiding")
       String name = versionNode.getName();
-      Node labelNode = ((Node)versionNode.getParent()).getNode("jcr:versionLabels");
+      Node labelNode = (versionNode.getParent()).getNode("jcr:versionLabels");
       //if this instruction do not find the jcr:versionLabels node
       //possibility to use ((Node)versionNode.getParent()).getNodes("jcr:versionLabels");
       //which return an iterator of child of this node which name matching pattern
@@ -436,6 +440,5 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     newarray[array.length] = value2add;
     return newarray; 
   }
-
 
 }

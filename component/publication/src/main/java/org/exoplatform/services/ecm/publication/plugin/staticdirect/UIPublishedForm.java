@@ -8,25 +8,20 @@ import org.exoplatform.webui.form.UIForm;
 
 
 @ComponentConfig (
-		lifecycle = UIApplicationLifecycle.class,
-		template = "classpath:conf/templates/staticredirect/published.gtmpl"
+    lifecycle = UIApplicationLifecycle.class,
+    template = "classpath:conf/templates/staticredirect/published.gtmpl"
 )
 public class UIPublishedForm extends UIForm {
 
-	private Node node_;
-	
-	public UIPublishedForm() throws Exception {
-	    addChild(UIPublicationComponent.class, null, null);
-   }
-	
-	public void setNode(Node node) {
-	   this.node_=node;
-	   getChild(UIPublicationComponent.class).setNode(node);
-	 }
-	
-	
-   
-	
-		
-	
+  private Node node_;
+
+  public UIPublishedForm() throws Exception {
+    addChild(UIPublicationComponent.class, null, null);
+  }
+
+  public void setNode(Node node) {
+    this.node_=node;
+    getChild(UIPublicationComponent.class).setNode(node);
+  }
+
 }

@@ -42,64 +42,55 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 public class UIPublicationComponent extends UIComponent {
 
   private Node node_;
-  
-  
-  public UIPublicationComponent() throws Exception {
-    
-  }
-  
-  public UIPublicationComponent(Node node) throws Exception {
-    this.node_=node;
-  }
-  
-  
-  public void setNode(Node node) {
-    this.node_=node;
-  }
-  
-  public String getNodeName() {
-	  try {
-		  return node_.getName();
-	  } catch (Exception e) {
-		  e.printStackTrace();
-		  return "Error in getNodeName";
-	  }
-  }
-  
-  public String getLifeCycleName () {
-	  try {
-		  PublicationService service = getApplicationComponent(PublicationService.class) ;
-		  return service.getNodeLifecycleName(node_);
-	  } catch (Exception e) {
-		  e.printStackTrace();
-		  return "Error in getLifeCycleName";
-	  }
-  }
-  
-  
-  public String getStateName () {
-	  try {
-		  PublicationService service = getApplicationComponent(PublicationService.class) ;
-		  return service.getCurrentState(node_);
-	  } catch (Exception e) {
-		  e.printStackTrace();
-		  return "Error in getStateName";
-	  }
-  }
-  
-  public String getLinkStateImage () {
-	  try {
-		  DownloadService dS = getApplicationComponent(DownloadService.class);
-		  PublicationService service = getApplicationComponent(PublicationService.class) ;
-		  
-		  byte[] bytes=service.getStateImage(node_);
-		  InputStream iS = new ByteArrayInputStream(bytes);    
-		  String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));
-		  return dS.getDownloadLink(id);
-	  } catch (Exception e) {
-		  e.printStackTrace();
-		  return "Error in getStateImage";
-	  }
 
+  public UIPublicationComponent() throws Exception {
   }
+
+  public UIPublicationComponent(Node node) throws Exception { this.node_=node; }
+
+  public void setNode(Node node) { this.node_=node; }
+
+  public String getNodeName() {
+    try {
+      return node_.getName();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Error in getNodeName";
+    }
+  }
+
+  public String getLifeCycleName () {
+    try {
+      PublicationService service = getApplicationComponent(PublicationService.class) ;
+      return service.getNodeLifecycleName(node_);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Error in getLifeCycleName";
+    }
+  }
+
+  public String getStateName () {
+    try {
+      PublicationService service = getApplicationComponent(PublicationService.class) ;
+      return service.getCurrentState(node_);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Error in getStateName";
+    }
+  }
+
+  public String getLinkStateImage () {
+    try {
+      DownloadService dS = getApplicationComponent(DownloadService.class);
+      PublicationService service = getApplicationComponent(PublicationService.class) ;
+      byte[] bytes=service.getStateImage(node_);
+      InputStream iS = new ByteArrayInputStream(bytes);    
+      String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));
+      return dS.getDownloadLink(id);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Error in getStateImage";
+    }
+  }
+
 }
