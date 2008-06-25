@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration>		       
+  
+  <component>
+    <key>org.exoplatform.services.ecm.publication.PublicationService</key>
+    <type>org.exoplatform.services.ecm.publication.impl.PublicationServiceImpl</type>
+    <component-plugins>
+    	<component-plugin>
+	    <name>StaticAndDirect</name>
+	    <set-method>addPublicationPlugin</set-method>
+	    <type>org.exoplatform.services.ecm.publication.plugin.staticdirect.StaticAndDirectPublicationPlugin</type>
+	    <init-params>
+	      <values-param>
+	    		<name>StaticAndDirect</name>
+	    		<description>This publication lifecycle keeps the content at their original place. Any version of the Node can be published.</description>
+	      </values-param>
+	    </init-params>
+	  </component-plugin>
+    </component-plugins>
+  </component>
+  
+  <component>
+    <key>org.exoplatform.services.ecm.publication.PublicationPresentationService</key>
+    <type>org.exoplatform.services.ecm.publication.impl.PublicationPresentationServiceImpl</type>
+  </component>
+  
+	<external-component-plugins>
+    <target-component>org.exoplatform.services.jcr.impl.ext.action.SessionActionCatalog</target-component>    
+    <component-plugin>
+	    <name>addActions</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
+	    <description>add exo:ownable mixin for node</description>
+	    <init-params>
+	      <object-param>
+	        <name>actions</name>
+	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
+	          <field  name="actions">
+	            <collection type="java.util.ArrayList">	              
+	              <value>
+	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
+	                  <field  name="eventTypes"><string>addNode</string></field>	                  
+	                  <field  name="actionClassName"><string>org.exoplatform.services.jcr.ext.owner.AddOwneableAction</string></field>
+	                </object>
+	              </value>
+	            </collection>
+	          </field>
+	        </object>
+	      </object-param>
+	    </init-params>
+	  </component-plugin>
+	  <component-plugin>
+	    <name>addActions</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin</type>
+	    <description>add actions plugin</description>
+	    <init-params>
+	      <object-param>
+	        <name>actions</name>
+	        <object type="org.exoplatform.services.jcr.impl.ext.action.AddActionsPlugin$ActionsConfig">
+	          <field  name="actions">
+	            <collection type="java.util.ArrayList">	              
+	              <value>
+	                <object type="org.exoplatform.services.jcr.impl.ext.action.ActionConfiguration">
+	                  <field  name="eventTypes"><string>addNode</string></field>	                  
+	                  <field  name="actionClassName"><string>org.exoplatform.services.cms.jcrext.AddDateTimeAction</string></field>
+	                </object>
+	              </value>
+	            </collection>
+	          </field>
+	        </object>
+	      </object-param>
+	    </init-params>
+	  </component-plugin>
+	</external-component-plugins> 
+	
+	<external-component-plugins>
+	  <target-component>org.exoplatform.services.ecm.publication.PublicationService</target-component>      
+	  <component-plugin>
+	    <name>addPublication</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.ecm.publication.plugin.staticdirect.StaticAndDirectPublicationPlugin</type>
+	    <init-params>
+	      <values-param>
+	        <name>StaticAndDirect</name>
+	        <description>StaticAndDirect Publication Plugin</description>
+	      </values-param>
+	    </init-params>
+	  </component-plugin>
+	</external-component-plugins>
+
+</configuration>

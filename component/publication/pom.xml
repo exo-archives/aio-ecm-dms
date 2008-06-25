@@ -6,12 +6,12 @@
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.component.publication.webui.interface</artifactId>
+  <artifactId>exo.ecm.component.publication</artifactId>
   <version>${org.exoplatform.ecm.version}</version>
   <packaging>jar</packaging>
-  <name>eXo Publication interface</name>
+  <name>eXo Publication Service</name>
   <url>http://www.exoplatform.org</url>
-  <description>eXo Publication interface</description>
+  <description>eXo Publication Service</description>
 
   <dependencies>
     <dependency>
@@ -48,13 +48,23 @@
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>
-
+    
     <dependency>
-      <groupId>org.exoplatform.ecm</groupId>
-      <artifactId>exo.ecm.component.cms</artifactId>
-      <version>${org.exoplatform.ecm.version}</version>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.component.resources</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
       <scope>compile</scope>
     </dependency>
+
+
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.core</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+
     
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
@@ -63,6 +73,40 @@
       <scope>compile</scope>
     </dependency>
     
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.api</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all-minimal</artifactId>
+      <version>1.5.4</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rome</groupId>
+      <artifactId>rome</artifactId>
+      <version>0.8</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.totsp.feedpod</groupId>
+      <artifactId>itunes-com-podcast</artifactId>
+      <version>0.2</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ical4j</groupId>
+      <artifactId>ical4j</artifactId>
+      <version>0.9.20</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   
 </project>
