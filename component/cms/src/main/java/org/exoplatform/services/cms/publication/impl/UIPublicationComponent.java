@@ -18,6 +18,7 @@ package org.exoplatform.services.cms.publication.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Locale;
 
 import javax.jcr.Node;
 
@@ -89,12 +90,12 @@ public class UIPublicationComponent extends UIComponent {
 	  }
   }
   
-  public String getLinkStateImage () {
+  public String getLinkStateImage (Locale locale) {
 	  try {
 		  DownloadService dS = getApplicationComponent(DownloadService.class);
 		  PublicationService service = getApplicationComponent(PublicationService.class) ;
 		  
-		  byte[] bytes=service.getStateImage(node_);
+		  byte[] bytes=service.getStateImage(node_,locale);
 		  InputStream iS = new ByteArrayInputStream(bytes);    
 		  String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));
 		  return dS.getDownloadLink(id);

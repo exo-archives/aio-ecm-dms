@@ -48,7 +48,12 @@
 }
 
 </style>
-
+<%
+ import org.exoplatform.portal.webui.util.Util;
+   import java.util.Locale;
+  import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+  
+%>
 <div class="UIPuplication">
   
   <div class="UIFormTabPane">
@@ -111,7 +116,7 @@
 											</td>
 										</tr>
   								</table>
-  								<div style="margin: auto; width: 448px; height: 50px;"><img src="<%=uicomponent.getLinkStateImage()%>" height="34" width="448" border="0" alt=""/><br /></div>
+  								<div style="margin: auto; width: 448px; height: 50px;"><img src="<%=uicomponent.getLinkStateImage(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale())%>" height="34" width="448" border="0" alt=""/><br /></div>
   								<div class="UITrees">
 	  						    <table class="UIGrid">
 										  <thead>
