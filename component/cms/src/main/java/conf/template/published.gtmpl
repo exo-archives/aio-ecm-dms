@@ -1,7 +1,0 @@
-<div>
-	Generic data :<br/>
-	<% uiform.renderChildren() %>
-	<br/>
-	<br/>
-	Specific data : published State
-</div>
