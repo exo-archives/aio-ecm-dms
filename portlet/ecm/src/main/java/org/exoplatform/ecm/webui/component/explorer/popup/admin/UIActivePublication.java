@@ -26,9 +26,6 @@ import javax.jcr.version.Version;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.services.cms.publication.PublicationPresentationService;
-import org.exoplatform.services.cms.publication.PublicationService;
-import org.exoplatform.services.cms.publication.impl.StaticAndDirectPublicationPlugin;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -36,6 +33,9 @@ import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.services.ecm.publication.PublicationService ;
+import org.exoplatform.services.ecm.publication.PublicationPresentationService ;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 
 /**
  * Created by The eXo Platform SAS
@@ -76,7 +76,7 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       context.put("nodeVersionUUID", version.getUUID());
       context.put("visibility", StaticAndDirectPublicationPlugin.PUBLIC);
       
-      publicationService.changeState(currentNode, "published", context);      
+      publicationService.changeState(currentNode, StaticAndDirectPublicationPlugin.PUBLISHED, context);      
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
       UIForm form = publicationPresentationService.getStateUI(currentNode, cont);
       UIPopupWindow popupWindow = uiPopupAction.getChild(UIPopupWindow.class);
@@ -85,7 +85,6 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       popupWindow.setRendered(true);
       popupWindow.setShow(true);
       popupWindow.setResizable(true);      
-      
     }
   }
 
