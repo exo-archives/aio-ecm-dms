@@ -71,8 +71,6 @@ public interface PublicationService {
   public void changeState(Node node, String newState, HashMap<String, String> context) 
   throws NotInPublicationLifecycleException, IncorrectStateUpdateLifecycleException, Exception;
 
-
-
   /**
    * Retrieves an image showing the lifecycle state of the specified Node.
    * The method first inspects the specified Node. If it does not contain
@@ -87,7 +85,7 @@ public interface PublicationService {
    * been registered in any lifecycle yet (in other words, if no publication
    * mixin has been found).
    */
-  public byte[] getStateImage(Node node)throws NotInPublicationLifecycleException ,Exception;
+  public byte[] getStateImage(Node node,Locale locale)throws NotInPublicationLifecycleException ,Exception;
 
   /**
    * Retrieves the name of the publication state corresponding to the

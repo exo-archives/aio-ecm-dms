@@ -99,7 +99,7 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * @return an array of bytes corresponding to the image to be shown to the
    * user
    */
-  public abstract byte[] getStateImage(Node node) throws IOException,FileNotFoundException;
+  public abstract byte[] getStateImage(Node node, Locale locale) throws IOException,FileNotFoundException,Exception;
 
   /**
    * Retrieves description information explaining to the user the current

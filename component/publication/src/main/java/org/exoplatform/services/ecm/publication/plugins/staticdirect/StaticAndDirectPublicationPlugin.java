@@ -75,8 +75,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
 
   public static final String MIXIN_TYPE = "exo:staticAndDirectPublication".intern();
 
-  public static final String IMG_LIFECYCLE = "resources/images/staticAndDirectPublication.gif".intern();
-
+  public static final String IMG_PATH = "resources/images/".intern();
 
   protected static Log log; 
 
@@ -296,12 +295,29 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   }
 
   @Override
-  public byte[] getStateImage(Node node) throws IOException,FileNotFoundException {
+  public byte[] getStateImage(Node node,Locale locale) throws IOException,FileNotFoundException,Exception {
     // TODO Auto-generated method stub
 
     byte[] bytes = null;
-    log.trace("loading file '" + name + "' from file system '" + IMG_LIFECYCLE + "'");
-    InputStream in = this.getClass().getClassLoader().getResourceAsStream(IMG_LIFECYCLE);
+    String fileName= "staticAndDirect";
+    String currentState = node.getProperty(CURRENT_STATE).getString();
+    if (currentState.equals(PUBLISHED)) {
+      fileName+="Published";
+    } else {
+      fileName+="Unpublished";
+    }
+    //should never be in state enrolled
+    
+    //add language
+    String fileNameLocalized =fileName+"_"+locale.getLanguage();
+    String completeFileName=IMG_PATH+fileNameLocalized+".gif";
+    log.trace("loading file '" + name + "' from file system '" + completeFileName + "'");
+    
+    InputStream in = this.getClass().getClassLoader().getResourceAsStream(completeFileName);
+    if (in==null) {
+      completeFileName=IMG_PATH+fileName+".gif";
+      in = this.getClass().getClassLoader().getResourceAsStream(completeFileName);
+    }
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     transfer(in, out);
     bytes = out.toByteArray();

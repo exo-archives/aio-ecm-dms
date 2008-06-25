@@ -227,15 +227,17 @@ public class PublicationServiceImpl implements PublicationService {
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#getStateImage(javax.jcr.Node)
    */
-  public byte[] getStateImage(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("###################");
-    log.info("#  getStateImage  #");
-    log.info("###################\n");
-    if (!isNodeEnrolledInLifecycle(node)) throw new NotInPublicationLifecycleException();
-    String lifecycleName=getNodeLifecycleName(node);
-    PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
-    return nodePlugin.getStateImage(node);
+  public byte[] getStateImage(Node node,Locale locale) throws NotInPublicationLifecycleException, Exception {
+//  log.info("###################");
+//  log.info("#  getStateImage  #");
+//  log.info("###################\n");    
+  if (!isNodeEnrolledInLifecycle(node)) {
+    throw new NotInPublicationLifecycleException();      
   }
+  String lifecycleName = getNodeLifecycleName(node);
+  PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
+  return nodePlugin.getStateImage(node, locale);
+}
 
 
   /* (non-Javadoc)
