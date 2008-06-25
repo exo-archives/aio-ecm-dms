@@ -13,13 +13,14 @@
     <module>component/workflow/impl/jbpm/facade</module>
 
     <module>component/cms</module>
+	<module>component/publication</module>
 
     <module>bp</module>
 
     <module>web/rest</module>
     <module>portlet/ecm</module>
+    <!--module>webui/ecm</module-->
     <module>portlet/workflow</module>
-
     <module>web/ecmportal</module>
     <module>server/tomcat/patch</module>
   </modules>
