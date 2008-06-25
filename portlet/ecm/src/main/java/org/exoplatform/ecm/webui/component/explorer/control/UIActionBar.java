@@ -33,9 +33,6 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
@@ -93,6 +90,9 @@ import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.ecm.publication.PublicationPresentationService;
+import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -110,9 +110,6 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.services.ecm.publication.PublicationService ;
-import org.exoplatform.services.ecm.publication.PublicationPresentationService ;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 
 /**
  * Created by The eXo Platform SARL
