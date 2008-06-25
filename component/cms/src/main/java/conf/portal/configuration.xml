@@ -148,29 +148,6 @@
     <type>org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService</type>
   </component>
   
-  <component>
-    <key>org.exoplatform.services.cms.publication.PublicationService</key>
-    <type>org.exoplatform.services.cms.publication.impl.PublicationServiceImpl</type>
-    <component-plugins>
-    	<component-plugin>
-	    <name>StaticAndDirect</name>
-	    <set-method>addPublicationPlugin</set-method>
-	    <type>org.exoplatform.services.cms.publication.impl.StaticAndDirectPublicationPlugin</type>
-	    <init-params>
-	      <values-param>
-	    		<name>StaticAndDirect</name>
-	    		<description>This publication lifecycle keeps the content at their original place. Any version of the Node can be published.</description>
-	      </values-param>
-	    </init-params>
-	  </component-plugin>
-    </component-plugins>
-  </component>
-  
-  <component>
-    <key>org.exoplatform.services.cms.publication.PublicationPresentationService</key>
-    <type>org.exoplatform.services.cms.publication.impl.PublicationPresentationServiceImpl</type>
-  </component>
-  
    <!-- component>
     <key>org.exoplatform.services.resources.LocaleConfigService</key>
     <type>org.exoplatform.services.resources.impl.LocaleConfigServiceImpl</type>
@@ -250,23 +227,6 @@
 	  </component-plugin>
 	</external-component-plugins> 
 	
-	
-	<external-component-plugins>
-	  <target-component>org.exoplatform.services.publication.PublicationService</target-component>      
-	  <component-plugin>
-	    <name>addPublication</name>
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.publication.impl.StaticAndDirectPublicationPlugin</type>
-	    <init-params>
-	      <values-param>
-	        <name>StaticAndDirect</name>
-	        <description>StaticAndDirect Publication Plugin</description>
-	      </values-param>
-	    </init-params>
-	  </component-plugin>
-	</external-component-plugins>
-
-
   <!-- Configures live time for query service cache -->
   <external-component-plugins>
     <target-component>org.exoplatform.services.cache.CacheService</target-component>

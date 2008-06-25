@@ -41,7 +41,7 @@ import org.exoplatform.webui.form.UIForm;
 public class PublicationPresentationServiceImpl implements PublicationPresentationService {
 
   protected static Log log;
-  private Map<String, PublicationPlugin> publicationPlugins_;
+  private Map<String, PublicationPlugin> publicationPlugins_ = new HashMap<String,PublicationPlugin>();
 
   public PublicationPresentationServiceImpl () {
     log = ExoLogger.getLogger("portal:PublicationPresentationServiceImpl");

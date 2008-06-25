@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.services.ecm.publication.plugin.staticdirect;
+package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -36,7 +36,7 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
  */
 @ComponentConfig (
     lifecycle = UIApplicationLifecycle.class,
-    template = "classpath:conf/templates/staticredirect/publication.gtmpl"
+    template = "classpath:resources/templates/staticdirect/publication.gtmpl"
 )
 
 public class UIPublicationComponent extends UIComponent {

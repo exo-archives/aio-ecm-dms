@@ -1,4 +1,4 @@
-package org.exoplatform.services.ecm.publication.plugin.staticdirect;
+package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 
 import javax.jcr.Node;
 
@@ -9,13 +9,13 @@ import org.exoplatform.webui.form.UIForm;
 
 @ComponentConfig (
     lifecycle = UIApplicationLifecycle.class,
-    template = "classpath:conf/templates/staticdirect/nonPublished.gtmpl"
+    template = "classpath:resources/templates/staticdirect/published.gtmpl"
 )
-public class UINonPublishedForm extends UIForm {
+public class UIPublishedForm extends UIForm {
 
   private Node node_;
 
-  public UINonPublishedForm() throws Exception {
+  public UIPublishedForm() throws Exception {
     addChild(UIPublicationComponent.class, null, null);
   }
 

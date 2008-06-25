@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.services.ecm.publication.plugin.staticdirect;
+package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -75,12 +75,12 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
 
   public static final String MIXIN_TYPE = "exo:staticAndDirectPublication".intern();
 
-  public static final String IMG_LIFECYCLE = "conf/images/staticAndDirectPublication.gif".intern();
+  public static final String IMG_LIFECYCLE = "resources/images/staticAndDirectPublication.gif".intern();
 
 
   protected static Log log; 
 
-  private final String localeFile = "locale.ecm.cms.publication.PublicationService";
+  private final String localeFile = "resources.locale.publication.PublicationService";
 
   public StaticAndDirectPublicationPlugin() {
     log = ExoLogger.getLogger("portal:StaticAndDirectPublicationPlugin");
