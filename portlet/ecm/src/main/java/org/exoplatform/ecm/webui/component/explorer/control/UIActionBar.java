@@ -56,6 +56,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActivePublication;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UICategoriesAddedList;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UICategoryManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIExportNode;
@@ -705,78 +706,84 @@ public class UIActionBar extends UIForm {
       if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      if(uiExplorer.nodeIsLocked(currentNode)) {
-        Object[] arg = { currentNode.getPath() } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      if (uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }      
-      if(currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIActivateVersion.class, 400) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
+      if (currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
+        uiPopupAction.activate(UIActivateVersion.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
       }
       if (currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIVersionInfo.class, null, 700, 500) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
+        uiPopupAction.activate(UIVersionInfo.class, null, 700, 500);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
       }
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     }
   }
   
   static public class ManagePublicationsActionListener extends EventListener<UIActionBar> {
 	    public void execute(Event<UIActionBar> event) throws Exception {
-	      UIActionBar uiActionBar = event.getSource() ;
-	      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
-	      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-	      Node currentNode = uiExplorer.getCurrentNode() ;
-	      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
-	      uiExplorer.setIsHidePopup(false) ;
+	      UIActionBar uiActionBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+	      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+	      Node currentNode = uiExplorer.getCurrentNode();
+	      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+	      uiExplorer.setIsHidePopup(false);
 	      
-	      if(currentNode.equals(uiExplorer.getRootNode())) {
-	        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-publication-rootnode", null)) ;
-	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-	        return ;
+	      if (currentNode.equals(uiExplorer.getRootNode())) {
+	        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-publication-rootnode", null));
+	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+	        return;
 	      }
-	      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+	      if (!Utils.isSetPropertyNodeAuthorized(currentNode)) {
 	        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-	            ApplicationMessage.WARNING)) ;
+	            ApplicationMessage.WARNING));
 	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-	        return ;
+	        return;
 	      }
-	      if(uiExplorer.nodeIsLocked(currentNode)) {
+	      if (uiExplorer.nodeIsLocked(currentNode)) {
 	        Object[] arg = { currentNode.getPath() } ;
 	        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
 	        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
 	        return ;
 	      }  
+        if (!currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
+          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.miss-versionable", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;          
+          return ;
+        }
+                
 	      PublicationService publicationService = uiActionBar.getApplicationComponent(PublicationService.class);
-	      PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);
-	      //this is to state inclusion of panel in UI
-	      //TODO : change to correct code
+	      PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);	      
 	      
-	      if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {
-	    	  publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
+	      if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {          
+          uiPopupAction.activate(UIActivePublication.class, 400);
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+          return;	    	  
 	      }
 	      Version version = currentNode.checkin();
 	      currentNode.checkout();
 	      
-	      HashMap<String,String> context=new HashMap<String,String>();
+	      HashMap<String,String> context = new HashMap<String,String>();
 	      context.put("nodeVersionUUID", version.getUUID());
 	      context.put("visibility", StaticAndDirectPublicationPlugin.PUBLIC);
 	      
 	      publicationService.changeState(currentNode, "published", context);
 	      
 	      UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
-	      UIForm form=publicationPresentationService.getStateUI(currentNode,cont);
+	      UIForm form = publicationPresentationService.getStateUI(currentNode, cont);
 	      UIPopupWindow popupWindow = uiPopupAction.getChild(UIPopupWindow.class);
 	      popupWindow.setUIComponent(form);
-	      popupWindow.setWindowSize(400, 400);
+	      popupWindow.setWindowSize(600, 600);
 	      popupWindow.setRendered(true);
 	      popupWindow.setShow(true);
 	      popupWindow.setResizable(true);

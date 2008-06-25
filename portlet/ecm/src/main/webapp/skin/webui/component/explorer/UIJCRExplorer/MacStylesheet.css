@@ -827,6 +827,14 @@
 	margin: 10px;
 }
 
+/*====================================UIActivePublication==================================*/
+
+.UIJCRExplorer .UIActivePublication {
+	border: solid 1px #b7b7b7;
+	background: url('MacSkin/background/Background1x4.png') repeat;
+	margin: 10px;
+}
+
 /*====================================UIActivateAuditing==================================*/
 
 .UIJCRExplorer .UIActivateAuditing {

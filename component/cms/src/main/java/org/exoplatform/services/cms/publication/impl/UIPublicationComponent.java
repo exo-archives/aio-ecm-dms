@@ -21,16 +21,12 @@ import java.io.InputStream;
 
 import javax.jcr.Node;
 
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.services.cms.publication.PublicationService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
-import org.exoplatform.webui.form.UIForm;
 
 /**
  * Created by The eXo Platform SAS
@@ -46,8 +42,7 @@ import org.exoplatform.webui.form.UIForm;
 public class UIPublicationComponent extends UIComponent {
 
   private Node node_;
-  
-  
+   
   public UIPublicationComponent() throws Exception {
     
   }
@@ -56,6 +51,9 @@ public class UIPublicationComponent extends UIComponent {
     this.node_=node;
   }
   
+  public Node getNode() {
+    return this.node_;
+  }
   
   public void setNode(Node node) {
     this.node_=node;
@@ -104,6 +102,6 @@ public class UIPublicationComponent extends UIComponent {
 		  e.printStackTrace();
 		  return "Error in getStateImage";
 	  }
-
   }
+  
 }

@@ -30,6 +30,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 
+
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.publication.AlreadyInPublicationLifecycleException;
@@ -124,6 +125,7 @@ public class PublicationServiceImpl implements PublicationService {
     
     this.publicationPlugins_.put(p.getLifecycleName(),p);
     publicationPresentationService.addPublicationPlugin(p);
+    
   }
 
   /* (non-Javadoc)
@@ -228,8 +230,7 @@ public class PublicationServiceImpl implements PublicationService {
       String lifecycleName=getNodeLifecycleName(node);
       PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
       return nodePlugin.getNodeLifecycleDesc(node);
-    }
-    
+    }        
   }
 
   /* (non-Javadoc)
@@ -264,14 +265,13 @@ public class PublicationServiceImpl implements PublicationService {
   public byte[] getStateImage(Node node) throws NotInPublicationLifecycleException, Exception {
 //    log.info("###################");
 //    log.info("#  getStateImage  #");
-//    log.info("###################\n");
+//    log.info("###################\n");    
     if (!isNodeEnrolledInLifecycle(node)) {
-      throw new NotInPublicationLifecycleException();
-    } else {
-      String lifecycleName=getNodeLifecycleName(node);
-      PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
-      return nodePlugin.getStateImage(node);
+      throw new NotInPublicationLifecycleException();      
     }
+    String lifecycleName = getNodeLifecycleName(node);
+    PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
+    return nodePlugin.getStateImage(node);
   }
 
 

@@ -780,6 +780,14 @@
 	background: #efefef;
 }
 
+/*====================================UIActivePublication==================================*/
+
+.UIJCRExplorer .UIActivePublication {
+	border: solid 1px #b7b7b7;
+	margin: 10px;
+	background: #efefef;
+}
+
 /*====================================UIActivateAuditing==================================*/
 
 .UIJCRExplorer .UIActivateAuditing {

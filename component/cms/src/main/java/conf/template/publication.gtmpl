@@ -63,9 +63,8 @@
 			              <div class="SelectedTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab">
-			                    	<div class="TabIcon AccountIcon"><span></span></div>
-			                    	<a href="#" class="Title">State</a>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">
+			                    	<div class="TabIcon AccountIcon"><%=_ctx.appRes("UIPopupWindow.title.UIPublishedForm.State")%></div>
 			                    	<div style="clear:left;"><span></span></div>
 			                    </div>
 			                  </div>
@@ -74,9 +73,8 @@
 			              <div class="NormalTab">
 			                <div class="LeftTab">
 			                  <div class="RightTab">                
-			                    <div class="MiddleTab">
-			                    	<div class="TabIcon AccountIcon"><span></span></div>
-			                    	<a href="#" class="Title">History</a>
+			                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this);">
+			                    	<div class="TabIcon AccountIcon"><%=_ctx.appRes("UIPopupWindow.title.UIPublishedForm.History")%></div>			                    	
 			                    	<div style="clear:left;"><span></span></div>
 			                    </div>
 			                  </div>
@@ -89,7 +87,7 @@
 				  </div>
 	      </div>
 	      <div class="UITabContentContainer">
-	        <div class="UITabContent" >
+	        <div class="UITabContent" style="display: block;">
         		<div class="UIForm State">
         			<div class="HorizontalLayout">
 								<div class="FormContainer">
@@ -215,7 +213,10 @@
 	  						</div>
 	  					</div>
         		</div>
-	        </div>
+	        </div>	  
+	        <div class="UITabContent" style="display: none;">
+        		abcdefegegaegnaejgkangjka
+	        </div>	        	        
 	      </div>  
 		  </div>  
 		</div>  

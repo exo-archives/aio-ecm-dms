@@ -20,13 +20,8 @@ public class UIPublishedForm extends UIForm {
    }
 	
 	public void setNode(Node node) {
-	   this.node_=node;
+	   this.node_ = node;
 	   getChild(UIPublicationComponent.class).setNode(node);
 	 }
-	
-	
-   
-	
-		
 	
 }
