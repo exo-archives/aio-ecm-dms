@@ -18,7 +18,6 @@ package org.exoplatform.ecm.webui.component.explorer.publication;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
-import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
@@ -45,6 +44,7 @@ public class UIVersionTreeList extends UIContainer {
   protected VersionNode rootVersion_ ;
   protected VersionNode curentVersion_;
   protected Node node_ ;
+  private boolean isSelectedBaseVersion_ = true ;
   
   public UIVersionTreeList() throws Exception {
     
@@ -60,11 +60,7 @@ public class UIVersionTreeList extends UIContainer {
     node_ = currentNode;   
     rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion());
     curentVersion_ = rootVersion_;
-  }
-  
-  public String[] getVersionLabels(VersionNode version) throws Exception {
-    VersionHistory vH = node_.getVersionHistory();
-    return vH.getVersionLabels(version.getVersion());   
+    
   }
   
   public boolean isBaseVersion(VersionNode versionNode) throws Exception {
@@ -74,6 +70,7 @@ public class UIVersionTreeList extends UIContainer {
   
   public boolean isSelectedVersion(VersionNode versionNode) throws Exception {
     if(curentVersion_.equals(versionNode)) return true ;
+    else if(isBaseVersion(versionNode) && isSelectedBaseVersion_) return true ;
     return false ;
   }
   
@@ -96,6 +93,7 @@ public class UIVersionTreeList extends UIContainer {
       UIVersionTreeList uiVersionTreeList = event.getSource() ;
       String versionPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiVersionTreeList.curentVersion_  = uiVersionTreeList.rootVersion_.findVersionNode(versionPath) ;
+      uiVersionTreeList.isSelectedBaseVersion_ = false ;
       UIPublicationContainer uiPublicationContainer = uiVersionTreeList.getParent() ;
       UIPublicationForm uiForm = uiPublicationContainer.getChild(UIPublicationForm.class) ;
       uiForm.updateForm(uiVersionTreeList.curentVersion_) ;
