@@ -50,10 +50,10 @@ import org.exoplatform.services.resources.ResourceBundleService;
  */ 
 public class PublicationServiceImpl implements PublicationService {
 
-  private static final String PUBLICATION = "exo:publication".intern();
-  private static final String LIFECYCLE_NAME = "exo:lifecycleName".intern();
-  private static final String CURRENT_STATE = "exo:currentState".intern();
-  private static final String HISTORY = "exo:history".intern();
+  private static final String PUBLICATION = "publication:publication".intern();
+  private static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
+  private static final String CURRENT_STATE = "publication:currentState".intern();
+  private static final String HISTORY = "publication:history".intern();
 
   protected static Log log;  
   private PublicationPresentationService publicationPresentationService;
