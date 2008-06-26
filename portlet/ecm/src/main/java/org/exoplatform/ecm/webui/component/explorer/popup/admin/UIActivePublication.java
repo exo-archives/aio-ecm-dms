@@ -26,7 +26,9 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
@@ -80,12 +82,18 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
       UIPublicationManager uiPublicationManager = 
-        uiExplorer.createUIComponent(UIPublicationManager.class, null, null) ;
+        uiExplorer.createUIComponent(UIPublicationManager.class, null, null);
       UIPublicationContainer uiPublicationContainer = 
-        uiPublicationManager.getChild(UIPublicationContainer.class) ;
-      uiPublicationContainer.addChild(uiForm) ;
-      uiPublicationContainer.initChild() ;
+        uiPublicationManager.getChild(UIPublicationContainer.class);
+      uiPublicationContainer.addChild(uiForm);
+      uiPublicationContainer.initChild();
+      UIPublicationLogList uiPublicationLogList = 
+        uiPublicationManager.getChild(UIPublicationLogList.class);
       uiPopupAction.activate(uiPublicationManager, 700, 500) ;      
+      uiPublicationLogList.updateGrid();
+      
+      UIVersionTreeList uiVersionTreeList = uiPublicationContainer.getChild(UIVersionTreeList.class);
+      uiVersionTreeList.initVersion(currentNode);
     }
   }
 

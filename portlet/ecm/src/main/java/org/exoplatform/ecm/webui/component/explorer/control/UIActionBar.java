@@ -72,7 +72,9 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataCon
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
@@ -784,8 +786,14 @@ public class UIActionBar extends UIForm {
       UIPublicationContainer uiPublicationContainer = 
         uiPublicationManager.getChild(UIPublicationContainer.class) ;
       uiPublicationContainer.addChild(uiForm) ;
-      uiPublicationContainer.initChild() ;
-      uiPopupAction.activate(uiPublicationManager, 700, 500) ;
+      uiPublicationContainer.initChild();
+      UIPublicationLogList uiPublicationLogList = 
+        uiPublicationManager.getChild(UIPublicationLogList.class);
+      UIVersionTreeList uiVersionTreeList = 
+        uiPublicationContainer.getChild(UIVersionTreeList.class);
+      uiPopupAction.activate(uiPublicationManager, 700, 500);
+      uiPublicationLogList.updateGrid() ;
+      uiVersionTreeList.initVersion(currentNode);
     }
   }
 

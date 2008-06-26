@@ -1,14 +1,44 @@
+<%	
+	import org.exoplatform.ecm.jcr.model.VersionNode;
+
+	VersionNode rootNode = uicomponent.getRootVersionNode() ;  
+  public void writeNodes(List nodes, int level) {
+  	boolean even = true ;
+  	int n = 0;
+  	for (node in nodes) {  		  			  		
+    	println("<tr class=\"EvenRow\"><td align=\"center\"><div class=\"ItemIcon TrueIcon\"></div></td>");
+  	  println("<td class=\"text\"><div class=\"Node\">");  		      	
+    	if (node.getChildrenSize() > 0) {
+    		println("<div class=\"CollapseIcon\">");
+  	  } else {
+  		  println("<div class=\"ExpandIcon\">");
+    	}	     
+			String show = "Version: " + node.getName();					
+			println(show);					
+			println("</div></div></td><td align=\"center\">");
+			println("<div class=\"ItemIcon UnPublishedicon\">");					
+			println("</div></td></tr>");							
+    	if (node.getChildrenSize() > 0) writeNodes(node.getChildren(), level + 1) ;  		
+	  }  	
+  }
+%>
 <div class="UIVersionTreeList">
 	<div class="UITrees">
     <table class="UIGrid">
 		  <thead>
 			  <tr>
 					<th width="40"></th>
-					<th >Version</th>
-					<th width="40">State</th>
+					<th><%=_ctx.appRes("UIVersionTreeList.header.version")%></th>
+					<th width="40"><%=_ctx.appRes("UIVersionTreeList.header.state")%></th>
 				</tr>
 			 </thead>
 			 <tbody>
+			 
+			 <%
+					writeNodes(rootNode.getChildren(), 0 );
+				  uicomponent.renderChildren(); 
+			 %>
+			 <!--
 				<tr class="EvenRow">
 					<td align="center">
 							<div class="ItemIcon TrueIcon"></div>
@@ -74,7 +104,9 @@
 						</a>
 					</td>
 				</tr>
+				-->
 			</tbody>
 		</table>
 	</div>
 </div>
+

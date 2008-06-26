@@ -16,7 +16,13 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.publication;
 
+import javax.jcr.Node;
+import javax.jcr.version.VersionHistory;
+
+import org.exoplatform.ecm.jcr.model.VersionNode;
+import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 
 /**
@@ -28,12 +34,38 @@ import org.exoplatform.webui.core.UIContainer;
 @ComponentConfig(
     template = "app:/groovy/webui/component/explorer/publication/UIVersionTreeList.gtmpl",
     events = {
+//        @EventConfig(listeners = UIVersionTreeList.SelectActionListener.class)
     }
 )
 public class UIVersionTreeList extends UIContainer {
+  
+  protected VersionNode rootVersion_ ;
+  protected VersionNode curentVersion_;
+  protected Node node_ ;
   
   public UIVersionTreeList() throws Exception {
     
   }
   
+  public VersionNode getRootVersionNode() throws Exception {  return rootVersion_ ; }
+  
+  public VersionNode getCurrentVersionNode() { return curentVersion_ ; }
+  
+  public Node getCurrentNode() { return node_ ; }
+  
+  public void initVersion(Node currentNode) throws Exception {
+    node_ = currentNode;   
+    rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion());
+    curentVersion_ = rootVersion_;
+  }
+  
+  public String[] getVersionLabels(VersionNode version) throws Exception {
+    VersionHistory vH = node_.getVersionHistory();
+    return vH.getVersionLabels(version.getVersion());   
+  }
+  
+  public boolean isBaseVersion(VersionNode versionNode) throws Exception {
+    if (node_.getBaseVersion().getName().equals(versionNode.getVersion().getName())) return true ;
+    return false ;
+  }
 }

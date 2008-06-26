@@ -16,11 +16,21 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.publication;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Node;
+
+import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.ecm.publication.NotInPublicationLifecycleException;
+import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -31,6 +41,7 @@ import org.exoplatform.webui.core.UIPageIterator;
 @ComponentConfig(
     template = "app:/groovy/webui/component/explorer/publication/UIPublicationLogList.gtmpl",
     events = {
+        @EventConfig(listeners = UIPublicationLogList.CloseActionListener.class)
     }
 )
 public class UIPublicationLogList extends UIComponentDecorator {
@@ -42,9 +53,62 @@ public class UIPublicationLogList extends UIComponentDecorator {
     setUIComponent(uiPageIterator_) ;
   }
   
+  public List<HistoryBean> getLog() throws NotInPublicationLifecycleException, Exception {
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+    String[][] array = publicationService.getLog(currentNode);
+    List<HistoryBean> list = new ArrayList<HistoryBean>();    
+    for (int i = 0; i < array.length; i++) {
+      HistoryBean bean = new HistoryBean();
+      bean.setDate(array[i][0]);
+      bean.setNewState(array[i][1]);
+      bean.setUser(array[i][2]);
+      bean.setDescription(array[i][3]);
+      bean.setVersion(array[i][4]);
+      bean.setVisibility(array[i][5]);
+      list.add(bean); 
+    }
+    return list;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public void updateGrid() throws Exception {   
+    ObjectPageList objPageList = new ObjectPageList(getLog(), 10) ;
+    uiPageIterator_.setPageList(objPageList) ;
+  }
+  
   public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
   
   public List getLogList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
 
   public String[] getActions() {return new String[]{"Close"} ;}
+  
+  static public class CloseActionListener extends EventListener<UIPublicationLogList> {
+    public void execute(Event<UIPublicationLogList> event) throws Exception {      
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      uiExplorer.cancelAction();
+    }
+  }
+  
+  public class HistoryBean {
+    private String date;
+    private String newState;
+    private String user;
+    private String description;
+    private String version;
+    private String visibility;
+    
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getNewState() { return newState; }
+    public void setNewState(String newState) { this.newState = newState; }
+    public String getUser() { return user; }
+    public void setUser(String user) { this.user = user; }
+    public String getVersion() { return version; }
+    public void setVersion(String version) { this.version = version; }
+    public String getVisibility() { return visibility; }
+    public void setVisibility(String visibility) { this.visibility = visibility; }
+  }
 }
