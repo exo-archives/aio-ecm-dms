@@ -32,6 +32,9 @@
 	  }  	
   }
 %>
+<%
+  if(rootNode != null) {
+%>
 <div class="UIVersionTreeList">
 	<div class="UITrees">
     <table class="UIGrid">
@@ -119,4 +122,5 @@
 		</table>
 	</div>
 </div>
+<%}%>
 

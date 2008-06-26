@@ -798,6 +798,7 @@ public class UIActionBar extends UIForm {
       uiPublicationLogList.updateGrid() ;
       uiVersionTreeList.initVersion(currentNode);
       uiPublicationForm.initForm(currentNode) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
 
