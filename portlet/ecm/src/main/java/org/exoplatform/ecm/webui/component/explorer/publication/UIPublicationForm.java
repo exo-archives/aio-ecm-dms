@@ -17,14 +17,16 @@
 package org.exoplatform.ecm.webui.component.explorer.publication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
+import javax.jcr.Value;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
-import org.exoplatform.ecm.webui.component.admin.drives.UIDriveInputSet;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -52,55 +54,82 @@ import org.exoplatform.webui.form.UIFormRadioBoxInput;
 )
 public class UIPublicationForm extends UIForm {
   
-  final static public String VISIBILITY = "visibility" ;
-  final static public String STATE = "state" ;
+  final static public String VISIBILITY = "visibility".intern();
+  final static public String STATE = "state".intern();
   
   private VersionNode curentVersion_ ;
   private VersionNode rootVersion_ ;
   private Node currentNode_ ;
+  private String visibility_ ;
+  private String state_ ;
   
   public UIPublicationForm() throws Exception {
+  }
+  
+  public void updateForm(VersionNode versionNode) throws Exception {
+    String state = getStateByVersion(versionNode) ;
+    resetCurrentState(state, visibility_) ;
+  }
+  
+  public void resetCurrentState(String state, String visibility) throws Exception {
     RequestContext context = RequestContext.getCurrentInstance() ;
     ResourceBundle res = context.getApplicationResourceBundle() ;
     String published = res.getString("UIPublicationForm.label.published") ;
     String non_published = res.getString("UIPublicationForm.label.non-published") ;
     String lblPublic = res.getString("UIPublicationForm.label.public") ;
     String lblPrivate = res.getString("UIPublicationForm.label.private") ;
-    
+    removeChildById(VISIBILITY) ;
+    removeChildById(STATE) ;
     List<SelectItemOption<String>> visibilityOptions = new ArrayList<SelectItemOption<String>>() ;
-    visibilityOptions.add(new SelectItemOption<String>(lblPublic, lblPublic)) ;
-    visibilityOptions.add(new SelectItemOption<String>(lblPrivate, lblPrivate)) ;
-    addUIFormInput(new UIFormRadioBoxInput(VISIBILITY, VISIBILITY, visibilityOptions).
+    visibilityOptions.add(new SelectItemOption<String>(lblPublic, StaticAndDirectPublicationPlugin.PUBLIC)) ;
+    visibilityOptions.add(new SelectItemOption<String>(lblPrivate, StaticAndDirectPublicationPlugin.PRIVATE)) ;
+    addUIFormInput(new UIFormRadioBoxInput(VISIBILITY, visibility, visibilityOptions).
         setAlign(UIFormRadioBoxInput.HORIZONTAL_ALIGN)) ;
     
     List<SelectItemOption<String>> stateOptions = new ArrayList<SelectItemOption<String>>() ;
-    stateOptions.add(new SelectItemOption<String>(published, published)) ;
-    stateOptions.add(new SelectItemOption<String>(non_published, non_published)) ;
-    addUIFormInput(new UIFormRadioBoxInput(STATE, STATE, stateOptions).
+    stateOptions.add(new SelectItemOption<String>(published, StaticAndDirectPublicationPlugin.PUBLISHED)) ;
+    stateOptions.add(new SelectItemOption<String>(non_published, StaticAndDirectPublicationPlugin.NON_PUBLISHED)) ;
+    addUIFormInput(new UIFormRadioBoxInput(STATE, state, stateOptions).
         setAlign(UIFormRadioBoxInput.HORIZONTAL_ALIGN)) ;
+  }
+  
+  public String getStateByVersion(VersionNode versionNode) throws Exception {
+    Value[] publicationStates =  currentNode_.getProperty(StaticAndDirectPublicationPlugin.VERSIONS_PUBLICATION_STATES).getValues() ;
+    for(Value value : publicationStates) {
+      String[] arrPublicationState = value.getString().split(",") ;
+      for(int i=0; i < arrPublicationState.length; i++) {
+        if(arrPublicationState[0].equals(versionNode.getVersion().getUUID())) {
+          return arrPublicationState[1];
+        }
+      }
+    }
+    return "";
   }
   
   public void initForm(Node currentNode) throws Exception {
     currentNode_ = currentNode;   
     rootVersion_ = new VersionNode(currentNode_.getVersionHistory().getRootVersion());
     curentVersion_ = rootVersion_;
-    String currentState = 
-      currentNode_.getProperty(StaticAndDirectPublicationPlugin.VISIBILITY).getString() ;
-    ((UIFormRadioBoxInput)getUIInput(VISIBILITY)).setValue(currentState) ;
+    visibility_ = currentNode_.getProperty(StaticAndDirectPublicationPlugin.VISIBILITY).getString() ;
+    state_ = currentNode_.getProperty(StaticAndDirectPublicationPlugin.CURRENT_STATE).getString() ;
+    resetCurrentState(state_, visibility_) ;
   }
   
   public void setVersionNode(VersionNode versionNode) {
     curentVersion_ = versionNode ;
   }
   
-  public void setCurrentState() {
-    
-  }
-  
   static public class SaveActionListener extends EventListener<UIPublicationForm> {
     public void execute(Event<UIPublicationForm> event) throws Exception {
       UIPublicationForm uiForm = event.getSource() ;
       String visibility = uiForm.<UIFormRadioBoxInput>getUIInput(VISIBILITY).getValue() ;
+      String state = uiForm.<UIFormRadioBoxInput>getUIInput(STATE).getValue() ;
+      PublicationService publicationService = uiForm.getApplicationComponent(PublicationService.class);
+      HashMap<String,String> context = new HashMap<String,String>();
+      context.put("nodeVersionUUID", uiForm.curentVersion_.getVersion().getUUID());
+      context.put("visibility", visibility);
+      publicationService.changeState(uiForm.currentNode_, state, context) ;
+      uiForm.getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
     }
   }
   

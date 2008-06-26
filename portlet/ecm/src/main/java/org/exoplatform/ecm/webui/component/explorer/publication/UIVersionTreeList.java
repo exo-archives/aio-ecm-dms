@@ -96,6 +96,10 @@ public class UIVersionTreeList extends UIContainer {
       UIVersionTreeList uiVersionTreeList = event.getSource() ;
       String versionPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiVersionTreeList.curentVersion_  = uiVersionTreeList.rootVersion_.findVersionNode(versionPath) ;
+      UIPublicationContainer uiPublicationContainer = uiVersionTreeList.getParent() ;
+      UIPublicationForm uiForm = uiPublicationContainer.getChild(UIPublicationForm.class) ;
+      uiForm.updateForm(uiVersionTreeList.curentVersion_) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPublicationContainer.getParent()) ;
     }
   }
 }
