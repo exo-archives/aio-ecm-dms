@@ -12,39 +12,24 @@
   <description>
     This application is a portlet. It can not be used outside a portal.
     This web.xml file is mandatory in each .par archive file.
-  </description>	
-	
-  <filter>
-    <filter-name>JcrFilter</filter-name>
-    <filter-class>org.exoplatform.frameworks.jcr.web.SimpleSessionFactoryInitializedFilter</filter-class>
-  </filter>  
+  </description>		   
   
   <filter>
     <filter-name>ResourceRequestFilter</filter-name>
     <filter-class>org.exoplatform.portal.application.ResourceRequestFilter</filter-class>
   </filter>
-  
-  <!-- setCurrentContainer and setCurrentIdentity -->
-  <filter>
-    <filter-name>SetCurrentIdentityFilter</filter-name>
-    <filter-class>org.exoplatform.services.security.web.SetCurrentIdentityFilter</filter-class>
-  </filter>
-  
+     
   <filter-mapping>
-    <filter-name>JcrFilter</filter-name>
-    <url-pattern>/repository/*</url-pattern>
+    <filter-name>ResourceRequestFilter</filter-name>
+    <url-pattern>/javascript/*</url-pattern>
   </filter-mapping>
+
 
   <filter-mapping>
     <filter-name>ResourceRequestFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  
-  <filter-mapping>
-    <filter-name>SetCurrentIdentityFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  	
+    <url-pattern>/css/*</url-pattern>
+  </filter-mapping>    
+    	
   <listener>
     <listener-class>org.exoplatform.services.portletcontainer.impl.servlet.PortletApplicationListener</listener-class>
   </listener>
