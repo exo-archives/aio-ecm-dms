@@ -16,7 +16,6 @@
  */
 package org.exoplatform.services.cms.queries.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,10 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFactory;
@@ -36,8 +33,6 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.poi.util.StringUtil;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -56,8 +51,6 @@ import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
 
 public class QueryServiceImpl implements QueryService, Startable{
-  
-  private static final String DATE_PARAMETER = "${Date}$".intern();  
   private static final String[] perms = {PermissionType.READ, PermissionType.ADD_NODE, 
     PermissionType.SET_PROPERTY, PermissionType.REMOVE };
   private String relativePath_;  
@@ -214,36 +207,38 @@ public class QueryServiceImpl implements QueryService, Startable{
   public void addSharedQuery(String queryName, String statement, String language, 
       String[] permissions, boolean cachedResult, String repository) throws Exception {
     Session session = getSession(repository);
-    ValueFactory vt = session.getValueFactory();    
+    ValueFactory vt = session.getValueFactory();
+    String queryPath ;
     List<Value> perm = new ArrayList<Value>() ;                 
     for(String permission : permissions) {
       Value vl = vt.createValue(permission) ;
       perm.add(vl) ;
     }
     Value[] vls = perm.toArray(new Value[] {}) ;
+
     String queriesPath = baseQueriesPath_ ;
     Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
-    String queryPath ;
-    Node query = null;
-    try{
-     query = queryHome.getNode(queryName);     
-     query.setProperty("jcr:language", language) ;
-     query.setProperty("jcr:statement", statement) ;
-     query.setProperty("exo:permissions", vls) ;
-     query.setProperty("exo:cachedResult", cachedResult) ;
-     query.save() ;     
-     queryPath = query.getPath() ;
-    }catch (PathNotFoundException e) {
-      query = queryHome.addNode(queryName,"nt:query");
+    QueryManager queryManager = session.getWorkspace().getQueryManager() ;
+    queryManager.createQuery(statement, language) ;
+    if(queryHome.hasNode(queryName)) {
+      Node query = queryHome.getNode(queryName) ;
       query.setProperty("jcr:language", language) ;
       query.setProperty("jcr:statement", statement) ;
-      query.addMixin("mix:sharedQuery") ;      
       query.setProperty("exo:permissions", vls) ;
       query.setProperty("exo:cachedResult", cachedResult) ;
-      queryHome.save();
+      query.save() ;
+      session.save() ;
+      queryPath = query.getPath() ;
+    }else {
+      QueryManager manager = session.getWorkspace().getQueryManager();    
+      Query query = manager.createQuery(statement, language);      
+      Node newQuery = query.storeAsNode(baseQueriesPath_ + "/" + queryName);
+      newQuery.addMixin("mix:sharedQuery") ;
+      newQuery.setProperty("exo:permissions", vls) ;
+      newQuery.setProperty("exo:cachedResult", cachedResult) ;
+      session.getItem(queriesPath).save();
       queryPath = queriesPath ;
     }
-    session.save();
     session.logout();
     removeFromCache(queryPath) ;
   }
@@ -325,46 +320,38 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
   
   private QueryResult execute(Session session,Node queryNode) throws Exception {
-    String statement = queryNode.getProperty("jcr:statement").getString();
+    String statement = this.computeStatement(session, queryNode.getProperty("jcr:statement").getString());
     String language = queryNode.getProperty("jcr:language").getString();
-    String userId = session.getUserID();    
-    statement = statement.replace("${UserId}$",userId);        
-    statement = replaceDateTimeParameters(statement);    
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
     return query.execute();
-  }  
+  }    
   
-  private String replaceDateTimeParameters(String statement) {
-    Calendar calendar = new GregorianCalendar();    
-    SimpleDateFormat dateFormat = new SimpleDateFormat(ISO8601.COMPLETE_DATE_FORMAT);
-    //TODO should us expression here
-    int count = StringUtils.countMatches(statement,DATE_PARAMETER);    
-    if(count==-1) return statement;
-    int index = 0;
-    int i =0;
-    do{
-      index = statement.indexOf("${Date}") ;
-      if(statement.charAt(index+7)=='$') {
-        dateFormat.format(calendar.getTime());
-        statement = statement.replace(DATE_PARAMETER,dateFormat.format(calendar.getTime())) ;
-      }else if(statement.charAt(index+7)=='-') {
-        int lastIndex = StringUtils.indexOf(statement,'$',index+7);
-        char type = statement.charAt(lastIndex-1);
-        String dayBefore = statement.substring(index+8,lastIndex-1);
-        int minusDays = Integer.parseInt(dayBefore);
-        if(type == 'D' || type =='d') {
-          calendar.add(Calendar.DATE,-minusDays); 
-        }else if(type == 'M'|| type =='m') {
-          calendar.add(Calendar.MONTH,-minusDays);
-        }else if(type == 'Y' || type =='y') {
-          calendar.add(Calendar.YEAR,-minusDays);
-        }        
-        String fullParameter = "${Date}-".concat(dayBefore).concat(Character.toString(type)).concat("$");
-        statement = statement.replace(fullParameter,dateFormat.format(calendar.getTime()));        
-      }
-      i++;
-    }while(i<count-1) ;    
-    return statement;
+  /**
+   * This method replaces tokens in the statement by their actual values
+   * Current supported tokens are :
+   * ${UserId}$ corresponds to the current user
+   * ${Date}$   corresponds to the current date
+   * That way, predefined queries can be equipped with dynamic values. This is
+   * useful when querying for documents made by the current user, or documents
+   * in publication state.
+   * 
+   * @param session reference to the JCR Session
+   * @return the processed String, with replaced tokens
+   */
+  private String computeStatement(Session session, String statement) {
+
+    // The returned computed statement
+    String ret = statement;
+      
+    // Replace ${UserId}$
+    String userId = session.getUserID();
+    ret = ret.replace("${UserId}$",userId);
+    
+    // Replace ${Date}$
+    String currentDate = ISO8601.format(new GregorianCalendar());
+    ret = ret.replace("${Date}$",currentDate);
+    
+    return ret;
   }
   
   private void removeFromCache(String queryPath) throws Exception {

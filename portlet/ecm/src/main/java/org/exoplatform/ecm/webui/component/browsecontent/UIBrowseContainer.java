@@ -54,6 +54,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -296,33 +297,77 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity ;
   }
   
-  public List<Node> getNodeByQuery(int recoderNumber) throws Exception{
-    List<Node> queryDocuments = new ArrayList<Node>() ;
-    QueryManager queryManager = null ;
-    try{
-      queryManager = getSession().getWorkspace().getQueryManager();
-    }catch (Exception e) {
-      e.printStackTrace();
-      return queryDocuments ;
-    }           
-    String queryStatiement = getQueryStatement() ;
-    if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
-      String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
-      Node queryNode = getNodeByPath(queryPath) ;
-      queryStatiement = queryNode.getProperty("jcr:statement").getString() ;
-    }
-    Query query = queryManager.createQuery(queryStatiement, getQueryLanguage());
+  /**
+   * Return a list of Node in the Query use case
+   * 
+   * @param  recordNumber Number of expected records
+   * @return list of Nodes corresponding to the query
+   * @throws Exception if there was a problem while issuing the query
+   */
+  public List<Node> getNodeByQuery(int recordNumber) throws Exception {
+    
+    // Returned list of documents
+    List<Node> queryDocuments = new ArrayList<Node>();
+    
     try {
-      QueryResult queryResult = query.execute();
+      QueryResult queryResult = null;
+      
+      if(Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
+        // New query
+        queryResult = getQueryResultNew();
+      } else {
+        // Stored query
+        queryResult = getQueryResultStored();
+      }
+      
+      // Add the required number of items to the returned list
       NodeIterator iter = queryResult.getNodes();
       int count = 0 ; 
-      while (iter.hasNext() && (count++ != recoderNumber)) {
+      while (iter.hasNext() && (count++ != recordNumber)) {
         queryDocuments.add(iter.nextNode()) ;
       }
-      return queryDocuments ;
     } catch(Exception e) {
-      return queryDocuments ;
+      // Display the stack trace
+      e.printStackTrace();
     }
+    
+    return queryDocuments;
+  }
+  
+  /**
+   * Returns the results of a new query
+   * 
+   * @param  recordNumber Number of expected records
+   * @return query results
+   */
+  public QueryResult getQueryResultNew() throws Exception {
+    
+    // Retrieve the query statement
+    String queryStatement = getQueryStatement();
+    
+    // Prepare the query
+    QueryManager queryManager = getSession().getWorkspace().getQueryManager();
+    Query query = queryManager.createQuery(queryStatement, getQueryLanguage());
+    
+    // Execute the query and return results
+    return query.execute();
+  }
+
+  /**
+   * Returns the results of a saved query
+   * 
+   * @param  recordNumber Number of expected records
+   * @return query results
+   */
+  public QueryResult getQueryResultStored() throws Exception {
+    QueryService queryService = getApplicationComponent(QueryService.class);
+    
+    String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
+    String workspace = getWorkSpace() ;
+    String repository = getRepository();
+    SessionProvider sessionProvider = getSessionProvider();
+    
+    return queryService.execute(queryPath, workspace, repository, sessionProvider);
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {

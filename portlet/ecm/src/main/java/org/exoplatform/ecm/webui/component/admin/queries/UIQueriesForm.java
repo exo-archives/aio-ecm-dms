@@ -73,14 +73,15 @@ public class UIQueriesForm extends UIForm implements UISelector {
   final static public String PERMISSIONS = "permissions" ;
   final static public String CACHE_RESULT = "cache" ;
   final static public String[] ACTIONS = {"Save", "Cancel"} ;
-  final static public String SQL_QUERY = "select * from exo:article where jcr:path like '/cms/publications/%'" ;
-  final static public String XPATH_QUERY = "/jcr:root/cms/publications//element(*, exo:article)" ;
+  final static public String SQL_QUERY = "select * from exo:article where jcr:path like '/Documents/Live/%'" ;
+  final static public String XPATH_QUERY = "/jcr:root/Documents/Live//element(*, exo:article)" ;
   final static public String[] REG_EXPRESSION = {"[", "]", ":", "&"} ;
   
   private boolean isAddNew_ = false ;
   
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
+    	addValidator(MandatoryValidator.class).
         addValidator(ECMNameValidator.class)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
     ls.add(new SelectItemOption<String>("xPath", "xpath")) ;
