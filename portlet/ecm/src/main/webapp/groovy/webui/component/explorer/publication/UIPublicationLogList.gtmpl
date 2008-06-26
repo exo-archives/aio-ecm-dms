@@ -1,0 +1,60 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Dec 26, 2008
+ * 9:36:26 AM 
+ */
+%>
+<div class="$uicomponent.id" id="$uicomponent.id">
+  <table class="UIGrid">
+    <thead>
+      <tr>
+  	    <th><%=_ctx.appRes("UIPublicationLogList.header.name")%></th>
+  	    <th><%=_ctx.appRes("UIPublicationLogList.header.path")%></th>
+  	    <th><%=_ctx.appRes("UIPublicationLogList.header.baseVersion")%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%
+        def rowClass = null ;
+  	    boolean even = true ;
+  	    for (node in uicomponent.getLogList()) {
+  	      if(even) rowClass = "EvenRow" ;  
+  	      else rowClass =  "OddRow" ; 
+  	      even = !even ;
+      %>
+          <tr class="$rowClass">
+            <td><div class="Text"></div></td>
+            <td><div class="Text"></div></td>
+            <td><div class="Text"></div></td>
+          </tr>
+      <%}%>  
+    </tbody>
+  </table>
+  <% if(uicomponent.getUIPageIterator().getAvailablePage() > 1){ %>
+  <div style="margin:1px 0px 5px 0px;">
+    <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+  </div>
+  <% } %>
+	<div class="UIAction">
+    <table align="center" class="ActionContainer">
+    	<tr>
+    		<td align="center">
+		      <% for(action in uicomponent.getActions()) { %>
+	          <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle">
+	  					<div class="ButtonLeft">
+	  					  <div class="ButtonRight">
+	  						  <div class="ButtonMiddle">
+	  							    <%=_ctx.appRes("UIPublicationLogList.action." + action)%>
+	  				      </div>
+	  				    </div>
+	  			    </div>
+	  				</a>
+		      <% } %>
+    		</td>
+    	</tr>
+    </table>
+  </div>
+</div>

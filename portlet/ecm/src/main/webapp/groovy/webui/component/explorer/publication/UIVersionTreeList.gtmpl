@@ -1,0 +1,80 @@
+<div class="UIVersionTreeList">
+	<div class="UITrees">
+    <table class="UIGrid">
+		  <thead>
+			  <tr>
+					<th width="40"></th>
+					<th >Version</th>
+					<th width="40">State</th>
+				</tr>
+			 </thead>
+			 <tbody>
+				<tr class="EvenRow">
+					<td align="center">
+							<div class="ItemIcon TrueIcon"></div>
+					</td>
+					<td class="text">
+							<div class="Node"><a class="ExpandIcon">Version:1</a></div>
+					</td>
+					<td align="center">
+						<a title="UnPublished" href="#">
+							<div class="ItemIcon UnPublishedicon"><span></span></div>
+						</a>
+					</td>
+				</tr>
+				<tr class="SelectRow">
+					<td align="center">
+							<div class="ItemIcon TrueSelectIcon"></div>
+					</td>
+					<td class="text">
+							<div class="Node"><a class="CollapseIcon">Version:1</a></div>
+					</td>
+					<td align="center">
+						<a title="Published" href="#">
+							<div class="ItemIcon Publishedicon"><span></span></div>
+						</a>
+					</td>
+				</tr>
+				<tr class="EvenRow">
+					<td align="center">
+							<div class="ItemIcon TrueIcon"></div>
+					</td>
+					<td class="text">
+							<div class="Node"><div class="Node"><a class="ExpandIcon">Version:1</a></div></div>
+					</td>
+					<td align="center">
+						<a title="Published" href="#">
+							<div class="ItemIcon UnPublishedicon"><span></span></div>
+						</a>
+					</td>
+				</tr>
+				<tr class="OddRow">
+					<td align="center">
+							<div class="ItemIcon TrueIcon"></div>
+					</td>
+					<td class="text">
+							<div class="Node"><div class="LastNode Node"><a class="ExpandIcon">Version:1</a></div></div>
+					</td>
+					<td align="center">
+						<a title="Published" href="#">
+							<div class="ItemIcon UnPublishedicon"><span></span></div>
+						</a>
+					</td>
+				</tr>
+				<tr class="EvenRow">
+					<td align="center">
+							<div class="ItemIcon TrueIcon"></div>
+					</td>
+					<td class="text">
+							<div class="LastNode Node"><a class="ExpandIcon">Version:1</a></div>
+					</td>
+					<td align="center">
+						<a title="Published" href="#">
+							<div class="ItemIcon UnPublishedicon"><span></span></div>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

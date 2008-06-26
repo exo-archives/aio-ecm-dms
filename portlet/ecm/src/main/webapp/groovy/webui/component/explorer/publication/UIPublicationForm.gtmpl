@@ -1,0 +1,29 @@
+<div class="UIPuplicationForm">
+  
+	<div class="UIForm State">
+		<div class="HorizontalLayout">
+			<div class="FormContainer">
+			  <table class="UIFormGrid">
+					<tr>
+						<td class="FieldLabel">Visibility:</td>
+						<td class="FieldComponent" style="width: 80px;">
+							<input type="radio" value="true" name="setActive" class="radio"/> Public
+						</td>
+						<td class="FieldComponent">
+							<input type="radio" value="true" name="setActive" class="radio"/> Private
+						</td>
+					</tr>
+					<tr>
+						<td class="FieldLabel">State:</td>
+						<td class="FieldComponent">
+							<input type="radio" value="true" name="setActive" class="radio"/> Published
+						</td>
+						<td class="FieldComponent">
+							<input type="radio" value="true" name="setActive" class="radio"/> unPublished
+						</td>
+					</tr>
+  			</table>
+  		</div>
+  	</div>
+	</div>
+</div>
