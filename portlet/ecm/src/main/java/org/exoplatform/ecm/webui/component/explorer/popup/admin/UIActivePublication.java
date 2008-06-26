@@ -17,7 +17,6 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
 
-
 import java.util.HashMap;
 
 import javax.jcr.Node;
@@ -26,16 +25,17 @@ import javax.jcr.version.Version;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
+import org.exoplatform.services.ecm.publication.PublicationPresentationService;
+import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
-import org.exoplatform.services.ecm.publication.PublicationService ;
-import org.exoplatform.services.ecm.publication.PublicationPresentationService ;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 
 /**
  * Created by The eXo Platform SAS
@@ -78,13 +78,14 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       
       publicationService.changeState(currentNode, StaticAndDirectPublicationPlugin.PUBLISHED, context);      
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
-      UIForm form = publicationPresentationService.getStateUI(currentNode, cont);
-      UIPopupWindow popupWindow = uiPopupAction.getChild(UIPopupWindow.class);
-      popupWindow.setUIComponent(form);
-      popupWindow.setWindowSize(600, 600);
-      popupWindow.setRendered(true);
-      popupWindow.setShow(true);
-      popupWindow.setResizable(true);      
+      UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
+      UIPublicationManager uiPublicationManager = 
+        uiExplorer.createUIComponent(UIPublicationManager.class, null, null) ;
+      UIPublicationContainer uiPublicationContainer = 
+        uiPublicationManager.getChild(UIPublicationContainer.class) ;
+      uiPublicationContainer.addChild(uiForm) ;
+      uiPublicationContainer.initChild() ;
+      uiPopupAction.activate(uiPublicationManager, 700, 500) ;      
     }
   }
 

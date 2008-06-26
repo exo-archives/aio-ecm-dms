@@ -71,6 +71,8 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIReferencesList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
@@ -101,7 +103,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -777,13 +778,14 @@ public class UIActionBar extends UIForm {
       publicationService.changeState(currentNode, "published", context);
 
       UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
-      UIForm form = publicationPresentationService.getStateUI(currentNode, cont);
-      UIPopupWindow popupWindow = uiPopupAction.getChild(UIPopupWindow.class);
-      popupWindow.setUIComponent(form);
-      popupWindow.setWindowSize(600, 600);
-      popupWindow.setRendered(true);
-      popupWindow.setShow(true);
-      popupWindow.setResizable(true);
+      UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
+      UIPublicationManager uiPublicationManager = 
+        uiExplorer.createUIComponent(UIPublicationManager.class, null, null) ;
+      UIPublicationContainer uiPublicationContainer = 
+        uiPublicationManager.getChild(UIPublicationContainer.class) ;
+      uiPublicationContainer.addChild(uiForm) ;
+      uiPublicationContainer.initChild() ;
+      uiPopupAction.activate(uiPublicationManager, 700, 500) ;
     }
   }
 
