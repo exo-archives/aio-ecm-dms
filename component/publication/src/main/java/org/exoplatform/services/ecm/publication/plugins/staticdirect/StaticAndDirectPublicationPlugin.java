@@ -67,8 +67,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   public static final String CURRENT_STATE = "publication:currentState".intern();
   public static final String HISTORY = "publication:history".intern();
 
-  private static final String VISIBILITY = "publication:visibility".intern();
-  private static final String VERSIONS_PUBLICATION_STATES = "publication:versionsPublicationStates".intern();
+  public static final String VISIBILITY = "publication:visibility".intern();
+  public static final String VERSIONS_PUBLICATION_STATES = "publication:versionsPublicationStates".intern();
 
   public static final String PUBLIC = "public".intern();
   public static final String PRIVATE = "private".intern();
