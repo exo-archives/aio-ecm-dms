@@ -39,5 +39,20 @@
 	    </init-params>
 	  </component-plugin>
 	</external-component-plugins>
+	
+	<external-component-plugins>
+  	<target-component>org.exoplatform.services.jcr.RepositoryService</target-component>
+		<component-plugin>
+	    <name>add.namespaces</name>
+	    <set-method>addPlugin</set-method>
+	    <type>org.exoplatform.services.jcr.impl.AddNamespacesPlugin</type>
+	    <init-params>
+	      <properties-param>
+	        <name>namespaces</name>
+			    <property name="publication" value="http://www.exoplatform.com/jcr/publication/1.1/"/>
+	      </properties-param>
+	    </init-params>
+	  </component-plugin>
+	</external-component-plugins>
 
 </configuration>

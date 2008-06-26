@@ -62,10 +62,10 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   public static final String NON_PUBLISHED = "non published".intern();
   public static final String PUBLISHED = "published".intern();
 
-  private static final String PUBLICATION = "publication:publication".intern();
-  private static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
-  private static final String CURRENT_STATE = "publication:currentState".intern();
-  private static final String HISTORY = "publication:history".intern();
+  public static final String PUBLICATION = "publication:publication".intern();
+  public static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
+  public static final String CURRENT_STATE = "publication:currentState".intern();
+  public static final String HISTORY = "publication:history".intern();
 
   private static final String VISIBILITY = "publication:visibility".intern();
   private static final String VERSIONS_PUBLICATION_STATES = "publication:versionsPublicationStates".intern();
