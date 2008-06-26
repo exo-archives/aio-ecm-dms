@@ -1,6 +1,3 @@
 ﻿<div>
-	Generic data :<br/>
 	<%= uiform.renderChild(UIPublicationComponent.class) %>
-	
-	Specific data : published State
 </div>
