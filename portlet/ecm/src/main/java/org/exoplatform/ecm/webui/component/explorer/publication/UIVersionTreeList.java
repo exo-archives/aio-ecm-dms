@@ -17,13 +17,16 @@
 package org.exoplatform.ecm.webui.component.explorer.publication;
 
 import javax.jcr.Node;
+import javax.jcr.Value;
 import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
-import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -34,7 +37,7 @@ import org.exoplatform.webui.core.UIContainer;
 @ComponentConfig(
     template = "app:/groovy/webui/component/explorer/publication/UIVersionTreeList.gtmpl",
     events = {
-//        @EventConfig(listeners = UIVersionTreeList.SelectActionListener.class)
+        @EventConfig(listeners = UIVersionTreeList.SelectActionListener.class)
     }
 )
 public class UIVersionTreeList extends UIContainer {
@@ -67,5 +70,32 @@ public class UIVersionTreeList extends UIContainer {
   public boolean isBaseVersion(VersionNode versionNode) throws Exception {
     if (node_.getBaseVersion().getName().equals(versionNode.getVersion().getName())) return true ;
     return false ;
+  }
+  
+  public boolean isSelectedVersion(VersionNode versionNode) throws Exception {
+    if(curentVersion_.equals(versionNode)) return true ;
+    return false ;
+  }
+  
+  public boolean isPublised(VersionNode versionNode) throws Exception {
+    Value[] publicationStates =  node_.getProperty(StaticAndDirectPublicationPlugin.VERSIONS_PUBLICATION_STATES).getValues() ;
+    for(Value value : publicationStates) {
+      String[] arrPublicationState = value.getString().split(",") ;
+      for(int i=0; i < arrPublicationState.length; i++) {
+        if(arrPublicationState[0].equals(versionNode.getVersion().getUUID())) {
+          if(arrPublicationState[1].equals(StaticAndDirectPublicationPlugin.PUBLISHED)) return true ;
+          return true ;
+        }
+      }
+    }
+    return false ;
+  }
+  
+  static public class SelectActionListener extends EventListener<UIVersionTreeList> {
+    public void execute(Event<UIVersionTreeList> event) throws Exception {
+      UIVersionTreeList uiVersionTreeList = event.getSource() ;
+      String versionPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiVersionTreeList.curentVersion_  = uiVersionTreeList.rootVersion_.findVersionNode(versionPath) ;
+    }
   }
 }

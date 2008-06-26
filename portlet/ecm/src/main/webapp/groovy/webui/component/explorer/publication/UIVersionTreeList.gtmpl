@@ -16,7 +16,11 @@
 			String show = "Version: " + node.getName();					
 			println(show);					
 			println("</div></div></td><td align=\"center\">");
-			println("<div class=\"ItemIcon UnPublishedicon\">");					
+			if(uicomponent.isPublised(node)) {
+				println("<div class=\"ItemIcon Publishedicon\">");					
+			} else {
+				println("<div class=\"ItemIcon UnPublishedicon\">");					
+			}
 			println("</div></td></tr>");							
     	if (node.getChildrenSize() > 0) writeNodes(node.getChildren(), level + 1) ;  		
 	  }  	
@@ -35,10 +39,10 @@
 			 <tbody>
 			 
 			 <%
-					writeNodes(rootNode.getChildren(), 0 );
-				  uicomponent.renderChildren(); 
+					//writeNodes(rootNode.getChildren(), 0 );
+				  //uicomponent.renderChildren(); 
 			 %>
-			 <!--
+			
 				<tr class="EvenRow">
 					<td align="center">
 							<div class="ItemIcon TrueIcon"></div>
@@ -104,7 +108,7 @@
 						</a>
 					</td>
 				</tr>
-				-->
+			
 			</tbody>
 		</table>
 	</div>
