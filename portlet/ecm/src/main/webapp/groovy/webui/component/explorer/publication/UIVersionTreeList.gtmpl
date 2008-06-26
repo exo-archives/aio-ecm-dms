@@ -6,15 +6,21 @@
   	boolean even = true ;
   	int n = 0;
   	for (node in nodes) {  		  			  		
-    	println("<tr class=\"EvenRow\"><td align=\"center\"><div class=\"ItemIcon TrueIcon\"></div></td>");
+			def clazz = "ExpandIcon" ;
+			def clazzRow = "EvenRow" ;
+			def selectItem = "ItemIcon TrueIcon";
+			if(uicomponent.isSelectedVersion(node)) {
+			  clazz = "CollapseIcon" ;
+			  clazzRow = "SelectRow" ;
+			  selectItem = "ItemIcon TrueSelectIcon" ;
+			}  
+    	println("<tr class=\""+clazzRow+"\"><td align=\"center\"><div class=\""+selectItem+"\"></div></td>");
   	  println("<td class=\"text\"><div class=\"Node\">");  		      	
-    	if (node.getChildrenSize() > 0) {
-    		println("<div class=\"CollapseIcon\">");
-  	  } else {
-  		  println("<div class=\"ExpandIcon\">");
-    	}	     
+		  println("<div class=\"" +clazz+ "\">");
 			String show = "Version: " + node.getName();					
-			println(show);					
+			println("<a href=\""+uicomponent.event("Select",   node.getPath()) + "\">");
+			println(show);				
+			println("</a>")	
 			println("</div></div></td><td align=\"center\">");
 			if(uicomponent.isPublised(node)) {
 				println("<div class=\"ItemIcon Publishedicon\">");					
@@ -39,10 +45,10 @@
 			 <tbody>
 			 
 			 <%
-					//writeNodes(rootNode.getChildren(), 0 );
-				  //uicomponent.renderChildren(); 
+					writeNodes(rootNode.getChildren(), 0 );
+				  uicomponent.renderChildren(); 
 			 %>
-			
+			<!--
 				<tr class="EvenRow">
 					<td align="center">
 							<div class="ItemIcon TrueIcon"></div>
@@ -108,7 +114,7 @@
 						</a>
 					</td>
 				</tr>
-			
+			-->
 			</tbody>
 		</table>
 	</div>

@@ -72,6 +72,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataCon
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationForm;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
@@ -791,9 +792,12 @@ public class UIActionBar extends UIForm {
         uiPublicationManager.getChild(UIPublicationLogList.class);
       UIVersionTreeList uiVersionTreeList = 
         uiPublicationContainer.getChild(UIVersionTreeList.class);
+      UIPublicationForm uiPublicationForm = 
+        uiPublicationContainer.getChild(UIPublicationForm.class);
       uiPopupAction.activate(uiPublicationManager, 700, 500);
       uiPublicationLogList.updateGrid() ;
       uiVersionTreeList.initVersion(currentNode);
+      uiPublicationForm.initForm(currentNode) ;
     }
   }
 

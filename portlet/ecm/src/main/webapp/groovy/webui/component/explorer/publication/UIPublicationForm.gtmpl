@@ -1,5 +1,5 @@
 <div class="UIPuplicationForm">
-  
+  <% uiform.begin() %>
 	<div class="UIForm State">
 		<div class="HorizontalLayout">
 			<div class="FormContainer">
@@ -7,23 +7,44 @@
 					<tr>
 						<td class="FieldLabel">Visibility:</td>
 						<td class="FieldComponent" style="width: 80px;">
-							<input type="radio" value="true" name="setActive" class="radio"/> Public
+							<% uiform.renderField(uicomponent.getChildById("visibility")) %>
 						</td>
 						<td class="FieldComponent">
-							<input type="radio" value="true" name="setActive" class="radio"/> Private
 						</td>
 					</tr>
 					<tr>
 						<td class="FieldLabel">State:</td>
 						<td class="FieldComponent">
-							<input type="radio" value="true" name="setActive" class="radio"/> Published
+						  <% uiform.renderField(uicomponent.getChildById("state")) %>
 						</td>
 						<td class="FieldComponent">
-							<input type="radio" value="true" name="setActive" class="radio"/> unPublished
 						</td>
 					</tr>
   			</table>
   		</div>
   	</div>
 	</div>
+	<div class="UIAction"> 
+    <table class="ActionContainer">
+    	<tr>
+    		<td align="center">
+	          <% for(action in uicomponent.getActions()) { 
+	          		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+	               String link = uicomponent.event(action) ;
+	          %>
+              <a href="$link" class="ActionButton LightBlueStyle" >
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      $actionLabel
+                    </div>
+                  </div>
+                </div>
+              </a>
+      		<%}%>
+      	</td>
+      </tr>          
+    </table>
+  </div>
+	<%uiform.end()%>
 </div>

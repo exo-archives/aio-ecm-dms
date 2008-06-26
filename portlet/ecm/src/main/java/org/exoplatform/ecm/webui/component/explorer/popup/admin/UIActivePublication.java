@@ -26,6 +26,7 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationForm;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
 import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
@@ -91,9 +92,11 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
         uiPublicationManager.getChild(UIPublicationLogList.class);
       uiPopupAction.activate(uiPublicationManager, 700, 500) ;      
       uiPublicationLogList.updateGrid();
-      
+      UIPublicationForm uiPublicationForm = 
+        uiPublicationContainer.getChild(UIPublicationForm.class);
       UIVersionTreeList uiVersionTreeList = uiPublicationContainer.getChild(UIVersionTreeList.class);
       uiVersionTreeList.initVersion(currentNode);
+      uiPublicationForm.initForm(currentNode) ;
     }
   }
 
