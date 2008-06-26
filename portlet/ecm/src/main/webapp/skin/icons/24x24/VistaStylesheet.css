@@ -111,8 +111,7 @@
 
 .ManagePublicationsIcon {
 	width: 24px; height: 24px;
-	/* TODO : add and change icon */
-  background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
+  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat ;
 }
 
 .ManageActionsIcon {
